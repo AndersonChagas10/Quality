@@ -810,7 +810,37 @@
   <data name="profiles" xml:space="preserve">
     <value>Profiles</value>
   </data>
+  <data name="profiles_and_roles" xml:space="preserve">
+    <value>Perfis e Regras</value>
+  </data>
+  <data name="roles" xml:space="preserve">
+    <value>Roles</value>
+  </data>
+  <data name="roles_sgq" xml:space="preserve">
+    <value>Roles SGQ</value>
+  </data>
+  <data name="screen_components" xml:space="preserve">
+    <value>Screen Components</value>
+  </data>
+  <data name="new_role" xml:space="preserve">
+    <value>New Role</value>
+  </data>
+  <data name="new_component" xml:space="preserve">
+    <value>New component</value>
+  </data>
+  <data name="component" xml:space="preserve">
+    <value>Component</value>
+  </data>
+  <data name="hashkey" xml:space="preserve">
+    <value>HashKey</value>
+  </data>
+  <data name="type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="screen_component" xml:space="preserve">
+    <value>Screen Component</value>
+  </data>
   <data name="nc_report" xml:space="preserve">
-    <value>Errors Report</value>
+    <value>NC Report</value>
   </data>
 </root>

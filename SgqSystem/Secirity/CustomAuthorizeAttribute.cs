@@ -55,8 +55,8 @@ namespace SgqSystem.Secirity
                 }
 
                 if (!string.IsNullOrEmpty(_userSgqRoles) && !Roles.Contains("somentemanutencao-sgq"))
-                    if (_userSgqRoles.Contains("somentemanutencao-sgq") && !HttpContext.Current.Request.RawUrl.Contains("/Manutencao/Index"))
-                        filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Manutencao", action = "Index" }));
+                    if (_userSgqRoles.Contains("somentemanutencao-sgq") && !HttpContext.Current.Request.RawUrl.Contains("ManPainelGestao/Index"))
+                        filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "ManPainelGestao", action = "Index" }));
             }
           
 

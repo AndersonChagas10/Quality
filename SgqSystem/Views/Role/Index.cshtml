@@ -1,0 +1,152 @@
+﻿@using SgqSystem.Helpers
+
+@{
+
+    ViewBag.Title = @Resources.Resource.role;
+
+    var urlCompany = Url.Action("AddUpdateParCompany", "api/Company"); //URL relativa
+    var urlStructure = Url.Action("AddUpdateParStructure", "api/Company"); //URL relativa
+    var urlStructureGroup = Url.Action("AddUpdateParStructureGroup", "api/Company"); //URL relativa
+    var urlHome = Url.Action("Index", "Home");
+
+}
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content" style="min-height: 650px;">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE TITLE-->
+        <h1 class="page-title">
+            @Resources.Resource.profiles_and_roles
+        </h1>
+        <!-- END PAGE TITLE-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@urlHome">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span> @Resources.Resource.profiles_and_roles </span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+                <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
+                <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.profiles_and_roles</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+
+                                <div class="panel-group accordion" id="roles_sgq_accordion">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="row panel-title">
+                                                <div class="col-xs-12">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#roles_sgq_accordion" href="#roles_sgq_collapse" aria-expanded="false" id="level2Title"> @Resources.Resource.roles_sgq </a>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="roles_sgq_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                            <div class="panel-body">
+                                                <div id="ParLevel2">
+                                                    @Html.Partial("~/Views/Role/RoleSGQ.cshtml")
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="panel-group accordion" id="screen_components_accordion">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="row panel-title">
+                                                <div class="col-xs-12">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#screen_components_accordion" href="#screen_components_collapse" aria-expanded="false" id="level2Title"> @Resources.Resource.screen_components </a>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="screen_components_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                            <div class="panel-body">
+                                                <div id="ParLevel2">
+                                                    @Html.Partial("~/Views/Role/ScreenComponent.cshtml")
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+
+<script>
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+
+    navbarSelect("navbar16");
+
+    var monthNames = [
+        '@Resources.Resource.january',
+        '@Resources.Resource.february',
+        '@Resources.Resource.march',
+        '@Resources.Resource.april',
+        '@Resources.Resource.may',
+        '@Resources.Resource.june',
+        '@Resources.Resource.july',
+        '@Resources.Resource.august',
+        '@Resources.Resource.september',
+        '@Resources.Resource.october',
+        '@Resources.Resource.november',
+        '@Resources.Resource.december'];
+
+    function twoDigits(str) {
+        str = ("000" + str).slice(-2);
+        return str;
+    }
+
+    function watcher() {
+
+        var date = new Date();
+        var day = date.getDate();
+        var monthIndex = date.getMonth();
+        var year = date.getFullYear();
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+
+        $("#currentDate").text(twoDigits(day) + ' @Resources.Resource.of ' + monthNames[monthIndex] + ' @Resources.Resource.of ' + year + ' ' + twoDigits(hour) + ':' + twoDigits(minute) + ':' + twoDigits(second));
+
+        setTimeout(watcher, 1000);
+    }
+
+    watcher();
+
+</script>

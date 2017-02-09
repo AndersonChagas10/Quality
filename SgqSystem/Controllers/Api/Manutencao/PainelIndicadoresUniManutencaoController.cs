@@ -20,13 +20,11 @@ namespace SgqSystem.Controllers.Api.Manutencao
             List<PainelIndicadoresUniManutencaoDTO> _mockEvolucao = new List<PainelIndicadoresUniManutencaoDTO>();
             PainelIndicadoresUniManutencaoDTO manColeta;
 
-            string parametro = obj.indicador;//"Bois Abatidos";
+            string parametro = obj.indicador;
             var realizado = "";
             var orcado = "";
             List<obj> d;
             List<obj2> e;
-
-            //var query = " SELECT Realizado,Orcado FROM (SELECT TOP 1 Name Realizado FROM DimManColetaDados WHERE DimName = '"+ parametro + "' and DimRealTarget = 'Real') Realizado,(SELECT TOP 1 Name Orcado FROM DimManColetaDados WHERE DimName = '"+ parametro + "' and DimRealTarget = 'Meta') Orcado";
 
             var query = "SELECT top 1 Realizado.Realizado ,Orcado.Orcado FROM " +
                         "(SELECT top 1 Name Realizado FROM DimManColetaDados WHERE DimName like '" + parametro + "' and DimRealTarget like 'Real' UNION ALL SELECT '0') Realizado " +
@@ -39,27 +37,80 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
             foreach (var item in d)
             {
-                //if (item.orcado == "")
-                //    orcado = "0";
-                //else
                 orcado = item.orcado;
-
-
-                //if (item.realizado == "")
-                //    realizado = "0";
-                //else
                 realizado = item.realizado;
             }
 
+            //var query2 = "SELECT " +
+            //                "Convert(varchar(7), ISNULL(Base_dateRef, cast(Base_dateAdd as varchar(10))), 120) Data " +
+            //                ",SUM(ISNULL(CASE WHEN " + realizado + " = '0' THEN 0.00 ELSE " + realizado + " END,0)) realizado " +
+            //                ",SUM(ISNULL(CASE WHEN " + orcado + " = '0' THEN 0.00 ELSE " + orcado + " END,0)) orcado " +
+            //                "FROM MANCOLETADADOS " +
+            //                //"WHERE 1 = 1" +
+            //                "WHERE ISNULL(YEAR(BASE_DATEREF),YEAR(BASE_DATEADD)) = " + obj.ano + "";
+            //if (obj.unidade != null)
+            //{
+            //    query2 += " and Base_parCompany_id = " + obj.unidade + " ";
+            //}
+            //query2 += "GROUP BY " +
+            //"Convert(varchar(7), ISNULL(Base_dateRef, cast(Base_dateAdd as varchar(10))), 120)";
+
+            //"HAVING SUM(Rendimento_Real)IS NOT NULL OR SUM(Rendimento_Meta) IS NOT NULL";
+
             var query2 = "SELECT " +
-                            "Convert(varchar(7), ISNULL(Base_dateRef, cast(Base_dateAdd as varchar(10))), 120) Data " +
-                            ",SUM(ISNULL(CASE WHEN " + realizado + " = '0' THEN 0.00 ELSE " + realizado + " END,0)) realizado " +
-                            ",SUM(ISNULL(CASE WHEN " + orcado + " = '0' THEN 0.00 ELSE " + orcado + " END,0)) orcado " +
-                            "FROM MANCOLETADADOS " +
-                            "GROUP BY " +
-                            //"WHERE Base_parCompany_id = 1" +
-                            "Convert(varchar(7), ISNULL(Base_dateRef, cast(Base_dateAdd as varchar(10))), 120)";
-                            //"HAVING SUM(Rendimento_Real)IS NOT NULL OR SUM(Rendimento_Meta) IS NOT NULL";
+                         "BASONA.Dado " +
+                        ",BASONA.Realizado " +
+                        ",BASONA.Orcado " +
+                    "FROM " +
+                    "(" +
+                        "SELECT" +
+                            "'Por Unidade' TipoRelatorio " +
+                            ", Mes.Mes dado " +
+                            ", isnull(Base.Realizado, 0) realizado " +
+                            ", isnull(Base.Orcado, 0)    orcado " +
+                        "FROM MANANOMES MES " +
+                        "LEFT JOIN " +
+                        "( " +
+                            "SELECT MONTH(ISNULL(Base_dateRef, cast(Base_dateAdd AS varchar(10)))) Mes, " +
+                                    "SUM(ISNULL(CASE " +
+                                        "WHEN " + realizado + " = '0' THEN 0.00 " +
+                                        "ELSE " + realizado + " " +
+                                    "END, 0)) realizado, " +
+                                    "SUM(ISNULL(CASE " +
+                                       "WHEN " + orcado + " = '0' THEN 0.00 " +
+                                       "ELSE " + orcado + " " +
+                                    "END, 0)) orcado " +
+                            "FROM MANCOLETADADOS Man " +
+                            "WHERE " +
+                                "ISNULL(YEAR(BASE_DATEREF), YEAR(BASE_DATEADD)) = '" + obj.ano + "' " +
+                                "AND Man.Base_parCompany_id in ('27') " +
+                            "GROUP BY MONTH(ISNULL(Base_dateRef, cast(Base_dateAdd AS varchar(10)))) " +
+                        ")Base on MES.MesInt = Base.Mes " +
+                        "union all " +
+                        "SELECT " +
+                            "'Por Regional' TipoRelatorio " +
+                            ", Uni.EmpresaSigla dado " +
+                            ", isnull(Base.Realizado, 0) Realizado " +
+                            ", isnull(Base.Orcado, 0)    Orcado " +
+                        "FROM DimManBaseUni Uni " +
+                        "LEFT JOIN( " +
+                            "SELECT Man.Base_parCompany_id, " +
+                                    "SUM(ISNULL(CASE " +
+                                        "WHEN  "+ realizado +"  = '0' THEN 0.00 " +
+                                        "ELSE  "+ realizado +"  " +
+                                    "END, 0)) realizado, " +
+                                    "SUM(ISNULL(CASE " +
+                                        "WHEN " + orcado + " = '0' THEN 0.00 " +
+                                        "ELSE " + orcado + " " +
+                                    "END, 0)) orcado " +
+                            "FROM MANCOLETADADOS Man " +
+                            "WHERE " +
+                                "ISNULL(YEAR(BASE_DATEREF), YEAR(BASE_DATEADD)) = '" + obj.ano + "'" +
+                                "AND Man.Base_parCompany_id in (SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegionalGrupo = '" + obj.regional + "' and ParCompany_id is not null) " +
+                            "GROUP BY Man.Base_parCompany_id " +
+                        ")Base on uni.Parcompany_id = Base.Base_parCompany_id " +
+                    ")BASONA " +
+                    "WHERE BASONA.TipoRelatorio = '" + obj.tipoRelatorio + "' ";
 
             using (var db = new SgqDbDevEntities())
             {
@@ -70,6 +121,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
             {
                 manColeta = new PainelIndicadoresUniManutencaoDTO();
 
+                manColeta.dado = item.dado;
                 manColeta.realizado = item.realizado;
                 manColeta.orcado = item.orcado;
                 manColeta.desvio = manColeta.realizado - manColeta.orcado;
@@ -81,19 +133,6 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
                 _mockEvolucao.Add(manColeta);
             }
-
-
-            //for (int i = 0; i < 12; i++)
-            //{
-            //    manColeta.orcado = i + 2;
-            //    manColeta.realizado = i + 1;
-            //    manColeta.desvio = manColeta.orcado - manColeta.realizado;
-            //    manColeta.porcDesvio = (manColeta.desvio / manColeta.orcado) * 100;
-
-            //    _mockEvolucao.Add(manColeta);
-
-            //    manColeta = new PainelIndicadoresUniManutencaoDTO();
-            //}
 
             return _mockEvolucao;
         }
@@ -139,6 +178,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
     public class obj2
     {
+        public string dado { get; set; }
         public decimal realizado { get; set; }
         public decimal orcado { get; set; }
     }
@@ -147,5 +187,8 @@ namespace SgqSystem.Controllers.Api.Manutencao
     {
         public string indicador { get; set; }
         public Nullable<int> unidade { get; set; }
+        public string ano { get; set; }
+        public string tipoRelatorio { get; set; }
+        public string regional { get; set; }
     }
 }
