@@ -197,6 +197,11 @@
     #showIndicadoresManutencao table {
         min-width: 280px;
     }
+
+    #indicadores .radio, .checkbox {
+        margin-top: 4px;
+        margin-bottom: 4px;
+    }
 </style>
 
 <!-- Sidebar -->
@@ -229,6 +234,17 @@
                 </div>
             </div>
         </li>
+
+        <li>
+            <div class="dropdown" id="showFiltroManutencao" style="display:none">
+                <span class="redLabel">Tipo de Relatorio</span>
+                <select id="tipoRelatorio" class="form-control" style="width:210px">
+                    <option value="Por Unidade">Por Unidade</option>
+                    <option value="Por Regional">Por Regional</option>
+                </select>
+            </div>
+        </li>
+
         @if (ViewBag.Anos != null)
         {
             <li>
@@ -238,11 +254,21 @@
                 </div>
             </li>
         }
-              
+
+        @if (ViewBag.Regionais != null)
+        {
+            <li>
+                <div class="dropdown" id="showRegionaisManutencao" style="display:none">
+                    <span class="redLabel">Regional</span>
+                    @Html.DropDownList("RegionalId", new SelectList(ViewBag.Regionais, "Nome", "Nome"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                </div>
+            </li>
+        }
+
         <li>
             <div id="showUnit" style="display:none">
                 <span class="redLabel">@Resources.Resource.unit</span>
-                
+
                 @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
@@ -375,7 +401,7 @@
             </div>
 
             <div id="showIndicadoresManutencao" style="display:none">
-                <table>
+                <table id="indicadores">
                     <tr>
                         <td><label class="radio"><input type="radio" name="optradio" value="Bois Abatidos">Bois Abatidos</label></td>
                         <td><label class="radio"><input type="radio" name="optradio" value="Manutenção R$">Manutenção R$</label></td>
@@ -385,14 +411,14 @@
                         <td><label class="radio"><input type="radio" name="optradio" value="Apropr Planej...to">Apropr Planej...to</label></td>
                     </tr>
                     @*<tr>
-                        <td><label class="radio"><input type="radio" name="optradio" value="Rend.(Sebo+Farinha)">Rend.(Sebo+Farinha)</label></td>
-                        <td><label class="radio"><input type="radio" name="optradio" value="Sebo Flotado">Sebo Flotado</label></td>
-                    </tr>*@
+                            <td><label class="radio"><input type="radio" name="optradio" value="Rend.(Sebo+Farinha)">Rend.(Sebo+Farinha)</label></td>
+                            <td><label class="radio"><input type="radio" name="optradio" value="Sebo Flotado">Sebo Flotado</label></td>
+                        </tr>*@
                     <tr>
                         <td><label class="radio"><input type="radio" name="optradio" value="Scorecard Unidade">Scorecard Unidade</label></td>
                         <td><label class="radio"><input type="radio" name="optradio" value="Scorecard Vácuo">Scorecard Vácuo</label></td>
                     </tr>
-                    <tr>             
+                    <tr>
                         <td><label class="radio"><input type="radio" name="optradio" value="Head Count">Head Count</label></td>
                         <td><label class="radio"><input type="radio" name="optradio" value="Scorecard Aspersão">Scorecard Aspersão</label></td>
                     </tr>
@@ -405,13 +431,13 @@
                         <td><label class="radio"><input type="radio" name="optradio" value="Devoluções %">Devoluções %</label></td>
                     </tr>
                     @*<tr>
-                        <td><label class="radio"><input type="radio" name="optradio" value="Devoluções R$">Devoluções R$</label></td>
-                        <td><label class="radio"><input type="radio" name="optradio" value="Absenteísmo">Absenteísmo</label></td>
-                    </tr>*@
+                            <td><label class="radio"><input type="radio" name="optradio" value="Devoluções R$">Devoluções R$</label></td>
+                            <td><label class="radio"><input type="radio" name="optradio" value="Absenteísmo">Absenteísmo</label></td>
+                        </tr>*@
                     @*<tr>
-                        <td><label class="radio"><input type="radio" name="optradio" value="Rotatividade">Rotatividade</label></td>
-                        <td><label class="radio"><input type="radio" name="optradio" value="Scorecard  Água">Scorecard  Água</label></td>
-                    </tr>*@
+                            <td><label class="radio"><input type="radio" name="optradio" value="Rotatividade">Rotatividade</label></td>
+                            <td><label class="radio"><input type="radio" name="optradio" value="Scorecard  Água">Scorecard  Água</label></td>
+                        </tr>*@
                     <tr>
                         <td><label class="radio"><input type="radio" name="optradio" value="R$/CB Manut">R$/CB Manut</label></td>
                         <td><label class="radio"><input type="radio" name="optradio" value="R$/CB Manut+Utilid">R$/CB Manut+Utilid</label></td>
@@ -452,16 +478,16 @@
                     <tr>
                         <td><label class="radio"><input type="radio" name="optradio" value="Horas Extras Nº">Horas Extras Nº</label></td>
                         <td><label class="radio"><input type="radio" name="optradio" value="CAPEX">CAPEX</label></td>
-                        
+
                     </tr>
                     <tr>
                         <td><label class="radio"><input type="radio" name="optradio" value="Apropriação de O.S">Apropriação de O.S</label></td>
                         <td><label class="radio"><input type="radio" name="optradio" value="CARTA META">CARTA METAS</label></td>
                     </tr>
                     @*<tr>
-                        <td><label class="radio"><input type="radio" name="optradio" value="Scorecard M. Amb">Scorecard M. Amb</label></td>
-                        <td><label class="radio"><input type="radio" name="optradio" value="Taxa de Frequência">Taxa de Frequência</label></td>
-                    </tr>*@
+                            <td><label class="radio"><input type="radio" name="optradio" value="Scorecard M. Amb">Scorecard M. Amb</label></td>
+                            <td><label class="radio"><input type="radio" name="optradio" value="Taxa de Frequência">Taxa de Frequência</label></td>
+                        </tr>*@
                 </table>
 
             </div>
@@ -713,6 +739,14 @@
 
         showYear: function () {
             $("#showYearManutencao").show();
+        },
+
+        showFiltroManutencao: function () {
+            $("#showFiltroManutencao").show();
+        },
+
+        showRegionaisManutencao: function () {
+            $("#showRegionaisManutencao").show();
         }
     }
 
@@ -766,4 +800,3 @@
     }
 
 </script>
-

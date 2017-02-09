@@ -8,6 +8,7 @@ namespace DTO.DTO.Manutencao
 {
     public class PainelIndicadoresUniManutencaoDTO
     {
+        public string dado { get; set; }
         public decimal orcado { get; set; }
         public decimal realizado { get; set; }
         public decimal desvio { get; set; }

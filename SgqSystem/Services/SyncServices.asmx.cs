@@ -2185,7 +2185,7 @@ namespace SgqSystem.Services
             string supports = "<div class=\"Results hide\"></div>" +
                               "<div class=\"ResultsConsolidation hide\"></div>" +
                                "<div class=\"ResultsKeys hide\"></div>" +
-                              "<div class=\"Deviations\"></div>" +
+                              "<div class=\"Deviations hide\"></div>" +
                               "<div class=\"Users hide\"></div>" +
                               "<div class=\"VerificacaoTipificacao hide\"></div>" +
                               "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
@@ -2303,7 +2303,8 @@ namespace SgqSystem.Services
                            "     Total Avaliado: <div id = 'totalAv'  class='clDebugAlertas'></div> " +
                            "     <br> " +
                            "     Total NC: <div id = 'totalNc'  class='clDebugAlertas'></div> " +
-
+                           "     <br> " +
+                           "     Total NC na avaliação: <div id = 'totalNcNaAvalicao'  class='clDebugAlertas'></div> " +
 
                            "</div> " +
 
