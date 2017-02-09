@@ -10,6 +10,7 @@ using DTO.Helpers;
 
 namespace SgqSystem.Controllers
 {
+    [FilterUnit]
     [CustomAuthorize]
     public class CepRecortesController : BaseController
     {

@@ -9,7 +9,6 @@ namespace DTO.DTO
 {
     public class RoleTypeDTO : EntityBase
     {
-        public int Id { get; set; }
         public string Type { get; set; }
 
     }

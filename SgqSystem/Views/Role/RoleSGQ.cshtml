@@ -1,138 +1,31 @@
 ﻿@using SgqSystem.Helpers
 <div>
-    <button class="btn btn-primary" onclick="indexRole.openNewRole();">@Resources.Resource.new_role</button>
+    <button class="btn btn-primary" onclick="indexRole.openRole();">@Resources.Resource.new_role</button>
 
     <table class="table margin-top">
         <thead>
             <tr>
-                <th style="width:20%">@Resources.Resource.screen_component</th>
-                <th style="width:20%">@Resources.Resource.role</th>
+                <th style="width:45%">@Resources.Resource.screen_component</th>
+                <th style="width:45%">@Resources.Resource.role</th>
+                <th style="width:10%"></th>
             </tr>
         </thead>
         <tbody>
-            @*@if (Model.paramsDto.parLevel1Dto.cabecalhosInclusos != null)
-                {
-                    foreach (var parLevel1XHeaderField in Model.paramsDto.parLevel1Dto.cabecalhosInclusos)
-                    {
-
-                        <tr class="alteracao">
-                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
-                            {
-                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
-                                                                    <td>
-
-                                                                        @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
-                                                                        @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
-                                                                    </td>
-
-                            }
-
-
-                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 3)
-                            {
-                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
-                                                                    <td>
-                                                                        @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
-                                                                        {
-                                                                            <label>@radioOpt.Name</label>
-                                                                            @Html.RadioButton("removerParHeaderField", true, new { @class = "" });
-                                                                        }
-                                                                        @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                                    </td>
-                            }
-
-                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 4)
-                            {
-                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
-                                                                    <td>
-                                                                        @Html.TextBox("a", null, new { @class = "fixed-width form-control input-sm" })
-                                                                        @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                                    </td>
-                            }
-
-                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 5)
-                            {
-                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
-                                                                    <td>
-                                                                        <input type="number" class="fixed-width form-control input-sm" />
-                                                                        @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                                    </td>
-                            }
-                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 6)
-                            {
-                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
-                                                                    <td>
-                                                                        <input type="text" class="dataInput active form-control input-sm">
-                                                                        @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                                    </td>
-                            }
-                            <td>
-                                <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
-                                <button type="button" id="required" class="btn btn-danger btn-xs" onclick="Cabecalhos.SetRequired($(this), @parLevel1XHeaderField.ParHeaderField.Id);">
-                                    @if (parLevel1XHeaderField.ParHeaderField.IsRequired != null)
-                                    {
-                                        if (parLevel1XHeaderField.ParHeaderField.IsRequired.Value)
-                                        {
-                                            @Html.Label("Obrigatório")
-                                        }
-                                        else
-                                        {
-                                            @Html.Label("Não Obrigatório")
-                                        }
-                                    }
-                                    else
-                                    {
-                                        @Html.Label("Não Obrigatório")
-                                    }
-                                </button>
-
-                            </td>
-                            <td>
-                                @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
-                                {
-                                    <div class="input-group">
-                                        <div class="input-group-btn">
-                                            <select class="form-control input-sm" id="@parLevel1XHeaderField.ParHeaderField_Id">
-                                                <option value="0" selected>Nenhum</option>
-                                                @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
-                                                {
-                                                    if (radioOpt.IsDefaultOption == true)
-                                                    {
-                                                        <option value="@radioOpt.Id" selected>@radioOpt.Name</option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="@radioOpt.Id">@radioOpt.Name</option>
-                                                    }
-                                                }
-                                            </select>
-                                            <button type="button" onclick="Cabecalhos.SetMultipleDefault($(this));" class="btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></button>
-                                        </div>
-                                    </div>
-                                }
-
-                            </td>
-
-
-
-                        </tr>
-                    }
-                }*@
-
+            @foreach (var component in ViewBag.listaScreenComponent)
+            {
+                <tr>                    
+                    <td>
+                        @component.Component
+                    </td>
+                    <td>
+                        @component.Type
+                    </td>
+                    <td>
+                        <button onclick="indexRole.openRole(@component.Id)" class="btn btn-primary btn-sm">@Resources.Resource.edit</button>
+                    </td>
+                 </tr>
+            }
         </tbody>
-        <tfoot>
-
-        </tfoot>
     </table>
 
     <div class="modal fade" id="modalRoleSgq" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -146,15 +39,16 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <form id="formRoleSgq">
-                                <div class="form-group">
-                                    <label>@Resources.Resource.screen_component</label>
-                                    <select id="roleSgqDto.ScreenComponent_Id" class="form-control input-sm">
-
-                                    </select>
+                                <div class="form-group hide">
+                                    <input type="hidden" name="Id" class="form-control input-sm">
                                 </div>
                                 <div class="form-group">
                                     <label>@Resources.Resource.role</label>
-                                    <input id="roleSgqDto.Role" class="form-control input-sm">
+                                    <input id="Role" class="form-control input-sm">
+                                </div>
+                                <div class="form-group">
+                                    <label>@Resources.Resource.screen_component</label>
+                                    @Html.DropDownList("ScreenComponent_Id", new SelectList(ViewBag.listaScreenComponent, "Id", "Component"), Resources.Resource.select + "...", new { @class = "form-control input-sm" })
                                 </div>
                             </form>
                         </div>
@@ -169,18 +63,3 @@
     </div>
 
 </div>
-
-<script>
-
-    var indexRole = {
-        openNewRole: function () {
-            $('#modalRoleSgq').modal();
-        },
-        saveRole: function () {
-
-
-        }
-
-    };
-
-</script>
