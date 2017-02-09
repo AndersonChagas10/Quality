@@ -18,5 +18,7 @@ namespace Dominio
         public string HashKey { get; set; }
         public string Component { get; set; }
         public Nullable<int> Type { get; set; }
+    
+        public virtual RoleType RoleType { get; set; }
     }
 }

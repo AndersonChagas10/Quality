@@ -58,7 +58,7 @@ namespace Dominio.Services
                         var defect = defects.FirstOrDefault();
 
                         defect.Evaluations += defectDTO.Evaluations;
-                        defect.Defects += defectDTO.Defects;
+                        defect.Defects += (defectDTO.Defects - defect.Defects);
                         defect.AlterDate = DateTime.Now;
                         defect.Active = true;
 

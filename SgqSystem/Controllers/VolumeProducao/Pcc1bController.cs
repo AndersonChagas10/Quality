@@ -8,6 +8,7 @@ using SgqSystem.Secirity;
 
 namespace SgqSystem.Controllers
 {
+    [FilterUnit]
     [CustomAuthorize]
     public class Pcc1bController : BaseController
     {

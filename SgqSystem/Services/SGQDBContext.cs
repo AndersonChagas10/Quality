@@ -26,6 +26,10 @@ namespace SGQDBContext
         public int RealTimeConsolitationUpdate { get; set; }
         public bool IsLimitedEvaluetionNumber { get; set; }
         public bool IsPartialSave { get; set; }
+
+        public decimal tipoAlerta { get; set; }
+        public decimal valorAlerta { get; set; }
+
         public ParLevel1()
         {
 
@@ -50,6 +54,7 @@ namespace SGQDBContext
             SqlConnection db = new SqlConnection(conexao);
             string sql = " SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
                          " P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate, P1.IsLimitedEvaluetionNumber, P1.IsPartialSave" +
+                         " ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta                                                                                                                                     " +                               
                          " FROM ParLevel1 P1                                                                                                          " +
                          " INNER JOIN (SELECT ParLevel1_Id FROM ParLevel3Level2Level1 GROUP BY ParLevel1_Id) P321                                     " +
                          " ON P321.ParLevel1_Id = P1.Id                                                                                               " +
@@ -61,7 +66,11 @@ namespace SGQDBContext
                          " ON CC.ParCluster_Id = P1C.ParCluster_Id                                                                                    " +
                          " INNER JOIN ParCriticalLevel CL                                                                                             " +
                          " ON CL.Id = P1C.ParCriticalLevel_Id                                                                                         " +
+                         " INNER JOIN ParNotConformityRuleXLevel AL                                                                                   " +
+                         " ON AL.ParLevel1_Id = P1.Id                                                                                                 " +
+
                          " WHERE CC.ParCompany_Id = '" + ParCompany_Id + "'                                                                           " +
+                         " AND AL.IsActive = 1                                                                                                        " +
                          " AND P1.IsActive = 1                                                                                                        " +
                          " ORDER BY CL.Name                                                                                                           ";
 
@@ -78,7 +87,7 @@ namespace SGQDBContext
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
         public decimal Nivel1 { get; set; }
         public decimal Nivel2 { get; set; }
-        public decimal Nivel3 { get; set; }
+        public string Nivel3 { get; set; }
         public decimal VolumeAlerta { get; set; }
         public decimal Meta { get; set; }
         
@@ -101,7 +110,7 @@ namespace SGQDBContext
             string sql = "";
 
             sql =   "\n SELECT " +
-                    "\n SUM((VolumeAlerta * (Meta/100)))		AS nivel3    " +
+                    "\n cast(SUM((VolumeAlerta * (Meta/100))) as varchar)		AS nivel3    " +
                     "\n ,SUM((VolumeAlerta * (Meta / 100)) / 3 * 2)   AS nivel2 " +
                     "\n , SUM((VolumeAlerta * (Meta / 100)) / 3)     AS nivel1 " +
                     "\n , sum(VolumeAlerta) AS VolumeAlerta " +
@@ -891,15 +900,18 @@ namespace SGQDBContext
         public int ParLevel1_Id { get; set; }
         public int ParFrequency_Id { get; set; }
         public bool IsPartialSave { get; set; }
+        public int Id { get; set; }
 
-        public IEnumerable<ParLevel1ConsolidationXParFrequency> getList(int ParCompany_Id)
+        public IEnumerable<ParLevel1ConsolidationXParFrequency> getList(int ParCompany_Id, DateTime data)
         {
             try
             {
                 SqlConnection db = new SqlConnection(conexao);
 
-                string sql = "SELECT CDL1.ParLevel1_Id, PL1.ParFrequency_Id, PL1.IsPartialSave FROM ConsolidationLevel1 CDL1 " +
-                             "INNER JOIN ParLevel1 PL1 ON CDL1.ParLevel1_Id = PL1.Id WHERE CDL1.UnitId = '" + ParCompany_Id + "' GROUP BY CDL1.ParLevel1_Id, PL1.ParFrequency_Id,  PL1.IsPartialSave";
+                string sql = "SELECT CDL1.Id, CDL1.ParLevel1_Id, PL1.ParFrequency_Id, PL1.IsPartialSave FROM ConsolidationLevel1 CDL1 " +
+                             "INNER JOIN ParLevel1 PL1 ON CDL1.ParLevel1_Id = PL1.Id WHERE CDL1.UnitId = '" + ParCompany_Id + "'" +
+                             " AND CDL1.Consolidationdate BETWEEN '" + data.ToString("yyyyMMdd") + " 00:00' and '" + data.ToString("yyyyMMdd") + " 23:59'" +
+                             " GROUP BY CDL1.Id, CDL1.ParLevel1_Id, PL1.ParFrequency_Id,  PL1.IsPartialSave";
 
                 var consolidation = db.Query<ParLevel1ConsolidationXParFrequency>(sql);
 
@@ -949,10 +961,16 @@ namespace SGQDBContext
         public int CollectionLevel2_ID_CorrectiveAction { get; set; }
 
         public int CollectionLevel2_Period_CorrectiveAction { get; set; }
-        public ConsolidationResultL1L2 getConsolidation(int ParLevel2_Id, int ParCompany_Id)
+        public ConsolidationResultL1L2 getConsolidation(int ParLevel2_Id, int ParCompany_Id, int? Id)
         {
 
             SqlConnection db = new SqlConnection(conexao);
+            var sql2 = "";
+
+            if (Id != null)
+            {
+                sql2 = " AND CDL1.Id = " + Id;
+            }
 
             string sql = "SELECT " +
                          "CDL1.AtualAlert AS AlertLevelL1, CDL1.WeiEvaluation AS WeiEvaluationL1, CDL1.EvaluateTotal AS EvaluateTotalL1, CDL1.DefectsTotal AS DefectsTotalL1, CDL1.WeiDefects AS WeiDefectsL1, CDL1.TotalLevel3Evaluation AS TotalLevel3EvaluationL1, CDL1.TotalLevel3WithDefects AS TotalLevel3WithDefectsL1, CDL1.LastEvaluationAlert AS LastEvaluationAlertL1, CDL1.LastLevel2Alert AS LastLevel2AlertL1, CDL1.EvaluatedResult AS EvaluatedResultL1, CDL1.DefectsResult AS DefectsResultL1, " +
@@ -963,7 +981,10 @@ namespace SGQDBContext
                          "LEFT JOIN " +
                          "CollectionLevel2 CL2 ON CL2.ConsolidationLevel2_Id=CDL2.Id AND CL2.HaveCorrectiveAction=1 " +
                          "WHERE(CDL2.ParLevel2_Id = " + ParLevel2_Id + ") AND (CDL1.UnitId = " + ParCompany_Id + ") " +
-                         "GROUP BY CDL1.AtualAlert, CDL1.WeiEvaluation,CDL1.EvaluateTotal, CDL1.DefectsTotal, CDL1.WeiDefects,  CDL1.TotalLevel3Evaluation, CDL1.TotalLevel3WithDefects, CDL1.LastEvaluationAlert, CDL1.LastLevel2Alert, CDL1.EvaluatedResult, CDL1.DefectsResult, CDL2.AlertLevel, CDL2.WeiEvaluation, CDL2.DefectsTotal, CDL2.WeiDefects, CDL2.TotalLevel3WithDefects, CDL2.TotalLevel3Evaluation, CDL2.EvaluateTotal, CDL2.EvaluatedResult, CDL2.DefectsResult,  CL2.HaveCorrectiveAction";
+                         
+                         sql2 +
+
+                         " GROUP BY CDL1.AtualAlert, CDL1.WeiEvaluation,CDL1.EvaluateTotal, CDL1.DefectsTotal, CDL1.WeiDefects,  CDL1.TotalLevel3Evaluation, CDL1.TotalLevel3WithDefects, CDL1.LastEvaluationAlert, CDL1.LastLevel2Alert, CDL1.EvaluatedResult, CDL1.DefectsResult, CDL2.AlertLevel, CDL2.WeiEvaluation, CDL2.DefectsTotal, CDL2.WeiDefects, CDL2.TotalLevel3WithDefects, CDL2.TotalLevel3Evaluation, CDL2.EvaluateTotal, CDL2.EvaluatedResult, CDL2.DefectsResult,  CL2.HaveCorrectiveAction";
 
             var consolidation = db.Query<ConsolidationResultL1L2>(sql).FirstOrDefault();
 

@@ -32,6 +32,7 @@ namespace Dominio
         public Nullable<int> LastEvaluationAlert { get; set; }
         public Nullable<int> EvaluatedResult { get; set; }
         public Nullable<int> DefectsResult { get; set; }
+        public Nullable<int> LastLevel2Alert { get; set; }
     
         public virtual Department Department { get; set; }
         public virtual ParLevel1 ParLevel1 { get; set; }

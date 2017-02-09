@@ -435,7 +435,7 @@ namespace SgqSystem.Services
             return user;
         }
         public string level1(SGQDBContext.ParLevel1 ParLevel1, string tipoTela, int totalAvaliado, decimal totalDefeitos, decimal alertNivel1, decimal alertNivel2,
-                             decimal alertaNivel3, int alertaAtual, int avaliacaoultimoalerta, int monitoramentoultimoalerta, decimal volumeAlertaIndicador, decimal metaIndicador,
+                             string alertaNivel3, int alertaAtual, int avaliacaoultimoalerta, int monitoramentoultimoalerta, decimal volumeAlertaIndicador, decimal metaIndicador,
                              decimal numeroAvaliacoes, decimal metaDia, decimal metaTolerancia, decimal metaAvaliacao, 
                              bool IsLimitedEvaluetionNumber=false)
         {

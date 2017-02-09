@@ -1,4 +1,33 @@
-﻿
+﻿/****** DataTable sum ******
+// Simply get the sum of a column
+  var table = $('#example').DataTable();
+  table.column( 3 ).data().sum();
+
+  // Insert the sum of a column into the columns footer, for the visible
+  // data on each draw
+  $('#example').DataTable( {
+    drawCallback: function () {
+      var api = this.api();
+      $( api.table().footer() ).html(
+        api.column( 4, {page:'current'} ).data().sum()
+      );
+    }
+  } );
+*/
+jQuery.fn.dataTable.Api.register('sum()', function () {
+    return this.flatten().reduce(function (a, b) {
+        if (typeof a === 'string') {
+            a = a.replace(/[^\d.-]/g, '') * 1;
+        }
+        if (typeof b === 'string') {
+            b = b.replace(/[^\d.-]/g, '') * 1;
+        }
+
+        return a + b;
+    }, 0);
+});
+
+
 function EasyAjax(url, dados, callback, loader, toggle) {
 
     if (!!loader)

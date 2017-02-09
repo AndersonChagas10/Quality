@@ -11,8 +11,8 @@ namespace SgqSystem.Secirity
     /// <summary>
     /// Disponibliza a ViewBag:
     /// 
-    /// ViewBag.UnidadeUsuario
-    /// 
+    /// ViewBag.UnidadeUsuario:
+    /// @Html.DropDownListFor(model => model.ParCompany_Id, new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
     /// </summary>
     public class FilterUnit : ActionFilterAttribute
     {

@@ -1,14 +1,9 @@
 ﻿@using SgqSystem.Helpers
 
 @{
-
     ViewBag.Title = @Resources.Resource.role;
 
-    var urlCompany = Url.Action("AddUpdateParCompany", "api/Company"); //URL relativa
-    var urlStructure = Url.Action("AddUpdateParStructure", "api/Company"); //URL relativa
-    var urlStructureGroup = Url.Action("AddUpdateParStructureGroup", "api/Company"); //URL relativa
     var urlHome = Url.Action("Index", "Home");
-
 }
 
 <div class="page-content-wrapper">
@@ -148,5 +143,74 @@
     }
 
     watcher();
+
+    var indexScreenComponent = {
+        openComponent: function (id) {
+
+            $('#modalScreenComponent').modal();
+            $('#formScreenComponent input').val('');
+
+            if (id) {
+                $.get(
+                    '@Url.Action("GetScreenComponent", "api/Role")',
+                    { 'Id': id }, function (object) {
+                        for (var key in object) {
+                            var obj = object[key];
+                            $("#formScreenComponent [name='" + key + "']").val(obj);
+                        }
+
+                        updatePage();
+                    }
+                );
+            } else {
+                $("[name='screenComponentDto.HashKey']").val('HAS');
+            }
+        },
+        saveComponent: function () {
+            $.post('@Url.Action("SaveScreenComponent", "api/Role")',
+                $('#formScreenComponent').serializeObject(),
+                function () {
+                    $('#modalScreenComponent').modal('close');
+                });
+
+        }
+
+    };
+
+    var indexRole = {
+        openRole: function (id) {
+
+            $('#modalRoleSgq').modal();
+            $('#formRoleSgq input').val('');
+
+            if (id) {
+                $.get(
+                    '@Url.Action("GetRoleSgq", "api/Role")',
+                    { 'Id': id }, function (object) {
+                        for (var key in object) {
+                            var obj = object[key];
+                            $("#formRoleSgq [name='" + key + "']").val(obj);
+                        }
+
+                        updatePage();
+                    }
+                );
+            }
+        },
+        saveRole: function () {
+            $.post('@Url.Action("SaveRoleSgq", "api/Role")',
+                $('#formRoleSgq').serializeObject(),
+                function () {
+                    $('#modalRoleSgq').modal('close');
+                });
+        }
+
+    };
+
+    var updatePage = function () {
+        $.get('@Url.Action("Index", "Role")', function (object) {});
+    }
+
+
 
 </script>
