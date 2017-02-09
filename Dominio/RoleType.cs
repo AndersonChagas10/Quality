@@ -14,7 +14,16 @@ namespace Dominio
     
     public partial class RoleType
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public RoleType()
+        {
+            this.ScreenComponent = new HashSet<ScreenComponent>();
+        }
+    
         public int Id { get; set; }
         public string Type { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ScreenComponent> ScreenComponent { get; set; }
     }
 }

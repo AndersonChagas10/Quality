@@ -14,6 +14,12 @@ namespace SgqSystem.Mappers
         {
             CreateMap<RoleType, RoleTypeDTO>();
             CreateMap<RoleTypeDTO, RoleType>();
+
+            CreateMap<ScreenComponent, ScreenComponentDTO>();
+            CreateMap<ScreenComponentDTO, ScreenComponent>();
+
+            CreateMap<RoleSGQ, RoleSGQDTO>();
+            CreateMap<RoleSGQDTO, RoleSGQ>();
         }
     }
 }

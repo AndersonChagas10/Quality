@@ -4,7 +4,7 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
-    [CustomAuthorize]
+    [CustomAuthorize(Roles = "somentemanutencao-sgq")]
     [FormularioPesquisa(filtraUnidadePorUsuario = true)]
     public class ManutencaoController : BaseController
     {

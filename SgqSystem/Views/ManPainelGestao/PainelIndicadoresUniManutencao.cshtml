@@ -64,13 +64,12 @@
         padding: 4px;
     }
 
-    #title{
+    #title {
         float: left;
         width: 100%;
         text-align: center;
         margin-bottom: 20px;
     }
-
 </style>
 
 <div class="page-content" style="min-height: 600px;">
@@ -154,6 +153,7 @@
             var vetorTeste = [];
             var dataTableVetor = [];
             var coluna = "";
+            var porcDesvioTotal = 0;
 
             if ($("#tipoRelatorio :selected").val() == 'Por Unidade') {
                 coluna = "Mês";
@@ -161,26 +161,16 @@
                 coluna = "Uni";
 
             for (var i = 0; i < dado.length; i++) {
-                //vetorTeste[0] = meses[i]; 
+                //vetorTeste[0] = meses[i];
                 vetorTeste[0] = dado[i];
-                vetorTeste[1] = formatReal(Math.round(orcado[i] * 100) / 100);               
-                vetorTeste[2] = formatReal(Math.round(realizado[i] * 100) / 100);                      
-                vetorTeste[3] = formatReal(Math.round(desvio[i] * 100) / 100);              
-                vetorTeste[4] = Math.floor(porcDesvio[i] * 100) / 100;
+                vetorTeste[1] = formatReal(Math.round(orcado[i] * 100) / 100);
+                vetorTeste[2] = formatReal(Math.round(realizado[i] * 100) / 100);
+                vetorTeste[3] = '<i>' + formatReal(Math.round(desvio[i] * 100) / 100) + '</i>';
+                vetorTeste[4] = '<i>' + Math.floor(porcDesvio[i] * 100) / 100 + '%</i>';
                 dataTableVetor.push(vetorTeste);
 
                 vetorTeste = [];
             }
-
-            //vetorTeste[0] = "Total"
-            //vetorTeste[1] = formatReal(Math.round(SomaVetor(orcado) * 100) / 100);
-            //vetorTeste[2] = formatReal(Math.round(SomaVetor(realizado) * 100) / 100);
-            //vetorTeste[3] = formatReal(Math.round(SomaVetor(desvio) * 100) / 100);
-            //vetorTeste[4] = SomaVetor(Math.floor(porcDesvio[i] * 100) / 100)
-
-            //dataTableVetor.push(vetorTeste);
-
-            //vetorTeste = [];
 
             var table = $('#tabela').empty().DataTable({
                 data: dataTableVetor,
@@ -210,31 +200,13 @@
                 loadingRecords: true,
                 destroy: true,
                 info: false,
-                //"drawCallback": function () {
-                //    var api = this.api();
-                //    nb_cols = api.columns().nodes().length;
-
-                //    j = 1;
-
-                //    while (j < nb_cols) {
-                //        var pageTotal = api.column(j, { page: 'current' }).data().sum();
-                //        $('#tabela tfoot tr:eq(0) th:eq(' + j + ')').html(Math.round(pageTotal * 100) / 100);
-                //        j++;
-                //    }
-                //},
-
-                createdRow: function (row, data, index) {
-
-                },
-
-                fnDrawCallback: function (data, d, o) {
-
-                }
+               
             });
 
-            $(".dataTables_scroll").append('<div class="dataTables_scrollFoot"><div class="dataTables_scrollFootInner"><table class="display no-footer dataTable" cellspacing="0" role="grid"><thead><tr role="row"><th class="dt-center sorting_disabled" rowspan="1" colspan="1">Total</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">'+formatReal(Math.round(SomaVetor(orcado) * 100) / 100)+'</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">'+formatReal(Math.round(SomaVetor(realizado) * 100) / 100)+'</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">'+formatReal(Math.round(SomaVetor(desvio) * 100) / 100)+'</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">0</th></tr></thead></table></div></div>');
+            porcDesvioTotal = (SomaVetor(realizado) / SomaVetor(orcado) - 1) * 100
 
-            //new $.fn.dataTable.Responsive(table);
+            //Adiciona "dataTables_scrollFoot" na DataTable
+            $(".dataTables_scroll").append('<div class="dataTables_scrollFoot" style="font-size: 11px;><div class="dataTables_scrollFootInner"><table class="display no-footer dataTable" cellspacing="0" role="grid"><thead><tr role="row"><th class="dt-center sorting_disabled" rowspan="1" colspan="1">Total</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">' + formatReal(Math.round(SomaVetor(orcado) * 100) / 100) + '</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">' + formatReal(Math.round(SomaVetor(realizado) * 100) / 100) + '</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1"><i>' + formatReal(Math.round(SomaVetor(desvio) * 100) / 100) + '</i></th><th class="dt-center sorting_disabled" rowspan="1" colspan="1"><i>' + Math.round(porcDesvioTotal * 100) / 100 + '%</i></th></tr></thead></table></div></div>');
 
             CallbackGraficoEvolucao(orcado, realizado, dado);
             CallbackGraficoAcumulado(orcado, realizado, desvio);
@@ -628,7 +600,7 @@
                 if ($("#showIndicadoresManutencao input:radio:checked").val() != undefined)
                     Send();
             });
-           
+
             formControl.showUnit();
             formControl.showIndicadoresManutencao();
             formControl.showYear();
