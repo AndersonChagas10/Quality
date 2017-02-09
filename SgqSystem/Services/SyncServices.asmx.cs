@@ -1700,7 +1700,7 @@ namespace SgqSystem.Services
             //Verificamos os Indicadores que já foram consolidados para a Unidade selecionada
             var ParLevel1ConsolidationXParFrequencyDB = new SGQDBContext.ParLevel1ConsolidationXParFrequency();
             //Instanciamos uma variável que irá 
-            var parLevel1ConsolidationXParFrequency = ParLevel1ConsolidationXParFrequencyDB.getList(Convert.ToInt32(ParCompany_Id));
+            var parLevel1ConsolidationXParFrequency = ParLevel1ConsolidationXParFrequencyDB.getList(Convert.ToInt32(ParCompany_Id), data);
 
             string Results = null;
 
@@ -1728,7 +1728,7 @@ namespace SgqSystem.Services
                 {
                     //Verificamos a consolidação
                     var ConsolidationResultL1L2DB = new SGQDBContext.ConsolidationResultL1L2();
-                    var consolidationResultL1L2 = ConsolidationResultL1L2DB.getConsolidation(Level2Result.ParLevel2_Id, Level2Result.Unit_Id);
+                    var consolidationResultL1L2 = ConsolidationResultL1L2DB.getConsolidation(Level2Result.ParLevel2_Id, Level2Result.Unit_Id, c.Id);
 
                     var lastSampleConsolidation = Level2ResultDB.getMaxSampe(Level2Result.ConsolidationLevel2_Id, Level2Result.EvaluateLast);
 
@@ -2528,21 +2528,73 @@ namespace SgqSystem.Services
                         //Incremento os itens que estaram no ParLevel1                
                         //Gera linha Level1
 
+                        decimal tipoAlerta = parlevel1.tipoAlerta;
+                        decimal valorAlerta = parlevel1.valorAlerta;
+
                         decimal alertaNivel1 = 0;
                         decimal alertaNivel2 = 0;
-                        decimal alertaNivel3 = 0;
+                        string alertaNivel3 = "";
 
                         decimal volumeAlerta = 0;
                         decimal meta = 0;
 
-                        if (alertas != null)
+                        if(tipoAlerta == 1) //JBS por Indicador
                         {
-                            alertaNivel1 = alertas.Nivel1;
-                            alertaNivel2 = alertas.Nivel2;
-                            alertaNivel3 = alertas.Nivel3;
-                            volumeAlerta = alertas.VolumeAlerta;
-                            meta = alertas.Meta;
+                            if (alertas != null)
+                            {
+                                alertaNivel1 = alertas.Nivel1;
+                                alertaNivel2 = alertas.Nivel2;
+                                alertaNivel3 = "a1";
+                                volumeAlerta = alertas.VolumeAlerta;
+                                meta = alertas.Meta;
+                            }
                         }
+                        else if (tipoAlerta == 2)  //# de NC
+                        {
+                            if (alertas != null)
+                            {
+                                alertaNivel1 = valorAlerta;
+                                alertaNivel2 = valorAlerta;
+                                alertaNivel3 = "a2";
+                                volumeAlerta = alertas.VolumeAlerta;
+                                meta = alertas.Meta;
+                            }
+                        }
+                        else if (tipoAlerta == 3)  //% de NC
+                        {
+                            if (alertas != null)
+                            {
+                                alertaNivel1 = valorAlerta;
+                                alertaNivel2 = valorAlerta;
+                                alertaNivel3 = "a3";
+                                volumeAlerta = alertas.VolumeAlerta;
+                                meta = alertas.Meta;
+                            }
+                        }
+                        else if (tipoAlerta == 4)  //JBS por Monitoramento
+                        {
+                            if (alertas != null)
+                            {
+                                alertaNivel1 = alertas.Nivel1;
+                                alertaNivel2 = alertas.Nivel2;
+                                alertaNivel3 = "a4";
+                                volumeAlerta = alertas.VolumeAlerta;
+                                meta = alertas.Meta;
+                            }
+                        }
+                        else
+                        {
+                            if (alertas != null) //Fica como padrão JBS por indicador
+                            {
+                                alertaNivel1 = alertas.Nivel1;
+                                alertaNivel2 = alertas.Nivel2;
+                                alertaNivel3 = "a1";
+                                volumeAlerta = alertas.VolumeAlerta;
+                                meta = alertas.Meta;
+                            }
+                        }
+
+
 
                         string level01 = html.level1(parlevel1,
                                                      tipoTela: tipoTela,
@@ -2552,7 +2604,7 @@ namespace SgqSystem.Services
                                                      alertNivel2: alertaNivel2,
                                                      alertaNivel3: alertaNivel3,
                                                      numeroAvaliacoes: 0,
-                                                     metaDia: alertaNivel3,
+                                                     metaDia: alertaNivel1 * 3,
                                                      metaTolerancia: alertaNivel1,
                                                      metaAvaliacao: 0,
                                                      alertaAtual: 0,
@@ -4431,9 +4483,12 @@ namespace SgqSystem.Services
             //Verificamos os Indicadores que já foram consolidados para a Unidade selecionada
             var ParLevel1ConsolidationXParFrequencyDB = new SGQDBContext.ParLevel1ConsolidationXParFrequency();
             //Instanciamos uma variável que irá 
-            var parLevel1ConsolidationXParFrequency = ParLevel1ConsolidationXParFrequencyDB.getList(Convert.ToInt32(ParCompany_Id));
 
             DateTime data = DateCollectConvert(date);
+
+            var parLevel1ConsolidationXParFrequency = ParLevel1ConsolidationXParFrequencyDB.getList(Convert.ToInt32(ParCompany_Id), data);
+
+           
 
             if (ParLevel1_Id > 0)
             {
