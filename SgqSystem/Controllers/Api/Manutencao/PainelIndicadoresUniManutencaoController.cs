@@ -109,6 +109,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                 "AND Man.Base_parCompany_id in (SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegionalGrupo = '" + obj.regional + "' and ParCompany_id is not null) " +
                             "GROUP BY Man.Base_parCompany_id " +
                         ")Base on uni.Parcompany_id = Base.Base_parCompany_id " +
+                        "WHERE Base.realizado != 0 AND Base.orcado != 0" +
                     ")BASONA " +
                     "WHERE BASONA.TipoRelatorio = '" + obj.tipoRelatorio + "' ";
 
