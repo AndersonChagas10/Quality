@@ -96,8 +96,8 @@ namespace SgqSystem.Controllers.Api.Manutencao
                         "LEFT JOIN( " +
                             "SELECT Man.Base_parCompany_id, " +
                                     "SUM(ISNULL(CASE " +
-                                        "WHEN  "+ realizado +"  = '0' THEN 0.00 " +
-                                        "ELSE  "+ realizado +"  " +
+                                        "WHEN  " + realizado + "  = '0' THEN 0.00 " +
+                                        "ELSE  " + realizado + "  " +
                                     "END, 0)) realizado, " +
                                     "SUM(ISNULL(CASE " +
                                         "WHEN " + orcado + " = '0' THEN 0.00 " +
