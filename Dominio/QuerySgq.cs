@@ -12,17 +12,12 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class CollectionLevel2XParHeaderField
+    public partial class QuerySgq
     {
         public int Id { get; set; }
-        public int CollectionLevel2_Id { get; set; }
-        public int ParHeaderField_Id { get; set; }
-        public string ParHeaderField_Name { get; set; }
-        public int ParFieldType_Id { get; set; }
-        public string Value { get; set; }
-    
-        public virtual CollectionLevel2 CollectionLevel2 { get; set; }
-        public virtual ParFieldType ParFieldType { get; set; }
-        public virtual ParHeaderField ParHeaderField { get; set; }
+        public string Query { get; set; }
+        public string Desc { get; set; }
+        public string FastKey { get; set; }
+        public bool IsActive { get; set; }
     }
 }

@@ -843,4 +843,7 @@
   <data name="nc_report" xml:space="preserve">
     <value>NC Report</value>
   </data>
+  <data name="hascompleteevaluation" xml:space="preserve">
+    <value>Complete Evaluation is Required</value>
+  </data>
 </root>

@@ -844,6 +844,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Complete Evaluation is Required.
+        /// </summary>
+        internal static string hascompleteevaluation {
+            get {
+                return ResourceManager.GetString("hascompleteevaluation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HashKey.
         /// </summary>
         internal static string hashkey {
