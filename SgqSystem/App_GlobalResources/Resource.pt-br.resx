@@ -840,4 +840,7 @@
   <data name="nc_report" xml:space="preserve">
     <value>Relatório de Não Conformidade</value>
   </data>
+  <data name="hascompleteevaluation" xml:space="preserve">
+    <value>Exige Avaliação Completa</value>
+  </data>
 </root>

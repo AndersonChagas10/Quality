@@ -1,7 +1,7 @@
 ﻿@model ICollection<DTO.DTO.Manutencao.PainelIndicadoresUniManutencaoDTO>
 @{
     ViewBag.Title = "Indicadores Por Unidade";
-    var url = Url.Action("Index", "Home");
+    var urlHome = Url.Action("Index", "ManPainelGestao");
     var urlTabela = Url.Action("GetTabela", "api/GetIndicadoresUniManutencao");
     var urlGraficoEvolucao = Url.Action("CriaGraficoEvolucao", "api/GetIndicadoresUniManutencao");
     var urlGraficoAcumulado = Url.Action("CriaGraficoAcumulado", "api/GetIndicadoresUniManutencao");
@@ -53,7 +53,7 @@
     }
 
     #primeiro {
-        min-height: 480px;
+        min-height: 533px;
     }
 
     table.dataTable thead th, table.dataTable thead td {
@@ -70,12 +70,19 @@
         text-align: center;
         margin-bottom: 20px;
     }
+
+    #home a:hover{
+        text-decoration: none;
+    }
 </style>
 
 <div class="page-content" style="min-height: 600px;">
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
     <div id="formBodyContent">
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+        <div id="home" style="float:right;font-size: 40px;">
+            <a id="home" class="fa fa-home" aria-hidden="true" href="@urlHome"></a>
+        </div>
         <div id="title"><h3></h3></div>
         <div id="load"></div>
         <div id="plotPrincipal"></div>
@@ -123,8 +130,9 @@
                 dados = {
                     "tipoRelatorio": $("#tipoRelatorio :selected").val(),
                     "indicador": $("#showIndicadoresManutencao input:radio:checked").val(),
-                    "unidade": $('#unitId :selected').val(),
+                    "unidade": $('#UnidadeId :selected').text(),
                     "regional": $('#RegionalId :selected').val(),
+                    "subRegional" : $('#RegionalId :selected').text(),
                     "ano": $('#yearId :selected').val()
                 }
 
@@ -132,7 +140,7 @@
                 GetTabela(dados);
             }
 
-            $("#title h3").text("Painel de Indicadores de " + $("#showIndicadoresManutencao input:radio:checked").val() + " - " + $('#unitId :selected').text())
+            $("#title h3").text("Painel de Indicadores de " + $("#showIndicadoresManutencao input:radio:checked").val() + " - " + $('#UnidadeId :selected').text())
 
         };
 
@@ -219,10 +227,10 @@
 
             var unidade = "";
 
-            if ($('#unitId :selected').text() == null)
-                indicador = "Todos";
-            else
-                unidade = $('#unitId :selected').text();
+            //if ($('#unitId :selected').text() == null)
+            //    indicador = "Todos";
+            //else
+                unidade = $('#UnidadeId :selected').text();
 
             var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
 
@@ -308,10 +316,10 @@
         //Gera grafico Acumulado
         function CallbackGraficoAcumulado(orcado, realizado, desvio) {
 
-            if ($('#unitId :selected').text() == null)
-                indicador = "Todos";
-            else
-                unidade = $('#unitId :selected').text();
+            //if ($('#unitId :selected').text() == null)
+            //    indicador = "Todos";
+            //else
+            var unidade = $('#UnidadeID :selected').text();
 
             var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
 
@@ -437,10 +445,10 @@
         //Gera grafico Desvios
         function CallbackGraficoDesvio(realizado, orcado, dado) {
 
-            if ($('#unitId :selected').text() == null)
-                indicador = "Todos";
-            else
-                unidade = $('#unitId :selected').text();
+            //if ($('#unitId :selected').text() == null)
+            //    indicador = "Todos";
+            //else
+            var unidade = $('#UnidadeID :selected').text();
 
             var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
 
@@ -518,7 +526,6 @@
         }
 
         /*Auxiliares*/
-
         function EasyAjax(url, dados, callback, loader) {
 
             //if (!!loader)
@@ -590,9 +597,9 @@
 
             $('#tipoRelatorio').change(function () {
                 if ($(this).val() == "Por Regional") {
-                    $('#unitId').prop('disabled', true);
+                    $('#UnidadeId').prop('disabled', true);
                 } else {
-                    $('#unitId').prop('disabled', false);
+                    $('#UnidadeId').prop('disabled', false);
                 }
             });          
                 
@@ -601,16 +608,45 @@
                     Send();
             });
 
-            formControl.showUnit();
+            formControl.showUnidadesManutencao();
             formControl.showIndicadoresManutencao();
             formControl.showYear();
             formControl.showFiltroManutencao();
             formControl.showRegionaisManutencao();
             formControl.showSubRegionaisManutencao();
 
-            $("#showIndicadoresManutencao label").on("click", function () {
+            $("#indicadores label").on("click", function () {
                 Send();
             });
+
+            $("#RegionalId").change(function () {
+
+                $('#UnidadeId').children('option').hide();
+
+                $("#UnidadeId").val($("#UnidadeId").find("option:visible:first").val());
+
+                $("#SubRegionalId").find("option").show().not("option[value*='" + this.value + "']").hide();
+
+                $("#SubRegionalId").val($("#SubRegionalId").find("option:visible:first").val());
+
+            }).change();
+
+            $("#SubRegionalId").change(function () {
+
+
+                $('#UnidadeId').children('option').hide();
+                $("#UnidadeId").val($("#UnidadeId").find("option:visible:first").val());
+
+                if (this.selectedIndex != -1) {
+
+                    $("#UnidadeId").find("option").show().not("option[value*='" + this.options[this.selectedIndex].text + "']").hide();
+
+                    $("#UnidadeId").val($("#UnidadeId").find("option:visible:first").val());
+
+                }
+                               
+
+            }).change();
    
         });
 

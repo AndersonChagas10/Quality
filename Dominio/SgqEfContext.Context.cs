@@ -44,13 +44,23 @@ namespace Dominio
         public virtual DbSet<CollectionJson> CollectionJson { get; set; }
         public virtual DbSet<CollectionLevel02> CollectionLevel02 { get; set; }
         public virtual DbSet<CollectionLevel03> CollectionLevel03 { get; set; }
+        public virtual DbSet<CollectionLevel2> CollectionLevel2 { get; set; }
         public virtual DbSet<CollectionLevel2XParHeaderField> CollectionLevel2XParHeaderField { get; set; }
         public virtual DbSet<ConsolidationLevel01> ConsolidationLevel01 { get; set; }
+        public virtual DbSet<ConsolidationLevel02> ConsolidationLevel02 { get; set; }
         public virtual DbSet<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
         public virtual DbSet<ConsolidationLevel2> ConsolidationLevel2 { get; set; }
         public virtual DbSet<CorrectiveAction> CorrectiveAction { get; set; }
+        public virtual DbSet<Defect> Defect { get; set; }
         public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<Departments> Departments { get; set; }
+        public virtual DbSet<DimManBaseReg> DimManBaseReg { get; set; }
+        public virtual DbSet<DimManBaseRegGrup> DimManBaseRegGrup { get; set; }
+        public virtual DbSet<DimManBaseUni> DimManBaseUni { get; set; }
+        public virtual DbSet<DimManCMDColetaDados> DimManCMDColetaDados { get; set; }
+        public virtual DbSet<DimManColetaDados> DimManColetaDados { get; set; }
+        public virtual DbSet<DimManutencaoColetaITs> DimManutencaoColetaITs { get; set; }
+        public virtual DbSet<Email_ConfiguracaoEmailSgq> Email_ConfiguracaoEmailSgq { get; set; }
         public virtual DbSet<Employees> Employees { get; set; }
         public virtual DbSet<Example> Example { get; set; }
         public virtual DbSet<Level01> Level01 { get; set; }
@@ -60,6 +70,9 @@ namespace Dominio
         public virtual DbSet<LogJson> LogJson { get; set; }
         public virtual DbSet<LogSgq> LogSgq { get; set; }
         public virtual DbSet<LogSgqGlobal> LogSgqGlobal { get; set; }
+        public virtual DbSet<ManColetaDados> ManColetaDados { get; set; }
+        public virtual DbSet<ManDataAlertIT> ManDataAlertIT { get; set; }
+        public virtual DbSet<ManDataCollectIT> ManDataCollectIT { get; set; }
         public virtual DbSet<NQA> NQA { get; set; }
         public virtual DbSet<ParCluster> ParCluster { get; set; }
         public virtual DbSet<ParClusterGroup> ParClusterGroup { get; set; }
@@ -84,6 +97,7 @@ namespace Dominio
         public virtual DbSet<ParLevel2> ParLevel2 { get; set; }
         public virtual DbSet<ParLevel2ControlCompany> ParLevel2ControlCompany { get; set; }
         public virtual DbSet<ParLevel2Level1> ParLevel2Level1 { get; set; }
+        public virtual DbSet<ParLevel2XHeaderField> ParLevel2XHeaderField { get; set; }
         public virtual DbSet<ParLevel3> ParLevel3 { get; set; }
         public virtual DbSet<ParLevel3BoolFalse> ParLevel3BoolFalse { get; set; }
         public virtual DbSet<ParLevel3BoolTrue> ParLevel3BoolTrue { get; set; }
@@ -103,7 +117,11 @@ namespace Dominio
         public virtual DbSet<ParStructure> ParStructure { get; set; }
         public virtual DbSet<ParStructureGroup> ParStructureGroup { get; set; }
         public virtual DbSet<Period> Period { get; set; }
+        public virtual DbSet<QuerySgq> QuerySgq { get; set; }
         public virtual DbSet<Result_Level3> Result_Level3 { get; set; }
+        public virtual DbSet<RoleSGQ> RoleSGQ { get; set; }
+        public virtual DbSet<RoleType> RoleType { get; set; }
+        public virtual DbSet<ScreenComponent> ScreenComponent { get; set; }
         public virtual DbSet<Shift> Shift { get; set; }
         public virtual DbSet<Unit> Unit { get; set; }
         public virtual DbSet<UnitUser> UnitUser { get; set; }
@@ -114,20 +132,12 @@ namespace Dominio
         public virtual DbSet<VolumeVacuoGRD> VolumeVacuoGRD { get; set; }
         public virtual DbSet<budgets> budgets { get; set; }
         public virtual DbSet<Deviation> Deviation { get; set; }
+        public virtual DbSet<DimManBaseUni_bkp> DimManBaseUni_bkp { get; set; }
+        public virtual DbSet<ManColetaDadosbkp> ManColetaDadosbkp { get; set; }
         public virtual DbSet<ParLevel1VariableProduction> ParLevel1VariableProduction { get; set; }
         public virtual DbSet<ParLevel1VariableProductionXLevel1> ParLevel1VariableProductionXLevel1 { get; set; }
         public virtual DbSet<ResultLevel2HeaderField> ResultLevel2HeaderField { get; set; }
-        public virtual DbSet<DimManutencaoColetaITs> DimManutencaoColetaITs { get; set; }
-        public virtual DbSet<ManDataCollectIT> ManDataCollectIT { get; set; }
-        public virtual DbSet<CollectionLevel2> CollectionLevel2 { get; set; }
-        public virtual DbSet<ParLevel2XHeaderField> ParLevel2XHeaderField { get; set; }
-        public virtual DbSet<ManColetaDados> ManColetaDados { get; set; }
-        public virtual DbSet<Defect> Defect { get; set; }
-        public virtual DbSet<ConsolidationLevel02> ConsolidationLevel02 { get; set; }
         public virtual DbSet<RoleJBS> RoleJBS { get; set; }
-        public virtual DbSet<RoleSGQ> RoleSGQ { get; set; }
-        public virtual DbSet<RoleType> RoleType { get; set; }
-        public virtual DbSet<ScreenComponent> ScreenComponent { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

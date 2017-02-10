@@ -12,24 +12,21 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class ScreenComponent
+    public partial class DimManBaseRegGrup
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ScreenComponent()
+        public DimManBaseRegGrup()
         {
-            this.RoleSGQ = new HashSet<RoleSGQ>();
-            this.RoleJBS = new HashSet<RoleJBS>();
+            this.DimManBaseReg = new HashSet<DimManBaseReg>();
+            this.DimManBaseUni = new HashSet<DimManBaseUni>();
         }
     
-        public int Id { get; set; }
-        public string HashKey { get; set; }
-        public string Component { get; set; }
-        public Nullable<int> Type { get; set; }
+        public int id { get; set; }
+        public string EmpresaRegionalGrupo { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RoleSGQ> RoleSGQ { get; set; }
-        public virtual RoleType RoleType { get; set; }
+        public virtual ICollection<DimManBaseReg> DimManBaseReg { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RoleJBS> RoleJBS { get; set; }
+        public virtual ICollection<DimManBaseUni> DimManBaseUni { get; set; }
     }
 }

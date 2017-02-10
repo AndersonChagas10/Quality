@@ -12,12 +12,14 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class RoleJBS
+    public partial class DimManColetaDados
     {
-        public int Id { get; set; }
-        public int ScreenComponent_Id { get; set; }
-        public string Role { get; set; }
+        public int id { get; set; }
+        public string Name { get; set; }
+        public string DimName { get; set; }
+        public Nullable<int> DimManCMDColetaDados_id { get; set; }
+        public string DimRealTarget { get; set; }
     
-        public virtual ScreenComponent ScreenComponent { get; set; }
+        public virtual DimManCMDColetaDados DimManCMDColetaDados { get; set; }
     }
 }

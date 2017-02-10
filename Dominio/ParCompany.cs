@@ -19,6 +19,9 @@ namespace Dominio
         {
             this.ConsolidationLevel1 = new HashSet<ConsolidationLevel1>();
             this.ConsolidationLevel2 = new HashSet<ConsolidationLevel2>();
+            this.Defect = new HashSet<Defect>();
+            this.DimManBaseUni = new HashSet<DimManBaseUni>();
+            this.ManDataCollectIT = new HashSet<ManDataCollectIT>();
             this.VolumeCepDesossa = new HashSet<VolumeCepDesossa>();
             this.VolumeCepRecortes = new HashSet<VolumeCepRecortes>();
             this.VolumePcc1b = new HashSet<VolumePcc1b>();
@@ -33,8 +36,6 @@ namespace Dominio
             this.ParLevel3Value = new HashSet<ParLevel3Value>();
             this.ParNotConformityRuleXLevel = new HashSet<ParNotConformityRuleXLevel>();
             this.ParSample = new HashSet<ParSample>();
-            this.ManDataCollectIT = new HashSet<ManDataCollectIT>();
-            this.Defect = new HashSet<Defect>();
         }
     
         public int Id { get; set; }
@@ -55,6 +56,12 @@ namespace Dominio
         public virtual ICollection<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ConsolidationLevel2> ConsolidationLevel2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Defect> Defect { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DimManBaseUni> DimManBaseUni { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ManDataCollectIT> ManDataCollectIT { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VolumeCepDesossa> VolumeCepDesossa { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -83,9 +90,5 @@ namespace Dominio
         public virtual ICollection<ParNotConformityRuleXLevel> ParNotConformityRuleXLevel { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParSample> ParSample { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ManDataCollectIT> ManDataCollectIT { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Defect> Defect { get; set; }
     }
 }

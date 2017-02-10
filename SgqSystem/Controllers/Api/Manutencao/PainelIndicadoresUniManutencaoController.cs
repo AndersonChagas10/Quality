@@ -1,11 +1,7 @@
 ﻿using Dominio;
 using DTO.DTO.Manutencao;
-using System;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api.Manutencao
@@ -83,7 +79,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                             "FROM MANCOLETADADOS Man " +
                             "WHERE " +
                                 "ISNULL(YEAR(BASE_DATEREF), YEAR(BASE_DATEADD)) = '" + obj.ano + "' " +
-                                "AND Man.Base_parCompany_id in ('27') " +
+                                "AND Man.Base_parCompany_id in (SELECT id FROM ParCompany WHERE Name = '" + obj.unidade + "')" +
                             "GROUP BY MONTH(ISNULL(Base_dateRef, cast(Base_dateAdd AS varchar(10)))) " +
                         ")Base on MES.MesInt = Base.Mes " +
                         "union all " +
@@ -106,7 +102,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                             "FROM MANCOLETADADOS Man " +
                             "WHERE " +
                                 "ISNULL(YEAR(BASE_DATEREF), YEAR(BASE_DATEADD)) = '" + obj.ano + "'" +
-                                "AND Man.Base_parCompany_id in (SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegionalGrupo = '" + obj.regional + "' and ParCompany_id is not null) " +
+                                "AND Man.Base_parCompany_id in (SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegionalGrupo = '" + obj.subRegional + "' and ParCompany_id is not null) " +
                             "GROUP BY Man.Base_parCompany_id " +
                         ")Base on uni.Parcompany_id = Base.Base_parCompany_id " +
                         "WHERE Base.realizado != 0 AND Base.orcado != 0" +
@@ -187,9 +183,10 @@ namespace SgqSystem.Controllers.Api.Manutencao
     public class obj3
     {
         public string indicador { get; set; }
-        public Nullable<int> unidade { get; set; }
+        public string unidade { get; set; }
         public string ano { get; set; }
         public string tipoRelatorio { get; set; }
         public string regional { get; set; }
+        public string subRegional { get; set; }
     }
 }
