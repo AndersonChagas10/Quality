@@ -17,6 +17,8 @@
     @Styles.Render("~/Content/Erp")
     @Styles.Render("~/Content/select2css")
     @Styles.Render("~/Content/DatePikerContentCss")
+    @*<link href="~/Content/Timeout/timeout-dialog.css" rel="stylesheet" />*@
+
     @Scripts.Render("~/bundles/modernizr")
     @Styles.Render("~/Content/Tables")
 
@@ -48,6 +50,7 @@
 
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    @*<script src="~/Scripts/Timeout/timeout-dialog.js"></script>*@
 
     <div class="modal fade modalLoader" id="modalLoader" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
         <div class="modal-dialog">
@@ -97,6 +100,20 @@
             <button id="btnMessageOk" class="btn btn-lg marginRight30 btn-primary pull-right"> Ok</button>
         </div>
     </div>
+
+    @*<script>
+        $(function () {
+            var fnTimeOut = function () {
+                jQuery.timeoutDialog.setupDialogTimer({
+                    timeout: 105,
+                    countdown: 100,
+                    logout_redirect_url: '@Url.Action("Logout", "Home")',
+                    keep_alive_url: '@Url.Action("Keepalive", "Home")'
+               });
+            };
+            fnTimeOut();
+        });
+    </script>*@
 
     <!--Loaders e messages-->
     <script>

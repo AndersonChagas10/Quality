@@ -123,8 +123,9 @@
                 dados = {
                     "tipoRelatorio": $("#tipoRelatorio :selected").val(),
                     "indicador": $("#showIndicadoresManutencao input:radio:checked").val(),
-                    "unidade": $('#unitId :selected').val(),
+                    "unidade": $('#UnidadeId :selected').text(),
                     "regional": $('#RegionalId :selected').val(),
+                    "subRegional" : $('#RegionalId :selected').text(),
                     "ano": $('#yearId :selected').val()
                 }
 
@@ -132,7 +133,7 @@
                 GetTabela(dados);
             }
 
-            $("#title h3").text("Painel de Indicadores de " + $("#showIndicadoresManutencao input:radio:checked").val() + " - " + $('#unitId :selected').text())
+            $("#title h3").text("Painel de Indicadores de " + $("#showIndicadoresManutencao input:radio:checked").val() + " - " + $('#UnidadeId :selected').text())
 
         };
 
@@ -518,7 +519,6 @@
         }
 
         /*Auxiliares*/
-
         function EasyAjax(url, dados, callback, loader) {
 
             //if (!!loader)
@@ -590,9 +590,9 @@
 
             $('#tipoRelatorio').change(function () {
                 if ($(this).val() == "Por Regional") {
-                    $('#unitId').prop('disabled', true);
+                    $('#UnidadeId').prop('disabled', true);
                 } else {
-                    $('#unitId').prop('disabled', false);
+                    $('#UnidadeId').prop('disabled', false);
                 }
             });          
                 
@@ -601,16 +601,45 @@
                     Send();
             });
 
-            formControl.showUnit();
+            formControl.showUnidadesManutencao();
             formControl.showIndicadoresManutencao();
             formControl.showYear();
             formControl.showFiltroManutencao();
             formControl.showRegionaisManutencao();
             formControl.showSubRegionaisManutencao();
 
-            $("#showIndicadoresManutencao label").on("click", function () {
+            $("#indicadores label").on("click", function () {
                 Send();
             });
+
+            $("#RegionalId").change(function () {
+
+                $('#UnidadeId').children('option').hide();
+
+                $("#UnidadeId").val($("#UnidadeId").find("option:visible:first").val());
+
+                $("#SubRegionalId").find("option").show().not("option[value*='" + this.value + "']").hide();
+
+                $("#SubRegionalId").val($("#SubRegionalId").find("option:visible:first").val());
+
+            }).change();
+
+            $("#SubRegionalId").change(function () {
+
+
+                $('#UnidadeId').children('option').hide();
+                $("#UnidadeId").val($("#UnidadeId").find("option:visible:first").val());
+
+                if (this.selectedIndex != -1) {
+
+                    $("#UnidadeId").find("option").show().not("option[value*='" + this.options[this.selectedIndex].text + "']").hide();
+
+                    $("#UnidadeId").val($("#UnidadeId").find("option:visible:first").val());
+
+                }
+                               
+
+            }).change();
    
         });
 

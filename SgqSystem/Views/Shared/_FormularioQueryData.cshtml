@@ -273,6 +273,15 @@
                 </div>
             </li>
         }
+        @if (ViewBag.Unidades != null)
+        {
+            <li>
+                <div class="dropdown" id="showUnidadesManutencao" style="display:none">
+                    <span class="redLabel">Unidade</span>
+                    @Html.DropDownList("UnidadeId", new SelectList(ViewBag.Unidades, "Grupo", "Nome"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                </div>
+            </li>
+        }
         <li>
             <div id="showUnit" style="display:none">
                 <span class="redLabel">@Resources.Resource.unit</span>
@@ -759,6 +768,10 @@
 
         showSubRegionaisManutencao: function () {
             $("#showSubRegionaisManutencao").show();
+        },
+
+        showUnidadesManutencao: function (){
+            $('#showUnidadesManutencao').show();
         }
 
     }
