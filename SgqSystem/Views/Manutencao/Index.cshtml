@@ -2,16 +2,36 @@
 @{
     ViewBag.Title = "Manutenção";
     var url1 = Url.Action("Index", "manDataCollectITs");
+    var urlHome = Url.Action("Index", "ManPainelGestao");
 }
 
+<style>
+    #LinkHome a:hover {
+        text-decoration: none;
+    }
+
+    #LinkHome {
+        float: right;
+        font-size: 40px;
+        margin-bottom: 10px;
+        width: 100%;
+        text-align: right;
+        margin-right: 4%;
+    }
+</style>
 
 <div class="page-content" style="min-height: 600px;">
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
     <div id="formBodyContent">
-
         <div class="page-content-wrapper">
+            <div id="LinkHome">
+                <a class="fa fa-home" aria-hidden="true" href="@urlHome"></a>
+            </div>
             <!-- BEGIN CONTENT BODY -->
-            <a id="linkGambiara" href="@url1">Coleta de Indicadores Técnicos</a>
+            <div>
+                <a id="linkGambiara" href="@url1">Coleta de Indicadores Técnicos</a>
+            </div>
+
             <div class="page-content" style="min-height: 600px;">
                 <!-- BEGIN PAGE HEADER-->
                 <!-- BEGIN PAGE BAR -->
