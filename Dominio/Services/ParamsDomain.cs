@@ -616,20 +616,28 @@ namespace Dominio.Services
                     }
 
                     /**/
-                    existenteL3L2L1 = db.ParLevel3Level2Level1.FirstOrDefault(r => r.ParLevel1_Id == idLevel1 && r.ParLevel3Level2_Id == existenteL3L2.Id);
+                    var idL3L2 = existenteL3L2.Id;
+                    existenteL3L2L1 = db.ParLevel3Level2Level1.FirstOrDefault(r => r.ParLevel1_Id == idLevel1 && r.ParLevel3Level2_Id == idL3L2);
                     if (existenteL3L2L1 == null)
                     {
-                        var salvarL3L2L1 = new ParLevel3Level2Level1() { ParLevel1_Id = idLevel1, ParLevel3Level2_Id = idLevel2, ParCompany_Id = null};
+                        var salvarL3L2L1 = new ParLevel3Level2Level1() { ParLevel1_Id = idLevel1, ParLevel3Level2_Id = idL3L2, ParCompany_Id = null};
                         db.ParLevel3Level2Level1.Add(salvarL3L2L1);
-                        db.SaveChanges();
+                        try
+                        {
+                            db.SaveChanges();
+                        }
+                        catch (Exception e)
+                        {
+
+                            throw e;
+                        }
                     }
                 }
-
-
-
                 
             }
+
             return retorno;
+
             //    var allLevel1Level2 = _baseRepoParLevel3Level2.GetAll();
             ///*Verifica se existe vinculo no level2 e level 3 selecionado na tela*/
             //var listExistsL3L2 = allLevel1Level2.Where(r => r.ParLevel2_Id == idLevel2 && r.ParLevel3_Id == idLevel3);
@@ -676,7 +684,7 @@ namespace Dominio.Services
             //    listObjToSave.Add(Mapper.Map<ParLevel3Level2Level1DTO>(objToSave));
             //}
 
-            return list;
+            //return list;
 
         }
 

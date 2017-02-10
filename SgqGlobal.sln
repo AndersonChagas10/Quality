@@ -29,7 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SgqDataAquisition", "SgqDat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - External", "4 - External", "{47BC8AC9-EDCB-4B88-8FE2-A03D7863E800}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SgqEmailClient", "..\..\..\Documents\Visual Studio 2015\Projects\SgqEmailClient\SgqEmailClient\SgqEmailClient.csproj", "{1168095A-2271-4003-B202-0B5F06C12CF3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SgqMailService2", "..\..\..\Documents\Visual Studio 2015\Projects\SgqEmailClient\SgqEmailClient\SgqMailService2.csproj", "{1168095A-2271-4003-B202-0B5F06C12CF3}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SgqEmailClientSetup", "..\..\..\Documents\Visual Studio 2015\Projects\SgqEmailClient\Setup1\Setup1.vdproj", "{297C0D9E-795C-4F9B-BE6D-74E3AF3D54AA}"
 EndProject

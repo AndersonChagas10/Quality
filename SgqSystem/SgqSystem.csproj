@@ -1008,6 +1008,7 @@
     <None Include="Properties\PublishProfiles\DevInterno.pubxml" />
     <None Include="Properties\PublishProfiles\jsdvdswjdjk.pubxml" />
     <None Include="Properties\PublishProfiles\Master.pubxml" />
+    <None Include="Properties\PublishProfiles\master2.pubxml" />
     <None Include="Properties\PublishProfiles\ParamsDevInterno.pubxml" />
     <None Include="Properties\PublishProfiles\ParamsInterno.pubxml" />
     <None Include="Properties\PublishProfiles\PublishEUA.pubxml" />
