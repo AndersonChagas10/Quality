@@ -117,7 +117,7 @@
                         console.log(data);
                         $.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
 
-                            $('#estName').html(r.ParLevel3_Name);
+                            $('#estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
                             $('#ResultLevel3_Id').val(r.Id);
                             
                             $('#changeConform').empty();
@@ -200,11 +200,11 @@
 
             dadosResultLevel3["Id"] = $('#ResultLevel3_Id').val();
             dadosResultLevel3["IsConform"] = $('#conform').is(':checked');
-            dadosResultLevel3["IsNotEvaluate"] = $('#evaluated').is(':checked');
+            dadosResultLevel3["IsNotEvaluate"] = $('#IsEvaluated').is(':checked');
             if ($('#decimal').length)
                 dadosResultLevel3["Value"] = $('#decimal').val() + "x10^" + $('#precisao').val();
             if ($('#numeroDeDefeitos').length)
-                dadosResultLevel3["Value"] = $('#numeroDeDefeitos').val();
+                    dadosResultLevel3["Value"] = $('#numeroDeDefeitos').val();
             if ($('#intervaloValor').length)
                 dadosResultLevel3["Value"] = $('#intervaloValor').val();
 

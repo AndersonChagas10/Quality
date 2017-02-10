@@ -2,6 +2,7 @@
 using Dominio;
 using DTO.DTO.Params;
 using DTO.Helpers;
+using SgqSystem.Services;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -18,17 +19,14 @@ namespace SgqSystem.Controllers.Api
 
         private List<ApontamentosDiariosResultSet> _mock { get; set; }
         private List<ApontamentosDiariosResultSet> _list { get; set; }
+        private SgqDbDevEntities db = new SgqDbDevEntities();
 
         [HttpPost]
         [Route("Get")]
         public List<ApontamentosDiariosResultSet> GetApontamentosDiarios([FromBody] FormularioParaRelatorioViewModel form)
         {
             var query = new ApontamentosDiariosResultSet().Select(form);
-            using (var db = new SgqDbDevEntities())
-            {
-                _list = db.Database.SqlQuery<ApontamentosDiariosResultSet>(query).ToList();
-            }
-
+            _list = db.Database.SqlQuery<ApontamentosDiariosResultSet>(query).ToList();
             return _list;
         }
 
@@ -47,20 +45,30 @@ namespace SgqSystem.Controllers.Api
 
             var query = resultLevel3.CreateUpdate();
 
-            using (var db = new SgqDbDevEntities())
+            try
             {
-                try
-                {
-                    db.Database.ExecuteSqlCommand(query);
-                    //db.Database.ExecuteSqlCommand(queryLevel2);
-                }
-                catch (System.Exception e)
-                {
-                    throw e;
-                }
+                db.Database.ExecuteSqlCommand(query);
+                ConsolidacaoEdicao(resultLevel3.Id);
+                //db.Database.ExecuteSqlCommand(queryLevel2);
+            }
+            catch (System.Exception e)
+            {
+                throw e;
             }
 
             return Mapper.Map<Result_Level3DTO>(Result_Level3DTO.GetById(resultLevel3.Id));
+        }
+
+        public void ConsolidacaoEdicao(int id)
+        {
+            var level3 = db.Result_Level3.Include("CollectionLevel2").FirstOrDefault(r => r.Id == id);
+
+            var data = level3.CollectionLevel2.CollectionDate;
+            var company_Id = level3.CollectionLevel2.UnitId;
+            var level1_Id = level3.CollectionLevel2.ParLevel1_Id;
+
+            var service = new SyncServices();
+            var retorno = service._ReConsolidationByLevel1(company_Id, level1_Id, data);
         }
 
         public class Result_Level3DTO
@@ -69,14 +77,14 @@ namespace SgqSystem.Controllers.Api
             public static Result_Level3 GetById(int id)
             {
                 Result_Level3 resultLevel3;
-                using (var db = new SgqDbDevEntities())
+                using (var databaseSgq = new SgqDbDevEntities())
                 {
-                    db.Configuration.LazyLoadingEnabled = false;
+                    databaseSgq.Configuration.LazyLoadingEnabled = false;
                     //db.Configuration.ProxyCreationEnabled = false;
-                    resultLevel3 = db.Result_Level3.AsNoTracking().FirstOrDefault(r => r.Id == id);
-                    resultLevel3.ParLevel3 = db.ParLevel3.AsNoTracking().FirstOrDefault(r => r.Id == resultLevel3.ParLevel3_Id);
-                    resultLevel3.ParLevel3.ParLevel3Value = db.ParLevel3Value.AsNoTracking().Where(r => r.ParLevel3_Id == resultLevel3.ParLevel3_Id).ToList();
-                    resultLevel3.CollectionLevel2 = db.CollectionLevel2.AsNoTracking().FirstOrDefault(r => r.Id == resultLevel3.CollectionLevel2_Id);
+                    resultLevel3 = databaseSgq.Result_Level3.AsNoTracking().FirstOrDefault(r => r.Id == id);
+                    resultLevel3.ParLevel3 = databaseSgq.ParLevel3.AsNoTracking().FirstOrDefault(r => r.Id == resultLevel3.ParLevel3_Id);
+                    resultLevel3.ParLevel3.ParLevel3Value = databaseSgq.ParLevel3Value.AsNoTracking().Where(r => r.ParLevel3_Id == resultLevel3.ParLevel3_Id).ToList();
+                    resultLevel3.CollectionLevel2 = databaseSgq.CollectionLevel2.AsNoTracking().FirstOrDefault(r => r.Id == resultLevel3.CollectionLevel2_Id);
                 }
 
                 return resultLevel3;
@@ -105,15 +113,25 @@ namespace SgqSystem.Controllers.Api
             }
 
             internal string CreateUpdate()
+
             {
                 isQueryEdit = true;
                 GetDataToEdit();
+
+                if (string.IsNullOrEmpty(Value))
+                {
+                    using (var databaseSgq = new SgqDbDevEntities())
+                    {
+                        Value = databaseSgq.Result_Level3.FirstOrDefault(r => r.Id == Id).Value;
+                    }
+                }
 
                 var query = "UPDATE [dbo].[Result_Level3] SET ";
                 query += "\n [IsConform] = " + _IsConform + ",";
                 query += "\n [Defects] = " + _Defects + ",";
                 query += "\n [WeiDefects] = " + _WeiDefects + ",";
                 query += "\n [Value] = " + _Value + ",";
+                query += "\n [IsNotEvaluate] = " + _IsNotEvaluate + ",";
                 query = query.Remove(query.Length - 1);//Remove a ultima virgula antes do where.
                 query += "\n WHERE Id = " + Id;
 
@@ -179,15 +197,16 @@ namespace SgqSystem.Controllers.Api
             {
                 get
                 {
-
                     if (isQueryEdit)
                     {
+
                         if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 1) != null)//BINARIO
                         {
                             return IsConform.GetValueOrDefault() ? "1" : "0";
                         }
                         else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 4) != null)//CALCULADO
                         {
+
                             var vmax = Convert.ToDecimal(IntervalMax, System.Globalization.CultureInfo.InvariantCulture);
                             var vmin = Convert.ToDecimal(IntervalMin, System.Globalization.CultureInfo.InvariantCulture);
                             var valorDefinido = Guard.ConverteValorCalculado(_Value);
@@ -210,6 +229,7 @@ namespace SgqSystem.Controllers.Api
             }
 
             public Nullable<bool> IsNotEvaluate { get; set; }
+            public int _IsNotEvaluate { get { return !IsNotEvaluate.GetValueOrDefault() ? 0 : 1; } }
 
             public Nullable<decimal> Defects { get; set; }
             public decimal _Defects
@@ -289,6 +309,18 @@ namespace SgqSystem.Controllers.Api
 
             public int? unit { get; set; }
 
+            //public string _HeaderEdit
+            //{
+            //    get
+            //    {
+            //        if()
+            //        var level1Name = this.CollectionLevel2.ParLevel1_Id;
+            //        var level2Name = this.CollectionLevel2.UnitId;
+            //        using 
+            //        return ParLevel3_Name
+            //    }
+            //}
+
             public string showIntervalos
             {
                 get
@@ -297,6 +329,7 @@ namespace SgqSystem.Controllers.Api
                         if (ParLevel3.ParLevel3Value.IsNotNull())
                             if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 3).IsNotNull())//INTERVALOS ??
                             {
+                                var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
                                 return "<div>" +
                                             "<label for='Conforme: '> Intervalo Max: </label>" + IntervalMax +
                                             "<br>" +
@@ -305,7 +338,10 @@ namespace SgqSystem.Controllers.Api
                                             "<label for='Conforme: '> Valor atual: </label>" + Value +
                                             "<br>" +
                                             "<label for='Conforme: '> Novo Valor: </label> &nbsp " +
-                                             "<input type='text' id='intervaloValor' class='form-control decimal' />" +
+                                             "<input type='text' id='intervaloValor' class='form-control decimal' value=" + Value + " />" +
+                                            "<br>" +
+                                            "<label for='Conforme: '> Não Avaliado: </label> &nbsp " +
+                                             "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                                         "</div>";
                             }
 
@@ -321,10 +357,14 @@ namespace SgqSystem.Controllers.Api
                         if (ParLevel3.ParLevel3Value.IsNotNull())
                             if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 1).IsNotNull())//é um BINARIO
                             {
+                                var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
                                 var checkedAttr = IsConform.GetValueOrDefault() ? "checked='checked'" : "";
                                 return "<div>" +
                                             "<label for='Conforme: '> Conforme: </label>" +
                                              "<input class='.check-box' id='conform' name='conform' " + checkedAttr + " type='checkbox' value='true'><input name = 'conform' type='hidden' value='false'>" +
+                                             "<br>" +
+                                              "<label for='Conforme: '> Não Avaliado: </label> &nbsp " +
+                                             "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                                         "</div>";
                             }
 
@@ -340,6 +380,8 @@ namespace SgqSystem.Controllers.Api
                         if (ParLevel3.ParLevel3Value.IsNotNull())
                             if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 4).IsNotNull())//é um CALCULADO
                             {
+                                var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
+
                                 return "<div>" +
                                             "<label for='Conforme: '> Intervalo Max: </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
                                             "<br>" +
@@ -349,6 +391,9 @@ namespace SgqSystem.Controllers.Api
                                             "<br>" +
                                             "<label for='Conforme: '> Novo Valor: </label> &nbsp" +
                                         "<input type='text' id='decimal' class='decimal' /> ^10x <input type='text' id='precisao' class='decimal' />" +
+                                        "<br>" +
+                                           "<label for='Conforme: '> Não Avaliado: </label> &nbsp " +
+                                             "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                                         "</div>";
                             }
 
