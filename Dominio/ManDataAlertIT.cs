@@ -12,12 +12,15 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class RoleJBS
+    public partial class ManDataAlertIT
     {
-        public int Id { get; set; }
-        public int ScreenComponent_Id { get; set; }
-        public string Role { get; set; }
-    
-        public virtual ScreenComponent ScreenComponent { get; set; }
+        public int id { get; set; }
+        public Nullable<System.DateTime> dateadd { get; set; }
+        public Nullable<int> collect_id { get; set; }
+        public Nullable<System.DateTime> dateref { get; set; }
+        public Nullable<int> ParCompany_Id { get; set; }
+        public string datatype { get; set; }
+        public Nullable<decimal> AmountData { get; set; }
+        public Nullable<decimal> AmountDataTarget { get; set; }
     }
 }
