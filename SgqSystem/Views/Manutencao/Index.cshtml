@@ -1646,6 +1646,7 @@
                                                 var tabela1;
                                                 $.post('../api/Manutencao/getTabela1/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + getManutencaoRegional() + '/', function (lista) {
 
+
                                                     // titleColumn1 - Mostrar na primeira coluna a primeira linha em branco e a segunda com nome fixo PACOTE
                                                     var titleColumn1 = [];
                                                     titleColumn1[0] = ['&nbsp;', 1];

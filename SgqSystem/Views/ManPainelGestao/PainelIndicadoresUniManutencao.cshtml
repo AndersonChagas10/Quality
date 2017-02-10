@@ -53,7 +53,7 @@
     }
 
     #primeiro {
-        min-height: 480px;
+        min-height: 533px;
     }
 
     table.dataTable thead th, table.dataTable thead td {
@@ -227,10 +227,10 @@
 
             var unidade = "";
 
-            if ($('#unitId :selected').text() == null)
-                indicador = "Todos";
-            else
-                unidade = $('#unitId :selected').text();
+            //if ($('#unitId :selected').text() == null)
+            //    indicador = "Todos";
+            //else
+                unidade = $('#UnidadeId :selected').text();
 
             var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
 
@@ -316,10 +316,10 @@
         //Gera grafico Acumulado
         function CallbackGraficoAcumulado(orcado, realizado, desvio) {
 
-            if ($('#unitId :selected').text() == null)
-                indicador = "Todos";
-            else
-                unidade = $('#unitId :selected').text();
+            //if ($('#unitId :selected').text() == null)
+            //    indicador = "Todos";
+            //else
+            var unidade = $('#UnidadeID :selected').text();
 
             var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
 
@@ -445,10 +445,10 @@
         //Gera grafico Desvios
         function CallbackGraficoDesvio(realizado, orcado, dado) {
 
-            if ($('#unitId :selected').text() == null)
-                indicador = "Todos";
-            else
-                unidade = $('#unitId :selected').text();
+            //if ($('#unitId :selected').text() == null)
+            //    indicador = "Todos";
+            //else
+            var unidade = $('#UnidadeID :selected').text();
 
             var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
 
