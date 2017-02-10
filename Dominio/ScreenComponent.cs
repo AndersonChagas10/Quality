@@ -14,11 +14,22 @@ namespace Dominio
     
     public partial class ScreenComponent
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ScreenComponent()
+        {
+            this.RoleJBS = new HashSet<RoleJBS>();
+            this.RoleSGQ = new HashSet<RoleSGQ>();
+        }
+    
         public int Id { get; set; }
         public string HashKey { get; set; }
         public string Component { get; set; }
         public Nullable<int> Type { get; set; }
     
         public virtual RoleType RoleType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RoleJBS> RoleJBS { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RoleSGQ> RoleSGQ { get; set; }
     }
 }

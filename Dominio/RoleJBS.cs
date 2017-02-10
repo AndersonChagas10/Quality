@@ -14,7 +14,10 @@ namespace Dominio
     
     public partial class RoleJBS
     {
+        public int Id { get; set; }
         public int ScreenComponent_Id { get; set; }
         public string Role { get; set; }
+    
+        public virtual ScreenComponent ScreenComponent { get; set; }
     }
 }

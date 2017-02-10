@@ -1214,17 +1214,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
 warning 6002: The table/view 'SgqDbDev.dbo.RoleJBS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="RoleJBS">
           <Key>
+            <PropertyRef Name="Id" />
             <PropertyRef Name="ScreenComponent_Id" />
           </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ScreenComponent_Id" Type="int" Nullable="false" />
           <Property Name="Role" Type="nchar" MaxLength="10" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'SgqDbDev.dbo.RoleSGQ' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="RoleSGQ">
           <Key>
-            <PropertyRef Name="ScreenComponent_Id" />
+            <PropertyRef Name="Id" />
           </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ScreenComponent_Id" Type="int" Nullable="false" />
           <Property Name="Role" Type="nchar" MaxLength="10" />
         </EntityType>
@@ -2707,6 +2708,30 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_RoleJBS_ScreenComponent">
+          <End Role="ScreenComponent" Type="Self.ScreenComponent" Multiplicity="1" />
+          <End Role="RoleJBS" Type="Self.RoleJBS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ScreenComponent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RoleJBS">
+              <PropertyRef Name="ScreenComponent_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoleSGQ_ScreenComponent">
+          <End Role="ScreenComponent" Type="Self.ScreenComponent" Multiplicity="1" />
+          <End Role="RoleSGQ" Type="Self.RoleSGQ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ScreenComponent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RoleSGQ">
+              <PropertyRef Name="ScreenComponent_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ScreenComponent_RoleType">
           <End Role="RoleType" Type="Self.RoleType" Multiplicity="0..1" />
           <End Role="ScreenComponent" Type="Self.ScreenComponent" Multiplicity="*" />
@@ -2860,6 +2885,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySet Name="ParStructureGroup" EntityType="Self.ParStructureGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Period" EntityType="Self.Period" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Result_Level3" EntityType="Self.Result_Level3" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoleSGQ" EntityType="Self.RoleSGQ" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoleType" EntityType="Self.RoleType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ScreenComponent" EntityType="Self.ScreenComponent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Shift" EntityType="Self.Shift" Schema="dbo" store:Type="Tables" />
@@ -2929,15 +2955,10 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           </EntitySet>
           <EntitySet Name="RoleJBS" EntityType="Self.RoleJBS" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
+    [RoleJBS].[Id] AS [Id], 
     [RoleJBS].[ScreenComponent_Id] AS [ScreenComponent_Id], 
     [RoleJBS].[Role] AS [Role]
     FROM [dbo].[RoleJBS] AS [RoleJBS]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="RoleSGQ" EntityType="Self.RoleSGQ" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [RoleSGQ].[ScreenComponent_Id] AS [ScreenComponent_Id], 
-    [RoleSGQ].[Role] AS [Role]
-    FROM [dbo].[RoleSGQ] AS [RoleSGQ]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="DelDados" EntityType="Self.DelDados" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -3431,6 +3452,14 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <AssociationSet Name="FK_Result_Level3_ParLevel3" Association="Self.FK_Result_Level3_ParLevel3">
             <End Role="ParLevel3" EntitySet="ParLevel3" />
             <End Role="Result_Level3" EntitySet="Result_Level3" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoleJBS_ScreenComponent" Association="Self.FK_RoleJBS_ScreenComponent">
+            <End Role="ScreenComponent" EntitySet="ScreenComponent" />
+            <End Role="RoleJBS" EntitySet="RoleJBS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoleSGQ_ScreenComponent" Association="Self.FK_RoleSGQ_ScreenComponent">
+            <End Role="ScreenComponent" EntitySet="ScreenComponent" />
+            <End Role="RoleSGQ" EntitySet="RoleSGQ" />
           </AssociationSet>
           <AssociationSet Name="FK_ScreenComponent_RoleType" Association="Self.FK_ScreenComponent_RoleType">
             <End Role="RoleType" EntitySet="RoleType" />
@@ -3978,13 +4007,21 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             <End Role="Level02" EntitySet="Level02" />
             <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
           </AssociationSet>
-          <EntitySet Name="RoleJBS" EntityType="SgqDbModel.RoleJBS" />
-          <EntitySet Name="RoleSGQ" EntityType="SgqDbModel.RoleSGQ" />
           <EntitySet Name="RoleType" EntityType="SgqDbModel.RoleType" />
           <EntitySet Name="ScreenComponent" EntityType="SgqDbModel.ScreenComponent" />
           <AssociationSet Name="FK_ScreenComponent_RoleType" Association="SgqDbModel.FK_ScreenComponent_RoleType">
             <End Role="RoleType" EntitySet="RoleType" />
             <End Role="ScreenComponent" EntitySet="ScreenComponent" />
+          </AssociationSet>
+          <EntitySet Name="RoleJBS" EntityType="SgqDbModel.RoleJBS" />
+          <AssociationSet Name="FK_RoleJBS_ScreenComponent" Association="SgqDbModel.FK_RoleJBS_ScreenComponent">
+            <End Role="ScreenComponent" EntitySet="ScreenComponent" />
+            <End Role="RoleJBS" EntitySet="RoleJBS" />
+          </AssociationSet>
+          <EntitySet Name="RoleSGQ" EntityType="SgqDbModel.RoleSGQ" />
+          <AssociationSet Name="FK_RoleSGQ_ScreenComponent" Association="SgqDbModel.FK_RoleSGQ_ScreenComponent">
+            <End Role="ScreenComponent" EntitySet="ScreenComponent" />
+            <End Role="RoleSGQ" EntitySet="RoleSGQ" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="sysdiagrams">
@@ -6894,20 +6931,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="RoleJBS">
-          <Key>
-            <PropertyRef Name="ScreenComponent_Id" />
-          </Key>
-          <Property Name="ScreenComponent_Id" Type="Int32" Nullable="false" />
-          <Property Name="Role" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-        </EntityType>
-        <EntityType Name="RoleSGQ">
-          <Key>
-            <PropertyRef Name="ScreenComponent_Id" />
-          </Key>
-          <Property Name="ScreenComponent_Id" Type="Int32" Nullable="false" />
-          <Property Name="Role" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-        </EntityType>
         <EntityType Name="RoleType">
           <Key>
             <PropertyRef Name="Id" />
@@ -6925,6 +6948,8 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="Component" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Type" Type="Int32" />
           <NavigationProperty Name="RoleType" Relationship="SgqDbModel.FK_ScreenComponent_RoleType" FromRole="ScreenComponent" ToRole="RoleType" />
+          <NavigationProperty Name="RoleJBS" Relationship="SgqDbModel.FK_RoleJBS_ScreenComponent" FromRole="ScreenComponent" ToRole="RoleJBS" />
+          <NavigationProperty Name="RoleSGQ" Relationship="SgqDbModel.FK_RoleSGQ_ScreenComponent" FromRole="ScreenComponent" ToRole="RoleSGQ" />
         </EntityType>
         <Association Name="FK_ScreenComponent_RoleType">
           <End Type="SgqDbModel.RoleType" Role="RoleType" Multiplicity="0..1" />
@@ -6935,6 +6960,49 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Principal>
             <Dependent Role="ScreenComponent">
               <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="RoleJBS">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ScreenComponent_Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScreenComponent_Id" Type="Int32" Nullable="false" />
+          <Property Name="Role" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="ScreenComponent" Relationship="SgqDbModel.FK_RoleJBS_ScreenComponent" FromRole="RoleJBS" ToRole="ScreenComponent" />
+        </EntityType>
+        <Association Name="FK_RoleJBS_ScreenComponent">
+          <End Type="SgqDbModel.ScreenComponent" Role="ScreenComponent" Multiplicity="1" />
+          <End Type="SgqDbModel.RoleJBS" Role="RoleJBS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ScreenComponent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RoleJBS">
+              <PropertyRef Name="ScreenComponent_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="RoleSGQ">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScreenComponent_Id" Type="Int32" Nullable="false" />
+          <Property Name="Role" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="ScreenComponent" Relationship="SgqDbModel.FK_RoleSGQ_ScreenComponent" FromRole="RoleSGQ" ToRole="ScreenComponent" />
+        </EntityType>
+        <Association Name="FK_RoleSGQ_ScreenComponent">
+          <End Type="SgqDbModel.ScreenComponent" Role="ScreenComponent" Multiplicity="1" />
+          <End Type="SgqDbModel.RoleSGQ" Role="RoleSGQ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ScreenComponent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RoleSGQ">
+              <PropertyRef Name="ScreenComponent_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8488,22 +8556,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="RoleJBS">
-            <EntityTypeMapping TypeName="SgqDbModel.RoleJBS">
-              <MappingFragment StoreEntitySet="RoleJBS">
-                <ScalarProperty Name="Role" ColumnName="Role" />
-                <ScalarProperty Name="ScreenComponent_Id" ColumnName="ScreenComponent_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RoleSGQ">
-            <EntityTypeMapping TypeName="SgqDbModel.RoleSGQ">
-              <MappingFragment StoreEntitySet="RoleSGQ">
-                <ScalarProperty Name="Role" ColumnName="Role" />
-                <ScalarProperty Name="ScreenComponent_Id" ColumnName="ScreenComponent_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="RoleType">
             <EntityTypeMapping TypeName="SgqDbModel.RoleType">
               <MappingFragment StoreEntitySet="RoleType">
@@ -8518,6 +8570,24 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Component" ColumnName="Component" />
                 <ScalarProperty Name="HashKey" ColumnName="HashKey" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleJBS">
+            <EntityTypeMapping TypeName="SgqDbModel.RoleJBS">
+              <MappingFragment StoreEntitySet="RoleJBS">
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="ScreenComponent_Id" ColumnName="ScreenComponent_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleSGQ">
+            <EntityTypeMapping TypeName="SgqDbModel.RoleSGQ">
+              <MappingFragment StoreEntitySet="RoleSGQ">
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="ScreenComponent_Id" ColumnName="ScreenComponent_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

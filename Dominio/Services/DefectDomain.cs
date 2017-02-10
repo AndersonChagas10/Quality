@@ -48,8 +48,8 @@ namespace Dominio.Services
                     if (defects.Count == 0)
                     {
                         Defect defect = Mapper.Map<Defect>(defectDTO);
-                        defectDTO.AddDate = DateTime.Now;
-                        defectDTO.Active = true;
+                        defect.AddDate = DateTime.Now;
+                        defect.Active = true;
 
                         _baseRepoDefect.Add(defect);
                     }
@@ -57,7 +57,7 @@ namespace Dominio.Services
                     {
                         var defect = defects.FirstOrDefault();
 
-                        defect.Evaluations += defectDTO.Evaluations;
+                        defect.Evaluations += (defectDTO.Evaluations - defect.Evaluations);
                         defect.Defects += (defectDTO.Defects - defect.Defects);
                         defect.AlterDate = DateTime.Now;
                         defect.Active = true;

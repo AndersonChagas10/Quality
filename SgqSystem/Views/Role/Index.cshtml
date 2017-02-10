@@ -159,7 +159,6 @@
                             $("#formScreenComponent [name='" + key + "']").val(obj);
                         }
 
-                        updatePage();
                     }
                 );
             } else {
@@ -170,7 +169,8 @@
             $.post('@Url.Action("SaveScreenComponent", "api/Role")',
                 $('#formScreenComponent').serializeObject(),
                 function () {
-                    $('#modalScreenComponent').modal('close');
+                    $('#modalScreenComponent').modal('hide');
+                    updatePage();
                 });
 
         }
@@ -192,7 +192,6 @@
                             $("#formRoleSgq [name='" + key + "']").val(obj);
                         }
 
-                        updatePage();
                     }
                 );
             }
@@ -201,14 +200,15 @@
             $.post('@Url.Action("SaveRoleSgq", "api/Role")',
                 $('#formRoleSgq').serializeObject(),
                 function () {
-                    $('#modalRoleSgq').modal('close');
+                    $('#modalRoleSgq').modal('hide');
+                    updatePage();
                 });
         }
 
     };
 
     var updatePage = function () {
-        $.get('@Url.Action("Index", "Role")', function (object) {});
+        $("#page-content-wrapper").load('@Url.Action("Index", "Role")');
     }
 
 
