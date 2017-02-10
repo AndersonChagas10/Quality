@@ -148,5 +148,7 @@ namespace DTO.DTO.Params
         public bool IsRequiredMultipleValue { get; set; }
         public Nullable<int> hashKey { get; set; }
 
+     
+
     }
 }

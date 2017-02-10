@@ -118,62 +118,73 @@
             </div>
         </div>
         <!-- Modal -->
-        <div class="modal fade" id="modalPositiveNegative" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog  modal-sm" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">@Resources.Resource.positive_negative</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-xs-12">@Resources.Resource.positive_value</div>
-                            <div class="col-xs-12">
-                                <input class="form-control input-sm" id="modalInputPositive" />
-                            </div>
-                            <div class="col-xs-12">@Resources.Resource.negative_value</div>
-                            <div class="col-xs-12">
-                                <input class="form-control input-sm" id="modalInputNegative" />
+                    <div class="modal fade" id="modalPositiveNegative" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog  modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">@Resources.Resource.positive_negative</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-xs-12">@Resources.Resource.positive_value</div>
+                                        <div class="col-xs-12">
+                                            <input class="form-control input-sm" id="modalInputPositive" />
+                                        </div>
+                                        <div class="col-xs-12">@Resources.Resource.negative_value</div>
+                                        <div class="col-xs-12">
+                                            <input class="form-control input-sm" id="modalInputNegative" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" onclick="clicModalBinarioSave()">@Resources.Resource.save</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="clicModalBinarioSave()">@Resources.Resource.save</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @Html.HiddenFor(m => m.paramsDto.parLevel3Value.Id)
+                    @Html.HiddenFor(m => m.paramsDto.parLevel3Value.Id)
 
         <!-- Modal -->
-        <div class="modal fade" id="modalUnidadeMedida" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog  modal-sm" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">@Resources.Resource.measurement_unit</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-xs-12">@Resources.Resource.measurement_unit</div>
-                            <div class="col-xs-12">
-                                <input class="form-control input-sm" id="modalInputMeasurementUnit" />
+                    <div class="modal fade" id="modalUnidadeMedida" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog  modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" id="fechar" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">@Resources.Resource.measurement_unit</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-xs-12">@Resources.Resource.measurement_unit</div>
+                                        <div class="col-xs-12">
+                                            <input class="form-control input-sm" id="modalInputMeasurementUnit" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" onclick="UpdateUnidadeMedidas();">@Resources.Resource.save</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">@Resources.Resource.save</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        }
+                    }
 
 </div>
 <script>
+
+
+    function UpdateUnidadeMedidas() {
+        var valor = $("#modalInputMeasurementUnit").val();
+        $.post(urlSaveMeassurementUnit + "/" + valor, function(r) {
+            $('#selectUnidadeDeMedidas').append('<option value="' + r.Id + '">' + r.Name + '</option>');
+            $('#selectUnidadeDeMedidas').val(r.Id).change();
+            $("#modalInputMeasurementUnit").val('');
+            $('#fechar').modal('hide');
+        });
+    }
 
     /*Vinculo Level3Level2*/
     function saveLevel3Level2() {
@@ -220,7 +231,7 @@
         idTable: 'tableLevel3Value',//
         tdsNames: ['ParLevel3InputType_Name', 'ParCompany_Name', 'ParMeasurementUnit_Name', 'IntervalMin', 'IntervalMax', 'AcceptableValueBetween_Name', 'ParLevel3BoolFalse_Name', 'ParLevel3BoolTrue_Name', 'btn'],
         getObjAdd: function(isEdit, obj){
-            
+
             var preseletor = "";
             if(isEdit != undefined){
                 preseletor = isEdit;
@@ -344,10 +355,10 @@
             });
 
             if(!!isEdit){/*Edição*/
-                   
+
             } else {/*Inclusão*/
                 if(exist.length){
-                
+
                     if(companySelected == -1)
                         display= "Todas";
 
@@ -357,7 +368,7 @@
                 }
             }
 
-          
+
             return true;
         },
         incluiNoObjetoParaSubmit: function(dados){
@@ -596,8 +607,24 @@
         if ($("#selectTipoInput option:selected").val() == "3" || $("#selectTipoInput option:selected").val() == "2") {
             resetaParIntervalos();
             resetaParBinarios();
-            $('#parLevel3Value_IntervalMin').inputmask("numeric");
-            $('#parLevel3Value_IntervalMax').inputmask("numeric");
+            $('#parLevel3Value_IntervalMin').inputmask("numeric",  { 
+                //radixPoint: ".", 
+                //groupSeparator: ",",
+                //groupSize: 3,
+                //digits: 2,
+                //autoGroup: true,
+                //allowPlus: true,
+                allowMinus: true
+            });
+            $('#parLevel3Value_IntervalMax').inputmask("numeric",  { 
+                //radixPoint: ".", 
+                //groupSeparator: ",",
+                //groupSize: 3,
+                //digits: 2,
+                //autoGroup: true,
+                //allowPlus: true,
+                allowMinus: true
+            });
             $('.ParBinarios').hide();
             $('.ParIntervalos').fadeIn();
         }

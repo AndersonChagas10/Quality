@@ -17,10 +17,11 @@
     var desvinculoVinculoL1L2 = Url.Action("RemVinculoL1L2", "api/ParamsApi");
     var urlSetRequiredCCAB = Url.Action("SetRequiredCCAB", "api/ParamsApi");
     var urlSetDefaultCCAB = Url.Action("SetDefaultCCAB", "api/ParamsApi");
+    var urlSaveMeassurementUnit = Url.Action("AddUnidadeDeMedida", "api/ParamsApi");
 
     var removeLevel3Group = Url.Action("RemoveParLevel3Group", "api/ParamsApi");
     var AddLevel3Group = Url.Action("AddUpdateParLevel3Group", "api/ParamsApi");
-
+    
     var urlHome = Url.Action("Index", "Home");
 
 }
@@ -299,7 +300,7 @@
         '@Resources.Resource.october',
         '@Resources.Resource.november',
         '@Resources.Resource.december'];
-    
+
     function twoDigits(str) {
         str = ("000" + str).slice(-2);
         return str;
@@ -369,7 +370,8 @@
     var parLevel1Empty = $('#ParLevel1 > form').clone();
     var parLevel2Empty = $('#ParLevel2 > form').clone();
     var parLevel3Empty = $('#ParLevel3 > form').clone();
-
+    
+    var urlSaveMeassurementUnit = '@Html.Raw(@urlSaveMeassurementUnit)';
     var urlGetLevel1 = '@Html.Raw(@urlGetLevel1)';
     var urlGetLevel2 = '@Html.Raw(@urlGetLevel2)';
     var urlGetLevel3 = '@Html.Raw(@urlGetLevel3)';
@@ -633,7 +635,7 @@
 
         },/*Executa ao selecionar um level2*/
         GetLevel2: function(thislevel2Id, thislevel3Id, isSave, thislevel1Id) {
-            thislevel1Id = !thislevel1Id ? '0' : thislevel1Id; 
+            thislevel1Id = !thislevel1Id ? '0' : thislevel1Id;
             $.get('GetParLevel2ById',{  level2Id: thislevel2Id, level3Id: thislevel3Id, level1Id: thislevel1Id}, function (obj, responseText, xhr) {
 
                 if (obj != null) {
