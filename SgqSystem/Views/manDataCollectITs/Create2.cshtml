@@ -61,16 +61,22 @@
 
     $(document).ready(function () {
 
-        var myDarlingViewBag = @Html.Raw(Json.Encode(ViewBag.listaDataDataType));
+        @*var myDarlingViewBag = @Html.Raw(Json.Encode(ViewBag.listaDataDataType));*@
 
-        if(myDarlingViewBag != null){
+        var indicadores = @Html.Raw(Json.Encode(ViewBag.Indicadores));
 
-            for (var i = 0; i < myDarlingViewBag.length; i++) {
+        //if (myDarlingViewBag != null){
+
+        if (indicadores != null){
+
+            //for (var i = 0; i < myDarlingViewBag.length; i++) {
+
+            for (var i = 0; i < indicadores.length; i++) {
 
                 var newRow = $("<tr>");
                 var cols = "";
 
-                cols += '<td>'+$(myDarlingViewBag[i]).attr('TechnicalIndicator')+'</td>';
+                cols += '<td>'+$(indicadores[i]).attr('TechnicalIndicator')+'</td>';
 
                 //cols += '<td style="display:none;">'+$(myDarlingViewBag[i]).attr('id')+'</td>';
 
