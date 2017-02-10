@@ -9,6 +9,7 @@ using SgqSystem.Helpers;
 
 namespace SgqSystem.Controllers
 {
+    [FilterUnit]
     [CustomAuthorize]
     public class VacuoGRDsController : BaseController
     {

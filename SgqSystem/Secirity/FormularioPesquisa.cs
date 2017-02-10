@@ -19,8 +19,8 @@ namespace SgqSystem.Secirity
     /// ViewBag.Level03
     /// ViewBag.Shift
     /// ViewBag.Period 
-    ///                        
-    /// </summary>
+    /// @Html.DropDownList("ParCompany_id", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })                         
+    /// /// </summary>
     public class FormularioPesquisa : ActionFilterAttribute
     {
         //public IEnumerable<ParCompanyDTO> _ParCompanyDTO { get; set; }

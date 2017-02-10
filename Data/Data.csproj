@@ -67,7 +67,7 @@
       <Name>Dominio</Name>
     </ProjectReference>
     <ProjectReference Include="..\DTO\DTO.csproj">
-      <Project>{0ed5466d-2a8f-4e37-8d4a-c2f2760bd687}</Project>
+      <Project>{0ED5466D-2A8F-4E37-8D4A-C2F2760BD687}</Project>
       <Name>DTO</Name>
     </ProjectReference>
   </ItemGroup>

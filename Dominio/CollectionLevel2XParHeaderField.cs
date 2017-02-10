@@ -21,8 +21,8 @@ namespace Dominio
         public int ParFieldType_Id { get; set; }
         public string Value { get; set; }
     
+        public virtual CollectionLevel2 CollectionLevel2 { get; set; }
         public virtual ParFieldType ParFieldType { get; set; }
         public virtual ParHeaderField ParHeaderField { get; set; }
-        public virtual CollectionLevel2 CollectionLevel2 { get; set; }
     }
 }

@@ -311,7 +311,9 @@ namespace Dominio.Services
 
             /*Avaliação e amostra*/
             level2.listEvaluation = Mapper.Map<List<ParEvaluationDTO>>(parLevel2.ParEvaluation.Where(r => r.IsActive == true));
-            level2.listSample = Mapper.Map<List<ParSampleDTO>>(parLevel2.ParSample.Where(r => r.IsActive == true));
+            if(parLevel2.ParSample.Count() > 0)
+                level2.listSample = Mapper.Map<List<ParSampleDTO>>(parLevel2.ParSample.Where(r => r.IsActive == true));
+
             level2.RecuperaListaSampleEvaluation();
             //paramsDto.parEvaluationDto = Mapper.Map<ParEvaluationDTO>(parLevel2.ParEvaluation.FirstOrDefault());
             //paramsDto.parSampleDto = Mapper.Map<ParSampleDTO>(parLevel2.ParSample.FirstOrDefault());
@@ -320,12 +322,7 @@ namespace Dominio.Services
             level2.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(parLevel2.ParCounterXLocal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));/*Contadores*/
             level2.listParNotConformityRuleXLevelDto = Mapper.Map<List<ParNotConformityRuleXLevelDTO>>(parLevel2.ParNotConformityRuleXLevel.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));/*Regra de Alerta*/
 
-            //SELECT* from ParLevel1XHeaderField
-            //where id not in 
-            //(select id from ParLevel2XHeaderField
-            //where ParLevel2_Id
-            //in (select id from parlevel2 where id = 1))
-
+           
             level2.cabecalhosInclusos = Mapper.Map<List<ParLevel1XHeaderFieldDTO>>(headerFieldLevel1.Where(r => r.IsActive == true && r.ParLevel1_Id == level1Id));/*Cabeçalhos do Level 1*/
             level2.cabecalhosExclusos = Mapper.Map<List<ParLevel2XHeaderFieldDTO>>(headerFieldLevel2.Where(r => r.IsActive == true && r.ParLevel1_Id == level1Id && r.ParLevel2_Id == idParLevel2));/*Cabeçalhos não permitidos no Level 2*/
             

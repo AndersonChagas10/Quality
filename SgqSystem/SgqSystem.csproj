@@ -700,6 +700,7 @@
     <Content Include="Content\Imagens\GRTJBSLogo.png" />
     <Content Include="Content\Imagens\SGQLogo01.png" />
     <Content Include="Content\select2.min.css" />
+    <Content Include="Content\Timeout\timeout-dialog.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -710,6 +711,7 @@
     <Content Include="Imagens\Spain.png" />
     <Content Include="Imagens\stack.png" />
     <Content Include="Imagens\tablet.png" />
+    <Content Include="Imagens\timeout-icon.png" />
     <Content Include="Imagens\United-States.png" />
     <Content Include="Scripts\aes.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
@@ -1152,6 +1154,7 @@
     <Content Include="Scripts\theme\font-awesome-4.7.0\HELP-US-OUT.txt" />
     <Content Include="Scripts\theme\js\app.min.js" />
     <Content Include="Scripts\theme\js\jquery.slimscroll.min.js" />
+    <Content Include="Scripts\Timeout\timeout-dialog.js" />
     <Content Include="Scripts\tripledes.js" />
     <Content Include="Scripts\x64-core.js" />
     <Content Include="Help.txt" />
