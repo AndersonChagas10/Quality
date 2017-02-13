@@ -331,6 +331,7 @@
     <Compile Include="Controllers\Api\RoleApiController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacaoController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacaoResultadosController.cs" />
+    <Compile Include="Controllers\Api\VTVerificacaoTipificacaoApiController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ExemploInputController.cs" />
     <Compile Include="Controllers\GestaoController.cs" />
@@ -474,6 +475,7 @@
     <Compile Include="ViewModels\ReportsCorrectiveActionViewModel.cs" />
     <Compile Include="ViewModels\ReqController.cs" />
     <Compile Include="ViewModels\SyncViewModel.cs" />
+    <Compile Include="ViewModels\TipificacaoViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
@@ -2163,6 +2165,8 @@
     <Folder Include="Views\EspecificarMonitoramentos\" />
     <Folder Include="Views\RelatorioController\" />
     <Folder Include="Views\RoleApi\" />
+    <Folder Include="Views\TipificacaoViewModel\" />
+    <Folder Include="Views\VTVerificacaoTipificacaoAPI\" />
     <Folder Include="Views\WebService\" />
   </ItemGroup>
   <ItemGroup>

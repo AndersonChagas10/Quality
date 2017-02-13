@@ -260,6 +260,13 @@
         <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoCampoTarefa_Participante" />
         <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoParticipanteMultiplaEscolha_Participante" />
         <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoParticipanteProjeto_Participante" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VTVerificacaoContagem" Width="1.5" PointX="26.375" PointY="4.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VTVerificacaoTipificacao" Width="1.5" PointX="17.375" PointY="26.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VTVerificacaoTipificacaoComparacao" Width="1.5" PointX="23.375" PointY="26.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VTVerificacaoTipificacaoResultados" Width="1.5" PointX="25.375" PointY="26.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VTVerificacaoTipificacaoTarefaIntegracao" Width="1.5" PointX="6.375" PointY="26.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VTVerificacaoTipificacaoValidacao" Width="1.5" PointX="27.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VTVerificacaoTipificacaoJBS" Width="1.5" PointX="27.375" PointY="7.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

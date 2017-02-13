@@ -3264,7 +3264,7 @@ namespace SgqSystem.Services
                                         );
 
                 var labelBanda = "<label class='font-small'>Banda</label>";
-                var formControlBanda = "<input class='form-control input-sm banda' style='font-size:100px; height: 150px; text-align:center;' type='number'>";
+                var formControlBanda = "<input class='form-control input-sm banda' min='1' max='2' style='font-size:100px; height: 150px; text-align:center;' type='number'>";
                 var formGroupBanda = html.div(
                                         outerhtml: labelBanda + formControlBanda,
                                         classe: "form-group",

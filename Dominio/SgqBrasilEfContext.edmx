@@ -1761,6 +1761,91 @@ warning 6002: The table/view 'SGQ_Brasil.dbo.VerificacaoTipificacaoJBS' does not
           <Property Name="UsuarioAlteracao" Type="int" />
           <Property Name="DataAlteracao" Type="datetime" />
         </EntityType>
+        <EntityType Name="VTVerificacaoContagem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Data" Type="datetime" Nullable="false" />
+          <Property Name="Status" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VTVerificacaoTipificacao">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Sequencial" Type="int" Nullable="false" />
+          <Property Name="Banda" Type="tinyint" Nullable="false" />
+          <Property Name="DataHora" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UnidadeId" Type="int" Nullable="false" />
+          <Property Name="Chave" Type="nvarchar(max)" />
+          <Property Name="Status" Type="bit" />
+        </EntityType>
+        <EntityType Name="VTVerificacaoTipificacaoComparacao">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Sequencial" Type="int" Nullable="false" />
+          <Property Name="Banda" Type="int" Nullable="false" />
+          <Property Name="Identificador" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="NumCaracteristica" Type="int" Nullable="false" />
+          <Property Name="DataHora" Type="datetime" Nullable="false" />
+          <Property Name="valorSGQ" Type="int" />
+          <Property Name="valorJBS" Type="int" />
+          <Property Name="nCdEmpresa" Type="int" />
+          <Property Name="Conforme" Type="bit" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SGQ_Brasil.dbo.VTVerificacaoTipificacaoJBS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="VTVerificacaoTipificacaoJBS">
+          <Key>
+            <PropertyRef Name="nCdEmpresa" />
+            <PropertyRef Name="iSequencial" />
+            <PropertyRef Name="iSequencialTipificacao" />
+            <PropertyRef Name="iBanda" />
+            <PropertyRef Name="cIdentificadorTipificacao" />
+            <PropertyRef Name="nCdCaracteristicaTipificacao" />
+          </Key>
+          <Property Name="nCdEmpresa" Type="int" Nullable="false" />
+          <Property Name="dMovimento" Type="datetime" />
+          <Property Name="iSequencial" Type="int" Nullable="false" />
+          <Property Name="iSequencialTipificacao" Type="int" Nullable="false" />
+          <Property Name="iBanda" Type="int" Nullable="false" />
+          <Property Name="cIdentificadorTipificacao" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="nCdCaracteristicaTipificacao" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VTVerificacaoTipificacaoResultados">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TarefaId" Type="int" Nullable="false" />
+          <Property Name="CaracteristicaTipificacaoId" Type="int" />
+          <Property Name="Chave" Type="nvarchar(max)" />
+          <Property Name="AreasParticipantesId" Type="int" />
+        </EntityType>
+        <EntityType Name="VTVerificacaoTipificacaoTarefaIntegracao">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TarefaId" Type="int" Nullable="false" />
+          <Property Name="CaracteristicaTipificacaoId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VTVerificacaoTipificacaoValidacao">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nCdEmpresa" Type="int" Nullable="false" />
+          <Property Name="dMovimento" Type="datetime" />
+          <Property Name="iSequencial" Type="int" Nullable="false" />
+          <Property Name="iSequencialTipificacao" Type="int" Nullable="false" />
+          <Property Name="iBanda" Type="int" Nullable="false" />
+          <Property Name="cIdentificadorTipificacao" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="nCdCaracteristicaTipificacao" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Z_Sistema">
           <Key>
             <PropertyRef Name="Id" />
@@ -3386,6 +3471,12 @@ warning 6002: The table/view 'SGQ_Brasil.dbo.VerificacaoTipificacaoJBS' does not
           <EntitySet Name="VinculoParticipanteProjeto" EntityType="Self.VinculoParticipanteProjeto" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VolumeAbate" EntityType="Self.VolumeAbate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VolumeProducao" EntityType="Self.VolumeProducao" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VTVerificacaoContagem" EntityType="Self.VTVerificacaoContagem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VTVerificacaoTipificacao" EntityType="Self.VTVerificacaoTipificacao" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VTVerificacaoTipificacaoComparacao" EntityType="Self.VTVerificacaoTipificacaoComparacao" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VTVerificacaoTipificacaoResultados" EntityType="Self.VTVerificacaoTipificacaoResultados" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VTVerificacaoTipificacaoTarefaIntegracao" EntityType="Self.VTVerificacaoTipificacaoTarefaIntegracao" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VTVerificacaoTipificacaoValidacao" EntityType="Self.VTVerificacaoTipificacaoValidacao" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Z_Sistema" EntityType="Self.Z_Sistema" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ControleMetaTolerancia" EntityType="Self.ControleMetaTolerancia" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -3483,6 +3574,17 @@ warning 6002: The table/view 'SGQ_Brasil.dbo.VerificacaoTipificacaoJBS' does not
     [VerificacaoTipificacaoJBS].[cIdentificadorTipificacao] AS [cIdentificadorTipificacao], 
     [VerificacaoTipificacaoJBS].[nCdCaracteristicaTipificacao] AS [nCdCaracteristicaTipificacao]
     FROM [dbo].[VerificacaoTipificacaoJBS] AS [VerificacaoTipificacaoJBS]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VTVerificacaoTipificacaoJBS" EntityType="Self.VTVerificacaoTipificacaoJBS" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VTVerificacaoTipificacaoJBS].[nCdEmpresa] AS [nCdEmpresa], 
+    [VTVerificacaoTipificacaoJBS].[dMovimento] AS [dMovimento], 
+    [VTVerificacaoTipificacaoJBS].[iSequencial] AS [iSequencial], 
+    [VTVerificacaoTipificacaoJBS].[iSequencialTipificacao] AS [iSequencialTipificacao], 
+    [VTVerificacaoTipificacaoJBS].[iBanda] AS [iBanda], 
+    [VTVerificacaoTipificacaoJBS].[cIdentificadorTipificacao] AS [cIdentificadorTipificacao], 
+    [VTVerificacaoTipificacaoJBS].[nCdCaracteristicaTipificacao] AS [nCdCaracteristicaTipificacao]
+    FROM [dbo].[VTVerificacaoTipificacaoJBS] AS [VTVerificacaoTipificacaoJBS]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_AcoesCorretivas_Operacoes" Association="Self.FK_AcoesCorretivas_Operacoes">
             <End Role="Operacoes" EntitySet="Operacoes" />
@@ -4603,6 +4705,13 @@ warning 6002: The table/view 'SGQ_Brasil.dbo.VerificacaoTipificacaoJBS' does not
             <Parameter Name="DataFim" Mode="In" Type="String" />
             <Parameter Name="UnidadeId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="VTVerificacaoContagem" EntityType="SGQ_BrasilModel.VTVerificacaoContagem" />
+          <EntitySet Name="VTVerificacaoTipificacao" EntityType="SGQ_BrasilModel.VTVerificacaoTipificacao" />
+          <EntitySet Name="VTVerificacaoTipificacaoComparacao" EntityType="SGQ_BrasilModel.VTVerificacaoTipificacaoComparacao" />
+          <EntitySet Name="VTVerificacaoTipificacaoResultados" EntityType="SGQ_BrasilModel.VTVerificacaoTipificacaoResultados" />
+          <EntitySet Name="VTVerificacaoTipificacaoTarefaIntegracao" EntityType="SGQ_BrasilModel.VTVerificacaoTipificacaoTarefaIntegracao" />
+          <EntitySet Name="VTVerificacaoTipificacaoValidacao" EntityType="SGQ_BrasilModel.VTVerificacaoTipificacaoValidacao" />
+          <EntitySet Name="VTVerificacaoTipificacaoJBS" EntityType="SGQ_BrasilModel.VTVerificacaoTipificacaoJBS" />
           </EntityContainer>
         <EntityType Name="Acoes">
           <Key>
@@ -8135,6 +8244,89 @@ warning 6002: The table/view 'SGQ_Brasil.dbo.VerificacaoTipificacaoJBS' does not
           <Property Type="Double" Name="Scorecard" Nullable="true" />
           <Property Type="Double" Name="Pontos" Nullable="true" />
         </ComplexType>
+        <EntityType Name="VTVerificacaoContagem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Data" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="VTVerificacaoTipificacao">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Sequencial" Type="Int32" Nullable="false" />
+          <Property Name="Banda" Type="Byte" Nullable="false" />
+          <Property Name="DataHora" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UnidadeId" Type="Int32" Nullable="false" />
+          <Property Name="Chave" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="VTVerificacaoTipificacaoComparacao">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Sequencial" Type="Int32" Nullable="false" />
+          <Property Name="Banda" Type="Int32" Nullable="false" />
+          <Property Name="Identificador" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="NumCaracteristica" Type="Int32" Nullable="false" />
+          <Property Name="DataHora" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="valorSGQ" Type="Int32" />
+          <Property Name="valorJBS" Type="Int32" />
+          <Property Name="nCdEmpresa" Type="Int32" />
+          <Property Name="Conforme" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="VTVerificacaoTipificacaoResultados">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TarefaId" Type="Int32" Nullable="false" />
+          <Property Name="CaracteristicaTipificacaoId" Type="Int32" />
+          <Property Name="Chave" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AreasParticipantesId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="VTVerificacaoTipificacaoTarefaIntegracao">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TarefaId" Type="Int32" Nullable="false" />
+          <Property Name="CaracteristicaTipificacaoId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VTVerificacaoTipificacaoValidacao">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nCdEmpresa" Type="Int32" Nullable="false" />
+          <Property Name="dMovimento" Type="DateTime" Precision="3" />
+          <Property Name="iSequencial" Type="Int32" Nullable="false" />
+          <Property Name="iSequencialTipificacao" Type="Int32" Nullable="false" />
+          <Property Name="iBanda" Type="Int32" Nullable="false" />
+          <Property Name="cIdentificadorTipificacao" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="nCdCaracteristicaTipificacao" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VTVerificacaoTipificacaoJBS">
+          <Key>
+            <PropertyRef Name="nCdEmpresa" />
+            <PropertyRef Name="iSequencial" />
+            <PropertyRef Name="iSequencialTipificacao" />
+            <PropertyRef Name="iBanda" />
+            <PropertyRef Name="cIdentificadorTipificacao" />
+            <PropertyRef Name="nCdCaracteristicaTipificacao" />
+          </Key>
+          <Property Name="nCdEmpresa" Type="Int32" Nullable="false" />
+          <Property Name="dMovimento" Type="DateTime" Precision="3" />
+          <Property Name="iSequencial" Type="Int32" Nullable="false" />
+          <Property Name="iSequencialTipificacao" Type="Int32" Nullable="false" />
+          <Property Name="iBanda" Type="Int32" Nullable="false" />
+          <Property Name="cIdentificadorTipificacao" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="nCdCaracteristicaTipificacao" Type="Int32" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -10059,6 +10251,91 @@ warning 6002: The table/view 'SGQ_Brasil.dbo.VerificacaoTipificacaoJBS' does not
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="VTVerificacaoContagem">
+            <EntityTypeMapping TypeName="SGQ_BrasilModel.VTVerificacaoContagem">
+              <MappingFragment StoreEntitySet="VTVerificacaoContagem">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VTVerificacaoTipificacao">
+            <EntityTypeMapping TypeName="SGQ_BrasilModel.VTVerificacaoTipificacao">
+              <MappingFragment StoreEntitySet="VTVerificacaoTipificacao">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Chave" ColumnName="Chave" />
+                <ScalarProperty Name="UnidadeId" ColumnName="UnidadeId" />
+                <ScalarProperty Name="DataHora" ColumnName="DataHora" />
+                <ScalarProperty Name="Banda" ColumnName="Banda" />
+                <ScalarProperty Name="Sequencial" ColumnName="Sequencial" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VTVerificacaoTipificacaoComparacao">
+            <EntityTypeMapping TypeName="SGQ_BrasilModel.VTVerificacaoTipificacaoComparacao">
+              <MappingFragment StoreEntitySet="VTVerificacaoTipificacaoComparacao">
+                <ScalarProperty Name="Conforme" ColumnName="Conforme" />
+                <ScalarProperty Name="nCdEmpresa" ColumnName="nCdEmpresa" />
+                <ScalarProperty Name="valorJBS" ColumnName="valorJBS" />
+                <ScalarProperty Name="valorSGQ" ColumnName="valorSGQ" />
+                <ScalarProperty Name="DataHora" ColumnName="DataHora" />
+                <ScalarProperty Name="NumCaracteristica" ColumnName="NumCaracteristica" />
+                <ScalarProperty Name="Identificador" ColumnName="Identificador" />
+                <ScalarProperty Name="Banda" ColumnName="Banda" />
+                <ScalarProperty Name="Sequencial" ColumnName="Sequencial" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VTVerificacaoTipificacaoResultados">
+            <EntityTypeMapping TypeName="SGQ_BrasilModel.VTVerificacaoTipificacaoResultados">
+              <MappingFragment StoreEntitySet="VTVerificacaoTipificacaoResultados">
+                <ScalarProperty Name="AreasParticipantesId" ColumnName="AreasParticipantesId" />
+                <ScalarProperty Name="Chave" ColumnName="Chave" />
+                <ScalarProperty Name="CaracteristicaTipificacaoId" ColumnName="CaracteristicaTipificacaoId" />
+                <ScalarProperty Name="TarefaId" ColumnName="TarefaId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VTVerificacaoTipificacaoTarefaIntegracao">
+            <EntityTypeMapping TypeName="SGQ_BrasilModel.VTVerificacaoTipificacaoTarefaIntegracao">
+              <MappingFragment StoreEntitySet="VTVerificacaoTipificacaoTarefaIntegracao">
+                <ScalarProperty Name="CaracteristicaTipificacaoId" ColumnName="CaracteristicaTipificacaoId" />
+                <ScalarProperty Name="TarefaId" ColumnName="TarefaId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VTVerificacaoTipificacaoValidacao">
+            <EntityTypeMapping TypeName="SGQ_BrasilModel.VTVerificacaoTipificacaoValidacao">
+              <MappingFragment StoreEntitySet="VTVerificacaoTipificacaoValidacao">
+                <ScalarProperty Name="nCdCaracteristicaTipificacao" ColumnName="nCdCaracteristicaTipificacao" />
+                <ScalarProperty Name="cIdentificadorTipificacao" ColumnName="cIdentificadorTipificacao" />
+                <ScalarProperty Name="iBanda" ColumnName="iBanda" />
+                <ScalarProperty Name="iSequencialTipificacao" ColumnName="iSequencialTipificacao" />
+                <ScalarProperty Name="iSequencial" ColumnName="iSequencial" />
+                <ScalarProperty Name="dMovimento" ColumnName="dMovimento" />
+                <ScalarProperty Name="nCdEmpresa" ColumnName="nCdEmpresa" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VTVerificacaoTipificacaoJBS">
+            <EntityTypeMapping TypeName="SGQ_BrasilModel.VTVerificacaoTipificacaoJBS">
+              <MappingFragment StoreEntitySet="VTVerificacaoTipificacaoJBS">
+                <ScalarProperty Name="nCdCaracteristicaTipificacao" ColumnName="nCdCaracteristicaTipificacao" />
+                <ScalarProperty Name="cIdentificadorTipificacao" ColumnName="cIdentificadorTipificacao" />
+                <ScalarProperty Name="iBanda" ColumnName="iBanda" />
+                <ScalarProperty Name="iSequencialTipificacao" ColumnName="iSequencialTipificacao" />
+                <ScalarProperty Name="iSequencial" ColumnName="iSequencial" />
+                <ScalarProperty Name="dMovimento" ColumnName="dMovimento" />
+                <ScalarProperty Name="nCdEmpresa" ColumnName="nCdEmpresa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
