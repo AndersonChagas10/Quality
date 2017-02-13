@@ -59,7 +59,7 @@
             <table class="table-erp">
                 <tbody>
                     <tr class="row">
-                        @Table.GerarColunaButton(@Html.DropDownList("clusterListId", new SelectList(ViewBag.listaParCluster, "Id", "Type"), Resources.Resource.select + "...", new { @id = "clusterListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.cluster), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='" + Resources.Resource.saving + "' id='btnAddCluster' onclick='clusterListAdd()' class='btn btn-primary btn-sm margin'><i class='fa fa-plus'></i></button>")
+                        @Table.GerarColunaButton(@Html.DropDownList("clusterListId", new SelectList(ViewBag.listaParCluster, "Id", "Name"), Resources.Resource.select + "...", new { @id = "clusterListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.cluster), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='" + Resources.Resource.saving + "' id='btnAddCluster' onclick='clusterListAdd()' class='btn btn-primary btn-sm margin'><i class='fa fa-plus'></i></button>")
                     </tr>
                 </tbody>
             </table>
