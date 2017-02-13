@@ -1,4 +1,8 @@
-﻿/****** DataTable sum ******
+﻿
+/*API de SUM para DataTable
+
+Exemplo: 
+
 // Simply get the sum of a column
   var table = $('#example').DataTable();
   table.column( 3 ).data().sum();
@@ -13,6 +17,7 @@
       );
     }
   } );
+
 */
 jQuery.fn.dataTable.Api.register('sum()', function () {
     return this.flatten().reduce(function (a, b) {
@@ -27,7 +32,7 @@ jQuery.fn.dataTable.Api.register('sum()', function () {
     }, 0);
 });
 
-
+/*Ajax tratado e com suporte a loader, utilizar ao montar graficos e tabelas*/
 function EasyAjax(url, dados, callback, loader, toggle) {
 
     if (!!loader)
@@ -65,13 +70,38 @@ function EasyAjax(url, dados, callback, loader, toggle) {
     });
 }
 
+/*Mascaras e instancias de Select 2 por classe*/
 $(document).ready(function () {
+
+    /*Input Mask*/
     $('.integer').each(function (index) {
         $(this).inputmask("integer", { rightAlign: false });
     });
     $('.decimal').each(function (index) {
         $(this).inputmask("decimal", { rightAlign: false });
     });
+
+    $('.integer-direita').each(function (index) {
+        $(this).inputmask("integer", { rightAlign: true });
+    });
+    $('.decimal-direita').each(function (index) {
+        $(this).inputmask("decimal", { rightAlign: true });
+    });
+
+    $('.integer-esquerda').each(function (index) {
+        $(this).inputmask("integer", { rightAlign: false });
+    });
+    $('.decimal-esquerda').each(function (index) {
+        $(this).inputmask("decimal", { rightAlign: false });
+    });
+    /*FIM Input Mask*/
+
+    /*Select 2*/
+    $('.select2ddl').each(function (index) {
+        $(this).select2();
+    });
+    /*FIM Select 2*/
+
 })
 
 function getCookie(name) {
@@ -135,6 +165,7 @@ function heatMap(tableId, isInLine, isInColumn, startIndex, delimiterIndex) {
     }
 }
 
+/*DESCONTINUAR ESTES METODOS< E UTILIZAR APENA INSTANCIA POR CLASSE*/
 Inputmask.extendAliases({
     'numeric': {
         allowPlus: false,
@@ -206,7 +237,9 @@ Inputmask.extendAliases({
         clearIfNotMatch: true
     }
 });
+/*FIM DESCONTINUAR ESTES METODOS< E UTILIZAR APENA INSTANCIA POR CLASSE*/
 
+/*Transforma array Row / Col para array unidirecional ROW (entrada [{a:1},{b:2}] saida [1,2])*/
 function MapeiaValorParaHC(array, prop) {
     var arrayRetorno = $.map(array, function (o, c) {
         return o[prop];
@@ -223,7 +256,7 @@ function loadSelect2() {
     $('.select2-container--classic .select2-selection--single .select2-selection__arrow').css('height', '32px');
 }
 
-//Auxiliares para abas
+//Auxiliares para abas de bootstrap e divs em geral.
 var DivManager = {
     //Cria div dentro de um elemento, retorna Id da div criada.
     // Parans: idString: Id do elemento aonde sera adicionada a nova Div, por ex, uma div,
@@ -244,6 +277,7 @@ var DivManager = {
 
 GuardJs = {
 
+    /*DESCONTINUAR ESTES METODOS< E UTILIZAR APENA INSTANCIA POR CLASSE*/
     mascaraNumericaPositiva: function (e) {
         $(e).inputmask("numericoPositivo");
     },
@@ -269,6 +303,7 @@ GuardJs = {
     mascaraInteger: function(e) {
         $(e).inputmask("integer", { rightAlign: false });  
     },
+    /*FIM DESCONTINUAR ESTES METODOS< E UTILIZAR APENA INSTANCIA POR CLASSE*/
 
     message: "One or more fields are requireds: ",
 
