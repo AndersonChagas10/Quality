@@ -11,14 +11,17 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var component in ViewBag.listaScreenComponent)
+            @foreach (var component in ViewBag.listaRoleSGQ)
             {
-                <tr>                    
+                <tr>        
+                    <td id="RoleSGQRow_@component.Id" class="hide">
+                        @component.Id
+                    </td>            
                     <td>
-                        @component.Component
+                        @component.ScreenComponent_Id
                     </td>
                     <td>
-                        @component.Type
+                        @component.Role
                     </td>
                     <td>
                         <button onclick="indexRole.openRole(@component.Id)" class="btn btn-primary btn-sm">@Resources.Resource.edit</button>
@@ -44,7 +47,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>@Resources.Resource.role</label>
-                                    <input id="Role" class="form-control input-sm">
+                                    <input name="Role" class="form-control input-sm">
                                 </div>
                                 <div class="form-group">
                                     <label>@Resources.Resource.screen_component</label>

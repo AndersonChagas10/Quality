@@ -62,7 +62,7 @@
                                         </div>
                                         <div id="roles_sgq_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                                             <div class="panel-body">
-                                                <div id="ParLevel2">
+                                                <div id="RoleSGQ">
                                                     @Html.Partial("~/Views/Role/RoleSGQ.cshtml")
                                                 </div>
                                             </div>
@@ -83,7 +83,7 @@
                                         </div>
                                         <div id="screen_components_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                                             <div class="panel-body">
-                                                <div id="ParLevel2">
+                                                <div id="ScreenComponent">
                                                     @Html.Partial("~/Views/Role/ScreenComponent.cshtml")
                                                 </div>
                                             </div>
@@ -159,7 +159,6 @@
                             $("#formScreenComponent [name='" + key + "']").val(obj);
                         }
 
-                        updatePage();
                     }
                 );
             } else {
@@ -169,8 +168,15 @@
         saveComponent: function () {
             $.post('@Url.Action("SaveScreenComponent", "api/Role")',
                 $('#formScreenComponent').serializeObject(),
-                function () {
-                    $('#modalScreenComponent').modal('close');
+                function (object) {
+                    $("ScreenComponentRow")
+                    for (var key in object) {
+                        var obj = object[key];
+                        $("#formScreenComponent [name='" + key + "']").text(obj);
+                    }
+
+                    $('#modalScreenComponent').modal('hide');
+                    updatePage();
                 });
 
         }
@@ -192,7 +198,6 @@
                             $("#formRoleSgq [name='" + key + "']").val(obj);
                         }
 
-                        updatePage();
                     }
                 );
             }
@@ -200,15 +205,20 @@
         saveRole: function () {
             $.post('@Url.Action("SaveRoleSgq", "api/Role")',
                 $('#formRoleSgq').serializeObject(),
-                function () {
-                    $('#modalRoleSgq').modal('close');
+                function (object) {
+
+                    $($("#RoleSgqRow_" + object.Id).siblings()[0]).text(object.ScreenComponent_Id);
+                    $($("#RoleSgqRow_" + object.Id).siblings()[1]).text(object.Role);
+
+                    $('#modalRoleSgq').modal('hide');
+                    updatePage();
                 });
         }
 
     };
 
     var updatePage = function () {
-        $.get('@Url.Action("Index", "Role")', function (object) {});
+        $("#page-content-wrapper").load('@Url.Action("Index", "Role")');
     }
 
 

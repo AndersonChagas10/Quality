@@ -445,6 +445,7 @@
     <Compile Include="Mappers\DepartmenMapperProfile.cs" />
     <Compile Include="Mappers\Audit\Level03MapperProfile.cs" />
     <Compile Include="Mappers\UserMapperProfile.cs" />
+    <Compile Include="Mappers\UserSgqMapperProfile.cs" />
     <Compile Include="Secirity\CustomAuthorizeAttribute.cs" />
     <Compile Include="Secirity\CustomPrincipal.cs" />
     <Compile Include="Secirity\FilterUnit.cs" />
@@ -2104,6 +2105,7 @@
     <Content Include="Views\Role\RoleSGQ.cshtml" />
     <Content Include="Views\Role\ScreenComponent.cshtml" />
     <Content Include="Views\ManPainelGestao\Index.cshtml" />
+    <Content Include="Views\ParCompany\Index2.cshtml" />
     <Content Include="Scripts\version.json" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
