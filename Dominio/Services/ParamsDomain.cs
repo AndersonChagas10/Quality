@@ -606,31 +606,28 @@ namespace Dominio.Services
                 if (idLevel3 > 0)
                 {
                     /**/
+                    var idL3L2 = 0;
                     existenteL3L2 = db.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == idLevel3 && r.ParLevel2_Id == idLevel2);
                     if (existenteL3L2 == null)
                     {
                         //throw new Exception("");
-                        salvarL3L2 = new ParLevel3Level2() {ParLevel2_Id = idLevel2,  ParLevel3_Id = idLevel3, ParCompany_Id = null };
+                        salvarL3L2 = new ParLevel3Level2() { ParLevel2_Id = idLevel2, ParLevel3_Id = idLevel3, ParCompany_Id = null , IsActive = true};
                         db.ParLevel3Level2.Add(salvarL3L2);
                         db.SaveChanges();
+                        idL3L2 = salvarL3L2.Id;
+                    }
+                    else
+                    {
+                        idL3L2 = existenteL3L2.Id;
                     }
 
                     /**/
-                    var idL3L2 = existenteL3L2.Id;
                     existenteL3L2L1 = db.ParLevel3Level2Level1.FirstOrDefault(r => r.ParLevel1_Id == idLevel1 && r.ParLevel3Level2_Id == idL3L2);
                     if (existenteL3L2L1 == null)
                     {
-                        var salvarL3L2L1 = new ParLevel3Level2Level1() { ParLevel1_Id = idLevel1, ParLevel3Level2_Id = idL3L2, ParCompany_Id = null};
+                        var salvarL3L2L1 = new ParLevel3Level2Level1() { ParLevel1_Id = idLevel1, ParLevel3Level2_Id = idL3L2, ParCompany_Id = null, Active = true};
                         db.ParLevel3Level2Level1.Add(salvarL3L2L1);
-                        try
-                        {
-                            db.SaveChanges();
-                        }
-                        catch (Exception e)
-                        {
-
-                            throw e;
-                        }
+                        db.SaveChanges();
                     }
                 }
                 

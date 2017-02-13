@@ -213,5 +213,23 @@ namespace SgqSystem.Controllers.Api.Params
 
             return list;
         }
+
+        [HttpPost]
+        [Route("GetListLevel3VinculadoLevel2Level1/{level1Id}/{level2Id}")]
+        public List<ParLevel3DTO> GetListLevel3VinculadoLevel2Level1(int level1Id, int level2Id)
+        {
+            var list = new List<ParLevel3DTO>();
+
+            using (var db = new SgqDbDevEntities())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+                var result = db.ParLevel3Level2Level1.Where(r => r.ParLevel3Level2.ParLevel2_Id == level2Id && r.ParLevel1_Id == level1Id).Select(r => r.ParLevel3Level2.ParLevel3).ToList().GroupBy(r => r.Id).Select(r => r.First());
+                //var result = db.ParLevel3Level2.Where(r => r.ParLevel2_Id == level2.Id).Select(r => r.ParLevel3).ToList().GroupBy(r => r.Id).Select(r => r.First());
+                list = Mapper.Map<List<ParLevel3DTO>>(result);
+            }
+
+            return list;
+        }
+        
     }
 }

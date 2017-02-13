@@ -288,35 +288,27 @@
                     <span class="redLabel">@Resources.Resource.level1</span>
                     <select data-ng-model="level1Value"
                             data-ng-options="s.Id as s.Name for s in level1"
-                            data-ng-change="GetListLevel2VinculadoLevel1()">
+                            data-ng-change="GetListLevel2VinculadoLevel1()" class="form-control" style="width:210px">
                         <option value="">@Resources.Resource.select</option>
                     </select>
                 </div>
 
                 <div>
                     <span class="redLabel">@Resources.Resource.level2</span>
-                    @*<select data-ng-model="city" data-ng-disabled="!cities"
-                            data-ng-options="c.CityId as c.CityName for c in cities">
-                        <option value="">--Select City--</option>*@
-
                         <select data-ng-model="level2Value" 
                                 @*data-ng-disabled="!level2"*@
                                 data-ng-options="s.Id as s.Name for s in level2"
-                                data-ng-change="GetListLevel3VinculadoLevel2()">
+                                data-ng-change="GetListLevel3VinculadoLevel2()" class="form-control" style="width:210px">
                             <option value="">@Resources.Resource.select</option>
                         </select>
                 </div>
 
                 <div>
                     <span class="redLabel">@Resources.Resource.level3</span>
-                    @*<select data-ng-model="city" data-ng-disabled="!cities"
-                data-ng-options="c.CityId as c.CityName for c in cities">
-            <option value="">--Select City--</option>*@
-
                     <select data-ng-model="level3Value"
                             @*data-ng-disabled="!level3"*@
                             data-ng-options="s.Id as s.Name for s in level3"
-                            data-ng-change="">
+                            data-ng-change="" class="form-control" style="width:210px">
                         <option value="">@Resources.Resource.select</option>
                     </select>
                 </div>
@@ -557,12 +549,17 @@
     var GetListLevel3VinculadoLevel2 = @Html.Raw(Json.Encode(GetListLevel3VinculadoLevel2));
     var GetListLevel3VinculadoLevel2Level1 = @Html.Raw(Json.Encode(GetListLevel3VinculadoLevel2Level1));
     
+
+    /*
+    START ANGULAR MODULE
+    */
+
     //Defining a module
     var myApp = angular.module('myApp', []);
     //Defining a Controller
     myApp.controller('MainCtrl', ['$scope', '$http',
         function ($scope, $http) {
-            //Defining the $http service for getting the states
+            //Defining the $http service for getting the Level1 2 and 3 by default
             $http({
                 method: 'POST',
                 url: GetListLevel1
@@ -587,7 +584,7 @@
                 $scope.level3 = r.data;
             });
 
-            //Defining the $http service for getting cities
+            //Defining the $http service for getting Level2 By Level1
             $scope.GetListLevel2VinculadoLevel1 = function () {
                 if ($scope.level1Value) {
                     $http({
@@ -610,8 +607,8 @@
                 }
             }
 
-            //Defining the $http service for getting cities
             $scope.GetListLevel3VinculadoLevel2 = function () {
+                //Defining the $http service for getting Level3 By Level2
                 if ($scope.level2Value && !$scope.level1Value) {
                     $http({
                         method: 'POST',
@@ -622,11 +619,12 @@
                         $scope.level3 = r.data;
                     });
                 }
+                //Defining the $http service for getting Level3 By Level2 and Level1
                 else if  ($scope.level2Value && $scope.level1Value) {
                     $http({
                         method: 'POST',
-                        url: GetListLevel3VinculadoLevel2Level1,
-                        data: JSON.stringify({ Id: $scope.level1Value } + { Id: $scope.level2Value })
+                        url: GetListLevel3VinculadoLevel2Level1 + "/" + $scope.level1Value + "/" + $scope.level2Value,
+                        //data: JSON.stringify({ Id:  } + { Id:  })
                     }).
                     then(function (r) {
                         $scope.level3 = r.data;
@@ -642,9 +640,12 @@
                    });
                 }
             }
-
-
         }]);
+
+    /*
+        END ANGULAR MODULE
+    */
+
 </script>
 
 <!-- Menu Toggle Script -->
