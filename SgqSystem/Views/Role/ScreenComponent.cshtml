@@ -15,6 +15,9 @@
             @foreach (var component in ViewBag.listaScreenComponent)
             {
                 <tr>
+                    <td id="ScreenComponentRow_@component.Id" class="hide">
+                        @component.Id
+                    </td>
                     <td>
                         @component.HashKey
                     </td>

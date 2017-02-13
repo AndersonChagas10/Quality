@@ -64,6 +64,7 @@ namespace SgqSystem.Controllers
             UserSgq userSgq = Mapper.Map<UserSgq>(userSgqDto);
             if (ModelState.IsValid)
             {
+                userSgq.AddDate = DateTime.Now;
                 db.UserSgq.Add(userSgq);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -96,6 +97,7 @@ namespace SgqSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                userSgq.AlterDate = DateTime.Now;
                 db.Entry(userSgq).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

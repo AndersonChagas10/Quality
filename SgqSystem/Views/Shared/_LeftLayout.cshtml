@@ -1,4 +1,4 @@
-﻿@{
+﻿e@{
     Layout = null;
     var urlDataCollection = ViewBag.UrlDataCollect;
 }
@@ -123,6 +123,13 @@
             <li class="nav-item" id="navbar2">
                 <a href="@Url.Action("Index", "ParCompany")" class="nav-link nav-toggle">
                     <i class="fa fa-industry" aria-hidden="true"></i>
+                    <span class="title">@Resources.Resource.company</span>
+                    <span class="arrow"></span>
+                </a>
+            </li>
+            <li class="nav-item" id="navbar2">
+                <a href="@Url.Action("Index2", "ParCompany")" class="nav-link nav-toggle">
+                    <i class="fa fa-sitemap" aria-hidden="true"></i>
                     <span class="title">@Resources.Resource.company_structure</span>
                     <span class="arrow"></span>
                 </a>
