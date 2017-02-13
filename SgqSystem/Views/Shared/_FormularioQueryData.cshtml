@@ -300,7 +300,7 @@
 
         <li data-ng-app="myApp">
             @*    @Html.DropDownList("level1Id", new SelectList(ViewBag.Level1, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2Init", @style = "width:210px" })*@
-            <div data-ng-controller="MainCtrl" id="showLevel1" style="display:none">
+            <div data-ng-controller="MainCtrl" id="showLevel1" style="display:none; margin-left:0px!important">
                 <div>
                     <span class="redLabel">@Resources.Resource.level1</span>
                     <select data-ng-model="level1Value"
@@ -606,8 +606,8 @@
                 if ($scope.level1Value) {
                     $http({
                         method: 'POST',
-                        url: GetListLevel2VinculadoLevel1,
-                        data: JSON.stringify({ Id: $scope.level1Value })
+                        url: GetListLevel2VinculadoLevel1 + "/" + $scope.level1Value, 
+                        //data: JSON.stringify({ Id: $scope.level1Value })
                     }).
                     then(function (r) {
                         $scope.level2 = r.data;
@@ -629,8 +629,8 @@
                 if ($scope.level2Value && !$scope.level1Value) {
                     $http({
                         method: 'POST',
-                        url: GetListLevel3VinculadoLevel2,
-                        data: JSON.stringify({ Id: $scope.level2Value })
+                        url: GetListLevel3VinculadoLevel2 + "/" + $scope.level2Value,
+                        //data: JSON.stringify({ Id: $scope.level2Value })
                     }).
                     then(function (r) {
                         $scope.level3 = r.data;

@@ -183,15 +183,15 @@ namespace SgqSystem.Controllers.Api.Params
         }
 
         [HttpPost]
-        [Route("GetListLevel2VinculadoLevel1")]
-        public List<ParLevel2DTO> GetListLevel2VinculadoLevel1(ParLevel1 level1)
+        [Route("GetListLevel2VinculadoLevel1/{level1Id}")]
+        public List<ParLevel2DTO> GetListLevel2VinculadoLevel1(int level1Id)
         {
             var list = new List<ParLevel2DTO>();
 
             using (var db = new SgqDbDevEntities())
             {
                 db.Configuration.LazyLoadingEnabled = false;
-                var result = db.ParLevel3Level2Level1.Where(r => r.ParLevel1_Id == level1.Id).Select(r => r.ParLevel3Level2.ParLevel2).ToList().GroupBy(r => r.Id);
+                var result = db.ParLevel3Level2Level1.Where(r => r.ParLevel1_Id == level1Id).Select(r => r.ParLevel3Level2.ParLevel2).ToList().GroupBy(r => r.Id);
                 list = Mapper.Map< List<ParLevel2DTO>>(result.Select(r=>r.First()));
             }
 
@@ -199,15 +199,15 @@ namespace SgqSystem.Controllers.Api.Params
         }
 
         [HttpPost]
-        [Route("GetListLevel3VinculadoLevel2")]
-        public List<ParLevel3DTO> GetListLevel3VinculadoLevel2(ParLevel2 level2)
+        [Route("GetListLevel3VinculadoLevel2/{level2Id}")]
+        public List<ParLevel3DTO> GetListLevel3VinculadoLevel2(int level2Id)
         {
             var list = new List<ParLevel3DTO>();
 
             using (var db = new SgqDbDevEntities())
             {
                 db.Configuration.LazyLoadingEnabled = false;
-                var result = db.ParLevel3Level2.Where(r => r.ParLevel2_Id == level2.Id).Select(r => r.ParLevel3).ToList().GroupBy(r => r.Id);
+                var result = db.ParLevel3Level2.Where(r => r.ParLevel2_Id == level2Id).Select(r => r.ParLevel3).ToList().GroupBy(r => r.Id);
                 list = Mapper.Map<List<ParLevel3DTO>>(result.Select(r => r.First()));
             }
 
