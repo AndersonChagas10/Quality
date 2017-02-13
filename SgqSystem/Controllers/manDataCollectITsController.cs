@@ -9,6 +9,7 @@ using DTO.Helpers;
 using SgqSystem.Secirity;
 using System;
 using DTO.DTO.Manutencao;
+using System.Collections.Generic;
 
 namespace SgqSystem.Controllers
 {
@@ -159,9 +160,22 @@ namespace SgqSystem.Controllers
         // GET: manDataCollectITs/Create
         public ActionResult Create2()
         {
+            List<Indicador> Indicadores;
+
+            string query = "SELECT DISTINCT DIMNAME as Nome FROM DimManColetaDados where DIMNAME is not null";
+
+            Indicadores = db.Database.SqlQuery<Indicador>(query).ToList();
+
+            ViewBag.Indicadores = Indicadores;
+
             return View(new ManDataCollectIT() { AmountData = 0 });
         }       
 
+    }
+
+    public class Indicador
+    {
+        public string Nome { get; set; }
     }
 
 

@@ -38,7 +38,6 @@
         text-align: center;
         font-weight: bold;
         color: #333;
-        
     }
 
     #circulo1Plan {
@@ -237,7 +236,7 @@
 
             <div id="circulo1Plan" class="circuloPDCA" onmouseover="setBgColor(this.id,'#ddb708', '#fff')" onmouseout="setBgColor(this.id,'#e5e498', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
 
-                Coleta
+                Planejamento
 
             </div>
 
@@ -247,13 +246,13 @@
 
             <div id="circulo4Action" class="circuloPDCA" onmouseover="setBgColor(this.id,'#7b8fa4', '#fff')" onmouseout="setBgColor(this.id,'#b4bcc5', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
 
-                Plano de Ação
+                Análise
 
             </div>
 
             <div id="circulo2Do" class="circuloPDCA" onmouseover="setBgColor(this.id,'#2d5f0f', '#fff')" onmouseout="setBgColor(this.id,'#9fe598', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
 
-                Monitoramento
+                Execução
 
             </div>
 
@@ -263,7 +262,7 @@
 
             <div id="circulo3Check" class="circuloPDCA" onmouseover="setBgColor(this.id,'#cb5454', '#fff')" onmouseout="setBgColor(this.id,'#e59898', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
 
-                Visões
+                Check
 
             </div>
 
@@ -272,16 +271,16 @@
         <div id="fundoMenuSuperior">
 
             <div class="corpoMenuCampos">
-
+                @*cima*@
                 <div id="menu1Plan" class="menuCampos">
 
                     <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
 
                     <ul id="nav">
-                                              
-                        @*<li><a href="@urlKPI">Visão KPI</a>
 
-                        <li><a href="@urlPainelIndicadoresUniManutencao">Visão Painel</a></li>*@
+                        <li><a href="#">Visão Geral da Área</a>
+
+                        <li><a href="#">Elaboração Plano de Ação</a></li>
                     </ul>
 
                 </div>
@@ -289,27 +288,29 @@
                 <div id="menu2Do" class="menuCampos">
 
                     <div class="interno">
-
+                        @*Direita*@
                         <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
 
                         <ul id="nav">
 
-                            @*<li>
+                            <li>
                                 <a href="#">Relatórios de coletas</a>
-                                <ul>
-                                    <li><a href="#">Paramentrizações</a></li>
-                                    <li><a href="#">Utilização do SGQ</a></li>
-                                    <li><a href="#">Apontamentos Diários</a></li>
-                                    <li><a href="#">Verificação do tipificação</a></li>
-                                </ul>
-                            </li>*@
+                                <a href="#">Execução do Plano de Ação</a>
+                                <a href="#">Coletas e Uso do Sistema</a>
+                                @*<ul>
+                                        <li><a href="#">Paramentrizações</a></li>
+                                        <li><a href="#">Utilização do SGQ</a></li>
+                                        <li><a href="#">Apontamentos Diários</a></li>
+                                        <li><a href="#">Verificação do tipificação</a></li>
+                                    </ul>*@
+                            </li>
                         </ul>
                     </div>
 
                 </div>
 
                 <div id="menu3Check" class="menuCampos">
-
+                    @*Baixo*@
                     <div class="interno">
 
                         <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
@@ -324,13 +325,13 @@
                 </div>
 
                 <div id="menu4Action" class="menuCampos">
-
+                    @*Esquerda*@
                     <div class="interno">
 
                         <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
 
                         <ul id="nav">
-                            @*<li><a href="#">Reincidências</a></li>*@
+                            <li><a href="#">Todos que não bateram a meta</a></li>
                         </ul>
                     </div>
 
