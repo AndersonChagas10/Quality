@@ -133,8 +133,11 @@
                     if(validaParaEnvio(obj)){
 
                         if(Enviar(obj)){
-                            $(this).parents('tr').find('#quantidade').val("");
-                            $(this).parents('tr').find('#comentarios').val("");
+                            //$(this).parents('tr').find('#quantidade').val("");
+                            //$(this).parents('tr').find('#comentarios').val("");
+                            $(this).parents('tr').find('#quantidade').prop( "disabled", true );
+                            $(this).parents('tr').find('#comentarios').prop( "disabled", true );
+                            $(this).parents('tr').find("#save").prop("disabled", true);
                         }
                     }
 
@@ -175,7 +178,10 @@
                 GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
             } else {
                 GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
-            }            
+            }
+            
+            return false;
+
         });
 
         return true;
