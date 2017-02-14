@@ -224,18 +224,6 @@
 
     <script>
 
-        @*$(function () {
-            var fnTimeOut = function () {
-                jQuery.timeoutDialog.setupDialogTimer({
-                    timeout: 105,
-                    countdown: 100,
-                    logout_redirect_url: '@Url.Action("LogOut", "UserAuthentication")',
-                    keep_alive_url: '@Url.Action("Keepalive", "Home")'
-                });
-            };
-            fnTimeOut();
-        });*@
-
         /*Muda select2 para PADRÂO BR*/
         $.fn.select2.defaults.set("language", "pt-BR");
 
@@ -409,15 +397,13 @@
 
 
         if (!!getCookie('webControlCookie')) {
-
-            $.get('@Url.Action("KeepAlive", "Base")', {}, function (r) {
-
+            setTimeout(function () {
                 $.timeoutDialog({
                     timeout: 305,
                     countdown: 300,
                     logout_redirect_url: '@Url.Action("LogOut", "UserAuthentication")',
                 });
-            });
+            }, 6 * 1000 * 60);  
         }
 
         @*$(function () {
