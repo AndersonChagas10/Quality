@@ -40,12 +40,11 @@ namespace SgqSystem.Controllers
 
         }
 
-        //public void teste()
-        //{
-        //    var obj = new CollectionLevel02DTO() { AddDate = DateTime.Now, Name = "aaa" };
-        //    new CreateLog(new Exception("a"), obj, "Save Collection");
-        //    new CreateLog(new Exception("a"));
-        //}
+
+        public ActionResult Keepalive()
+        {
+            return Json("OK", JsonRequestBehavior.AllowGet);
+        }
 
     }
 }

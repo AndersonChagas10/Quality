@@ -3256,7 +3256,7 @@ namespace SgqSystem.Services
                 var painelLevel3HeaderListHtml = "";
 
                 var labelSequencial = "<label class='font-small'>Sequencial</label>";
-                var formControlSequencial = "<input class='form-control input-sm sequencial' style='font-size:100px; height: 150px; text-align:center;' type='number'>";
+                var formControlSequencial = "<input class='form-control input-sm sequencial' style='font-size:30px; height: 50px; text-align:center;' type='number'>";
                 var formGroupSequencial = html.div(
                                         outerhtml: labelSequencial + formControlSequencial,
                                         classe: "form-group",
@@ -3264,6 +3264,12 @@ namespace SgqSystem.Services
                                         );
 
                 var labelBanda = "<label class='font-small'>Banda</label>";
+
+                ////var formControlBanda = "<input class='form-control input-sm banda' style='font-size:30px; height: 50px; text-align:center;' type='number'>";
+
+                //var formControlBanda = "<select class='form-control input-sm banda' style='font-size:30px; height: 50px; text-align:center;'><option value = '1'>1</option><option value='2'>2</option></select>";
+
+
                 var formControlBanda = "<input class='form-control input-sm banda' min='1' max='2' style='font-size:100px; height: 150px; text-align:center;' type='number'>";
                 var formGroupBanda = html.div(
                                         outerhtml: labelBanda + formControlBanda,

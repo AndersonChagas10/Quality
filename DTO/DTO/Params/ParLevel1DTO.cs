@@ -110,11 +110,15 @@ namespace DTO.DTO.Params
 
             var group = new SelectListGroup() { Name = "Não vinculados:" };
             var groupSelecionado = new SelectListGroup();
+            //listParLevel3Level2Level1Dto = listParLevel3Level2Level1Dto.OrderBy(r => listLevel2.Any(ll2 => ll2.Id == r.ParLevel3Level2.ParLevel2_Id)).ToList();
+
             foreach (var i in listLevel2)
             {
                 var text = i.Name;
                 var prop = i.Id;
                 var opt = new SelectListItem() { Text = i.Id.ToString() + " - " + i.Name, Value = i.Id.ToString() };
+
+
                 if (listParLevel3Level2Level1Dto.Where(r => r.ParLevel3Level2.ParLevel2_Id == i.Id).Count() > 0)
                 {
                     groupSelecionado.Name = "Vinculado:";
@@ -130,7 +134,9 @@ namespace DTO.DTO.Params
                 counter++;
             }
 
+
             DdlLevel2Vinculados = retorno;
+            //DdlLevel2Vinculados = retorno.OrderBy(r=>r.Group);
         }
 
         #endregion
