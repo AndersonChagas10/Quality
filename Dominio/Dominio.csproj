@@ -53,7 +53,7 @@
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="BkpCollection.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="budgets.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
@@ -219,7 +219,7 @@
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Example.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="FamiliaProdutos.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
@@ -302,7 +302,7 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="LogAlteracoes.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="LogJson.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
@@ -312,7 +312,7 @@
     </Compile>
     <Compile Include="LogService\LoggerNLog.cs" />
     <Compile Include="LogSgq.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="LogSgqGlobal.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
@@ -685,7 +685,7 @@
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="sysdiagrams.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TarefaAmostras.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
@@ -797,6 +797,27 @@
     </Compile>
     <Compile Include="VolumeVacuoGRD.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VTVerificacaoContagem.cs">
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VTVerificacaoTipificacao.cs">
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VTVerificacaoTipificacaoComparacao.cs">
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VTVerificacaoTipificacaoJBS.cs">
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VTVerificacaoTipificacaoResultados.cs">
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VTVerificacaoTipificacaoTarefaIntegracao.cs">
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VTVerificacaoTipificacaoValidacao.cs">
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="VWCFFResults.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>

@@ -59,13 +59,12 @@
 
                     </tbody>
                 </table>
-
-
+                
                 @Html.Partial("_AvaliacaoAmostra", Model)
 
-                @if (Model.paramsDto.parLevel2Dto._PermiteEditarCamposCabecalho)
+                @if (Model.paramsDto.parLevel2Dto.cabecalhosInclusos != null)
                 {
-                    if (Model.paramsDto.parLevel2Dto.cabecalhosInclusos != null)
+                    if (Model.paramsDto.parLevel2Dto.cabecalhosInclusos.Count > 0)
                     {
                         <div class="panel-group accordion" id="level2_header_accordion">
                             <div class="panel panel-default">

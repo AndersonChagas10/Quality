@@ -8,9 +8,9 @@ using System.Web;
 
 namespace SgqSystem.Mappers
 {
-    public class UserSgqProfile : Profile
+    public class UserSgqMapperProfile : Profile
     {
-        public UserSgqProfile()
+        public UserSgqMapperProfile()
         {
             CreateMap<UserSgq, UserSgqDTO>();
             CreateMap<UserSgqDTO, UserSgq>();

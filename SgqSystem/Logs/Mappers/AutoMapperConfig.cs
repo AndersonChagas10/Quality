@@ -95,6 +95,7 @@ namespace SgqSystem.Mappers
                 x.AddProfile<ResultLevel3MapperProfile>();
                 x.AddProfile<RoleMapperProfile>();
                 x.AddProfile<DefectMapperProfile>();
+                x.AddProfile<UserSgqMapperProfile>();
 
 
 

@@ -46,7 +46,7 @@ namespace SgqSystem.Controllers.Api
             return _baseDomainRoleSGQ.GetById(Id);
         }
 
-        [Route("SaveScreenComponent")]
+        [Route("SaveRoleSGQ")]
         [HttpPost]
         public RoleSGQDTO SaveRoleSGQ(RoleSGQDTO roleSgqDto)
         {
