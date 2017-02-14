@@ -2954,6 +2954,11 @@ namespace SgqSystem.Services
                     case 6:
                         form_control = "<input class=\"form-control input-sm\" type=\"date\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
                         break;
+
+                    //Hora
+                    case 7:
+                        form_control = "<input class=\"form-control input-sm\" type=\"time\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
+                        break;
                 }
 
                 var form_group = html.div(
@@ -3140,7 +3145,7 @@ namespace SgqSystem.Services
                                                      carac.cSgCaracteristica + "</div>"; ;
                                 }
                                 var CtIdOpe = CaracteristicaTipificacaoDB.getCaracteristicasTipificacaoUnico(206).First().nCdCaracteristica;
-                                var TIdOpe = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdOpe).First().TarefaId;
+                                var TIdOpe = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(Convert.ToInt32(CtIdOpe)).First().TarefaId;
                                 labels += html.div(outerhtml: listOperHtml, classe: "row items", name: "Falha Op.", tags: "listtype = multiple caracteristicatipificacaoid=" + CtIdOpe + " tarefaid=" + TIdOpe);
                                 break;
                             case "Verificação Tipificação - Gordura":
@@ -3154,7 +3159,7 @@ namespace SgqSystem.Services
                                                         carac.cSgCaracteristica + "</div>"; ;
                                 }
                                 var CtIdGor = CaracteristicaTipificacaoDB.getCaracteristicasTipificacaoUnico(203).First().nCdCaracteristica;
-                                var TIdGor = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdGor).First().TarefaId;
+                                var TIdGor = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(Convert.ToInt32(CtIdGor)).First().TarefaId;
                                 labels += html.div(outerhtml: listGorduraHtml, classe: "row items", name: "Gordura", tags: "listtype = single caracteristicatipificacaoid=" + CtIdGor + " tarefaid=" + TIdGor);
                                 break;
                             case "Verificação Tipificação - Contusão":
@@ -3168,7 +3173,7 @@ namespace SgqSystem.Services
                                                         carac.cSgCaracteristica + "</div>"; ;
                                 }
                                 var CtIdCon = CaracteristicaTipificacaoDB.getCaracteristicasTipificacaoUnico(205).First().nCdCaracteristica;
-                                var TIdCon = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdCon).First().TarefaId;
+                                var TIdCon = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(Convert.ToInt32(CtIdCon)).First().TarefaId;
                                 labels += html.div(outerhtml: listContusaoHtml, classe: "row items", name: "Contusão", tags: "listtype = multiple caracteristicatipificacaoid=" + CtIdCon + " tarefaid=" + TIdCon);
                                 break;
                             case "Verificação Tipificação - Idade":
@@ -3182,7 +3187,7 @@ namespace SgqSystem.Services
                                                         carac.cSgCaracteristica + "</div>"; ;
                                 }
                                 var CtIdIdade = CaracteristicaTipificacaoDB.getCaracteristicasTipificacaoUnico(201).First().nCdCaracteristica;
-                                var TIdIdade = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdIdade).First().TarefaId;
+                                var TIdIdade = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(Convert.ToInt32(CtIdIdade)).First().TarefaId;
                                 labels += html.div(outerhtml: listIdadeHtml, classe: "row items", name: "Maturidade", tags: "listtype = single caracteristicatipificacaoid=" + CtIdIdade + " tarefaid=" + TIdIdade);
                                 break;
                             case "Verificação Tipificação - Sexo":
@@ -3196,7 +3201,7 @@ namespace SgqSystem.Services
                                                     carac.cSgCaracteristica + "</div>"; ;
                                 }
                                 var CtIdSexo = CaracteristicaTipificacaoDB.getCaracteristicasTipificacaoUnico(207).First().nCdCaracteristica;
-                                var TIdSexo = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdSexo).First().TarefaId;
+                                var TIdSexo = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(Convert.ToInt32(CtIdSexo)).First().TarefaId;
                                 labels += html.div(outerhtml: listSexoHtml, classe: "row items", name: "Sexo", tags: "listtype = single caracteristicatipificacaoid=" + CtIdSexo + " tarefaid=" + TIdSexo);
                                 break;
                         }
@@ -3236,7 +3241,7 @@ namespace SgqSystem.Services
                 }
 
                 var CtIdAP = CaracteristicaTipificacaoDB.getAreasParticipantesUnico().First().nCdCaracteristica;
-                var TIdAP = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(CtIdAP).First().TarefaId;
+                var TIdAP = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(Convert.ToInt32(CtIdAP)).First().TarefaId;
                 var areasParticipantes = html.listgroupItem(
                                                 id: "400",
                                                 classe: "level3 row VF",
@@ -3270,7 +3275,7 @@ namespace SgqSystem.Services
                 //var formControlBanda = "<select class='form-control input-sm banda' style='font-size:30px; height: 50px; text-align:center;'><option value = '1'>1</option><option value='2'>2</option></select>";
 
 
-                var formControlBanda = "<input class='form-control input-sm banda' min='1' max='2' style='font-size:100px; height: 150px; text-align:center;' type='number'>";
+                var formControlBanda = "<input class='form-control input-sm banda' min='1' max='2' style='font-size:30px; height: 50px; text-align:center;' type='number'>";
                 var formGroupBanda = html.div(
                                         outerhtml: labelBanda + formControlBanda,
                                         classe: "form-group",

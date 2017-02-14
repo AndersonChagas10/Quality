@@ -35,10 +35,15 @@ namespace SgqSystem.Controllers.Api
                     //Busca todos os resultados referente a verificação localizada
                     var resultados = db.VTVerificacaoTipificacaoResultados.Where(p => p.Chave == verificacaoTipificacao.Chave).ToList();
                     //Deleta os resultados da verificaçao
-                    resultados.RemoveAll(p => p.Chave == verificacaoTipificacao.Chave);
+                    foreach (var r in resultados)
+                    {
+                        db.VTVerificacaoTipificacaoResultados.Remove(r);
+                    }
                     //Deleta a Verificação
                     db.VTVerificacaoTipificacao.Remove(verificacaoTipificacao);
                 }
+
+                db.SaveChanges();
 
                 //instanciamos um novo objeto na verificacao da tipificacao
                 verificacaoTipificacao = new VTVerificacaoTipificacao();
@@ -55,70 +60,67 @@ namespace SgqSystem.Controllers.Api
 
                 for (var i = 0; i < model.VerificacaoTipificacaoResultados.Count; i++)
                 {
-                    if (model.VerificacaoTipificacaoResultados[i].CaracteristicaTipificacao.cIdentificador.Equals("AREASPARTICIPANTES"))
+                    if (model.VerificacaoTipificacaoResultados[i].CaracteristicaTipificacaoId == "null")
                     {
                         //PEGA ID DA AREA PARTICIPANTES
+                       // var aa = model.VerificacaoTipificacaoResultados[i].AreasParticipantesId.GetValueOrDefault().ToString();
 
-                        var idCaracteristicaTipificacaoTemp = model.VerificacaoTipificacaoResultados[i].CaracteristicaTipificacao.nCdCaracteristica;
+                        string aId = model.VerificacaoTipificacaoResultados[i].AreasParticipantesId;
 
-                        var numeroCaracteristica = (from x in db.AreasParticipantes.AsNoTracking()
-                                                    where x.nCdCaracteristica == idCaracteristicaTipificacaoTemp
-                                                    select x.cNrCaracteristica).FirstOrDefault();
+                        var AreaParticObj = (from x in db.AreasParticipantes.AsNoTracking()
+                                     where x.cNrCaracteristica == aId
+                                     select x).FirstOrDefault();
 
+                       
+                        var numeroCaracteristica = AreaParticObj.cNrCaracteristica;
 
                         numeroCaracteristica = numeroCaracteristica.Substring(0, 4);
 
                         var codigoCaracteristica = (from x in db.AreasParticipantes.AsNoTracking()
-                                                    where x.cNrCaracteristica.Equals(numeroCaracteristica)
+                                                    where x.cNrCaracteristica == numeroCaracteristica
                                                     select x.nCdCaracteristica).FirstOrDefault();
 
                         var codigoTarefa = (from x in db.VerificacaoTipificacaoTarefaIntegracao.AsNoTracking()
                                             where x.CaracteristicaTipificacaoId == codigoCaracteristica
                                             select x.TarefaId).FirstOrDefault();
 
-                        VerificacaoTipificacaoResultados verificacaoTipificacaoResultados = new VerificacaoTipificacaoResultados()
-                        {
-                            // VerificacaoTipificacaoId = verificacaoTipificacao.Id,
-                            AreasParticipantesId = Convert.ToInt32(model.VerificacaoTipificacaoResultados[i].CaracteristicaTipificacao.nCdCaracteristica),
-                            TarefaId = codigoTarefa,
-                            Chave = _verificacao.Chave
-                        };
+                        VTVerificacaoTipificacaoResultados verificacaoTipificacaoResultados = new VTVerificacaoTipificacaoResultados();
+                        verificacaoTipificacaoResultados.AreasParticipantesId = Convert.ToInt32(model.VerificacaoTipificacaoResultados[i].AreasParticipantesId);
+                        verificacaoTipificacaoResultados.TarefaId = codigoTarefa;
+                        verificacaoTipificacaoResultados.Chave = _verificacao.Chave;
+                       
 
-
-                        db.VerificacaoTipificacaoResultados.Add(verificacaoTipificacaoResultados);
+                        db.VTVerificacaoTipificacaoResultados.Add(verificacaoTipificacaoResultados);
 
                     }
                     else
                     {
                         //CARACTERISTICA TIPIFICACAO
 
-                        var idCaracteristicaTipificacaoTemp = model.VerificacaoTipificacaoResultados[i].CaracteristicaTipificacao.nCdCaracteristica;
+                        var idCaracteristicaTipificacaoTemp = model.VerificacaoTipificacaoResultados[i].CaracteristicaTipificacaoId;
 
-                        var numeroCaracteristica = (from x in db.CaracteristicaTipificacao.AsNoTracking()
-                                                    where x.nCdCaracteristica == idCaracteristicaTipificacaoTemp
-                                                    select x.cNrCaracteristica).FirstOrDefault();
+                        var obj = (from x in db.CaracteristicaTipificacao.AsNoTracking()
+                                                    where x.cNrCaracteristica == idCaracteristicaTipificacaoTemp select x).FirstOrDefault();
 
-
-                        numeroCaracteristica = numeroCaracteristica.Substring(0, 4);
+                        var numeroCaracteristica = obj.cNrCaracteristica;
+                        numeroCaracteristica = numeroCaracteristica.Substring(0, 3);
 
                         var codigoCaracteristica = (from x in db.CaracteristicaTipificacao.AsNoTracking()
-                                                    where x.cNrCaracteristica.Equals(numeroCaracteristica)
+                                                    where x.cNrCaracteristica == numeroCaracteristica
                                                     select x.nCdCaracteristica).FirstOrDefault();
 
                         var codigoTarefa = (from x in db.VerificacaoTipificacaoTarefaIntegracao.AsNoTracking()
                                             where x.CaracteristicaTipificacaoId == codigoCaracteristica
                                             select x.TarefaId).FirstOrDefault();
 
-                        VerificacaoTipificacaoResultados verificacaoTipificacaoResultados = new VerificacaoTipificacaoResultados()
-                        {
-                            // VerificacaoTipificacaoId = verificacaoTipificacao.Id,
-                            CaracteristicaTipificacaoId = Convert.ToInt32(model.VerificacaoTipificacaoResultados[i].CaracteristicaTipificacao.nCdCaracteristica),
-                            TarefaId = codigoTarefa,
-                            Chave = _verificacao.Chave
-                        };
+                        VTVerificacaoTipificacaoResultados verificacaoTipificacaoResultados = new VTVerificacaoTipificacaoResultados();
+                        verificacaoTipificacaoResultados.CaracteristicaTipificacaoId = Convert.ToInt32(model.VerificacaoTipificacaoResultados[i].CaracteristicaTipificacaoId);
+                        verificacaoTipificacaoResultados.TarefaId = codigoTarefa;
+                        verificacaoTipificacaoResultados.Chave = _verificacao.Chave;
+                      
 
 
-                        db.VerificacaoTipificacaoResultados.Add(verificacaoTipificacaoResultados);
+                        db.VTVerificacaoTipificacaoResultados.Add(verificacaoTipificacaoResultados);
                     }
 
                 }
