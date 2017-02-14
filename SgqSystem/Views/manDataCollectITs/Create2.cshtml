@@ -76,7 +76,9 @@
                 var newRow = $("<tr>");
                 var cols = "";
 
-                cols += '<td>'+$(indicadores[i]).attr('TechnicalIndicator')+'</td>';
+                cols += '<td>'+ indicadores[i].Nome +'</td>';
+
+                //cols += '<td>'+$(indicadores[i].Nome).attr('TechnicalIndicator')+'</td>';
 
                 //cols += '<td style="display:none;">'+$(myDarlingViewBag[i]).attr('id')+'</td>';
 
@@ -117,6 +119,7 @@
 
                     var obj = {};
 
+                    obj['indicadorNome'] = 'CabAbat_QteBoiAbatidosReal';
                     obj['descricao'] = data[0];
                     obj['quantidade'] = quantidade;
                     obj['comentarios'] = comentarios;
