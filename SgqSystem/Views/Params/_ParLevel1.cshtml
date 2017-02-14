@@ -1367,6 +1367,7 @@
 
         defaults();
         loadSelect2();
+
         $('#paramsDto_parLevel1Dto_IsRuleConformity[value="false"]').trigger('click');
         $('#paramsDto_parLevel1Dto_IsFixedEvaluetionNumber[value="true"]').trigger('click');
         
@@ -1409,15 +1410,12 @@
 
             var IsRuleConformity = @Html.Raw(Json.Encode(Model.paramsDto.parLevel1Dto.IsRuleConformity));
             var IsSpecificNumberEvaluetion = @Html.Raw(Json.Encode(Model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion));
+            console.log("IsRuleConformity: " + IsRuleConformity);
+            console.log("IsSpecificNumberEvaluetion: " + IsSpecificNumberEvaluetion);
 
-            if(!IsRuleConformity){
-                $('input[name="paramsDto.parLevel1Dto.IsRuleConformity"]').not(':checked').prop("checked", true);
-            }
-
-            $('input[name="paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion"]:first').prop("checked", true);
-            if(!IsSpecificNumberEvaluetion){
-                $('input[name="paramsDto.parLevel1Dto.IsFixedEvaluetionNumber"]').not(':checked').prop("checked", true);
-            }
+            /*Seta as 2 fdp pra false*/
+            $('#paramsDto_parLevel1Dto_IsFixedEvaluetionNumber').bootstrapSwitch('toggleState');
+            
 
         } catch (e) {
             console.log(e);
