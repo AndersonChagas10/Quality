@@ -21,5 +21,7 @@ namespace Dominio
         public int UnidadeId { get; set; }
         public string Chave { get; set; }
         public Nullable<bool> Status { get; set; }
+        public Nullable<int> EvaluationNumber { get; set; }
+        public Nullable<int> Sample { get; set; }
     }
 }
