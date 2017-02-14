@@ -2159,7 +2159,6 @@
     <Folder Include="Areas\HelpPage\Views\Shared\" />
     <Folder Include="Arquivos\uploads\" />
     <Folder Include="DataCollect\" />
-    <Folder Include="Mappers\NewFolder1\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\EspecificarMonitoramentos\" />
     <Folder Include="Views\RelatorioController\" />
