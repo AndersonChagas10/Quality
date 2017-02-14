@@ -158,8 +158,19 @@ namespace SgqSystem.Controllers
 
 
         // GET: manDataCollectITs/Create
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult Create2()
         {
+
+            /**
+             * Colocar os filtros de Query
+             * 
+             * SELECT DISTINCT Name FROM DimManColetaDados WHERE DimRealTarget = 'Real' and DimName is not null and name = 'M3AguaBoi_Real'
+             * SELECT top 1 M3AguaBoi_Real as PerguntaIndicador FROM ManColetaDados WHERE Base_dateRef= '2017-02-14'--  -- DataDoDia
+             * SELECT DISTINCT * FROM DimManColetaDados where DIMNAME is not null and name = 'Moral_CustoHorasExtrasParcial'
+             * 
+             **/
+
             List<Indicador> Indicadores;
 
             string query = "SELECT DISTINCT DIMNAME as Nome FROM DimManColetaDados where DIMNAME is not null";

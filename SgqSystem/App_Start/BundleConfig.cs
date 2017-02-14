@@ -10,7 +10,9 @@ namespace SgqSystem
             #region Scripts
 
             bundles.Add(new ScriptBundle("~/bundles/jquery")
-                .Include("~/Scripts/jquery-{version}.js"));
+                .Include("~/Scripts/jquery-{version}.js",
+                "~/Scripts/jquery-ui-1.12.1.min.js"
+                ));
 
             //HighCharts
             bundles.Add(new ScriptBundle("~/bundles/hc")
@@ -72,7 +74,9 @@ namespace SgqSystem
 
             bundles.Add(new StyleBundle("~/Content/General").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/bootstrap-theme.min.css.map"));
+                      "~/Content/bootstrap-theme.min.css.map",
+                      "~/Content/jquery-ui.min.css"
+                      ));
 
             bundles.Add(new StyleBundle("~/Content/select2css").Include(
                    "~/Content/css/select2.min.css"));

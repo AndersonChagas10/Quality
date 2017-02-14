@@ -137,6 +137,7 @@
     <Compile Include="DTO\RoleSGQDTO.cs" />
     <Compile Include="DTO\ScreenComponentDTO.cs" />
     <Compile Include="DTO\UserSgqDTO.cs" />
+    <Compile Include="DTO\VTVerificacaoTipificacaoDTO.cs" />
     <Compile Include="GlobalConfig.cs" />
     <Compile Include="ResultSet\ApontamentosDiariosResultSet.cs" />
     <Compile Include="ResultSet\ScorecardResultSet.cs" />

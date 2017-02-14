@@ -61,8 +61,12 @@ namespace DTO.DTO.Params
 
             var group = new SelectListGroup() { Name = "Não vinculados:" };
             var groupSelecionado = new SelectListGroup();
+
             foreach (var i in listLevel3)
             {
+                #region Gambri pra ordenar 1 vez só.
+                #endregion
+
                 var text = i.Name;
                 var prop = i.Id;
                 var opt = new SelectListItem() { Text = i.Id.ToString() + " - " + i.Name, Value = i.Id.ToString() };

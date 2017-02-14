@@ -20,6 +20,8 @@ namespace Dominio
         public SGQ_GlobalEntities()
             : base("name=SGQ_GlobalEntities")
         {
+            this.Database.CommandTimeout = 9600;
+            this.Database.Log = s => System.Diagnostics.Debug.Write(s);
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -156,11 +158,13 @@ namespace Dominio
         public virtual DbSet<ScorecardConsolidadoDia> ScorecardConsolidadoDia { get; set; }
         public virtual DbSet<Tipificacao> Tipificacao { get; set; }
         public virtual DbSet<VerificacaoTipificacaoJBS> VerificacaoTipificacaoJBS { get; set; }
-        public virtual DbSet<DelDados> DelDados { get; set; }
-        public virtual DbSet<Reports_CCA_Audit> Reports_CCA_Audit { get; set; }
-        public virtual DbSet<Reports_CFF_Audit> Reports_CFF_Audit { get; set; }
-        public virtual DbSet<Reports_HTP_Audit> Reports_HTP_Audit { get; set; }
-        public virtual DbSet<VWCFFResults> VWCFFResults { get; set; }
+        public virtual DbSet<VTVerificacaoContagem> VTVerificacaoContagem { get; set; }
+        public virtual DbSet<VTVerificacaoTipificacao> VTVerificacaoTipificacao { get; set; }
+        public virtual DbSet<VTVerificacaoTipificacaoComparacao> VTVerificacaoTipificacaoComparacao { get; set; }
+        public virtual DbSet<VTVerificacaoTipificacaoResultados> VTVerificacaoTipificacaoResultados { get; set; }
+        public virtual DbSet<VTVerificacaoTipificacaoTarefaIntegracao> VTVerificacaoTipificacaoTarefaIntegracao { get; set; }
+        public virtual DbSet<VTVerificacaoTipificacaoValidacao> VTVerificacaoTipificacaoValidacao { get; set; }
+        public virtual DbSet<VTVerificacaoTipificacaoJBS> VTVerificacaoTipificacaoJBS { get; set; }
     
         public virtual ObjectResult<GetOperacoes_Result> GetOperacoes()
         {

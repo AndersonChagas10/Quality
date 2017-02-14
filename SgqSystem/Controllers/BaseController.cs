@@ -1,10 +1,5 @@
-﻿using AutoMapper;
-using Dominio;
-using DTO;
-using DTO.DTO.Params;
-using System.Collections.Generic;
+﻿using DTO;
 using System.Globalization;
-using System.Linq;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
@@ -41,10 +36,7 @@ namespace SgqSystem.Controllers
             base.Initialize(requestContext);
         }
 
-        //internal UserSgq GetUserLogado()
-        //{
-        //    return db.UserSgq.FirstOrDefault(r => r.Id == Guard.GetUsuarioLogado_Id(HttpContext));
-        //}
+    
     }
 
 }

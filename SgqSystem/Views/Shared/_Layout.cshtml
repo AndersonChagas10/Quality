@@ -17,10 +17,11 @@
     @Styles.Render("~/Content/Erp")
     @Styles.Render("~/Content/select2css")
     @Styles.Render("~/Content/DatePikerContentCss")
-    @*<link href="~/Content/Timeout/timeout-dialog.css" rel="stylesheet" />*@
 
     @Scripts.Render("~/bundles/modernizr")
     @Styles.Render("~/Content/Tables")
+
+    <link href="~/Content/Timeout/timeout-dialog.css" rel="stylesheet" />
 
     <link href="~/Scripts/theme/css/components.min.css" rel="stylesheet" />
     <link href="~/Scripts/theme/css/darkblue.min.css" rel="stylesheet" />
@@ -51,6 +52,7 @@
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     @*<script src="~/Scripts/Timeout/timeout-dialog.js"></script>*@
+    <script src="~/Scripts/Timeout/timeout-dialog.js"></script>
 
     <div class="modal fade modalLoader" id="modalLoader" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
         <div class="modal-dialog">
@@ -102,18 +104,18 @@
     </div>
 
     @*<script>
-        $(function () {
-            var fnTimeOut = function () {
-                jQuery.timeoutDialog.setupDialogTimer({
-                    timeout: 105,
-                    countdown: 100,
-                    logout_redirect_url: '@Url.Action("Logout", "Home")',
-                    keep_alive_url: '@Url.Action("Keepalive", "Home")'
-               });
-            };
-            fnTimeOut();
-        });
-    </script>*@
+            $(function () {
+                var fnTimeOut = function () {
+                    jQuery.timeoutDialog.setupDialogTimer({
+                        timeout: 105,
+                        countdown: 100,
+                        logout_redirect_url: '@Url.Action("Logout", "Home")',
+                        keep_alive_url: '@Url.Action("Keepalive", "Home")'
+                   });
+                };
+                fnTimeOut();
+            });
+        </script>*@
 
     <!--Loaders e messages-->
     <script>
@@ -207,13 +209,18 @@
     </div>
 
     <footer class="wrapper">
+        @*<div>
+                <a href="#" id="timeout-example">Click Here to See Demo</a>
+            </div>*@
+
         <p class="page-content-wrapper" style="padding-left: 16px; padding-right: 16px;">
             <label class="pull-right">Version: @Html.AssemblyVersion()</label>
             <label class="pull-right" style="margin-right: 30px;">&copy; @DateTime.Now.Year - @Resources.Resource.jbs_and_grt_aplication </label>
         </p>
     </footer>
-    
+
     @RenderSection("scripts", required: false)
+
 
     <script>
 
@@ -365,34 +372,55 @@
 
         function FiltrosPorColuna() {
 
-                $('.dataTable thead th').each(function (i) {
-                    var title = $('.dataTable thead th').eq($(this).index()).text();
-                    $(this).html(title + '<br><input type="text" style="font-size:x-small; color: #555; text-align:center;" placeholder="Filtrar ' + title + '" data-index="' + i + '" />');
-                });
+            $('.dataTable thead th').each(function (i) {
+                var title = $('.dataTable thead th').eq($(this).index()).text();
+                $(this).html(title + '<br><input type="text" style="font-size:x-small; color: #555; text-align:center;" placeholder="Filtrar ' + title + '" data-index="' + i + '" />');
+            });
 
-                // DataTable
-                var table = $('.dataTable').DataTable();
+            // DataTable
+            var table = $('.dataTable').DataTable();
 
-                // Filter event handler
-                $(table.table().container()).on('keyup', 'thead input', function () {
-                    table
-                        .column($(this).data('index'))
-                        .search(this.value)
-                        .draw();
-                });
+            // Filter event handler
+            $(table.table().container()).on('keyup', 'thead input', function () {
+                table
+                    .column($(this).data('index'))
+                    .search(this.value)
+                    .draw();
+            });
 
-            }
+        }
 
         $(document).ready(function () {
             //var settngs = $.data($('form')[0], 'validator').settings;
             //settngs.ignore = ".ignore";
-
-            
-
         });
+
+
+        if (!!getCookie('webControlCookie')) {
+            setTimeout(function () {
+                $.timeoutDialog({
+                    timeout: 305,
+                    countdown: 300,
+                    logout_redirect_url: '@Url.Action("LogOut", "UserAuthentication")',
+                });
+            }, 6 * 1000 * 60);  
+        }
+
+        @*$(function () {
+            $("#timeout-example").click(function (e) {
+                e.preventDefault();
+                $.timeoutDialog({ timeout: 1,
+                    countdown: 60,
+                    logout_redirect_url: '@Url.Action("LogOut", "UserAuthentication")',
+                    restart_on_yes: false
+                });
+            });
+        });*@
+
     </script>
 
-    
+
 
 </body>
 </html>
+
