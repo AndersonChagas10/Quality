@@ -134,15 +134,54 @@ namespace SgqSystem.Controllers.Api
 
                 //Consolidar resultados e tratamento de erro
 
-
+                GetDadosGet(_verificacao.Chave);
 
             }
         }
+        public string connectionString(int parCompany_Id, string url = null)
+        {
+            try
+            {
+
+                using (var db = new SgqDbDevEntities())
+                {
+                    string _user = "UserGQualidade";
+                    string _password = "grJsoluco3s";
+
+                    var parCompany = (from p in db.ParCompany
+                                      where p.Id == parCompany_Id
+                                      select p).FirstOrDefault();
+
+                    if (parCompany.DBServer.ToLower() == "sgqdbdev")
+                    {
+                        //unidades.EnderecoIP = "mssql1.gear.host";
+                        //unidades.NomeDatabase = "GRJQualidadeDev";
+                        _user = "sa";
+                        _password = "1qazmko0";
+                    }
+
+
+                    string conexao = null;
+                    if(parCompany != null)
+                    {
+                        string porta = null;
+
+                         conexao = "data source=" + parCompany.IPServer + porta + ";initial catalog=" + parCompany.DBServer + ";persist security info=True;user id=" + _user + ";password=" + _password + ";";
+
+                    }
+                    return conexao;
+                }                   
+            }
+            catch (Exception ex)
+            {
+                string mensagem = ex.Message;
+                return mensagem;
+            }
+        }
+
         [Route("Consolidation")]
         [HttpPost]
-        public System.Web.Mvc.JsonResult GetDadosGet(string verificacaoTipificacaoChave = "", string sequencial = "", string idUnidade = "",
-                                string data = "", string empresaId = "", string departamentoId = "", string tarefaId = "",
-                                string codigo = "", string teste = "", string porta = "", string versaoApp = "", string url = "", string usuarioId = "", string evaluationNumber="", string sample="")//codigo só pra teste
+        public System.Web.Mvc.JsonResult GetDadosGet(string verificacaoTipificacaoChave)//codigo só pra teste
         {
 
             //problemas que podem ocorrer
@@ -160,22 +199,21 @@ namespace SgqSystem.Controllers.Api
 
                 //se teste for sim, vai testar no ambiente de teste
 
-                int id = Convert.ToInt32(idUnidade);
-
-                var unidades = (from p in db.Unidades
-                                where p.Id == id
-                                select p).FirstOrDefault();
+               
 
 
-                string conexao = "";
+
 
 
                 //Verifica se existe na VerificacaoTipificacao uma verificação com a chave informada no parametro do WebService.
 
                 //confirmar se a funcionalidade do statuus da Verificacao é para informar se tem ou nao verificacao.
-                var verificacaoTipificacao = (from p in db.VerificacaoTipificacao
+                var verificacaoTipificacao = (from p in db.VTVerificacaoTipificacao
                                               where p.Chave == verificacaoTipificacaoChave
                                               select p).FirstOrDefault();
+
+
+                
 
                 if (verificacaoTipificacao == null)
                 {
@@ -192,8 +230,12 @@ namespace SgqSystem.Controllers.Api
                 //Instanciamos a variável excluirVerificacaoAntiga para verificar se existe alguma verificação na tabela VerificacaoTipificacaoValidacao.
                 bool excluirVerificacaoAntiga = false;
 
+                string conexao = connectionString(verificacaoTipificacao.UnidadeId);
+
                 // Query String para verificação das Caracteristicas da tipificação
-                string queryString = "exec FBED_GRTTipificacaoCaracteristica " + unidades.Codigo + ", '" + data + "', " + sequencial;
+                string queryString = "exec FBED_GRTTipificacaoCaracteristica " + verificacaoTipificacao.UnidadeId + ", '" + verificacaoTipificacao.DataHora.ToString("yyyyMMdd") + "', " + verificacaoTipificacao.Sequencial;
+
+                queryString = "SELECT 1";
                 int iSequencial = 0;
                 int iBanda = 0;
                 DateTime dataHoraMonitor = DateTime.Now;
@@ -317,16 +359,8 @@ namespace SgqSystem.Controllers.Api
 
                                     string[] ArrayComparacao = { "<GORDURA>", "<CONTUSAO>" };
 
-                                   
-                                
-
-
-
-
-
                                     using (var db2 = new SgqDbDevEntities())
                                     {
-
                                         var collectionLevel2 = (from p in db2.CollectionLevel2
                                                                 where p.Key == verificacaoTipificacaoChave
                                                                 select p).FirstOrDefault();
@@ -354,16 +388,16 @@ namespace SgqSystem.Controllers.Api
                                         var ConsolidationLevel2DB = new SGQDBContext.ConsolidationLevel2();
 
                                         ///****trocar***//
-                                        int iUnidade = Convert.ToInt32(idUnidade);
+                                      
                                         int iParLevel1_Id = Convert.ToInt32("1");
                                         DateTime dataC = new DateTime();
 
 
-                                        var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(iUnidade, iParLevel1_Id, dataC);
+                                        var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(verificacaoTipificacao.UnidadeId, iParLevel1_Id, dataC);
 
                                         if (consolidationLevel1 == null)
                                         {
-                                            consolidationLevel1 = SgqSystem.InsertConsolidationLevel1(iUnidade, iParLevel1_Id, dataC);
+                                            consolidationLevel1 = SgqSystem.InsertConsolidationLevel1(verificacaoTipificacao.UnidadeId, iParLevel1_Id, dataC);
                                             if (consolidationLevel1 == null)
                                             {
                                                 throw new Exception();
@@ -373,10 +407,10 @@ namespace SgqSystem.Controllers.Api
                                         //******Trocar
                                         int iParLevel2_Id = Convert.ToInt32("1");
 
-                                        var consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(iUnidade, consolidationLevel1.Id, iParLevel2_Id);
+                                        var consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(verificacaoTipificacao.UnidadeId, consolidationLevel1.Id, iParLevel2_Id);
                                         if (consolidationLevel2 == null)
                                         {
-                                            consolidationLevel2 = SgqSystem.InsertConsolidationLevel2(consolidationLevel1.Id, iParLevel2_Id, iUnidade, dataC);
+                                            consolidationLevel2 = SgqSystem.InsertConsolidationLevel2(consolidationLevel1.Id, iParLevel2_Id, verificacaoTipificacao.UnidadeId, dataC);
                                             if (consolidationLevel2 == null)
                                             {
                                                 throw new Exception();
@@ -392,7 +426,7 @@ namespace SgqSystem.Controllers.Api
                                         collectionLevel2.ConsolidationLevel2_Id = consolidationLevel2.Id;
                                         collectionLevel2.ParLevel1_Id = 1;
                                         collectionLevel2.ParLevel2_Id = 1;
-                                        collectionLevel2.UnitId = 1;
+                                        collectionLevel2.UnitId = verificacaoTipificacao.UnidadeId;
                                         collectionLevel2.AuditorId = 1;
                                         collectionLevel2.Shift = 1;
                                         collectionLevel2.Period = 1;
@@ -401,8 +435,8 @@ namespace SgqSystem.Controllers.Api
                                         collectionLevel2.ReauditNumber = 1;
                                         collectionLevel2.CollectionDate = DateTime.Now;
                                         collectionLevel2.StartPhaseDate = DateTime.MinValue;
-                                        collectionLevel2.EvaluationNumber = Convert.ToInt32(evaluationNumber);
-                                        collectionLevel2.Sample = Convert.ToInt32(sample);
+                                        collectionLevel2.EvaluationNumber = verificacaoTipificacao.EvaluationNumber;
+                                        collectionLevel2.Sample = verificacaoTipificacao.Sample.GetValueOrDefault();
                                         collectionLevel2.AddDate = DateTime.Now;
                                         collectionLevel2.ConsecutiveFailureIs = false;
                                         collectionLevel2.ConsecutiveFailureTotal = 0;
@@ -433,7 +467,7 @@ namespace SgqSystem.Controllers.Api
                                                                   where y.cIdentificador.Equals(comparacaoToString)
                                                                   select x).FirstOrDefault().TarefaId;
 
-                                            bool conforme = verificacaoTipificaoComparacao(unidades.Codigo.ToString(), data, sequencial, iBanda.ToString(), unidades, empresaId, departamentoId, tarefaId, conexao, varComparacao);
+                                            bool conforme = verificacaoTipificaoComparacao(verificacaoTipificacao.UnidadeId.ToString(), verificacaoTipificacao.DataHora.ToString("yyyyMMdd"), verificacaoTipificacao.Sequencial.ToString(), iBanda.ToString(), null, verificacaoTipificacao.UnidadeId.ToString(), "1", "1", conexao, varComparacao);
 
                                             var result = new Result_Level3();
                                             result.CollectionLevel2_Id = collectionLevel2.Id;
