@@ -2954,6 +2954,11 @@ namespace SgqSystem.Services
                     case 6:
                         form_control = "<input class=\"form-control input-sm\" type=\"date\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
                         break;
+
+                    //Hora
+                    case 7:
+                        form_control = "<input class=\"form-control input-sm\" type=\"time\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
+                        break;
                 }
 
                 var form_group = html.div(
