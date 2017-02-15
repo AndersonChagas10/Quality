@@ -158,25 +158,13 @@ namespace SgqSystem.Controllers
 
 
         // GET: manDataCollectITs/Create
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult Create2()
         {
-            List<Indicador> Indicadores;
-
-            string query = "SELECT DISTINCT DIMNAME as Nome FROM DimManColetaDados where DIMNAME is not null";
-
-            Indicadores = db.Database.SqlQuery<Indicador>(query).ToList();
-
-            ViewBag.Indicadores = Indicadores;
 
             return View(new ManDataCollectIT() { AmountData = 0 });
-        }       
-
+        }
     }
-
-    public class Indicador
-    {
-        public string Nome { get; set; }
-    }
-
-
 }
+
+

@@ -1,6 +1,7 @@
 ﻿@model Dominio.ManDataCollectIT
 @{
     var urlSave = Url.Action("SaveCreate", "Api/Manutencao");
+    var UrlGetInd = Url.Action("GetIndicadores", "Api/Manutencao");
 }
 
 <div class="page-content-wrapper">
@@ -22,24 +23,19 @@
 
             @Html.Label("Unidade", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
-                @Html.DropDownListFor(model => model.ParCompany_Id, new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.ParCompany_Id, new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.ParCompany_Id, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-1">
+                <button type="button" id="GetIndicadores" class="btn btn-primary pull-right"><i class="fa fa-search" aria-hidden="true"></i></button>
             </div>
         </div>
         <br />
         <br />
-
-        <table id="dataTable" class="display" width="100%" cellspacing="0">
-            <thead>
-                <tr>
-                    <th>Descrição da Coleta</th>
-                    <th>Quantidade</th>
-                    <th>Comentarios</th>
-                    <th>Salvar</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+        <div id="tabela">
+            
+        </div>
         <br />
         <br />
         <div class="form-group">
@@ -58,16 +54,102 @@
 <script>
 
     var url1 = '@Html.Raw(@urlSave)';
+    var url = '@Html.Raw(@UrlGetInd)';
 
     $(document).ready(function () {
 
         @*var myDarlingViewBag = @Html.Raw(Json.Encode(ViewBag.listaDataDataType));*@
 
-        var indicadores = @Html.Raw(Json.Encode(ViewBag.Indicadores));
+        var end = moment();
+
+        $('.simpleCalendar').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            maxDate: end,
+            'locale': {
+                "format": "DD/MM/YYYY",
+            }
+        });
+
+        $('tbody #quantidade').inputmask("decimal", { rightAlign: false })
+
+        $('#GetIndicadores').click(function () {
+
+            $("#dataTable").empty();
+            $('#dataTable_wrapper').remove()
+
+            Send();
+        });
+
+    });
+
+    function Send() {
+
+        var Unidade = $('#ParCompany_Id option:selected').val();
+
+        var Data = $('#date').val();
+
+        var newdate = Data.split("/").reverse().join("/");
+
+        if (Unidade >= 0 && Data != '') {
+
+            var dados = { 'Date': newdate, 'Unit': Unidade };
+
+            $.post(url, dados, function (lista) {
+
+                MountTable(lista);
+
+            });
+        }
+
+    }
+
+    function Enviar(dataToSend) {
+
+        //data[jsonObjectName] = JSON.stringify(dataToSend);
+
+        $.post(url1, dataToSend, function (r) {
+            try {
+
+            } catch (e) {
+                console.log(e);
+            } finally {
+
+            }
+        }).fail(function (e, h, x) {
+
+            if (e.status == 0) {
+                GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+            } else {
+                GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+            }
+
+            return false;
+
+        });
+
+        return true;
+    }
+
+    function validaParaEnvio(obj) {
+        if (obj.quantidade == "") {
+            alert("Campo Quantidade obrigatório");
+            $(this).find('#quantidade').focus;
+            return false;
+        } else {
+
+            return true;
+        }
+    }
+
+    function MountTable(indicadores) {
 
         //if (myDarlingViewBag != null){
 
-        if (indicadores != null){
+        $("#tabela").append('<table id="dataTable" class="display" width="100%" cellspacing="0"><thead><tr><th>Descrição da Coleta</th><th>Quantidade</th><th>Comentarios</th><th>Salvar</th></tr></thead><tbody></tbody></table>');
+
+
+        if (indicadores != null) {
 
             //for (var i = 0; i < myDarlingViewBag.length; i++) {
 
@@ -76,15 +158,15 @@
                 var newRow = $("<tr>");
                 var cols = "";
 
-                cols += '<td>'+ indicadores[i].Nome +'</td>';
+                cols += '<td>' + indicadores[i].Nome + '</td>';
 
                 //cols += '<td>'+$(indicadores[i].Nome).attr('TechnicalIndicator')+'</td>';
 
                 //cols += '<td style="display:none;">'+$(myDarlingViewBag[i]).attr('id')+'</td>';
 
-                cols += '<td><input id="quantidade" name="row-1-age" type="text"></td>';
+                cols += '<td><input id="quantidade" name="row-1-age" type="text" style="text-align: center" ></td>'; //BS: Alteração feita=> Alinhamento do texto: Centralizado
 
-                cols += '<td><input id="comentarios" name="row-1-position" value="" type="text"></td>';
+                cols += '<td><input id="comentarios" name="row-1-position" value="" type="text" ></td>';
 
                 cols += '<td><button id="save" class="btn btn-large btn-danger" type="button">Salvar</button></td>';
 
@@ -99,14 +181,17 @@
         }
 
         var table = $('#dataTable').DataTable({
-
             paging: false,
             "searching": false,
             "lengthChange": false,
             "info": false,
             "ordering": false,
-
-            'initComplete': function() {
+            columns: [
+            { "data": "engine" },
+            { "data": "browser" },
+            { "data": "platform" },
+            { "data": "version" }],
+            'initComplete': function () {
 
                 $('#dataTable tbody').on('click', 'button', function (data, a, b) {
 
@@ -115,67 +200,37 @@
                     var quantidade = $(this).parents('tr').find('#quantidade').val();
                     var comentarios = $(this).parents('tr').find('#comentarios').val();
                     var date = $("#date").val();
+                    var newdate = date.split("/").reverse().join("-");
+                    //var date = $("#date").datepicker({ dateFormat: 'yyyy-mm-dd' }).val();
                     var parCompany_Id = $("#ParCompany_Id").val();
 
                     var obj = {};
 
-                    obj['indicadorNome'] = 'CabAbat_QteBoiAbatidosReal';
-                    obj['descricao'] = data[0];
-                    obj['quantidade'] = quantidade;
+                    //obj['indicadorNome'] = 'CabAbat_QteBoiAbatidosReal';
+                    obj['descricao'] = data.engine;
+                    obj['quantidade'] = quantidade.replace(",", ".");
                     obj['comentarios'] = comentarios;
-                    obj['data'] = date;
+                    obj['data'] = newdate;
                     obj['parCompany'] = parCompany_Id;
 
                     //console.log(obj);
 
-                    if(validaParaEnvio(obj)){
+                    if (validaParaEnvio(obj)) {
 
-                        Enviar(obj,"obj");
-
+                        if (Enviar(obj)) {
+                            //$(this).parents('tr').find('#quantidade').val("");
+                            //$(this).parents('tr').find('#comentarios').val("");
+                            $(this).parents('tr').find('#quantidade').prop("disabled", true);
+                            $(this).parents('tr').find('#comentarios').prop("disabled", true);
+                            $(this).parents('tr').find("#save").prop("disabled", true);
+                        }
                     }
 
                 });
             }
         });
 
-        $('.simpleCalendar').daterangepicker({
-            singleDatePicker: true,
-            showDropdowns: true,
-            'locale': {
-                "format": "DD/MM/YYYY",
-            }
-        });
-
-        ;
-
-        $('tbody #quantidade').inputmask("decimal", { rightAlign: false })
-
-    });
-
-
-    function Enviar(dataToSend, jsonObjectName) {
-
-        var data= {};
-
-        data[jsonObjectName] = JSON.stringify(dataToSend);
-
-        $.post(url1, data , function(data) {
-
-            console.log(data);
-
-        });
-
     }
 
-    function validaParaEnvio(obj){
-        if(obj.quantidade == ""){
-            alert("Campo Quantidade obrigatório");
-            $(this).find('#quantidade').focus;
-            return false;
-        }else{
-
-            return true;
-        }
-    }
 
 </script>

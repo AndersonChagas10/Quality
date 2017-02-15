@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dominio.Entities.BaseEntity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,30 +16,35 @@ namespace SgqSystem.ViewModels
         public int ProdutoId { get; set; }
         public int UnidadeId { get; set; }
         public int OperacaoId { get; set; }
+        public int AuditorId { get; set; }
         public VTVerificacaoTipificacaoDTO VerificacaoTipificacao { get; set; }
         public List<VTVerificacaoTipificacaoResultadosDTO> VerificacaoTipificacaoResultados { get; set; }
     }
 
-    public class VTVerificacaoTipificacaoDTO
+    public class VTVerificacaoTipificacaoDTO : EntityBase
     {
-        public int Id { get; set; }
         public int Sequencial { get; set; }
         public byte Banda { get; set; }
         public string dataTipificacao { get; set; }
         public DateTime DataHora { get; set; }
         public int UnidadeId { get; set; }
         public string Chave { get; set; }
+        public Nullable<int> EvaluationNumber { get; set; }
+        public Nullable<int> Sample { get; set; }
     }
 
-    public class VTVerificacaoTipificacaoResultadosDTO
+    public class VTVerificacaoTipificacaoResultadosDTO : EntityBase
     {
-        public int Id { get; set; }
+        public int TarefaId { get; set; }
+        public string CaracteristicaTipificacaoId { get; set; }
+        public int Chave { get; set; }
+        public string AreasParticipantesId { get; set; }
         public VTVerificacaoTipificacaoDTO VerificacaoTipificacao { get; set; }
         public MonitoramentoDTO Monitoramento { get; set; }
         public CaracteristicaTipificacaoDTO CaracteristicaTipificacao { get; set; }
     }
 
-    public class VTVerificacaoTipificacaoTarefaIntegracaoDTO
+    public class VTVerificacaoTipificacaoTarefaIntegracaoDTO : EntityBase
     {
         public MonitoramentoDTO Monitoramento { get; set; }
         public CaracteristicaTipificacaoDTO CaracteristicaTipificacao { get; set; }
