@@ -11,39 +11,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
     [RoutePrefix("api/Manutencao")]
     public class ManDataCollectITsController : ApiController
     {
-        //[HttpPost]
-        //[HandleApi()]
-        //[Route("SaveCreate")]
-        //public int SaveCreate(Obj obj)
-        //{
-        //    string sql = "";
-
-        //    //string sql = "INSERT INTO [dbo].[ManDataCollectIT]" +
-        //    //  "([AddDate]" +
-        //    //  ",[ReferenceDatetime]" +
-        //    //  ",[UserSGQ_Id]" +
-        //    //  ",[ParCompany_Id]" +
-        //    //  ",[DimManutencaoColetaITs_id]" +
-        //    //  ",[AmountData]" +
-        //    //  ",[Comments]" +
-        //    //  ",[IsActive])" +
-        //    //  "VALUES" +
-        //    //  "(" + DateTime.Now + "," +
-        //      //"," + manDataCollectITs.ReferenceDatetime +
-        //      ////"," + Guard.GetUsuarioLogado_Id(System.Web.HttpContext) +
-        //      //"," + manDataCollectITs.ParCompany_Id +
-        //      //"," + manDataCollectITs.DimManutencaoColetaITs_id +
-        //      //"," + manDataCollectITs.AmountData +
-        //      //"," + manDataCollectITs.Comments +
-        //      //"," + true + ")";
-
-        //    using (var db = new SgqDbDevEntities())
-        //    {
-        //        var d = db.Database.ExecuteSqlCommand(sql);
-        //        return d;
-        //    }
-
-        //}
+        private SgqDbDevEntities db = new SgqDbDevEntities();
 
         [HttpPost]
         [Route("SaveCreate")]
@@ -100,6 +68,37 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
         }
 
+        [HttpPost]
+        [Route("GetIndicadores")]
+        public List<Indicador> GetIdicadores(Obj3 obj3)
+        {
+            List<Indicador> Indicadores;
+            List<Indicador> Indicadores2 = new List<Indicador>();
+
+            string query = "SELECT DISTINCT DimName as Nome, Name as NomeReal FROM DimManColetaDados WHERE DimRealTarget = 'Real' and DimName is not null";
+
+            Indicadores = db.Database.SqlQuery<Indicador>(query).ToList();
+
+            //Pergunta se existe o Indicador na data
+
+            int nIndicadores = Indicadores.Count;
+
+            for (int i = 0; i < nIndicadores; i++)
+            {
+                query = "SELECT top 1 " + Indicadores[i].NomeReal + " as PerguntaIndicador FROM ManColetaDados WHERE Base_dateRef = '" + obj3.Date.ToString("yyyy-MM-dd") + "' AND " + Indicadores[i].NomeReal + " IS NOT NULL AND Base_parCompany_id = " + obj3.Unit;
+
+                Nullable<decimal> result = db.Database.SqlQuery<Nullable<decimal>>(query).FirstOrDefault();
+
+                if (result == null)
+                {
+                    Indicadores2.Add(Indicadores[i]);
+                }
+
+            }
+
+            return Indicadores2;
+        }
+
     }
 
     public class Obj
@@ -117,4 +116,21 @@ namespace SgqSystem.Controllers.Api.Manutencao
         public string indicadorNome { get; set; }
     }
 
+    public class Obj3
+    {
+        public DateTime Date { get; set; }
+        public string Unit { get; set; }
+    }
+
+    public class Indicador
+    {
+        public string Nome { get; set; }
+        public string NomeReal { get; set; }
+    }
+
+    public class Pergunta
+    {
+        public string PerguntaIndicador { get; set; }
+    }
 }
+

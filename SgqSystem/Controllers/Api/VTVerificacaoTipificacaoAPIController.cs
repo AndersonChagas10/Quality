@@ -27,7 +27,7 @@ namespace SgqSystem.Controllers.Api
                 var verificacaoTipificacao = db.VTVerificacaoTipificacao.FirstOrDefault(r => r.Chave == _verificacao.Chave);
 
                 //Variavel para atribuir data correta na verificãção da tipificação
-                DateTime dataHoraTipificacao = DateTime.Now;
+                DateTime dataHoraTipificacao = _verificacao.DataHora;
 
                 //Caso exista uma verificação da tipidicação a mesma será removida, mantando somente a data para atribuir na nova verificação que será criada
                 if (verificacaoTipificacao != null)
@@ -67,6 +67,8 @@ namespace SgqSystem.Controllers.Api
                 verificacaoTipificacao.UnidadeId = _verificacao.UnidadeId;
                 verificacaoTipificacao.Chave = _verificacao.Chave;
                 verificacaoTipificacao.Status = false;
+                verificacaoTipificacao.EvaluationNumber = _verificacao.EvaluationNumber;
+                verificacaoTipificacao.Sample = _verificacao.Sample;
 
                 //gravamos o objeto no banco
                 db.VTVerificacaoTipificacao.Add(verificacaoTipificacao);
@@ -459,7 +461,7 @@ namespace SgqSystem.Controllers.Api
                                         collectionLevel2.ReauditNumber = 1;
                                         collectionLevel2.CollectionDate = verificacaoTipificacao.DataHora;
                                         collectionLevel2.StartPhaseDate = DateTime.MinValue;
-                                        collectionLevel2.EvaluationNumber = verificacaoTipificacao.EvaluationNumber;
+                                        collectionLevel2.EvaluationNumber = verificacaoTipificacao.EvaluationNumber.GetValueOrDefault();
                                         collectionLevel2.Sample = verificacaoTipificacao.Sample.GetValueOrDefault();
                                         collectionLevel2.AddDate = DateTime.Now;
                                         collectionLevel2.ConsecutiveFailureIs = false;
@@ -522,7 +524,9 @@ namespace SgqSystem.Controllers.Api
                                             db2.Result_Level3.Add(result);
                                         
                                         }
+                                        verificacaoTipificacao.Status = true;
                                         db2.SaveChanges();
+                                        db.SaveChanges();
 
 
 
