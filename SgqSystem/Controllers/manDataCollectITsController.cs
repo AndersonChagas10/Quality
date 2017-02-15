@@ -162,54 +162,9 @@ namespace SgqSystem.Controllers
         public ActionResult Create2()
         {
 
-            /**
-             * Colocar os filtros de Query
-             * 
-             * SELECT DISTINCT Name FROM DimManColetaDados WHERE DimRealTarget = 'Real' and DimName is not null and name = 'M3AguaBoi_Real'
-             * SELECT top 1 M3AguaBoi_Real as PerguntaIndicador FROM ManColetaDados WHERE Base_dateRef= '2017-02-14'--  -- DataDoDia
-             * SELECT DISTINCT * FROM DimManColetaDados where DIMNAME is not null and name = 'Moral_CustoHorasExtrasParcial'
-             * 
-             **/
-
-            //Lista com todos os indicadores
-            //List<Indicador> Indicadores;
-
-            string query = "SELECT DISTINCT DimName as Nome, Name as NomeReal FROM DimManColetaDados WHERE DimRealTarget = 'Real' and DimName is not null";
-
-            var Indicadores = db.Database.SqlQuery<Indicador>(query).ToList();
-
-
-            //Pergunta se existe o Indicador na data
-
-            //foreach (var item in Indicadores)
-            
-
-            for (int i = 0; i < Indicadores.Count; i++)
-            {
-                query = "SELECT top 1 " + Indicadores[i].NomeReal + " as PerguntaIndicador FROM ManColetaDados WHERE Base_dateRef= '" + DateTime.Now.ToString("yyyy - MM - dd") + "' AND " + Indicadores[i].NomeReal + " IS NOT NULL ";
-
-                Nullable<decimal> result = db.Database.SqlQuery<Nullable<decimal>>(query).FirstOrDefault();
-
-                if (result != null)
-                {
-                    Indicadores.RemoveAt(i);
-                }
-            }
-
-            ViewBag.Indicadores = Indicadores;
-
             return View(new ManDataCollectIT() { AmountData = 0 });
         }
     }
-
-    public class Indicador
-    {
-        public string Nome { get; set; }
-        public string NomeReal { get; set; }
-    }
-
-    public class Pergunta
-    {
-        public string PerguntaIndicador { get; set; }
-    }
 }
+
+
