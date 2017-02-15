@@ -121,7 +121,7 @@
         <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacaoComparacao" Width="1.5" PointX="17.75" PointY="22.75" />
         <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacaoResultados" Width="1.5" PointX="22.75" PointY="18.75" />
         <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacaoTarefaIntegracao" Width="1.5" PointX="3" PointY="34.875" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacaoValidacao" Width="1.5" PointX="22.75" PointY="21.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacaoValidacao" Width="1" PointX="22.75" PointY="21.75" />
         <EntityTypeShape EntityType="SGQ_BrasilModel.VinculoCampoCabecalho" Width="1.5" PointX="14.25" PointY="81" />
         <EntityTypeShape EntityType="SGQ_BrasilModel.VinculoCampoTarefa" Width="1.5" PointX="19.75" PointY="79.625" />
         <EntityTypeShape EntityType="SGQ_BrasilModel.VinculoParticipanteMultiplaEscolha" Width="1.5" PointX="17.25" PointY="79.75" />
@@ -132,7 +132,7 @@
         <EntityTypeShape EntityType="SGQ_BrasilModel.ControleMetaTolerancia" Width="1.5" PointX="24.75" PointY="0.75" />
         <EntityTypeShape EntityType="SGQ_BrasilModel.Resultados_BKP_OCT" Width="1.5" PointX="24.75" PointY="7.75" />
         <EntityTypeShape EntityType="SGQ_BrasilModel.ScorecardConsolidadoDia" Width="1.5" PointX="24.75" PointY="18.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.Tipificacao" Width="1.5" PointX="24.75" PointY="22.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.Tipificacao" Width="2.25" PointX="24.75" PointY="22.75" />
         <EntityTypeShape EntityType="SGQ_BrasilModel.VerificacaoTipificacaoJBS" Width="1.5" PointX="14.75" PointY="25.75" />
         <EntityTypeShape EntityType="SGQ_BrasilModel.DelDados" Width="1.5" PointX="25.75" PointY="4.75" />
         <EntityTypeShape EntityType="SGQ_BrasilModel.Reports_CCA_Audit" Width="1.5" PointX="26.75" PointY="6.75" />
@@ -260,13 +260,13 @@
         <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoCampoTarefa_Participante" />
         <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoParticipanteMultiplaEscolha_Participante" />
         <AssociationConnector Association="SGQ_BrasilModel.FK_VinculoParticipanteProjeto_Participante" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.VTVerificacaoContagem" Width="1.5" PointX="26.375" PointY="4.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.VTVerificacaoTipificacao" Width="1.5" PointX="17.375" PointY="26.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.VTVerificacaoTipificacaoComparacao" Width="1.5" PointX="23.375" PointY="26.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.VTVerificacaoTipificacaoResultados" Width="1.5" PointX="25.375" PointY="26.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VTVerificacaoContagem" Width="2.125" PointX="26.375" PointY="4.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VTVerificacaoTipificacaoComparacao" Width="1.75" PointX="22.875" PointY="26.375" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VTVerificacaoTipificacaoResultados" Width="2.375" PointX="25.375" PointY="26.75" />
         <EntityTypeShape EntityType="SGQ_BrasilModel.VTVerificacaoTipificacaoTarefaIntegracao" Width="1.5" PointX="6.375" PointY="26.75" />
         <EntityTypeShape EntityType="SGQ_BrasilModel.VTVerificacaoTipificacaoValidacao" Width="1.5" PointX="27.375" PointY="0.75" />
-        <EntityTypeShape EntityType="SGQ_BrasilModel.VTVerificacaoTipificacaoJBS" Width="1.5" PointX="27.375" PointY="7.75" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VTVerificacaoTipificacaoJBS" Width="2.625" PointX="26.375" PointY="7.875" />
+        <EntityTypeShape EntityType="SGQ_BrasilModel.VTVerificacaoTipificacao" Width="2.125" PointX="17.375" PointY="26.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
