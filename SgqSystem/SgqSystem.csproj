@@ -456,117 +456,6 @@
     <Compile Include="Mappers\Audit\Level03MapperProfile.cs" />
     <Compile Include="Mappers\UserMapperProfile.cs" />
     <Compile Include="Mappers\UserSgqMapperProfile.cs" />
-    <Compile Include="PlanoAcao\Data\LogOperacaoData.cs" />
-    <Compile Include="PlanoAcao\Data\PlanoAcaoData.cs" />
-    <Compile Include="PlanoAcao\Domain\AutoMapperNHibernateUtil.cs" />
-    <Compile Include="PlanoAcao\Domain\AutoMapperUtil.cs" />
-    <Compile Include="PlanoAcao\Domain\AutoMapper\Profile\AcompanhamentoTarefaProfile.cs" />
-    <Compile Include="PlanoAcao\Domain\AutoMapper\Profile\CabecalhoProfile.cs" />
-    <Compile Include="PlanoAcao\Domain\AutoMapper\Profile\CampoProfile.cs" />
-    <Compile Include="PlanoAcao\Domain\AutoMapper\Profile\ConfiguracaoEmailProfile.cs" />
-    <Compile Include="PlanoAcao\Domain\AutoMapper\Profile\EmpresaProfile.cs" />
-    <Compile Include="PlanoAcao\Domain\AutoMapper\Profile\GrupoCabecalhoProfile.cs" />
-    <Compile Include="PlanoAcao\Domain\AutoMapper\Profile\GrupoProjetoProfile.cs" />
-    <Compile Include="PlanoAcao\Domain\AutoMapper\Profile\LogOperacaoProfile.cs" />
-    <Compile Include="PlanoAcao\Domain\AutoMapper\Profile\MultiplaEscolhaProfile.cs" />
-    <Compile Include="PlanoAcao\Domain\AutoMapper\Profile\ParticipanteProfile.cs" />
-    <Compile Include="PlanoAcao\Domain\AutoMapper\Profile\ProjetoProfile.cs" />
-    <Compile Include="PlanoAcao\Domain\AutoMapper\Profile\TarefaProfile.cs" />
-    <Compile Include="PlanoAcao\Domain\AutoMapper\Profile\VinculoCampoCabecalhoProfile.cs" />
-    <Compile Include="PlanoAcao\Domain\AutoMapper\Profile\VinculoCampoTarefaProfile.cs" />
-    <Compile Include="PlanoAcao\Domain\AutoMapper\Profile\VinculoParticipanteMultiplaEscolhaProfile.cs" />
-    <Compile Include="PlanoAcao\Domain\AutoMapper\Profile\VinculoParticipanteProjetoProfile.cs" />
-    <Compile Include="PlanoAcao\Domain\Business\LogOperacaoBusiness.cs" />
-    <Compile Include="PlanoAcao\Domain\Business\PlanoAcaoBusiness.cs" />
-    <Compile Include="PlanoAcao\DTO\AcompanhamentoTarefaDTO.cs" />
-    <Compile Include="PlanoAcao\DTO\BaseDTO.cs" />
-    <Compile Include="PlanoAcao\DTO\CabecalhoDTO.cs" />
-    <Compile Include="PlanoAcao\DTO\CampoDTO.cs" />
-    <Compile Include="PlanoAcao\DTO\ConfiguracaoEmailDTO.cs" />
-    <Compile Include="PlanoAcao\DTO\EmpresaDTO.cs" />
-    <Compile Include="PlanoAcao\DTO\Ferramentas\Constantes.cs" />
-    <Compile Include="PlanoAcao\DTO\Ferramentas\ExtensoesComuns.cs" />
-    <Compile Include="PlanoAcao\DTO\Ferramentas\Mensagens.cs" />
-    <Compile Include="PlanoAcao\DTO\Ferramentas\RetornoGenerico.cs" />
-    <Compile Include="PlanoAcao\DTO\GrupoCabecalhoDTO.cs" />
-    <Compile Include="PlanoAcao\DTO\GrupoProjetoDTO.cs" />
-    <Compile Include="PlanoAcao\DTO\LogOperacaoDTO.cs" />
-    <Compile Include="PlanoAcao\DTO\MultiplaEscolhaDTO.cs" />
-    <Compile Include="PlanoAcao\DTO\ParticipanteDTO.cs" />
-    <Compile Include="PlanoAcao\DTO\ProjetoDTO.cs" />
-    <Compile Include="PlanoAcao\DTO\RelatorioDTO.cs" />
-    <Compile Include="PlanoAcao\DTO\ResultCabecalhoMock.cs" />
-    <Compile Include="PlanoAcao\DTO\TarefaDTO.cs" />
-    <Compile Include="PlanoAcao\DTO\VinculoCampoCabecalhoDTO.cs" />
-    <Compile Include="PlanoAcao\DTO\VinculoCampoTarefaDTO.cs" />
-    <Compile Include="PlanoAcao\DTO\VinculoParticipanteMultiplaEscolhaDTO.cs" />
-    <Compile Include="PlanoAcao\DTO\VinculoParticipanteProjetoDTO.cs" />
-    <Compile Include="PlanoAcao\Model\AcompanhamentoTarefa.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PlanoAcao\Model\Cabecalho.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PlanoAcao\Model\Campo.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PlanoAcao\Model\ConfiguracaoEmailPA.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PlanoAcao\Model\GrupoCabecalho.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PlanoAcao\Model\GrupoProjeto.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PlanoAcao\Model\LogOperacaoPA.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PlanoAcao\Model\Model.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PlanoAcao\Model\Model.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PlanoAcao\Model\Model.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="PlanoAcao\Model\MultiplaEscolha.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PlanoAcao\Model\Projeto.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PlanoAcao\Model\TarefaPA.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PlanoAcao\Model\Unidades.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PlanoAcao\Model\Usuarios.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PlanoAcao\Model\VIEW_STATUS_PA.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PlanoAcao\Model\VinculoCampoCabecalho.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PlanoAcao\Model\VinculoCampoTarefa.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PlanoAcao\Model\VinculoParticipanteMultiplaEscolha.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PlanoAcao\Model\VinculoParticipanteProjeto.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Secirity\CustomAuthorizeAttribute.cs" />
     <Compile Include="Secirity\CustomPrincipal.cs" />
     <Compile Include="Secirity\FilterUnit.cs" />
@@ -877,48 +766,6 @@
     <Content Include="Imagens\tablet.png" />
     <Content Include="Imagens\timeout-icon.png" />
     <Content Include="Imagens\United-States.png" />
-    <Content Include="PlanoAcao\Css\bootstrap-datepicker.min.css" />
-    <Content Include="PlanoAcao\Css\bootstrap.min.css" />
-    <Content Include="PlanoAcao\Css\datatables.min.css" />
-    <Content Include="PlanoAcao\Css\select2.css" />
-    <Content Include="PlanoAcao\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="PlanoAcao\Model\Model.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model.edmx</DependentUpon>
-      <LastGenOutput>Model.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="PlanoAcao\Model\Model.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model.edmx</DependentUpon>
-      <LastGenOutput>Model.cs</LastGenOutput>
-    </Content>
-    <Content Include="PlanoAcao\Scripts\bootbox.js" />
-    <Content Include="PlanoAcao\Scripts\bootstrap-datepicker.js" />
-    <Content Include="PlanoAcao\Scripts\bootstrap-datepicker.pt-BR.min.js" />
-    <Content Include="PlanoAcao\Scripts\bootstrap.js" />
-    <Content Include="PlanoAcao\Scripts\bootstrap.min.js" />
-    <Content Include="PlanoAcao\Scripts\datatables.min.js" />
-    <EntityDeploy Include="PlanoAcao\Model\Model.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="PlanoAcao\Model\Model.edmx.diagram">
-      <DependentUpon>Model.edmx</DependentUpon>
-    </Content>
-    <None Include="PlanoAcao\Scripts\jquery-3.1.0.intellisense.js" />
-    <Content Include="PlanoAcao\Scripts\jquery-3.1.0.js" />
-    <Content Include="PlanoAcao\Scripts\jquery-3.1.0.min.js" />
-    <Content Include="PlanoAcao\Scripts\jquery-3.1.0.slim.js" />
-    <Content Include="PlanoAcao\Scripts\jquery-3.1.0.slim.min.js" />
-    <Content Include="PlanoAcao\Scripts\jquery.inputmask.js" />
-    <Content Include="PlanoAcao\Scripts\jquery.maskMoney.js" />
-    <Content Include="PlanoAcao\Scripts\jquery.meio.mask.config.js" />
-    <Content Include="PlanoAcao\Scripts\jquery.meio.mask.js" />
-    <Content Include="PlanoAcao\Scripts\moment.min.js" />
-    <Content Include="PlanoAcao\Scripts\npm.js" />
-    <Content Include="PlanoAcao\Scripts\select2.js" />
-    <Content Include="PlanoAcao\Scripts\utils.js" />
-    <Content Include="PlanoAcao\Scripts\waitingfor.js" />
     <Content Include="Scripts\aes.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
@@ -1075,12 +922,6 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="PlanoAcao\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="PlanoAcao\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="PlanoAcao\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="PlanoAcao\fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="PlanoAcao\Scripts\jquery-3.1.0.min.map" />
-    <Content Include="PlanoAcao\Scripts\jquery-3.1.0.slim.min.map" />
     <None Include="Properties\PublishProfiles\BuildSqgMaster.pubxml" />
     <None Include="Properties\PublishProfiles\DeployInterno.pubxml" />
     <None Include="Properties\PublishProfiles\DeployInternoDebug.pubxml" />
