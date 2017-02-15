@@ -50,9 +50,9 @@ public class ScorecardResultSet
         "\n , NC " +
         "\n , Pontos " +
         "\n , Meta " +
-        "\n ,ROUND(Real, 2) as Real " +
-        "\n ,ROUND(CASE WHEN Scorecard < 70 THEN 0 ELSE (CASE WHEN Scorecard > 100 THEN 100 ELSE Scorecard END /100 ) * Pontos  END , 2) AS PontosAtingidos " +
-        "\n ,CASE WHEN Scorecard > 100 THEN 100 ELSE ROUND(Scorecard,2) END AS Scorecard " +
+        "\n , ROUND(Real,2) as Real " +
+        "\n , CASE WHEN Scorecard < 70 THEN 0 ELSE (CASE WHEN Scorecard > 100 THEN 100 ELSE Scorecard END /100 ) * Pontos  END AS PontosAtingidos " +
+        "\n , ROUND(CASE WHEN Scorecard > 100 THEN 100 ELSE Scorecard END,2) AS Scorecard " +
 
         "\n FROM " +
         "\n ( " +
@@ -72,12 +72,12 @@ public class ScorecardResultSet
             "\n , Criterio " +
             "\n , CriterioName " +
             "\n , AV " +
-            "\n , NC " +
+            "\n , CASE WHEN TipoIndicadorName = 'Maior' THEN AV - NC ELSE NC END AS NC " +
             "\n , Pontos " +
             "\n , Meta " +
-            "\n , ROUND(Real, 2) as Real " +
+            "\n , CASE WHEN TipoIndicadorName = 'Maior' THEN AV - NC ELSE NC END / AV * 100 as Real " +
             "\n , NULL AS PontosAtingidos " +
-            "\n , CASE WHEN TipoIndicador = 1 THEN CASE WHEN Real = 0 THEN 100 ELSE Meta / Real * 100 END WHEN TipoIndicador = 2 THEN Real / Meta * 100 END AS Scorecard " +
+            "\n , CASE WHEN TipoIndicador = 1 THEN CASE WHEN (CASE WHEN TipoIndicadorName = 'Maior' THEN AV - NC ELSE NC END / AV * 100) = 0 THEN 100 ELSE Meta / (CASE WHEN TipoIndicadorName = 'Maior' THEN AV - NC ELSE NC END / AV * 100) * 100 END WHEN TipoIndicador = 2 THEN (CASE WHEN TipoIndicadorName = 'Maior' THEN AV - NC ELSE NC END / AV * 100) / Meta * 100 END AS Scorecard " +
 
 
             "\n FROM " +
@@ -239,10 +239,64 @@ public class ScorecardResultSet
             "\n ) AS Score " +
         "\n ) Real " +
 
+
             "\n                                                                                                                                                                              " +
             "\n  UNION ALL                                                                                                                                                                   " +
             "\n                                                                                                                                                                              " +
             "\n                                                                                                                                                                              " +
+
+            "\n SELECT " +
+
+        "\n   Cluster " +
+        "\n , ClusterName " +
+        "\n , Regional " +
+        "\n , RegionalName " +
+        "\n , ParCompanyId " +
+        "\n , ParCompanyName " +
+        "\n , TipoIndicador " +
+        "\n , TipoIndicadorName " +
+        "\n , Level1Id " +
+        "\n , Level1Name " +
+        "\n , Criterio " +
+        "\n , CriterioName " +
+        "\n , AV " +
+        "\n , NC " +
+        "\n , Pontos " +
+        "\n , Meta " +
+        "\n , ROUND(Real,2) as Real " +
+        "\n , CASE WHEN Scorecard < 70 THEN 0 ELSE (CASE WHEN Scorecard > 100 THEN 100 ELSE Scorecard END /100 ) * Pontos  END AS PontosAtingidos " +
+        "\n , ROUND(CASE WHEN Scorecard > 100 THEN 100 ELSE Scorecard END,2) AS Scorecard " +
+
+        "\n FROM " +
+        "\n ( " +
+            "\n SELECT " +
+
+
+            "\n   Cluster " +
+            "\n , ClusterName " +
+            "\n , Regional " +
+            "\n , RegionalName " +
+            "\n , ParCompanyId " +
+            "\n , ParCompanyName " +
+            "\n , TipoIndicador " +
+            "\n , TipoIndicadorName " +
+            "\n , Level1Id " +
+            "\n , Level1Name " +
+            "\n , Criterio " +
+            "\n , CriterioName " +
+            "\n , AV " +
+            "\n , CASE WHEN TipoIndicadorName = 'Maior' THEN NC ELSE AV - NC END AS NC " +
+            "\n , Pontos " +
+            "\n , Meta " +
+            "\n , CASE WHEN AV = 0 THEN 0 WHEN AV - NC = 0 THEN 100 ELSE CASE WHEN TipoIndicadorName = 'Maior' THEN NC ELSE AV - NC END / AV * 100 END as Real " +
+            "\n , NULL AS PontosAtingidos " +
+            "\n , CASE WHEN AV = 0 THEN 0 WHEN AV - NC = 0 THEN 100 ELSE CASE WHEN TipoIndicador = 1 THEN CASE WHEN (CASE WHEN TipoIndicadorName = 'Maior' THEN NC ELSE AV - NC END / AV * 100) = 0 THEN 100 ELSE Meta / (CASE WHEN TipoIndicadorName = 'Maior' THEN NC ELSE AV - NC END / AV * 100) * 100 END WHEN TipoIndicador = 2 THEN (CASE WHEN TipoIndicadorName = 'Maior' THEN NC ELSE AV - NC END / AV * 100) / Meta * 100 END END AS Scorecard " +
+
+
+            "\n FROM " +
+
+                "\n ( " +
+
             "\n  SELECT                                                                                                                                                                      " +
             "\n  --*                                                                                                                                                                         " +
             "\n      CL.Id                      AS Cluster                                                                                                                                   " +
@@ -261,17 +315,102 @@ public class ScorecardResultSet
             "\n  , CRL.Id AS Criterio                                                                                                                                                        " +
             "\n  , CRL.Name AS CriterioName                                                                                                                                                  " +
             "\n                                                                                                                                                                              " +
-            "\n  ,0							AS AV                                                                                                                                            " +
-            "\n                                                                                                                                                                              " +
-            "\n  ,0							AS NC                                                                                                                                            " +
-            "\n                                                                                                                                                                              " +
+            "\n  , ( SELECT COUNT(PCC.semana) AS AV FROM  " +
+            "\n  (  " +
+            "\n      SELECT  " +
+            "\n      CONVERT(VARCHAR, DATEPART(year, C1.ConsolidationDate)) + '-' + CONVERT(VARCHAR, DATEPART(week, C1.ConsolidationDate)) as Semana  " +
+            "\n      , C1.ParLevel1_Id  " +
+            "\n      , C1.UnitId AS ParCompany_Id  " +
+            "\n      , 1 as Verificado  " +
+
+            "\n      FROM ConsolidationLevel1 C1  " +
+
+            "\n      WHERE C1.ConsolidationDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59'  " +
+
+            "\n      AND C1.ParLevel1_Id = 3  " +
+
+            "\n      AND C1.UnitId = 1  " +
+
+            "\n      GROUP BY CONVERT(VARCHAR, DATEPART(year, C1.ConsolidationDate)) + '-' + CONVERT(VARCHAR, DATEPART(week, C1.ConsolidationDate))  " +
+            "\n      , C1.ParLevel1_Id  " +
+            "\n      , C1.UnitId  " +
+            "\n  ) PCC  " +
+            "\n  LEFT JOIN  " +
+            "\n  (  " +
+            "\n      SELECT  " +
+
+            "\n      CONVERT(VARCHAR, DATEPART(year, C1.ConsolidationDate)) + '-' + CONVERT(VARCHAR, DATEPART(week, C1.ConsolidationDate)) as Semana  " +
+            "\n      , C1.ParLevel1_Id  " +
+            "\n      , C1.UnitId AS ParCompany_Id  " +
+            "\n      , 1 as Verificado  " +
+
+            "\n      FROM ConsolidationLevel1 C1  " +
+
+            "\n      WHERE C1.ConsolidationDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59'  " +
+
+            "\n      AND C1.ParLevel1_Id = 24  " +
+
+            "\n      AND C1.UnitId = 1  " +
+
+            "\n      GROUP BY CONVERT(VARCHAR, DATEPART(year, C1.ConsolidationDate)) + '-' + CONVERT(VARCHAR, DATEPART(week, C1.ConsolidationDate))  " +
+            "\n      , C1.ParLevel1_Id  " +
+            "\n      , C1.UnitId  " +
+            "\n  ) VT  " +
+            "\n  ON PCC.Semana = VT.Semana ) AS AV " +
+
+            "\n  , ( SELECT COUNT(vt.semana)AS NC FROM  " +
+            "\n  (  " +
+            "\n      SELECT  " +
+            "\n      CONVERT(VARCHAR, DATEPART(year, C1.ConsolidationDate)) + '-' + CONVERT(VARCHAR, DATEPART(week, C1.ConsolidationDate)) as Semana  " +
+            "\n      , C1.ParLevel1_Id  " +
+            "\n      , C1.UnitId AS ParCompany_Id  " +
+            "\n      , 1 as Verificado  " +
+
+            "\n      FROM ConsolidationLevel1 C1  " +
+
+            "\n      WHERE C1.ConsolidationDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59'  " +
+
+            "\n      AND C1.ParLevel1_Id = 3  " +
+
+            "\n      AND C1.UnitId = 1  " +
+
+            "\n      GROUP BY CONVERT(VARCHAR, DATEPART(year, C1.ConsolidationDate)) + '-' + CONVERT(VARCHAR, DATEPART(week, C1.ConsolidationDate))  " +
+            "\n      , C1.ParLevel1_Id  " +
+            "\n      , C1.UnitId  " +
+            "\n  ) PCC  " +
+            "\n  LEFT JOIN  " +
+            "\n  (  " +
+            "\n      SELECT  " +
+
+            "\n      CONVERT(VARCHAR, DATEPART(year, C1.ConsolidationDate)) + '-' + CONVERT(VARCHAR, DATEPART(week, C1.ConsolidationDate)) as Semana  " +
+            "\n      , C1.ParLevel1_Id  " +
+            "\n      , C1.UnitId AS ParCompany_Id  " +
+            "\n      , 1 as Verificado  " +
+
+            "\n      FROM ConsolidationLevel1 C1  " +
+
+            "\n      WHERE C1.ConsolidationDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59'  " +
+
+            "\n      AND C1.ParLevel1_Id = 24  " +
+
+            "\n      AND C1.UnitId = 1  " +
+
+            "\n      GROUP BY CONVERT(VARCHAR, DATEPART(year, C1.ConsolidationDate)) + '-' + CONVERT(VARCHAR, DATEPART(week, C1.ConsolidationDate))  " +
+            "\n      , C1.ParLevel1_Id  " +
+            "\n      , C1.UnitId  " +
+            "\n  ) VT  " +
+            "\n  ON PCC.Semana = VT.Semana ) AS NC " +
+
+
+
+
             "\n                                                                                                                                                                              " +
             "\n  , L1C.Points AS Pontos                                                                                                                                                      " +
             "\n  , G.PercentValue AS Meta                                                                                                                                                    " +
-            "\n  ,0						    AS Real                                                                                                                                          " +
+            "\n  ,0 AS Real                                                                                                                                          " +
             "\n                                                                                                                                                                              " +
-            "\n  ,0							AS PontosAtingidos                                                                                                                               " +
-            "\n  ,0							AS Scorecard                                                                                                                                     " +
+            "\n  ,0	AS PontosAtingidos                                                                                                                               " +
+            "\n  ,0	AS Scorecard                                                                                                                                     " +
             "\n                                                                                                                                                                              " +
             "\n  FROM ParLevel1 L1                                                                                                                                                           " +
             "\n  LEFT JOIN ParCompany C                                                                                                                                                      " +
@@ -295,7 +434,67 @@ public class ScorecardResultSet
             "\n  LEFT JOIN ParGoal G                                                                                                                                                         " +
             "\n  ON (G.ParCompany_Id = C.Id OR G.ParCompany_Id IS NULL) AND G.ParLevel1_Id = L1.Id                                                                                           " +
             "\n  WHERE C.Id = " + unidadeId + "                                                                                                                                              " +
-            "\n  AND L1.Id NOT IN (SELECT CCC.ParLevel1_Id FROM ConsolidationLevel1 CCC WHERE CCC.UnitId = " + unidadeId + "                                                                                  " +
+            "\n  AND L1.Id = 25 " +
+             "\n ) AS Score " +
+        "\n ) Real " +
+            "\n                                                                                                                                                                              " +
+            "\n  UNION ALL                                                                                                                                                                   " +
+            "\n                                                                                                                                                                              " +
+            "\n                                                                                                                                                                              " +
+            "\n  SELECT                                                                                                                                                                      " +
+            "\n  --*                                                                                                                                                                         " +
+            "\n      CL.Id                      AS Cluster                                                                                                                                   " +
+            "\n  , CL.Name AS ClusterName                                                                                                                                                    " +
+            "\n  , S.Id AS Regional                                                                                                                                                          " +
+            "\n  , S.Name AS RegionalName                                                                                                                                                    " +
+            "\n  , C.Id AS ParCompanyId                                                                                                                                                      " +
+            "\n  , C.Name AS ParCompanyName                                                                                                                                                  " +
+            "\n                                                                                                                                                                              " +
+            "\n  , CASE WHEN L1.IsRuleConformity = 0 THEN 1 ELSE 2 END AS TipoIndicador                                                                                                      " +
+            "\n  , CASE WHEN L1.IsRuleConformity = 0 THEN 'Menor' ELSE 'Maior' END AS TipoIndicadorName                                                                                      " +
+            "\n                                                                                                                                                                              " +
+            "\n  , L1.Id AS Level1Id                                                                                                                                                         " +
+            "\n  , L1.Name AS Level1Name                                                                                                                                                     " +
+            "\n                                                                                                                                                                              " +
+            "\n  , CRL.Id AS Criterio                                                                                                                                                        " +
+            "\n  , CRL.Name AS CriterioName                                                                                                                                                  " +
+            "\n                                                                                                                                                                              " +
+            "\n  ,0	AS AV                                                                                                                                            " +
+            "\n                                                                                                                                                                              " +
+            "\n  ,0	AS NC                                                                                                                                            " +
+            "\n                                                                                                                                                                              " +
+            "\n                                                                                                                                                                              " +
+            "\n  , L1C.Points AS Pontos                                                                                                                                                      " +
+            "\n  , G.PercentValue AS Meta                                                                                                                                                    " +
+            "\n  ,0 AS Real                                                                                                                                          " +
+            "\n                                                                                                                                                                              " +
+            "\n  ,0	AS PontosAtingidos                                                                                                                               " +
+            "\n  ,0	AS Scorecard                                                                                                                                     " +
+            "\n                                                                                                                                                                              " +
+            "\n  FROM ParLevel1 L1                                                                                                                                                           " +
+            "\n  LEFT JOIN ParCompany C                                                                                                                                                      " +
+            "\n  ON C.Id = " + unidadeId + "                                                                                                                                                                 " +
+            "\n  LEFT JOIN ParCompanyXStructure CS                                                                                                                                           " +
+            "\n  ON CS.ParCompany_Id = C.Id                                                                                                                                                  " +
+            "\n  LEFT JOIN ParStructure S                                                                                                                                                    " +
+            "\n  ON S.Id = CS.ParStructure_Id                                                                                                                                                " +
+            "\n  LEFT JOIN ParStructureGroup SG                                                                                                                                              " +
+            "\n  ON SG.Id = S.ParStructureGroup_Id                                                                                                                                           " +
+            "\n  LEFT JOIN ParCompanyCluster CCL                                                                                                                                             " +
+            "\n  ON CCL.ParCompany_Id = C.Id                                                                                                                                                 " +
+            "\n  LEFT JOIN ParCluster CL                                                                                                                                                     " +
+            "\n  ON CL.Id = CCL.ParCluster_Id                                                                                                                                                " +
+            "\n  LEFT JOIN ParConsolidationType CT                                                                                                                                           " +
+            "\n  ON CT.Id = L1.ParConsolidationType_Id                                                                                                                                       " +
+            "\n  LEFT JOIN ParLevel1XCluster L1C                                                                                                                                             " +
+            "\n  ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id                                                                                                                   " +
+            "\n  LEFT JOIN ParCriticalLevel CRL                                                                                                                                              " +
+            "\n  ON L1C.ParCriticalLevel_Id = CRL.Id                                                                                                                                         " +
+            "\n  LEFT JOIN ParGoal G                                                                                                                                                         " +
+            "\n  ON (G.ParCompany_Id = C.Id OR G.ParCompany_Id IS NULL) AND G.ParLevel1_Id = L1.Id                                                                                           " +
+            "\n  WHERE C.Id = " + unidadeId + " " +
+            "\n  AND L1.Id <> 25 " +
+            "\n  AND L1.Id NOT IN (SELECT CCC.ParLevel1_Id FROM ConsolidationLevel1 CCC WHERE CCC.UnitId = " + unidadeId + "                                                                 " +
             "\n  AND CCC.ConsolidationDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59')                                             ";
     }
 
