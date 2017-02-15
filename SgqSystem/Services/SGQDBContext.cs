@@ -1276,9 +1276,9 @@ namespace SGQDBContext
     {
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
 
-        public int nCdCaracteristica { get; set; }
+        public String nCdCaracteristica { get; set; }
         public String cNmCaracteristica { get; set; }
-        public int cNrCaracteristica { get; set; }
+        public String cNrCaracteristica { get; set; }
         public String cSgCaracteristica { get; set; }
         public String cIdentificador { get; set; }
 
