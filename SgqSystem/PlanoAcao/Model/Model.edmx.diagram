@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3a9dccd4764f4cd2bfab835c1688e777" Name="Diagram1">
+        <EntityTypeShape EntityType="PADATABASEEntities.AcompanhamentoTarefa" Width="1.5" PointX="3" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PADATABASEEntities.Cabecalho" Width="1.5" PointX="6" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PADATABASEEntities.Campo" Width="1.5" PointX="1.5" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PADATABASEEntities.ConfiguracaoEmailPA" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PADATABASEEntities.GrupoCabecalho" Width="1.5" PointX="1.5" PointY="23.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PADATABASEEntities.GrupoProjeto" Width="1.5" PointX="1.5" PointY="33.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PADATABASEEntities.LogOperacaoPA" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PADATABASEEntities.MultiplaEscolha" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PADATABASEEntities.Projeto" Width="1.5" PointX="1.5" PointY="28.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PADATABASEEntities.TarefaPA" Width="1.5" PointX="8.25" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PADATABASEEntities.Unidades" Width="1.5" PointX="1.5" PointY="37.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PADATABASEEntities.Usuarios" Width="1.5" PointX="0.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PADATABASEEntities.VinculoCampoCabecalho" Width="1.5" PointX="11.25" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PADATABASEEntities.VinculoCampoTarefa" Width="1.5" PointX="13.5" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PADATABASEEntities.VinculoParticipanteMultiplaEscolha" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PADATABASEEntities.VinculoParticipanteProjeto" Width="1.5" PointX="3" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PADATABASEEntities.VIEW_STATUS_PA" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="PADATABASEEntities.FK_AcompanhamentoTarefa_Participante" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_AcompanhamentoTarefa_Tarefa" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_Cabecalho_Participante" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_Cabecalho_Projeto" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_Tarefa_Cabecalho" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_VinculoCampoCabecalho_Cabecalho" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_Campo_GrupoCabecalho" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_Campo_Projeto" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_MultiplaEscolha_Campo" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_VinculoCampoCabecalho_Campo" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_VinculoCampoTarefa_Campo" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_GrupoCabecalho_Projeto" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_VinculoCampoCabecalho_GrupoCabecalho" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_GrupoProjeto_Empresa" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_Projeto_GrupoProjeto" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_VinculoCampoCabecalho_MultiplaEscolha" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_VinculoCampoTarefa_MultiplaEscolha" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_VinculoParticipanteMultiplaEscolha_MultiplaEscolha" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_Tarefa_Projeto" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_VinculoParticipanteProjeto_Projeto" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_Tarefa_Participante" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_VinculoCampoTarefa_Tarefa" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_VinculoCampoCabecalho_Participante" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_VinculoCampoTarefa_Participante" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_VinculoParticipanteMultiplaEscolha_Participante" ManuallyRouted="false" />
+        <AssociationConnector Association="PADATABASEEntities.FK_VinculoParticipanteProjeto_Participante" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
