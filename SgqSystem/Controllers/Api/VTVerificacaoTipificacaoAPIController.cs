@@ -235,7 +235,6 @@ namespace SgqSystem.Controllers.Api
                 // Query String para verificação das Caracteristicas da tipificação
                 string queryString = "exec FBED_GRTTipificacaoCaracteristica " + verificacaoTipificacao.UnidadeId + ", '" + verificacaoTipificacao.DataHora.ToString("yyyyMMdd") + "', " + verificacaoTipificacao.Sequencial;
 
-                queryString = "SELECT 1";
                 int iSequencial = 0;
                 int iBanda = 0;
                 DateTime dataHoraMonitor = DateTime.Now;
@@ -390,7 +389,7 @@ namespace SgqSystem.Controllers.Api
                                         ///****trocar***//
                                       
                                         int iParLevel1_Id = Convert.ToInt32("1");
-                                        DateTime dataC = new DateTime();
+                                        DateTime dataC = verificacaoTipificacao.DataHora;
 
 
                                         var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(verificacaoTipificacao.UnidadeId, iParLevel1_Id, dataC);
@@ -572,22 +571,22 @@ namespace SgqSystem.Controllers.Api
 
 
             string queryString = "(SELECT 'VTR', U.CODIGO nCdEmpresa, VT.DATAHORA dMovimento, VT.SEQUENCIAL iSequencial, VT.BANDA iBanda, VTR.CARACTERISTICATIPIFICACAOID nCdCaracteristicaTipificacao, CT.cIdentificador, VTV.nCdCaracteristicaTipificacao " +
-                                "FROM VERIFICACAOTIPIFICACAO VT " +
+                                "FROM VTVERIFICACAOTIPIFICACAO VT " +
                                 "INNER JOIN UNIDADES U ON U.ID = VT.UNIDADEID " +
-                                "INNER JOIN VERIFICACAOTIPIFICACAOresultados VTR ON VTR.CHAVE = VT.CHAVE " +
+                                "INNER JOIN VTVERIFICACAOTIPIFICACAOresultados VTR ON VTR.CHAVE = VT.CHAVE " +
                                 "INNER JOIN CaracteristicaTipificacao CT ON VTR.CARACTERISTICATIPIFICACAOID=CT.nCdCaracteristica " +
-                                "LEFT JOIN VerificacaoTipificacaoValidacao VTV ON VTV.nCdEmpresa=U.CODIGO AND CAST(VTV.dMovimento AS DATE) = CAST(VT.datahora AS DATE) AND VTV.iSequencial=VT.SEQUENCIAL AND VTV.IBANDA=VT.BANDA AND VTV.nCdCaracteristicaTipificacao=VTR.CARACTERISTICATIPIFICACAOID " +
+                                "LEFT JOIN VTVerificacaoTipificacaoValidacao VTV ON VTV.nCdEmpresa=U.CODIGO AND CAST(VTV.dMovimento AS DATE) = CAST(VT.datahora AS DATE) AND VTV.iSequencial=VT.SEQUENCIAL AND VTV.IBANDA=VT.BANDA AND VTV.nCdCaracteristicaTipificacao=VTR.CARACTERISTICATIPIFICACAOID " +
                                 "WHERE U.CODIGO='" + unidadeCodigo + "' AND CAST(VT.datahora AS DATE) = CAST('" + data + "' AS DATE) AND VT.sequencial='" + sequencial + "' AND VT.Banda='" + banda + "')" +
                                 "UNION ALL " +
                                 "(SELECT 'VTV', VTV.nCdEmpresa, VTV.dMovimento, VTV.iSequencial, VTV.iBanda, VTR.CaracteristicaTipificacaoId, VTV.cIdentificadorTipificacao, VTV.nCdCaracteristicaTipificacao " +
-                                "FROM VerificacaoTipificacaoValidacao VTV " +
+                                "FROM VTVerificacaoTipificacaoValidacao VTV " +
                                 "INNER JOIN UNIDADES U ON U.CODIGO = VTV.nCdEmpresa " +
-                                "INNER JOIN VERIFICACAOTIPIFICACAO VT ON VT.UnidadeId=U.ID AND VT.Sequencial=VTV.iSequencial AND VT.Banda=VTV.iBanda AND CAST(VT.DataHora AS DATE) = CAST(VTV.dMovimento AS DATE) " +
-                                "LEFT JOIN VERIFICACAOTIPIFICACAOresultados VTR ON VTR.CHAVE = VT.CHAVE AND VTR.CaracteristicaTipificacaoId=VTV.nCdCaracteristicaTipificacao " +
+                                "INNER JOIN VTVERIFICACAOTIPIFICACAO VT ON VT.UnidadeId=U.ID AND VT.Sequencial=VTV.iSequencial AND VT.Banda=VTV.iBanda AND CAST(VT.DataHora AS DATE) = CAST(VTV.dMovimento AS DATE) " +
+                                "LEFT JOIN VTVERIFICACAOTIPIFICACAOresultados VTR ON VTR.CHAVE = VT.CHAVE AND VTR.CaracteristicaTipificacaoId=VTV.nCdCaracteristicaTipificacao " +
                                 "WHERE VTV.nCdEmpresa='" + unidadeCodigo + "' AND CAST(VTV.dMovimento AS DATE) = CAST('" + data + "' AS DATE) AND VTV.iSequencial='" + sequencial + "' AND VTV.iBanda='" + banda + "') ";
 
             //utiliza transacao para excluir e incluir os itens
-            using (SqlConnection connection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SGQ"].ConnectionString))
+            using (SqlConnection connection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
 
