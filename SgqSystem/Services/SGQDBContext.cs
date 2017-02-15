@@ -871,12 +871,20 @@ namespace SGQDBContext
         }
         public int getMaxSampe(int ConsolidationLevel2_Id, int EvaluationNumber)
         {
+            try
+            {
 
-            SqlConnection db = new SqlConnection(conexao);
+                SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT MAX(Sample) FROM CollectionLevel2 WHERE ConsolidationLevel2_Id = " + ConsolidationLevel2_Id + " AND EvaluationNumber = " +  EvaluationNumber;
-            var LastSample = db.Query<int>(sql).FirstOrDefault();
-            return LastSample;
+                string sql = "SELECT MAX(Sample) FROM CollectionLevel2 WHERE ConsolidationLevel2_Id = " + ConsolidationLevel2_Id + " AND EvaluationNumber = " + EvaluationNumber;
+                var LastSample = db.Query<int>(sql).FirstOrDefault();
+                return LastSample;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+                throw ex;
+            }
         }
         public IEnumerable<Level2Result> getKeys(int ParLevel1_Id, int ParCompany_Id, string dataInicio, string dataFim)
         {
