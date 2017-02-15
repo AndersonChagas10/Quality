@@ -171,23 +171,45 @@ namespace SgqSystem.Controllers
              * 
              **/
 
-            List<Indicador> Indicadores;
+            //Lista com todos os indicadores
+            //List<Indicador> Indicadores;
 
-            string query = "SELECT DISTINCT DIMNAME as Nome FROM DimManColetaDados where DIMNAME is not null";
+            string query = "SELECT DISTINCT DimName as Nome, Name as NomeReal FROM DimManColetaDados WHERE DimRealTarget = 'Real' and DimName is not null";
 
-            Indicadores = db.Database.SqlQuery<Indicador>(query).ToList();
+            var Indicadores = db.Database.SqlQuery<Indicador>(query).ToList();
+
+
+            //Pergunta se existe o Indicador na data
+
+            //foreach (var item in Indicadores)
+            
+
+            for (int i = 0; i < Indicadores.Count; i++)
+            {
+                query = "SELECT top 1 " + Indicadores[i].NomeReal + " as PerguntaIndicador FROM ManColetaDados WHERE Base_dateRef= '" + DateTime.Now.ToString("yyyy - MM - dd") + "' AND " + Indicadores[i].NomeReal + " IS NOT NULL ";
+
+                Nullable<decimal> result = db.Database.SqlQuery<Nullable<decimal>>(query).FirstOrDefault();
+
+                if (result != null)
+                {
+                    Indicadores.RemoveAt(i);
+                }
+            }
 
             ViewBag.Indicadores = Indicadores;
 
             return View(new ManDataCollectIT() { AmountData = 0 });
-        }       
-
+        }
     }
 
     public class Indicador
     {
         public string Nome { get; set; }
+        public string NomeReal { get; set; }
     }
 
-
+    public class Pergunta
+    {
+        public string PerguntaIndicador { get; set; }
+    }
 }

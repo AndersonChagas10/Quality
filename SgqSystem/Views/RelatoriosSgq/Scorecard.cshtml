@@ -97,6 +97,9 @@
                 },
                 createdRow: function (row, data, index) {
 
+
+                  
+
                     if (data["Scorecard"] > 99 || (data["CriterioName"] == 'Maior' && (data["AV"] == 0 && data["NC"] == 0))) {
                         // green
                         $('td', row).eq(12).css("background-color", '#33FF33');
@@ -141,6 +144,7 @@
                     },
                     {
                         extend: 'excelHtml5',
+                        
                         exportOptions: {
                             columns: ':visible'
                         }

@@ -1,6 +1,4 @@
 ﻿using Dominio;
-using DTO.Helpers;
-using SgqSystem.Handlres;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,7 +54,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
             sql = "select Name as indicadorNome from DimManColetaDados where DimRealTarget = 'Real' and DimName is not null and DimName = '" + obj.descricao + "'";
 
             var db1 = new SgqDbDevEntities();
-            
+
             List<Obj2> list = db1.Database.SqlQuery<Obj2>(sql).ToList();
 
             obj.indicadorNome = list[0].indicadorNome;
@@ -77,7 +75,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
             "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'," +
             "'" + obj.data.ToString("yyyy-MM-dd HH:mm:ss") + "'," +
             "'" + obj.comentarios + "'," +
-            "'" + obj.quantidade + "'" +
+            " replace('" + obj.quantidade + "',',','.')" + //BS: Alteração feita=> Troca de Virgula (,) por Ponto (.): Replace()
             ")";
 
             using (var db = new SgqDbDevEntities())
