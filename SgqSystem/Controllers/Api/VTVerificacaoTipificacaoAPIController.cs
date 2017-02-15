@@ -35,18 +35,28 @@ namespace SgqSystem.Controllers.Api
                     //Atribui a data da verificação que for encontrada
                     dataHoraTipificacao = verificacaoTipificacao.DataHora;
 
-                    //Busca todos os resultados referente a verificação localizada
-                    var resultados = db.VTVerificacaoTipificacaoResultados.Where(p => p.Chave == verificacaoTipificacao.Chave).ToList();
-                    //Deleta os resultados da verificaçao
-                    foreach (var r in resultados)
-                    {
-                        db.VTVerificacaoTipificacaoResultados.Remove(r);
-                    }
+                    string queryValidacaoVDelete = "DELETE FROM VTVerificacaoTipificacaoResultados WHERE chave='" + verificacaoTipificacao.Chave + "'";
+                    int noOfRowDeleted = db.Database.ExecuteSqlCommand(queryValidacaoVDelete);
+
+
+                    string queryValidacaoVDelete1 = "DELETE FROM VTVerificacaoTipificacao WHERE id='" + verificacaoTipificacao.Id + "'";
+                    int noOfRowDeleted1 = db.Database.ExecuteSqlCommand(queryValidacaoVDelete1);
+
+                    ////Busca todos os resultados referente a verificação localizada
+                    //var resultados = db.VTVerificacaoTipificacaoResultados.Where(p => p.Chave == verificacaoTipificacao.Chave).ToList();
+                    ////Deleta os resultados da verificaçao
+                    //foreach (var r in resultados)
+                    //{
+                    //    db.VTVerificacaoTipificacaoResultados.Remove(r);
+                    //}
+                    //db.SaveChanges();
+
                     //Deleta a Verificação
-                    db.VTVerificacaoTipificacao.Remove(verificacaoTipificacao);
+                    //db.VTVerificacaoTipificacao.Remove(verificacaoTipificacao);
+                    //db.SaveChanges();
+
                 }
 
-                db.SaveChanges();
 
                 //instanciamos um novo objeto na verificacao da tipificacao
                 verificacaoTipificacao = new VTVerificacaoTipificacao();
@@ -138,7 +148,7 @@ namespace SgqSystem.Controllers.Api
 
             }
         }
-        public string connectionString(int parCompany_Id, string url = null)
+        public void connectionString(int parCompany_Id, ref string conexao, ref ParCompany company)
         {
             try
             {
@@ -161,21 +171,19 @@ namespace SgqSystem.Controllers.Api
                     }
 
 
-                    string conexao = null;
+                   
                     if(parCompany != null)
                     {
                         string porta = null;
 
                          conexao = "data source=" + parCompany.IPServer + porta + ";initial catalog=" + parCompany.DBServer + ";persist security info=True;user id=" + _user + ";password=" + _password + ";";
-
+                        company = parCompany;
                     }
-                    return conexao;
                 }                   
             }
             catch (Exception ex)
             {
                 string mensagem = ex.Message;
-                return mensagem;
             }
         }
 
@@ -230,12 +238,17 @@ namespace SgqSystem.Controllers.Api
                 //Instanciamos a variável excluirVerificacaoAntiga para verificar se existe alguma verificação na tabela VerificacaoTipificacaoValidacao.
                 bool excluirVerificacaoAntiga = false;
 
-                string conexao = connectionString(verificacaoTipificacao.UnidadeId);
+                string conexao = null;
+                var company = new ParCompany();
 
+                connectionString(verificacaoTipificacao.UnidadeId, ref conexao, ref company);
+
+
+           
                 // Query String para verificação das Caracteristicas da tipificação
-                string queryString = "exec FBED_GRTTipificacaoCaracteristica " + verificacaoTipificacao.UnidadeId + ", '" + verificacaoTipificacao.DataHora.ToString("yyyyMMdd") + "', " + verificacaoTipificacao.Sequencial;
+                string queryString = "exec FBED_GRTTipificacaoCaracteristica " + company.CompanyNumber + ", '" + verificacaoTipificacao.DataHora.ToString("yyyyMMdd") + "', " + verificacaoTipificacao.Sequencial;
 
-                queryString = "SELECT 1";
+                //queryString = "SELECT 1";
                 int iSequencial = 0;
                 int iBanda = 0;
                 DateTime dataHoraMonitor = DateTime.Now;
@@ -249,10 +262,10 @@ namespace SgqSystem.Controllers.Api
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
 
-                            string queryZeroToNull = "UPDATE VerificacaoTipificacaoResultados SET AreasParticipantesId = NULL WHERE AreasParticipantesId='0'";
+                            string queryZeroToNull = "UPDATE VTVerificacaoTipificacaoResultados SET AreasParticipantesId = NULL WHERE AreasParticipantesId='0'";
                             int noOfRowDeleted0 = db.Database.ExecuteSqlCommand(queryZeroToNull);
 
-                            queryZeroToNull = "UPDATE VerificacaoTipificacaoResultados SET CaracteristicaTipificacaoId = NULL WHERE CaracteristicaTipificacaoId='0'";
+                            queryZeroToNull = "UPDATE VTVerificacaoTipificacaoResultados SET CaracteristicaTipificacaoId = NULL WHERE CaracteristicaTipificacaoId='0'";
                             noOfRowDeleted0 = db.Database.ExecuteSqlCommand(queryZeroToNull);
 
 
@@ -305,12 +318,12 @@ namespace SgqSystem.Controllers.Api
                                         //}
                                         //podemos excluir resultados e tbm
                                         //deleta validacao
-                                        string queryValidacaoVDelete = "DELETE FROM VerificacaoTipificacaoValidacao WHERE nCdEmpresa='" + nCdEmpresa + "' AND CAST(dMovimento AS DATE) ='" + dMovimento.ToString("yyyy-MM-dd 00:00:00") + "' AND iSequencial='" + iSequencial + "' AND iBanda='" + iBanda + "'";
+                                        string queryValidacaoVDelete = "DELETE FROM VTVerificacaoTipificacaoValidacao WHERE nCdEmpresa='" + nCdEmpresa + "' AND CAST(dMovimento AS DATE) ='" + dMovimento.ToString("yyyy-MM-dd 00:00:00") + "' AND iSequencial='" + iSequencial + "' AND iBanda='" + iBanda + "'";
                                         int noOfRowDeleted = db.Database.ExecuteSqlCommand(queryValidacaoVDelete);
 
 
                                         //deleta validacao de comparacao
-                                        string queryValidacaoCDelete = "DELETE FROM VerificacaoTipificacaoComparacao WHERE nCdEmpresa='" + nCdEmpresa + "' AND CAST(DataHora AS DATE) = '" + dMovimento.ToString("yyyy-MM-dd 00:00:00") + "' AND Sequencial='" + iSequencial + "' AND Banda='" + iBanda + "'";
+                                        string queryValidacaoCDelete = "DELETE FROM VTVerificacaoTipificacaoComparacao WHERE nCdEmpresa='" + nCdEmpresa + "' AND CAST(DataHora AS DATE) = '" + dMovimento.ToString("yyyy-MM-dd 00:00:00") + "' AND Sequencial='" + iSequencial + "' AND Banda='" + iBanda + "'";
                                         noOfRowDeleted = db.Database.ExecuteSqlCommand(queryValidacaoCDelete);
                                         //if (ExcluiVerificacaoTipificacaoValidacao(nCdEmpresa, dMovimento, iSequencial) == false)
                                         //{
@@ -329,7 +342,7 @@ namespace SgqSystem.Controllers.Api
                                         //Informamos na tabela verificação que o status da verificação é verdadeiro
                                         verificacaoTipificacao.Status = true;
                                         //Instanciamos um novo objeto da tabela VerificacaoTipificacaoValidacao
-                                        var VerificacaoTipificacaoValidacao = new VerificacaoTipificacaoValidacao();
+                                        var VerificacaoTipificacaoValidacao = new VTVerificacaoTipificacaoValidacao();
                                         //Incluimos o registro na tabela com 
                                         VerificacaoTipificacaoValidacao.nCdEmpresa = nCdEmpresa;
                                         VerificacaoTipificacaoValidacao.dMovimento = dMovimento;
@@ -338,10 +351,12 @@ namespace SgqSystem.Controllers.Api
                                         VerificacaoTipificacaoValidacao.iBanda = iBanda;
                                         VerificacaoTipificacaoValidacao.cIdentificadorTipificacao = cIdentificadorTipificacao;
                                         VerificacaoTipificacaoValidacao.nCdCaracteristicaTipificacao = nCdCaracteristicaTipificacao;
-                                        db.VerificacaoTipificacaoValidacao.Add(VerificacaoTipificacaoValidacao);
+                                        db.VTVerificacaoTipificacaoValidacao.Add(VerificacaoTipificacaoValidacao);
+                                        db.SaveChanges();
                                     }
                                 }
                             }
+                            db.SaveChanges();
 
                             iBanda = verificacaoTipificacao.Banda;
                             if (existeComparacao == false)
@@ -350,7 +365,7 @@ namespace SgqSystem.Controllers.Api
                             }
                             else
                             {
-                                db.SaveChanges();
+                                //db.SaveChanges();
                                 //tratamento de erro, como fica?
                                 //Verifica se a comparação entre a tabela Verificação Comparação Resultados está conforme a tabela Verificação Tipificação Validacao
                                 //
@@ -361,6 +376,16 @@ namespace SgqSystem.Controllers.Api
 
                                     using (var db2 = new SgqDbDevEntities())
                                     {
+
+                                        var ParLevel1 = (from p in db2.ParLevel1
+                                                         where p.hashKey == 5
+                                                         select p).FirstOrDefault();
+
+
+                                        var ParLevel2 = (from p in db2.ParLevel2
+                                                         where p.Description == "183"
+                                                         select p).FirstOrDefault();
+
                                         var collectionLevel2 = (from p in db2.CollectionLevel2
                                                                 where p.Key == verificacaoTipificacaoChave
                                                                 select p).FirstOrDefault();
@@ -389,15 +414,15 @@ namespace SgqSystem.Controllers.Api
 
                                         ///****trocar***//
                                       
-                                        int iParLevel1_Id = Convert.ToInt32("1");
-                                        DateTime dataC = new DateTime();
+                                        
+                                        DateTime dataC = verificacaoTipificacao.DataHora;
 
 
-                                        var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(verificacaoTipificacao.UnidadeId, iParLevel1_Id, dataC);
+                                        var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(verificacaoTipificacao.UnidadeId, ParLevel1.Id, dataC);
 
                                         if (consolidationLevel1 == null)
                                         {
-                                            consolidationLevel1 = SgqSystem.InsertConsolidationLevel1(verificacaoTipificacao.UnidadeId, iParLevel1_Id, dataC);
+                                            consolidationLevel1 = SgqSystem.InsertConsolidationLevel1(verificacaoTipificacao.UnidadeId, ParLevel1.Id, dataC);
                                             if (consolidationLevel1 == null)
                                             {
                                                 throw new Exception();
@@ -405,12 +430,11 @@ namespace SgqSystem.Controllers.Api
                                         }
 
                                         //******Trocar
-                                        int iParLevel2_Id = Convert.ToInt32("1");
 
-                                        var consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(verificacaoTipificacao.UnidadeId, consolidationLevel1.Id, iParLevel2_Id);
+                                        var consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(verificacaoTipificacao.UnidadeId, consolidationLevel1.Id, ParLevel2.Id);
                                         if (consolidationLevel2 == null)
                                         {
-                                            consolidationLevel2 = SgqSystem.InsertConsolidationLevel2(consolidationLevel1.Id, iParLevel2_Id, verificacaoTipificacao.UnidadeId, dataC);
+                                            consolidationLevel2 = SgqSystem.InsertConsolidationLevel2(consolidationLevel1.Id, ParLevel2.Id, verificacaoTipificacao.UnidadeId, dataC);
                                             if (consolidationLevel2 == null)
                                             {
                                                 throw new Exception();
@@ -424,8 +448,8 @@ namespace SgqSystem.Controllers.Api
 
                                         ///////************TROCAR**************/////////////
                                         collectionLevel2.ConsolidationLevel2_Id = consolidationLevel2.Id;
-                                        collectionLevel2.ParLevel1_Id = 1;
-                                        collectionLevel2.ParLevel2_Id = 1;
+                                        collectionLevel2.ParLevel1_Id = ParLevel1.Id;
+                                        collectionLevel2.ParLevel2_Id = ParLevel2.Id;
                                         collectionLevel2.UnitId = verificacaoTipificacao.UnidadeId;
                                         collectionLevel2.AuditorId = 1;
                                         collectionLevel2.Shift = 1;
@@ -433,7 +457,7 @@ namespace SgqSystem.Controllers.Api
                                         collectionLevel2.Phase = 1;
                                         collectionLevel2.ReauditIs = false;
                                         collectionLevel2.ReauditNumber = 1;
-                                        collectionLevel2.CollectionDate = DateTime.Now;
+                                        collectionLevel2.CollectionDate = verificacaoTipificacao.DataHora;
                                         collectionLevel2.StartPhaseDate = DateTime.MinValue;
                                         collectionLevel2.EvaluationNumber = verificacaoTipificacao.EvaluationNumber;
                                         collectionLevel2.Sample = verificacaoTipificacao.Sample.GetValueOrDefault();
@@ -450,7 +474,11 @@ namespace SgqSystem.Controllers.Api
                                         collectionLevel2.Side = iBanda;
 
                                         db2.CollectionLevel2.Add(collectionLevel2);
-                                        db.SaveChanges();
+                                        db2.SaveChanges();
+
+                                        var ParLevel3List = (from p in db2.ParLevel3
+                                                             select p).ToList();
+
 
                                         for (var i = 0; i < ArrayComparacao.Length; i++)
                                         {
@@ -467,15 +495,19 @@ namespace SgqSystem.Controllers.Api
                                                                   where y.cIdentificador.Equals(comparacaoToString)
                                                                   select x).FirstOrDefault().TarefaId;
 
-                                            bool conforme = verificacaoTipificaoComparacao(verificacaoTipificacao.UnidadeId.ToString(), verificacaoTipificacao.DataHora.ToString("yyyyMMdd"), verificacaoTipificacao.Sequencial.ToString(), iBanda.ToString(), null, verificacaoTipificacao.UnidadeId.ToString(), "1", "1", conexao, varComparacao);
+                                            var ParLevel3 = (from p in ParLevel3List
+                                                             where p.Description == resultIdTarefa.ToString()
+                                                             select p).FirstOrDefault();
+
+                                            bool conforme = verificacaoTipificaoComparacao(company.CompanyNumber.ToString(), verificacaoTipificacao.DataHora.ToString("yyyyMMdd"), verificacaoTipificacao.Sequencial.ToString(), iBanda.ToString(), null, verificacaoTipificacao.UnidadeId.ToString(), "1", "1", conexao, varComparacao);
 
                                             var result = new Result_Level3();
                                             result.CollectionLevel2_Id = collectionLevel2.Id;
 
                                             //***trocar/*******//
-                                            result.ParLevel3_Id = 1;
-                                            result.ParLevel3_Name = "";
-                                            result.Weight = 0;
+                                            result.ParLevel3_Id = ParLevel3.Id;
+                                            result.ParLevel3_Name = ParLevel3.Name;
+                                            result.Weight = 1;
                                             result.IntervalMin = "0";
                                             result.IntervalMax = "0";
                                             result.Value = "0";
@@ -490,7 +522,7 @@ namespace SgqSystem.Controllers.Api
                                             db2.Result_Level3.Add(result);
                                         
                                         }
-                                        db.SaveChanges();
+                                        db2.SaveChanges();
 
 
 
@@ -572,22 +604,24 @@ namespace SgqSystem.Controllers.Api
 
 
             string queryString = "(SELECT 'VTR', U.CODIGO nCdEmpresa, VT.DATAHORA dMovimento, VT.SEQUENCIAL iSequencial, VT.BANDA iBanda, VTR.CARACTERISTICATIPIFICACAOID nCdCaracteristicaTipificacao, CT.cIdentificador, VTV.nCdCaracteristicaTipificacao " +
-                                "FROM VERIFICACAOTIPIFICACAO VT " +
+                                "FROM VTVERIFICACAOTIPIFICACAO VT " +
                                 "INNER JOIN UNIDADES U ON U.ID = VT.UNIDADEID " +
-                                "INNER JOIN VERIFICACAOTIPIFICACAOresultados VTR ON VTR.CHAVE = VT.CHAVE " +
-                                "INNER JOIN CaracteristicaTipificacao CT ON VTR.CARACTERISTICATIPIFICACAOID=CT.nCdCaracteristica " +
-                                "LEFT JOIN VerificacaoTipificacaoValidacao VTV ON VTV.nCdEmpresa=U.CODIGO AND CAST(VTV.dMovimento AS DATE) = CAST(VT.datahora AS DATE) AND VTV.iSequencial=VT.SEQUENCIAL AND VTV.IBANDA=VT.BANDA AND VTV.nCdCaracteristicaTipificacao=VTR.CARACTERISTICATIPIFICACAOID " +
+                                "INNER JOIN VTVERIFICACAOTIPIFICACAOresultados VTR ON VTR.CHAVE = VT.CHAVE " +
+                                //Trocamos nCdCaracteristica para cNrCaracteristica
+                                //"INNER JOIN CaracteristicaTipificacao CT ON VTR.CARACTERISTICATIPIFICACAOID=CT.nCdCaracteristica " +
+                                "INNER JOIN CaracteristicaTipificacao CT ON VTR.CARACTERISTICATIPIFICACAOID=CT.cNrCaracteristica " +
+                                "LEFT JOIN VTVerificacaoTipificacaoValidacao VTV ON VTV.nCdEmpresa=U.CODIGO AND CAST(VTV.dMovimento AS DATE) = CAST(VT.datahora AS DATE) AND VTV.iSequencial=VT.SEQUENCIAL AND VTV.IBANDA=VT.BANDA AND VTV.nCdCaracteristicaTipificacao=VTR.CARACTERISTICATIPIFICACAOID " +
                                 "WHERE U.CODIGO='" + unidadeCodigo + "' AND CAST(VT.datahora AS DATE) = CAST('" + data + "' AS DATE) AND VT.sequencial='" + sequencial + "' AND VT.Banda='" + banda + "')" +
                                 "UNION ALL " +
                                 "(SELECT 'VTV', VTV.nCdEmpresa, VTV.dMovimento, VTV.iSequencial, VTV.iBanda, VTR.CaracteristicaTipificacaoId, VTV.cIdentificadorTipificacao, VTV.nCdCaracteristicaTipificacao " +
-                                "FROM VerificacaoTipificacaoValidacao VTV " +
+                                "FROM VTVerificacaoTipificacaoValidacao VTV " +
                                 "INNER JOIN UNIDADES U ON U.CODIGO = VTV.nCdEmpresa " +
-                                "INNER JOIN VERIFICACAOTIPIFICACAO VT ON VT.UnidadeId=U.ID AND VT.Sequencial=VTV.iSequencial AND VT.Banda=VTV.iBanda AND CAST(VT.DataHora AS DATE) = CAST(VTV.dMovimento AS DATE) " +
-                                "LEFT JOIN VERIFICACAOTIPIFICACAOresultados VTR ON VTR.CHAVE = VT.CHAVE AND VTR.CaracteristicaTipificacaoId=VTV.nCdCaracteristicaTipificacao " +
+                                "INNER JOIN VTVERIFICACAOTIPIFICACAO VT ON VT.UnidadeId=U.ID AND VT.Sequencial=VTV.iSequencial AND VT.Banda=VTV.iBanda AND CAST(VT.DataHora AS DATE) = CAST(VTV.dMovimento AS DATE) " +
+                                "LEFT JOIN VTVERIFICACAOTIPIFICACAOresultados VTR ON VTR.CHAVE = VT.CHAVE AND VTR.CaracteristicaTipificacaoId=VTV.nCdCaracteristicaTipificacao " +
                                 "WHERE VTV.nCdEmpresa='" + unidadeCodigo + "' AND CAST(VTV.dMovimento AS DATE) = CAST('" + data + "' AS DATE) AND VTV.iSequencial='" + sequencial + "' AND VTV.iBanda='" + banda + "') ";
 
             //utiliza transacao para excluir e incluir os itens
-            using (SqlConnection connection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SGQ"].ConnectionString))
+            using (SqlConnection connection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
 

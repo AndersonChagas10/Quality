@@ -28,6 +28,8 @@ namespace SgqSystem.ViewModels
         public DateTime DataHora { get; set; }
         public int UnidadeId { get; set; }
         public string Chave { get; set; }
+        public Nullable<int> EvaluationNumber { get; set; }
+        public Nullable<int> Sample { get; set; }
     }
 
     public class VTVerificacaoTipificacaoResultadosDTO : EntityBase
