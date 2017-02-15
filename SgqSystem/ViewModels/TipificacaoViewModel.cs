@@ -16,6 +16,7 @@ namespace SgqSystem.ViewModels
         public int ProdutoId { get; set; }
         public int UnidadeId { get; set; }
         public int OperacaoId { get; set; }
+        public int AuditorId { get; set; }
         public VTVerificacaoTipificacaoDTO VerificacaoTipificacao { get; set; }
         public List<VTVerificacaoTipificacaoResultadosDTO> VerificacaoTipificacaoResultados { get; set; }
     }
