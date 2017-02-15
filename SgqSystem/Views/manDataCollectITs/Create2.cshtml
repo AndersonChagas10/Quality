@@ -23,7 +23,7 @@
 
             @Html.Label("Unidade", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
-                @Html.DropDownListFor(model => model.ParCompany_Id, new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.ParCompany_Id, new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.ParCompany_Id, "", new { @class = "text-danger" })
             </div>
 
@@ -69,9 +69,12 @@
 
         @*var myDarlingViewBag = @Html.Raw(Json.Encode(ViewBag.listaDataDataType));*@
 
+        var end = moment();
+
         $('.simpleCalendar').daterangepicker({
             singleDatePicker: true,
             showDropdowns: true,
+            maxDate: end,
             'locale': {
                 "format": "DD/MM/YYYY",
             }
@@ -81,6 +84,8 @@
 
         $('#GetIndicadores').click(function(){
 
+            $("#dataTable tbody").empty();
+
             Send();
         });
 
@@ -89,11 +94,14 @@
     function Send(){
 
         var Unidade = $('#ParCompany_Id option:selected').val();
+
         var Data = $('#date').val();
+
+        var newdate = Data.split("/").reverse().join("/");
 
         if(Unidade >= 0 && Data != ''){
 
-            var dados = { 'Date': Data, 'Unit': Unidade };
+            var dados = { 'Date': newdate, 'Unit': Unidade };
 
             $.post(url, dados, function (lista) {
 
@@ -200,7 +208,7 @@
 
                     var obj = {};
 
-                    obj['indicadorNome'] = 'CabAbat_QteBoiAbatidosReal';
+                    //obj['indicadorNome'] = 'CabAbat_QteBoiAbatidosReal';
                     obj['descricao'] = data[0];
                     obj['quantidade'] = quantidade;
                     obj['comentarios'] = comentarios;

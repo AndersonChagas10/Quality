@@ -68,7 +68,6 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
         }
 
-
         [HttpPost]
         [Route("GetIndicadores")]
         public List<Indicador> GetIdicadores(Obj3 obj3)
@@ -80,16 +79,13 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
             Indicadores = db.Database.SqlQuery<Indicador>(query).ToList();
 
-
             //Pergunta se existe o Indicador na data
-
-            //foreach (var item in Indicadores)
 
             int nIndicadores = Indicadores.Count;
 
             for (int i = 0; i < nIndicadores; i++)
             {
-                query = "SELECT top 1 " + Indicadores[i].NomeReal + " as PerguntaIndicador FROM ManColetaDados WHERE Base_dateRef= '" + obj3.Date.ToString("yyyy-MM-dd") + "' AND " + Indicadores[i].NomeReal + " IS NOT NULL ";
+                query = "SELECT top 1 " + Indicadores[i].NomeReal + " as PerguntaIndicador FROM ManColetaDados WHERE Base_dateRef = '" + obj3.Date.ToString("yyyy-MM-dd") + "' AND " + Indicadores[i].NomeReal + " IS NOT NULL AND Base_parCompany_id = " + obj3.Unit;
 
                 Nullable<decimal> result = db.Database.SqlQuery<Nullable<decimal>>(query).FirstOrDefault();
 
@@ -102,7 +98,6 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
             return Indicadores2;
         }
-
 
     }
 
