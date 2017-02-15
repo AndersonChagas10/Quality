@@ -1,4 +1,6 @@
-﻿using Dominio.Interfaces.Services;
+﻿using Dominio;
+using Dominio.Interfaces.Services;
+using DTO.DTO;
 using DTO.Helpers;
 using Helper;
 using SgqSystem.ViewModels;
@@ -14,9 +16,11 @@ namespace SgqSystem.Controllers.Api
     {
 
         private readonly IUserDomain _userDomain;
+        private readonly IBaseDomain<UserSgq, UserDTO> _userBaseDomain;
 
-        public UserAuthenticationController(IUserDomain userDomain)
+        public UserAuthenticationController(IUserDomain userDomain, IBaseDomain<UserSgq, UserDTO> userBaseDomain)
         {
+            _userBaseDomain = userBaseDomain;
             _userDomain = userDomain;
         }
 
@@ -51,28 +55,42 @@ namespace SgqSystem.Controllers.Api
 
         private void CreateCookie(GenericReturn<DTO.DTO.UserDTO> isAuthorized)
         {
-            //create a cookie
-            HttpCookie myCookie = new HttpCookie("webControlCookie");
+            CreateCookieFromUserDTO(isAuthorized.Retorno);
+        }
 
-            //Add key-values in the cookie
-            myCookie.Values.Add("userId", isAuthorized.Retorno.Id.ToString());
-            myCookie.Values.Add("userName", isAuthorized.Retorno.Name);
-            if (isAuthorized.Retorno.Role != null)
-                myCookie.Values.Add("roles", isAuthorized.Retorno.Role.Replace(';', ',').ToString());//"admin, teste, operacional, 3666,344, 43434,...."
+        private void CreateCookieFromUserDTO(UserDTO isAuthorized)
+        {
+            HttpCookie cookie = HttpContext.Request.Cookies.Get("webControlCookie");
+            if (cookie != null)
+            {
+                cookie.Expires = DateTime.Now.AddMinutes(60);
+                HttpContext.Response.Cookies.Set(cookie);
+            }
             else
-                myCookie.Values.Add("roles", "");
+            {
+                //create a cookie
+                HttpCookie myCookie = new HttpCookie("webControlCookie");
 
-            if (isAuthorized.Retorno.ParCompanyXUserSgq != null)
-                if (isAuthorized.Retorno.ParCompanyXUserSgq.Any(r => r.Role != null))
-                    myCookie.Values.Add("rolesCompany", string.Join(",", isAuthorized.Retorno.ParCompanyXUserSgq.Select(n => n.Role).Distinct().ToArray()));
-            else
-                myCookie.Values.Add("rolesCompany", "");
+                //Add key-values in the cookie
+                myCookie.Values.Add("userId", isAuthorized.Id.ToString());
+                myCookie.Values.Add("userName", isAuthorized.Name);
+                if (isAuthorized.Role != null)
+                    myCookie.Values.Add("roles", isAuthorized.Role.Replace(';', ',').ToString());//"admin, teste, operacional, 3666,344, 43434,...."
+                else
+                    myCookie.Values.Add("roles", "");
 
-            //set cookie expiry date-time. Made it to last for next 12 hours.
-            myCookie.Expires = DateTime.Now.AddMinutes(30);
+                if (isAuthorized.ParCompanyXUserSgq != null)
+                    if (isAuthorized.ParCompanyXUserSgq.Any(r => r.Role != null))
+                        myCookie.Values.Add("rolesCompany", string.Join(",", isAuthorized.ParCompanyXUserSgq.Select(n => n.Role).Distinct().ToArray()));
+                    else
+                        myCookie.Values.Add("rolesCompany", "");
 
-            //Most important, write the cookie to client.
-            Response.Cookies.Add(myCookie);
+                //set cookie expiry date-time. Made it to last for next 12 hours.
+                myCookie.Expires = DateTime.Now.AddMinutes(60);
+
+                //Most important, write the cookie to client.
+                Response.Cookies.Add(myCookie);
+            }
         }
 
         public ActionResult LogOut(UserViewModel user)
@@ -93,6 +111,14 @@ namespace SgqSystem.Controllers.Api
                 Response.SetCookie(currentUserCookie);
             }
            
+        }
+
+        [HttpGet]
+        public ActionResult KeepAlive(int id)
+        {
+            var isAuthorized =  _userBaseDomain.GetByIdNoLazyLoad(id);
+            CreateCookieFromUserDTO(isAuthorized);
+            return Json("OK", JsonRequestBehavior.AllowGet);
         }
 
     }
