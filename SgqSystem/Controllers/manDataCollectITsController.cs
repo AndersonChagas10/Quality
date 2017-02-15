@@ -174,7 +174,7 @@ namespace SgqSystem.Controllers
             //Lista com todos os indicadores
             List<Indicador> Indicadores;
 
-            string query = "SELECT DISTINCT DIMNAME as Nome, NAME as NomeReal FROM DimManColetaDados where DIMNAME is not null";
+            string query = "SELECT DISTINCT DimName as Nome, Name as NomeReal FROM DimManColetaDados WHERE DimRealTarget = 'Real' and DimName is not null";
 
             Indicadores = db.Database.SqlQuery<Indicador>(query).ToList();
 
