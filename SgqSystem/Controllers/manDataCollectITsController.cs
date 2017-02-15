@@ -172,23 +172,27 @@ namespace SgqSystem.Controllers
              **/
 
             //Lista com todos os indicadores
-            List<Indicador> Indicadores;
+            //List<Indicador> Indicadores;
 
             string query = "SELECT DISTINCT DimName as Nome, Name as NomeReal FROM DimManColetaDados WHERE DimRealTarget = 'Real' and DimName is not null";
 
-            Indicadores = db.Database.SqlQuery<Indicador>(query).ToList();
+            var Indicadores = db.Database.SqlQuery<Indicador>(query).ToList();
 
 
             //Pergunta se existe o Indicador na data
-            foreach (var item in Indicadores)
+
+            //foreach (var item in Indicadores)
+            
+
+            for (int i = 0; i < Indicadores.Count; i++)
             {
-                query = "SELECT top 1 '" + item.NomeReal + "' as PerguntaIndicador FROM ManColetaDados WHERE Base_dateRef= '" + DateTime.Now + "'";
+                query = "SELECT top 1 " + Indicadores[i].NomeReal + " as PerguntaIndicador FROM ManColetaDados WHERE Base_dateRef= '" + DateTime.Now.ToString("yyyy - MM - dd") + "' AND " + Indicadores[i].NomeReal + " IS NOT NULL ";
 
-                string result = db.Database.SqlQuery<String>(query).FirstOrDefault();
+                Nullable<decimal> result = db.Database.SqlQuery<Nullable<decimal>>(query).FirstOrDefault();
 
-                if (result == null)
+                if (result != null)
                 {
-                    Indicadores.Remove(item);
+                    Indicadores.RemoveAt(i);
                 }
             }
 
