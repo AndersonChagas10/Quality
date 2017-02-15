@@ -33,18 +33,9 @@
         </div>
         <br />
         <br />
-
-        <table id="dataTable" class="display" width="100%" cellspacing="0">
-            <thead>
-                <tr>
-                    <th>Descrição da Coleta</th>
-                    <th>Quantidade</th>
-                    <th>Comentarios</th>
-                    <th>Salvar</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+        <div id="tabela">
+            
+        </div>
         <br />
         <br />
         <div class="form-group">
@@ -78,20 +69,21 @@
             'locale': {
                 "format": "DD/MM/YYYY",
             }
-        });        
+        });
 
         $('tbody #quantidade').inputmask("decimal", { rightAlign: false })
 
-        $('#GetIndicadores').click(function(){
+        $('#GetIndicadores').click(function () {
 
-            $("#dataTable tbody").empty();
+            $("#dataTable").empty();
+            $('#dataTable_wrapper').remove()
 
             Send();
         });
 
     });
 
-    function Send(){
+    function Send() {
 
         var Unidade = $('#ParCompany_Id option:selected').val();
 
@@ -99,7 +91,7 @@
 
         var newdate = Data.split("/").reverse().join("/");
 
-        if(Unidade >= 0 && Data != ''){
+        if (Unidade >= 0 && Data != '') {
 
             var dados = { 'Date': newdate, 'Unit': Unidade };
 
@@ -139,12 +131,12 @@
         return true;
     }
 
-    function validaParaEnvio(obj){
-        if(obj.quantidade == ""){
+    function validaParaEnvio(obj) {
+        if (obj.quantidade == "") {
             alert("Campo Quantidade obrigatório");
             $(this).find('#quantidade').focus;
             return false;
-        }else{
+        } else {
 
             return true;
         }
@@ -154,7 +146,10 @@
 
         //if (myDarlingViewBag != null){
 
-        if (indicadores != null){
+        $("#tabela").append('<table id="dataTable" class="display" width="100%" cellspacing="0"><thead><tr><th>Descrição da Coleta</th><th>Quantidade</th><th>Comentarios</th><th>Salvar</th></tr></thead><tbody></tbody></table>');
+
+
+        if (indicadores != null) {
 
             //for (var i = 0; i < myDarlingViewBag.length; i++) {
 
@@ -163,7 +158,7 @@
                 var newRow = $("<tr>");
                 var cols = "";
 
-                cols += '<td>'+ indicadores[i].Nome +'</td>';
+                cols += '<td>' + indicadores[i].Nome + '</td>';
 
                 //cols += '<td>'+$(indicadores[i].Nome).attr('TechnicalIndicator')+'</td>';
 
@@ -186,13 +181,16 @@
         }
 
         var table = $('#dataTable').DataTable({
-
             paging: false,
             "searching": false,
             "lengthChange": false,
             "info": false,
             "ordering": false,
-
+            columns: [
+            { "data": "engine" },
+            { "data": "browser" },
+            { "data": "platform" },
+            { "data": "version" }],
             'initComplete': function () {
 
                 $('#dataTable tbody').on('click', 'button', function (data, a, b) {
@@ -233,5 +231,6 @@
         });
 
     }
+
 
 </script>
