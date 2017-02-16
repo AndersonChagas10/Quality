@@ -175,8 +175,6 @@
         <EntityTypeShape EntityType="SgqDbModel.RoleType" Width="1.5" PointX="3.375" PointY="15.125" />
         <EntityTypeShape EntityType="SgqDbModel.ScreenComponent" Width="1.5" PointX="5.625" PointY="14.875" />
         <AssociationConnector Association="SgqDbModel.FK_ScreenComponent_RoleType" />
-        <EntityTypeShape EntityType="SgqDbModel.RoleJBS" Width="1.5" PointX="8.375" PointY="15.75" />
-        <AssociationConnector Association="SgqDbModel.FK_RoleJBS_ScreenComponent" />
         <EntityTypeShape EntityType="SgqDbModel.RoleSGQ" Width="1.5" PointX="7.875" PointY="73.125" />
         <AssociationConnector Association="SgqDbModel.FK_RoleSGQ_ScreenComponent" />
         <EntityTypeShape EntityType="SgqDbModel.ParCompany" Width="1.5" PointX="0.75" PointY="40.125" />
@@ -198,6 +196,8 @@
         <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParSample_ParCompany" />
+        <EntityTypeShape EntityType="SgqDbModel.RoleJBS" Width="1.5" PointX="7.875" PointY="15.125" />
+        <AssociationConnector Association="SgqDbModel.FK_RoleJBS_ScreenComponent" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

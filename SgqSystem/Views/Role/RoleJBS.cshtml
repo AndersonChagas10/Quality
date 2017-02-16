@@ -1,6 +1,6 @@
 ﻿@using SgqSystem.Helpers
 <div>
-    <button class="btn btn-primary" onclick="indexRoleSGQ.openRole();">@Resources.Resource.new_role</button>
+    <button class="btn btn-primary" onclick="indexRoleJBS.openRole()">@Resources.Resource.new_role</button>
 
     <table class="table margin-top">
         <thead>
@@ -10,11 +10,11 @@
                 <th style="width:10%"></th>
             </tr>
         </thead>
-        <tbody id="tbodySgq">
-            @foreach (var component in ViewBag.listaRoleSGQ)
+        <tbody id="tbodyJbs">
+            @foreach (var component in ViewBag.listaRoleJBS)
             {
                 <tr>        
-                    <td id="RoleSGQRow_@component.Id" class="hide">
+                    <td id="RoleJBSRow_@component.Id" class="hide">
                         @component.Id
                     </td>            
                     <td>
@@ -24,14 +24,15 @@
                         @component.Role
                     </td>
                     <td>
-                        <button onclick="indexRoleSGQ.openRole(@component.Id)" class="btn btn-primary btn-sm">@Resources.Resource.edit</button>
+                        <button onclick="indexRoleJBS.openRole(@component.Id)" class="btn btn-primary btn-sm">@Resources.Resource.edit</button>
                     </td>
                  </tr>
             }
         </tbody>
     </table>
 
-    <div class="modal fade" id="modalRoleSgq" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+
+    <div class="modal fade" id="modalRoleJbs" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -41,7 +42,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-xs-12">
-                            <form id="formRoleSgq">
+                            <form id="formRoleJbs">
                                 <div class="form-group hide">
                                     <input type="hidden" name="Id" class="form-control input-sm">
                                 </div>
@@ -59,10 +60,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
-                    <button type="button" class="btn btn-primary" onclick="indexRoleSGQ.saveRole()">@Resources.Resource.save</button>
+                    <button type="button" class="btn btn-primary" onclick="indexRoleJBS.saveRole()">@Resources.Resource.save</button>
                 </div>
             </div>
         </div>
     </div>
-
 </div>

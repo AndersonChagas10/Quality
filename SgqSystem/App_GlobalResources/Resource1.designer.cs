@@ -1825,6 +1825,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Role JBS.
+        /// </summary>
+        internal static string role_jbs {
+            get {
+                return ResourceManager.GetString("role_jbs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Role SGQ.
+        /// </summary>
+        internal static string role_sgq {
+            get {
+                return ResourceManager.GetString("role_sgq", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rule.
         /// </summary>
         internal static string rule {
