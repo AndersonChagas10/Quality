@@ -59,10 +59,16 @@
     var url1 = '@Html.Raw(@urlSave)';
     var url2 = '@Html.Raw(@UrlGetIndEdit)';
     var url3 = '@Html.Raw(@UrlSaveEdit)'
+    var DataEdit = '';
+    var UniEdit = '';
+    var $btnFind;
+    var $btnEdit;
 
     $(document).ready(function () {
 
         var end = moment();
+        $btnFind = $('#GetIndicadores');
+        $btnEdit = $('#GetIndicadoresEdit');
 
         $('.simpleCalendar').daterangepicker({
             singleDatePicker: true,
@@ -76,14 +82,16 @@
         $('tbody #quantidade').inputmask("decimal", { rightAlign: false })
 
         $('#GetIndicadores').click(function () {
-
+            $btnFind.button('loading'); 
             $("#dataTable").empty();
             $('#dataTable_wrapper').remove();
             var typeRequest = 'Get';
             Send(typeRequest);
+            
         });
 
         $('#GetIndicadoresEdit').click(function () {
+            $btnEdit.button('loading');
             $("#dataTable").empty();
             $('#dataTable_wrapper').remove();
             var typeRequest = 'Edit';
@@ -98,8 +106,12 @@
 
         var Data = $('#date').val();
 
-        var newdate = Data.split("/").reverse().join("/");
+        DataEdit = $('#date').val();
 
+        UniEdit = $('#ParCompany_Id option:selected').val();
+
+        var newdate = Data.split("/").reverse().join("/");
+        
         if (Unidade >= 0 && Data != '') {
 
             var dados = { 'Date': newdate, 'Unit': Unidade };
@@ -108,9 +120,9 @@
             switch (typeRequest) {
                 case 'Get':
                     $.post(url, dados, function (lista) {
-
+                        
                         MountTable(lista);
-
+                        
                     });
                     break;
                 case 'Edit':
@@ -124,7 +136,7 @@
 
             }
         }
-
+       
     }
 
     function Enviar(dataToSend) {
@@ -191,7 +203,7 @@
     }
 
     function MountTable(indicadores) {
-
+        
         $("#tabela").append('<table id="dataTable" class="display" width="100%" cellspacing="0"><thead><tr><th>Descrição da Coleta</th><th>Quantidade</th><th>Comentarios</th><th>Salvar</th></tr></thead><tbody></tbody></table>');
 
         if (indicadores != null) {
@@ -263,6 +275,7 @@
             }
         });
 
+        $btnFind.button('reset');
     }
 
     function MountTableEdit(indicadores) {
@@ -278,11 +291,11 @@
 
                 cols += '<td>' + indicadores[i].Nome + '</td>';
 
-                cols += '<td><input id="quantidade" name="row-1-age" type="text" style="text-align: center" ></td>'; //BS: Alteração feita=> Alinhamento do texto: Centralizado
+                cols += '<td><input id="quantidade" name="row-1-age" type="text" value="' + indicadores[i].ValorReal + '" style="text-align: center" disabled ></td>'; //BS: Alteração feita=> Alinhamento do texto: Centralizado
 
-                cols += '<td><input id="comentarios" name="row-1-position" value="" type="text" ></td>';
+                cols += '<td><input id="comentarios" name="row-1-position" value="" type="text" disabled></td>';
 
-                cols += '<td><button id="save" class="btn btn-large btn-primary" type="button">Salvar</button></td>';
+                cols += '<td><button id="alter" class="btn btn-large btn-primary" type="button">Alterar</button><button id="save" class="btn btn-large btn-danger" type="button" style="display: none;">Salvar</button></td>';
 
                 cols += '</td>';
 
@@ -306,16 +319,23 @@
             { "data": "version" }],
             'initComplete': function () {
 
-                $('#dataTable tbody').on('click', 'button', function (data, a, b) {
+                $('#dataTable tbody #alter').on('click', function (data, a, b) {
+                    $(this).parents('tr').find('#quantidade').prop("disabled", false);
+                    $(this).parents('tr').find('#comentarios').prop("disabled", false);
+                    $(this).parents('tr').find('#save').show();
+                    $(this).parents('tr').find('#alter').hide();
+
+                });
+
+                $('#dataTable tbody #save').on('click', function (data, a, b) {
 
                     var data = table.row($(this).parents('tr')).data();
-
                     var quantidade = $(this).parents('tr').find('#quantidade').val();
                     var comentarios = $(this).parents('tr').find('#comentarios').val();
-                    var date = $("#date").val();
-                    var newdate = date.split("/").reverse().join("-");
+                    //var date = $("#date").val();
+                    var newdate = DataEdit.split("/").reverse().join("-");
                     //var date = $("#date").datepicker({ dateFormat: 'yyyy-mm-dd' }).val();
-                    var parCompany_Id = $("#ParCompany_Id").val();
+                    //var parCompany_Id = $("#ParCompany_Id").val();
 
                     var obj = {};
 
@@ -323,7 +343,9 @@
                     obj['quantidade'] = quantidade.replace(",", ".");
                     obj['comentarios'] = comentarios;
                     obj['data'] = newdate;
-                    obj['parCompany'] = parCompany_Id;
+                    //obj['parCompany'] = parCompany_Id;
+                   
+                    obj['parCompany'] = UniEdit
 
                     if (validaParaEnvio(obj)) {
 
@@ -337,5 +359,8 @@
                 });
             }
         });
+
+        $btnEdit.button('reset');
     }
+
 </script>

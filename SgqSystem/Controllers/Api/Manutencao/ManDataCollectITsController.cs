@@ -55,20 +55,6 @@ namespace SgqSystem.Controllers.Api.Manutencao
         }
 
         [HttpPost]
-        [Route("SaveCreateAll")]
-        public int SaveCreateAll(Obj obj)
-        {
-            string sql = "";
-
-            using (var db = new SgqDbDevEntities())
-            {
-                var d = db.Database.ExecuteSqlCommand(sql);
-                return d;
-            }
-
-        }
-
-        [HttpPost]
         [Route("GetIndicadores")]
         public List<Indicador> GetIdicadores(Obj3 obj3)
         {
@@ -134,7 +120,8 @@ namespace SgqSystem.Controllers.Api.Manutencao
             for (int i = 0; i < nIndicadores; i++)
             {
                 query = "SELECT top 1 " + Indicadores2[i].NomeReal + " as ValorReal FROM ManColetaDados WHERE Base_dateRef = '" + obj3.Date.ToString("yyyy-MM-dd") + "' AND " + Indicadores2[i].NomeReal + " IS NOT NULL AND Base_parCompany_id = " + obj3.Unit;
-                Indicadores2 = db.Database.SqlQuery<Indicador>(query).ToList();
+                decimal result = db.Database.SqlQuery<decimal>(query).FirstOrDefault();
+                Indicadores2[i].ValorReal = result;
             }
 
             return Indicadores2;
@@ -156,22 +143,18 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
             sql = "";
 
-            sql = "INSERT INTO dbo.ManColetaDados " +
-            "(" +
-            "Base_parCompany_id " +
-            ",Base_dateAdd " +
-            ",Base_dateRef " +
-            ",Comentarios " +
-            "," + obj.indicadorNome +
-            ") " +
-            "VALUES " +
-            "(" +
-            "" + obj.parCompany + "," +
-            "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'," +
-            "'" + obj.data.ToString("yyyy-MM-dd HH:mm:ss") + "'," +
-            "'" + obj.comentarios + "'," +
-            " replace('" + obj.quantidade + "',',','.')" + //BS: Alteração feita=> Troca de Virgula (,) por Ponto (.): Replace()
-            ")";
+            sql = "UPDATE ManColetaDados " +
+                   "SET " +
+                    "Base_dateAlter = GETDATE() " +
+                    "," + obj.indicadorNome + " = '" + obj.quantidade + "' " +
+                    ",Comentarios = '" + obj.comentarios + "' " +
+                   "from ManColetaDados " +
+                   "WHERE " +
+                    "Base_parCompany_id = '" + obj.parCompany + "' " +
+                   "AND " +
+                   "Base_dateRef = '" + obj.data.ToString("yyyy-MM-dd HH:mm:ss") + "'" +
+                   " AND " +
+                    obj.indicadorNome + " IS NOT NULL"; 
 
             using (var db = new SgqDbDevEntities())
             {
@@ -207,7 +190,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
     {
         public string Nome { get; set; }
         public string NomeReal { get; set; }
-        public decimal? ValorReal { get; set; }     
+        public decimal? ValorReal { get; set; }
     }
 
     public class Pergunta
