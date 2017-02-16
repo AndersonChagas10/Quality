@@ -114,7 +114,7 @@ namespace DTO.Helpers
         public void SetMensagemExcecao(Exception _ex, string mensagemPadrao)
         {
             var innerMessage = "";
-        
+
             var isExceptionHelper = _ex.GetType() == typeof(ExceptionHelper);
 
             if (!isExceptionHelper && _ex.InnerException != null) // Se a Exception lancada não for Exception Helper & Se a InnerException for diferente de null:
@@ -140,13 +140,13 @@ namespace DTO.Helpers
                 counter++;
             }
 
-            if (!isExceptionHelper)
-            {
-                var logger = LogManager.GetLogger("dataBaseLogger");
-                GlobalDiagnosticsContext.Set("StackTrace", StackTrace);
-                //GlobalDiagnosticsContext.Set("MensagemExcecao", MensagemExcecao);
-                logger.Error(_ex, MensagemExcecao, this);
-            }
+            //if (!isExceptionHelper)
+            //{
+            //    var logger = LogManager.GetLogger("dataBaseLogger");
+            //    GlobalDiagnosticsContext.Set("StackTrace", StackTrace);
+            //    //GlobalDiagnosticsContext.Set("MensagemExcecao", MensagemExcecao);
+            //    logger.Error(_ex, MensagemExcecao, this);
+            //}
 
         }
 

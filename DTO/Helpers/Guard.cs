@@ -27,6 +27,13 @@ namespace DTO.Helpers
             return new DateTime(data.Year, data.AddMonths(-1).Month, 1);
         }
 
+        public static string CheckStringFullSimple(string name)
+        {
+            var nameValidado = "";
+            Guard.CheckStringFull(out nameValidado, "Name", name, "Property Name is invalid", true);
+            return nameValidado;
+        }
+
         public static DateTime Next(this DateTime from, DayOfWeek dayOfWeek)
         {
             int start = (int)from.DayOfWeek;

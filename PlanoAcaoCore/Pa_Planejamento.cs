@@ -5,11 +5,8 @@ using System.Text;
 
 namespace PlanoAcaoCore
 {
-    public class Planejamento : ICrudPa<Planejamento>
+    public class Pa_Planejamento : Pa_BaseObject, ICrudPa<Pa_Planejamento>
     {
-       public int Id { get; set; }
-       public DateTime AddDate { get; set; }
-       public DateTime AlterDate { get; set; }
        public int Diretoria_Id { get; set; }
        public int Gerencia_Id { get; set; }
        public int Coordenacao_Id { get; set; }
@@ -28,32 +25,44 @@ namespace PlanoAcaoCore
 
         public void IsValid()
         {
-            throw new NotImplementedException();
+            //Name = Guard.CheckStringFullSimple(Name);
         }
 
-        public List<Planejamento> Listar()
+        public static List<Pa_Planejamento> Listar()
         {
-            IsValid();
+            List<Pa_Planejamento> listReturn;
+            var query = "SELECT * FROM Pa_Planejamento";
+            using (var db = new FactoryPA(""))
+                listReturn = db.SearchQuery<Pa_Planejamento>(query);
+
+            return listReturn;
+        }
+
+        public static Pa_Planejamento Get(int Id)
+        {
+            Pa_Planejamento listReturn;
+            var query = "SELECT * FROM Pa_Planejamento WHERE Id = "  + Id;
 
             using (var db = new FactoryPA(""))
+                listReturn = db.SearchQuery<Pa_Planejamento>(query).FirstOrDefault();
+
+            return listReturn;
+        }
+
+        public void AddOrUpdate()
+        {
+            IsValid();
+            string query;
+            if (Id > 0)
             {
-                var query = "SELECT * FROM Planejamento";
-                db.SearchQuery<Planejamento>(query);
+                query = "";
+                Update(query);
             }
-
-            return null;
-        }
-
-        public Planejamento Salvar()
-        {
-            IsValid();
-            throw new NotImplementedException();
-        }
-
-        public Planejamento Update()
-        {
-            IsValid();
-            throw new NotImplementedException();
+            else
+            {
+                query = "";
+                Salvar(query);
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Security;
 
 namespace PlanoAcaoCore
 {
-    public class FactoryPA : IDisposable
+    internal class FactoryPA : IDisposable
     {
         public SqlConnection connection;
         private SqlConnectionStringBuilder connectionString;
@@ -202,5 +202,22 @@ namespace PlanoAcaoCore
             closeConnection(true);
             //Dispose();
         }
+
+
+        //private static void Salvar<T>(string query, T obj)
+        //{
+        //    int id;
+        //    using (var db = new FactoryPA(""))
+        //        id = db.ExecuteSql(query);
+
+        //    obj.GetType().GetProperty("Id").SetValue(obj, id);
+        //}
+
+        //private static void Update<T>(string query, T obj)
+        //{
+        //    var id = (int)obj.GetType().GetProperty("Id").GetValue(obj, null);
+        //    using (var db = new FactoryPA(""))
+        //        db.ExecuteSql(query);
+        //}
     }
 }

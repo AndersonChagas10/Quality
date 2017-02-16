@@ -4,10 +4,9 @@ namespace PlanoAcaoCore
 {
     public interface ICrudPa<T>
     {
-        List<T> Listar();
-        T Salvar();
-        T Update();
+        //List<T> Listar();
+       
         void IsValid();
-
+        void AddOrUpdate();
     }
 }
