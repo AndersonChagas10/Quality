@@ -101,6 +101,28 @@ namespace SgqSystem.Mappers
 
                 /*Manutencao*/
                 x.AddProfile<DimManutencaoColetaITsMapperProfile>();
+
+
+
+
+                ///*PA............*/
+                //x.AddProfile<AcompanhamentoTarefaProfile>();
+                //x.AddProfile<CabecalhoProfile>();
+                //x.AddProfile<CampoProfile>();
+                //x.AddProfile<ConfiguracaoEmailProfile>();
+                //x.AddProfile<EmpresaProfile>();
+                //x.AddProfile<GrupoCabecalhoProfile>();
+                //x.AddProfile<GrupoProjetoProfile>();
+                //x.AddProfile<LogOperacaoProfile>();
+                //x.AddProfile<MultiplaEscolhaProfile>();
+                //x.AddProfile<ParticipanteProfile>();
+                //x.AddProfile<ProjetoProfile>();
+                //x.AddProfile<TarefaProfile>();
+                //x.AddProfile<VinculoCampoCabecalhoProfile>();
+                //x.AddProfile<VinculoCampoTarefaProfile>();
+                //x.AddProfile<VinculoParticipanteMultiplaEscolhaProfile>();
+                //x.AddProfile<VinculoParticipanteProjetoProfile>();
+
             });
 
         }

@@ -31,6 +31,13 @@ namespace SgqSystem.Secirity
             }
             else
             {
+
+                var userId = 0;
+                if (!string.IsNullOrEmpty(cookie.Values["userId"])) {
+                    int.TryParse(cookie.Values["userId"].ToString(), out userId);
+                    filterContext.Controller.ViewBag.KeepAlive = "KeepAlive/" + userId;
+                }
+
                 if (!string.IsNullOrEmpty(cookie.Values["roles"]))
                     _userSgqRoles = cookie.Values["roles"].ToString();
                     //Extends cookie ttl
