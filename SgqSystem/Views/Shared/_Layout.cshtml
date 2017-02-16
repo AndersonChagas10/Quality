@@ -103,20 +103,6 @@
         </div>
     </div>
 
-    @*<script>
-            $(function () {
-                var fnTimeOut = function () {
-                    jQuery.timeoutDialog.setupDialogTimer({
-                        timeout: 105,
-                        countdown: 100,
-                        logout_redirect_url: '@Url.Action("Logout", "Home")',
-                        keep_alive_url: '@Url.Action("Keepalive", "Home")'
-                   });
-                };
-                fnTimeOut();
-            });
-        </script>*@
-
     <!--Loaders e messages-->
     <script>
 
@@ -397,13 +383,15 @@
 
 
         if (!!getCookie('webControlCookie')) {
+            var keepAlive = '@Url.Action(ViewBag.KeepAlive, "UserAuthentication")';
             setTimeout(function () {
                 $.timeoutDialog({
                     timeout: 305,
                     countdown: 300,
                     logout_redirect_url: '@Url.Action("LogOut", "UserAuthentication")',
+                    keep_alive_url: keepAlive,
                 });
-            }, 6 * 1000 * 60);  
+            }, 300000 * 8);
         }
 
         @*$(function () {

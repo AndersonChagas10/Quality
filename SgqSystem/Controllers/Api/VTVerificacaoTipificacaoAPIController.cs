@@ -145,7 +145,7 @@ namespace SgqSystem.Controllers.Api
                 db.SaveChanges();
 
                 //Consolidar resultados e tratamento de erro
-
+                //_verificacao.Chave = "1245120170215";
                 GetDadosGet(_verificacao.Chave);
 
             }
@@ -227,8 +227,10 @@ namespace SgqSystem.Controllers.Api
 
                 if (verificacaoTipificacao == null)
                 {
-                    //mensagem de erro que ñão existe
 
+
+                    //mensagem de erro que ñão existe
+                    return null;
                 }
 
                 // var VerificacaoTipificacao = db.VerificacaoTipificacao.Where(v => v.Chave == verificacaoTipificacaoChave).FirstOrDefault();
@@ -481,6 +483,7 @@ namespace SgqSystem.Controllers.Api
                                         var ParLevel3List = (from p in db2.ParLevel3
                                                              select p).ToList();
 
+                                        int defectsL2 = 0;
 
                                         for (var i = 0; i < ArrayComparacao.Length; i++)
                                         {
@@ -501,7 +504,18 @@ namespace SgqSystem.Controllers.Api
                                                              where p.Description == resultIdTarefa.ToString()
                                                              select p).FirstOrDefault();
 
-                                            bool conforme = verificacaoTipificaoComparacao(company.CompanyNumber.ToString(), verificacaoTipificacao.DataHora.ToString("yyyyMMdd"), verificacaoTipificacao.Sequencial.ToString(), iBanda.ToString(), null, verificacaoTipificacao.UnidadeId.ToString(), "1", "1", conexao, varComparacao);
+                                            bool conforme = true;
+
+                                            verificacaoTipificaoComparacao(company.CompanyNumber.ToString(), verificacaoTipificacao.DataHora.ToString("yyyyMMdd"), 
+                                                                           verificacaoTipificacao.Sequencial.ToString(), iBanda.ToString(), null,
+                                                                           verificacaoTipificacao.UnidadeId.ToString(), "1", "1", conexao,
+                                                                           varComparacao, ref conforme);
+                                            int defectsL3 = 0;
+                                            if(conforme == false)
+                                            {
+                                                defectsL3++;
+                                                defectsL2++;
+                                            }
 
                                             var result = new Result_Level3();
                                             result.CollectionLevel2_Id = collectionLevel2.Id;
@@ -513,9 +527,9 @@ namespace SgqSystem.Controllers.Api
                                             result.IntervalMin = "0";
                                             result.IntervalMax = "0";
                                             result.Value = "0";
-                                            result.IsConform = true;
+                                            result.IsConform = conforme;
                                             result.IsNotEvaluate = false;
-                                            result.Defects = 0;
+                                            result.Defects = defectsL3;
                                             result.PunishmentValue = 0;
                                             result.WeiEvaluation = 0;
                                             result.Evaluation = 1;
@@ -524,6 +538,7 @@ namespace SgqSystem.Controllers.Api
                                             db2.Result_Level3.Add(result);
                                         
                                         }
+                                        collectionLevel2.Defects = defectsL2;
                                         verificacaoTipificacao.Status = true;
                                         db2.SaveChanges();
                                         db.SaveChanges();
@@ -590,7 +605,9 @@ namespace SgqSystem.Controllers.Api
             }
             return false;
         }
-        public bool verificacaoTipificaoComparacao(string unidadeCodigo, string data, string sequencial, string banda, Unidades unidades, string empresaId, string departamentoId, string tarefaIdm, string conexao, string[] varComparacao)
+        public bool verificacaoTipificaoComparacao(string unidadeCodigo, string data, string sequencial, string banda, Unidades unidades,
+                                                   string empresaId, string departamentoId, string tarefaIdm, string conexao,
+                                                   string[] varComparacao, ref bool comparacaoResultado)
         {
 
             //melhorar tabela de comparacao
@@ -607,21 +624,23 @@ namespace SgqSystem.Controllers.Api
             string[] comparacaoRESULTADO = varComparacao;
 
 
-            string queryString = "(SELECT 'VTR', U.CODIGO nCdEmpresa, VT.DATAHORA dMovimento, VT.SEQUENCIAL iSequencial, VT.BANDA iBanda, VTR.CARACTERISTICATIPIFICACAOID nCdCaracteristicaTipificacao, CT.cIdentificador, VTV.nCdCaracteristicaTipificacao " +
+            string queryString = "(SELECT 'VTR', U.CODIGO nCdEmpresa, VT.DATAHORA dMovimento, VT.SEQUENCIAL iSequencial, VT.BANDA iBanda, CT.nCdCaracteristica cNrCaracteristica, CT.cIdentificador, VTV.nCdCaracteristicaTipificacao " +
                                 "FROM VTVERIFICACAOTIPIFICACAO VT " +
                                 "INNER JOIN UNIDADES U ON U.ID = VT.UNIDADEID " +
                                 "INNER JOIN VTVERIFICACAOTIPIFICACAOresultados VTR ON VTR.CHAVE = VT.CHAVE " +
                                 //Trocamos nCdCaracteristica para cNrCaracteristica
-                                //"INNER JOIN CaracteristicaTipificacao CT ON VTR.CARACTERISTICATIPIFICACAOID=CT.nCdCaracteristica " +
                                 "INNER JOIN CaracteristicaTipificacao CT ON VTR.CARACTERISTICATIPIFICACAOID=CT.cNrCaracteristica " +
-                                "LEFT JOIN VTVerificacaoTipificacaoValidacao VTV ON VTV.nCdEmpresa=U.CODIGO AND CAST(VTV.dMovimento AS DATE) = CAST(VT.datahora AS DATE) AND VTV.iSequencial=VT.SEQUENCIAL AND VTV.IBANDA=VT.BANDA AND VTV.nCdCaracteristicaTipificacao=VTR.CARACTERISTICATIPIFICACAOID " +
+                                //"INNER JOIN CaracteristicaTipificacao CT ON VTR.CARACTERISTICATIPIFICACAOID=CT.cNrCaracteristica " +
+                                //"LEFT JOIN VTVerificacaoTipificacaoValidacao VTV ON VTV.nCdEmpresa=U.CODIGO AND CAST(VTV.dMovimento AS DATE) = CAST(VT.datahora AS DATE) AND VTV.iSequencial=VT.SEQUENCIAL AND VTV.IBANDA=VT.BANDA AND VTV.nCdCaracteristicaTipificacao=VTR.CARACTERISTICATIPIFICACAOID " +
+                                "LEFT JOIN VTVerificacaoTipificacaoValidacao VTV ON VTV.nCdEmpresa=U.CODIGO AND CAST(VTV.dMovimento AS DATE) = CAST(VT.datahora AS DATE) AND VTV.iSequencial=VT.SEQUENCIAL AND VTV.IBANDA=VT.BANDA AND VTV.nCdCaracteristicaTipificacao=CT.nCdCaracteristica " +
                                 "WHERE U.CODIGO='" + unidadeCodigo + "' AND CAST(VT.datahora AS DATE) = CAST('" + data + "' AS DATE) AND VT.sequencial='" + sequencial + "' AND VT.Banda='" + banda + "')" +
                                 "UNION ALL " +
-                                "(SELECT 'VTV', VTV.nCdEmpresa, VTV.dMovimento, VTV.iSequencial, VTV.iBanda, VTR.CaracteristicaTipificacaoId, VTV.cIdentificadorTipificacao, VTV.nCdCaracteristicaTipificacao " +
+                                "(SELECT 'VTV', VTV.nCdEmpresa, VTV.dMovimento, VTV.iSequencial, VTV.iBanda, CT.nCdCaracteristica, VTV.cIdentificadorTipificacao, VTV.nCdCaracteristicaTipificacao " +
                                 "FROM VTVerificacaoTipificacaoValidacao VTV " +
                                 "INNER JOIN UNIDADES U ON U.CODIGO = VTV.nCdEmpresa " +
-                                "INNER JOIN VTVERIFICACAOTIPIFICACAO VT ON VT.UnidadeId=U.ID AND VT.Sequencial=VTV.iSequencial AND VT.Banda=VTV.iBanda AND CAST(VT.DataHora AS DATE) = CAST(VTV.dMovimento AS DATE) " +
-                                "LEFT JOIN VTVERIFICACAOTIPIFICACAOresultados VTR ON VTR.CHAVE = VT.CHAVE AND VTR.CaracteristicaTipificacaoId=VTV.nCdCaracteristicaTipificacao " +
+                                "INNER JOIN VTVERIFICACAOTIPIFICACAO VT ON VT.UnidadeId=U.ID AND VT.Sequencial=VTV.iSequencial AND VT.Banda=VTV.iBanda AND CAST(VT.DataHora AS DATE) = CAST(VTV.dMovimento AS DATE)  LEFT JOIN" +
+                                "CaracteristicaTipificacao CT ON VTV.nCdCaracteristicaTipificacao = CT.nCdCaracteristica LEFT OUTER JOIN " +
+                                "VTVerificacaoTipificacaoResultados AS VTR ON VTR.Chave = VT.Chave AND VTR.CaracteristicaTipificacaoId = CT.cNrCaracteristica " +
                                 "WHERE VTV.nCdEmpresa='" + unidadeCodigo + "' AND CAST(VTV.dMovimento AS DATE) = CAST('" + data + "' AS DATE) AND VTV.iSequencial='" + sequencial + "' AND VTV.iBanda='" + banda + "') ";
 
             //utiliza transacao para excluir e incluir os itens
@@ -714,6 +733,8 @@ namespace SgqSystem.Controllers.Api
                                 VerificacaoTipificacaoComparacaoAdicionar(unidadeCodigo, sequencial, banda, p.identificadorLabel, p.dataMovimento.ToString(), p.idCaracteristicaVTR, p.idCaracteristicaVTV);
                             }
                         }
+
+                        comparacaoResultado = conforme;
                         //retornamos o valor para tabela de resultados
                         return conforme;
                     }
