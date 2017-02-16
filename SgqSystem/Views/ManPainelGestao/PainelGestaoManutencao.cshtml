@@ -37,8 +37,6 @@
     <script type="text/javascript">
 
         var urlGet = '@Html.Raw(@urlGet)';
-
-        //var meses = new Array("Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
         var $btn = $('#btnSend');
 
         $('#simpleCallendar').hide().attr('disabled', true);
@@ -54,42 +52,6 @@
         });
 
         Send();
-
-        //function Send() {
-
-        //    $btn.button('loading');
-        //    $('#results').empty();
-
-        //    if (!ValidaDadosParaEnvio()) {
-        //        $btn.button('reset');
-        //        return;
-        //    }
-
-        //    $('#menu-toggle').click();
-
-        //    //AJAX
-        //    $.post("", enviar, function (r) {
-
-        //        try {
-
-
-
-        //        } catch (e) {
-        //            console.log(e);
-        //        } finally {
-        //            $btn.button('reset');
-        //        }
-
-        //    }).fail(function (e, h, x) {
-        //        $btn.button('reset');
-        //        if (e.status == 0) {
-        //            GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
-        //        } else {
-        //            GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
-        //        }
-        //    });
-
-        //};
 
         function ValidaDadosParaEnvio() {
             GuardJs.resetForValidation();
@@ -163,36 +125,6 @@
                 loadingRecords: true,
                 destroy: true,
                 info: true,
-                //responsive: true,
-                //initComplete: function () {
-                //    $('#loading').hide();
-                //    setTimeout(function (e) {
-                //        var oTable = $('#results').dataTable();
-                //        if (oTable.length > 0) {
-                //            oTable.fnAdjustColumnSizing();
-                //        }
-                //    }, 100);
-
-                //    $('#results tbody').on('click', 'button', function (data, a, b) {
-
-                //        var data = table.row($(this).parents('tr')).data();
-                //        console.log(data);
-                //        $.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
-
-                //            $('#Level3Name').html(r.ParLevel3_Name);
-                //            $('#ResultLevel3_Id').val(r.Id);
-
-                //            $('#changeConform').empty();
-                //            $('#changeConform').append($(r.showIntervalos));
-                //            $('#changeConform').append($(r.showConform));
-                //            $('#changeConform').append($(r.showCalculado));
-                //            $('#changeConform').append($(r.showNumeroDefeitos));
-
-                //            console.log(r.Id);
-                //        });
-
-                //    });
-                //},
 
                 createdRow: function (row, data, index) {
 
@@ -202,8 +134,6 @@
 
                 }
             });
-
-            //new $.fn.dataTable.Responsive(table);
 
             new $.fn.dataTable.Buttons(table, {
                 buttons: [

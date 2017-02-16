@@ -4,6 +4,9 @@
     ViewBag.Title = @Resources.Resource.role;
 
     var urlHome = Url.Action("Index", "Home");
+    var urlUpdateRoleSGQList = Url.Action("UpdateRoleSGQList", "Role");
+    var urlUpdateRoleJBSList = Url.Action("UpdateRoleJBSList", "Role");
+    var urlUpdateRoleScreenComponentList = Url.Action("UpdateScreenComponentList", "Role");
 }
 
 <div class="page-content-wrapper">
@@ -64,6 +67,27 @@
                                             <div class="panel-body">
                                                 <div id="RoleSGQ">
                                                     @Html.Partial("~/Views/Role/RoleSGQ.cshtml")
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="panel-group accordion" id="roles_jbs_accordion">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="row panel-title">
+                                                <div class="col-xs-12">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#roles_jbs_accordion" href="#roles_jbs_collapse" aria-expanded="false" id="level2Title"> @Resources.Resource.role_jbs </a>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="roles_jbs_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                            <div class="panel-body">
+                                                <div id="RoleJBS">
+                                                    @Html.Partial("~/Views/Role/RoleJBS.cshtml")
                                                 </div>
                                             </div>
                                         </div>
@@ -176,14 +200,21 @@
                     }
 
                     $('#modalScreenComponent').modal('hide');
-                    updatePage();
+                    indexScreenComponent.updateTable();
                 });
+
+        },
+        updateTable: function () {
+
+            $.get('@urlUpdateRoleScreenComponentList', function (r) {
+                $('#tbodySC').replaceWith(r);
+            });
 
         }
 
     };
 
-    var indexRole = {
+    var indexRoleSGQ = {
         openRole: function (id) {
 
             $('#modalRoleSgq').modal();
@@ -211,8 +242,56 @@
                     $($("#RoleSgqRow_" + object.Id).siblings()[1]).text(object.Role);
 
                     $('#modalRoleSgq').modal('hide');
-                    updatePage();
+                    indexRoleSGQ.updateTable();
                 });
+        },
+        updateTable: function () {
+
+            $.get('@urlUpdateRoleSGQList', function (r) {
+                $('#tbodySgq').replaceWith(r);
+            });
+
+        }
+
+    };
+
+    var indexRoleJBS = {
+        openRole: function (id) {
+
+            $('#modalRoleJbs').modal();
+            $('#formRoleJbs input').val('');
+
+            if (id) {
+                $.get(
+                    '@Url.Action("GetRoleJBS", "api/Role")',
+                    { 'Id': id }, function (object) {
+                        for (var key in object) {
+                            var obj = object[key];
+                            $("#formRoleJbs [name='" + key + "']").val(obj);
+                        }
+
+                    }
+                );
+            }
+        },
+        saveRole: function () {
+            $.post('@Url.Action("SaveRoleJBS", "api/Role")',
+                $('#formRoleJbs').serializeObject(),
+                function (object) {
+
+                    $($("#RoleJbsRow_" + object.Id).siblings()[0]).text(object.ScreenComponent_Id);
+                    $($("#RoleJbsRow_" + object.Id).siblings()[1]).text(object.Role);
+
+                    $('#modalRoleJbs').modal('hide');
+                    indexRoleJBS.updateTable();
+                });
+        },
+        updateTable: function () {
+
+            $.get('@urlUpdateRoleJBSList', function (r) {
+                $('#tbodyJbs').replaceWith(r);
+            });
+
         }
 
     };

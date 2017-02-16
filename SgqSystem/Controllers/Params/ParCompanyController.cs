@@ -3,6 +3,7 @@ using Dominio.Interfaces.Services;
 using DTO.DTO.Params;
 using Helper;
 using SgqSystem.Secirity;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
@@ -30,11 +31,12 @@ namespace SgqSystem.Controllers
             _baseDomainParCluster = baseDomainParCluster;
 
             ViewBag.listaParCompany = _baseDomainParCompany.GetAll();
-            ViewBag.listaParCompanyStructure = _baseDomainParCompanyXStructure.GetAll();
+            ViewBag.listaParCompanyStructure = _baseDomainParCompanyXStructure.GetAllNoLazyLoad();
             ViewBag.listaParStructure = _baseDomainParStructure.GetAll();
             ViewBag.listaParStructureGroup = _baseDomainParStructureGroup.GetAll();
             ViewBag.listaParCluster = _baseDomainParCluster.GetAll();
-            ViewBag.listaParStructureXCompany = _baseDomainParStructure.ExecuteSql("select * from ParStructure where ParStructureGroup_Id = (select max(ParStructureGroup_Id) from ParStructure)");
+            ViewBag.listaParStructureXCompany = _baseDomainParStructure.GetAll().Where(
+                r=>r.ParStructureGroup_Id == _baseDomainParStructure.GetAllNoLazyLoad().Max(x => x.ParStructureGroup_Id));
 
         }
 
@@ -63,6 +65,8 @@ namespace SgqSystem.Controllers
         {
             return PartialView("ParStructureGroup");//retorna partial ParStructureGroup
         }
+
+        
 
 
     }

@@ -321,7 +321,7 @@
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\RelatoriosBrasil\RelatoriosSgqController.cs" />
-    <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\Role\RoleController.cs" />
     <Compile Include="Controllers\UserSgqController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepDesossasController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepRecortesController.cs" />
@@ -2110,6 +2110,7 @@
     <Content Include="Views\ManPainelGestao\Index.cshtml" />
     <Content Include="Views\ParCompany\Index2.cshtml" />
     <Content Include="Scripts\version.json" />
+    <Content Include="Views\Role\RoleJBS.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

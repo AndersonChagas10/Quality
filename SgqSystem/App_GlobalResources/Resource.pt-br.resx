@@ -843,4 +843,10 @@
   <data name="hascompleteevaluation" xml:space="preserve">
     <value>Exige Avaliação Completa</value>
   </data>
+  <data name="role_jbs" xml:space="preserve">
+    <value>Regra JBS</value>
+  </data>
+  <data name="role_sgq" xml:space="preserve">
+    <value>Regra SGQ</value>
+  </data>
 </root>

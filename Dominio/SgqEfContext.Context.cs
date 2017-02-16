@@ -125,9 +125,9 @@ namespace Dominio
         public virtual DbSet<ConsolidationLevel02> ConsolidationLevel02 { get; set; }
         public virtual DbSet<RoleType> RoleType { get; set; }
         public virtual DbSet<ScreenComponent> ScreenComponent { get; set; }
-        public virtual DbSet<RoleJBS> RoleJBS { get; set; }
         public virtual DbSet<RoleSGQ> RoleSGQ { get; set; }
         public virtual DbSet<ParCompany> ParCompany { get; set; }
+        public virtual DbSet<RoleJBS> RoleJBS { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

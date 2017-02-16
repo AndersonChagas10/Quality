@@ -16,13 +16,15 @@ namespace SgqSystem.Controllers.Api
     {
         private IBaseDomain<ScreenComponent, ScreenComponentDTO> _baseDomainScreenComponent;
         private IBaseDomain<RoleSGQ, RoleSGQDTO> _baseDomainRoleSGQ;
+        private IBaseDomain<RoleJBS, RoleJBSDTO> _baseDomainRoleJBS;
 
         public RoleApiController(
             IBaseDomain<ScreenComponent, ScreenComponentDTO> baseDomainScreenComponent,
-            IBaseDomain<RoleSGQ, RoleSGQDTO> baseDomainRoleSGQ)
+            IBaseDomain<RoleSGQ, RoleSGQDTO> baseDomainRoleSGQ, IBaseDomain<RoleJBS, RoleJBSDTO> baseDomainRoleJBS)
         {
             _baseDomainScreenComponent = baseDomainScreenComponent;
             _baseDomainRoleSGQ = baseDomainRoleSGQ;
+            _baseDomainRoleJBS = baseDomainRoleJBS;
         }
         
         [Route("GetScreenComponent")]
@@ -51,6 +53,20 @@ namespace SgqSystem.Controllers.Api
         public RoleSGQDTO SaveRoleSGQ(RoleSGQDTO roleSgqDto)
         {
             return _baseDomainRoleSGQ.AddOrUpdate(roleSgqDto);
+        }
+
+        [Route("GetRoleJBS")]
+        [HttpGet]
+        public RoleJBSDTO GetRoleJBS(int Id)
+        {
+            return _baseDomainRoleJBS.GetById(Id);
+        }
+
+        [Route("SaveRoleJBS")]
+        [HttpPost]
+        public RoleJBSDTO SaveRoleJBS(RoleJBSDTO roleJbsDto)
+        {
+            return _baseDomainRoleJBS.AddOrUpdate(roleJbsDto);
         }
     }
 }

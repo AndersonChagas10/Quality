@@ -2,6 +2,8 @@
 @{
     var urlSave = Url.Action("SaveCreate", "Api/Manutencao");
     var UrlGetInd = Url.Action("GetIndicadores", "Api/Manutencao");
+    var UrlGetIndEdit = Url.Action("GetIndicadoresEdit", "Api/Manutencao");
+    var UrlSaveEdit = Url.Action("SaveEdit", "Api/Manutencao");
 }
 
 <div class="page-content-wrapper">
@@ -53,12 +55,20 @@
 
 <script>
 
-    var url1 = '@Html.Raw(@urlSave)';
     var url = '@Html.Raw(@UrlGetInd)';
+    var url1 = '@Html.Raw(@urlSave)';
+    var url2 = '@Html.Raw(@UrlGetIndEdit)';
+    var url3 = '@Html.Raw(@UrlSaveEdit)'
+    var DataEdit = '';
+    var UniEdit = '';
+    var $btnFind;
+    var $btnEdit;
 
     $(document).ready(function () {
 
         var end = moment();
+        $btnFind = $('#GetIndicadores');
+        $btnEdit = $('#GetIndicadoresEdit');
 
         $('.simpleCalendar').daterangepicker({
             singleDatePicker: true,
@@ -72,40 +82,61 @@
         $('tbody #quantidade').inputmask("decimal", { rightAlign: false })
 
         $('#GetIndicadores').click(function () {
-
+            $btnFind.button('loading'); 
             $("#dataTable").empty();
-            $('#dataTable_wrapper').remove()
-
-            Send();
+            $('#dataTable_wrapper').remove();
+            var typeRequest = 'Get';
+            Send(typeRequest);
+            
         });
 
         $('#GetIndicadoresEdit').click(function () {
+            $btnEdit.button('loading');
             $("#dataTable").empty();
-            $('#dataTable_wrapper').remove()
-
+            $('#dataTable_wrapper').remove();
+            var typeRequest = 'Edit';
+            Send(typeRequest)
         });
 
     });
 
-    function Send() {
+    function Send(typeRequest) {
 
         var Unidade = $('#ParCompany_Id option:selected').val();
 
         var Data = $('#date').val();
 
-        var newdate = Data.split("/").reverse().join("/");
+        DataEdit = $('#date').val();
 
+        UniEdit = $('#ParCompany_Id option:selected').val();
+
+        var newdate = Data.split("/").reverse().join("/");
+        
         if (Unidade >= 0 && Data != '') {
 
             var dados = { 'Date': newdate, 'Unit': Unidade };
 
-            $.post(url, dados, function (lista) {
+            //Verifica o tipo de requisição
+            switch (typeRequest) {
+                case 'Get':
+                    $.post(url, dados, function (lista) {
+                        
+                        MountTable(lista);
+                        
+                    });
+                    break;
+                case 'Edit':
+                    $.post(url2, dados, function (lista) {
 
-                MountTable(lista);
+                        MountTableEdit(lista);
 
-            });
+                    });
+                    break;
+                default:
+
+            }
         }
-
+       
     }
 
     function Enviar(dataToSend) {
@@ -113,6 +144,31 @@
         //data[jsonObjectName] = JSON.stringify(dataToSend);
 
         $.post(url1, dataToSend, function (r) {
+            try {
+
+            } catch (e) {
+                console.log(e);
+            } finally {
+
+            }
+        }).fail(function (e, h, x) {
+
+            if (e.status == 0) {
+                GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+            } else {
+                GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+            }
+
+            return false;
+
+        });
+
+        return true;
+    }
+
+    function EnviarEdit(dataToSend) {
+
+        $.post(url3, dataToSend, function (r) {
             try {
 
             } catch (e) {
@@ -147,7 +203,7 @@
     }
 
     function MountTable(indicadores) {
-
+        
         $("#tabela").append('<table id="dataTable" class="display" width="100%" cellspacing="0"><thead><tr><th>Descrição da Coleta</th><th>Quantidade</th><th>Comentarios</th><th>Salvar</th></tr></thead><tbody></tbody></table>');
 
         if (indicadores != null) {
@@ -219,6 +275,92 @@
             }
         });
 
+        $btnFind.button('reset');
+    }
+
+    function MountTableEdit(indicadores) {
+
+        $("#tabela").append('<table id="dataTable" class="display" width="100%" cellspacing="0"><thead><tr><th>Descrição da Coleta</th><th>Quantidade</th><th>Comentarios</th><th>Salvar</th></tr></thead><tbody></tbody></table>');
+
+        if (indicadores != null) {
+
+            for (var i = 0; i < indicadores.length; i++) {
+
+                var newRow = $("<tr>");
+                var cols = "";
+
+                cols += '<td>' + indicadores[i].Nome + '</td>';
+
+                cols += '<td><input id="quantidade" name="row-1-age" type="text" value="' + indicadores[i].ValorReal + '" style="text-align: center" disabled ></td>'; //BS: Alteração feita=> Alinhamento do texto: Centralizado
+
+                cols += '<td><input id="comentarios" name="row-1-position" value="" type="text" disabled></td>';
+
+                cols += '<td><button id="alter" class="btn btn-large btn-primary" type="button">Alterar</button><button id="save" class="btn btn-large btn-danger" type="button" style="display: none;">Salvar</button></td>';
+
+                cols += '</td>';
+
+                newRow.append(cols);
+
+                $("#dataTable").append(newRow);
+
+            }
+        }
+
+        var table = $('#dataTable').DataTable({
+            paging: false,
+            "searching": false,
+            "lengthChange": false,
+            "info": false,
+            "ordering": false,
+            columns: [
+            { "data": "engine" },
+            { "data": "browser" },
+            { "data": "platform" },
+            { "data": "version" }],
+            'initComplete': function () {
+
+                $('#dataTable tbody #alter').on('click', function (data, a, b) {
+                    $(this).parents('tr').find('#quantidade').prop("disabled", false);
+                    $(this).parents('tr').find('#comentarios').prop("disabled", false);
+                    $(this).parents('tr').find('#save').show();
+                    $(this).parents('tr').find('#alter').hide();
+
+                });
+
+                $('#dataTable tbody #save').on('click', function (data, a, b) {
+
+                    var data = table.row($(this).parents('tr')).data();
+                    var quantidade = $(this).parents('tr').find('#quantidade').val();
+                    var comentarios = $(this).parents('tr').find('#comentarios').val();
+                    //var date = $("#date").val();
+                    var newdate = DataEdit.split("/").reverse().join("-");
+                    //var date = $("#date").datepicker({ dateFormat: 'yyyy-mm-dd' }).val();
+                    //var parCompany_Id = $("#ParCompany_Id").val();
+
+                    var obj = {};
+
+                    obj['descricao'] = data.engine;
+                    obj['quantidade'] = quantidade.replace(",", ".");
+                    obj['comentarios'] = comentarios;
+                    obj['data'] = newdate;
+                    //obj['parCompany'] = parCompany_Id;
+                   
+                    obj['parCompany'] = UniEdit
+
+                    if (validaParaEnvio(obj)) {
+
+                        if (EnviarEdit(obj)) {
+                            $(this).parents('tr').find('#quantidade').prop("disabled", true);
+                            $(this).parents('tr').find('#comentarios').prop("disabled", true);
+                            $(this).parents('tr').find("#save").prop("disabled", true);
+                        }
+                    }
+
+                });
+            }
+        });
+
+        $btnEdit.button('reset');
     }
 
 </script>
