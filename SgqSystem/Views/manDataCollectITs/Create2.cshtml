@@ -330,13 +330,12 @@
                 $('#dataTable tbody #save').on('click', function (data, a, b) {
 
                     var data = table.row($(this).parents('tr')).data();
-
                     var quantidade = $(this).parents('tr').find('#quantidade').val();
                     var comentarios = $(this).parents('tr').find('#comentarios').val();
-                    var date = $("#date").val();
+                    //var date = $("#date").val();
                     var newdate = DataEdit.split("/").reverse().join("-");
                     //var date = $("#date").datepicker({ dateFormat: 'yyyy-mm-dd' }).val();
-                    var parCompany_Id = $("#ParCompany_Id").val();
+                    //var parCompany_Id = $("#ParCompany_Id").val();
 
                     var obj = {};
 

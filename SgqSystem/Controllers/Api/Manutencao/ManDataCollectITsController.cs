@@ -55,20 +55,6 @@ namespace SgqSystem.Controllers.Api.Manutencao
         }
 
         [HttpPost]
-        [Route("SaveCreateAll")]
-        public int SaveCreateAll(Obj obj)
-        {
-            string sql = "";
-
-            using (var db = new SgqDbDevEntities())
-            {
-                var d = db.Database.ExecuteSqlCommand(sql);
-                return d;
-            }
-
-        }
-
-        [HttpPost]
         [Route("GetIndicadores")]
         public List<Indicador> GetIdicadores(Obj3 obj3)
         {
@@ -166,7 +152,9 @@ namespace SgqSystem.Controllers.Api.Manutencao
                    "WHERE " +
                     "Base_parCompany_id = '" + obj.parCompany + "' " +
                    "AND " +
-                   "Base_dateRef = '" + obj.data.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+                   "Base_dateRef = '" + obj.data.ToString("yyyy-MM-dd HH:mm:ss") + "'" +
+                   " AND " +
+                    obj.indicadorNome + " IS NOT NULL"; 
 
             using (var db = new SgqDbDevEntities())
             {
