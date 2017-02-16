@@ -3,6 +3,7 @@
     ViewBag.Title = "Manutenção";
     var urlKPI = Url.Action("Index", "Manutencao");
     var urlPainelIndicadoresUniManutencao = Url.Action("PainelIndicadoresUniManutencao", "ManPainelGestao");
+    var urlColeta = Url.Action("Create2", "manDataCollectITs");
 }
 
 <style>
@@ -296,7 +297,7 @@
                             <li>
                                 <a href="#">Relatórios de coletas</a>
                                 <a href="#">Execução do Plano de Ação</a>
-                                <a href="#">Coletas e Uso do Sistema</a>
+                                <a href="@urlColeta">Coletas e Uso do Sistema</a>
                                 @*<ul>
                                         <li><a href="#">Paramentrizações</a></li>
                                         <li><a href="#">Utilização do SGQ</a></li>
