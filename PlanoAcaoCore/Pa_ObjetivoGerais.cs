@@ -1,4 +1,5 @@
-﻿using DTO.Helpers;
+﻿using ADOFactory;
+using DTO.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,39 +18,30 @@ namespace PlanoAcaoCore
 
         public static List<Pa_ObjetivoGerais> Listar()
         {
-            List<Pa_ObjetivoGerais> listReturn;
-            var query = "SELECT * FROM Pa_ObjetivoGerais";
-            using (var db = new FactoryPA(""))
-                listReturn = db.SearchQuery<Pa_ObjetivoGerais>(query);
-
-            return listReturn;
+            var query = "SELECT * FROM Pa_ObjetivoGeral";
+            return ListarGenerico<Pa_ObjetivoGerais>(query);
         }
 
         public static Pa_ObjetivoGerais Get(int Id)
         {
-            Pa_ObjetivoGerais listReturn;
-            var query = "SELECT * FROM Pa_ObjetivoGerais WHERE Id = " + Id;
-
-            using (var db = new FactoryPA(""))
-                listReturn = db.SearchQuery<Pa_ObjetivoGerais>(query).FirstOrDefault();
-
-            return listReturn;
+            var query = "SELECT * FROM Pa_ObjetivoGeral WHERE Id = " + Id;
+            return GetGenerico<Pa_ObjetivoGerais>(query);
         }
 
         public void AddOrUpdate()
         {
             IsValid();
-            string query;
-            if (Id > 0)
-            {
-                query = "";
-                Update(query);
-            }
-            else
-            {
-                query = "";
-                Salvar(query);
-            }
+            //string query;
+            //if (Id > 0)
+            //{
+            //    query = "";
+            //    Update(query);
+            //}
+            //else
+            //{
+            //    query = "";
+            //    Salvar(query);
+            //}
         }
     }
 }

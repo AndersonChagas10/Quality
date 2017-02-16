@@ -42,16 +42,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Pa_Acao.cs" />
-    <Compile Include="DataLayer\FactoryPA.cs" />
     <Compile Include="Interfaces\ICrudPa.cs" />
     <Compile Include="Pa_BaseObject.cs" />
+    <Compile Include="Pa_Coordenacao.cs" />
+    <Compile Include="Pa_Diretoria.cs" />
+    <Compile Include="Pa_Gerencia.cs" />
+    <Compile Include="Pa_Missao.cs" />
     <Compile Include="Pa_ObjetivoGerais.cs" />
     <Compile Include="Pa_Iniciativas.cs" />
     <Compile Include="Pa_Indicadores.cs" />
     <Compile Include="Pa_Planejamento.cs" />
+    <Compile Include="Pa_TemaAssunto.cs" />
+    <Compile Include="Pa_Visao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">
+      <Project>{31925fca-e0f6-428d-9a7d-59ca8879d6f8}</Project>
+      <Name>ADOFactory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DTO\DTO.csproj">
       <Project>{0ED5466D-2A8F-4E37-8D4A-C2F2760BD687}</Project>
       <Name>DTO</Name>

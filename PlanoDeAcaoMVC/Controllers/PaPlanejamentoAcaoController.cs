@@ -2,13 +2,11 @@
 
 namespace PlanoDeAcaoMVC.Controllers
 {
-
-    public class HomeController : Controller
+    public class PaPlanejamentoAcaoController : Controller
     {
+        // GET: PaPlanejamentoAcao
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
-
             return View();
         }
     }
