@@ -20,7 +20,6 @@ namespace Dominio
             this.ConsolidationLevel1 = new HashSet<ConsolidationLevel1>();
             this.ConsolidationLevel2 = new HashSet<ConsolidationLevel2>();
             this.Defect = new HashSet<Defect>();
-            this.DimManBaseUni = new HashSet<DimManBaseUni>();
             this.ManDataCollectIT = new HashSet<ManDataCollectIT>();
             this.VolumeCepDesossa = new HashSet<VolumeCepDesossa>();
             this.VolumeCepRecortes = new HashSet<VolumeCepRecortes>();
@@ -45,7 +44,7 @@ namespace Dominio
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool IsActive { get; set; }
         public string Initials { get; set; }
-        public Nullable<int> SIF { get; set; }
+        public string SIF { get; set; }
         public Nullable<int> CompanyNumber { get; set; }
         public string IPServer { get; set; }
         public string DBServer { get; set; }
@@ -58,8 +57,6 @@ namespace Dominio
         public virtual ICollection<ConsolidationLevel2> ConsolidationLevel2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Defect> Defect { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DimManBaseUni> DimManBaseUni { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ManDataCollectIT> ManDataCollectIT { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

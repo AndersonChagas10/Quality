@@ -34,6 +34,7 @@ namespace SgqSystem.Controllers
             ViewBag.listaParStructure = _baseDomainParStructure.GetAll();
             ViewBag.listaParStructureGroup = _baseDomainParStructureGroup.GetAll();
             ViewBag.listaParCluster = _baseDomainParCluster.GetAll();
+            ViewBag.listaParStructureXCompany = _baseDomainParStructure.ExecuteSql("select * from ParStructure where ParStructureGroup_Id = (select max(ParStructureGroup_Id) from ParStructure)");
 
         }
 
