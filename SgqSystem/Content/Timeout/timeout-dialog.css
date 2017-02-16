@@ -38,7 +38,7 @@ button {
 .timeout-dialog {
   padding: 15px;
   position: absolute;
-  background: #eeeeee url("~/Imagens/timeout-icon.png") no-repeat 15px 25px;
+  background: #eeeeee url("../../Imagens/timeout-icon.png") no-repeat 15px 25px;
   border: 1px solid #ffffff;
   -webkit-box-shadow: 0 0px 5px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0 0px 5px rgba(0, 0, 0, 0.5);
