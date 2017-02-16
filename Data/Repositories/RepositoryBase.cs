@@ -182,7 +182,7 @@ namespace Data.Repositories
             var aaa = Entity.AsQueryable().AsNoTracking(); 
 
             return Entity.ToList();
-        }
+        } 
 
         public T GetById(int id)
         {
