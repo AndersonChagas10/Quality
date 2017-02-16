@@ -61,10 +61,14 @@
     var url3 = '@Html.Raw(@UrlSaveEdit)'
     var DataEdit = '';
     var UniEdit = '';
+    var $btnFind;
+    var $btnEdit;
 
     $(document).ready(function () {
 
         var end = moment();
+        $btnFind = $('#GetIndicadores');
+        $btnEdit = $('#GetIndicadoresEdit');
 
         $('.simpleCalendar').daterangepicker({
             singleDatePicker: true,
@@ -78,14 +82,16 @@
         $('tbody #quantidade').inputmask("decimal", { rightAlign: false })
 
         $('#GetIndicadores').click(function () {
-
+            $btnFind.button('loading'); 
             $("#dataTable").empty();
             $('#dataTable_wrapper').remove();
             var typeRequest = 'Get';
             Send(typeRequest);
+            
         });
 
         $('#GetIndicadoresEdit').click(function () {
+            $btnEdit.button('loading');
             $("#dataTable").empty();
             $('#dataTable_wrapper').remove();
             var typeRequest = 'Edit';
@@ -105,7 +111,7 @@
         UniEdit = $('#ParCompany_Id option:selected').val();
 
         var newdate = Data.split("/").reverse().join("/");
-
+        
         if (Unidade >= 0 && Data != '') {
 
             var dados = { 'Date': newdate, 'Unit': Unidade };
@@ -114,9 +120,9 @@
             switch (typeRequest) {
                 case 'Get':
                     $.post(url, dados, function (lista) {
-
+                        
                         MountTable(lista);
-
+                        
                     });
                     break;
                 case 'Edit':
@@ -130,7 +136,7 @@
 
             }
         }
-
+       
     }
 
     function Enviar(dataToSend) {
@@ -197,7 +203,7 @@
     }
 
     function MountTable(indicadores) {
-
+        
         $("#tabela").append('<table id="dataTable" class="display" width="100%" cellspacing="0"><thead><tr><th>Descrição da Coleta</th><th>Quantidade</th><th>Comentarios</th><th>Salvar</th></tr></thead><tbody></tbody></table>');
 
         if (indicadores != null) {
@@ -269,6 +275,7 @@
             }
         });
 
+        $btnFind.button('reset');
     }
 
     function MountTableEdit(indicadores) {
@@ -353,6 +360,8 @@
                 });
             }
         });
+
+        $btnEdit.button('reset');
     }
 
 </script>
