@@ -19,7 +19,7 @@ namespace Dominio
         public int ParCompany_Id { get; set; }
         public string Role { get; set; }
     
-        public virtual ParCompany ParCompany { get; set; }
         public virtual UserSgq UserSgq { get; set; }
+        public virtual ParCompany ParCompany { get; set; }
     }
 }

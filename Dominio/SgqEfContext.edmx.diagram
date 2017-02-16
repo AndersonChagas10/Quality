@@ -29,7 +29,6 @@
         <EntityTypeShape EntityType="SgqDbModel.NQA" Width="1.5" PointX="8.75" PointY="4.75" />
         <EntityTypeShape EntityType="SgqDbModel.ParCluster" Width="1.5" PointX="9" PointY="65.75" />
         <EntityTypeShape EntityType="SgqDbModel.ParClusterGroup" Width="1.5" PointX="6.75" PointY="66" />
-        <EntityTypeShape EntityType="SgqDbModel.ParCompany" Width="1.5" PointX="6" PointY="32" />
         <EntityTypeShape EntityType="SgqDbModel.ParCompanyCluster" Width="1.5" PointX="19.25" PointY="53.125" />
         <EntityTypeShape EntityType="SgqDbModel.ParCompanyXStructure" Width="1.5" PointX="11.25" PointY="30" />
         <EntityTypeShape EntityType="SgqDbModel.ParCompanyXUserSgq" Width="1.5" PointX="14.25" PointY="32.25" />
@@ -95,8 +94,6 @@
         <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel01_Unit" />
         <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel1_Department" />
         <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel1_Level1" />
-        <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel1_ParCompany" />
-        <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel1" />
         <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel2_ParLevel2" />
         <AssociationConnector Association="SgqDbModel.FK_CorrectiveAction_UserSgq" />
         <AssociationConnector Association="SgqDbModel.FK_CorrectiveAction_UserSgq1" />
@@ -105,20 +102,6 @@
         <AssociationConnector Association="SgqDbModel.FK_ParCluster_ParClusterGroup" />
         <AssociationConnector Association="SgqDbModel.FK_ParCompanyCluster_ParCluster" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel1XCluster_ParCluster" />
-        <AssociationConnector Association="SgqDbModel.FK__CepDesoss__ParCo__17D860BF" />
-        <AssociationConnector Association="SgqDbModel.FK__CepRecort__ParCo__1407CFDB" />
-        <AssociationConnector Association="SgqDbModel.FK__Pcc1b__ParCompan__1BA8F1A3" />
-        <AssociationConnector Association="SgqDbModel.FK__VacuoGRD__ParCom__10373EF7" />
-        <AssociationConnector Association="SgqDbModel.FK_ParCompanyCluster_ParCompany" />
-        <AssociationConnector Association="SgqDbModel.FK_ParCompanyXStructure_ParCompany" />
-        <AssociationConnector Association="SgqDbModel.FK_ParCompanyXUserSgq_ParCompany" />
-        <AssociationConnector Association="SgqDbModel.FK_ParEvaluation_ParCompany" />
-        <AssociationConnector Association="SgqDbModel.FK_ParGoal_ParCompany" />
-        <AssociationConnector Association="SgqDbModel.FK_ParLevel2ControlCompany_ParCompany" />
-        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Level2_ParCompany" />
-        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParCompany" />
-        <AssociationConnector Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParCompany" />
-        <AssociationConnector Association="SgqDbModel.FK_ParSample_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParCompanyXStructure_ParStructure" />
         <AssociationConnector Association="SgqDbModel.FK_ParCompanyXUserSgq_UserSgq" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel1_ParConsolidationType" />
@@ -174,7 +157,6 @@
         <EntityTypeShape EntityType="SgqDbModel.DimManutencaoColetaITs" Width="1.5" PointX="6" PointY="20.375" />
         <EntityTypeShape EntityType="SgqDbModel.ManDataCollectIT" Width="1.5" PointX="3.875" PointY="26.875" />
         <AssociationConnector Association="SgqDbModel.FK_ManDataCollectIT_DimManutencaoColetaITs_id" />
-        <AssociationConnector Association="SgqDbModel.FK_ManDataCollectIT_ParCompany_id" />
         <EntityTypeShape EntityType="SgqDbModel.CollectionLevel2" Width="2.25" PointX="22.5" PointY="35.125" />
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2" />
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_ParLevel1" />
@@ -185,7 +167,6 @@
         <EntityTypeShape EntityType="SgqDbModel.ParLevel2XHeaderField" Width="1.5" PointX="9.375" PointY="11.75" />
         <EntityTypeShape EntityType="SgqDbModel.ManColetaDados" Width="1.5" PointX="0.75" PointY="13.75" />
         <EntityTypeShape EntityType="SgqDbModel.Defect" Width="1.5" PointX="14.25" PointY="45.75" />
-        <AssociationConnector Association="SgqDbModel.FK_Defect_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_Defect_ParLevel1" />
         <EntityTypeShape EntityType="SgqDbModel.ConsolidationLevel02" Width="2.25" PointX="15.75" PointY="15.625" />
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02" />
@@ -198,6 +179,25 @@
         <AssociationConnector Association="SgqDbModel.FK_RoleJBS_ScreenComponent" />
         <EntityTypeShape EntityType="SgqDbModel.RoleSGQ" Width="1.5" PointX="7.875" PointY="73.125" />
         <AssociationConnector Association="SgqDbModel.FK_RoleSGQ_ScreenComponent" />
+        <EntityTypeShape EntityType="SgqDbModel.ParCompany" Width="1.5" PointX="0.75" PointY="40.125" />
+        <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel1_ParCompany" />
+        <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel1" />
+        <AssociationConnector Association="SgqDbModel.FK_Defect_ParCompany" />
+        <AssociationConnector Association="SgqDbModel.FK_ManDataCollectIT_ParCompany_id" />
+        <AssociationConnector Association="SgqDbModel.FK__CepDesoss__ParCo__17D860BF" />
+        <AssociationConnector Association="SgqDbModel.FK__CepRecort__ParCo__1407CFDB" />
+        <AssociationConnector Association="SgqDbModel.FK__Pcc1b__ParCompan__1BA8F1A3" />
+        <AssociationConnector Association="SgqDbModel.FK__VacuoGRD__ParCom__10373EF7" />
+        <AssociationConnector Association="SgqDbModel.FK_ParCompanyCluster_ParCompany" />
+        <AssociationConnector Association="SgqDbModel.FK_ParCompanyXStructure_ParCompany" />
+        <AssociationConnector Association="SgqDbModel.FK_ParCompanyXUserSgq_ParCompany" />
+        <AssociationConnector Association="SgqDbModel.FK_ParEvaluation_ParCompany" />
+        <AssociationConnector Association="SgqDbModel.FK_ParGoal_ParCompany" />
+        <AssociationConnector Association="SgqDbModel.FK_ParLevel2ControlCompany_ParCompany" />
+        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Level2_ParCompany" />
+        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParCompany" />
+        <AssociationConnector Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParCompany" />
+        <AssociationConnector Association="SgqDbModel.FK_ParSample_ParCompany" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

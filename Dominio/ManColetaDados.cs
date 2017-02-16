@@ -120,5 +120,9 @@ namespace Dominio
         public Nullable<decimal> CartaMetas_Real { get; set; }
         public Nullable<decimal> CartaMetas_Vazio { get; set; }
         public string Comentarios { get; set; }
+        public Nullable<decimal> Disponibilidade_AbateMeta { get; set; }
+        public Nullable<decimal> Disponibilidade_AbateReal { get; set; }
+        public Nullable<decimal> Disponibilidade_DesossaReal { get; set; }
+        public Nullable<decimal> Disponibilidade_DesossaMeta { get; set; }
     }
 }

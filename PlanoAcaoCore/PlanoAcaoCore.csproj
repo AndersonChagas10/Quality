@@ -41,10 +41,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FactoryPA.cs" />
-    <Compile Include="ICrudPa.cs" />
-    <Compile Include="Planejamento.cs" />
+    <Compile Include="Pa_Acao.cs" />
+    <Compile Include="DataLayer\FactoryPA.cs" />
+    <Compile Include="Interfaces\ICrudPa.cs" />
+    <Compile Include="Pa_BaseObject.cs" />
+    <Compile Include="Pa_ObjetivoGerais.cs" />
+    <Compile Include="Pa_Iniciativas.cs" />
+    <Compile Include="Pa_Indicadores.cs" />
+    <Compile Include="Pa_Planejamento.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DTO\DTO.csproj">
+      <Project>{0ED5466D-2A8F-4E37-8D4A-C2F2760BD687}</Project>
+      <Name>DTO</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

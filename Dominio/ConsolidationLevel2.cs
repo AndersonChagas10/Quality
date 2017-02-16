@@ -39,9 +39,9 @@ namespace Dominio
         public Nullable<int> DefectsResult { get; set; }
         public string LastLevel2Alert { get; set; }
     
+        public virtual ParLevel2 ParLevel2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }
         public virtual ParCompany ParCompany { get; set; }
-        public virtual ParLevel2 ParLevel2 { get; set; }
     }
 }
