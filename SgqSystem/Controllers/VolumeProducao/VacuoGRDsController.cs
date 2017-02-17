@@ -18,6 +18,7 @@ namespace SgqSystem.Controllers
 
         private void GetNumeroDeFamiliasPorUnidadeDoUsuarioVacuoGRD(VolumeVacuoGRD model, int hashKey)
         {
+            hashKey = 3;
             var naoCorporativas = CommonData.GetNumeroDeFamiliasPorUnidadeDoUsuario(HttpContext, hashKey);
             var corporativos = CommonData.GetNumeroDeFamiliasCorporativo(HttpContext, hashKey);
             model.QtdadeFamiliaProduto = corporativos + naoCorporativas;
