@@ -272,15 +272,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\Resource.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Resource.pt-br1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.pt-br.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Resource1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -309,6 +309,7 @@
     <Compile Include="Controllers\Api\RelatoriosBrasil\ScorecardApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\VisaoGeralDaAreaApiController.cs" />
     <Compile Include="Controllers\Api\RoleApiController.cs" />
+    <Compile Include="Controllers\Api\UserSgqApiController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacaoController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacaoResultadosController.cs" />
     <Compile Include="Controllers\Api\VTVerificacaoTipificacaoApiController.cs" />
@@ -2126,6 +2127,7 @@
     <Folder Include="Views\RelatorioController\" />
     <Folder Include="Views\RoleApi\" />
     <Folder Include="Views\TipificacaoViewModel\" />
+    <Folder Include="Views\UserSgqApi\" />
     <Folder Include="Views\VTVerificacaoTipificacaoAPI\" />
     <Folder Include="Views\WebService\" />
   </ItemGroup>

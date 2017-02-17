@@ -56,18 +56,15 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(UserSgqDTO userSgqDto)
+        public ActionResult Save(UserSgqDTO userSgqDto)
         {
             UserSgq userSgq = Mapper.Map<UserSgq>(userSgqDto);
-            if (ModelState.IsValid)
-            {
-                userSgq.AddDate = DateTime.Now;
-                db.UserSgq.Add(userSgq);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            userSgq.AddDate = DateTime.Now;
+            db.UserSgq.Add(userSgq);
+            db.SaveChanges();
 
-            return View(userSgq);
+
+            return RedirectToAction("Index");
         }
 
         // GET: UserSgq/Edit/5
@@ -95,6 +92,8 @@ namespace SgqSystem.Controllers
             if (ModelState.IsValid)
             {
                 userSgq.AlterDate = DateTime.Now;
+                UserSgq dummy = db.UserSgq.Find(userSgq.Id);
+
                 db.Entry(userSgq).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
