@@ -172,19 +172,25 @@
             try {
 
             } catch (e) {
+
                 console.log(e);
+
             } finally {
 
             }
         }).fail(function (e, h, x) {
 
             if (e.status == 0) {
+
                 GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+
             } else {
+
                 GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+
             }
 
-            return false;
+            
 
         });
 
@@ -204,7 +210,7 @@
 
     function MountTable(indicadores) {
         
-        $("#tabela").append('<table id="dataTable" class="display" width="100%" cellspacing="0"><thead><tr><th>Descrição da Coleta</th><th>Quantidade</th><th>Comentarios</th><th>Salvar</th></tr></thead><tbody></tbody></table>');
+        $("#tabela").append('<table id="dataTable" class="display" width="100%" cellspacing="0"><thead><tr><th>Descrição da Coleta</th><th>Quantidade</th><th>Comentarios</th><th>Salvar</th><th>Conclusão</tr></thead><tbody></tbody></table>');
 
         if (indicadores != null) {
 
@@ -221,6 +227,8 @@
 
                 cols += '<td><button id="save" class="btn btn-large btn-danger" type="button">Salvar</button></td>';
 
+                cols += '<td id="return"></td>';
+
                 cols += '</td>';
 
                 newRow.append(cols);
@@ -236,11 +244,6 @@
             "lengthChange": false,
             "info": false,
             "ordering": false,
-            columns: [
-            { "data": "engine" },
-            { "data": "browser" },
-            { "data": "platform" },
-            { "data": "version" }],
             'initComplete': function () {
 
                 $('#dataTable tbody').on('click', 'button', function (data, a, b) {
@@ -280,7 +283,7 @@
 
     function MountTableEdit(indicadores) {
 
-        $("#tabela").append('<table id="dataTable" class="display" width="100%" cellspacing="0"><thead><tr><th>Descrição da Coleta</th><th>Quantidade</th><th>Comentarios</th><th>Salvar</th></tr></thead><tbody></tbody></table>');
+        $("#tabela").append('<table id="dataTable" class="display" width="100%" cellspacing="0"><thead><tr><th>Descrição da Coleta</th><th>Quantidade</th><th>Comentarios</th><th>Alterar/Salvar</th><th>Conclusão</th></tr></thead><tbody></tbody></table>');
 
         if (indicadores != null) {
 
@@ -297,12 +300,13 @@
 
                 cols += '<td><button id="alter" class="btn btn-large btn-primary" type="button">Alterar</button><button id="save" class="btn btn-large btn-danger" type="button" style="display: none;">Salvar</button></td>';
 
+                cols += '<td></td>';
+
                 cols += '</td>';
 
                 newRow.append(cols);
 
                 $("#dataTable").append(newRow);
-
             }
         }
 
@@ -312,11 +316,6 @@
             "lengthChange": false,
             "info": false,
             "ordering": false,
-            columns: [
-            { "data": "engine" },
-            { "data": "browser" },
-            { "data": "platform" },
-            { "data": "version" }],
             'initComplete': function () {
 
                 $('#dataTable tbody #alter').on('click', function (data, a, b) {
@@ -353,6 +352,7 @@
                             $(this).parents('tr').find('#quantidade').prop("disabled", true);
                             $(this).parents('tr').find('#comentarios').prop("disabled", true);
                             $(this).parents('tr').find("#save").prop("disabled", true);
+                            $(this).parents('tr').find("#result").text(retorno.result);
                         }
                     }
 
