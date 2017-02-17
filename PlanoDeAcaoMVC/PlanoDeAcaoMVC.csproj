@@ -179,6 +179,8 @@
     <Compile Include="Controllers\Api\ApiPa_ObjetivoGeraisController.cs" />
     <Compile Include="Controllers\Api\ApiPa_PlanejamentoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PaPlanejamentoAcaoController.cs" />
+    <Compile Include="Controllers\Pa_PlanejamentoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -196,9 +198,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\GuardJs.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\Relatives.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Web.config" />
@@ -215,8 +219,16 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Pa_Planejamento\Index.cshtml" />
+    <Content Include="Views\PaPlanejamentoAcao\Index.cshtml" />
+    <Content Include="Views\Pa_Planejamento\Details.cshtml" />
+    <Content Include="Views\Pa_Planejamento\Buscar.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Project>{026efa70-bd6d-46c8-bd94-d7fcd42b9692}</Project>
+      <Name>Helper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlanoAcaoCore\PlanoAcaoCore.csproj">
       <Project>{9f15cca3-ec01-46b6-91ec-3f408e7417bc}</Project>
       <Name>PlanoAcaoCore</Name>

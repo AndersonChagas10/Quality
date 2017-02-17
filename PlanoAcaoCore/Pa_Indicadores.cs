@@ -1,9 +1,7 @@
-﻿using DTO.Helpers;
-using System;
+﻿using ADOFactory;
+using DTO.Helpers;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PlanoAcaoCore
 {
@@ -20,39 +18,30 @@ namespace PlanoAcaoCore
 
         public static List<Pa_Indicadores> Listar()
         {
-            List<Pa_Indicadores> listReturn;
             var query = "SELECT * FROM Pa_Indicadores";
-            using (var db = new FactoryPA(""))
-                listReturn = db.SearchQuery<Pa_Indicadores>(query);
-
-            return listReturn;
+            return ListarGenerico<Pa_Indicadores>(query);
         }
 
         public static Pa_Indicadores Get(int Id)
         {
-            Pa_Indicadores listReturn;
             var query = "SELECT * FROM Pa_Indicadores WHERE Id = " + Id;
-
-            using (var db = new FactoryPA(""))
-                listReturn = db.SearchQuery<Pa_Indicadores>(query).FirstOrDefault();
-
-            return listReturn;
+            return GetGenerico<Pa_Indicadores>(query);
         }
 
         public void AddOrUpdate()
         {
             IsValid();
-            string query;
-            if (Id > 0)
-            {
-                query = "";
-                Update(query);
-            }
-            else
-            {
-                query = "";
-                Salvar(query);
-            }
+            //string query;
+            //if (Id > 0)
+            //{
+            //    query = "";
+            //    Update(query);
+            //}
+            //else
+            //{
+            //    query = "";
+            //    Salvar(query);
+            //}
         }
       
     }

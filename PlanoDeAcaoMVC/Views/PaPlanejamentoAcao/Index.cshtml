@@ -1,0 +1,230 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Plano de Ação</h2>
+
+<div>
+    <button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="ModalOpcoesEstrategico(); TaticoClicked(false);">
+        Planejamento Estratégico
+    </button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="ModalOpcoesEstrategico(); TaticoClicked(true);">
+        Planejamento Tático
+    </button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="ModalOperacional(true); TaticoClicked(false);">
+        Planejamento Operacional
+    </button>
+    <button type="button" onclick="Relatorios();" class="btn btn-primary">
+        Relatórios
+    </button>
+</div>
+
+<div>
+    <table id="paTable">
+
+    </table>
+</div>
+
+<div class="modal fade" id="modalLindo" tabindex="-1" role="dialog" aria-labelledby="modalBuscarCabecalhoLabel" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="times">&times;</span></button>
+                <button type="button" class="close modalMinimize" aria-label="Minimizar"><span aria-hidden="true" class="minus">&minus;</span></button>
+                <h4 class="modal-title" id="Header">ID: Header</h4>
+            </div>
+            <div class="modal-body" id="body">
+              ID: Body
+            </div>
+            <div class="modal-footer">
+                
+                <button type="button" class="btn btn-default" id="Fechar" onclick="" data-dismiss="modal" style="display:none">Fechar</button>
+                <button type="button" class="btn btn-default" id="Fechar2"  onclick=""  style="display:none">Fechar</button>
+                <button type="button" class="btn btn-primary" id="Selecionar" onclick="" style="display:none" disabled >Selecionar</button>
+                <button type="button" class="btn btn-primary" id="Salvar" onclick="" style="display:none" disabled>Salvar</button>
+                <button type="button" class="btn btn-info" id="BuscarPlanejamentos" onclick="BuscarPlanejamentos();">Buscar Planejamento</button>
+                <button type="button" class="btn btn-success" id="NovoPlanejamento" onclick="NovoPlanejamento();" data-toggle="modal" style="display:none"> Novo Planejamento</button>
+                <button type="button" class="btn btn-primary" id="NovaAcao" onclick="ModalOperacional(false);" style="display:none">Nova Ação</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-dialog" id="modalNovo" role="document" style="display:none">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="times">×</span></button>
+            <button type="button" class="close modalMinimize" aria-label="Minimizar"><span aria-hidden="true" class="minus">−</span></button>
+            <h4 class="modal-title" id="novoHeader"></h4>
+        </div>
+        <div class="modal-body" id="novoBody">
+            <form>
+                <div class="form-group">
+                    <label for="recipient-name" id="novoLabel" class="control-label"></label>
+                    <input type="text" class="form-control" id="adicionar">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            <button type="button" class="btn btn-primary" onclick="SalvarNovo();">Salvar</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+  
+
+    <script>
+
+        var isTaticoClicked = false;
+        $.fn.serializeObject = function () {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name] !== undefined) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+
+        var urlModalOpcoesEstrategico = '@Url.Action("Details", "Pa_Planejamento")';
+        var urlNovoPlanejamento = '@Url.Action("Index", "Pa_Planejamento")';
+        var urlBuscarPlanejamentos = '@Url.Action("Buscar", "Pa_Planejamento")';
+        var urlSalvarPlanejamento = '@Url.Action("Save", "api/Pa_Planejamento")';
+        var urlNovaAcao = '@Url.Action("", "")';
+        var urlSalvarAcao = '@Url.Action("", "")';
+        var urlSalvarNovo = '@Url.Action("", "")';
+        
+        function TaticoClicked(isClicked) {
+            isTaticoClicked = isClicked;
+        }
+
+        /*Planejamento*/
+        function ModalOpcoesEstrategico(idPlanejamento) {//Pos Modal1
+            $('#modalLindo').modal();
+            $('#Header').html("Planejamento");
+            if (!idPlanejamento) {
+
+                $.get(urlModalOpcoesEstrategico, { id: idPlanejamento }, function (r) {
+                    $('#modalLindo').find('.modal-body').empty().append(r);
+                });
+
+            } else {
+                $('#modalLindo').find('.modal-body').empty();
+            }
+
+            /*Botões*/
+            $('#modalLindo').find('.modal-footer button').hide()
+
+            $('#Fechar').show();
+
+            $('#BuscarPlanejamentos').show();
+
+            $('#NovoPlanejamento').show();
+
+            $('#NovaAcao').show();
+            /*Fim Botões*/
+
+        }
+
+        function NovoPlanejamento() {//Pos Modal2
+            $('#Header').html("Novo Planejamento")
+
+            $.get(urlNovoPlanejamento, function (r) {
+                $('#modalLindo').find('.modal-body').empty().append(r);
+            });
+
+            /*Botões*/
+            $('#modalLindo').find('.modal-footer button').hide()
+
+            $('#Fechar2').show();
+            $('#Fechar2').off('click').on('click', ModalOpcoesEstrategico);
+
+            $('#Salvar').show();
+            $('#Salvar').off('click').on('click', SalvarPlanejamento);
+            /*Fim Botões*/
+        }
+
+        function BuscarPlanejamentos() {//Pos Modal2
+            $('#Header').html("Buscar Planejamento")
+
+            $.get(urlBuscarPlanejamentos, function (r) {
+                $('#modalLindo').find('.modal-body').empty().append(r);
+            });
+
+            /*Botões*/
+            $('#modalLindo').find('.modal-footer button').hide()
+
+            $('#Fechar2').show();
+            $('#Fechar2').off('click').on('click', ModalOpcoesEstrategico);
+
+            $('#Selecionar').show();
+            $('#Selecionar').off('click').on('click', SelecionarPlanejamento);
+            /*Fim Botões*/
+        }
+
+        function SelecionarPlanejamento() {
+            var id = 2;
+            ModalOpcoesEstrategico(id);
+        }
+
+        function SalvarPlanejamento() {
+            var sendObj = $('#Planejamento').serializeObject();
+            $.post(urlSalvarPlanejamento, sendObj, function (r) {
+                //console.log(r);
+                ModalOpcoesEstrategico(r.id);
+            });
+        }
+        /*Fim Planejamento*/
+
+        /*Acao*/
+        function ModalOperacional(isOpenModal) {
+            if (isOpenModal)
+                $('#modalLindo').modal();
+
+            $('#Header').html("Ação");
+
+            $.get(urlNovaAcao, function (r) {
+                $('#modalLindo').find('.modal-body').empty().append(r);
+            });
+
+            /*Botões*/
+            $('#Fechar').show();
+
+            $('#Salvar').show();
+            $('#Salvar').off('click').on('click', SalvarAcao);
+            /*Fim Botões*/
+        }
+
+        function SalvarAcao() {
+            var sendObj = $('#Acao').serializeObject();
+            $.get(urlSalvarAcao, sendObj, function (r) {
+
+            });
+        }
+        /*Fim Acao*/
+
+        /*Novo item*/
+        function Novo() {
+            $('#modalNovo').modal();
+        }
+
+        function SalvarNovo(obj, value) {
+            var salvar = { "obj": obj, "value": par2 };
+            $.post(urlSalvarNovo, salvar, function () {
+                
+            });
+        }
+        /*Fim Novo item*/
+    </script>
+
+}

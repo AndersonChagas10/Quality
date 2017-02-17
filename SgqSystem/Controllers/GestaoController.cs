@@ -1,5 +1,6 @@
 ﻿using SgqSystem.Secirity;
 using System.Web.Mvc;
+using Helper;
 
 namespace SgqSystem.Controllers
 {
