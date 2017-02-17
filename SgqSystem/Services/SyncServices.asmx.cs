@@ -3856,6 +3856,10 @@ namespace SgqSystem.Services
             }
             #endregion
 
+            string selectUrlPreffix = html.option("http://mtzsvmqsc/SgqGlobal", "JBS") +
+                                      html.option("http://192.168.25.200/SgqMaster", "GRT") +
+                                      html.option("http://localhost:8090/SgqSystem", "GCN");
+
             string formOuterHtml = html.head(Html.h.h2, outerhtml: "Entre com seu Login") +
                                   selectUnit +
                                   selectShit +
@@ -3879,7 +3883,10 @@ namespace SgqSystem.Services
                                   html.div(id: "messageSuccess",
                                            classe: "alert alert-success hide",
                                            tags: "role=\"alert\"",
-                                           outerhtml: html.span(id: "mensagemSucesso", classe: "icon-ok-circle"));
+                                           outerhtml: html.span(id: "mensagemSucesso", classe: "icon-ok-circle")) + 
+                                           
+                                  html.select(selectUrlPreffix, "cb_UrlPreffix", "\" onChange='abreOApp(this.value);' \"");
+
             string form = html.form(
                                     outerhtml: formOuterHtml
                                     , classe: "form-signin");
