@@ -1,16 +1,78 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Security;
 
-namespace PlanoAcaoCore
+namespace ADOFactory
 {
-    internal class FactoryPA : IDisposable
+    public class Factory : IDisposable
     {
         public SqlConnection connection;
         private SqlConnectionStringBuilder connectionString;
+
+       
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dataSource">Ip do DB ou caminho físico.</param>
+        /// <param name="catalog">Nome do catalogo do DB.</param>
+        /// <param name="password">Senha.</param>
+        /// <param name="user">User.</param>
+        public Factory(string dataSource, string catalog, string password, string user)
+        {
+            connectionString = new SqlConnectionStringBuilder();
+            connectionString.DataSource = dataSource;//@"SERVERGRT\MSSQLSERVER2014";
+            connectionString.InitialCatalog = catalog;//"SgqDbDev";
+            connectionString.Password = password;//"1qazmko0";
+            connectionString.UserID = user;// "sa";
+
+            try
+            {
+                connection = new SqlConnection();
+                {
+                    connection.ConnectionString = connectionString.ConnectionString;
+                }
+                connection.Open();
+            }
+            catch (SqlException ex)
+            {
+                closeConnection();
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                closeConnection();
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="connectionStringDoWebConfig"></param>
+        public Factory(string connectionStringDoWebConfig)
+        {
+            try
+            {
+                var connectionString = ConfigurationManager.ConnectionStrings[connectionStringDoWebConfig].ConnectionString;
+                connection = new SqlConnection();
+                connection.ConnectionString = connectionString;
+                connection.Open();
+            }
+            catch (SqlException ex)
+            {
+                closeConnection();
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                closeConnection();
+                throw ex;
+            }
+        }
 
         /// <summary>
         /// 
@@ -46,66 +108,6 @@ namespace PlanoAcaoCore
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="dataSource">Ip do DB ou caminho físico.</param>
-        /// <param name="catalog">Nome do catalogo do DB.</param>
-        /// <param name="password">Senha.</param>
-        /// <param name="user">User.</param>
-        public FactoryPA(string dataSource, string catalog, string password, string user)
-        {
-            connectionString = new SqlConnectionStringBuilder();
-            connectionString.DataSource = dataSource;//@"SERVERGRT\MSSQLSERVER2014";
-            connectionString.InitialCatalog = catalog;//"SgqDbDev";
-            connectionString.Password = password;//"1qazmko0";
-            connectionString.UserID = user;// "sa";
-
-            try
-            {
-                connection = new SqlConnection();
-                {
-                    connection.ConnectionString = connectionString.ConnectionString;
-                }
-                connection.Open();
-            }
-            catch (SqlException ex)
-            {
-                closeConnection();
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                closeConnection();
-                throw ex;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="connectionStringDoWebConfig"></param>
-        public FactoryPA(string connectionStringDoWebConfig)
-        {
-            try
-            {
-                var connectionString = ConfigurationManager.ConnectionStrings[connectionStringDoWebConfig].ConnectionString;
-                connection = new SqlConnection();
-                connection.ConnectionString = connectionString;
-                connection.Open();
-            }
-            catch (SqlException ex)
-            {
-                closeConnection();
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                closeConnection();
-                throw ex;
-            }
-        }
-
         public List<T> SearchQuery<T>(string query)
         {
             try
@@ -137,6 +139,29 @@ namespace PlanoAcaoCore
                 throw e;
             }
 
+        }
+
+        public int InsertUpdateData(SqlCommand cmd)
+        {
+         
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = connection;
+            try
+            {
+                int newID;
+                newID = (int)cmd.ExecuteScalar();
+                return newID;
+            }
+            catch (Exception ex)
+            {
+                //Response.Write(ex.Message);
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+                connection.Dispose();
+            }
         }
 
         public int ExecuteSql(string query)

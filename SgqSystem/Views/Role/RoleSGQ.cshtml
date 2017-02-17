@@ -1,6 +1,6 @@
 ﻿@using SgqSystem.Helpers
 <div>
-    <button class="btn btn-primary" onclick="indexRole.openRole();">@Resources.Resource.new_role</button>
+    <button class="btn btn-primary" onclick="indexRoleSGQ.openRole();">@Resources.Resource.new_role</button>
 
     <table class="table margin-top">
         <thead>
@@ -10,7 +10,7 @@
                 <th style="width:10%"></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="tbodySgq">
             @foreach (var component in ViewBag.listaRoleSGQ)
             {
                 <tr>        
@@ -24,7 +24,7 @@
                         @component.Role
                     </td>
                     <td>
-                        <button onclick="indexRole.openRole(@component.Id)" class="btn btn-primary btn-sm">@Resources.Resource.edit</button>
+                        <button onclick="indexRoleSGQ.openRole(@component.Id)" class="btn btn-primary btn-sm">@Resources.Resource.edit</button>
                     </td>
                  </tr>
             }
@@ -59,7 +59,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resource.close</button>
-                    <button type="button" class="btn btn-primary" onclick="indexRole.saveRole()">@Resources.Resource.save</button>
+                    <button type="button" class="btn btn-primary" onclick="indexRoleSGQ.saveRole()">@Resources.Resource.save</button>
                 </div>
             </div>
         </div>

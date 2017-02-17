@@ -843,4 +843,34 @@
   <data name="hascompleteevaluation" xml:space="preserve">
     <value>Exige Avaliação Completa</value>
   </data>
+  <data name="role_jbs" xml:space="preserve">
+    <value>Regra JBS</value>
+  </data>
+  <data name="role_sgq" xml:space="preserve">
+    <value>Regra SGQ</value>
+  </data>
+  <data name="change_password" xml:space="preserve">
+    <value>Mudar a senha</value>
+  </data>
+  <data name="do_not_change_password" xml:space="preserve">
+    <value>Não mudar a senha</value>
+  </data>
+  <data name="fullname" xml:space="preserve">
+    <value>Nome Completo</value>
+  </data>
+  <data name="fullname_required" xml:space="preserve">
+    <value>Preenchimento do nome completo é obrigatório</value>
+  </data>
+  <data name="invalid_password" xml:space="preserve">
+    <value>A senha preenchida é inválida</value>
+  </data>
+  <data name="password_required" xml:space="preserve">
+    <value>Preenchimento da senha é obrigatória</value>
+  </data>
+  <data name="username_required" xml:space="preserve">
+    <value>Preenchimento do nome  do usuário é obrigatório</value>
+  </data>
+  <data name="user_save_success" xml:space="preserve">
+    <value>Usuário salvo com sucesso</value>
+  </data>
 </root>

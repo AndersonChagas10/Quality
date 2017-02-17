@@ -30,11 +30,11 @@ namespace SgqSystem.Controllers
             _baseDomainParStructureGroup = baseDomainParStructureGroup;
             _baseDomainParCluster = baseDomainParCluster;
 
-            ViewBag.listaParCompany = _baseDomainParCompany.GetAllNoLazyLoad();
+            ViewBag.listaParCompany = _baseDomainParCompany.GetAll();
             ViewBag.listaParCompanyStructure = _baseDomainParCompanyXStructure.GetAllNoLazyLoad();
-            ViewBag.listaParStructure = _baseDomainParStructure.GetAllNoLazyLoad();
-            ViewBag.listaParStructureGroup = _baseDomainParStructureGroup.GetAllNoLazyLoad();
-            ViewBag.listaParCluster = _baseDomainParCluster.GetAllNoLazyLoad();
+            ViewBag.listaParStructure = _baseDomainParStructure.GetAll();
+            ViewBag.listaParStructureGroup = _baseDomainParStructureGroup.GetAll();
+            ViewBag.listaParCluster = _baseDomainParCluster.GetAll();
             ViewBag.listaParStructureXCompany = _baseDomainParStructure.GetAll().Where(
                 r=>r.ParStructureGroup_Id == _baseDomainParStructure.GetAllNoLazyLoad().Max(x => x.ParStructureGroup_Id));
 
@@ -65,6 +65,8 @@ namespace SgqSystem.Controllers
         {
             return PartialView("ParStructureGroup");//retorna partial ParStructureGroup
         }
+
+        
 
 
     }

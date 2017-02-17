@@ -638,7 +638,7 @@ namespace SgqSystem.Controllers.Api
                                 "(SELECT 'VTV', VTV.nCdEmpresa, VTV.dMovimento, VTV.iSequencial, VTV.iBanda, CT.nCdCaracteristica, VTV.cIdentificadorTipificacao, VTV.nCdCaracteristicaTipificacao " +
                                 "FROM VTVerificacaoTipificacaoValidacao VTV " +
                                 "INNER JOIN UNIDADES U ON U.CODIGO = VTV.nCdEmpresa " +
-                                "INNER JOIN VTVERIFICACAOTIPIFICACAO VT ON VT.UnidadeId=U.ID AND VT.Sequencial=VTV.iSequencial AND VT.Banda=VTV.iBanda AND CAST(VT.DataHora AS DATE) = CAST(VTV.dMovimento AS DATE)  LEFT JOIN" +
+                                "INNER JOIN VTVERIFICACAOTIPIFICACAO VT ON VT.UnidadeId=U.ID AND VT.Sequencial=VTV.iSequencial AND VT.Banda=VTV.iBanda AND CAST(VT.DataHora AS DATE) = CAST(VTV.dMovimento AS DATE)  LEFT JOIN " +
                                 "CaracteristicaTipificacao CT ON VTV.nCdCaracteristicaTipificacao = CT.nCdCaracteristica LEFT OUTER JOIN " +
                                 "VTVerificacaoTipificacaoResultados AS VTR ON VTR.Chave = VT.Chave AND VTR.CaracteristicaTipificacaoId = CT.cNrCaracteristica " +
                                 "WHERE VTV.nCdEmpresa='" + unidadeCodigo + "' AND CAST(VTV.dMovimento AS DATE) = CAST('" + data + "' AS DATE) AND VTV.iSequencial='" + sequencial + "' AND VTV.iBanda='" + banda + "') ";

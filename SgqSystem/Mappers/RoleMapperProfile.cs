@@ -20,6 +20,9 @@ namespace SgqSystem.Mappers
 
             CreateMap<RoleSGQ, RoleSGQDTO>();
             CreateMap<RoleSGQDTO, RoleSGQ>();
+
+            CreateMap<RoleJBS, RoleJBSDTO>();
+            CreateMap<RoleJBSDTO, RoleJBS>();
         }
     }
 }

@@ -846,4 +846,34 @@
   <data name="hascompleteevaluation" xml:space="preserve">
     <value>Complete Evaluation is Required</value>
   </data>
+  <data name="role_jbs" xml:space="preserve">
+    <value>Role JBS</value>
+  </data>
+  <data name="role_sgq" xml:space="preserve">
+    <value>Role SGQ</value>
+  </data>
+  <data name="change_password" xml:space="preserve">
+    <value>Change the password</value>
+  </data>
+  <data name="do_not_change_password" xml:space="preserve">
+    <value>Not change password</value>
+  </data>
+  <data name="fullname" xml:space="preserve">
+    <value>Fullname</value>
+  </data>
+  <data name="fullname_required" xml:space="preserve">
+    <value>Fullname is required</value>
+  </data>
+  <data name="invalid_password" xml:space="preserve">
+    <value>Password is invalid</value>
+  </data>
+  <data name="password_required" xml:space="preserve">
+    <value>Password is required</value>
+  </data>
+  <data name="username_required" xml:space="preserve">
+    <value>Username is required</value>
+  </data>
+  <data name="user_save_success" xml:space="preserve">
+    <value>User saved successfully</value>
+  </data>
 </root>

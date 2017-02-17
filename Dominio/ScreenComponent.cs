@@ -26,10 +26,10 @@ namespace Dominio
         public string Component { get; set; }
         public Nullable<int> Type { get; set; }
     
-        public virtual RoleType RoleType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RoleJBS> RoleJBS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RoleSGQ> RoleSGQ { get; set; }
+        public virtual RoleType RoleType { get; set; }
     }
 }

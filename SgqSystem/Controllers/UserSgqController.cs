@@ -16,10 +16,13 @@ namespace SgqSystem.Controllers
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
         private IBaseDomain<ParCompany, ParCompanyDTO> _baseDomainParCompany;
+        private IBaseDomain<UserSgq, UserSgqDTO> _baseDomainUserSgq;
 
-        public UserSgqController(IBaseDomain<ParCompany, ParCompanyDTO> baseDomainParCompany)
+        public UserSgqController(IBaseDomain<ParCompany, ParCompanyDTO> baseDomainParCompany,
+            IBaseDomain<UserSgq, UserSgqDTO> baseDomainUserSgq)
         {
             _baseDomainParCompany = baseDomainParCompany;
+            _baseDomainUserSgq = baseDomainUserSgq;
 
             ViewBag.listaParCompany = _baseDomainParCompany.GetAll();
         }
@@ -56,18 +59,26 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(UserSgqDTO userSgqDto)
+        public void Save(UserSgqDTO userSgqDto)
         {
-            UserSgq userSgq = Mapper.Map<UserSgq>(userSgqDto);
-            if (ModelState.IsValid)
-            {
-                userSgq.AddDate = DateTime.Now;
-                db.UserSgq.Add(userSgq);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
 
-            return View(userSgq);
+            if (userSgqDto.Id == 0)
+            {
+                userSgqDto.AddDate = DateTime.Now;
+                _baseDomainUserSgq.AddOrUpdate(userSgqDto);
+            }
+            else
+            {
+                userSgqDto.AlterDate = DateTime.Now;
+
+                if(userSgqDto.Password == null)
+                {
+                    UserSgq dummy = db.UserSgq.Find(userSgqDto.Id);
+                    userSgqDto.Password = dummy.Password;
+                }               
+            }
+            _baseDomainUserSgq.AddOrUpdate(userSgqDto);
+
         }
 
         // GET: UserSgq/Edit/5
@@ -82,24 +93,7 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
-            return View(userSgq);
-        }
-
-        // POST: UserSgq/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Password,AcessDate,AddDate,AlterDate,Role,FullName,Email,Phone,ParCompany_Id")] UserSgq userSgq)
-        {
-            if (ModelState.IsValid)
-            {
-                userSgq.AlterDate = DateTime.Now;
-                db.Entry(userSgq).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(userSgq);
+            return View();
         }
 
         // GET: UserSgq/Delete/5

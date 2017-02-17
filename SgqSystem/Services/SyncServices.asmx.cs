@@ -16,6 +16,8 @@ using System.Net;
 using SgqSystem.ViewModels;
 using System.Threading;
 using System.Transactions;
+using System.Globalization;
+using System.Collections;
 
 namespace SgqSystem.Services
 {
@@ -2190,9 +2192,31 @@ namespace SgqSystem.Services
                               "<div class=\"VerificacaoTipificacao hide\"></div>" +
                               "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
 
+            string resource = GetResource();
+
             return APPMain +
-                   supports;
+                   supports+
+                   resource;
         }
+        public string GetResource()
+        {
+            System.Reflection.Assembly assembly = this.GetType().Assembly;
+
+            System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
+
+            var resourceSet = resourceManager.GetResourceSet(
+                Thread.CurrentThread.CurrentUICulture, false, true);
+
+            string items = "";
+
+            foreach (var entry in resourceSet.Cast<DictionaryEntry>())
+            {
+                items += "<div res='"+entry.Key.ToString() + "'>"+ entry.Value.ToString() + "</div>";
+            } 
+            
+            return "<div class='Resource hide'>"+ items + "</div>";
+        }
+
         public int getEvaluate(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluatePadrao)
         {
             int evaluate = 1;
@@ -3581,9 +3605,9 @@ namespace SgqSystem.Services
 
                 string panelButton = html.listgroupItem(
                                                            outerhtml: accordeonbuttons +
-                                                                      "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
+                                                                      "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right btnAllNA'> Todos N/A </button>" +
 
-                                                                      "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>",
+                                                                      "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right  btnAllNC' style='margin-right: 10px;'> Clicar em Todos </button>",
                                                            classe: "painel painelLevel02 row"
                                                         );
 
@@ -3832,6 +3856,10 @@ namespace SgqSystem.Services
             }
             #endregion
 
+            string selectUrlPreffix = html.option("http://mtzsvmqsc/SgqGlobal", "JBS") +
+                                      html.option("http://192.168.25.200/SgqMaster", "GRT") +
+                                      html.option("http://localhost:8090/SgqSystem", "GCN");
+
             string formOuterHtml = html.head(Html.h.h2, outerhtml: "Entre com seu Login") +
                                   selectUnit +
                                   selectShit +
@@ -3855,7 +3883,10 @@ namespace SgqSystem.Services
                                   html.div(id: "messageSuccess",
                                            classe: "alert alert-success hide",
                                            tags: "role=\"alert\"",
-                                           outerhtml: html.span(id: "mensagemSucesso", classe: "icon-ok-circle"));
+                                           outerhtml: html.span(id: "mensagemSucesso", classe: "icon-ok-circle")) + 
+                                           
+                                  html.select(selectUrlPreffix, "cb_UrlPreffix", "\" onChange='abreOApp(this.value);' \"");
+
             string form = html.form(
                                     outerhtml: formOuterHtml
                                     , classe: "form-signin");
