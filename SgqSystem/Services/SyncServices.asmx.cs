@@ -16,6 +16,8 @@ using System.Net;
 using SgqSystem.ViewModels;
 using System.Threading;
 using System.Transactions;
+using System.Globalization;
+using System.Collections;
 
 namespace SgqSystem.Services
 {
@@ -2190,9 +2192,31 @@ namespace SgqSystem.Services
                               "<div class=\"VerificacaoTipificacao hide\"></div>" +
                               "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
 
+            string resource = GetResource();
+
             return APPMain +
-                   supports;
+                   supports+
+                   resource;
         }
+        public string GetResource()
+        {
+            System.Reflection.Assembly assembly = this.GetType().Assembly;
+
+            System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
+
+            var resourceSet = resourceManager.GetResourceSet(
+                Thread.CurrentThread.CurrentUICulture, false, true);
+
+            string items = "";
+
+            foreach (var entry in resourceSet.Cast<DictionaryEntry>())
+            {
+                items += "<div res='"+entry.Key.ToString() + "'>"+ entry.Value.ToString() + "</div>";
+            } 
+            
+            return "<div class='Resource hide'>"+ items + "</div>";
+        }
+
         public int getEvaluate(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluatePadrao)
         {
             int evaluate = 1;
