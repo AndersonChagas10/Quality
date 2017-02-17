@@ -61,22 +61,7 @@
                                                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
-
-                                        <div class="form-group">
-                                            @Html.Label(Resources.Resource.password, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type="password" } })
-                                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            @Html.Label(Resources.Resource.confirm_password, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.Editor("ConfirmPassword", new { htmlAttributes = new { @class = "form-control", @type="password" } })
-                                            </div>
-                                        </div>
-
+                                        
                                         <div class="form-group hide">
                                             @Html.LabelFor(model => model.AcessDate, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
@@ -133,7 +118,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group hide">
+                                        <div class="form-group">
                                             @Html.LabelFor(model => model.ParCompany_Id, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.ParCompany_Id, new { htmlAttributes = new { @class = "form-control" } })
@@ -143,8 +128,28 @@
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
+                                                <button type="button" id="btnChangePassword" class="btn btn-warning">@Resources.Resource.change_password</button>
                                                 <input type="submit" value="@Resources.Resource.save" class="btn btn-default" />
                                             </div>
+                                        </div>
+
+                                        <div class="password">
+
+                                            <div class="form-group">
+                                                @Html.Label(Resources.Resource.password, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                @Html.Label(Resources.Resource.confirm_password, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.Editor("ConfirmPassword", new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
                                 }
@@ -172,6 +177,22 @@
     navbarSelect("navbar15");
 
     $('#AlterDate').val(new Date($.now()).toUTCString());
+
+    $(document).on("click", "#btnChangePassword", function () {
+        if ($(".password").hasClass("hide")) {
+            $(".password").removeClass("hide");
+            $("#Password").val("");
+            $("#ConfirmPassword").val("");
+            $(this).text('@Resources.Resource.do_not_change_password');
+        } else {
+            $(this).text('@Resources.Resource.change_password');
+            $(".password").addClass("hide");
+        }
+    });
+
+    $(".password").addClass("hide");
+    $("#Password").val("");
+    $("#ConfirmPassword").val("");
 
 </script>
 

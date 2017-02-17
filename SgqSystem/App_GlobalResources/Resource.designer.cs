@@ -331,6 +331,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change the password.
+        /// </summary>
+        internal static string change_password {
+            get {
+                return ResourceManager.GetString("change_password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         internal static string close {
@@ -678,6 +687,15 @@ namespace Resources {
         internal static string details {
             get {
                 return ResourceManager.GetString("details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not change password.
+        /// </summary>
+        internal static string do_not_change_password {
+            get {
+                return ResourceManager.GetString("do_not_change_password", resourceCulture);
             }
         }
         

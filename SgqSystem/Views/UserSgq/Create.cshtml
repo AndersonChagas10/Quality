@@ -52,30 +52,9 @@
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                                         <div class="form-group">
-                                            @Html.Label(Resources.Resource.name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.Label(Resources.Resource.fullname, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.Editor("userSgqDto.FullName", new { htmlAttributes = new { @class = "form-control" } })
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            @Html.Label(Resources.Resource.username, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.Editor("userSgqDto.Name", new { htmlAttributes = new { @class = "form-control" } })
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            @Html.Label(Resources.Resource.password, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.Editor("userSgqDto.Password", new { htmlAttributes = new { @class = "form-control", @type="password" } })
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            @Html.Label(Resources.Resource.confirm_password, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.Editor("userSgqDto.ConfirmPassword", new { htmlAttributes = new { @class = "form-control", @type = "password" } })
                                             </div>
                                         </div>
 
@@ -108,7 +87,7 @@
                                         <div class="form-group">
                                             @Html.Label(Resources.Resource.email, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.Editor("userSgqDto.Email", new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.Editor("userSgqDto.Email", new { htmlAttributes = new { @class = "form-control", @type = "email" } })
                                             </div>
                                         </div>
 
@@ -118,15 +97,7 @@
                                                 @Html.Editor("userSgqDto.Phone", new { htmlAttributes = new { @class = "form-control" } })
                                             </div>
                                         </div>
-
-                                        @*<div class="form-group">
-                                            @Html.LabelFor(model => model.ParCompany_Id, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.EditorFor(model => model.ParCompany_Id, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.ParCompany_Id, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>*@
-
+                                        
                                         <div class="form-group">
                                             @Html.Label(Resources.Resource.company, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
@@ -134,9 +105,32 @@
                                             </div>
                                         </div>
 
+                                        <hr/>
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.username, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.Editor("userSgqDto.Name", new { htmlAttributes = new { @class = "form-control" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.password, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.Editor("userSgqDto.Password", new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.confirm_password, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.Editor("userSgqDto.ConfirmPassword", new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                                            </div>
+                                        </div>
+
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="@Resources.Resource.save" class="btn btn-default" />
+                                                <button type="button" id="btnSave" class="btn btn-default">@Resources.Resource.save</button>
                                             </div>
                                         </div>
                                     </div>
@@ -163,7 +157,36 @@
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar15");
 
-    $('#AddDate').val(new Date($.now()).toUTCString());
+    $('#userSgqDto_AddDate').val(new Date($.now()).toUTCString());
+
+    $(document).on("click", "#btnSave", function () {
+
+        var valid = true;
+
+        if ($("#userSgqDto_FullName").val() == "") {
+            openMessageModal('@Resources.Resource.fullname_required', '');
+            return;
+        }
+
+        if ($("#userSgqDto_Name").val() == "") {
+            openMessageModal('@Resources.Resource.username_required', '');
+            return;
+        }
+
+        if ($("#userSgqDto_Password").val() == "") {
+            openMessageModal('@Resources.Resource.password_required', '');
+            return;
+        }
+
+        if ($("#userSgqDto_Password").val() != $("#userSgqDto_ConfirmPassword").val()) {
+            openMessageModal('@Resources.Resource.invalid_password', '');
+            return;
+        }
+
+        $.post("@Url.Action("Save", "UserSgq")", $('form').serializeObject(), function () {
+
+        })
+    });
 
 </script>
 
