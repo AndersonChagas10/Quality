@@ -1,17 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using AutoMapper;
+using Dominio;
+using Dominio.Interfaces.Services;
+using DTO.DTO;
+using SgqSystem.Handlres;
+using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api
 {
-    public class UserSgqApiController : Controller
+    [HandleApi()]
+    [RoutePrefix("api/UserSgq")]
+    public class UserSgqApiController : ApiController
     {
-        // GET: UserSgqApi
-        public ActionResult Index()
+        private IBaseDomain<UserSgq, UserSgqDTO> _baseDomainUserSgq;
+
+        public UserSgqApiController(
+            IBaseDomain<UserSgq, UserSgqDTO> baseDomainUserSgq)
         {
-            return View();
+            _baseDomainUserSgq = baseDomainUserSgq;
+        }
+
+        [Route("Get")]
+        [HttpGet]
+        public UserSgq Get(int Id)
+        {
+            UserSgq userSgqDto = Mapper.Map<UserSgq>(_baseDomainUserSgq.GetById(Id));
+            return userSgqDto;
         }
     }
 }

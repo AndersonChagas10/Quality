@@ -1,6 +1,4 @@
-﻿@model Dominio.UserSgq
-
-@{
+﻿@{
     ViewBag.Title = "Edit";
 }
 
@@ -50,86 +48,74 @@
                                 {
                                     @Html.AntiForgeryToken()
 
+                                    <div class="form-group hide">
+                                        <div class="col-md-10">
+                                            @Html.Editor("userSgqDto.Id", new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>
+                                    </div>
+
                                     <div class="form-horizontal">
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                        @Html.HiddenFor(model => model.Id)
-
                                         <div class="form-group">
-                                            @Html.Label(Resources.Resource.username, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.Label(Resources.Resource.fullname, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="form-group hide">
-                                            @Html.LabelFor(model => model.AcessDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.EditorFor(model => model.AcessDate, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.AcessDate, "", new { @class = "text-danger" })
+                                                @Html.Editor("userSgqDto.FullName", new { htmlAttributes = new { @class = "form-control" } })
                                             </div>
                                         </div>
 
                                         <div class="form-group hide">
-                                            @Html.LabelFor(model => model.AddDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.Label(Resources.Resource.date, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.AddDate, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.AddDate, "", new { @class = "text-danger" })
+                                                @Html.Editor("userSgqDto.AccessDate", new { htmlAttributes = new { @class = "form-control" } })
                                             </div>
                                         </div>
 
                                         <div class="form-group hide">
-                                            @Html.LabelFor(model => model.AlterDate, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.AlterDate, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.AlterDate, "", new { @class = "text-danger" })
+                                                @Html.Editor("userSgqDto.AddDate", new { htmlAttributes = new { @class = "form-control" } })
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
-                                            @Html.Label(Resources.Resource.role, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="form-group hide">
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Role, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            @Html.Label(Resources.Resource.name, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                                                @Html.Editor("userSgqDto.AlterDate", new { htmlAttributes = new { @class = "form-control" } })
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             @Html.Label(Resources.Resource.email, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                                @Html.Editor("userSgqDto.Email", new { htmlAttributes = new { @class = "form-control", @type = "email" } })
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             @Html.Label(Resources.Resource.phone, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                                                @Html.Editor("userSgqDto.Phone", new { htmlAttributes = new { @class = "form-control" } })
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParCompany_Id, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.Label(Resources.Resource.company, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.ParCompany_Id, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.ParCompany_Id, "", new { @class = "text-danger" })
+                                                @Html.DropDownList("userSgqDto.ParCompany_Id", new SelectList(ViewBag.listaParCompany, "Id", "Name"), new { @class = "form-control" })
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <div class="col-md-offset-2 col-md-10">
-                                                <button type="button" id="btnChangePassword" class="btn btn-warning">@Resources.Resource.change_password</button>
-                                                <input type="submit" value="@Resources.Resource.save" class="btn btn-default" />
+                                            @Html.Label(Resources.Resource.role, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.Editor("userSgqDto.Role", new { htmlAttributes = new { @class = "form-control" } })
+                                            </div>
+                                        </div>
+
+                                        <hr />
+
+                                        <div class="form-group">
+                                            @Html.Label(Resources.Resource.username, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.Editor("userSgqDto.Name", new { htmlAttributes = new { @class = "form-control" } })
                                             </div>
                                         </div>
 
@@ -138,19 +124,26 @@
                                             <div class="form-group">
                                                 @Html.Label(Resources.Resource.password, htmlAttributes: new { @class = "control-label col-md-2" })
                                                 <div class="col-md-10">
-                                                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
-                                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                                    @Html.Editor("userSgqDto.Password", new { htmlAttributes = new { @class = "form-control", @type = "password" } })
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
                                                 @Html.Label(Resources.Resource.confirm_password, htmlAttributes: new { @class = "control-label col-md-2" })
                                                 <div class="col-md-10">
-                                                    @Html.Editor("ConfirmPassword", new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                                                    @Html.Editor("userSgqDto.ConfirmPassword", new { htmlAttributes = new { @class = "form-control", @type = "password" } })
                                                 </div>
                                             </div>
 
                                         </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <button type="button" id="btnChangePassword" class="btn btn-warning">@Resources.Resource.change_password</button>
+                                                <button type="button" id="btnSave" class="btn btn-default">@Resources.Resource.save</button>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 }
                             </div>
@@ -181,8 +174,8 @@
     $(document).on("click", "#btnChangePassword", function () {
         if ($(".password").hasClass("hide")) {
             $(".password").removeClass("hide");
-            $("#Password").val("");
-            $("#ConfirmPassword").val("");
+            $("#userSgqDto_Password").val("");
+            $("#userSgqDto_ConfirmPassword").val("");
             $(this).text('@Resources.Resource.do_not_change_password');
         } else {
             $(this).text('@Resources.Resource.change_password');
@@ -190,9 +183,53 @@
         }
     });
 
-    $(".password").addClass("hide");
-    $("#Password").val("");
-    $("#ConfirmPassword").val("");
+    $(document).on("click", "#btnSave", function () {
+
+        var valid = true;
+
+        if ($("#userSgqDto_FullName").val() == "") {
+            openMessageModal('@Resources.Resource.fullname_required', '');
+            return;
+        }
+
+        if ($("#userSgqDto_Name").val() == "") {
+            openMessageModal('@Resources.Resource.username_required', '');
+            return;
+        }
+
+        if (!$(".password").hasClass("hide")) {
+
+            if ($("#userSgqDto_Password").val() == "") {
+                openMessageModal('@Resources.Resource.password_required', '');
+                return;
+            }
+
+            if ($("#userSgqDto_Password").val() != $("#userSgqDto_ConfirmPassword").val()) {
+                openMessageModal('@Resources.Resource.invalid_password', '');
+                return;
+            }
+
+        }
+
+        $.post("@Url.Action("Save", "UserSgq")", $('form').serializeObject(), function () {
+            openMessageModal('@Resources.Resource.user_save_success', '');
+        })
+    });
+
+    $(document).ready( function () {
+
+        $.get("@Url.Action("Get", "api/UserSgq")", {'Id': 2} , function (object) {
+            for (var key in object) {
+                var obj = object[key];
+                $('#userSgqDto_' + key).val(obj);
+            }
+
+            $(".password").addClass("hide");
+            $("#userSgqDto_Password").val("");
+            $("#userSgqDto_ConfirmPassword").val("");
+        })
+
+    })
 
 </script>
 

@@ -172,11 +172,6 @@
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02" />
         <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel02_ConsolidationLevel01" />
         <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel02_Level02" />
-        <EntityTypeShape EntityType="SgqDbModel.RoleType" Width="1.5" PointX="3.375" PointY="15.125" />
-        <EntityTypeShape EntityType="SgqDbModel.ScreenComponent" Width="1.5" PointX="5.625" PointY="14.875" />
-        <AssociationConnector Association="SgqDbModel.FK_ScreenComponent_RoleType" />
-        <EntityTypeShape EntityType="SgqDbModel.RoleSGQ" Width="1.5" PointX="7.875" PointY="73.125" />
-        <AssociationConnector Association="SgqDbModel.FK_RoleSGQ_ScreenComponent" />
         <EntityTypeShape EntityType="SgqDbModel.ParCompany" Width="1.5" PointX="0.75" PointY="40.125" />
         <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel1_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel1" />
@@ -196,8 +191,13 @@
         <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParCompany" />
         <AssociationConnector Association="SgqDbModel.FK_ParSample_ParCompany" />
-        <EntityTypeShape EntityType="SgqDbModel.RoleJBS" Width="1.5" PointX="7.875" PointY="15.125" />
+        <EntityTypeShape EntityType="SgqDbModel.RoleJBS" Width="1.5" PointX="17.875" PointY="5" />
+        <EntityTypeShape EntityType="SgqDbModel.RoleSGQ" Width="1.5" PointX="17.875" PointY="7.625" />
+        <EntityTypeShape EntityType="SgqDbModel.RoleType" Width="1.5" PointX="13.375" PointY="6.375" />
+        <EntityTypeShape EntityType="SgqDbModel.ScreenComponent" Width="1.5" PointX="15.625" PointY="6" />
         <AssociationConnector Association="SgqDbModel.FK_RoleJBS_ScreenComponent" />
+        <AssociationConnector Association="SgqDbModel.FK_RoleSGQ_ScreenComponent" />
+        <AssociationConnector Association="SgqDbModel.FK_ScreenComponent_RoleType" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
