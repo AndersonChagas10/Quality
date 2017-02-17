@@ -427,10 +427,11 @@
     <Compile Include="Mappers\Audit\Level03MapperProfile.cs" />
     <Compile Include="Mappers\UserMapperProfile.cs" />
     <Compile Include="Mappers\UserSgqMapperProfile.cs" />
-    <Compile Include="Secirity\CustomAuthorizeAttribute.cs" />
     <Compile Include="Secirity\CustomPrincipal.cs" />
     <Compile Include="Secirity\FilterUnit.cs" />
     <Compile Include="Secirity\FormularioPesquisa.cs" />
+    <Compile Include="Secirity\RoleAuthorizeAttribute.cs" />
+    <Compile Include="Secirity\RolesPorUnidade.cs" />
     <Compile Include="Secirity\SessionPersister.cs" />
     <Compile Include="Services\Html.cs" />
     <Compile Include="Services\Level02Result.cs" />

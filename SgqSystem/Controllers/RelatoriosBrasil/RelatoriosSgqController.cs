@@ -3,6 +3,7 @@ using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Helper;
 
 namespace SgqSystem.Controllers
 {
