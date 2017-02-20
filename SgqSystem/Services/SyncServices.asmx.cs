@@ -16,6 +16,8 @@ using System.Net;
 using SgqSystem.ViewModels;
 using System.Threading;
 using System.Transactions;
+using System.Globalization;
+using System.Collections;
 
 namespace SgqSystem.Services
 {
@@ -2172,7 +2174,9 @@ namespace SgqSystem.Services
 
             string login = GetLoginAPP();
 
-            return login;
+            string resource = GetResource();
+
+            return login + resource;
         }
         [WebMethod]
         public string getAPPLevels(int UserSgq_Id, int ParCompany_Id, DateTime Date)
@@ -2190,9 +2194,31 @@ namespace SgqSystem.Services
                               "<div class=\"VerificacaoTipificacao hide\"></div>" +
                               "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
 
+            string resource = GetResource();
+
             return APPMain +
-                   supports;
+                   supports +
+                   resource;
         }
+        public string GetResource()
+        {
+            System.Reflection.Assembly assembly = this.GetType().Assembly;
+
+            System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
+
+            var resourceSet = resourceManager.GetResourceSet(
+                Thread.CurrentThread.CurrentUICulture, true, false);
+
+            string items = "";
+
+            foreach (var entry in resourceSet.Cast<DictionaryEntry>())
+            {
+                items += "<div res='"+entry.Key.ToString() + "'>"+ entry.Value.ToString() + "</div>";
+            } 
+            
+            return "<div class='Resource hide'>"+ items + "</div>";
+        }
+
         public int getEvaluate(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluatePadrao)
         {
             int evaluate = 1;
@@ -2338,16 +2364,17 @@ namespace SgqSystem.Services
 
         public string navBar(int UserSgq_Id, int ParCompany_Id)
         {
-            string navBar = "<div class=\"navbar navbar-inverse navbar-fixed-top\">                                                                                                                         " +
-                           "    <div class=\"container\">                                                                                                                                                  " +
-                           "        <div class=\"navbar-header\" style=\"width: 100%\">                                                                                                                    " +
-                           "            <a class=\"navbar-brand\" id=\"SGQName\" href=\"#\"><i class=\"fa fa-chevron-left hide iconReturn\" aria-hidden=\"true\"></i> SGQ - Coleta de dados</a>                  " +
-                           "            <div class=\"buttonMenu navbar-brand hide\" id=\"btnShowImage\" level01id=\"2\">Show Image</div>                                                                   " +
-                                        selectUserCompanys(UserSgq_Id, ParCompany_Id) +
-                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div>          " +
-                           "        </div>                                                                                                                                                                 " +
-                           "    </div>                                                                                                                                                                     " +
-                           "</div>                                                                                                                                                                         ";
+            string navBar = "<div class=\"navbar navbar-inverse navbar-fixed-top\">                                                                                                                             " +
+                           "    <div class=\"container\">                                                                                                                                                       " +
+                           "        <div class=\"navbar-header\" style=\"width: 100%\">                                                                                                                         " +
+                           "            <a class=\"navbar-brand\" id=\"SGQName\" href=\"#\"><i class=\"fa fa-chevron-left hide iconReturn\" aria-hidden=\"true\"></i> SGQ - Coleta de dados</a>                 " +
+                           "            <div class=\"buttonMenu navbar-brand hide\" id=\"btnShowImage\" level01id=\"2\">Show Image</div>                                                                        " +
+                           selectUserCompanys(UserSgq_Id, ParCompany_Id) +
+                           "            <span style='color: #ffffff; margin: 14px;' class='period'>Periodo</span><span style='color: #ffffff; margin: 14px;' class='shift'>shift</span> " +
+                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div><span style='color: #ffffff; margin: 14px;' class='atualDate pull-right'></span>" +
+                           "        </div>                                                                                                                                                                      " +
+                           "    </div>                                                                                                                                                                          " +
+                           "</div>                                                                                                                                                                              ";
 
             return navBar;
         }
@@ -3676,9 +3703,9 @@ namespace SgqSystem.Services
 
                 string panelButton = html.listgroupItem(
                                                            outerhtml: accordeonbuttons +
-                                                                      "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
+                                                                      "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right btnAllNA'> Todos N/A </button>" +
 
-                                                                      "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>",
+                                                                      "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right  btnAllNC' style='margin-right: 10px;'> Clicar em Todos </button>",
                                                            classe: "painel painelLevel02 row"
                                                         );
 
@@ -3713,6 +3740,20 @@ namespace SgqSystem.Services
             {
                 classInput = " boolean";
                 input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
+            }
+            else if (parLevel3.ParLevel3InputType_Id == 2)
+            {
+                classInput = " defects";
+                labels = html.div(
+                                           outerhtml: "<b>Max: </b>" + parLevel3.IntervalMax.ToString("G29"),
+                                           classe: "font10",
+                                           style: "font-size: 11px; margin-top:7px;"
+                                       );
+
+                input = html.campoNumeroDeDefeitos(id: parLevel3.Id.ToString(),
+                                                intervalMin: parLevel3.IntervalMin,
+                                                intervalMax: parLevel3.IntervalMax,
+                                                unitName: parLevel3.ParMeasurementUnit_Name);
             }
             else if (parLevel3.ParLevel3InputType_Id == 3)
             {
@@ -3768,13 +3809,13 @@ namespace SgqSystem.Services
         {
             var html = new Html();
             string input = null;
-            classInput = " interval";
+            classInput = " defects";
             labels = html.div(
                                        classe: "font10",
                                        style: "font-size: 11px; margin-top:7px;"
                                    );
 
-            input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+            input = html.campoNumeroDeDefeitos(id: parLevel3.Id.ToString(),
                                             intervalMin: parLevel3.IntervalMin,
                                             intervalMax: parLevel3.IntervalMax,
                                             unitName: parLevel3.ParMeasurementUnit_Name);
@@ -3927,6 +3968,10 @@ namespace SgqSystem.Services
             }
             #endregion
 
+            string selectUrlPreffix = html.option("http://mtzsvmqsc/SgqGlobal", "JBS") +
+                                      html.option("http://192.168.25.200/SgqMaster", "GRT") +
+                                      html.option("http://localhost:8090/SgqSystem", "GCN");
+
             string formOuterHtml = html.head(Html.h.h2, outerhtml: "Entre com seu Login") +
                                   selectUnit +
                                   selectShit +
@@ -3950,7 +3995,10 @@ namespace SgqSystem.Services
                                   html.div(id: "messageSuccess",
                                            classe: "alert alert-success hide",
                                            tags: "role=\"alert\"",
-                                           outerhtml: html.span(id: "mensagemSucesso", classe: "icon-ok-circle"));
+                                           outerhtml: html.span(id: "mensagemSucesso", classe: "icon-ok-circle")) + 
+                                           
+                                  html.select(selectUrlPreffix, "cb_UrlPreffix", "\" onChange='abreOApp(this.value);' \"");
+
             string form = html.form(
                                     outerhtml: formOuterHtml
                                     , classe: "form-signin");
