@@ -130,7 +130,7 @@
 
         //monta InfoColeta na div
         $('#InfoColeta').empty();
-        $('#InfoColeta').append('<h5>Coleta da Unidade de <b>' + NomeUnidade + '</b> refente a data de <b>' + DataEdit + '</b></h5>');
+        $('#InfoColeta').append('<h5>Coleta da Unidade de <b>' + NomeUnidade + '</b> referente a data de <b>' + DataEdit + '</b></h5>');
 
         var newdate = Data.split("/").reverse().join("/");
         
@@ -167,7 +167,7 @@
 
         $.post(url1, dataToSend, function (r) {
             try {
-
+                console.log(r);
             } catch (e) {
                 console.log(e);
             } finally {
