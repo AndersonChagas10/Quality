@@ -900,4 +900,106 @@
   <data name="version" xml:space="preserve">
     <value>Versão</value>
   </data>
+  <data name="alter_collection_date" xml:space="preserve">
+    <value>Altere a data de coleta</value>
+  </data>
+  <data name="attention_lose_information" xml:space="preserve">
+    <value>Atenção! Se você continuar, você perderá informações.</value>
+  </data>
+  <data name="change_date_collection_need_to_be_online" xml:space="preserve">
+    <value>Para mudar a data de coleta, você precisa estar on-line</value>
+  </data>
+  <data name="changing_date" xml:space="preserve">
+    <value>Alterando Data</value>
+  </data>
+  <data name="changing_date_please_wait" xml:space="preserve">
+    <value>Estamos alterando a data de coleta, por favor aguarde</value>
+  </data>
+  <data name="clear_database" xml:space="preserve">
+    <value>Limpar banco de dados</value>
+  </data>
+  <data name="consolidated_results" xml:space="preserve">
+    <value>Resultados consolidados</value>
+  </data>
+  <data name="do_you_want_to_continue" xml:space="preserve">
+    <value>Deseja continuar?</value>
+  </data>
+  <data name="everything_synchronized_sucessfully" xml:space="preserve">
+    <value>Todos os dados foram sincronizados com sucesso</value>
+  </data>
+  <data name="first_time_login_error" xml:space="preserve">
+    <value>O primeiro login precisa ser conectado à unidade.</value>
+  </data>
+  <data name="indicators_error_try_again" xml:space="preserve">
+    <value>Não foi possível carregar os indicadores, tente novamente</value>
+  </data>
+  <data name="inform_retroactive_date" xml:space="preserve">
+    <value>Informa a data retroativa</value>
+  </data>
+  <data name="keys_error_try_again" xml:space="preserve">
+    <value>Não foi possível carregar as chaves, tente novamente</value>
+  </data>
+  <data name="login_error_try_again" xml:space="preserve">
+    <value>Não foi possível efetuar o login, tente novamente.</value>
+  </data>
+  <data name="not_connected_to_network" xml:space="preserve">
+    <value>Você parece não estar conectado a rede da JBS. Peça ajuda ao pessoal de TI</value>
+  </data>
+  <data name="no_data_to_send" xml:space="preserve">
+    <value>Sem dados para enviar</value>
+  </data>
+  <data name="no_volumn_level" xml:space="preserve">
+    <value>Não há volume de coleta nesse indicador!</value>
+  </data>
+  <data name="online_to_login" xml:space="preserve">
+    <value>Você precisa estar on-line para efetuar o login.</value>
+  </data>
+  <data name="preparing_the_data_to_send" xml:space="preserve">
+    <value>Preparando os dados para o envio</value>
+  </data>
+  <data name="ready" xml:space="preserve">
+    <value>Pronto</value>
+  </data>
+  <data name="receiving_data" xml:space="preserve">
+    <value>Recebendo dados</value>
+  </data>
+  <data name="server_not_found" xml:space="preserve">
+    <value>Servidor não encontrado</value>
+  </data>
+  <data name="synchronization_error" xml:space="preserve">
+    <value>Erro de sincronização</value>
+  </data>
+  <data name="synchronize_data_before_change_unit" xml:space="preserve">
+    <value>Tem dados de outra unidade ainda não sincronizados. Sincronize antes de trocar de unidade.</value>
+  </data>
+  <data name="synchronizing" xml:space="preserve">
+    <value>Sincronizando</value>
+  </data>
+  <data name="try_again_contact_support" xml:space="preserve">
+    <value>Tente novamente daqui a pouco. Se o erro persistir, entre em contato com o suporte.</value>
+  </data>
+  <data name="unit_change" xml:space="preserve">
+    <value>Troca de unidade</value>
+  </data>
+  <data name="unsyncronized_data" xml:space="preserve">
+    <value>There's still unsync data</value>
+  </data>
+  <data name="user_information_error_try_again" xml:space="preserve">
+    <value>Não foi possível verificar as informações do usuário, tente novamente</value>
+  </data>
+  <data name="user_load_error_try_again" xml:space="preserve">
+    <value>Não foi possível carregar os usuário, tente novamente</value>
+  </data>
+  <data name="verifying_if_theres_data_to_receive" xml:space="preserve">
+    <value>Verificando se existem dados para receber</value>
+  </data>
+  <data name="verifying_the_collected_data" xml:space="preserve">
+    <value>Verificando os dados coletados</value>
+  </data>
+  <data name="warning" xml:space="preserve">
+    <value>Alerta</value>
+  </data>
+  <data name="you_are_not_online" xml:space="preserve">
+    <value>Você não está online.</value>
+  </data>
 </root>
