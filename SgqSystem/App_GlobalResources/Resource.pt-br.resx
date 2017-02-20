@@ -1056,4 +1056,97 @@
   <data name="you_need_to_be_connected" xml:space="preserve">
     <value>Você precisa estar on-line para efetuar o login</value>
   </data>
+  <data name="allowed" xml:space="preserve">
+    <value>permitidas/permitidos</value>
+  </data>
+  <data name="change_unit_must_be_online" xml:space="preserve">
+    <value>Ops! Você não está online', 'Para alterar a unidade você precisa estar online'</value>
+  </data>
+  <data name="changing_unit_preferences" xml:space="preserve">
+    <value>Alterando unidade", "Estamos alterando as preferências de unidade, aguarde um momento...</value>
+  </data>
+  <data name="collection_dropped" xml:space="preserve">
+    <value>Verificamos que a coleta que está fazendo já foi lançada. Esta coleta será descartada</value>
+  </data>
+  <data name="day_target_exceed" xml:space="preserve">
+    <value>Foi excedida a meta dia</value>
+  </data>
+  <data name="duplicated_collection" xml:space="preserve">
+    <value>Coleta Duplicada</value>
+  </data>
+  <data name="error_recovery_sequential" xml:space="preserve">
+    <value>Problema na recuperação do próximo sequencial, deseja continuar com o próximo ou aguardar o automático</value>
+  </data>
+  <data name="evaluation_target" xml:space="preserve">
+    <value>e a meta avaliação</value>
+  </data>
+  <data name="fail_description_is_empty" xml:space="preserve">
+    <value>A falha da descrição está vazia.</value>
+  </data>
+  <data name="fill_header_fields" xml:space="preserve">
+    <value>Preencha os campos de cabeçalho que são obrigatórios</value>
+  </data>
+  <data name="fill_the_corrective_action" xml:space="preserve">
+    <value>Preencha a ação corretiva primeiro.</value>
+  </data>
+  <data name="fired" xml:space="preserve">
+    <value>Disparado</value>
+  </data>
+  <data name="first_synchronization_of_the_day" xml:space="preserve">
+    <value>Primeiro sincronismo do dia</value>
+  </data>
+  <data name="immediate_corrective_action_is_empty" xml:space="preserve">
+    <value>A ação corretiva imediata está vazia.</value>
+  </data>
+  <data name="loading_next_sequential" xml:space="preserve">
+    <value>Carregando o próximo sequencial</value>
+  </data>
+  <data name="nc_of" xml:space="preserve">
+    <value>NC de</value>
+  </data>
+  <data name="nc_target_exceed" xml:space="preserve">
+    <value>Foi excedida a meta de NC</value>
+  </data>
+  <data name="problem_occur" xml:space="preserve">
+    <value>Ocorreu um problema</value>
+  </data>
+  <data name="sequential_side_already_filled" xml:space="preserve">
+    <value>O sequencial dessa banda já foi preenchido.</value>
+  </data>
+  <data name="some_problems_occur" xml:space="preserve">
+    <value>Alguns problemas ocorreram</value>
+  </data>
+  <data name="supervisor_manager_director" xml:space="preserve">
+    <value>O Supervisor, o Gerente e o Diretor da área serão notificados</value>
+  </data>
+  <data name="supervisor_manager_notification" xml:space="preserve">
+    <value>O Supervisor e o Gerente da área serão notificados.</value>
+  </data>
+  <data name="supervisor_notification" xml:space="preserve">
+    <value>O Supervisor da área será notificado</value>
+  </data>
+  <data name="target_exceed" xml:space="preserve">
+    <value>Foi excedida a meta</value>
+  </data>
+  <data name="tolerance_target_exceed" xml:space="preserve">
+    <value>Foi excedida a meta tolerância</value>
+  </data>
+  <data name="unit_changed_login_again" xml:space="preserve">
+    <value>Unidade Alterada', 'A unidade foi alterada, efetue o login novamente para atualizar os indicadores'</value>
+  </data>
+  <data name="update_parameters_must_be_online" xml:space="preserve">
+    <value>Para atualizar os parâmetros, você precisa estar on-line</value>
+  </data>
+  <data name="updating_parameters" xml:space="preserve">
+    <value>Atualizando Parâmetros</value>
+  </data>
+  <data name="user_doesnt_belong_unit" xml:space="preserve">
+    <value>Este usuário não pertence a esta unidade</value>
+  </data>
+  <data name="user_has_no_permission_fill_form" xml:space="preserve">
+    <value>O usuário não tem permissão para assinar este formulário.</value>
+  </data>
+  <data name="verifying_parameters" xml:space="preserve">
+    <value>Estamos  verificando os parâmetros do notebook</value>
+  </data>
 </root>
