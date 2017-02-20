@@ -2211,10 +2211,10 @@ namespace SgqSystem.Services
 
             string items = "";
 
-            foreach (var entry in resourceSet.Cast<DictionaryEntry>())
-            {
-                items += "<div res='"+entry.Key.ToString() + "'>"+ entry.Value.ToString() + "</div>";
-            } 
+            //foreach (var entry in resourceSet.Cast<DictionaryEntry>())
+            //{
+            //    items += "<div res='"+entry.Key.ToString() + "'>"+ entry.Value.ToString() + "</div>";
+            //} 
             
             return "<div class='Resource hide'>"+ items + "</div>";
         }
@@ -3645,6 +3645,20 @@ namespace SgqSystem.Services
                 classInput = " boolean";
                 input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
             }
+            else if (parLevel3.ParLevel3InputType_Id == 2)
+            {
+                classInput = " defects";
+                labels = html.div(
+                                           outerhtml: "<b>Max: </b>" + parLevel3.IntervalMax.ToString("G29"),
+                                           classe: "font10",
+                                           style: "font-size: 11px; margin-top:7px;"
+                                       );
+
+                input = html.campoNumeroDeDefeitos(id: parLevel3.Id.ToString(),
+                                                intervalMin: parLevel3.IntervalMin,
+                                                intervalMax: parLevel3.IntervalMax,
+                                                unitName: parLevel3.ParMeasurementUnit_Name);
+            }
             else if (parLevel3.ParLevel3InputType_Id == 3)
             {
                 classInput = " interval";
@@ -3699,13 +3713,13 @@ namespace SgqSystem.Services
         {
             var html = new Html();
             string input = null;
-            classInput = " interval";
+            classInput = " defects";
             labels = html.div(
                                        classe: "font10",
                                        style: "font-size: 11px; margin-top:7px;"
                                    );
 
-            input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+            input = html.campoNumeroDeDefeitos(id: parLevel3.Id.ToString(),
                                             intervalMin: parLevel3.IntervalMin,
                                             intervalMax: parLevel3.IntervalMax,
                                             unitName: parLevel3.ParMeasurementUnit_Name);

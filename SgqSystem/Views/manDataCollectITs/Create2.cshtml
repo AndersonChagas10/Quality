@@ -6,6 +6,18 @@
     var UrlSaveEdit = Url.Action("SaveEdit", "Api/Manutencao");
 }
 
+<style>
+
+    div #InfoColeta{
+        color:gray;
+    }
+
+    div #InfoColeta b{
+        color:red;
+    }
+
+</style>
+
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
     <div class="page-content" style="min-height: 650px;">
@@ -36,6 +48,11 @@
             <div class="col-md-1">
                 <button type="button" id="GetIndicadoresEdit" class="btn btn-primary pull-left"><i class="fa fa-pencil" aria-hidden="true"></i></button>
             </div>
+            <br />
+            <br />
+            <br />
+
+            <div id="InfoColeta" class="col-md-8"></div>
 
         </div>
         <br />
@@ -87,7 +104,6 @@
             $('#dataTable_wrapper').remove();
             var typeRequest = 'Get';
             Send(typeRequest);
-            
         });
 
         $('#GetIndicadoresEdit').click(function () {
@@ -106,9 +122,15 @@
 
         var Data = $('#date').val();
 
+        var NomeUnidade = $('#ParCompany_Id option:selected').text()
+
         DataEdit = $('#date').val();
 
         UniEdit = $('#ParCompany_Id option:selected').val();
+
+        //monta InfoColeta na div
+        $('#InfoColeta').empty();
+        $('#InfoColeta').append('<h5>Coleta da Unidade de <b>' + NomeUnidade + '</b> referente a data de <b>' + DataEdit + '</b></h5>');
 
         var newdate = Data.split("/").reverse().join("/");
         
@@ -145,7 +167,7 @@
 
         $.post(url1, dataToSend, function (r) {
             try {
-
+                console.log(r);
             } catch (e) {
                 console.log(e);
             } finally {
@@ -170,21 +192,23 @@
 
         $.post(url3, dataToSend, function (r) {
             try {
-
+                return r
             } catch (e) {
+
                 console.log(e);
+
             } finally {
 
             }
         }).fail(function (e, h, x) {
 
             if (e.status == 0) {
+
                 GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
             } else {
-                GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
-            }
 
-            return false;
+                GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+            }           
 
         });
 
@@ -204,7 +228,7 @@
 
     function MountTable(indicadores) {
         
-        $("#tabela").append('<table id="dataTable" class="display" width="100%" cellspacing="0"><thead><tr><th>Descrição da Coleta</th><th>Quantidade</th><th>Comentarios</th><th>Salvar</th></tr></thead><tbody></tbody></table>');
+        $("#tabela").append('<table id="dataTable" class="display" width="100%" cellspacing="0"><thead><tr><th>Descrição da Coleta</th><th>Quantidade</th><th>Comentarios</th><th>Salvar</th><th>Conclusão</tr></thead><tbody></tbody></table>');
 
         if (indicadores != null) {
 
@@ -214,13 +238,10 @@
                 var cols = "";
 
                 cols += '<td>' + indicadores[i].Nome + '</td>';
-
                 cols += '<td><input id="quantidade" name="row-1-age" type="text" style="text-align: center" ></td>'; //BS: Alteração feita=> Alinhamento do texto: Centralizado
-
                 cols += '<td><input id="comentarios" name="row-1-position" value="" type="text" ></td>';
-
                 cols += '<td><button id="save" class="btn btn-large btn-danger" type="button">Salvar</button></td>';
-
+                cols += '<td id="return"></td>';
                 cols += '</td>';
 
                 newRow.append(cols);
@@ -236,31 +257,26 @@
             "lengthChange": false,
             "info": false,
             "ordering": false,
-            columns: [
-            { "data": "engine" },
-            { "data": "browser" },
-            { "data": "platform" },
-            { "data": "version" }],
             'initComplete': function () {
 
                 $('#dataTable tbody').on('click', 'button', function (data, a, b) {
 
                     var data = table.row($(this).parents('tr')).data();
-
                     var quantidade = $(this).parents('tr').find('#quantidade').val();
                     var comentarios = $(this).parents('tr').find('#comentarios').val();
-                    var date = $("#date").val();
-                    var newdate = date.split("/").reverse().join("-");
+                    //var date = $("#date").val();
+                    var newdate = DataEdit.split("/").reverse().join("-");
                     //var date = $("#date").datepicker({ dateFormat: 'yyyy-mm-dd' }).val();
-                    var parCompany_Id = $("#ParCompany_Id").val();
+                    //var parCompany_Id = $("#ParCompany_Id").val();
 
                     var obj = {};
 
-                    obj['descricao'] = data.engine;
+                    obj['descricao'] = data[0];
                     obj['quantidade'] = quantidade.replace(",", ".");
                     obj['comentarios'] = comentarios;
                     obj['data'] = newdate;
-                    obj['parCompany'] = parCompany_Id;
+                    //obj['parCompany'] = parCompany_Id;
+                    obj['parCompany'] = UniEdit;
 
                     if (validaParaEnvio(obj)) {
 
@@ -280,7 +296,7 @@
 
     function MountTableEdit(indicadores) {
 
-        $("#tabela").append('<table id="dataTable" class="display" width="100%" cellspacing="0"><thead><tr><th>Descrição da Coleta</th><th>Quantidade</th><th>Comentarios</th><th>Salvar</th></tr></thead><tbody></tbody></table>');
+        $("#tabela").append('<table id="dataTable" class="display" width="100%" cellspacing="0"><thead><tr><th>Descrição da Coleta</th><th>Quantidade</th><th>Comentarios</th><th>Alterar/Salvar</th><th>Conclusão</th></tr></thead><tbody></tbody></table>');
 
         if (indicadores != null) {
 
@@ -290,19 +306,15 @@
                 var cols = "";
 
                 cols += '<td>' + indicadores[i].Nome + '</td>';
-
                 cols += '<td><input id="quantidade" name="row-1-age" type="text" value="' + indicadores[i].ValorReal + '" style="text-align: center" disabled ></td>'; //BS: Alteração feita=> Alinhamento do texto: Centralizado
-
                 cols += '<td><input id="comentarios" name="row-1-position" value="" type="text" disabled></td>';
-
                 cols += '<td><button id="alter" class="btn btn-large btn-primary" type="button">Alterar</button><button id="save" class="btn btn-large btn-danger" type="button" style="display: none;">Salvar</button></td>';
-
+                cols += '<td></td>';
                 cols += '</td>';
 
                 newRow.append(cols);
 
                 $("#dataTable").append(newRow);
-
             }
         }
 
@@ -312,11 +324,6 @@
             "lengthChange": false,
             "info": false,
             "ordering": false,
-            columns: [
-            { "data": "engine" },
-            { "data": "browser" },
-            { "data": "platform" },
-            { "data": "version" }],
             'initComplete': function () {
 
                 $('#dataTable tbody #alter').on('click', function (data, a, b) {
@@ -339,13 +346,13 @@
 
                     var obj = {};
 
-                    obj['descricao'] = data.engine;
+                    obj['descricao'] = data[0];
                     obj['quantidade'] = quantidade.replace(",", ".");
                     obj['comentarios'] = comentarios;
                     obj['data'] = newdate;
                     //obj['parCompany'] = parCompany_Id;
                    
-                    obj['parCompany'] = UniEdit
+                    obj['parCompany'] = UniEdit;
 
                     if (validaParaEnvio(obj)) {
 
@@ -353,6 +360,7 @@
                             $(this).parents('tr').find('#quantidade').prop("disabled", true);
                             $(this).parents('tr').find('#comentarios').prop("disabled", true);
                             $(this).parents('tr').find("#save").prop("disabled", true);
+                            //$(this).parents('tr').find("#result").text(retorno.result);
                         }
                     }
 
