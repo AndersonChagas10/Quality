@@ -156,8 +156,9 @@
                     "indicador": $("#showIndicadoresManutencao input:radio:checked").val(),
                     "unidade": $('#UnidadeId :selected').text(),
                     "regional": $('#RegionalId :selected').val(),
-                    "subRegional" : $('#RegionalId :selected').text(),
-                    "ano": $('#yearId :selected').val()
+                    "subRegional": $('#SubRegionalId :selected').text(),
+                    "ano": $('#yearId :selected').val(),
+                    "mes": $('#mouthId :selected').val()
                 }
 
                 //Funçao para criar a tabela
@@ -170,7 +171,7 @@
 
         //Ajax DataTable
         function GetTabela(dados) {
-            EasyAjax(urlTabela /*+ "/" + value*/, dados, GerarTabela, "graficoEvolucao");
+            EasyAjax(urlTabela, dados, GerarTabela, "graficoEvolucao");
         }
 
         //Gerar DataTable
@@ -834,6 +835,8 @@
 
         $(document).ready(function () {
 
+            $('#btnSend').hide();
+
             $('#tipoRelatorio').change(function () {
                 if ($(this).val() == "Por Regional") {
                     $('#UnidadeId').prop('disabled', true);
@@ -888,6 +891,13 @@
                                
 
             }).change();
+
+            $('#UnidadeId').change(function () {
+
+                if ($("#showIndicadoresManutencao input:radio:checked").val() != undefined) {
+                    Send();
+                }
+            });
    
         });
 
