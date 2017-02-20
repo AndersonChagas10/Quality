@@ -2754,12 +2754,26 @@ namespace SgqSystem.Services
             var ParSampleCompany = ParSampleDB.getSample(ParLevel1: ParLevel1,
                                                         ParCompany_Id: ParCompany_Id);
 
+            //Variaveis para avaliação de grupos
+            int evaluateGroup = 0;
+            int sampleGroup = 0;
+
+            string groupLevel3Level2 = null;
+            string painelLevel3 = null;
+
             //Enquando houver lista de level2
             foreach (var parlevel2 in parlevel02List)
             {
                 //Verifica se pega avaliações e amostras padrão ou da company
                 int evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
                 int sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
+
+                //Se agrupar level2 com level3 pego o valor da primeira avaliação e amostra
+                if(ParLevel1.HasGroupLevel2 == true & evaluateGroup == 0 )
+                {
+                    evaluateGroup = evaluate;
+                    sampleGroup = sample;
+                }
 
                 //Colocar função de gerar cabeçalhos por selectbox
                 //Monta os cabecalhos
@@ -2875,10 +2889,91 @@ namespace SgqSystem.Services
                                                                html.div(classe: "level2Debug")
                                                     );
 
+
                 //Gera monitoramento do level3
-                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect);
-                level3Group += groupLevel3;
+                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect, ref painelLevel3);
+
+                if(ParLevel1.HasGroupLevel2 == true)
+                {
+                    groupLevel3 = html.accordeon(
+                                                    id: parlevel2.Id.ToString() + "Level2",
+                                                    label: parlevel2.Name,
+                                                    classe: "level2",
+                                                    outerhtml: groupLevel3
+
+                                                );
+
+                    groupLevel3Level2 += groupLevel3;
+                }
+                else
+                {
+                    level3Group += groupLevel3;
+                }
+               
             }
+
+            //Se tiver agrupamentos no ParLevel1
+            if(ParLevel1.HasGroupLevel2 == true)
+            {
+                string parLevel3Group = null;
+
+
+                string accordeonbuttons = null;
+                
+                    accordeonbuttons = "<button class=\"btn btn-default button-expand marginRight10\"><i class=\"fa fa-expand\" aria-hidden=\"true\"></i> Mostrar Todos</button>" +
+                                       "<button class=\"btn btn-default button-collapse\"><i class=\"fa fa-compress\" aria-hidden=\"true\"></i> Fechar Todos</button>";
+                
+
+                //painellevel3 = html.listgroupItem(
+                //                                            outerhtml: avaliacoes +
+                //                                                       amostras +
+                //                                                       painelLevel3HeaderListHtml,
+
+                //                               classe: "painel painelLevel03 row");
+
+                string panelButton = html.listgroupItem(
+                                                           outerhtml: accordeonbuttons +
+                                                                      "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
+
+                                                                      "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>",
+                                                           classe: "painel painelLevel02 row"
+                                                        );
+
+
+                if (!string.IsNullOrEmpty(groupLevel3Level2))
+                {
+                    parLevel3Group = html.div(
+                                               classe: "level3Group",
+                                               tags: "level1idgroup=\"" + ParLevel1.Id + "\"",
+
+                                               outerhtml: painelLevel3 + panelButton +
+                                                          groupLevel3Level2
+                                             );
+
+                    level3Group += parLevel3Group;
+                }
+
+                headerList = null;
+                string level2 = html.level2(id: "0",
+                                            label: ParLevel1.Name,
+                                            classe: "group col-xs-12",
+                                            evaluate: evaluateGroup,
+                                            sample: sampleGroup,
+                                            HasSampleTotal: false,
+                                            IsEmptyLevel3: false,
+                                            level1Group_Id: ParLevel1.Id);
+
+                //Gera linha do Level2
+                ParLevel2List = html.listgroupItem(
+                                                    id: ParLevel1.Id.ToString(),
+                                                    classe: "row",
+                                                    outerhtml: level2 +
+                                                               null +
+                                                               null +
+                                                               html.div(classe: "level2Debug")
+                                                    );
+            }
+           
             //aqui tem que fazer a pesquisa se tem itens sao do level1 ex: cca,htp
             //quando tiver cabecalhos tem que replicar no level1
 
@@ -3012,7 +3107,7 @@ namespace SgqSystem.Services
         /// <param name="ParLevel1"></param>
         /// <param name="ParLevel2"></param>
         /// <returns></returns>
-        public string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id, DateTime dateCollect)
+        public string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id, DateTime dateCollect, ref string painellevel3)
         {
             var html = new Html();
 
@@ -3120,12 +3215,12 @@ namespace SgqSystem.Services
 
                 //string HeaderLevel02 = null;
 
-                string painellevel3 = html.listgroupItem(
-                                                            outerhtml: avaliacoes +
-                                                                       amostras +
-                                                                       painelLevel3HeaderListHtml,
+                painellevel3 = html.listgroupItem(
+                                                     outerhtml: avaliacoes +
+                                                                amostras +
+                                                                painelLevel3HeaderListHtml,
 
-                                               classe: "painel painelLevel03 row");
+                                        classe: "painel painelLevel03 row");
 
                 //Se tiver level3 gera o agrupamento no padrão
                 if (!string.IsNullOrEmpty(parLevel3Group))
@@ -3343,7 +3438,7 @@ namespace SgqSystem.Services
                 //Painel
                 //O interessante é um painel só mas no momento está um painel para cada level3group
 
-                string painellevel3 = html.listgroupItem(
+                painellevel3 = html.listgroupItem(
                                                             outerhtml: avaliacoes +
                                                                        amostras +
                                                                        painelLevel3HeaderListHtml,
@@ -3351,7 +3446,7 @@ namespace SgqSystem.Services
                                                classe: "painel painelLevel03 row");
 
                 //Se tiver level3 gera o agrupamento no padrão
-                if (!string.IsNullOrEmpty(parLevel3Group))
+                if (!string.IsNullOrEmpty(parLevel3Group) && ParLevel1.HasGroupLevel2 != true)
                 {
                     parLevel3Group = html.div(
                                                classe: "level3Group VF",
@@ -3485,7 +3580,7 @@ namespace SgqSystem.Services
                                     style: "padding-right: 4px !important; padding-left: 4px !important;",
                                     classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2 hide");
 
-                string painellevel3 = html.listgroupItem(
+                painellevel3 = html.listgroupItem(
                                                             outerhtml: amostras + avaliacoes + totalnc + ncdianteiro + nctraseiro + niveis + painelLevel3HeaderListHtml,
 
                                                classe: "painel painelLevel03 row");
@@ -3599,7 +3694,7 @@ namespace SgqSystem.Services
                                        "<button class=\"btn btn-default button-collapse\"><i class=\"fa fa-compress\" aria-hidden=\"true\"></i> Fechar Todos</button>";
                 }
 
-                string painellevel3 = html.listgroupItem(
+                painellevel3 = html.listgroupItem(
                                                             outerhtml: avaliacoes +
                                                                        amostras +
                                                                        painelLevel3HeaderListHtml,
@@ -3615,7 +3710,7 @@ namespace SgqSystem.Services
                                                         );
 
                 //Se tiver level3 gera o agrupamento no padrão
-                if (!string.IsNullOrEmpty(parLevel3Group))
+                if (!string.IsNullOrEmpty(parLevel3Group) && ParLevel1.HasGroupLevel2 != true)
                 {
                     parLevel3Group = html.div(
                                                classe: "level3Group",
