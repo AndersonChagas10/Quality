@@ -16,6 +16,10 @@
         color:red;
     }
 
+    #return {
+       font-size: 12px;
+    }
+
 </style>
 
 <div class="page-content-wrapper">
@@ -114,6 +118,8 @@
             Send(typeRequest)
         });
 
+        //$('#UnidadeId')
+
     });
 
     function Send(typeRequest) {
@@ -194,7 +200,6 @@
 
         $.post(url3, dataToSend, function (r) {
             try {
-                console.log(r)
                 InserirRetorno(r);
 
             } catch (e) {
@@ -221,7 +226,7 @@
 
     function validaParaEnvio(obj) {
         if (obj.quantidade == "") {
-            alert("Campo Quantidade obrigatório");
+            alert("Para salvar, é necessário inserir uma coleta no campo 'Quantidade'.");
             $(this).find('#quantidade').focus;
             return false;
         } else {
