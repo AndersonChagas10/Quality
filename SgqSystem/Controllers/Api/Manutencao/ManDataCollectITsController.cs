@@ -58,9 +58,9 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
                 if (true)
                 {
-                    return "Salvo com sucesso";
+                    return "Salvo com Sucesso!";
                 }
-                    //else
+                //else
                     //return "Sua meta para essa coleta é de "++" , com a informação de "++" ela foi reajustada para"++;
 
             }
@@ -147,38 +147,58 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
         [HttpPost]
         [Route("SaveEdit")]
-        public int SaveEdit(Obj obj)
+        public string SaveEdit(Obj obj)
         {
-            string sql = "";
 
-            sql = "select Name as indicadorNome from DimManColetaDados where DimRealTarget = 'Real' and DimName is not null and DimName = '" + obj.descricao + "'";
-
-            var db1 = new SgqDbDevEntities();
-
-            List<Obj2> list = db1.Database.SqlQuery<Obj2>(sql).ToList();
-
-            obj.indicadorNome = list[0].indicadorNome;
-
-            sql = "";
-
-            sql = "UPDATE ManColetaDados " +
-                   "SET " +
-                    "Base_dateAlter = GETDATE() " +
-                    "," + obj.indicadorNome + " = '" + obj.quantidade + "' " +
-                    ",Comentarios = '" + obj.comentarios + "' " +
-                   "from ManColetaDados " +
-                   "WHERE " +
-                    "Base_parCompany_id = '" + obj.parCompany + "' " +
-                   "AND " +
-                   "Base_dateRef = '" + obj.data.ToString("yyyy-MM-dd HH:mm:ss") + "'" +
-                   " AND " +
-                    obj.indicadorNome + " IS NOT NULL";
-
-            using (var db = new SgqDbDevEntities())
+            try
             {
-                var d = db.Database.ExecuteSqlCommand(sql);
-                return d;
+                string sql = "";
+
+                sql = "select Name as indicadorNome from DimManColetaDados where DimRealTarget = 'Real' and DimName is not null and DimName = '" + obj.descricao + "'";
+
+                var db1 = new SgqDbDevEntities();
+
+                List<Obj2> list = db1.Database.SqlQuery<Obj2>(sql).ToList();
+
+                obj.indicadorNome = list[0].indicadorNome;
+
+                sql = "";
+
+                sql = "UPDATE ManColetaDados " +
+                       "SET " +
+                        "Base_dateAlter = GETDATE() " +
+                        "," + obj.indicadorNome + " = '" + obj.quantidade + "' " +
+                        ",Comentarios = '" + obj.comentarios + "' " +
+                       "from ManColetaDados " +
+                       "WHERE " +
+                        "Base_parCompany_id = '" + obj.parCompany + "' " +
+                       "AND " +
+                       "Base_dateRef = '" + obj.data.ToString("yyyy-MM-dd HH:mm:ss") + "'" +
+                       " AND " +
+                        obj.indicadorNome + " IS NOT NULL";
+
+                using (var db = new SgqDbDevEntities())
+                {
+                    var d = db.Database.ExecuteSqlCommand(sql);
+                    //return d;
+                }
+
+                if (true)
+                {
+                    return "Salvo com Sucesso!";
+                }
+                //else
+                    //return "Sua meta para essa coleta é de "++" , com a informação de "++" ela foi reajustada para"++;
+
+
             }
+            catch (Exception e)
+            {
+                return "Erro ao Salvar no Banco: " + e;
+                throw;
+            }
+
+            
 
         }
     }
