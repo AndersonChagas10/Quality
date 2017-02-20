@@ -45,15 +45,17 @@
     }
 
     #tabela th {
-        font-size: 12px;
+        font-size: 10px;
+        padding: 2px;
     }
 
     #tabela td {
-        font-size: 11px;
+        font-size: 10px;
+        padding: 2px;
     }
 
     #primeiro {
-        min-height: 533px;
+        min-height: 450px;
     }
 
     table.dataTable thead th, table.dataTable thead td {
@@ -95,14 +97,14 @@
             <div id="primeiro">
                 <table id="tabela" class="display" cellspacing="0"></table>
 
-                <div id="graficoEvolucao"></div>
+                <div id="graficoEvolucao" style="height:300px;"></div>
 
             </div>
             <div id="segundo">
 
-                <div id="graficoAcumulado"></div>
+                <div id="graficoAcumulado" style="height:200px;"></div>
 
-                <div id="graficoDesvios"></div>
+                <div id="graficoDesvios" style="height:200px;"></div>
 
             </div>
         </div>
@@ -115,6 +117,28 @@
         var urlGraficoEvolucao = '@Html.Raw(urlGraficoEvolucao)'
         var urlGraficoAcumulado = '@Html.Raw(urlGraficoAcumulado)'
         var dados = {};
+
+        function getNome() {
+
+            var titulo = "";
+             
+            var tipoRelatorio = $('#tipoRelatorio :selected').text();
+            var regional = $('#RegionalId :selected').text();
+            var subregional = "";
+
+            if ($('#SubRegionalId :selected').text() != "") { subregional = " - " + $('#SubRegionalId :selected').text(); };
+
+            var unidade = $('#UnidadeId :selected').text();
+
+            if (tipoRelatorio == 'Por Regional') {
+                titulo = regional;
+            } else {
+                titulo = unidade;
+            }
+
+            return titulo;
+
+        }
 
         function Send(Toggle) {
 
@@ -140,7 +164,7 @@
                 GetTabela(dados);
             }
 
-            $("#title h3").text("Painel de Indicadores de " + $("#showIndicadoresManutencao input:radio:checked").val() + " - " + $('#UnidadeId :selected').text())
+            $("#title h3").text("Painel de Indicadores de " + $("#showIndicadoresManutencao input:radio:checked").val() + " - " + getNome())
 
         };
 
@@ -151,6 +175,51 @@
 
         //Gerar DataTable
         function GerarTabela(retornoArray) {
+
+            var ordemDoIndicador = "";
+            var corDoIndicador = "";
+
+            if (
+                dados.indicador == 'Bois Abatidos' ||
+                //indicador == 'Manutenção R$' ||
+                dados.indicador == 'Eficiên.Programção' ||
+                dados.indicador == 'Apropr Planej...to' ||
+                dados.indicador == 'Scorecard Unidade' ||
+                //indicador == 'Scorecard Vácuo' ||
+                //indicador == 'Head Count' ||
+                //indicador == 'Scorecard Aspersão' ||
+                dados.indicador == 'Scorecard Energia' ||
+                dados.indicador == 'Scorecard Vapor' ||
+                //indicador == 'Pilar Manutenção' ||
+                //indicador == 'Devoluções %' ||
+                //indicador == 'R$/CB Manut' ||
+                //indicador == 'R$/CB Manut+Utilid' ||
+                //indicador == 'Sobra de Animais' ||
+                //indicador == 'R$ Manut Comb.' ||
+                //indicador == 'Energia R$' ||
+                //indicador == 'KWh/Boi Proc' ||
+                //indicador == 'Caldeira R$' ||
+                //indicador == 'Mcal/Boi Proc' ||
+                dados.indicador == 'Fator de Potência' ||
+                //indicador == 'Água M³/Boi' ||
+                //indicador == 'M³ de Lenha' ||
+                dados.indicador == 'Disponibilidade Ab' ||
+                dados.indicador == 'Disponibilidade Des' ||
+                //indicador == 'KWh' ||
+                //indicador == 'Parada Abate (min)' ||
+                //indicador == 'Parada Des. (min)' ||
+                //indicador == 'OBRAS' ||
+                //indicador == 'Horas Extras R$' ||
+                //indicador == 'Horas Extras Nº' ||
+                //indicador == 'CAPEX' ||
+                dados.indicador == 'Apropriação de O.S' ||
+                dados.indicador == 'CARTA METAS') {
+                
+                ordemDoIndicador = "↑";
+                
+            } else {
+                ordemDoIndicador = "↓";
+            }
 
             //var meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
             var dado = MapeiaValorParaHC(retornoArray, 'dado')
@@ -174,7 +243,23 @@
                 vetorTeste[1] = formatReal(Math.round(orcado[i] * 100) / 100);
                 vetorTeste[2] = formatReal(Math.round(realizado[i] * 100) / 100);
                 vetorTeste[3] = '<i>' + formatReal(Math.round(desvio[i] * 100) / 100) + '</i>';
-                vetorTeste[4] = '<i>' + Math.floor(porcDesvio[i] * 100) / 100 + '%</i>';
+
+                if (ordemDoIndicador == "↑") {
+                    if ((Math.round(desvio[i] * 100) / 100) < 0) {
+                        corDoIndicador = '#ff7575';
+                    }else{
+                        corDoIndicador = '#aef2ae';
+                    }
+                } else {
+                    if ((Math.round(desvio[i] * 100) / 100) >= 0) {
+                        corDoIndicador = '#ff7575';
+                    } else {
+                        corDoIndicador = '#aef2ae';
+                    }
+                }
+
+                vetorTeste[4] = '<div style="padding:0px; background-color:' + corDoIndicador + ';"><i>' + Math.floor(porcDesvio[i] * 100) / 100 + '%</i>' + ordemDoIndicador + '</div>';
+                
                 dataTableVetor.push(vetorTeste);
 
                 vetorTeste = [];
@@ -232,7 +317,56 @@
             //else
                 unidade = $('#UnidadeId :selected').text();
 
-            var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
+                var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
+
+                var corPositivo = "";
+                var corNegativo = "";
+
+                if (
+                indicador == 'Bois Abatidos' ||
+                    //indicador == 'Manutenção R$' ||
+                indicador == 'Eficiên.Programção' ||
+                indicador == 'Apropr Planej...to' ||
+                indicador == 'Scorecard Unidade' ||
+                    //indicador == 'Scorecard Vácuo' ||
+                    //indicador == 'Head Count' ||
+                    //indicador == 'Scorecard Aspersão' ||
+                indicador == 'Scorecard Energia' ||
+                indicador == 'Scorecard Vapor' ||
+                    //indicador == 'Pilar Manutenção' ||
+                    //indicador == 'Devoluções %' ||
+                    //indicador == 'R$/CB Manut' ||
+                    //indicador == 'R$/CB Manut+Utilid' ||
+                    //indicador == 'Sobra de Animais' ||
+                    //indicador == 'R$ Manut Comb.' ||
+                    //indicador == 'Energia R$' ||
+                    //indicador == 'KWh/Boi Proc' ||
+                    //indicador == 'Caldeira R$' ||
+                    //indicador == 'Mcal/Boi Proc' ||
+                indicador == 'Fator de Potência' ||
+                    //indicador == 'Água M³/Boi' ||
+                    //indicador == 'M³ de Lenha' ||
+                indicador == 'Disponibilidade Ab' ||
+                indicador == 'Disponibilidade Des' ||
+                    //indicador == 'KWh' ||
+                    //indicador == 'Parada Abate (min)' ||
+                    //indicador == 'Parada Des. (min)' ||
+                    //indicador == 'OBRAS' ||
+                    //indicador == 'Horas Extras R$' ||
+                    //indicador == 'Horas Extras Nº' ||
+                    //indicador == 'CAPEX' ||
+                indicador == 'Apropriação de O.S' ||
+                indicador == 'CARTA METAS') {
+                    corPositivo = '#ff7575';
+                    corNegativo = '#aef2ae';
+                    legendaPositivo = "Positivo";
+                    legendaNegativo = "Negativo";
+                } else {
+                    corPositivo = '#aef2ae';
+                    corNegativo = '#ff7575';
+                    legendaPositivo = "Negativo";
+                    legendaNegativo = "Positivo";
+                }
 
 
             $('#graficoEvolucao').empty().highcharts({
@@ -243,7 +377,7 @@
                     zoomType: 'xy'
                 },
                 title: {
-                    text: 'Evolução de ' + indicador + ' em ' + unidade + ''
+                    text: 'Evolução de ' + indicador + ' em ' + getNome() + ''
                 },
                 subtitle: {
                     text: ''
@@ -299,13 +433,11 @@
                     {
                         type: 'spline',
                         name: 'Orçado',
-                        data: orcado, //Colocar o array de orçado
-                        marker: {
-                            lineWidth: 2,
-                            lineColor: Highcharts.getOptions().colors[3],
-                            fillColor: 'white'
-                        },
+                        data: orcado, //Colocar o array de orçado                        
                         color: Highcharts.getOptions().colors[3],
+                        marker: {
+                            enabled: false
+                        }
                     }
                 ]
             });
@@ -319,18 +451,70 @@
             //if ($('#unitId :selected').text() == null)
             //    indicador = "Todos";
             //else
-            var unidade = $('#UnidadeID :selected').text();
+            var unidade = $('#UnidadeId :selected').text();
 
             var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
+
+            var legendaPositivo = "";
+            var legendaNegativo = "";
+
+            var corPositivo = "";
+            var corNegativo = "";
+
+            if (
+                indicador == 'Bois Abatidos' ||
+                //indicador == 'Manutenção R$' ||
+                indicador == 'Eficiên.Programção' ||
+                indicador == 'Apropr Planej...to' ||
+                indicador == 'Scorecard Unidade' ||
+                //indicador == 'Scorecard Vácuo' ||
+                //indicador == 'Head Count' ||
+                //indicador == 'Scorecard Aspersão' ||
+                indicador == 'Scorecard Energia' ||
+                indicador == 'Scorecard Vapor' ||
+                //indicador == 'Pilar Manutenção' ||
+                //indicador == 'Devoluções %' ||
+                //indicador == 'R$/CB Manut' ||
+                //indicador == 'R$/CB Manut+Utilid' ||
+                //indicador == 'Sobra de Animais' ||
+                //indicador == 'R$ Manut Comb.' ||
+                //indicador == 'Energia R$' ||
+                //indicador == 'KWh/Boi Proc' ||
+                //indicador == 'Caldeira R$' ||
+                //indicador == 'Mcal/Boi Proc' ||
+                indicador == 'Fator de Potência' ||
+                //indicador == 'Água M³/Boi' ||
+                //indicador == 'M³ de Lenha' ||
+                indicador == 'Disponibilidade Ab' ||
+                indicador == 'Disponibilidade Des' ||
+                //indicador == 'KWh' ||
+                //indicador == 'Parada Abate (min)' ||
+                //indicador == 'Parada Des. (min)' ||
+                //indicador == 'OBRAS' ||
+                //indicador == 'Horas Extras R$' ||
+                //indicador == 'Horas Extras Nº' ||
+                //indicador == 'CAPEX' ||
+                indicador == 'Apropriação de O.S' ||
+                indicador == 'CARTA METAS') {
+                corPositivo = '#ff7575';
+                corNegativo = '#aef2ae';
+                legendaPositivo = "Positivo";
+                legendaNegativo = "Negativo";
+            } else {
+                corPositivo = '#aef2ae';
+                corNegativo = '#ff7575';
+                legendaPositivo = "Negativo";
+                legendaNegativo = "Positivo";
+            }
 
             var somaDesvio = Math.round(SomaVetor(desvio) * 100) / 100;
 
             if (somaDesvio <= 0) {
 
-                somaDesvio = { y: somaDesvio, color: '#aef2ae', name: 'Desvio', drilldown: null };
+                somaDesvio = { y: somaDesvio, color: corPositivo, name: 'Desvio', drilldown: null };
             } else {
 
-                somaDesvio = { y: somaDesvio, color: '#ff7575', name: 'Desvio', drilldown: null };
+                somaDesvio = { y: somaDesvio, color: corNegativo, name: 'Desvio', drilldown: null };
             }
 
             //Somar os valores dos vetores
@@ -343,7 +527,7 @@
                     zoomType: 'xy'
                 },
                 title: {
-                    text: 'Acumulado de ' + indicador + ' em ' + unidade + ''
+                    text: 'Acumulado de ' + indicador + ' em ' + getNome() + ''
                 },
                 subtitle: {
                     text: ''
@@ -393,7 +577,7 @@
                 tooltip: {
                     shared: true,
                     headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>R${point.y:.2f}</b><br/>'
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b><br/>'
                 },
                 //series: [
                 //    {
@@ -419,7 +603,7 @@
                 //    }
                 //]
                 series: [{
-                    name: 'Brands',
+                    name: 'Acumulado',
                     colorByPoint: true,
                     data: [{
                         name: 'Orcado',
@@ -448,19 +632,68 @@
             //if ($('#unitId :selected').text() == null)
             //    indicador = "Todos";
             //else
-            var unidade = $('#UnidadeID :selected').text();
+            var unidade = $('#UnidadeId :selected').text();
 
             var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
+
+            var corPositivo = "";
+            var corNegativo = "";
+
+            if (
+                indicador == 'Bois Abatidos' ||
+                //indicador == 'Manutenção R$' ||
+                indicador == 'Eficiên.Programção' ||
+                indicador == 'Apropr Planej...to' ||
+                indicador == 'Scorecard Unidade' ||
+                //indicador == 'Scorecard Vácuo' ||
+                //indicador == 'Head Count' ||
+                //indicador == 'Scorecard Aspersão' ||
+                indicador == 'Scorecard Energia' ||
+                indicador == 'Scorecard Vapor' ||
+                //indicador == 'Pilar Manutenção' ||
+                //indicador == 'Devoluções %' ||
+                //indicador == 'R$/CB Manut' ||
+                //indicador == 'R$/CB Manut+Utilid' ||
+                //indicador == 'Sobra de Animais' ||
+                //indicador == 'R$ Manut Comb.' ||
+                //indicador == 'Energia R$' ||
+                //indicador == 'KWh/Boi Proc' ||
+                //indicador == 'Caldeira R$' ||
+                //indicador == 'Mcal/Boi Proc' ||
+                indicador == 'Fator de Potência' ||
+                //indicador == 'Água M³/Boi' ||
+                //indicador == 'M³ de Lenha' ||
+                indicador == 'Disponibilidade Ab' ||
+                indicador == 'Disponibilidade Des' ||
+                //indicador == 'KWh' ||
+                //indicador == 'Parada Abate (min)' ||
+                //indicador == 'Parada Des. (min)' ||
+                //indicador == 'OBRAS' ||
+                //indicador == 'Horas Extras R$' ||
+                //indicador == 'Horas Extras Nº' ||
+                //indicador == 'CAPEX' ||
+                indicador == 'Apropriação de O.S' ||
+                indicador == 'CARTA METAS') {
+                corPositivo = '#ff7575';
+                corNegativo = '#aef2ae';
+                legendaPositivo = "Positivo";
+                legendaNegativo = "Negativo";
+            } else {
+                corPositivo = '#aef2ae';
+                corNegativo = '#ff7575';
+                legendaPositivo = "Negativo";
+                legendaNegativo = "Positivo";
+            }
 
             var positivo = [];
             var negativo = [];
 
             for (var i = 0; i < dado.length; i++) {
                 if (orcado[i] > realizado[i]) {
-                    positivo[i] = orcado[i] - realizado[i]
+                    positivo[i] = realizado[i] - orcado[i];
                     negativo[i] = null
                 } else {
-                    negativo[i] = orcado[i] - realizado[i];
+                    negativo[i] = realizado[i] - orcado[i] ;
                     positivo[i] = null
                 }
             }
@@ -477,19 +710,24 @@
                 },
 
                 title: {
-                    text: 'Desvio de ' + indicador + ' em ' + unidade + ''
+                    text: 'Desvio de ' + indicador + ' em ' + getNome() + ''
                 },
 
                 legend: {
-                    enabled: false
+                    enabled: true,
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
                 },
 
                 xAxis: {
                     categories: dado,
+
                 },
 
                 yAxis: {
                     allowDecimals: false,
+                    
 
                     title: {
                         text: 'Valor do desvio em milhões'
@@ -511,15 +749,16 @@
                 },
 
                 series: [{
-                    name: 'Positivo',
+                    name: legendaNegativo,
                     data: positivo,
                     stack: 'Conta',
-                    color: '#ff7575'
+                    color: corPositivo
+                    
                 }, {
-                    name: 'Negativo',
+                    name: legendaPositivo,
                     data: negativo,
                     stack: 'Conta',
-                    color: '#aef2ae'
+                    color: corNegativo
                 }]
             });
 
@@ -586,7 +825,7 @@
 
             for (var i = 0; i < 12; i++) {
 
-                vetor[i].push(orcado[i] - realizado[i]);
+                vetor[i].push(realizado[i] - orcado[i]);
 
             }
 
