@@ -1044,8 +1044,8 @@
   <data name="side_must_be_filled" xml:space="preserve">
     <value>The side must be filled</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value>Existem campos de preenchimento obrigatórios neste monitoramento. Já deixamos a tela aberta para você preenche-los corretamente</value>
+  <data name="required_fields_open_screen" xml:space="preserve">
+    <value>There are required filled fields in this monitoring. We left the screen open to be filled properly. </value>
   </data>
   <data name="the_number_parts_filled" xml:space="preserve">
     <value>The number of evaluated parts must be filled.</value>
@@ -1058,5 +1058,98 @@
   </data>
   <data name="you_need_to_be_connected" xml:space="preserve">
     <value>In order to login you need to be connected to the network</value>
+  </data>
+  <data name="allowed" xml:space="preserve">
+    <value>Allowed</value>
+  </data>
+  <data name="change_unit_must_be_online" xml:space="preserve">
+    <value>To change the unit you must be online</value>
+  </data>
+  <data name="changing_unit_preferences" xml:space="preserve">
+    <value>Changing unit. We are changing the unit preferences. Please wait</value>
+  </data>
+  <data name="collection_dropped" xml:space="preserve">
+    <value>We noticed that the collection was alredy done and it will be dropped.</value>
+  </data>
+  <data name="day_target_exceed" xml:space="preserve">
+    <value>The daily target was exceed</value>
+  </data>
+  <data name="duplicated_collection" xml:space="preserve">
+    <value>Duplicated collection</value>
+  </data>
+  <data name="error_recovery_sequential" xml:space="preserve">
+    <value>Recovery error in the next sequential. Would you like to continue with the next  or  wait the automatic one?</value>
+  </data>
+  <data name="evaluation_target" xml:space="preserve">
+    <value>Evaluation target</value>
+  </data>
+  <data name="fail_description_is_empty" xml:space="preserve">
+    <value>The fail description is empty.</value>
+  </data>
+  <data name="fill_header_fields" xml:space="preserve">
+    <value>Fill out the required header fields  </value>
+  </data>
+  <data name="fill_the_corrective_action" xml:space="preserve">
+    <value>Fill the Corrective Action first.</value>
+  </data>
+  <data name="fired" xml:space="preserve">
+    <value>fired</value>
+  </data>
+  <data name="first_synchronization_of_the_day" xml:space="preserve">
+    <value>First synchronization of the day</value>
+  </data>
+  <data name="immediate_corrective_action_is_empty" xml:space="preserve">
+    <value>The corrective action is empty.</value>
+  </data>
+  <data name="loading_next_sequential" xml:space="preserve">
+    <value>Loading the next sequential</value>
+  </data>
+  <data name="nc_of" xml:space="preserve">
+    <value>NC of</value>
+  </data>
+  <data name="nc_target_exceed" xml:space="preserve">
+    <value>The NC target was exceed</value>
+  </data>
+  <data name="problem_occur" xml:space="preserve">
+    <value>Problem occurred</value>
+  </data>
+  <data name="sequential_side_already_filled" xml:space="preserve">
+    <value>This side sequential was already filled</value>
+  </data>
+  <data name="some_problems_occur" xml:space="preserve">
+    <value>Some problems occur</value>
+  </data>
+  <data name="supervisor_manager_director" xml:space="preserve">
+    <value>The area supervisor, manager and director will be notified</value>
+  </data>
+  <data name="supervisor_manager_notification" xml:space="preserve">
+    <value>The supervisor and the manager will be notified</value>
+  </data>
+  <data name="supervisor_notification" xml:space="preserve">
+    <value>The area supervisor will be notified</value>
+  </data>
+  <data name="target_exceed" xml:space="preserve">
+    <value>The target was exceed</value>
+  </data>
+  <data name="tolerance_target_exceed" xml:space="preserve">
+    <value>The tolerance target was exceed</value>
+  </data>
+  <data name="unit_changed_login_again" xml:space="preserve">
+    <value>Unit changed. The unit was changed, login again to update the indicators</value>
+  </data>
+  <data name="update_parameters_must_be_online" xml:space="preserve">
+    <value>Para atualizar os parâmetros, você precisa estar on-line</value>
+  </data>
+  <data name="updating_parameters" xml:space="preserve">
+    <value>Updating parameters</value>
+  </data>
+  <data name="user_doesnt_belong_unit" xml:space="preserve">
+    <value>This user does not belong to this unit.</value>
+  </data>
+  <data name="user_has_no_permission_fill_form" xml:space="preserve">
+    <value>The user has no permission to fill the form.</value>
+  </data>
+  <data name="verifying_parameters" xml:space="preserve">
+    <value>We are verifying the laptop parameters</value>
   </data>
 </root>
