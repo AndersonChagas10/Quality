@@ -188,5 +188,6 @@ namespace SgqSystem.Controllers.Api.Manutencao
         public string tipoRelatorio { get; set; }
         public string regional { get; set; }
         public string subRegional { get; set; }
+        public string mes { get; set; }
     }
 }
