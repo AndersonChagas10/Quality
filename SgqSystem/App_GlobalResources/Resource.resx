@@ -876,4 +876,31 @@
   <data name="user_save_success" xml:space="preserve">
     <value>User saved successfully</value>
   </data>
+  <data name="enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="entering" xml:space="preserve">
+    <value>Entering</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="invalid_user_or_password" xml:space="preserve">
+    <value>Invalid user or password</value>
+  </data>
+  <data name="loading_indicators" xml:space="preserve">
+    <value>Loading Indicators</value>
+  </data>
+  <data name="recording_information" xml:space="preserve">
+    <value>Recording Information</value>
+  </data>
+  <data name="verifying_keys" xml:space="preserve">
+    <value>Verifying keys</value>
+  </data>
+  <data name="verifying_users" xml:space="preserve">
+    <value>Verifying users</value>
+  </data>
+  <data name="version" xml:space="preserve">
+    <value>Version</value>
+  </data>
 </root>

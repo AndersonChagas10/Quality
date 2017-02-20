@@ -2174,7 +2174,9 @@ namespace SgqSystem.Services
 
             string login = GetLoginAPP();
 
-            return login;
+            string resource = GetResource();
+
+            return login + resource;
         }
         [WebMethod]
         public string getAPPLevels(int UserSgq_Id, int ParCompany_Id, DateTime Date)
@@ -2195,7 +2197,7 @@ namespace SgqSystem.Services
             string resource = GetResource();
 
             return APPMain +
-                   supports+
+                   supports +
                    resource;
         }
         public string GetResource()
@@ -2205,7 +2207,7 @@ namespace SgqSystem.Services
             System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
 
             var resourceSet = resourceManager.GetResourceSet(
-                Thread.CurrentThread.CurrentUICulture, false, true);
+                Thread.CurrentThread.CurrentUICulture, true, false);
 
             string items = "";
 
