@@ -2370,8 +2370,8 @@ namespace SgqSystem.Services
                            "            <a class=\"navbar-brand\" id=\"SGQName\" href=\"#\"><i class=\"fa fa-chevron-left hide iconReturn\" aria-hidden=\"true\"></i> SGQ - Coleta de dados</a>                 " +
                            "            <div class=\"buttonMenu navbar-brand hide\" id=\"btnShowImage\" level01id=\"2\">Show Image</div>                                                                        " +
                            selectUserCompanys(UserSgq_Id, ParCompany_Id) +
-                           "            <span style='color: #ffffff; margin: 14px;' class='period'>Periodo</span><span style='color: #ffffff; margin: 14px;' class='shift'>shift</span> " +
-                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div><span style='color: #ffffff; margin: 14px;' class='atualDate pull-right'></span>" +
+                           "            <span style='color: #ffffff; margin: 8px;' class='periodShift'></span>" +
+                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div><span style='color: #ffffff; margin-top: 14px; margin-right: 8px;' class='atualDate pull-right'></span>" +
                            "        </div>                                                                                                                                                                      " +
                            "    </div>                                                                                                                                                                          " +
                            "</div>                                                                                                                                                                              ";
@@ -4392,7 +4392,7 @@ namespace SgqSystem.Services
 
             if (!string.IsNullOrEmpty(options))
             {
-                options = "<select id=\"selectParCompany\" style=\"margin: 14px;\" ParCompany_Id=\"" + ParCompany_Id + "\">" + options + "</select>";
+                options = "<select id=\"selectParCompany\" style=\"margin-top: 14px; margin-bottom: 14px; margin-left: 8px; margin-right: 8px;\" ParCompany_Id=\"" + ParCompany_Id + "\">" + options + "</select>";
             }
             return options;
         }
