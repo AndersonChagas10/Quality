@@ -168,6 +168,7 @@
         $.post(url1, dataToSend, function (r) {
             try {
                 console.log(r);
+                $(this).parents('tr').find("#result").text(r);
             } catch (e) {
                 console.log(e);
             } finally {
