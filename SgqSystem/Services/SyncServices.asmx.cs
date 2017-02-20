@@ -2211,10 +2211,10 @@ namespace SgqSystem.Services
 
             string items = "";
 
-            //foreach (var entry in resourceSet.Cast<DictionaryEntry>())
-            //{
-            //    items += "<div res='"+entry.Key.ToString() + "'>"+ entry.Value.ToString() + "</div>";
-            //} 
+            foreach (var entry in resourceSet.Cast<DictionaryEntry>())
+            {
+                items += "<div res='"+entry.Key.ToString() + "'>"+ entry.Value.ToString() + "</div>";
+            } 
             
             return "<div class='Resource hide'>"+ items + "</div>";
         }
