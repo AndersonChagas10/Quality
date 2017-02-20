@@ -79,6 +79,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Action not allowed .
+        /// </summary>
+        internal static string action_not_allowed {
+            get {
+                return ResourceManager.GetString("action_not_allowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add date.
         /// </summary>
         internal static string add_date {
@@ -327,6 +336,15 @@ namespace Resources {
         internal static string back_to_list {
             get {
                 return ResourceManager.GetString("back_to_list", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You still have Corrective action(s) pending .
+        /// </summary>
+        internal static string ca_pending {
+            get {
+                return ResourceManager.GetString("ca_pending", resourceCulture);
             }
         }
         
@@ -862,7 +880,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Evaluation.
+        ///   Looks up a localized string similar to Evaluation .
         /// </summary>
         internal static string evaluation {
             get {
@@ -1083,6 +1101,24 @@ namespace Resources {
         internal static string id {
             get {
                 return ResourceManager.GetString("id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inactive.
+        /// </summary>
+        internal static string inactive {
+            get {
+                return ResourceManager.GetString("inactive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You hae been inactive for.
+        /// </summary>
+        internal static string inactive_for {
+            get {
+                return ResourceManager.GetString("inactive_for", resourceCulture);
             }
         }
         
@@ -1429,11 +1465,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Logging In.
+        /// </summary>
+        internal static string logging_in {
+            get {
+                return ResourceManager.GetString("logging_in", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
         internal static string login {
             get {
                 return ResourceManager.GetString("login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to minutes. Please, login again.
+        /// </summary>
+        internal static string login_again {
+            get {
+                return ResourceManager.GetString("login_again", resourceCulture);
             }
         }
         
@@ -1542,6 +1596,15 @@ namespace Resources {
         internal static string minimum_range {
             get {
                 return ResourceManager.GetString("minimum_range", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You still have monitorings to do.
+        /// </summary>
+        internal static string mornitorings_pedding {
+            get {
+                return ResourceManager.GetString("mornitorings_pedding", resourceCulture);
             }
         }
         
@@ -1726,6 +1789,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  not finished.
+        /// </summary>
+        internal static string not_finished {
+            get {
+                return ResourceManager.GetString("not_finished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to November.
         /// </summary>
         internal static string november {
@@ -1767,6 +1839,15 @@ namespace Resources {
         internal static string number_nc {
             get {
                 return ResourceManager.GetString("number_nc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The number of  wrong evaluated animals must be smaller or equal to the number of evaluated animals..
+        /// </summary>
+        internal static string number_of_animals {
+            get {
+                return ResourceManager.GetString("number_of_animals", resourceCulture);
             }
         }
         
@@ -2086,6 +2167,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Required fields unfilled .
+        /// </summary>
+        internal static string required_fields_unfilled {
+            get {
+                return ResourceManager.GetString("required_fields_unfilled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to One of the required items was not selected.
+        /// </summary>
+        internal static string required_items_not_selected {
+            get {
+                return ResourceManager.GetString("required_items_not_selected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to en_us.
         /// </summary>
         internal static string resource_id {
@@ -2356,6 +2455,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The sequential must be filled.
+        /// </summary>
+        internal static string sequential_must_be_filled {
+            get {
+                return ResourceManager.GetString("sequential_must_be_filled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server not found.
         /// </summary>
         internal static string server_not_found {
@@ -2392,6 +2500,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The side must be filled.
+        /// </summary>
+        internal static string side_must_be_filled {
+            get {
+                return ResourceManager.GetString("side_must_be_filled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SIF.
         /// </summary>
         internal static string sif {
@@ -2415,6 +2532,15 @@ namespace Resources {
         internal static string standard {
             get {
                 return ResourceManager.GetString("standard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Existem campos de preenchimento obrigatórios neste monitoramento. Já deixamos a tela aberta para você preenche-los corretamente.
+        /// </summary>
+        internal static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         
@@ -2460,6 +2586,33 @@ namespace Resources {
         internal static string synchronizing {
             get {
                 return ResourceManager.GetString("synchronizing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The number of evaluated parts must be filled..
+        /// </summary>
+        internal static string the_number_parts_filled {
+            get {
+                return ResourceManager.GetString("the_number_parts_filled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The total evaluated parts exceed the amount of samples.
+        /// </summary>
+        internal static string total_evaluated_parts_exceed {
+            get {
+                return ResourceManager.GetString("total_evaluated_parts_exceed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trying Again.
+        /// </summary>
+        internal static string trying_again {
+            get {
+                return ResourceManager.GetString("trying_again", resourceCulture);
             }
         }
         
@@ -2712,6 +2865,15 @@ namespace Resources {
         internal static string you_are_not_online {
             get {
                 return ResourceManager.GetString("you_are_not_online", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In order to login you need to be connected to the network.
+        /// </summary>
+        internal static string you_need_to_be_connected {
+            get {
+                return ResourceManager.GetString("you_need_to_be_connected", resourceCulture);
             }
         }
         
