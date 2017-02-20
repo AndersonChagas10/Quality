@@ -101,8 +101,8 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                     "END, 0)) orcado " +
                             "FROM MANCOLETADADOS Man " +
                             "WHERE " +
-                                "ISNULL(YEAR(BASE_DATEREF), YEAR(BASE_DATEADD)) = '" + obj.ano + "'" +
-                                "AND Man.Base_parCompany_id in (SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegionalGrupo = '" + obj.subRegional + "' and ParCompany_id is not null) " +
+                                "ISNULL(YEAR(BASE_DATEREF), YEAR(BASE_DATEADD)) = '" + obj.ano + "'" +                              
+                                "AND Man.Base_parCompany_id in (SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegionalGrupo = '" + obj.regional + "' and ParCompany_id is not null) " +
                             "GROUP BY Man.Base_parCompany_id " +
                         ")Base on uni.Parcompany_id = Base.Base_parCompany_id " +
                         "WHERE Base.realizado != 0 AND Base.orcado != 0" +
