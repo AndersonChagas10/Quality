@@ -18,6 +18,8 @@ namespace SgqSystem.Controllers.Api.Manutencao
         public string SaveCreate(Obj obj)
         {
             //Fazer a inserção do Orçado
+            bool mockRetorno = false; 
+
             try
             {
                 string sql = "";
@@ -56,12 +58,12 @@ namespace SgqSystem.Controllers.Api.Manutencao
                 }
 
 
-                if (true)
+                if (mockRetorno)
                 {
                     return "Salvo com Sucesso!";
                 }
-                //else
-                    //return "Sua meta para essa coleta é de "++" , com a informação de "++" ela foi reajustada para"++;
+                else
+                    return "Sua meta para essa coleta é de 19% , com a informação de 20% ela foi reajustada para 18%";
 
             }
             catch (Exception e)
@@ -149,7 +151,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
         [Route("SaveEdit")]
         public string SaveEdit(Obj obj)
         {
-
+            bool mockRetorno = false;
             try
             {
                 string sql = "";
@@ -183,13 +185,12 @@ namespace SgqSystem.Controllers.Api.Manutencao
                     //return d;
                 }
 
-                if (true)
+                if (mockRetorno)
                 {
                     return "Salvo com Sucesso!";
                 }
-                //else
-                    //return "Sua meta para essa coleta é de "++" , com a informação de "++" ela foi reajustada para"++;
-
+                else
+                    return "Target Diário Atual: 19% <br/> Coleta de Hoje: 20% <br/> Novo Target Diário: 21%";
 
             }
             catch (Exception e)
@@ -198,9 +199,8 @@ namespace SgqSystem.Controllers.Api.Manutencao
                 throw;
             }
 
-            
-
         }
+
     }
 
     public class Obj
