@@ -241,6 +241,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alter collection date.
+        /// </summary>
+        internal static string alter_collection_date {
+            get {
+                return ResourceManager.GetString("alter_collection_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alter date.
         /// </summary>
         internal static string alter_date {
@@ -340,11 +349,47 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You need to be online to change the data collection..
+        /// </summary>
+        internal static string change_date_collection_need_to_be_online {
+            get {
+                return ResourceManager.GetString("change_date_collection_need_to_be_online", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change the password.
         /// </summary>
         internal static string change_password {
             get {
                 return ResourceManager.GetString("change_password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changing date.
+        /// </summary>
+        internal static string changing_date {
+            get {
+                return ResourceManager.GetString("changing_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changing date, please wait.
+        /// </summary>
+        internal static string changing_date_please_wait {
+            get {
+                return ResourceManager.GetString("changing_date_please_wait", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear database.
+        /// </summary>
+        internal static string clear_database {
+            get {
+                return ResourceManager.GetString("clear_database", resourceCulture);
             }
         }
         
@@ -718,6 +763,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want to continue?.
+        /// </summary>
+        internal static string do_you_want_to_continue {
+            get {
+                return ResourceManager.GetString("do_you_want_to_continue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         internal static string edit {
@@ -867,6 +921,15 @@ namespace Resources {
         internal static string field_name {
             get {
                 return ResourceManager.GetString("field_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The first login needs to be connected to the unit..
+        /// </summary>
+        internal static string first_time_login_error {
+            get {
+                return ResourceManager.GetString("first_time_login_error", resourceCulture);
             }
         }
         
@@ -1047,6 +1110,15 @@ namespace Resources {
         internal static string info {
             get {
                 return ResourceManager.GetString("info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inform the retroactive date.
+        /// </summary>
+        internal static string inform_retroactive_date {
+            get {
+                return ResourceManager.GetString("inform_retroactive_date", resourceCulture);
             }
         }
         
@@ -2437,6 +2509,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There still unsynced data in the tablet database.
+        /// </summary>
+        internal static string unsyncronized_data {
+            get {
+                return ResourceManager.GetString("unsyncronized_data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username.
         /// </summary>
         internal static string username {
@@ -2622,6 +2703,15 @@ namespace Resources {
         internal static string yes {
             get {
                 return ResourceManager.GetString("yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are not online..
+        /// </summary>
+        internal static string you_are_not_online {
+            get {
+                return ResourceManager.GetString("you_are_not_online", resourceCulture);
             }
         }
         
