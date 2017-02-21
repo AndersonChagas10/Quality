@@ -570,7 +570,7 @@ namespace SgqSystem.Services
                     int sampleTotal = consolidationLevel2.EvaluatedResult;
 
 
-                    bool hasSampleTotal = Convert.ToBoolean(DefaultValueReturn(arrayHeader[25], "0"));
+                    bool hasSampleTotal = Convert.ToBoolean(DefaultValueReturn(arrayHeader[25], "false"));
                     if (hasSampleTotal == true)
                     {
                         sampleCollect = sampleTotal++;
@@ -2211,10 +2211,10 @@ namespace SgqSystem.Services
 
             string items = "";
 
-            foreach (var entry in resourceSet.Cast<DictionaryEntry>())
-            {
-                items += "<div res='"+entry.Key.ToString() + "'>"+ entry.Value.ToString() + "</div>";
-            } 
+            //foreach (var entry in resourceSet.Cast<DictionaryEntry>())
+            //{
+            //    items += "<div res='"+entry.Key.ToString() + "'>"+ entry.Value.ToString() + "</div>";
+            //} 
             
             return "<div class='Resource hide'>"+ items + "</div>";
         }
@@ -2896,10 +2896,11 @@ namespace SgqSystem.Services
                 if(ParLevel1.HasGroupLevel2 == true)
                 {
                     groupLevel3 = html.accordeon(
-                                                    id: parlevel2.Id.ToString() + "Level2",
+                                                    id: parlevel2.Id.ToString(),
                                                     label: parlevel2.Name,
-                                                    classe: "level2",
-                                                    outerhtml: groupLevel3
+                                                    classe: "level2 row",
+                                                    outerhtml: groupLevel3,
+                                                    accordeonId: parlevel2.Id
 
                                                 );
 

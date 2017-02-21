@@ -233,7 +233,7 @@ namespace SgqSystem.Services
             return "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + ">" + outerhtml + "</li>";
         }
 
-        public string accordeon(string id, string label, string classe = null, string outerhtml = null, bool aberto = false, bootstrapcolor? color = null)
+        public string accordeon(string id, string label, string classe = null, string outerhtml = null, bool aberto = false, bootstrapcolor? color = null, int accordeonId=0)
         {
             string collapseIn = " in";
             if (aberto == false)
@@ -252,7 +252,13 @@ namespace SgqSystem.Services
                 classe = " " + classe;
             }
 
-            return "  <div class=\"panel-group" + classe + "\">                                                                                                          " +
+            string accordeonIdTag = null;
+            if(accordeonId > 0)
+            {
+                accordeonIdTag = " id=\"" + accordeonId + "\"";
+            }
+
+            return "  <div class=\"panel-group" + classe + "\"" + accordeonIdTag + ">                                                                                                          " +
                     "    <div class=\"panel panel-" + colorPanel + "\">                                                                                          " +
                     "      <div class=\"panel-heading\" role=\"tab\" id=\"heading" + id + "\">                                                                                                    " +
                     "        <h4 class=\"panel-title\">                                                                                                     " +
