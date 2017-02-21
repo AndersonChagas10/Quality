@@ -2370,8 +2370,8 @@ namespace SgqSystem.Services
                            "            <a class=\"navbar-brand\" id=\"SGQName\" href=\"#\"><i class=\"fa fa-chevron-left hide iconReturn\" aria-hidden=\"true\"></i> SGQ - Coleta de dados</a>                 " +
                            "            <div class=\"buttonMenu navbar-brand hide\" id=\"btnShowImage\" level01id=\"2\">Show Image</div>                                                                        " +
                            selectUserCompanys(UserSgq_Id, ParCompany_Id) +
-                           "            <span style='color: #ffffff; margin: 8px;' class='periodShift'></span>" +
-                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div><span style='color: #ffffff; margin-top: 14px; margin-right: 8px;' class='atualDate pull-right'></span>" +
+                           "            <span style='color: #ffffff; margin: 14px;' class='period'>Periodo</span><span style='color: #ffffff; margin: 14px;' class='shift'>shift</span> " +
+                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div><span style='color: #ffffff; margin: 14px;' class='atualDate pull-right'></span>" +
                            "        </div>                                                                                                                                                                      " +
                            "    </div>                                                                                                                                                                          " +
                            "</div>                                                                                                                                                                              ";
@@ -3221,7 +3221,8 @@ namespace SgqSystem.Services
                                                                 amostras +
                                                                 painelLevel3HeaderListHtml,
 
-                                        classe: "painel painelLevel03 row");
+                                        classe: "painel painelLevel03 row") +
+                              html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 //Se tiver level3 gera o agrupamento no padrão
                 if (!string.IsNullOrEmpty(parLevel3Group))
@@ -3444,7 +3445,8 @@ namespace SgqSystem.Services
                                                                        amostras +
                                                                        painelLevel3HeaderListHtml,
 
-                                               classe: "painel painelLevel03 row");
+                                               classe: "painel painelLevel03 row") +
+                                html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 //Se tiver level3 gera o agrupamento no padrão
                 if (!string.IsNullOrEmpty(parLevel3Group) && ParLevel1.HasGroupLevel2 != true)
@@ -3584,7 +3586,8 @@ namespace SgqSystem.Services
                 painellevel3 = html.listgroupItem(
                                                             outerhtml: amostras + avaliacoes + totalnc + ncdianteiro + nctraseiro + niveis + painelLevel3HeaderListHtml,
 
-                                               classe: "painel painelLevel03 row");
+                                               classe: "painel painelLevel03 row") +
+                             html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 //Se tiver level3 gera o agrupamento no padrão
                 if (!string.IsNullOrEmpty(parLevel3Group))
@@ -3700,7 +3703,8 @@ namespace SgqSystem.Services
                                                                        amostras +
                                                                        painelLevel3HeaderListHtml,
 
-                                               classe: "painel painelLevel03 row");
+                                               classe: "painel painelLevel03 row") +
+                                                html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 string panelButton = html.listgroupItem(
                                                            outerhtml: accordeonbuttons +
@@ -4132,6 +4136,10 @@ namespace SgqSystem.Services
         public string insertDeviation(string deviations)
         {
 
+            if(string.IsNullOrEmpty(deviations))
+            {
+                return null;
+            }
             //var result = deviation.attr('parcompany_id'); // 0
             //result += ";" + deviation.attr('parlevel1_id'); // 1  
             //result += ";" + deviation.attr('parlevel2_id');// 2
@@ -4173,8 +4181,6 @@ namespace SgqSystem.Services
                         "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', GetDate() , GetDate(), 0, " + deviationMessage + ")";
             }
 
-
-
             //string sql = null;
             //for (int i = 0; i < arrayDeviations.Length; i++)
             //{
@@ -4182,7 +4188,6 @@ namespace SgqSystem.Services
 
 
             //}
-
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -4488,7 +4493,7 @@ namespace SgqSystem.Services
 
             if (!string.IsNullOrEmpty(options))
             {
-                options = "<select id=\"selectParCompany\" style=\"margin-top: 14px; margin-bottom: 14px; margin-left: 8px; margin-right: 8px;\" ParCompany_Id=\"" + ParCompany_Id + "\">" + options + "</select>";
+                options = "<select id=\"selectParCompany\" style=\"margin: 14px;\" ParCompany_Id=\"" + ParCompany_Id + "\">" + options + "</select>";
             }
             return options;
         }
