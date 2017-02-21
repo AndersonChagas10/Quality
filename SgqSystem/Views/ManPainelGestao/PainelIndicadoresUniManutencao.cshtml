@@ -73,7 +73,7 @@
         margin-bottom: 20px;
     }
 
-    #home a:hover{
+    #home a:hover {
         text-decoration: none;
     }
 </style>
@@ -82,9 +82,13 @@
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
     <div id="formBodyContent">
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-        <div id="home" style="float:right;font-size: 40px;">
+        <div id="home" style="float:left; font-size: 40px;">
             <a id="home" class="fa fa-home" aria-hidden="true" href="@urlHome"></a>
         </div>
+
+        <div id="FullScreen" style="float:right; font-size: 20px;">
+            <button type="button" onclick="toggleFullScreen();" class="btn btn-default fa fa-arrows-alt"></button>
+        </div>   
         <div id="title"><h3></h3></div>
         <div id="load"></div>
         <div id="plotPrincipal"></div>
@@ -121,7 +125,7 @@
         function getNome() {
 
             var titulo = "";
-             
+
             var tipoRelatorio = $('#tipoRelatorio :selected').text();
             var regional = $('#RegionalId :selected').text();
             var subregional = "";
@@ -215,9 +219,9 @@
                 //indicador == 'CAPEX' ||
                 dados.indicador == 'Apropriação de O.S' ||
                 dados.indicador == 'CARTA METAS') {
-                
+
                 ordemDoIndicador = "↑";
-                
+
             } else {
                 ordemDoIndicador = "↓";
             }
@@ -248,7 +252,7 @@
                 if (ordemDoIndicador == "↑") {
                     if ((Math.round(desvio[i] * 100) / 100) < 0) {
                         corDoIndicador = '#ff7575';
-                    }else{
+                    } else {
                         corDoIndicador = '#aef2ae';
                     }
                 } else {
@@ -260,7 +264,7 @@
                 }
 
                 vetorTeste[4] = '<div style="padding:0px; background-color:' + corDoIndicador + ';"><i>' + Math.floor(porcDesvio[i] * 100) / 100 + '%</i>' + ordemDoIndicador + '</div>';
-                
+
                 dataTableVetor.push(vetorTeste);
 
                 vetorTeste = [];
@@ -294,10 +298,13 @@
                 loadingRecords: true,
                 destroy: true,
                 info: false,
-               
+
             });
 
             porcDesvioTotal = (SomaVetor(realizado) / SomaVetor(orcado) - 1) * 100
+
+            if (isNaN(porcDesvioTotal))
+                porcDesvioTotal = 0;
 
             //Adiciona "dataTables_scrollFoot" na DataTable
             $(".dataTables_scroll").append('<div class="dataTables_scrollFoot" style="font-size: 11px;><div class="dataTables_scrollFootInner"><table class="display no-footer dataTable" cellspacing="0" role="grid"><thead><tr role="row"><th class="dt-center sorting_disabled" rowspan="1" colspan="1">Total</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">' + formatReal(Math.round(SomaVetor(orcado) * 100) / 100) + '</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">' + formatReal(Math.round(SomaVetor(realizado) * 100) / 100) + '</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1"><i>' + formatReal(Math.round(SomaVetor(desvio) * 100) / 100) + '</i></th><th class="dt-center sorting_disabled" rowspan="1" colspan="1"><i>' + Math.round(porcDesvioTotal * 100) / 100 + '%</i></th></tr></thead></table></div></div>');
@@ -316,58 +323,58 @@
             //if ($('#unitId :selected').text() == null)
             //    indicador = "Todos";
             //else
-                unidade = $('#UnidadeId :selected').text();
+            unidade = $('#UnidadeId :selected').text();
 
-                var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
+            var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
 
-                var corPositivo = "";
-                var corNegativo = "";
+            var corPositivo = "";
+            var corNegativo = "";
 
-                if (
-                indicador == 'Bois Abatidos' ||
-                    //indicador == 'Manutenção R$' ||
-                indicador == 'Eficiên.Programção' ||
-                indicador == 'Apropr Planej...to' ||
-                indicador == 'Scorecard Unidade' ||
-                    //indicador == 'Scorecard Vácuo' ||
-                    //indicador == 'Head Count' ||
-                    //indicador == 'Scorecard Aspersão' ||
-                indicador == 'Scorecard Energia' ||
-                indicador == 'Scorecard Vapor' ||
-                    //indicador == 'Pilar Manutenção' ||
-                    //indicador == 'Devoluções %' ||
-                    //indicador == 'R$/CB Manut' ||
-                    //indicador == 'R$/CB Manut+Utilid' ||
-                    //indicador == 'Sobra de Animais' ||
-                    //indicador == 'R$ Manut Comb.' ||
-                    //indicador == 'Energia R$' ||
-                    //indicador == 'KWh/Boi Proc' ||
-                    //indicador == 'Caldeira R$' ||
-                    //indicador == 'Mcal/Boi Proc' ||
-                indicador == 'Fator de Potência' ||
-                    //indicador == 'Água M³/Boi' ||
-                    //indicador == 'M³ de Lenha' ||
-                indicador == 'Disponibilidade Ab' ||
-                indicador == 'Disponibilidade Des' ||
-                    //indicador == 'KWh' ||
-                    //indicador == 'Parada Abate (min)' ||
-                    //indicador == 'Parada Des. (min)' ||
-                    //indicador == 'OBRAS' ||
-                    //indicador == 'Horas Extras R$' ||
-                    //indicador == 'Horas Extras Nº' ||
-                    //indicador == 'CAPEX' ||
-                indicador == 'Apropriação de O.S' ||
-                indicador == 'CARTA METAS') {
-                    corPositivo = '#ff7575';
-                    corNegativo = '#aef2ae';
-                    legendaPositivo = "Positivo";
-                    legendaNegativo = "Negativo";
-                } else {
-                    corPositivo = '#aef2ae';
-                    corNegativo = '#ff7575';
-                    legendaPositivo = "Negativo";
-                    legendaNegativo = "Positivo";
-                }
+            if (
+            indicador == 'Bois Abatidos' ||
+                //indicador == 'Manutenção R$' ||
+            indicador == 'Eficiên.Programção' ||
+            indicador == 'Apropr Planej...to' ||
+            indicador == 'Scorecard Unidade' ||
+                //indicador == 'Scorecard Vácuo' ||
+                //indicador == 'Head Count' ||
+                //indicador == 'Scorecard Aspersão' ||
+            indicador == 'Scorecard Energia' ||
+            indicador == 'Scorecard Vapor' ||
+                //indicador == 'Pilar Manutenção' ||
+                //indicador == 'Devoluções %' ||
+                //indicador == 'R$/CB Manut' ||
+                //indicador == 'R$/CB Manut+Utilid' ||
+                //indicador == 'Sobra de Animais' ||
+                //indicador == 'R$ Manut Comb.' ||
+                //indicador == 'Energia R$' ||
+                //indicador == 'KWh/Boi Proc' ||
+                //indicador == 'Caldeira R$' ||
+                //indicador == 'Mcal/Boi Proc' ||
+            indicador == 'Fator de Potência' ||
+                //indicador == 'Água M³/Boi' ||
+                //indicador == 'M³ de Lenha' ||
+            indicador == 'Disponibilidade Ab' ||
+            indicador == 'Disponibilidade Des' ||
+                //indicador == 'KWh' ||
+                //indicador == 'Parada Abate (min)' ||
+                //indicador == 'Parada Des. (min)' ||
+                //indicador == 'OBRAS' ||
+                //indicador == 'Horas Extras R$' ||
+                //indicador == 'Horas Extras Nº' ||
+                //indicador == 'CAPEX' ||
+            indicador == 'Apropriação de O.S' ||
+            indicador == 'CARTA METAS') {
+                corPositivo = '#ff7575';
+                corNegativo = '#aef2ae';
+                legendaPositivo = "Positivo";
+                legendaNegativo = "Negativo";
+            } else {
+                corPositivo = '#aef2ae';
+                corNegativo = '#ff7575';
+                legendaPositivo = "Negativo";
+                legendaNegativo = "Positivo";
+            }
 
 
             $('#graficoEvolucao').empty().highcharts({
@@ -434,7 +441,7 @@
                     {
                         type: 'spline',
                         name: 'Orçado',
-                        data: orcado, //Colocar o array de orçado                        
+                        data: orcado, //Colocar o array de orçado
                         color: Highcharts.getOptions().colors[3],
                         marker: {
                             enabled: false
@@ -694,7 +701,7 @@
                     positivo[i] = realizado[i] - orcado[i];
                     negativo[i] = null
                 } else {
-                    negativo[i] = realizado[i] - orcado[i] ;
+                    negativo[i] = realizado[i] - orcado[i];
                     positivo[i] = null
                 }
             }
@@ -728,7 +735,7 @@
 
                 yAxis: {
                     allowDecimals: false,
-                    
+
 
                     title: {
                         text: 'Valor do desvio em milhões'
@@ -754,7 +761,7 @@
                     data: positivo,
                     stack: 'Conta',
                     color: corPositivo
-                    
+
                 }, {
                     name: legendaPositivo,
                     data: negativo,
@@ -804,14 +811,6 @@
         function ValidaDadosParaEnvio() {
             GuardJs.resetForValidation();
 
-            //GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
-            /*Especifico*/
-            //if (!($('#unitId :selected').val() > 0))
-            //{
-            //    GuardJs.exibirMensagemAlerta("Por favor selecione uma unidade.");
-            //    return false;
-            //}
-
             if (!GuardJs.isValid)
                 return !GuardJs.isValid;
             GuardJs.esconderMensagem();
@@ -819,19 +818,19 @@
             return true;
         }
 
-        function GeraVetorDesvio(realizado, orcado) {
+        //function GeraVetorDesvio(realizado, orcado) {
 
-            var positivo = [];
-            var negativo = [];
+        //    var positivo = [];
+        //    var negativo = [];
 
-            for (var i = 0; i < 12; i++) {
+        //    for (var i = 0; i < 12; i++) {
 
-                vetor[i].push(realizado[i] - orcado[i]);
+        //        vetor[i].push(realizado[i] - orcado[i]);
 
-            }
+        //    }
 
-            return vetor;
-        }
+        //    return vetor;
+        //}
 
         $(document).ready(function () {
 
@@ -843,8 +842,8 @@
                 } else {
                     $('#UnidadeId').prop('disabled', false);
                 }
-            });          
-                
+            });
+
             $("#btnSend").click(function (e) {
                 if ($("#showIndicadoresManutencao input:radio:checked").val() != undefined)
                     Send();
@@ -857,7 +856,7 @@
             formControl.showFiltroManutencao();
             formControl.showRegionaisManutencao();
             formControl.showSubRegionaisManutencao();
-            
+
 
             $("#indicadores label").on("click", function () {
                 Send();
@@ -888,17 +887,54 @@
                     $("#UnidadeId").val($("#UnidadeId").find("option:visible:first").val());
 
                 }
-                               
+
 
             }).change();
 
             $('#UnidadeId').change(function () {
 
-                if ($("#showIndicadoresManutencao input:radio:checked").val() != undefined) {
+                if (ConfirmaEnvio()) {
                     Send();
                 }
             });
-   
+
+            $('#tipoRelatorio').change(function () {
+                if (ConfirmaEnvio()) {
+                    Send();
+                }
+
+            });
+
+            $('#yearId').change(function () {
+                if (ConfirmaEnvio()) {
+                    Send();
+                }
+            });
+
+            $('#mouthId').change(function () {
+                if (ConfirmaEnvio()) {
+                    Send();
+                }
+            });
+
+            $('#RegionalId').change(function () {
+                if (ConfirmaEnvio()) {
+                    Send();
+                }
+            });
+
+            $('#SubRegionalId').change(function () {
+                if (ConfirmaEnvio()) {
+                    Send();
+                }
+            });
+
+            $('#UnidadeId').change(function () {
+                if (ConfirmaEnvio()) {
+                    Send();
+                }
+            });
+
         });
 
         var ajaxCount = 0;
@@ -946,6 +982,36 @@
             return p[0].split("").reverse().reduce(function (acc, num, i, orig) {
                 return num == "-" ? acc : num + (i && !(i % 3) ? "." : "") + acc;
             }, "") + "," + p[1];
+        }
+
+        function ConfirmaEnvio() {
+
+            var tipo = $("#tipoRelatorio :selected").val();
+            var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
+            var unidade = $('#UnidadeId :selected').text();
+            var regional = $('#RegionalId :selected').val();
+            var subRegional = $('#SubRegionalId :selected').text();
+            var ano = $('#yearId :selected').val();
+            var mes = $('#mouthId :selected').val();
+            var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
+
+            switch (tipo) {
+                case "Por Unidade":
+                    if (tipo != undefined && indicador != undefined && unidade != "" && regional != undefined && subRegional != "" && ano != undefined && mes != undefined && indicador != undefined) {
+                        return true;
+                    } else
+                        return false;
+                    break;
+                case "Por Regional":
+                    if (tipo != undefined && indicador != undefined && regional != undefined && subRegional != "" && ano != undefined && mes != undefined && indicador != undefined) {
+                        return true;
+                    } else
+                        return false;
+                    break;
+                default:
+                    alert("Tipo de relatório inválido!");
+                    break;
+            }
         }
 
     </script>
