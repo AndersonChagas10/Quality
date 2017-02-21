@@ -1168,6 +1168,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Has Group on Level2.
+        /// </summary>
+        internal static string has_group_level2 {
+            get {
+                return ResourceManager.GetString("has_group_level2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Has groups on level 3.
         /// </summary>
         internal static string has_group_on_level3 {
