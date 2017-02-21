@@ -82,9 +82,15 @@
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
     <div id="formBodyContent">
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-        <div id="home" style="float:right;font-size: 40px;">
+        <div id="home" style="float:left; font-size: 40px;">
             <a id="home" class="fa fa-home" aria-hidden="true" href="@urlHome"></a>
         </div>
+        @*<br />
+        <br />
+        <br />*@
+        <div id="FullScreen" style="float:right; font-size: 20px;">
+            <button type="button" onclick="toggleFullScreen();" class="btn btn-default fa fa-arrows-alt"></button>
+        </div>   
         <div id="title"><h3></h3></div>
         <div id="load"></div>
         <div id="plotPrincipal"></div>
