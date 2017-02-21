@@ -1,4 +1,5 @@
 ﻿using PlanoAcaoCore;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace PlanoDeAcaoMVC.Controllers
@@ -16,7 +17,9 @@ namespace PlanoDeAcaoMVC.Controllers
             ViewBag.TemaAssunto = Pa_TemaAssunto.Listar();
             ViewBag.Indicadores = Pa_Indicadores.Listar();
             ViewBag.Iniciativa = Pa_Iniciativas.Listar();
-            ViewBag.ObjetivoGerencial = Pa_ObjetivoGerais.Listar();
+            ViewBag.ObjetivoGerencial = Pa_ObjetivoGeral.Listar();
+            ViewBag.Objetivo = Pa_Objetivo.Listar();
+            ViewBag.Dimensao = Pa_Dimensao.Listar();
         }
 
         // GET: Pa_Planejamento
@@ -42,6 +45,34 @@ namespace PlanoDeAcaoMVC.Controllers
         public ActionResult Buscar()
         {
             return PartialView("Buscar");
+        }
+
+        [HttpPost]
+        public ActionResult Filtrar(Pa_Planejamento filtro)
+        {
+            var lista = Pa_Planejamento.Listar();
+
+            if (filtro.Diretoria_Id > 0)
+                lista =  lista.Where(r => r.Diretoria_Id == filtro.Diretoria_Id).ToList();
+
+            if (filtro.Gerencia_Id > 0)
+                lista = lista.Where(r => r.Gerencia_Id == filtro.Gerencia_Id).ToList();
+
+            if (filtro.Coordenacao_Id > 0)
+                lista = lista.Where(r => r.Coordenacao_Id == filtro.Coordenacao_Id).ToList();
+
+            if (filtro.TemaAssunto_Id > 0)
+                lista = lista.Where(r => r.TemaAssunto_Id == filtro.TemaAssunto_Id).ToList();
+
+            if (filtro.ObjetivoGerencial_Id > 0)
+                lista = lista.Where(r => r.ObjetivoGerencial_Id == filtro.ObjetivoGerencial_Id).ToList();
+
+            if (filtro.Indicadores_Id > 0)
+                lista = lista.Where(r => r.Indicadores_Id == filtro.Indicadores_Id).ToList();
+
+            ViewBag.Filtradas = lista;
+
+            return PartialView("Filtrar");
         }
     }
 }

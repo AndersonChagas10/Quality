@@ -28,7 +28,15 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             planejamento.AddOrUpdate();
             return planejamento;
         }
-       
-      
+
+        [HttpPost]
+        [Route("GetPlanejamentoAcao")]
+        public IEnumerable<Pa_Planejamento> GetPlanejamentoAcao()
+        {
+            var retorno = Pa_Planejamento.GetPlanejamentoAcao();
+            return retorno;
+        }
+        
+
     }
 }

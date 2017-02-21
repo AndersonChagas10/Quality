@@ -1,148 +1,165 @@
 ﻿@model PlanoAcaoCore.Pa_Planejamento
 
-<div>
+    <table class="nowrap .col-md-6 .col-md-offset-3" style="width: 100%;">
+        <tbody>
+            @*<tr>
+                <td style="width: 43%;">
+                    @Html.DisplayNameFor(model => model.AddDate)
+                </td>
+                <td style="width: 43%;">
+                    @Html.DisplayFor(model => model.AddDate)
+                </td>
+                <td style="width: 16%;"></td>
+            </tr>
+            <tr>
+                <td style="width: 43%;">
+                    @Html.DisplayNameFor(model => model.AlterDate)
+                </td>
+                <td style="width: 43%;">
+                    @Html.DisplayFor(model => model.AlterDate)
+                </td>
+                <td style="width: 16%;"></td>
+            </tr>*@
+            <tr>
+                <td style="width: 43%;">
+                    @Html.DisplayNameFor(model => model.Diretoria_Id)
+                </td>
+                <td style="width: 43%;">
+                    @Html.DisplayFor(model => model.Diretoria)
+                </td>
+                <td style="width: 16%;"></td>
+            </tr>
+            <tr>
+                <td >
+                    @Html.DisplayNameFor(model => model.Gerencia_Id)
+                </td>
+                <td >
+                    @Html.DisplayFor(model => model.Gerencia)
+                </td>
+                <td ></td>
+            </tr>
+            <tr>
+                <td >
+                    @Html.DisplayNameFor(model => model.Coordenacao_Id)
+                </td>
+                <td >
+                    @Html.DisplayFor(model => model.Coordenacao)
+                </td>
+                <td ></td>
+            </tr>
+            <tr>
+                <td >
+                    @Html.DisplayNameFor(model => model.Missao_Id)
+                </td>
+                <td >
+                    @Html.DisplayFor(model => model.Missao)
+                </td>
+                <td ></td>
+            </tr>
+            <tr>
+                <td >
+                    @Html.DisplayNameFor(model => model.Visao_Id)
+                </td>
+                <td >
+                    @Html.DisplayFor(model => model.Visao)
+                </td>
+                <td ></td>
+            </tr>
+            <tr>
+                <td >
+                    @Html.DisplayNameFor(model => model.TemaAssunto_Id)
+                </td>
+                <td >
+                    @Html.DisplayFor(model => model.TemaAssunto)
+                </td>
+                <td ></td>
+            </tr>
+            <tr>
+                <td >
+                    @Html.DisplayNameFor(model => model.Indicadores_Id)
+                </td>
+                <td >
+                    @Html.DisplayFor(model => model.Indicadores)
+                </td>
+                <td ></td>
+            </tr>
+            <tr>
+                <td >
+                    @Html.DisplayNameFor(model => model.Iniciativa_Id)
+                </td>
+                <td >
+                    @Html.DisplayFor(model => model.Iniciativa)
+                </td>
+                <td ></td>
+            </tr>
+            <tr>
+                <td >
+                    @Html.DisplayNameFor(model => model.ObjetivoGerencial_Id)
+                </td>
+                <td >
+                    @Html.DisplayFor(model => model.ObjetivoGerencial)
+                </td>
+                <td ></td>
+            </tr>
+            <tr>
+                <td >
+                    @Html.DisplayNameFor(model => model.Dimensao)
+                </td>
+                <td >
+                    @Html.DisplayFor(model => model.Dimensao)
+                </td>
+                <td ></td>
+            </tr>
+            <tr>
+                <td >
+                    @Html.DisplayNameFor(model => model.Objetivo)
+                </td>
+                <td >
+                    @Html.DisplayFor(model => model.Objetivo)
+                </td>
+                <td ></td>
+            </tr>
+            <tr>
+                <td >
+                    @Html.DisplayNameFor(model => model.ValorDe)
+                </td>
+                <td >
+                    @Html.DisplayFor(model => model.ValorDe)
+                </td>
+                <td ></td>
+            </tr>
+            <tr>
+                <td >
+                    @Html.DisplayNameFor(model => model.ValorPara)
+                </td>
+                <td >
+                    @Html.DisplayFor(model => model.ValorPara)
+                </td>
+                <td ></td>
+            </tr>
+            <tr>
+                <td >
+                    @Html.DisplayNameFor(model => model.DataInicio)
+                </td>
+                <td >
+                    @Html.DisplayFor(model => model.DataInicio)
+                </td>
+                <td ></td>
+            </tr>
+            <tr>
+                <td >
+                    @Html.DisplayNameFor(model => model.DataFim)
+                </td>
+                <td >
+                    @Html.DisplayFor(model => model.DataFim)
+                </td>
+                <td ></td>
+            </tr>
+        </tbody>
+    </table>
+
     
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.AddDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AddDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AlterDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AlterDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Diretoria_Id)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Diretoria_Id)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Gerencia_Id)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Gerencia_Id)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Coordenacao_Id)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Coordenacao_Id)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Missao_Id)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Missao_Id)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Visao_Id)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Visao_Id)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TemaAssunto_Id)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TemaAssunto_Id)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Indicadores_Id)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Indicadores_Id)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Iniciativa_Id)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Iniciativa_Id)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ObjetivoGerencial_Id)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ObjetivoGerencial_Id)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Dimensao)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Dimensao)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Objetivo)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Objetivo)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ValorDe)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ValorDe)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ValorPara)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ValorPara)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DataInicio)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DataInicio)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DataFim)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DataFim)
-        </dd>
-
-    </dl>
-</div>
 @*<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>*@
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>*@
