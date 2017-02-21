@@ -2202,6 +2202,10 @@ namespace SgqSystem.Services
         }
         public string GetResource()
         {
+            //setup temporário
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+
             System.Reflection.Assembly assembly = this.GetType().Assembly;
 
             System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
@@ -2211,10 +2215,10 @@ namespace SgqSystem.Services
 
             string items = "";
 
-            //foreach (var entry in resourceSet.Cast<DictionaryEntry>())
-            //{
-            //    items += "<div res='"+entry.Key.ToString() + "'>"+ entry.Value.ToString() + "</div>";
-            //} 
+            foreach (var entry in resourceSet.Cast<DictionaryEntry>())
+            {
+                items += "<div res='"+entry.Key.ToString() + "'>"+ entry.Value.ToString() + "</div>";
+            } 
             
             return "<div class='Resource hide'>"+ items + "</div>";
         }
@@ -2365,9 +2369,9 @@ namespace SgqSystem.Services
         public string navBar(int UserSgq_Id, int ParCompany_Id)
         {
             string navBar = "<div class=\"navbar navbar-inverse navbar-fixed-top\">                                                                                                                             " +
-                           "    <div class=\"container\">                                                                                                                                                       " +
+                           "    <div class=\"container\" style=\"padding: 0px !important;\">                                                                                                                                                       " +
                            "        <div class=\"navbar-header\" style=\"width: 100%\">                                                                                                                         " +
-                           "            <a class=\"navbar-brand\" id=\"SGQName\" href=\"#\"><i class=\"fa fa-chevron-left hide iconReturn\" aria-hidden=\"true\"></i> SGQ - Coleta de dados</a>                 " +
+                           "            <a class=\"navbar-brand\" id=\"SGQName\" href=\"#\"><i class=\"fa fa-chevron-left hide iconReturn\" style=\"margin-left: 8px; font-size: 24px;\" aria-hidden=\"true\"></i> SGQ </a>                 " +
                            "            <div class=\"buttonMenu navbar-brand hide\" id=\"btnShowImage\" level01id=\"2\">Show Image</div>                                                                        " +
                            selectUserCompanys(UserSgq_Id, ParCompany_Id) +
                            "            <span style='color: #ffffff; margin: 14px;' class='period'>Periodo</span><span style='color: #ffffff; margin: 14px;' class='shift'>shift</span> " +
