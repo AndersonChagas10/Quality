@@ -3,6 +3,8 @@
     ViewBag.Title = "Manutenção";
     var url1 = Url.Action("Index", "manDataCollectITs");
     var urlHome = Url.Action("Index", "ManPainelGestao");
+    var urlGrupoPorPacote = Url.Action("getSelectGraficoRegionalGrupoPorPacote", "api/Manutencao");
+    var UrlDespRegGrup = Url.Action("getSelectGrafDespRegGrup", "api/Manutencao");
 }
 
 <style>
@@ -27,7 +29,7 @@
             <div id="LinkHome">
                 <a class="fa fa-home" aria-hidden="true" href="@urlHome"></a>
             </div>
-            
+
             <!-- BEGIN CONTENT BODY -->
             <div>
                 <a id="linkGambiara" href="@url1">Coleta de Indicadores Técnicos</a>
@@ -113,6 +115,8 @@
 
                                             var regionalSelecionada = '';
                                             var unidadeSelecionada = '';
+                                            var urlGrupoPorPacote = '@Html.Raw(@urlGrupoPorPacote)';
+                                            var urlDespRegGrup = '@Html.Raw(@UrlDespRegGrup)';
 
                                             function buscaCor(posicao) {
 
@@ -723,6 +727,8 @@
                                                                         }
                                                                         setTimeout(resizeHighcharts(), 200);
                                                                         MountGraficoDespesaTodasRegionais(this.category);
+                                                                        MountGraficoDespesaTodasRegionaisGrupoPorPacote(this.category);
+                                                                        MountGrafDespRegGrup(this.category);
                                                                     }
                                                                 }
                                                             }
@@ -757,6 +763,8 @@
                                                                         }
                                                                         setTimeout(resizeHighcharts(), 200);
                                                                         MountGraficoDespesaTodasRegionais(this.category);
+                                                                        MountGraficoDespesaTodasRegionaisGrupoPorPacote(this.category);
+                                                                        MountGrafDespRegGrup(this.category);
                                                                     }
                                                                 }
                                                             }
@@ -782,7 +790,9 @@
                                                                         $('#GraficoDespesaTodasRegionais').empty();
                                                                         $('#GraficoDespesaTodasRegionaisPorPacote').empty();
                                                                         $('#GrafDespReg').empty();
-                                                                        MountGraficoDespesaTodasRegionais(this.category)
+                                                                        MountGraficoDespesaTodasRegionais(this.category);
+                                                                        MountGraficoDespesaTodasRegionaisGrupoPorPacote(this.category);
+                                                                        MountGrafDespRegGrup(this.category);
                                                                     }
                                                                 }
                                                             }
@@ -869,15 +879,79 @@
                                                         }
                                                     }
 
-                                                    GraficoDespesaTodasRegionaisPorPacote(regional, xOrcada, xRealizada, mediaDesvio, media);
+                                                    var text = "Sub-Regional";
+
+                                                    GraficoDespesaTodasRegionaisPorPacote(regional, xOrcada, xRealizada, mediaDesvio, media, text);
 
                                                     $btn.button('reset');
 
                                                 });
                                             }
 
+                                            //chamada ajax para montar terceiro grafico (regional)
+                                            function MountGraficoDespesaTodasRegionaisGrupoPorPacote(regional) {
+
+                                                var obj = {
+                                                    'dataIni': enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2),
+                                                    'dataFim': enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2),
+                                                    'meses': getManutencaoMes(),
+                                                    'anos': getManutencaoAno(),
+                                                    'regFiltro': getManutencaoRegional(),
+                                                    'regional': regional 
+                                                };
+
+                                                $.post(urlGrupoPorPacote, obj, function (lista) {
+
+                                                    var regional = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        regional.push(entry.Regional);
+                                                    });
+
+                                                    var xOrcada = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        xOrcada.push(entry.Orçada);
+                                                    });
+
+                                                    var xRealizada = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        xRealizada.push(entry.Realizada);
+                                                    });
+
+                                                    var mediaDesvio = [];
+                                                    var desvio = 0
+                                                    var desvio1 = 0
+                                                    var desvio2 = 0
+
+                                                    for (i = 0; i < xOrcada.length; i++) {
+                                                        mediaDesvio[i] = Math.round(((xRealizada[i] - xOrcada[i]) / xOrcada[i] * 100)); // (real - orcado) / orçado * 100
+                                                        desvio1 += xOrcada[i]
+                                                        desvio2 += xOrcada[i]
+                                                        //mediaDesvio[i] = mediaDesvio[i]
+                                                    }
+                                                    var media = (desvio2 / desvio1 - 1) * 100;
+
+                                                    for (i = 0; i < xOrcada.length; i++) {
+                                                        if (xOrcada[i] < xRealizada[i]) {
+                                                            xRealizada[i] = { y: xRealizada[i], color: '#ff7575' };  //fica vermelho que a despesa for maior que o orçado
+
+                                                        } else {
+                                                            xRealizada[i] = { y: xRealizada[i], color: '#aef2ae' }; //fica verde que a despesa for menor que o orçado
+                                                        }
+                                                    }
+
+                                                    var text = "Regional";
+
+                                                    GraficoDespesaTodasRegionaisPorPacote(regional, xOrcada, xRealizada, mediaDesvio, media, text);
+
+                                                    $btn.button('reset');
+                                                });
+                                            }
+
                                             //locação terceiro gráfico
-                                            function GraficoDespesaTodasRegionaisPorPacote(name, x1, x2, mediaDesvio, media) {
+                                            function GraficoDespesaTodasRegionaisPorPacote(name, x1, x2, mediaDesvio, media, text) {
                                                 $(function () {
 
 
@@ -949,7 +1023,7 @@
                                                         },
 
                                                         title: {
-                                                            text: 'Despesas por Sub-Regional por Pacote',
+                                                            text: 'Despesas por ' + text + ' por Pacote',
                                                             style: {
                                                                 fontSize: 'small'
                                                             }
@@ -1372,6 +1446,68 @@
                                             //ajax - monta GRÁFICO DE DESPESA POR REGIONAL
                                             function MountGrafDespReg(regional) {
                                                 $.post('../api/Manutencao/getSelectGrafDespReg/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + escape(regional.replace(/[/]/g, '|')) + '/' + getManutencaoRegional() + '/', function (lista) {
+
+                                                    var titleLine = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        titleLine.push(entry.Regional);
+                                                    });
+
+                                                    var xOrçada = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        xOrçada.push(entry.Orçada);
+                                                    });
+
+                                                    var xRealizada = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        xRealizada.push(entry.Realizada);
+                                                    });
+
+                                                    var mediaDesvio = [];
+                                                    var desvio = 0
+                                                    var desvio1 = 0
+                                                    var desvio2 = 0
+
+                                                    for (i = 0; i < xOrçada.length; i++) {
+                                                        mediaDesvio[i] = Math.round(((xRealizada[i] - xOrçada[i]) / xOrçada[i] * 100)); // (real - orcado) / orçado * 100
+                                                        desvio1 += xOrçada[i]
+                                                        desvio2 += xRealizada[i]
+                                                        //mediaDesvio[i] = mediaDesvio[i]
+                                                    }
+                                                    var media = (desvio2 / desvio1 - 1) * 100;
+
+                                                    for (i = 0; i < xOrçada.length; i++) {
+                                                        if (xOrçada[i] < xRealizada[i]) {
+                                                            xRealizada[i] = { y: xRealizada[i], color: '#ff7575' };  //fica vermelho que a despesa for maior que o orçado
+
+                                                        } else {
+                                                            xRealizada[i] = { y: xRealizada[i], color: '#aef2ae' }; //fica verde que a despesa for menor que o orçado
+                                                        }
+                                                    }
+
+                                                    GrafDespReg(titleLine, xOrçada, xRealizada, mediaDesvio, media, regional);
+
+                                                    $btn.button('reset');
+
+                                                });
+                                            }
+
+                                            //ajax - monta GRÁFICO DE DESPESA POR REGIONAL GRUPO
+                                            function MountGrafDespRegGrup(regional) {
+
+                                                var obj = {
+
+                                                    'dataIni': enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2),
+                                                    'dataFim': enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2),
+                                                    'meses': getManutencaoMes(),
+                                                    'anos': getManutencaoAno(),
+                                                    'regFiltro': getManutencaoRegional(),
+                                                    'regional': regional
+                                                };
+
+                                                $.post(urlDespRegGrup, obj, function (lista){ 
 
                                                     var titleLine = [];
 
@@ -2589,6 +2725,7 @@
                                             function TabelaITPorUni() {
 
                                             }
+
                                             //chamada ajax unit gráfico
                                             function MountRegionalChart(u, conta) {
                                                 var tipo = u.series.name;
