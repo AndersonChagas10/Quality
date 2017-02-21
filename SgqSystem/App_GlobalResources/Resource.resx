@@ -1152,4 +1152,7 @@
   <data name="verifying_parameters" xml:space="preserve">
     <value>We are verifying the laptop parameters</value>
   </data>
+  <data name="has_group_level2" xml:space="preserve">
+    <value>Has Group on Level2</value>
+  </data>
 </root>
