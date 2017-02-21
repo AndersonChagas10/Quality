@@ -3225,8 +3225,9 @@ namespace SgqSystem.Services
                                                                 amostras +
                                                                 painelLevel3HeaderListHtml,
 
-                                        classe: "painel painelLevel03 row") +
-                              html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
+                                        classe: "painel painelLevel03 row");
+                              //          +
+                              //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 //Se tiver level3 gera o agrupamento no padrão
                 if (!string.IsNullOrEmpty(parLevel3Group))
@@ -3449,8 +3450,9 @@ namespace SgqSystem.Services
                                                                        amostras +
                                                                        painelLevel3HeaderListHtml,
 
-                                               classe: "painel painelLevel03 row") +
-                                html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
+                                               classe: "painel painelLevel03 row");
+                //+
+                //                html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 //Se tiver level3 gera o agrupamento no padrão
                 if (!string.IsNullOrEmpty(parLevel3Group) && ParLevel1.HasGroupLevel2 != true)
@@ -3590,8 +3592,10 @@ namespace SgqSystem.Services
                 painellevel3 = html.listgroupItem(
                                                             outerhtml: amostras + avaliacoes + totalnc + ncdianteiro + nctraseiro + niveis + painelLevel3HeaderListHtml,
 
-                                               classe: "painel painelLevel03 row") +
-                             html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
+                                               classe: "painel painelLevel03 row");
+                //+
+                             //                  +
+                             //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 //Se tiver level3 gera o agrupamento no padrão
                 if (!string.IsNullOrEmpty(parLevel3Group))
@@ -3707,8 +3711,9 @@ namespace SgqSystem.Services
                                                                        amostras +
                                                                        painelLevel3HeaderListHtml,
 
-                                               classe: "painel painelLevel03 row") +
-                                                html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
+                                               classe: "painel painelLevel03 row");
+                //+
+                //                                html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 string panelButton = html.listgroupItem(
                                                            outerhtml: accordeonbuttons +
