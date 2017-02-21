@@ -124,7 +124,7 @@
     <value>Validando...</value>
   </data>
   <data name="corrective_action_reports" xml:space="preserve">
-    <value>Relatórios de Ação Corretiva</value>
+    <value>Relatórios de Ação Corretiva </value>
   </data>
   <data name="data_collection_reports" xml:space="preserve">
     <value>Relatórios de Coleta de Dados</value>
@@ -848,5 +848,308 @@
   </data>
   <data name="role_sgq" xml:space="preserve">
     <value>Regra SGQ</value>
+  </data>
+  <data name="change_password" xml:space="preserve">
+    <value>Mudar a senha</value>
+  </data>
+  <data name="do_not_change_password" xml:space="preserve">
+    <value>Não mudar a senha</value>
+  </data>
+  <data name="fullname" xml:space="preserve">
+    <value>Nome Completo</value>
+  </data>
+  <data name="fullname_required" xml:space="preserve">
+    <value>Preenchimento do nome completo é obrigatório</value>
+  </data>
+  <data name="invalid_password" xml:space="preserve">
+    <value>A senha preenchida é inválida</value>
+  </data>
+  <data name="password_required" xml:space="preserve">
+    <value>Preenchimento da senha é obrigatória</value>
+  </data>
+  <data name="username_required" xml:space="preserve">
+    <value>Preenchimento do nome  do usuário é obrigatório</value>
+  </data>
+  <data name="user_save_success" xml:space="preserve">
+    <value>Usuário salvo com sucesso</value>
+  </data>
+  <data name="enter" xml:space="preserve">
+    <value>Entrar</value>
+  </data>
+  <data name="entering" xml:space="preserve">
+    <value>Entrando</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>Erro</value>
+  </data>
+  <data name="invalid_user_or_password" xml:space="preserve">
+    <value>Usuário ou senha inválidos</value>
+  </data>
+  <data name="loading_indicators" xml:space="preserve">
+    <value>Carregando usuários</value>
+  </data>
+  <data name="recording_information" xml:space="preserve">
+    <value>Gravando informações</value>
+  </data>
+  <data name="verifying_keys" xml:space="preserve">
+    <value>Verificando chaves</value>
+  </data>
+  <data name="verifying_users" xml:space="preserve">
+    <value>Verificando usuários</value>
+  </data>
+  <data name="version" xml:space="preserve">
+    <value>Versão</value>
+  </data>
+  <data name="alter_collection_date" xml:space="preserve">
+    <value>Altere a data de coleta</value>
+  </data>
+  <data name="attention_lose_information" xml:space="preserve">
+    <value>Atenção! Se você continuar, você perderá informações.</value>
+  </data>
+  <data name="change_date_collection_need_to_be_online" xml:space="preserve">
+    <value>Para mudar a data de coleta, você precisa estar on-line</value>
+  </data>
+  <data name="changing_date" xml:space="preserve">
+    <value>Alterando Data</value>
+  </data>
+  <data name="changing_date_please_wait" xml:space="preserve">
+    <value>Estamos alterando a data de coleta, por favor aguarde</value>
+  </data>
+  <data name="clear_database" xml:space="preserve">
+    <value>Limpar banco de dados</value>
+  </data>
+  <data name="consolidated_results" xml:space="preserve">
+    <value>Resultados consolidados</value>
+  </data>
+  <data name="do_you_want_to_continue" xml:space="preserve">
+    <value>Deseja continuar?</value>
+  </data>
+  <data name="everything_synchronized_sucessfully" xml:space="preserve">
+    <value>Todos os dados foram sincronizados com sucesso</value>
+  </data>
+  <data name="first_time_login_error" xml:space="preserve">
+    <value>O primeiro login precisa ser conectado à unidade.</value>
+  </data>
+  <data name="indicators_error_try_again" xml:space="preserve">
+    <value>Não foi possível carregar os indicadores, tente novamente</value>
+  </data>
+  <data name="inform_retroactive_date" xml:space="preserve">
+    <value>Informa a data retroativa</value>
+  </data>
+  <data name="keys_error_try_again" xml:space="preserve">
+    <value>Não foi possível carregar as chaves, tente novamente</value>
+  </data>
+  <data name="login_error_try_again" xml:space="preserve">
+    <value>Não foi possível efetuar o login, tente novamente.</value>
+  </data>
+  <data name="not_connected_to_network" xml:space="preserve">
+    <value>Você parece não estar conectado a rede da JBS. Peça ajuda ao pessoal de TI</value>
+  </data>
+  <data name="no_data_to_send" xml:space="preserve">
+    <value>Sem dados para enviar</value>
+  </data>
+  <data name="no_volumn_level" xml:space="preserve">
+    <value>Não há volume de coleta nesse indicador!</value>
+  </data>
+  <data name="online_to_login" xml:space="preserve">
+    <value>Você precisa estar on-line para efetuar o login.</value>
+  </data>
+  <data name="preparing_the_data_to_send" xml:space="preserve">
+    <value>Preparando os dados para o envio</value>
+  </data>
+  <data name="ready" xml:space="preserve">
+    <value>Pronto</value>
+  </data>
+  <data name="receiving_data" xml:space="preserve">
+    <value>Recebendo dados</value>
+  </data>
+  <data name="server_not_found" xml:space="preserve">
+    <value>Servidor não encontrado</value>
+  </data>
+  <data name="synchronization_error" xml:space="preserve">
+    <value>Erro de sincronização</value>
+  </data>
+  <data name="synchronize_data_before_change_unit" xml:space="preserve">
+    <value>Tem dados de outra unidade ainda não sincronizados. Sincronize antes de trocar de unidade.</value>
+  </data>
+  <data name="synchronizing" xml:space="preserve">
+    <value>Sincronizando</value>
+  </data>
+  <data name="try_again_contact_support" xml:space="preserve">
+    <value>Tente novamente daqui a pouco. Se o erro persistir, entre em contato com o suporte.</value>
+  </data>
+  <data name="unit_change" xml:space="preserve">
+    <value>Troca de unidade</value>
+  </data>
+  <data name="unsyncronized_data" xml:space="preserve">
+    <value>There's still unsync data</value>
+  </data>
+  <data name="user_information_error_try_again" xml:space="preserve">
+    <value>Não foi possível verificar as informações do usuário, tente novamente</value>
+  </data>
+  <data name="user_load_error_try_again" xml:space="preserve">
+    <value>Não foi possível carregar os usuário, tente novamente</value>
+  </data>
+  <data name="verifying_if_theres_data_to_receive" xml:space="preserve">
+    <value>Verificando se existem dados para receber</value>
+  </data>
+  <data name="verifying_the_collected_data" xml:space="preserve">
+    <value>Verificando os dados coletados</value>
+  </data>
+  <data name="warning" xml:space="preserve">
+    <value>Alerta</value>
+  </data>
+  <data name="you_are_not_online" xml:space="preserve">
+    <value>Você não está online.</value>
+  </data>
+  <data name="action_not_allowed" xml:space="preserve">
+    <value>Ação não permitida</value>
+  </data>
+  <data name="ca_pending" xml:space="preserve">
+    <value>Você não pode mudar de avaliação enquando houver ações corretivas pendentes na avaliação</value>
+  </data>
+  <data name="inactive" xml:space="preserve">
+    <value>Inativo</value>
+  </data>
+  <data name="inactive_for" xml:space="preserve">
+    <value>Você ficou inativo por</value>
+  </data>
+  <data name="logging_in" xml:space="preserve">
+    <value>Entrando</value>
+  </data>
+  <data name="login_again" xml:space="preserve">
+    <value>minutos. Faça o login novamente.</value>
+  </data>
+  <data name="mornitorings_pedding" xml:space="preserve">
+    <value>Você não pode mudar de avaliação enquando houver monitoramentos na avaliação</value>
+  </data>
+  <data name="not_finished" xml:space="preserve">
+    <value>não encerrada</value>
+  </data>
+  <data name="number_of_animals" xml:space="preserve">
+    <value>O número de animais mal avaliados precisa ser menor ou igual ao número de animais avaliados.</value>
+  </data>
+  <data name="required_fields_open_screen" xml:space="preserve">
+    <value>Existem campos de preenchimento obrigatórios neste monitoramento. Já deixamos a tela aberta para você preenche-los corretamente</value>
+  </data>
+  <data name="required_fields_unfilled" xml:space="preserve">
+    <value>Campos obrigatórios não preenchidos</value>
+  </data>
+  <data name="required_items_not_selected" xml:space="preserve">
+    <value>Um dos items obrigatórios não foram selecionados</value>
+  </data>
+  <data name="sequential_must_be_filled" xml:space="preserve">
+    <value>O sequencial precisa ser preenchido</value>
+  </data>
+  <data name="side_must_be_filled" xml:space="preserve">
+    <value>A banda precisa ser preenchida.</value>
+  </data>
+  <data name="the_number_parts_filled" xml:space="preserve">
+    <value>O número de peças avaliadas precisa ser preenchido.</value>
+  </data>
+  <data name="total_evaluated_parts_exceed" xml:space="preserve">
+    <value>O total de peças avaliadas excede a quantidade de amostras.</value>
+  </data>
+  <data name="trying_again" xml:space="preserve">
+    <value>Tentando novamente</value>
+  </data>
+  <data name="you_need_to_be_connected" xml:space="preserve">
+    <value>Você precisa estar on-line para efetuar o login</value>
+  </data>
+  <data name="allowed" xml:space="preserve">
+    <value>permitidas/permitidos</value>
+  </data>
+  <data name="change_unit_must_be_online" xml:space="preserve">
+    <value>Ops! Você não está online', 'Para alterar a unidade você precisa estar online'</value>
+  </data>
+  <data name="changing_unit_preferences" xml:space="preserve">
+    <value>Alterando unidade", "Estamos alterando as preferências de unidade, aguarde um momento...</value>
+  </data>
+  <data name="collection_dropped" xml:space="preserve">
+    <value>Verificamos que a coleta que está fazendo já foi lançada. Esta coleta será descartada</value>
+  </data>
+  <data name="day_target_exceed" xml:space="preserve">
+    <value>Foi excedida a meta dia</value>
+  </data>
+  <data name="duplicated_collection" xml:space="preserve">
+    <value>Coleta Duplicada</value>
+  </data>
+  <data name="error_recovery_sequential" xml:space="preserve">
+    <value>Problema na recuperação do próximo sequencial, deseja continuar com o próximo ou aguardar o automático</value>
+  </data>
+  <data name="evaluation_target" xml:space="preserve">
+    <value>e a meta avaliação</value>
+  </data>
+  <data name="fail_description_is_empty" xml:space="preserve">
+    <value>A falha da descrição está vazia.</value>
+  </data>
+  <data name="fill_header_fields" xml:space="preserve">
+    <value>Preencha os campos de cabeçalho que são obrigatórios</value>
+  </data>
+  <data name="fill_the_corrective_action" xml:space="preserve">
+    <value>Preencha a ação corretiva primeiro.</value>
+  </data>
+  <data name="fired" xml:space="preserve">
+    <value>Disparado</value>
+  </data>
+  <data name="first_synchronization_of_the_day" xml:space="preserve">
+    <value>Primeiro sincronismo do dia</value>
+  </data>
+  <data name="immediate_corrective_action_is_empty" xml:space="preserve">
+    <value>A ação corretiva imediata está vazia.</value>
+  </data>
+  <data name="loading_next_sequential" xml:space="preserve">
+    <value>Carregando o próximo sequencial</value>
+  </data>
+  <data name="nc_of" xml:space="preserve">
+    <value>NC de</value>
+  </data>
+  <data name="nc_target_exceed" xml:space="preserve">
+    <value>Foi excedida a meta de NC</value>
+  </data>
+  <data name="problem_occur" xml:space="preserve">
+    <value>Ocorreu um problema</value>
+  </data>
+  <data name="sequential_side_already_filled" xml:space="preserve">
+    <value>O sequencial dessa banda já foi preenchido.</value>
+  </data>
+  <data name="some_problems_occur" xml:space="preserve">
+    <value>Alguns problemas ocorreram</value>
+  </data>
+  <data name="supervisor_manager_director" xml:space="preserve">
+    <value>O Supervisor, o Gerente e o Diretor da área serão notificados</value>
+  </data>
+  <data name="supervisor_manager_notification" xml:space="preserve">
+    <value>O Supervisor e o Gerente da área serão notificados.</value>
+  </data>
+  <data name="supervisor_notification" xml:space="preserve">
+    <value>O Supervisor da área será notificado</value>
+  </data>
+  <data name="target_exceed" xml:space="preserve">
+    <value>Foi excedida a meta</value>
+  </data>
+  <data name="tolerance_target_exceed" xml:space="preserve">
+    <value>Foi excedida a meta tolerância</value>
+  </data>
+  <data name="unit_changed_login_again" xml:space="preserve">
+    <value>Unidade Alterada', 'A unidade foi alterada, efetue o login novamente para atualizar os indicadores'</value>
+  </data>
+  <data name="update_parameters_must_be_online" xml:space="preserve">
+    <value>Para atualizar os parâmetros, você precisa estar on-line</value>
+  </data>
+  <data name="updating_parameters" xml:space="preserve">
+    <value>Atualizando Parâmetros</value>
+  </data>
+  <data name="user_doesnt_belong_unit" xml:space="preserve">
+    <value>Este usuário não pertence a esta unidade</value>
+  </data>
+  <data name="user_has_no_permission_fill_form" xml:space="preserve">
+    <value>O usuário não tem permissão para assinar este formulário.</value>
+  </data>
+  <data name="verifying_parameters" xml:space="preserve">
+    <value>Estamos  verificando os parâmetros do notebook</value>
+  </data>
+  <data name="has_group_level2" xml:space="preserve">
+    <value>Agrupamento no Monitoramento</value>
   </data>
 </root>

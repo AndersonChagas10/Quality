@@ -16,6 +16,8 @@ using System.Net;
 using SgqSystem.ViewModels;
 using System.Threading;
 using System.Transactions;
+using System.Globalization;
+using System.Collections;
 
 namespace SgqSystem.Services
 {
@@ -568,7 +570,7 @@ namespace SgqSystem.Services
                     int sampleTotal = consolidationLevel2.EvaluatedResult;
 
 
-                    bool hasSampleTotal = Convert.ToBoolean(DefaultValueReturn(arrayHeader[25], "0"));
+                    bool hasSampleTotal = Convert.ToBoolean(DefaultValueReturn(arrayHeader[25], "false"));
                     if (hasSampleTotal == true)
                     {
                         sampleCollect = sampleTotal++;
@@ -2172,7 +2174,9 @@ namespace SgqSystem.Services
 
             string login = GetLoginAPP();
 
-            return login;
+            string resource = GetResource();
+
+            return login + resource;
         }
         [WebMethod]
         public string getAPPLevels(int UserSgq_Id, int ParCompany_Id, DateTime Date)
@@ -2190,9 +2194,35 @@ namespace SgqSystem.Services
                               "<div class=\"VerificacaoTipificacao hide\"></div>" +
                               "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
 
+            string resource = GetResource();
+
             return APPMain +
-                   supports;
+                   supports +
+                   resource;
         }
+        public string GetResource()
+        {
+            //setup temporário
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+
+            System.Reflection.Assembly assembly = this.GetType().Assembly;
+
+            System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
+
+            var resourceSet = resourceManager.GetResourceSet(
+                Thread.CurrentThread.CurrentUICulture, true, false);
+
+            string items = "";
+
+            foreach (var entry in resourceSet.Cast<DictionaryEntry>())
+            {
+                items += "<div res='"+entry.Key.ToString() + "'>"+ entry.Value.ToString() + "</div>";
+            } 
+            
+            return "<div class='Resource hide'>"+ items + "</div>";
+        }
+
         public int getEvaluate(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluatePadrao)
         {
             int evaluate = 1;
@@ -2338,16 +2368,17 @@ namespace SgqSystem.Services
 
         public string navBar(int UserSgq_Id, int ParCompany_Id)
         {
-            string navBar = "<div class=\"navbar navbar-inverse navbar-fixed-top\">                                                                                                                         " +
-                           "    <div class=\"container\">                                                                                                                                                  " +
-                           "        <div class=\"navbar-header\" style=\"width: 100%\">                                                                                                                    " +
-                           "            <a class=\"navbar-brand\" id=\"SGQName\" href=\"#\"><i class=\"fa fa-chevron-left hide iconReturn\" aria-hidden=\"true\"></i> SGQ - Coleta de dados</a>                  " +
-                           "            <div class=\"buttonMenu navbar-brand hide\" id=\"btnShowImage\" level01id=\"2\">Show Image</div>                                                                   " +
-                                        selectUserCompanys(UserSgq_Id, ParCompany_Id) +
-                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div>          " +
-                           "        </div>                                                                                                                                                                 " +
-                           "    </div>                                                                                                                                                                     " +
-                           "</div>                                                                                                                                                                         ";
+            string navBar = "<div class=\"navbar navbar-inverse navbar-fixed-top\">                                                                                                                             " +
+                           "    <div class=\"container\" style=\"padding: 0px !important;\">                                                                                                                                                       " +
+                           "        <div class=\"navbar-header\" style=\"width: 100%\">                                                                                                                         " +
+                           "            <a class=\"navbar-brand\" id=\"SGQName\" href=\"#\"><i class=\"fa fa-chevron-left hide iconReturn\" style=\"margin-left: 8px; font-size: 24px;\" aria-hidden=\"true\"></i> SGQ </a>                 " +
+                           "            <div class=\"buttonMenu navbar-brand hide\" id=\"btnShowImage\" level01id=\"2\">Show Image</div>                                                                        " +
+                           selectUserCompanys(UserSgq_Id, ParCompany_Id) +
+                           "            <span style='color: #ffffff; margin: 8px;' class='periodShift'></span>" +
+                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div><span style='color: #ffffff; margin-top: 14px; margin-right: 8px;' class='atualDate pull-right'></span>" +
+                           "        </div>                                                                                                                                                                      " +
+                           "    </div>                                                                                                                                                                          " +
+                           "</div>  ";
 
             return navBar;
         }
@@ -2379,6 +2410,10 @@ namespace SgqSystem.Services
                                           "</div>-->" +
                                           "<div class=\"modal-body\">" +
                                                "<h2>Ação Corretiva</h2>" +
+
+                                               "<button class=\"btn btn-danger modal-close-ca\">Fechar</button>" +
+                                               "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">Enviar</button>" +
+
                                           "<div id=\"messageAlert\" class=\"alert alert-info hide\" role=\"alert\">" +
                                           "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>" +
                                           "</div>" +
@@ -2447,8 +2482,7 @@ namespace SgqSystem.Services
                                                         //"</button>" +
                                                         "</span>" +
 
-                                                        "<button class=\"btn btn-danger modal-close-ca\">Fechar</button>" +
-                                                        "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">Enviar</button>" +
+                                                        
                                                     "</div>" +
                                                 "</div>" +
                                                 "</div>";
@@ -2727,12 +2761,26 @@ namespace SgqSystem.Services
             var ParSampleCompany = ParSampleDB.getSample(ParLevel1: ParLevel1,
                                                         ParCompany_Id: ParCompany_Id);
 
+            //Variaveis para avaliação de grupos
+            int evaluateGroup = 0;
+            int sampleGroup = 0;
+
+            string groupLevel3Level2 = null;
+            string painelLevel3 = null;
+
             //Enquando houver lista de level2
             foreach (var parlevel2 in parlevel02List)
             {
                 //Verifica se pega avaliações e amostras padrão ou da company
                 int evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
                 int sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
+
+                //Se agrupar level2 com level3 pego o valor da primeira avaliação e amostra
+                if(ParLevel1.HasGroupLevel2 == true & evaluateGroup == 0 )
+                {
+                    evaluateGroup = evaluate;
+                    sampleGroup = sample;
+                }
 
                 //Colocar função de gerar cabeçalhos por selectbox
                 //Monta os cabecalhos
@@ -2848,10 +2896,92 @@ namespace SgqSystem.Services
                                                                html.div(classe: "level2Debug")
                                                     );
 
+
                 //Gera monitoramento do level3
-                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect);
-                level3Group += groupLevel3;
+                string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect, ref painelLevel3);
+
+                if(ParLevel1.HasGroupLevel2 == true)
+                {
+                    groupLevel3 = html.accordeon(
+                                                    id: parlevel2.Id.ToString(),
+                                                    label: parlevel2.Name,
+                                                    classe: "level2 row",
+                                                    outerhtml: groupLevel3,
+                                                    accordeonId: parlevel2.Id
+
+                                                );
+
+                    groupLevel3Level2 += groupLevel3;
+                }
+                else
+                {
+                    level3Group += groupLevel3;
+                }
+               
             }
+
+            //Se tiver agrupamentos no ParLevel1
+            if(ParLevel1.HasGroupLevel2 == true)
+            {
+                string parLevel3Group = null;
+
+
+                string accordeonbuttons = null;
+                
+                    accordeonbuttons = "<button class=\"btn btn-default button-expand marginRight10\"><i class=\"fa fa-expand\" aria-hidden=\"true\"></i> Mostrar Todos</button>" +
+                                       "<button class=\"btn btn-default button-collapse\"><i class=\"fa fa-compress\" aria-hidden=\"true\"></i> Fechar Todos</button>";
+                
+
+                //painellevel3 = html.listgroupItem(
+                //                                            outerhtml: avaliacoes +
+                //                                                       amostras +
+                //                                                       painelLevel3HeaderListHtml,
+
+                //                               classe: "painel painelLevel03 row");
+
+                string panelButton = html.listgroupItem(
+                                                           outerhtml: accordeonbuttons +
+                                                                      "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
+
+                                                                      "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>",
+                                                           classe: "painel painelLevel02 row"
+                                                        );
+
+
+                if (!string.IsNullOrEmpty(groupLevel3Level2))
+                {
+                    parLevel3Group = html.div(
+                                               classe: "level3Group",
+                                               tags: "level1idgroup=\"" + ParLevel1.Id + "\"",
+
+                                               outerhtml: painelLevel3 + panelButton +
+                                                          groupLevel3Level2
+                                             );
+
+                    level3Group += parLevel3Group;
+                }
+
+                headerList = null;
+                string level2 = html.level2(id: "0",
+                                            label: ParLevel1.Name,
+                                            classe: "group col-xs-12",
+                                            evaluate: evaluateGroup,
+                                            sample: sampleGroup,
+                                            HasSampleTotal: false,
+                                            IsEmptyLevel3: false,
+                                            level1Group_Id: ParLevel1.Id);
+
+                //Gera linha do Level2
+                ParLevel2List = html.listgroupItem(
+                                                    id: ParLevel1.Id.ToString(),
+                                                    classe: "row",
+                                                    outerhtml: level2 +
+                                                               null +
+                                                               null +
+                                                               html.div(classe: "level2Debug")
+                                                    );
+            }
+           
             //aqui tem que fazer a pesquisa se tem itens sao do level1 ex: cca,htp
             //quando tiver cabecalhos tem que replicar no level1
 
@@ -2985,7 +3115,7 @@ namespace SgqSystem.Services
         /// <param name="ParLevel1"></param>
         /// <param name="ParLevel2"></param>
         /// <returns></returns>
-        public string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id, DateTime dateCollect)
+        public string GetLevel03(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id, DateTime dateCollect, ref string painellevel3)
         {
             var html = new Html();
 
@@ -3093,12 +3223,14 @@ namespace SgqSystem.Services
 
                 //string HeaderLevel02 = null;
 
-                string painellevel3 = html.listgroupItem(
-                                                            outerhtml: avaliacoes +
-                                                                       amostras +
-                                                                       painelLevel3HeaderListHtml,
+                painellevel3 = html.listgroupItem(
+                                                     outerhtml: avaliacoes +
+                                                                amostras +
+                                                                painelLevel3HeaderListHtml,
 
-                                               classe: "painel painelLevel03 row");
+                                        classe: "painel painelLevel03 row");
+                              //          +
+                              //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 //Se tiver level3 gera o agrupamento no padrão
                 if (!string.IsNullOrEmpty(parLevel3Group))
@@ -3316,15 +3448,17 @@ namespace SgqSystem.Services
                 //Painel
                 //O interessante é um painel só mas no momento está um painel para cada level3group
 
-                string painellevel3 = html.listgroupItem(
+                painellevel3 = html.listgroupItem(
                                                             outerhtml: avaliacoes +
                                                                        amostras +
                                                                        painelLevel3HeaderListHtml,
 
                                                classe: "painel painelLevel03 row");
+                //+
+                //                html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 //Se tiver level3 gera o agrupamento no padrão
-                if (!string.IsNullOrEmpty(parLevel3Group))
+                if (!string.IsNullOrEmpty(parLevel3Group) && ParLevel1.HasGroupLevel2 != true)
                 {
                     parLevel3Group = html.div(
                                                classe: "level3Group VF",
@@ -3458,10 +3592,13 @@ namespace SgqSystem.Services
                                     style: "padding-right: 4px !important; padding-left: 4px !important;",
                                     classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2 hide");
 
-                string painellevel3 = html.listgroupItem(
+                painellevel3 = html.listgroupItem(
                                                             outerhtml: amostras + avaliacoes + totalnc + ncdianteiro + nctraseiro + niveis + painelLevel3HeaderListHtml,
 
                                                classe: "painel painelLevel03 row");
+                //+
+                             //                  +
+                             //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 //Se tiver level3 gera o agrupamento no padrão
                 if (!string.IsNullOrEmpty(parLevel3Group))
@@ -3572,23 +3709,25 @@ namespace SgqSystem.Services
                                        "<button class=\"btn btn-default button-collapse\"><i class=\"fa fa-compress\" aria-hidden=\"true\"></i> Fechar Todos</button>";
                 }
 
-                string painellevel3 = html.listgroupItem(
+                painellevel3 = html.listgroupItem(
                                                             outerhtml: avaliacoes +
                                                                        amostras +
                                                                        painelLevel3HeaderListHtml,
 
                                                classe: "painel painelLevel03 row");
+                //+
+                //                                html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 string panelButton = html.listgroupItem(
                                                            outerhtml: accordeonbuttons +
-                                                                      "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
+                                                                      "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right btnAllNA'> Todos N/A </button>" +
 
-                                                                      "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>",
+                                                                      "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right  btnAllNC' style='margin-right: 10px;'> Clicar em Todos </button>",
                                                            classe: "painel painelLevel02 row"
                                                         );
 
                 //Se tiver level3 gera o agrupamento no padrão
-                if (!string.IsNullOrEmpty(parLevel3Group))
+                if (!string.IsNullOrEmpty(parLevel3Group) && ParLevel1.HasGroupLevel2 != true)
                 {
                     parLevel3Group = html.div(
                                                classe: "level3Group",
@@ -3618,6 +3757,20 @@ namespace SgqSystem.Services
             {
                 classInput = " boolean";
                 input = html.campoBinario(parLevel3.Id.ToString(), parLevel3.ParLevel3BoolTrue_Name, parLevel3.ParLevel3BoolFalse_Name);
+            }
+            else if (parLevel3.ParLevel3InputType_Id == 2)
+            {
+                classInput = " defects";
+                labels = html.div(
+                                           outerhtml: "<b>Max: </b>" + parLevel3.IntervalMax.ToString("G29"),
+                                           classe: "font10",
+                                           style: "font-size: 11px; margin-top:7px;"
+                                       );
+
+                input = html.campoNumeroDeDefeitos(id: parLevel3.Id.ToString(),
+                                                intervalMin: parLevel3.IntervalMin,
+                                                intervalMax: parLevel3.IntervalMax,
+                                                unitName: parLevel3.ParMeasurementUnit_Name);
             }
             else if (parLevel3.ParLevel3InputType_Id == 3)
             {
@@ -3673,13 +3826,13 @@ namespace SgqSystem.Services
         {
             var html = new Html();
             string input = null;
-            classInput = " interval";
+            classInput = " defects";
             labels = html.div(
                                        classe: "font10",
                                        style: "font-size: 11px; margin-top:7px;"
                                    );
 
-            input = html.campoIntervalo(id: parLevel3.Id.ToString(),
+            input = html.campoNumeroDeDefeitos(id: parLevel3.Id.ToString(),
                                             intervalMin: parLevel3.IntervalMin,
                                             intervalMax: parLevel3.IntervalMax,
                                             unitName: parLevel3.ParMeasurementUnit_Name);
@@ -3832,6 +3985,10 @@ namespace SgqSystem.Services
             }
             #endregion
 
+            //string selectUrlPreffix = html.option("http://mtzsvmqsc/SgqGlobal", "JBS") +
+            //                          html.option("http://192.168.25.200/SgqMaster", "GRT") +
+            //                          html.option("http://localhost:8090/SgqSystem", "GCN");
+
             string formOuterHtml = html.head(Html.h.h2, outerhtml: "Entre com seu Login") +
                                   selectUnit +
                                   selectShit +
@@ -3855,7 +4012,12 @@ namespace SgqSystem.Services
                                   html.div(id: "messageSuccess",
                                            classe: "alert alert-success hide",
                                            tags: "role=\"alert\"",
-                                           outerhtml: html.span(id: "mensagemSucesso", classe: "icon-ok-circle"));
+                                           outerhtml: html.span(id: "mensagemSucesso", classe: "icon-ok-circle")) + 
+                                           
+                                 // html.select(selectUrlPreffix, "cb_UrlPreffix", "\" onChange='abreOApp(this.value);' \"") +
+                                 
+                                 "";
+
             string form = html.form(
                                     outerhtml: formOuterHtml
                                     , classe: "form-signin");
@@ -3988,6 +4150,10 @@ namespace SgqSystem.Services
         public string insertDeviation(string deviations)
         {
 
+            if(string.IsNullOrEmpty(deviations))
+            {
+                return null;
+            }
             //var result = deviation.attr('parcompany_id'); // 0
             //result += ";" + deviation.attr('parlevel1_id'); // 1  
             //result += ";" + deviation.attr('parlevel2_id');// 2
@@ -4029,8 +4195,6 @@ namespace SgqSystem.Services
                         "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', GetDate() , GetDate(), 0, " + deviationMessage + ")";
             }
 
-
-
             //string sql = null;
             //for (int i = 0; i < arrayDeviations.Length; i++)
             //{
@@ -4038,7 +4202,6 @@ namespace SgqSystem.Services
 
 
             //}
-
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
