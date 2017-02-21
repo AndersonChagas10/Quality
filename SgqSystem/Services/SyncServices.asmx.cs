@@ -2374,11 +2374,11 @@ namespace SgqSystem.Services
                            "            <a class=\"navbar-brand\" id=\"SGQName\" href=\"#\"><i class=\"fa fa-chevron-left hide iconReturn\" style=\"margin-left: 8px; font-size: 24px;\" aria-hidden=\"true\"></i> SGQ </a>                 " +
                            "            <div class=\"buttonMenu navbar-brand hide\" id=\"btnShowImage\" level01id=\"2\">Show Image</div>                                                                        " +
                            selectUserCompanys(UserSgq_Id, ParCompany_Id) +
-                           "            <span style='color: #ffffff; margin: 14px;' class='period'>Periodo</span><span style='color: #ffffff; margin: 14px;' class='shift'>shift</span> " +
-                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div><span style='color: #ffffff; margin: 14px;' class='atualDate pull-right'></span>" +
+                           "            <span style='color: #ffffff; margin: 8px;' class='periodShift'></span>" +
+                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div><span style='color: #ffffff; margin-top: 14px; margin-right: 8px;' class='atualDate pull-right'></span>" +
                            "        </div>                                                                                                                                                                      " +
                            "    </div>                                                                                                                                                                          " +
-                           "</div>                                                                                                                                                                              ";
+                           "</div>  ";
 
             return navBar;
         }
@@ -2410,6 +2410,10 @@ namespace SgqSystem.Services
                                           "</div>-->" +
                                           "<div class=\"modal-body\">" +
                                                "<h2>Ação Corretiva</h2>" +
+
+                                               "<button class=\"btn btn-danger modal-close-ca\">Fechar</button>" +
+                                               "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">Enviar</button>" +
+
                                           "<div id=\"messageAlert\" class=\"alert alert-info hide\" role=\"alert\">" +
                                           "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>" +
                                           "</div>" +
@@ -2478,8 +2482,7 @@ namespace SgqSystem.Services
                                                         //"</button>" +
                                                         "</span>" +
 
-                                                        "<button class=\"btn btn-danger modal-close-ca\">Fechar</button>" +
-                                                        "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">Enviar</button>" +
+                                                        
                                                     "</div>" +
                                                 "</div>" +
                                                 "</div>";
@@ -3982,9 +3985,9 @@ namespace SgqSystem.Services
             }
             #endregion
 
-            string selectUrlPreffix = html.option("http://mtzsvmqsc/SgqGlobal", "JBS") +
-                                      html.option("http://192.168.25.200/SgqMaster", "GRT") +
-                                      html.option("http://localhost:8090/SgqSystem", "GCN");
+            //string selectUrlPreffix = html.option("http://mtzsvmqsc/SgqGlobal", "JBS") +
+            //                          html.option("http://192.168.25.200/SgqMaster", "GRT") +
+            //                          html.option("http://localhost:8090/SgqSystem", "GCN");
 
             string formOuterHtml = html.head(Html.h.h2, outerhtml: "Entre com seu Login") +
                                   selectUnit +
@@ -4011,7 +4014,9 @@ namespace SgqSystem.Services
                                            tags: "role=\"alert\"",
                                            outerhtml: html.span(id: "mensagemSucesso", classe: "icon-ok-circle")) + 
                                            
-                                  html.select(selectUrlPreffix, "cb_UrlPreffix", "\" onChange='abreOApp(this.value);' \"");
+                                 // html.select(selectUrlPreffix, "cb_UrlPreffix", "\" onChange='abreOApp(this.value);' \"") +
+                                 
+                                 "";
 
             string form = html.form(
                                     outerhtml: formOuterHtml

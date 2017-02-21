@@ -1149,4 +1149,7 @@
   <data name="verifying_parameters" xml:space="preserve">
     <value>Estamos  verificando os parâmetros do notebook</value>
   </data>
+  <data name="has_group_level2" xml:space="preserve">
+    <value>Agrupamento no Monitoramento</value>
+  </data>
 </root>
