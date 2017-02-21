@@ -2374,11 +2374,11 @@ namespace SgqSystem.Services
                            "            <a class=\"navbar-brand\" id=\"SGQName\" href=\"#\"><i class=\"fa fa-chevron-left hide iconReturn\" style=\"margin-left: 8px; font-size: 24px;\" aria-hidden=\"true\"></i> SGQ </a>                 " +
                            "            <div class=\"buttonMenu navbar-brand hide\" id=\"btnShowImage\" level01id=\"2\">Show Image</div>                                                                        " +
                            selectUserCompanys(UserSgq_Id, ParCompany_Id) +
-                           "            <span style='color: #ffffff; margin: 14px;' class='period'>Periodo</span><span style='color: #ffffff; margin: 14px;' class='shift'>shift</span> " +
-                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div><span style='color: #ffffff; margin: 14px;' class='atualDate pull-right'></span>" +
+                           "            <span style='color: #ffffff; margin: 8px;' class='periodShift'></span>" +
+                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div><span style='color: #ffffff; margin-top: 14px; margin-right: 8px;' class='atualDate pull-right'></span>" +
                            "        </div>                                                                                                                                                                      " +
                            "    </div>                                                                                                                                                                          " +
-                           "</div>                                                                                                                                                                              ";
+                           "</div>  ";
 
             return navBar;
         }
