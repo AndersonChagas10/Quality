@@ -2410,6 +2410,10 @@ namespace SgqSystem.Services
                                           "</div>-->" +
                                           "<div class=\"modal-body\">" +
                                                "<h2>Ação Corretiva</h2>" +
+
+                                               "<button class=\"btn btn-danger modal-close-ca\">Fechar</button>" +
+                                               "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">Enviar</button>" +
+
                                           "<div id=\"messageAlert\" class=\"alert alert-info hide\" role=\"alert\">" +
                                           "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>" +
                                           "</div>" +
@@ -2478,8 +2482,7 @@ namespace SgqSystem.Services
                                                         //"</button>" +
                                                         "</span>" +
 
-                                                        "<button class=\"btn btn-danger modal-close-ca\">Fechar</button>" +
-                                                        "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">Enviar</button>" +
+                                                        
                                                     "</div>" +
                                                 "</div>" +
                                                 "</div>";
@@ -3982,9 +3985,9 @@ namespace SgqSystem.Services
             }
             #endregion
 
-            string selectUrlPreffix = html.option("http://mtzsvmqsc/SgqGlobal", "JBS") +
-                                      html.option("http://192.168.25.200/SgqMaster", "GRT") +
-                                      html.option("http://localhost:8090/SgqSystem", "GCN");
+            //string selectUrlPreffix = html.option("http://mtzsvmqsc/SgqGlobal", "JBS") +
+            //                          html.option("http://192.168.25.200/SgqMaster", "GRT") +
+            //                          html.option("http://localhost:8090/SgqSystem", "GCN");
 
             string formOuterHtml = html.head(Html.h.h2, outerhtml: "Entre com seu Login") +
                                   selectUnit +
@@ -4011,7 +4014,9 @@ namespace SgqSystem.Services
                                            tags: "role=\"alert\"",
                                            outerhtml: html.span(id: "mensagemSucesso", classe: "icon-ok-circle")) + 
                                            
-                                  html.select(selectUrlPreffix, "cb_UrlPreffix", "\" onChange='abreOApp(this.value);' \"");
+                                 // html.select(selectUrlPreffix, "cb_UrlPreffix", "\" onChange='abreOApp(this.value);' \"") +
+                                 
+                                 "";
 
             string form = html.form(
                                     outerhtml: formOuterHtml
