@@ -16,7 +16,6 @@ namespace Helper
             _filter = this.Roles;
         }
 
-
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
 

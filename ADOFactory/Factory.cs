@@ -12,8 +12,6 @@ namespace ADOFactory
         public SqlConnection connection;
         private SqlConnectionStringBuilder connectionString;
 
-       
-
         /// <summary>
         /// 
         /// </summary>
@@ -124,9 +122,16 @@ namespace ADOFactory
 
                         for (int i = 0; i < reader.FieldCount; i++)
                         {
-                            if (!reader.IsDBNull(i))
-                                if (instance.GetType().GetProperty(reader.GetName(i)) != null)
-                                    instance.GetType().GetProperty(reader.GetName(i)).SetValue(instance, reader[i]);
+                            try
+                            {
+                                if (!reader.IsDBNull(i))
+                                    if (instance.GetType().GetProperty(reader.GetName(i)) != null)
+                                        instance.GetType().GetProperty(reader.GetName(i)).SetValue(instance, reader[i]);
+                            }
+                            catch (Exception e)
+                            {
+                                throw e;
+                            }
                         }
                         listReturn.Add((T)instance);
                     }

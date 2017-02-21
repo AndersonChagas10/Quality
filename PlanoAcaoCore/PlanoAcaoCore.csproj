@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,19 +42,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Pa_Acao.cs" />
+    <Compile Include="Acao\Pa_Acao.cs" />
+    <Compile Include="Acao\Pa_CausaGenerica.cs" />
+    <Compile Include="Acao\Pa_ContramedidaGenerica.cs" />
+    <Compile Include="Acao\Pa_GrupoCausa.cs" />
+    <Compile Include="Acao\Pa_Quem.cs" />
     <Compile Include="Interfaces\ICrudPa.cs" />
+    <Compile Include="Acao\Pa_AcaoXQuem.cs" />
     <Compile Include="Pa_BaseObject.cs" />
-    <Compile Include="Pa_Coordenacao.cs" />
-    <Compile Include="Pa_Diretoria.cs" />
-    <Compile Include="Pa_Gerencia.cs" />
-    <Compile Include="Pa_Missao.cs" />
-    <Compile Include="Pa_ObjetivoGerais.cs" />
-    <Compile Include="Pa_Iniciativas.cs" />
-    <Compile Include="Pa_Indicadores.cs" />
-    <Compile Include="Pa_Planejamento.cs" />
-    <Compile Include="Pa_TemaAssunto.cs" />
-    <Compile Include="Pa_Visao.cs" />
+    <Compile Include="Acao\Pa_CausaMedidasXAcao.cs" />
+    <Compile Include="Acao\Pa_Departamento.cs" />
+    <Compile Include="Acao\Pa_Unidade.cs" />
+    <Compile Include="Planejamento\Pa_Coordenacao.cs" />
+    <Compile Include="Planejamento\Pa_Dimensao.cs" />
+    <Compile Include="Planejamento\Pa_Diretoria.cs" />
+    <Compile Include="Planejamento\Pa_Gerencia.cs" />
+    <Compile Include="Planejamento\Pa_Missao.cs" />
+    <Compile Include="Planejamento\Pa_Objetivo.cs" />
+    <Compile Include="Planejamento\Pa_ObjetivoGeral.cs" />
+    <Compile Include="Planejamento\Pa_Iniciativas.cs" />
+    <Compile Include="Planejamento\Pa_Indicadores.cs" />
+    <Compile Include="Planejamento\Pa_Planejamento.cs" />
+    <Compile Include="Planejamento\Pa_Status.cs" />
+    <Compile Include="Planejamento\Pa_TemaAssunto.cs" />
+    <Compile Include="Planejamento\Pa_Visao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
