@@ -37,22 +37,6 @@ namespace SgqSystem.Controllers.Api.Manutencao
                 realizado = item.realizado;
             }
 
-            //var query2 = "SELECT " +
-            //                "Convert(varchar(7), ISNULL(Base_dateRef, cast(Base_dateAdd as varchar(10))), 120) Data " +
-            //                ",SUM(ISNULL(CASE WHEN " + realizado + " = '0' THEN 0.00 ELSE " + realizado + " END,0)) realizado " +
-            //                ",SUM(ISNULL(CASE WHEN " + orcado + " = '0' THEN 0.00 ELSE " + orcado + " END,0)) orcado " +
-            //                "FROM MANCOLETADADOS " +
-            //                //"WHERE 1 = 1" +
-            //                "WHERE ISNULL(YEAR(BASE_DATEREF),YEAR(BASE_DATEADD)) = " + obj.ano + "";
-            //if (obj.unidade != null)
-            //{
-            //    query2 += " and Base_parCompany_id = " + obj.unidade + " ";
-            //}
-            //query2 += "GROUP BY " +
-            //"Convert(varchar(7), ISNULL(Base_dateRef, cast(Base_dateAdd as varchar(10))), 120)";
-
-            //"HAVING SUM(Rendimento_Real)IS NOT NULL OR SUM(Rendimento_Meta) IS NOT NULL";
-
             var query2 = "SELECT " +
                          "BASONA.Dado " +
                         ",BASONA.Realizado " +
