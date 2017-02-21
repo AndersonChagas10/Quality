@@ -879,7 +879,9 @@
                                                         }
                                                     }
 
-                                                    GraficoDespesaTodasRegionaisPorPacote(regional, xOrcada, xRealizada, mediaDesvio, media);
+                                                    var text = "Sub-Regional";
+
+                                                    GraficoDespesaTodasRegionaisPorPacote(regional, xOrcada, xRealizada, mediaDesvio, media, text);
 
                                                     $btn.button('reset');
 
@@ -940,14 +942,16 @@
                                                         }
                                                     }
 
-                                                    GraficoDespesaTodasRegionaisPorPacote(regional, xOrcada, xRealizada, mediaDesvio, media);
+                                                    var text = "Regional";
+
+                                                    GraficoDespesaTodasRegionaisPorPacote(regional, xOrcada, xRealizada, mediaDesvio, media, text);
 
                                                     $btn.button('reset');
                                                 });
                                             }
 
                                             //locação terceiro gráfico
-                                            function GraficoDespesaTodasRegionaisPorPacote(name, x1, x2, mediaDesvio, media) {
+                                            function GraficoDespesaTodasRegionaisPorPacote(name, x1, x2, mediaDesvio, media, text) {
                                                 $(function () {
 
 
@@ -1019,7 +1023,7 @@
                                                         },
 
                                                         title: {
-                                                            text: 'Despesas por Sub-Regional por Pacote',
+                                                            text: 'Despesas por ' + text + ' por Pacote',
                                                             style: {
                                                                 fontSize: 'small'
                                                             }
