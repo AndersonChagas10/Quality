@@ -13,7 +13,6 @@ namespace SgqSystem.Controllers.Api
     public class ManutencaoController : ApiController
     {
 
-
         public string queryReg(string regional)
         {
             var regionais = new List<string>(regional.Split(','));
@@ -126,6 +125,51 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
+        [Route("getSelectGraficoRegionalGrupoPorPacote")]
+        public List<Reg> getSelectGraficoRegionalGrupoPorPacote(Ajax obj)
+        {
+            var lista = new List<Reg>();
+
+            if (obj.anos == "null") obj.anos = "";
+            if (obj.meses == "null") obj.meses = "";
+
+            string regionaisFiltradas = "";
+
+            if (obj.regFiltro != null)
+            {
+
+                var regionalFiltDecode = HttpUtility.UrlDecode(obj.regFiltro, System.Text.Encoding.Default);
+                regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
+
+                if (regionalFiltDecode != "null") regionaisFiltradas = queryReg(regionalFiltDecode);
+
+            }
+
+            using (var db = new SgqDbDevEntities())
+            {
+                var sql = "";
+
+                sql = "select concat(EmpresaRegionalGrupo, ' <br><br> ', pacote) as Regional, ";
+                sql += "ROUND(SUM(DespesaOrcada) / 1000, 0) AS Orçada, ";
+                sql += "ROUND(SUM(DespesaRealizada) / 1000, 0) AS Realizada, ";
+                sql += "CASE WHEN SUM(DespesaOrcada) = 0 THEN 0 ELSE ROUND((SUM(DespesaRealizada) / SUM(DespesaOrcada) - 1) * 100, 0) END AS DesvioPorc, ";
+                sql += "ROUND(SUM(DespesaRealizada) / 1000 - SUM(DespesaOrcada) / 1000, 0) AS DesvioReal ";
+                sql += "from Manutencao ";
+                sql += "WHERE 1=1 ";
+                sql += "and MesAno BETWEEN \'" + obj.dataIni + "\' AND \'" + obj.dataFim + "\' ";
+                sql += "AND TipoInformacao = 'CustoFixo' ";
+                sql += "AND EmpresaRegionalGrupo = '" + obj.regional + "' ";
+                sql += regionaisFiltradas;
+                sql += "group by EmpresaRegionalGrupo, pacote ";
+                sql += "order by EmpresaRegionalGrupo, pacote ";
+
+                lista = db.Database.SqlQuery<Reg>(sql).ToList();
+            }
+
+            return lista;
+        }
+
+        [HttpPost]
         [Route("getSelectEmpresaRegionalList")]
         public List<Reg> getSelectEmpresaRegionalList()
         {
@@ -140,7 +184,6 @@ namespace SgqSystem.Controllers.Api
 
             return lista;
         }
-
 
         [HttpPost]
         [Route("getSelectGrafico0/{dataIni}/{dataFim}/{meses}/{anos}")]
@@ -227,6 +270,51 @@ namespace SgqSystem.Controllers.Api
 
             return lista;
         }
+
+        [HttpPost]
+        [Route("getSelectGrafDespRegGrup")]
+        public List<Reg> getSelectGrafDespRegGrup(Ajax obj)
+        {
+            if (obj.anos == "null") obj.anos = "";
+            if (obj.meses == "null") obj.meses = "";
+
+            var regionalDecode = HttpUtility.UrlDecode(obj.regional, System.Text.Encoding.Default);
+            //regionalDecode = regionalDecode.Replace("|", "/");
+
+            var lista = new List<Reg>();
+
+            //var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
+            //regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
+
+            string regionaisFiltradas = "";
+            string regionalFiltDecode = "";
+
+            if (regionalFiltDecode != "null")
+            {
+                regionaisFiltradas = queryReg(regionalFiltDecode);
+            }
+
+            using (var db = new SgqDbDevEntities())
+            {
+                var sql = "";
+
+                sql = "select EmpresaSigla as Regional, ";
+                sql += "ROUND(SUM(DespesaOrcada) / 1000, 0) AS Orçada, ";
+                sql += "ROUND(SUM(DespesaRealizada) / 1000, 0) AS Realizada ";
+                sql += "from Manutencao ";
+                sql += "WHERE MesAno BETWEEN \'" + obj.dataIni + "\' AND \'" + obj.dataFim + "\' ";
+                sql += "AND TipoInformacao = 'CustoFixo' ";
+                sql += "\n and EmpresaRegionalGrupo in (\'" + regionalDecode + "\')";
+                //sql += regionaisFiltradas;
+                sql += "group by EmpresaSigla ";
+                sql += "order by EmpresaSigla ";
+
+                lista = db.Database.SqlQuery<Reg>(sql).ToList();
+            }
+
+            return lista;
+        }
+
 
         [HttpPost]
         [Route("getSelectGraficoEvolutivoPorUnidade/{dataIni}/{dataFim}/{meses}/{anos}/{unidade}/{regFiltro}")]
@@ -1377,4 +1465,14 @@ public class FatoresTecnicosMateriaPrima
     public string EmpresaSigla { get; set; }
     public string AnoMes { get; set; }
 
+}
+
+public class Ajax
+{
+    public string dataIni { get; set; }
+    public string dataFim { get; set; }
+    public string meses { get; set; }
+    public string anos { get; set; }
+    public string regFiltro { get; set; }
+    public string regional { get; set; }
 }

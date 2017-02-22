@@ -2203,8 +2203,8 @@ namespace SgqSystem.Services
         public string GetResource()
         {
             //setup temporário
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-br");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-br");
 
             System.Reflection.Assembly assembly = this.GetType().Assembly;
 
@@ -2214,10 +2214,13 @@ namespace SgqSystem.Services
                 Thread.CurrentThread.CurrentUICulture, true, false);
 
             string items = "";
-
+            //resourceSet = null;
             foreach (var entry in resourceSet.Cast<DictionaryEntry>())
             {
-                items += "<div res='"+entry.Key.ToString() + "'>"+ entry.Value.ToString() + "</div>";
+                var celso = entry;
+                
+                // items += "<div res='"+entry.Key.ToString() + "'>"+ entry.Value.ToString() + "</div>";
+                items += "<div res='" + celso.Key.ToString() + "'>" + celso.Value.ToString() + "</div>";
             } 
             
             return "<div class='Resource hide'>"+ items + "</div>";
@@ -2411,6 +2414,10 @@ namespace SgqSystem.Services
                                           "</div>-->" +
                                           "<div class=\"modal-body\">" +
                                                "<h2>Ação Corretiva</h2>" +
+
+                                               "<button class=\"btn btn-danger modal-close-ca\">Fechar</button>" +
+                                               "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">Enviar</button>" +
+
                                           "<div id=\"messageAlert\" class=\"alert alert-info hide\" role=\"alert\">" +
                                           "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>" +
                                           "</div>" +
@@ -2479,8 +2486,7 @@ namespace SgqSystem.Services
                                                         //"</button>" +
                                                         "</span>" +
 
-                                                        "<button class=\"btn btn-danger modal-close-ca\">Fechar</button>" +
-                                                        "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">Enviar</button>" +
+                                                        
                                                     "</div>" +
                                                 "</div>" +
                                                 "</div>";
@@ -3983,9 +3989,9 @@ namespace SgqSystem.Services
             }
             #endregion
 
-            string selectUrlPreffix = html.option("http://mtzsvmqsc/SgqGlobal", "JBS") +
-                                      html.option("http://192.168.25.200/SgqMaster", "GRT") +
-                                      html.option("http://localhost:8090/SgqSystem", "GCN");
+            //string selectUrlPreffix = html.option("http://mtzsvmqsc/SgqGlobal", "JBS") +
+            //                          html.option("http://192.168.25.200/SgqMaster", "GRT") +
+            //                          html.option("http://localhost:8090/SgqSystem", "GCN");
 
             string formOuterHtml = html.head(Html.h.h2, outerhtml: "Entre com seu Login") +
                                   selectUnit +
@@ -4012,7 +4018,9 @@ namespace SgqSystem.Services
                                            tags: "role=\"alert\"",
                                            outerhtml: html.span(id: "mensagemSucesso", classe: "icon-ok-circle")) + 
                                            
-                                  html.select(selectUrlPreffix, "cb_UrlPreffix", "\" onChange='abreOApp(this.value);' \"");
+                                 // html.select(selectUrlPreffix, "cb_UrlPreffix", "\" onChange='abreOApp(this.value);' \"") +
+                                 
+                                 "";
 
             string form = html.form(
                                     outerhtml: formOuterHtml
