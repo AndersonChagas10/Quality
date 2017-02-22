@@ -2203,8 +2203,8 @@ namespace SgqSystem.Services
         public string GetResource()
         {
             //setup temporário
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-br");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-br");
 
             System.Reflection.Assembly assembly = this.GetType().Assembly;
 
@@ -2214,10 +2214,13 @@ namespace SgqSystem.Services
                 Thread.CurrentThread.CurrentUICulture, true, false);
 
             string items = "";
-
+            //resourceSet = null;
             foreach (var entry in resourceSet.Cast<DictionaryEntry>())
             {
-                items += "<div res='"+entry.Key.ToString() + "'>"+ entry.Value.ToString() + "</div>";
+                var celso = entry;
+                
+                // items += "<div res='"+entry.Key.ToString() + "'>"+ entry.Value.ToString() + "</div>";
+                items += "<div res='" + celso.Key.ToString() + "'>" + celso.Value.ToString() + "</div>";
             } 
             
             return "<div class='Resource hide'>"+ items + "</div>";
