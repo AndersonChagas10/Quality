@@ -2174,9 +2174,9 @@ namespace SgqSystem.Services
 
             string login = GetLoginAPP();
 
-            string resource = GetResource();
+            //string resource = GetResource();
 
-            return login + resource;
+            return login;
         }
         [WebMethod]
         public string getAPPLevels(int UserSgq_Id, int ParCompany_Id, DateTime Date)
@@ -2194,38 +2194,12 @@ namespace SgqSystem.Services
                               "<div class=\"VerificacaoTipificacao hide\"></div>" +
                               "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
 
-            string resource = GetResource();
+           // string resource = GetResource();
 
             return APPMain +
-                   supports +
-                   resource;
+                   supports;
         }
-        public string GetResource()
-        {
-            //setup temporário
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-br");
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-br");
-
-            System.Reflection.Assembly assembly = this.GetType().Assembly;
-
-            System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
-
-            var resourceSet = resourceManager.GetResourceSet(
-                Thread.CurrentThread.CurrentUICulture, true, false);
-
-            string items = "";
-            //resourceSet = null;
-            foreach (var entry in resourceSet.Cast<DictionaryEntry>())
-            {
-                var celso = entry;
-                
-                // items += "<div res='"+entry.Key.ToString() + "'>"+ entry.Value.ToString() + "</div>";
-                items += "<div res='" + celso.Key.ToString() + "'>" + celso.Value.ToString() + "</div>";
-            } 
-            
-            return "<div class='Resource hide'>"+ items + "</div>";
-        }
-
+        
         public int getEvaluate(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluatePadrao)
         {
             int evaluate = 1;
@@ -3989,12 +3963,22 @@ namespace SgqSystem.Services
             }
             #endregion
 
+            #region language
+
+            var selectLanguage = html.option("en-us", "English") +
+                              html.option("pt-br", "Português");
+
+            selectLanguage = html.select(selectLanguage, id: "language");
+
+            #endregion
+
             //string selectUrlPreffix = html.option("http://mtzsvmqsc/SgqGlobal", "JBS") +
             //                          html.option("http://192.168.25.200/SgqMaster", "GRT") +
             //                          html.option("http://localhost:8090/SgqSystem", "GCN");
 
-            string formOuterHtml = html.head(Html.h.h2, outerhtml: "Entre com seu Login") +
+            string formOuterHtml = html.head(Html.h.h2, outerhtml: "Login") +
                                   selectUnit +
+                                  selectLanguage+
                                   selectShit +
                                   html.label(labelfor: "inputUserName", classe: "sr-only", outerhtml: "Username") +
                                   html.input(id: "inputUserName", placeholder: "Username", required: true, disabled: inputsDesabilitados) +

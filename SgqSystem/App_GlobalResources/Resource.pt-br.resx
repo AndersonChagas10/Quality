@@ -1152,4 +1152,205 @@
   <data name="has_group_level2" xml:space="preserve">
     <value>Agrupamento no Monitoramento</value>
   </data>
+  <data name="acceptable_value_equal_or_greater_than" xml:space="preserve">
+    <value>O valor aceitável deve ser igual ou maior que</value>
+  </data>
+  <data name="acceptable_value_less_than" xml:space="preserve">
+    <value>O valor aceitável deve ser menor que</value>
+  </data>
+  <data name="and" xml:space="preserve">
+    <value>e</value>
+  </data>
+  <data name="and_greater_than" xml:space="preserve">
+    <value>e maior que </value>
+  </data>
+  <data name="cluster_can_not_be_duplicated" xml:space="preserve">
+    <value>O cluster não pode ser duplicado, por favor verifique a seleção.</value>
+  </data>
+  <data name="data_already_register_on_company" xml:space="preserve">
+    <value>Dados já cadastrados para a empresa</value>
+  </data>
+  <data name="done" xml:space="preserve">
+    <value>Feito</value>
+  </data>
+  <data name="fill_the_alert_rule_value" xml:space="preserve">
+    <value>É necessário preencher o campo Valor da Regra de alerta.</value>
+  </data>
+  <data name="fill_the_cluster_points" xml:space="preserve">
+    <value>Por favor preencha o campo pontos do cluster</value>
+  </data>
+  <data name="fill_the_numeric_field_name" xml:space="preserve">
+    <value>Digite o nome para o campo numéico</value>
+  </data>
+  <data name="fill_the_permanency" xml:space="preserve">
+    <value>Preencha a vigência.</value>
+  </data>
+  <data name="group_name" xml:space="preserve">
+    <value>Nome do grupo</value>
+  </data>
+  <data name="header_name" xml:space="preserve">
+    <value>Nome do cabeçalho</value>
+  </data>
+  <data name="inform_the_nc_number" xml:space="preserve">
+    <value>É necessário informar o Número de NC</value>
+  </data>
+  <data name="invalid_evaluations_number" xml:space="preserve">
+    <value>Número de avaliações inválido.</value>
+  </data>
+  <data name="invalid_samples_number" xml:space="preserve">
+    <value>Número de amostras inválido.</value>
+  </data>
+  <data name="invalid_value_for" xml:space="preserve">
+    <value>Valor inválido para:</value>
+  </data>
+  <data name="level" xml:space="preserve">
+    <value>Nível</value>
+  </data>
+  <data name="level2_linked_to_level3_successfully" xml:space="preserve">
+    <value>Tarefa vinculada ao Monitoramento com sucesso!</value>
+  </data>
+  <data name="linked" xml:space="preserve">
+    <value>Vinculado</value>
+  </data>
+  <data name="options" xml:space="preserve">
+    <value>Opções</value>
+  </data>
+  <data name="or_greater_than" xml:space="preserve">
+    <value>ou maior que</value>
+  </data>
+  <data name="pattern" xml:space="preserve">
+    <value>Padrão</value>
+  </data>
+  <data name="percentage" xml:space="preserve">
+    <value>Porcentagem</value>
+  </data>
+  <data name="preview" xml:space="preserve">
+    <value>Visualização</value>
+  </data>
+  <data name="required" xml:space="preserve">
+    <value>Obrigatório</value>
+  </data>
+  <data name="required_field" xml:space="preserve">
+    <value>Campo obrigatório:</value>
+  </data>
+  <data name="required_field_was_not_filled" xml:space="preserve">
+    <value>Um campo obrigatório não foi preenchido:</value>
+  </data>
+  <data name="samples" xml:space="preserve">
+    <value>Amostras</value>
+  </data>
+  <data name="select_negative_value_for_binary_field" xml:space="preserve">
+    <value>Por favor, selecione o valor negative para o campo binário.</value>
+  </data>
+  <data name="select_not_conformity_rule" xml:space="preserve">
+    <value>Selecione a regra de não conformidade</value>
+  </data>
+  <data name="select_positive_value_for_binary_field" xml:space="preserve">
+    <value>Por favor, selecione o valor positivo para o campo binário.</value>
+  </data>
+  <data name="select_the_cluster" xml:space="preserve">
+    <value>Por favor selecione o cluster.</value>
+  </data>
+  <data name="select_the_counter" xml:space="preserve">
+    <value>Por favor selecione o contador.</value>
+  </data>
+  <data name="select_the_critical_level" xml:space="preserve">
+    <value>Por favor, selecione o nível critico.</value>
+  </data>
+  <data name="select_the_group" xml:space="preserve">
+    <value>Por favor selecione o grupo.</value>
+  </data>
+  <data name="select_the_header_level" xml:space="preserve">
+    <value>Selecione o nível de cabeçalho</value>
+  </data>
+  <data name="select_the_level2" xml:space="preserve">
+    <value>É necessario selecionar o monitoramento</value>
+  </data>
+  <data name="select_the_level3" xml:space="preserve">
+    <value>É necessario selecionar a tarefa</value>
+  </data>
+  <data name="select_the_measurement_unit" xml:space="preserve">
+    <value>Por favor selecione a unidade de medida.</value>
+  </data>
+  <data name="select_the_not_conformity_rule" xml:space="preserve">
+    <value>Selecione a regra de não conformidade</value>
+  </data>
+  <data name="select_the_place" xml:space="preserve">
+    <value>Por favor selecione o local.</value>
+  </data>
+  <data name="show_on_this_level" xml:space="preserve">
+    <value>Mostrar nesse nível</value>
+  </data>
+  <data name="success" xml:space="preserve">
+    <value>Sucesso</value>
+  </data>
+  <data name="there_id_not_a_pattern_value" xml:space="preserve">
+    <value>Não existe mais um valor padrão.</value>
+  </data>
+  <data name="there_is_group_for_input" xml:space="preserve">
+    <value>Já cadastrou esse grupo para o input</value>
+  </data>
+  <data name="value_is_acceptable_between" xml:space="preserve">
+    <value>O valor é aceitável quando esta entre</value>
+  </data>
+  <data name="value_is_acceptable_less_than" xml:space="preserve">
+    <value>O valor e aceitavel quando e menor que</value>
+  </data>
+  <data name="access_denied" xml:space="preserve">
+    <value>Acesso negado</value>
+  </data>
+  <data name="action_plan" xml:space="preserve">
+    <value>Plano de Ação</value>
+  </data>
+  <data name="add" xml:space="preserve">
+    <value>Adicionar</value>
+  </data>
+  <data name="chronic_problems_and_anomaly_reports" xml:space="preserve">
+    <value>Problemas Crônicos e Relatos de Anomalia</value>
+  </data>
+  <data name="collection_date" xml:space="preserve">
+    <value>Data da coleta</value>
+  </data>
+  <data name="collection_reports" xml:space="preserve">
+    <value>Relatórios de coletas</value>
+  </data>
+  <data name="daily_meeting" xml:space="preserve">
+    <value>Reunião Diária</value>
+  </data>
+  <data name="data_collection_description" xml:space="preserve">
+    <value>Descrição da Coleta</value>
+  </data>
+  <data name="data_collect_execution_and_action_plan" xml:space="preserve">
+    <value>Execução da Coleta de dados e Planos de Ação</value>
+  </data>
+  <data name="general_view_of_the_area" xml:space="preserve">
+    <value>Visão Geral da Área</value>
+  </data>
+  <data name="indicators_evolution" xml:space="preserve">
+    <value>Evolutivo dos indicadores</value>
+  </data>
+  <data name="insert" xml:space="preserve">
+    <value>Inserir</value>
+  </data>
+  <data name="letters_cep" xml:space="preserve">
+    <value>Cartas CEP</value>
+  </data>
+  <data name="not_conformities" xml:space="preserve">
+    <value>Não Conformidades</value>
+  </data>
+  <data name="online_to_change_language" xml:space="preserve">
+    <value>Você precisa estar online para mudar o idioma.</value>
+  </data>
+  <data name="planning" xml:space="preserve">
+    <value>Planejamento</value>
+  </data>
+  <data name="result_evaluation_and_deviation_communication" xml:space="preserve">
+    <value>Avaliação de Resultados e Comunicacão dos Desvios</value>
+  </data>
+  <data name="sgq_using" xml:space="preserve">
+    <value>Utilização do SGQ</value>
+  </data>
+  <data name="tipification_verification" xml:space="preserve">
+    <value>Verificação do tipificação</value>
+  </data>
 </root>

@@ -79,11 +79,56 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The acceptable value should be equal ou greater than.
+        /// </summary>
+        internal static string acceptable_value_equal_or_greater_than {
+            get {
+                return ResourceManager.GetString("acceptable_value_equal_or_greater_than", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The acceptable value should be less than.
+        /// </summary>
+        internal static string acceptable_value_less_than {
+            get {
+                return ResourceManager.GetString("acceptable_value_less_than", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Acess denied.
+        /// </summary>
+        internal static string access_denied {
+            get {
+                return ResourceManager.GetString("access_denied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Action not allowed .
         /// </summary>
         internal static string action_not_allowed {
             get {
                 return ResourceManager.GetString("action_not_allowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Action plan.
+        /// </summary>
+        internal static string action_plan {
+            get {
+                return ResourceManager.GetString("action_plan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        internal static string add {
+            get {
+                return ResourceManager.GetString("add", resourceCulture);
             }
         }
         
@@ -277,6 +322,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to and.
+        /// </summary>
+        internal static string and {
+            get {
+                return ResourceManager.GetString("and", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e maior que.
+        /// </summary>
+        internal static string and_greater_than {
+            get {
+                return ResourceManager.GetString("and_greater_than", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to April.
         /// </summary>
         internal static string april {
@@ -430,6 +493,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chronic problems and anomaly reports.
+        /// </summary>
+        internal static string chronic_problems_and_anomaly_reports {
+            get {
+                return ResourceManager.GetString("chronic_problems_and_anomaly_reports", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear database.
         /// </summary>
         internal static string clear_database {
@@ -462,6 +534,15 @@ namespace Resources {
         internal static string clusters {
             get {
                 return ResourceManager.GetString("clusters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cluster can not be duplicated.
+        /// </summary>
+        internal static string cluster_can_not_be_duplicated {
+            get {
+                return ResourceManager.GetString("cluster_can_not_be_duplicated", resourceCulture);
             }
         }
         
@@ -511,11 +592,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Collection date.
+        /// </summary>
+        internal static string collection_date {
+            get {
+                return ResourceManager.GetString("collection_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to We noticed that the collection was alredy done and it will be dropped..
         /// </summary>
         internal static string collection_dropped {
             get {
                 return ResourceManager.GetString("collection_dropped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Collection reports.
+        /// </summary>
+        internal static string collection_reports {
+            get {
+                return ResourceManager.GetString("collection_reports", resourceCulture);
             }
         }
         
@@ -691,11 +790,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Daily Meeting.
+        /// </summary>
+        internal static string daily_meeting {
+            get {
+                return ResourceManager.GetString("daily_meeting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Daily Report.
         /// </summary>
         internal static string daily_report {
             get {
                 return ResourceManager.GetString("daily_report", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data already register on company.
+        /// </summary>
+        internal static string data_already_register_on_company {
+            get {
+                return ResourceManager.GetString("data_already_register_on_company", resourceCulture);
             }
         }
         
@@ -709,11 +826,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data collection description.
+        /// </summary>
+        internal static string data_collection_description {
+            get {
+                return ResourceManager.GetString("data_collection_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data Collection Reports.
         /// </summary>
         internal static string data_collection_reports {
             get {
                 return ResourceManager.GetString("data_collection_reports", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data collection execution and action plan.
+        /// </summary>
+        internal static string data_collect_execution_and_action_plan {
+            get {
+                return ResourceManager.GetString("data_collect_execution_and_action_plan", resourceCulture);
             }
         }
         
@@ -813,6 +948,15 @@ namespace Resources {
         internal static string details {
             get {
                 return ResourceManager.GetString("details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Done.
+        /// </summary>
+        internal static string done {
+            get {
+                return ResourceManager.GetString("done", resourceCulture);
             }
         }
         
@@ -1033,11 +1177,47 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fill the alert rule field..
+        /// </summary>
+        internal static string fill_the_alert_rule_value {
+            get {
+                return ResourceManager.GetString("fill_the_alert_rule_value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please, fill the cluster points field..
+        /// </summary>
+        internal static string fill_the_cluster_points {
+            get {
+                return ResourceManager.GetString("fill_the_cluster_points", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fill the Corrective Action first..
         /// </summary>
         internal static string fill_the_corrective_action {
             get {
                 return ResourceManager.GetString("fill_the_corrective_action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fill the the numeric field name.
+        /// </summary>
+        internal static string fill_the_numeric_field_name {
+            get {
+                return ResourceManager.GetString("fill_the_numeric_field_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fill the permanency..
+        /// </summary>
+        internal static string fill_the_permanency {
+            get {
+                return ResourceManager.GetString("fill_the_permanency", resourceCulture);
             }
         }
         
@@ -1105,6 +1285,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to General view of the area.
+        /// </summary>
+        internal static string general_view_of_the_area {
+            get {
+                return ResourceManager.GetString("general_view_of_the_area", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Goal value  (%).
         /// </summary>
         internal static string goal_value {
@@ -1128,6 +1317,15 @@ namespace Resources {
         internal static string groups {
             get {
                 return ResourceManager.GetString("groups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group name.
+        /// </summary>
+        internal static string group_name {
+            get {
+                return ResourceManager.GetString("group_name", resourceCulture);
             }
         }
         
@@ -1213,6 +1411,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Header name.
+        /// </summary>
+        internal static string header_name {
+            get {
+                return ResourceManager.GetString("header_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
         internal static string home {
@@ -1276,6 +1483,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Indicators evolution.
+        /// </summary>
+        internal static string indicators_evolution {
+            get {
+                return ResourceManager.GetString("indicators_evolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Info.
         /// </summary>
         internal static string info {
@@ -1290,6 +1506,15 @@ namespace Resources {
         internal static string inform_retroactive_date {
             get {
                 return ResourceManager.GetString("inform_retroactive_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inform the NC number.
+        /// </summary>
+        internal static string inform_the_nc_number {
+            get {
+                return ResourceManager.GetString("inform_the_nc_number", resourceCulture);
             }
         }
         
@@ -1312,6 +1537,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inserir.
+        /// </summary>
+        internal static string insert {
+            get {
+                return ResourceManager.GetString("insert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid evaluations number.
+        /// </summary>
+        internal static string invalid_evaluations_number {
+            get {
+                return ResourceManager.GetString("invalid_evaluations_number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password is invalid.
         /// </summary>
         internal static string invalid_password {
@@ -1321,11 +1564,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid sample number..
+        /// </summary>
+        internal static string invalid_samples_number {
+            get {
+                return ResourceManager.GetString("invalid_samples_number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid user or password.
         /// </summary>
         internal static string invalid_user_or_password {
             get {
                 return ResourceManager.GetString("invalid_user_or_password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid value for:.
+        /// </summary>
+        internal static string invalid_value_for {
+            get {
+                return ResourceManager.GetString("invalid_value_for", resourceCulture);
             }
         }
         
@@ -1398,6 +1659,24 @@ namespace Resources {
         internal static string language {
             get {
                 return ResourceManager.GetString("language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Letters CEP.
+        /// </summary>
+        internal static string letters_cep {
+            get {
+                return ResourceManager.GetString("letters_cep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level.
+        /// </summary>
+        internal static string level {
+            get {
+                return ResourceManager.GetString("level", resourceCulture);
             }
         }
         
@@ -1483,6 +1762,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level2 linked to the level 3 successfully!.
+        /// </summary>
+        internal static string level2_linked_to_level3_successfully {
+            get {
+                return ResourceManager.GetString("level2_linked_to_level3_successfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level 2 name.
         /// </summary>
         internal static string level2_name {
@@ -1533,6 +1821,15 @@ namespace Resources {
         internal static string limited_number_of_evaluations {
             get {
                 return ResourceManager.GetString("limited_number_of_evaluations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Linked.
+        /// </summary>
+        internal static string linked {
+            get {
+                return ResourceManager.GetString("linked", resourceCulture);
             }
         }
         
@@ -1933,6 +2230,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not conformities.
+        /// </summary>
+        internal static string not_conformities {
+            get {
+                return ResourceManager.GetString("not_conformities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not conformity rule.
         /// </summary>
         internal static string not_conformity_rule {
@@ -2032,6 +2338,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You need to be online to change the language.
+        /// </summary>
+        internal static string online_to_change_language {
+            get {
+                return ResourceManager.GetString("online_to_change_language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You need to be online to login..
         /// </summary>
         internal static string online_to_login {
@@ -2046,6 +2361,24 @@ namespace Resources {
         internal static string option {
             get {
                 return ResourceManager.GetString("option", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Options.
+        /// </summary>
+        internal static string options {
+            get {
+                return ResourceManager.GetString("options", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ou maior que.
+        /// </summary>
+        internal static string or_greater_than {
+            get {
+                return ResourceManager.GetString("or_greater_than", resourceCulture);
             }
         }
         
@@ -2068,11 +2401,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pattern.
+        /// </summary>
+        internal static string pattern {
+            get {
+                return ResourceManager.GetString("pattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PCC1B.
         /// </summary>
         internal static string pcc1b {
             get {
                 return ResourceManager.GetString("pcc1b", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Percentage.
+        /// </summary>
+        internal static string percentage {
+            get {
+                return ResourceManager.GetString("percentage", resourceCulture);
             }
         }
         
@@ -2100,6 +2451,15 @@ namespace Resources {
         internal static string phone {
             get {
                 return ResourceManager.GetString("phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Planning.
+        /// </summary>
+        internal static string planning {
+            get {
+                return ResourceManager.GetString("planning", resourceCulture);
             }
         }
         
@@ -2176,6 +2536,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Preview.
+        /// </summary>
+        internal static string preview {
+            get {
+                return ResourceManager.GetString("preview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Problem occurred.
         /// </summary>
         internal static string problem_occur {
@@ -2194,7 +2563,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Perfis e Regras.
+        ///   Looks up a localized string similar to Profiles and Roles.
         /// </summary>
         internal static string profiles_and_roles {
             get {
@@ -2338,6 +2707,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Required.
+        /// </summary>
+        internal static string required {
+            get {
+                return ResourceManager.GetString("required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Required field:.
+        /// </summary>
+        internal static string required_field {
+            get {
+                return ResourceManager.GetString("required_field", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There are required filled fields in this monitoring. We left the screen open to be filled properly. .
         /// </summary>
         internal static string required_fields_open_screen {
@@ -2356,6 +2743,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Required field was not filled:.
+        /// </summary>
+        internal static string required_field_was_not_filled {
+            get {
+                return ResourceManager.GetString("required_field_was_not_filled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to One of the required items was not selected.
         /// </summary>
         internal static string required_items_not_selected {
@@ -2370,6 +2766,15 @@ namespace Resources {
         internal static string resource_id {
             get {
                 return ResourceManager.GetString("resource_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Result evaluation and deviation communication.
+        /// </summary>
+        internal static string result_evaluation_and_deviation_communication {
+            get {
+                return ResourceManager.GetString("result_evaluation_and_deviation_communication", resourceCulture);
             }
         }
         
@@ -2442,6 +2847,15 @@ namespace Resources {
         internal static string sample {
             get {
                 return ResourceManager.GetString("sample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Samples.
+        /// </summary>
+        internal static string samples {
+            get {
+                return ResourceManager.GetString("samples", resourceCulture);
             }
         }
         
@@ -2599,6 +3013,42 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the negative value for the binary field..
+        /// </summary>
+        internal static string select_negative_value_for_binary_field {
+            get {
+                return ResourceManager.GetString("select_negative_value_for_binary_field", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the not conformity rule.
+        /// </summary>
+        internal static string select_not_conformity_rule {
+            get {
+                return ResourceManager.GetString("select_not_conformity_rule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the positive value for the binary field..
+        /// </summary>
+        internal static string select_positive_value_for_binary_field {
+            get {
+                return ResourceManager.GetString("select_positive_value_for_binary_field", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please, select the cluster..
+        /// </summary>
+        internal static string select_the_cluster {
+            get {
+                return ResourceManager.GetString("select_the_cluster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the consolidation type.
         /// </summary>
         internal static string select_the_consolidation_type {
@@ -2608,11 +3058,92 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please, select the counter..
+        /// </summary>
+        internal static string select_the_counter {
+            get {
+                return ResourceManager.GetString("select_the_counter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please, select the critical level..
+        /// </summary>
+        internal static string select_the_critical_level {
+            get {
+                return ResourceManager.GetString("select_the_critical_level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the frequency.
         /// </summary>
         internal static string select_the_frequency {
             get {
                 return ResourceManager.GetString("select_the_frequency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the group.
+        /// </summary>
+        internal static string select_the_group {
+            get {
+                return ResourceManager.GetString("select_the_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the header level.
+        /// </summary>
+        internal static string select_the_header_level {
+            get {
+                return ResourceManager.GetString("select_the_header_level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the level 2.
+        /// </summary>
+        internal static string select_the_level2 {
+            get {
+                return ResourceManager.GetString("select_the_level2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the level 3.
+        /// </summary>
+        internal static string select_the_level3 {
+            get {
+                return ResourceManager.GetString("select_the_level3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the measurement unit.
+        /// </summary>
+        internal static string select_the_measurement_unit {
+            get {
+                return ResourceManager.GetString("select_the_measurement_unit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the not conformity rule.
+        /// </summary>
+        internal static string select_the_not_conformity_rule {
+            get {
+                return ResourceManager.GetString("select_the_not_conformity_rule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please, select the place..
+        /// </summary>
+        internal static string select_the_place {
+            get {
+                return ResourceManager.GetString("select_the_place", resourceCulture);
             }
         }
         
@@ -2662,6 +3193,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SGQ using.
+        /// </summary>
+        internal static string sgq_using {
+            get {
+                return ResourceManager.GetString("sgq_using", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shift.
         /// </summary>
         internal static string shift {
@@ -2685,6 +3225,15 @@ namespace Resources {
         internal static string show_level1_counters {
             get {
                 return ResourceManager.GetString("show_level1_counters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show on this level.
+        /// </summary>
+        internal static string show_on_this_level {
+            get {
+                return ResourceManager.GetString("show_on_this_level", resourceCulture);
             }
         }
         
@@ -2734,6 +3283,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quantidade.
+        /// </summary>
+        internal static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Structure Group.
         /// </summary>
         internal static string structure_group {
@@ -2748,6 +3306,15 @@ namespace Resources {
         internal static string structure_register {
             get {
                 return ResourceManager.GetString("structure_register", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Success.
+        /// </summary>
+        internal static string success {
+            get {
+                return ResourceManager.GetString("success", resourceCulture);
             }
         }
         
@@ -2815,11 +3382,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is not a pattern value..
+        /// </summary>
+        internal static string there_id_not_a_pattern_value {
+            get {
+                return ResourceManager.GetString("there_id_not_a_pattern_value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is a group for the input.
+        /// </summary>
+        internal static string there_is_group_for_input {
+            get {
+                return ResourceManager.GetString("there_is_group_for_input", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The number of evaluated parts must be filled..
         /// </summary>
         internal static string the_number_parts_filled {
             get {
                 return ResourceManager.GetString("the_number_parts_filled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tipification Verification.
+        /// </summary>
+        internal static string tipification_verification {
+            get {
+                return ResourceManager.GetString("tipification_verification", resourceCulture);
             }
         }
         
@@ -3045,6 +3639,24 @@ namespace Resources {
         internal static string values_between {
             get {
                 return ResourceManager.GetString("values_between", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value is acceptable is between.
+        /// </summary>
+        internal static string value_is_acceptable_between {
+            get {
+                return ResourceManager.GetString("value_is_acceptable_between", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value is acceptable is less than.
+        /// </summary>
+        internal static string value_is_acceptable_less_than {
+            get {
+                return ResourceManager.GetString("value_is_acceptable_less_than", resourceCulture);
             }
         }
         

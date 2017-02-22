@@ -44,9 +44,9 @@
                 <table id="tablePeso" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar peso:">
                     <thead>
                         <tr>
-                            <th>Empresa</th>
-                            <th>Peso</th>
-                            <th>Grupo</th>
+                            <th>@Resources.Resource.company</th>
+                            <th>@Resources.Resource.weight</th>
+                            <th>@Resources.Resource.group</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -150,7 +150,7 @@
 
                 /*Valida se pode criar o objeto*/
                 if($('#' + seletorTato + ' #peso').val().length == 0){
-                    openMessageModal("Campo obrigatório:", "O campo Peso precisa ser preenchido.")
+                    openMessageModal("@Resources.Resource.required_field", "@Resources.Resource.inform_the_weight_of_the_level3")
                     return false;
                 }
 
@@ -171,7 +171,7 @@
                         if(companySelected == -1)
                             display= "Todas";
 
-                        openMessageModal("Dados já cadastrados para a empresa " + display + ".", "")
+                        openMessageModal("@Resources.Resource.data_already_register_on_company " + display + ".", "")
                         return false;
                     }
                 }

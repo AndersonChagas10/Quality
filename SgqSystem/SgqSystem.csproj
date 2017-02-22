@@ -277,6 +277,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Resource.pt-br.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.pt-br.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Resource.pt-br1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -495,8 +500,8 @@
     <Content Include="admin-lte\js\app.min.js" />
     <Content Include="App_GlobalResources\Resource.pt-br.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Resource.pt-br1.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resource.pt-br.designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_Readme\readme.txt" />
     <Content Include="Content\bootstrap-datepicker.css" />

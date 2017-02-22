@@ -34,7 +34,7 @@
                 <table id="tableGroupLevel" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Grupo:">
                     <thead>
                         <tr>
-                            <th>Nome do Grupo</th>
+                            <th>@Resources.Resource.group_name</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -91,7 +91,7 @@
                 var seletorTato = !!isEdit ? isEdit : this.level;
                 /*Valida se pode criar o objeto*/
                 if($('#' + seletorTato + ' #inputParLevel03Name :selected').val() <= 0){
-                    alert("Por favor selecione o Grupo.");
+                    openMessageModal("@Resources.Resource.select_the_group");
                     return false;
                 }
                 return true;

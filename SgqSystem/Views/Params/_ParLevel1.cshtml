@@ -207,12 +207,12 @@
                                             <thead>
                                                 <tr>
                                                     @*<th>Cod.</th>*@
-                                                    <th>Nivel do campo</th>
-                                                    <th>Nome</th>
-                                                    <th>Vinculado</th>
-                                                    <th>Tipo</th>
-                                                    <th>Opções</th>
-                                                    <th>Valor</th>
+                                                    <th>@Resources.Resource.field_level</th>
+                                                    <th>@Resources.Resource.name</th>
+                                                    <th>@Resources.Resource.linked</th>
+                                                    <th>@Resources.Resource.type</th>
+                                                    <th>@Resources.Resource.options</th>
+                                                    <th>@Resources.Resource.value</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -259,13 +259,13 @@
                                         <table id="tableCabecalhosPreview" class="table">
                                             <thead>
                                                 <tr>
-                                                    <th style="width:20%">Nível do campo</th>
-                                                    <th style="width:20%">Nome</th>
-                                                    <th style="width:15%">Tipo</th>
-                                                    <th style="width:10%">Preview</th>
+                                                    <th style="width:20%">@Resources.Resource.field_level</th>
+                                                    <th style="width:20%">@Resources.Resource.name</th>
+                                                    <th style="width:15%">@Resources.Resource.type</th>
+                                                    <th style="width:10%">@Resources.Resource.preview</th>
                                                     <th style="width:5%"></th>
-                                                    <th style="width:15%">Obrigatório</th>
-                                                    <th style="width:15%">Padrão</th>
+                                                    <th style="width:15%">@Resources.Resource.required</th>
+                                                    <th style="width:15%">@Resources.Resource.pattern</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -344,19 +344,19 @@
                                                                     {
                                                                         if (parLevel1XHeaderField.ParHeaderField.IsRequired.Value)
                                                                         {
-                                                                            <option value="0">Não</option>
-                                                                            <option value="1" selected>Sim</option>
+                                                                            <option value="0">@Resources.Resource.no</option>
+                                                                            <option value="1" selected>@Resources.Resource.yes</option>
                                                                         }
                                                                         else
                                                                         {
-                                                                            <option value="0" selected>Não</option>
-                                                                            <option value="1">Sim</option>
+                                                                            <option value="0" selected>@Resources.Resource.no</option>
+                                                                            <option value="1">@Resources.Resource.yes</option>
                                                                         }
                                                                     }
                                                                     else
                                                                     {
-                                                                        <option value="0" selected>Não</option>
-                                                                        <option value="1">Sim</option>
+                                                                        <option value="0" selected>@Resources.Resource.no</option>
+                                                                        <option value="1">@Resources.Resource.yes</option>
                                                                     }
                                                                 </select>
                                                             </td>
@@ -444,9 +444,9 @@
                                 <table id="tableRegraNc" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Regra de Alerta:">
                                     <thead>
                                         <tr>
-                                            <th>Regra de Não conformidade</th>
-                                            <th>Valor</th>
-                                            <th>Reauditoria</th>
+                                            <th>@Resources.Resource.not_conformity_rule</th>
+                                            <th>@Resources.Resource.value</th>
+                                            <th>@Resources.Resource.reaudit</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -516,9 +516,9 @@
                 console.log(r);
                 if(r){
                     if(r.IsDefaultOption == true){
-                        openMessageModal("Sucesso", r.Name+" se tornou o valor padrão.");
+                        openMessageModal("@Resources.Resource.success", r.Name+" se tornou o valor padrão.");
                     }else{
-                        openMessageModal("Sucesso", " Não existe mais um valor padrão.");
+                        openMessageModal("@Resources.Resource.success", "@Resources.Resource.there_id_not_a_pattern_value");
                     }
                 }
             });
@@ -526,9 +526,9 @@
         SetRequired: function(e, id){
             $.post(urlSetRequiredCCAB + "/" + id+"/"+parseInt($(e).val()), function(r){
                 if(r){
-                    $(e).empty().append("<option value='0'>Não</option><option value='1' selected>Sim</option>");
+                    $(e).empty().append("<option value='0'>"+@Resources.Resource.no+"</option><option value='1' selected>"+@Resources.Resource.yes+"</option>");
                 }else{
-                    $(e).empty().append("<option value='0' selected>Não</option><option value='1'>Sim</option>");
+                    $(e).empty().append("<option value='0' selected>"+@Resources.Resource.no+"</option><option value='1'>"+@Resources.Resource.yes+"</option>");
                 }
             });
         },
@@ -696,7 +696,7 @@
             var opcoes = $('#objMultiplaEscolhaName').val();
             var valor = $('#objMultiplaEscolhaPunishmentValue').val();
             var obj = '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParMultiplaEscolhaOpcoes.length + ');"><i class="fa fa-times"></i></button>';//Btn excluir;
-            
+
 
             /*Obj*/
             Cabecalhos.ParMultiplaEscolhaOpcoes.push({
@@ -842,7 +842,7 @@
                 return;
             }
             if($('#headerLevel option:selected').val() == -1){
-                openMessageModal("Alerta", "Selecione o Nivel do Cabecalho");
+                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
                 //alert('Selecione o Nivel do Cabecalho')
                 return;
             }
@@ -998,7 +998,7 @@
         IncluirSalvarTexto: function (isData) {
 
             if($('#headerLevel option:selected').val() == -1){
-                openMessageModal("Alerta", "Selecione o Nivel do Cabecalho");
+                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
                 //alert('Selecione o Nivel do Cabecalho')
                 return;
             }
@@ -1083,13 +1083,13 @@
         IncluirSalvarNumerico: function () {
 
             if($('#headerLevel option:selected').val() == -1){
-                openMessageModal("Alerta", "Selecione o Nivel do Cabecalho");
+                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
                 //lert('Selecione o Nivel do Cabecalho');
                 return;
             }
 
             if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
-                openMessageModal("Alerta", "Digite o nome para o Campo Numerico");
+                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.fill_the_numeric_field_name");
                 //alert('Digite o nome para o Campo Numerico');
                 return;
             }
@@ -1242,12 +1242,12 @@
         adiciona: function() {
             /*Valida se pode criar o objeto*/
             if($('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').val() <= 0){
-                alert("Por favor Selecione Regra de Não conformidade.");
+                openMessageModal("@Resources.Resource.select_not_conformity_rule");
                 return;
             }
 
             if($('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, '') == ""){
-                alert("É necessário preencher o campo Valor da Regra de alerta.");
+                openMessageModal("@Resources.Resource.fill_the_alert_rule_value");
                 return;
             }
 
@@ -1317,7 +1317,7 @@
 
         if($('#l1SelectFrequenciaReincidencia :selected').val() <= 0)
         {
-            openMessageModal("Alerta", "É necessário selecionar a Frequência");
+            openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_frequency");
             //alert('É necessário selecionar a Frequência');
             return;
         }
@@ -1325,7 +1325,7 @@
         if($('#l1InputNumeroNC').val().length <= 0)
         {
 
-            openMessageModal("Alerta", "Selecione o Nivel do Cabecalho");
+            openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
             //alert('Selecione o Nivel do Cabecalho');
             return;
         }
@@ -1333,7 +1333,7 @@
         if($('#l1InputVigencia').val().length <= 0)
         {
 
-            openMessageModal("Alerta", "É necessário selecionar a Vigência");
+            openMessageModal("@Resources.Resource.warning", "É necessário selecionar a Vigência");
             //alert('É necessário selecionar a Vigência');
             return;
         }
@@ -1377,7 +1377,7 @@
 
         $('#paramsDto_parLevel1Dto_IsRuleConformity[value="false"]').trigger('click');
         $('#paramsDto_parLevel1Dto_IsFixedEvaluetionNumber[value="true"]').trigger('click');
-        
+
         //Guard.mascaraInteger('#VolumeAnimais');
 
         if($('#paramsDto_parLevel1Dto_IsSpecific').is(':checked'))
@@ -1387,7 +1387,7 @@
             $('.RealTimeConsolitationUpdate').fadeIn();
 
         updateAllTables();
-        
+
         $('[data-toggle="popover"]').popover();
 
         SingleCallendar.IntiFullCallendarByClass('dataInput');
@@ -1422,7 +1422,7 @@
 
             /*Seta as 2 fdp pra false*/
             $('#paramsDto_parLevel1Dto_IsFixedEvaluetionNumber').bootstrapSwitch('toggleState');
-            
+
 
         } catch (e) {
             console.log(e);

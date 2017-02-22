@@ -43,8 +43,8 @@
                 <table id="tableMeta" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Meta:">
                     <thead>
                         <tr>
-                            <th>Empresa</th>
-                            <th>Percentual</th>
+                            <th>@Resources.Resource.company</th>
+                            <th>@Resources.Resource.percentage</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -111,7 +111,7 @@
                 var seletorTato = !!isEdit ? isEdit : this.level;
                 /*Valida se pode criar o objeto*/
                 if($('#' + seletorTato + ' #percentVal').val().length == 0){
-                    openMessageModal("Campo obrigatório:", "O campo Meta precisa ser preenchido.")
+                    openMessageModal("@Resources.Resource.required_fields_unfilled"+":", "@Resources.Resource.goal_value")
                     return false;
                 }
 
@@ -132,7 +132,7 @@
                         if(companySelected == -1)
                             display= "Todas";
 
-                        openMessageModal("Dados já cadastrados para a empresa " + display + ".", "")
+                        openMessageModal("@Resources.Resource.data_already_register_on_company"+" " + display + ".", "")
                         return false;
                     }
                 }
