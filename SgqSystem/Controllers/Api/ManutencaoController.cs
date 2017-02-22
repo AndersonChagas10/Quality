@@ -1030,7 +1030,7 @@ namespace SgqSystem.Controllers.Api
 
                     sql += " NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE NULL END AS FLOAT)),0) ";
                     sql += "	/ ";
-                    sql += " NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE NULL END AS FLOAT)),0)  AS DesvQtdeBoi, ";
+                    sql += " NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE NULL END AS FLOAT)),0) -1 AS DesvQtdeBoi, ";
 
                     sql += " NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN ConsumoRealizado ELSE NULL END AS FLOAT)),0) ";
                     sql += "	/ ";
@@ -1050,7 +1050,7 @@ namespace SgqSystem.Controllers.Api
                     sql += "	/ ";
                     sql += " (NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN(CASE WHEN ConsumoOrcado = 0 THEN ConsumoRealizado ELSE ConsumoOrcado END) ELSE 0 END AS FLOAT)),0) ";
                     sql += "       / ";
-                    sql += " NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE 0 END AS FLOAT)),0))) AS DesvUNBoi ";
+                    sql += " NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE 0 END AS FLOAT)),0))) -1 AS DesvUNBoi ";
 
                     sql += " FROM Manutencao ";
                     sql += " WHERE MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
@@ -1069,7 +1069,7 @@ namespace SgqSystem.Controllers.Api
 
                     sql += " NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE NULL END AS FLOAT)),0) ";
                     sql += "	/ ";
-                    sql += " NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE NULL END AS FLOAT)),0)  AS DesvQtdeBoi,";
+                    sql += " NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE NULL END AS FLOAT)),0) -1 AS DesvQtdeBoi,";
 
                     sql += " NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN ConsumoRealizado ELSE NULL END AS FLOAT)),0) ";
                     sql += "	/ ";
@@ -1089,7 +1089,7 @@ namespace SgqSystem.Controllers.Api
                     sql += "	/ ";
                     sql += " (NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN(CASE WHEN ConsumoOrcado = 0 THEN ConsumoRealizado ELSE ConsumoOrcado END) ELSE 0 END AS FLOAT)),0) ";
                     sql += "       / ";
-                    sql += " NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE 0 END AS FLOAT)),0))) AS DesvUNBoi ";
+                    sql += " NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE 0 END AS FLOAT)),0))) -1 AS DesvUNBoi ";
 
                     sql += " FROM Manutencao ";
                     sql += " WHERE MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
@@ -1109,7 +1109,7 @@ namespace SgqSystem.Controllers.Api
 
                     sql += " NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE NULL END AS FLOAT)),0) ";
                     sql += "	/ ";
-                    sql += " NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE NULL END AS FLOAT)),0)  AS DesvQtdeBoi,";
+                    sql += " NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE NULL END AS FLOAT)),0) -1 AS DesvQtdeBoi,";
 
                     sql += " NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '002.M3. Agua' THEN ConsumoRealizado ELSE NULL END AS FLOAT)),0) ";
                     sql += "	/ ";
@@ -1129,7 +1129,7 @@ namespace SgqSystem.Controllers.Api
                     sql += "	/ ";
                     sql += " (NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '002.M3. Agua' THEN(CASE WHEN ConsumoOrcado = 0 THEN ConsumoRealizado ELSE ConsumoOrcado END) ELSE 0 END AS FLOAT)),0) ";
                     sql += "       / ";
-                    sql += " NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE 0 END AS FLOAT)),0))) AS DesvUNBoi ";
+                    sql += " NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE 0 END AS FLOAT)),0))) -1 AS DesvUNBoi ";
 
                     sql += " FROM Manutencao ";
                     sql += " WHERE MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
