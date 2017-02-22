@@ -782,6 +782,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
           <Property Name="AlterDate" Type="datetime" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="ParGoalScorecard">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="PercentValueMid" Type="decimal" Precision="25" Scale="7" Nullable="false" />
+          <Property Name="PercentValueHigh" Type="decimal" Precision="25" Scale="7" Nullable="false" />
+          <Property Name="InitDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="ParHeaderField">
           <Key>
             <PropertyRef Name="Id" />
@@ -2859,6 +2871,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySet Name="ParFieldType" EntityType="Self.ParFieldType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParFrequency" EntityType="Self.ParFrequency" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParGoal" EntityType="Self.ParGoal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParGoalScorecard" EntityType="Self.ParGoalScorecard" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParHeaderField" EntityType="Self.ParHeaderField" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel1" EntityType="Self.ParLevel1" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel1XCluster" EntityType="Self.ParLevel1XCluster" Schema="dbo" store:Type="Tables" />
@@ -4019,6 +4032,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             <End Role="RoleType" EntitySet="RoleType" />
             <End Role="ScreenComponent" EntitySet="ScreenComponent" />
           </AssociationSet>
+          <EntitySet Name="ParGoalScorecard" EntityType="SgqDbModel.ParGoalScorecard" />
           </EntityContainer>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -7006,6 +7020,18 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ParGoalScorecard">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="PercentValueMid" Type="Decimal" Nullable="false" Precision="25" Scale="7" />
+          <Property Name="PercentValueHigh" Type="Decimal" Nullable="false" Precision="25" Scale="7" />
+          <Property Name="InitDate" Type="DateTime" Precision="3" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8593,6 +8619,19 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Component" ColumnName="Component" />
                 <ScalarProperty Name="HashKey" ColumnName="HashKey" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParGoalScorecard">
+            <EntityTypeMapping TypeName="SgqDbModel.ParGoalScorecard">
+              <MappingFragment StoreEntitySet="ParGoalScorecard">
+                <ScalarProperty Name="InitDate" ColumnName="InitDate" />
+                <ScalarProperty Name="PercentValueHigh" ColumnName="PercentValueHigh" />
+                <ScalarProperty Name="PercentValueMid" ColumnName="PercentValueMid" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

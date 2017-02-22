@@ -2,6 +2,11 @@
 using DTO.DTO;
 using SgqSystem.Handlres;
 using SgqSystem.ViewModels;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api.Example
@@ -63,5 +68,34 @@ namespace SgqSystem.Controllers.Api.Example
             return "a";
             //returna paramsViewModel;
         }
+
+        [HttpGet]
+        [Route("ChangeCultureTable/{cultureDesejada}")]
+        public IEnumerable<DictionaryEntry> ChangeCultureTable(string cultureDesejada)
+        {
+
+            if (cultureDesejada != null) //CULTURE DIFERENTE DO PADRÃO
+            {
+                if (cultureDesejada.Equals("en"))
+                {
+                    Thread.CurrentThread.CurrentCulture = new CultureInfo("");
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
+                }
+                else
+                {
+                    Thread.CurrentThread.CurrentCulture = new CultureInfo(cultureDesejada);
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo(cultureDesejada);
+                }
+            }
+
+            System.Reflection.Assembly assembly = this.GetType().Assembly;
+            System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
+
+            var resourceSet = resourceManager.GetResourceSet(
+                Thread.CurrentThread.CurrentUICulture, true, false);
+
+            return resourceSet.Cast<DictionaryEntry>();
+        }
+
     }
 }

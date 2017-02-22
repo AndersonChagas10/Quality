@@ -4,22 +4,21 @@
     var UrlGetInd = Url.Action("GetIndicadores", "Api/Manutencao");
     var UrlGetIndEdit = Url.Action("GetIndicadoresEdit", "Api/Manutencao");
     var UrlSaveEdit = Url.Action("SaveEdit", "Api/Manutencao");
+    
 }
 
 <style>
-
-    div #InfoColeta{
-        color:gray;
+    div #InfoColeta {
+        color: gray;
     }
 
-    div #InfoColeta b{
-        color:red;
-    }
+        div #InfoColeta b {
+            color: red;
+        }
 
     #return {
-       font-size: 12px;
+        font-size: 12px;
     }
-
 </style>
 
 <div class="page-content-wrapper">
@@ -42,6 +41,7 @@
             <div class="col-md-3">
                 @Html.DropDownListFor(model => model.ParCompany_Id, new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.ParCompany_Id, "", new { @class = "text-danger" })
+               
             </div>
 
             <div class="col-md-1">
@@ -84,26 +84,35 @@
     var $btnFind;
     var $btnEdit;
     var ThisGlobal;
+    var FilterData = @(Html.Raw(Json.Encode(@ViewBag.DataRole)));
+    var start1;
 
     $(document).ready(function () {
 
         var end = moment();
+
         $btnFind = $('#GetIndicadores');
         $btnEdit = $('#GetIndicadoresEdit');
+
+        if (FilterData) {
+            start1 = start;
+        } else
+            start1 = "";
 
         $('.simpleCalendar').daterangepicker({
             singleDatePicker: true,
             showDropdowns: true,
             maxDate: end,
+            minDate: start1,
             'locale': {
                 "format": "DD/MM/YYYY",
-            }
+                }
         });
 
         $('tbody #quantidade').inputmask("decimal", { rightAlign: false })
 
         $('#GetIndicadores').click(function () {
-            $btnFind.button('loading'); 
+            $btnFind.button('loading');
             $("#dataTable").empty();
             $('#dataTable_wrapper').remove();
             var typeRequest = 'Get';
@@ -137,7 +146,7 @@
         $('#InfoColeta').append('<h5>Coleta da Unidade de <b>' + NomeUnidade + '</b> referente a data de <b>' + DataEdit + '</b></h5>');
 
         var newdate = Data.split("/").reverse().join("/");
-        
+
         if (Unidade >= 0 && Data != '') {
 
             var dados = { 'Date': newdate, 'Unit': Unidade };
@@ -146,9 +155,9 @@
             switch (typeRequest) {
                 case 'Get':
                     $.post(url, dados, function (lista) {
-                        
+
                         MountTable(lista);
-                        
+
                     });
                     break;
                 case 'Edit':
@@ -162,10 +171,10 @@
 
             }
         }
-       
+
     }
 
-    function InserirRetorno(retorno){
+    function InserirRetorno(retorno) {
         $(ThisGlobal).parents('tr').find("#return").text(retorno);
     }
 
@@ -215,7 +224,7 @@
             } else {
 
                 GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
-            }           
+            }
 
         });
 
@@ -234,7 +243,7 @@
     }
 
     function MountTable(indicadores) {
-        
+
         $("#tabela").append('<table id="dataTable" class="display" width="100%" cellspacing="0"><thead><tr><th>Descrição da Coleta</th><th>Quantidade</th><th>Comentarios</th><th>Salvar</th><th>Conclusão</tr></thead><tbody></tbody></table>');
 
         if (indicadores != null) {
@@ -291,8 +300,8 @@
                         if (Enviar(obj)) {
                             $(this).parents('tr').find('#quantidade').prop("disabled", true);
                             $(this).parents('tr').find('#comentarios').prop("disabled", true);
-                            $(this).parents('tr').find("#save").prop("disabled", true);                           
-                        }                          
+                            $(this).parents('tr').find("#save").prop("disabled", true);
+                        }
                     }
 
                 });
@@ -360,7 +369,7 @@
                     obj['comentarios'] = comentarios;
                     obj['data'] = newdate;
                     //obj['parCompany'] = parCompany_Id;
-                   
+
                     obj['parCompany'] = UniEdit;
 
                     if (validaParaEnvio(obj)) {
@@ -368,7 +377,7 @@
                         if (EnviarEdit(obj)) {
                             $(this).parents('tr').find('#quantidade').prop("disabled", true);
                             $(this).parents('tr').find('#comentarios').prop("disabled", true);
-                            $(this).parents('tr').find("#save").prop("disabled", true);                           
+                            $(this).parents('tr').find("#save").prop("disabled", true);
                         }
                     }
 

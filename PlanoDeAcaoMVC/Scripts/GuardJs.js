@@ -85,6 +85,7 @@ $(document).ready(function () {
         $(this).inputmask("integer", { rightAlign: true });
     });
     $('.decimal-direita').each(function (index) {
+        $(this).val($(this).val().replace(',', '.')); 
         $(this).inputmask("decimal", { rightAlign: true });
     });
 
@@ -92,6 +93,7 @@ $(document).ready(function () {
         $(this).inputmask("integer", { rightAlign: false });
     });
     $('.decimal-esquerda').each(function (index) {
+        $(this).val($(this).val().replace(',', '.'));
         $(this).inputmask("decimal", { rightAlign: false });
     });
     /*FIM Input Mask*/
@@ -100,8 +102,16 @@ $(document).ready(function () {
     $('.select2ddl').each(function (index) {
         $(this).select2();
     });
+
     /*FIM Select 2*/
 
+    $('.DataPiker').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        'locale': {
+            "format": "DD/MM/YYYY",
+        }
+    });
 })
 
 function getCookie(name) {
