@@ -886,7 +886,7 @@
     <value>Usuário ou senha inválidos</value>
   </data>
   <data name="loading_indicators" xml:space="preserve">
-    <value>Carregando usuários</value>
+    <value>Carregando indicadores</value>
   </data>
   <data name="recording_information" xml:space="preserve">
     <value>Gravando informações</value>

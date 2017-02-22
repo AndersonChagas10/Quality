@@ -851,13 +851,13 @@ namespace Dominio.Services
 
         #endregion
 
-        public bool SetRequiredCamposCabecalho(int id)
+        public bool SetRequiredCamposCabecalho(int id, int required)
         {
             var headerField = _baseRepoParHeaderField.GetById(id);
-            if (headerField.IsRequired == null)
+            if (required == 1)
                 headerField.IsRequired = true;
             else
-                headerField.IsRequired = !headerField.IsRequired;
+                headerField.IsRequired = false;
 
             _baseRepoParHeaderField.AddOrUpdate(headerField);
 
