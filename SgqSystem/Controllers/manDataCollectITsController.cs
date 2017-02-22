@@ -177,7 +177,7 @@ namespace SgqSystem.Controllers
                     //colocar diferente != depois de testar
                     if (role != "somentemanutencao-sgq,adminManutencao")
                     {
-                        ViewBag.DataRole = true;
+                        ViewBag.DataRole = false;
                     }else
                         ViewBag.DataRole = false;
 
