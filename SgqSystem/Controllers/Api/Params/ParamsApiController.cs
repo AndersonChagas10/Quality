@@ -48,10 +48,10 @@ namespace SgqSystem.Controllers.Api.Params
         }
 
         [HttpPost]
-        [Route("SetRequiredCCAB/{Id}")]
-        public bool SetRequiredCamposCabecalho(int id)
+        [Route("SetRequiredCCAB/{Id}/{Required}")]
+        public bool SetRequiredCamposCabecalho(int id, int required)
         {
-            return _paramdDomain.SetRequiredCamposCabecalho(id);
+            return _paramdDomain.SetRequiredCamposCabecalho(id, required);
         }
 
         [HttpPost]

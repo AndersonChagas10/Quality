@@ -263,8 +263,9 @@
                                                     <th style="width:20%">Nome</th>
                                                     <th style="width:15%">Tipo</th>
                                                     <th style="width:10%">Preview</th>
-                                                    <th style="width:15%"></th>
-                                                    <th style="width:20%">Padrão</th>
+                                                    <th style="width:5%"></th>
+                                                    <th style="width:15%">Obrigatório</th>
+                                                    <th style="width:15%">Padrão</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -336,24 +337,28 @@
                                                             }
                                                             <td>
                                                                 <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
-                                                                <button type="button" id="required"class="btn btn-danger btn-xs" onclick="Cabecalhos.SetRequired($(this), @parLevel1XHeaderField.ParHeaderField.Id);">
+                                                            </td>
+                                                            <td>   
+                                                                <select id="parLevel1XHeaderField_ParHeaderField_IsRequired" class="form-control input-sm" onchange="Cabecalhos.SetRequired($(this), @parLevel1XHeaderField.ParHeaderField.Id);">
                                                                     @if (parLevel1XHeaderField.ParHeaderField.IsRequired != null)
                                                                     {
                                                                         if (parLevel1XHeaderField.ParHeaderField.IsRequired.Value)
                                                                         {
-                                                                            @Html.Label("Obrigatório")
+                                                                            <option value="0">Não</option>
+                                                                            <option value="1" selected>Sim</option>
                                                                         }
                                                                         else
                                                                         {
-                                                                            @Html.Label("Não Obrigatório")
+                                                                            <option value="0" selected>Não</option>
+                                                                            <option value="1">Sim</option>
                                                                         }
                                                                     }
                                                                     else
                                                                     {
-                                                                            @Html.Label("Não Obrigatório")
+                                                                        <option value="0" selected>Não</option>
+                                                                        <option value="1">Sim</option>
                                                                     }
-                                                                </button>
-
+                                                                </select>
                                                             </td>
                                                             <td>
                                                                 @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
@@ -519,11 +524,11 @@
             });
         },
         SetRequired: function(e, id){
-            $.post(urlSetRequiredCCAB + "/" + id, function(r){
+            $.post(urlSetRequiredCCAB + "/" + id+"/"+parseInt($(e).val()), function(r){
                 if(r){
-                    $(e).empty().text("Obrigatório");
+                    $(e).empty().append("<option value='0'>Não</option><option value='1' selected>Sim</option>");
                 }else{
-                    $(e).empty().text("Não Obrigatório");
+                    $(e).empty().append("<option value='0' selected>Não</option><option value='1'>Sim</option>");
                 }
             });
         },

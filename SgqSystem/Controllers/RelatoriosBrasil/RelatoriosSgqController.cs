@@ -4,6 +4,9 @@ using SgqSystem.ViewModels;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using Helper;
+using Dominio;
+using System.Linq;
+using System;
 
 namespace SgqSystem.Controllers
 {
@@ -29,7 +32,57 @@ namespace SgqSystem.Controllers
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult Scorecard()
         {
+            GetMetaAtualScorecard();
             return View(form);
+        }
+
+        private void GetMetaAtualScorecard()
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+                var atual = db.ParGoalScorecard.OrderByDescending(r => r.Id).FirstOrDefault();
+                if (atual != null)
+                {
+                    ViewBag.PercentValueMid = atual.PercentValueMid;
+                    ViewBag.PercentValueHigh = atual.PercentValueHigh;
+                }
+                else
+                {
+                    ViewBag.PercentValueMid = "70";
+                    ViewBag.PercentValueHigh = "99";
+                }
+            }
+        }
+
+        public ActionResult ScorecardConfig()
+        {
+            GetMetaAtualScorecard();
+            return View(new ParGoalScorecard());
+        }
+
+        [HttpPost]
+        public ActionResult ScorecardConfig(ParGoalScorecard parGoalScorecard)
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+                parGoalScorecard.InitDate = DateTime.Now;
+                db.ParGoalScorecard.Add(parGoalScorecard);
+                db.SaveChanges();
+
+                var atual = db.ParGoalScorecard.OrderByDescending(r => r.Id).FirstOrDefault();
+                if (atual != null)
+                {
+                    ViewBag.PercentValueMid = atual.PercentValueMid;
+                    ViewBag.PercentValueHigh = atual.PercentValueHigh;
+                }
+                else
+                {
+                    ViewBag.PercentValueMid = "70";
+                    ViewBag.PercentValueHigh = "99";
+                }
+            }
+
+            return View(parGoalScorecard);
         }
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]

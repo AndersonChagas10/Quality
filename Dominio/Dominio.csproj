@@ -398,6 +398,9 @@
     <Compile Include="ParGoal.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ParGoalScorecard.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ParHeaderField.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>

@@ -198,6 +198,13 @@
         <AssociationConnector Association="SgqDbModel.FK_RoleJBS_ScreenComponent" />
         <AssociationConnector Association="SgqDbModel.FK_RoleSGQ_ScreenComponent" />
         <AssociationConnector Association="SgqDbModel.FK_ScreenComponent_RoleType" />
+        <EntityTypeShape EntityType="SgqDbModel.ParGoalScorecard" Width="1.5" PointX="13.375" PointY="9.75" />
+        <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_CollectionLevel2" />
+        <AssociationConnector Association="SgqDbModel.FK_CorrectiveAction_CollectionLevel2" />
+        <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel11" />
+        <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_CollectionLevel2" />
+        <AssociationConnector Association="SgqDbModel.FK_CorrectiveAction_CollectionLevel2" />
+        <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel11" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

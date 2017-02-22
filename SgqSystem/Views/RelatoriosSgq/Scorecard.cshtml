@@ -54,6 +54,10 @@
             $('#divTable').hide();
             EasyAjax(url1, enviar, GerarTabela, "load", toggle);//AJAX
         };
+
+        var limitesMid = @Html.Raw(Json.Encode(ViewBag.PercentValueMid));
+        var limitesHigh = @Html.Raw(Json.Encode(ViewBag.PercentValueHigh));
+
         function GerarTabela(retornoArray) {
             $('#divTable').show();
 
@@ -67,10 +71,10 @@
                     { title: "AV", mData: "AV" },
                     { title: "NC/C", mData: "NC" },
                     { title: "Critério", mData: "CriterioName" },
-                    { title: "Pontos", mData: "Pontos" },
+                    { title: "Pontos", mData: "PontosIndicador" },
                     { title: "Meta %", mData: "Meta" },
                     { title: "Real %", mData: "Real" },
-                    { title: "Pontos Ating.", mData: "PontosAtingidos" },
+                    { title: "Pontos Ating.", mData: "PontosAtingidosIndicador" },
                     { title: "Scorecard", mData: "Scorecard" },
                 ],
                 destroy: true,
@@ -97,17 +101,14 @@
                 },
                 createdRow: function (row, data, index) {
 
-
-                  
-
                     if (data["Scorecard"] > 99 || (data["CriterioName"] == 'Maior' && (data["AV"] == 0 && data["NC"] == 0))) {
                         // green
                         $('td', row).eq(12).css("background-color", '#33FF33');
-                    } else if (data["Scorecard"] < 70) {
+                    } else if (data["Scorecard"] < parseInt(limitesMid)) {
                         // red
                         $('td', row).eq(12).css("background-color", '#FF6666');
                     }
-                    else if (data["Scorecard"] < 99) {
+                    else if (data["Scorecard"] < parseInt(limitesHigh)) {
                         $('td', row).eq(12).css("background-color", 'yellow');
                     }
 
@@ -144,7 +145,7 @@
                     },
                     {
                         extend: 'excelHtml5',
-                        
+
                         exportOptions: {
                             columns: ':visible'
                         }
@@ -158,6 +159,7 @@
             );
 
         }
+
         function ValidaDadosParaEnvio() {
             GuardJs.resetForValidation();
             GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
