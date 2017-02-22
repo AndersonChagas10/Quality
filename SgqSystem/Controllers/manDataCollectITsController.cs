@@ -11,6 +11,7 @@ using System;
 using DTO.DTO.Manutencao;
 using System.Collections.Generic;
 using Helper;
+using System.Web;
 
 namespace SgqSystem.Controllers
 {
@@ -163,9 +164,31 @@ namespace SgqSystem.Controllers
         public ActionResult Create2()
         {
 
+            string role = "";
+
+            if (Request.Cookies["webControlCookie"] != null)
+            {
+                //HttpCookieCollection cookie = Request.Cookies["webControlCookie"];
+                
+                if (Request.Cookies["webControlCookie"]["roles"] != null)
+                {
+                    role = Request.Cookies["webControlCookie"]["roles"];
+
+                    //colocar diferente != depois de testar
+                    if (role != "somentemanutencao-sgq,adminManutencao")
+                    {
+                        ViewBag.DataRole = true;
+                    }else
+                        ViewBag.DataRole = false;
+
+                }
+                
+            }
+
             return View(new ManDataCollectIT() { AmountData = 0 });
         }
     }
+
 }
 
 
