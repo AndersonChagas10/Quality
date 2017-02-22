@@ -179,6 +179,7 @@ namespace SgqSystem.Controllers
                     {
                         ViewBag.DataRole = false;
                     }else
+                        //Colocar true pra filtar
                         ViewBag.DataRole = false;
 
                 }
