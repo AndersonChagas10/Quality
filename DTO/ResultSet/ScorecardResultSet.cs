@@ -24,9 +24,11 @@ public class ScorecardResultSet
     public decimal? NC { get; set; }
 
     public decimal? Pontos { get; set; }
+    public decimal? PontosIndicador { get; set; }
     public decimal? Meta { get; set; }
     public decimal? Real { get; set; }
     public decimal? PontosAtingidos { get; set; }
+    public decimal? PontosAtingidosIndicador { get; set; }
     public decimal? Scorecard { get; set; }
 
     public string SelectScorecard(DateTime dtInicio, DateTime dtFim, int unidadeId)
