@@ -27,13 +27,13 @@
                                    , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParConsolidationType_Id, null, new { @class = "text-danger" }))
                             @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, info: Resources.Resource.frequency_popover, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
                         </tr>
-                        <tr class="row hide">
+                        <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasSaveLevel2, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.save_button_on_level2), Table.PosicaoLabel.left, null, Resources.Resource.save_button_on_level2_popover)
                             <td>
                                 <p style="color:red; font-weight:bold;">ERRO!</p>
                             </td>
                         </tr>
-                        <tr class="row hide">
+                        <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasNoApplicableLevel2, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.not_applicable_on_level_2), Table.PosicaoLabel.left, null, Resources.Resource.not_applicable_on_level_2_popover)
                             <td>
                                 <p style="color:red; font-weight:bold;">ERRO!</p>
@@ -263,8 +263,9 @@
                                                     <th style="width:20%">Nome</th>
                                                     <th style="width:15%">Tipo</th>
                                                     <th style="width:10%">Preview</th>
-                                                    <th style="width:15%"></th>
-                                                    <th style="width:20%">Padrão</th>
+                                                    <th style="width:5%"></th>
+                                                    <th style="width:15%">Obrigatório</th>
+                                                    <th style="width:15%">Padrão</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -336,24 +337,28 @@
                                                             }
                                                             <td>
                                                                 <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
-                                                                <button type="button" id="required"class="btn btn-danger btn-xs" onclick="Cabecalhos.SetRequired($(this), @parLevel1XHeaderField.ParHeaderField.Id);">
+                                                            </td>
+                                                            <td>   
+                                                                <select id="parLevel1XHeaderField_ParHeaderField_IsRequired" class="form-control input-sm" onchange="Cabecalhos.SetRequired($(this), @parLevel1XHeaderField.ParHeaderField.Id);">
                                                                     @if (parLevel1XHeaderField.ParHeaderField.IsRequired != null)
                                                                     {
                                                                         if (parLevel1XHeaderField.ParHeaderField.IsRequired.Value)
                                                                         {
-                                                                            @Html.Label("Obrigatório")
+                                                                            <option value="0">Não</option>
+                                                                            <option value="1" selected>Sim</option>
                                                                         }
                                                                         else
                                                                         {
-                                                                            @Html.Label("Não Obrigatório")
+                                                                            <option value="0" selected>Não</option>
+                                                                            <option value="1">Sim</option>
                                                                         }
                                                                     }
                                                                     else
                                                                     {
-                                                                            @Html.Label("Não Obrigatório")
+                                                                        <option value="0" selected>Não</option>
+                                                                        <option value="1">Sim</option>
                                                                     }
-                                                                </button>
-
+                                                                </select>
                                                             </td>
                                                             <td>
                                                                 @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
@@ -519,11 +524,11 @@
             });
         },
         SetRequired: function(e, id){
-            $.post(urlSetRequiredCCAB + "/" + id, function(r){
+            $.post(urlSetRequiredCCAB + "/" + id+"/"+parseInt($(e).val()), function(r){
                 if(r){
-                    $(e).empty().text("Obrigatório");
+                    $(e).empty().append("<option value='0'>Não</option><option value='1' selected>Sim</option>");
                 }else{
-                    $(e).empty().text("Não Obrigatório");
+                    $(e).empty().append("<option value='0' selected>Não</option><option value='1'>Sim</option>");
                 }
             });
         },

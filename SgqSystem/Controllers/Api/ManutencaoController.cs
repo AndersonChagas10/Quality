@@ -315,7 +315,6 @@ namespace SgqSystem.Controllers.Api
             return lista;
         }
 
-
         [HttpPost]
         [Route("getSelectGraficoEvolutivoPorUnidade/{dataIni}/{dataFim}/{meses}/{anos}/{unidade}/{regFiltro}")]
         public List<Uni> getSelectGraficoEvolutivoPorUnidade(string dataIni, string dataFim, string meses, string anos, string unidade, string regFiltro)

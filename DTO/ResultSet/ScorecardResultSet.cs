@@ -24,15 +24,18 @@ public class ScorecardResultSet
     public decimal? NC { get; set; }
 
     public decimal? Pontos { get; set; }
+    public decimal? PontosIndicador { get; set; }
     public decimal? Meta { get; set; }
     public decimal? Real { get; set; }
     public decimal? PontosAtingidos { get; set; }
+    public decimal? PontosAtingidosIndicador { get; set; }
     public decimal? Scorecard { get; set; }
 
-    public string SelectScorecard(DateTime dtInicio, DateTime dtFim, int unidadeId)
+    public string getSQLScorecard(DateTime dtInicio, DateTime dtFim, int unidadeId)
     {
+        string sql = "";
 
-        return "\n SELECT " +
+        sql = "\n SELECT " +
 
         "\n   Cluster " +
         "\n , ClusterName " +
@@ -117,7 +120,7 @@ public class ScorecardResultSet
                 "\n              WHERE NA = 'NA'" +
                 "\n          )) ELSE" +
 
-               
+
                 "\n  CASE WHEN CT.Id IN (1,2) THEN SUM(CL1.WeiEvaluation) WHEN CT.Id = 3 THEN SUM(CL1.EvaluatedResult) END END AS AV " +
                 "\n , CASE WHEN CT.Id IN (1,2) THEN SUM(CL1.WeiDefects) WHEN CT.Id = 3 THEN SUM(CL1.DefectsResult) END      AS NC " +
                 "\n , L1C.Points AS Pontos " +
@@ -496,6 +499,91 @@ public class ScorecardResultSet
             "\n  AND L1.Id <> 25 " +
             "\n  AND L1.Id NOT IN (SELECT CCC.ParLevel1_Id FROM ConsolidationLevel1 CCC WHERE CCC.UnitId = " + unidadeId + "                                                                 " +
             "\n  AND CCC.ConsolidationDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59')                                             ";
+
+        return sql;
+    }
+
+    public string SelectScorecard(DateTime dtInicio, DateTime dtFim, int unidadeId)
+    {
+
+        DateTime _dtIni = dtInicio;
+        DateTime _dtFim = dtFim;
+
+        DateTime _novaDataIni = _dtIni;
+        DateTime _novaDataFim = _dtIni;
+
+        int numMeses = (12 * (_dtFim.Year - _dtIni.Year) + _dtFim.Month - _dtIni.Month) + 1;
+
+        var sql = "SELECT " +
+
+        "\n   Cluster " +
+        "\n , ClusterName " +
+        "\n , Regional " +
+        "\n , RegionalName " +
+        "\n , ParCompanyId " +
+        "\n , ParCompanyName " +
+        "\n , TipoIndicador " +
+        "\n , TipoIndicadorName " +
+        "\n , Level1Id " +
+        "\n , Level1Name " +
+        "\n , Criterio " +
+        "\n , CriterioName " +
+        "\n , SUM(AV) AS AV " +
+        "\n , SUM(NC) AS NC " +
+        "\n , SUM(Pontos) AS Pontos " +
+        "\n , Meta " +
+        "\n , CASE WHEN SUM(AV) = 0 THEN 0 ELSE ROUND(SUM(NC) / SUM(AV) * 100,2) END Real " +
+        "\n , SUM(PontosAtingidos) AS PontosAtingidos " +
+        "\n , CASE WHEN SUM(Pontos) = 0 THEN 0 ELSE ROUND(SUM(PontosAtingidos) / SUM(Pontos) * 100, 0) END AS Scorecard " +
+        "\n FROM ( \n ";
+
+        for (int i = 0; i < numMeses; i++)
+        {
+
+            if (i > 0)
+            {
+                sql += "\n UNION ALL \n";
+
+                _novaDataIni = new DateTime(_novaDataIni.AddMonths(1).Year, _novaDataIni.AddMonths(1).Month, 1);
+
+            }
+
+            _novaDataFim = new DateTime(_novaDataIni.Year, _novaDataIni.Month, DateTime.DaysInMonth(_novaDataIni.Year, _novaDataIni.Month));
+
+            if(i == numMeses - 1)
+            {
+                _novaDataFim = _dtFim;
+            }
+            
+            sql += getSQLScorecard(_novaDataIni, _novaDataFim, unidadeId);
+        }
+
+        sql += " ) A " +
+        "\n GROUP BY " +
+        "\n   Cluster " +
+        "\n , ClusterName " +
+        "\n , Regional " +
+        "\n , RegionalName " +
+        "\n , ParCompanyId " +
+        "\n , ParCompanyName " +
+        "\n , TipoIndicador " +
+        "\n , TipoIndicadorName " +
+        "\n , Level1Id " +
+        "\n , Level1Name " +
+        "\n , Criterio " +
+        "\n , CriterioName " +
+        //"\n , AV " +
+        //"\n , NC " +
+        //"\n , Pontos " +
+        "\n , Meta " +
+        //"\n , Real " +
+        //"\n , PontosAtingidos " +
+        //"\n , Scorecard " +
+        "";
+
+        
+        return sql;
+
     }
 
 }

@@ -67,10 +67,10 @@
                     { title: "AV", mData: "AV" },
                     { title: "NC/C", mData: "NC" },
                     { title: "Critério", mData: "CriterioName" },
-                    { title: "Pontos", mData: "Pontos" },
+                    { title: "Pontos", mData: "PontosIndicador" },
                     { title: "Meta %", mData: "Meta" },
                     { title: "Real %", mData: "Real" },
-                    { title: "Pontos Ating.", mData: "PontosAtingidos" },
+                    { title: "Pontos Ating.", mData: "PontosAtingidosIndicador" },
                     { title: "Scorecard", mData: "Scorecard" },
                 ],
                 destroy: true,
@@ -96,9 +96,6 @@
                     }, 100);
                 },
                 createdRow: function (row, data, index) {
-
-
-                  
 
                     if (data["Scorecard"] > 99 || (data["CriterioName"] == 'Maior' && (data["AV"] == 0 && data["NC"] == 0))) {
                         // green

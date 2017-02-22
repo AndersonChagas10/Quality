@@ -12,22 +12,29 @@ namespace PlanoAcaoCore
         public DateTime AddDate { get; set; }
         public DateTime AlterDate { get; set; }
 
-        private static string catalog { get { return "PlanoDeAcao"; } }
-        private static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
-        private static string user { get { return "sa"; } }
-        private static string pass { get { return "1qazmko0"; } }
+        protected static string catalog { get { return "PlanoDeAcao"; } }
+        protected static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
+        protected static string user { get { return "sa"; } }
+        protected static string pass { get { return "1qazmko0"; } }
 
-        public int Update(SqlCommand cmd)
+        protected int Update(SqlCommand cmd)
         {
             using (var db = new Factory(dataSource, catalog, pass, user))
                 return db.InsertUpdateData(cmd);
         }
 
-        public int Salvar(SqlCommand cmd)
+        protected int Salvar(SqlCommand cmd)
         {
             using (var db = new Factory(dataSource, catalog, pass, user))
                 return db.InsertUpdateData(cmd);
             
+        }
+
+        protected static int SalvarStatic(SqlCommand cmd)
+        {
+            using (var db = new Factory(dataSource, catalog, pass, user))
+                return db.InsertUpdateData(cmd);
+
         }
 
         protected static List<T> ListarGenerico<T>(string query)
@@ -46,6 +53,23 @@ namespace PlanoAcaoCore
 
             return objReturn;
 
+        }
+
+        public static int GenericInsert(string valor, string table)
+        {
+            string query;
+
+            query = " INSERT INTO [dbo].[" + table + "]           " +
+                    "\n       ([Name])                             " +
+                    "\n VALUES                                     " +
+                    "\n       (@Name)                              " +
+                    "\n       SELECT CAST(scope_identity() AS int) ";
+
+            SqlCommand cmd;
+            cmd = new SqlCommand(query);
+            cmd.Parameters.AddWithValue("@Name", valor);
+
+            return SalvarStatic(cmd);
         }
 
     }

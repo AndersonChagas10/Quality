@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
+    <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+    @Styles.Render("~/Content/Tables")
+    @Styles.Render("~/Content/select2css")
+
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
@@ -36,7 +40,44 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+
+    @Scripts.Render("~/bundles/ScriptTables")
+    @Scripts.Render("~/bundles/select2js")
+
+    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+    <script src="~/Scripts/locales/bootstrap-datepicker.pt-BR.min.js"></script>
     @*<script src="~/Scripts/GuardJs.js"></script>*@
+    <script src="~/Scripts/jquery.moneymask.js"></script>
+
+    <script src="~/Scripts/loadingoverlay.min.js"></script>
+    <script src="~/Scripts/loadingoverlay_progress.min.js"></script>
+
     @RenderSection("scripts", required: false)
+
+    <script>
+
+        /*
+            http://plentz.github.io/jquery-maskmoney/
+        */
+        $(".money").maskMoney({ prefix: 'R$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: false })
+
+        /*
+            https://bootstrap-datepicker.readthedocs.io/en/latest/
+            https://uxsolutions.github.io/bootstrap-datepicker/?markup=input&format=&weekStart=&startDate=0&endDate=&startView=0&minViewMode=0&maxViewMode=4&todayBtn=linked&clearBtn=false&language=pt-BR&orientation=auto&multidate=false&multidateSeparator=&todayHighlight=on&keyboardNavigation=on&forceParse=on#sandbox
+        */
+        function InitDatePiker() {
+            $('.datepicker').datepicker({
+                startDate: 0,
+                todayBtn: "linked",
+                language: "pt-BR",
+                multidate: false,
+                todayHighlight: true
+            });
+        }
+        $(document).ready(function () {
+            InitDatePiker();
+        })
+    </script>
+
 </body>
 </html>
