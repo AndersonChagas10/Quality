@@ -99,7 +99,7 @@ namespace DTO.Helpers
             return retorno;
         }
 
-        internal static void ParseDateToSql(string date, ref DateTime _dtvalue)
+        public static void ParseDateToSql(string date, ref DateTime _dtvalue)
         {
             if (GlobalConfig.Brasil)
                 DateTime.TryParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
@@ -107,6 +107,21 @@ namespace DTO.Helpers
                 DateTime.TryParseExact(date, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
         }
 
+        public static DateTime ParseDateToSqlV2(string date)
+        {
+            if (string.IsNullOrEmpty(date))
+                return DateTime.Now;
+
+            var _dtvalue = DateTime.Now;
+            if (GlobalConfig.Brasil)
+                DateTime.TryParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
+            else if (GlobalConfig.Eua)
+                DateTime.TryParseExact(date, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
+
+            return _dtvalue;
+        }
+
+        
         public static string ConverteValorCalculado(decimal valorDecimal)
         {
 

@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Manutenção";
-    var urlKPI = Url.Action("Index", "Manutencao");
+    var urlVisaoGeral = Url.Action("Index", "Manutencao");
     var urlPainelIndicadoresUniManutencao = Url.Action("PainelIndicadoresUniManutencao", "ManPainelGestao");
     var urlColeta = Url.Action("Create2", "manDataCollectITs");
 }
@@ -279,7 +279,7 @@
 
                     <ul id="nav">
 
-                        <li><a href="#">Visão Geral da Área</a>
+                        <li><a href="@urlVisaoGeral">Visão Geral da Área</a>
 
                         <li><a href="#">Elaboração Plano de Ação</a></li>
                     </ul>
@@ -317,7 +317,7 @@
                         <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
 
                         <ul id="nav">
-                            <li><a href="@urlKPI">Visão KPI</a>
+                            @*<li><a href="#">Visão KPI</a></li>*@
 
                             <li><a href="@urlPainelIndicadoresUniManutencao">Visão Painel</a></li>
                         </ul>

@@ -1,18 +1,131 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
 }
 
-<h2>Plano de Ação</h2>
+<style>
 
+    .modal-header .btnGrp {
+              position: absolute;
+              top: 8px;
+              right: 10px;
+          }
+
+
+          .min {
+              width: 250px;
+              height: 35px;
+              overflow: hidden !important;
+              padding: 0px !important;
+              margin: 0px;
+              float: left;
+              position: static !important;
+          }
+
+          .min .modal-dialog, .min .modal-content {
+              height: 100%;
+              width: 100%;
+              min-width: 70%;
+              align-self: center;
+              margin: 0px !important;
+              padding: 0px !important;
+          }
+
+          .modal-dialog {
+              width: 80% !important;
+          }
+
+          .min .modal-header {
+              height: 100%;
+              width: 100%;
+              margin: 0px !important;
+              padding: 3px 5px !important;
+          }
+
+          .display-none {
+              display: none;
+          }
+
+          button .fa {
+              font-size: 16px;
+              margin-left: 10px;
+          }
+
+          .min .fa {
+              font-size: 14px;
+          }
+
+          .min .menuTab {
+              display: none;
+          }
+
+          button:focus {
+              outline: none;
+          }
+
+          .minmaxCon {
+              height: 35px;
+              bottom: 1px;
+              left: 1px;
+              position: fixed;
+              right: 1px;
+              z-index: 9999;
+          }
+
+</style>
+
+<h2>Plano de Ação</h2>
+@*
+    <table data-ng-app="myApp" class="nowrap .col-md-6 .col-md-offset-3" style="width: 100%;">
+        <tbody data-ng-controller="MainCtrl">
+            <tr>
+                <td>
+                    <span class="control-label ">Causa Generica</span>
+                </td>
+                <td>
+                    <select data-ng-model="CausaGenericaValue"
+                            data-ng-options="s.Id as s.CausaGenerica for s in CausaGenerica"
+                            data-ng-change="CausaGenericaChange();" class="form-control input-sm">
+                        <option value="">Selecione...</option>
+                    </select>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="control-label ">Grupo causa</span>
+                </td>
+                <td>
+                    <select data-ng-model="GrupoCausaValue"
+                            data-ng-options="s.Id as s.GrupoCausa for s in GrupoCausa"
+                            data-ng-change="GrupoCausaChange();" class="form-control input-sm">
+                        <option value="">Selecione...</option>
+                    </select>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="control-label ">Contramedida generica</span>
+                </td>
+                <td>
+                    <select data-ng-model="ContramedidaGenericaValue"
+                            data-ng-options="s.Id as s.ContramedidaGenerica for s in ContramedidaGenerica"
+                            data-ng-change="" class="form-control input-sm">
+                        <option value="">Selecione...</option>
+                    </select>
+                </td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>*@
 <div>
-    <button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="ModalOpcoesEstrategico(); TaticoClicked(false);">
+    <button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="Clicked(false, false); ModalOpcoesEstrategico(); ">
         Planejamento Estratégico
     </button>
-    <button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="ModalOpcoesEstrategico(); TaticoClicked(true);">
+    <button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="Clicked(true, false); ModalOpcoesEstrategico(); ">
         Planejamento Tático
     </button>
-    <button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="ModalOperacional(true); TaticoClicked(false);">
+    <button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="Clicked(false, true); ModalOpcoesEstrategico(true); ">
         Planejamento Operacional
     </button>
     <button type="button" onclick="Relatorios();" class="btn btn-primary">
@@ -20,66 +133,218 @@
     </button>
 </div>
 
-<div>
-    <table id="paTable">
+<hr />
 
-    </table>
+<div>
+    <table id="paTable" class="table-striped dt-body-justify dt-body-nowrap"></table>
 </div>
 
-<div class="modal fade" id="modalLindo" tabindex="-1" role="dialog" aria-labelledby="modalBuscarCabecalhoLabel" data-backdrop="static">
-    <div class="modal-dialog" role="document">
+<div class="container">
+    <div class="modal fade" id="modalLindo" tabindex="-1" role="dialog" aria-labelledby="" data-backdrop="static">
+        <div class="modal-dialog" style="max-width:685px;" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="times">&times;</span></button>
+                    <button class="close modalMinimize"><span aria-hidden="true" class="minus">&minus;</span></button>
+
+
+                    <h4 class="modal-title" id="Header">ID: Header</h4>
+                </div>
+                <div class="modal-body" id="body">
+                    ID: Body
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default" id="Fechar" onclick="Clicked(false, false);" data-dismiss="modal" style="display:none">Fechar</button>
+                    <button type="button" class="btn btn-default" id="Fechar2" onclick="" style="display:none">Fechar</button>
+                    <button type="button" class="btn btn-primary" id="Selecionar" onclick="" style="display:none" disabled>Selecionar</button>
+                    <button type="button" class="btn btn-primary" id="Salvar" onclick="" style="display:none">Salvar</button>
+                    <button type="button" class="btn btn-info" id="BuscarPlanejamentos" onclick="BuscarPlanejamentos();">Buscar Planejamento</button>
+                    <button type="button" class="btn btn-success" id="NovoPlanejamento" onclick="NovoPlanejamento();" data-toggle="modal" style="display:none"> Novo Planejamento</button>
+                    <button type="button" class="btn btn-primary" id="NovaAcao" onclick="Clicked(isTaticoClicked, isNovaAcao); ModalAcao(true);" style="display:none">Nova Ação</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="modalNovo" tabindex="-1" role="dialog" aria-labelledby="">
+    <div class="modal-dialog" id="" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="times">&times;</span></button>
-                <button type="button" class="close modalMinimize" aria-label="Minimizar"><span aria-hidden="true" class="minus">&minus;</span></button>
-                <h4 class="modal-title" id="Header">ID: Header</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="times">×</span></button>
+                <button type="button" class="close modalMinimize" aria-label="Minimizar"><span aria-hidden="true" class="minus">−</span></button>
+                <h4 class="modal-title" id="novoHeader"></h4>
             </div>
-            <div class="modal-body" id="body">
-              ID: Body
+            <div class="modal-body" id="novoBody">
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="newItem">
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
-                
-                <button type="button" class="btn btn-default" id="Fechar" onclick="" data-dismiss="modal" style="display:none">Fechar</button>
-                <button type="button" class="btn btn-default" id="Fechar2"  onclick=""  style="display:none">Fechar</button>
-                <button type="button" class="btn btn-primary" id="Selecionar" onclick="" style="display:none" disabled >Selecionar</button>
-                <button type="button" class="btn btn-primary" id="Salvar" onclick="" style="display:none" disabled>Salvar</button>
-                <button type="button" class="btn btn-info" id="BuscarPlanejamentos" onclick="BuscarPlanejamentos();">Buscar Planejamento</button>
-                <button type="button" class="btn btn-success" id="NovoPlanejamento" onclick="NovoPlanejamento();" data-toggle="modal" style="display:none"> Novo Planejamento</button>
-                <button type="button" class="btn btn-primary" id="NovaAcao" onclick="ModalOperacional(false);" style="display:none">Nova Ação</button>
-
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" onclick="SalvarNovo();">Salvar</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal-dialog" id="modalNovo" role="document" style="display:none">
-    <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="times">×</span></button>
-            <button type="button" class="close modalMinimize" aria-label="Minimizar"><span aria-hidden="true" class="minus">−</span></button>
-            <h4 class="modal-title" id="novoHeader"></h4>
-        </div>
-        <div class="modal-body" id="novoBody">
-            <form>
-                <div class="form-group">
-                    <label for="recipient-name" id="novoLabel" class="control-label"></label>
-                    <input type="text" class="form-control" id="adicionar">
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-            <button type="button" class="btn btn-primary" onclick="SalvarNovo();">Salvar</button>
-        </div>
-    </div>
-</div>
+<div class="minmaxCon"></div>
+
+<script src="~/Scripts/angular.min.js"></script>
 
 @section Scripts {
-  
 
     <script>
+        /*
+  START ANGULAR MODULE
+  */
 
+        var GETCausaGenerica = '@Url.Action("GETCausaGenerica", "api/Pa_Acao")';
+        var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "api/Pa_Acao")';
+        var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "api/Pa_Acao")';
+        /*
+        //Defining a module
+        var myApp = angular.module('myApp', []);
+        //Defining a Controller
+        myApp.controller('MainCtrl', ['$scope', '$http',
+            function ($scope, $http) {
+                //Defining the $http service for getting the Level1 2 and 3 by default
+                $http({
+                    method: 'POST',
+                    url: GETCausaGenerica
+                }).
+                then(function (r) {
+                    $scope.CausaGenerica = r.data;
+                });
+
+                $http({
+                    method: 'POST',
+                    url: GETGrupoCausa + "/0"
+                }).
+                then(function (r) {
+                    $scope.GrupoCausa = r.data;
+                });
+
+                $http({
+                    method: 'POST',
+                    url: GETContramedidaGenerica + "/0"
+                }).
+                then(function (r) {
+                    $scope.ContramedidaGenerica = r.data;
+                });
+
+                //Defining the $http service for getting Level2 By Level1
+                $scope.CausaGenericaChange = function () {
+
+                    var url = GETGrupoCausa;
+                    if ($scope.CausaGenericaValue) {
+                        url += "/" + $scope.CausaGenericaValue;
+                    } else {
+                        url += "/0";
+                    }
+
+                    $http({
+                        method: 'POST',
+                        url: url
+                        //data: JSON.stringify({ Id: $scope.level1Value })
+                    }).
+                    then(function (r) {
+                        $scope.GrupoCausa = r.data;
+                    });
+
+                }
+
+                /*$scope.GetListLevel3VinculadoLevel2 = function () {
+                    //Defining the $http service for getting Level3 By Level2
+                    if ($scope.level2Value && !$scope.level1Value) {
+                        $http({
+                            method: 'POST',
+                            url: GetListLevel3VinculadoLevel2 + "/" + $scope.level2Value,
+                            //data: JSON.stringify({ Id: $scope.level2Value })
+                        }).
+                        then(function (r) {
+                            $scope.level3 = r.data;
+                        });
+                    }
+                    //Defining the $http service for getting Level3 By Level2 and Level1
+                    else if  ($scope.level2Value && $scope.level1Value) {
+                        $http({
+                            method: 'POST',
+                            url: GetListLevel3VinculadoLevel2Level1 + "/" + $scope.level1Value + "/" + $scope.level2Value,
+                            //data: JSON.stringify({ Id:  } + { Id:  })
+                        }).
+                        then(function (r) {
+                            $scope.level3 = r.data;
+                        });
+                    }
+                    else {
+                        $http({
+                            method: 'POST',
+                            url: GetListLevel3
+                        }).
+                       then(function (r) {
+                           $scope.level3 = r.data;
+                       });
+                    }
+                }
+        }]);
+        */
+        /*
+            END ANGULAR MODULE
+        */
+
+        /*Btn Minimizar Modal*/
+        $(document).ready(function () {
+
+            var $content, $modal, $apnData, $modalCon;
+            $content = $(".min");
+
+            //To fire modal
+            $(".mdlFire").click(function (e) {
+                e.preventDefault();
+                var $id = $(this).attr("data-target");
+                $($id).modal({ backdrop: false, keyboard: false });
+            });
+
+
+            $(".modalMinimize").on("click", function () {
+
+                $modalCon = $(this).closest(".modal").attr("id");
+
+                $apnData = $(this).closest(".modal");
+
+                $modal = "#" + $modalCon;
+
+                $(".modal-backdrop").addClass("display-none");
+
+                $($modal).toggleClass("min");
+
+                if ($($modal).hasClass("min")) {
+                    $(".minmaxCon").append($apnData);
+                    ///$(this).find("i").toggleClass('fa-minus').toggleClass('fa-clone');
+                } else {
+                    $("body").append($apnData);
+                    ///$(this).find("i").toggleClass('fa-clone').toggleClass('fa-minus');
+                };
+            });
+
+            $("button[data-dismiss='modal']").click(function () {
+                $(this).closest(".modal").removeClass("min");
+                $(".container").removeClass($apnData);
+                //$(this).next('.modalMinimize').find("i").removeClass('fa fa-clone').addClass( 'fa fa-minus');
+            });
+
+        });
+        /*FIM Btn Minimizar Modal*/
+
+        var planejamentoCorrentId = 0;
         var isTaticoClicked = false;
+        var isNovaAcao = false;
         $.fn.serializeObject = function () {
             var o = {};
             var a = this.serializeArray();
@@ -99,23 +364,28 @@
         var urlModalOpcoesEstrategico = '@Url.Action("Details", "Pa_Planejamento")';
         var urlNovoPlanejamento = '@Url.Action("Index", "Pa_Planejamento")';
         var urlBuscarPlanejamentos = '@Url.Action("Buscar", "Pa_Planejamento")';
+        var urlFiltraPlanejamentos = '@Url.Action("Filtrar", "Pa_Planejamento")';
         var urlSalvarPlanejamento = '@Url.Action("Save", "api/Pa_Planejamento")';
-        var urlNovaAcao = '@Url.Action("", "")';
-        var urlSalvarAcao = '@Url.Action("", "")';
-        var urlSalvarNovo = '@Url.Action("", "")';
-        
-        function TaticoClicked(isClicked) {
-            isTaticoClicked = isClicked;
+        var urlNovaAcao = '@Url.Action("Index", "Pa_Acao")';
+        var urlSalvarAcao = '@Url.Action("Save", "api/Pa_Acao")';
+        var urlGetPlanejamentoAcao = '@Url.Action("GetPlanejamentoAcao", "api/Pa_Planejamento")';
+        var urlSalvarNovoItem = '@Url.Action("Save", "api/Generics")';
+
+        function Clicked(isClickedTatico, isClickedAcao) {
+            isTaticoClicked = isClickedTatico;
+            isNovaAcao = isClickedAcao;
         }
 
         /*Planejamento*/
-        function ModalOpcoesEstrategico(idPlanejamento) {//Pos Modal1
-            $('#modalLindo').modal();
-            $('#Header').html("Planejamento");
-            if (!idPlanejamento) {
+        function ModalOpcoesEstrategico() {//Pos Modal1
 
-                $.get(urlModalOpcoesEstrategico, { id: idPlanejamento }, function (r) {
+            $('#modalLindo').modal();
+            $('#modalLindo').find('.modal-body').empty()
+            $('#Header').html("Planejamento");
+            if (planejamentoCorrentId > 0) {
+                $.get(urlModalOpcoesEstrategico, { id: planejamentoCorrentId }, function (r) {
                     $('#modalLindo').find('.modal-body').empty().append(r);
+                    $('#NovaAcao').show();
                 });
 
             } else {
@@ -129,18 +399,26 @@
 
             $('#BuscarPlanejamentos').show();
 
-            $('#NovoPlanejamento').show();
+            if (!isNovaAcao) {
+                $('#NovoPlanejamento').show();
+            }
 
+            //$('#NovaAcao').attr('disabled', true);
             $('#NovaAcao').show();
             /*Fim Botões*/
 
         }
 
         function NovoPlanejamento() {//Pos Modal2
-            $('#Header').html("Novo Planejamento")
+            $('#Header').html("Novo Planejamento");
 
             $.get(urlNovoPlanejamento, function (r) {
                 $('#modalLindo').find('.modal-body').empty().append(r);
+                if (isTaticoClicked) {
+                    $('.novoItem ').hide();
+                } else {
+                    $('.novoItem ').show();
+                }
             });
 
             /*Botões*/
@@ -168,36 +446,73 @@
             $('#Fechar2').off('click').on('click', ModalOpcoesEstrategico);
 
             $('#Selecionar').show();
-            $('#Selecionar').off('click').on('click', SelecionarPlanejamento);
+            $('#Selecionar').prop('disabled', true);
+            $('#Selecionar').off('click');
             /*Fim Botões*/
-        }
-
-        function SelecionarPlanejamento() {
-            var id = 2;
-            ModalOpcoesEstrategico(id);
         }
 
         function SalvarPlanejamento() {
             var sendObj = $('#Planejamento').serializeObject();
             $.post(urlSalvarPlanejamento, sendObj, function (r) {
                 //console.log(r);
-                ModalOpcoesEstrategico(r.id);
+                planejamentoCorrentId = parseInt(r.Id);
+                ModalOpcoesEstrategico(r.Id);
             });
-        }
+        }/*planejamentoCorrentId*/
+
+        function FiltrarPlanejamento() {
+            $('#Selecionar').prop('disabled', true);
+            $('#Selecionar').off('click');
+
+            var filtro = {};
+            filtro["Diretoria_Id"] = $('#Diretoria_Id').val();
+            filtro["Gerencia_Id"] = $('#Gerencia_Id').val();
+            filtro["Coordenacao_Id"] = $('#Coordenacao_Id').val();
+            filtro["TemaAssunto_Id"] = $('#TemaAssunto_Id').val();
+            filtro["ObjetivoGerencial_Id"] = $('#ObjetivoGerencial_Id').val();
+            filtro["Indicadores_Id"] = $('#Indicadores_Id').val();
+
+            $.post(urlFiltraPlanejamentos, filtro, function (r) {
+                $('#planejamentosFiltrado').empty().append(r);
+                $('#planejamentosFiltrado > select').on('change', function (e) {
+                    if (e.currentTarget.selectedIndex > 0) {
+                        var id = $('#planejamentosFiltrado > select').val()
+                        $('#Selecionar').prop('disabled', false);
+                        $('#Selecionar').on('click', function () {
+                            planejamentoCorrentId = parseInt($('#planejamentosFiltrado > select').val());
+                            if (!isNovaAcao) {
+                                ModalOpcoesEstrategico();
+                            } else {
+                                ModalAcao();
+                            }
+                        });
+                    }
+                });
+            });
+
+            /*Interação com planejamentoCorrentId*/
+        }/*planejamentoCorrentId*/
         /*Fim Planejamento*/
 
         /*Acao*/
-        function ModalOperacional(isOpenModal) {
+        function ModalAcao(isOpenModal) {
+
+            if (!(planejamentoCorrentId > 0)) {
+                BuscarPlanejamentos(true);
+                return;
+            }
+
             if (isOpenModal)
                 $('#modalLindo').modal();
 
             $('#Header').html("Ação");
-
+            $('#modalLindo').find('.modal-body').empty()
             $.get(urlNovaAcao, function (r) {
-                $('#modalLindo').find('.modal-body').empty().append(r);
+                $('#modalLindo').find('.modal-body').append(r);
             });
 
             /*Botões*/
+            $('#modalLindo').find('.modal-footer button').hide()
             $('#Fechar').show();
 
             $('#Salvar').show();
@@ -207,24 +522,319 @@
 
         function SalvarAcao() {
             var sendObj = $('#Acao').serializeObject();
-            $.get(urlSalvarAcao, sendObj, function (r) {
-
+            sendObj['Planejamento_Id'] = planejamentoCorrentId;
+            $.post(urlSalvarAcao, sendObj, function (r) {
+                //planejamentoCorrentId = parseInt(r.Id);
+                //ModalOpcoesEstrategico(planejamentoCorrentId);
+                //$('#modalLindo').modal("hide");
             });
         }
         /*Fim Acao*/
 
         /*Novo item*/
-        function Novo() {
+        var tempInput;
+        var tempName;
+        function Novo(btn) {
+            tempInput = $(btn).parents('tr').find('input , select');
+            tempName = $(btn).parents('tr').find('input , select').attr('name');
+            var label = $(btn).parents('tr').find('label').html();
+            $('#newItem').val("");
             $('#modalNovo').modal();
+            $('#novoHeader').html("Incluir novo: " + label);
         }
 
-        function SalvarNovo(obj, value) {
-            var salvar = { "obj": obj, "value": par2 };
-            $.post(urlSalvarNovo, salvar, function () {
-                
+        function SalvarNovo() {
+            $.get(urlSalvarNovoItem + "/" + $('#newItem').val() + "/" + tempName.split('_Id')[0], {}, function (r) {
+                $(tempInput).append('<option value=' + r + '> ' + $('#newItem').val() + '</option>');
+                $(tempInput).val(r).change();
+                $('#modalNovo').modal('hide');
+                tempInput = undefined;
+                tempName = undefined;
             });
         }
         /*Fim Novo item*/
+
+        $(document).ajaxStart(function () {
+            $.LoadingOverlay("show");
+        });
+
+        $(document).ajaxStop(function () {
+            $.LoadingOverlay("hide");
+        });
+
+        /*Table*/
+        $(document).ready(function () {
+            $.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
+        });
+
+        function GerarTabela(retornoArray) {
+
+            console.log(retornoArray);
+
+            var table = $('#paTable').empty().DataTable({
+                data: retornoArray,
+                columns: [
+                    { title: "Iniciativa", mData: "Iniciativa" },
+                    { title: "Diretoria", mData: "Diretoria" },
+                    { title: "Gerência", mData: "Gerencia" },
+                    { title: "Coordenação", mData: "Coordenacao" },
+                    { title: "Missão", mData: "Missao" },
+                    { title: "Visão", mData: "Visao" },
+                    { title: "Dimenção", mData: "Dimensao" },
+                    { title: "Tema / Assunto", mData: "TemaAssunto" },
+                    { title: "Objetivo", mData: "Objetivo" },
+                    { title: "Indicadores", mData: "Indicadores" },
+                    { title: "Objetivo Gerencial", mData: "ObjetivoGerencial" },
+                    { title: "Valor de", mData: "ValorDe" },
+                    { title: "Valor para", mData: "ValorPara" },
+                    { title: "Data (Início)", mData: "_DataInicio" },
+                    { title: "Data (Fim)", mData: "_DataFim" },
+                    { title: "Indicador SGQ", mData: null },
+                    { title: "Monitoramento SGQ", mData: null },
+                    { title: "Tarefa SGQ", mData: null },
+                    { title: "Unidade", mData: "Acao.Unidade" },
+                    { title: "Departamento", mData: "Acao.Departamento" },
+                    { title: "Causa Genérica", mData: null },
+                    { title: "Grupo Causa", mData: null },
+                    { title: "Contramedida Genérica", mData: null },
+                    { title: "Causa Específica", mData: null },
+                    { title: "Contramedida Específica", mData: null },
+                    { title: "Quem", mData: "Acao._Quem" },
+                    { title: "Quando (Início)", mData: "Acao._QuandoInicio" },
+                    { title: "Duração", mData: "Acao.DuracaoDias" },
+                    { title: "Quando (Fim)", mData: "Acao._QuandoFim" },
+                    { title: "Como / Pontos importantes", mData: "Acao.ComoPontosimportantes" },
+                    { title: "Predecessora", mData: null },
+                    { title: "Pra que", mData: "Acao.PraQue" },
+                    { title: "Quanto custa", mData: "Acao.QuantoCusta" },
+                    { title: "Status", mData: "Acao.StatusName" },
+                    { title: "Prazo", mData: "Acao._Prazo" },
+                    { title: "Ação", mData: null, defaultContent: '<p><span class="glyphicon glyphicon-edit" style="cursor:pointer"><span style="color:white">__</span></span><span style="cursor:pointer" class="glyphicon glyphicon-list-alt"></span></p>' },
+                ],
+                fixedColumns: {
+                    leftColumns: 1,
+                    rightColumns: 2,
+                },
+                scrollX: true,
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
+                pageLength: 10,
+                responsive: true,
+                loadingRecords: true,
+                destroy: true,
+                info: true,
+                responsive: true,
+                columnDefs: [
+                    {
+                        targets: 0,
+                        visible: false
+                    },
+                    {
+                        targets: 1,
+                        visible: false
+                    },
+                    {
+                        targets: 2,
+                        visible: false
+                    },
+                    {
+                        targets: 3,
+                        visible: false
+                    },
+                    {
+                        targets: 4,
+                        visible: false
+                    },
+                    {
+                        targets: 5,
+                        visible: false
+                    },
+                    {
+                        targets: 6,
+                        visible: false
+                    },
+
+                    {
+                        targets: 8,
+                        visible: false
+                    },
+                    {
+                        targets: 9,
+                        visible: false
+                    },
+                    {
+                        targets: 10,
+                        visible: false
+                    },
+                    {
+                        targets: 11,
+                        visible: false
+                    },
+                    {
+                        targets: 12,
+                        visible: false
+                    },
+                    {
+                        targets: 13,
+                        visible: false
+                    },
+                    {
+                        targets: 14,
+                        visible: false
+                    },
+                    {
+                        targets: 15,
+                        visible: false
+                    },
+                    {
+                        targets: 16,
+                        visible: false
+                    },
+                    {
+                        targets: 17,
+                        visible: false
+                    },
+                    {
+                        targets: 19,
+                        visible: false
+                    },
+                    {
+                        targets: 23,
+                        visible: false
+                    },
+                    {
+                        targets: 24,
+                        visible: false
+                    },
+                    {
+                        targets: 27,
+                        visible: false
+                    },
+                    {
+                        targets: 30,
+                        visible: false
+                    },
+                    {
+                        targets: 31,
+                        visible: false
+                    },
+                    {
+                        targets: 32,
+                        visible: false
+                    },
+                ],
+                initComplete: function () {
+                    $('table > tbody > tr > td > p > span.glyphicon.glyphicon-edit').on('click', function (data, a, b) {
+                        var data = table.row($(this).parents('tr')).data();
+                        console.log(data);
+                        //$.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
+                        //    $('#estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
+                        //    $('#ResultLevel3_Id').val(r.Id);
+                        //    $('#changeConform').empty();
+                        //    $('#changeConform').append($(r.showIntervalos));
+                        //    $('#changeConform').append($(r.showConform));
+                        //    $('#changeConform').append($(r.showCalculado));
+                        //    $('#changeConform').append($(r.showNumeroDefeitos));
+                        //    console.log(r.Id);
+                        //});
+                    });
+
+                    $('table > tbody > tr > td > p > span.glyphicon.glyphicon-list-alt').on('click', function (data, a, b) {
+                        var data = table.row($(this).parents('tr')).data();
+                        console.log(data);
+
+
+                        //$.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
+                        //    $('#estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
+                        //    $('#ResultLevel3_Id').val(r.Id);
+                        //    $('#changeConform').empty();
+                        //    $('#changeConform').append($(r.showIntervalos));
+                        //    $('#changeConform').append($(r.showConform));
+                        //    $('#changeConform').append($(r.showCalculado));
+                        //    $('#changeConform').append($(r.showNumeroDefeitos));
+                        //    console.log(r.Id);
+                        //});
+                    });
+
+                },
+                language: {
+                    "sEmptyTable": "Nenhum registro encontrado",
+                    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLengthMenu": "_MENU_ resultados por página",
+                    "sLoadingRecords": "Carregando...",
+                    "sProcessing": "Processando...",
+                    "sZeroRecords": "Nenhum registro encontrado",
+                    "sSearch": "Pesquisar",
+                    "oPaginate": {
+                        "sNext": "Próximo",
+                        "sPrevious": "Anterior",
+                        "sFirst": "Primeiro",
+                        "sLast": "Último"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Ordenar colunas de forma ascendente",
+                        "sSortDescending": ": Ordenar colunas de forma descendente"
+                    }
+                },
+                createdRow: function (row, data, index) {
+
+
+                },
+                fnDrawCallback: function (data, d, o) {
+
+
+                }
+            });
+
+            new $.fn.dataTable.Buttons(table, {
+                buttons: [
+                    {
+                        extend: 'print',
+                        text: 'Imprimir',
+                        customize: function (win) {
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        },
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Excel',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                     {
+                         extend: 'pdf',
+                         text: 'PDF',
+                         exportOptions: {
+                             columns: ':visible'
+                         }
+                     },
+                      {
+                          extend: 'colvis',
+                          text: 'Colunas Visíveis',
+                          exportOptions: {
+                              columns: ':visible'
+                          }
+                      },
+                ]
+            });
+
+            table.buttons(0, null).container().prependTo(
+                table.table().container()
+            );
+
+        }
+        /*Fim Table*/
+
+
     </script>
 
 }
