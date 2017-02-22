@@ -531,10 +531,66 @@ public class ScorecardResultSet
         "\n , SUM(AV) AS AV " +
         "\n , SUM(NC) AS NC " +
         "\n , SUM(Pontos) AS Pontos " +
+        "\n , AVG(Pontos) AS PontosIndicador " +
         "\n , Meta " +
         "\n , CASE WHEN SUM(AV) = 0 THEN 0 ELSE ROUND(SUM(NC) / SUM(AV) * 100,2) END Real " +
         "\n , SUM(PontosAtingidos) AS PontosAtingidos " +
-        "\n , CASE WHEN SUM(Pontos) = 0 THEN 0 ELSE ROUND(SUM(PontosAtingidos) / SUM(Pontos) * 100, 0) END AS Scorecard " +
+        //"\n , CASE WHEN TipoIndicador = 1 THEN (CASE WHEN SUM(AV) = 0 OR Meta = 0 THEN 100 ELSE (SUM(NC) / SUM(AV) * 100) / Meta * 100 END AS Scorecard " +
+
+        
+
+        "\n , CASE WHEN " +
+        //ini Scorecard 
+
+        "\n ( " +
+        "\n CASE WHEN (" +
+        "\n  CASE WHEN TipoIndicadorName = 'Maior' THEN CASE WHEN SUM(AV) = 0 OR (SUM(NC) / SUM(AV) * 100) = 0 THEN 100 ELSE (SUM(NC) / SUM(AV) * 100) / Meta * 100 END " +
+        "\n  ELSE CASE WHEN SUM(AV) = 0 OR (SUM(NC) / SUM(AV) * 100) = 0 THEN 0 ELSE Meta / (SUM(NC) / SUM(AV) * 100) * 100 END END  " +
+        "\n ) > 100 THEN 100 ELSE " +
+        "\n  CASE WHEN TipoIndicadorName = 'Maior' THEN CASE WHEN SUM(AV) = 0 OR (SUM(NC) / SUM(AV) * 100) = 0 THEN 100 ELSE (SUM(NC) / SUM(AV) * 100) / Meta * 100 END " +
+        "\n  ELSE CASE WHEN SUM(AV) = 0 OR (SUM(NC) / SUM(AV) * 100) = 0 THEN 0 ELSE Meta / (SUM(NC) / SUM(AV) * 100) * 100 END END  " +
+        "\n END " +
+        "\n ) " +
+
+        //fim Scorecard 
+        "\n < 70 THEN 0 ELSE (CASE WHEN " +
+        //ini Scorecard 
+
+        "\n ( " +
+        "\n CASE WHEN (" +
+        "\n  CASE WHEN TipoIndicadorName = 'Maior' THEN CASE WHEN SUM(AV) = 0 OR (SUM(NC) / SUM(AV) * 100) = 0 THEN 100 ELSE (SUM(NC) / SUM(AV) * 100) / Meta * 100 END " +
+        "\n  ELSE CASE WHEN SUM(AV) = 0 OR (SUM(NC) / SUM(AV) * 100) = 0 THEN 0 ELSE Meta / (SUM(NC) / SUM(AV) * 100) * 100 END END  " +
+        "\n ) > 100 THEN 100 ELSE " +
+        "\n  CASE WHEN TipoIndicadorName = 'Maior' THEN CASE WHEN SUM(AV) = 0 OR (SUM(NC) / SUM(AV) * 100) = 0 THEN 100 ELSE (SUM(NC) / SUM(AV) * 100) / Meta * 100 END " +
+        "\n  ELSE CASE WHEN SUM(AV) = 0 OR (SUM(NC) / SUM(AV) * 100) = 0 THEN 0 ELSE Meta / (SUM(NC) / SUM(AV) * 100) * 100 END END  " +
+        "\n END " +
+        "\n ) " +
+
+        //fim Scorecard 
+        "\n > 100 THEN 100 ELSE " +
+        //ini Scorecard 
+
+        "\n ( " +
+        "\n CASE WHEN (" +
+        "\n  CASE WHEN TipoIndicadorName = 'Maior' THEN CASE WHEN SUM(AV) = 0 OR (SUM(NC) / SUM(AV) * 100) = 0 THEN 100 ELSE (SUM(NC) / SUM(AV) * 100) / Meta * 100 END " +
+        "\n  ELSE CASE WHEN SUM(AV) = 0 OR (SUM(NC) / SUM(AV) * 100) = 0 THEN 0 ELSE Meta / (SUM(NC) / SUM(AV) * 100) * 100 END END  " +
+        "\n ) > 100 THEN 100 ELSE " +
+        "\n  CASE WHEN TipoIndicadorName = 'Maior' THEN CASE WHEN SUM(AV) = 0 OR (SUM(NC) / SUM(AV) * 100) = 0 THEN 100 ELSE (SUM(NC) / SUM(AV) * 100) / Meta * 100 END " +
+        "\n  ELSE CASE WHEN SUM(AV) = 0 OR (SUM(NC) / SUM(AV) * 100) = 0 THEN 0 ELSE Meta / (SUM(NC) / SUM(AV) * 100) * 100 END END  " +
+        "\n END " +
+        "\n ) " +
+
+        //fim Scorecard  
+        "\n END /100 ) * AVG(Pontos)  END AS PontosAtingidosIndicador " +
+
+        "\n , CASE WHEN (" +
+        "\n  CASE WHEN TipoIndicadorName = 'Maior' THEN CASE WHEN SUM(AV) = 0 OR (SUM(NC) / SUM(AV) * 100) = 0 THEN 100 ELSE (SUM(NC) / SUM(AV) * 100) / Meta * 100 END " +
+        "\n  ELSE CASE WHEN SUM(AV) = 0 OR (SUM(NC) / SUM(AV) * 100) = 0 THEN 0 ELSE Meta / (SUM(NC) / SUM(AV) * 100) * 100 END END  " +
+        "\n ) > 100 THEN 100 ELSE " +
+        "\n  CASE WHEN TipoIndicadorName = 'Maior' THEN CASE WHEN SUM(AV) = 0 OR (SUM(NC) / SUM(AV) * 100) = 0 THEN 100 ELSE (SUM(NC) / SUM(AV) * 100) / Meta * 100 END " +
+        "\n  ELSE CASE WHEN SUM(AV) = 0 OR (SUM(NC) / SUM(AV) * 100) = 0 THEN 0 ELSE Meta / (SUM(NC) / SUM(AV) * 100) * 100 END END  " +
+        "\n END AS Scorecard " +
+
         "\n FROM ( \n ";
 
         for (int i = 0; i < numMeses; i++)
