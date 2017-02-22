@@ -169,7 +169,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                 sql = "UPDATE ManColetaDados " +
                        "SET " +
                         "Base_dateAlter = GETDATE() " +
-                        "," + obj.indicadorNome + " = '" + obj.quantidade + "' " +
+                        "," + obj.indicadorNome + " = replace('" + obj.quantidade + "',',','.') " +
                         ",Comentarios = '" + obj.comentarios + "' " +
                        "from ManColetaDados " +
                        "WHERE " +
