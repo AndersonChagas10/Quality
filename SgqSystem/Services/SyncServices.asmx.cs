@@ -2683,7 +2683,8 @@ namespace SgqSystem.Services
                                                 id: parLevel1Group.Key.ToString() + "critivalLevel",
                                                 label: nameParCritialLevel,
                                                 color: color,
-                                                outerhtml: parLevel1);
+                                                outerhtml: parLevel1,
+                                                aberto: true);
                 }
                 else
                 {
@@ -2785,14 +2786,24 @@ namespace SgqSystem.Services
                 string headerCounter =
                                      html.div(
                                                outerhtml: "<b>Av.</b>",
-                                               classe: "col-xs-6",
+                                               classe: "col-xs-3",
                                                style: "text-align:center"
                                              ) +
                                      html.div(
                                                outerhtml: "<b>Am.</b>",
-                                               classe: "col-xs-6",
+                                               classe: "col-xs-3",
                                                style: "text-align:center"
-                                             ); ;
+                                              ) +
+                                    html.div(
+                                        outerhtml: "<b>Def.</b>",
+                                        classe: "col-xs-3",
+                                        style: "text-align:center"
+                                    ) +
+                                    html.div(
+                                        outerhtml: "<b></b>",
+                                        classe: "col-xs-3",
+                                        style: "text-align:center"
+                                    );
 
                 headerCounter = html.div(
                                     //aqui vai os botoes
@@ -2808,14 +2819,24 @@ namespace SgqSystem.Services
                 string counters =
                                       html.div(
                                                 outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + " / " + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
-                                                classe: "col-xs-6",
+                                                classe: "col-xs-3",
                                                 style: "text-align:center"
                                               ) +
                                       html.div(
                                                 outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent hide") + html.span(outerhtml: "0", classe: "sampleCurrentTotal") + " / " + html.span(outerhtml: sample.ToString(), classe: "sampleTotal hide") + html.span(outerhtml: totalSampleXEvaluate.ToString(), classe: "sampleXEvaluateTotal"),
-                                                classe: "col-xs-6",
+                                                classe: "col-xs-3",
                                                 style: "text-align:center"
-                                              );
+                                              ) +
+                                        html.div(
+                                                    outerhtml: html.span(outerhtml: "0", classe: "defectsLevel2"),
+                                                    classe: "col-xs-3",
+                                                    style: "text-align:center"
+                                                 ) +
+                                          html.div(
+                                                    outerhtml: html.span(outerhtml: "", classe: "newcoutner"),
+                                                    classe: "col-xs-3",
+                                                    style: "text-align:center"
+                                                 );
 
                 counters = html.div(
                                     //aqui vai os botoes
@@ -2987,16 +3008,26 @@ namespace SgqSystem.Services
 
             var painelLevel2HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1(ParLevel1.Id), ParFieldTypeDB, html);
 
-            painelLevel2HeaderListHtml = html.listgroupItem(
-                                                            outerhtml: painelLevel2HeaderListHtml,
-                                                            classe: "row"
-                                                            );
+
+            if (!string.IsNullOrEmpty(painelLevel2HeaderListHtml))
+            {
+                painelLevel2HeaderListHtml = html.listgroupItem(
+                                                                outerhtml: painelLevel2HeaderListHtml,
+                                                                classe: "row"
+                                                                );
+            }
+
+            string painelCounters = html.painelCounters();
+
+
+
             //Se contem  monitoramentos
             if (!string.IsNullOrEmpty(ParLevel2List))
             {
                 //Gera agrupamento dw Level2 para o Level1
                 ParLevel2List = html.listgroup(
                                                 outerhtml: painelLevel2HeaderListHtml +
+                                                           painelCounters +
                                                            ParLevel2List,
                                                 tags: "level01Id=\"" + ParLevel1.Id + "\""
                                                , classe: "level2Group hide");
@@ -3225,7 +3256,8 @@ namespace SgqSystem.Services
                                                                 amostras +
                                                                 painelLevel3HeaderListHtml,
 
-                                        classe: "painel painelLevel03 row");
+                                        classe: "painel painelLevel03 row") +
+                              html.painelCounters();
                               //          +
                               //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
@@ -3450,7 +3482,9 @@ namespace SgqSystem.Services
                                                                        amostras +
                                                                        painelLevel3HeaderListHtml,
 
-                                               classe: "painel painelLevel03 row");
+                                               classe: "painel painelLevel03 row") +
+
+                               html.painelCounters();
                 //+
                 //                html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
@@ -3591,11 +3625,12 @@ namespace SgqSystem.Services
 
                 painellevel3 = html.listgroupItem(
                                                             outerhtml: amostras + avaliacoes + totalnc + ncdianteiro + nctraseiro + niveis + painelLevel3HeaderListHtml,
+                                               classe: "painel painelLevel03 row") +
 
-                                               classe: "painel painelLevel03 row");
+                              html.painelCounters();
                 //+
-                             //                  +
-                             //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
+                //                  +
+                //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 //Se tiver level3 gera o agrupamento no padrão
                 if (!string.IsNullOrEmpty(parLevel3Group))
@@ -3711,7 +3746,8 @@ namespace SgqSystem.Services
                                                                        amostras +
                                                                        painelLevel3HeaderListHtml,
 
-                                               classe: "painel painelLevel03 row");
+                                               classe: "painel painelLevel03 row") +
+                              html.painelCounters();
                 //+
                 //                                html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
