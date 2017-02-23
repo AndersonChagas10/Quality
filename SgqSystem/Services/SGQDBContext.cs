@@ -995,6 +995,7 @@ namespace SGQDBContext
         public int CollectionLevel2_ID_CorrectiveAction { get; set; }
 
         public int CollectionLevel2_Period_CorrectiveAction { get; set; }
+        public int More3DefectsEvaluate { get; set; }
         public ConsolidationResultL1L2 getConsolidation(int ParLevel2_Id, int ParCompany_Id, int? Id)
         {
 
@@ -1675,6 +1676,7 @@ namespace SGQDBContext
                 throw;
             }
         }
+       
 
     }
 }

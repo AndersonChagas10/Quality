@@ -503,9 +503,8 @@ namespace SgqSystem.Services
 
         public string painelCounters(string classe=null)
         {
-            return null;
-
-            string countersArray = "Total Defeitos:<span class=\"DefectsTotal\">0</span>;Defeitos Level2:<span class=\"DefectsL2\">0</span>;Lados com Defeitos: <span class=\"DefectsEvaluate\">0</span>;3 Defeitos ou mais:<span class=\"More3DefectsEvaluate\">0</span>;Side Current:0;Set Current:0;Defeitos Amostra:<span class=\"DefectsL2Sample\">0</span>";
+        
+            string countersArray = "Total Defeitos:<span class=\"DefectsTotal\">0</span>;Defeitos Level2:<span class=\"DefectsL2\">0</span>;Lados com Defeitos: <span class=\"DefectsEvaluate\">0</span>;3 Defeitos ou mais:<span class=\"More3DefectsEvaluate\">0</span>;Set Current:<span class=\"evaluateCurrentC\">0</span>;Side Current:<span class=\"sampleCurrentC\">0</span>;Defeitos Amostra:<span class=\"DefectsL2Sample\">0</span>";
 
             string[] arrayCounter = countersArray.Split(';');
 
