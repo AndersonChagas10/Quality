@@ -29,6 +29,8 @@ namespace SGQDBContext
         public decimal tipoAlerta { get; set; }
         public decimal valorAlerta { get; set; }
         public bool HasCompleteEvaluation { get; set; }
+        public bool IsReaudit { get; set; }
+
 
         public bool HasGroupLevel2 { get; set; }
 
@@ -56,7 +58,7 @@ namespace SGQDBContext
             SqlConnection db = new SqlConnection(conexao);
             string sql = " SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
                          " P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate, P1.IsLimitedEvaluetionNumber, P1.IsPartialSave" +
-                         " ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2                                                                                                                                     " +                               
+                         " ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, AL.IsReaudit AS Reaudit, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2                                                                                                                                     " +                               
                          " FROM ParLevel1 P1                                                                                                          " +
                          " INNER JOIN (SELECT ParLevel1_Id FROM ParLevel3Level2Level1 GROUP BY ParLevel1_Id) P321                                     " +
                          " ON P321.ParLevel1_Id = P1.Id                                                                                               " +
@@ -266,6 +268,13 @@ namespace SGQDBContext
         public bool HasSampleTotal { get; set; }
 
         public bool IsEmptyLevel3 { get; set; }
+
+        public int ParNotConformityRule_id { get; set; }
+
+        public decimal Value { get; set; }
+
+        public bool IsReaudit { get; set; }
+
         //public int? Evaluate { get; set; }
         //public int? Sample { get; set; }
         //public int? ParCompany_Id_Evaluate { get; set; }
@@ -323,12 +332,14 @@ namespace SGQDBContext
 
             if(parLevel1Familia == true)
             {
-                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3                      " +
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit                      " +
                              "FROM ParLevel3Level2 P32                                                                          " +
                              "INNER JOIN ParLevel3Level2Level1 P321                                                             " +
                              "ON P321.ParLevel3Level2_Id = P32.Id                                                               " +
                              "INNER JOIN ParLevel2 PL2                                                                          " +
                              "ON PL2.Id = P32.ParLevel2_Id                                                                      " +
+                             " LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
+                             " ON AL.ParLevel2_Id = PL2.Id                                                                                                 " +
                              "INNER JOIN (SELECT * FROM ParLevel2ControlCompany PL INNER JOIN                                   " +
                              "(SELECT MAX(InitDate) Data, ParCompany_Id AS UNIDADE FROM ParLevel2ControlCompany                 " +
                              "where ParLevel1_Id = '" + ParLevel1_Id + "'                                                       " +
@@ -338,7 +349,7 @@ namespace SGQDBContext
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'                                                  " +
                              "AND PL2.IsActive = 1                                                                              " +
                              "AND (Familia.ParCompany_Id = '" + ParCompany_Id + "'  or Familia.ParCompany_Id IS NULL)           " +
-                             "GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3                                                     ";
+                             "GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value                                                     ";
 
                 var parLevel2List = db.Query<ParLevel2>(sql);
 
@@ -348,15 +359,17 @@ namespace SGQDBContext
             else
             {
 
-                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3 " +
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit " +
                          "FROM ParLevel3Level2 P32                                      " +
                          "INNER JOIN ParLevel3Level2Level1 P321                         " +
                          "ON P321.ParLevel3Level2_Id = P32.Id                           " +
                          "INNER JOIN ParLevel2 PL2                                      " +
                          "ON PL2.Id = P32.ParLevel2_Id                                  " +
+                         " LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
+                         " ON AL.ParLevel2_Id = PL2.Id                                                                                                 " +
                          "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'              " +
                          "AND PL2.IsActive = 1                                          " +
-                         "GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3                 ";
+                         "GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value                ";
 
                 var parLevel2List = db.Query<ParLevel2>(sql);
 
