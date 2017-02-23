@@ -2838,7 +2838,7 @@ namespace SgqSystem.Services
                 string buttonsHeaders = null;
                 //Caso tenha funções de não aplicado, coloca os botões nas respectivas linhas
                 //Como vai ficar se o item tem varias avaliações?vai ter botão salvar na linha do monitoramento?
-                if (ParLevel1.HasNoApplicableLevel2 == true || ParLevel1.HasSaveLevel2 == true)
+                if (ParLevel1.HasNoApplicableLevel2 == true || ParLevel1.HasSaveLevel2 == true || 1==1)
                 {
                     string btnNotAvaliable = null;
                     if (ParLevel1.HasNoApplicableLevel2)
@@ -2857,9 +2857,18 @@ namespace SgqSystem.Services
                                        "   <span class=\"cursorPointer iconsArea\"><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i></span>        " +
                                        "</button>                                                                                                      ";
                     }
+
+                    string btnReaudit = null;
+                    
+                        btnReaudit =   "<button class=\"btn btn-danger btnReaudit\">                                                                 " +
+                                       "   <span class=\"cursorPointer iconsArea\"><i class=\"fa fa-retweet\" aria-hidden=\"true\"></i></span>        " +
+                                       "</button>                                                                                                      ";
+                    
+
                     buttons = html.div(
                                  //aqui vai os botoes
-                                 outerhtml: btnAreaSave +
+                                 outerhtml: btnReaudit +
+                                            btnAreaSave +
                                             btnNotAvaliable,
                                  style: "text-align: right",
                                  classe: "userInfo col-xs-3"
