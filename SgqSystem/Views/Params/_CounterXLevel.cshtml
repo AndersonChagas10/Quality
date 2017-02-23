@@ -91,12 +91,12 @@
             veifyAdd: function() {
                 /*Valida se pode criar o objeto*/
                 if($('#' + this.level + ' #parCounter :selected').val() <= 0){
-                    alert("Por favor selecione o contador.");
+                    openMessageModal("@Resources.Resource.select_the_counter");
                     return false;
                 }
 
                 if($('#' + this.level + ' #parLocal').val() <= 0){
-                    alert("Por favor selecione o local.");
+                    openMessageModal("@Resources.Resource.select_the_place");
                     return false;
                 }
                 return true;

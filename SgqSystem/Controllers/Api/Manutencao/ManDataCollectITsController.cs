@@ -18,7 +18,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
         public string SaveCreate(Obj obj)
         {
             //Fazer a inserção do Orçado
-            bool mockRetorno = false; 
+            bool mockRetorno = true;
 
             try
             {
@@ -41,6 +41,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                 ",Base_dateRef " +
                 ",Comentarios " +
                 "," + obj.indicadorNome +
+                ", userAdd" +
                 ") " +
                 "VALUES " +
                 "(" +
@@ -48,7 +49,8 @@ namespace SgqSystem.Controllers.Api.Manutencao
                 "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'," +
                 "'" + obj.data.ToString("yyyy-MM-dd HH:mm:ss") + "'," +
                 "'" + obj.comentarios + "'," +
-                " replace('" + obj.quantidade + "',',','.')" + //BS: Alteração feita=> Troca de Virgula (,) por Ponto (.): Replace()
+                " replace('" + obj.quantidade + "',',','.')," + //BS: Alteração feita=> Troca de Virgula (,) por Ponto (.): Replace()
+                "'" + obj.user + "'" +
                 ")";
 
                 using (var db = new SgqDbDevEntities())
@@ -151,9 +153,11 @@ namespace SgqSystem.Controllers.Api.Manutencao
         [Route("SaveEdit")]
         public string SaveEdit(Obj obj)
         {
-            bool mockRetorno = false;
+
+            bool mockRetorno = true;
             try
             {
+
                 string sql = "";
 
                 sql = "select Name as indicadorNome from DimManColetaDados where DimRealTarget = 'Real' and DimName is not null and DimName = '" + obj.descricao + "'";
@@ -169,8 +173,9 @@ namespace SgqSystem.Controllers.Api.Manutencao
                 sql = "UPDATE ManColetaDados " +
                        "SET " +
                         "Base_dateAlter = GETDATE() " +
-                        "," + obj.indicadorNome + " = '" + obj.quantidade + "' " +
+                        "," + obj.indicadorNome + " = replace('" + obj.quantidade + "',',','.') " +
                         ",Comentarios = '" + obj.comentarios + "' " +
+                        ",userAlter = '" + obj.user + "'" +
                        "from ManColetaDados " +
                        "WHERE " +
                         "Base_parCompany_id = '" + obj.parCompany + "' " +
@@ -211,6 +216,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
         public string comentarios { get; set; }
         public DateTime data { get; set; }
         public int parCompany { get; set; }
+        public string user { get; set; }
     }
 
     public class Obj2

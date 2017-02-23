@@ -113,17 +113,17 @@
                 var seletorTato = !!isEdit ? isEdit : this.level;
                 /*Valida se pode criar o objeto*/
                 if($('#' + seletorTato + ' #selectFrequenciaReincidencia :selected').val() <= 0){
-                    alert("Por favor selecione a frequência.");
+                    openMessageModal("@Resources.Resource.select_the_frequency");
                     return false;
                 }
 
                 if($('#' + seletorTato + ' #inputNumeroNC').val().replace(/[^0-9.]/g, '') == ""){
-                    alert("Por preencha o numero de não conformidades.");
+                    openMessageModal("@Resources.Resource.inform_the_nc_number");
                     return false;
                 }
 
                 if($('#' + seletorTato + ' #inputVigencia').val().replace(/[^0-9.]/g, '') == ""){
-                    alert("Por favor preencha a vigência.");
+                    openMessageModal("@Resources.Resource.fill_the_permanency");
                     return false;
                 }
                 return true;

@@ -5,12 +5,12 @@
 }
 
 <h2>@ViewBag.Title</h2>
-<p><a href="@url" class="btn btn-primary btn-lg"><< Back</a></p>
+<p><a href="@url" class="btn btn-primary btn-lg"><< @Resources.Resource.back</a></p>
 
 <table>
     <tr>
         <td class="dl-fake">
-            @Html.Label("Data: ", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label(Resources.Resource.date+": ", htmlAttributes: new { @class = "control-label col-md-2" })
         </td>
         <td style="margin-top:10px;">
             <input type="date" id="dtIni"/>
@@ -19,7 +19,7 @@
     <tr>&nbsp;</tr>
     <tr>
         <td class="dl-fake">
-            @Html.Label("Data: ", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label(Resources.Resource.date + ": ", htmlAttributes: new { @class = "control-label col-md-2" })
         </td>
         <td style="margin-top:10px;">
             <input type="date" id="dtFim"/>

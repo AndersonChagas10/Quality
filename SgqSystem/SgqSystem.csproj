@@ -277,6 +277,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Resource.pt-br.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.pt-br.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Resource.pt-br1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -321,6 +326,7 @@
     <Compile Include="Controllers\Manutencao\ManPainelGestaoController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\ParLevel2ControlCompanyController.cs" />
+    <Compile Include="Controllers\RelatoriosBrasil\ParGoalScorecardController.cs" />
     <Compile Include="Controllers\RelatoriosBrasil\RelatoriosSgqController.cs" />
     <Compile Include="Controllers\Role\RoleController.cs" />
     <Compile Include="Controllers\UserSgqController.cs" />
@@ -495,8 +501,8 @@
     <Content Include="admin-lte\js\app.min.js" />
     <Content Include="App_GlobalResources\Resource.pt-br.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Resource.pt-br1.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resource.pt-br.designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_Readme\readme.txt" />
     <Content Include="Content\bootstrap-datepicker.css" />
@@ -2109,6 +2115,11 @@
     <Content Include="Views\ParCompany\Index2.cshtml" />
     <Content Include="Scripts\version.json" />
     <Content Include="Views\Role\RoleJBS.cshtml" />
+    <Content Include="Views\RelatoriosSgq\ScorecardConfig.cshtml" />
+    <Content Include="Views\ParGoalScorecard\Create.cshtml" />
+    <Content Include="Views\ParGoalScorecard\Delete.cshtml" />
+    <Content Include="Views\ParGoalScorecard\Details.cshtml" />
+    <Content Include="Views\ParGoalScorecard\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2121,6 +2132,7 @@
     <Folder Include="Views\EspecificarMonitoramentos\" />
     <Folder Include="Views\RelatorioController\" />
     <Folder Include="Views\RoleApi\" />
+    <Folder Include="Views\ScorecardConfig\" />
     <Folder Include="Views\TipificacaoViewModel\" />
     <Folder Include="Views\UserSgqApi\" />
     <Folder Include="Views\VTVerificacaoTipificacaoAPI\" />
@@ -2133,6 +2145,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">
+      <Project>{31925FCA-E0F6-428D-9A7D-59CA8879D6F8}</Project>
+      <Name>ADOFactory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CrossCutting\CrossCutting.csproj">
       <Project>{0896bc38-df38-4e39-adf9-db1f9910bfe6}</Project>
       <Name>CrossCutting</Name>

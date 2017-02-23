@@ -36,47 +36,29 @@ namespace SgqSystem.Controllers.Api
 
                 foreach (var i in _list.ToList())
                 {
-
                     pontosDisputados = 0;
 
                     if (i.Pontos != null)
-                    {
                         pontosDisputados = i.Pontos.Value;
-                    }
                     else
-                    {
                         _list.Remove(i);
-                    }
 
                     if (i.AV > 0)
                     {
-
                         totalPontosDisputados += pontosDisputados;
-
 
                         pontosAtingidos = 0;
 
                         if(i.PontosAtingidos != null)
-                        {
                             pontosAtingidos = i.PontosAtingidos.Value;
-                        }
 
                         totalPontosAtingidos += pontosAtingidos;
-
-
-                        //total.Pontos += i.PontosAtingidos - i.Pontos;
-
-                        //if (total.Scorecard >= 100)
-                        //    total.Scorecard = 100;
-                        //else
-                        //    total.Scorecard += i.Scorecard;
                     }
-
                 }
 
                 totalScorecard = totalPontosDisputados == 0 ? 0 : Math.Round((totalPontosAtingidos / totalPontosDisputados * 100) , 2);
 
-                _list.Add(new ScorecardResultSet() { Level1Name = "Total:", Pontos = totalPontosDisputados, Scorecard = totalScorecard, PontosAtingidos = totalPontosAtingidos });
+                _list.Add(new ScorecardResultSet() { Level1Name = "Total:", PontosIndicador = totalPontosDisputados, Scorecard = totalScorecard, PontosAtingidosIndicador = totalPontosAtingidos });
             }
 
 

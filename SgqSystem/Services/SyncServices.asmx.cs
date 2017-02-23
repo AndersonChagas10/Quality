@@ -2174,9 +2174,9 @@ namespace SgqSystem.Services
 
             string login = GetLoginAPP();
 
-            string resource = GetResource();
+            //string resource = GetResource();
 
-            return login + resource;
+            return login;
         }
         [WebMethod]
         public string getAPPLevels(int UserSgq_Id, int ParCompany_Id, DateTime Date)
@@ -2194,35 +2194,12 @@ namespace SgqSystem.Services
                               "<div class=\"VerificacaoTipificacao hide\"></div>" +
                               "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
 
-            string resource = GetResource();
+           // string resource = GetResource();
 
             return APPMain +
-                   supports +
-                   resource;
+                   supports;
         }
-        public string GetResource()
-        {
-            //setup temporário
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
-
-            System.Reflection.Assembly assembly = this.GetType().Assembly;
-
-            System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
-
-            var resourceSet = resourceManager.GetResourceSet(
-                Thread.CurrentThread.CurrentUICulture, true, false);
-
-            string items = "";
-
-            foreach (var entry in resourceSet.Cast<DictionaryEntry>())
-            {
-                items += "<div res='"+entry.Key.ToString() + "'>"+ entry.Value.ToString() + "</div>";
-            } 
-            
-            return "<div class='Resource hide'>"+ items + "</div>";
-        }
-
+        
         public int getEvaluate(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluatePadrao)
         {
             int evaluate = 1;
@@ -2368,17 +2345,18 @@ namespace SgqSystem.Services
 
         public string navBar(int UserSgq_Id, int ParCompany_Id)
         {
-            string navBar = "<div class=\"navbar navbar-inverse navbar-fixed-top\">                                                                                                                             " +
-                           "    <div class=\"container\" style=\"padding: 0px !important;\">                                                                                                                                                       " +
-                           "        <div class=\"navbar-header\" style=\"width: 100%\">                                                                                                                         " +
-                           "            <a class=\"navbar-brand\" id=\"SGQName\" href=\"#\"><i class=\"fa fa-chevron-left hide iconReturn\" style=\"margin-left: 8px; font-size: 24px;\" aria-hidden=\"true\"></i> SGQ </a>                 " +
-                           "            <div class=\"buttonMenu navbar-brand hide\" id=\"btnShowImage\" level01id=\"2\">Show Image</div>                                                                        " +
+            string navBar = "<div class=\"navbar navbar-inverse navbar-fixed-top\">                                                                                                                                             " +
+                           "    <div class=\"container\" style=\"padding: 0px !important;\">                                                                                                                                    " +
+                           "        <div class=\"navbar-header\" style=\"width: 100%\">                                                                                                                                         " +
+                           "            <a class=\"navbar-brand\" id=\"SGQName\" href=\"#\"><i class=\"fa fa-chevron-left hide iconReturn\" style=\"margin-left: 8px; font-size: 24px;\" aria-hidden=\"true\"></i> SGQ </a>     " +
+                           "            <div class=\"buttonMenu navbar-brand hide\" id=\"btnShowImage\" level01id=\"2\">Show Image</div>                                                                                        " +
                            selectUserCompanys(UserSgq_Id, ParCompany_Id) +
-                           "            <span style='color: #ffffff; margin: 14px;' class='period'>Periodo</span><span style='color: #ffffff; margin: 14px;' class='shift'>shift</span> " +
-                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div><span style='color: #ffffff; margin: 14px;' class='atualDate pull-right'></span>" +
-                           "        </div>                                                                                                                                                                      " +
-                           "    </div>                                                                                                                                                                          " +
-                           "</div>                                                                                                                                                                              ";
+                           "            <span style='color: #ffffff; margin: 8px;' class='periodShift'></span>                                                                                                                  " +
+                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div>                               "+
+                           "            <span style='color: #ffffff; margin-top: 14px; margin-right: 8px;' class='atualDate pull-right'></span>                                                                                 " +
+                           "        </div>                                                                                                                                                                                      " +
+                           "    </div>                                                                                                                                                                                          " +
+                           "</div>                                                                                                                                                                                              ";
 
             return navBar;
         }
@@ -2410,6 +2388,10 @@ namespace SgqSystem.Services
                                           "</div>-->" +
                                           "<div class=\"modal-body\">" +
                                                "<h2>Ação Corretiva</h2>" +
+
+                                               "<button class=\"btn btn-danger modal-close-ca\">Fechar</button>" +
+                                               "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">Enviar</button>" +
+
                                           "<div id=\"messageAlert\" class=\"alert alert-info hide\" role=\"alert\">" +
                                           "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>" +
                                           "</div>" +
@@ -2478,8 +2460,7 @@ namespace SgqSystem.Services
                                                         //"</button>" +
                                                         "</span>" +
 
-                                                        "<button class=\"btn btn-danger modal-close-ca\">Fechar</button>" +
-                                                        "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">Enviar</button>" +
+                                                        
                                                     "</div>" +
                                                 "</div>" +
                                                 "</div>";
@@ -2558,6 +2539,8 @@ namespace SgqSystem.Services
                         nameParCritialLevel = parlevel1.ParCriticalLevel_Name;
                         //Incremento os itens que estaram no ParLevel1                
                         //Gera linha Level1
+
+                        bool reaudit = parlevel1.IsReaudit;
 
                         decimal tipoAlerta = parlevel1.tipoAlerta;
                         decimal valorAlerta = parlevel1.valorAlerta;
@@ -2642,7 +2625,8 @@ namespace SgqSystem.Services
                                                      avaliacaoultimoalerta: 0,
                                                      monitoramentoultimoalerta: 0,
                                                      volumeAlertaIndicador: volumeAlerta,
-                                                     metaIndicador: meta);
+                                                     metaIndicador: meta,
+                                                     reaudit: reaudit);
                         //Incrementa level1
                         parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row", outerhtml: level01);
                     }
@@ -2849,7 +2833,7 @@ namespace SgqSystem.Services
                 string buttonsHeaders = null;
                 //Caso tenha funções de não aplicado, coloca os botões nas respectivas linhas
                 //Como vai ficar se o item tem varias avaliações?vai ter botão salvar na linha do monitoramento?
-                if (ParLevel1.HasNoApplicableLevel2 == true || ParLevel1.HasSaveLevel2 == true)
+                if (ParLevel1.HasNoApplicableLevel2 == true || ParLevel1.HasSaveLevel2 == true || 1==1)
                 {
                     string btnNotAvaliable = null;
                     if (ParLevel1.HasNoApplicableLevel2)
@@ -2862,15 +2846,24 @@ namespace SgqSystem.Services
                     if (ParLevel1.HasSaveLevel2)
                     {
                         btnAreaSave = "<button class=\"btn btn-success hide btnAreaSaveConfirm\">                                                    " +
-                                       "   <span class=\"cursorPointer\">Confirm? <i class=\"fa fa-check\" aria-hidden=\"true\"></i></span>     " +
+                                       "   <span class=\"cursorPointer\"><i class=\"fa fa-check\" aria-hidden=\"true\"></i></span>     " +
                                        "</button>                                                                                                      " +
                                        "<button class=\"btn btn-primary btnAreaSave\">                                                                 " +
                                        "   <span class=\"cursorPointer iconsArea\"><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i></span>        " +
                                        "</button>                                                                                                      ";
                     }
+
+                    string btnReaudit = null;
+                    
+                        btnReaudit =   "<button class=\"btn btn-danger btnReaudit\">                                                                 " +
+                                       "   <span class=\"cursorPointer iconsArea\"><i class=\"fa fa-retweet\" aria-hidden=\"true\"></i></span>        " +
+                                       "</button>                                                                                                      ";
+                    
+
                     buttons = html.div(
                                  //aqui vai os botoes
-                                 outerhtml: btnAreaSave +
+                                 outerhtml: //btnReaudit +
+                                            btnAreaSave +
                                             btnNotAvaliable,
                                  style: "text-align: right",
                                  classe: "userInfo col-xs-3"
@@ -2902,7 +2895,10 @@ namespace SgqSystem.Services
                                             evaluate: evaluate,
                                             sample: sample,
                                             HasSampleTotal: parlevel2.HasSampleTotal,
-                                            IsEmptyLevel3: parlevel2.IsEmptyLevel3);
+                                            IsEmptyLevel3: parlevel2.IsEmptyLevel3,
+                                            ParNotConformityRule_id : parlevel2.ParNotConformityRule_id,
+                                            AlertValue: parlevel2.Value,
+                                            IsReaudit: parlevel2.IsReaudit);
 
                 //Gera linha do Level2
                 ParLevel2List += html.listgroupItem(
@@ -2987,7 +2983,10 @@ namespace SgqSystem.Services
                                             sample: sampleGroup,
                                             HasSampleTotal: false,
                                             IsEmptyLevel3: false,
-                                            level1Group_Id: ParLevel1.Id);
+                                            level1Group_Id: ParLevel1.Id,
+                                            ParNotConformityRule_id: 0,
+                                            AlertValue: 0,
+                                            IsReaudit: false);
 
                 //Gera linha do Level2
                 ParLevel2List = html.listgroupItem(
@@ -4018,12 +4017,22 @@ namespace SgqSystem.Services
             }
             #endregion
 
-            string selectUrlPreffix = html.option("http://mtzsvmqsc/SgqGlobal", "JBS") +
-                                      html.option("http://192.168.25.200/SgqMaster", "GRT") +
-                                      html.option("http://localhost:8090/SgqSystem", "GCN");
+            #region language
 
-            string formOuterHtml = html.head(Html.h.h2, outerhtml: "Entre com seu Login") +
+            var selectLanguage = html.option("en-us", "English") +
+                              html.option("pt-br", "Português");
+
+            selectLanguage = html.select(selectLanguage, id: "language");
+
+            #endregion
+
+            //string selectUrlPreffix = html.option("http://mtzsvmqsc/SgqGlobal", "JBS") +
+            //                          html.option("http://192.168.25.200/SgqMaster", "GRT") +
+            //                          html.option("http://localhost:8090/SgqSystem", "GCN");
+
+            string formOuterHtml = html.head(Html.h.h2, outerhtml: "Login") +
                                   selectUnit +
+                                  //selectLanguage+
                                   selectShit +
                                   html.label(labelfor: "inputUserName", classe: "sr-only", outerhtml: "Username") +
                                   html.input(id: "inputUserName", placeholder: "Username", required: true, disabled: inputsDesabilitados) +
@@ -4047,7 +4056,9 @@ namespace SgqSystem.Services
                                            tags: "role=\"alert\"",
                                            outerhtml: html.span(id: "mensagemSucesso", classe: "icon-ok-circle")) + 
                                            
-                                  html.select(selectUrlPreffix, "cb_UrlPreffix", "\" onChange='abreOApp(this.value);' \"");
+                                 // html.select(selectUrlPreffix, "cb_UrlPreffix", "\" onChange='abreOApp(this.value);' \"") +
+                                 
+                                 "";
 
             string form = html.form(
                                     outerhtml: formOuterHtml

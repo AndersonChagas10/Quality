@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Gestão";
+    ViewBag.Title = Resources.Resource.management;
     var urlScorecard = Url.Action("Scorecard", "RelatoriosSgq");
     var urlRelatorioDiario = Url.Action("RelatorioDiario", "RelatoriosSgq");
     var urlApontamentosDiarios = Url.Action("ApontamentosDiarios", "RelatoriosSgq");
@@ -237,7 +237,7 @@
 
             <div id="circulo1Plan" class="circuloPDCA" onmouseover="setBgColor(this.id,'#ddb708', '#fff')" onmouseout="setBgColor(this.id,'#e5e498', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
 
-                Planejamento
+                @Resources.Resource.planning
 
             </div>
 
@@ -247,13 +247,13 @@
 
             <div id="circulo4Action" class="circuloPDCA" onmouseover="setBgColor(this.id,'#7b8fa4', '#fff')" onmouseout="setBgColor(this.id,'#b4bcc5', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
 
-                Problemas Crônicos e Relatos de Anomalia
+                @Resources.Resource.chronic_problems_and_anomaly_reports
 
             </div>
 
             <div id="circulo2Do" class="circuloPDCA" onmouseover="setBgColor(this.id,'#2d5f0f', '#fff')" onmouseout="setBgColor(this.id,'#9fe598', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
 
-                Execução da Coleta de dados e Planos de Ação
+                @Resources.Resource.data_collect_execution_and_action_plan
 
             </div>
 
@@ -263,15 +263,13 @@
 
             <div id="circulo3Check" class="circuloPDCA" onmouseover="setBgColor(this.id,'#cb5454', '#fff')" onmouseout="setBgColor(this.id,'#e59898', '#333')" onclick="showHide(this.id,'fundoMenuSuperior');">
 
-                Avaliação de Resultados e Comunicacão dos Desvios
+                @Resources.Resource.result_evaluation_and_deviation_communication
 
             </div>
 
         </div>
 
         <div id="fundoMenuSuperior">
-
-
 
             <div class="corpoMenuCampos">
 
@@ -281,9 +279,9 @@
 
                     <ul id="nav">
 
-                        <li><a href="#">Visão Geral da Área</a>
+                        <li><a href="#">@Resources.Resource.general_view_of_the_area</a>
 
-                        <li><a href="#">Plano de Ação</a></li>
+                        <li><a href="#">@Resources.Resource.action_plan</a></li>
                     </ul>
 
                 </div>
@@ -292,17 +290,17 @@
 
                     <div class="interno">
 
-                        <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
+                        <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">@Resources.Resource.back</div>
 
                         <ul id="nav">
 
                             <li>
-                                <a href="#">Relatórios de coletas</a>
+                                <a href="#">@Resources.Resource.collection_reports</a>
                                 <ul>
-                                    <li><a href="#">Paramentrizações</a></li>
-                                    <li><a href="#">Utilização do SGQ</a></li>
-                                    <li><a href="#">Apontamentos Diários</a></li>
-                                    <li><a href="#">Verificação do tipificação</a></li>
+                                    <li><a href="#">@Resources.Resource.customization</a></li>
+                                    <li><a href="#">@Resources.Resource.sgq_using</a></li>
+                                    <li><a href="#">@Resources.Resource.daily_apointments</a></li>
+                                    <li><a href="#">@Resources.Resource.tipification_verification</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -317,11 +315,11 @@
                         <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
 
                         <ul id="nav">
-                            <li><a href="@urlRelatorioDiario">Reunião Diária</a></li>
-                            <li><a href="#">Não Conformidades</a></li>
-                            <li><a href="#">Cartas CEP</a></li>
-                            <li><a href="@urlScorecard">Scorecard</a></li>
-                            <li><a href="#">Evolutivo dos indicadores</a></li>
+                            <li><a href="@urlRelatorioDiario">@Resources.Resource.daily_meeting</a></li>
+                            <li><a href="#">@Resources.Resource.not_conformities</a></li>
+                            <li><a href="#">@Resources.Resource.letters_cep</a></li>
+                            <li><a href="@urlScorecard">@Resources.Resource.scorecard</a></li>
+                            <li><a href="#">@Resources.Resource.indicators_evolution </a></li>
                         </ul>
                     </div>
 
@@ -334,7 +332,7 @@
                         <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
 
                         <ul id="nav">
-                            <li><a href="#">Reincidências</a></li>
+                            <li><a href="#">@Resources.Resource.recidivism</a></li>
                         </ul>
                     </div>
 
