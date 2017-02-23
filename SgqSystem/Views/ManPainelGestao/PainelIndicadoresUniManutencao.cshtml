@@ -121,6 +121,8 @@
         var urlGraficoEvolucao = '@Html.Raw(urlGraficoEvolucao)'
         var urlGraficoAcumulado = '@Html.Raw(urlGraficoAcumulado)'
         var dados = {};
+        var legenda1 = "";
+        var tipoGrafico = "";
 
         function getNome() {
 
@@ -226,7 +228,6 @@
                 ordemDoIndicador = "↓";
             }
 
-            //var meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
             var dado = MapeiaValorParaHC(retornoArray, 'dado')
             var realizado = MapeiaValorParaHC(retornoArray, 'realizado');
             var orcado = MapeiaValorParaHC(retornoArray, 'orcado');
@@ -288,9 +289,9 @@
                 "scrollX": true,
                 "autoWidth": false,
                 "scrollCollapse": true,
-                "scrollY": "350px",
+                "scrollY": "250px",
                 lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-                pageLength: 12,
+                //pageLength: 12,
                 responsive: true,
                 paginate: false,
                 //paging: false,
@@ -394,7 +395,7 @@
                     categories: dado,
                     crosshair: true,
                     title: {
-                        text: 'Meses',
+                        text: legenda1, 
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -439,7 +440,7 @@
                         color: Highcharts.getOptions().colors[0],
                     },
                     {
-                        type: 'spline',
+                        type: tipoGrafico, 
                         name: 'Orçado',
                         data: orcado, //Colocar o array de orçado
                         color: Highcharts.getOptions().colors[3],
@@ -818,29 +819,27 @@
             return true;
         }
 
-        //function GeraVetorDesvio(realizado, orcado) {
-
-        //    var positivo = [];
-        //    var negativo = [];
-
-        //    for (var i = 0; i < 12; i++) {
-
-        //        vetor[i].push(realizado[i] - orcado[i]);
-
-        //    }
-
-        //    return vetor;
-        //}
-
         $(document).ready(function () {
+          
+            $("#mouthId").prop('disabled', true);
 
+            legenda1 = 'Meses';
+           
             $('#btnSend').hide();
+
+            tipoGrafico = 'spline';
 
             $('#tipoRelatorio').change(function () {
                 if ($(this).val() == "Por Regional") {
                     $('#UnidadeId').prop('disabled', true);
+                    $("#mouthId").prop('disabled', false);
+                    legenda1 = 'Unidades';
+                    tipoGrafico = 'column';
                 } else {
                     $('#UnidadeId').prop('disabled', false);
+                    $("#mouthId").prop('disabled', true);
+                    legenda1 = 'Meses';
+                    tipoGrafico = 'spline';
                 }
             });
 
@@ -872,10 +871,19 @@
 
                 $("#SubRegionalId").val($("#SubRegionalId").find("option:visible:first").val());
 
+                if ($('#tipoRelatorio option:selected').val() == "Por Unidade") {
+                    $("#SubRegionalId option[value='todos']").hide();
+                } else {
+                    $("#SubRegionalId option[value='todos']").show();
+                }
+
+                if (ConfirmaEnvio()) {
+                    Send();
+                }
+
             }).change();
 
             $("#SubRegionalId").change(function () {
-
 
                 $('#UnidadeId').children('option').hide();
                 $("#UnidadeId").val($("#UnidadeId").find("option:visible:first").val());
@@ -888,6 +896,9 @@
 
                 }
 
+                if (ConfirmaEnvio()) {
+                    Send();
+                }
 
             }).change();
 
@@ -899,11 +910,19 @@
             });
 
             $('#tipoRelatorio').change(function () {
+
+                if ($('#tipoRelatorio option:selected').val() == "Por Unidade") {
+                    $("#SubRegionalId option[value='todos']").remove();
+                    $("#mouthId").val(0);
+                } else {
+                    $("#SubRegionalId").append('<option value="todos">Todos</option>');
+                }
+
                 if (ConfirmaEnvio()) {
                     Send();
                 }
 
-            });
+            }).change();
 
             $('#yearId').change(function () {
                 if (ConfirmaEnvio()) {
@@ -912,24 +931,6 @@
             });
 
             $('#mouthId').change(function () {
-                if (ConfirmaEnvio()) {
-                    Send();
-                }
-            });
-
-            $('#RegionalId').change(function () {
-                if (ConfirmaEnvio()) {
-                    Send();
-                }
-            });
-
-            $('#SubRegionalId').change(function () {
-                if (ConfirmaEnvio()) {
-                    Send();
-                }
-            });
-
-            $('#UnidadeId').change(function () {
                 if (ConfirmaEnvio()) {
                     Send();
                 }
