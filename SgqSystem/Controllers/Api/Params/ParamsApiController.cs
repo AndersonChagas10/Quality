@@ -5,8 +5,11 @@ using DTO.DTO.Params;
 using SgqSystem.Handlres;
 using SgqSystem.ViewModels;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api.Params
@@ -230,6 +233,27 @@ namespace SgqSystem.Controllers.Api.Params
 
             return list;
         }
-        
+
+        [HttpGet]
+        [Route("GetResource/{language}")]
+        public IEnumerable<DictionaryEntry> GetResource(string language)
+        {
+            if (language.Equals("pt-br")) //se portugues
+            {
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+            }
+            else //default: inglês
+            {
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
+            }
+            
+            System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
+
+            return resourceManager.GetResourceSet(
+                Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
+        }
+
     }
 }

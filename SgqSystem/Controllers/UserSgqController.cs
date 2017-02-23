@@ -11,7 +11,7 @@ using AutoMapper;
 
 namespace SgqSystem.Controllers
 {
-    public class UserSgqController : Controller
+    public class UserSgqController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
 

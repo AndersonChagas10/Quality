@@ -7,8 +7,6 @@
     var urlHeaderLevel2 = Url.Action("AddRemoveParHeaderLevel2", "api/ParamsApi"); //URL relativa
     Model.levelControl = 2;
 
-
-
 }
 <div id="newLevel2Modal">
     @using (Html.BeginForm())
@@ -78,8 +76,8 @@
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th style="width:50%">Nome do Cabeçalho</th>
-                                                    <th style="width:50%">Mostrar nesse nível?</th>
+                                                    <th style="width:50%">@Resources.Resource.header_name</th>
+                                                    <th style="width:50%">@Resources.Resource.show_on_this_level?</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -91,7 +89,7 @@
                                                         <td>
                                                             @if (Model.paramsDto.parLevel2Dto.cabecalhosExclusos.Count == 0)
                                                             {
-                                                                <button type="button" class="btn btn-danger btn-sm" onclick="HeaderLevel2.Add(@parLevel1XHeaderField.ParHeaderField_Id, $(this));"><i class="fa fa-times"></i>  Não</button>
+                                                                <button type="button" class="btn btn-danger btn-sm" onclick="HeaderLevel2.Add(@parLevel1XHeaderField.ParHeaderField_Id, $(this));"><i class="fa fa-times"></i>  @Resources.Resource.no</button>
                                                             }
                                                             else
                                                             {
@@ -100,12 +98,12 @@
                                                                     if (parLevel1XHeaderField.ParHeaderField.Id == parLevel2XHeaderField.ParHeaderField_Id)
                                                                     {
                                                                         added = 1;
-                                                                        <button type="button" class="btn btn-primary btn-sm" onclick="HeaderLevel2.Remove(@parLevel2XHeaderField.Id, $(this));"><i class="fa fa-check"></i>  Sim</button>
+                                                                        <button type="button" class="btn btn-primary btn-sm" onclick="HeaderLevel2.Remove(@parLevel2XHeaderField.Id, $(this));"><i class="fa fa-check"></i>  @Resources.Resource.yes</button>
                                                                     }
                                                                 }
                                                                 if (added == 0)
                                                                 {
-                                                                    <button type="button" class="btn btn-danger btn-sm" onclick="HeaderLevel2.Add(@parLevel1XHeaderField.ParHeaderField_Id, $(this));"><i class="fa fa-times"></i>  Não</button>
+                                                                    <button type="button" class="btn btn-danger btn-sm" onclick="HeaderLevel2.Add(@parLevel1XHeaderField.ParHeaderField_Id, $(this));"><i class="fa fa-times"></i>  @Resources.Resource.no</button>
                                                                 }
                                                             }
                                                         </td>
@@ -156,9 +154,9 @@
                                 <table id="tableRegraNc" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Regra de Alerta:">
                                     <thead>
                                         <tr>
-                                            <th>Regra de Não conformidade</th>
-                                            <th>Valor</th>
-                                            <th>Reauditoria</th>
+                                            <th>@Resources.Resource.not_conformity_rule</th>
+                                            <th>@Resources.Resource.value</th>
+                                            <th>@Resources.Resource.reaudit</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -223,12 +221,12 @@
         adiciona: function() {
             /*Valida se pode criar o objeto*/
             if($('#' + RegraNcL2.level + ' #selectNotConformityRule :selected').val() <= 0){
-                alert("Por favor Selecione Regra de Não conformidade.");
+                alert("@Resources.Resource.select_the_not_conformity_rule");
                 return;
             }
 
             if($('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, '') == ""){
-                alert("É necessário preencher o campo Valor da Regra de alerta.");
+                alert("@Resources.Resource.fill_the_alert_rule_value");
                 return;
             }
 
@@ -325,7 +323,7 @@
         inputs.each(function (e) {
 
             if ($(this).val() == input.val()) {
-                openMessageModal("Alerta", "Já cadastrou esse grupo para o input");
+                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.there_is_group_for_input");
                 //alert('Já cadastrou esse grupo para o input');
                 includeItem = false;
                 return false;
@@ -378,19 +376,19 @@
 
         e.preventDefault();
         if($('#l2SelectFrequenciaReincidencia :selected').val() <= 0){
-            openMessageModal("Alerta", "É necessário selecionar a Frequência");
+            openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_frequency");
             //alert('É necessário selecionar a Frequência');
             return;
         }
 
         if($('#l2InputNumeroNC').val().length <= 0){
-            openMessageModal("Alerta", "É necessário informar o Número de NC");
+            openMessageModal("@Resources.Resource.warning", "@Resources.Resource.inform_the_nc_number");
             //alert('É necessário informar o Número de NC');
             return;
         }
 
         if($('#l2InputVigencia').val().length <= 0){
-            openMessageModal("Alerta", "É necessário selecionar a Vigência");
+            openMessageModal("@Resources.Resource.warning", "É necessário selecionar a Vigência");
             //alert('É necessário selecionar a Vigência');
             return;
         }

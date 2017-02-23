@@ -11,10 +11,17 @@ namespace PlanoAcaoCore
             return ListarGenerico<Pa_ContramedidaGenerica>(query);
         }
 
-        public static Pa_ContramedidaGenerica Get(int Id)
+        public static Pa_ContramedidaGenerica Get(int id)
         {
-            var query = "SELECT * FROM Pa_ContramedidaGenerica WHERE Id = " + Id;
+            var query = "SELECT * FROM Pa_ContramedidaGenerica WHERE Id = " + id;
             return GetGenerico<Pa_ContramedidaGenerica>(query);
         }
+
+        public static List<Pa_ContramedidaGenerica> ContramedidaGenericaPorGrupoCausa(int id)
+        {
+            var query = "select * from Pa_ContramedidaGenerica WHERE CausaGenerica = " + id;
+            return ListarGenerico<Pa_ContramedidaGenerica>(query);
+        }
+
     }
 }

@@ -44,7 +44,7 @@
 
                             <div class="tab-pane active" id="setup_tab">
                                 <p>
-                                    @Html.ActionLink("Novo", "Create")
+                                    @Html.ActionLink(Resources.Resource._new, "Create")
                                 </p>
                                 <table class="table">
                                     <tr>
@@ -73,9 +73,10 @@
                                                 @Html.DisplayFor(modelItem => item.Email)
                                             </td>
                                             <td>
-                                                @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }) |
-                                                @Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }) |
-                                                @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id })
+                                                @Html.ActionLink(Resources.Resource.edit, "Edit", new { id = item.Id }) 
+                                                @*|
+                                                @Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }, htmlAttributes) |
+                                                @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id })*@
                                             </td>
                                         </tr>
                                     }
