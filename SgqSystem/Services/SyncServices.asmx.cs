@@ -2566,6 +2566,8 @@ namespace SgqSystem.Services
                         //Incremento os itens que estaram no ParLevel1                
                         //Gera linha Level1
 
+                        bool reaudit = parlevel1.IsReaudit;
+
                         decimal tipoAlerta = parlevel1.tipoAlerta;
                         decimal valorAlerta = parlevel1.valorAlerta;
 
@@ -2649,7 +2651,8 @@ namespace SgqSystem.Services
                                                      avaliacaoultimoalerta: 0,
                                                      monitoramentoultimoalerta: 0,
                                                      volumeAlertaIndicador: volumeAlerta,
-                                                     metaIndicador: meta);
+                                                     metaIndicador: meta,
+                                                     reaudit: reaudit);
                         //Incrementa level1
                         parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row", outerhtml: level01);
                     }
@@ -2888,7 +2891,10 @@ namespace SgqSystem.Services
                                             evaluate: evaluate,
                                             sample: sample,
                                             HasSampleTotal: parlevel2.HasSampleTotal,
-                                            IsEmptyLevel3: parlevel2.IsEmptyLevel3);
+                                            IsEmptyLevel3: parlevel2.IsEmptyLevel3,
+                                            ParNotConformityRule_id : parlevel2.ParNotConformityRule_id,
+                                            AlertValue: parlevel2.Value,
+                                            IsReaudit: parlevel2.IsReaudit);
 
                 //Gera linha do Level2
                 ParLevel2List += html.listgroupItem(
@@ -2973,7 +2979,10 @@ namespace SgqSystem.Services
                                             sample: sampleGroup,
                                             HasSampleTotal: false,
                                             IsEmptyLevel3: false,
-                                            level1Group_Id: ParLevel1.Id);
+                                            level1Group_Id: ParLevel1.Id,
+                                            ParNotConformityRule_id: 0,
+                                            AlertValue: 0,
+                                            IsReaudit: false);
 
                 //Gera linha do Level2
                 ParLevel2List = html.listgroupItem(
