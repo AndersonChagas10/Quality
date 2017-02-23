@@ -39,7 +39,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
             string tipo = "";
 
-            if (obj.subRegional == "Todos")
+            if (obj.subRegional == "Todas")
 
                 tipo = "SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegionalGrupo = '" + obj.regional + "' and ParCompany_id is not null";
 

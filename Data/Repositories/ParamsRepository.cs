@@ -105,6 +105,10 @@ namespace Data.Repositories
                 {
                     Guard.verifyDate(nonCoformitRule, "AlterDate");
                     db.ParNotConformityRuleXLevel.Attach(nonCoformitRule);
+
+                    if (nonCoformitRule.ParCompany_Id == 0)
+                        nonCoformitRule.ParCompany_Id = null;
+
                     db.Entry(nonCoformitRule).State = EntityState.Modified;
                 }
                 db.SaveChanges();
