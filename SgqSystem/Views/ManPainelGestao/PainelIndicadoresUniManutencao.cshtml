@@ -851,10 +851,10 @@
             $('#tipoRelatorio').change(function () {
 
                 if ($('#tipoRelatorio option:selected').val() == "Por Unidade") {
-                    $("#SubRegionalId option[value='todos']").remove();
+                    $("#SubRegionalId option[value='Todas']").remove();
                     $("#mouthId").val(0);
                 } else {
-                    $("#SubRegionalId").append('<option value="Todos">Todos</option>');
+                    $("#SubRegionalId").append('<option value="Todas">Todas</option>');
                 }
 
                 if (ConfirmaEnvio()) {
@@ -878,10 +878,10 @@
                 $("#SubRegionalId").val($("#SubRegionalId").find("option:visible:first").val());
 
                 if ($('#tipoRelatorio option:selected').val() == "Por Unidade") {
-                    $("#SubRegionalId option[value='todos']").hide();
+                    $("#SubRegionalId option[value='Todas']").hide();
 
                 } else {
-                    $("#SubRegionalId option[value='todos']").show();
+                    $("#SubRegionalId option[value='Todas']").show();
                 }
 
                 if (ConfirmaEnvio()) {
