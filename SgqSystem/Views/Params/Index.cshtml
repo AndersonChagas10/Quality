@@ -182,6 +182,27 @@
 
 <script>
 
+    function defaults() {
+        $.fn.bootstrapSwitch.defaults.size = 'small';
+        $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
+        $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
+        $(".check-box").bootstrapSwitch();
+    }
+
+    function reloadPopovers(){
+        $(".popovers").attr("data-toggle", "popover");
+        $("[data-toggle=popover]").popover();
+    }
+
+    function updateAllTables(){
+        $('table').each(function (e) {
+            if ($(this).children('tbody').children('tr').not(".example").length > 0) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
 
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
@@ -370,7 +391,7 @@
     var parLevel1Empty = $('#ParLevel1 > form').clone();
     var parLevel2Empty = $('#ParLevel2 > form').clone();
     var parLevel3Empty = $('#ParLevel3 > form').clone();
-    
+
     var urlSaveMeassurementUnit = '@Html.Raw(@urlSaveMeassurementUnit)';
     var urlGetLevel1 = '@Html.Raw(@urlGetLevel1)';
     var urlGetLevel2 = '@Html.Raw(@urlGetLevel2)';
