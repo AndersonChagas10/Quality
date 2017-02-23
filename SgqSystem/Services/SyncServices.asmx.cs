@@ -1757,7 +1757,7 @@ namespace SgqSystem.Services
                     }
 
                     // Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\" havecorrectiveaction=\"false\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + "\"></div>";
-                    Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" LastLevel2AlertL1=\"" + consolidationResultL1L2.LastLevel2AlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\" havecorrectiveaction=\"" + consolidationResultL1L2.haveCorrectiveAction.ToString().ToLower() + "\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + "\" CollectionLevel2_Period_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_Period_CorrectiveAction + "\">" +
+                    Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" LastLevel2AlertL1=\"" + consolidationResultL1L2.LastLevel2AlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\" havecorrectiveaction=\"" + consolidationResultL1L2.haveCorrectiveAction.ToString().ToLower() + "\" more3defectsEvaluate=\"" + consolidationResultL1L2.More3DefectsEvaluate + "\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + "\" CollectionLevel2_Period_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_Period_CorrectiveAction + "\">" +
                                 partialResults +
                                "</div>";
                 }
@@ -2174,9 +2174,9 @@ namespace SgqSystem.Services
 
             string login = GetLoginAPP();
 
-            //string resource = GetResource();
+            string resource = GetResource();
 
-            return login;
+            return login + resource;
         }
         [WebMethod]
         public string getAPPLevels(int UserSgq_Id, int ParCompany_Id, DateTime Date)
@@ -2194,12 +2194,35 @@ namespace SgqSystem.Services
                               "<div class=\"VerificacaoTipificacao hide\"></div>" +
                               "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
 
-           // string resource = GetResource();
+            string resource = GetResource();
 
             return APPMain +
-                   supports;
+                   supports +
+                   resource;
         }
-        
+        public string GetResource()
+        {
+            //setup temporário
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+
+            System.Reflection.Assembly assembly = this.GetType().Assembly;
+
+            System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
+
+            var resourceSet = resourceManager.GetResourceSet(
+                Thread.CurrentThread.CurrentUICulture, true, false);
+
+            string items = "";
+
+            foreach (var entry in resourceSet.Cast<DictionaryEntry>())
+            {
+                items += "<div res='"+entry.Key.ToString() + "'>"+ entry.Value.ToString() + "</div>";
+            } 
+            
+            return "<div class='Resource hide'>"+ items + "</div>";
+        }
+
         public int getEvaluate(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluatePadrao)
         {
             int evaluate = 1;
@@ -2345,18 +2368,17 @@ namespace SgqSystem.Services
 
         public string navBar(int UserSgq_Id, int ParCompany_Id)
         {
-            string navBar = "<div class=\"navbar navbar-inverse navbar-fixed-top\">                                                                                                                                             " +
-                           "    <div class=\"container\" style=\"padding: 0px !important;\">                                                                                                                                    " +
-                           "        <div class=\"navbar-header\" style=\"width: 100%\">                                                                                                                                         " +
-                           "            <a class=\"navbar-brand\" id=\"SGQName\" href=\"#\"><i class=\"fa fa-chevron-left hide iconReturn\" style=\"margin-left: 8px; font-size: 24px;\" aria-hidden=\"true\"></i> SGQ </a>     " +
-                           "            <div class=\"buttonMenu navbar-brand hide\" id=\"btnShowImage\" level01id=\"2\">Show Image</div>                                                                                        " +
+            string navBar = "<div class=\"navbar navbar-inverse navbar-fixed-top\">                                                                                                                             " +
+                           "    <div class=\"container\" style=\"padding: 0px !important;\">                                                                                                                                                       " +
+                           "        <div class=\"navbar-header\" style=\"width: 100%\">                                                                                                                         " +
+                           "            <a class=\"navbar-brand\" id=\"SGQName\" href=\"#\"><i class=\"fa fa-chevron-left hide iconReturn\" style=\"margin-left: 8px; font-size: 24px;\" aria-hidden=\"true\"></i> SGQ </a>                 " +
+                           "            <div class=\"buttonMenu navbar-brand hide\" id=\"btnShowImage\" level01id=\"2\">Show Image</div>                                                                        " +
                            selectUserCompanys(UserSgq_Id, ParCompany_Id) +
-                           "            <span style='color: #ffffff; margin: 8px;' class='periodShift'></span>                                                                                                                  " +
-                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div>                               "+
-                           "            <span style='color: #ffffff; margin-top: 14px; margin-right: 8px;' class='atualDate pull-right'></span>                                                                                 " +
-                           "        </div>                                                                                                                                                                                      " +
-                           "    </div>                                                                                                                                                                                          " +
-                           "</div>                                                                                                                                                                                              ";
+                           "            <span style='color: #ffffff; margin: 14px;' class='period'>Periodo</span><span style='color: #ffffff; margin: 14px;' class='shift'>shift</span> " +
+                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div><span style='color: #ffffff; margin: 14px;' class='atualDate pull-right'></span>" +
+                           "        </div>                                                                                                                                                                      " +
+                           "    </div>                                                                                                                                                                          " +
+                           "</div>                                                                                                                                                                              ";
 
             return navBar;
         }
@@ -2388,10 +2410,6 @@ namespace SgqSystem.Services
                                           "</div>-->" +
                                           "<div class=\"modal-body\">" +
                                                "<h2>Ação Corretiva</h2>" +
-
-                                               "<button class=\"btn btn-danger modal-close-ca\">Fechar</button>" +
-                                               "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">Enviar</button>" +
-
                                           "<div id=\"messageAlert\" class=\"alert alert-info hide\" role=\"alert\">" +
                                           "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>" +
                                           "</div>" +
@@ -2460,7 +2478,8 @@ namespace SgqSystem.Services
                                                         //"</button>" +
                                                         "</span>" +
 
-                                                        
+                                                        "<button class=\"btn btn-danger modal-close-ca\">Fechar</button>" +
+                                                        "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">Enviar</button>" +
                                                     "</div>" +
                                                 "</div>" +
                                                 "</div>";
@@ -2539,8 +2558,6 @@ namespace SgqSystem.Services
                         nameParCritialLevel = parlevel1.ParCriticalLevel_Name;
                         //Incremento os itens que estaram no ParLevel1                
                         //Gera linha Level1
-
-                        bool reaudit = parlevel1.IsReaudit;
 
                         decimal tipoAlerta = parlevel1.tipoAlerta;
                         decimal valorAlerta = parlevel1.valorAlerta;
@@ -2625,8 +2642,7 @@ namespace SgqSystem.Services
                                                      avaliacaoultimoalerta: 0,
                                                      monitoramentoultimoalerta: 0,
                                                      volumeAlertaIndicador: volumeAlerta,
-                                                     metaIndicador: meta,
-                                                     reaudit: reaudit);
+                                                     metaIndicador: meta);
                         //Incrementa level1
                         parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row", outerhtml: level01);
                     }
@@ -2667,7 +2683,8 @@ namespace SgqSystem.Services
                                                 id: parLevel1Group.Key.ToString() + "critivalLevel",
                                                 label: nameParCritialLevel,
                                                 color: color,
-                                                outerhtml: parLevel1);
+                                                outerhtml: parLevel1,
+                                                aberto: true);
                 }
                 else
                 {
@@ -2769,14 +2786,24 @@ namespace SgqSystem.Services
                 string headerCounter =
                                      html.div(
                                                outerhtml: "<b>Av.</b>",
-                                               classe: "col-xs-6",
+                                               classe: "col-xs-3",
                                                style: "text-align:center"
                                              ) +
                                      html.div(
                                                outerhtml: "<b>Am.</b>",
-                                               classe: "col-xs-6",
+                                               classe: "col-xs-3",
                                                style: "text-align:center"
-                                             ); ;
+                                              ) +
+                                    html.div(
+                                        outerhtml: "<b>Def.</b>",
+                                        classe: "col-xs-3",
+                                        style: "text-align:center"
+                                    ) +
+                                    html.div(
+                                        outerhtml: "<b></b>",
+                                        classe: "col-xs-3",
+                                        style: "text-align:center"
+                                    );
 
                 headerCounter = html.div(
                                     //aqui vai os botoes
@@ -2792,14 +2819,24 @@ namespace SgqSystem.Services
                 string counters =
                                       html.div(
                                                 outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + " / " + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
-                                                classe: "col-xs-6",
+                                                classe: "col-xs-3",
                                                 style: "text-align:center"
                                               ) +
                                       html.div(
                                                 outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent hide") + html.span(outerhtml: "0", classe: "sampleCurrentTotal") + " / " + html.span(outerhtml: sample.ToString(), classe: "sampleTotal hide") + html.span(outerhtml: totalSampleXEvaluate.ToString(), classe: "sampleXEvaluateTotal"),
-                                                classe: "col-xs-6",
+                                                classe: "col-xs-3",
                                                 style: "text-align:center"
-                                              );
+                                              ) +
+                                        html.div(
+                                                    outerhtml: html.span(outerhtml: "0", classe: "defectsLevel2"),
+                                                    classe: "col-xs-3",
+                                                    style: "text-align:center"
+                                                 ) +
+                                          html.div(
+                                                    outerhtml: html.span(outerhtml: "", classe: "newcoutner"),
+                                                    classe: "col-xs-3",
+                                                    style: "text-align:center"
+                                                 );
 
                 counters = html.div(
                                     //aqui vai os botoes
@@ -2812,7 +2849,7 @@ namespace SgqSystem.Services
                 string buttonsHeaders = null;
                 //Caso tenha funções de não aplicado, coloca os botões nas respectivas linhas
                 //Como vai ficar se o item tem varias avaliações?vai ter botão salvar na linha do monitoramento?
-                if (ParLevel1.HasNoApplicableLevel2 == true || ParLevel1.HasSaveLevel2 == true || 1==1)
+                if (ParLevel1.HasNoApplicableLevel2 == true || ParLevel1.HasSaveLevel2 == true)
                 {
                     string btnNotAvaliable = null;
                     if (ParLevel1.HasNoApplicableLevel2)
@@ -2825,24 +2862,15 @@ namespace SgqSystem.Services
                     if (ParLevel1.HasSaveLevel2)
                     {
                         btnAreaSave = "<button class=\"btn btn-success hide btnAreaSaveConfirm\">                                                    " +
-                                       "   <span class=\"cursorPointer\"><i class=\"fa fa-check\" aria-hidden=\"true\"></i></span>     " +
+                                       "   <span class=\"cursorPointer\">Confirm? <i class=\"fa fa-check\" aria-hidden=\"true\"></i></span>     " +
                                        "</button>                                                                                                      " +
                                        "<button class=\"btn btn-primary btnAreaSave\">                                                                 " +
                                        "   <span class=\"cursorPointer iconsArea\"><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i></span>        " +
                                        "</button>                                                                                                      ";
                     }
-
-                    string btnReaudit = null;
-                    
-                        btnReaudit =   "<button class=\"btn btn-danger btnReaudit\">                                                                 " +
-                                       "   <span class=\"cursorPointer iconsArea\"><i class=\"fa fa-retweet\" aria-hidden=\"true\"></i></span>        " +
-                                       "</button>                                                                                                      ";
-                    
-
                     buttons = html.div(
                                  //aqui vai os botoes
-                                 outerhtml: //btnReaudit +
-                                            btnAreaSave +
+                                 outerhtml: btnAreaSave +
                                             btnNotAvaliable,
                                  style: "text-align: right",
                                  classe: "userInfo col-xs-3"
@@ -2874,10 +2902,7 @@ namespace SgqSystem.Services
                                             evaluate: evaluate,
                                             sample: sample,
                                             HasSampleTotal: parlevel2.HasSampleTotal,
-                                            IsEmptyLevel3: parlevel2.IsEmptyLevel3,
-                                            ParNotConformityRule_id : parlevel2.ParNotConformityRule_id,
-                                            AlertValue: parlevel2.Value,
-                                            IsReaudit: parlevel2.IsReaudit);
+                                            IsEmptyLevel3: parlevel2.IsEmptyLevel3);
 
                 //Gera linha do Level2
                 ParLevel2List += html.listgroupItem(
@@ -2962,10 +2987,7 @@ namespace SgqSystem.Services
                                             sample: sampleGroup,
                                             HasSampleTotal: false,
                                             IsEmptyLevel3: false,
-                                            level1Group_Id: ParLevel1.Id,
-                                            ParNotConformityRule_id: 0,
-                                            AlertValue: 0,
-                                            IsReaudit: false);
+                                            level1Group_Id: ParLevel1.Id);
 
                 //Gera linha do Level2
                 ParLevel2List = html.listgroupItem(
@@ -2986,16 +3008,26 @@ namespace SgqSystem.Services
 
             var painelLevel2HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1(ParLevel1.Id), ParFieldTypeDB, html);
 
-            painelLevel2HeaderListHtml = html.listgroupItem(
-                                                            outerhtml: painelLevel2HeaderListHtml,
-                                                            classe: "row"
-                                                            );
+
+            if (!string.IsNullOrEmpty(painelLevel2HeaderListHtml))
+            {
+                painelLevel2HeaderListHtml = html.listgroupItem(
+                                                                outerhtml: painelLevel2HeaderListHtml,
+                                                                classe: "row"
+                                                                );
+            }
+
+            string painelCounters = html.painelCounters();
+
+
+
             //Se contem  monitoramentos
             if (!string.IsNullOrEmpty(ParLevel2List))
             {
                 //Gera agrupamento dw Level2 para o Level1
                 ParLevel2List = html.listgroup(
                                                 outerhtml: painelLevel2HeaderListHtml +
+                                                           painelCounters +
                                                            ParLevel2List,
                                                 tags: "level01Id=\"" + ParLevel1.Id + "\""
                                                , classe: "level2Group hide");
@@ -3224,7 +3256,8 @@ namespace SgqSystem.Services
                                                                 amostras +
                                                                 painelLevel3HeaderListHtml,
 
-                                        classe: "painel painelLevel03 row");
+                                        classe: "painel painelLevel03 row") +
+                              html.painelCounters();
                               //          +
                               //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
@@ -3449,7 +3482,9 @@ namespace SgqSystem.Services
                                                                        amostras +
                                                                        painelLevel3HeaderListHtml,
 
-                                               classe: "painel painelLevel03 row");
+                                               classe: "painel painelLevel03 row") +
+
+                               html.painelCounters();
                 //+
                 //                html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
@@ -3590,11 +3625,12 @@ namespace SgqSystem.Services
 
                 painellevel3 = html.listgroupItem(
                                                             outerhtml: amostras + avaliacoes + totalnc + ncdianteiro + nctraseiro + niveis + painelLevel3HeaderListHtml,
+                                               classe: "painel painelLevel03 row") +
 
-                                               classe: "painel painelLevel03 row");
+                              html.painelCounters();
                 //+
-                             //                  +
-                             //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
+                //                  +
+                //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 //Se tiver level3 gera o agrupamento no padrão
                 if (!string.IsNullOrEmpty(parLevel3Group))
@@ -3710,7 +3746,8 @@ namespace SgqSystem.Services
                                                                        amostras +
                                                                        painelLevel3HeaderListHtml,
 
-                                               classe: "painel painelLevel03 row");
+                                               classe: "painel painelLevel03 row") +
+                              html.painelCounters();
                 //+
                 //                                html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
@@ -3981,22 +4018,12 @@ namespace SgqSystem.Services
             }
             #endregion
 
-            #region language
+            string selectUrlPreffix = html.option("http://mtzsvmqsc/SgqGlobal", "JBS") +
+                                      html.option("http://192.168.25.200/SgqMaster", "GRT") +
+                                      html.option("http://localhost:8090/SgqSystem", "GCN");
 
-            var selectLanguage = html.option("en-us", "English") +
-                              html.option("pt-br", "Português");
-
-            selectLanguage = html.select(selectLanguage, id: "language");
-
-            #endregion
-
-            //string selectUrlPreffix = html.option("http://mtzsvmqsc/SgqGlobal", "JBS") +
-            //                          html.option("http://192.168.25.200/SgqMaster", "GRT") +
-            //                          html.option("http://localhost:8090/SgqSystem", "GCN");
-
-            string formOuterHtml = html.head(Html.h.h2, outerhtml: "Login") +
+            string formOuterHtml = html.head(Html.h.h2, outerhtml: "Entre com seu Login") +
                                   selectUnit +
-                                  //selectLanguage+
                                   selectShit +
                                   html.label(labelfor: "inputUserName", classe: "sr-only", outerhtml: "Username") +
                                   html.input(id: "inputUserName", placeholder: "Username", required: true, disabled: inputsDesabilitados) +
@@ -4020,9 +4047,7 @@ namespace SgqSystem.Services
                                            tags: "role=\"alert\"",
                                            outerhtml: html.span(id: "mensagemSucesso", classe: "icon-ok-circle")) + 
                                            
-                                 // html.select(selectUrlPreffix, "cb_UrlPreffix", "\" onChange='abreOApp(this.value);' \"") +
-                                 
-                                 "";
+                                  html.select(selectUrlPreffix, "cb_UrlPreffix", "\" onChange='abreOApp(this.value);' \"");
 
             string form = html.form(
                                     outerhtml: formOuterHtml

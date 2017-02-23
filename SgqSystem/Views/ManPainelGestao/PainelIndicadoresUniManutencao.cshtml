@@ -228,7 +228,6 @@
                 ordemDoIndicador = "↓";
             }
 
-            //var meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
             var dado = MapeiaValorParaHC(retornoArray, 'dado')
             var realizado = MapeiaValorParaHC(retornoArray, 'realizado');
             var orcado = MapeiaValorParaHC(retornoArray, 'orcado');
@@ -290,9 +289,9 @@
                 "scrollX": true,
                 "autoWidth": false,
                 "scrollCollapse": true,
-                "scrollY": "350px",
+                "scrollY": "250px",
                 lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-                pageLength: 12,
+                //pageLength: 12,
                 responsive: true,
                 paginate: false,
                 //paging: false,
@@ -322,9 +321,6 @@
 
             var unidade = "";
 
-            //if ($('#unitId :selected').text() == null)
-            //    indicador = "Todos";
-            //else
             unidade = $('#UnidadeId :selected').text();
 
             var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
@@ -458,9 +454,6 @@
         //Gera grafico Acumulado
         function CallbackGraficoAcumulado(orcado, realizado, desvio) {
 
-            //if ($('#unitId :selected').text() == null)
-            //    indicador = "Todos";
-            //else
             var unidade = $('#UnidadeId :selected').text();
 
             var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
@@ -639,9 +632,6 @@
         //Gera grafico Desvios
         function CallbackGraficoDesvio(realizado, orcado, dado) {
 
-            //if ($('#unitId :selected').text() == null)
-            //    indicador = "Todos";
-            //else
             var unidade = $('#UnidadeId :selected').text();
 
             var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
@@ -820,20 +810,6 @@
             return true;
         }
 
-        //function GeraVetorDesvio(realizado, orcado) {
-
-        //    var positivo = [];
-        //    var negativo = [];
-
-        //    for (var i = 0; i < 12; i++) {
-
-        //        vetor[i].push(realizado[i] - orcado[i]);
-
-        //    }
-
-        //    return vetor;
-        //}
-
         $(document).ready(function () {
           
             $("#mouthId").prop('disabled', true);
@@ -872,6 +848,21 @@
             formControl.showSubRegionaisManutencao();
 
 
+            $('#tipoRelatorio').change(function () {
+
+                if ($('#tipoRelatorio option:selected').val() == "Por Unidade") {
+                    $("#SubRegionalId option[value='Todas']").remove();
+                    $("#mouthId").val(0);
+                } else {
+                    $("#SubRegionalId").append('<option value="Todas">Todas</option>');
+                }
+
+                if (ConfirmaEnvio()) {
+                    Send();
+                }
+
+            }).change();
+
             $("#indicadores label").on("click", function () {
                 Send();
             });
@@ -886,10 +877,21 @@
 
                 $("#SubRegionalId").val($("#SubRegionalId").find("option:visible:first").val());
 
+                if ($('#tipoRelatorio option:selected').val() == "Por Unidade") {
+                    $("#SubRegionalId option[value='Todas']").hide();
+
+                } else {
+                    $("#SubRegionalId option[value='Todas']").show();
+                }
+
+                if (ConfirmaEnvio()) {
+
+                    Send();
+                }
+
             }).change();
 
             $("#SubRegionalId").change(function () {
-
 
                 $('#UnidadeId').children('option').hide();
                 $("#UnidadeId").val($("#UnidadeId").find("option:visible:first").val());
@@ -902,6 +904,9 @@
 
                 }
 
+                if (ConfirmaEnvio()) {
+                    Send();
+                }
 
             }).change();
 
@@ -912,13 +917,6 @@
                 }
             });
 
-            $('#tipoRelatorio').change(function () {
-                if (ConfirmaEnvio()) {
-                    Send();
-                }
-
-            });
-
             $('#yearId').change(function () {
                 if (ConfirmaEnvio()) {
                     Send();
@@ -926,24 +924,6 @@
             });
 
             $('#mouthId').change(function () {
-                if (ConfirmaEnvio()) {
-                    Send();
-                }
-            });
-
-            $('#RegionalId').change(function () {
-                if (ConfirmaEnvio()) {
-                    Send();
-                }
-            });
-
-            $('#SubRegionalId').change(function () {
-                if (ConfirmaEnvio()) {
-                    Send();
-                }
-            });
-
-            $('#UnidadeId').change(function () {
                 if (ConfirmaEnvio()) {
                     Send();
                 }
