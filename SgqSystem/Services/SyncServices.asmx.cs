@@ -2174,9 +2174,9 @@ namespace SgqSystem.Services
 
             string login = GetLoginAPP();
 
-            string resource = GetResource();
+            //string resource = GetResource();
 
-            return login + resource;
+            return login;
         }
         [WebMethod]
         public string getAPPLevels(int UserSgq_Id, int ParCompany_Id, DateTime Date)
@@ -2194,38 +2194,12 @@ namespace SgqSystem.Services
                               "<div class=\"VerificacaoTipificacao hide\"></div>" +
                               "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
 
-            string resource = GetResource();
+           // string resource = GetResource();
 
             return APPMain +
-                   supports +
-                   resource;
+                   supports;
         }
-        public string GetResource()
-        {
-            //setup temporário
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-br");
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-br");
-
-            System.Reflection.Assembly assembly = this.GetType().Assembly;
-
-            System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
-
-            var resourceSet = resourceManager.GetResourceSet(
-                Thread.CurrentThread.CurrentUICulture, true, false);
-
-            string items = "";
-            //resourceSet = null;
-            foreach (var entry in resourceSet.Cast<DictionaryEntry>())
-            {
-                var celso = entry;
-                
-                // items += "<div res='"+entry.Key.ToString() + "'>"+ entry.Value.ToString() + "</div>";
-                items += "<div res='" + celso.Key.ToString() + "'>" + celso.Value.ToString() + "</div>";
-            } 
-            
-            return "<div class='Resource hide'>"+ items + "</div>";
-        }
-
+        
         public int getEvaluate(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluatePadrao)
         {
             int evaluate = 1;
@@ -2566,6 +2540,8 @@ namespace SgqSystem.Services
                         //Incremento os itens que estaram no ParLevel1                
                         //Gera linha Level1
 
+                        bool reaudit = parlevel1.IsReaudit;
+
                         decimal tipoAlerta = parlevel1.tipoAlerta;
                         decimal valorAlerta = parlevel1.valorAlerta;
 
@@ -2649,7 +2625,8 @@ namespace SgqSystem.Services
                                                      avaliacaoultimoalerta: 0,
                                                      monitoramentoultimoalerta: 0,
                                                      volumeAlertaIndicador: volumeAlerta,
-                                                     metaIndicador: meta);
+                                                     metaIndicador: meta,
+                                                     reaudit: reaudit);
                         //Incrementa level1
                         parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row", outerhtml: level01);
                     }
@@ -2835,7 +2812,7 @@ namespace SgqSystem.Services
                 string buttonsHeaders = null;
                 //Caso tenha funções de não aplicado, coloca os botões nas respectivas linhas
                 //Como vai ficar se o item tem varias avaliações?vai ter botão salvar na linha do monitoramento?
-                if (ParLevel1.HasNoApplicableLevel2 == true || ParLevel1.HasSaveLevel2 == true)
+                if (ParLevel1.HasNoApplicableLevel2 == true || ParLevel1.HasSaveLevel2 == true || 1==1)
                 {
                     string btnNotAvaliable = null;
                     if (ParLevel1.HasNoApplicableLevel2)
@@ -2854,9 +2831,18 @@ namespace SgqSystem.Services
                                        "   <span class=\"cursorPointer iconsArea\"><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i></span>        " +
                                        "</button>                                                                                                      ";
                     }
+
+                    string btnReaudit = null;
+                    
+                        btnReaudit =   "<button class=\"btn btn-danger btnReaudit\">                                                                 " +
+                                       "   <span class=\"cursorPointer iconsArea\"><i class=\"fa fa-retweet\" aria-hidden=\"true\"></i></span>        " +
+                                       "</button>                                                                                                      ";
+                    
+
                     buttons = html.div(
                                  //aqui vai os botoes
-                                 outerhtml: btnAreaSave +
+                                 outerhtml: btnReaudit +
+                                            btnAreaSave +
                                             btnNotAvaliable,
                                  style: "text-align: right",
                                  classe: "userInfo col-xs-3"
@@ -2888,7 +2874,10 @@ namespace SgqSystem.Services
                                             evaluate: evaluate,
                                             sample: sample,
                                             HasSampleTotal: parlevel2.HasSampleTotal,
-                                            IsEmptyLevel3: parlevel2.IsEmptyLevel3);
+                                            IsEmptyLevel3: parlevel2.IsEmptyLevel3,
+                                            ParNotConformityRule_id : parlevel2.ParNotConformityRule_id,
+                                            AlertValue: parlevel2.Value,
+                                            IsReaudit: parlevel2.IsReaudit);
 
                 //Gera linha do Level2
                 ParLevel2List += html.listgroupItem(
@@ -2973,7 +2962,10 @@ namespace SgqSystem.Services
                                             sample: sampleGroup,
                                             HasSampleTotal: false,
                                             IsEmptyLevel3: false,
-                                            level1Group_Id: ParLevel1.Id);
+                                            level1Group_Id: ParLevel1.Id,
+                                            ParNotConformityRule_id: 0,
+                                            AlertValue: 0,
+                                            IsReaudit: false);
 
                 //Gera linha do Level2
                 ParLevel2List = html.listgroupItem(
@@ -3989,12 +3981,22 @@ namespace SgqSystem.Services
             }
             #endregion
 
+            #region language
+
+            var selectLanguage = html.option("en-us", "English") +
+                              html.option("pt-br", "Português");
+
+            selectLanguage = html.select(selectLanguage, id: "language");
+
+            #endregion
+
             //string selectUrlPreffix = html.option("http://mtzsvmqsc/SgqGlobal", "JBS") +
             //                          html.option("http://192.168.25.200/SgqMaster", "GRT") +
             //                          html.option("http://localhost:8090/SgqSystem", "GCN");
 
-            string formOuterHtml = html.head(Html.h.h2, outerhtml: "Entre com seu Login") +
+            string formOuterHtml = html.head(Html.h.h2, outerhtml: "Login") +
                                   selectUnit +
+                                  selectLanguage+
                                   selectShit +
                                   html.label(labelfor: "inputUserName", classe: "sr-only", outerhtml: "Username") +
                                   html.input(id: "inputUserName", placeholder: "Username", required: true, disabled: inputsDesabilitados) +

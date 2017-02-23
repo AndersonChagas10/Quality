@@ -49,9 +49,9 @@
                 <table id="tableAvAm" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Avaliação e Amostra:">
                     <thead>
                         <tr>
-                            <th>Empresa</th>
-                            <th>Avaliação</th>
-                            <th>Amostras/Avaliação</th>
+                            <th>@Resources.Resource.company</th>
+                            <th>@Resources.Resource.evaluation</th>
+                            <th>@Resources.Resource.samples / @Resources.Resource.evaluation</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -128,11 +128,11 @@
 
                 /*Valida se pode criar o objeto*/
                 if($('#' + seletorTato + ' #amostra').val().length == 0){
-                    openMessageModal("Numero de amostras inválido.")
+                    openMessageModal('@Resources.Resource.invalid_samples_number');
                     return false;
                 }
                 if($('#' + seletorTato + ' #avaliacao').val().length == 0){
-                    openMessageModal("Numero de avaliações inválido.")
+                    openMessageModal('@Resources.Resource.invalid_evaluations_number');
                     return false;
                 }
 
@@ -147,14 +147,14 @@
                 });
 
                 if(!!isEdit){/*Edição*/
-                   
+
                 } else {/*Inclusão*/
                     if(exist.length){
-                
+
                         if(companySelected == -1)
                             display= "Todas";
 
-                        openMessageModal("Dados já cadastrados para a empresa " + display + ".", "")
+                        openMessageModal("@Resources.Resource.data_already_register_on_company"+" " + display + ".", "")
                         return false;
 
                     }

@@ -1,7 +1,7 @@
 ﻿@model Dominio.ManDataCollectIT
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = Resources.Resource.create;
 }
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
@@ -13,7 +13,7 @@
 
             <div class="form-horizontal">
                 <h3>Coleta de Dados de Indicadores Técnicos</h3>
-                <h4>Inserir</h4>
+                <h4>@Resources.Resource.insert</h4>
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -21,7 +21,7 @@
                 @{ Html.EnableClientValidation(false); }
 
                 <div class="form-group">
-                    @Html.Label("Data de Coleta", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.Label(Resources.Resource.collection_date, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.ReferenceDatetime, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.ReferenceDatetime, "", new { @class = "text-danger" })
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.Label("Unidade", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.Label(Resources.Resource.unit, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.DropDownListFor(model => model.ParCompany_Id, new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.ParCompany_Id, "", new { @class = "text-danger" })
@@ -63,7 +63,7 @@
                     </div>*@
 
                 <div class="form-group">
-                    @Html.Label("Descrição da Coleta", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.Label(Resources.Resource.data_collection_description, htmlAttributes: new { @class = "control-label col-md-2" })
 
                     <div class="col-md-10">
                         @Html.DropDownListFor(model => model.DimManutencaoColetaITs_id, new SelectList(ViewBag.listaDataDataType, "id", "TechnicalIndicator"), Resources.Resource.select + "...", new { @class = "form-control" })
@@ -71,15 +71,12 @@
                     </div>
                 </div>
 
-
                 <div class="form-group">
-                    @Html.Label("Quantidade", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.Label(Resources.Resource.quantity, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-
 
                         @Html.TextBoxFor(model => model.AmountData, Model.AmountData.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.AmountData, "", new { @class = "text-danger" })
-
 
                     </div>
                 </div>

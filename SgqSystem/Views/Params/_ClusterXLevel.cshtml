@@ -36,7 +36,7 @@
                     <thead>
                         <tr>
                             <th>@Resources.Resource.cluster_name</th>
-                            <th>Nivel</th>
+                            <th>@Resources.Resource.level</th>
                             <th>@Resources.Resource.cluster_points</th>
                             <th></th>
                         </tr>
@@ -111,17 +111,17 @@
                 var seletorTato = !!isEdit ? isEdit : this.level;
                 /*Valida se pode criar o objeto*/
                 if($('#' + seletorTato + ' #valueCluster :selected').val() <= 0){
-                    alert("Por favor selecione o cluster.");
+                    openMessageModal("@Resources.Resource.select_the_cluster");
                     return false;
                 }
 
                 if($('#' + seletorTato + ' #valCrit :selected').val() <= 0){
-                    alert("Por favor selecione o nivel critico.");
+                    openMessageModal("@Resources.Resource.select_the_critical_level");
                     return false;
                 }
 
                 if($('#' + seletorTato + ' #pontosCluster').val().replace(/[^0-9.]/g, '') == ""){
-                    alert("Por favor preencha o campo pontos do cluster.");
+                    openMessageModal("@Resources.Resource.fill_the_cluster_points");
                     return false;
                 }
                 return true;
@@ -170,7 +170,7 @@
                 var isValid  = true;
                 $('#'+this.level + ' #' + this.idTable).find('tbody > tr').each(function(c, o) {
                     if($(o).data().ParCluster_Id == obj.ParCluster_Id){
-                        alert("O cluster não pode ser duplicado, por favor verifique a seleção.")  
+                        openMessageModal("@Resources.Resource.cluster_can_not_be_duplicated")
                         isValid = false
                     }
                 });
@@ -180,6 +180,6 @@
     }
 
 
-   
+
 
 </script>
