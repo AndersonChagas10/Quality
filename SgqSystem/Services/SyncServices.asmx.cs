@@ -2566,6 +2566,8 @@ namespace SgqSystem.Services
                         //Incremento os itens que estaram no ParLevel1                
                         //Gera linha Level1
 
+                        bool reaudit = parlevel1.IsReaudit;
+
                         decimal tipoAlerta = parlevel1.tipoAlerta;
                         decimal valorAlerta = parlevel1.valorAlerta;
 
@@ -2649,7 +2651,8 @@ namespace SgqSystem.Services
                                                      avaliacaoultimoalerta: 0,
                                                      monitoramentoultimoalerta: 0,
                                                      volumeAlertaIndicador: volumeAlerta,
-                                                     metaIndicador: meta);
+                                                     metaIndicador: meta,
+                                                     reaudit: reaudit);
                         //Incrementa level1
                         parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row", outerhtml: level01);
                     }
@@ -2835,7 +2838,7 @@ namespace SgqSystem.Services
                 string buttonsHeaders = null;
                 //Caso tenha funções de não aplicado, coloca os botões nas respectivas linhas
                 //Como vai ficar se o item tem varias avaliações?vai ter botão salvar na linha do monitoramento?
-                if (ParLevel1.HasNoApplicableLevel2 == true || ParLevel1.HasSaveLevel2 == true)
+                if (ParLevel1.HasNoApplicableLevel2 == true || ParLevel1.HasSaveLevel2 == true || 1==1)
                 {
                     string btnNotAvaliable = null;
                     if (ParLevel1.HasNoApplicableLevel2)
@@ -2854,9 +2857,18 @@ namespace SgqSystem.Services
                                        "   <span class=\"cursorPointer iconsArea\"><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i></span>        " +
                                        "</button>                                                                                                      ";
                     }
+
+                    string btnReaudit = null;
+                    
+                        btnReaudit =   "<button class=\"btn btn-danger btnReaudit\">                                                                 " +
+                                       "   <span class=\"cursorPointer iconsArea\"><i class=\"fa fa-retweet\" aria-hidden=\"true\"></i></span>        " +
+                                       "</button>                                                                                                      ";
+                    
+
                     buttons = html.div(
                                  //aqui vai os botoes
-                                 outerhtml: btnAreaSave +
+                                 outerhtml: btnReaudit +
+                                            btnAreaSave +
                                             btnNotAvaliable,
                                  style: "text-align: right",
                                  classe: "userInfo col-xs-3"
@@ -2888,7 +2900,10 @@ namespace SgqSystem.Services
                                             evaluate: evaluate,
                                             sample: sample,
                                             HasSampleTotal: parlevel2.HasSampleTotal,
-                                            IsEmptyLevel3: parlevel2.IsEmptyLevel3);
+                                            IsEmptyLevel3: parlevel2.IsEmptyLevel3,
+                                            ParNotConformityRule_id : parlevel2.ParNotConformityRule_id,
+                                            AlertValue: parlevel2.Value,
+                                            IsReaudit: parlevel2.IsReaudit);
 
                 //Gera linha do Level2
                 ParLevel2List += html.listgroupItem(
@@ -2973,7 +2988,10 @@ namespace SgqSystem.Services
                                             sample: sampleGroup,
                                             HasSampleTotal: false,
                                             IsEmptyLevel3: false,
-                                            level1Group_Id: ParLevel1.Id);
+                                            level1Group_Id: ParLevel1.Id,
+                                            ParNotConformityRule_id: 0,
+                                            AlertValue: 0,
+                                            IsReaudit: false);
 
                 //Gera linha do Level2
                 ParLevel2List = html.listgroupItem(
