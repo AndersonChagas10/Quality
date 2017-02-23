@@ -1406,6 +1406,7 @@
     <Content Include="Scripts\version.json" />
     <Content Include="Views\Pa_Planejamento\Filtrar.cshtml" />
     <Content Include="Views\Pa_Acao\Index.cshtml" />
+    <Content Include="Views\Shared\_DdlGenerica.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Helper\Helper.csproj">

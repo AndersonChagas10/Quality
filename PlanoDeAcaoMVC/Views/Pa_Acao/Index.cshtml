@@ -28,50 +28,33 @@
             </tr>
             <tr>
                 <td>
-                    @*@Html.Label("CausaGenerica", htmlAttributes: new { @class = "control-label " })*@
-                    <span>Causa Generica</span>
+                    @Html.Label("Causa generica", htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
-                    @*@Html.DropDownList("CausaMedidasXAcao.CausaGenerica_Id", new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione", new { @class = "form-control input-sm" })*@
-                    <select data-ng-model="CausaGenericaValue"
-                            data-ng-options="s.Id as s.Name for s in CausaGenerica"
-                            data-ng-change="CausaGenericaChange();" class="form-control input-sm">
-                        <option value="">Selecione...</option>
-                    </select>
+                    @Html.DropDownList("CausaMedidasXAcao.CausaGenerica_Id", new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione", new { @class = "form-control input-sm" })
+                    @Html.ValidationMessageFor(model => model.Departamento_Id, "", new { @class = "text-danger" })
+                </td>
+                <td style="width: 16%;"></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Grupo causa", htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td id="GrupoCausa">
+                    @Html.DropDownList("CausaMedidasXAcao.GrupoCausa_Id", new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
                 </td>
                 <td></td>
             </tr>
             <tr>
                 <td>
-                    @*@Html.Label("Grupo causa", htmlAttributes: new { @class = "control-label " })*@
-                    <span>Grupo causa</span>
+                    @Html.Label("Contramedida generica", htmlAttributes: new { @class = "control-label " })
                 </td>
-                <td>
-                    @*@Html.DropDownList("CausaMedidasXAcao.GrupoCausa_Id", new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione", new { @class = "form-control input-sm" })*@
-                    <select data-ng-model="GrupoCausaValue"
-                            data-ng-options="s.Id as s.Name for s in GrupoCausa"
-                            data-ng-change="GrupoCausaChange();" class="form-control input-sm">
-                        <option value="">Selecione...</option>
-                    </select>
+                <td id="ContramedidaGenerica">
+                    @Html.DropDownList("CausaMedidasXAcao.ContramedidaGenerica_Id", new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
                 </td>
                 <td></td>
             </tr>
-            <tr>
-                <td>
-                    @*@Html.Label("Contramedida generica", htmlAttributes: new { @class = "control-label " })*@
-                    <span>Contramedida generica</span>
-                </td>
-                <td>
-                    @*@Html.DropDownList("CausaMedidasXAcao.ContramedidaGenerica_Id", new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), "Selecione", new { @class = "form-control input-sm" })*@
-                    <select data-ng-model="ContramedidaGenericaValue"
-                            data-ng-options="s.Id as s.Name for s in ContramedidaGenerica"
-                            data-ng-change="" class="form-control input-sm">
-                        <option value="">Selecione...</option>
-                    </select>
-                </td>
-                <td></td>
-            </tr>
-            <tr>
+                 <tr>
                 <td >
                     @Html.Label("Quem", htmlAttributes: new { @class = "control-label " })
                 </td>

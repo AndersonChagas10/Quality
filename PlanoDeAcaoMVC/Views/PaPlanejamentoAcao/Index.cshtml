@@ -158,6 +158,21 @@
 
     <script>
 
+        var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
+        var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")'; 
+        var planejamentoCorrentId = 0;
+        var isTaticoClicked = false;
+        var isNovaAcao = false;
+        var urlModalOpcoesEstrategico = '@Url.Action("Details", "Pa_Planejamento")';
+        var urlNovoPlanejamento = '@Url.Action("Index", "Pa_Planejamento")';
+        var urlBuscarPlanejamentos = '@Url.Action("Buscar", "Pa_Planejamento")';
+        var urlFiltraPlanejamentos = '@Url.Action("Filtrar", "Pa_Planejamento")';
+        var urlSalvarPlanejamento = '@Url.Action("Save", "api/Pa_Planejamento")';
+        var urlNovaAcao = '@Url.Action("Index", "Pa_Acao")';
+        var urlSalvarAcao = '@Url.Action("Save", "api/Pa_Acao")';
+        var urlGetPlanejamentoAcao = '@Url.Action("GetPlanejamentoAcao", "api/Pa_Planejamento")';
+        var urlSalvarNovoItem = '@Url.Action("Save", "api/Generics")';
+
         /*Btn Minimizar Modal*/
         $(document).ready(function () {
 
@@ -202,9 +217,6 @@
         });
         /*FIM Btn Minimizar Modal*/
 
-        var planejamentoCorrentId = 0;
-        var isTaticoClicked = false;
-        var isNovaAcao = false;
         $.fn.serializeObject = function () {
             var o = {};
             var a = this.serializeArray();
@@ -220,16 +232,6 @@
             });
             return o;
         };
-
-        var urlModalOpcoesEstrategico = '@Url.Action("Details", "Pa_Planejamento")';
-        var urlNovoPlanejamento = '@Url.Action("Index", "Pa_Planejamento")';
-        var urlBuscarPlanejamentos = '@Url.Action("Buscar", "Pa_Planejamento")';
-        var urlFiltraPlanejamentos = '@Url.Action("Filtrar", "Pa_Planejamento")';
-        var urlSalvarPlanejamento = '@Url.Action("Save", "api/Pa_Planejamento")';
-        var urlNovaAcao = '@Url.Action("Index", "Pa_Acao")';
-        var urlSalvarAcao = '@Url.Action("Save", "api/Pa_Acao")';
-        var urlGetPlanejamentoAcao = '@Url.Action("GetPlanejamentoAcao", "api/Pa_Planejamento")';
-        var urlSalvarNovoItem = '@Url.Action("Save", "api/Generics")';
 
         function Clicked(isClickedTatico, isClickedAcao) {
             isTaticoClicked = isClickedTatico;
@@ -366,9 +368,24 @@
                 $('#modalLindo').modal();
 
             $('#Header').html("Ação");
-            $('#modalLindo').find('.modal-body').empty()
+            $('#modalLindo').find('.modal-body').empty();
+
             $.get(urlNovaAcao, function (r) {
+
                 $('#modalLindo').find('.modal-body').append(r);
+                $('#CausaMedidasXAcao_CausaGenerica_Id').off('change')
+                $('#CausaMedidasXAcao_GrupoCausa_Id').off('change')
+
+                $('#CausaMedidasXAcao_CausaGenerica_Id').on('change', function () {
+                    var valor =  $('#CausaMedidasXAcao_CausaGenerica_Id').val();
+                    $.get(GETGrupoCausa, { id: valor }, function (r) {
+                        $('#GrupoCausa').empty().html(r);
+                    });
+                    $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
+                        $('#ContramedidaGenerica').empty().html(rr);
+                    });
+                });
+
             });
 
             /*Botões*/
