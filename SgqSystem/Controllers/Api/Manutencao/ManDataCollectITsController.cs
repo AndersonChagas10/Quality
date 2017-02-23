@@ -18,7 +18,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
         public string SaveCreate(Obj obj)
         {
             //Fazer a inserção do Orçado
-            bool mockRetorno = false; 
+            bool mockRetorno = true; 
 
             try
             {
@@ -57,7 +57,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                     //return d;
                 }
 
-
+                
                 if (mockRetorno)
                 {
                     return "Salvo com Sucesso!";
@@ -151,7 +151,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
         [Route("SaveEdit")]
         public string SaveEdit(Obj obj)
         {
-            bool mockRetorno = false;
+            bool mockRetorno = true;
             try
             {
                 string sql = "";
@@ -169,7 +169,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                 sql = "UPDATE ManColetaDados " +
                        "SET " +
                         "Base_dateAlter = GETDATE() " +
-                        "," + obj.indicadorNome + " = '" + obj.quantidade + "' " +
+                        "," + obj.indicadorNome + " = replace('" + obj.quantidade + "',',','.') " +
                         ",Comentarios = '" + obj.comentarios + "' " +
                        "from ManColetaDados " +
                        "WHERE " +
