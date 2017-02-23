@@ -3,74 +3,72 @@
 }
 
 <style>
-
     .modal-header .btnGrp {
-              position: absolute;
-              top: 8px;
-              right: 10px;
-          }
+        position: absolute;
+        top: 8px;
+        right: 10px;
+    }
 
 
-          .min {
-              width: 250px;
-              height: 35px;
-              overflow: hidden !important;
-              padding: 0px !important;
-              margin: 0px;
-              float: left;
-              position: static !important;
-          }
+    .min {
+        width: 250px;
+        height: 35px;
+        overflow: hidden !important;
+        padding: 0px !important;
+        margin: 0px;
+        float: left;
+        position: static !important;
+    }
 
-          .min .modal-dialog, .min .modal-content {
-              height: 100%;
-              width: 100%;
-              min-width: 70%;
-              align-self: center;
-              margin: 0px !important;
-              padding: 0px !important;
-          }
+        .min .modal-dialog, .min .modal-content {
+            height: 100%;
+            width: 100%;
+            min-width: 70%;
+            align-self: center;
+            margin: 0px !important;
+            padding: 0px !important;
+        }
 
-          .modal-dialog {
-              width: 80% !important;
-          }
+    .modal-dialog {
+        width: 80% !important;
+    }
 
-          .min .modal-header {
-              height: 100%;
-              width: 100%;
-              margin: 0px !important;
-              padding: 3px 5px !important;
-          }
+    .min .modal-header {
+        height: 100%;
+        width: 100%;
+        margin: 0px !important;
+        padding: 3px 5px !important;
+    }
 
-          .display-none {
-              display: none;
-          }
+    .display-none {
+        display: none;
+    }
 
-          button .fa {
-              font-size: 16px;
-              margin-left: 10px;
-          }
+    button .fa {
+        font-size: 16px;
+        margin-left: 10px;
+    }
 
-          .min .fa {
-              font-size: 14px;
-          }
+    .min .fa {
+        font-size: 14px;
+    }
 
-          .min .menuTab {
-              display: none;
-          }
+    .min .menuTab {
+        display: none;
+    }
 
-          button:focus {
-              outline: none;
-          }
+    button:focus {
+        outline: none;
+    }
 
-          .minmaxCon {
-              height: 35px;
-              bottom: 1px;
-              left: 1px;
-              position: fixed;
-              right: 1px;
-              z-index: 9999;
-          }
-
+    .minmaxCon {
+        height: 35px;
+        bottom: 1px;
+        left: 1px;
+        position: fixed;
+        right: 1px;
+        z-index: 9999;
+    }
 </style>
 
 <h2>Plano de Ação</h2>
@@ -159,7 +157,7 @@
     <script>
 
         var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
-        var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")'; 
+        var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")';
         var planejamentoCorrentId = 0;
         var isTaticoClicked = false;
         var isNovaAcao = false;
@@ -373,18 +371,27 @@
             $.get(urlNovaAcao, function (r) {
 
                 $('#modalLindo').find('.modal-body').append(r);
-                $('#CausaMedidasXAcao_CausaGenerica_Id').off('change')
-                $('#CausaMedidasXAcao_GrupoCausa_Id').off('change')
+
+                $('#CausaMedidasXAcao_GrupoCausa_Id').empty().attr('disabled', true);
+                $('#CausaMedidasXAcao_ContramedidaGenerica_Id').empty().attr('disabled', true);
 
                 $('#CausaMedidasXAcao_CausaGenerica_Id').on('change', function () {
-                    var valor =  $('#CausaMedidasXAcao_CausaGenerica_Id').val();
-                    $.get(GETGrupoCausa, { id: valor }, function (r) {
-                        $('#GrupoCausa').empty().html(r);
-                    });
-                    $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
-                        $('#ContramedidaGenerica').empty().html(rr);
-                    });
+                    var valor = $('#CausaMedidasXAcao_CausaGenerica_Id').val();
+                    if (valor) {
+                        $.get(GETGrupoCausa, { id: valor }, function (r) {
+                            $('#GrupoCausa').empty().html(r);
+                        });
+                        $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
+                            $('#ContramedidaGenerica').empty().html(rr);
+                        });
+                    }
+                    else {
+                        $('#CausaMedidasXAcao_GrupoCausa_Id').empty().attr('disabled', true);
+                        $('#CausaMedidasXAcao_ContramedidaGenerica_Id').empty().attr('disabled', true);
+                    }
                 });
+
+                AcaoXQuem_Quem_Id
 
             });
 
@@ -397,6 +404,14 @@
             /*Fim Botões*/
         }
 
+        function dadosQuem() {
+            return {
+                id: $('#AcaoXQuem_Quem_Id').val()
+                , name: $('#AcaoXQuem_Quem_Id option:selected').text()
+                , display: $('#AcaoXQuem_Quem_Id option:selected').text()
+            }
+        }
+
         function SalvarAcao() {
             var sendObj = $('#Acao').serializeObject();
             sendObj['Planejamento_Id'] = planejamentoCorrentId;
@@ -407,6 +422,31 @@
             });
         }
         /*Fim Acao*/
+
+        function Adicionar(btn) {
+
+            var $tr = $(btn).closest('.tr_clone');
+            var $clone;
+            //if ($($tr).is("tr")) {
+
+                $clone = $tr.clone();
+
+            //} else if ($($tr).is("td")) {
+
+            //    var quantidade = parseInt($tr.attr('rowspan')) - 1;
+            //    $clone = $($tr).parents('tr').nextAll("*:lt(" + quantidade + ")")
+
+            //}
+
+            $clone.find(':text').val('');
+            $tr.find('#remove').show();
+            $tr.find('#adicionar').hide();
+            $tr.after($clone);
+        }
+
+        function Remover(btn) {
+            $(btn).parents('tr').remove();
+        }
 
         /*Novo item*/
         var tempInput;
