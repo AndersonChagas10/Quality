@@ -127,6 +127,7 @@
             Send(typeRequest)
         });
 
+
     });
 
     function Send(typeRequest) {
@@ -254,7 +255,7 @@
                 var cols = "";
 
                 cols += '<td>' + indicadores[i].Nome + '</td>';
-                cols += '<td><input id="quantidade" name="row-1-age" type="text" style="text-align: center" ></td>'; //BS: Alteração feita=> Alinhamento do texto: Centralizado
+                cols += '<td><input id="quantidade" name="row-1-age" type="number" style="text-align: center" ></td>'; //BS: Alteração feita=> Alinhamento do texto: Centralizado
                 cols += '<td><input id="comentarios" name="row-1-position" value="" type="text" ></td>';
                 cols += '<td><button id="save" class="btn btn-large btn-danger" type="button">Salvar</button></td>';
                 cols += '<td id="return"></td>';
@@ -285,6 +286,7 @@
                     //var date = $("#date").datepicker({ dateFormat: 'yyyy-mm-dd' }).val();
                     //var parCompany_Id = $("#ParCompany_Id").val();
                     ThisGlobal = this;
+                    var cookie = getCookie('webControlCookie');
 
                     var obj = {};
 
@@ -294,6 +296,8 @@
                     obj['data'] = newdate;
                     //obj['parCompany'] = parCompany_Id;
                     obj['parCompany'] = UniEdit;
+
+                    obj['user'] = cookie[1].substr(9);
 
                     if (validaParaEnvio(obj)) {
 
@@ -323,7 +327,7 @@
                 var cols = "";
 
                 cols += '<td>' + indicadores[i].Nome + '</td>';
-                cols += '<td><input id="quantidade" name="row-1-age" type="text" value="' + indicadores[i].ValorReal + '" style="text-align: center" disabled ></td>'; //BS: Alteração feita=> Alinhamento do texto: Centralizado
+                cols += '<td><input id="quantidade" name="row-1-age" type="number" value="' + indicadores[i].ValorReal + '" style="text-align: center" disabled ></td>'; //BS: Alteração feita=> Alinhamento do texto: Centralizado
                 cols += '<td><input id="comentarios" name="row-1-position" value="" type="text" disabled></td>';
                 cols += '<td><button id="alter" class="btn btn-large btn-primary" type="button">Alterar</button><button id="save" class="btn btn-large btn-danger" type="button" style="display: none;">Salvar</button></td>';
                 cols += '<td id="return"></td>';
@@ -361,6 +365,7 @@
                     //var date = $("#date").datepicker({ dateFormat: 'yyyy-mm-dd' }).val();
                     //var parCompany_Id = $("#ParCompany_Id").val();
                     ThisGlobal = this;
+                    var cookie = getCookie('webControlCookie');
 
                     var obj = {};
 
@@ -369,7 +374,7 @@
                     obj['comentarios'] = comentarios;
                     obj['data'] = newdate;
                     //obj['parCompany'] = parCompany_Id;
-
+                    obj['user'] = cookie[1].substr(9);
                     obj['parCompany'] = UniEdit;
 
                     if (validaParaEnvio(obj)) {

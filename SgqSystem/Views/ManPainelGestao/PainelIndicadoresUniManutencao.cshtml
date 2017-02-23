@@ -121,6 +121,8 @@
         var urlGraficoEvolucao = '@Html.Raw(urlGraficoEvolucao)'
         var urlGraficoAcumulado = '@Html.Raw(urlGraficoAcumulado)'
         var dados = {};
+        var legenda1 = "";
+        var tipoGrafico = "";
 
         function getNome() {
 
@@ -394,7 +396,7 @@
                     categories: dado,
                     crosshair: true,
                     title: {
-                        text: 'Meses',
+                        text: legenda1, 
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -439,7 +441,7 @@
                         color: Highcharts.getOptions().colors[0],
                     },
                     {
-                        type: 'spline',
+                        type: tipoGrafico, 
                         name: 'Orçado',
                         data: orcado, //Colocar o array de orçado
                         color: Highcharts.getOptions().colors[3],
@@ -833,14 +835,26 @@
         //}
 
         $(document).ready(function () {
+          
+            $("#mouthId").prop('disabled', true);
 
+            legenda1 = 'Meses';
+           
             $('#btnSend').hide();
+
+            tipoGrafico = 'spline';
 
             $('#tipoRelatorio').change(function () {
                 if ($(this).val() == "Por Regional") {
                     $('#UnidadeId').prop('disabled', true);
+                    $("#mouthId").prop('disabled', false);
+                    legenda1 = 'Unidades';
+                    tipoGrafico = 'column';
                 } else {
                     $('#UnidadeId').prop('disabled', false);
+                    $("#mouthId").prop('disabled', true);
+                    legenda1 = 'Meses';
+                    tipoGrafico = 'spline';
                 }
             });
 

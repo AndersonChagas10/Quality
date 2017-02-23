@@ -2825,7 +2825,7 @@ namespace SgqSystem.Services
                     if (ParLevel1.HasSaveLevel2)
                     {
                         btnAreaSave = "<button class=\"btn btn-success hide btnAreaSaveConfirm\">                                                    " +
-                                       "   <span class=\"cursorPointer\">Confirm? <i class=\"fa fa-check\" aria-hidden=\"true\"></i></span>     " +
+                                       "   <span class=\"cursorPointer\"><i class=\"fa fa-check\" aria-hidden=\"true\"></i></span>     " +
                                        "</button>                                                                                                      " +
                                        "<button class=\"btn btn-primary btnAreaSave\">                                                                 " +
                                        "   <span class=\"cursorPointer iconsArea\"><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i></span>        " +
@@ -2841,7 +2841,7 @@ namespace SgqSystem.Services
 
                     buttons = html.div(
                                  //aqui vai os botoes
-                                 outerhtml: btnReaudit +
+                                 outerhtml: //btnReaudit +
                                             btnAreaSave +
                                             btnNotAvaliable,
                                  style: "text-align: right",
@@ -3996,7 +3996,7 @@ namespace SgqSystem.Services
 
             string formOuterHtml = html.head(Html.h.h2, outerhtml: "Login") +
                                   selectUnit +
-                                  selectLanguage+
+                                  //selectLanguage+
                                   selectShit +
                                   html.label(labelfor: "inputUserName", classe: "sr-only", outerhtml: "Username") +
                                   html.input(id: "inputUserName", placeholder: "Username", required: true, disabled: inputsDesabilitados) +
