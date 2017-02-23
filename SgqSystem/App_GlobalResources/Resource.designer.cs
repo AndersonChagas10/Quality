@@ -3778,6 +3778,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to en-us.
+        /// </summary>
+        internal static string _language {
+            get {
+                return ResourceManager.GetString("_language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New.
         /// </summary>
         internal static string _new {

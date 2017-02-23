@@ -1353,4 +1353,7 @@
   <data name="tipification_verification" xml:space="preserve">
     <value>Verificação do tipificação</value>
   </data>
+  <data name="_language" xml:space="preserve">
+    <value>pt-br</value>
+  </data>
 </root>

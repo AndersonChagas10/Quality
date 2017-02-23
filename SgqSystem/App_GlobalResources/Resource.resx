@@ -1359,4 +1359,7 @@
   <data name="online_to_change_language" xml:space="preserve">
     <value>You need to be online to change the language</value>
   </data>
+  <data name="_language" xml:space="preserve">
+    <value>en-us</value>
+  </data>
 </root>
