@@ -70,7 +70,7 @@ namespace SGQDBContext
                          " ON CC.ParCluster_Id = P1C.ParCluster_Id                                                                                    " +
                          " INNER JOIN ParCriticalLevel CL                                                                                             " +
                          " ON CL.Id = P1C.ParCriticalLevel_Id                                                                                         " +
-                         " INNER JOIN ParNotConformityRuleXLevel AL                                                                                   " +
+                         " LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
                          " ON AL.ParLevel1_Id = P1.Id                                                                                                 " +
 
                          " WHERE CC.ParCompany_Id = '" + ParCompany_Id + "'                                                                           " +
