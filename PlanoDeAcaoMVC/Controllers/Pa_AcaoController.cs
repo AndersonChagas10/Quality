@@ -39,7 +39,11 @@ namespace PlanoDeAcaoMVC.Controllers
             if (results == null)
                 results = new List<Pa_GrupoCausa>();
 
-            ViewBag.Ddl = new SelectList(results, "Id", "GrupoCausa");
+            if (results.Count == 1)
+                ViewBag.Ddl = new SelectList(results, "Id", "GrupoCausa", results.FirstOrDefault().Id);
+            else
+                ViewBag.Ddl = new SelectList(results, "Id", "GrupoCausa");
+
             return PartialView("_DdlGenerica");
         }
 
@@ -56,7 +60,11 @@ namespace PlanoDeAcaoMVC.Controllers
             if (results == null)
                 results = new List<Pa_ContramedidaGenerica>();
 
-            ViewBag.Ddl = new SelectList(results, "Id", "ContramedidaGenerica");
+            if (results.Count == 1)
+                ViewBag.Ddl = new SelectList(results, "Id", "ContramedidaGenerica", results.FirstOrDefault().Id);
+            else
+                ViewBag.Ddl = new SelectList(results, "Id", "ContramedidaGenerica");
+          
             return PartialView("_DdlGenerica");
         }
     }
