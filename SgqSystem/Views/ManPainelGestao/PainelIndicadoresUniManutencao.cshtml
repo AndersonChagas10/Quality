@@ -122,7 +122,7 @@
         var urlGraficoAcumulado = '@Html.Raw(urlGraficoAcumulado)'
         var dados = {};
         var legenda1 = "";
-        var tipoGrafico = "";
+        var tipoGrafico = "";      
 
         function getNome() {
 
@@ -847,14 +847,15 @@
             formControl.showRegionaisManutencao();
             formControl.showSubRegionaisManutencao();
 
-
             $('#tipoRelatorio').change(function () {
 
                 if ($('#tipoRelatorio option:selected').val() == "Por Unidade") {
                     $("#SubRegionalId option[value='Todas']").remove();
                     $("#mouthId").val(0);
+                    $('#SubRegionalId').change();
                 } else {
                     $("#SubRegionalId").append('<option value="Todas">Todas</option>');
+                    $('#SubRegionalId').change();
                 }
 
                 if (ConfirmaEnvio()) {
@@ -864,7 +865,9 @@
             }).change();
 
             $("#indicadores label").on("click", function () {
-                Send();
+                if (ConfirmaEnvio()) {
+                    Send();
+                }
             });
 
             $("#RegionalId").change(function () {

@@ -94,11 +94,13 @@
         $btnFind = $('#GetIndicadores');
         $btnEdit = $('#GetIndicadoresEdit');
 
+        //Filtro de data (Só permite a data atual no calendário)
         if (FilterData) {
             start1 = start;
         } else
             start1 = "";
 
+        //Calendário
         $('.simpleCalendar').daterangepicker({
             singleDatePicker: true,
             showDropdowns: true,
@@ -139,10 +141,9 @@
         var NomeUnidade = $('#ParCompany_Id option:selected').text()
 
         DataEdit = $('#date').val();
-
         UniEdit = $('#ParCompany_Id option:selected').val();
 
-        //monta InfoColeta na div
+        //monta Informações da coleta na div InfoColeta
         $('#InfoColeta').empty();
         $('#InfoColeta').append('<h5>Coleta da Unidade de <b>' + NomeUnidade + '</b> referente a data de <b>' + DataEdit + '</b></h5>');
 
@@ -176,6 +177,7 @@
     }
 
     function InserirRetorno(retorno) {
+        //Insere o retorno(resposta) na div da tabela
         $(ThisGlobal).parents('tr').find("#return").text(retorno);
     }
 
@@ -281,10 +283,7 @@
                     var data = table.row($(this).parents('tr')).data();
                     var quantidade = $(this).parents('tr').find('#quantidade').val();
                     var comentarios = $(this).parents('tr').find('#comentarios').val();
-                    //var date = $("#date").val();
                     var newdate = DataEdit.split("/").reverse().join("-");
-                    //var date = $("#date").datepicker({ dateFormat: 'yyyy-mm-dd' }).val();
-                    //var parCompany_Id = $("#ParCompany_Id").val();
                     ThisGlobal = this;
                     var cookie = getCookie('webControlCookie');
 
@@ -294,9 +293,7 @@
                     obj['quantidade'] = quantidade.replace(",", ".");
                     obj['comentarios'] = comentarios;
                     obj['data'] = newdate;
-                    //obj['parCompany'] = parCompany_Id;
                     obj['parCompany'] = UniEdit;
-
                     obj['user'] = cookie[1].substr(9);
 
                     if (validaParaEnvio(obj)) {
@@ -360,10 +357,7 @@
                     var data = table.row($(this).parents('tr')).data();
                     var quantidade = $(this).parents('tr').find('#quantidade').val();
                     var comentarios = $(this).parents('tr').find('#comentarios').val();
-                    //var date = $("#date").val();
                     var newdate = DataEdit.split("/").reverse().join("-");
-                    //var date = $("#date").datepicker({ dateFormat: 'yyyy-mm-dd' }).val();
-                    //var parCompany_Id = $("#ParCompany_Id").val();
                     ThisGlobal = this;
                     var cookie = getCookie('webControlCookie');
 
@@ -373,7 +367,6 @@
                     obj['quantidade'] = quantidade.replace(",", ".");
                     obj['comentarios'] = comentarios;
                     obj['data'] = newdate;
-                    //obj['parCompany'] = parCompany_Id;
                     obj['user'] = cookie[1].substr(9);
                     obj['parCompany'] = UniEdit;
 
