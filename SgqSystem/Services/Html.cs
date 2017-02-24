@@ -488,7 +488,7 @@ namespace SgqSystem.Services
             string btnReaudit = null;
             if(ParLevel1.IsReaudit == true)
             {
-                btnReaudit = button("Reaudit", type.submit, "btnReaudit", classe: "btn-primary pull-right");
+                btnReaudit = button("Reaudit", type.submit, "btnReaudit", classe: "btn-primary pull-right hide");
             }
 
             string level01 = link(
