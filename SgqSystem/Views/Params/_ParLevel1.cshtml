@@ -486,27 +486,7 @@
         }
     });
 
-    function defaults() {
-        $.fn.bootstrapSwitch.defaults.size = 'small';
-        $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
-        $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
-        $(".check-box").bootstrapSwitch();
-    }
-
-    function reloadPopovers(){
-        $(".popovers").attr("data-toggle", "popover");
-        $("[data-toggle=popover]").popover();
-    }
-
-    function updateAllTables(){
-        $('table').each(function (e) {
-            if ($(this).children('tbody').children('tr').not(".example").length > 0) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
-        });
-    }
+    
 
     var Cabecalhos = {
         SetMultipleDefault: function(elem){

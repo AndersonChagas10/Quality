@@ -70,7 +70,7 @@ namespace SGQDBContext
                          " ON CC.ParCluster_Id = P1C.ParCluster_Id                                                                                    " +
                          " INNER JOIN ParCriticalLevel CL                                                                                             " +
                          " ON CL.Id = P1C.ParCriticalLevel_Id                                                                                         " +
-                         " INNER JOIN ParNotConformityRuleXLevel AL                                                                                   " +
+                         " LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
                          " ON AL.ParLevel1_Id = P1.Id                                                                                                 " +
 
                          " WHERE CC.ParCompany_Id = '" + ParCompany_Id + "'                                                                           " +
@@ -995,6 +995,7 @@ namespace SGQDBContext
         public int CollectionLevel2_ID_CorrectiveAction { get; set; }
 
         public int CollectionLevel2_Period_CorrectiveAction { get; set; }
+        public int More3DefectsEvaluate { get; set; }
         public ConsolidationResultL1L2 getConsolidation(int ParLevel2_Id, int ParCompany_Id, int? Id)
         {
 
@@ -1675,6 +1676,7 @@ namespace SGQDBContext
                 throw;
             }
         }
+       
 
     }
 }
