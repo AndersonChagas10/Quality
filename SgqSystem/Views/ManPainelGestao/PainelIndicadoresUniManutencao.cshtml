@@ -122,7 +122,7 @@
         var urlGraficoAcumulado = '@Html.Raw(urlGraficoAcumulado)'
         var dados = {};
         var legenda1 = "";
-        var tipoGrafico = "";
+        var tipoGrafico = "";      
 
         function getNome() {
 
@@ -321,9 +321,6 @@
 
             var unidade = "";
 
-            //if ($('#unitId :selected').text() == null)
-            //    indicador = "Todos";
-            //else
             unidade = $('#UnidadeId :selected').text();
 
             var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
@@ -457,9 +454,6 @@
         //Gera grafico Acumulado
         function CallbackGraficoAcumulado(orcado, realizado, desvio) {
 
-            //if ($('#unitId :selected').text() == null)
-            //    indicador = "Todos";
-            //else
             var unidade = $('#UnidadeId :selected').text();
 
             var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
@@ -638,9 +632,6 @@
         //Gera grafico Desvios
         function CallbackGraficoDesvio(realizado, orcado, dado) {
 
-            //if ($('#unitId :selected').text() == null)
-            //    indicador = "Todos";
-            //else
             var unidade = $('#UnidadeId :selected').text();
 
             var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
@@ -856,9 +847,27 @@
             formControl.showRegionaisManutencao();
             formControl.showSubRegionaisManutencao();
 
+            $('#tipoRelatorio').change(function () {
+
+                if ($('#tipoRelatorio option:selected').val() == "Por Unidade") {
+                    $("#SubRegionalId option[value='Todas']").remove();
+                    $("#mouthId").val(0);
+                    $('#SubRegionalId').change();
+                } else {
+                    $("#SubRegionalId").append('<option value="Todas">Todas</option>');
+                    $('#SubRegionalId').change();
+                }
+
+                if (ConfirmaEnvio()) {
+                    Send();
+                }
+
+            }).change();
 
             $("#indicadores label").on("click", function () {
-                Send();
+                if (ConfirmaEnvio()) {
+                    Send();
+                }
             });
 
             $("#RegionalId").change(function () {
@@ -872,12 +881,14 @@
                 $("#SubRegionalId").val($("#SubRegionalId").find("option:visible:first").val());
 
                 if ($('#tipoRelatorio option:selected').val() == "Por Unidade") {
-                    $("#SubRegionalId option[value='todos']").hide();
+                    $("#SubRegionalId option[value='Todas']").hide();
+
                 } else {
-                    $("#SubRegionalId option[value='todos']").show();
+                    $("#SubRegionalId option[value='Todas']").show();
                 }
 
                 if (ConfirmaEnvio()) {
+
                     Send();
                 }
 
@@ -908,21 +919,6 @@
                     Send();
                 }
             });
-
-            $('#tipoRelatorio').change(function () {
-
-                if ($('#tipoRelatorio option:selected').val() == "Por Unidade") {
-                    $("#SubRegionalId option[value='todos']").remove();
-                    $("#mouthId").val(0);
-                } else {
-                    $("#SubRegionalId").append('<option value="todos">Todos</option>');
-                }
-
-                if (ConfirmaEnvio()) {
-                    Send();
-                }
-
-            }).change();
 
             $('#yearId').change(function () {
                 if (ConfirmaEnvio()) {

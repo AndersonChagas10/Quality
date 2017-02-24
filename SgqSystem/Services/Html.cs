@@ -376,9 +376,8 @@ namespace SgqSystem.Services
         //                     string alertlevel1 = null, string alertlevel2 = null, string alertlevel3 = null, string AlertLevel = null, string ParFrequency_Id = null)
 
         public string level2(string id, string label,
-                             int ParNotConformityRule_id, decimal AlertValue, bool IsReaudit,
                              string classe = null, decimal defects = 0, int evaluate = 1, int sample = 1,                           
-                             bool reaudit = false, bool correctiveaction = false, bool phase = false, bool HasSampleTotal = false, bool IsEmptyLevel3 = false, int level1Group_Id = 0)
+                             bool reaudit = false, bool correctiveaction = false, bool phase = false, bool HasSampleTotal = false, bool IsEmptyLevel3 = false, int level1Group_Id = 0, int ParNotConformityRule_id=0, decimal AlertValue=0, bool IsReaudit=false)
         {
 
             string tagLevel1Group = null;
@@ -478,9 +477,8 @@ namespace SgqSystem.Services
         }
         public string level1(SGQDBContext.ParLevel1 ParLevel1, string tipoTela, int totalAvaliado, decimal totalDefeitos, decimal alertNivel1, decimal alertNivel2,
                              string alertaNivel3, int alertaAtual, int avaliacaoultimoalerta, int monitoramentoultimoalerta, decimal volumeAlertaIndicador, decimal metaIndicador,
-                             bool reaudit,
                              decimal numeroAvaliacoes, decimal metaDia, decimal metaTolerancia, decimal metaAvaliacao, 
-                             bool IsLimitedEvaluetionNumber=false)
+                             bool IsLimitedEvaluetionNumber=false, bool reaudit = false)
         {
 
             string tags = "parconsolidationtype_id=\"" + ParLevel1.ParConsolidationType_Id + "\" parfrequency_id=\"" + ParLevel1.ParFrequency_Id + "\" hasalert=\"" + ParLevel1.HasAlert.ToString().ToLower() + "\" isspecific=\"" + ParLevel1.IsSpecific.ToString().ToLower() + "\" totalavaliado=\"" + totalAvaliado + "\" totaldefeitos=\"" + totalDefeitos + "\" volumeAlertaIndicador=\"" + volumeAlertaIndicador + "\" metaIndicador=\"" + metaIndicador + "\" numeroAvaliacoes=\"" + numeroAvaliacoes + "\" metaDia=\"" + metaDia + "\" metaTolerancia=\"" + metaTolerancia + "\" metaAvaliacao=\"" + metaAvaliacao + "\" alertanivel1=\"" + alertNivel1 + "\" alertanivel2=\"" + alertNivel2 + "\" alertanivel3=\"" + alertaNivel3 + "\" alertaatual=\"" + alertaAtual + "\" avaliacaoultimoalerta=\"" + avaliacaoultimoalerta + "\" monitoramentoultimoalerta=\"" + monitoramentoultimoalerta + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\" haverealtimeconsolidation=\"" + ParLevel1.haveRealTimeConsolidation.ToString().ToLower() + "\" realtimeconsolitationupdate=\"" + ParLevel1.RealTimeConsolitationUpdate + "\" islimitedevaluetionnumber=\"" + ParLevel1.IsLimitedEvaluetionNumber.ToString().ToLower() + "\" hashkey=\"" + ParLevel1.hashKey + "\" ispartialsave=\"" + ParLevel1.IsPartialSave.ToString().ToLower() + "\" hascompleteevaluation=\"" + ParLevel1.HasCompleteEvaluation.ToString().ToLower() + "\" hasgrouplevel2=\"" + ParLevel1.HasGroupLevel2.ToString().ToLower() + "\" reaudit=\"" + ParLevel1.IsReaudit.ToString() + "\"";
@@ -503,9 +501,8 @@ namespace SgqSystem.Services
 
         public string painelCounters(string classe=null)
         {
-            return null;
-
-            string countersArray = "Total Defeitos:<span class=\"DefectsTotal\">0</span>;Defeitos Level2:<span class=\"DefectsL2\">0</span>;Lados com Defeitos: <span class=\"DefectsEvaluate\">0</span>;3 Defeitos ou mais:<span class=\"More3DefectsEvaluate\">0</span>;Side Current:0;Set Current:0;Defeitos Amostra:<span class=\"DefectsL2Sample\">0</span>";
+        
+            string countersArray = "Total Defeitos:<span class=\"DefectsTotal\">0</span>;Defeitos Level2:<span class=\"DefectsL2\">0</span>;Lados com Defeitos: <span class=\"DefectsEvaluate\">0</span>;3 Defeitos ou mais:<span class=\"More3DefectsEvaluate\">0</span>;Set Current:<span class=\"evaluateCurrentC\">0</span>;Side Current:<span class=\"sampleCurrentC\">0</span>;Defeitos Amostra:<span class=\"DefectsL2Sample\">0</span>";
 
             string[] arrayCounter = countersArray.Split(';');
 
