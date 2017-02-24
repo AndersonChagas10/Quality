@@ -852,8 +852,10 @@
                 if ($('#tipoRelatorio option:selected').val() == "Por Unidade") {
                     $("#SubRegionalId option[value='Todas']").remove();
                     $("#mouthId").val(0);
+                    $('#SubRegionalId').change();
                 } else {
                     $("#SubRegionalId").append('<option value="Todas">Todas</option>');
+                    $('#SubRegionalId').change();
                 }
 
                 if (ConfirmaEnvio()) {
@@ -863,7 +865,9 @@
             }).change();
 
             $("#indicadores label").on("click", function () {
-                Send();
+                if (ConfirmaEnvio()) {
+                    Send();
+                }
             });
 
             $("#RegionalId").change(function () {
