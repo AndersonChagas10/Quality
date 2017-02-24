@@ -772,6 +772,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current Evaluation.
+        /// </summary>
+        internal static string current_evaluation {
+            get {
+                return ResourceManager.GetString("current_evaluation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Sample Defects.
+        /// </summary>
+        internal static string current_sample_defects {
+            get {
+                return ResourceManager.GetString("current_sample_defects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Side.
+        /// </summary>
+        internal static string current_side {
+            get {
+                return ResourceManager.GetString("current_side", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Customization.
         /// </summary>
         internal static string customization {
@@ -894,6 +921,15 @@ namespace Resources {
         internal static string december {
             get {
                 return ResourceManager.GetString("december", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Defects Evaluation.
+        /// </summary>
+        internal static string defects_evaluate {
+            get {
+                return ResourceManager.GetString("defects_evaluate", resourceCulture);
             }
         }
         
@@ -1092,6 +1128,15 @@ namespace Resources {
         internal static string evaluation {
             get {
                 return ResourceManager.GetString("evaluation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evaluation Completed.
+        /// </summary>
+        internal static string evaluation_complete {
+            get {
+                return ResourceManager.GetString("evaluation_complete", resourceCulture);
             }
         }
         
@@ -1731,6 +1776,15 @@ namespace Resources {
         internal static string level2 {
             get {
                 return ResourceManager.GetString("level2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 2 Defects.
+        /// </summary>
+        internal static string level2_defects {
+            get {
+                return ResourceManager.GetString("level2_defects", resourceCulture);
             }
         }
         
@@ -3409,6 +3463,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 3 or more Defects.
+        /// </summary>
+        internal static string three_more_defects {
+            get {
+                return ResourceManager.GetString("three_more_defects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tipification Verification.
         /// </summary>
         internal static string tipification_verification {
@@ -3423,6 +3486,15 @@ namespace Resources {
         internal static string tolerance_target_exceed {
             get {
                 return ResourceManager.GetString("tolerance_target_exceed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Defects.
+        /// </summary>
+        internal static string total_defects {
+            get {
+                return ResourceManager.GetString("total_defects", resourceCulture);
             }
         }
         

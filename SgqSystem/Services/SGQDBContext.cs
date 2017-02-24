@@ -4,6 +4,8 @@ using Dapper;
 using System;
 using System.Linq;
 using Dominio;
+using System.Threading;
+using System.Collections;
 
 namespace SGQDBContext
 {
@@ -1616,6 +1618,45 @@ namespace SGQDBContext
         }
     }
 
+    public partial class ParCounter
+    {
+        public string Name { get; set; }
+
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public IEnumerable<ParCounter> GetParLevel1XParCounterList(int ParLevel1_Id, int ParLevel2_Id, int Level)
+        {
+            try
+            {
+                string sql = "";
+                if (ParLevel2_Id == 0)
+                {
+                    sql = "SELECT PC.Name FROM ParCounterXLocal PL                                                      " +
+                             "   LEFT JOIN ParCounter PC ON PL.ParCounter_Id = PC.Id                                    " +
+                             "   WHERE PL.ParLevel1_Id = " + ParLevel1_Id +
+                             "   AND PL.ParLevel2_Id IS NULL                                                                " +
+                             "   AND PC.Level = " + Level + ";                                                          ";
+                }else
+                {
+                    sql = "SELECT PC.Name FROM ParCounterXLocal PL                                                   " +
+                             "   LEFT JOIN ParCounter PC ON PL.ParCounter_Id = PC.Id                                    " +
+                             "   WHERE PL.ParLevel1_Id = " + ParLevel1_Id +
+                             "   AND PL.ParLevel2_Id = " + ParLevel2_Id +
+                             "   AND PC.Level = " + Level + ";                                                           ";
+                }                
+
+                SqlConnection db = new SqlConnection(conexao);
+                var list = db.Query<ParCounter>(sql);
+                return list;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+    }
+
     public partial class CollectionLevel2
     {
         public int Id { get; set; }
@@ -1679,4 +1720,5 @@ namespace SGQDBContext
        
 
     }
+
 }
