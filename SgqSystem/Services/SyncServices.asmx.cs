@@ -2786,24 +2786,25 @@ namespace SgqSystem.Services
                 string headerCounter =
                                      html.div(
                                                outerhtml: "<b>Av.</b>",
-                                               classe: "col-xs-3",
+                                               classe: "col-xs-6",
                                                style: "text-align:center"
                                              ) +
                                      html.div(
                                                outerhtml: "<b>Am.</b>",
-                                               classe: "col-xs-3",
+                                               classe: "col-xs-6",
                                                style: "text-align:center"
-                                              ) +
-                                    html.div(
-                                        outerhtml: "<b>Def.</b>",
-                                        classe: "col-xs-3",
-                                        style: "text-align:center"
-                                    ) +
-                                    html.div(
-                                        outerhtml: "<b></b>",
-                                        classe: "col-xs-3",
-                                        style: "text-align:center"
-                                    );
+                                              );
+                //+
+                //                    html.div(
+                //                        outerhtml: "<b>Def.</b>",
+                //                        classe: "col-xs-3",
+                //                        style: "text-align:center"
+                //                    ) +
+                //                    html.div(
+                //                        outerhtml: "<b></b>",
+                //                        classe: "col-xs-3",
+                //                        style: "text-align:center"
+                //                    );
 
                 headerCounter = html.div(
                                     //aqui vai os botoes
@@ -2819,24 +2820,25 @@ namespace SgqSystem.Services
                 string counters =
                                       html.div(
                                                 outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + " / " + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
-                                                classe: "col-xs-3",
+                                                classe: "col-xs-6",
                                                 style: "text-align:center"
                                               ) +
                                       html.div(
                                                 outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent hide") + html.span(outerhtml: "0", classe: "sampleCurrentTotal") + " / " + html.span(outerhtml: sample.ToString(), classe: "sampleTotal hide") + html.span(outerhtml: totalSampleXEvaluate.ToString(), classe: "sampleXEvaluateTotal"),
-                                                classe: "col-xs-3",
+                                                classe: "col-xs-6",
                                                 style: "text-align:center"
-                                              ) +
-                                        html.div(
-                                                    outerhtml: html.span(outerhtml: "0", classe: "defectsLevel2"),
-                                                    classe: "col-xs-3",
-                                                    style: "text-align:center"
-                                                 ) +
-                                          html.div(
-                                                    outerhtml: html.span(outerhtml: "", classe: "newcoutner"),
-                                                    classe: "col-xs-3",
-                                                    style: "text-align:center"
-                                                 );
+                                              );
+                //+
+                //                        html.div(
+                //                                    outerhtml: html.span(outerhtml: "0", classe: "defectsLevel2"),
+                //                                    classe: "col-xs-3",
+                //                                    style: "text-align:center"
+                //                                 ) +
+                //                          html.div(
+                //                                    outerhtml: html.span(outerhtml: "", classe: "newcoutner"),
+                //                                    classe: "col-xs-3",
+                //                                    style: "text-align:center"
+                //                                 );
 
                 counters = html.div(
                                     //aqui vai os botoes
