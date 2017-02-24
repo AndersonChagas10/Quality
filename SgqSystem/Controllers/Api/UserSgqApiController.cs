@@ -3,6 +3,7 @@ using Dominio;
 using Dominio.Interfaces.Services;
 using DTO.DTO;
 using SgqSystem.Handlres;
+using System.Linq;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api
@@ -12,18 +13,27 @@ namespace SgqSystem.Controllers.Api
     public class UserSgqApiController : ApiController
     {
         private IBaseDomain<UserSgq, UserSgqDTO> _baseDomainUserSgq;
+        private IBaseDomain<ParCompanyXUserSgq, ParCompanyXUserSgqDTO> _baseDomainParCompanyXUserSgq;
 
         public UserSgqApiController(
-            IBaseDomain<UserSgq, UserSgqDTO> baseDomainUserSgq)
+            IBaseDomain<UserSgq, UserSgqDTO> baseDomainUserSgq,
+            IBaseDomain<ParCompanyXUserSgq, ParCompanyXUserSgqDTO> baseDomainParCompanyXUserSgq)
         {
             _baseDomainUserSgq = baseDomainUserSgq;
+            _baseDomainParCompanyXUserSgq = baseDomainParCompanyXUserSgq;
         }
 
         [Route("Get")]
         [HttpGet]
-        public UserSgq Get(int Id)
+        public UserSgqDTO Get(int Id)
         {
-            UserSgq userSgqDto = Mapper.Map<UserSgq>(_baseDomainUserSgq.GetById(Id));
+            UserSgqDTO userSgqDto = _baseDomainUserSgq.GetById(Id);
+
+            userSgqDto.ListParCompany_Id = _baseDomainParCompanyXUserSgq.GetAll().Where(r => r.UserSgq_Id == userSgqDto.Id).Select(p => p.ParCompany_Id);
+
+            if(userSgqDto.Role != null)
+                userSgqDto.ListRole = userSgqDto.Role.Split(';').Select(p => p.Trim());
+
             return userSgqDto;
         }
     }

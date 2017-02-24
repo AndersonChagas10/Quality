@@ -20,5 +20,7 @@ namespace DTO.DTO
         public string Email { get; set; }
         public string Phone { get; set; }
         public Nullable<int> ParCompany_Id { get; set; }
+        public IEnumerable<int> ListParCompany_Id { get; set; }
+        public IEnumerable<string> ListRole { get; set; }
     }
 }
