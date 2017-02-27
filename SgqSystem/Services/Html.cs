@@ -1,7 +1,10 @@
 ﻿using SGQDBContext;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
+using System.Threading;
 using System.Web;
 
 namespace SgqSystem.Services
@@ -478,10 +481,18 @@ namespace SgqSystem.Services
         public string level1(SGQDBContext.ParLevel1 ParLevel1, string tipoTela, int totalAvaliado, decimal totalDefeitos, decimal alertNivel1, decimal alertNivel2,
                              string alertaNivel3, int alertaAtual, int avaliacaoultimoalerta, int monitoramentoultimoalerta, decimal volumeAlertaIndicador, decimal metaIndicador,
                              decimal numeroAvaliacoes, decimal metaDia, decimal metaTolerancia, decimal metaAvaliacao, 
-                             bool IsLimitedEvaluetionNumber=false, bool reaudit = false)
+                             bool IsLimitedEvaluetionNumber=false)
         {
 
+
+
             string tags = "parconsolidationtype_id=\"" + ParLevel1.ParConsolidationType_Id + "\" parfrequency_id=\"" + ParLevel1.ParFrequency_Id + "\" hasalert=\"" + ParLevel1.HasAlert.ToString().ToLower() + "\" isspecific=\"" + ParLevel1.IsSpecific.ToString().ToLower() + "\" totalavaliado=\"" + totalAvaliado + "\" totaldefeitos=\"" + totalDefeitos + "\" volumeAlertaIndicador=\"" + volumeAlertaIndicador + "\" metaIndicador=\"" + metaIndicador + "\" numeroAvaliacoes=\"" + numeroAvaliacoes + "\" metaDia=\"" + metaDia + "\" metaTolerancia=\"" + metaTolerancia + "\" metaAvaliacao=\"" + metaAvaliacao + "\" alertanivel1=\"" + alertNivel1 + "\" alertanivel2=\"" + alertNivel2 + "\" alertanivel3=\"" + alertaNivel3 + "\" alertaatual=\"" + alertaAtual + "\" avaliacaoultimoalerta=\"" + avaliacaoultimoalerta + "\" monitoramentoultimoalerta=\"" + monitoramentoultimoalerta + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\" haverealtimeconsolidation=\"" + ParLevel1.haveRealTimeConsolidation.ToString().ToLower() + "\" realtimeconsolitationupdate=\"" + ParLevel1.RealTimeConsolitationUpdate + "\" islimitedevaluetionnumber=\"" + ParLevel1.IsLimitedEvaluetionNumber.ToString().ToLower() + "\" hashkey=\"" + ParLevel1.hashKey + "\" ispartialsave=\"" + ParLevel1.IsPartialSave.ToString().ToLower() + "\" hascompleteevaluation=\"" + ParLevel1.HasCompleteEvaluation.ToString().ToLower() + "\" hasgrouplevel2=\"" + ParLevel1.HasGroupLevel2.ToString().ToLower() + "\" reaudit=\"" + ParLevel1.IsReaudit.ToString() + "\"";
+
+            string btnReaudit = null;
+            if(ParLevel1.IsReaudit == true)
+            {
+                btnReaudit = button("Reaudit", type.submit, "btnReaudit", classe: "btn-primary pull-right hide");
+            }
 
             string level01 = link(
 
@@ -494,52 +505,92 @@ namespace SgqSystem.Services
             //Adiciona Div Lateral
             level01 += div(
                             //aqui vai os botoes
-                            outerhtml: null,
+                            outerhtml: btnReaudit,
                             classe: "userInfo col-xs-5");
             return level01;
         }
 
-        public string painelCounters(string classe=null)
+        public string painelCounters(IEnumerable<SGQDBContext.ParCounter> parCounterList)
         {
-        
-            string countersArray = "Total Defeitos:<span class=\"DefectsTotal\">0</span>;Defeitos Level2:<span class=\"DefectsL2\">0</span>;Lados com Defeitos: <span class=\"DefectsEvaluate\">0</span>;3 Defeitos ou mais:<span class=\"More3DefectsEvaluate\">0</span>;Set Current:<span class=\"evaluateCurrentC\">0</span>;Side Current:<span class=\"sampleCurrentC\">0</span>;Defeitos Amostra:<span class=\"DefectsL2Sample\">0</span>";
-
-            string[] arrayCounter = countersArray.Split(';');
-
-
-            string countersLine = null;
-
-            int qtdeColunas = 12 / arrayCounter.Length;
-            if(qtdeColunas < 2)
+            if(parCounterList.Count() == 0)
             {
-                qtdeColunas = 2;
-            }
-            int contagem = 0;
-            string painel = null;
-            for (int i = 0; i < arrayCounter.Length; i++)
+                return "";
+            }else
             {
-                contagem++;
-                string[] counters = arrayCounter[i].Split(':');
-                countersLine += counter(counters[0], counters[1], "col-xs-" + qtdeColunas);
-                if (contagem == 6)
+                string countersArray = "";
+
+                foreach (SGQDBContext.ParCounter parCounter in parCounterList)
                 {
-                    painel += div(outerhtml: countersLine, classe: "counters row " + classe, style: "background-color: #f1f1f1; padding-top: 5px;padding-bottom:5px;");
-                    countersLine = null;
-                    contagem = 0;
+                    string counterLine = getResource(parCounter.Name).Value + ":<span class=\"" + parCounter.Name + "\">0</span>";
+                  
+                    if(!string.IsNullOrEmpty(countersArray))
+                    {
+                        countersArray += ";" +  counterLine;
+                    }
+                    else
+                    {
+                        countersArray += counterLine;
+                    }
                 }
-            }
 
-            if(!string.IsNullOrEmpty(countersLine))
-            {
-                painel += div(outerhtml: countersLine, classe: "counters row " + classe, style: "background-color: #f1f1f1; padding-top: 5px;padding-bottom:5px;");
+                //string countersArray = "Total Defeitos:<span class=\"DefectsTotal\">0</span>;Defeitos Level2:<span class=\"DefectsL2\">0</span>;Lados com Defeitos: <span class=\"DefectsEvaluate\">0</span>;3 Defeitos ou mais:<span class=\"More3DefectsEvaluate\">0</span>;Set Current:<span class=\"evaluateCurrentC\">0</span>;Side Current:<span class=\"sampleCurrentC\">0</span>;Defeitos Amostra:<span class=\"DefectsL2Sample\">0</span>";
+
+                string[] arrayCounter = countersArray.Split(';');
+
+
+                string countersLine = null;
+
+                int qtdeColunas = 12 / arrayCounter.Length;
+                if (qtdeColunas < 2)
+                {
+                    qtdeColunas = 2;
+                }
+                int contagem = 0;
+                string painel = null;
+                for (int i = 0; i < arrayCounter.Length; i++)
+                {
+                    contagem++;
+                    string[] counters = arrayCounter[i].Split(':');
+                    countersLine += counter(counters[0], counters[1], "col-xs-" + qtdeColunas);
+                    if (contagem == 6)
+                    {
+                        painel += div(outerhtml: countersLine, classe: "counters row ", style: "background-color: #f1f1f1; padding-top: 5px;padding-bottom:5px;");
+                        countersLine = null;
+                        contagem = 0;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(countersLine))
+                {
+                    painel += div(outerhtml: countersLine, classe: "counters row ", style: "background-color: #f1f1f1; padding-top: 5px;padding-bottom:5px;");
+                }
+                return painel;
             }
-            return painel;                
+                           
                 //div(outerhtml: countersLine, classe: "counters row " + classe, style: "background-color: #f1f1f1; padding-top: 5px;padding-bottom:5px;");
         }
         public string counter(string label, string value, string classe)
         {
             return "<span class=\"counter "+ classe + "\"><b><span class=\"labelCounter\">" + label.Trim() + "</span></b>: <span class=\"value\">" + value.Trim() + "</span></span>";
         }
+
+        private DictionaryEntry getResource(string value)
+        {
+
+            System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
+
+            var list = resourceManager.GetResourceSet(
+                Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
+
+            foreach (var r in list)
+            {
+                if (r.Key.ToString() == value)
+                    return r;
+            }
+
+            return new DictionaryEntry();
+        }
     }
-    
+       
+
 }

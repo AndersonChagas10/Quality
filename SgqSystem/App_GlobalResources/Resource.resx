@@ -1362,4 +1362,28 @@
   <data name="_language" xml:space="preserve">
     <value>en-us</value>
   </data>
+  <data name="current_evaluation" xml:space="preserve">
+    <value>Current Evaluation</value>
+  </data>
+  <data name="current_sample_defects" xml:space="preserve">
+    <value>Current Sample Defects</value>
+  </data>
+  <data name="current_side" xml:space="preserve">
+    <value>Current Side</value>
+  </data>
+  <data name="defects_evaluate" xml:space="preserve">
+    <value>Defects Evaluation</value>
+  </data>
+  <data name="evaluation_complete" xml:space="preserve">
+    <value>Evaluation Completed</value>
+  </data>
+  <data name="level2_defects" xml:space="preserve">
+    <value>Level 2 Defects</value>
+  </data>
+  <data name="three_more_defects" xml:space="preserve">
+    <value>3 or more Defects</value>
+  </data>
+  <data name="total_defects" xml:space="preserve">
+    <value>Total Defects</value>
+  </data>
 </root>

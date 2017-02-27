@@ -4,6 +4,8 @@ using Dapper;
 using System;
 using System.Linq;
 using Dominio;
+using System.Threading;
+using System.Collections;
 
 namespace SGQDBContext
 {
@@ -58,7 +60,7 @@ namespace SGQDBContext
             SqlConnection db = new SqlConnection(conexao);
             string sql = " SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
                          " P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate, P1.IsLimitedEvaluetionNumber, P1.IsPartialSave" +
-                         " ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, AL.IsReaudit AS Reaudit, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2                                                                                                                                     " +                               
+                         " ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, AL.IsReaudit AS IsReaudit, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2                                                                                                                                     " +                               
                          " FROM ParLevel1 P1                                                                                                          " +
                          " INNER JOIN (SELECT ParLevel1_Id FROM ParLevel3Level2Level1 GROUP BY ParLevel1_Id) P321                                     " +
                          " ON P321.ParLevel1_Id = P1.Id                                                                                               " +
@@ -1616,6 +1618,45 @@ namespace SGQDBContext
         }
     }
 
+    public partial class ParCounter
+    {
+        public string Name { get; set; }
+
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public IEnumerable<ParCounter> GetParLevel1XParCounterList(int ParLevel1_Id, int ParLevel2_Id, int Level)
+        {
+            try
+            {
+                string sql = "";
+                if (ParLevel2_Id == 0)
+                {
+                    sql = "SELECT PC.Name FROM ParCounterXLocal PL                                                      " +
+                             "   LEFT JOIN ParCounter PC ON PL.ParCounter_Id = PC.Id                                    " +
+                             "   WHERE PL.ParLevel1_Id = " + ParLevel1_Id +
+                             "   AND PL.ParLevel2_Id IS NULL                                                                " +
+                             "   AND PC.Level = " + Level + ";                                                          ";
+                }else
+                {
+                    sql = "SELECT PC.Name FROM ParCounterXLocal PL                                                   " +
+                             "   LEFT JOIN ParCounter PC ON PL.ParCounter_Id = PC.Id                                    " +
+                             "   WHERE PL.ParLevel1_Id = " + ParLevel1_Id +
+                             "   AND PL.ParLevel2_Id = " + ParLevel2_Id +
+                             "   AND PC.Level = " + Level + ";                                                           ";
+                }                
+
+                SqlConnection db = new SqlConnection(conexao);
+                var list = db.Query<ParCounter>(sql);
+                return list;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+    }
+
     public partial class CollectionLevel2
     {
         public int Id { get; set; }
@@ -1679,4 +1720,5 @@ namespace SGQDBContext
        
 
     }
+
 }
