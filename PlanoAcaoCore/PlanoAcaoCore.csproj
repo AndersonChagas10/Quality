@@ -52,28 +52,47 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Acao\Pa_AcaoDTO.cs" />
-    <Compile Include="Acao\Pa_CausaGenericaDTO.cs" />
-    <Compile Include="Acao\Pa_ContramedidaGenericaDTO.cs" />
-    <Compile Include="Acao\Pa_GrupoCausaDTO.cs" />
-    <Compile Include="Acao\Pa_QuemDTO.cs" />
+    <Compile Include="Acao\Pa_Acao.cs" />
+    <Compile Include="Acao\Pa_AcaoXQuem.cs" />
+    <Compile Include="Acao\Pa_CausaEspecifica.cs" />
+    <Compile Include="Acao\Pa_CausaGenerica.cs" />
+    <Compile Include="Acao\Pa_CausaMedidasXAcao.cs" />
+    <Compile Include="Acao\Pa_ContramedidaEspecifica.cs" />
+    <Compile Include="Acao\Pa_ContramedidaGenerica.cs" />
+    <Compile Include="Acao\Pa_Departamento.cs" />
+    <Compile Include="Acao\Pa_GrupoCausa.cs" />
+    <Compile Include="Acao\Pa_Quem.cs" />
+    <Compile Include="Acao\Pa_Status.cs" />
+    <Compile Include="Acao\Pa_Unidade.cs" />
     <Compile Include="Interfaces\ICrudPa.cs" />
-    <Compile Include="Acao\Pa_AcaoXQuemDTO.cs" />
     <Compile Include="Pa_BaseObject.cs" />
-    <Compile Include="Acao\Pa_CausaMedidasXAcaoDTO.cs" />
-    <Compile Include="Acao\Pa_DepartamentoDTO.cs" />
-    <Compile Include="Acao\Pa_UnidadeDTO.cs" />
-    <Compile Include="Planejamento\Pa_CoordenacaoDTO.cs" />
-    <Compile Include="Planejamento\Pa_DimensaoDTO.cs" />
-    <Compile Include="Planejamento\Pa_DiretoriaDTO.cs" />
-    <Compile Include="Planejamento\Pa_GerenciaDTO.cs" />
-    <Compile Include="Planejamento\Pa_Missao.cs" />
+    <Compile Include="PaEfConenction.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PaEfConenction.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PaEfConenction.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PaEfConenction.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PaEfConenction.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PaEfConenction.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Planejamento\Pa_Indicadores.cs" />
+    <Compile Include="Planejamento\Pa_Gerencia.cs" />
+    <Compile Include="Planejamento\Pa_Diretoria.cs" />
+    <Compile Include="Planejamento\Pa_Dimensao.cs" />
+    <Compile Include="Planejamento\Pa_Coordenacao.cs" />
+    <Compile Include="Planejamento\Pa_IndicadoresDiretriz.cs" />
+    <Compile Include="Planejamento\Pa_IndicadoresDeProjeto.cs" />
     <Compile Include="Planejamento\Pa_Objetivo.cs" />
     <Compile Include="Planejamento\Pa_ObjetivoGeral.cs" />
-    <Compile Include="Planejamento\Pa_IniciativasDTO.cs" />
-    <Compile Include="Planejamento\Pa_IndicadoresDTO.cs" />
+    <Compile Include="Planejamento\Pa_Iniciativas.cs" />
+    <Compile Include="Planejamento\Pa_Missao.cs" />
     <Compile Include="Planejamento\Pa_Planejamento.cs" />
-    <Compile Include="Planejamento\Pa_Status.cs" />
     <Compile Include="Planejamento\Pa_TemaAssunto.cs" />
     <Compile Include="Planejamento\Pa_Visao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -91,9 +110,28 @@
   <ItemGroup>
     <None Include="App.Config" />
     <None Include="packages.config" />
+    <EntityDeploy Include="PaEfConenction.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PaEfConenction.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="PaEfConenction.edmx.diagram">
+      <DependentUpon>PaEfConenction.edmx</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="PaEfConenction.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PaEfConenction.edmx</DependentUpon>
+      <LastGenOutput>PaEfConenction.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="PaEfConenction.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PaEfConenction.edmx</DependentUpon>
+      <LastGenOutput>PaEfConenction.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

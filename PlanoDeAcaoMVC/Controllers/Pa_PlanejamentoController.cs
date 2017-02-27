@@ -15,7 +15,8 @@ namespace PlanoDeAcaoMVC.Controllers
             ViewBag.Missao = Pa_Missao.Listar();
             ViewBag.Visao = Pa_Visao.Listar();
             ViewBag.TemaAssunto = Pa_TemaAssunto.Listar();
-            ViewBag.Indicadores = Pa_Indicadores.Listar();
+            ViewBag.IndicadoresDeProjeto = Pa_IndicadoresDeProjeto.Listar();
+            ViewBag.IndicadoresDiretriz = Pa_IndicadoresDiretriz.Listar();
             ViewBag.Iniciativa = Pa_Iniciativas.Listar();
             ViewBag.ObjetivoGerencial = Pa_ObjetivoGeral.Listar();
             ViewBag.Objetivo = Pa_Objetivo.Listar();
@@ -67,8 +68,11 @@ namespace PlanoDeAcaoMVC.Controllers
             if (filtro.ObjetivoGerencial_Id > 0)
                 lista = lista.Where(r => r.ObjetivoGerencial_Id == filtro.ObjetivoGerencial_Id).ToList();
 
-            if (filtro.Indicadores_Id > 0)
-                lista = lista.Where(r => r.Indicadores_Id == filtro.Indicadores_Id).ToList();
+            if (filtro.IndicadoresDeProjeto_Id > 0)
+                lista = lista.Where(r => r.IndicadoresDeProjeto_Id == filtro.IndicadoresDeProjeto_Id).ToList();
+
+            if (filtro.IndicadoresDiretriz_Id> 0)
+                lista = lista.Where(r => r.IndicadoresDiretriz_Id == filtro.IndicadoresDiretriz_Id).ToList();
 
             ViewBag.Filtradas = lista;
 

@@ -57,11 +57,21 @@
             </tr>
             <tr>
                 <td style="width: 43%;">
-                    @Html.LabelFor(model => model.Indicadores_Id, htmlAttributes: new { @class = "control-label" })
+                    @Html.LabelFor(model => model.IndicadoresDeProjeto_Id, htmlAttributes: new { @class = "control-label" })
                 </td>
                 <td style="width: 43%;">
-                    @Html.DropDownList("Indicadores_Id", new SelectList(ViewBag.Indicadores, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                    @Html.ValidationMessageFor(model => model.Indicadores_Id, "", new { @class = "text-danger" })
+                    @Html.DropDownList("IndicadoresDeProjeto_Id", new SelectList(ViewBag.IndicadoresDeProjeto, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    @Html.ValidationMessageFor(model => model.IndicadoresDeProjeto_Id, "", new { @class = "text-danger" })
+                </td>
+                <td style="width: 16%;"></td>
+            </tr>
+            <tr>
+                <td style="width: 43%;">
+                    @Html.LabelFor(model => model.IndicadoresDiretriz_Id, htmlAttributes: new { @class = "control-label" })
+                </td>
+                <td style="width: 43%;">
+                    @Html.DropDownList("IndicadoresDiretriz_Id", new SelectList(ViewBag.IndicadoresDiretriz, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    @Html.ValidationMessageFor(model => model.IndicadoresDiretriz_Id, "", new { @class = "text-danger" })
                 </td>
                 <td style="width: 16%;"></td>
             </tr>

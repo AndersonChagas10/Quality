@@ -26,6 +26,13 @@ namespace PlanoDeAcaoMVC.Controllers
             //ViewBag.Panejamento             = Pa_Planejamento
             return PartialView();
         }
+        
+        // GET: Pa_Acao
+        public ActionResult Edit(int id)
+        {
+            var obj = Pa_Acao.Get(id);
+            return PartialView(obj);
+        }
 
         public ActionResult GETGrupoCausa(int id)
         {

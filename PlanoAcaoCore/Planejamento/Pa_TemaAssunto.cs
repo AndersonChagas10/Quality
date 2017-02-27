@@ -1,7 +1,4 @@
-﻿using ADOFactory;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
+﻿using System.Collections.Generic;
 
 namespace PlanoAcaoCore
 {
@@ -19,11 +16,5 @@ namespace PlanoAcaoCore
             var query = "SELECT * FROM Pa_TemaAssunto WHERE Id = " + Id;
             return GetGenerico<Pa_TemaAssunto>(query);
         }
-
-        public void IsValid()
-        {
-            throw new NotImplementedException();
-        }
-       
     }
 }

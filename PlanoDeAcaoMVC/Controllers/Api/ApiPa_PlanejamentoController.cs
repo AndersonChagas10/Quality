@@ -1,4 +1,5 @@
-﻿using PlanoAcaoCore;
+﻿using DTO.Helpers;
+using PlanoAcaoCore;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -25,6 +26,8 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         [Route("Save")]
         public Pa_Planejamento Save([FromBody]Pa_Planejamento planejamento)
         {
+            planejamento.DataInicio = Guard.ParseDateToSqlV2(planejamento._DataInicio);
+            planejamento.DataFim = Guard.ParseDateToSqlV2(planejamento._DataFim);
             Pa_BaseObject.SalvarGenerico(planejamento);
             return planejamento;
         }
