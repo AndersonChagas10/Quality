@@ -2864,7 +2864,7 @@ namespace SgqSystem.Services
                     if (ParLevel1.HasSaveLevel2)
                     {
                         btnAreaSave = "<button class=\"btn btn-success hide btnAreaSaveConfirm\">                                                    " +
-                                       "   <span class=\"cursorPointer\">Confirm? <i class=\"fa fa-check\" aria-hidden=\"true\"></i></span>     " +
+                                       "   <span class=\"cursorPointer\">?<i class=\"fa fa-check\" aria-hidden=\"true\"></i></span>     " +
                                        "</button>                                                                                                      " +
                                        "<button class=\"btn btn-primary btnAreaSave\">                                                                 " +
                                        "   <span class=\"cursorPointer iconsArea\"><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i></span>        " +

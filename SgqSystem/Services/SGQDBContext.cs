@@ -71,10 +71,10 @@ namespace SGQDBContext
                          " INNER JOIN ParCriticalLevel CL                                                                                             " +
                          " ON CL.Id = P1C.ParCriticalLevel_Id                                                                                         " +
                          " LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
-                         " ON AL.ParLevel1_Id = P1.Id                                                                                                 " +
+                         " ON AL.ParLevel1_Id = P1.Id   AND AL.IsActive = 1                                                                                               " +
 
                          " WHERE CC.ParCompany_Id = '" + ParCompany_Id + "'                                                                           " +
-                         " AND AL.IsActive = 1                                                                                                        " +
+                         "                                                                                                        " +
                          " AND P1.IsActive = 1                                                                                                        " +
                          " ORDER BY CL.Name                                                                                                           ";
 
@@ -339,7 +339,7 @@ namespace SGQDBContext
                              "INNER JOIN ParLevel2 PL2                                                                          " +
                              "ON PL2.Id = P32.ParLevel2_Id                                                                      " +
                              " LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
-                             " ON AL.ParLevel2_Id = PL2.Id                                                                                                 " +
+                             " ON AL.ParLevel2_Id = PL2.Id  AND AL.IsActive = 1                                                                                                " +
                              "INNER JOIN (SELECT * FROM ParLevel2ControlCompany PL INNER JOIN                                   " +
                              "(SELECT MAX(InitDate) Data, ParCompany_Id AS UNIDADE FROM ParLevel2ControlCompany                 " +
                              "where ParLevel1_Id = '" + ParLevel1_Id + "'                                                       " +
