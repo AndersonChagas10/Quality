@@ -1,204 +1,224 @@
 ﻿@model PlanoAcaoCore.Pa_Acao
 
-<form id="Acao">
 
-    <table data-ng-app="myApp" class="nowrap .col-md-6 .col-md-offset-3" style="width: 100%;">
-        <tbody data-ng-controller="MainCtrl">
-            <tr>
-                <td style="width: 43%;">
-                    @Html.LabelFor(model => model.Unidade_Id, htmlAttributes: new { @class = "control-label " })
-                </td>
-                <td style="width: 43%;">
-                    @Html.DropDownList("Unidade_Id", new SelectList(ViewBag.Unidade, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                    @Html.ValidationMessageFor(model => model.Unidade_Id, "", new { @class = "text-danger" })
-                </td>
-                <td style="width: 16%;"></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.Departamento_Id, htmlAttributes: new { @class = "control-label " })
-                </td>
-                <td>
-                    @Html.DropDownList("Departamento_Id", new SelectList(ViewBag.Departamento, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                    @Html.ValidationMessageFor(model => model.Departamento_Id, "", new { @class = "text-danger" })
-                </td>
-                <td style="width: 16%;"></td>
-            </tr>
+<div style="display:none" id="obj">
+    <button aria-expanded="false" data-target="#collapsible_obj_0" data-toggle="collapse" class="btn btn-default collapsed">Ação Name</button>
+    <div style="height: 0px;" aria-expanded="false" id="collapsible_obj_0" class="collapse">
 
-          
-                <tr>
-                    <td>
-                        @Html.Label("Causa generica", htmlAttributes: new { @class = "control-label " })
-                    </td>
-                    <td>
-                        @Html.DropDownList("CausaMedidasXAcao.CausaGenerica_Id", new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione", new { @class = "form-control input-sm" })
-                        @Html.ValidationMessageFor(model => model.Departamento_Id, "", new { @class = "text-danger" })
-                    </td>
-                    <td rowspan="5" style="text-align: center; vertical-align: central;" id="CausaMedidasXAcaoAdd" class="tr_clone">
+        <form id="Acao" class="Acao">
 
-                        <button id="adicionar" type="button" class="btn btn-default btn-sm" onclick="Adicionar(this);">
-                            <span class="glyphicon glyphicon-plus"></span> Adicionar
-                        </button>
+            <table class="nowrap .col-md-6 .col-md-offset-3" style="width: 100%;">
+                <tbody>
+                    @*<tr>
+                        <td style="width: 43%;">
+                            @Html.LabelFor(model => model.Unidade_Id, htmlAttributes: new { @class = "control-label " })
+                        </td>
+                        <td style="width: 43%;">
+                            @Html.DropDownList("Unidade_Id", new SelectList(ViewBag.Unidade, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                            @Html.ValidationMessageFor(model => model.Unidade_Id, "", new { @class = "text-danger" })
+                        </td>
+                        <td style="width: 16%;"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.Departamento_Id, htmlAttributes: new { @class = "control-label " })
+                        </td>
+                        <td>
+                            @Html.DropDownList("Departamento_Id", new SelectList(ViewBag.Departamento, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                            @Html.ValidationMessageFor(model => model.Departamento_Id, "", new { @class = "text-danger" })
+                        </td>
+                        <td></td>
+                    </tr>*@
 
-                        <button id="remove" style="display:none" type="button" class="btn btn-default btn-sm" onclick="Remover(this);">
-                            <span class="glyphicon glyphicon-remove"></span> Remover
-                        </button>
+                    <tr>
+                        <td>
+                            @Html.Label("Causa generica", htmlAttributes: new { @class = "control-label " })
+                        </td>
+                        <td>
+                            @Html.DropDownList("CausaMedidasXAcao.CausaGenerica_Id", new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione", new { @class = "form-control input-sm" })
+                            @Html.ValidationMessageFor(model => model.Departamento_Id, "", new { @class = "text-danger" })
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label("Grupo causa", htmlAttributes: new { @class = "control-label " })
+                        </td>
+                        <td id="GrupoCausa">
+                            @Html.DropDownList("CausaMedidasXAcao.GrupoCausa_Id", new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label("Contramedida generica", htmlAttributes: new { @class = "control-label " })
+                        </td>
+                        <td id="ContramedidaGenerica">
+                            @Html.DropDownList("CausaMedidasXAcao.ContramedidaGenerica_Id", new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label("Causa Específica", htmlAttributes: new { @class = "control-label " })
+                        </td>
+                        <td>
+                            @Html.Editor("CausaMedidasXAcao.CausaEspecifica", new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label("Contramedida Específica", htmlAttributes: new { @class = "control-label " })
+                        </td>
+                        <td>
+                            @Html.Editor("CausaMedidasXAcao.ContramedidaEspecifica", new { htmlAttributes = new { @class = "form-control" } })
+                        </td>
+                        <td></td>
+                    </tr>
 
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.Label("Grupo causa", htmlAttributes: new { @class = "control-label " })
-                    </td>
-                    <td id="GrupoCausa">
-                        @Html.DropDownList("CausaMedidasXAcao.GrupoCausa_Id", new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
-                    </td>
-                    <td></td>
+                    <tr rowspan="2" class="tr_clone quemClone" id="quem">
+                        <td>
+                            @Html.Label("Quem", htmlAttributes: new { @class = "control-label " })
+                        </td>
+                        <td>
+                            @Html.DropDownList("AcaoXQuemDdl", new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                        </td>
+                        <td style="text-align: center; vertical-align: bottom;" id="CausaMedidasXAcaoAdd">
 
-                </tr>
-                <tr>
-                    <td>
-                        @Html.Label("Contramedida generica", htmlAttributes: new { @class = "control-label " })
-                    </td>
-                    <td id="ContramedidaGenerica">
-                        @Html.DropDownList("CausaMedidasXAcao.ContramedidaGenerica_Id", new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.Label("Causa Específica", htmlAttributes: new { @class = "control-label " })
-                    </td>
-                    <td>
-                        @Html.Editor("CausaMedidasXAcao.CausaEspecifica", new { htmlAttributes = new { @class = "form-control" } })
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.Label("Contramedida Específica", htmlAttributes: new { @class = "control-label " })
-                    </td>
-                    <td>
-                        @Html.Editor("CausaMedidasXAcao.ContramedidaEspecifica", new { htmlAttributes = new { @class = "form-control" } })
-                    </td>
-                </tr>
+                            <button id="adicionar" type="button" class="btn btn-default btn-sm" onclick="Adicionar(this);">
+                                <span class="glyphicon glyphicon-plus"></span> Adicionar
+                            </button>
 
-            <tr rowspan="2" class="tr_clone" id="quem">
-                <td>
-                    @Html.Label("Quem", htmlAttributes: new { @class = "control-label " })
-                </td>
-                <td>
-                    @Html.DropDownList("AcaoXQuem.Quem_Id", new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                </td>
-                <td style="text-align: center; vertical-align: bottom;" id="CausaMedidasXAcaoAdd">
+                            <button id="remove" style="display:none" type="button" class="btn btn-default btn-sm" onclick="Remover(this);">
+                                <span class="glyphicon glyphicon-remove"></span> Remover
+                            </button>
 
-                    <button id="adicionar" type="button" class="btn btn-default btn-sm" onclick="Adicionar(this);">
-                        <span class="glyphicon glyphicon-plus"></span> Adicionar
-                    </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.QuandoInicio, htmlAttributes: new { @class = "control-label " })
+                        </td>
+                        <td>
+                            @Html.Editor("_QuandoInicio", new { htmlAttributes = new { @class = "form-control datepicker" } })
+                            @Html.ValidationMessageFor(model => model.QuandoInicio, "", new { @class = "text-danger" })
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.DuracaoDias, htmlAttributes: new { @class = "control-label " })
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.DuracaoDias, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DuracaoDias, "", new { @class = "text-danger" })
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.QuandoFim, htmlAttributes: new { @class = "control-label " })
+                        </td>
+                        <td>
+                            @Html.Editor("_QuandoFim", new { htmlAttributes = new { @class = "form-control datepicker" } })
+                            @Html.ValidationMessageFor(model => model.QuandoFim, "", new { @class = "text-danger" })
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.ComoPontosimportantes, htmlAttributes: new { @class = "control-label " })
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.ComoPontosimportantes, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ComoPontosimportantes, "", new { @class = "text-danger" })
+                        </td>
+                        <td></td>
+                    </tr>
+                    @*<tr>
+                        <td>
+                            @Html.LabelFor(model => model.Predecessora_Id, htmlAttributes: new { @class = "control-label " })
+                        </td>
+                        <td>
+                            @Html.DropDownList("Predecessora_Id", new SelectList(ViewBag.Predecessora, "Id", "Id"), "Selecione", new { @class = "form-control input-sm" })
+                            @Html.ValidationMessageFor(model => model.Predecessora_Id, "", new { @class = "text-danger" })
+                        </td>
+                        <td></td>
+                    </tr>*@
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.PraQue, htmlAttributes: new { @class = "control-label " })
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.PraQue, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PraQue, "", new { @class = "text-danger" })
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.QuantoCusta, htmlAttributes: new { @class = "control-label " })
+                        </td>
+                        <td>
+                            @Html.EditorFor(model => model.QuantoCusta, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.QuantoCusta, "", new { @class = "text-danger" })
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label " })
+                        </td>
+                        <td>
+                            @Html.DropDownList("Status", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                        </td>
+                        <td></td>
+                    </tr>
+                    @if (ViewBag.Panejamento != null)
+                    {
+                        <tr>
+                            <td>
+                                @Html.LabelFor(model => model.Panejamento_Id, htmlAttributes: new { @class = "control-label " })
+                            </td>
+                            <td>
+                                @Html.DropDownList("Panejamento_Id", new SelectList(ViewBag.Panejamento, "Id", "Id"), "Selecione", new { @class = "form-control input-sm" })
+                                @Html.ValidationMessageFor(model => model.Panejamento_Id, "", new { @class = "text-danger" })
+                            </td>
+                            <td></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
-                    <button id="remove" style="display:none" type="button" class="btn btn-default btn-sm" onclick="Remover(this);">
-                        <span class="glyphicon glyphicon-remove"></span> Remover
-                    </button>
+        </form>
 
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.QuandoInicio, htmlAttributes: new { @class = "control-label " })
-                </td>
-                <td>
-                    @Html.Editor("_QuandoInicio", new { htmlAttributes = new { @class = "form-control datepicker" } })
-                    @Html.ValidationMessageFor(model => model.QuandoInicio, "", new { @class = "text-danger" })
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.DuracaoDias, htmlAttributes: new { @class = "control-label " })
-                </td>
-                <td>
-                    @Html.EditorFor(model => model.DuracaoDias, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.DuracaoDias, "", new { @class = "text-danger" })
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.QuandoFim, htmlAttributes: new { @class = "control-label " })
-                </td>
-                <td>
-                    @Html.Editor("_QuandoFim", new { htmlAttributes = new { @class = "form-control datepicker" } })
-                    @Html.ValidationMessageFor(model => model.QuandoFim, "", new { @class = "text-danger" })
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.ComoPontosimportantes, htmlAttributes: new { @class = "control-label " })
-                </td>
-                <td>
-                    @Html.EditorFor(model => model.ComoPontosimportantes, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ComoPontosimportantes, "", new { @class = "text-danger" })
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.Predecessora_Id, htmlAttributes: new { @class = "control-label " })
-                </td>
-                <td>
-                    @Html.DropDownList("Predecessora_Id", new SelectList(ViewBag.Predecessora, "Id", "Id"), "Selecione", new { @class = "form-control input-sm" })
-                    @Html.ValidationMessageFor(model => model.Predecessora_Id, "", new { @class = "text-danger" })
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.PraQue, htmlAttributes: new { @class = "control-label " })
-                </td>
-                <td>
-                    @Html.EditorFor(model => model.PraQue, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.PraQue, "", new { @class = "text-danger" })
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.QuantoCusta, htmlAttributes: new { @class = "control-label " })
-                </td>
-                <td>
-                    @Html.EditorFor(model => model.QuantoCusta, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.QuantoCusta, "", new { @class = "text-danger" })
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label " })
-                </td>
-                <td>
-                    @Html.DropDownList("Status", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-                </td>
-                <td></td>
-            </tr>
-            @if (ViewBag.Panejamento != null)
-            {
-                <tr>
-                    <td>
-                        @Html.LabelFor(model => model.Panejamento_Id, htmlAttributes: new { @class = "control-label " })
-                    </td>
-                    <td>
-                        @Html.DropDownList("Panejamento_Id", new SelectList(ViewBag.Panejamento, "Id", "Id"), "Selecione", new { @class = "form-control input-sm" })
-                        @Html.ValidationMessageFor(model => model.Panejamento_Id, "", new { @class = "text-danger" })
-                    </td>
-                    <td></td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</form>
+    </div>
+    <hr />
+</div>
+<div id="final">
 
-<script>
+</div>
 
 
+@*<div id="obj" class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-target="#collapsible_obj_0" data-parent="#accordion" aria-expanded="false" aria-controls="collapseOne">
+                    Collapsible Group Item #1
+                </a>
+            </h4>
+        </div>
+        <div id="collapsible_obj_0" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
 
-</script>
+            </div>
+        </div>
+    </div>*@
+
+@*var teste = $('#body').clone()
+    var nameCollapse = 'collapseT'
+    teste.find('a').attr('href', '#' + nameCollapse)
+    teste.find('#collapseOne').attr('id', nameCollapse )
+    teste.find('a').attr('aria-controls', nameCollapse )*@

@@ -3,6 +3,82 @@
 }
 
 <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        color: #333;
+    }
+
+    table {
+        text-align: left;
+        /*line-height: 40px;
+      border-collapse: separate;
+      border-spacing: 0;*/
+        /*width: 500px;
+      margin: 50px auto;*/
+        border-radius: .25rem;
+    }
+
+        table.borderedNinja {
+            border: 2px solid #c1c1c1;
+        }
+
+    thead tr:first-child {
+        background: #ffffff;
+        /*color: #fff;*/
+        border: none;
+        height: 60px;
+    }
+
+    th:first-child,
+    td:first-child {
+        padding: 0 15px 0 20px;
+    }
+
+    /*thead tr:last-child th {
+      border-bottom: 3px solid #ddd;
+    }*/
+
+    tbody tr:hover {
+        background-color: rgba(170, 170, 170, 0.20);
+        cursor: default;
+    }
+
+    tbody tr:last-child td {
+        border: none;
+    }
+
+    /*tbody td {
+      border-bottom: 1px solid #ddd;
+    }*/
+
+    td:last-child {
+        text-align: right;
+        padding-right: 10px;
+    }
+
+    .button {
+        color: #aaa;
+        cursor: pointer;
+        vertical-align: middle;
+    }
+
+    .edit:hover {
+        color: #0a79df;
+    }
+
+    .delete:hover {
+        color: #dc2a2a;
+    }
+
+
+
+
     .modal-header .btnGrp {
         position: absolute;
         top: 8px;
@@ -118,6 +194,7 @@
                     <button type="button" class="btn btn-info" id="BuscarPlanejamentos" onclick="BuscarPlanejamentos();">Buscar Planejamento</button>
                     <button type="button" class="btn btn-success" id="NovoPlanejamento" onclick="NovoPlanejamento();" data-toggle="modal" style="display:none"> Novo Planejamento</button>
                     <button type="button" class="btn btn-primary" id="NovaAcao" onclick="Clicked(isTaticoClicked, isNovaAcao); ModalAcao(true);" style="display:none">Nova Ação</button>
+                    <button type="button" class="btn btn-default" value="" id="new">Adicionar Ação</button>
 
                 </div>
             </div>
@@ -143,6 +220,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                 <button type="button" class="btn btn-primary" onclick="SalvarNovo();">Salvar</button>
+
             </div>
         </div>
     </div>
@@ -170,6 +248,28 @@
         var urlSalvarAcao = '@Url.Action("Save", "api/Pa_Acao")';
         var urlGetPlanejamentoAcao = '@Url.Action("GetPlanejamentoAcao", "api/Pa_Planejamento")';
         var urlSalvarNovoItem = '@Url.Action("Save", "api/Generics")';
+
+        var addButton = (function () {
+            var counter = 0;
+
+            return function () {
+                var objectContainer = $('#obj');
+                var header = objectContainer.clone();
+                counter += 1;
+                var collapseId = "collapsible_obj_" + counter;
+
+                header.find(".collapse").attr("id", collapseId);
+                header.find("button[data-toggle='collapse']").attr("data-target", "#" + collapseId);
+                header.find("button[data-toggle='collapse']").html("Acao Name" + counter)
+
+                header.appendTo('#final');
+                header.show();
+
+                myfunction();
+            };
+
+        })();
+        $('#new').click(addButton);
 
         /*Btn Minimizar Modal*/
         $(document).ready(function () {
@@ -317,6 +417,9 @@
                 //console.log(r);
                 planejamentoCorrentId = parseInt(r.Id);
                 ModalOpcoesEstrategico(r.Id);
+
+                $.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
+
             });
         }/*planejamentoCorrentId*/
 
@@ -375,51 +478,60 @@
                 $('#CausaMedidasXAcao_GrupoCausa_Id').empty().attr('disabled', true);
                 $('#CausaMedidasXAcao_ContramedidaGenerica_Id').empty().attr('disabled', true);
 
-                $('#CausaMedidasXAcao_CausaGenerica_Id').on('change', function () {
-                    var valor = $('#CausaMedidasXAcao_CausaGenerica_Id').val();
-                    if (valor) {
-                        $.get(GETGrupoCausa, { id: valor }, function (r) {
-                            $('#GrupoCausa').empty().html(r);
-                        });
-                        $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
-                            $('#ContramedidaGenerica').empty().html(rr);
-                        });
-                    }
-                    else {
-                        $('#CausaMedidasXAcao_GrupoCausa_Id').empty().attr('disabled', true);
-                        $('#CausaMedidasXAcao_ContramedidaGenerica_Id').empty().attr('disabled', true);
-                    }
-                });
 
-                AcaoXQuem_Quem_Id
+                myfunction();
 
+                $('#new').click();
             });
 
             /*Botões*/
             $('#modalLindo').find('.modal-footer button').hide()
             $('#Fechar').show();
 
+            $('#new').show();
+
             $('#Salvar').show();
             $('#Salvar').off('click').on('click', SalvarAcao);
             /*Fim Botões*/
         }
-
-        function dadosQuem() {
-            return {
-                id: $('#AcaoXQuem_Quem_Id').val()
-                , name: $('#AcaoXQuem_Quem_Id option:selected').text()
-                , display: $('#AcaoXQuem_Quem_Id option:selected').text()
-            }
+        function myfunction() {
+                $('[id=CausaMedidasXAcao_CausaGenerica_Id]').off('change').on('change', function () {
+                    var valor = $(this).val();
+                    var form = $(this).parents('form');
+                    if (valor) {
+                        $.get(GETGrupoCausa, { id: valor }, function (r) {
+                            form.find('#GrupoCausa').empty().html(r);
+                        });
+                        $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
+                            form.find('#ContramedidaGenerica').empty().html(rr);
+                        });
+                    }
+                    else {
+                        form.find('#CausaMedidasXAcao_GrupoCausa_Id').empty().attr('disabled', true);
+                        form.find('#CausaMedidasXAcao_ContramedidaGenerica_Id').empty().attr('disabled', true);
+                    }
+                });
         }
-
         function SalvarAcao() {
-            var sendObj = $('#Acao').serializeObject();
-            sendObj['Planejamento_Id'] = planejamentoCorrentId;
-            $.post(urlSalvarAcao, sendObj, function (r) {
-                //planejamentoCorrentId = parseInt(r.Id);
-                //ModalOpcoesEstrategico(planejamentoCorrentId);
-                //$('#modalLindo').modal("hide");
+
+            $('.Acao').not(':first').each(function (c, o) {
+
+                var sendObj = $(o).serializeObject();
+                sendObj['Panejamento_Id'] = planejamentoCorrentId;
+                sendObj['AcaoXQuem'] = [];
+
+                $('.quemClone').each(function (c, o) {
+                    if ($(o).find('select').val())
+                        sendObj['AcaoXQuem'].push({ Quem_Id: $(o).find('select').val() });
+                });
+
+                $.post(urlSalvarAcao, sendObj, function (r) {
+                    $.post(urlGetPlanejamentoAcao, {}, function (r) {
+                        GerarTabela(r);
+                    });
+                });
             });
+
         }
         /*Fim Acao*/
 
@@ -429,7 +541,7 @@
             var $clone;
             //if ($($tr).is("tr")) {
 
-                $clone = $tr.clone();
+            $clone = $tr.clone();
 
             //} else if ($($tr).is("td")) {
 
@@ -516,7 +628,7 @@
                     { title: "Contramedida Genérica", mData: null },
                     { title: "Causa Específica", mData: null },
                     { title: "Contramedida Específica", mData: null },
-                    { title: "Quem", mData: "Acao._Quem" },
+                    { title: "Quem", mData: "Acao._Quem[, ]" },
                     { title: "Quando (Início)", mData: "Acao._QuandoInicio" },
                     { title: "Duração", mData: "Acao.DuracaoDias" },
                     { title: "Quando (Fim)", mData: "Acao._QuandoFim" },

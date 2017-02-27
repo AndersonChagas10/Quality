@@ -30,10 +30,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,26 +52,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Acao\Pa_Acao.cs" />
-    <Compile Include="Acao\Pa_CausaGenerica.cs" />
-    <Compile Include="Acao\Pa_ContramedidaGenerica.cs" />
-    <Compile Include="Acao\Pa_GrupoCausa.cs" />
-    <Compile Include="Acao\Pa_Quem.cs" />
+    <Compile Include="Acao\Pa_AcaoDTO.cs" />
+    <Compile Include="Acao\Pa_CausaGenericaDTO.cs" />
+    <Compile Include="Acao\Pa_ContramedidaGenericaDTO.cs" />
+    <Compile Include="Acao\Pa_GrupoCausaDTO.cs" />
+    <Compile Include="Acao\Pa_QuemDTO.cs" />
     <Compile Include="Interfaces\ICrudPa.cs" />
-    <Compile Include="Acao\Pa_AcaoXQuem.cs" />
+    <Compile Include="Acao\Pa_AcaoXQuemDTO.cs" />
     <Compile Include="Pa_BaseObject.cs" />
-    <Compile Include="Acao\Pa_CausaMedidasXAcao.cs" />
-    <Compile Include="Acao\Pa_Departamento.cs" />
-    <Compile Include="Acao\Pa_Unidade.cs" />
-    <Compile Include="Planejamento\Pa_Coordenacao.cs" />
-    <Compile Include="Planejamento\Pa_Dimensao.cs" />
-    <Compile Include="Planejamento\Pa_Diretoria.cs" />
-    <Compile Include="Planejamento\Pa_Gerencia.cs" />
+    <Compile Include="Acao\Pa_CausaMedidasXAcaoDTO.cs" />
+    <Compile Include="Acao\Pa_DepartamentoDTO.cs" />
+    <Compile Include="Acao\Pa_UnidadeDTO.cs" />
+    <Compile Include="Planejamento\Pa_CoordenacaoDTO.cs" />
+    <Compile Include="Planejamento\Pa_DimensaoDTO.cs" />
+    <Compile Include="Planejamento\Pa_DiretoriaDTO.cs" />
+    <Compile Include="Planejamento\Pa_GerenciaDTO.cs" />
     <Compile Include="Planejamento\Pa_Missao.cs" />
     <Compile Include="Planejamento\Pa_Objetivo.cs" />
     <Compile Include="Planejamento\Pa_ObjetivoGeral.cs" />
-    <Compile Include="Planejamento\Pa_Iniciativas.cs" />
-    <Compile Include="Planejamento\Pa_Indicadores.cs" />
+    <Compile Include="Planejamento\Pa_IniciativasDTO.cs" />
+    <Compile Include="Planejamento\Pa_IndicadoresDTO.cs" />
     <Compile Include="Planejamento\Pa_Planejamento.cs" />
     <Compile Include="Planejamento\Pa_Status.cs" />
     <Compile Include="Planejamento\Pa_TemaAssunto.cs" />
@@ -77,6 +87,13 @@
       <Project>{0ED5466D-2A8F-4E37-8D4A-C2F2760BD687}</Project>
       <Name>DTO</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

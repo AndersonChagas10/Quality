@@ -25,7 +25,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         [Route("Save")]
         public Pa_Planejamento Save([FromBody]Pa_Planejamento planejamento)
         {
-            planejamento.AddOrUpdate();
+            Pa_BaseObject.SalvarGenerico(planejamento);
             return planejamento;
         }
 

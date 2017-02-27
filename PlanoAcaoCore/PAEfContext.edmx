@@ -1,0 +1,1012 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PlanoDeAcaoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Pa_Acao">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Unidade_Id" Type="int" />
+          <Property Name="Departamento_Id" Type="int" />
+          <Property Name="QuandoInicio" Type="datetime2" Precision="7" />
+          <Property Name="DuracaoDias" Type="int" />
+          <Property Name="QuandoFim" Type="datetime2" Precision="7" />
+          <Property Name="ComoPontosimportantes" Type="nvarchar(max)" />
+          <Property Name="Predecessora_Id" Type="int" />
+          <Property Name="PraQue" Type="nvarchar(max)" />
+          <Property Name="QuantoCusta" Type="decimal" Precision="35" Scale="10" />
+          <Property Name="Status" Type="int" />
+          <Property Name="Panejamento_Id" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PlanoDeAcao.dbo.Pa_AcaoXQuem' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Pa_AcaoXQuem">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Acao_Id" />
+            <PropertyRef Name="Quem_Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Acao_Id" Type="int" Nullable="false" />
+          <Property Name="Quem_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pa_CausaEspecifica">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Text" Type="nchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pa_CausaGenerica">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CausaGenerica" Type="nvarchar" MaxLength="100" />
+          <Property Name="GrupoCausa" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PlanoDeAcao.dbo.Pa_CausaMedidaXAcao' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Pa_CausaMedidaXAcao">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Acao_Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CausaGenerica_Id" Type="int" />
+          <Property Name="CausaEspecifica_Id" Type="int" />
+          <Property Name="ContramedidaGenerica_Id" Type="int" />
+          <Property Name="ContramedidaEspecifica_Id" Type="int" />
+          <Property Name="GrupoCausa_Id" Type="int" />
+          <Property Name="Acao_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pa_ContramedidaEspecifica">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Text" Type="nchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pa_ContramedidaGenerica">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ContramedidaGenerica" Type="nvarchar" MaxLength="100" />
+          <Property Name="CausaGenerica" Type="int" />
+        </EntityType>
+        <EntityType Name="Pa_Coordenacao">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Order" Type="int" />
+        </EntityType>
+        <EntityType Name="Pa_Departamento">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Order" Type="int" />
+        </EntityType>
+        <EntityType Name="Pa_Dimensao">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Order" Type="int" />
+        </EntityType>
+        <EntityType Name="Pa_Diretoria">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Order" Type="int" />
+        </EntityType>
+        <EntityType Name="Pa_Gerencia">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Order" Type="int" />
+        </EntityType>
+        <EntityType Name="Pa_GrupoCausa">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GrupoCausa" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Pa_Indicadores">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Order" Type="int" />
+        </EntityType>
+        <EntityType Name="Pa_Iniciativa">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Order" Type="int" />
+        </EntityType>
+        <EntityType Name="Pa_Missao">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Order" Type="int" />
+        </EntityType>
+        <EntityType Name="Pa_Objetivo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Order" Type="int" />
+        </EntityType>
+        <EntityType Name="Pa_ObjetivoGeral">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Order" Type="int" />
+        </EntityType>
+        <EntityType Name="Pa_Planejamento">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Diretoria_Id" Type="int" />
+          <Property Name="Gerencia_Id" Type="int" />
+          <Property Name="Coordenacao_Id" Type="int" />
+          <Property Name="Missao_Id" Type="int" />
+          <Property Name="Visao_Id" Type="int" />
+          <Property Name="TemaAssunto_Id" Type="int" />
+          <Property Name="Indicadores_Id" Type="int" />
+          <Property Name="Iniciativa_Id" Type="int" />
+          <Property Name="ObjetivoGerencial_Id" Type="int" />
+          <Property Name="Dimensao" Type="nvarchar(max)" />
+          <Property Name="Objetivo" Type="nvarchar(max)" />
+          <Property Name="ValorDe" Type="decimal" Precision="32" Scale="10" Nullable="false" />
+          <Property Name="ValorPara" Type="decimal" Precision="32" Scale="10" Nullable="false" />
+          <Property Name="DataInicio" Type="datetime2" Precision="7" />
+          <Property Name="DataFim" Type="datetime2" Precision="7" />
+          <Property Name="Order" Type="int" />
+          <Property Name="Dimensao_Id" Type="int" />
+          <Property Name="Objetivo_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="Pa_Quem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Order" Type="int" />
+        </EntityType>
+        <EntityType Name="Pa_Status">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Order" Type="int" />
+        </EntityType>
+        <EntityType Name="Pa_TemaAssunto">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Order" Type="int" />
+        </EntityType>
+        <EntityType Name="Pa_Unidade">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Order" Type="int" />
+        </EntityType>
+        <EntityType Name="Pa_Visao">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Order" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Pa_Acao_Pa_Planejamento">
+          <End Role="Pa_Planejamento" Type="Self.Pa_Planejamento" Multiplicity="0..1" />
+          <End Role="Pa_Acao" Type="Self.Pa_Acao" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pa_Planejamento">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pa_Acao">
+              <PropertyRef Name="Panejamento_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PlanoDeAcaoModelStoreContainer">
+          <EntitySet Name="Pa_Acao" EntityType="Self.Pa_Acao" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_CausaEspecifica" EntityType="Self.Pa_CausaEspecifica" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_CausaGenerica" EntityType="Self.Pa_CausaGenerica" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_ContramedidaEspecifica" EntityType="Self.Pa_ContramedidaEspecifica" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_ContramedidaGenerica" EntityType="Self.Pa_ContramedidaGenerica" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_Coordenacao" EntityType="Self.Pa_Coordenacao" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_Departamento" EntityType="Self.Pa_Departamento" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_Dimensao" EntityType="Self.Pa_Dimensao" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_Diretoria" EntityType="Self.Pa_Diretoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_Gerencia" EntityType="Self.Pa_Gerencia" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_GrupoCausa" EntityType="Self.Pa_GrupoCausa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_Indicadores" EntityType="Self.Pa_Indicadores" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_Iniciativa" EntityType="Self.Pa_Iniciativa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_Missao" EntityType="Self.Pa_Missao" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_Objetivo" EntityType="Self.Pa_Objetivo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_ObjetivoGeral" EntityType="Self.Pa_ObjetivoGeral" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_Planejamento" EntityType="Self.Pa_Planejamento" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_Quem" EntityType="Self.Pa_Quem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_Status" EntityType="Self.Pa_Status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_TemaAssunto" EntityType="Self.Pa_TemaAssunto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_Unidade" EntityType="Self.Pa_Unidade" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_Visao" EntityType="Self.Pa_Visao" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_AcaoXQuem" EntityType="Self.Pa_AcaoXQuem" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Pa_AcaoXQuem].[Id] AS [Id], 
+    [Pa_AcaoXQuem].[Acao_Id] AS [Acao_Id], 
+    [Pa_AcaoXQuem].[Quem_Id] AS [Quem_Id]
+    FROM [dbo].[Pa_AcaoXQuem] AS [Pa_AcaoXQuem]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Pa_CausaMedidaXAcao" EntityType="Self.Pa_CausaMedidaXAcao" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Pa_CausaMedidaXAcao].[Id] AS [Id], 
+    [Pa_CausaMedidaXAcao].[CausaGenerica_Id] AS [CausaGenerica_Id], 
+    [Pa_CausaMedidaXAcao].[CausaEspecifica_Id] AS [CausaEspecifica_Id], 
+    [Pa_CausaMedidaXAcao].[ContramedidaGenerica_Id] AS [ContramedidaGenerica_Id], 
+    [Pa_CausaMedidaXAcao].[ContramedidaEspecifica_Id] AS [ContramedidaEspecifica_Id], 
+    [Pa_CausaMedidaXAcao].[GrupoCausa_Id] AS [GrupoCausa_Id], 
+    [Pa_CausaMedidaXAcao].[Acao_Id] AS [Acao_Id]
+    FROM [dbo].[Pa_CausaMedidaXAcao] AS [Pa_CausaMedidaXAcao]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Pa_Acao_Pa_Planejamento" Association="Self.FK_Pa_Acao_Pa_Planejamento">
+            <End Role="Pa_Planejamento" EntitySet="Pa_Planejamento" />
+            <End Role="Pa_Acao" EntitySet="Pa_Acao" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PlanoDeAcaoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Pa_Acao">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Unidade_Id" Type="Int32" />
+          <Property Name="Departamento_Id" Type="Int32" />
+          <Property Name="QuandoInicio" Type="DateTime" Precision="7" />
+          <Property Name="DuracaoDias" Type="Int32" />
+          <Property Name="QuandoFim" Type="DateTime" Precision="7" />
+          <Property Name="ComoPontosimportantes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Predecessora_Id" Type="Int32" />
+          <Property Name="PraQue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="QuantoCusta" Type="Decimal" Precision="35" Scale="10" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="Panejamento_Id" Type="Int32" />
+          <NavigationProperty Name="Pa_Planejamento" Relationship="Self.FK_Pa_Acao_Pa_Planejamento" FromRole="Pa_Acao" ToRole="Pa_Planejamento" />
+        </EntityType>
+        <EntityType Name="Pa_CausaEspecifica">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Text" Type="String" MaxLength="500" FixedLength="true" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pa_CausaGenerica">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CausaGenerica" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="GrupoCausa" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Pa_ContramedidaEspecifica">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Text" Type="String" MaxLength="500" FixedLength="true" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pa_ContramedidaGenerica">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ContramedidaGenerica" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CausaGenerica" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Pa_Coordenacao">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Order" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Pa_Departamento">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Order" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Pa_Dimensao">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Order" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Pa_Diretoria">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Order" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Pa_Gerencia">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Order" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Pa_GrupoCausa">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GrupoCausa" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Pa_Indicadores">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Order" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Pa_Iniciativa">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Order" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Pa_Missao">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Order" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Pa_Objetivo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Order" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Pa_ObjetivoGeral">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Order" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Pa_Planejamento">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Diretoria_Id" Type="Int32" />
+          <Property Name="Gerencia_Id" Type="Int32" />
+          <Property Name="Coordenacao_Id" Type="Int32" />
+          <Property Name="Missao_Id" Type="Int32" />
+          <Property Name="Visao_Id" Type="Int32" />
+          <Property Name="TemaAssunto_Id" Type="Int32" />
+          <Property Name="Indicadores_Id" Type="Int32" />
+          <Property Name="Iniciativa_Id" Type="Int32" />
+          <Property Name="ObjetivoGerencial_Id" Type="Int32" />
+          <Property Name="Dimensao" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Objetivo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ValorDe" Type="Decimal" Precision="32" Scale="10" Nullable="false" />
+          <Property Name="ValorPara" Type="Decimal" Precision="32" Scale="10" Nullable="false" />
+          <Property Name="DataInicio" Type="DateTime" Precision="7" />
+          <Property Name="DataFim" Type="DateTime" Precision="7" />
+          <Property Name="Order" Type="Int32" />
+          <Property Name="Dimensao_Id" Type="Int32" />
+          <Property Name="Objetivo_Id" Type="Int32" />
+          <NavigationProperty Name="Pa_Acao" Relationship="Self.FK_Pa_Acao_Pa_Planejamento" FromRole="Pa_Planejamento" ToRole="Pa_Acao" />
+        </EntityType>
+        <EntityType Name="Pa_Quem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Order" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Pa_Status">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Order" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Pa_TemaAssunto">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Order" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Pa_Unidade">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Order" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Pa_Visao">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Order" Type="Int32" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Pa_AcaoXQuem">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Acao_Id" />
+            <PropertyRef Name="Quem_Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Acao_Id" Type="Int32" Nullable="false" />
+          <Property Name="Quem_Id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pa_CausaMedidaXAcao">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Acao_Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CausaGenerica_Id" Type="Int32" />
+          <Property Name="CausaEspecifica_Id" Type="Int32" />
+          <Property Name="ContramedidaGenerica_Id" Type="Int32" />
+          <Property Name="ContramedidaEspecifica_Id" Type="Int32" />
+          <Property Name="GrupoCausa_Id" Type="Int32" />
+          <Property Name="Acao_Id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Pa_Acao_Pa_Planejamento">
+          <End Role="Pa_Planejamento" Type="Self.Pa_Planejamento" Multiplicity="0..1" />
+          <End Role="Pa_Acao" Type="Self.Pa_Acao" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pa_Planejamento">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pa_Acao">
+              <PropertyRef Name="Panejamento_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PlanoDeAcaoEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Pa_Acao" EntityType="Self.Pa_Acao" />
+          <EntitySet Name="Pa_CausaEspecifica" EntityType="Self.Pa_CausaEspecifica" />
+          <EntitySet Name="Pa_CausaGenerica" EntityType="Self.Pa_CausaGenerica" />
+          <EntitySet Name="Pa_ContramedidaEspecifica" EntityType="Self.Pa_ContramedidaEspecifica" />
+          <EntitySet Name="Pa_ContramedidaGenerica" EntityType="Self.Pa_ContramedidaGenerica" />
+          <EntitySet Name="Pa_Coordenacao" EntityType="Self.Pa_Coordenacao" />
+          <EntitySet Name="Pa_Departamento" EntityType="Self.Pa_Departamento" />
+          <EntitySet Name="Pa_Dimensao" EntityType="Self.Pa_Dimensao" />
+          <EntitySet Name="Pa_Diretoria" EntityType="Self.Pa_Diretoria" />
+          <EntitySet Name="Pa_Gerencia" EntityType="Self.Pa_Gerencia" />
+          <EntitySet Name="Pa_GrupoCausa" EntityType="Self.Pa_GrupoCausa" />
+          <EntitySet Name="Pa_Indicadores" EntityType="Self.Pa_Indicadores" />
+          <EntitySet Name="Pa_Iniciativa" EntityType="Self.Pa_Iniciativa" />
+          <EntitySet Name="Pa_Missao" EntityType="Self.Pa_Missao" />
+          <EntitySet Name="Pa_Objetivo" EntityType="Self.Pa_Objetivo" />
+          <EntitySet Name="Pa_ObjetivoGeral" EntityType="Self.Pa_ObjetivoGeral" />
+          <EntitySet Name="Pa_Planejamento" EntityType="Self.Pa_Planejamento" />
+          <EntitySet Name="Pa_Quem" EntityType="Self.Pa_Quem" />
+          <EntitySet Name="Pa_Status" EntityType="Self.Pa_Status" />
+          <EntitySet Name="Pa_TemaAssunto" EntityType="Self.Pa_TemaAssunto" />
+          <EntitySet Name="Pa_Unidade" EntityType="Self.Pa_Unidade" />
+          <EntitySet Name="Pa_Visao" EntityType="Self.Pa_Visao" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Pa_AcaoXQuem" EntityType="Self.Pa_AcaoXQuem" />
+          <EntitySet Name="Pa_CausaMedidaXAcao" EntityType="Self.Pa_CausaMedidaXAcao" />
+          <AssociationSet Name="FK_Pa_Acao_Pa_Planejamento" Association="Self.FK_Pa_Acao_Pa_Planejamento">
+            <End Role="Pa_Planejamento" EntitySet="Pa_Planejamento" />
+            <End Role="Pa_Acao" EntitySet="Pa_Acao" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PlanoDeAcaoModelStoreContainer" CdmEntityContainer="PlanoDeAcaoEntities">
+          <EntitySetMapping Name="Pa_Acao">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Acao">
+              <MappingFragment StoreEntitySet="Pa_Acao">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="Unidade_Id" ColumnName="Unidade_Id" />
+                <ScalarProperty Name="Departamento_Id" ColumnName="Departamento_Id" />
+                <ScalarProperty Name="QuandoInicio" ColumnName="QuandoInicio" />
+                <ScalarProperty Name="DuracaoDias" ColumnName="DuracaoDias" />
+                <ScalarProperty Name="QuandoFim" ColumnName="QuandoFim" />
+                <ScalarProperty Name="ComoPontosimportantes" ColumnName="ComoPontosimportantes" />
+                <ScalarProperty Name="Predecessora_Id" ColumnName="Predecessora_Id" />
+                <ScalarProperty Name="PraQue" ColumnName="PraQue" />
+                <ScalarProperty Name="QuantoCusta" ColumnName="QuantoCusta" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Panejamento_Id" ColumnName="Panejamento_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_CausaEspecifica">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_CausaEspecifica">
+              <MappingFragment StoreEntitySet="Pa_CausaEspecifica">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_CausaGenerica">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_CausaGenerica">
+              <MappingFragment StoreEntitySet="Pa_CausaGenerica">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CausaGenerica" ColumnName="CausaGenerica" />
+                <ScalarProperty Name="GrupoCausa" ColumnName="GrupoCausa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_ContramedidaEspecifica">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_ContramedidaEspecifica">
+              <MappingFragment StoreEntitySet="Pa_ContramedidaEspecifica">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_ContramedidaGenerica">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_ContramedidaGenerica">
+              <MappingFragment StoreEntitySet="Pa_ContramedidaGenerica">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ContramedidaGenerica" ColumnName="ContramedidaGenerica" />
+                <ScalarProperty Name="CausaGenerica" ColumnName="CausaGenerica" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_Coordenacao">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Coordenacao">
+              <MappingFragment StoreEntitySet="Pa_Coordenacao">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_Departamento">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Departamento">
+              <MappingFragment StoreEntitySet="Pa_Departamento">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_Dimensao">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Dimensao">
+              <MappingFragment StoreEntitySet="Pa_Dimensao">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_Diretoria">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Diretoria">
+              <MappingFragment StoreEntitySet="Pa_Diretoria">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_Gerencia">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Gerencia">
+              <MappingFragment StoreEntitySet="Pa_Gerencia">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_GrupoCausa">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_GrupoCausa">
+              <MappingFragment StoreEntitySet="Pa_GrupoCausa">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="GrupoCausa" ColumnName="GrupoCausa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_Indicadores">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Indicadores">
+              <MappingFragment StoreEntitySet="Pa_Indicadores">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_Iniciativa">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Iniciativa">
+              <MappingFragment StoreEntitySet="Pa_Iniciativa">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_Missao">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Missao">
+              <MappingFragment StoreEntitySet="Pa_Missao">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_Objetivo">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Objetivo">
+              <MappingFragment StoreEntitySet="Pa_Objetivo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_ObjetivoGeral">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_ObjetivoGeral">
+              <MappingFragment StoreEntitySet="Pa_ObjetivoGeral">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_Planejamento">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Planejamento">
+              <MappingFragment StoreEntitySet="Pa_Planejamento">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="Diretoria_Id" ColumnName="Diretoria_Id" />
+                <ScalarProperty Name="Gerencia_Id" ColumnName="Gerencia_Id" />
+                <ScalarProperty Name="Coordenacao_Id" ColumnName="Coordenacao_Id" />
+                <ScalarProperty Name="Missao_Id" ColumnName="Missao_Id" />
+                <ScalarProperty Name="Visao_Id" ColumnName="Visao_Id" />
+                <ScalarProperty Name="TemaAssunto_Id" ColumnName="TemaAssunto_Id" />
+                <ScalarProperty Name="Indicadores_Id" ColumnName="Indicadores_Id" />
+                <ScalarProperty Name="Iniciativa_Id" ColumnName="Iniciativa_Id" />
+                <ScalarProperty Name="ObjetivoGerencial_Id" ColumnName="ObjetivoGerencial_Id" />
+                <ScalarProperty Name="Dimensao" ColumnName="Dimensao" />
+                <ScalarProperty Name="Objetivo" ColumnName="Objetivo" />
+                <ScalarProperty Name="ValorDe" ColumnName="ValorDe" />
+                <ScalarProperty Name="ValorPara" ColumnName="ValorPara" />
+                <ScalarProperty Name="DataInicio" ColumnName="DataInicio" />
+                <ScalarProperty Name="DataFim" ColumnName="DataFim" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="Dimensao_Id" ColumnName="Dimensao_Id" />
+                <ScalarProperty Name="Objetivo_Id" ColumnName="Objetivo_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_Quem">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Quem">
+              <MappingFragment StoreEntitySet="Pa_Quem">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_Status">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Status">
+              <MappingFragment StoreEntitySet="Pa_Status">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_TemaAssunto">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_TemaAssunto">
+              <MappingFragment StoreEntitySet="Pa_TemaAssunto">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_Unidade">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Unidade">
+              <MappingFragment StoreEntitySet="Pa_Unidade">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_Visao">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Visao">
+              <MappingFragment StoreEntitySet="Pa_Visao">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_AcaoXQuem">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_AcaoXQuem">
+              <MappingFragment StoreEntitySet="Pa_AcaoXQuem">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Acao_Id" ColumnName="Acao_Id" />
+                <ScalarProperty Name="Quem_Id" ColumnName="Quem_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_CausaMedidaXAcao">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_CausaMedidaXAcao">
+              <MappingFragment StoreEntitySet="Pa_CausaMedidaXAcao">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CausaGenerica_Id" ColumnName="CausaGenerica_Id" />
+                <ScalarProperty Name="CausaEspecifica_Id" ColumnName="CausaEspecifica_Id" />
+                <ScalarProperty Name="ContramedidaGenerica_Id" ColumnName="ContramedidaGenerica_Id" />
+                <ScalarProperty Name="ContramedidaEspecifica_Id" ColumnName="ContramedidaEspecifica_Id" />
+                <ScalarProperty Name="GrupoCausa_Id" ColumnName="GrupoCausa_Id" />
+                <ScalarProperty Name="Acao_Id" ColumnName="Acao_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

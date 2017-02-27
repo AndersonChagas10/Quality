@@ -37,6 +37,13 @@ namespace PlanoAcaoCore
 
         }
 
+        public static T SalvarGenerico<T>(T obj)
+        {
+            using (var db = new Factory(dataSource, catalog, pass, user))
+                return db.InsertUpdateData<T>(obj);
+
+        }
+
         protected static List<T> ListarGenerico<T>(string query)
         {
             List<T> listReturn;
@@ -59,10 +66,10 @@ namespace PlanoAcaoCore
         {
             string query;
 
-            query = " INSERT INTO [dbo].[" + table + "]           " +
-                    "\n       ([Name])                             " +
-                    "\n VALUES                                     " +
-                    "\n       (@Name)                              " +
+            query = " INSERT INTO [dbo].[" + table + "] " +
+                    "\n       ([Name])                  " +
+                    "\n VALUES                          " +
+                    "\n       (@Name)                   " +
                     "\n       SELECT CAST(scope_identity() AS int) ";
 
             SqlCommand cmd;

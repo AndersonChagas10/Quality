@@ -1,4 +1,5 @@
-﻿using PlanoAcaoCore;
+﻿using DTO.Helpers;
+using PlanoAcaoCore;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -45,10 +46,17 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
         [HttpPost]
         [Route("Save")]
-        public Pa_Acao Save([FromBody] Pa_Acao planejamento)
+        public Pa_Acao Save([FromBody] Pa_Acao acao)
         {
-            planejamento.AddOrUpdate();
-            return planejamento;
+            acao.QuandoInicio = Guard.ParseDateToSqlV2(acao._QuandoInicio);
+            acao.QuandoFim = Guard.ParseDateToSqlV2(acao._QuandoFim);
+            acao._QuandoInicio = null;
+            acao._QuandoFim = null;
+            //Pa_BaseObject.SalvarGenerico(acao);
+            //Pa_BaseObject.SalvarGenerico(acao.CausaMedidasXAcao);
+
+            acao.AddOrUpdate();
+            return acao;
         }
     }
 }
