@@ -1356,4 +1356,28 @@
   <data name="_language" xml:space="preserve">
     <value>pt-br</value>
   </data>
+  <data name="current_evaluation" xml:space="preserve">
+    <value>Avaliação Completa</value>
+  </data>
+  <data name="current_sample_defects" xml:space="preserve">
+    <value>Defeitos Amostra Atual</value>
+  </data>
+  <data name="current_side" xml:space="preserve">
+    <value>Amostra Atual</value>
+  </data>
+  <data name="defects_evaluate" xml:space="preserve">
+    <value>Defeitos Avaliação</value>
+  </data>
+  <data name="evaluation_complete" xml:space="preserve">
+    <value>Avaliação Completa</value>
+  </data>
+  <data name="level2_defects" xml:space="preserve">
+    <value>Defeitos Monitoramento</value>
+  </data>
+  <data name="three_more_defects" xml:space="preserve">
+    <value>3 ou mais Defeitos</value>
+  </data>
+  <data name="total_defects" xml:space="preserve">
+    <value>Total Defeitos</value>
+  </data>
 </root>

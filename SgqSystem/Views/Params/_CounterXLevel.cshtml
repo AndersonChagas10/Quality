@@ -11,11 +11,11 @@
 }
 
 @*Contadores*@
-<div class="panel-group accordion hide" id="@id">
+<div class="panel-group accordion" id="@id">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
-                <a id="changeCounterCollapse" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="@id2" href="@id3" aria-expanded="false"> @Resources.Resource.counters <p style="color:red; font-weight:bold;">ERRO!</p> </a>
+                <a id="changeCounterCollapse" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="@id2" href="@id3" aria-expanded="false"> @Resources.Resource.counters </a>
             </h4>
         </div>
         <div id="@id4" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
@@ -23,9 +23,19 @@
                 <table id="camposContador" class="table-erp">
                     <tbody>
                         <tr class="row">
-                            @Table.GerarColuna(@Html.DropDownList("parCounter", Model.paramsDdl.DdlParCounter_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.counter), Table.PosicaoLabel.top, null, null)
-                            @Table.GerarColunaButton(@Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top
+                            @if (Model.levelControl == 1)
+                            {
+                                @Table.GerarColuna(@Html.DropDownList("parCounter", Model.paramsDdl.DdlParCounter_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.counter), Table.PosicaoLabel.top, null, null)
+                                @Table.GerarColunaButton(@Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top
                            , button: "<button type=\"button\" id=\"btnSaveCounter\" onclick=\"" + @click + "; \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                            }
+                            else if (Model.levelControl == 2)
+                            {
+                                @Table.GerarColuna(@Html.DropDownList("parCounter", Model.paramsDdl.DdlParCounter_Level2, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.counter), Table.PosicaoLabel.top, null, null)
+                                @Table.GerarColunaButton(@Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level2, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top
+                           , button: "<button type=\"button\" id=\"btnSaveCounter\" onclick=\"" + @click + "; \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                            }
+                            
                         </tr>
                     </tbody>
                 </table>

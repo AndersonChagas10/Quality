@@ -8,6 +8,7 @@ using Dominio.Interfaces.Services;
 using DTO.DTO.Params;
 using DTO.DTO;
 using AutoMapper;
+using System.Collections.Generic;
 
 namespace SgqSystem.Controllers
 {
@@ -16,15 +17,30 @@ namespace SgqSystem.Controllers
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
         private IBaseDomain<ParCompany, ParCompanyDTO> _baseDomainParCompany;
+        private IBaseDomain<ParCompanyXUserSgq, ParCompanyXUserSgqDTO> _baseDomainParCompanyXUserSgq;
         private IBaseDomain<UserSgq, UserSgqDTO> _baseDomainUserSgq;
+        private IBaseDomain<RoleSGQ, RoleSGQDTO> _baseDomainRoleSGQ;
 
         public UserSgqController(IBaseDomain<ParCompany, ParCompanyDTO> baseDomainParCompany,
-            IBaseDomain<UserSgq, UserSgqDTO> baseDomainUserSgq)
+            IBaseDomain<ParCompanyXUserSgq, ParCompanyXUserSgqDTO> baseDomainParCompanyXUserSgq,
+            IBaseDomain<UserSgq, UserSgqDTO> baseDomainUserSgq,
+            IBaseDomain<RoleSGQ, RoleSGQDTO> baseDomainRoleSGQ
+            )
         {
             _baseDomainParCompany = baseDomainParCompany;
             _baseDomainUserSgq = baseDomainUserSgq;
+            _baseDomainParCompanyXUserSgq = baseDomainParCompanyXUserSgq;
+            _baseDomainRoleSGQ = baseDomainRoleSGQ;
 
             ViewBag.listaParCompany = _baseDomainParCompany.GetAll();
+            var listaRoleSGQ = _baseDomainRoleSGQ.GetAll();
+
+            foreach (var roleSgq in listaRoleSGQ)
+            {
+                roleSgq.Role = roleSgq.Role.Trim();
+            }
+
+            ViewBag.listaRoleSGQ = listaRoleSGQ;
         }
 
         // GET: UserSgq
@@ -65,19 +81,39 @@ namespace SgqSystem.Controllers
             if (userSgqDto.Id == 0)
             {
                 userSgqDto.AddDate = DateTime.Now;
-                _baseDomainUserSgq.AddOrUpdate(userSgqDto);
+                userSgqDto.Password = "123";
             }
             else
             {
                 userSgqDto.AlterDate = DateTime.Now;
 
-                if(userSgqDto.Password == null)
+                if (userSgqDto.Password == null)
                 {
                     UserSgq dummy = db.UserSgq.Find(userSgqDto.Id);
                     userSgqDto.Password = dummy.Password;
-                }               
+                }
             }
-            _baseDomainUserSgq.AddOrUpdate(userSgqDto);
+
+            if (userSgqDto.ListRole != null)
+            {
+                string roles = string.Join("; ", userSgqDto.ListRole);
+                userSgqDto.Role = roles;
+            }
+
+            IEnumerable<int> listParCompany = userSgqDto.ListParCompany_Id;
+            userSgqDto = _baseDomainUserSgq.AddOrUpdate(userSgqDto);
+
+            _baseDomainParCompanyXUserSgq.ExecuteSql("DELETE FROM ParCompanyXUserSgq WHERE UserSgq_Id = " + userSgqDto.Id);
+
+            foreach (int ParCompany_id in listParCompany)
+            {
+                ParCompanyXUserSgqDTO parCompanyXUserSgqDTO = new ParCompanyXUserSgqDTO();
+                parCompanyXUserSgqDTO.Id = 0;
+                parCompanyXUserSgqDTO.UserSgq_Id = userSgqDto.Id;
+                parCompanyXUserSgqDTO.ParCompany_Id = ParCompany_id;
+
+                _baseDomainParCompanyXUserSgq.AddOrUpdate(parCompanyXUserSgqDTO);
+            }
 
         }
 

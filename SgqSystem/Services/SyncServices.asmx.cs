@@ -2723,6 +2723,7 @@ namespace SgqSystem.Services
         {
             //Inicializa ParLevel2
             var ParLevel2DB = new SGQDBContext.ParLevel2();
+            var ParCounterDB = new SGQDBContext.ParCounter();
             //Pega uma lista de ParLevel2
             //Tem que confirmar a company e colocar na query dentro do método, ainda não foi validado
             var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(ParLevel1.Id, ParCompany_Id);
@@ -2864,7 +2865,7 @@ namespace SgqSystem.Services
                     if (ParLevel1.HasSaveLevel2)
                     {
                         btnAreaSave = "<button class=\"btn btn-success hide btnAreaSaveConfirm\">                                                    " +
-                                       "   <span class=\"cursorPointer\">Confirm? <i class=\"fa fa-check\" aria-hidden=\"true\"></i></span>     " +
+                                       "   <span class=\"cursorPointer\">?<i class=\"fa fa-check\" aria-hidden=\"true\"></i></span>     " +
                                        "</button>                                                                                                      " +
                                        "<button class=\"btn btn-primary btnAreaSave\">                                                                 " +
                                        "   <span class=\"cursorPointer iconsArea\"><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i></span>        " +
@@ -3019,9 +3020,14 @@ namespace SgqSystem.Services
                                                                 );
             }
 
-            string painelCounters = html.painelCounters();
+            var listCounter = ParCounterDB.GetParLevelXParCounterList(ParLevel1.Id, 0, 1);
 
+            string painelCounters = "";
 
+            if (listCounter != null)
+            {
+                painelCounters = html.painelCounters(listCounter);
+            }
 
             //Se contem  monitoramentos
             if (!string.IsNullOrEmpty(ParLevel2List))
@@ -3152,6 +3158,8 @@ namespace SgqSystem.Services
             //Inicializa ParLevel3
             var ParLevel3DB = new SGQDBContext.ParLevel3();
 
+            var ParCounterDB = new SGQDBContext.ParCounter();
+
             //Inicializa Cabecalhos
             var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader();
             //Inicaliza ParFieldType
@@ -3170,6 +3178,8 @@ namespace SgqSystem.Services
             string tipoTela = "";
 
             var variableList = ParLevel1VariableProductionDB.getVariable(ParLevel1.Id).ToList();
+
+            var listCounter = ParCounterDB.GetParLevelXParCounterList(0, ParLevel2.Id, 2);
 
             if (variableList.Count > 0)
             {
@@ -3252,14 +3262,13 @@ namespace SgqSystem.Services
                                                 );
 
                 //string HeaderLevel02 = null;
-
                 painellevel3 = html.listgroupItem(
                                                      outerhtml: avaliacoes +
                                                                 amostras +
                                                                 painelLevel3HeaderListHtml,
 
                                         classe: "painel painelLevel03 row") +
-                              html.painelCounters();
+                              html.painelCounters(listCounter);
                               //          +
                               //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
@@ -3486,7 +3495,7 @@ namespace SgqSystem.Services
 
                                                classe: "painel painelLevel03 row") +
 
-                               html.painelCounters();
+                               html.painelCounters(listCounter);
                 //+
                 //                html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
@@ -3629,7 +3638,7 @@ namespace SgqSystem.Services
                                                             outerhtml: amostras + avaliacoes + totalnc + ncdianteiro + nctraseiro + niveis + painelLevel3HeaderListHtml,
                                                classe: "painel painelLevel03 row") +
 
-                              html.painelCounters();
+                              html.painelCounters(listCounter);
                 //+
                 //                  +
                 //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
@@ -3749,7 +3758,7 @@ namespace SgqSystem.Services
                                                                        painelLevel3HeaderListHtml,
 
                                                classe: "painel painelLevel03 row") +
-                              html.painelCounters();
+                              html.painelCounters(listCounter);
                 //+
                 //                                html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
