@@ -1,6 +1,6 @@
 ﻿@model SgqSystem.ViewModels.ParamsViewModel
 @using SgqSystem.Helpers
-
+@using DTO
 @{
 
     ViewBag.Title = Resources.Resource.customization;
@@ -21,7 +21,7 @@
 
     var removeLevel3Group = Url.Action("RemoveParLevel3Group", "api/ParamsApi");
     var AddLevel3Group = Url.Action("AddUpdateParLevel3Group", "api/ParamsApi");
-    
+
     var urlHome = Url.Action("Index", "Home");
 
 }
@@ -72,7 +72,10 @@
                             <div class="tab-pane active" id="setup_tab">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <button class="btn btn-primary btn-block" id="btnNewLevel1">@Resources.Resource.new_level1</button>
+                                        @if (!GlobalConfig.Eua)
+                                        {
+                                            <button class="btn btn-primary btn-block" id="btnNewLevel1">@Resources.Resource.new_level1</button>
+                                        }
                                     </div>
                                     <div class="col-xs-9">
                                         @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2" })
@@ -89,7 +92,12 @@
                                         <div id="level1_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                                             <div class="panel-body">
                                                 <div id="ParLevel1">
-                                                    @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
+
+                                                    @if (!GlobalConfig.Eua)
+                                                    {
+                                                        @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
+                                                    }
+
                                                 </div>
                                             </div>
                                         </div>
@@ -115,8 +123,8 @@
                                                     </h4>
                                                 </div>
                                                 <div class="col-xs-4">
-                                                    <button id="vinculoLevel1" class="btn btn-warning pull-right "  style="height: 42px;" title="Vincular ao Level 1" ><span class="glyphicon glyphicon-link"></span></button>
-                                                    <button id="desVinculoLevel1" class="btn btn-warning pull-right "  style="height: 42px; display:none" title="Vincular ao Level 1"><i class="fa fa-chain-broken" aria-hidden="true"></i></button>
+                                                    <button id="vinculoLevel1" class="btn btn-warning pull-right " style="height: 42px;" title="Vincular ao Level 1"><span class="glyphicon glyphicon-link"></span></button>
+                                                    <button id="desVinculoLevel1" class="btn btn-warning pull-right " style="height: 42px; display:none" title="Vincular ao Level 1"><i class="fa fa-chain-broken" aria-hidden="true"></i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -151,7 +159,7 @@
                                                     </h4>
                                                 </div>
                                                 <div class="col-xs-4">
-                                                    <button id="vinculoLevel2" class="btn btn-danger pull-right" style="height: 42px;" title="Vincular ao Level 2" onclick="saveLevel3Level2()"><span class="glyphicon glyphicon-link"></span></button>
+                                                    @*<button id="vinculoLevel2" class="btn btn-danger pull-right" style="height: 42px;" title="Vincular ao Level 2" onclick="saveLevel3Level2()"><span class="glyphicon glyphicon-link"></span></button>*@
                                                 </div>
                                             </div>
                                         </div>
@@ -222,13 +230,13 @@
     }
 
     function loadSelect2(){
-    //    $.fn.select2.defaults.set("theme", "classic");
-    //    $('.select2').css("max-height","400px");
-      $('.select2').select2({matcher: modelMatcher});
-    //    $('.select2').select2();
-    //    $('.select2-container .select2-selection--single').css('height', '34px');
-    //    $('.select2-container--classic .select2-selection--single .select2-selection__rendered').css('line-height', '34px');
-    //    $('.select2-container--classic .select2-selection--single .select2-selection__arrow').css('height', '32px');
+        //    $.fn.select2.defaults.set("theme", "classic");
+        //    $('.select2').css("max-height","400px");
+        $('.select2').select2({matcher: modelMatcher});
+        //    $('.select2').select2();
+        //    $('.select2-container .select2-selection--single').css('height', '34px');
+        //    $('.select2-container--classic .select2-selection--single .select2-selection__rendered').css('line-height', '34px');
+        //    $('.select2-container--classic .select2-selection--single .select2-selection__arrow').css('height', '32px');
     }
 
     function modelMatcher (params, data) {
@@ -400,7 +408,7 @@
     var removeLevel3Group = '@Html.Raw(@removeLevel3Group)';
 
     //Loader estava aqui//
-
+    var gc = @Html.Raw(Json.Encode(GlobalConfig.Eua));
     /*LEVEL 1*/
     var indexParamsLevel1 = {
         new_level1: @Html.Raw(Json.Encode(@Resources.Resource.new_level1)),
@@ -489,7 +497,8 @@
             var valorSelecionado = $('#parLevel1Select2 option:selected').val();
 
             if (valorSelecionado == "") {/*Reseta Form*/
-                indexParamsLevel1.resetaForm();
+                if(!gcEua)
+                    indexParamsLevel1.resetaForm();
             } else {
                 indexParamsLevel1.GetLevel1(valorSelecionado);
             }

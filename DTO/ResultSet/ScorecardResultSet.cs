@@ -31,6 +31,8 @@ public class ScorecardResultSet
     public decimal? PontosAtingidosIndicador { get; set; }
     public decimal? Scorecard { get; set; }
 
+    public string TipoScore { get; set; }
+
     public string getSQLScorecard(DateTime dtInicio, DateTime dtFim, int unidadeId)
     {
         string sql = "";
@@ -52,10 +54,11 @@ public class ScorecardResultSet
         "\n , AV " +
         "\n , NC " +
         "\n , Pontos " +
-        "\n , Meta " +
+        "\n , ROUND(Meta,2) AS Meta" +
         "\n , ROUND(Real,2) as Real " +
         "\n , CASE WHEN Scorecard < 70 THEN 0 ELSE (CASE WHEN Scorecard > 100 THEN 100 ELSE Scorecard END /100 ) * Pontos  END AS PontosAtingidos " +
         "\n , ROUND(CASE WHEN Scorecard > 100 THEN 100 ELSE Scorecard END,2) AS Scorecard " +
+        "\n , TipoScore " + 
 
         "\n FROM " +
         "\n ( " +
@@ -81,7 +84,7 @@ public class ScorecardResultSet
             "\n , CASE WHEN TipoIndicadorName = 'Maior' THEN AV - NC ELSE NC END / AV * 100 as Real " +
             "\n , NULL AS PontosAtingidos " +
             "\n , CASE WHEN TipoIndicador = 1 THEN CASE WHEN (CASE WHEN TipoIndicadorName = 'Maior' THEN AV - NC ELSE NC END / AV * 100) = 0 THEN 100 ELSE Meta / (CASE WHEN TipoIndicadorName = 'Maior' THEN AV - NC ELSE NC END / AV * 100) * 100 END WHEN TipoIndicador = 2 THEN (CASE WHEN TipoIndicadorName = 'Maior' THEN AV - NC ELSE NC END / AV * 100) / Meta * 100 END AS Scorecard " +
-
+            "\n , TipoScore " +
 
             "\n FROM " +
 
@@ -124,7 +127,34 @@ public class ScorecardResultSet
                 "\n  CASE WHEN CT.Id IN (1,2) THEN SUM(CL1.WeiEvaluation) WHEN CT.Id = 3 THEN SUM(CL1.EvaluatedResult) END END AS AV " +
                 "\n , CASE WHEN CT.Id IN (1,2) THEN SUM(CL1.WeiDefects) WHEN CT.Id = 3 THEN SUM(CL1.DefectsResult) END      AS NC " +
                 "\n , L1C.Points AS Pontos " +
-                "\n , G.PercentValue AS Meta " +
+                
+                //"\n     SELECT TOP 1 CASE WHEN PercentValue IS NULL THEN 0 ELSE PercentValue END FROM ParGoal GG WHERE GG.ParLevel1_Id = L1.Id AND (GG.ParCompany_Id = c.ID OR GG.ParCompany_Id IS NULL) ORDER BY ParCompany_Id DESC" +
+
+                "\n  , (( " +
+                "\n      CASE WHEN(SELECT COUNT(1) FROM ParGoal WHERE AddDate <= '" + dtFim.ToString("yyyyMMdd") + " 23:59' AND ParLevel1_Id = L1.Id) > 0 THEN " +
+                "\n          ( " +
+                "\n          SELECT top 1 CASE WHEN PercentValue IS NULL THEN 0 ELSE PercentValue END PercentValue " +
+                "\n          --, Adddate, ParCompany_Id, ParLevel1_Id " +
+                "\n          FROM ParGoal G " +
+                "\n          where ParLevel1_Id = L1.Id " +
+                "\n          and(ParCompany_Id is null or ParCompany_Id = C.Id) " +
+                "\n          and AddDate <= '" + dtFim.ToString("yyyyMMdd") + " 23:59' " +
+                "\n          group by ParCompany_Id, ParLevel1_Id, PercentValue, Adddate " +
+                "\n          order by Adddate desc " +
+                "\n          ) " +
+                "\n      ELSE " +
+                "\n          ( " +
+                "\n            SELECT top 1 CASE WHEN PercentValue IS NULL THEN 0 ELSE PercentValue END PercentValue " +
+                "\n            --, Adddate, ParCompany_Id, ParLevel1_Id " +
+                "\n            FROM ParGoal G " +
+                "\n            where ParLevel1_Id = L1.Id " +
+                "\n            and(ParCompany_Id is null or ParCompany_Id = C.Id) " +
+                "\n            group by ParCompany_Id, ParLevel1_Id, PercentValue, Adddate " +
+                "\n            order by Adddate ASC " +
+                "\n           ) " +
+                "\n      END " +
+                "\n     )) AS META " +
+
                 "\n , CASE WHEN L1.HashKey = 1 THEN " +
                 "\n           CAST(SUM(CL1.DefectsResult) AS DECIMAL) / " +
                 "\n          ((SELECT sum(Amostras) * 2 as AV FROM VolumePcc1b WHERE ParCompany_id = " + unidadeId + " and Data BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59')" +
@@ -152,14 +182,18 @@ public class ScorecardResultSet
                     "\n CASE WHEN SUM(CL1.EvaluatedResult) = 0 THEN 0 ELSE (CAST(SUM(CL1.DefectsResult) AS DECIMAL) / CAST(SUM(CL1.EvaluatedResult) AS DECIMAL)) END " +
 
                 "\n  END END * 100 AS Real " +
-
-
+                
+                "\n ,ST.Name AS TipoScore " +
 
                 "\n FROM ParLevel1 L1 " +
 
                 "\n LEFT JOIN ConsolidationLevel1 CL1 " +
 
                 "\n ON L1.Id = CL1.ParLevel1_Id " +
+
+                "\n LEFT JOIN ParScoreType ST " +
+
+                "\n ON ST.Id = L1.ParScoreType_Id " +
 
                 "\n LEFT JOIN ParCompany C " +
 
@@ -197,12 +231,12 @@ public class ScorecardResultSet
 
                 "\n ON L1C.ParCriticalLevel_Id = CRL.Id " +
 
-                "\n LEFT JOIN ParGoal G " +
+                "\n --LEFT JOIN (SELECT TOP 1 * FROM ParGoal WHERE ParCompany_Id = " + unidadeId + " OR ParCompany_Id IS NULL ORDER BY ParCompany_Id DESC) G " +
 
-                "\n ON(G.ParCompany_Id = C.Id OR G.ParCompany_Id IS NULL) AND G.ParLevel1_Id = L1.Id " +
+                "\n --ON(G.ParCompany_Id = C.Id OR G.ParCompany_Id IS NULL) AND G.ParLevel1_Id = L1.Id " +
 
                 "\n WHERE(ConsolidationDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59') " +
-
+                "\n AND(L1.IsActive <> 0) " +
                 "\n AND(C.Id = " + unidadeId + ") " +
 
                 "\n GROUP BY " +
@@ -230,8 +264,8 @@ public class ScorecardResultSet
                 "\n ,CRL.Name " +
 
                 "\n ,L1C.Points " +
-
-                "\n ,G.PercentValue " +
+                "\n ,ST.Name " +
+                "\n --,G.PercentValue " +
 
                 "\n ,CT.Id " +
 
@@ -265,11 +299,11 @@ public class ScorecardResultSet
         "\n , AV " +
         "\n , NC " +
         "\n , Pontos " +
-        "\n , Meta " +
+        "\n , ROUND(Meta,2) AS Meta " +
         "\n , ROUND(Real,2) as Real " +
         "\n , CASE WHEN Scorecard < 70 THEN 0 ELSE (CASE WHEN Scorecard > 100 THEN 100 ELSE Scorecard END /100 ) * Pontos  END AS PontosAtingidos " +
         "\n , ROUND(CASE WHEN Scorecard > 100 THEN 100 ELSE Scorecard END,2) AS Scorecard " +
-
+        "\n , TipoScore " +
         "\n FROM " +
         "\n ( " +
             "\n SELECT " +
@@ -294,7 +328,7 @@ public class ScorecardResultSet
             "\n , CASE WHEN AV = 0 THEN 0 WHEN AV - NC = 0 THEN 100 ELSE CASE WHEN TipoIndicadorName = 'Maior' THEN NC ELSE AV - NC END / AV * 100 END as Real " +
             "\n , NULL AS PontosAtingidos " +
             "\n , CASE WHEN AV = 0 THEN 0 WHEN AV - NC = 0 THEN 100 ELSE CASE WHEN TipoIndicador = 1 THEN CASE WHEN (CASE WHEN TipoIndicadorName = 'Maior' THEN NC ELSE AV - NC END / AV * 100) = 0 THEN 100 ELSE Meta / (CASE WHEN TipoIndicadorName = 'Maior' THEN NC ELSE AV - NC END / AV * 100) * 100 END WHEN TipoIndicador = 2 THEN (CASE WHEN TipoIndicadorName = 'Maior' THEN NC ELSE AV - NC END / AV * 100) / Meta * 100 END END AS Scorecard " +
-
+            "\n , TipoScore " +
 
             "\n FROM " +
 
@@ -331,7 +365,7 @@ public class ScorecardResultSet
             "\n      WHERE C1.ConsolidationDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59'  " +
 
             "\n      AND C1.ParLevel1_Id = 3  " +
-
+            "\n      AND C1.ParLevel1_Id <> 0 " +
             "\n      AND C1.UnitId = 1  " +
 
             "\n      GROUP BY CONVERT(VARCHAR, DATEPART(year, C1.ConsolidationDate)) + '-' + CONVERT(VARCHAR, DATEPART(week, C1.ConsolidationDate))  " +
@@ -352,7 +386,7 @@ public class ScorecardResultSet
             "\n      WHERE C1.ConsolidationDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59'  " +
 
             "\n      AND C1.ParLevel1_Id = 24  " +
-
+            "\n      AND C1.ParLevel1_Id <> 0 " +
             "\n      AND C1.UnitId = 1  " +
 
             "\n      GROUP BY CONVERT(VARCHAR, DATEPART(year, C1.ConsolidationDate)) + '-' + CONVERT(VARCHAR, DATEPART(week, C1.ConsolidationDate))  " +
@@ -395,7 +429,7 @@ public class ScorecardResultSet
             "\n      WHERE C1.ConsolidationDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59'  " +
 
             "\n      AND C1.ParLevel1_Id = 24  " +
-
+            "\n      AND C1.ParLevel1_Id <> 0 " +
             "\n      AND C1.UnitId = 1  " +
 
             "\n      GROUP BY CONVERT(VARCHAR, DATEPART(year, C1.ConsolidationDate)) + '-' + CONVERT(VARCHAR, DATEPART(week, C1.ConsolidationDate))  " +
@@ -409,13 +443,43 @@ public class ScorecardResultSet
 
             "\n                                                                                                                                                                              " +
             "\n  , L1C.Points AS Pontos                                                                                                                                                      " +
-            "\n  , G.PercentValue AS Meta                                                                                                                                                    " +
+         
+            //"\n     SELECT TOP 1 CASE WHEN PercentValue IS NULL THEN 0 ELSE PercentValue END FROM ParGoal GG WHERE GG.ParLevel1_Id = L1.Id AND (GG.ParCompany_Id = c.ID OR GG.ParCompany_Id IS NULL) ORDER BY ParCompany_Id DESC" +
+
+            "\n  , (( " +
+            "\n      CASE WHEN(SELECT COUNT(1) FROM ParGoal WHERE AddDate <= '" + dtFim.ToString("yyyyMMdd") + " 23:59' AND ParLevel1_Id = L1.Id) > 0 THEN " +
+            "\n          ( " +
+            "\n          SELECT top 1 CASE WHEN PercentValue IS NULL THEN 0 ELSE PercentValue END PercentValue " +
+            "\n          --, Adddate, ParCompany_Id, ParLevel1_Id " +
+            "\n          FROM ParGoal G " +
+            "\n          where ParLevel1_Id = L1.Id " +
+            "\n          and(ParCompany_Id is null or ParCompany_Id = C.Id) " +
+            "\n          and AddDate <= '" + dtFim.ToString("yyyyMMdd") + " 23:59' " +
+            "\n          group by ParCompany_Id, ParLevel1_Id, PercentValue, Adddate " +
+            "\n          order by Adddate desc " +
+            "\n          ) " +
+            "\n      ELSE " +
+            "\n          ( " +
+            "\n            SELECT top 1 CASE WHEN PercentValue IS NULL THEN 0 ELSE PercentValue END PercentValue " +
+            "\n            --, Adddate, ParCompany_Id, ParLevel1_Id " +
+            "\n            FROM ParGoal G " +
+            "\n            where ParLevel1_Id = L1.Id " +
+            "\n            and(ParCompany_Id is null or ParCompany_Id = C.Id) " +
+            "\n            group by ParCompany_Id, ParLevel1_Id, PercentValue, Adddate " +
+            "\n            order by Adddate ASC " +
+            "\n           ) " +
+            "\n      END " +
+            "\n     )) AS META " +
             "\n  ,0 AS Real                                                                                                                                          " +
             "\n                                                                                                                                                                              " +
             "\n  ,0	AS PontosAtingidos                                                                                                                               " +
             "\n  ,0	AS Scorecard                                                                                                                                     " +
-            "\n                                                                                                                                                                              " +
+            "\n  ,ST.Name AS TipoScore                                                                                                                                                                            " +
             "\n  FROM ParLevel1 L1                                                                                                                                                           " +
+            
+            "\n LEFT JOIN ParScoreType ST " +
+            "\n ON ST.Id = L1.ParScoreType_Id " +
+
             "\n  LEFT JOIN ParCompany C                                                                                                                                                      " +
             "\n  ON C.Id = " + unidadeId + "                                                                                                                                                                 " +
             "\n  LEFT JOIN ParCompanyXStructure CS                                                                                                                                           " +
@@ -434,11 +498,12 @@ public class ScorecardResultSet
             "\n  ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id                                                                                                                   " +
             "\n  LEFT JOIN ParCriticalLevel CRL                                                                                                                                              " +
             "\n  ON L1C.ParCriticalLevel_Id = CRL.Id                                                                                                                                         " +
-            "\n  LEFT JOIN ParGoal G                                                                                                                                                         " +
-            "\n  ON (G.ParCompany_Id = C.Id OR G.ParCompany_Id IS NULL) AND G.ParLevel1_Id = L1.Id                                                                                           " +
+            "\n  --LEFT JOIN (SELECT TOP 1 * FROM ParGoal WHERE ParCompany_Id = " + unidadeId + " OR ParCompany_Id IS NULL ORDER BY ParCompany_Id DESC) G                                                                                                                                                         " +
+            "\n  --ON (G.ParCompany_Id = C.Id OR G.ParCompany_Id IS NULL) AND G.ParLevel1_Id = L1.Id                                                                                           " +
             "\n  WHERE C.Id = " + unidadeId + "                                                                                                                                              " +
             "\n  AND L1.Id = 25 " +
-             "\n ) AS Score " +
+            "\n  AND L1.IsActive <> 0 " +
+            "\n ) AS Score " +
         "\n ) Real " +
             "\n                                                                                                                                                                              " +
             "\n  UNION ALL                                                                                                                                                                   " +
@@ -468,13 +533,44 @@ public class ScorecardResultSet
             "\n                                                                                                                                                                              " +
             "\n                                                                                                                                                                              " +
             "\n  , L1C.Points AS Pontos                                                                                                                                                      " +
-            "\n  , G.PercentValue AS Meta                                                                                                                                                    " +
+
+            //"\n     SELECT TOP 1 CASE WHEN PercentValue IS NULL THEN 0 ELSE PercentValue END FROM ParGoal GG WHERE GG.ParLevel1_Id = L1.Id AND (GG.ParCompany_Id = c.ID OR GG.ParCompany_Id IS NULL) ORDER BY ParCompany_Id DESC" +
+
+            "\n  , ROUND( " +
+            "\n      CASE WHEN(SELECT COUNT(1) FROM ParGoal WHERE AddDate <= '" + dtFim.ToString("yyyyMMdd") + " 23:59' AND ParLevel1_Id = L1.Id) > 0 THEN " +
+            "\n          ( " +
+            "\n          SELECT top 1 CASE WHEN PercentValue IS NULL THEN 0 ELSE PercentValue END PercentValue " +
+            "\n          --, Adddate, ParCompany_Id, ParLevel1_Id " +
+            "\n          FROM ParGoal G " +
+            "\n          where ParLevel1_Id = L1.Id " +
+            "\n          and(ParCompany_Id is null or ParCompany_Id = C.Id) " +
+            "\n          and AddDate <= '" + dtFim.ToString("yyyyMMdd") + " 23:59' " +
+            "\n          group by ParCompany_Id, ParLevel1_Id, PercentValue, Adddate " +
+            "\n          order by Adddate desc " +
+            "\n          ) " +
+            "\n      ELSE " +
+            "\n          ( " +
+            "\n            SELECT top 1 CASE WHEN PercentValue IS NULL THEN 0 ELSE PercentValue END PercentValue " +
+            "\n            --, Adddate, ParCompany_Id, ParLevel1_Id " +
+            "\n            FROM ParGoal G " +
+            "\n            where ParLevel1_Id = L1.Id " +
+            "\n            and(ParCompany_Id is null or ParCompany_Id = C.Id) " +
+            "\n            group by ParCompany_Id, ParLevel1_Id, PercentValue, Adddate " +
+            "\n            order by Adddate ASC " +
+            "\n           ) " +
+            "\n      END " +
+            "\n    ,2) AS META " +
+
             "\n  ,0 AS Real                                                                                                                                          " +
             "\n                                                                                                                                                                              " +
             "\n  ,0	AS PontosAtingidos                                                                                                                               " +
             "\n  ,0	AS Scorecard                                                                                                                                     " +
-            "\n                                                                                                                                                                              " +
+            "\n  ,ST.Name AS TipoScore                                                                                                                                                                            " +
             "\n  FROM ParLevel1 L1                                                                                                                                                           " +
+
+            "\n LEFT JOIN ParScoreType ST " +
+            "\n ON ST.Id = L1.ParScoreType_Id " +
+
             "\n  LEFT JOIN ParCompany C                                                                                                                                                      " +
             "\n  ON C.Id = " + unidadeId + "                                                                                                                                                                 " +
             "\n  LEFT JOIN ParCompanyXStructure CS                                                                                                                                           " +
@@ -493,10 +589,11 @@ public class ScorecardResultSet
             "\n  ON L1C.ParLevel1_Id = L1.Id AND L1C.ParCluster_Id = CL.Id                                                                                                                   " +
             "\n  LEFT JOIN ParCriticalLevel CRL                                                                                                                                              " +
             "\n  ON L1C.ParCriticalLevel_Id = CRL.Id                                                                                                                                         " +
-            "\n  LEFT JOIN ParGoal G                                                                                                                                                         " +
-            "\n  ON (G.ParCompany_Id = C.Id OR G.ParCompany_Id IS NULL) AND G.ParLevel1_Id = L1.Id                                                                                           " +
+            "\n  --LEFT JOIN (SELECT TOP 1 * FROM ParGoal WHERE ParCompany_Id = " + unidadeId + " OR ParCompany_Id IS NULL ORDER BY ParCompany_Id DESC) G                                                                                                                                                         " +
+            "\n  --ON (G.ParCompany_Id = C.Id OR G.ParCompany_Id IS NULL) AND G.ParLevel1_Id = L1.Id                                                                                           " +
             "\n  WHERE C.Id = " + unidadeId + " " +
             "\n  AND L1.Id <> 25 " +
+            "\n  AND L1.IsActive <> 0 " +
             "\n  AND L1.Id NOT IN (SELECT CCC.ParLevel1_Id FROM ConsolidationLevel1 CCC WHERE CCC.UnitId = " + unidadeId + "                                                                 " +
             "\n  AND CCC.ConsolidationDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59')                                             ";
 
@@ -583,14 +680,14 @@ public class ScorecardResultSet
         //fim Scorecard  
         "\n END /100 ) * AVG(Pontos)  END AS PontosAtingidosIndicador " +
 
-        "\n , CASE WHEN (" +
+        "\n , ROUND(CASE WHEN (" +
         "\n  CASE WHEN TipoIndicadorName = 'Maior' THEN CASE WHEN SUM(AV) = 0 OR (SUM(NC) / SUM(AV) * 100) = 0 THEN 100 ELSE (SUM(NC) / SUM(AV) * 100) / Meta * 100 END " +
         "\n  ELSE CASE WHEN SUM(AV) = 0 OR (SUM(NC) / SUM(AV) * 100) = 0 THEN 0 ELSE Meta / (SUM(NC) / SUM(AV) * 100) * 100 END END  " +
         "\n ) > 100 THEN 100 ELSE " +
         "\n  CASE WHEN TipoIndicadorName = 'Maior' THEN CASE WHEN SUM(AV) = 0 OR (SUM(NC) / SUM(AV) * 100) = 0 THEN 100 ELSE (SUM(NC) / SUM(AV) * 100) / Meta * 100 END " +
         "\n  ELSE CASE WHEN SUM(AV) = 0 OR (SUM(NC) / SUM(AV) * 100) = 0 THEN 0 ELSE Meta / (SUM(NC) / SUM(AV) * 100) * 100 END END  " +
-        "\n END AS Scorecard " +
-
+        "\n END, 2) AS Scorecard " +
+        "\n , TipoScore " +
         "\n FROM ( \n ";
 
         for (int i = 0; i < numMeses; i++)
@@ -615,6 +712,7 @@ public class ScorecardResultSet
         }
 
         sql += " ) A " +
+
         "\n GROUP BY " +
         "\n   Cluster " +
         "\n , ClusterName " +
@@ -628,6 +726,7 @@ public class ScorecardResultSet
         "\n , Level1Name " +
         "\n , Criterio " +
         "\n , CriterioName " +
+        "\n , TipoScore " +
         //"\n , AV " +
         //"\n , NC " +
         //"\n , Pontos " +

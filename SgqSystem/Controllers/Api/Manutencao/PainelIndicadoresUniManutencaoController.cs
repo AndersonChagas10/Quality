@@ -102,7 +102,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                 "AND Man.Base_parCompany_id in (" + tipo + ") " +
                             "GROUP BY Man.Base_parCompany_id " +
                         ")Base on uni.Parcompany_id = Base.Base_parCompany_id " +
-                        "WHERE Base.realizado != 0 AND Base.orcado != 0 " +
+                        //"WHERE Base.realizado != 0 AND Base.orcado != 0 " +
                     ")BASONA " +
                     "WHERE BASONA.TipoRelatorio = '" + obj.tipoRelatorio + "' ";
 

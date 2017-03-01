@@ -1,5 +1,7 @@
 ﻿using Dominio.Interfaces.Services;
+using DTO;
 using Helper;
+using SgqSystem.Helpers;
 using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
 using System.Web.Mvc;
@@ -36,10 +38,25 @@ namespace SgqSystem.Controllers.Params
         {
             ViewModel.levelControl = 1;
             if (id == -1)/*Retorna View Vazia*/
-                return PartialView("_ParLevel1", ViewModel);
+                if(!GlobalConfig.Eua)
+                    return PartialView("_ParLevel1", ViewModel);
+                else
+                    return PartialView("Blank");
 
             ViewModel.paramsDto.parLevel1Dto = _paramDomain.GetLevel1(id);
             ViewModel.paramsDto.parLevel1Dto.listParLevel3Level2Level1Dto = null;
+
+            if (ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal != null)
+                for (int i = 0; i < ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal.Count; i++)
+                {
+                    ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParCounter.Name = 
+                        CommonData.getResource(ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParCounter.Name).Value.ToString();
+
+                    ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParLocal.Name =
+                        CommonData.getResource(ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParLocal.Name).Value.ToString();
+                }
+            
+
             return PartialView("_ParLevel1", ViewModel);/*Retorna View com Model ParLevel1 encontrado no DB.*/
         }
 
@@ -50,6 +67,18 @@ namespace SgqSystem.Controllers.Params
 
             ViewModel.levelControl = 2;
             ViewModel.paramsDto = _paramDomain.GetLevel2(level2Id, level3Id, level1Id);
+
+            if (ViewModel.paramsDto.parLevel2Dto.listParCounterXLocal != null)
+                for (int i = 0; i < ViewModel.paramsDto.parLevel2Dto.listParCounterXLocal.Count; i++)
+                {
+                    ViewModel.paramsDto.parLevel2Dto.listParCounterXLocal[i].ParCounter.Name = 
+                        CommonData.getResource(ViewModel.paramsDto.parLevel2Dto.listParCounterXLocal[i].ParCounter.Name).Value.ToString();
+
+                    ViewModel.paramsDto.parLevel2Dto.listParCounterXLocal[i].ParLocal.Name =
+                        CommonData.getResource(ViewModel.paramsDto.parLevel2Dto.listParCounterXLocal[i].ParLocal.Name).Value.ToString();
+                }
+
+
             return PartialView("_ParLevel2", ViewModel);/*Retorna View com Model ParLevel2 encontrado no DB.*/
         }
         
