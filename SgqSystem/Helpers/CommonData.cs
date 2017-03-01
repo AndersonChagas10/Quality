@@ -1735,6 +1735,27 @@ namespace SgqSystem.Helpers
             return new DictionaryEntry();
         }
 
+        public static MvcHtmlString ParCounterList(this HtmlHelper helper, string name, IEnumerable<SelectListItem> values, Object htmlAttributes)
+        {
+
+            List<SelectListItem> Textes = new List<SelectListItem>();
+            foreach (SelectListItem item in values)
+            {
+                SelectListItem selItem = new SelectListItem();
+                selItem.Value = item.Value.ToString();
+                if (getResource(item.Text.ToString()).Value != null)
+                    selItem.Text = getResource(item.Text.ToString()).Value.ToString();
+                else
+                    selItem.Text = item.Text.ToString();
+                Textes.Add(selItem);
+            }
+
+            return System.Web.Mvc.Html.SelectExtensions.DropDownList(helper,
+                                                                     name,
+                                                                     Textes,
+                                                                     htmlAttributes);
+        }
+
         //public static JsonResult DebugAlertas()
         //{
 
