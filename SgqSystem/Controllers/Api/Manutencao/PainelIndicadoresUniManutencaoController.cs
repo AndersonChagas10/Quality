@@ -1,5 +1,6 @@
 ﻿using Dominio;
 using DTO.DTO.Manutencao;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -130,7 +131,6 @@ namespace SgqSystem.Controllers.Api.Manutencao
             return _mockEvolucao;
         }
 
-
         [HttpPost]
         [Route("CriaGraficoEvolucao")]
         public List<PainelIndicadoresUniManutencaoDTO> CriaGraficoEvolucao()
@@ -161,6 +161,64 @@ namespace SgqSystem.Controllers.Api.Manutencao
             return _mockEvolucao;
         }
 
+
+        [HttpPost]
+        [Route("CriaGraficoAcompanhamento")]
+        public List<Acompanhamento> CriaGraficoAcompanhamento(obj3 obj)
+        {
+            List<Acompanhamento> list = new List<Acompanhamento>();
+
+            string parametro = obj.indicador;
+            var realizado = "";
+            var orcado = "";
+            List<obj> d;
+
+            var query = "SELECT top 1 Realizado.Realizado ,Orcado.Orcado FROM " +
+                        "(SELECT top 1 Name Realizado FROM DimManColetaDados WHERE DimName like '" + parametro + "' and DimRealTarget like 'Real' UNION ALL SELECT '0') Realizado " +
+                        ",(SELECT top 1 Name Orcado FROM DimManColetaDados WHERE DimName like '" + parametro + "' and DimRealTarget like 'Meta' UNION ALL SELECT '0') Orcado ";
+
+            using (var db = new SgqDbDevEntities())
+            {
+                d = db.Database.SqlQuery<obj>(query).ToList();
+            }
+
+            foreach (var item in d)
+            {
+                orcado = item.orcado;
+                realizado = item.realizado;
+            }
+
+            var query2 = "select day(Base_dateRef) diaMes " +
+                        "\n , Sum(case when " + realizado + " = 0 then 0.00 else " + realizado + " end) [real] " +
+                        "\n ,0.00 [targetAjustado] " +
+                        "\n ,Sum(case when " + orcado + " = 0 then 0.00 else " + orcado + " end) [budget] " +
+                        "\n from[ManColetaDados] " +
+                        "\n left join ManCalendario on[ManColetaDados].Base_dateRef = ManCalendario.Data " +
+                        "\n where " +
+                        "\n convert(varchar(7),[ManColetaDados].Base_dateRef,120) = convert(varchar(7),DATEFROMPARTS('" + obj.ano + "','" + obj.mes + "',01),120)  " +
+                        //"\n and[ManColetaDados].Base_parCompany_id = " + obj.unidade + " " +
+                        "\n and ManCalendario.DiaUtil = 1 " +
+                        "\n group by day(Base_dateRef) " +
+                        "\n order by 1,2";
+
+            using (var db = new SgqDbDevEntities())
+            {
+                list = db.Database.SqlQuery<Acompanhamento>(query2).ToList();
+            }
+
+            //for (int i = 0; i < 30; i++)
+            //{
+            //    Acompanhamento acompanhamento = new Acompanhamento();
+            //    acompanhamento.diaMes = i + 1;
+            //    acompanhamento.real = i + 1;
+            //    acompanhamento.targetAjustado = i + 2;
+            //    list.Add(acompanhamento);
+            //}
+
+            //list[0].budget = 10;
+
+            return list;
+        }
     }
 
     public class obj
@@ -185,5 +243,13 @@ namespace SgqSystem.Controllers.Api.Manutencao
         public string regional { get; set; }
         public string subRegional { get; set; }
         public string mes { get; set; }
+    }
+
+    public class Acompanhamento
+    {
+        public int diaMes { get; set; }
+        public decimal? real { get; set; }
+        public decimal? targetAjustado { get; set; }
+        public decimal? budget { get; set; }
     }
 }
