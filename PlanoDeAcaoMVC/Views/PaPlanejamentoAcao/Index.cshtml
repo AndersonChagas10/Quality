@@ -195,6 +195,7 @@
                     <button type="button" class="btn btn-success" id="NovoPlanejamento" onclick="NovoPlanejamento();" data-toggle="modal" style="display:none"> Novo Planejamento</button>
                     <button type="button" class="btn btn-primary" id="NovaAcao" onclick="Clicked(isTaticoClicked, isNovaAcao); ModalAcao(true, true);" style="display:none">Nova Ação</button>
                     <button type="button" class="btn btn-default" value="" id="new" style="display:none">Adicionar Ação</button>
+                    <button type="button" class="btn btn-default" value="" id="Edit" style="display:none" onclick="SalvarAcaoAvulsa($('.Acao'))">Editar Ação</button>
 
                 </div>
             </div>
@@ -522,12 +523,15 @@
             $('#modalLindo').find('.modal-body').empty().append(html);
             myfunction();
             $('#CausaMedidasXAcao_CausaGenerica_Id').val(data.Acao.CausaMedidasXAcao.CausaGenerica_Id).change();
-            $('#CausaMedidasXAcao_CausaEspecifica').val(data.Acao.CausaMedidasXAcao.CausaEspecifica);
-            $('#CausaMedidasXAcao_ContramedidaEspecifica').val(data.Acao.CausaMedidasXAcao.ContramedidaEspecifica);
+            //$('#CausaMedidasXAcao_CausaEspecifica').val(data.Acao.CausaMedidasXAcao.CausaEspecifica);
+            //$('#CausaMedidasXAcao_ContramedidaEspecifica').val(data.Acao.CausaMedidasXAcao.ContramedidaEspecifica);
+            $('[name="_QuandoInicio"]').val(data.Acao._QuandoInicio.split(" ")[0]);
+            $('[name="_QuandoFim"]').val(data.Acao._QuandoFim.split(" ")[0]);
             $('#Status').val(data.Acao.Status);
-            
+            $('#modalLindo').find('.modal-footer button').hide();
+            $('#Edit').show();
+            InitDatePiker();
         }
-        var model = {};
 
         function myfunction() {
             $('[id=CausaMedidasXAcao_CausaGenerica_Id]').off('change').on('change', function () {
@@ -552,24 +556,30 @@
 
             $('.Acao').not(':first').each(function (c, o) {
 
-                var sendObj = $(o).serializeObject();
-                sendObj['Panejamento_Id'] = planejamentoCorrentId;
-                sendObj['AcaoXQuem'] = [];
+                SalvarAcaoAvulsa(o);
 
-                $('.quemClone').each(function (c, o) {
-                    if ($(o).find('select').val())
-                        sendObj['AcaoXQuem'].push({ Quem_Id: $(o).find('select').val() });
-                });
-
-                $.post(urlSalvarAcao, sendObj, function (r) {
-                    $.post(urlGetPlanejamentoAcao, {}, function (r) {
-                        GerarTabela(r);
-                    });
-                });
             });
 
         }
 
+        function SalvarAcaoAvulsa(o) {
+
+            var sendObj = $(o).serializeObject();
+            sendObj['Panejamento_Id'] = planejamentoCorrentId;
+            sendObj['AcaoXQuem'] = [];
+
+            $('.quemClone').each(function (c, o) {
+                if ($(o).find('select').val())
+                    sendObj['AcaoXQuem'].push({ Quem_Id: $(o).find('select').val() });
+            });
+
+            $.post(urlSalvarAcao, sendObj, function (r) {
+                $.post(urlGetPlanejamentoAcao, {}, function (r) {
+                    GerarTabela(r);
+                });
+            });
+
+        }
         function RemoveAcao(btn) {
             $(btn).parents('#obj').remove();
         }

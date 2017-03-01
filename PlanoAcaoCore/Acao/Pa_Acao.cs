@@ -18,82 +18,60 @@ namespace PlanoAcaoCore
         public int? Departamento_Id { get; set; }
         public string Departamento { get; set; }
 
-        [Display(Name = "Quando início")]
         public int? Pa_CausaMedidasXAcao_Id { get; set; }
-
-        [Display(Name = "Quando início")]
-        public DateTime QuandoInicio { get; set; }
-
-        public string _QuandoInicio { get; set; }
 
         [Display(Name = "Duracao dias")]
         public int DuracaoDias { get; set; }
 
-        [Display(Name = "Quando fim")]
-        public DateTime QuandoFim { get; set; }
-        public string _QuandoFim { get; set; }
-        //{
-        //    get
-        //    {
-        //        if (QuandoFim == null)
-        //            if (!string.IsNullOrEmpty(_QuandoFim))
-        //                return Guard.ParseDateToSqlV2(_QuandoFim);
-
-        //        return QuandoFim;
-        //    }
-        //    set
-        //    {
-        //        QuandoFim = value;
-        //    }
-        //}
-
         [Display(Name = "Como pontos importantes")]
         public string ComoPontosimportantes { get; set; }
+
         [Display(Name = "Predecessora")]
         public int? Predecessora_Id { get; set; }
+
         [Display(Name = "Pra que")]
         public string PraQue { get; set; }
+
         [Display(Name = "Quanto custa")]
         public decimal QuantoCusta { get; set; }
+
         [Display(Name = "Status")]
         public int Status { get; set; }
+
         public string StatusName { get; set; }
 
         [Display(Name = "Planejamento")]
         public int Panejamento_Id { get; set; }
 
-        //public List<Pa_CausaMedidasXAcao> CausaMedidasXAcao { get; set; }
+        [Display(Name = "Quando início")]
+        public DateTime QuandoInicio { get; set; }
+        public string _QuandoInicio { get; set; }
+
+        [Display(Name = "Quando fim")]
+        public DateTime QuandoFim { get; set; }
+        public string _QuandoFim { get; set; }
+
         public List<Pa_AcaoXQuem> AcaoXQuem { get; set; }
         public List<string> _Quem { get; set; }
 
         public Pa_CausaMedidasXAcao CausaMedidasXAcao { get; set; }
-        //public Pa_AcaoXQuem AcaoXQuem { get; set; }
-
-        public string _CorPrazo { get; set; }
 
         public string _Prazo
         {
             get
             {
+                if (QuandoFim == DateTime.MinValue)
+                    return "-";
+
                 if (!string.IsNullOrEmpty(StatusName))
                     if (StatusName.Contains("Concluído"))
-                    {
-                        _CorPrazo = "rgb(126, 194, 253)";
                         return "Finalizado";
-                    }
 
                 var agora = DateTime.Now;
                 if (QuandoFim > agora)
-                {
-                    _CorPrazo = "rgb(144, 238, 144);";
                     return string.Format("Faltam {0} dias.", Math.Round((QuandoFim - agora).TotalDays));
-                }
                 else if (QuandoFim < agora)
-                {
-                    _CorPrazo = "rgb(250, 128, 114);";
                     return string.Format("-{0} Dias", Math.Round((QuandoFim - agora).TotalDays));
-                }
-
 
                 return string.Empty;
             }
@@ -108,14 +86,14 @@ namespace PlanoAcaoCore
         {
             get
             {
-                return "SELECT ACAO.* ,                                                    " +
+                return "SELECT ACAO.* ,                                                     " +
                         "\n STA.Name as StatusName,                                         " +
                         "\n UN.Name as Unidade,                                             " +
-                        "\n DPT.Name as Departamento                                       " +
+                        "\n DPT.Name as Departamento                                        " +
                         "\n FROM pa_acao ACAO                                               " +
                         "\n LEFT JOIN Pa_Unidade UN ON UN.Id = ACAO.Unidade_Id              " +
                         "\n LEFT JOIN Pa_Departamento DPT ON DPT.Id = ACAO.Departamento_Id  " +
-                        "\n LEFT JOIN Pa_Status STA ON STA.Id = ACAO.[Status]              ";
+                        "\n LEFT JOIN Pa_Status STA ON STA.Id = ACAO.[Status]               ";
 
 
             }
