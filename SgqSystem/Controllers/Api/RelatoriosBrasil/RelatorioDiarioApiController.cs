@@ -317,12 +317,32 @@ namespace SgqSystem.Controllers.Api
                "\n         , IND.Name       AS Level1Name " +
                "\n         , UNI.Id         AS Unidade_Id " +
                "\n         , UNI.Name       AS Unidade " +
-               "\n         , CASE " +
+
+               "\n , CASE WHEN IND.HashKey = 1 THEN " +
+
+
+                "\n          ((SELECT sum(Amostras) * 2 as AV FROM VolumePcc1b WHERE ParCompany_id = " + form.unitId + " and CONVERT(Date, Data) BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "')" +
+                "\n          -" +
+                "\n          (" +
+                "\n              SELECT COUNT(1) FROM" +
+                "\n              (" +
+                "\n              SELECT C2.ID, CASE WHEN COUNT(1) = sum(CAST(C3.IsNotEvaluate AS INT)) THEN 'NA' ELSE 'A' END NA FROM CollectionLevel2 C2" +
+                "\n              LEFT JOIN Result_Level3 C3" +
+                "\n              ON C3.CollectionLevel2_Id = C2.Id" +
+                "\n              WHERE CONVERT(Date,C2.CollectionDate) BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
+                "\n              AND C2.ParLevel1_Id = IND.Id" +
+                "\n             AND C2.UnitId = " + form.unitId + "" +
+                "\n              GROUP BY C2.ID" +
+                "\n              ) NA" +
+                "\n              WHERE NA = 'NA'" +
+                "\n          )) ELSE" +
+
+               "\n         CASE " +
                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN WeiEvaluation " +
                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation " +
                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
                "\n         ELSE 0 " +
-               "\n        END AS Av " +
+               "\n        END END AS Av " +
                "\n         , CASE " +
                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN WeiDefects " +
                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiDefects " +
@@ -373,12 +393,30 @@ namespace SgqSystem.Controllers.Api
                "\n 		,IND.Name		AS Level1Name " +
                "\n 		,UNI.Id			AS Unidade_Id " +
                "\n 		,UNI.Name		AS Unidade " +
-               "\n 		,CASE  " +
+                "\n , CASE WHEN IND.HashKey = 1 THEN " +
+
+
+                "\n          ((SELECT sum(Amostras) * 2 as AV FROM VolumePcc1b WHERE ParCompany_id = " + form.unitId + " and CONVERT(Date, Data) BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "')" +
+                "\n          -" +
+                "\n          (" +
+                "\n              SELECT COUNT(1) FROM" +
+                "\n              (" +
+                "\n              SELECT C2.ID, CASE WHEN COUNT(1) = sum(CAST(C3.IsNotEvaluate AS INT)) THEN 'NA' ELSE 'A' END NA FROM CollectionLevel2 C2" +
+                "\n              LEFT JOIN Result_Level3 C3" +
+                "\n              ON C3.CollectionLevel2_Id = C2.Id" +
+                "\n              WHERE CONVERT(Date,C2.CollectionDate) BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
+                "\n              AND C2.ParLevel1_Id = IND.Id" +
+                "\n             AND C2.UnitId = " + form.unitId + "" +
+                "\n              GROUP BY C2.ID" +
+                "\n              ) NA" +
+                "\n              WHERE NA = 'NA'" +
+                "\n          )) ELSE" +
+               "\n 		CASE  " +
                "\n 		WHEN IND.ParConsolidationType_Id = 1 THEN WeiEvaluation " +
                "\n 		WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation " +
                "\n 		WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
                "\n 		ELSE 0 " +
-               "\n 		END AS Av " +
+               "\n 		END END AS Av " +
                "\n 		,CASE  " +
                "\n 		WHEN IND.ParConsolidationType_Id = 1 THEN WeiDefects " +
                "\n 		WHEN IND.ParConsolidationType_Id = 2 THEN WeiDefects " +
@@ -423,12 +461,30 @@ namespace SgqSystem.Controllers.Api
                 "\n 	,IND.Name AS Level1Name " +
                 "\n 	,UNI.Id			AS Unidade_Id " +
                 "\n 	,UNI.Name		AS Unidade " +
-                "\n 	,CASE  " +
+                 "\n , CASE WHEN IND.HashKey = 1 THEN " +
+
+
+                "\n          ((SELECT sum(Amostras) * 2 as AV FROM VolumePcc1b WHERE ParCompany_id = " + form.unitId + " and CONVERT(Date, Data) BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "')" +
+                "\n          -" +
+                "\n          (" +
+                "\n              SELECT COUNT(1) FROM" +
+                "\n              (" +
+                "\n              SELECT C2.ID, CASE WHEN COUNT(1) = sum(CAST(C3.IsNotEvaluate AS INT)) THEN 'NA' ELSE 'A' END NA FROM CollectionLevel2 C2" +
+                "\n              LEFT JOIN Result_Level3 C3" +
+                "\n              ON C3.CollectionLevel2_Id = C2.Id" +
+                "\n              WHERE CONVERT(Date,C2.CollectionDate) BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
+                "\n              AND C2.ParLevel1_Id = IND.Id" +
+                "\n             AND C2.UnitId = " + form.unitId + "" +
+                "\n              GROUP BY C2.ID" +
+                "\n              ) NA" +
+                "\n              WHERE NA = 'NA'" +
+                "\n          )) ELSE" +
+                "\n 	CASE  " +
                 "\n 	WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiEvaluation " +
                 "\n 	WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation " +
                 "\n 	WHEN IND.ParConsolidationType_Id = 3 THEN CL2.EvaluatedResult " +
                 "\n 	ELSE 0 " +
-                "\n 	END AS Av " +
+                "\n 	END END AS Av " +
                 "\n 	,CASE  " +
                 "\n 	WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiDefects " +
                 "\n 	WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiDefects " +

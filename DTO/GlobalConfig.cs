@@ -10,6 +10,7 @@ namespace DTO
         public static string linkDataCollect { get; set; }
         public static bool corrigeLinkDataCollect { get; set; } = false;
         public static bool linkDataCollectJaConfigurado { get; set; } = false;
+
         public static List<string> listLinkDataCollect
         {
             get

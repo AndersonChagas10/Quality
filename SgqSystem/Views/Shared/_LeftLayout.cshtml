@@ -1,8 +1,11 @@
-﻿e@{
+﻿@using DTO
+
+@{
     Layout = null;
     var urlDataCollection = ViewBag.UrlDataCollect;
 }
 @using DTO
+F
 <div class="page-sidebar-wrapper hide">
     <div class="page-sidebar navbar-collapse collapse" style="position: fixed !important; height: 100% !important; z-index: 2000;">
         <ul class="page-sidebar-menu  page-header-fixed" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
@@ -67,7 +70,7 @@
                             </a>
                         </li>
                     }
-                    
+
                 </ul>
             </li>
             <li class="nav-item" id="navbar1">
@@ -81,13 +84,18 @@
             <li class="heading">
                 <h3 class="uppercase">@Resources.Resource.controls</h3>
             </li>
-            <li class="nav-item" id="navbar6">
-                <a href="@Url.Action("Index", "ParLevel2ControlCompany")" class="nav-link nav-toggle">
-                    <i class="fa fa-sliders"></i>
-                    <span class="title">@Resources.Resource.family</span>
-                    <span class="arrow"></span>
-                </a>
-            </li>
+
+            @if (!GlobalConfig.Eua)
+            {
+                <li class="nav-item" id="navbar6">
+                    <a href="@Url.Action("Index", "ParLevel2ControlCompany")" class="nav-link nav-toggle">
+                        <i class="fa fa-sliders"></i>
+                        <span class="title">@Resources.Resource.family</span>
+                        <span class="arrow"></span>
+                    </a>
+                </li>
+            }
+
             <li class="nav-item" id="navbar7">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="fa fa-tasks"></i>
@@ -168,20 +176,20 @@
                     <span class="title">@Resources.Resource.profiles_and_roles</span>
                     <span class="arrow"></span>
                 </a>
-            </li>            
+            </li>
         </ul>
     </div>
 </div>
 
 <script>
-    
+
     function navbarSelect(id) {
         $('.nav-item').removeClass('active').removeClass('start').removeClass('open');
         $('#' + id).addClass('active').addClass('start').addClass('open');
     };
 
     $('.nav-item').click(function () {
-        if($(this).hasClass('open')){
+        if ($(this).hasClass('open')) {
             $(this).children('.sub-menu').css("display", "none");
             $(this).removeClass('open');
         } else {
@@ -189,5 +197,5 @@
             $(this).children('.sub-menu').css("display", "block");
         }
     });
-        
+
 </script>

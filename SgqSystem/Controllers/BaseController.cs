@@ -28,8 +28,16 @@ namespace SgqSystem.Controllers
             }
             else
             {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+                if (GlobalConfig.Brasil)
+                {
+                    Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+                }
+                else if (GlobalConfig.Eua)
+                {
+                    Thread.CurrentThread.CurrentCulture = new CultureInfo("");
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
+                }
             }
 
 
