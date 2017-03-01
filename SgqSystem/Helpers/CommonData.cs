@@ -1,11 +1,13 @@
 ﻿using Dominio;
 using DTO.Helpers;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.SqlServer;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 
@@ -1714,6 +1716,23 @@ namespace SgqSystem.Helpers
                 return RetornoPadraoJsonException(ex);
             }
 
+        }
+
+        public static DictionaryEntry getResource(string value)
+        {
+
+            System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
+
+            var list = resourceManager.GetResourceSet(
+                Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
+
+            foreach (var r in list)
+            {
+                if (r.Key.ToString() == value)
+                    return r;
+            }
+
+            return new DictionaryEntry();
         }
 
         //public static JsonResult DebugAlertas()

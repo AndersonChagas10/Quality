@@ -3020,10 +3020,14 @@ namespace SgqSystem.Services
                                                                 );
             }
 
-            var listCounter = ParCounterDB.GetParLevel1XParCounterList(ParLevel1.Id, 0, 1);
-            string painelCounters = html.painelCounters(listCounter);
+            var listCounter = ParCounterDB.GetParLevelXParCounterList(ParLevel1.Id, 0, 1);
 
+            string painelCounters = "";
 
+            if (listCounter != null)
+            {
+                painelCounters = html.painelCounters(listCounter);
+            }
 
             //Se contem  monitoramentos
             if (!string.IsNullOrEmpty(ParLevel2List))
@@ -3175,7 +3179,7 @@ namespace SgqSystem.Services
 
             var variableList = ParLevel1VariableProductionDB.getVariable(ParLevel1.Id).ToList();
 
-            var listCounter = ParCounterDB.GetParLevel1XParCounterList(ParLevel1.Id, ParLevel2.Id, 2);
+            var listCounter = ParCounterDB.GetParLevelXParCounterList(0, ParLevel2.Id, 2);
 
             if (variableList.Count > 0)
             {

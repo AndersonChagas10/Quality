@@ -574,7 +574,7 @@ namespace SgqSystem.Services
             return "<span class=\"counter "+ classe + "\"><b><span class=\"labelCounter\">" + label.Trim() + "</span></b>: <span class=\"value\">" + value.Trim() + "</span></span>";
         }
 
-        private DictionaryEntry getResource(string value)
+        public DictionaryEntry getResource(string value)
         {
 
             System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
