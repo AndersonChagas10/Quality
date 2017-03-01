@@ -50,6 +50,7 @@ namespace SgqSystem.Controllers.Params
 
             ViewModel.levelControl = 2;
             ViewModel.paramsDto = _paramDomain.GetLevel2(level2Id, level3Id, level1Id);
+            
             return PartialView("_ParLevel2", ViewModel);/*Retorna View com Model ParLevel2 encontrado no DB.*/
         }
         
