@@ -1724,9 +1724,19 @@ namespace SgqSystem.Helpers
             System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
 
             var list = resourceManager.GetResourceSet(
-                Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
+                Thread.CurrentThread.CurrentUICulture, true, false);
 
-            foreach (var r in list)
+            if (list == null) //se portugues
+            {
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
+
+                list = resourceManager.GetResourceSet(Thread.CurrentThread.CurrentUICulture, true, false);
+            }
+
+            var listRes = list.Cast<DictionaryEntry>();
+
+            foreach (var r in listRes)
             {
                 if (r.Key.ToString() == value)
                     return r;
@@ -1736,6 +1746,27 @@ namespace SgqSystem.Helpers
         }
 
         public static MvcHtmlString ParCounterList(this HtmlHelper helper, string name, IEnumerable<SelectListItem> values, Object htmlAttributes)
+        {
+
+            List<SelectListItem> Textes = new List<SelectListItem>();
+            foreach (SelectListItem item in values)
+            {
+                SelectListItem selItem = new SelectListItem();
+                selItem.Value = item.Value.ToString();
+                if (getResource(item.Text.ToString()).Value != null)
+                    selItem.Text = getResource(item.Text.ToString()).Value.ToString();
+                else
+                    selItem.Text = item.Text.ToString();
+                Textes.Add(selItem);
+            }
+
+            return System.Web.Mvc.Html.SelectExtensions.DropDownList(helper,
+                                                                     name,
+                                                                     Textes,
+                                                                     htmlAttributes);
+        }
+
+        public static MvcHtmlString ParLocalList(this HtmlHelper helper, string name, IEnumerable<SelectListItem> values, Object htmlAttributes)
         {
 
             List<SelectListItem> Textes = new List<SelectListItem>();

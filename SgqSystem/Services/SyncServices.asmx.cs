@@ -3020,7 +3020,7 @@ namespace SgqSystem.Services
                                                                 );
             }
 
-            var listCounter = ParCounterDB.GetParLevelXParCounterList(ParLevel1.Id, 0, 1);
+            var listCounter = ParCounterDB.GetParLevelXParCounterList(ParLevel1.Id, 0, 1, "level2_header");
 
             string painelCounters = "";
 
@@ -3179,7 +3179,7 @@ namespace SgqSystem.Services
 
             var variableList = ParLevel1VariableProductionDB.getVariable(ParLevel1.Id).ToList();
 
-            var listCounter = ParCounterDB.GetParLevelXParCounterList(0, ParLevel2.Id, 2);
+            var listCounter = ParCounterDB.GetParLevelXParCounterList(0, ParLevel2.Id, 2, "level3_header");
 
             if (variableList.Count > 0)
             {

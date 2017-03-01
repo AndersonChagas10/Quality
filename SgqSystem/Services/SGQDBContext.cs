@@ -1624,7 +1624,7 @@ namespace SGQDBContext
 
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
-        public IEnumerable<ParCounter> GetParLevelXParCounterList(int ParLevel1_Id, int ParLevel2_Id, int Level)
+        public IEnumerable<ParCounter> GetParLevelXParCounterList(int ParLevel1_Id, int ParLevel2_Id, int Level, string Local)
         {
             try
             {
@@ -1635,17 +1635,21 @@ namespace SGQDBContext
                     {
                         sql = "SELECT PC.Name FROM ParCounterXLocal PL                                                      " +
                                  "   LEFT JOIN ParCounter PC ON PL.ParCounter_Id = PC.Id                                    " +
+                                 "   LEFT JOIN ParLocal PO ON PO.Id = PL.ParLocal_Id                                        " +
                                  "   WHERE PL.ParLevel1_Id = " + ParLevel1_Id +
                                  "   AND PL.ParLevel2_Id IS NULL                                                            " +
-                                 "   AND PC.Level = " + Level + ";                                                          ";
+                                 "   AND PO.Name = '"+ Local+"'                                                             "+
+                                 "   AND PC.Level = " + Level + " AND PL.IsActive = 1;                                      ";
                     }
                     else if (ParLevel2_Id > 0)
                     {
                         sql = "SELECT PC.Name FROM ParCounterXLocal PL                                                      " +
                                  "   LEFT JOIN ParCounter PC ON PL.ParCounter_Id = PC.Id                                    " +
+                                 "   LEFT JOIN ParLocal PO ON PO.Id = PL.ParLocal_Id                                        " +
                                  "   WHERE PL.ParLevel1_Id IS NULL                                                          " +
                                  "   AND PL.ParLevel2_Id = " + ParLevel2_Id +
-                                 "   AND PC.Level = " + Level + ";                                                           ";
+                                 "   AND PO.Name = '" + Local + "'                                                             " +
+                                 "   AND PC.Level = " + Level + " AND PL.IsActive = 1;                                      ";
                     }
 
                     SqlConnection db = new SqlConnection(conexao);

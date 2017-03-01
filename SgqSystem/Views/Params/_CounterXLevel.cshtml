@@ -24,17 +24,17 @@
                     <tbody>
                         <tr class="row">
                             @if (Model.levelControl == 1)
-                            {
-                                @Table.GerarColuna(CommonData.ParCounterList(@Html,"parCounter", Model.paramsDdl.DdlParCounter_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.counter), Table.PosicaoLabel.top, null, null)
-                                @Table.GerarColunaButton(@Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top
-                                    , button: "<button type=\"button\" id=\"btnSaveCounter\" onclick=\"" + @click + "; \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
-                            }
-                            else if (Model.levelControl == 2)
-                            {
-                                @Table.GerarColuna(CommonData.ParCounterList(@Html,"parCounter", Model.paramsDdl.DdlParCounter_Level2, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.counter), Table.PosicaoLabel.top, null, null)
-                                @Table.GerarColunaButton(@Html.DropDownList("parLocal", Model.paramsDdl.DdlParLocal_Level2, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top
-                                    , button: "<button type=\"button\" id=\"btnSaveCounter\" onclick=\"" + @click + "; \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
-                            }
+                             {
+                                 @Table.GerarColuna(CommonData.ParCounterList(@Html,"parCounter", Model.paramsDdl.DdlParCounter_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.counter), Table.PosicaoLabel.top, null, null)
+                                 @Table.GerarColunaButton(CommonData.ParLocalList(@Html, "parLocal", Model.paramsDdl.DdlParLocal_Level1, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top
+                            , button: "<button type=\"button\" id=\"btnSaveCounter\" onclick=\"" + @click + "; \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                             }
+                             else if (Model.levelControl == 2)
+                             {
+                                 @Table.GerarColuna(CommonData.ParCounterList(@Html,"parCounter", Model.paramsDdl.DdlParCounter_Level2, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.counter), Table.PosicaoLabel.top, null, null)
+                                 @Table.GerarColunaButton(CommonData.ParLocalList(@Html, "parLocal", Model.paramsDdl.DdlParLocal_Level2, new { @class = "form-control input-erp input-sm" }), @Html.Label(Resources.Resource.local), Table.PosicaoLabel.top
+                            , button: "<button type=\"button\" id=\"btnSaveCounter\" onclick=\"" + @click + "; \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
+                             }
                             
                         </tr>
                     </tbody>

@@ -1762,6 +1762,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level 1 Line.
+        /// </summary>
+        internal static string level1_line {
+            get {
+                return ResourceManager.GetString("level1_line", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level 1 Name.
         /// </summary>
         internal static string level1_name {
@@ -1816,6 +1825,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level 2 Header.
+        /// </summary>
+        internal static string level2_header {
+            get {
+                return ResourceManager.GetString("level2_header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 2 Line.
+        /// </summary>
+        internal static string level2_line {
+            get {
+                return ResourceManager.GetString("level2_line", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level2 linked to the level 3 successfully!.
         /// </summary>
         internal static string level2_linked_to_level3_successfully {
@@ -1857,6 +1884,15 @@ namespace Resources {
         internal static string level3_group {
             get {
                 return ResourceManager.GetString("level3_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 3 Header.
+        /// </summary>
+        internal static string level3_header {
+            get {
+                return ResourceManager.GetString("level3_header", resourceCulture);
             }
         }
         

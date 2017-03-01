@@ -1380,4 +1380,16 @@
   <data name="total_defects" xml:space="preserve">
     <value>Total Defeitos</value>
   </data>
+  <data name="level1_line" xml:space="preserve">
+    <value>Linha do indicador</value>
+  </data>
+  <data name="level2_header" xml:space="preserve">
+    <value>Cabeçalho do monitoramento</value>
+  </data>
+  <data name="level2_line" xml:space="preserve">
+    <value>Linha do monitoramento</value>
+  </data>
+  <data name="level3_header" xml:space="preserve">
+    <value>Cabeçalho da tarefa</value>
+  </data>
 </root>
