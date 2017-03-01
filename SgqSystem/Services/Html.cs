@@ -511,7 +511,7 @@ namespace SgqSystem.Services
             return level01;
         }
 
-        public string painelCounters(IEnumerable<SGQDBContext.ParCounter> parCounterList)
+        public string painelCounters(IEnumerable<SGQDBContext.ParCounter> parCounterList, string css = "")
         {
             if(parCounterList.Count() == 0)
             {
@@ -555,7 +555,7 @@ namespace SgqSystem.Services
                     countersLine += counter(counters[0], counters[1], "col-xs-" + qtdeColunas);
                     if (contagem == 6)
                     {
-                        painel += div(outerhtml: countersLine, classe: "counters row ", style: "background-color: #f1f1f1; padding-top: 5px;padding-bottom:5px;");
+                        painel += div(outerhtml: countersLine, classe: "counters row ", style: "background-color: #f1f1f1; padding-top: 5px;padding-bottom:5px;"+css);
                         countersLine = null;
                         contagem = 0;
                     }
@@ -563,7 +563,7 @@ namespace SgqSystem.Services
 
                 if (!string.IsNullOrEmpty(countersLine))
                 {
-                    painel += div(outerhtml: countersLine, classe: "counters row ", style: "background-color: #f1f1f1; padding-top: 5px;padding-bottom:5px;");
+                    painel += div(outerhtml: countersLine, classe: "counters row ", style: "background-color: #f1f1f1; padding-top: 5px;padding-bottom:5px;" + css);
                 }
                 return painel;
             }
