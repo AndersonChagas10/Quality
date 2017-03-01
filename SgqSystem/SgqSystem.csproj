@@ -2121,6 +2121,7 @@
     <Content Include="Views\ParGoalScorecard\Delete.cshtml" />
     <Content Include="Views\ParGoalScorecard\Details.cshtml" />
     <Content Include="Views\ParGoalScorecard\Index.cshtml" />
+    <Content Include="Views\Params\Blank.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
