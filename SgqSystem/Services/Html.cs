@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Resources;
 using System.Threading;
@@ -574,11 +575,16 @@ namespace SgqSystem.Services
             return "<span class=\"counter "+ classe + "\"><b><span class=\"labelCounter\">" + label.Trim() + "</span></b>: <span class=\"value\">" + value.Trim() + "</span></span>";
         }
 
-        private DictionaryEntry getResource(string value)
+        public DictionaryEntry getResource(string value)
         {
-
             System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
-
+            
+            if (resourceManager == null) //se portugues
+            {
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
+            }         
+            
             var list = resourceManager.GetResourceSet(
                 Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
 

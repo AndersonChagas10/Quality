@@ -1386,4 +1386,16 @@
   <data name="total_defects" xml:space="preserve">
     <value>Total Defects</value>
   </data>
+  <data name="level1_line" xml:space="preserve">
+    <value>Level 1 Line</value>
+  </data>
+  <data name="level2_header" xml:space="preserve">
+    <value>Level 2 Header</value>
+  </data>
+  <data name="level2_line" xml:space="preserve">
+    <value>Level 2 Line</value>
+  </data>
+  <data name="level3_header" xml:space="preserve">
+    <value>Level 3 Header</value>
+  </data>
 </root>

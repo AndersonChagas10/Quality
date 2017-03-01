@@ -1,6 +1,6 @@
 ﻿@model SgqSystem.ViewModels.ParamsViewModel
 @using SgqSystem.Helpers
-
+@using DTO
 <!--MODAL-->
 
 <div id="newLevel1Modal">
@@ -19,14 +19,18 @@
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_name), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.Name, null, new { @class = "text-danger" }))
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.Description, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_description), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.Description, null, new { @class = "text-danger" }))
                         </tr>
-                        <tr class="row">
-                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.paramsDdl.DdlParConsolidation, new { @class = "form-control input-sm", @id = "selectConsolidacao" })
-                                   , @Html.Label(Resources.Resource.consolidation_type)
-                                   , Table.PosicaoLabel.top
-                                   , info: Resources.Resource.consolidation_type_popover
-                                   , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParConsolidationType_Id, null, new { @class = "text-danger" }))
-                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, info: Resources.Resource.frequency_popover, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
-                        </tr>
+
+                        @*@if (!GlobalConfig.Eua)
+                        {*@
+                            <tr class="row">
+                                @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParConsolidationType_Id", Model.paramsDdl.DdlParConsolidation, new { @class = "form-control input-sm", @id = "selectConsolidacao" })
+                                       , @Html.Label(Resources.Resource.consolidation_type)
+                                       , Table.PosicaoLabel.top
+                                       , info: Resources.Resource.consolidation_type_popover
+                                       , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParConsolidationType_Id, null, new { @class = "text-danger" }))
+                                @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, info: Resources.Resource.frequency_popover, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
+                            </tr>
+
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasSaveLevel2, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.save_button_on_level2), Table.PosicaoLabel.left, null, Resources.Resource.save_button_on_level2_popover)
                             <td>
@@ -43,13 +47,16 @@
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasAlert, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_alert), Table.PosicaoLabel.left, null, Resources.Resource.has_alert_popover)
                         </tr>
 
-                        <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.haveRealTimeConsolidation, new { @class = "form-control checkbox-erp" }), @Html.Label("Possui consolidação em tempo real"), Table.PosicaoLabel.left, null, "Define consilidação em tempo real para o indicador.")
-                        </tr>
-                        <tr class="row RealTimeConsolitationUpdate padding-left" style="display:none">
-                            @Table.GerarColunaCheckbox(@Html.TextBox("paramsDto.parLevel1Dto.RealTimeConsolitationUpdate", Model.paramsDto.parLevel1Dto.RealTimeConsolitationUpdate, new { @class = "form-control checkbox-erp integer" }), @Html.Label("Intervalo de tempo para a consildação em tempo real", new { @class = "padding-left" }), Table.PosicaoLabel.left, null, "Define intervalo de tempo para o item acima.")
-                        </tr>
-                  
+                        @if (!GlobalConfig.Eua)
+                        {
+                            <tr class="row">
+                                @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.haveRealTimeConsolidation, new { @class = "form-control checkbox-erp" }), @Html.Label("Possui consolidação em tempo real"), Table.PosicaoLabel.left, null, "Define consilidação em tempo real para o indicador.")
+                            </tr>
+                            <tr class="row RealTimeConsolitationUpdate padding-left" style="display:none">
+                                @Table.GerarColunaCheckbox(@Html.TextBox("paramsDto.parLevel1Dto.RealTimeConsolitationUpdate", Model.paramsDto.parLevel1Dto.RealTimeConsolitationUpdate, new { @class = "form-control checkbox-erp integer" }), @Html.Label("Intervalo de tempo para a consildação em tempo real", new { @class = "padding-left" }), Table.PosicaoLabel.left, null, "Define intervalo de tempo para o item acima.")
+                            </tr>
+                        }
+
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecific, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_specific_register_by_unit), Table.PosicaoLabel.left, null, Resources.Resource.allow_specific_register_by_unit_popover)
                         </tr>
@@ -72,7 +79,7 @@
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificGoal, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_goal_of_the_level1_by_unit, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
                         </tr>
                         <tr class="row">
-                           <!-- Table.GerarColunaRadioButton(Html.Label(Resources.Resource.standard), Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "true", new { class = "icheck" }), Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "false", new { class = "icheck" }), Resources.Resource.conform, Resources.Resource.not_conform, Table.PosicaoLabel.top, null, null)-->
+                            <!-- Table.GerarColunaRadioButton(Html.Label(Resources.Resource.standard), Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "true", new { class = "icheck" }), Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "false", new { class = "icheck" }), Resources.Resource.conform, Resources.Resource.not_conform, Table.PosicaoLabel.top, null, null)-->
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.standard, new { @class = "" }), Table.PosicaoLabel.left, null, null)
                         </tr>
                         <tr class="row">
@@ -81,16 +88,21 @@
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsLimitedEvaluetionNumber, new { @class = "form-control checkbox-erp", @checked = "checked" }), @Html.Label(Resources.Resource.limited_number_of_evaluations), Table.PosicaoLabel.left, null, null)
                         </tr>
-                        <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasCompleteEvaluation, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.hascompleteevaluation), Table.PosicaoLabel.left, null, null)
-                        </tr>
+
+                        @if (!GlobalConfig.Eua)
+                        {
+                            <tr class="row">
+                                @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasCompleteEvaluation, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.hascompleteevaluation), Table.PosicaoLabel.left, null, null)
+                            </tr>
+                        }
+
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
                         </tr>
 
                         @*<tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
-                        </tr>*@
+                                @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
+                            </tr>*@
 
                     </tbody>
                 </table>
@@ -338,7 +350,7 @@
                                                             <td>
                                                                 <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
                                                             </td>
-                                                            <td>   
+                                                            <td>
                                                                 <select id="parLevel1XHeaderField_ParHeaderField_IsRequired" class="form-control input-sm" onchange="Cabecalhos.SetRequired($(this), @parLevel1XHeaderField.ParHeaderField.Id);">
                                                                     @if (parLevel1XHeaderField.ParHeaderField.IsRequired != null)
                                                                     {
@@ -464,7 +476,7 @@
                 <button type="button" data-loading-text="@Resources.Resource.saving_the_level1" id="btnSaveNewLevel1" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level1</button>
             </div>
         </div>
-    }
+                    }
 </div>
 
 
@@ -486,7 +498,7 @@
         }
     });
 
-    
+
 
     var Cabecalhos = {
         SetMultipleDefault: function(elem){
