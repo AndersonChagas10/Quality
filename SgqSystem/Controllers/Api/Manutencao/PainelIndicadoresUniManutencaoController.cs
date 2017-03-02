@@ -17,98 +17,106 @@ namespace SgqSystem.Controllers.Api.Manutencao
             List<PainelIndicadoresUniManutencaoDTO> _mockEvolucao = new List<PainelIndicadoresUniManutencaoDTO>();
             PainelIndicadoresUniManutencaoDTO manColeta;
 
-            string parametro = obj.indicador;
-            var realizado = "";
-            var orcado = "";
-            List<obj> d;
-            List<obj2> e;
 
-            var query = "SELECT top 1 Realizado.Realizado ,Orcado.Orcado FROM " +
-                        "(SELECT top 1 Name Realizado FROM DimManColetaDados WHERE DimName like '" + parametro + "' and DimRealTarget like 'Real' UNION ALL SELECT '0') Realizado " +
-                        ",(SELECT top 1 Name Orcado FROM DimManColetaDados WHERE DimName like '" + parametro + "' and DimRealTarget like 'Meta' UNION ALL SELECT '0') Orcado ";
+            var numeroDeVariaveis = 2;
 
-            using (var db = new SgqDbDevEntities())
+            for (var i = 0; i < numeroDeVariaveis; i++)
             {
-                d = db.Database.SqlQuery<obj>(query).ToList();
-            }
 
-            foreach (var item in d)
-            {
-                orcado = item.orcado;
-                realizado = item.realizado;
-            }
+                string parametro = obj.indicador;
+                var realizado = "";
+                var orcado = "";
+                List<obj> d;
+                List<obj2> e;
 
-            string tipo = "";
+                var query = "SELECT top 1 Realizado.Realizado ,Orcado.Orcado FROM " +
+                            "(SELECT top 1 Name Realizado FROM DimManColetaDados WHERE DimName like '" + parametro + "' and DimRealTarget like 'Real' UNION ALL SELECT '0') Realizado " +
+                            ",(SELECT top 1 Name Orcado FROM DimManColetaDados WHERE DimName like '" + parametro + "' and DimRealTarget like 'Meta' UNION ALL SELECT '0') Orcado ";
 
-            if (obj.subRegional == "Todas")
+                using (var db = new SgqDbDevEntities())
+                {
+                    d = db.Database.SqlQuery<obj>(query).ToList();
+                }
 
-                tipo = "SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegionalGrupo = '" + obj.regional + "' and ParCompany_id is not null";
+                foreach (var item in d)
+                {
+                    orcado = item.orcado;
+                    realizado = item.realizado;
+                }
 
-            else
+                string tipo = "";
 
-                tipo = "SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegional = '" + obj.subRegional + "' and ParCompany_id is not null";
+                if (obj.subRegional == "Todas")
 
-            var query2 = "SELECT " +
-                         "BASONA.Dado " +
-                        ",BASONA.Realizado " +
-                        ",BASONA.Orcado " +
-                    "FROM " +
-                    "(" +
-                        "SELECT " +
-                            "'Por Unidade' TipoRelatorio " +
-                            ", Mes.Mes dado " +
-                            ", isnull(Base.Realizado, 0) realizado " +
-                            ", isnull(Base.Orcado, 0)    orcado " +
-                        "FROM MANANOMES MES " +
-                        "LEFT JOIN " +
-                        "( " +
-                            "SELECT MONTH(ISNULL(Base_dateRef, cast(Base_dateAdd AS varchar(10)))) Mes, " +
-                                    "SUM(ISNULL(CASE " +
-                                        "WHEN " + realizado + " = '0' THEN 0.00 " +
-                                        "ELSE " + realizado + " " +
-                                    "END, 0)) realizado, " +
-                                    "SUM(ISNULL(CASE " +
-                                       "WHEN " + orcado + " = '0' THEN 0.00 " +
-                                       "ELSE " + orcado + " " +
-                                    "END, 0)) orcado " +
-                            "FROM MANCOLETADADOS Man " +
-                            "WHERE " +
-                                "ISNULL(YEAR(BASE_DATEREF), YEAR(BASE_DATEADD)) = '" + obj.ano + "' " +
-                                "AND ISNULL(MONTH(BASE_DATEREF), MONTH(BASE_DATEADD)) LIKE CASE WHEN '" + obj.mes + "' = 0 THEN '%%' ELSE '" + obj.mes + "' END " +
-                                "AND Man.Base_parCompany_id in (SELECT id FROM ParCompany WHERE Name = '" + obj.unidade + "')" +
-                            "GROUP BY MONTH(ISNULL(Base_dateRef, cast(Base_dateAdd AS varchar(10)))) " +
-                        ")Base on MES.MesInt = Base.Mes " +
-                        "union all " +
-                        "SELECT " +
-                            "'Por Regional' TipoRelatorio " +
-                            ", Uni.EmpresaSigla dado " +
-                            ", isnull(Base.Realizado, 0) Realizado " +
-                            ", isnull(Base.Orcado, 0)    Orcado " +
-                        "FROM DimManBaseUni Uni " +
-                        "LEFT JOIN( " +
-                            "SELECT Man.Base_parCompany_id, " +
-                                    "SUM(ISNULL(CASE " +
-                                        "WHEN  " + realizado + "  = '0' THEN 0.00 " +
-                                        "ELSE  " + realizado + "  " +
-                                    "END, 0)) realizado, " +
-                                    "SUM(ISNULL(CASE " +
-                                        "WHEN " + orcado + " = '0' THEN 0.00 " +
-                                        "ELSE " + orcado + " " +
-                                    "END, 0)) orcado " +
-                            "FROM MANCOLETADADOS Man " +
-                            "WHERE " +
-                                "ISNULL(YEAR(BASE_DATEREF), YEAR(BASE_DATEADD)) = '" + obj.ano + "'" +
-                                "AND ISNULL(MONTH(BASE_DATEREF), MONTH(BASE_DATEADD)) LIKE CASE WHEN '" + obj.mes + "' = 0 THEN '%%' ELSE '" + obj.mes + "' END " +
-                                "AND Man.Base_parCompany_id in (" + tipo + ") " +
-                            "GROUP BY Man.Base_parCompany_id " +
-                        ")Base on uni.Parcompany_id = Base.Base_parCompany_id " +
+                    tipo = "SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegionalGrupo = '" + obj.regional + "' and ParCompany_id is not null";
+
+                else
+
+                    tipo = "SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegional = '" + obj.subRegional + "' and ParCompany_id is not null";
+
+                var query2 = "SELECT " +
+                             "BASONA.Dado " +
+                            ",BASONA.Realizado " +
+                            ",BASONA.Orcado " +
+                        "FROM " +
+                        "(" +
+                            "SELECT " +
+                                "'Por Unidade' TipoRelatorio " +
+                                ", Mes.Mes dado " +
+                                ", isnull(Base.Realizado, 0) realizado " +
+                                ", isnull(Base.Orcado, 0)    orcado " +
+                            "FROM MANANOMES MES " +
+                            "LEFT JOIN " +
+                            "( " +
+                                "SELECT MONTH(ISNULL(Base_dateRef, cast(Base_dateAdd AS varchar(10)))) Mes, " +
+                                        "SUM(ISNULL(CASE " +
+                                            "WHEN " + realizado + " = '0' THEN 0.00 " +
+                                            "ELSE " + realizado + " " +
+                                        "END, 0)) realizado, " +
+                                        "SUM(ISNULL(CASE " +
+                                           "WHEN " + orcado + " = '0' THEN 0.00 " +
+                                           "ELSE " + orcado + " " +
+                                        "END, 0)) orcado " +
+                                "FROM MANCOLETADADOS Man " +
+                                "WHERE " +
+                                    "ISNULL(YEAR(BASE_DATEREF), YEAR(BASE_DATEADD)) = '" + obj.ano + "' " +
+                                    "AND ISNULL(MONTH(BASE_DATEREF), MONTH(BASE_DATEADD)) LIKE CASE WHEN '" + obj.mes + "' = 0 THEN '%%' ELSE '" + obj.mes + "' END " +
+                                    "AND Man.Base_parCompany_id in (SELECT id FROM ParCompany WHERE Name = '" + obj.unidade + "')" +
+                                "GROUP BY MONTH(ISNULL(Base_dateRef, cast(Base_dateAdd AS varchar(10)))) " +
+                            ")Base on MES.MesInt = Base.Mes " +
+                            "union all " +
+                            "SELECT " +
+                                "'Por Regional' TipoRelatorio " +
+                                ", Uni.EmpresaSigla dado " +
+                                ", isnull(Base.Realizado, 0) Realizado " +
+                                ", isnull(Base.Orcado, 0)    Orcado " +
+                            "FROM DimManBaseUni Uni " +
+                            "LEFT JOIN( " +
+                                "SELECT Man.Base_parCompany_id, " +
+                                        "SUM(ISNULL(CASE " +
+                                            "WHEN  " + realizado + "  = '0' THEN 0.00 " +
+                                            "ELSE  " + realizado + "  " +
+                                        "END, 0)) realizado, " +
+                                        "SUM(ISNULL(CASE " +
+                                            "WHEN " + orcado + " = '0' THEN 0.00 " +
+                                            "ELSE " + orcado + " " +
+                                        "END, 0)) orcado " +
+                                "FROM MANCOLETADADOS Man " +
+                                "WHERE " +
+                                    "ISNULL(YEAR(BASE_DATEREF), YEAR(BASE_DATEADD)) = '" + obj.ano + "'" +
+                                    "AND ISNULL(MONTH(BASE_DATEREF), MONTH(BASE_DATEADD)) LIKE CASE WHEN '" + obj.mes + "' = 0 THEN '%%' ELSE '" + obj.mes + "' END " +
+                                    "AND Man.Base_parCompany_id in (" + tipo + ") " +
+                                "GROUP BY Man.Base_parCompany_id " +
+                            ")Base on uni.Parcompany_id = Base.Base_parCompany_id " +
                         //"WHERE Base.realizado != 0 AND Base.orcado != 0 " +
-                    ")BASONA " +
-                    "WHERE BASONA.TipoRelatorio = '" + obj.tipoRelatorio + "' ";
+                        ")BASONA " +
+                        "WHERE BASONA.TipoRelatorio = '" + obj.tipoRelatorio + "' ";
 
-            using (var db = new SgqDbDevEntities())
-            {
-                e = db.Database.SqlQuery<obj2>(query2).ToList();
+                using (var db = new SgqDbDevEntities())
+                {
+                    e = db.Database.SqlQuery<obj2>(query2).ToList();
+                }
+
             }
 
             foreach (var item in e)
