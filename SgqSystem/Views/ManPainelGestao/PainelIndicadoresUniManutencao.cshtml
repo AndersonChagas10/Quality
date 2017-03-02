@@ -840,6 +840,8 @@
             var linha = [];
             var dataTableVetor = [];
 
+            var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
+
             var budget2 = SomaVetor(budget);
 
             $('#terceiro').show();
@@ -855,7 +857,7 @@
                     zoomType: 'xy'
                 },
                 title: {
-                    text: 'Acompanhamento Diário'
+                    text: 'Acompanhamento Diário de ' + indicador + ' em ' + getNome() + ''
                 },
                 subtitle: {
                     text: ''
