@@ -2345,6 +2345,32 @@ namespace SgqSystem.Services
 
                            " </script> ";
 
+            debug =        "<div id = 'ControlaDivDebugAlertas' style='display:none'></div> " +
+
+                           "<div id = 'divDebugAlertas'  style='display:none'> " +
+                           "     <p class='titDebugAlertas'>Acompanhamento do indicador</p> " +
+                           "     Indicador: <div id = 'level1' class='clDebugAlertas'></div> " +
+                           "     <br> " +
+                           "     Volume total do indicador: <div id = 'volumeTotal'  class='clDebugAlertas'></div> " +
+                           "     <br> " +
+                           "     Meta %: <div id = 'meta'  class='clDebugAlertas'></div> " +
+                           "     <br> " +
+                           "     Meta Tolerância: <div id = 'metaTolerancia'  class='clDebugAlertas'></div> " +
+                           "     <br> " +
+                           "     Meta Dia: <div id = 'metaDia'  class='clDebugAlertas'></div> " +
+                           "     <br> " +
+                           "     Meta Avaliação: <div id = 'metaAvaliacao'  class='clDebugAlertas'></div> " +
+                           "     <br> " +
+                           "     Total Avaliado: <div id = 'totalAv'  class='clDebugAlertas'></div> " +
+                           "     <br> " +
+                           "     Total NC: <div id = 'totalNc'  class='clDebugAlertas'></div> " +
+                           "     <br> " +
+                           "     Total NC na avaliação: <div id = 'totalNcNaAvalicao'  class='clDebugAlertas'></div> " +
+
+                           "</div> ";
+
+                          
+
             return html.div(
                             outerhtml: navBar(UserSgq_Id, ParCompany_Id) +
                                        rightMenu() +
@@ -2374,7 +2400,7 @@ namespace SgqSystem.Services
                            "            <a class=\"navbar-brand\" id=\"SGQName\" href=\"#\"><i class=\"fa fa-chevron-left hide iconReturn\" style=\"margin-left: 8px; font-size: 24px;\" aria-hidden=\"true\"></i> SGQ </a>                 " +
                            "            <div class=\"buttonMenu navbar-brand hide\" id=\"btnShowImage\" level01id=\"2\">Show Image</div>                                                                        " +
                            selectUserCompanys(UserSgq_Id, ParCompany_Id) +
-                           "            <span style='color: #ffffff; margin: 14px;' class='period'>Periodo</span><span style='color: #ffffff; margin: 14px;' class='shift'>shift</span> " +
+                           "            <span style='color: #ffffff; margin: 14px;' class='periodShift'></span><span style='color: #ffffff; margin: 14px;' class='shift'>shift</span> " +
                            "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div><span style='color: #ffffff; margin: 14px;' class='atualDate pull-right'></span>" +
                            "        </div>                                                                                                                                                                      " +
                            "    </div>                                                                                                                                                                          " +
@@ -2875,7 +2901,7 @@ namespace SgqSystem.Services
                     if (ParLevel1.HasSaveLevel2)
                     {
                         btnAreaSave = "<button class=\"btn btn-success hide btnAreaSaveConfirm\">                                                    " +
-                                       "   <span class=\"cursorPointer\">?<i class=\"fa fa-check\" aria-hidden=\"true\"></i></span>     " +
+                                       "   <span class=\"cursorPointer\"><i class=\"fa fa-check\" aria-hidden=\"true\"></i></span>     " +
                                        "</button>                                                                                                      " +
                                        "<button class=\"btn btn-primary btnAreaSave\">                                                                 " +
                                        "   <span class=\"cursorPointer iconsArea\"><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i></span>        " +
