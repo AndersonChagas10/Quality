@@ -1,4 +1,5 @@
-﻿using PlanoAcaoCore;
+﻿using DTO.Helpers;
+using PlanoAcaoCore;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -7,28 +8,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
     [RoutePrefix("api/Pa_Acao")]
     public class ApiPa_AcaoController : ApiController
     {
-        [HttpPost]
-        [Route("GETCausaGenerica")]
-        public IEnumerable<Pa_CausaGenerica> GETCausaGenerica()
-        {
-            return Pa_CausaGenerica.Listar();
-        }
-
-        [HttpPost]
-        [Route("GETGrupoCausa/{id}")]
-        public IEnumerable<Pa_GrupoCausa> GETGrupoCausa(int id)
-        {
-            return Pa_GrupoCausa.Listar();
-        }
-
-        [HttpPost]
-        [Route("GETContramedidaGenerica/{id}")]
-        public IEnumerable<Pa_ContramedidaGenerica> GETContramedidaGenerica(int id)
-        {
-            return Pa_ContramedidaGenerica.Listar();
-        }
-
-
+      
         [HttpGet]
         [Route("List")]
         public IEnumerable<Pa_Acao> List()
@@ -45,10 +25,17 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
         [HttpPost]
         [Route("Save")]
-        public Pa_Acao Save([FromBody] Pa_Acao planejamento)
+        public Pa_Acao Save([FromBody] Pa_Acao acao)
         {
-            planejamento.AddOrUpdate();
-            return planejamento;
+            acao.QuandoInicio = Guard.ParseDateToSqlV2(acao._QuandoInicio);
+            acao.QuandoFim = Guard.ParseDateToSqlV2(acao._QuandoFim);
+            acao._QuandoInicio = null;
+            acao._QuandoFim = null;
+            //Pa_BaseObject.SalvarGenerico(acao);
+            //Pa_BaseObject.SalvarGenerico(acao.CausaMedidasXAcao);
+
+            acao.AddOrUpdate();
+            return acao;
         }
     }
 }

@@ -1,25 +1,7 @@
 ﻿@model PlanoAcaoCore.Pa_Planejamento
 
-    <table class="nowrap .col-md-6 .col-md-offset-3" style="width: 100%;">
+    <table class="borderedNinja nowrap .col-md-6 .col-md-offset-3 display"  cellspacing="0" style="width: 100%;">
         <tbody>
-            @*<tr>
-                <td style="width: 43%;">
-                    @Html.DisplayNameFor(model => model.AddDate)
-                </td>
-                <td style="width: 43%;">
-                    @Html.DisplayFor(model => model.AddDate)
-                </td>
-                <td style="width: 16%;"></td>
-            </tr>
-            <tr>
-                <td style="width: 43%;">
-                    @Html.DisplayNameFor(model => model.AlterDate)
-                </td>
-                <td style="width: 43%;">
-                    @Html.DisplayFor(model => model.AlterDate)
-                </td>
-                <td style="width: 16%;"></td>
-            </tr>*@
             <tr>
                 <td style="width: 43%;">
                     @Html.DisplayNameFor(model => model.Diretoria_Id)
@@ -76,12 +58,21 @@
             </tr>
             <tr>
                 <td >
-                    @Html.DisplayNameFor(model => model.Indicadores_Id)
+                    @Html.DisplayNameFor(model => model.IndicadoresDeProjeto_Id)
                 </td>
                 <td >
-                    @Html.DisplayFor(model => model.Indicadores)
+                    @Html.DisplayFor(model => model.IndicadoresDeProjeto)
                 </td>
                 <td ></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.IndicadoresDiretriz_Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.IndicadoresDiretriz)
+                </td>
+                <td></td>
             </tr>
             <tr>
                 <td >

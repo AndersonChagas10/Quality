@@ -1407,8 +1407,13 @@
     <Content Include="Views\Pa_Planejamento\Filtrar.cshtml" />
     <Content Include="Views\Pa_Acao\Index.cshtml" />
     <Content Include="Views\Shared\_DdlGenerica.cshtml" />
+    <Content Include="Views\Pa_Acao\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DTO\DTO.csproj">
+      <Project>{0ED5466D-2A8F-4E37-8D4A-C2F2760BD687}</Project>
+      <Name>DTO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Helper\Helper.csproj">
       <Project>{026efa70-bd6d-46c8-bd94-d7fcd42b9692}</Project>
       <Name>Helper</Name>

@@ -3,6 +3,82 @@
 }
 
 <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        color: #333;
+    }
+
+    table {
+        text-align: left;
+        /*line-height: 40px;
+      border-collapse: separate;
+      border-spacing: 0;*/
+        /*width: 500px;
+      margin: 50px auto;*/
+        border-radius: .25rem;
+    }
+
+        table.borderedNinja {
+            border: 2px solid #c1c1c1;
+        }
+
+    thead tr:first-child {
+        background: #ffffff;
+        /*color: #fff;*/
+        border: none;
+        height: 60px;
+    }
+
+    th:first-child,
+    td:first-child {
+        padding: 0 15px 0 20px;
+    }
+
+    /*thead tr:last-child th {
+      border-bottom: 3px solid #ddd;
+    }*/
+
+    tbody tr:hover {
+        background-color: rgba(170, 170, 170, 0.20);
+        cursor: default;
+    }
+
+    tbody tr:last-child td {
+        border: none;
+    }
+
+    /*tbody td {
+      border-bottom: 1px solid #ddd;
+    }*/
+
+    td:last-child {
+        text-align: right;
+        padding-right: 10px;
+    }
+
+    .button {
+        color: #aaa;
+        cursor: pointer;
+        vertical-align: middle;
+    }
+
+    .edit:hover {
+        color: #0a79df;
+    }
+
+    .delete:hover {
+        color: #dc2a2a;
+    }
+
+
+
+
     .modal-header .btnGrp {
         position: absolute;
         top: 8px;
@@ -74,13 +150,13 @@
 <h2>Plano de Ação</h2>
 
 <div>
-    <button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="Clicked(false, false); ModalOpcoesEstrategico(); ">
+    <button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="Clicked(false, false); ModalOpcoesEstrategico('Planejamento Estratégico'); ">
         Planejamento Estratégico
     </button>
-    <button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="Clicked(true, false); ModalOpcoesEstrategico(); ">
+    <button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="Clicked(true, false); ModalOpcoesEstrategico('Planejamento Tático'); ">
         Planejamento Tático
     </button>
-    <button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="Clicked(false, true); ModalOpcoesEstrategico(true); ">
+    <button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="Clicked(false, true); ModalOpcoesEstrategico('Planejamento Operacional'); ">
         Planejamento Operacional
     </button>
     <button type="button" onclick="Relatorios();" class="btn btn-primary">
@@ -117,7 +193,9 @@
                     <button type="button" class="btn btn-primary" id="Salvar" onclick="" style="display:none">Salvar</button>
                     <button type="button" class="btn btn-info" id="BuscarPlanejamentos" onclick="BuscarPlanejamentos();">Buscar Planejamento</button>
                     <button type="button" class="btn btn-success" id="NovoPlanejamento" onclick="NovoPlanejamento();" data-toggle="modal" style="display:none"> Novo Planejamento</button>
-                    <button type="button" class="btn btn-primary" id="NovaAcao" onclick="Clicked(isTaticoClicked, isNovaAcao); ModalAcao(true);" style="display:none">Nova Ação</button>
+                    <button type="button" class="btn btn-primary" id="NovaAcao" onclick="Clicked(isTaticoClicked, isNovaAcao); ModalAcao(true, true);" style="display:none">Nova Ação</button>
+                    <button type="button" class="btn btn-default" value="" id="new" style="display:none">Adicionar Ação</button>
+                    <button type="button" class="btn btn-default" value="" id="Edit" style="display:none" onclick="SalvarAcaoAvulsa($('.Acao'))">Editar Ação</button>
 
                 </div>
             </div>
@@ -143,6 +221,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                 <button type="button" class="btn btn-primary" onclick="SalvarNovo();">Salvar</button>
+
             </div>
         </div>
     </div>
@@ -167,9 +246,32 @@
         var urlFiltraPlanejamentos = '@Url.Action("Filtrar", "Pa_Planejamento")';
         var urlSalvarPlanejamento = '@Url.Action("Save", "api/Pa_Planejamento")';
         var urlNovaAcao = '@Url.Action("Index", "Pa_Acao")';
+        var urlEditAcao = '@Url.Action("Edit", "Pa_Acao")';
         var urlSalvarAcao = '@Url.Action("Save", "api/Pa_Acao")';
         var urlGetPlanejamentoAcao = '@Url.Action("GetPlanejamentoAcao", "api/Pa_Planejamento")';
         var urlSalvarNovoItem = '@Url.Action("Save", "api/Generics")';
+
+        var addButton = (function () {
+            var counter = 0;
+
+            return function () {
+                var objectContainer = $('#obj');
+                var header = objectContainer.clone();
+                counter += 1;
+                var collapseId = "collapsible_obj_" + counter;
+
+                header.find(".collapse").attr("id", collapseId);
+                header.find("button[data-toggle='collapse']").attr("data-target", "#" + collapseId);
+                header.find("button[data-toggle='collapse']").html("Acao Name" + counter)
+
+                header.appendTo('#final');
+                header.show();
+
+                myfunction();
+            };
+
+        })();
+        $('#new').click(addButton);
 
         /*Btn Minimizar Modal*/
         $(document).ready(function () {
@@ -237,11 +339,17 @@
         }
 
         /*Planejamento*/
-        function ModalOpcoesEstrategico() {//Pos Modal1
+        function ModalOpcoesEstrategico(title) {//Pos Modal1
 
             $('#modalLindo').modal();
-            $('#modalLindo').find('.modal-body').empty()
-            $('#Header').html("Planejamento");
+            $('#modalLindo').find('.modal-body').empty();
+
+            if (title != undefined) {
+                $('#Header').html(title);
+            } else {
+                $('#Header').html("Planejamento");
+            }
+
             if (planejamentoCorrentId > 0) {
                 $.get(urlModalOpcoesEstrategico, { id: planejamentoCorrentId }, function (r) {
                     $('#modalLindo').find('.modal-body').empty().append(r);
@@ -254,23 +362,23 @@
 
             /*Botões*/
             $('#modalLindo').find('.modal-footer button').hide()
-
             $('#Fechar').show();
-
             $('#BuscarPlanejamentos').show();
+            $('#NovaAcao').show();
+
 
             if (!isNovaAcao) {
                 $('#NovoPlanejamento').show();
             }
-
-            //$('#NovaAcao').attr('disabled', true);
-            $('#NovaAcao').show();
             /*Fim Botões*/
 
         }
 
         function NovoPlanejamento() {//Pos Modal2
-            $('#Header').html("Novo Planejamento");
+            var title = $('#Header').html();
+            var title2 = " > Novo"
+
+            $('#Header').html(title + title2);
 
             $.get(urlNovoPlanejamento, function (r) {
                 $('#modalLindo').find('.modal-body').empty().append(r);
@@ -279,35 +387,38 @@
                 } else {
                     $('.novoItem ').show();
                 }
+                InitDatePiker();
             });
 
             /*Botões*/
             $('#modalLindo').find('.modal-footer button').hide()
-
             $('#Fechar2').show();
-            $('#Fechar2').off('click').on('click', ModalOpcoesEstrategico);
-
             $('#Salvar').show();
+
             $('#Salvar').off('click').on('click', SalvarPlanejamento);
+
+            $('#Fechar2').off('click').on('click', function () { ModalOpcoesEstrategico(title) });
             /*Fim Botões*/
         }
 
         function BuscarPlanejamentos() {//Pos Modal2
+
+            var title = $('#Header').html();
             $('#Header').html("Buscar Planejamento")
 
             $.get(urlBuscarPlanejamentos, function (r) {
                 $('#modalLindo').find('.modal-body').empty().append(r);
+                $('#filtrarPlanejamento').click();
             });
 
             /*Botões*/
             $('#modalLindo').find('.modal-footer button').hide()
-
             $('#Fechar2').show();
-            $('#Fechar2').off('click').on('click', ModalOpcoesEstrategico);
-
             $('#Selecionar').show();
             $('#Selecionar').prop('disabled', true);
             $('#Selecionar').off('click');
+
+            $('#Fechar2').off('click').on('click', function () { ModalOpcoesEstrategico(title) });
             /*Fim Botões*/
         }
 
@@ -317,6 +428,9 @@
                 //console.log(r);
                 planejamentoCorrentId = parseInt(r.Id);
                 ModalOpcoesEstrategico(r.Id);
+
+                $.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
+
             });
         }/*planejamentoCorrentId*/
 
@@ -331,6 +445,8 @@
             filtro["TemaAssunto_Id"] = $('#TemaAssunto_Id').val();
             filtro["ObjetivoGerencial_Id"] = $('#ObjetivoGerencial_Id').val();
             filtro["Indicadores_Id"] = $('#Indicadores_Id').val();
+            filtro["IndicadoresDeProjeto_Id"] = $('#IndicadoresDeProjeto_Id').val();
+            filtro["IndicadoresDiretriz_Id"] = $('#IndicadoresDiretriz_Id').val();
 
             $.post(urlFiltraPlanejamentos, filtro, function (r) {
                 $('#planejamentosFiltrado').empty().append(r);
@@ -355,72 +471,119 @@
         /*Fim Planejamento*/
 
         /*Acao*/
-        function ModalAcao(isOpenModal) {
+        function ModalAcao(isOpenModal, isFukingNewClicked) {
 
             if (!(planejamentoCorrentId > 0)) {
-                BuscarPlanejamentos(true);
+                BuscarPlanejamentos();
                 return;
+            } else {
+                if (!$('#body > table').length) {
+                    ModalOpcoesEstrategico('Planejamento Operacional');
+                }
             }
 
-            if (isOpenModal)
-                $('#modalLindo').modal();
+            if (isFukingNewClicked) {
 
-            $('#Header').html("Ação");
-            $('#modalLindo').find('.modal-body').empty();
+                if (isOpenModal)
+                    $('#modalLindo').modal();
 
-            $.get(urlNovaAcao, function (r) {
+                $('#Header').html("Nova Ação");
+                //$('#modalLindo').find('.modal-body').empty();
 
-                $('#modalLindo').find('.modal-body').append(r);
+                $.get(urlNovaAcao, function (r) {
 
-                $('#CausaMedidasXAcao_GrupoCausa_Id').empty().attr('disabled', true);
-                $('#CausaMedidasXAcao_ContramedidaGenerica_Id').empty().attr('disabled', true);
+                    $('#modalLindo').find('.modal-body').append('<hr>');
+                    $('#modalLindo').find('.modal-body').append(r);
+                    $('#CausaMedidasXAcao_GrupoCausa_Id').empty().attr('disabled', true);
+                    $('#CausaMedidasXAcao_ContramedidaGenerica_Id').empty().attr('disabled', true);
 
-                $('#CausaMedidasXAcao_CausaGenerica_Id').on('change', function () {
-                    var valor = $('#CausaMedidasXAcao_CausaGenerica_Id').val();
-                    if (valor) {
-                        $.get(GETGrupoCausa, { id: valor }, function (r) {
-                            $('#GrupoCausa').empty().html(r);
-                        });
-                        $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
-                            $('#ContramedidaGenerica').empty().html(rr);
-                        });
+                    myfunction();
+
+                    $('#new').click();
+                    if (isFukingNewClicked) {
+                        $('#new').show();
+                    } else {
+                        $('#new').hide();
                     }
-                    else {
-                        $('#CausaMedidasXAcao_GrupoCausa_Id').empty().attr('disabled', true);
-                        $('#CausaMedidasXAcao_ContramedidaGenerica_Id').empty().attr('disabled', true);
-                    }
+
                 });
 
-                AcaoXQuem_Quem_Id
-
-            });
-
-            /*Botões*/
-            $('#modalLindo').find('.modal-footer button').hide()
-            $('#Fechar').show();
-
-            $('#Salvar').show();
-            $('#Salvar').off('click').on('click', SalvarAcao);
-            /*Fim Botões*/
+                /*Botões*/
+                $('#modalLindo').find('.modal-footer button').hide()
+                $('#Fechar').show();
+                $('#Salvar').show();
+                $('#Salvar').off('click').on('click', SalvarAcao);
+                /*Fim Botões*/
+            }
         }
 
-        function dadosQuem() {
-            return {
-                id: $('#AcaoXQuem_Quem_Id').val()
-                , name: $('#AcaoXQuem_Quem_Id option:selected').text()
-                , display: $('#AcaoXQuem_Quem_Id option:selected').text()
-            }
+        function EditarAcao(html, data) {
+            $('#modalLindo').modal();
+            $('#Header').html("Editar Ação");
+            $('#modalLindo').find('.modal-body').empty().append(html);
+            myfunction();
+            $('#CausaMedidasXAcao_CausaGenerica_Id').val(data.Acao.CausaMedidasXAcao.CausaGenerica_Id).change();
+            //$('#CausaMedidasXAcao_CausaEspecifica').val(data.Acao.CausaMedidasXAcao.CausaEspecifica);
+            //$('#CausaMedidasXAcao_ContramedidaEspecifica').val(data.Acao.CausaMedidasXAcao.ContramedidaEspecifica);
+            $('[name="_QuandoInicio"]').val(data.Acao._QuandoInicio.split(" ")[0]);
+            $('[name="_QuandoFim"]').val(data.Acao._QuandoFim.split(" ")[0]);
+            $('#Status').val(data.Acao.Status);
+            $('#modalLindo').find('.modal-footer button').hide();
+            $('#Edit').show();
+            InitDatePiker();
+        }
+
+        function myfunction() {
+            $('[id=CausaMedidasXAcao_CausaGenerica_Id]').off('change').on('change', function () {
+                var valor = $(this).val();
+                var form = $(this).parents('form');
+                if (valor) {
+                    $.get(GETGrupoCausa, { id: valor }, function (r) {
+                        form.find('#GrupoCausa').empty().html(r);
+                    });
+                    $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
+                        form.find('#ContramedidaGenerica').empty().html(rr);
+                    });
+                }
+                else {
+                    form.find('#CausaMedidasXAcao_GrupoCausa_Id').empty().attr('disabled', true);
+                    form.find('#CausaMedidasXAcao_ContramedidaGenerica_Id').empty().attr('disabled', true);
+                }
+            });
         }
 
         function SalvarAcao() {
-            var sendObj = $('#Acao').serializeObject();
-            sendObj['Planejamento_Id'] = planejamentoCorrentId;
-            $.post(urlSalvarAcao, sendObj, function (r) {
-                //planejamentoCorrentId = parseInt(r.Id);
-                //ModalOpcoesEstrategico(planejamentoCorrentId);
-                //$('#modalLindo').modal("hide");
+
+            $('.Acao').not(':first').each(function (c, o) {
+
+                SalvarAcaoAvulsa(o);
+
             });
+
         }
+
+        function SalvarAcaoAvulsa(o) {
+
+            var sendObj = $(o).serializeObject();
+            sendObj['Panejamento_Id'] = planejamentoCorrentId;
+            sendObj['AcaoXQuem'] = [];
+
+            $('.quemClone').each(function (c, o) {
+                if ($(o).find('select').val())
+                    sendObj['AcaoXQuem'].push({ Quem_Id: $(o).find('select').val() });
+            });
+
+            $.post(urlSalvarAcao, sendObj, function (r) {
+                $.post(urlGetPlanejamentoAcao, {}, function (r) {
+                    GerarTabela(r);
+                });
+            });
+
+        }
+        function RemoveAcao(btn) {
+            $(btn).parents('#obj').remove();
+        }
+
         /*Fim Acao*/
 
         function Adicionar(btn) {
@@ -429,7 +592,7 @@
             var $clone;
             //if ($($tr).is("tr")) {
 
-                $clone = $tr.clone();
+            $clone = $tr.clone();
 
             //} else if ($($tr).is("td")) {
 
@@ -500,7 +663,8 @@
                     { title: "Dimenção", mData: "Dimensao" },
                     { title: "Tema / Assunto", mData: "TemaAssunto" },
                     { title: "Objetivo", mData: "Objetivo" },
-                    { title: "Indicadores", mData: "Indicadores" },
+                    { title: "Indicadores de Projeto", mData: "IndicadoresDeProjeto" },
+                    { title: "Indicadores diretriz", mData: "IndicadoresDiretriz" },
                     { title: "Objetivo Gerencial", mData: "ObjetivoGerencial" },
                     { title: "Valor de", mData: "ValorDe" },
                     { title: "Valor para", mData: "ValorPara" },
@@ -511,12 +675,12 @@
                     { title: "Tarefa SGQ", mData: null },
                     { title: "Unidade", mData: "Acao.Unidade" },
                     { title: "Departamento", mData: "Acao.Departamento" },
-                    { title: "Causa Genérica", mData: null },
-                    { title: "Grupo Causa", mData: null },
-                    { title: "Contramedida Genérica", mData: null },
-                    { title: "Causa Específica", mData: null },
-                    { title: "Contramedida Específica", mData: null },
-                    { title: "Quem", mData: "Acao._Quem" },
+                    { title: "Causa Genérica", mData: "Acao.CausaMedidasXAcao.CausaGenerica" },
+                    { title: "Grupo Causa", mData: "Acao.CausaMedidasXAcao.GrupoCausa" },
+                    { title: "Contramedida Genérica", mData: "Acao.CausaMedidasXAcao.ContramedidaGenerica" },
+                    { title: "Causa Específica", mData: "Acao.CausaMedidasXAcao.CausaEspecifica" },
+                    { title: "Contramedida Específica", mData: "Acao.CausaMedidasXAcao.ContramedidaEspecifica" },
+                    { title: "Quem", mData: "Acao._Quem[, ]" },
                     { title: "Quando (Início)", mData: "Acao._QuandoInicio" },
                     { title: "Duração", mData: "Acao.DuracaoDias" },
                     { title: "Quando (Fim)", mData: "Acao._QuandoFim" },
@@ -610,12 +774,12 @@
                         targets: 17,
                         visible: false
                     },
+                        {
+                            targets: 18,
+                            visible: false
+                        },
                     {
-                        targets: 19,
-                        visible: false
-                    },
-                    {
-                        targets: 23,
+                        targets: 20,
                         visible: false
                     },
                     {
@@ -623,11 +787,11 @@
                         visible: false
                     },
                     {
-                        targets: 27,
+                        targets: 25,
                         visible: false
                     },
                     {
-                        targets: 30,
+                        targets: 28,
                         visible: false
                     },
                     {
@@ -638,21 +802,19 @@
                         targets: 32,
                         visible: false
                     },
+                    {
+                        targets: 33,
+                        visible: false
+                    },
                 ],
                 initComplete: function () {
                     $('table > tbody > tr > td > p > span.glyphicon.glyphicon-edit').on('click', function (data, a, b) {
                         var data = table.row($(this).parents('tr')).data();
                         console.log(data);
-                        //$.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
-                        //    $('#estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
-                        //    $('#ResultLevel3_Id').val(r.Id);
-                        //    $('#changeConform').empty();
-                        //    $('#changeConform').append($(r.showIntervalos));
-                        //    $('#changeConform').append($(r.showConform));
-                        //    $('#changeConform').append($(r.showCalculado));
-                        //    $('#changeConform').append($(r.showNumeroDefeitos));
-                        //    console.log(r.Id);
-                        //});
+                        $.get(urlEditAcao, { id: data.Acao.Id },
+                              function (r) {
+                                  EditarAcao(r, data);
+                              });
                     });
 
                     $('table > tbody > tr > td > p > span.glyphicon.glyphicon-list-alt').on('click', function (data, a, b) {
@@ -697,7 +859,43 @@
                     }
                 },
                 createdRow: function (row, data, index) {
+                    try {
+                        var bgColorStatus = ""
+                        var bgColorPrazo = ""
+                        /*Status*/
+                        if (data.Acao.StatusName.indexOf("Cancelado") > -1) {
+                            bgColorStatus = "grey";
+                            bgColorPrazo = "rgb(126, 194, 253)";
+                        } else if (data.Acao.StatusName.indexOf('Ativo') > -1) {
+                            bgColorStatus = "#ADD8E6";
+                        } else if (data.Acao.StatusName.indexOf('Ativo') > -1 && data.Acao.StatusName.indexOf('Atrasado') > -1) {
+                            bgColorStatus = "#458fa8"
+                        } else if (data.Acao.StatusName.indexOf('Concluído') > -1 && data.Acao.StatusName.indexOf('Prazo') > -1) {
+                            bgColorPrazo = "rgb(126, 194, 253)";
+                            bgColorStatus = "cyan"
+                        } else if (data.Acao.StatusName.indexOf('Concluído') > -1 && data.Acao.StatusName.indexOf('Atrasado') > -1) {
+                            bgColorPrazo = "rgb(126, 194, 253)";
+                            bgColorStatus = "blue"
+                        } else if (data.Acao.StatusName.indexOf('Replanejado') > -1) {
+                            bgColorStatus = "yellow"
+                        }
+                        $(row.cells[9]).css("background", bgColorStatus);
 
+
+                        /*Prazo*/
+                        if (data.Acao.StatusName == "Cancelado") {
+                        } else if (data.Acao.StatusName.indexOf('Concluído') > -1) {
+                        } else if (data.Acao._Prazo.indexOf('Faltam') > -1) {
+                            bgColorPrazo = "#90EE90"
+                        } else if (data.Acao._Prazo.indexOf('-') > -1 && data.Acao._Prazo.indexOf(' Dias') > -1) {
+                            bgColorPrazo = "rgb(250, 128, 114)"
+                        }
+
+                        $(row.cells[10]).css("background", bgColorPrazo);
+
+                    } catch (e) {
+
+                    }
 
                 },
                 fnDrawCallback: function (data, d, o) {

@@ -169,6 +169,88 @@ namespace ADOFactory
             }
         }
 
+        public T InsertUpdateData<T>(T obj)
+        {
+            SqlCommand cmd = GetQuery(obj);
+
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = connection;
+            try
+            {
+                int newID;
+                newID = (int)cmd.ExecuteScalar();
+                obj.GetType().GetProperty("Id").SetValue(obj, newID);
+            }
+            catch (Exception ex)
+            {
+                //Response.Write(ex.Message);
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+                connection.Dispose();
+            }
+
+            return obj;
+        }
+
+        private static SqlCommand GetQuery<T>(T obj)
+        {
+            var query = "INSERT INTO " + obj.GetType().Name;
+            var queryProps = "(";
+            var queryValues = " VALUES (";
+
+            foreach (var item in obj.GetType().GetProperties())
+            {
+                if (item != null && item.Name != "Id" && item.Name != "AddDate" && item.Name != "AlterDate")
+                {
+                    if(obj.GetType().GetProperty(item.Name).GetValue(obj) == null)
+                        continue;
+
+                    if (item.PropertyType.Name == "String")
+                        if (string.IsNullOrEmpty(obj.GetType().GetProperty(item.Name).GetValue(obj) as string))
+                            continue;
+
+                    if (item.PropertyType.IsClass)
+                        continue;
+
+                    queryProps += "\n " + item.Name + ", ";
+                    queryValues += "\n @" + item.Name + ", ";
+                }
+            }
+
+            queryProps = queryProps.Substring(0, queryProps.LastIndexOf(", ")) + "\n )";
+            queryValues = queryValues.Substring(0, queryValues.LastIndexOf(", ")) + "\n )";
+
+            query += queryProps;
+            query += queryValues;
+            query += " \n SELECT CAST(scope_identity() AS int)";
+
+            SqlCommand cmd;
+            cmd = new SqlCommand(query);
+
+            foreach (var item in obj.GetType().GetProperties())
+            {
+                if (item != null && item.Name != "Id" && item.Name != "AddDate" && item.Name != "AlterDate")
+                {
+                    if (obj.GetType().GetProperty(item.Name).GetValue(obj) == null)
+                        continue;
+
+                    if (item.PropertyType.Name == "String")
+                        if (string.IsNullOrEmpty(obj.GetType().GetProperty(item.Name).GetValue(obj) as string))
+                            continue;
+
+                    if (item.PropertyType.IsClass)
+                        continue;
+
+                    cmd.Parameters.AddWithValue("@" + item.Name, obj.GetType().GetProperty(item.Name).GetValue(obj));
+                }
+            }
+
+            return cmd;
+        }
+
         public int ExecuteSql(string query)
         {
             try

@@ -43,6 +43,6 @@ namespace PlanoAcaoCore
             //    Salvar(query);
             //}
         }
-      
+
     }
 }

@@ -32,6 +32,39 @@ EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SgqEmailClientSetup", "..\..\..\Documents\Visual Studio 2015\Projects\SgqEmailClient\Setup1\Setup1.vdproj", "{297C0D9E-795C-4F9B-BE6D-74E3AF3D54AA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - PlanoAcao", "5 - PlanoAcao", "{716C9494-D29A-4CB7-AC2A-D6303127A795}"
+	ProjectSection(SolutionItems) = preProject
+		PlanoAcaoCore\Planejamento\Pa_AcaoXQuem.cs = PlanoAcaoCore\Planejamento\Pa_AcaoXQuem.cs
+		PlanoAcaoCore\Planejamento\Pa_CausaEspecifica.cs = PlanoAcaoCore\Planejamento\Pa_CausaEspecifica.cs
+		PlanoAcaoCore\Planejamento\Pa_CausaGenerica.cs = PlanoAcaoCore\Planejamento\Pa_CausaGenerica.cs
+		PlanoAcaoCore\Planejamento\Pa_CausaMedidaXAcao.cs = PlanoAcaoCore\Planejamento\Pa_CausaMedidaXAcao.cs
+		PlanoAcaoCore\Planejamento\Pa_ContramedidaEspecifica.cs = PlanoAcaoCore\Planejamento\Pa_ContramedidaEspecifica.cs
+		PlanoAcaoCore\Planejamento\Pa_ContramedidaGenerica.cs = PlanoAcaoCore\Planejamento\Pa_ContramedidaGenerica.cs
+		PlanoAcaoCore\Planejamento\Pa_Coordenacao.cs = PlanoAcaoCore\Planejamento\Pa_Coordenacao.cs
+		PlanoAcaoCore\Planejamento\Pa_Departamento.cs = PlanoAcaoCore\Planejamento\Pa_Departamento.cs
+		PlanoAcaoCore\Planejamento\Pa_Dimensao.cs = PlanoAcaoCore\Planejamento\Pa_Dimensao.cs
+		PlanoAcaoCore\Planejamento\Pa_Diretoria.cs = PlanoAcaoCore\Planejamento\Pa_Diretoria.cs
+		PlanoAcaoCore\Planejamento\Pa_Gerencia.cs = PlanoAcaoCore\Planejamento\Pa_Gerencia.cs
+		PlanoAcaoCore\Planejamento\Pa_GrupoCausa.cs = PlanoAcaoCore\Planejamento\Pa_GrupoCausa.cs
+		PlanoAcaoCore\Planejamento\Pa_Indicadores.cs = PlanoAcaoCore\Planejamento\Pa_Indicadores.cs
+		PlanoAcaoCore\Planejamento\Pa_IndicadoresDeProjeto.cs = PlanoAcaoCore\Planejamento\Pa_IndicadoresDeProjeto.cs
+		PlanoAcaoCore\Planejamento\Pa_IndicadoresDiretriz.cs = PlanoAcaoCore\Planejamento\Pa_IndicadoresDiretriz.cs
+		PlanoAcaoCore\Planejamento\Pa_Iniciativa.cs = PlanoAcaoCore\Planejamento\Pa_Iniciativa.cs
+		PlanoAcaoCore\Planejamento\Pa_Missao.cs = PlanoAcaoCore\Planejamento\Pa_Missao.cs
+		PlanoAcaoCore\Planejamento\Pa_Objetivo.cs = PlanoAcaoCore\Planejamento\Pa_Objetivo.cs
+		PlanoAcaoCore\Planejamento\Pa_ObjetivoGeral.cs = PlanoAcaoCore\Planejamento\Pa_ObjetivoGeral.cs
+		PlanoAcaoCore\Planejamento\Pa_Quem.cs = PlanoAcaoCore\Planejamento\Pa_Quem.cs
+		PlanoAcaoCore\Planejamento\Pa_Status.cs = PlanoAcaoCore\Planejamento\Pa_Status.cs
+		PlanoAcaoCore\Planejamento\Pa_TemaAssunto.cs = PlanoAcaoCore\Planejamento\Pa_TemaAssunto.cs
+		PlanoAcaoCore\Planejamento\Pa_Unidade.cs = PlanoAcaoCore\Planejamento\Pa_Unidade.cs
+		PlanoAcaoCore\Planejamento\Pa_Visao.cs = PlanoAcaoCore\Planejamento\Pa_Visao.cs
+		PlanoAcaoCore\Planejamento\PaEfConenction.Context.cs = PlanoAcaoCore\Planejamento\PaEfConenction.Context.cs
+		PlanoAcaoCore\Planejamento\PaEfConenction.Context.tt = PlanoAcaoCore\Planejamento\PaEfConenction.Context.tt
+		PlanoAcaoCore\Planejamento\PaEfConenction.cs = PlanoAcaoCore\Planejamento\PaEfConenction.cs
+		PlanoAcaoCore\Planejamento\PaEfConenction.Designer.cs = PlanoAcaoCore\Planejamento\PaEfConenction.Designer.cs
+		PlanoAcaoCore\Planejamento\PaEfConenction.edmx = PlanoAcaoCore\Planejamento\PaEfConenction.edmx
+		PlanoAcaoCore\Planejamento\PaEfConenction.edmx.diagram = PlanoAcaoCore\Planejamento\PaEfConenction.edmx.diagram
+		PlanoAcaoCore\Planejamento\PaEfConenction.tt = PlanoAcaoCore\Planejamento\PaEfConenction.tt
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanoAcaoCore", "PlanoAcaoCore\PlanoAcaoCore.csproj", "{9F15CCA3-EC01-46B6-91EC-3F408E7417BC}"
 EndProject

@@ -5,7 +5,6 @@ namespace PlanoAcaoCore
     public class Pa_Status : Pa_BaseObject
     {
         public string Name { get; set; }
-
         public static List<Pa_Status> Listar()
         {
             var query = "SELECT * FROM Pa_Status";

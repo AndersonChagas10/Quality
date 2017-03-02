@@ -1,7 +1,5 @@
-﻿using ADOFactory;
-using DTO.Helpers;
+﻿using DTO.Helpers;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace PlanoAcaoCore
 {
@@ -18,13 +16,13 @@ namespace PlanoAcaoCore
 
         public static List<Pa_ObjetivoGeral> Listar()
         {
-            var query = "SELECT * FROM Pa_ObjetivoGeral";
+            var query = "SELECT * FROM Pa_Iniciativa";
             return ListarGenerico<Pa_ObjetivoGeral>(query);
         }
 
         public static Pa_ObjetivoGeral Get(int Id)
         {
-            var query = "SELECT * FROM Pa_ObjetivoGeral WHERE Id = " + Id;
+            var query = "SELECT * FROM Pa_Iniciativa WHERE Id = " + Id;
             return GetGenerico<Pa_ObjetivoGeral>(query);
         }
 
@@ -43,5 +41,6 @@ namespace PlanoAcaoCore
             //    Salvar(query);
             //}
         }
+
     }
 }

@@ -27,6 +27,12 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 case "ObjetivoGerencial":
                     table = "Pa_ObjetivoGeral";
                     break;
+                case "IndicadoresDeProjeto":
+                    table = "Pa_IndicadoresDeProjeto";
+                    break;
+                case "IndicadoresDiretriz":
+                    table = "Pa_IndicadoresDiretriz";
+                    break;
                 default:
                     break;
             }

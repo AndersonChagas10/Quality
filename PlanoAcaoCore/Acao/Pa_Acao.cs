@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace PlanoAcaoCore
 {
@@ -10,104 +11,113 @@ namespace PlanoAcaoCore
     {
 
         [Display(Name = "Unidade")]
-        public int Unidade_Id { get; set; }
+        public int? Unidade_Id { get; set; }
         public string Unidade { get; set; }
 
         [Display(Name = "Departamento")]
-        public int Departamento_Id { get; set; }
+        public int? Departamento_Id { get; set; }
         public string Departamento { get; set; }
 
-        [Display(Name = "Quando início")]
-        public int Pa_CausaMedidasXAcao_Id { get; set; }
-
-        [Display(Name = "Quando início")]
-        public DateTime QuandoInicio { get; set; }
-       
-        public string _QuandoInicio { get; set; }
+        public int? Pa_CausaMedidasXAcao_Id { get; set; }
 
         [Display(Name = "Duracao dias")]
         public int DuracaoDias { get; set; }
 
-        [Display(Name = "Quando fim")]
-        public DateTime QuandoFim { get; set; }
-        public string _QuandoFim { get; set; }
-        //{
-        //    get
-        //    {
-        //        if (QuandoFim == null)
-        //            if (!string.IsNullOrEmpty(_QuandoFim))
-        //                return Guard.ParseDateToSqlV2(_QuandoFim);
-
-        //        return QuandoFim;
-        //    }
-        //    set
-        //    {
-        //        QuandoFim = value;
-        //    }
-        //}
-
         [Display(Name = "Como pontos importantes")]
         public string ComoPontosimportantes { get; set; }
+
         [Display(Name = "Predecessora")]
-        public int Predecessora_Id { get; set; }
-        [Display(Name = "pra que")]
+        public int? Predecessora_Id { get; set; }
+
+        [Display(Name = "Pra que")]
         public string PraQue { get; set; }
+
         [Display(Name = "Quanto custa")]
         public decimal QuantoCusta { get; set; }
+
         [Display(Name = "Status")]
         public int Status { get; set; }
+
         public string StatusName { get; set; }
-       
+
         [Display(Name = "Planejamento")]
         public int Panejamento_Id { get; set; }
 
-        //public List<Pa_CausaMedidasXAcao> CausaMedidasXAcao { get; set; }
-        //public List<Pa_AcaoXQuem> AcaoXQuem { get; set; }
+        [Display(Name = "Quando início")]
+        public DateTime QuandoInicio { get; set; }
+        public string _QuandoInicio { get; set; }
+
+        [Display(Name = "Quando fim")]
+        public DateTime QuandoFim { get; set; }
+        public string _QuandoFim { get; set; }
+
+        public List<Pa_AcaoXQuem> AcaoXQuem { get; set; }
+        public List<string> _Quem { get; set; }
+
         public Pa_CausaMedidasXAcao CausaMedidasXAcao { get; set; }
-        public Pa_AcaoXQuem AcaoXQuem { get; set; }
-        public string _Quem { get; set; }
-        public string _Prazo { get; set; }
+
+        public string _Prazo
+        {
+            get
+            {
+                if (QuandoFim == DateTime.MinValue)
+                    return "-";
+
+                if (!string.IsNullOrEmpty(StatusName))
+                    if (StatusName.Contains("Concluído"))
+                        return "Finalizado";
+
+                var agora = DateTime.Now;
+                if (QuandoFim > agora)
+                    return string.Format("Faltam {0} dias.", Math.Round((QuandoFim - agora).TotalDays));
+                else if (QuandoFim < agora)
+                    return string.Format("-{0} Dias", Math.Round((QuandoFim - agora).TotalDays));
+
+                return string.Empty;
+            }
+        }
 
         public void IsValid()
         {
             //Name = Guard.CheckStringFullSimple(Name);
         }
 
-      
+        private static string query
+        {
+            get
+            {
+                return "SELECT ACAO.* ,                                                     " +
+                        "\n STA.Name as StatusName,                                         " +
+                        "\n UN.Name as Unidade,                                             " +
+                        "\n DPT.Name as Departamento                                        " +
+                        "\n FROM pa_acao ACAO                                               " +
+                        "\n LEFT JOIN Pa_Unidade UN ON UN.Id = ACAO.Unidade_Id              " +
+                        "\n LEFT JOIN Pa_Departamento DPT ON DPT.Id = ACAO.Departamento_Id  " +
+                        "\n LEFT JOIN Pa_Status STA ON STA.Id = ACAO.[Status]               ";
+
+
+            }
+        }
 
         public static List<Pa_Acao> Listar()
-        {                                                                                   
-            var query = "SELECT ACAO.* ,                                                    "+
-                        "\n STA.Name as StatusName,                                         "+
-                        "\n UN.Name as Unidade,                                             "+
-                        "\n DPT.Name as Departamento,                                       "+
-                        "\n AXQ.*,                                                          "+
-                        "\n CMA.*                                                           "+
-                        "\n FROM pa_acao ACAO                                               "+
-                        "\n LEFT JOIN Pa_CausaMedidaXAcao CMA ON CMA.Acao_Id = ACAO.Id      "+
-                        "\n LEFT JOIN Pa_Unidade UN ON UN.Id = ACAO.Unidade_Id              "+
-                        "\n LEFT JOIN Pa_Departamento DPT ON DPT.Id = ACAO.Departamento_Id  "+
-                        "\n LEFT JOIN Pa_AcaoXQuem AXQ ON AXQ.Acao_Id = ACAO.Id             "+
-                        "\n LEFT JOIN Pa_Status STA ON STA.Id = ACAO.[Status];              ";
-            return ListarGenerico<Pa_Acao>(query);
+        {
+         
+            var retorno = ListarGenerico<Pa_Acao>(query);
+
+            foreach (var i in retorno)
+            {
+                i._Quem = Pa_Quem.GetQuemXAcao(i.Id).Select(r => r.Name).ToList();
+                i.CausaMedidasXAcao = Pa_CausaMedidasXAcao.GetByAcaoId(i.Id);
+                i._QuandoInicio = i.QuandoInicio.ToShortDateString() + " " + i.QuandoInicio.ToShortTimeString();
+                i._QuandoFim = i.QuandoFim.ToShortDateString() + " " + i.QuandoFim.ToShortTimeString();
+            }
+
+            return retorno;
         }
 
         public static Pa_Acao Get(int Id)
         {
-            var query = "SELECT ACAO.* ,                                                    " +
-                        "\n STA.Name as StatusName,                                         " +
-                        "\n UN.Name as Unidade,                                             " +
-                        "\n DPT.Name as Departamento,                                       " +
-                        "\n AXQ.*,                                                          " +
-                        "\n CMA.*                                                           " +
-                        "\n FROM pa_acao ACAO                                               " +
-                        "\n LEFT JOIN Pa_CausaMedidaXAcao CMA ON CMA.Acao_Id = ACAO.Id      " +
-                        "\n LEFT JOIN Pa_Unidade UN ON UN.Id = ACAO.Unidade_Id              " +
-                        "\n LEFT JOIN Pa_Departamento DPT ON DPT.Id = ACAO.Departamento_Id  " +
-                        "\n LEFT JOIN Pa_AcaoXQuem AXQ ON AXQ.Acao_Id = ACAO.Id             " +
-                        "\n LEFT JOIN Pa_Status STA ON STA.Id = ACAO.[Status] WHERE Id = " + Id;
-
-            return GetGenerico<Pa_Acao>(query);
+            return GetGenerico<Pa_Acao>(query + " WHERE ACAO.Id = " + Id);
         }
 
         public void AddOrUpdate()
@@ -154,31 +164,25 @@ namespace PlanoAcaoCore
                 //foreach (var i in CausaMedidasXAcao)
                 //    i.IsValid();
 
-                //foreach (var j in AcaoXQuem)
-                //    j.IsValid();
+                foreach (var j in AcaoXQuem)
+                    j.IsValid();
                 CausaMedidasXAcao.IsValid();
-                AcaoXQuem.IsValid();
+                //AcaoXQuem.IsValid();
 
                 query = "INSERT INTO [dbo].[Pa_Acao]" +
-              "\n        ([Unidade_Id]                            " +
-              "\n        ,[Departamento_Id]                       " +
-              "\n        ,[QuandoInicio]                          " +
+              "\n       ([QuandoInicio]                          " +
               "\n        ,[DuracaoDias]                           " +
               "\n        ,[QuandoFim]                             " +
               "\n        ,[ComoPontosimportantes]                 " +
-              "\n        ,[Predecessora_Id]                       " +
               "\n        ,[PraQue]                                " +
               "\n        ,[QuantoCusta]                           " +
               "\n        ,[Status]                                " +
               "\n        ,[Panejamento_Id])                       " +
               "\n  VALUES                                         " +
-              "\n        (@Unidade_Id                             " +
-              "\n        ,@Departamento_Id                        " +
-              "\n        ,@QuandoInicio                           " +
+              "\n        (@QuandoInicio                           " +
               "\n        ,@DuracaoDias                            " +
               "\n        ,@QuandoFim                              " +
               "\n        ,@ComoPontosimportantes                  " +
-              "\n        ,@Predecessora_Id                        " +
               "\n        ,@PraQue                                 " +
               "\n        ,@QuantoCusta                            " +
               "\n        ,@Status                                 " +
@@ -187,13 +191,10 @@ namespace PlanoAcaoCore
                 SqlCommand cmd;
                 cmd = new SqlCommand(query);
 
-                cmd.Parameters.AddWithValue("@Unidade_Id", Unidade_Id);
-                cmd.Parameters.AddWithValue("@Departamento_Id", Departamento_Id);
-                cmd.Parameters.AddWithValue("@QuandoInicio", Guard.ParseDateToSqlV2(_QuandoInicio));
+                cmd.Parameters.AddWithValue("@QuandoInicio", QuandoInicio);
                 cmd.Parameters.AddWithValue("@DuracaoDias", DuracaoDias);
-                cmd.Parameters.AddWithValue("@QuandoFim", Guard.ParseDateToSqlV2(_QuandoFim));
+                cmd.Parameters.AddWithValue("@QuandoFim", QuandoFim);
                 cmd.Parameters.AddWithValue("@ComoPontosimportantes", ComoPontosimportantes);
-                cmd.Parameters.AddWithValue("@Predecessora_Id", Predecessora_Id);
                 cmd.Parameters.AddWithValue("@PraQue", PraQue);
                 cmd.Parameters.AddWithValue("@QuantoCusta", QuantoCusta);
                 cmd.Parameters.AddWithValue("@Status", Status);
@@ -201,10 +202,21 @@ namespace PlanoAcaoCore
 
                 Id = Salvar(cmd);
 
+                var causaEsp = new Pa_CausaEspecifica() { Text = CausaMedidasXAcao.CausaEspecifica };
+                var contramedidaEsp = new Pa_ContramedidaEspecifica() { Text = CausaMedidasXAcao.ContramedidaEspecifica };
+                causaEsp.AddOrUpdate();
+                contramedidaEsp.AddOrUpdate();
+
+                CausaMedidasXAcao.CausaEspecifica_Id = causaEsp.Id;
+                CausaMedidasXAcao.ContramedidaEspecifica_Id = contramedidaEsp.Id;
+
                 CausaMedidasXAcao.Acao_Id = Id;
                 CausaMedidasXAcao.AddOrUpdate();
-                AcaoXQuem.Acao_Id = Id;
-                AcaoXQuem.AddOrUpdate();
+
+
+
+                //AcaoXQuem.Acao_Id = Id;
+                //AcaoXQuem.AddOrUpdate();
 
                 //foreach (var i in CausaMedidasXAcao)
                 //{
@@ -212,11 +224,11 @@ namespace PlanoAcaoCore
                 //    i.AddOrUpdate();
                 //}
 
-                //foreach (var j in AcaoXQuem)
-                //{
-                //    j.Acao_Id = Id;
-                //    j.AddOrUpdate();
-                //}
+                foreach (var j in AcaoXQuem)
+                {
+                    j.Acao_Id = Id;
+                    j.AddOrUpdate();
+                }
 
             }
         }

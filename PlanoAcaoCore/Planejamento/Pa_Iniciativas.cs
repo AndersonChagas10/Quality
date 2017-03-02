@@ -1,7 +1,5 @@
-﻿using ADOFactory;
-using DTO.Helpers;
+﻿using DTO.Helpers;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace PlanoAcaoCore
 {
