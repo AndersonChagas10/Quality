@@ -5,6 +5,7 @@
     var urlTabela = Url.Action("GetTabela", "api/GetIndicadoresUniManutencao");
     var urlGraficoEvolucao = Url.Action("CriaGraficoEvolucao", "api/GetIndicadoresUniManutencao");
     var urlGraficoAcumulado = Url.Action("CriaGraficoAcumulado", "api/GetIndicadoresUniManutencao");
+    var urlgraficoAcompanhamento = Url.Action("CriaGraficoAcompanhamento", "api/GetIndicadoresUniManutencao");
 }
 
 <style>
@@ -42,6 +43,10 @@
     #graficoDesvios {
         width: 50%;
         float: right;
+    }
+
+    #graficoAcompanhamento {
+        width: 100%;
     }
 
     #tabela th {
@@ -88,7 +93,7 @@
 
         <div id="FullScreen" style="float:right; font-size: 20px;">
             <button type="button" onclick="toggleFullScreen();" class="btn btn-default fa fa-arrows-alt"></button>
-        </div>   
+        </div>
         <div id="title"><h3></h3></div>
         <div id="load"></div>
         <div id="plotPrincipal"></div>
@@ -111,6 +116,30 @@
                 <div id="graficoDesvios" style="height:200px;"></div>
 
             </div>
+            <br />
+            <br />
+            <div id="terceiro">
+                <div class="dropdown" id="DropAcumulado" style="float:right; display:none;">
+                    <span class="redLabel">Mês:</span>
+                    <select class="form-control select2Init" style="width:210px" id="AcumuladoMouthId">
+                        <option value="1">Janeiro</option>
+                        <option value="2">Fevereiro</option>
+                        <option value="3">Março</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Maio</option>
+                        <option value="6">Junho</option>
+                        <option value="7">Julho</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Setembro</option>
+                        <option value="10">Outubro</option>
+                        <option value="11">Novembro</option>
+                        <option value="12">Dezembro</option>
+                    </select>
+                </div>
+
+                <div id="graficoAcompanhamento"></div>
+
+            </div>
         </div>
     </div>
 </div>
@@ -120,9 +149,10 @@
         var urlTabela = '@Html.Raw(urlTabela)'
         var urlGraficoEvolucao = '@Html.Raw(urlGraficoEvolucao)'
         var urlGraficoAcumulado = '@Html.Raw(urlGraficoAcumulado)'
+        var urlGraficoAcompanhamento = '@Html.Raw(urlgraficoAcompanhamento)'
         var dados = {};
         var legenda1 = "";
-        var tipoGrafico = "";      
+        var tipoGrafico = "";
 
         function getNome() {
 
@@ -149,7 +179,9 @@
         function Send(Toggle) {
 
             //Funçoes para destruir os graficos
-
+            $('#graficoAcompanhamento').empty();
+            $('#DropAcumulado').hide();
+            
             if (!ValidaDadosParaEnvio()) {
                 $btn.button('reset');
                 return;
@@ -169,6 +201,11 @@
 
                 //Funçao para criar a tabela
                 GetTabela(dados);
+
+                if ($("#tipoRelatorio :selected").val() == 'Por Unidade') {          
+                    GetGraficoAcompanhamento();
+                  
+                }
             }
 
             $("#title h3").text("Painel de Indicadores de " + $("#showIndicadoresManutencao input:radio:checked").val() + " - " + getNome())
@@ -228,7 +265,7 @@
                 ordemDoIndicador = "↓";
             }
 
-            var dado = MapeiaValorParaHC(retornoArray, 'dado')
+            var dado = MapeiaValorParaHC(retornoArray, 'dado');
             var realizado = MapeiaValorParaHC(retornoArray, 'realizado');
             var orcado = MapeiaValorParaHC(retornoArray, 'orcado');
             var desvio = MapeiaValorParaHC(retornoArray, 'desvio');
@@ -312,7 +349,7 @@
 
             CallbackGraficoEvolucao(orcado, realizado, dado);
             CallbackGraficoAcumulado(orcado, realizado, desvio);
-            CallbackGraficoDesvio(realizado, orcado, dado);
+            CallbackGraficoDesvio(realizado, orcado, dado);            
 
         }
 
@@ -392,7 +429,7 @@
                     categories: dado,
                     crosshair: true,
                     title: {
-                        text: legenda1, 
+                        text: legenda1,
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -437,7 +474,7 @@
                         color: Highcharts.getOptions().colors[0],
                     },
                     {
-                        type: tipoGrafico, 
+                        type: tipoGrafico,
                         name: 'Orçado',
                         data: orcado, //Colocar o array de orçado
                         color: Highcharts.getOptions().colors[3],
@@ -764,6 +801,109 @@
 
         }
 
+        //Ajax grafico Acompanhamento
+        function GetGraficoAcompanhamento() {
+
+            var dadosAcompanhamento = {
+                "tipoRelatorio": $("#tipoRelatorio :selected").val(),
+                "indicador": $("#showIndicadoresManutencao input:radio:checked").val(),
+                "unidade": $('#UnidadeId :selected').text(),
+                "regional": $('#RegionalId :selected').val(),
+                "subRegional": $('#SubRegionalId :selected').text(),
+                "ano": $('#yearId :selected').val(),
+                "mes": $('#AcumuladoMouthId :selected').val()
+            }
+
+            EasyAjax(urlGraficoAcompanhamento, dadosAcompanhamento, CallbackGraficoAcompanhamento, "graficoAcompanhamento");
+        }
+
+        //Gera grafico Acompanhamento
+        function CallbackGraficoAcompanhamento(retornoArray) {
+
+            var dia = MapeiaValorParaHC(retornoArray, 'diaMes');
+            var real = MapeiaValorParaHC(retornoArray, 'real');
+            var targetAjustado = MapeiaValorParaHC(retornoArray, 'targetAjustado');
+            var budget = MapeiaValorParaHC(retornoArray, 'budget');
+
+            var budget2 = SomaVetor(budget);
+
+            $('#DropAcumulado').show();
+
+            $('#graficoAcompanhamento').empty().highcharts({
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    //type: 'spline'
+                    zoomType: 'xy'
+                },
+                title: {
+                    text: 'Acompanhamento Diário'
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: [{
+                    //type: 'String',
+                    title: {
+                        text: 'Dia'
+                    },
+                    //min: 1
+                    categories: dia
+                }],
+                yAxis: {
+                    title: {
+                        text: 'Valor'
+                    },
+                    min: 0,
+                    plotLines: [{
+                        value: budget2,
+                        width: 2,
+                        color: 'black',
+                        dashStyle: 'dash',
+                        zIndex: 0,
+                        label: {
+                            text: '<b>Budget ' + budget2 + '</b>',
+                            align: 'right',
+                            y: -10,
+                            x: 0
+                        }
+                    }]
+                },
+                //tooltip: {
+                //    headerFormat: '<b>{series.name}</b><br>',
+                //    pointFormat: 'Dia {point.x}: {point.y:.2f}'
+                //},
+                tooltip: {
+                    headerFormat: '<b>Dia {point.x}</b><br>',
+                    crosshairs: true,
+                    shared: true
+                },
+                plotOptions: {
+                    line: {
+                        marker: {
+                            enabled: true
+                        },
+                        dataLabels: {
+                            enabled: true
+                        },
+                        enableMouseTracking: true
+                    }
+                },
+                series: [{
+                    type: 'spline',
+                    name: 'Real',
+                    data: real
+
+                },
+                {
+                    type: 'spline',
+                    name: 'Target Ajustado',
+                    data: targetAjustado
+                }]
+            });
+        }
+
         /*Auxiliares*/
         function EasyAjax(url, dados, callback, loader) {
 
@@ -811,11 +951,11 @@
         }
 
         $(document).ready(function () {
-          
+
             $("#mouthId").prop('disabled', true);
 
             legenda1 = 'Meses';
-           
+
             $('#btnSend').hide();
 
             tipoGrafico = 'spline';
@@ -929,6 +1069,12 @@
             $('#mouthId').change(function () {
                 if (ConfirmaEnvio()) {
                     Send();
+                }
+            });
+
+            $('#AcumuladoMouthId').change(function () {
+                if (ConfirmaEnvio()) {
+                    GetGraficoAcompanhamento();
                 }
             });
 

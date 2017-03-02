@@ -2535,6 +2535,7 @@ namespace SgqSystem.Services
 
             //Instanciamos a Classe ParLevel01 Dapper
             var ParLevel1DB = new SGQDBContext.ParLevel1();
+            var ParCounterDB = new SGQDBContext.ParCounter();
             //Inicaliza ParLevel1VariableProduction
             var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction();
 
@@ -2651,7 +2652,14 @@ namespace SgqSystem.Services
                             }
                         }
 
+                        var listCounter = ParCounterDB.GetParLevelXParCounterList(parlevel1.Id, 0, 1, "level1_line");
 
+                        string painelCounters = "";
+
+                        if (listCounter != null)
+                        {
+                            painelCounters = html.painelCounters(listCounter, "margin-top: 40px;font-size: 12px;");
+                        }
 
                         string level01 = html.level1(parlevel1,
                                                      tipoTela: tipoTela,
@@ -2670,7 +2678,7 @@ namespace SgqSystem.Services
                                                      volumeAlertaIndicador: volumeAlerta,
                                                      metaIndicador: meta);
                         //Incrementa level1
-                        parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row", outerhtml: level01);
+                        parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row", outerhtml: level01+ painelCounters);
                     }
                     else
                     {
@@ -2833,6 +2841,8 @@ namespace SgqSystem.Services
                 //                        style: "text-align:center"
                 //                    );
 
+                //**inserir contadores
+
                 headerCounter = html.div(
                                     //aqui vai os botoes
                                     outerhtml: headerCounter,
@@ -2933,6 +2943,15 @@ namespace SgqSystem.Services
                                             HasSampleTotal: parlevel2.HasSampleTotal,
                                             IsEmptyLevel3: parlevel2.IsEmptyLevel3);
 
+                var listLineCounter = ParCounterDB.GetParLevelXParCounterList(0, parlevel2.Id, 2, "level2_line");
+
+                string lineCounters = "";
+
+                if (listLineCounter != null)
+                {
+                    lineCounters = html.painelCounters(listLineCounter, "margin-top: 45px;font-size: 12px;");
+                }
+
                 //Gera linha do Level2
                 ParLevel2List += html.listgroupItem(
                                                     id: parlevel2.Id.ToString(),
@@ -2940,7 +2959,8 @@ namespace SgqSystem.Services
                                                     outerhtml: level2 +
                                                                counters +
                                                                buttons +
-                                                               html.div(classe: "level2Debug")
+                                                               html.div(classe: "level2Debug")+
+                                                               lineCounters
                                                     );
 
 
@@ -3205,7 +3225,8 @@ namespace SgqSystem.Services
 
             var variableList = ParLevel1VariableProductionDB.getVariable(ParLevel1.Id).ToList();
 
-            var listCounter = ParCounterDB.GetParLevelXParCounterList(0, ParLevel2.Id, 2, "level3_header");
+            var listCounter = ParCounterDB.GetParLevelXParCounterList(0, ParLevel2.Id, 2, "level3_header").ToList();
+            listCounter.AddRange(ParCounterDB.GetParLevelXParCounterList(ParLevel1.Id, 0, 1, "level3_header").ToList());
 
             if (variableList.Count > 0)
             {
@@ -3732,6 +3753,8 @@ namespace SgqSystem.Services
                                                         classe: "row"
                                                     );
                     }
+
+                    //*inserir contador
 
                     parLevel3Group += level3Group;
 
