@@ -84,7 +84,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                             "\n , Uni.EmpresaSigla dado " +
                             "\n , isnull(Base.Realizado, 0) Realizado " +
                             "\n , isnull(Base.Orcado, 0)    Orcado " +
-                        "\n FROM DimManBaseUni Uni " +
+                        "\n FROM (Select distinct ParCompany_id, EmpresaSigla, DimManBaseReg_id, EmpresaRegional, DimManBaseRegGrup_id, EmpresaRegionalGrupo, EmpresaCluster from DimManBaseUni where ParCompany_id is not null) Uni " +
                         "\n JOIN( " +
                             "SELECT Man.Base_parCompany_id, " +
                                     "\n SUM(ISNULL(CASE " +
