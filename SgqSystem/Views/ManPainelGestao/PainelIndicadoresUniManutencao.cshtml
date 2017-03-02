@@ -118,7 +118,7 @@
             </div>
             <br />
             <br />
-            <div id="terceiro">
+            <div id="terceiro" style="height:600px; display:none;">
                 <div id="Acumulado">
 
                     <div id="Export" style="float:left; width:100px; display:none;">
@@ -126,7 +126,7 @@
                         <button id="BtnExport" type="button" class="btn btn-default" style="width:80px;">Extrair</button>
                     </div>
 
-                    <div class="dropdown" id="DropAcumulado" style="float:right; display:none;">
+                    <div class="dropdown" id="DropAcumulado" style="float:right;">
                         <span class="redLabel">Mês:</span>
                         <select class="form-control select2Init" style="width:210px" id="AcumuladoMouthId">
                             <option value="1">Janeiro</option>
@@ -145,7 +145,7 @@
                     </div>
                 </div>
 
-                <div id="graficoAcompanhamento"></div>
+                <div id="graficoAcompanhamento" style="height:400px;"></div>
 
                 <table id="TableExport" class="display" cellspacing="0" style="display:none"></table>
 
@@ -190,7 +190,7 @@
 
             //Funçoes para destruir os graficos
             $('#graficoAcompanhamento').empty();
-            $('#DropAcumulado').hide();
+            $('#terceiro').hide();
             //$('#Export').hide();
 
             if (!ValidaDadosParaEnvio()) {
@@ -842,7 +842,7 @@
 
             var budget2 = SomaVetor(budget);
 
-            $('#DropAcumulado').show();
+            $('#terceiro').show();
             //$('#Export').show();
 
             //Gera o grafico
