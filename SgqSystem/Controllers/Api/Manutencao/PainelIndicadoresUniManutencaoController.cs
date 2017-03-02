@@ -196,7 +196,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                         "\n left join ManCalendario on[ManColetaDados].Base_dateRef = ManCalendario.Data " +
                         "\n where " +
                         "\n convert(varchar(7),[ManColetaDados].Base_dateRef,120) = convert(varchar(7),DATEFROMPARTS('" + obj.ano + "','" + obj.mes + "',01),120)  " +
-                        //"\n and[ManColetaDados].Base_parCompany_id = " + obj.unidade + " " +
+                        "\n and[ManColetaDados].Base_parCompany_id in (SELECT id FROM ParCompany WHERE Name = '" + obj.unidade + "')" +
                         "\n and ManCalendario.DiaUtil = 1 " +
                         "\n group by day(Base_dateRef) " +
                         "\n order by 1,2";
