@@ -35,6 +35,46 @@ namespace SgqSystem.Controllers.Api.Manutencao
                     indicador.Add("Consumo Agua m³");
                     indicador.Add("Bois Abatidos");
                     break;
+                case "Rend.(Sebo+Farinha)":
+                    indicador.Add("Consumo Agua m³");
+                    indicador.Add("Bois Abatidos");
+                    break;
+                case "Sebo Flotado":
+                    indicador.Add("Litros de Sebo");
+                    indicador.Add("Bois Abatidos");
+                    break;
+                case "Disponibilidade Ab":
+                    indicador.Add("Nº Hrs Disponíveis Trabalhar Ab");
+                    indicador.Add("Parada Abate (min)");
+                    break;
+                case "Disponibilidade Des":
+                    indicador.Add("Nº Hrs Disponíveis Trabalhar Des");
+                    indicador.Add("Parada Des. (min)");
+                    break;
+                case "Eficiên.Programção":
+                    indicador.Add("Nº OS Programadas");
+                    indicador.Add("Nº OS Executadas");
+                    break;
+                case "Apropr Planej...to":
+                    indicador.Add("Nº OS Planejadas");
+                    indicador.Add("Nº OS Programadas");
+                    break;
+                case "Apropriação de O.S":
+                    indicador.Add("Nº Hrs Apropriadas OS");
+                    indicador.Add("Nº Hrs Disponíveis Trabalhar");
+                    break;
+                case "Absenteísmo":
+                    indicador.Add("Nº Colaboradores Registrados");
+                    indicador.Add("Nº Colaboradores Ausentes");
+                    break;
+                case "Rotatividade":
+                    indicador.Add("Nº Colaboradores Registrados");
+                    indicador.Add("Nº Colaboradores Desligados");
+                    break;
+                case "Devoluções %":
+                    indicador.Add("Total Vendas R$");
+                    indicador.Add("Total Devolvido R$");
+                    break;
                 default:
                     break;
             }
@@ -146,14 +186,15 @@ namespace SgqSystem.Controllers.Api.Manutencao
                     {
                         vetor0.lista = e;
                     }
-                    else if(i == 1)
+                    else if (i == 1)
                     {
                         vetor1.lista = e;
-                    } else if (i == 2)
+                    }
+                    else if (i == 2)
                     {
                         vetor2.lista = e;
                     }
-                   
+
 
                 }
 
@@ -165,7 +206,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
             if (vetor1.lista != null)
             {
-            
+
                 for (int i = 0; i < vetor1.lista.Count; i++)
                 {
                     f[i].dado = vetor1.lista[i].dado;
@@ -189,7 +230,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                     }
 
                 }
-            } 
+            }
 
             foreach (var item in f)
             {
