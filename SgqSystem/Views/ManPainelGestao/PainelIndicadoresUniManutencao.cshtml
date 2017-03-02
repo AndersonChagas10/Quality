@@ -119,25 +119,35 @@
             <br />
             <br />
             <div id="terceiro">
-                <div class="dropdown" id="DropAcumulado" style="float:right; display:none;">
-                    <span class="redLabel">Mês:</span>
-                    <select class="form-control select2Init" style="width:210px" id="AcumuladoMouthId">
-                        <option value="1">Janeiro</option>
-                        <option value="2">Fevereiro</option>
-                        <option value="3">Março</option>
-                        <option value="4">Abril</option>
-                        <option value="5">Maio</option>
-                        <option value="6">Junho</option>
-                        <option value="7">Julho</option>
-                        <option value="8">Agosto</option>
-                        <option value="9">Setembro</option>
-                        <option value="10">Outubro</option>
-                        <option value="11">Novembro</option>
-                        <option value="12">Dezembro</option>
-                    </select>
+                <div id="Acumulado">
+
+                    <div id="Export" style="float:left; width:100px; display:none;">
+                        <span class="redLabel">Exportar:</span>
+                        <button id="BtnExport" type="button" class="btn btn-default" style="width:80px;">Extrair</button>
+                    </div>
+
+                    <div class="dropdown" id="DropAcumulado" style="float:right; display:none;">
+                        <span class="redLabel">Mês:</span>
+                        <select class="form-control select2Init" style="width:210px" id="AcumuladoMouthId">
+                            <option value="1">Janeiro</option>
+                            <option value="2">Fevereiro</option>
+                            <option value="3">Março</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Maio</option>
+                            <option value="6">Junho</option>
+                            <option value="7">Julho</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Setembro</option>
+                            <option value="10">Outubro</option>
+                            <option value="11">Novembro</option>
+                            <option value="12">Dezembro</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div id="graficoAcompanhamento"></div>
+
+                <table id="TableExport" class="display" cellspacing="0" style="display:none"></table>
 
             </div>
         </div>
@@ -181,7 +191,8 @@
             //Funçoes para destruir os graficos
             $('#graficoAcompanhamento').empty();
             $('#DropAcumulado').hide();
-            
+            //$('#Export').hide();
+
             if (!ValidaDadosParaEnvio()) {
                 $btn.button('reset');
                 return;
@@ -202,9 +213,9 @@
                 //Funçao para criar a tabela
                 GetTabela(dados);
 
-                if ($("#tipoRelatorio :selected").val() == 'Por Unidade') {          
+                if ($("#tipoRelatorio :selected").val() == 'Por Unidade') {
                     GetGraficoAcompanhamento();
-                  
+
                 }
             }
 
@@ -345,11 +356,11 @@
                 porcDesvioTotal = 0;
 
             //Adiciona "dataTables_scrollFoot" na DataTable
-            $(".dataTables_scroll").append('<div class="dataTables_scrollFoot" style="font-size: 11px;><div class="dataTables_scrollFootInner"><table class="display no-footer dataTable" cellspacing="0" role="grid"><thead><tr role="row"><th class="dt-center sorting_disabled" rowspan="1" colspan="1">Total</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">' + formatReal(Math.round(SomaVetor(orcado) * 100) / 100) + '</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">' + formatReal(Math.round(SomaVetor(realizado) * 100) / 100) + '</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1"><i>' + formatReal(Math.round(SomaVetor(desvio) * 100) / 100) + '</i></th><th class="dt-center sorting_disabled" rowspan="1" colspan="1"><i>' + Math.round(porcDesvioTotal * 100) / 100 + '%</i></th></tr></thead></table></div></div>');
+            $("#primeiro .dataTables_scroll").append('<div class="dataTables_scrollFoot" style="font-size: 11px;><div class="dataTables_scrollFootInner"><table class="display no-footer dataTable" cellspacing="0" role="grid"><thead><tr role="row"><th class="dt-center sorting_disabled" rowspan="1" colspan="1">Total</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">' + formatReal(Math.round(SomaVetor(orcado) * 100) / 100) + '</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">' + formatReal(Math.round(SomaVetor(realizado) * 100) / 100) + '</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1"><i>' + formatReal(Math.round(SomaVetor(desvio) * 100) / 100) + '</i></th><th class="dt-center sorting_disabled" rowspan="1" colspan="1"><i>' + Math.round(porcDesvioTotal * 100) / 100 + '%</i></th></tr></thead></table></div></div>');
 
             CallbackGraficoEvolucao(orcado, realizado, dado);
             CallbackGraficoAcumulado(orcado, realizado, desvio);
-            CallbackGraficoDesvio(realizado, orcado, dado);            
+            CallbackGraficoDesvio(realizado, orcado, dado);
 
         }
 
@@ -824,11 +835,17 @@
             var real = MapeiaValorParaHC(retornoArray, 'real');
             var targetAjustado = MapeiaValorParaHC(retornoArray, 'targetAjustado');
             var budget = MapeiaValorParaHC(retornoArray, 'budget');
+            var userAdd = MapeiaValorParaHC(retornoArray, 'userAdd');
+            var userAlter = MapeiaValorParaHC(retornoArray, 'userAlter');
+            var linha = [];
+            var dataTableVetor = [];
 
             var budget2 = SomaVetor(budget);
 
             $('#DropAcumulado').show();
+            //$('#Export').show();
 
+            //Gera o grafico
             $('#graficoAcompanhamento').empty().highcharts({
                 credits: {
                     enabled: false
@@ -902,6 +919,64 @@
                     data: targetAjustado
                 }]
             });
+
+            //for (var i = 0; i < dia.length; i++) {
+            //    linha[0] = dia[i];
+            //    linha[1] = userAdd[i];
+            //    linha[2] = userAlter[i];
+            //    linha[3] = formatReal(Math.round(real[i] * 100) / 100);
+
+            //    dataTableVetor.push(linha);
+
+            //    linha = [];
+            //}
+
+            ////Gera a tabela
+            //var table = $('#TableExport').empty().DataTable({
+            //    data: dataTableVetor,
+            //    columns: [
+            //    { title: "data" },
+            //    { title: "User Create" },
+            //    { title: "User Alter" },
+            //    { title: "Valor Coleta" }
+            //    ],
+            //    buttons: [
+            //{ extend: 'create', editor: editor },
+            //{ extend: 'edit', editor: editor },
+            //{ extend: 'remove', editor: editor },
+            //{
+            //    extend: 'collection',
+            //    text: 'Export',
+            //    buttons: [
+            //        'copy',
+            //        'excel',
+            //        'csv',
+            //        'pdf',
+            //        'print'
+            //    ]
+            //}
+            //    ],
+            //    fixedHeader: {
+            //        header: true,
+            //        footer: true
+            //    },
+            //    "searching": false,
+            //    "ordering": false,
+            //    "scrollX": true,
+            //    "autoWidth": false,
+            //    "scrollCollapse": true,
+            //    "scrollY": "250px",
+            //    lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+            //    //pageLength: 12,
+            //    responsive: true,
+            //    paginate: false,
+            //    //paging: false,
+            //    //bSort: false,
+            //    loadingRecords: true,
+            //    destroy: true,
+            //    info: false,
+
+            //});
         }
 
         /*Auxiliares*/

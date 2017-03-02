@@ -206,17 +206,6 @@ namespace SgqSystem.Controllers.Api.Manutencao
                 list = db.Database.SqlQuery<Acompanhamento>(query2).ToList();
             }
 
-            //for (int i = 0; i < 30; i++)
-            //{
-            //    Acompanhamento acompanhamento = new Acompanhamento();
-            //    acompanhamento.diaMes = i + 1;
-            //    acompanhamento.real = i + 1;
-            //    acompanhamento.targetAjustado = i + 2;
-            //    list.Add(acompanhamento);
-            //}
-
-            //list[0].budget = 10;
-
             return list;
         }
     }
@@ -251,5 +240,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
         public decimal? real { get; set; }
         public decimal? targetAjustado { get; set; }
         public decimal? budget { get; set; }
+        public string userAdd { get; set; }
+        public string userAlter { get; set; }
     }
 }
