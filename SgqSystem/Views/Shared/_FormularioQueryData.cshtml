@@ -333,12 +333,12 @@
 
                 <div>
                     <span class="redLabel">@Resources.Resource.level2</span>
-                        <select data-ng-model="level2Value" 
-                                @*data-ng-disabled="!level2"*@
-                                data-ng-options="s.Id as s.Name for s in level2"
-                                data-ng-change="GetListLevel3VinculadoLevel2()" class="form-control" style="width:210px">
-                            <option value="">@Resources.Resource.select</option>
-                        </select>
+                    <select data-ng-model="level2Value"
+                            @*data-ng-disabled="!level2"*@
+                            data-ng-options="s.Id as s.Name for s in level2"
+                            data-ng-change="GetListLevel3VinculadoLevel2()" class="form-control" style="width:210px">
+                        <option value="">@Resources.Resource.select</option>
+                    </select>
                 </div>
 
                 <div>
@@ -559,8 +559,51 @@
                     </tr>
                     <tr>
                         <td><label class="radio"><input type="radio" name="optradio" value="Consumo Agua m³">Consumo Agua m³</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Custo Fixo Utilidades">Custo Fixo Utilidades</label></td>
                     </tr>
-                    @*<tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Litros de Sebo">Litros de Sebo</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Bois Processados">Bois Processados</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Mcal">Mcal</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Custo Fixo Manutenção">Custo Fixo Manutenção</label></td>
+                    </tr>
+
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Energia R$ (Fixo)">Energia R$ (Fixo)</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Energia R$ (Variável)">Energia R$ (Variável)</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Demanda Ponta">Demanda Ponta</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Demanda Fora de Ponta">Demanda Fora de Ponta</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Kg Lenha (Cavaco)">Kg Lenha (Cavaco)</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Nº OS Programadas">Nº OS Programadas</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Nº OS Executadas">Nº OS Executadas</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Total Devolvido R$">Total Devolvido R$</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Nº OS Planejadas">Nº OS Planejadas</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Nº Hrs Apropriadas OS">Nº Hrs Apropriadas OS</label></td>                      
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Nº Hrs Disponíveis Trabalhar">Nº Hrs Disponíveis Trabalhar</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Nº Colaboradores Registrados">Nº Colaboradores Registrados</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Nº Colaboradores Ausentes">Nº Colaboradores Ausentes</label></td>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Nº Colaboradores Desligados">Nº Colaboradores Desligados</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="radio"><input type="radio" name="optradio" value="Total Vendas R$">Total Vendas R$</label></td>
+                    </tr>
+
+                    @*
+                        <tr>
                             <td><label class="radio"><input type="radio" name="optradio" value="Scorecard M. Amb">Scorecard M. Amb</label></td>
                             <td><label class="radio"><input type="radio" name="optradio" value="Taxa de Frequência">Taxa de Frequência</label></td>
                         </tr>*@
@@ -589,7 +632,7 @@
     var GetListLevel2VinculadoLevel1 = @Html.Raw(Json.Encode(GetListLevel2VinculadoLevel1));
     var GetListLevel3VinculadoLevel2 = @Html.Raw(Json.Encode(GetListLevel3VinculadoLevel2));
     var GetListLevel3VinculadoLevel2Level1 = @Html.Raw(Json.Encode(GetListLevel3VinculadoLevel2Level1));
-    
+
 
     /*
     START ANGULAR MODULE
@@ -630,7 +673,7 @@
                 if ($scope.level1Value) {
                     $http({
                         method: 'POST',
-                        url: GetListLevel2VinculadoLevel1 + "/" + $scope.level1Value, 
+                        url: GetListLevel2VinculadoLevel1 + "/" + $scope.level1Value,
                         //data: JSON.stringify({ Id: $scope.level1Value })
                     }).
                     then(function (r) {
@@ -660,7 +703,7 @@
                         $scope.level3 = r.data;
                     });
                 }
-                //Defining the $http service for getting Level3 By Level2 and Level1
+                    //Defining the $http service for getting Level3 By Level2 and Level1
                 else if  ($scope.level2Value && $scope.level1Value) {
                     $http({
                         method: 'POST',
