@@ -658,11 +658,11 @@
                     colorByPoint: true,
                     data: [{
                         name: 'Orcado',
-                        y: Math.round(SomaVetor(orcado), -2),
+                        y: Math.round(SomaVetor(orcado) * 100) / 100,
                         drilldown: null
                     }, {
                         name: 'Real',
-                        y: Math.round(SomaVetor(realizado), -2),
+                        y: Math.round(SomaVetor(realizado) * 100) / 100,
                         drilldown: null
                     }, somaDesvio
                     //{
@@ -1081,7 +1081,7 @@
 
             }).change();
 
-            $("#indicadores label").on("click", function () {
+            $("#indicadores input:radio").on("click", function () {
                 if (ConfirmaEnvio()) {
                     Send();
                 }
