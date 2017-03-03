@@ -27,7 +27,7 @@ namespace SgqSystem.Controllers.Manutencao
             List<SubRegional> subRegionais;
             List<Unidade> unidades;
 
-            string query = "SELECT DISTINCT ISNULL(YEAR(BASE_DATEREF),YEAR(BASE_DATEADD)) Ano FROM MANCOLETADADOS";
+            string query = "SELECT DISTINCT ISNULL(YEAR(BASE_DATEREF),YEAR(BASE_DATEADD)) Ano FROM MANCOLETADADOS order by 1 desc";
             anos = db.Database.SqlQuery<Date>(query).ToList();
             ViewBag.Anos = anos;
 
