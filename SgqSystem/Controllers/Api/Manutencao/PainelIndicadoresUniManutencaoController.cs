@@ -18,6 +18,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
             PainelIndicadoresUniManutencaoDTO manColeta;
 
             List<string> indicador = new List<string>();
+            var tipoCalculo = "normal";
 
             indicador.Add(obj.indicador);
 
@@ -75,11 +76,31 @@ namespace SgqSystem.Controllers.Api.Manutencao
                     indicador.Add("Total Vendas R$");
                     indicador.Add("Total Devolvido R$");
                     break;
+
+                //Media
+                case "Taxa de Frequência":
+                    indicador.Add("Taxa de Frequência");
+                    indicador.Add("Taxa de Frequência");
+                    tipoCalculo = "media";
+                    break;
+                case "Pilar Manutenção":
+                    indicador.Add("Pilar Manutenção");
+                    indicador.Add("Pilar Manutenção");
+                    tipoCalculo = "media";
+                    break;
+                case "CARTA METAS":
+                    indicador.Add("CARTA METAS");
+                    indicador.Add("CARTA METAS");
+                    tipoCalculo = "media";
+                    break;
+
+                case "Head Count":
+                    indicador.Add("Head Count");
+                    indicador.Add("Head Count");
+                    break;
                 default:
                     break;
             }
-
-
 
             var numeroDeVariaveis = indicador.Count;
 
@@ -93,8 +114,8 @@ namespace SgqSystem.Controllers.Api.Manutencao
                 string parametro = indicador[i];
                 var realizado = "";
                 var orcado = "";
-                List<obj> d;
-                List<obj2> e;
+                List<obj> d = null;
+                List<obj2> e = null;
 
                 var query = "SELECT top 1 Realizado.Realizado ,Orcado.Orcado FROM " +
                             "(SELECT top 1 Name Realizado FROM DimManColetaDados WHERE DimName like '" + parametro + "' and DimRealTarget like 'Real' UNION ALL SELECT '0') Realizado " +
@@ -125,6 +146,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                              "\n BASONA.Dado " +
                             "\n ,BASONA.Realizado " +
                             "\n ,BASONA.Orcado " +
+                            "\n ,BASONA.qtde " +
                         "\n FROM " +
                         "\n (" +
                             "\n SELECT " +
@@ -132,6 +154,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                 "\n , Mes.Mes dado " +
                                 "\n , isnull(Base.Realizado, 0) realizado " +
                                 "\n , isnull(Base.Orcado, 0)    orcado " +
+                                "\n , isnull(qtde, 0) qtde " +
                             "\n FROM MANANOMES MES " +
                             "\n LEFT JOIN " +
                             "\n ( " +
@@ -143,9 +166,11 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                         "\n SUM(ISNULL(CASE " +
                                            "\n WHEN " + orcado + " = '0' THEN 0.00 " +
                                            "\n ELSE " + orcado + " " +
-                                        "\n END, 0)) orcado " +
+                                        "\n END, 0)) orcado, " +
+                                        "\n count(1) as qtde " +
                                 "\n FROM MANCOLETADADOS Man " +
                                 "\n WHERE " +
+                                    "\n " + realizado + " is not null and " +
                                     "\n ISNULL(YEAR(BASE_DATEREF), YEAR(BASE_DATEADD)) = '" + obj.ano + "' " +
                                     "\n AND ISNULL(MONTH(BASE_DATEREF), MONTH(BASE_DATEADD)) LIKE CASE WHEN '" + obj.mes + "' = 0 THEN '%%' ELSE '" + obj.mes + "' END " +
                                     "\n AND Man.Base_parCompany_id in (SELECT id FROM ParCompany WHERE Name = '" + obj.unidade + "')" +
@@ -157,6 +182,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                 "\n , Uni.EmpresaSigla dado " +
                                 "\n , isnull(Base.Realizado, 0) Realizado " +
                                 "\n , isnull(Base.Orcado, 0)    Orcado " +
+                                "\n , isnull(qtde, 0) qtde " +
                             "\n FROM (Select distinct ParCompany_id, EmpresaSigla, DimManBaseReg_id, EmpresaRegional, DimManBaseRegGrup_id, EmpresaRegionalGrupo, EmpresaCluster from DimManBaseUni where ParCompany_id is not null) Uni " +
                             "\n JOIN( " +
                                 "SELECT Man.Base_parCompany_id, " +
@@ -167,9 +193,11 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                         "\n SUM(ISNULL(CASE " +
                                             "\n WHEN " + orcado + " = '0' THEN 0.00 " +
                                             "\n ELSE " + orcado + " " +
-                                        "\n END, 0)) orcado " +
+                                        "\n END, 0)) orcado, " +
+                                        "\n count(1) as qtde " +
                                 "\n FROM MANCOLETADADOS Man " +
                                 "\n WHERE " +
+                                    "\n " + realizado + " is not null and " +
                                     "\n ISNULL(YEAR(BASE_DATEREF), YEAR(BASE_DATEADD)) = '" + obj.ano + "'" +
                                     "\n AND ISNULL(MONTH(BASE_DATEREF), MONTH(BASE_DATEADD)) LIKE CASE WHEN '" + obj.mes + "' = 0 THEN '%%' ELSE '" + obj.mes + "' END " +
                                     "\n AND Man.Base_parCompany_id in (" + tipo + ") " +
@@ -194,14 +222,10 @@ namespace SgqSystem.Controllers.Api.Manutencao
                     {
                         vetor2.lista = e;
                     }
-
-
                 }
-
             }
 
             List<obj2> f = new List<obj2>();
-
             f = vetor0.lista;
 
             if (vetor1.lista != null)
@@ -213,7 +237,13 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
                     try
                     {
-                        f[i].realizado = vetor1.lista[i].realizado / vetor2.lista[i].realizado;
+                        if (tipoCalculo == "media")
+
+                            f[i].realizado = vetor1.lista[i].realizado / vetor1.lista[i].qtde;
+
+                        else
+
+                            f[i].realizado = vetor1.lista[i].realizado / vetor2.lista[i].realizado;
                     }
                     catch (DivideByZeroException e)
                     {
@@ -222,7 +252,10 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
                     try
                     {
-                        f[i].orcado = vetor1.lista[i].orcado / vetor2.lista[i].orcado;
+                        if (tipoCalculo == "media")
+                            f[i].orcado = vetor1.lista[i].orcado / vetor1.lista[i].qtde;
+                        else
+                            f[i].orcado = vetor1.lista[i].orcado / vetor2.lista[i].orcado;
                     }
                     catch (DivideByZeroException e)
                     {
@@ -252,35 +285,35 @@ namespace SgqSystem.Controllers.Api.Manutencao
             return _mockEvolucao;
         }
 
-        [HttpPost]
-        [Route("CriaGraficoEvolucao")]
-        public List<PainelIndicadoresUniManutencaoDTO> CriaGraficoEvolucao()
-        {
-            List<PainelIndicadoresUniManutencaoDTO> _mockEvolucao = new List<PainelIndicadoresUniManutencaoDTO>();
-            PainelIndicadoresUniManutencaoDTO coleta = new PainelIndicadoresUniManutencaoDTO();
+        //[HttpPost]
+        //[Route("CriaGraficoEvolucao")]
+        //public List<PainelIndicadoresUniManutencaoDTO> CriaGraficoEvolucao()
+        //{
+        //    List<PainelIndicadoresUniManutencaoDTO> _mockEvolucao = new List<PainelIndicadoresUniManutencaoDTO>();
+        //    PainelIndicadoresUniManutencaoDTO coleta = new PainelIndicadoresUniManutencaoDTO();
 
-            coleta.orcado = 10;
-            coleta.realizado = 20;
+        //    coleta.orcado = 10;
+        //    coleta.realizado = 20;
 
-            _mockEvolucao.Add(coleta);
+        //    _mockEvolucao.Add(coleta);
 
-            return _mockEvolucao;
-        }
+        //    return _mockEvolucao;
+        //}
 
-        [HttpPost]
-        [Route("CriaGraficoAcumulado")]
-        public List<PainelIndicadoresUniManutencaoDTO> CriaGraficoAcumulado()
-        {
-            List<PainelIndicadoresUniManutencaoDTO> _mockEvolucao = new List<PainelIndicadoresUniManutencaoDTO>();
-            PainelIndicadoresUniManutencaoDTO coleta = new PainelIndicadoresUniManutencaoDTO();
+        //[HttpPost]
+        //[Route("CriaGraficoAcumulado")]
+        //public List<PainelIndicadoresUniManutencaoDTO> CriaGraficoAcumulado()
+        //{
+        //    List<PainelIndicadoresUniManutencaoDTO> _mockEvolucao = new List<PainelIndicadoresUniManutencaoDTO>();
+        //    PainelIndicadoresUniManutencaoDTO coleta = new PainelIndicadoresUniManutencaoDTO();
 
-            coleta.orcado = 100;
-            coleta.realizado = 200;
+        //    coleta.orcado = 100;
+        //    coleta.realizado = 200;
 
-            _mockEvolucao.Add(coleta);
+        //    _mockEvolucao.Add(coleta);
 
-            return _mockEvolucao;
-        }
+        //    return _mockEvolucao;
+        //}
 
 
         [HttpPost]
@@ -310,9 +343,9 @@ namespace SgqSystem.Controllers.Api.Manutencao
             }
 
             var query2 = "select day(Base_dateRef) diaMes " +
-                        "\n , Sum(case when " + realizado + " = 0 then 0.00 else " + realizado + " end) [real] " +
+                        "\n ,isnull(Sum(case when " + realizado + " = 0 then 0.00 else " + realizado + " end),0.00) [real] " +
                         "\n ,0.00 [targetAjustado] " +
-                        "\n ,Sum(case when " + orcado + " = 0 then 0.00 else " + orcado + " end) [budget] " +
+                        "\n ,isnull(Sum(case when " + orcado + " = 0 then 0.00 else " + orcado + " end),0.00) [budget] " +
                         "\n from[ManColetaDados] " +
                         "\n left join ManCalendario on[ManColetaDados].Base_dateRef = ManCalendario.Data " +
                         "\n where " +
@@ -348,6 +381,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
         public string dado { get; set; }
         public decimal realizado { get; set; }
         public decimal orcado { get; set; }
+        public int qtde { get; set; }
     }
 
     public class obj3

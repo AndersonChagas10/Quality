@@ -213,7 +213,7 @@
                 //Funçao para criar a tabela
                 GetTabela(dados);
 
-                if ($("#tipoRelatorio :selected").val() == 'Por Unidade') {
+                if (!VericaAcompanhamento()) {
                     GetGraficoAcompanhamento();
 
                 }
@@ -1232,6 +1232,27 @@
                     alert("Tipo de relatório inválido!");
                     break;
             }
+        }
+
+        function VericaAcompanhamento() {
+
+            if ($("#tipoRelatorio :selected").val() == 'Por Regional' ||
+                $("#showIndicadoresManutencao input:radio:checked").val() == 'KWh/Boi Proc' ||
+                $("#showIndicadoresManutencao input:radio:checked").val() == 'Mcal/Boi Proc' ||
+                $("#showIndicadoresManutencao input:radio:checked").val() == 'Água M³/Boi' ||
+                $("#showIndicadoresManutencao input:radio:checked").val() == 'Rend.(Sebo+Farinha)' ||
+                $("#showIndicadoresManutencao input:radio:checked").val() == 'Sebo Flotado' ||
+                $("#showIndicadoresManutencao input:radio:checked").val() == 'Disponibilidade Ab' ||
+                $("#showIndicadoresManutencao input:radio:checked").val() == 'Disponibilidade Des' ||
+                $("#showIndicadoresManutencao input:radio:checked").val() == 'Eficiên.Programção' ||
+                $("#showIndicadoresManutencao input:radio:checked").val() == 'Apropr Planej...to' ||
+                $("#showIndicadoresManutencao input:radio:checked").val() == 'Apropriação de O.S' ||
+                $("#showIndicadoresManutencao input:radio:checked").val() == 'Absenteísmo' ||
+                $("#showIndicadoresManutencao input:radio:checked").val() == 'Rotatividade' ||
+                $("#showIndicadoresManutencao input:radio:checked").val() == 'Devoluções %')
+                return true;
+            else
+                return false;
         }
 
     </script>
