@@ -133,14 +133,20 @@ namespace SgqSystem.Controllers.Api.Manutencao
                 }
 
                 string tipo = "";
+                string tipo2 = "";
 
                 if (obj.subRegional == "Todas")
+                {
 
                     tipo = "SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegionalGrupo = '" + obj.regional + "' and ParCompany_id is not null";
+                    tipo2 = "Select distinct ParCompany_id, EmpresaSigla, DimManBaseReg_id, EmpresaRegional, DimManBaseRegGrup_id, EmpresaRegionalGrupo, EmpresaCluster from DimManBaseUni where EmpresaRegionalGrupo = '" + obj.regional + "' and ParCompany_id is not null";
 
+                }
                 else
-
+                {
                     tipo = "SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegional = '" + obj.subRegional + "' and ParCompany_id is not null";
+                    tipo2 = "Select distinct ParCompany_id, EmpresaSigla, DimManBaseReg_id, EmpresaRegional, DimManBaseRegGrup_id, EmpresaRegionalGrupo, EmpresaCluster from DimManBaseUni where EmpresaRegional = '" + obj.subRegional + "' and ParCompany_id is not null";
+                }
 
                 var query2 = "\n SELECT " +
                              "\n BASONA.Dado " +
@@ -183,8 +189,8 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                 "\n , isnull(Base.Realizado, 0) Realizado " +
                                 "\n , isnull(Base.Orcado, 0)    Orcado " +
                                 "\n , isnull(qtde, 0) qtde " +
-                            "\n FROM (Select distinct ParCompany_id, EmpresaSigla, DimManBaseReg_id, EmpresaRegional, DimManBaseRegGrup_id, EmpresaRegionalGrupo, EmpresaCluster from DimManBaseUni where ParCompany_id is not null) Uni " +
-                            "\n JOIN( " +
+                            "\n FROM (" + tipo2 + ") Uni " + //AQUI
+                            "\n LEFT JOIN( " +
                                 "SELECT Man.Base_parCompany_id, " +
                                         "\n SUM(ISNULL(CASE " +
                                             "\n WHEN  " + realizado + "  = '0' THEN 0.00 " +
