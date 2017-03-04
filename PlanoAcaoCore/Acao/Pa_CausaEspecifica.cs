@@ -31,24 +31,30 @@ namespace PlanoAcaoCore
             string query;
             if (Id > 0)
             {
-
-
-            }
-            else
-            {
-
-                query = "INSERT INTO [dbo].[Pa_CausaEspecifica]" +
-              "\n       ([Text])                       " +
-              "\n  VALUES                                         " +
-              "\n        (@Text)SELECT CAST(scope_identity() AS int)";
+                query = "UPDATE [Pa_CausaEspecifica]  " +
+                        "\n     SET [Text] = @Text WHERE Id = @Id" +
+                        "\n SELECT CAST(@Id AS int)";
 
                 SqlCommand cmd;
                 cmd = new SqlCommand(query);
+                cmd.Parameters.AddWithValue("@Text", Text.TrimEnd().TrimStart());
+                cmd.Parameters.AddWithValue("@Id", Id);
 
+                Salvar(cmd);
+            }
+            else
+            {
+                query = "INSERT INTO [dbo].[Pa_CausaEspecifica]     " +
+                        "\n       ([Text])                          " +
+                        "\n  VALUES                                 " +
+                        "\n        (@Text)                          " +
+                        "\n SELECT CAST(scope_identity() AS int)    ";
+
+                SqlCommand cmd;
+                cmd = new SqlCommand(query);
                 cmd.Parameters.AddWithValue("@Text", Text);
 
                 Id = Salvar(cmd);
-
             }
         }
     }

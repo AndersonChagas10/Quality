@@ -3,6 +3,28 @@
 }
 
 <style>
+
+    .dataTable td {
+        /* essential */
+        /*text-overflow: ellipsis;*/
+         max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+        /*width: 200px;
+        white-space: nowrap;
+        overflow: hidden;*/
+        /* for good looks */
+        padding: 10px;
+
+    }
+
+    .dataTable td:hover {
+        overflow: visible;
+         white-space: normal;
+    }
+
     * {
         margin: 0;
         padding: 0;
@@ -192,10 +214,11 @@
                     <button type="button" class="btn btn-primary" id="Selecionar" onclick="" style="display:none" disabled>Selecionar</button>
                     <button type="button" class="btn btn-primary" id="Salvar" onclick="" style="display:none">Salvar</button>
                     <button type="button" class="btn btn-info" id="BuscarPlanejamentos" onclick="BuscarPlanejamentos();">Buscar Planejamento</button>
-                    <button type="button" class="btn btn-success" id="NovoPlanejamento" onclick="NovoPlanejamento();" data-toggle="modal" style="display:none"> Novo Planejamento</button>
+                    <button type="button" class="btn btn-info" id="TaticoVinculado" onclick="BuscarPlanejamentos();">Novo Planejamento Tático Vinculado a um Planejamento Tatico</button>
+                    <button type="button" class="btn btn-success" id="NovoPlanejamento" onclick="NovoPlanejamento(); Clicked(true, false, true);" data-toggle="modal" style="display:none"> Novo Planejamento</button>
                     <button type="button" class="btn btn-primary" id="NovaAcao" onclick="Clicked(isTaticoClicked, isNovaAcao); ModalAcao(true, true);" style="display:none">Nova Ação</button>
                     <button type="button" class="btn btn-default" value="" id="new" style="display:none">Adicionar Ação</button>
-                    <button type="button" class="btn btn-default" value="" id="Edit" style="display:none" onclick="SalvarAcaoAvulsa($('.Acao'))">Editar Ação</button>
+                    <button type="button" class="btn btn-default" value="" id="Edit" style="display:none" onclick="SalvarAcaoAvulsa($('.Acao'), true)">Editar Ação</button>
 
                 </div>
             </div>
@@ -268,6 +291,7 @@
                 header.show();
 
                 myfunction();
+                MoneyMask();
             };
 
         })();
@@ -285,7 +309,6 @@
                 var $id = $(this).attr("data-target");
                 $($id).modal({ backdrop: false, keyboard: false });
             });
-
 
             $(".modalMinimize").on("click", function () {
 
@@ -333,9 +356,10 @@
             return o;
         };
 
-        function Clicked(isClickedTatico, isClickedAcao) {
+        function Clicked(isClickedTatico, isClickedAcao, isClickedTaticoVinculado) {
             isTaticoClicked = isClickedTatico;
             isNovaAcao = isClickedAcao;
+            isNovaAcao = isClickedTaticoVinculado;
         }
 
         /*Planejamento*/
@@ -384,10 +408,37 @@
                 $('#modalLindo').find('.modal-body').empty().append(r);
                 if (isTaticoClicked) {
                     $('.novoItem ').hide();
+
+                    if (isClickedTaticoVinculado) {
+                        $('#Planejamento > table > tbody > tr:nth-child(1)').attr('disabled', true);
+                        $('#Planejamento > table > tbody > tr:nth-child(4)').attr('disabled', true);
+                        $('#Planejamento > table > tbody > tr:nth-child(5)').attr('disabled', true);
+                        $('#Planejamento > table > tbody > tr:nth-child(6)').attr('disabled', true);
+                        $('#Planejamento > table > tbody > tr:nth-child(7)').attr('disabled', true);
+                        $('#Planejamento > table > tbody > tr:nth-child(8)').attr('disabled', true);
+                    } else {
+                        $('#Planejamento > table > tbody > tr:nth-child(1)').hide();
+                        $('#Planejamento > table > tbody > tr:nth-child(4)').hide();
+                        $('#Planejamento > table > tbody > tr:nth-child(5)').hide();
+                        $('#Planejamento > table > tbody > tr:nth-child(6)').hide();
+                        $('#Planejamento > table > tbody > tr:nth-child(7)').hide();
+                        $('#Planejamento > table > tbody > tr:nth-child(8)').hide();
+                    }
+
                 } else {
                     $('.novoItem ').show();
+                    $('#Planejamento > table > tbody > tr:nth-child(2)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(3)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(9)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(10)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(11)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(12)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(13)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(14)').hide();
+                    $('#Planejamento > table > tbody > tr:nth-child(15)').hide();
                 }
                 InitDatePiker();
+                MoneyMask();
             });
 
             /*Botões*/
@@ -498,6 +549,7 @@
                     $('#CausaMedidasXAcao_ContramedidaGenerica_Id').empty().attr('disabled', true);
 
                     myfunction();
+                    MoneyMask();
 
                     $('#new').click();
                     if (isFukingNewClicked) {
@@ -518,21 +570,38 @@
         }
 
         function EditarAcao(html, data) {
+
+            var acao = data.Acao;
+
             $('#modalLindo').modal();
             $('#Header').html("Editar Ação");
             $('#modalLindo').find('.modal-body').empty().append(html);
-            myfunction();
-            $('#CausaMedidasXAcao_CausaGenerica_Id').val(data.Acao.CausaMedidasXAcao.CausaGenerica_Id).change();
-            //$('#CausaMedidasXAcao_CausaEspecifica').val(data.Acao.CausaMedidasXAcao.CausaEspecifica);
-            //$('#CausaMedidasXAcao_ContramedidaEspecifica').val(data.Acao.CausaMedidasXAcao.ContramedidaEspecifica);
-            $('[name="_QuandoInicio"]').val(data.Acao._QuandoInicio.split(" ")[0]);
-            $('[name="_QuandoFim"]').val(data.Acao._QuandoFim.split(" ")[0]);
-            $('#Status').val(data.Acao.Status);
             $('#modalLindo').find('.modal-footer button').hide();
+            myfunction();
+
+            $('#CausaMedidasXAcao_CausaGenerica_Id').val(acao.CausaMedidasXAcao.CausaGenerica_Id).change();
+            //$('#CausaMedidasXAcao_CausaEspecifica').val(acao.CausaMedidasXAcao.CausaEspecifica);
+            //$('#CausaMedidasXAcao_ContramedidaEspecifica').val(acao.CausaMedidasXAcao.ContramedidaEspecifica);
+            $('[name="_QuandoInicio"]').val(acao._QuandoInicio.split(" ")[0]);
+            $('[name="_QuandoFim"]').val(acao._QuandoFim.split(" ")[0]);
+            $('#Status').val(acao.Status);
+            MoneyMask();
+            $('#_QuantoCusta').val(acao.QuantoCusta);
+            $('#_QuantoCusta').trigger('mask.maskMoney');
+            $('#_QuantoCusta').trigger('blur');
+
+            acao.AcaoXQuem.forEach(function (o, c) {
+                $($('[id=AcaoXQuemDdl]')[c]).val(o.Quem_Id).change();
+                $($('[id=AcaoXQuemDdlId]')[c]).val(o.Id).change();
+                if (acao._QuemObj.length > 1 && acao._QuemObj.length - 1 != c)
+                    $($('[id=adicionar]')[c]).click();
+            });
+
             $('#Edit').show();
             InitDatePiker();
         }
 
+        /*Causa Medida Etc...*/
         function myfunction() {
             $('[id=CausaMedidasXAcao_CausaGenerica_Id]').off('change').on('change', function () {
                 var valor = $(this).val();
@@ -562,15 +631,20 @@
 
         }
 
-        function SalvarAcaoAvulsa(o) {
+        function SalvarAcaoAvulsa(o, isEdit) {
 
             var sendObj = $(o).serializeObject();
-            sendObj['Panejamento_Id'] = planejamentoCorrentId;
+            if (isEdit == undefined) {
+                sendObj['Panejamento_Id'] = planejamentoCorrentId;
+            }
             sendObj['AcaoXQuem'] = [];
 
             $('.quemClone').each(function (c, o) {
-                if ($(o).find('select').val())
+                if ($('#AcaoXQuemDdlId').length)
+                    sendObj['AcaoXQuem'].push({ Id: $(o).find('#AcaoXQuemDdlId').val(), Quem_Id: $(o).find('select').val() });
+                else if ($(o).find('select').val())
                     sendObj['AcaoXQuem'].push({ Quem_Id: $(o).find('select').val() });
+
             });
 
             $.post(urlSalvarAcao, sendObj, function (r) {
@@ -580,6 +654,7 @@
             });
 
         }
+
         function RemoveAcao(btn) {
             $(btn).parents('#obj').remove();
         }
@@ -884,7 +959,9 @@
 
                         /*Prazo*/
                         if (data.Acao.StatusName == "Cancelado") {
+
                         } else if (data.Acao.StatusName.indexOf('Concluído') > -1) {
+
                         } else if (data.Acao._Prazo.indexOf('Faltam') > -1) {
                             bgColorPrazo = "#90EE90"
                         } else if (data.Acao._Prazo.indexOf('-') > -1 && data.Acao._Prazo.indexOf(' Dias') > -1) {

@@ -181,10 +181,12 @@
     <Compile Include="Controllers\Api\ApiPa_AcaoController.cs" />
     <Compile Include="Controllers\Api\ApiPa_PlanejamentoController.cs" />
     <Compile Include="Controllers\Api\GenericsController.cs" />
+    <Compile Include="Controllers\Api\ApiRelatoriosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PaPlanejamentoAcaoController.cs" />
     <Compile Include="Controllers\Pa_AcaoController.cs" />
     <Compile Include="Controllers\Pa_PlanejamentoController.cs" />
+    <Compile Include="Controllers\RelatoriosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1408,6 +1410,7 @@
     <Content Include="Views\Pa_Acao\Index.cshtml" />
     <Content Include="Views\Shared\_DdlGenerica.cshtml" />
     <Content Include="Views\Pa_Acao\Edit.cshtml" />
+    <Content Include="Views\Relatorios\Relatorios.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DTO\DTO.csproj">

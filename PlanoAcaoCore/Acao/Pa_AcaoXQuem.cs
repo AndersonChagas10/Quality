@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 
 namespace PlanoAcaoCore
@@ -8,25 +8,22 @@ namespace PlanoAcaoCore
         public int Acao_Id { get; set; }
         public int Quem_Id { get; set; }
 
+        internal static IEnumerable<Pa_AcaoXQuem> Get(int idAcao)
+        {
+            var query = "SELECT AQ.* FROM Pa_AcaoXQuem AQ INNER JOIN Pa_Quem Q on q.Id = AQ.Quem_Id where AQ.Acao_Id =" + idAcao;
+            return ListarGenerico<Pa_AcaoXQuem>(query);
+        }
+
         public void AddOrUpdate()
         {
             IsValid();
             string query;
             if (Id > 0)
             {
-                query = "UPDATE [dbo].[Pa_AcaoXQuem]                                 " +
-                   "\n    SET [Acao_Id] = @Acao_Id                          " +
-                   "\n       ,[Quem_Id] = @Quem_Id                " +
-                   "\n       ,[QuandoInicio] = @QuandoInicio                      " +
-                   "\n       ,[DuracaoDias] = @DuracaoDias                        " +
-                   "\n       ,[QuandoFim] = @QuandoFim                            " +
-                   "\n       ,[ComoPontosimportantes] = @ComoPontosimportantes    " +
-                   "\n       ,[Predecessora_Id] = @Predecessora_Id                " +
-                   "\n       ,[PraQue] = @PraQue                                  " +
-                   "\n       ,[QuantoCusta] = @QuantoCusta                        " +
-                   "\n       ,[Status] = @Status                                  " +
-                   "\n       ,[Panejamento_Id] = @Panejamento_Id                  " +
-                   "\n  WHERE Id = @Id ";
+                query = "UPDATE [dbo].[Pa_AcaoXQuem]            " +
+                   "\n    SET [Acao_Id] = @Acao_Id              " +
+                   "\n       ,[Quem_Id] = @Quem_Id              " +
+                   "\n  WHERE Id = @Id SELECT CAST(@Id AS int)  ";
 
                 SqlCommand cmd;
                 cmd = new SqlCommand(query);

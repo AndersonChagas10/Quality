@@ -11,7 +11,6 @@
                         </td>
                         <td>
                             @Html.DropDownList("CausaMedidasXAcao.CausaGenerica_Id", new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione", new { @class = "form-control input-sm" })
-                            @Html.ValidationMessageFor(model => model.Departamento_Id, "", new { @class = "text-danger" })
                         </td>
                         <td></td>
                     </tr>
@@ -39,6 +38,7 @@
                         </td>
                         <td>
                             @Html.Editor("CausaMedidasXAcao.CausaEspecifica", new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.Hidden("CausaMedidasXAcao.CausaEspecifica_Id", Model.CausaMedidasXAcao.CausaEspecifica_Id)
                         </td>
                         <td></td>
                     </tr>
@@ -48,6 +48,7 @@
                         </td>
                         <td>
                             @Html.Editor("CausaMedidasXAcao.ContramedidaEspecifica", new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.Hidden("CausaMedidasXAcao.ContramedidaEspecifica_Id", Model.CausaMedidasXAcao.ContramedidaEspecifica_Id)
                         </td>
                         <td></td>
                     </tr>
@@ -58,6 +59,7 @@
                         </td>
                         <td>
                             @Html.DropDownList("AcaoXQuemDdl", new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                            @Html.Hidden("AcaoXQuemDdlId")
                         </td>
                         <td style="text-align: center; vertical-align: bottom;" id="CausaMedidasXAcaoAdd">
 
@@ -97,7 +99,6 @@
                         </td>
                         <td>
                             @Html.Editor("_QuandoFim", new { htmlAttributes = new { @class = "form-control datepicker" } })
-                            @Html.ValidationMessageFor(model => model.QuandoFim, "", new { @class = "text-danger" })
                         </td>
                         <td></td>
                     </tr>
@@ -107,7 +108,6 @@
                         </td>
                         <td>
                             @Html.EditorFor(model => model.ComoPontosimportantes, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.ComoPontosimportantes, "", new { @class = "text-danger" })
                         </td>
                         <td></td>
                     </tr>
@@ -118,7 +118,6 @@
                         </td>
                         <td>
                             @Html.EditorFor(model => model.PraQue, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.PraQue, "", new { @class = "text-danger" })
                         </td>
                         <td></td>
                     </tr>
@@ -127,8 +126,7 @@
                             @Html.LabelFor(model => model.QuantoCusta, htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @Html.EditorFor(model => model.QuantoCusta, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.QuantoCusta, "", new { @class = "text-danger" })
+                            @Html.Editor("_QuantoCusta", new { htmlAttributes = new { @class = "form-control money" , @id= "_QuantoCusta" } } )
                         </td>
                         <td></td>
                     </tr>
@@ -138,7 +136,6 @@
                         </td>
                         <td>
                             @Html.DropDownList("Status", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                         </td>
                         <td></td>
                     </tr>
@@ -150,7 +147,6 @@
                             </td>
                             <td>
                                 @Html.DropDownList("Panejamento_Id", new SelectList(ViewBag.Panejamento, "Id", "Id"), "Selecione", new { @class = "form-control input-sm" })
-                                @Html.ValidationMessageFor(model => model.Panejamento_Id, "", new { @class = "text-danger" })
                             </td>
                             <td></td>
                         </tr>
@@ -158,8 +154,12 @@
                 </tbody>
             </table>
 
+            @Html.Hidden("Id", Model.Id)
+            @Html.Hidden("Panejamento_Id", Model.Panejamento_Id)
+            @Html.Hidden("CausaMedidasXAcao.Id", Model.CausaMedidasXAcao.Id)
+            
         </form>
 
   <script>
-      model = @Html.Raw(Json.Encode(Model));
+
   </script>

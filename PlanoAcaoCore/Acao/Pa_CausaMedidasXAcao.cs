@@ -37,30 +37,21 @@ namespace PlanoAcaoCore
             string query;
             if (Id > 0)
             {
-                query = "UPDATE [dbo].[Pa_AcaoXQuem]                                  " +
-                   "\n    SET  ";
+                query = "UPDATE [dbo].[Pa_CausaMedidaXAcao]  SET ";
+                if (CausaGenerica_Id != null)
+                    query += "\n    CausaGenerica_Id = @CausaGenerica_Id,";
                 if (CausaEspecifica_Id != null)
-                {
-                    query += "\n [CausaGenerica_Id] = @CausaGenerica_Id                    ";
-                }
-                if (CausaEspecifica_Id != null)
-                {
-                    query += "\n       ,[CausaEspecifica_Id] = @CausaEspecifica_Id                ";
-                }
+                    query += "\n    CausaEspecifica_Id = @CausaEspecifica_Id,";
                 if (ContramedidaGenerica_Id != null)
-                {
-                    query += "\n       ,[ContramedidaGenerica_Id] = @ContramedidaGenerica_Id                ";
-                }
+                    query += "\n    ContramedidaGenerica_Id = @ContramedidaGenerica_Id,";
                 if (ContramedidaEspecifica_Id != null)
-                {
-                    query += "\n       ,[ContramedidaEspecifica_Id] = @ContramedidaEspecifica_Id                ";
-                }
+                    query += "\n    ContramedidaEspecifica_Id = @ContramedidaEspecifica_Id,";
                 if (GrupoCausa_Id != null)
-                {
-                    query += "\n       ,[GrupoCausa_Id] = @GrupoCausa_Id                ";
-                }
+                    query += "\n    GrupoCausa_Id = @GrupoCausa_Id,";
 
-                query += "\n  WHERE Id = @Id ";
+                query = query.TrimEnd(',');
+
+                query += "\n  WHERE Id = @Id SELECT CAST(@Id AS int)";
 
                 SqlCommand cmd;
                 cmd = new SqlCommand(query);
@@ -76,10 +67,9 @@ namespace PlanoAcaoCore
                 if (GrupoCausa_Id != null)
                     cmd.Parameters.AddWithValue("@GrupoCausa_Id", GrupoCausa_Id);
 
-                cmd.Parameters.AddWithValue("@Acao_Id", Acao_Id);
                 cmd.Parameters.AddWithValue("@Id", Id);
 
-                Id = Salvar(cmd);
+                Salvar(cmd);
             }
             else
             {
@@ -170,24 +160,6 @@ namespace PlanoAcaoCore
         {
             //throw new NotImplementedException();
         }
-
-        //public static List<Pa_Acao> Listar()
-        //{
-        //    var query = "SELECT ACAO.* ,                                                    " +
-        //                "\n STA.Name as StatusName,                                         " +
-        //                "\n UN.Name as Unidade,                                             " +
-        //                "\n DPT.Name as Departamento                                       " +
-        //                "\n FROM pa_acao ACAO                                               " +
-        //                "\n LEFT JOIN Pa_Unidade UN ON UN.Id = ACAO.Unidade_Id              " +
-        //                "\n LEFT JOIN Pa_Departamento DPT ON DPT.Id = ACAO.Departamento_Id  " +
-        //                "\n LEFT JOIN Pa_Status STA ON STA.Id = ACAO.[Status];              ";
-        //    var retorno = ListarGenerico<Pa_Acao>(query);
-        //    foreach (var i in retorno)
-        //    {
-        //        i._Quem = Pa_Quem.GetQuemXAcao(i.Id).Select(r => r.Name).ToList();
-        //    }
-        //    return retorno;
-        //}
 
         public static Pa_CausaMedidasXAcao Get(int Id)
         {

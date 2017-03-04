@@ -1,4 +1,5 @@
-﻿using Microsoft.ApplicationInsights.Extensibility;
+﻿using Helper;
+using Microsoft.ApplicationInsights.Extensibility;
 using SgqSystem.Handlres;
 using SgqSystem.Mappers;
 using System.Diagnostics;

@@ -63,15 +63,13 @@ namespace Dominio.Services
 
                 try
                 {
-
                     userDto.Password = DecryptStringAES(userDto.Password);
                     userDto.ValidaObjetoUserDTO(); //Valida Properties do objeto para gravar no banco.
                     userByName = _userRepo.GetByName(userDto.Name);
-
                 }
                 catch (Exception e)
                 {
-                    throw new Exception("Erro inesperado ao validar objeto e buscar user pelo nome SGq Global.", e);
+                    throw  e;
                 }
 
                 if (GlobalConfig.Brasil)

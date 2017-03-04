@@ -34,6 +34,7 @@ namespace PlanoAcaoCore
 
         [Display(Name = "Quanto custa")]
         public decimal QuantoCusta { get; set; }
+        public string _QuantoCusta { get; set; }
 
         [Display(Name = "Status")]
         public int Status { get; set; }
@@ -53,6 +54,7 @@ namespace PlanoAcaoCore
 
         public List<Pa_AcaoXQuem> AcaoXQuem { get; set; }
         public List<string> _Quem { get; set; }
+        public List<Pa_Quem> _QuemObj { get; set; }
 
         public Pa_CausaMedidasXAcao CausaMedidasXAcao { get; set; }
 
@@ -64,7 +66,7 @@ namespace PlanoAcaoCore
                     return "-";
 
                 if (!string.IsNullOrEmpty(StatusName))
-                    if (StatusName.Contains("Concluído"))
+                    if (StatusName.Contains("Concluido") || StatusName.Contains("Concluído") || StatusName.Contains("Cancelado"))
                         return "Finalizado";
 
                 var agora = DateTime.Now;
@@ -95,18 +97,18 @@ namespace PlanoAcaoCore
                         "\n LEFT JOIN Pa_Departamento DPT ON DPT.Id = ACAO.Departamento_Id  " +
                         "\n LEFT JOIN Pa_Status STA ON STA.Id = ACAO.[Status]               ";
 
-
             }
         }
 
         public static List<Pa_Acao> Listar()
         {
-         
             var retorno = ListarGenerico<Pa_Acao>(query);
 
             foreach (var i in retorno)
             {
                 i._Quem = Pa_Quem.GetQuemXAcao(i.Id).Select(r => r.Name).ToList();
+                i._QuemObj = Pa_Quem.GetQuemXAcao(i.Id).ToList();
+                i.AcaoXQuem = Pa_AcaoXQuem.Get(i.Id).ToList();
                 i.CausaMedidasXAcao = Pa_CausaMedidasXAcao.GetByAcaoId(i.Id);
                 i._QuandoInicio = i.QuandoInicio.ToShortDateString() + " " + i.QuandoInicio.ToShortTimeString();
                 i._QuandoFim = i.QuandoFim.ToShortDateString() + " " + i.QuandoFim.ToShortTimeString();
@@ -117,76 +119,106 @@ namespace PlanoAcaoCore
 
         public static Pa_Acao Get(int Id)
         {
-            return GetGenerico<Pa_Acao>(query + " WHERE ACAO.Id = " + Id);
+            var retorno = GetGenerico<Pa_Acao>(query + " WHERE ACAO.Id = " + Id);
+
+            retorno._Quem = Pa_Quem.GetQuemXAcao(retorno.Id).Select(r => r.Name).ToList();
+            retorno.AcaoXQuem = Pa_AcaoXQuem.Get(retorno.Id).ToList();
+            retorno._QuemObj = Pa_Quem.GetQuemXAcao(retorno.Id).ToList();
+            retorno.CausaMedidasXAcao = Pa_CausaMedidasXAcao.GetByAcaoId(retorno.Id);
+            retorno._QuandoInicio = retorno.QuandoInicio.ToShortDateString() + " " + retorno.QuandoInicio.ToShortTimeString();
+            retorno._QuandoFim = retorno.QuandoFim.ToShortDateString() + " " + retorno.QuandoFim.ToShortTimeString();
+
+            return retorno;
         }
 
         public void AddOrUpdate()
         {
             IsValid();
+            CausaMedidasXAcao.IsValid();
+
+            foreach (var j in AcaoXQuem)
+                j.IsValid();
+
             string query;
+
             if (Id > 0)
             {
+
                 query = "UPDATE [dbo].[Pa_Acao]                                 " +
-                   "\n    SET [Unidade_Id] = @Unidade_Id                          " +
-                   "\n       ,[Departamento_Id] = @Departamento_Id                " +
-                   "\n       ,[QuandoInicio] = @QuandoInicio                      " +
-                   "\n       ,[DuracaoDias] = @DuracaoDias                        " +
-                   "\n       ,[QuandoFim] = @QuandoFim                            " +
-                   "\n       ,[ComoPontosimportantes] = @ComoPontosimportantes    " +
-                   "\n       ,[Predecessora_Id] = @Predecessora_Id                " +
-                   "\n       ,[PraQue] = @PraQue                                  " +
-                   "\n       ,[QuantoCusta] = @QuantoCusta                        " +
-                   "\n       ,[Status] = @Status                                  " +
-                   "\n       ,[Panejamento_Id] = @Panejamento_Id                  " +
-                   "\n  WHERE Id = @Id ";
+                   "\n    SET [QuandoInicio] = @QuandoInicio                    " +
+                   "\n       ,[DuracaoDias] = @DuracaoDias                      " +
+                   "\n       ,[QuandoFim] = @QuandoFim                          " +
+                   "\n       ,[ComoPontosimportantes] = @ComoPontosimportantes  " +
+                   "\n       ,[QuantoCusta] = @QuantoCusta                      " +
+                   "\n       ,[Status] = @Status                                " +
+                   "\n       ,[PraQue] = @PraQue                                " +
+                   "\n       ,[Panejamento_Id] = @Panejamento_Id                " +
+                   "\n  WHERE Id = @Id                                          ";
+
+                query += " SELECT CAST(1 AS int)";
 
                 SqlCommand cmd;
                 cmd = new SqlCommand(query);
 
-                cmd.Parameters.AddWithValue("@Unidade_Id", Unidade_Id);
-                cmd.Parameters.AddWithValue("@Departamento_Id", Departamento_Id);
-                cmd.Parameters.AddWithValue("@QuandoInicio", Guard.ParseDateToSqlV2(_QuandoInicio));
+                cmd.Parameters.AddWithValue("@QuandoInicio", QuandoInicio);
                 cmd.Parameters.AddWithValue("@DuracaoDias", DuracaoDias);
-                cmd.Parameters.AddWithValue("@QuandoFim", Guard.ParseDateToSqlV2(_QuandoFim));
+                cmd.Parameters.AddWithValue("@QuandoFim", QuandoFim);
                 cmd.Parameters.AddWithValue("@ComoPontosimportantes", ComoPontosimportantes);
-                cmd.Parameters.AddWithValue("@Predecessora_Id", Predecessora_Id);
-                cmd.Parameters.AddWithValue("@PraQue", PraQue);
                 cmd.Parameters.AddWithValue("@QuantoCusta", QuantoCusta);
                 cmd.Parameters.AddWithValue("@Status", Status);
+                cmd.Parameters.AddWithValue("@PraQue", PraQue);
                 cmd.Parameters.AddWithValue("@Panejamento_Id", Panejamento_Id);
                 cmd.Parameters.AddWithValue("@Id", Id);
 
                 Salvar(cmd);
+
+                var causaEsp = new Pa_CausaEspecifica()
+                {
+                    Id = CausaMedidasXAcao.CausaEspecifica_Id.GetValueOrDefault(),
+                    Text = CausaMedidasXAcao.CausaEspecifica
+                };
+
+                var contramedidaEsp = new Pa_ContramedidaEspecifica()
+                {
+                    Id = CausaMedidasXAcao.ContramedidaEspecifica_Id.GetValueOrDefault(),
+                    Text = CausaMedidasXAcao.ContramedidaEspecifica
+                };
+
+                causaEsp.AddOrUpdate();
+                contramedidaEsp.AddOrUpdate();
+
+                CausaMedidasXAcao.AddOrUpdate();
+
+                foreach (var j in AcaoXQuem)
+                {
+                    j.Acao_Id = Id;
+                    j.AddOrUpdate();
+                }
+
             }
             else
             {
 
-                //foreach (var i in CausaMedidasXAcao)
-                //    i.IsValid();
+                query = "INSERT INTO [dbo].[Pa_Acao]        " +
+                        "\n       ([QuandoInicio]           " +
+                        "\n        ,[DuracaoDias]           " +
+                        "\n        ,[QuandoFim]             " +
+                        "\n        ,[ComoPontosimportantes] " +
+                        "\n        ,[PraQue]                " +
+                        "\n        ,[QuantoCusta]           " +
+                        "\n        ,[Status]                " +
+                        "\n        ,[Panejamento_Id])       " +
+                        "\n  VALUES                         " +
+                        "\n        (@QuandoInicio           " +
+                        "\n        ,@DuracaoDias            " +
+                        "\n        ,@QuandoFim              " +
+                        "\n        ,@ComoPontosimportantes  " +
+                        "\n        ,@PraQue                 " +
+                        "\n        ,@QuantoCusta            " +
+                        "\n        ,@Status                 " +
+                        "\n        ,@Panejamento_Id);       ";
 
-                foreach (var j in AcaoXQuem)
-                    j.IsValid();
-                CausaMedidasXAcao.IsValid();
-                //AcaoXQuem.IsValid();
-
-                query = "INSERT INTO [dbo].[Pa_Acao]" +
-              "\n       ([QuandoInicio]                          " +
-              "\n        ,[DuracaoDias]                           " +
-              "\n        ,[QuandoFim]                             " +
-              "\n        ,[ComoPontosimportantes]                 " +
-              "\n        ,[PraQue]                                " +
-              "\n        ,[QuantoCusta]                           " +
-              "\n        ,[Status]                                " +
-              "\n        ,[Panejamento_Id])                       " +
-              "\n  VALUES                                         " +
-              "\n        (@QuandoInicio                           " +
-              "\n        ,@DuracaoDias                            " +
-              "\n        ,@QuandoFim                              " +
-              "\n        ,@ComoPontosimportantes                  " +
-              "\n        ,@PraQue                                 " +
-              "\n        ,@QuantoCusta                            " +
-              "\n        ,@Status                                 " +
-              "\n        ,@Panejamento_Id)SELECT CAST(scope_identity() AS int)";
+                query += "SELECT CAST(scope_identity() AS int)";
 
                 SqlCommand cmd;
                 cmd = new SqlCommand(query);
@@ -212,17 +244,6 @@ namespace PlanoAcaoCore
 
                 CausaMedidasXAcao.Acao_Id = Id;
                 CausaMedidasXAcao.AddOrUpdate();
-
-
-
-                //AcaoXQuem.Acao_Id = Id;
-                //AcaoXQuem.AddOrUpdate();
-
-                //foreach (var i in CausaMedidasXAcao)
-                //{
-                //    i.Acao_Id = Id;
-                //    i.AddOrUpdate();
-                //}
 
                 foreach (var j in AcaoXQuem)
                 {

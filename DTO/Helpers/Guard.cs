@@ -113,9 +113,10 @@ namespace DTO.Helpers
                 return DateTime.Now;
 
             var _dtvalue = DateTime.Now;
-            if (GlobalConfig.Brasil)
+            //if (GlobalConfig.Brasil)
                 DateTime.TryParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
-            else if (GlobalConfig.Eua)
+            //else if (GlobalConfig.Eua)
+            if(_dtvalue == DateTime.MinValue)
                 DateTime.TryParseExact(date, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
 
             return _dtvalue;

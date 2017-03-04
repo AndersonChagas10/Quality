@@ -164,7 +164,7 @@
                             @Html.LabelFor(model => model.QuantoCusta, htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @Html.EditorFor(model => model.QuantoCusta, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.Editor("_QuantoCusta", new { htmlAttributes = new { @class = "form-control money" } })
                             @Html.ValidationMessageFor(model => model.QuantoCusta, "", new { @class = "text-danger" })
                         </td>
                         <td></td>

@@ -31,7 +31,16 @@ namespace PlanoAcaoCore
             string query;
             if (Id > 0)
             {
+                query = "UPDATE [Pa_ContramedidaEspecifica]  " +
+                     "\n     SET [Text] = @Text WHERE Id = @Id" +
+                     "\n SELECT CAST(@Id AS int)";
 
+                SqlCommand cmd;
+                cmd = new SqlCommand(query);
+                cmd.Parameters.AddWithValue("@Text", Text.TrimEnd().TrimStart());
+                cmd.Parameters.AddWithValue("@Id", Id);
+
+                Salvar(cmd);
             }
             else
             {

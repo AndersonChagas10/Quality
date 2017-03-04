@@ -59,8 +59,9 @@
         /*
             http://plentz.github.io/jquery-maskmoney/
         */
-        $(".money").maskMoney({ prefix: 'R$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: false })
-
+        function MoneyMask() {
+            $(".money").maskMoney({ prefix: 'R$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: false })
+        }
         /*
             https://bootstrap-datepicker.readthedocs.io/en/latest/
             https://uxsolutions.github.io/bootstrap-datepicker/?markup=input&format=&weekStart=&startDate=0&endDate=&startView=0&minViewMode=0&maxViewMode=4&todayBtn=linked&clearBtn=false&language=pt-BR&orientation=auto&multidate=false&multidateSeparator=&todayHighlight=on&keyboardNavigation=on&forceParse=on#sandbox
@@ -76,6 +77,7 @@
         }
         $(document).ready(function () {
             InitDatePiker();
+            MoneyMask();
         })
     </script>
 

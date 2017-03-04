@@ -22,5 +22,7 @@ namespace PlanoAcaoCore
             var query = "SELECT Q.* FROM Pa_AcaoXQuem AQ INNER JOIN Pa_Quem Q on q.Id = AQ.Quem_Id where AQ.Acao_Id =" + IdAcao;
             return ListarGenerico<Pa_Quem>(query);
         }
+
+       
     }
 }

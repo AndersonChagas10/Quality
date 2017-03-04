@@ -360,7 +360,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Handlres\DecimalModelBinder.cs" />
     <Compile Include="Handlres\HandleApi.cs" />
     <Compile Include="Handlres\HandleController.cs" />
     <Compile Include="Handlres\ValidateModelAttribute.cs" />

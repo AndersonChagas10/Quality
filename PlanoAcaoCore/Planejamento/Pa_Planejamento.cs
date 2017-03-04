@@ -41,7 +41,7 @@ namespace PlanoAcaoCore
         public int IndicadoresDeProjeto_Id { get; set; }
         public string IndicadoresDeProjeto { get; set; }
 
-        [Display(Name = "Iniciativa")]
+        [Display(Name = "Projeto / Iniciativa")]
         public int Iniciativa_Id { get; set; }
         public string Iniciativa { get; set; }
 
@@ -53,15 +53,17 @@ namespace PlanoAcaoCore
         public int Dimensao_Id { get; set; }
         public string Dimensao { get; set; }
 
-        [Display(Name = "Objetivo")]
+        [Display(Name = "Diretrizes / Objetivos")]
         public int Objetivo_Id { get; set; }
         public string Objetivo { get; set; }
 
         [Display(Name = "Valor de")]
         public decimal ValorDe { get; set; }
+        public string _ValorDe { get; set; }
 
         [Display(Name = "Valor para")]
         public decimal ValorPara { get; set; }
+        public string _ValorPara { get; set; }
 
         [Display(Name = "Data inicio")]
         public DateTime DataInicio { get; set; }
