@@ -12,6 +12,6 @@ namespace DTO.DTO.Manutencao
         public decimal orcado { get; set; }
         public decimal realizado { get; set; }
         public decimal desvio { get; set; }
-        public decimal porcDesvio { get; set; }
+        public decimal porcDesvio { get; set; }        
     }
 }
