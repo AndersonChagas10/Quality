@@ -47,10 +47,24 @@ namespace SgqSystem.Controllers.Api.Manutencao
                 case "Disponibilidade Ab":
                     indicador.Add("Nº Hrs Disponíveis Trabalhar Ab");
                     indicador.Add("Parada Abate (min)");
+                    tipoCalculo = "Disponibilidade";
                     break;
                 case "Disponibilidade Des":
                     indicador.Add("Nº Hrs Disponíveis Trabalhar Des");
                     indicador.Add("Parada Des. (min)");
+                    tipoCalculo = "Disponibilidade";
+                    break;
+                case "Disponibilidade Total":
+                    indicador.Add("Nº Hrs Disponíveis Trabalhar Ab");
+                    indicador.Add("Nº Hrs Disponíveis Trabalhar Des");
+                    indicador.Add("Parada Abate (min)");
+                    indicador.Add("Parada Des. (min)");
+                    tipoCalculo = "Disponibilidade";
+                    break;
+                case "Paradas Total":
+                    indicador.Add("Parada Abate (min)");
+                    indicador.Add("Parada Des. (min)");
+                    tipoCalculo = "Soma";
                     break;
                 case "Eficiên.Programção":
                     indicador.Add("Nº OS Programadas");
@@ -103,10 +117,11 @@ namespace SgqSystem.Controllers.Api.Manutencao
             }
 
             var numeroDeVariaveis = indicador.Count;
-
+            listaDelistas vetor0 = new listaDelistas();
             listaDelistas vetor1 = new listaDelistas();
             listaDelistas vetor2 = new listaDelistas();
-            listaDelistas vetor0 = new listaDelistas();
+            listaDelistas vetor3 = new listaDelistas();
+            listaDelistas vetor4 = new listaDelistas();
 
             for (var i = 0; i < numeroDeVariaveis; i++)
             {
@@ -228,6 +243,14 @@ namespace SgqSystem.Controllers.Api.Manutencao
                     {
                         vetor2.lista = e;
                     }
+                    else if (i == 3)
+                    {
+                        vetor3.lista = e;
+                    }
+                    else if (i == 4)
+                    {
+                        vetor4.lista = e;
+                    }
                 }
             }
 
@@ -244,9 +267,21 @@ namespace SgqSystem.Controllers.Api.Manutencao
                     try
                     {
                         if (tipoCalculo == "media")
-
+                        {
                             f[i].realizado = vetor1.lista[i].realizado / vetor1.lista[i].qtde;
+                        }
+                        else if (tipoCalculo == "Disponibilidade")
+                        {
+                            if (vetor4.lista != null)
+                            {
+                                f[i].realizado = 1 - ((vetor3.lista[i].realizado + vetor4.lista[i].realizado) / ((vetor1.lista[i].realizado * 60) + (vetor2.lista[i].realizado * 60)));
+                            }
+                            else
+                            {
+                                f[i].realizado = 1 - ((vetor2.lista[i].realizado) / ((vetor1.lista[i].realizado * 60)));
+                            }
 
+                        }
                         else
 
                             f[i].realizado = vetor1.lista[i].realizado / vetor2.lista[i].realizado;
@@ -260,6 +295,18 @@ namespace SgqSystem.Controllers.Api.Manutencao
                     {
                         if (tipoCalculo == "media")
                             f[i].orcado = vetor1.lista[i].orcado / vetor1.lista[i].qtde;
+                        else if (tipoCalculo == "Disponibilidade")
+                        {
+                            if (vetor4.lista != null)
+                            {
+                                f[i].orcado = 1 - ((vetor3.lista[i].orcado + vetor4.lista[i].orcado) / ((vetor1.lista[i].orcado * 60) + (vetor2.lista[i].orcado * 60)));
+                            }
+                            else
+                            {
+                                f[i].orcado = 1 - ((vetor2.lista[i].orcado) / ((vetor1.lista[i].orcado * 60)));
+                            }
+
+                        }
                         else
                             f[i].orcado = vetor1.lista[i].orcado / vetor2.lista[i].orcado;
                     }
