@@ -143,6 +143,7 @@
                             <option value="12">Dezembro</option>
                         </select>
                     </div>
+
                 </div>
 
                 <div id="graficoAcompanhamento" style="height:400px;"></div>
@@ -1071,8 +1072,8 @@
                     GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
                 }
             }).always(function () {
-                if (!!loader)
-                    $('#' + loader).removeClass('loader');
+                //if (!!loader)
+                //    $('#' + loader).removeClass('loader');
             });
         }
 
@@ -1215,23 +1216,6 @@
             });
 
         });
-
-        //var ajaxCount = 0;
-
-        //$(document).ajaxStart(function () {
-        //    ajaxCount++;
-        //});
-
-        //$(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
-        //    ajaxCount--;
-        //});
-
-        //$(document).ajaxStop(function () {
-        //    ajaxCount--;
-        //    if (ajaxCount == 0) {
-        //        $(".loader").removeClass("loader");
-        //    }
-        //});
 
         function addMes(retornoArray) {
 
