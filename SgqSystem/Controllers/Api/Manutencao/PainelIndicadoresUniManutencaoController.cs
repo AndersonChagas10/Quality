@@ -409,7 +409,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
             //            "\n group by day(Base_dateRef) " +
             //            "\n order by 1,2";
 
-            
+
             //using (var db = new SgqDbDevEntities())
             //{
             //    list = db.Database.SqlQuery<Acompanhamento>(query2).ToList();
@@ -418,9 +418,9 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
             var query2 = "SELECT " +
                         "\n day(Calendario.Data) as diaMes " +
-                        "\n , Calendario.Data as data " +
+                        "\n , CONVERT(VARCHAR(10),Calendario.Data, 103) as data " +
                         "\n , ISNULL(Man." + realizado + ", 0) as 'real' " +
-                        "\n , ISNULL(isnull(Man.userAlter, Man.userAdd), '') as userResp "+
+                        "\n , ISNULL(isnull(Man.userAlter, Man.userAdd), '') as userResp " +
                         "\n , ISNULL(Dim.DimName, '') as Indicador " +
                         "\n , ISNULL(valores.targetAjustado, 0.00) as targetAjustado " +
                         "\n , ISNULL(valores.budget, 0.00) as budget " +
@@ -443,16 +443,11 @@ namespace SgqSystem.Controllers.Api.Manutencao
                         "\n ) " +
                         "\n as valores " +
                         "\n on valores.diaMes = day(Calendario.Data) " +
-                        "\n ORDER BY 1" ;
+                        "\n ORDER BY 1";
 
             using (var db = new SgqDbDevEntities())
             {
                 list2 = db.Database.SqlQuery<Acompanhamento>(query2).ToList();
-            }
-
-            for (int i = 0; i < list2.Count; i++)
-            {
-                list2[i].dataFormatada = list2[i].data.ToString("MM/dd/yyyy");
             }
 
             return list2;
@@ -495,13 +490,10 @@ namespace SgqSystem.Controllers.Api.Manutencao
     public class Acompanhamento
     {
         public int diaMes { get; set; }
-        public DateTime data { get; set; }
-        public string dataFormatada { get; set; }
+        public string data { get; set; }
         public decimal? real { get; set; }
         public decimal? targetAjustado { get; set; }
         public decimal? budget { get; set; }
-        //public string userAdd { get; set; }
-        //public string userAlter { get; set; }
         public string userResp { get; set; }
     }
 }
