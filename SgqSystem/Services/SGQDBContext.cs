@@ -995,6 +995,7 @@ namespace SGQDBContext
         public int DefectsResultL2 { get; set; }
         public bool haveCorrectiveAction { get; set; }
         public bool haveReaudit { get; set; }
+        public int ReauditLevel { get; set; }
 
         public int CollectionLevel2_ID_CorrectiveAction { get; set; }
 
@@ -1013,7 +1014,7 @@ namespace SGQDBContext
 
             string sql = "SELECT " +
                          "CDL1.AtualAlert AS AlertLevelL1, CDL1.WeiEvaluation AS WeiEvaluationL1, CDL1.EvaluateTotal AS EvaluateTotalL1, CDL1.DefectsTotal AS DefectsTotalL1, CDL1.WeiDefects AS WeiDefectsL1, CDL1.TotalLevel3Evaluation AS TotalLevel3EvaluationL1, CDL1.TotalLevel3WithDefects AS TotalLevel3WithDefectsL1, CDL1.LastEvaluationAlert AS LastEvaluationAlertL1, CDL1.LastLevel2Alert AS LastLevel2AlertL1, CDL1.EvaluatedResult AS EvaluatedResultL1, CDL1.DefectsResult AS DefectsResultL1, " +
-                         "CDL2.AlertLevel AS AlertLevelL2, CDL2.WeiEvaluation AS WeiEvaluationL2, CDL2.DefectsTotal AS DefectsL2, CDL2.WeiDefects AS WeiDefectsL2, CDL2.TotalLevel3WithDefects AS TotalLevel3WithDefectsL2, CDL2.TotalLevel3Evaluation AS TotalLevel3EvaluationL2, CDL2.EvaluateTotal AS EvaluateTotalL2, CDL2.DefectsTotal AS DefectsTotalL2, CDL2.EvaluatedResult AS EvaluatedResultL2, CDL2.DefectsResult AS DefectsResultL2, CL2.HaveCorrectiveAction AS HaveCorrectiveAction, CL2.HaveReaudit AS HaveReaudit, MIN(CL2.Id) AS CollectionLevel2_ID_CorrectiveAction, MIN(CL2.Period) AS CollectionLevel2_Period_CorrectiveAction " +
+                         "CDL2.AlertLevel AS AlertLevelL2, CDL2.WeiEvaluation AS WeiEvaluationL2, CDL2.DefectsTotal AS DefectsL2, CDL2.WeiDefects AS WeiDefectsL2, CDL2.TotalLevel3WithDefects AS TotalLevel3WithDefectsL2, CDL2.TotalLevel3Evaluation AS TotalLevel3EvaluationL2, CDL2.EvaluateTotal AS EvaluateTotalL2, CDL2.DefectsTotal AS DefectsTotalL2, CDL2.EvaluatedResult AS EvaluatedResultL2, CDL2.DefectsResult AS DefectsResultL2, CL2.HaveCorrectiveAction AS HaveCorrectiveAction, CL2.HaveReaudit AS HaveReaudit, CL2.ReauditLevel AS ReauditLevel, MIN(CL2.Id) AS CollectionLevel2_ID_CorrectiveAction, MIN(CL2.Period) AS CollectionLevel2_Period_CorrectiveAction " +
                          "FROM ConsolidationLevel2 AS CDL2 " +
                          "INNER JOIN " +
                          "ConsolidationLevel1 AS CDL1 ON CDL2.ConsolidationLevel1_Id = CDL1.Id " +
@@ -1023,7 +1024,7 @@ namespace SGQDBContext
 
                          sql2 +
 
-                         " GROUP BY CDL1.AtualAlert, CDL1.WeiEvaluation,CDL1.EvaluateTotal, CDL1.DefectsTotal, CDL1.WeiDefects,  CDL1.TotalLevel3Evaluation, CDL1.TotalLevel3WithDefects, CDL1.LastEvaluationAlert, CDL1.LastLevel2Alert, CDL1.EvaluatedResult, CDL1.DefectsResult, CDL2.AlertLevel, CDL2.WeiEvaluation, CDL2.DefectsTotal, CDL2.WeiDefects, CDL2.TotalLevel3WithDefects, CDL2.TotalLevel3Evaluation, CDL2.EvaluateTotal, CDL2.EvaluatedResult, CDL2.DefectsResult,  CL2.HaveCorrectiveAction, CL2.HaveReaudit";
+                         " GROUP BY CDL1.AtualAlert, CDL1.WeiEvaluation,CDL1.EvaluateTotal, CDL1.DefectsTotal, CDL1.WeiDefects,  CDL1.TotalLevel3Evaluation, CDL1.TotalLevel3WithDefects, CDL1.LastEvaluationAlert, CDL1.LastLevel2Alert, CDL1.EvaluatedResult, CDL1.DefectsResult, CDL2.AlertLevel, CDL2.WeiEvaluation, CDL2.DefectsTotal, CDL2.WeiDefects, CDL2.TotalLevel3WithDefects, CDL2.TotalLevel3Evaluation, CDL2.EvaluateTotal, CDL2.EvaluatedResult, CDL2.DefectsResult,  CL2.HaveCorrectiveAction, CL2.HaveReaudit, CL2.ReauditLevel";
 
             var consolidation = db.Query<ConsolidationResultL1L2>(sql).FirstOrDefault();
 
@@ -1591,6 +1592,7 @@ namespace SGQDBContext
         public string CorrectiveActionJson { get; set; }
         public bool Reaudit { get; set; }
         public int ReauditNumber { get; set; }
+        public int ReauditLevel { get; set; }
         public bool haveReaudit { get; set; }
         public bool haveCorrectiveAction { get; set; }
         public string Device_Id { get; set; }
@@ -1711,6 +1713,7 @@ namespace SGQDBContext
         public int Phase { get; set; }
         public bool ReauditIs { get; set; }
         public int ReauditNumber { get; set; }
+        public int ReauditLevel { get; set; }
         public DateTime CollectionDate { get; set; }
         public DateTime? StartPhaseDate { get; set; }
         public int EvaluationNumber { get; set; }
