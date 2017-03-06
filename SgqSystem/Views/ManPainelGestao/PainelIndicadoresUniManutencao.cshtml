@@ -154,8 +154,8 @@
                         <!-- Modal content-->
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Tabela de Exportação</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times</button>
+                                <h4 class="modal-title" id="titleTable">Tabela de Exportação</h4>
                             </div>
                             <div class="modal-body">
                                 <table id="TableExport" class="table table-striped table-bordered" cellspacing="0" width="100%"></table>
@@ -858,18 +858,21 @@
         //Gera grafico Acompanhamento
         function CallbackGraficoAcompanhamento(retornoArray) {
 
+            //Grafico + Tabela
             var dia = MapeiaValorParaHC(retornoArray, 'diaMes');
-            var real = MapeiaValorParaHC(retornoArray, 'real');
             var targetAjustado = MapeiaValorParaHC(retornoArray, 'targetAjustado');
+            var real = MapeiaValorParaHC(retornoArray, 'real');
             var budget = MapeiaValorParaHC(retornoArray, 'budget');
-            var userAdd = MapeiaValorParaHC(retornoArray, 'userAdd');
-            var userAlter = MapeiaValorParaHC(retornoArray, 'userAlter');
+
+            //Tabela
+            var data = MapeiaValorParaHC(retornoArray, 'dataFormatada');
+            var userResp = MapeiaValorParaHC(retornoArray, 'userResp');
+
             var linha = [];
             var dataTableVetor = [];
-
             var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
-
             var budget2 = SomaVetor(budget);
+            var unidade = $('#UnidadeId :selected').text();
 
             $('#terceiro').show();
             $('#Export').show();
@@ -950,15 +953,17 @@
             });
 
             for (var i = 0; i < dia.length; i++) {
-                linha[0] = dia[i];
-                //linha[1] = userAdd[i];
-                //linha[2] = userAlter[i];
-                linha[1] = 'Renan';
-                linha[2] = 'Gabriel';
+
+                //$.datepicker.formatDate('dd/mm/yy', data[i])
+
+                linha[0] = data[i];
+                linha[1] = dia[i];
+                linha[2] = userResp[i];
                 linha[3] = formatReal(Math.round(real[i] * 100) / 100);
+                linha[4] = formatReal(Math.round(budget[i] * 100) / 100);
+                linha[5] = formatReal(Math.round(targetAjustado[i] * 100) / 100);
 
                 dataTableVetor.push(linha);
-
                 linha = [];
             }
 
@@ -966,10 +971,12 @@
             var table = $('#TableExport').empty().DataTable({
                 data: dataTableVetor,
                 columns: [
-                { title: "data" },
-                { title: "User Create" },
-                { title: "User Alter" },
-                { title: "Valor Coleta" }
+                { title: "Data" },
+                { title: "Dia" },
+                { title: "Usuário Responsável" },
+                { title: "Valor Coleta" },
+                { title: "Orçamento" },
+                { title: "Target" }
                 ],
                 //buttons: [
                 //    { extend: 'collection', text: 'Exportar', buttons: ['copy', 'excel', 'csv', 'pdf', 'print'] }
@@ -983,13 +990,15 @@
                 //"scrollX": true,
                 "autoWidth": true,
                 "autoHeight": true,
+                "lengthChange": false,
                 //"scrollCollapse": true,
                 //"scrollY": "300px",
                 //lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
                 pageLength: 12,
                 responsive: true,
-                //paginate: true,
-                //paging: false,
+                paginate: false,
+                paging: true,
+                lengthMenu: false,
                 //bSort: false,
                 //loadingRecords: true,
                 destroy: true,
@@ -1009,7 +1018,7 @@
                         },
                         exportOptions: {
                             columns: ':visible'
-                        }                        
+                        }
                     },
                     {
                         extend: 'excelHtml5',
@@ -1025,6 +1034,9 @@
             table.buttons(0, null).container().prependTo(
                 table.table().container()
             );
+            $("#titleTable").empty();
+
+            $("#titleTable").append("Tabela de Exportação - Indicador " + indicador + " de " + unidade + "");
 
         }
 
@@ -1204,22 +1216,22 @@
 
         });
 
-        var ajaxCount = 0;
+        //var ajaxCount = 0;
 
-        $(document).ajaxStart(function () {
-            ajaxCount++;
-        });
+        //$(document).ajaxStart(function () {
+        //    ajaxCount++;
+        //});
 
-        $(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
-            ajaxCount--;
-        });
+        //$(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
+        //    ajaxCount--;
+        //});
 
-        $(document).ajaxStop(function () {
-            ajaxCount--;
-            if (ajaxCount == 0) {
-                $(".loader").removeClass("loader");
-            }
-        });
+        //$(document).ajaxStop(function () {
+        //    ajaxCount--;
+        //    if (ajaxCount == 0) {
+        //        $(".loader").removeClass("loader");
+        //    }
+        //});
 
         function addMes(retornoArray) {
 
