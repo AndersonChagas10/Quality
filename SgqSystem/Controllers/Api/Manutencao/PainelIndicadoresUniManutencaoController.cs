@@ -152,10 +152,8 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
                 if (obj.subRegional == "Todas")
                 {
-
                     tipo = "SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegionalGrupo = '" + obj.regional + "' and ParCompany_id is not null";
                     tipo2 = "Select distinct ParCompany_id, EmpresaSigla, DimManBaseReg_id, EmpresaRegional, DimManBaseRegGrup_id, EmpresaRegionalGrupo, EmpresaCluster from DimManBaseUni where EmpresaRegionalGrupo = '" + obj.regional + "' and ParCompany_id is not null";
-
                 }
                 else
                 {

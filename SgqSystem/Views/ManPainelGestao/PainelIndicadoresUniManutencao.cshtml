@@ -874,6 +874,7 @@
             var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
             var budget2 = SomaVetor(budget);
             var unidade = $('#UnidadeId :selected').text();
+            var mes = $('#AcumuladoMouthId option:selected').text();
 
             $('#terceiro').show();
             $('#Export').show();
@@ -995,7 +996,7 @@
                 //"scrollCollapse": true,
                 //"scrollY": "300px",
                 //lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-                pageLength: 12,
+                pageLength: 11,
                 responsive: true,
                 paginate: false,
                 paging: true,
@@ -1037,7 +1038,7 @@
             );
             $("#titleTable").empty();
 
-            $("#titleTable").append("Tabela de Exportação - Indicador " + indicador + " de " + unidade + "");
+            $("#titleTable").append("Tabela de Exportação - Indicador " + indicador + " de " + unidade + " - " + mes + "");
 
         }
 
