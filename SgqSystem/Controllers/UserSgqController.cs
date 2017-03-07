@@ -14,6 +14,7 @@ namespace SgqSystem.Controllers
 {
     public class UserSgqController : BaseController
     {
+        [HandleController()]
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
         private IBaseDomain<ParCompany, ParCompanyDTO> _baseDomainParCompany;
