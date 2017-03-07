@@ -1411,6 +1411,7 @@
     <Content Include="Views\Shared\_DdlGenerica.cshtml" />
     <Content Include="Views\Pa_Acao\Edit.cshtml" />
     <Content Include="Views\Relatorios\Relatorios.cshtml" />
+    <Content Include="Views\Pa_Planejamento\Editar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DTO\DTO.csproj">

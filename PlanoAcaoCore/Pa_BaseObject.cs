@@ -79,5 +79,25 @@ namespace PlanoAcaoCore
             return SalvarStatic(cmd);
         }
 
+        public static int GenericInsert(string valor, string table, int predecessor, string fk)
+        {
+            string query;
+
+            query = " INSERT INTO [dbo].[" + table + "] " +
+                    "\n       ([Name],                  " +
+                    "\n        " + fk +"     )          " +
+                    "\n VALUES                          " +
+                    "\n       (@Name,                   "+
+                    "\n        @predecessor)            " +
+                    "\n       SELECT CAST(scope_identity() AS int) ";
+
+            SqlCommand cmd;
+            cmd = new SqlCommand(query);
+            cmd.Parameters.AddWithValue("@Name", valor);
+            cmd.Parameters.AddWithValue("@predecessor", predecessor);
+
+            return SalvarStatic(cmd);
+        }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PlanoAcaoCore
 {
@@ -15,6 +16,12 @@ namespace PlanoAcaoCore
         {
             var query = "SELECT * FROM Pa_IndicadoresDeProjeto WHERE Id = " + Id;
             return GetGenerico<Pa_IndicadoresDeProjeto>(query);
+        }
+
+        public static List<Pa_IndicadoresDeProjeto> GetIndicadoresProjetoXiniciativa(int id)
+        {
+            var query = "SELECT * FROM Pa_IndicadoresDeProjeto WHERE Pa_Iniciativa_Id = " + id;
+            return ListarGenerico<Pa_IndicadoresDeProjeto>(query);
         }
     }
 }

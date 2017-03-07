@@ -89,6 +89,7 @@
     <Compile Include="Planejamento\Pa_IndicadoresDiretriz.cs" />
     <Compile Include="Planejamento\Pa_IndicadoresDeProjeto.cs" />
     <Compile Include="Planejamento\Pa_Objetivo.cs" />
+    <Compile Include="Planejamento\Pa_UnidadeMedida.cs" />
     <Compile Include="Planejamento\Pa_ObjetivoGeral.cs" />
     <Compile Include="Planejamento\Pa_Iniciativas.cs" />
     <Compile Include="Planejamento\Pa_Missao.cs" />
