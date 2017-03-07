@@ -193,7 +193,7 @@ namespace SgqSystem.Services
             {
                 using (SqlConnection connection = new SqlConnection(conexao))
                 {
-                     connection.Open();
+                    connection.Open();
 
                     SqlCommand command;
                     for (int i = 0; i < arrayObj.Length; i++)
@@ -327,7 +327,7 @@ namespace SgqSystem.Services
                         level02HeaderJSon += ";" + hassampletotal;
                         level02HeaderJSon += ";" + hashKey;
                         level02HeaderJSon += ";" + monitoramentoultimoalerta;
-                        
+
                         //level02HeaderJSon += ";" + alertaAtual;
 
                         //Verifica o Resultado do Level03
@@ -344,6 +344,10 @@ namespace SgqSystem.Services
                         {
                             haveReaudit = "1";
                         }
+                        string reauditlevel = result[46];
+                        //Convert Reauditoria Pendente para valor correto
+                        reauditlevel = DefaultValueReturn(haveReaudit, "0");
+                        
                         //Se Ação corretiva ficou pendente
                         string haveCorrectiveAction = result[25];
                         //Converte ação corretiva para valor correto
@@ -360,9 +364,9 @@ namespace SgqSystem.Services
 
 
                         string sql = "INSERT INTO [dbo].[CollectionJson] " +
-                               "([Unit_Id],[Shift],[Period],[level01_Id],[Level01CollectionDate],[level02_Id],[Evaluate],[Sample],[AuditorId],[Level02CollectionDate],[Level02HeaderJson],[Level03ResultJSon],[CorrectiveActionJson],[Reaudit],[ReauditNumber],[haveReaudit],[haveCorrectiveAction],[Device_Id],[AppVersion],[Ambient],[IsProcessed],[Device_Mac],[AddDate],[AlterDate],[Key],[TTP]) " +
+                               "([Unit_Id],[Shift],[Period],[level01_Id],[Level01CollectionDate],[level02_Id],[Evaluate],[Sample],[AuditorId],[Level02CollectionDate],[Level02HeaderJson],[Level03ResultJSon],[CorrectiveActionJson],[Reaudit],[ReauditNumber],[haveReaudit],[ReauditLevel],[haveCorrectiveAction],[Device_Id],[AppVersion],[Ambient],[IsProcessed],[Device_Mac],[AddDate],[AlterDate],[Key],[TTP]) " +
                                "VALUES " +
-                               "('" + unidadeId + "','" + shift + "','" + period + "','" + level01Id + "',CAST(N'" + level01DataCollect + "' AS DateTime),'" + level02Id + "','" + evaluate + "','" + sample + "', '" + auditorId + "',CAST(N'" + level02DataCollect + "' AS DateTime),'" + level02HeaderJSon + "','" + level03ResultJson + "', '" + correctiveActionJson + "', '" + reaudit + "', '" + reauditNumber + "', '" + haveReaudit + "','" + haveCorrectiveAction + "' ,'" + deviceId + "','" + versaoApp + "','" + ambiente + "',0,'" + deviceMac + "',GETDATE(),NULL,'" + key + "',NULL) ";
+                               "('" + unidadeId + "','" + shift + "','" + period + "','" + level01Id + "',CAST(N'" + level01DataCollect + "' AS DateTime),'" + level02Id + "','" + evaluate + "','" + sample + "', '" + auditorId + "',CAST(N'" + level02DataCollect + "' AS DateTime),'" + level02HeaderJSon + "','" + level03ResultJson + "', '" + correctiveActionJson + "', '" + reaudit + "', '" + reauditNumber + "', '" + haveReaudit + "', '" + reauditlevel + "','" + haveCorrectiveAction + "' ,'" + deviceId + "','" + versaoApp + "','" + ambiente + "',0,'" + deviceMac + "',GETDATE(),NULL,'" + key + "',NULL) ";
 
                         if (autoSend == true)
                         {
@@ -439,7 +443,7 @@ namespace SgqSystem.Services
                     query = "[Id] = '" + id + "' AND";
                 }
 
-                string sql = "SELECT [level01_Id], [Level01CollectionDate], [level02_Id], [Level02CollectionDate], [Unit_Id],[Period], [Shift], [AppVersion], [Ambient], [Device_Id], [Device_Mac] , [Key], [Level03ResultJSon], [Id], [Level02HeaderJson], [Evaluate],[Sample],[AuditorId], [Reaudit], [CorrectiveActionJson],[haveReaudit],[haveCorrectiveAction],[ReauditNumber]  FROM CollectionJson WHERE " + query + " [IsProcessed] = 0";
+                string sql = "SELECT [level01_Id], [Level01CollectionDate], [level02_Id], [Level02CollectionDate], [Unit_Id],[Period], [Shift], [AppVersion], [Ambient], [Device_Id], [Device_Mac] , [Key], [Level03ResultJSon], [Id], [Level02HeaderJson], [Evaluate],[Sample],[AuditorId], [Reaudit], [CorrectiveActionJson],[haveReaudit],[ReauditLevel],[haveCorrectiveAction],[ReauditNumber]  FROM CollectionJson WHERE " + query + " [IsProcessed] = 0";
 
 
                 var CollectionJsonDB = new SGQDBContext.CollectionJson();
@@ -465,105 +469,107 @@ namespace SgqSystem.Services
                     //Cabecalho                   
                     string[] arrayHeader = c.Level02HeaderJson.Split(';');
 
-                        string headersContadores = arrayHeader[0];
-                        string Phase = arrayHeader[1];
+                    string headersContadores = arrayHeader[0];
+                    string Phase = arrayHeader[1];
 
-                        string Reaudit = BoolConverter(c.Reaudit.ToString());
+                    string Reaudit = BoolConverter(c.Reaudit.ToString());
 
-                        string StartPhase = arrayHeader[2];
-                        if (string.IsNullOrEmpty(StartPhase) || StartPhase == "null" || StartPhase == "undefined")
-                        {
-                            StartPhase = "'0001-01-01 00:00:00'";
-                        }
-                        else
-                        {
-                            DateTime dataPhase = DateCollectConvert(StartPhase);
-                            StartPhase = "CAST(N'" + dataPhase.ToString("yyyy-MM-dd 00:00:00") + "' AS DateTime)";
-                        }
+                    string StartPhase = arrayHeader[2];
+                    if (string.IsNullOrEmpty(StartPhase) || StartPhase == "null" || StartPhase == "undefined")
+                    {
+                        StartPhase = "'0001-01-01 00:00:00'";
+                    }
+                    else
+                    {
+                        DateTime dataPhase = DateCollectConvert(StartPhase);
+                        StartPhase = "CAST(N'" + dataPhase.ToString("yyyy-MM-dd 00:00:00") + "' AS DateTime)";
+                    }
 
 
-                        string ConsecuticeFalireIs = arrayHeader[3];
-                        ConsecuticeFalireIs = DefaultValueReturn(arrayHeader[6], "0");
-                        if (ConsecuticeFalireIs != "0")
-                        {
-                            ConsecuticeFalireIs = "1";
-                        }
+                    string ConsecuticeFalireIs = arrayHeader[3];
+                    ConsecuticeFalireIs = DefaultValueReturn(arrayHeader[6], "0");
+                    if (ConsecuticeFalireIs != "0")
+                    {
+                        ConsecuticeFalireIs = "1";
+                    }
 
-                        string ConsecutiveFailureTotal = arrayHeader[4];
-                        ConsecutiveFailureTotal = DefaultValueReturn(ConsecutiveFailureTotal, "0");
-                        string NotEvaluateIs = arrayHeader[5];
-                        NotEvaluateIs = BoolConverter(NotEvaluateIs);
+                    string ConsecutiveFailureTotal = arrayHeader[4];
+                    ConsecutiveFailureTotal = DefaultValueReturn(ConsecutiveFailureTotal, "0");
+                    string NotEvaluateIs = arrayHeader[5];
+                    NotEvaluateIs = BoolConverter(NotEvaluateIs);
 
-                        string Duplicated = "0";
+                    string Duplicated = "0";
 
-                        string completed = arrayHeader[6];
-                        completed = BoolCompletedConverter(completed);
+                    string completed = arrayHeader[6];
+                    completed = BoolCompletedConverter(completed);
 
-                        bool update = false;
-                        string idCollectionLevel2 = arrayHeader[8];
-                        idCollectionLevel2 = DefaultValueReturn(idCollectionLevel2, "0");
-                        if (idCollectionLevel2 != "0")
-                        {
-                            update = true;
-                        }
-                        string havePhases = arrayHeader[7];
-                        havePhases = BoolConverter(havePhases);
+                    bool update = false;
+                    string idCollectionLevel2 = arrayHeader[8];
+                    idCollectionLevel2 = DefaultValueReturn(idCollectionLevel2, "0");
+                    if (idCollectionLevel2 != "0")
+                    {
+                        update = true;
+                    }
+                    string havePhases = arrayHeader[7];
+                    havePhases = BoolConverter(havePhases);
 
-                        AlertLevel = arrayHeader[11];
-                        AlertLevel = DefaultValueReturn(AlertLevel, "0");
+                    AlertLevel = arrayHeader[11];
+                    AlertLevel = DefaultValueReturn(AlertLevel, "0");
 
-                        string weievaluation = arrayHeader[14];
-                        string weidefects = arrayHeader[15];
-                        string defects = arrayHeader[16];
-                        string totallevel3withdefects = arrayHeader[17];
-                        string totalLevel3evaluation = arrayHeader[18];
+                    string weievaluation = arrayHeader[14];
+                    string weidefects = arrayHeader[15];
+                    string defects = arrayHeader[16];
+                    string totallevel3withdefects = arrayHeader[17];
+                    string totalLevel3evaluation = arrayHeader[18];
 
-                        avaliacaoultimoalerta = arrayHeader[19];
-                        avaliacaoultimoalerta = DefaultValueReturn(avaliacaoultimoalerta, "0");
+                    avaliacaoultimoalerta = arrayHeader[19];
+                    avaliacaoultimoalerta = DefaultValueReturn(avaliacaoultimoalerta, "0");
 
-                        
 
-                        string evaluatedresult = arrayHeader[20];
-                        string defectsresult = arrayHeader[21];
-                        string sequential = arrayHeader[22];
-                        sequential = DefaultValueReturn(sequential, "0");
-                        string side = arrayHeader[23];
-                        side = DefaultValueReturn(side, "0");
 
-                        string isemptylevel3 = arrayHeader[24];
-                        isemptylevel3 = DefaultValueReturn(isemptylevel3, "0");
-                        isemptylevel3 = BoolConverter(isemptylevel3);
+                    string evaluatedresult = arrayHeader[20];
+                    string defectsresult = arrayHeader[21];
+                    string sequential = arrayHeader[22];
+                    sequential = DefaultValueReturn(sequential, "0");
+                    string side = arrayHeader[23];
+                    side = DefaultValueReturn(side, "0");
 
-                                             
+                    string isemptylevel3 = arrayHeader[24];
+                    isemptylevel3 = DefaultValueReturn(isemptylevel3, "0");
+                    isemptylevel3 = BoolConverter(isemptylevel3);
 
-                        string haveReaudit = BoolConverter(c.haveReaudit.ToString());
 
-                        string haveCorrectiveAction = BoolConverter(c.haveCorrectiveAction.ToString());
 
-                        string reauditNumber = DefaultValueReturn(c.ReauditNumber.ToString(), "0");
+                    string haveReaudit = BoolConverter(c.haveReaudit.ToString());
 
-                        var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(c.Unit_Id, c.level01_Id, c.Level01CollectionDate);
+                    int reauditLevel = c.ReauditLevel;
 
+                    string haveCorrectiveAction = BoolConverter(c.haveCorrectiveAction.ToString());
+
+                    string reauditNumber = DefaultValueReturn(c.ReauditNumber.ToString(), "0");
+
+                    var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(c.Unit_Id, c.level01_Id, c.Level01CollectionDate);
+
+                    if (consolidationLevel1 == null)
+                    {
+                        consolidationLevel1 = InsertConsolidationLevel1(c.Unit_Id, c.level01_Id, c.Level01CollectionDate);
                         if (consolidationLevel1 == null)
                         {
-                            consolidationLevel1 = InsertConsolidationLevel1(c.Unit_Id, c.level01_Id, c.Level01CollectionDate);
-                            if (consolidationLevel1 == null)
-                            {
-                                throw new Exception();
-                            }
+                            throw new Exception();
                         }
+                    }
 
-                        var consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(c.Unit_Id, consolidationLevel1.Id, c.level02_Id);
+                    var consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(c.Unit_Id, consolidationLevel1.Id, c.level02_Id);
+                    if (consolidationLevel2 == null)
+                    {
+                        consolidationLevel2 = InsertConsolidationLevel2(consolidationLevel1.Id, c.level02_Id, c.Unit_Id, c.Level02CollectionDate);
                         if (consolidationLevel2 == null)
                         {
-                            consolidationLevel2 = InsertConsolidationLevel2(consolidationLevel1.Id, c.level02_Id, c.Unit_Id, c.Level02CollectionDate);
-                            if (consolidationLevel2 == null)
-                            {
-                                throw new Exception();
-                            }
+                            throw new Exception();
                         }
-                        ConsolidationLevel1_Id = consolidationLevel1.Id;
-                        ConsolidationLevel2_Id = consolidationLevel2.Id;
+                    }
+                    ConsolidationLevel1_Id = consolidationLevel1.Id;
+                    ConsolidationLevel2_Id = consolidationLevel2.Id;
 
 
                     int sampleCollect = c.Sample;
@@ -583,11 +589,11 @@ namespace SgqSystem.Services
                     monitoramentoultimoalerta = DefaultValueReturn(monitoramentoultimoalerta, "0");
 
                     int CollectionLevel2Id = InsertCollectionLevel2(consolidationLevel1, consolidationLevel2, c.AuditorId, c.Shift, c.Period, Phase, c.Reaudit, c.ReauditNumber, c.Level02CollectionDate,
-                                                StartPhase, c.Evaluate, sampleCollect, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit,
+                                                StartPhase, c.Evaluate, sampleCollect, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel,
                                                 haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel, sequential, side,
                                                 weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, hashKey);
 
-                    if(CollectionLevel2Id > 0)
+                    if (CollectionLevel2Id > 0)
                     {
 
                         int CollectionLevel3Id = InsertCollectionLevel3(CollectionLevel2Id.ToString(), c.level02_Id, c.Level03ResultJSon, c.AuditorId, Duplicated);
@@ -1119,12 +1125,12 @@ namespace SgqSystem.Services
         /// <param name="Completed">Se o level01 está completo(todos os level02 dentro do level01 estão completos)</param>
         /// <param name="id">Id da Coleta</param>
         /// <returns></returns>
-        public int InsertCollectionLevel2(SGQDBContext.ConsolidationLevel1 ConsolidationLevel1, SGQDBContext.ConsolidationLevel2 ConsolidationLevel2, int AuditorId, int Shift, 
+        public int InsertCollectionLevel2(SGQDBContext.ConsolidationLevel1 ConsolidationLevel1, SGQDBContext.ConsolidationLevel2 ConsolidationLevel2, int AuditorId, int Shift,
                                           int Period, string Phase, bool Reaudit, int ReauditNumber, DateTime CollectionDate,
                                            string StartPhase, int Evaluation, int Sample, string ConsecuticeFalireIs, string ConsecutiveFailureTotal, string NotEvaluateIs,
-                                           string Duplicated, string haveReaudit, string haveCorrectiveAction, string HavePhase, string Completed, string id, string AlertLevel,
+                                           string Duplicated, string haveReaudit, int reauditLevel, string haveCorrectiveAction, string HavePhase, string Completed, string id, string AlertLevel,
                                            string sequential, string side, string WeiEvaluation, string Defects, string WeiDefects, string TotalLevel3WithDefects, string totalLevel3evaluation,
-                                           string avaliacaoultimoalerta, string monitoramentoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3, string hashKey=null)
+                                           string avaliacaoultimoalerta, string monitoramentoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3, string hashKey = null)
         {
             //Converte a data da coleta
             string sql = null;
@@ -1134,7 +1140,7 @@ namespace SgqSystem.Services
 
             key += "-" + ConsolidationLevel1.ParLevel1_Id.ToString();
             key += "-" + ConsolidationLevel2.ParLevel2_Id.ToString();
-            if(hashKey == "1")
+            if (hashKey == "1")
             {
                 key += "-" + sequential;
                 key += "-" + side;
@@ -1148,9 +1154,9 @@ namespace SgqSystem.Services
 
             if (id == "0")
             {
-                sql = "INSERT INTO CollectionLevel2 ([Key],[ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit], [HaveCorrectiveAction],[HavePhase],[Completed],[AlertLevel],[Sequential],[Side],[WeiEvaluation],[Defects],[WeiDefects],[TotalLevel3WithDefects], [TotalLevel3Evaluation], [LastEvaluationAlert],[LastLevel2Alert],[EvaluatedResult],[DefectsResult],[IsEmptyLevel3]) " +
+                sql = "INSERT INTO CollectionLevel2 ([Key],[ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit],[ReauditLevel], [HaveCorrectiveAction],[HavePhase],[Completed],[AlertLevel],[Sequential],[Side],[WeiEvaluation],[Defects],[WeiDefects],[TotalLevel3WithDefects], [TotalLevel3Evaluation], [LastEvaluationAlert],[LastLevel2Alert],[EvaluatedResult],[DefectsResult],[IsEmptyLevel3]) " +
                 "VALUES " +
-                "('" + key + "', '" + ConsolidationLevel2.Id + "','" + ConsolidationLevel1.ParLevel1_Id + "','" + ConsolidationLevel2.ParLevel2_Id + "','" + ConsolidationLevel1.UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + BoolConverter(Reaudit.ToString()) + "','" + ReauditNumber + "', CAST(N'" + CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") + "' AS DateTime), " + StartPhase + ",'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "', '" + sequential + "', '" + side + "','" + WeiEvaluation + "','" + Defects + "','" + WeiDefects + "','" + TotalLevel3WithDefects + "', '" + totalLevel3evaluation + "', '" + avaliacaoultimoalerta + "', '" + monitoramentoultimoalerta + "', '" + evaluatedresult + "', '" + defectsresult + "', '" + isemptylevel3 + "') ";
+                "('" + key + "', '" + ConsolidationLevel2.Id + "','" + ConsolidationLevel1.ParLevel1_Id + "','" + ConsolidationLevel2.ParLevel2_Id + "','" + ConsolidationLevel1.UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + BoolConverter(Reaudit.ToString()) + "','" + ReauditNumber + "', CAST(N'" + CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") + "' AS DateTime), " + StartPhase + ",'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', " + reauditLevel + ", '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "', '" + sequential + "', '" + side + "','" + WeiEvaluation + "','" + Defects + "','" + WeiDefects + "','" + TotalLevel3WithDefects + "', '" + totalLevel3evaluation + "', '" + avaliacaoultimoalerta + "', '" + monitoramentoultimoalerta + "', '" + evaluatedresult + "', '" + defectsresult + "', '" + isemptylevel3 + "') ";
 
                 sql += " SELECT @@IDENTITY AS 'Identity' ";
             }
@@ -1158,7 +1164,7 @@ namespace SgqSystem.Services
             {
                 ///podemos melhorar a verificação para Id zero, id null e id not null
                 //Caso contrário  é u Update
-                sql = "UPDATE CollectionLevel2 SET NotEvaluatedIs='" + NotEvaluateIs + "', AlterDate='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', HaveReaudit='" + haveReaudit + "', HaveCorrectiveAction='" + haveCorrectiveAction + "', WeiEvaluation=" + WeiEvaluation + ", Defects=" + defectsresult + ", WeiDefects=" + WeiDefects + ", TotalLevel3WithDefects=" +  TotalLevel3WithDefects + ", TotalLevel3Evaluation=" + totalLevel3evaluation + ", LastEvaluationAlert=" + avaliacaoultimoalerta + ", EvaluatedResult=" + evaluatedresult + ", DefectsResult=" +defectsresult + ", IsEmptyLevel3=" + isemptylevel3 + " WHERE Id='" + id + "'";
+                sql = "UPDATE CollectionLevel2 SET NotEvaluatedIs='" + NotEvaluateIs + "', AlterDate='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', HaveReaudit='" + haveReaudit + "', ReauditLevel=" + reauditLevel + ", HaveCorrectiveAction='" + haveCorrectiveAction + "', WeiEvaluation=" + WeiEvaluation + ", Defects=" + defectsresult + ", WeiDefects=" + WeiDefects + ", TotalLevel3WithDefects=" + TotalLevel3WithDefects + ", TotalLevel3Evaluation=" + totalLevel3evaluation + ", LastEvaluationAlert=" + avaliacaoultimoalerta + ", EvaluatedResult=" + evaluatedresult + ", DefectsResult=" + defectsresult + ", IsEmptyLevel3=" + isemptylevel3 + " WHERE Id='" + id + "'";
 
                 sql += " SELECT '" + id + "' AS 'Identity'";
             }
@@ -1190,13 +1196,13 @@ namespace SgqSystem.Services
             {
                 if (ex.Number == 2627)
                 {
-                   if(hashKey == "1")
+                    if (hashKey == "1")
                     {
                         var CollectionLevel2DB = new SGQDBContext.CollectionLevel2();
                         var collectionLevel2 = CollectionLevel2DB.GetByKey(key);
 
-                        var updateLevel2Id = InsertCollectionLevel2(ConsolidationLevel1, ConsolidationLevel2, AuditorId, Shift, Period, Phase, Reaudit, ReauditNumber, CollectionDate, StartPhase, Evaluation, Sample, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, haveCorrectiveAction, HavePhase, Completed, collectionLevel2.Id.ToString(), AlertLevel, sequential, side, WeiEvaluation, Defects, WeiDefects, TotalLevel3WithDefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, hashKey);
-                        if(updateLevel2Id > 0)
+                        var updateLevel2Id = InsertCollectionLevel2(ConsolidationLevel1, ConsolidationLevel2, AuditorId, Shift, Period, Phase, Reaudit, ReauditNumber, CollectionDate, StartPhase, Evaluation, Sample, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel, haveCorrectiveAction, HavePhase, Completed, collectionLevel2.Id.ToString(), AlertLevel, sequential, side, WeiEvaluation, Defects, WeiDefects, TotalLevel3WithDefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, hashKey);
+                        if (updateLevel2Id > 0)
                         {
                             int removeLevel3 = ResultLevel3Delete(collectionLevel2.Id);
                             return updateLevel2Id;
@@ -1696,7 +1702,7 @@ namespace SgqSystem.Services
             dataFim = periodoFim.ToString("yyyyMMdd");
 
         }
-        public string getConsolidation(string ParCompany_Id, DateTime data, int ParLevel1_Id=0)
+        public string getConsolidation(string ParCompany_Id, DateTime data, int ParLevel1_Id = 0)
         {
 
             //Verificamos os Indicadores que já foram consolidados para a Unidade selecionada
@@ -1706,7 +1712,7 @@ namespace SgqSystem.Services
 
             string Results = null;
 
-            if(ParLevel1_Id > 0)
+            if (ParLevel1_Id > 0)
             {
                 parLevel1ConsolidationXParFrequency = parLevel1ConsolidationXParFrequency.Where(p => p.ParLevel1_Id == ParLevel1_Id);
             }
@@ -1737,7 +1743,7 @@ namespace SgqSystem.Services
                     Level2Result.SampleLast = lastSampleConsolidation;
 
                     string partialResults = null;
-                    if(c.IsPartialSave ==  true)
+                    if (c.IsPartialSave == true)
                     {
 
                         var ParLevel1DB = new SGQDBContext.ParLevel1();
@@ -1748,7 +1754,7 @@ namespace SgqSystem.Services
 
                         var ParLevel3DB = new SGQDBContext.ParLevel3();
                         var parLevel3InLevel2List = ParLevel3DB.getLevel3InLevel2(parLevel1, parLevel2, Convert.ToInt32(ParCompany_Id), data);
- 
+
                         foreach (var l3 in parLevel3InLevel2List)
                         {
                             partialResults += "<div id=\"" + l3.Id + "\" class=\"r3l2\"></div>";
@@ -1757,7 +1763,7 @@ namespace SgqSystem.Services
                     }
 
                     // Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\" havecorrectiveaction=\"false\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + "\"></div>";
-                    Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" LastLevel2AlertL1=\"" + consolidationResultL1L2.LastLevel2AlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\" havecorrectiveaction=\"" + consolidationResultL1L2.haveCorrectiveAction.ToString().ToLower() + "\" more3defectsEvaluate=\"" + consolidationResultL1L2.More3DefectsEvaluate + "\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + "\" CollectionLevel2_Period_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_Period_CorrectiveAction + "\">" +
+                    Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" LastLevel2AlertL1=\"" + consolidationResultL1L2.LastLevel2AlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\" havecorrectiveaction=\"" + consolidationResultL1L2.haveCorrectiveAction.ToString().ToLower() + "\" havereaudit=\"" + consolidationResultL1L2.haveReaudit.ToString().ToLower() + "\" reauditlevel=\"" + consolidationResultL1L2.ReauditLevel.ToString().ToLower() + "\" more3defectsEvaluate=\"" + consolidationResultL1L2.More3DefectsEvaluate + "\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + "\" CollectionLevel2_Period_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_Period_CorrectiveAction + "\">" +
                                 partialResults +
                                "</div>";
                 }
@@ -2217,10 +2223,10 @@ namespace SgqSystem.Services
 
             foreach (var entry in resourceSet.Cast<DictionaryEntry>())
             {
-                items += "<div res='"+entry.Key.ToString() + "'>"+ entry.Value.ToString() + "</div>";
-            } 
-            
-            return "<div class='Resource hide'>"+ items + "</div>";
+                items += "<div res='" + entry.Key.ToString() + "'>" + entry.Value.ToString() + "</div>";
+            }
+
+            return "<div class='Resource hide'>" + items + "</div>";
         }
 
         public int getEvaluate(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluatePadrao)
@@ -2345,7 +2351,7 @@ namespace SgqSystem.Services
 
                            " </script> ";
 
-            debug =        "<div id = 'ControlaDivDebugAlertas' style='display:none'></div> " +
+            debug = "<div id = 'ControlaDivDebugAlertas' style='display:none'></div> " +
 
                            "<div id = 'divDebugAlertas'  style='display:none'> " +
                            "     <p class='titDebugAlertas'>Acompanhamento do indicador</p> " +
@@ -2369,7 +2375,7 @@ namespace SgqSystem.Services
 
                            "</div> ";
 
-                          
+
 
             return html.div(
                             outerhtml: navBar(UserSgq_Id, ParCompany_Id) +
@@ -2390,7 +2396,7 @@ namespace SgqSystem.Services
                            debug;
         }
 
-       
+
 
         public string navBar(int UserSgq_Id, int ParCompany_Id)
         {
@@ -2596,7 +2602,7 @@ namespace SgqSystem.Services
                         decimal volumeAlerta = 0;
                         decimal meta = 0;
 
-                        if(tipoAlerta == 1) //JBS por Indicador
+                        if (tipoAlerta == 1) //JBS por Indicador
                         {
                             if (alertas != null)
                             {
@@ -2664,7 +2670,7 @@ namespace SgqSystem.Services
                         string level01 = html.level1(parlevel1,
                                                      tipoTela: tipoTela,
                                                      totalAvaliado: 0,
-                                                     totalDefeitos: 0,                                                     
+                                                     totalDefeitos: 0,
                                                      alertNivel1: alertaNivel1,
                                                      alertNivel2: alertaNivel2,
                                                      alertaNivel3: alertaNivel3,
@@ -2678,7 +2684,7 @@ namespace SgqSystem.Services
                                                      volumeAlertaIndicador: volumeAlerta,
                                                      metaIndicador: meta);
                         //Incrementa level1
-                        parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row", outerhtml: level01+ painelCounters);
+                        parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row", outerhtml: level01 + painelCounters);
                     }
                     else
                     {
@@ -2696,7 +2702,7 @@ namespace SgqSystem.Services
                 }
                 //Quando termina o loop dos itens agrupados por ParCritialLevel 
                 //Se contem ParCritialLevel
-                
+
                 if (ParCriticalLevel == true)
                 {
                     Html.bootstrapcolor? color = null;
@@ -2766,6 +2772,7 @@ namespace SgqSystem.Services
             var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader();
             //Inicaliza ParFieldType
             var ParFieldTypeDB = new SGQDBContext.ParFieldType();
+            var ParNCRuleDB = new SGQDBContext.NotConformityRule();
 
             var html = new Html();
 
@@ -2809,7 +2816,7 @@ namespace SgqSystem.Services
                 int sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
 
                 //Se agrupar level2 com level3 pego o valor da primeira avaliação e amostra
-                if(ParLevel1.HasGroupLevel2 == true & evaluateGroup == 0 )
+                if (ParLevel1.HasGroupLevel2 == true & evaluateGroup == 0)
                 {
                     evaluateGroup = evaluate;
                     sampleGroup = sample;
@@ -2907,9 +2914,16 @@ namespace SgqSystem.Services
                                        "   <span class=\"cursorPointer iconsArea\"><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i></span>        " +
                                        "</button>                                                                                                      ";
                     }
+                    string btnReaudit = null;
+                    if (parlevel2.IsReaudit)
+                    {
+                        btnReaudit = "<button class=\"btn btn-primary hide btnReaudit\"> " +
+                                      "<span>R.</span></button>";
+                    }
                     buttons = html.div(
                                  //aqui vai os botoes
-                                 outerhtml: btnAreaSave +
+                                 outerhtml: btnReaudit +
+                                            btnAreaSave +
                                             btnNotAvaliable,
                                  style: "text-align: right",
                                  classe: "userInfo col-xs-3"
@@ -2934,6 +2948,14 @@ namespace SgqSystem.Services
                                                 outerhtml: level02Header
                                                );
 
+                var parNCRuleDB = ParNCRuleDB.getParNCRule(parlevel2.ParNotConformityRule_id, parlevel2.Id);
+                decimal ruleValue = 0;
+
+                if (parNCRuleDB != null)
+                {
+                    ruleValue = parNCRuleDB.Value;
+                }
+
                 //podemos aplicar os defeitos
                 string level2 = html.level2(id: parlevel2.Id.ToString(),
                                             label: parlevel2.Name,
@@ -2941,7 +2963,10 @@ namespace SgqSystem.Services
                                             evaluate: evaluate,
                                             sample: sample,
                                             HasSampleTotal: parlevel2.HasSampleTotal,
-                                            IsEmptyLevel3: parlevel2.IsEmptyLevel3);
+                                            IsEmptyLevel3: parlevel2.IsEmptyLevel3,
+                                            RuleId: parlevel2.ParNotConformityRule_id,
+                                            RuleValue: ruleValue.ToString(),
+                                            reaudit: parlevel2.IsReaudit);
 
                 var listLineCounter = ParCounterDB.GetParLevelXParCounterList(0, parlevel2.Id, 2, "level2_line");
 
@@ -2959,7 +2984,7 @@ namespace SgqSystem.Services
                                                     outerhtml: level2 +
                                                                counters +
                                                                buttons +
-                                                               html.div(classe: "level2Debug")+
+                                                               html.div(classe: "level2Debug") +
                                                                lineCounters
                                                     );
 
@@ -2967,7 +2992,7 @@ namespace SgqSystem.Services
                 //Gera monitoramento do level3
                 string groupLevel3 = GetLevel03(ParLevel1, parlevel2, ParCompany_Id, dateCollect, ref painelLevel3);
 
-                if(ParLevel1.HasGroupLevel2 == true)
+                if (ParLevel1.HasGroupLevel2 == true)
                 {
                     groupLevel3 = html.accordeon(
                                                     id: parlevel2.Id.ToString(),
@@ -2984,20 +3009,20 @@ namespace SgqSystem.Services
                 {
                     level3Group += groupLevel3;
                 }
-               
+
             }
 
             //Se tiver agrupamentos no ParLevel1
-            if(ParLevel1.HasGroupLevel2 == true)
+            if (ParLevel1.HasGroupLevel2 == true)
             {
                 string parLevel3Group = null;
 
 
                 string accordeonbuttons = null;
-                
-                    accordeonbuttons = "<button class=\"btn btn-default button-expand marginRight10\"><i class=\"fa fa-expand\" aria-hidden=\"true\"></i> Mostrar Todos</button>" +
-                                       "<button class=\"btn btn-default button-collapse\"><i class=\"fa fa-compress\" aria-hidden=\"true\"></i> Fechar Todos</button>";
-                
+
+                accordeonbuttons = "<button class=\"btn btn-default button-expand marginRight10\"><i class=\"fa fa-expand\" aria-hidden=\"true\"></i> Mostrar Todos</button>" +
+                                   "<button class=\"btn btn-default button-collapse\"><i class=\"fa fa-compress\" aria-hidden=\"true\"></i> Fechar Todos</button>";
+
 
                 //painellevel3 = html.listgroupItem(
                 //                                            outerhtml: avaliacoes +
@@ -3048,7 +3073,7 @@ namespace SgqSystem.Services
                                                                html.div(classe: "level2Debug")
                                                     );
             }
-           
+
             //aqui tem que fazer a pesquisa se tem itens sao do level1 ex: cca,htp
             //quando tiver cabecalhos tem que replicar no level1
 
@@ -3062,7 +3087,7 @@ namespace SgqSystem.Services
             {
                 painelLevel2HeaderListHtml = html.listgroupItem(
                                                                 outerhtml: painelLevel2HeaderListHtml,
-                                                                classe: "row"
+                                                                classe: "row painelLevel02"
                                                                 );
             }
 
@@ -3096,7 +3121,7 @@ namespace SgqSystem.Services
             foreach (var header in list)
             {
 
-                if(ParLevel1_Id > 0 && ParLevel2_Id > 0 && ParLevelHeaderDB != null)
+                if (ParLevel1_Id > 0 && ParLevel2_Id > 0 && ParLevelHeaderDB != null)
                 {
                     if (ParLevelHeaderDB.isHeaderLeve2Exception(ParLevel1_Id, ParLevel2_Id, header.ParHeaderField_Id))
                     {
@@ -3316,8 +3341,8 @@ namespace SgqSystem.Services
 
                                         classe: "painel painelLevel03 row") +
                               html.painelCounters(listCounter);
-                              //          +
-                              //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
+                //          +
+                //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 //Se tiver level3 gera o agrupamento no padrão
                 if (!string.IsNullOrEmpty(parLevel3Group))
@@ -3747,8 +3772,8 @@ namespace SgqSystem.Services
                     {
                         haveAccordeon = true;
                         level3Group = html.accordeon(
-                                                        id: acoordeonId + "Level3", 
-                                                        label: accordeonName, 
+                                                        id: acoordeonId + "Level3",
+                                                        label: accordeonName,
                                                         outerhtml: level3Group,
                                                         classe: "row"
                                                     );
@@ -4106,9 +4131,9 @@ namespace SgqSystem.Services
                                   html.div(id: "messageSuccess",
                                            classe: "alert alert-success hide",
                                            tags: "role=\"alert\"",
-                                           outerhtml: html.span(id: "mensagemSucesso", classe: "icon-ok-circle")); 
-                                           
-                                  //html.select(selectUrlPreffix, "cb_UrlPreffix", "\" onChange='abreOApp(this.value);' \"");
+                                           outerhtml: html.span(id: "mensagemSucesso", classe: "icon-ok-circle"));
+
+            //html.select(selectUrlPreffix, "cb_UrlPreffix", "\" onChange='abreOApp(this.value);' \"");
 
             string form = html.form(
                                     outerhtml: formOuterHtml
@@ -4242,7 +4267,7 @@ namespace SgqSystem.Services
         public string insertDeviation(string deviations)
         {
 
-            if(string.IsNullOrEmpty(deviations))
+            if (string.IsNullOrEmpty(deviations))
             {
                 return null;
             }
@@ -4273,7 +4298,7 @@ namespace SgqSystem.Services
                 string defects = deviation[6];
                 string deviationDate = deviation[7];
                 string deviationMessage = deviation[8];
-                if(string.IsNullOrEmpty(deviationMessage))
+                if (string.IsNullOrEmpty(deviationMessage))
                 {
                     deviationMessage = "null";
                 }
@@ -4643,56 +4668,56 @@ namespace SgqSystem.Services
             {
                 //using (var transacao = new TransactionScope())
                 //{
-                    SlaughterId = DefaultValueReturn(SlaughterId, "1");
-                    TechinicalId = DefaultValueReturn(TechinicalId, "1");
-                    DateTimeSlaughter = DefaultValueReturn(DateTimeSlaughter, "03012017 00:00:00");
-                    DateTimeTechinical = DateTimeSlaughter;
-                    Period = DefaultValueReturn(Period, "1");
+                SlaughterId = DefaultValueReturn(SlaughterId, "1");
+                TechinicalId = DefaultValueReturn(TechinicalId, "1");
+                DateTimeSlaughter = DefaultValueReturn(DateTimeSlaughter, "03012017 00:00:00");
+                DateTimeTechinical = DateTimeSlaughter;
+                Period = DefaultValueReturn(Period, "1");
 
-                    if (string.IsNullOrEmpty(CollectionLevel2_Id) || CollectionLevel2_Id == "0")
+                if (string.IsNullOrEmpty(CollectionLevel2_Id) || CollectionLevel2_Id == "0")
+                {
+                    CollectionLevel2_Id = getCollectionLevel2WithCorrectiveAction(ParLevel1_Id, ParLevel2_Id, Shift, Period, ParCompany_Id, EvaluationNumber).ToString();
+                    if (CollectionLevel2_Id == "0")
                     {
-                        CollectionLevel2_Id = getCollectionLevel2WithCorrectiveAction(ParLevel1_Id, ParLevel2_Id, Shift, Period, ParCompany_Id, EvaluationNumber).ToString();
-                        if (CollectionLevel2_Id == "0")
-                        {
-                            return "error";
-                        }
+                        return "error";
                     }
+                }
 
-                    DescriptionFailure = HttpUtility.UrlDecode(DescriptionFailure, System.Text.Encoding.Default);
-                    ImmediateCorrectiveAction = HttpUtility.UrlDecode(ImmediateCorrectiveAction, System.Text.Encoding.Default);
-                    ProductDisposition = HttpUtility.UrlDecode(ProductDisposition, System.Text.Encoding.Default);
-                    PreventativeMeasure = HttpUtility.UrlDecode(PreventativeMeasure, System.Text.Encoding.Default);
+                DescriptionFailure = HttpUtility.UrlDecode(DescriptionFailure, System.Text.Encoding.Default);
+                ImmediateCorrectiveAction = HttpUtility.UrlDecode(ImmediateCorrectiveAction, System.Text.Encoding.Default);
+                ProductDisposition = HttpUtility.UrlDecode(ProductDisposition, System.Text.Encoding.Default);
+                PreventativeMeasure = HttpUtility.UrlDecode(PreventativeMeasure, System.Text.Encoding.Default);
 
-                    int id = correctiveActionInsert(AuditorId, CollectionLevel2_Id, SlaughterId, TechinicalId, DateTimeSlaughter, DateTimeTechinical, Convert.ToDateTime(DateCorrectiveAction).ToString("yyyy-MM-dd HH:mm:ss"), Convert.ToDateTime(AuditStartTime).ToString("yyyy-MM-dd HH:mm:ss"), DescriptionFailure, ImmediateCorrectiveAction, ProductDisposition, PreventativeMeasure);
-                    if (id > 0)
-                    {
+                int id = correctiveActionInsert(AuditorId, CollectionLevel2_Id, SlaughterId, TechinicalId, DateTimeSlaughter, DateTimeTechinical, Convert.ToDateTime(DateCorrectiveAction).ToString("yyyy-MM-dd HH:mm:ss"), Convert.ToDateTime(AuditStartTime).ToString("yyyy-MM-dd HH:mm:ss"), DescriptionFailure, ImmediateCorrectiveAction, ProductDisposition, PreventativeMeasure);
+                if (id > 0)
+                {
                     //01/20/2017
 
-                        
-                        string dataInicio = null;
-                        string dataFim = null;
 
-                        if(!data.Contains("/"))
-                        {
-                            string dia = data.Substring(2, 2);
-                            string mes = data.Substring(0, 2);
-                            string ano = data.Substring(4, 4); 
+                    string dataInicio = null;
+                    string dataFim = null;
 
-                            data = ano + "/" + mes + "/" + dia;
-                        }
-                        DateTime dataAPP = Convert.ToDateTime(data);
-                        
-                        //Pega a data pela regra da frequencia
-                        getFrequencyDate(Convert.ToInt32(ParFrequency_Id), dataAPP, ref dataInicio, ref dataFim);
-                        var idUpdate = updateCorrectiveAction_CollectionLevel2_By_ParLevel1(ParLevel1_Id, ParCompany_Id, dataInicio, dataFim);
-                        //transacao.complete();
-                        return null;
-                    }
-                    else
+                    if (!data.Contains("/"))
                     {
-                        throw new Exception();
+                        string dia = data.Substring(2, 2);
+                        string mes = data.Substring(0, 2);
+                        string ano = data.Substring(4, 4);
+
+                        data = ano + "/" + mes + "/" + dia;
                     }
-               // }
+                    DateTime dataAPP = Convert.ToDateTime(data);
+
+                    //Pega a data pela regra da frequencia
+                    getFrequencyDate(Convert.ToInt32(ParFrequency_Id), dataAPP, ref dataInicio, ref dataFim);
+                    var idUpdate = updateCorrectiveAction_CollectionLevel2_By_ParLevel1(ParLevel1_Id, ParCompany_Id, dataInicio, dataFim);
+                    //transacao.complete();
+                    return null;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+                // }
             }
             catch (Exception ex)
             {
@@ -4754,7 +4779,7 @@ namespace SgqSystem.Services
 
             var parLevel1ConsolidationXParFrequency = ParLevel1ConsolidationXParFrequencyDB.getList(Convert.ToInt32(ParCompany_Id), data);
 
-           
+
 
             if (ParLevel1_Id > 0)
             {
@@ -4783,7 +4808,7 @@ namespace SgqSystem.Services
                     listKeys += "<div id=\"" + key.Key + "\" class=\"collectionLevel2Key\"></div>";
                 }
 
-                if(!string.IsNullOrEmpty(listKeys))
+                if (!string.IsNullOrEmpty(listKeys))
                 {
                     ResultsKeys += "<div parlevel1_id=\"" + c.ParLevel1_Id + "\" class=\"ResultLevel2Key\">" +
                                         listKeys +
@@ -4883,7 +4908,7 @@ namespace SgqSystem.Services
                         using (SqlDataReader r = command.ExecuteReader())
                         {
 
-                          //Se encontrar, retorna o Id da Consolidação
+                            //Se encontrar, retorna o Id da Consolidação
                             while (r.Read())
                             {
                                 int ConsolidationLevel2_Id = Convert.ToInt32(r[0]);
@@ -4982,7 +5007,7 @@ namespace SgqSystem.Services
 
 
 
-               " WHERE CL2.UnitId='" + ParCompany_Id + "' AND CL1.ParLevel1_Id='" + ParLevel1_Id + "' AND CAST(CL1.ConsolidationDate AS DATE) = '" + ConsolidationDate.ToString("yyyyMMdd") + "'" ;
+               " WHERE CL2.UnitId='" + ParCompany_Id + "' AND CL1.ParLevel1_Id='" + ParLevel1_Id + "' AND CAST(CL1.ConsolidationDate AS DATE) = '" + ConsolidationDate.ToString("yyyyMMdd") + "'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -5037,7 +5062,7 @@ namespace SgqSystem.Services
         public void _CollectionLevel02_Update(int ConsolidationLevel2_Id, int ParLevel1_Id, int ParLevel2_Id, int ParCompany_Id, DateTime ConsolidationDate)
         {
             //CollectionDate
-            string sql = "UPDATE CollectionLevel2  SET ConsolidationLevel2_Id='" + ConsolidationLevel2_Id + "' WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND ParLevel2_Id='" + ParLevel2_Id + "' AND UnitId='" +  ParCompany_Id + "' AND CAST(CollectionDate AS DATE) = '" + ConsolidationDate.ToString("yyyyMMdd") + "'";
+            string sql = "UPDATE CollectionLevel2  SET ConsolidationLevel2_Id='" + ConsolidationLevel2_Id + "' WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND ParLevel2_Id='" + ParLevel2_Id + "' AND UnitId='" + ParCompany_Id + "' AND CAST(CollectionDate AS DATE) = '" + ConsolidationDate.ToString("yyyyMMdd") + "'";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
@@ -5047,7 +5072,7 @@ namespace SgqSystem.Services
                     {
                         connection.Open();
                         var i = Convert.ToInt32(command.ExecuteNonQuery());
-                     
+
                     }
                 }
             }
@@ -5065,3 +5090,4 @@ namespace SgqSystem.Services
     }
 
 }
+

@@ -118,9 +118,7 @@ namespace Dominio
         public virtual DbSet<ResultLevel2HeaderField> ResultLevel2HeaderField { get; set; }
         public virtual DbSet<DimManutencaoColetaITs> DimManutencaoColetaITs { get; set; }
         public virtual DbSet<ManDataCollectIT> ManDataCollectIT { get; set; }
-        public virtual DbSet<CollectionLevel2> CollectionLevel2 { get; set; }
         public virtual DbSet<ParLevel2XHeaderField> ParLevel2XHeaderField { get; set; }
-        public virtual DbSet<ManColetaDados> ManColetaDados { get; set; }
         public virtual DbSet<Defect> Defect { get; set; }
         public virtual DbSet<ConsolidationLevel02> ConsolidationLevel02 { get; set; }
         public virtual DbSet<ParCompany> ParCompany { get; set; }
@@ -129,6 +127,8 @@ namespace Dominio
         public virtual DbSet<RoleType> RoleType { get; set; }
         public virtual DbSet<ScreenComponent> ScreenComponent { get; set; }
         public virtual DbSet<ParGoalScorecard> ParGoalScorecard { get; set; }
+        public virtual DbSet<CollectionLevel2> CollectionLevel2 { get; set; }
+        public virtual DbSet<ManColetaDados> ManColetaDados { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

@@ -124,5 +124,57 @@ namespace Dominio
         public Nullable<decimal> Disponibilidade_AbateReal { get; set; }
         public Nullable<decimal> Disponibilidade_DesossaReal { get; set; }
         public Nullable<decimal> Disponibilidade_DesossaMeta { get; set; }
+        public Nullable<decimal> M3Agua_Meta { get; set; }
+        public Nullable<decimal> M3Agua_Real { get; set; }
+        public string userAdd { get; set; }
+        public string userAlter { get; set; }
+        public Nullable<decimal> LitrosSebo_Real { get; set; }
+        public Nullable<decimal> LitrosSebo_Meta { get; set; }
+        public Nullable<decimal> CabBP_BoisProcessados_Real { get; set; }
+        public Nullable<decimal> CabBP_BoisProcessados_Meta { get; set; }
+        public Nullable<decimal> Mcal_Nr_Real { get; set; }
+        public Nullable<decimal> Mcal_Nr_Meta { get; set; }
+        public Nullable<decimal> CF_Manutencao_Real { get; set; }
+        public Nullable<decimal> CF_Manutencao_Meta { get; set; }
+        public Nullable<decimal> CF_Utilidades_Real { get; set; }
+        public Nullable<decimal> CF_Utilidades_Meta { get; set; }
+        public Nullable<decimal> CF_EnergiaFixa_Real { get; set; }
+        public Nullable<decimal> CF_EnergiaFixa_Meta { get; set; }
+        public Nullable<decimal> CF_EnergiaVariavel_Real { get; set; }
+        public Nullable<decimal> CF_EnergiaVariavel_Meta { get; set; }
+        public Nullable<decimal> Demanda_EnergiaPonta_Real { get; set; }
+        public Nullable<decimal> Demanda_EnergiaPonta_Meta { get; set; }
+        public Nullable<decimal> Demanda_EnergiaForaPonta_Real { get; set; }
+        public Nullable<decimal> Demanda_EnergiaForaPonta_Meta { get; set; }
+        public Nullable<decimal> KgLenha_Real { get; set; }
+        public Nullable<decimal> KgLenha_Meta { get; set; }
+        public Nullable<decimal> OS_NrProgramadas_Real { get; set; }
+        public Nullable<decimal> OS_NrProgramadas_Meta { get; set; }
+        public Nullable<decimal> OS_NrExecutadas_Real { get; set; }
+        public Nullable<decimal> OS_NrExecutadas_Meta { get; set; }
+        public Nullable<decimal> OS_NrPlanejadas_Real { get; set; }
+        public Nullable<decimal> OS_NrPlanejadas_Meta { get; set; }
+        public Nullable<decimal> Horas_DispTrabalhar_Real { get; set; }
+        public Nullable<decimal> Horas_DispTrabalhar_Meta { get; set; }
+        public Nullable<decimal> Horas_ApropriadasOS_Real { get; set; }
+        public Nullable<decimal> Horas_ApropriadasOS_Meta { get; set; }
+        public Nullable<decimal> Colaboradores_NrRegistrados_Real { get; set; }
+        public Nullable<decimal> Colaboradores_NrRegistrados_Meta { get; set; }
+        public Nullable<decimal> Colaboradores_NrAusentes_Real { get; set; }
+        public Nullable<decimal> Colaboradores_NrAusentes_Meta { get; set; }
+        public Nullable<decimal> Colaboradores_NrDesligados_Real { get; set; }
+        public Nullable<decimal> Colaboradores_NrDesligados_Meta { get; set; }
+        public Nullable<decimal> Vendas_Total_Real { get; set; }
+        public Nullable<decimal> Vendas_Total_Meta { get; set; }
+        public Nullable<decimal> Vendas_TotalDevolvido_Real { get; set; }
+        public Nullable<decimal> Vendas_TotalDevolvido_Meta { get; set; }
+        public Nullable<decimal> Horas_DispTrabalharAb_Real { get; set; }
+        public Nullable<decimal> Horas_DispTrabalharAb_Meta { get; set; }
+        public Nullable<decimal> Horas_DispTrabalharDes_Real { get; set; }
+        public Nullable<decimal> Horas_DispTrabalharDes_Meta { get; set; }
+        public Nullable<decimal> KgSebo_Real { get; set; }
+        public Nullable<decimal> KgSebo_Meta { get; set; }
+        public Nullable<decimal> KgFarinha_Real { get; set; }
+        public Nullable<decimal> KgFarinha_Meta { get; set; }
     }
 }

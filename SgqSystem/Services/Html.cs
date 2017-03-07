@@ -237,7 +237,7 @@ namespace SgqSystem.Services
             return "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + ">" + outerhtml + "</li>";
         }
 
-        public string accordeon(string id, string label, string classe = null, string outerhtml = null, bool aberto = false, bootstrapcolor? color = null, int accordeonId=0)
+        public string accordeon(string id, string label, string classe = null, string outerhtml = null, bool aberto = false, bootstrapcolor? color = null, int accordeonId = 0)
         {
             string collapseIn = " in";
             if (aberto == false)
@@ -257,7 +257,7 @@ namespace SgqSystem.Services
             }
 
             string accordeonIdTag = null;
-            if(accordeonId > 0)
+            if (accordeonId > 0)
             {
                 accordeonIdTag = " id=\"" + accordeonId + "\"";
             }
@@ -380,8 +380,10 @@ namespace SgqSystem.Services
         //                     string alertlevel1 = null, string alertlevel2 = null, string alertlevel3 = null, string AlertLevel = null, string ParFrequency_Id = null)
 
         public string level2(string id, string label,
-                             string classe = null, decimal defects = 0, int evaluate = 1, int sample = 1,                           
-                             bool reaudit = false, bool correctiveaction = false, bool phase = false, bool HasSampleTotal = false, bool IsEmptyLevel3 = false, int level1Group_Id = 0, int ParNotConformityRule_id=0, decimal AlertValue=0, bool IsReaudit=false)
+                             string classe = null, decimal defects = 0, int evaluate = 1, int sample = 1,
+                             bool reaudit = false, bool correctiveaction = false, bool phase = false,
+                             bool HasSampleTotal = false, bool IsEmptyLevel3 = false, int level1Group_Id = 0,
+                             int RuleId = 0, string RuleValue = null, decimal AlertValue = 0)
         {
 
             string tagLevel1Group = null;
@@ -392,12 +394,13 @@ namespace SgqSystem.Services
             return link(
                            id: id,
                            classe: "level2 " + classe,
-                          // tags: "defects=\"" + defects + "\" evaluate=\"" + evaluate + "\" sample=\"" + sample + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\"",
+                           // tags: "defects=\"" + defects + "\" evaluate=\"" + evaluate + "\" sample=\"" + sample + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\"",
                            tags: "defects=\"" + defects + "\" evaluate=\"" + evaluate + "\" sample=\"" + sample + "\" weievaluation=\"0\" evaluatetotal=\"0\" defectstotal=\"0\" weidefects=\"0\" totallevel3evaluation=\"0\" totallevel3withdefects=\"0\" hassampletotal=\"" + HasSampleTotal.ToString().ToLower() + "\" isemptylevel3=\"" + IsEmptyLevel3.ToString().ToLower()
-                           + "\" ParNotConformityRule_id=\"" + ParNotConformityRule_id.ToString()
+                           + "\" ParNotConformityRule_id=\"" + RuleId.ToString()
+                           + "\" ParNotConformityRule_value=\"" + RuleValue
                            + "\" AlertValue=\"" + AlertValue.ToString()
-                           + "\" IsReaudit=\"" + IsReaudit.ToString() 
-                           + "\"" + tagLevel1Group, 
+                           + "\" reaudit=\"" + reaudit.ToString().ToLower()
+                           + "\"" + tagLevel1Group,
                            outerhtml: span(outerhtml: label, classe: "levelName")
                        );
         }
@@ -443,7 +446,7 @@ namespace SgqSystem.Services
                                         );
 
 
-            return  listgroupItem(
+            return listgroupItem(
                                     id: parLevel3.Id.ToString(),
                                     classe: "level3 row" + classe,
                                     tags: tags,
@@ -462,7 +465,7 @@ namespace SgqSystem.Services
             {
                 foreach (RoleXUserSgq role in roles)
                 {
-                    if( role.Type == 0
+                    if (role.Type == 0
                         || (role.Type == 3 && role.RoleJBS != null && role.RoleSGQ != null)
                         || (role.Type == 1 && role.RoleSGQ != null)
                         || (role.Type == 2 && role.RoleJBS != null))
@@ -471,28 +474,28 @@ namespace SgqSystem.Services
                     }
                 }
             }
-            
+
 
             //user += "<div class='role'>comp001</div><div class='role'>comp002</div><div class='role'>comp004</div>";
-            
+
             user += "</div>";
 
             return user;
         }
         public string level1(SGQDBContext.ParLevel1 ParLevel1, string tipoTela, int totalAvaliado, decimal totalDefeitos, decimal alertNivel1, decimal alertNivel2,
                              string alertaNivel3, int alertaAtual, int avaliacaoultimoalerta, int monitoramentoultimoalerta, decimal volumeAlertaIndicador, decimal metaIndicador,
-                             decimal numeroAvaliacoes, decimal metaDia, decimal metaTolerancia, decimal metaAvaliacao, 
-                             bool IsLimitedEvaluetionNumber=false)
+                             decimal numeroAvaliacoes, decimal metaDia, decimal metaTolerancia, decimal metaAvaliacao,
+                             bool IsLimitedEvaluetionNumber = false)
         {
 
 
 
-            string tags = "parconsolidationtype_id=\"" + ParLevel1.ParConsolidationType_Id + "\" parfrequency_id=\"" + ParLevel1.ParFrequency_Id + "\" hasalert=\"" + ParLevel1.HasAlert.ToString().ToLower() + "\" isspecific=\"" + ParLevel1.IsSpecific.ToString().ToLower() + "\" totalavaliado=\"" + totalAvaliado + "\" totaldefeitos=\"" + totalDefeitos + "\" volumeAlertaIndicador=\"" + volumeAlertaIndicador + "\" metaIndicador=\"" + metaIndicador + "\" numeroAvaliacoes=\"" + numeroAvaliacoes + "\" metaDia=\"" + metaDia + "\" metaTolerancia=\"" + metaTolerancia + "\" metaAvaliacao=\"" + metaAvaliacao + "\" alertanivel1=\"" + alertNivel1 + "\" alertanivel2=\"" + alertNivel2 + "\" alertanivel3=\"" + alertaNivel3 + "\" alertaatual=\"" + alertaAtual + "\" avaliacaoultimoalerta=\"" + avaliacaoultimoalerta + "\" monitoramentoultimoalerta=\"" + monitoramentoultimoalerta + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\" haverealtimeconsolidation=\"" + ParLevel1.haveRealTimeConsolidation.ToString().ToLower() + "\" realtimeconsolitationupdate=\"" + ParLevel1.RealTimeConsolitationUpdate + "\" islimitedevaluetionnumber=\"" + ParLevel1.IsLimitedEvaluetionNumber.ToString().ToLower() + "\" hashkey=\"" + ParLevel1.hashKey + "\" ispartialsave=\"" + ParLevel1.IsPartialSave.ToString().ToLower() + "\" hascompleteevaluation=\"" + ParLevel1.HasCompleteEvaluation.ToString().ToLower() + "\" hasgrouplevel2=\"" + ParLevel1.HasGroupLevel2.ToString().ToLower() + "\" reaudit=\"" + ParLevel1.IsReaudit.ToString() + "\"";
+            string tags = "parconsolidationtype_id=\"" + ParLevel1.ParConsolidationType_Id + "\" parfrequency_id=\"" + ParLevel1.ParFrequency_Id + "\" hasalert=\"" + ParLevel1.HasAlert.ToString().ToLower() + "\" isspecific=\"" + ParLevel1.IsSpecific.ToString().ToLower() + "\" totalavaliado=\"" + totalAvaliado + "\" totaldefeitos=\"" + totalDefeitos + "\" volumeAlertaIndicador=\"" + volumeAlertaIndicador + "\" metaIndicador=\"" + metaIndicador + "\" numeroAvaliacoes=\"" + numeroAvaliacoes + "\" metaDia=\"" + metaDia + "\" metaTolerancia=\"" + metaTolerancia + "\" metaAvaliacao=\"" + metaAvaliacao + "\" alertanivel1=\"" + alertNivel1 + "\" alertanivel2=\"" + alertNivel2 + "\" alertanivel3=\"" + alertaNivel3 + "\" alertaatual=\"" + alertaAtual + "\" avaliacaoultimoalerta=\"" + avaliacaoultimoalerta + "\" monitoramentoultimoalerta=\"" + monitoramentoultimoalerta + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\" haverealtimeconsolidation=\"" + ParLevel1.haveRealTimeConsolidation.ToString().ToLower() + "\" realtimeconsolitationupdate=\"" + ParLevel1.RealTimeConsolitationUpdate + "\" islimitedevaluetionnumber=\"" + ParLevel1.IsLimitedEvaluetionNumber.ToString().ToLower() + "\" hashkey=\"" + ParLevel1.hashKey + "\" ispartialsave=\"" + ParLevel1.IsPartialSave.ToString().ToLower() + "\" hascompleteevaluation=\"" + ParLevel1.HasCompleteEvaluation.ToString().ToLower() + "\" hasgrouplevel2=\"" + ParLevel1.HasGroupLevel2.ToString().ToLower() + "\" reaudit=\"" + ParLevel1.IsReaudit.ToString().ToLower() + "\"";
 
             string btnReaudit = null;
-            if(ParLevel1.IsReaudit == true)
+            if (ParLevel1.IsReaudit == true)
             {
-                btnReaudit = button("Reaudit", type.submit, "btnReaudit", classe: "btn-primary pull-right hide");
+                btnReaudit = button("Reaudit", type.submit, "", classe: "btn-primary pull-right btnReaudit hide");
             }
 
             string level01 = link(
@@ -513,20 +516,21 @@ namespace SgqSystem.Services
 
         public string painelCounters(IEnumerable<SGQDBContext.ParCounter> parCounterList, string css = "")
         {
-            if(parCounterList.Count() == 0)
+            if (parCounterList.Count() == 0)
             {
                 return "";
-            }else
+            }
+            else
             {
                 string countersArray = "";
 
                 foreach (SGQDBContext.ParCounter parCounter in parCounterList)
                 {
                     string counterLine = getResource(parCounter.Name).Value + ":<span class=\"" + parCounter.Name + "\">0</span>";
-                  
-                    if(!string.IsNullOrEmpty(countersArray))
+
+                    if (!string.IsNullOrEmpty(countersArray))
                     {
-                        countersArray += ";" +  counterLine;
+                        countersArray += ";" + counterLine;
                     }
                     else
                     {
@@ -555,7 +559,7 @@ namespace SgqSystem.Services
                     countersLine += counter(counters[0], counters[1], "col-xs-" + qtdeColunas);
                     if (contagem == 6)
                     {
-                        painel += div(outerhtml: countersLine, classe: "counters row ", style: "background-color: #f1f1f1; padding-top: 5px;padding-bottom:5px;"+css);
+                        painel += div(outerhtml: countersLine, classe: "counters row ", style: "background-color: #f1f1f1; padding-top: 5px;padding-bottom:5px;" + css);
                         countersLine = null;
                         contagem = 0;
                     }
@@ -567,24 +571,24 @@ namespace SgqSystem.Services
                 }
                 return painel;
             }
-                           
-                //div(outerhtml: countersLine, classe: "counters row " + classe, style: "background-color: #f1f1f1; padding-top: 5px;padding-bottom:5px;");
+
+            //div(outerhtml: countersLine, classe: "counters row " + classe, style: "background-color: #f1f1f1; padding-top: 5px;padding-bottom:5px;");
         }
         public string counter(string label, string value, string classe)
         {
-            return "<span class=\"counter "+ classe + "\"><b><span class=\"labelCounter\">" + label.Trim() + "</span></b>: <span class=\"value\">" + value.Trim() + "</span></span>";
+            return "<span class=\"counter " + classe + "\"><b><span class=\"labelCounter\">" + label.Trim() + "</span></b>: <span class=\"value\">" + value.Trim() + "</span></span>";
         }
 
         public DictionaryEntry getResource(string value)
         {
             System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
-            
+
             if (resourceManager == null) //se portugues
             {
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("");
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
-            }         
-            
+            }
+
             var list = resourceManager.GetResourceSet(
                 Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
 
@@ -597,6 +601,6 @@ namespace SgqSystem.Services
             return new DictionaryEntry();
         }
     }
-       
+
 
 }

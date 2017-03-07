@@ -168,6 +168,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.budgets' does not have a primary key 
           <Property Name="DefectsResult" Type="int" />
           <Property Name="IsEmptyLevel3" Type="bit" />
           <Property Name="LastLevel2Alert" Type="int" />
+          <Property Name="ReauditLevel" Type="int" />
         </EntityType>
         <EntityType Name="CollectionLevel2XParHeaderField">
           <Key>
@@ -453,11 +454,13 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
           <Property Name="email" Type="varchar(max)" />
           <Property Name="Second_Log_Path" Type="varchar(max)" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SgqDbDev.dbo.ManColetaDados' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ManColetaDados">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" />
           <Property Name="Base_parCompany_id" Type="int" />
           <Property Name="Base_dateAdd" Type="datetime" />
           <Property Name="Base_dateAlter" Type="datetime" />
@@ -567,6 +570,58 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
           <Property Name="Disponibilidade_AbateReal" Type="decimal" Precision="30" Scale="10" />
           <Property Name="Disponibilidade_DesossaReal" Type="decimal" Precision="30" Scale="10" />
           <Property Name="Disponibilidade_DesossaMeta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="M3Agua_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="M3Agua_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="userAdd" Type="varchar" MaxLength="150" />
+          <Property Name="userAlter" Type="varchar" MaxLength="150" />
+          <Property Name="LitrosSebo_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="LitrosSebo_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="CabBP_BoisProcessados_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="CabBP_BoisProcessados_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Mcal_Nr_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Mcal_Nr_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="CF_Manutencao_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="CF_Manutencao_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="CF_Utilidades_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="CF_Utilidades_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="CF_EnergiaFixa_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="CF_EnergiaFixa_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="CF_EnergiaVariavel_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="CF_EnergiaVariavel_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Demanda_EnergiaPonta_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Demanda_EnergiaPonta_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Demanda_EnergiaForaPonta_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Demanda_EnergiaForaPonta_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="KgLenha_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="KgLenha_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="OS_NrProgramadas_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="OS_NrProgramadas_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="OS_NrExecutadas_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="OS_NrExecutadas_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="OS_NrPlanejadas_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="OS_NrPlanejadas_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Horas_DispTrabalhar_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Horas_DispTrabalhar_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Horas_ApropriadasOS_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Horas_ApropriadasOS_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Colaboradores_NrRegistrados_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Colaboradores_NrRegistrados_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Colaboradores_NrAusentes_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Colaboradores_NrAusentes_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Colaboradores_NrDesligados_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Colaboradores_NrDesligados_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Vendas_Total_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Vendas_Total_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Vendas_TotalDevolvido_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Vendas_TotalDevolvido_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Horas_DispTrabalharAb_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Horas_DispTrabalharAb_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Horas_DispTrabalharDes_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="Horas_DispTrabalharDes_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="KgSebo_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="KgSebo_Meta" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="KgFarinha_Real" Type="decimal" Precision="30" Scale="10" />
+          <Property Name="KgFarinha_Meta" Type="decimal" Precision="30" Scale="10" />
         </EntityType>
         <EntityType Name="ManDataCollectIT">
           <Key>
@@ -840,6 +895,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
           <Property Name="RealTimeConsolitationUpdate" Type="int" />
           <Property Name="IsPartialSave" Type="bit" />
           <Property Name="HasCompleteEvaluation" Type="bit" />
+          <Property Name="ParScoreType_Id" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'SgqDbDev.dbo.ParLevel1VariableProduction' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2852,7 +2908,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySet Name="LogJson" EntityType="Self.LogJson" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogSgq" EntityType="Self.LogSgq" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogSgqGlobal" EntityType="Self.LogSgqGlobal" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ManColetaDados" EntityType="Self.ManColetaDados" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ManDataCollectIT" EntityType="Self.ManDataCollectIT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NQA" EntityType="Self.NQA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParCluster" EntityType="Self.ParCluster" Schema="dbo" store:Type="Tables" />
@@ -2937,6 +2992,172 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
     [Deviation].[Status] AS [Status], 
     [Deviation].[SendDate] AS [SendDate]
     FROM [dbo].[Deviation] AS [Deviation]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ManColetaDados" EntityType="Self.ManColetaDados" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ManColetaDados].[id] AS [id], 
+    [ManColetaDados].[Base_parCompany_id] AS [Base_parCompany_id], 
+    [ManColetaDados].[Base_dateAdd] AS [Base_dateAdd], 
+    [ManColetaDados].[Base_dateAlter] AS [Base_dateAlter], 
+    [ManColetaDados].[Base_dateRef] AS [Base_dateRef], 
+    [ManColetaDados].[CabAbat_QteBoiAbatidosReal] AS [CabAbat_QteBoiAbatidosReal], 
+    [ManColetaDados].[CabAbat_QteBoiAbatidosMeta] AS [CabAbat_QteBoiAbatidosMeta], 
+    [ManColetaDados].[CabAbat_PrevisaoFechamento] AS [CabAbat_PrevisaoFechamento], 
+    [ManColetaDados].[CabAbat_SobraAnimaisCurrais] AS [CabAbat_SobraAnimaisCurrais], 
+    [ManColetaDados].[CustoMan_Meta] AS [CustoMan_Meta], 
+    [ManColetaDados].[CustoMan_OrcDia] AS [CustoMan_OrcDia], 
+    [ManColetaDados].[CustoMan_Real] AS [CustoMan_Real], 
+    [ManColetaDados].[CustoMan_CombinadoMenos5pcnt] AS [CustoMan_CombinadoMenos5pcnt], 
+    [ManColetaDados].[CustoMan_VarCombinado] AS [CustoMan_VarCombinado], 
+    [ManColetaDados].[CustoMan_PrevisaoFechamento] AS [CustoMan_PrevisaoFechamento], 
+    [ManColetaDados].[EnergiaEletrica_Meta] AS [EnergiaEletrica_Meta], 
+    [ManColetaDados].[EnergiaEletrica_Real] AS [EnergiaEletrica_Real], 
+    [ManColetaDados].[EnergiaEletrica_OrcDia] AS [EnergiaEletrica_OrcDia], 
+    [ManColetaDados].[EnergiaEletrica_KWhBoiProcMeta] AS [EnergiaEletrica_KWhBoiProcMeta], 
+    [ManColetaDados].[EnergiaEletrica_KWhBoiProcReal] AS [EnergiaEletrica_KWhBoiProcReal], 
+    [ManColetaDados].[EnergiaEletrica_PrevisaoFechamento] AS [EnergiaEletrica_PrevisaoFechamento], 
+    [ManColetaDados].[CombCaldUtil_Meta] AS [CombCaldUtil_Meta], 
+    [ManColetaDados].[CombCaldUtil_OrcDia] AS [CombCaldUtil_OrcDia], 
+    [ManColetaDados].[CombCaldUtil_Real] AS [CombCaldUtil_Real], 
+    [ManColetaDados].[CombCaldUtil_McalBoiUtilMeta] AS [CombCaldUtil_McalBoiUtilMeta], 
+    [ManColetaDados].[CombCaldUtil_McalBoiUtilReal] AS [CombCaldUtil_McalBoiUtilReal], 
+    [ManColetaDados].[CombCaldUtil_PrevFechamento] AS [CombCaldUtil_PrevFechamento], 
+    [ManColetaDados].[FatorPotencia_Meta] AS [FatorPotencia_Meta], 
+    [ManColetaDados].[FatorPotencia_Real] AS [FatorPotencia_Real], 
+    [ManColetaDados].[M3AguaBoi_Meta] AS [M3AguaBoi_Meta], 
+    [ManColetaDados].[M3AguaBoi_Real] AS [M3AguaBoi_Real], 
+    [ManColetaDados].[M3Lenha_Meta] AS [M3Lenha_Meta], 
+    [ManColetaDados].[M3Lenha_Real] AS [M3Lenha_Real], 
+    [ManColetaDados].[Confiabilidade_AbateMeta] AS [Confiabilidade_AbateMeta], 
+    [ManColetaDados].[Confiabilidade_AbateReal] AS [Confiabilidade_AbateReal], 
+    [ManColetaDados].[Confiabilidade_DesossaMeta] AS [Confiabilidade_DesossaMeta], 
+    [ManColetaDados].[Confiabilidade_DesossaReal] AS [Confiabilidade_DesossaReal], 
+    [ManColetaDados].[KWhMes_Meta] AS [KWhMes_Meta], 
+    [ManColetaDados].[KWhMes_Real] AS [KWhMes_Real], 
+    [ManColetaDados].[ParadasAbateMinutos_Meta] AS [ParadasAbateMinutos_Meta], 
+    [ManColetaDados].[ParadasAbateMinutos_Real] AS [ParadasAbateMinutos_Real], 
+    [ManColetaDados].[ParadasDesossaMinutos_Meta] AS [ParadasDesossaMinutos_Meta], 
+    [ManColetaDados].[ParadasDesossaMinutos_Real] AS [ParadasDesossaMinutos_Real], 
+    [ManColetaDados].[ObrasEmAndamento_Meta] AS [ObrasEmAndamento_Meta], 
+    [ManColetaDados].[ObrasEmAndamento_Real] AS [ObrasEmAndamento_Real], 
+    [ManColetaDados].[Moral_CustoHorasExtrasMeta] AS [Moral_CustoHorasExtrasMeta], 
+    [ManColetaDados].[Moral_CustoHorasExtrasReal] AS [Moral_CustoHorasExtrasReal], 
+    [ManColetaDados].[Moral_CustoHorasExtrasParcial] AS [Moral_CustoHorasExtrasParcial], 
+    [ManColetaDados].[Moral_QteHorasExtras] AS [Moral_QteHorasExtras], 
+    [ManColetaDados].[Moral_TaxaFrequenciaAcidentesMeta] AS [Moral_TaxaFrequenciaAcidentesMeta], 
+    [ManColetaDados].[Moral_TaxaFrequenciaAcidentesReal] AS [Moral_TaxaFrequenciaAcidentesReal], 
+    [ManColetaDados].[ApropHoras_Meta] AS [ApropHoras_Meta], 
+    [ManColetaDados].[ApropHoras_QteHoraAprop] AS [ApropHoras_QteHoraAprop], 
+    [ManColetaDados].[ApropHoras_QteManutentores] AS [ApropHoras_QteManutentores], 
+    [ManColetaDados].[ApropHoras_Real] AS [ApropHoras_Real], 
+    [ManColetaDados].[EficienciaProgram_Meta] AS [EficienciaProgram_Meta], 
+    [ManColetaDados].[EficienciaProgram_QteOSAberta] AS [EficienciaProgram_QteOSAberta], 
+    [ManColetaDados].[EficienciaProgram_QteOSEncerrada] AS [EficienciaProgram_QteOSEncerrada], 
+    [ManColetaDados].[EficienciaProgram_Real] AS [EficienciaProgram_Real], 
+    [ManColetaDados].[ApropPlanejamento_Meta] AS [ApropPlanejamento_Meta], 
+    [ManColetaDados].[ApropPlanejamento_TotalHorasAprop] AS [ApropPlanejamento_TotalHorasAprop], 
+    [ManColetaDados].[ApropPlanejamento_Real] AS [ApropPlanejamento_Real], 
+    [ManColetaDados].[Rendimento_Meta] AS [Rendimento_Meta], 
+    [ManColetaDados].[Rendimento_Real] AS [Rendimento_Real], 
+    [ManColetaDados].[SeboFlotado_Meta] AS [SeboFlotado_Meta], 
+    [ManColetaDados].[SeboFlotado_Real] AS [SeboFlotado_Real], 
+    [ManColetaDados].[ScoreCardUnidade_Meta] AS [ScoreCardUnidade_Meta], 
+    [ManColetaDados].[ScoreCardUnidade_Real] AS [ScoreCardUnidade_Real], 
+    [ManColetaDados].[ScoreCardCheckListEquip_Meta] AS [ScoreCardCheckListEquip_Meta], 
+    [ManColetaDados].[ScoreCardCheckListEquip_Real] AS [ScoreCardCheckListEquip_Real], 
+    [ManColetaDados].[ScoreCardAnaliseAgua_Meta] AS [ScoreCardAnaliseAgua_Meta], 
+    [ManColetaDados].[ScoreCardAnaliseAgua_Real] AS [ScoreCardAnaliseAgua_Real], 
+    [ManColetaDados].[ScoreCardAspersao_Meta] AS [ScoreCardAspersao_Meta], 
+    [ManColetaDados].[ScoreCardAspersao_Real] AS [ScoreCardAspersao_Real], 
+    [ManColetaDados].[ScoreCardMeioAmbiente_Meta] AS [ScoreCardMeioAmbiente_Meta], 
+    [ManColetaDados].[ScoreCardMeioAmbiente_Real] AS [ScoreCardMeioAmbiente_Real], 
+    [ManColetaDados].[ScoreCardEnergia_Meta] AS [ScoreCardEnergia_Meta], 
+    [ManColetaDados].[ScoreCardEnergia_Real] AS [ScoreCardEnergia_Real], 
+    [ManColetaDados].[ScoreCardVapor_Meta] AS [ScoreCardVapor_Meta], 
+    [ManColetaDados].[ScoreCardVapor_Real] AS [ScoreCardVapor_Real], 
+    [ManColetaDados].[PilarMan_Meta] AS [PilarMan_Meta], 
+    [ManColetaDados].[PilarMan_Real] AS [PilarMan_Real], 
+    [ManColetaDados].[Reclamacao_Meta] AS [Reclamacao_Meta], 
+    [ManColetaDados].[Reclamacao_Real] AS [Reclamacao_Real], 
+    [ManColetaDados].[CustoDevolucoes_Meta] AS [CustoDevolucoes_Meta], 
+    [ManColetaDados].[CustoDevolucoes_Real] AS [CustoDevolucoes_Real], 
+    [ManColetaDados].[Absenteismo_Meta] AS [Absenteismo_Meta], 
+    [ManColetaDados].[Absenteismo_Real] AS [Absenteismo_Real], 
+    [ManColetaDados].[Rotatividade_Meta] AS [Rotatividade_Meta], 
+    [ManColetaDados].[Rotatividade_Real] AS [Rotatividade_Real], 
+    [ManColetaDados].[HeadCount_Meta] AS [HeadCount_Meta], 
+    [ManColetaDados].[HeadCount_Real] AS [HeadCount_Real], 
+    [ManColetaDados].[ReaisCabeca_Meta] AS [ReaisCabeca_Meta], 
+    [ManColetaDados].[ReaisCabeca_Real] AS [ReaisCabeca_Real], 
+    [ManColetaDados].[ReaisCabeca_ManUtilMeta] AS [ReaisCabeca_ManUtilMeta], 
+    [ManColetaDados].[ReaisCabeca_ManUtilReal] AS [ReaisCabeca_ManUtilReal], 
+    [ManColetaDados].[EnergiaReaisCabeca_Meta] AS [EnergiaReaisCabeca_Meta], 
+    [ManColetaDados].[EnergiaReaisCabeca_Real] AS [EnergiaReaisCabeca_Real], 
+    [ManColetaDados].[Capex_Meta] AS [Capex_Meta], 
+    [ManColetaDados].[Capex_Real] AS [Capex_Real], 
+    [ManColetaDados].[Disponibilidade_GeralMeta] AS [Disponibilidade_GeralMeta], 
+    [ManColetaDados].[Disponibilidade_GeralReal] AS [Disponibilidade_GeralReal], 
+    [ManColetaDados].[CartaMetas_Meta] AS [CartaMetas_Meta], 
+    [ManColetaDados].[CartaMetas_Real] AS [CartaMetas_Real], 
+    [ManColetaDados].[CartaMetas_Vazio] AS [CartaMetas_Vazio], 
+    [ManColetaDados].[Comentarios] AS [Comentarios], 
+    [ManColetaDados].[Disponibilidade_AbateMeta] AS [Disponibilidade_AbateMeta], 
+    [ManColetaDados].[Disponibilidade_AbateReal] AS [Disponibilidade_AbateReal], 
+    [ManColetaDados].[Disponibilidade_DesossaReal] AS [Disponibilidade_DesossaReal], 
+    [ManColetaDados].[Disponibilidade_DesossaMeta] AS [Disponibilidade_DesossaMeta], 
+    [ManColetaDados].[M3Agua_Meta] AS [M3Agua_Meta], 
+    [ManColetaDados].[M3Agua_Real] AS [M3Agua_Real], 
+    [ManColetaDados].[userAdd] AS [userAdd], 
+    [ManColetaDados].[userAlter] AS [userAlter], 
+    [ManColetaDados].[LitrosSebo_Real] AS [LitrosSebo_Real], 
+    [ManColetaDados].[LitrosSebo_Meta] AS [LitrosSebo_Meta], 
+    [ManColetaDados].[CabBP_BoisProcessados_Real] AS [CabBP_BoisProcessados_Real], 
+    [ManColetaDados].[CabBP_BoisProcessados_Meta] AS [CabBP_BoisProcessados_Meta], 
+    [ManColetaDados].[Mcal_Nr_Real] AS [Mcal_Nr_Real], 
+    [ManColetaDados].[Mcal_Nr_Meta] AS [Mcal_Nr_Meta], 
+    [ManColetaDados].[CF_Manutencao_Real] AS [CF_Manutencao_Real], 
+    [ManColetaDados].[CF_Manutencao_Meta] AS [CF_Manutencao_Meta], 
+    [ManColetaDados].[CF_Utilidades_Real] AS [CF_Utilidades_Real], 
+    [ManColetaDados].[CF_Utilidades_Meta] AS [CF_Utilidades_Meta], 
+    [ManColetaDados].[CF_EnergiaFixa_Real] AS [CF_EnergiaFixa_Real], 
+    [ManColetaDados].[CF_EnergiaFixa_Meta] AS [CF_EnergiaFixa_Meta], 
+    [ManColetaDados].[CF_EnergiaVariavel_Real] AS [CF_EnergiaVariavel_Real], 
+    [ManColetaDados].[CF_EnergiaVariavel_Meta] AS [CF_EnergiaVariavel_Meta], 
+    [ManColetaDados].[Demanda_EnergiaPonta_Real] AS [Demanda_EnergiaPonta_Real], 
+    [ManColetaDados].[Demanda_EnergiaPonta_Meta] AS [Demanda_EnergiaPonta_Meta], 
+    [ManColetaDados].[Demanda_EnergiaForaPonta_Real] AS [Demanda_EnergiaForaPonta_Real], 
+    [ManColetaDados].[Demanda_EnergiaForaPonta_Meta] AS [Demanda_EnergiaForaPonta_Meta], 
+    [ManColetaDados].[KgLenha_Real] AS [KgLenha_Real], 
+    [ManColetaDados].[KgLenha_Meta] AS [KgLenha_Meta], 
+    [ManColetaDados].[OS_NrProgramadas_Real] AS [OS_NrProgramadas_Real], 
+    [ManColetaDados].[OS_NrProgramadas_Meta] AS [OS_NrProgramadas_Meta], 
+    [ManColetaDados].[OS_NrExecutadas_Real] AS [OS_NrExecutadas_Real], 
+    [ManColetaDados].[OS_NrExecutadas_Meta] AS [OS_NrExecutadas_Meta], 
+    [ManColetaDados].[OS_NrPlanejadas_Real] AS [OS_NrPlanejadas_Real], 
+    [ManColetaDados].[OS_NrPlanejadas_Meta] AS [OS_NrPlanejadas_Meta], 
+    [ManColetaDados].[Horas_DispTrabalhar_Real] AS [Horas_DispTrabalhar_Real], 
+    [ManColetaDados].[Horas_DispTrabalhar_Meta] AS [Horas_DispTrabalhar_Meta], 
+    [ManColetaDados].[Horas_ApropriadasOS_Real] AS [Horas_ApropriadasOS_Real], 
+    [ManColetaDados].[Horas_ApropriadasOS_Meta] AS [Horas_ApropriadasOS_Meta], 
+    [ManColetaDados].[Colaboradores_NrRegistrados_Real] AS [Colaboradores_NrRegistrados_Real], 
+    [ManColetaDados].[Colaboradores_NrRegistrados_Meta] AS [Colaboradores_NrRegistrados_Meta], 
+    [ManColetaDados].[Colaboradores_NrAusentes_Real] AS [Colaboradores_NrAusentes_Real], 
+    [ManColetaDados].[Colaboradores_NrAusentes_Meta] AS [Colaboradores_NrAusentes_Meta], 
+    [ManColetaDados].[Colaboradores_NrDesligados_Real] AS [Colaboradores_NrDesligados_Real], 
+    [ManColetaDados].[Colaboradores_NrDesligados_Meta] AS [Colaboradores_NrDesligados_Meta], 
+    [ManColetaDados].[Vendas_Total_Real] AS [Vendas_Total_Real], 
+    [ManColetaDados].[Vendas_Total_Meta] AS [Vendas_Total_Meta], 
+    [ManColetaDados].[Vendas_TotalDevolvido_Real] AS [Vendas_TotalDevolvido_Real], 
+    [ManColetaDados].[Vendas_TotalDevolvido_Meta] AS [Vendas_TotalDevolvido_Meta], 
+    [ManColetaDados].[Horas_DispTrabalharAb_Real] AS [Horas_DispTrabalharAb_Real], 
+    [ManColetaDados].[Horas_DispTrabalharAb_Meta] AS [Horas_DispTrabalharAb_Meta], 
+    [ManColetaDados].[Horas_DispTrabalharDes_Real] AS [Horas_DispTrabalharDes_Real], 
+    [ManColetaDados].[Horas_DispTrabalharDes_Meta] AS [Horas_DispTrabalharDes_Meta], 
+    [ManColetaDados].[KgSebo_Real] AS [KgSebo_Real], 
+    [ManColetaDados].[KgSebo_Meta] AS [KgSebo_Meta], 
+    [ManColetaDados].[KgFarinha_Real] AS [KgFarinha_Real], 
+    [ManColetaDados].[KgFarinha_Meta] AS [KgFarinha_Meta]
+    FROM [dbo].[ManColetaDados] AS [ManColetaDados]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ParLevel1VariableProduction" EntityType="Self.ParLevel1VariableProduction" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -3898,33 +4119,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             <End Role="DimManutencaoColetaITs" EntitySet="DimManutencaoColetaITs" />
             <End Role="ManDataCollectIT" EntitySet="ManDataCollectIT" />
           </AssociationSet>
-          <EntitySet Name="CollectionLevel2" EntityType="SgqDbModel.CollectionLevel2" />
-          <AssociationSet Name="FK_CollectionLevel2_ConsolidationLevel2" Association="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2">
-            <End Role="ConsolidationLevel2" EntitySet="ConsolidationLevel2" />
-            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel2_ParLevel1" Association="SgqDbModel.FK_CollectionLevel2_ParLevel1">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel2_ParLevel2" Association="SgqDbModel.FK_CollectionLevel2_ParLevel2">
-            <End Role="ParLevel2" EntitySet="ParLevel2" />
-            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel2_UserSgq" Association="SgqDbModel.FK_CollectionLevel2_UserSgq">
-            <End Role="UserSgq" EntitySet="UserSgq" />
-            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel2XParHeaderField_CollectionLevel2" Association="SgqDbModel.FK_CollectionLevel2XParHeaderField_CollectionLevel2">
-            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
-            <End Role="CollectionLevel2XParHeaderField" EntitySet="CollectionLevel2XParHeaderField" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Result_Level3_CollectionLevel2" Association="SgqDbModel.FK_Result_Level3_CollectionLevel2">
-            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
-            <End Role="Result_Level3" EntitySet="Result_Level3" />
-          </AssociationSet>
           <EntitySet Name="ParLevel2XHeaderField" EntityType="SgqDbModel.ParLevel2XHeaderField" />
-          <EntitySet Name="ManColetaDados" EntityType="SgqDbModel.ManColetaDados" />
           <EntitySet Name="Defect" EntityType="SgqDbModel.Defect" />
           <AssociationSet Name="FK_Defect_ParLevel1" Association="SgqDbModel.FK_Defect_ParLevel1">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
@@ -4033,6 +4228,32 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             <End Role="ScreenComponent" EntitySet="ScreenComponent" />
           </AssociationSet>
           <EntitySet Name="ParGoalScorecard" EntityType="SgqDbModel.ParGoalScorecard" />
+          <EntitySet Name="CollectionLevel2" EntityType="SgqDbModel.CollectionLevel2" />
+          <AssociationSet Name="FK_CollectionLevel2_ConsolidationLevel2" Association="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2">
+            <End Role="ConsolidationLevel2" EntitySet="ConsolidationLevel2" />
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel2_ParLevel1" Association="SgqDbModel.FK_CollectionLevel2_ParLevel1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel2_ParLevel2" Association="SgqDbModel.FK_CollectionLevel2_ParLevel2">
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel2_UserSgq" Association="SgqDbModel.FK_CollectionLevel2_UserSgq">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel2XParHeaderField_CollectionLevel2" Association="SgqDbModel.FK_CollectionLevel2XParHeaderField_CollectionLevel2">
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+            <End Role="CollectionLevel2XParHeaderField" EntitySet="CollectionLevel2XParHeaderField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Result_Level3_CollectionLevel2" Association="SgqDbModel.FK_Result_Level3_CollectionLevel2">
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+            <End Role="Result_Level3" EntitySet="Result_Level3" />
+          </AssociationSet>
+          <EntitySet Name="ManColetaDados" EntityType="SgqDbModel.ManColetaDados" />
           </EntityContainer>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -4395,9 +4616,9 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="EvaluatedResult" Type="Int32" />
           <Property Name="DefectsResult" Type="Int32" />
           <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ConsolidationLevel2_ParLevel2" FromRole="ConsolidationLevel2" ToRole="ParLevel2" />
-          <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2" FromRole="ConsolidationLevel2" ToRole="CollectionLevel2" />
           <Property Name="LastLevel2Alert" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel1" FromRole="ConsolidationLevel2" ToRole="ParCompany" />
+          <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2" FromRole="ConsolidationLevel2" ToRole="CollectionLevel2" />
         </EntityType>
         <EntityType Name="CorrectiveAction">
           <Key>
@@ -4831,10 +5052,11 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel1" FromRole="ParLevel1" ToRole="ParRelapse" />
           <Property Name="haveRealTimeConsolidation" Type="Boolean" />
           <Property Name="RealTimeConsolitationUpdate" Type="Int32" />
-          <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel1" FromRole="ParLevel1" ToRole="CollectionLevel2" />
           <Property Name="IsPartialSave" Type="Boolean" />
           <NavigationProperty Name="Defect" Relationship="SgqDbModel.FK_Defect_ParLevel1" FromRole="ParLevel1" ToRole="Defect" />
           <Property Name="HasCompleteEvaluation" Type="Boolean" />
+          <Property Name="ParScoreType_Id" Type="Int32" />
+          <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel1" FromRole="ParLevel1" ToRole="CollectionLevel2" />
         </EntityType>
         <EntityType Name="ParLevel1XCluster">
           <Key>
@@ -6364,129 +6586,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="CollectionLevel2">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Key" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ConsolidationLevel2_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParLevel2_Id" Type="Int32" Nullable="false" />
-          <Property Name="UnitId" Type="Int32" Nullable="false" />
-          <Property Name="AuditorId" Type="Int32" Nullable="false" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Period" Type="Int32" Nullable="false" />
-          <Property Name="Phase" Type="Int32" Nullable="false" />
-          <Property Name="ReauditIs" Type="Boolean" Nullable="false" />
-          <Property Name="ReauditNumber" Type="Int32" Nullable="false" />
-          <Property Name="CollectionDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="StartPhaseDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="EvaluationNumber" Type="Int32" />
-          <Property Name="Sample" Type="Int32" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="ConsecutiveFailureIs" Type="Boolean" Nullable="false" />
-          <Property Name="ConsecutiveFailureTotal" Type="Int32" Nullable="false" />
-          <Property Name="NotEvaluatedIs" Type="Boolean" Nullable="false" />
-          <Property Name="Duplicated" Type="Boolean" Nullable="false" />
-          <Property Name="HaveCorrectiveAction" Type="Boolean" />
-          <Property Name="HaveReaudit" Type="Boolean" />
-          <Property Name="HavePhase" Type="Boolean" />
-          <Property Name="Completed" Type="Boolean" />
-          <Property Name="ParFrequency_Id" Type="Int32" />
-          <Property Name="AlertLevel" Type="Int32" />
-          <Property Name="Sequential" Type="Int32" />
-          <Property Name="Side" Type="Int32" />
-          <Property Name="WeiEvaluation" Type="Decimal" Precision="30" Scale="5" />
-          <Property Name="Defects" Type="Decimal" Precision="30" Scale="8" />
-          <Property Name="WeiDefects" Type="Decimal" Precision="15" Scale="5" />
-          <Property Name="TotalLevel3WithDefects" Type="Int32" />
-          <Property Name="TotalLevel3Evaluation" Type="Int32" />
-          <Property Name="LastEvaluationAlert" Type="Int32" />
-          <Property Name="EvaluatedResult" Type="Int32" />
-          <Property Name="DefectsResult" Type="Int32" />
-          <Property Name="IsEmptyLevel3" Type="Boolean" />
-          <NavigationProperty Name="ConsolidationLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2" FromRole="CollectionLevel2" ToRole="ConsolidationLevel2" />
-          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel1" FromRole="CollectionLevel2" ToRole="ParLevel1" />
-          <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel2" FromRole="CollectionLevel2" ToRole="ParLevel2" />
-          <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_CollectionLevel2_UserSgq" FromRole="CollectionLevel2" ToRole="UserSgq" />
-          <NavigationProperty Name="CollectionLevel2XParHeaderField" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_CollectionLevel2" FromRole="CollectionLevel2" ToRole="CollectionLevel2XParHeaderField" />
-          <NavigationProperty Name="Result_Level3" Relationship="SgqDbModel.FK_Result_Level3_CollectionLevel2" FromRole="CollectionLevel2" ToRole="Result_Level3" />
-          <Property Name="LastLevel2Alert" Type="Int32" />
-        </EntityType>
-        <Association Name="FK_CollectionLevel2_ConsolidationLevel2">
-          <End Type="SgqDbModel.ConsolidationLevel2" Role="ConsolidationLevel2" Multiplicity="1" />
-          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ConsolidationLevel2">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel2">
-              <PropertyRef Name="ConsolidationLevel2_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CollectionLevel2_ParLevel1">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
-          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel2">
-              <PropertyRef Name="ParLevel1_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CollectionLevel2_ParLevel2">
-          <End Type="SgqDbModel.ParLevel2" Role="ParLevel2" Multiplicity="1" />
-          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel2">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel2">
-              <PropertyRef Name="ParLevel2_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CollectionLevel2_UserSgq">
-          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="1" />
-          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserSgq">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel2">
-              <PropertyRef Name="AuditorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CollectionLevel2XParHeaderField_CollectionLevel2">
-          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="1" />
-          <End Type="SgqDbModel.CollectionLevel2XParHeaderField" Role="CollectionLevel2XParHeaderField" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CollectionLevel2">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel2XParHeaderField">
-              <PropertyRef Name="CollectionLevel2_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Result_Level3_CollectionLevel2">
-          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="1" />
-          <End Type="SgqDbModel.Result_Level3" Role="Result_Level3" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CollectionLevel2">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Result_Level3">
-              <PropertyRef Name="CollectionLevel2_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="ParLevel2XHeaderField">
           <Key>
             <PropertyRef Name="Id" />
@@ -6498,121 +6597,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ManColetaDados">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Base_parCompany_id" Type="Int32" />
-          <Property Name="Base_dateAdd" Type="DateTime" Precision="3" />
-          <Property Name="Base_dateAlter" Type="DateTime" Precision="3" />
-          <Property Name="Base_dateRef" Type="DateTime" Precision="0" />
-          <Property Name="CabAbat_QteBoiAbatidosReal" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="CabAbat_QteBoiAbatidosMeta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="CabAbat_PrevisaoFechamento" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="CabAbat_SobraAnimaisCurrais" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="CustoMan_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="CustoMan_OrcDia" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="CustoMan_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="CustoMan_CombinadoMenos5pcnt" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="CustoMan_VarCombinado" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="CustoMan_PrevisaoFechamento" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="EnergiaEletrica_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="EnergiaEletrica_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="EnergiaEletrica_OrcDia" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="EnergiaEletrica_KWhBoiProcMeta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="EnergiaEletrica_KWhBoiProcReal" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="EnergiaEletrica_PrevisaoFechamento" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="CombCaldUtil_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="CombCaldUtil_OrcDia" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="CombCaldUtil_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="CombCaldUtil_McalBoiUtilMeta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="CombCaldUtil_McalBoiUtilReal" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="CombCaldUtil_PrevFechamento" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="FatorPotencia_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="FatorPotencia_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="M3AguaBoi_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="M3AguaBoi_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="M3Lenha_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="M3Lenha_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Confiabilidade_AbateMeta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Confiabilidade_AbateReal" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Confiabilidade_DesossaMeta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Confiabilidade_DesossaReal" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="KWhMes_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="KWhMes_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ParadasAbateMinutos_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ParadasAbateMinutos_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ParadasDesossaMinutos_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ParadasDesossaMinutos_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ObrasEmAndamento_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ObrasEmAndamento_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Moral_CustoHorasExtrasMeta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Moral_CustoHorasExtrasReal" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Moral_CustoHorasExtrasParcial" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Moral_QteHorasExtras" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Moral_TaxaFrequenciaAcidentesMeta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Moral_TaxaFrequenciaAcidentesReal" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ApropHoras_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ApropHoras_QteHoraAprop" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ApropHoras_QteManutentores" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ApropHoras_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="EficienciaProgram_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="EficienciaProgram_QteOSAberta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="EficienciaProgram_QteOSEncerrada" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="EficienciaProgram_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ApropPlanejamento_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ApropPlanejamento_TotalHorasAprop" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ApropPlanejamento_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Rendimento_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Rendimento_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="SeboFlotado_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="SeboFlotado_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ScoreCardUnidade_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ScoreCardUnidade_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ScoreCardCheckListEquip_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ScoreCardCheckListEquip_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ScoreCardAnaliseAgua_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ScoreCardAnaliseAgua_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ScoreCardAspersao_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ScoreCardAspersao_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ScoreCardMeioAmbiente_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ScoreCardMeioAmbiente_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ScoreCardEnergia_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ScoreCardEnergia_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ScoreCardVapor_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ScoreCardVapor_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="PilarMan_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="PilarMan_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Reclamacao_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Reclamacao_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="CustoDevolucoes_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="CustoDevolucoes_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Absenteismo_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Absenteismo_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Rotatividade_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Rotatividade_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="HeadCount_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="HeadCount_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ReaisCabeca_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ReaisCabeca_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ReaisCabeca_ManUtilMeta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="ReaisCabeca_ManUtilReal" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="EnergiaReaisCabeca_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="EnergiaReaisCabeca_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Capex_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Capex_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Disponibilidade_GeralMeta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Disponibilidade_GeralReal" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="CartaMetas_Meta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="CartaMetas_Real" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="CartaMetas_Vazio" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Comentarios" Type="String" MaxLength="900" FixedLength="false" Unicode="false" />
-          <Property Name="Disponibilidade_AbateMeta" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Disponibilidade_AbateReal" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Disponibilidade_DesossaReal" Type="Decimal" Precision="30" Scale="10" />
-          <Property Name="Disponibilidade_DesossaMeta" Type="Decimal" Precision="30" Scale="10" />
         </EntityType>
         <EntityType Name="Defect">
           <Key>
@@ -7031,6 +7015,297 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="PercentValueMid" Type="Decimal" Nullable="false" Precision="25" Scale="7" />
           <Property Name="PercentValueHigh" Type="Decimal" Nullable="false" Precision="25" Scale="7" />
           <Property Name="InitDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="CollectionLevel2">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Key" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ConsolidationLevel2_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParLevel2_Id" Type="Int32" Nullable="false" />
+          <Property Name="UnitId" Type="Int32" Nullable="false" />
+          <Property Name="AuditorId" Type="Int32" Nullable="false" />
+          <Property Name="Shift" Type="Int32" Nullable="false" />
+          <Property Name="Period" Type="Int32" Nullable="false" />
+          <Property Name="Phase" Type="Int32" Nullable="false" />
+          <Property Name="ReauditIs" Type="Boolean" Nullable="false" />
+          <Property Name="ReauditNumber" Type="Int32" Nullable="false" />
+          <Property Name="CollectionDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="StartPhaseDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="EvaluationNumber" Type="Int32" />
+          <Property Name="Sample" Type="Int32" Nullable="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="ConsecutiveFailureIs" Type="Boolean" Nullable="false" />
+          <Property Name="ConsecutiveFailureTotal" Type="Int32" Nullable="false" />
+          <Property Name="NotEvaluatedIs" Type="Boolean" Nullable="false" />
+          <Property Name="Duplicated" Type="Boolean" Nullable="false" />
+          <Property Name="HaveCorrectiveAction" Type="Boolean" />
+          <Property Name="HaveReaudit" Type="Boolean" />
+          <Property Name="HavePhase" Type="Boolean" />
+          <Property Name="Completed" Type="Boolean" />
+          <Property Name="ParFrequency_Id" Type="Int32" />
+          <Property Name="AlertLevel" Type="Int32" />
+          <Property Name="Sequential" Type="Int32" />
+          <Property Name="Side" Type="Int32" />
+          <Property Name="WeiEvaluation" Type="Decimal" Precision="30" Scale="5" />
+          <Property Name="Defects" Type="Decimal" Precision="30" Scale="8" />
+          <Property Name="WeiDefects" Type="Decimal" Precision="15" Scale="5" />
+          <Property Name="TotalLevel3WithDefects" Type="Int32" />
+          <Property Name="TotalLevel3Evaluation" Type="Int32" />
+          <Property Name="LastEvaluationAlert" Type="Int32" />
+          <Property Name="EvaluatedResult" Type="Int32" />
+          <Property Name="DefectsResult" Type="Int32" />
+          <Property Name="IsEmptyLevel3" Type="Boolean" />
+          <Property Name="LastLevel2Alert" Type="Int32" />
+          <Property Name="ReauditLevel" Type="Int32" />
+          <NavigationProperty Name="ConsolidationLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2" FromRole="CollectionLevel2" ToRole="ConsolidationLevel2" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel1" FromRole="CollectionLevel2" ToRole="ParLevel1" />
+          <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel2" FromRole="CollectionLevel2" ToRole="ParLevel2" />
+          <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_CollectionLevel2_UserSgq" FromRole="CollectionLevel2" ToRole="UserSgq" />
+          <NavigationProperty Name="CollectionLevel2XParHeaderField" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_CollectionLevel2" FromRole="CollectionLevel2" ToRole="CollectionLevel2XParHeaderField" />
+          <NavigationProperty Name="Result_Level3" Relationship="SgqDbModel.FK_Result_Level3_CollectionLevel2" FromRole="CollectionLevel2" ToRole="Result_Level3" />
+        </EntityType>
+        <Association Name="FK_CollectionLevel2_ConsolidationLevel2">
+          <End Type="SgqDbModel.ConsolidationLevel2" Role="ConsolidationLevel2" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConsolidationLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2">
+              <PropertyRef Name="ConsolidationLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel2_ParLevel1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel2_ParLevel2">
+          <End Type="SgqDbModel.ParLevel2" Role="ParLevel2" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2">
+              <PropertyRef Name="ParLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel2_UserSgq">
+          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2">
+              <PropertyRef Name="AuditorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel2XParHeaderField_CollectionLevel2">
+          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel2XParHeaderField" Role="CollectionLevel2XParHeaderField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2XParHeaderField">
+              <PropertyRef Name="CollectionLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Result_Level3_CollectionLevel2">
+          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="1" />
+          <End Type="SgqDbModel.Result_Level3" Role="Result_Level3" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Result_Level3">
+              <PropertyRef Name="CollectionLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ManColetaDados">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="Base_parCompany_id" Type="Int32" />
+          <Property Name="Base_dateAdd" Type="DateTime" Precision="3" />
+          <Property Name="Base_dateAlter" Type="DateTime" Precision="3" />
+          <Property Name="Base_dateRef" Type="DateTime" Precision="0" />
+          <Property Name="CabAbat_QteBoiAbatidosReal" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CabAbat_QteBoiAbatidosMeta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CabAbat_PrevisaoFechamento" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CabAbat_SobraAnimaisCurrais" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CustoMan_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CustoMan_OrcDia" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CustoMan_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CustoMan_CombinadoMenos5pcnt" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CustoMan_VarCombinado" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CustoMan_PrevisaoFechamento" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="EnergiaEletrica_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="EnergiaEletrica_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="EnergiaEletrica_OrcDia" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="EnergiaEletrica_KWhBoiProcMeta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="EnergiaEletrica_KWhBoiProcReal" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="EnergiaEletrica_PrevisaoFechamento" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CombCaldUtil_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CombCaldUtil_OrcDia" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CombCaldUtil_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CombCaldUtil_McalBoiUtilMeta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CombCaldUtil_McalBoiUtilReal" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CombCaldUtil_PrevFechamento" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="FatorPotencia_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="FatorPotencia_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="M3AguaBoi_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="M3AguaBoi_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="M3Lenha_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="M3Lenha_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Confiabilidade_AbateMeta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Confiabilidade_AbateReal" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Confiabilidade_DesossaMeta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Confiabilidade_DesossaReal" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="KWhMes_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="KWhMes_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ParadasAbateMinutos_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ParadasAbateMinutos_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ParadasDesossaMinutos_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ParadasDesossaMinutos_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ObrasEmAndamento_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ObrasEmAndamento_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Moral_CustoHorasExtrasMeta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Moral_CustoHorasExtrasReal" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Moral_CustoHorasExtrasParcial" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Moral_QteHorasExtras" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Moral_TaxaFrequenciaAcidentesMeta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Moral_TaxaFrequenciaAcidentesReal" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ApropHoras_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ApropHoras_QteHoraAprop" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ApropHoras_QteManutentores" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ApropHoras_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="EficienciaProgram_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="EficienciaProgram_QteOSAberta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="EficienciaProgram_QteOSEncerrada" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="EficienciaProgram_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ApropPlanejamento_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ApropPlanejamento_TotalHorasAprop" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ApropPlanejamento_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Rendimento_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Rendimento_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="SeboFlotado_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="SeboFlotado_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ScoreCardUnidade_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ScoreCardUnidade_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ScoreCardCheckListEquip_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ScoreCardCheckListEquip_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ScoreCardAnaliseAgua_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ScoreCardAnaliseAgua_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ScoreCardAspersao_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ScoreCardAspersao_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ScoreCardMeioAmbiente_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ScoreCardMeioAmbiente_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ScoreCardEnergia_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ScoreCardEnergia_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ScoreCardVapor_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ScoreCardVapor_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="PilarMan_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="PilarMan_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Reclamacao_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Reclamacao_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CustoDevolucoes_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CustoDevolucoes_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Absenteismo_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Absenteismo_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Rotatividade_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Rotatividade_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="HeadCount_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="HeadCount_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ReaisCabeca_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ReaisCabeca_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ReaisCabeca_ManUtilMeta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="ReaisCabeca_ManUtilReal" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="EnergiaReaisCabeca_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="EnergiaReaisCabeca_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Capex_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Capex_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Disponibilidade_GeralMeta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Disponibilidade_GeralReal" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CartaMetas_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CartaMetas_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CartaMetas_Vazio" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Comentarios" Type="String" MaxLength="900" FixedLength="false" Unicode="false" />
+          <Property Name="Disponibilidade_AbateMeta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Disponibilidade_AbateReal" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Disponibilidade_DesossaReal" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Disponibilidade_DesossaMeta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="M3Agua_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="M3Agua_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="userAdd" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="userAlter" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="LitrosSebo_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="LitrosSebo_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CabBP_BoisProcessados_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CabBP_BoisProcessados_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Mcal_Nr_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Mcal_Nr_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CF_Manutencao_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CF_Manutencao_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CF_Utilidades_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CF_Utilidades_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CF_EnergiaFixa_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CF_EnergiaFixa_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CF_EnergiaVariavel_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="CF_EnergiaVariavel_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Demanda_EnergiaPonta_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Demanda_EnergiaPonta_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Demanda_EnergiaForaPonta_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Demanda_EnergiaForaPonta_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="KgLenha_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="KgLenha_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="OS_NrProgramadas_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="OS_NrProgramadas_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="OS_NrExecutadas_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="OS_NrExecutadas_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="OS_NrPlanejadas_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="OS_NrPlanejadas_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Horas_DispTrabalhar_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Horas_DispTrabalhar_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Horas_ApropriadasOS_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Horas_ApropriadasOS_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Colaboradores_NrRegistrados_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Colaboradores_NrRegistrados_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Colaboradores_NrAusentes_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Colaboradores_NrAusentes_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Colaboradores_NrDesligados_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Colaboradores_NrDesligados_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Vendas_Total_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Vendas_Total_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Vendas_TotalDevolvido_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Vendas_TotalDevolvido_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Horas_DispTrabalharAb_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Horas_DispTrabalharAb_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Horas_DispTrabalharDes_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="Horas_DispTrabalharDes_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="KgSebo_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="KgSebo_Meta" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="KgFarinha_Real" Type="Decimal" Precision="30" Scale="10" />
+          <Property Name="KgFarinha_Meta" Type="Decimal" Precision="30" Scale="10" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -7752,6 +8027,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySetMapping Name="ParLevel1">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel1">
               <MappingFragment StoreEntitySet="ParLevel1">
+                <ScalarProperty Name="ParScoreType_Id" ColumnName="ParScoreType_Id" />
                 <ScalarProperty Name="HasCompleteEvaluation" ColumnName="HasCompleteEvaluation" />
                 <ScalarProperty Name="IsPartialSave" ColumnName="IsPartialSave" />
                 <ScalarProperty Name="RealTimeConsolitationUpdate" ColumnName="RealTimeConsolitationUpdate" />
@@ -8364,9 +8640,120 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ParLevel2XHeaderField">
+            <EntityTypeMapping TypeName="SgqDbModel.ParLevel2XHeaderField">
+              <MappingFragment StoreEntitySet="ParLevel2XHeaderField">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="ParHeaderField_Id" ColumnName="ParHeaderField_Id" />
+                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
+                <ScalarProperty Name="ParLevel2_Id" ColumnName="ParLevel2_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Defect">
+            <EntityTypeMapping TypeName="SgqDbModel.Defect">
+              <MappingFragment StoreEntitySet="Defect">
+                <ScalarProperty Name="CurrentEvaluation" ColumnName="CurrentEvaluation" />
+                <ScalarProperty Name="Evaluations" ColumnName="Evaluations" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Defects" ColumnName="Defects" />
+                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
+                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConsolidationLevel02">
+            <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel02">
+              <MappingFragment StoreEntitySet="ConsolidationLevel02">
+                <ScalarProperty Name="ConsolidationDate" ColumnName="ConsolidationDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+                <ScalarProperty Name="Level02Id" ColumnName="Level02Id" />
+                <ScalarProperty Name="Level01ConsolidationId" ColumnName="Level01ConsolidationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParCompany">
+            <EntityTypeMapping TypeName="SgqDbModel.ParCompany">
+              <MappingFragment StoreEntitySet="ParCompany">
+                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
+                <ScalarProperty Name="IntegrationId" ColumnName="IntegrationId" />
+                <ScalarProperty Name="DBServer" ColumnName="DBServer" />
+                <ScalarProperty Name="IPServer" ColumnName="IPServer" />
+                <ScalarProperty Name="CompanyNumber" ColumnName="CompanyNumber" />
+                <ScalarProperty Name="SIF" ColumnName="SIF" />
+                <ScalarProperty Name="Initials" ColumnName="Initials" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleJBS">
+            <EntityTypeMapping TypeName="SgqDbModel.RoleJBS">
+              <MappingFragment StoreEntitySet="RoleJBS">
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="ScreenComponent_Id" ColumnName="ScreenComponent_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleSGQ">
+            <EntityTypeMapping TypeName="SgqDbModel.RoleSGQ">
+              <MappingFragment StoreEntitySet="RoleSGQ">
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="ScreenComponent_Id" ColumnName="ScreenComponent_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleType">
+            <EntityTypeMapping TypeName="SgqDbModel.RoleType">
+              <MappingFragment StoreEntitySet="RoleType">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScreenComponent">
+            <EntityTypeMapping TypeName="SgqDbModel.ScreenComponent">
+              <MappingFragment StoreEntitySet="ScreenComponent">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Component" ColumnName="Component" />
+                <ScalarProperty Name="HashKey" ColumnName="HashKey" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParGoalScorecard">
+            <EntityTypeMapping TypeName="SgqDbModel.ParGoalScorecard">
+              <MappingFragment StoreEntitySet="ParGoalScorecard">
+                <ScalarProperty Name="InitDate" ColumnName="InitDate" />
+                <ScalarProperty Name="PercentValueHigh" ColumnName="PercentValueHigh" />
+                <ScalarProperty Name="PercentValueMid" ColumnName="PercentValueMid" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="CollectionLevel2">
             <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel2">
               <MappingFragment StoreEntitySet="CollectionLevel2">
+                <ScalarProperty Name="ReauditLevel" ColumnName="ReauditLevel" />
                 <ScalarProperty Name="LastLevel2Alert" ColumnName="LastLevel2Alert" />
                 <ScalarProperty Name="IsEmptyLevel3" ColumnName="IsEmptyLevel3" />
                 <ScalarProperty Name="DefectsResult" ColumnName="DefectsResult" />
@@ -8410,22 +8797,61 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ParLevel2XHeaderField">
-            <EntityTypeMapping TypeName="SgqDbModel.ParLevel2XHeaderField">
-              <MappingFragment StoreEntitySet="ParLevel2XHeaderField">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="ParHeaderField_Id" ColumnName="ParHeaderField_Id" />
-                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
-                <ScalarProperty Name="ParLevel2_Id" ColumnName="ParLevel2_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ManColetaDados">
             <EntityTypeMapping TypeName="SgqDbModel.ManColetaDados">
               <MappingFragment StoreEntitySet="ManColetaDados">
+                <ScalarProperty Name="KgFarinha_Meta" ColumnName="KgFarinha_Meta" />
+                <ScalarProperty Name="KgFarinha_Real" ColumnName="KgFarinha_Real" />
+                <ScalarProperty Name="KgSebo_Meta" ColumnName="KgSebo_Meta" />
+                <ScalarProperty Name="KgSebo_Real" ColumnName="KgSebo_Real" />
+                <ScalarProperty Name="Horas_DispTrabalharDes_Meta" ColumnName="Horas_DispTrabalharDes_Meta" />
+                <ScalarProperty Name="Horas_DispTrabalharDes_Real" ColumnName="Horas_DispTrabalharDes_Real" />
+                <ScalarProperty Name="Horas_DispTrabalharAb_Meta" ColumnName="Horas_DispTrabalharAb_Meta" />
+                <ScalarProperty Name="Horas_DispTrabalharAb_Real" ColumnName="Horas_DispTrabalharAb_Real" />
+                <ScalarProperty Name="Vendas_TotalDevolvido_Meta" ColumnName="Vendas_TotalDevolvido_Meta" />
+                <ScalarProperty Name="Vendas_TotalDevolvido_Real" ColumnName="Vendas_TotalDevolvido_Real" />
+                <ScalarProperty Name="Vendas_Total_Meta" ColumnName="Vendas_Total_Meta" />
+                <ScalarProperty Name="Vendas_Total_Real" ColumnName="Vendas_Total_Real" />
+                <ScalarProperty Name="Colaboradores_NrDesligados_Meta" ColumnName="Colaboradores_NrDesligados_Meta" />
+                <ScalarProperty Name="Colaboradores_NrDesligados_Real" ColumnName="Colaboradores_NrDesligados_Real" />
+                <ScalarProperty Name="Colaboradores_NrAusentes_Meta" ColumnName="Colaboradores_NrAusentes_Meta" />
+                <ScalarProperty Name="Colaboradores_NrAusentes_Real" ColumnName="Colaboradores_NrAusentes_Real" />
+                <ScalarProperty Name="Colaboradores_NrRegistrados_Meta" ColumnName="Colaboradores_NrRegistrados_Meta" />
+                <ScalarProperty Name="Colaboradores_NrRegistrados_Real" ColumnName="Colaboradores_NrRegistrados_Real" />
+                <ScalarProperty Name="Horas_ApropriadasOS_Meta" ColumnName="Horas_ApropriadasOS_Meta" />
+                <ScalarProperty Name="Horas_ApropriadasOS_Real" ColumnName="Horas_ApropriadasOS_Real" />
+                <ScalarProperty Name="Horas_DispTrabalhar_Meta" ColumnName="Horas_DispTrabalhar_Meta" />
+                <ScalarProperty Name="Horas_DispTrabalhar_Real" ColumnName="Horas_DispTrabalhar_Real" />
+                <ScalarProperty Name="OS_NrPlanejadas_Meta" ColumnName="OS_NrPlanejadas_Meta" />
+                <ScalarProperty Name="OS_NrPlanejadas_Real" ColumnName="OS_NrPlanejadas_Real" />
+                <ScalarProperty Name="OS_NrExecutadas_Meta" ColumnName="OS_NrExecutadas_Meta" />
+                <ScalarProperty Name="OS_NrExecutadas_Real" ColumnName="OS_NrExecutadas_Real" />
+                <ScalarProperty Name="OS_NrProgramadas_Meta" ColumnName="OS_NrProgramadas_Meta" />
+                <ScalarProperty Name="OS_NrProgramadas_Real" ColumnName="OS_NrProgramadas_Real" />
+                <ScalarProperty Name="KgLenha_Meta" ColumnName="KgLenha_Meta" />
+                <ScalarProperty Name="KgLenha_Real" ColumnName="KgLenha_Real" />
+                <ScalarProperty Name="Demanda_EnergiaForaPonta_Meta" ColumnName="Demanda_EnergiaForaPonta_Meta" />
+                <ScalarProperty Name="Demanda_EnergiaForaPonta_Real" ColumnName="Demanda_EnergiaForaPonta_Real" />
+                <ScalarProperty Name="Demanda_EnergiaPonta_Meta" ColumnName="Demanda_EnergiaPonta_Meta" />
+                <ScalarProperty Name="Demanda_EnergiaPonta_Real" ColumnName="Demanda_EnergiaPonta_Real" />
+                <ScalarProperty Name="CF_EnergiaVariavel_Meta" ColumnName="CF_EnergiaVariavel_Meta" />
+                <ScalarProperty Name="CF_EnergiaVariavel_Real" ColumnName="CF_EnergiaVariavel_Real" />
+                <ScalarProperty Name="CF_EnergiaFixa_Meta" ColumnName="CF_EnergiaFixa_Meta" />
+                <ScalarProperty Name="CF_EnergiaFixa_Real" ColumnName="CF_EnergiaFixa_Real" />
+                <ScalarProperty Name="CF_Utilidades_Meta" ColumnName="CF_Utilidades_Meta" />
+                <ScalarProperty Name="CF_Utilidades_Real" ColumnName="CF_Utilidades_Real" />
+                <ScalarProperty Name="CF_Manutencao_Meta" ColumnName="CF_Manutencao_Meta" />
+                <ScalarProperty Name="CF_Manutencao_Real" ColumnName="CF_Manutencao_Real" />
+                <ScalarProperty Name="Mcal_Nr_Meta" ColumnName="Mcal_Nr_Meta" />
+                <ScalarProperty Name="Mcal_Nr_Real" ColumnName="Mcal_Nr_Real" />
+                <ScalarProperty Name="CabBP_BoisProcessados_Meta" ColumnName="CabBP_BoisProcessados_Meta" />
+                <ScalarProperty Name="CabBP_BoisProcessados_Real" ColumnName="CabBP_BoisProcessados_Real" />
+                <ScalarProperty Name="LitrosSebo_Meta" ColumnName="LitrosSebo_Meta" />
+                <ScalarProperty Name="LitrosSebo_Real" ColumnName="LitrosSebo_Real" />
+                <ScalarProperty Name="userAlter" ColumnName="userAlter" />
+                <ScalarProperty Name="userAdd" ColumnName="userAdd" />
+                <ScalarProperty Name="M3Agua_Real" ColumnName="M3Agua_Real" />
+                <ScalarProperty Name="M3Agua_Meta" ColumnName="M3Agua_Meta" />
                 <ScalarProperty Name="Disponibilidade_DesossaMeta" ColumnName="Disponibilidade_DesossaMeta" />
                 <ScalarProperty Name="Disponibilidade_DesossaReal" ColumnName="Disponibilidade_DesossaReal" />
                 <ScalarProperty Name="Disponibilidade_AbateReal" ColumnName="Disponibilidade_AbateReal" />
@@ -8536,103 +8962,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
                 <ScalarProperty Name="Base_dateAdd" ColumnName="Base_dateAdd" />
                 <ScalarProperty Name="Base_parCompany_id" ColumnName="Base_parCompany_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Defect">
-            <EntityTypeMapping TypeName="SgqDbModel.Defect">
-              <MappingFragment StoreEntitySet="Defect">
-                <ScalarProperty Name="CurrentEvaluation" ColumnName="CurrentEvaluation" />
-                <ScalarProperty Name="Evaluations" ColumnName="Evaluations" />
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Defects" ColumnName="Defects" />
-                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
-                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ConsolidationLevel02">
-            <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel02">
-              <MappingFragment StoreEntitySet="ConsolidationLevel02">
-                <ScalarProperty Name="ConsolidationDate" ColumnName="ConsolidationDate" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
-                <ScalarProperty Name="Level02Id" ColumnName="Level02Id" />
-                <ScalarProperty Name="Level01ConsolidationId" ColumnName="Level01ConsolidationId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ParCompany">
-            <EntityTypeMapping TypeName="SgqDbModel.ParCompany">
-              <MappingFragment StoreEntitySet="ParCompany">
-                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
-                <ScalarProperty Name="IntegrationId" ColumnName="IntegrationId" />
-                <ScalarProperty Name="DBServer" ColumnName="DBServer" />
-                <ScalarProperty Name="IPServer" ColumnName="IPServer" />
-                <ScalarProperty Name="CompanyNumber" ColumnName="CompanyNumber" />
-                <ScalarProperty Name="SIF" ColumnName="SIF" />
-                <ScalarProperty Name="Initials" ColumnName="Initials" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RoleJBS">
-            <EntityTypeMapping TypeName="SgqDbModel.RoleJBS">
-              <MappingFragment StoreEntitySet="RoleJBS">
-                <ScalarProperty Name="Role" ColumnName="Role" />
-                <ScalarProperty Name="ScreenComponent_Id" ColumnName="ScreenComponent_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RoleSGQ">
-            <EntityTypeMapping TypeName="SgqDbModel.RoleSGQ">
-              <MappingFragment StoreEntitySet="RoleSGQ">
-                <ScalarProperty Name="Role" ColumnName="Role" />
-                <ScalarProperty Name="ScreenComponent_Id" ColumnName="ScreenComponent_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RoleType">
-            <EntityTypeMapping TypeName="SgqDbModel.RoleType">
-              <MappingFragment StoreEntitySet="RoleType">
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ScreenComponent">
-            <EntityTypeMapping TypeName="SgqDbModel.ScreenComponent">
-              <MappingFragment StoreEntitySet="ScreenComponent">
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Component" ColumnName="Component" />
-                <ScalarProperty Name="HashKey" ColumnName="HashKey" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ParGoalScorecard">
-            <EntityTypeMapping TypeName="SgqDbModel.ParGoalScorecard">
-              <MappingFragment StoreEntitySet="ParGoalScorecard">
-                <ScalarProperty Name="InitDate" ColumnName="InitDate" />
-                <ScalarProperty Name="PercentValueHigh" ColumnName="PercentValueHigh" />
-                <ScalarProperty Name="PercentValueMid" ColumnName="PercentValueMid" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

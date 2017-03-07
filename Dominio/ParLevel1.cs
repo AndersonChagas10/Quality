@@ -31,8 +31,8 @@ namespace Dominio
             this.ParLevel3Level2Level1 = new HashSet<ParLevel3Level2Level1>();
             this.ParNotConformityRuleXLevel = new HashSet<ParNotConformityRuleXLevel>();
             this.ParRelapse = new HashSet<ParRelapse>();
-            this.CollectionLevel2 = new HashSet<CollectionLevel2>();
             this.Defect = new HashSet<Defect>();
+            this.CollectionLevel2 = new HashSet<CollectionLevel2>();
         }
     
         public int Id { get; set; }
@@ -62,6 +62,7 @@ namespace Dominio
         public Nullable<int> RealTimeConsolitationUpdate { get; set; }
         public Nullable<bool> IsPartialSave { get; set; }
         public Nullable<bool> HasCompleteEvaluation { get; set; }
+        public Nullable<int> ParScoreType_Id { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
@@ -94,8 +95,8 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParRelapse> ParRelapse { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Defect> Defect { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }
     }
 }

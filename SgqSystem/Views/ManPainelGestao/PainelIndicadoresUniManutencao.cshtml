@@ -123,7 +123,7 @@
 
                     <div id="Export" style="float:left; width:100px; display:none;">
                         <span class="redLabel">Exportar:</span>
-                        <button id="BtnExport" type="button" class="btn btn-default" style="width:80px;">Extrair</button>
+                        <button id="BtnExport" type="button" class="btn btn-default" style="width:80px;" data-toggle="modal" data-target="#myModal">Extrair</button>
                     </div>
 
                     <div class="dropdown" id="DropAcumulado" style="float:right;">
@@ -143,11 +143,31 @@
                             <option value="12">Dezembro</option>
                         </select>
                     </div>
+
                 </div>
 
                 <div id="graficoAcompanhamento" style="height:400px;"></div>
 
-                <table id="TableExport" class="display" cellspacing="0" style="display:none"></table>
+
+                <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-lg">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times</button>
+                                <h4 class="modal-title" id="titleTable">Tabela de Exportação</h4>
+                            </div>
+                            <div class="modal-body">
+                                <table id="TableExport" class="table table-striped" cellspacing="0" width="100%"></table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -380,39 +400,39 @@
 
             if (
             indicador == 'Bois Abatidos' ||
-                //indicador == 'Manutenção R$' ||
+            //indicador == 'Manutenção R$' ||
             indicador == 'Eficiên.Programção' ||
             indicador == 'Apropr Planej...to' ||
             indicador == 'Scorecard Unidade' ||
-                //indicador == 'Scorecard Vácuo' ||
-                //indicador == 'Head Count' ||
-                //indicador == 'Scorecard Aspersão' ||
+            //indicador == 'Scorecard Vácuo' ||
+            //indicador == 'Head Count' ||
+            //indicador == 'Scorecard Aspersão' ||
             indicador == 'Scorecard Energia' ||
             indicador == 'Scorecard Vapor' ||
-                //indicador == 'Pilar Manutenção' ||
-                //indicador == 'Devoluções %' ||
-                //indicador == 'R$/CB Manut' ||
-                //indicador == 'R$/CB Manut+Utilid' ||
-                //indicador == 'Sobra de Animais' ||
-                //indicador == 'R$ Manut Comb.' ||
-                //indicador == 'Energia R$' ||
-                //indicador == 'KWh/Boi Proc' ||
-                //indicador == 'Caldeira R$' ||
-                //indicador == 'Mcal/Boi Proc' ||
+            //indicador == 'Pilar Manutenção' ||
+            //indicador == 'Devoluções %' ||
+            //indicador == 'R$/CB Manut' ||
+            //indicador == 'R$/CB Manut+Utilid' ||
+            //indicador == 'Sobra de Animais' ||
+            //indicador == 'R$ Manut Comb.' ||
+            //indicador == 'Energia R$' ||
+            //indicador == 'KWh/Boi Proc' ||
+            //indicador == 'Caldeira R$' ||
+            //indicador == 'Mcal/Boi Proc' ||
             indicador == 'Fator de Potência' ||
-                //indicador == 'Água M³/Boi' ||
-                //indicador == 'M³ de Lenha' ||
+            //indicador == 'Água M³/Boi' ||
+            //indicador == 'M³ de Lenha' ||
             indicador == 'Disponibilidade Ab' ||
             indicador == 'Disponibilidade Des' ||
             indicador == 'Disponibilidade Total' ||
             indicador == 'Paradas Total' ||
-                //indicador == 'KWh' ||
-                //indicador == 'Parada Abate (min)' ||
-                //indicador == 'Parada Des. (min)' ||
-                //indicador == 'OBRAS' ||
-                //indicador == 'Horas Extras R$' ||
-                //indicador == 'Horas Extras Nº' ||
-                //indicador == 'CAPEX' ||
+            //indicador == 'KWh' ||
+            //indicador == 'Parada Abate (min)' ||
+            //indicador == 'Parada Des. (min)' ||
+            //indicador == 'OBRAS' ||
+            //indicador == 'Horas Extras R$' ||
+            //indicador == 'Horas Extras Nº' ||
+            //indicador == 'CAPEX' ||
             indicador == 'Apropriação de O.S' ||
             indicador == 'CARTA METAS') {
                 corPositivo = '#ff7575';
@@ -839,21 +859,25 @@
         //Gera grafico Acompanhamento
         function CallbackGraficoAcompanhamento(retornoArray) {
 
+            //Grafico + Tabela
             var dia = MapeiaValorParaHC(retornoArray, 'diaMes');
-            var real = MapeiaValorParaHC(retornoArray, 'real');
             var targetAjustado = MapeiaValorParaHC(retornoArray, 'targetAjustado');
+            var real = MapeiaValorParaHC(retornoArray, 'real');
             var budget = MapeiaValorParaHC(retornoArray, 'budget');
-            var userAdd = MapeiaValorParaHC(retornoArray, 'userAdd');
-            var userAlter = MapeiaValorParaHC(retornoArray, 'userAlter');
+
+            //Tabela
+            var data = MapeiaValorParaHC(retornoArray, 'data');
+            var userResp = MapeiaValorParaHC(retornoArray, 'userResp');
+
             var linha = [];
             var dataTableVetor = [];
-
             var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
-
             var budget2 = SomaVetor(budget);
+            var unidade = $('#UnidadeId :selected').text();
+            var mes = $('#AcumuladoMouthId option:selected').text();
 
             $('#terceiro').show();
-            //$('#Export').show();
+            $('#Export').show();
 
             //Gera o grafico
             $('#graficoAcompanhamento').empty().highcharts({
@@ -930,63 +954,92 @@
                 }]
             });
 
-            //for (var i = 0; i < dia.length; i++) {
-            //    linha[0] = dia[i];
-            //    linha[1] = userAdd[i];
-            //    linha[2] = userAlter[i];
-            //    linha[3] = formatReal(Math.round(real[i] * 100) / 100);
+            for (var i = 0; i < dia.length; i++) {
 
-            //    dataTableVetor.push(linha);
+                linha[0] = data[i];
+                linha[1] = dia[i];
+                linha[2] = userResp[i];
+                linha[3] = formatReal(Math.round(real[i] * 100) / 100);
+                linha[4] = formatReal(Math.round(budget[i] * 100) / 100);
+                linha[5] = formatReal(Math.round(targetAjustado[i] * 100) / 100);
 
-            //    linha = [];
-            //}
+                dataTableVetor.push(linha);
+                linha = [];
+            }
 
-            ////Gera a tabela
-            //var table = $('#TableExport').empty().DataTable({
-            //    data: dataTableVetor,
-            //    columns: [
-            //    { title: "data" },
-            //    { title: "User Create" },
-            //    { title: "User Alter" },
-            //    { title: "Valor Coleta" }
-            //    ],
-            //    buttons: [
-            //{ extend: 'create', editor: editor },
-            //{ extend: 'edit', editor: editor },
-            //{ extend: 'remove', editor: editor },
-            //{
-            //    extend: 'collection',
-            //    text: 'Export',
-            //    buttons: [
-            //        'copy',
-            //        'excel',
-            //        'csv',
-            //        'pdf',
-            //        'print'
-            //    ]
-            //}
-            //    ],
-            //    fixedHeader: {
-            //        header: true,
-            //        footer: true
-            //    },
-            //    "searching": false,
-            //    "ordering": false,
-            //    "scrollX": true,
-            //    "autoWidth": false,
-            //    "scrollCollapse": true,
-            //    "scrollY": "250px",
-            //    lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-            //    //pageLength: 12,
-            //    responsive: true,
-            //    paginate: false,
-            //    //paging: false,
-            //    //bSort: false,
-            //    loadingRecords: true,
-            //    destroy: true,
-            //    info: false,
+            //Gera a tabela
+            var table = $('#TableExport').empty().DataTable({
+                data: dataTableVetor,
+                columns: [
+                { title: "Data" },
+                { title: "Dia" },
+                { title: "Usuário Responsável" },
+                { title: "Valor Coleta" },
+                { title: "Orçamento" },
+                { title: "Target" }
+                ],
+                //buttons: [
+                //    { extend: 'collection', text: 'Exportar', buttons: ['copy', 'excel', 'csv', 'pdf', 'print'] }
+                //],
+                fixedHeader: {
+                    header: true,
+                    footer: true
+                },
+                "searching": false,
+                "ordering": false,
+                //"scrollX": true,
+                "autoWidth": true,
+                "autoHeight": true,
+                "lengthChange": false,
+                //"scrollCollapse": true,
+                //"scrollY": "300px",
+                //lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                pageLength: 12,
+                responsive: true,
+                paginate: false,
+                paging: true,
+                lengthMenu: false,
+                //bSort: false,
+                //loadingRecords: true,
+                destroy: true,
+                info: false,
 
-            //});
+            });
+
+            //Botões de exportação da tabela do modal
+            new $.fn.dataTable.Buttons(table, {
+                buttons: [
+                    {
+                        extend: 'print',
+                        text: 'Imprimir',
+                        customize: function (win) {
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        },
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    'pdf',
+                ]
+            });
+
+            table.buttons(0, null).container().prependTo(
+                table.table().container()
+            );
+           
+            //Titulo da Tabela no modal
+            $("#titleTable").empty();
+            $("#titleTable").append("Tabela de Exportação - Indicador " + indicador + " de " + unidade + " - " + mes + "");
+
         }
 
         /*Auxiliares*/
@@ -1020,8 +1073,8 @@
                     GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
                 }
             }).always(function () {
-                if (!!loader)
-                    $('#' + loader).removeClass('loader');
+                //if (!!loader)
+                //    $('#' + loader).removeClass('loader');
             });
         }
 
@@ -1163,23 +1216,6 @@
                 }
             });
 
-        });
-
-        var ajaxCount = 0;
-
-        $(document).ajaxStart(function () {
-            ajaxCount++;
-        });
-
-        $(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
-            ajaxCount--;
-        });
-
-        $(document).ajaxStop(function () {
-            ajaxCount--;
-            if (ajaxCount == 0) {
-                $(".loader").removeClass("loader");
-            }
         });
 
         function addMes(retornoArray) {

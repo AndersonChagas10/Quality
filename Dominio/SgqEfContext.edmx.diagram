@@ -157,15 +157,7 @@
         <EntityTypeShape EntityType="SgqDbModel.DimManutencaoColetaITs" Width="1.5" PointX="6" PointY="20.375" />
         <EntityTypeShape EntityType="SgqDbModel.ManDataCollectIT" Width="1.5" PointX="3.875" PointY="26.875" />
         <AssociationConnector Association="SgqDbModel.FK_ManDataCollectIT_DimManutencaoColetaITs_id" />
-        <EntityTypeShape EntityType="SgqDbModel.CollectionLevel2" Width="2.25" PointX="22.5" PointY="35.125" />
-        <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2" />
-        <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_ParLevel1" />
-        <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_ParLevel2" />
-        <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_UserSgq" />
-        <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2XParHeaderField_CollectionLevel2" />
-        <AssociationConnector Association="SgqDbModel.FK_Result_Level3_CollectionLevel2" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel2XHeaderField" Width="1.5" PointX="9.375" PointY="11.75" />
-        <EntityTypeShape EntityType="SgqDbModel.ManColetaDados" Width="1.5" PointX="0.75" PointY="13.75" />
         <EntityTypeShape EntityType="SgqDbModel.Defect" Width="1.5" PointX="14.25" PointY="45.75" />
         <AssociationConnector Association="SgqDbModel.FK_Defect_ParLevel1" />
         <EntityTypeShape EntityType="SgqDbModel.ConsolidationLevel02" Width="2.25" PointX="15.75" PointY="15.625" />
@@ -205,6 +197,14 @@
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_CollectionLevel2" />
         <AssociationConnector Association="SgqDbModel.FK_CorrectiveAction_CollectionLevel2" />
         <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel11" />
+        <EntityTypeShape EntityType="SgqDbModel.CollectionLevel2" Width="1.75" PointX="23.375" PointY="35.375" />
+        <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2" />
+        <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_ParLevel1" />
+        <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_ParLevel2" />
+        <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_UserSgq" />
+        <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2XParHeaderField_CollectionLevel2" />
+        <AssociationConnector Association="SgqDbModel.FK_Result_Level3_CollectionLevel2" />
+        <EntityTypeShape EntityType="SgqDbModel.ManColetaDados" Width="1.5" PointX="23.375" PointY="0.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
