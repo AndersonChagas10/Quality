@@ -400,39 +400,39 @@
 
             if (
             indicador == 'Bois Abatidos' ||
-                //indicador == 'Manutenção R$' ||
+            //indicador == 'Manutenção R$' ||
             indicador == 'Eficiên.Programção' ||
             indicador == 'Apropr Planej...to' ||
             indicador == 'Scorecard Unidade' ||
-                //indicador == 'Scorecard Vácuo' ||
-                //indicador == 'Head Count' ||
-                //indicador == 'Scorecard Aspersão' ||
+            //indicador == 'Scorecard Vácuo' ||
+            //indicador == 'Head Count' ||
+            //indicador == 'Scorecard Aspersão' ||
             indicador == 'Scorecard Energia' ||
             indicador == 'Scorecard Vapor' ||
-                //indicador == 'Pilar Manutenção' ||
-                //indicador == 'Devoluções %' ||
-                //indicador == 'R$/CB Manut' ||
-                //indicador == 'R$/CB Manut+Utilid' ||
-                //indicador == 'Sobra de Animais' ||
-                //indicador == 'R$ Manut Comb.' ||
-                //indicador == 'Energia R$' ||
-                //indicador == 'KWh/Boi Proc' ||
-                //indicador == 'Caldeira R$' ||
-                //indicador == 'Mcal/Boi Proc' ||
+            //indicador == 'Pilar Manutenção' ||
+            //indicador == 'Devoluções %' ||
+            //indicador == 'R$/CB Manut' ||
+            //indicador == 'R$/CB Manut+Utilid' ||
+            //indicador == 'Sobra de Animais' ||
+            //indicador == 'R$ Manut Comb.' ||
+            //indicador == 'Energia R$' ||
+            //indicador == 'KWh/Boi Proc' ||
+            //indicador == 'Caldeira R$' ||
+            //indicador == 'Mcal/Boi Proc' ||
             indicador == 'Fator de Potência' ||
-                //indicador == 'Água M³/Boi' ||
-                //indicador == 'M³ de Lenha' ||
+            //indicador == 'Água M³/Boi' ||
+            //indicador == 'M³ de Lenha' ||
             indicador == 'Disponibilidade Ab' ||
             indicador == 'Disponibilidade Des' ||
             indicador == 'Disponibilidade Total' ||
             indicador == 'Paradas Total' ||
-                //indicador == 'KWh' ||
-                //indicador == 'Parada Abate (min)' ||
-                //indicador == 'Parada Des. (min)' ||
-                //indicador == 'OBRAS' ||
-                //indicador == 'Horas Extras R$' ||
-                //indicador == 'Horas Extras Nº' ||
-                //indicador == 'CAPEX' ||
+            //indicador == 'KWh' ||
+            //indicador == 'Parada Abate (min)' ||
+            //indicador == 'Parada Des. (min)' ||
+            //indicador == 'OBRAS' ||
+            //indicador == 'Horas Extras R$' ||
+            //indicador == 'Horas Extras Nº' ||
+            //indicador == 'CAPEX' ||
             indicador == 'Apropriação de O.S' ||
             indicador == 'CARTA METAS') {
                 corPositivo = '#ff7575';
@@ -956,8 +956,6 @@
 
             for (var i = 0; i < dia.length; i++) {
 
-                //$.datepicker.formatDate('dd/mm/yy', data[i])
-
                 linha[0] = data[i];
                 linha[1] = dia[i];
                 linha[2] = userResp[i];
@@ -1008,6 +1006,7 @@
 
             });
 
+            //Botões de exportação da tabela do modal
             new $.fn.dataTable.Buttons(table, {
                 buttons: [
                     {
@@ -1036,8 +1035,9 @@
             table.buttons(0, null).container().prependTo(
                 table.table().container()
             );
+           
+            //Titulo da Tabela no modal
             $("#titleTable").empty();
-
             $("#titleTable").append("Tabela de Exportação - Indicador " + indicador + " de " + unidade + " - " + mes + "");
 
         }
