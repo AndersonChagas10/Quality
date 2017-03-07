@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -17,12 +18,13 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
             var sql = "Select * From [SERVERGRT\\MSSQLSERVER2014].SgqDbDev.dbo.ManColetaDados";
 
+
             using (var db = new SgqDbDevEntities())
             {
 
-                var d = db.Database.SqlQuery<ManColetaDados>(sql);
+                var d = db.Database.SqlQuery<ManColetaDados>(sql).ToList();
 
-                return d.ToList();
+                return d;
             }
 
         }

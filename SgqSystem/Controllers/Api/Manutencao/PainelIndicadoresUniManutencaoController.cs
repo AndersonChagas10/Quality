@@ -418,9 +418,10 @@ namespace SgqSystem.Controllers.Api.Manutencao
                         "\n day(Calendario.Data) as diaMes " +
                         "\n , CONVERT(VARCHAR(10),Calendario.Data, 103) as data " +
                         "\n , ISNULL(Man." + realizado + ", 0) as 'real' " +
+                        "\n , ISNULL(Man." + orcado + ", 0) as 'targetAjustado' " +
                         "\n , ISNULL(isnull(Man.userAlter, Man.userAdd), '') as userResp " +
                         "\n , ISNULL(Dim.DimName, '') as Indicador " +
-                        "\n , ISNULL(valores.targetAjustado, 0.00) as targetAjustado " +
+                        "\n , ISNULL(valores.targetAjustado, 0.00) as budget " +
                         "\n , ISNULL(valores.budget, 0.00) as budget " +
                         "\n FROM(select Data, day(Data) Dia from ManCalendario WHERE CONVERT(VARCHAR(7), Data, 120) = CONVERT(VARCHAR(7), DATEFROMPARTS('" + visaoPainel.ano + "', '" + visaoPainel.mes + "', 01), 120)) Calendario " +
                               "\n LEFT join(SELECT * FROM ManColetaDados WHERE CONVERT(VARCHAR(7), Base_dateRef, 120) = CONVERT(VARCHAR(7), DATEFROMPARTS('" + visaoPainel.ano + "', '" + visaoPainel.mes + "', 01), 120) AND " + realizado + " IS NOT NULL AND Base_parCompany_id in (SELECT id FROM ParCompany WHERE Name = '" + visaoPainel.unidade + "')) Man on Calendario.Data = Man.Base_dateRef " +
