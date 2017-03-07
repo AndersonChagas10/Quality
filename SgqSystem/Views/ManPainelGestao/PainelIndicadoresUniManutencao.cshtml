@@ -123,7 +123,7 @@
 
                     <div id="Export" style="float:left; width:100px; display:none;">
                         <span class="redLabel">Exportar:</span>
-                        <button id="BtnExport" type="button" class="btn btn-default" style="width:80px;">Extrair</button>
+                        <button id="BtnExport" type="button" class="btn btn-default" style="width:80px;" data-toggle="modal" data-target="#myModal">Extrair</button>
                     </div>
 
                     <div class="dropdown" id="DropAcumulado" style="float:right;">
@@ -147,7 +147,26 @@
 
                 <div id="graficoAcompanhamento" style="height:400px;"></div>
 
-                <table id="TableExport" class="display" cellspacing="0" style="display:none"></table>
+
+                <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-lg">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Tabela de Exportação</h4>
+                            </div>
+                            <div class="modal-body">
+                                <table id="TableExport" class="table table-striped table-bordered" cellspacing="0" width="100%"></table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -853,7 +872,7 @@
             var budget2 = SomaVetor(budget);
 
             $('#terceiro').show();
-            //$('#Export').show();
+            $('#Export').show();
 
             //Gera o grafico
             $('#graficoAcompanhamento').empty().highcharts({
@@ -930,63 +949,83 @@
                 }]
             });
 
-            //for (var i = 0; i < dia.length; i++) {
-            //    linha[0] = dia[i];
-            //    linha[1] = userAdd[i];
-            //    linha[2] = userAlter[i];
-            //    linha[3] = formatReal(Math.round(real[i] * 100) / 100);
+            for (var i = 0; i < dia.length; i++) {
+                linha[0] = dia[i];
+                //linha[1] = userAdd[i];
+                //linha[2] = userAlter[i];
+                linha[1] = 'Renan';
+                linha[2] = 'Gabriel';
+                linha[3] = formatReal(Math.round(real[i] * 100) / 100);
 
-            //    dataTableVetor.push(linha);
+                dataTableVetor.push(linha);
 
-            //    linha = [];
-            //}
+                linha = [];
+            }
 
-            ////Gera a tabela
-            //var table = $('#TableExport').empty().DataTable({
-            //    data: dataTableVetor,
-            //    columns: [
-            //    { title: "data" },
-            //    { title: "User Create" },
-            //    { title: "User Alter" },
-            //    { title: "Valor Coleta" }
-            //    ],
-            //    buttons: [
-            //{ extend: 'create', editor: editor },
-            //{ extend: 'edit', editor: editor },
-            //{ extend: 'remove', editor: editor },
-            //{
-            //    extend: 'collection',
-            //    text: 'Export',
-            //    buttons: [
-            //        'copy',
-            //        'excel',
-            //        'csv',
-            //        'pdf',
-            //        'print'
-            //    ]
-            //}
-            //    ],
-            //    fixedHeader: {
-            //        header: true,
-            //        footer: true
-            //    },
-            //    "searching": false,
-            //    "ordering": false,
-            //    "scrollX": true,
-            //    "autoWidth": false,
-            //    "scrollCollapse": true,
-            //    "scrollY": "250px",
-            //    lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-            //    //pageLength: 12,
-            //    responsive: true,
-            //    paginate: false,
-            //    //paging: false,
-            //    //bSort: false,
-            //    loadingRecords: true,
-            //    destroy: true,
-            //    info: false,
+            //Gera a tabela
+            var table = $('#TableExport').empty().DataTable({
+                data: dataTableVetor,
+                columns: [
+                { title: "data" },
+                { title: "User Create" },
+                { title: "User Alter" },
+                { title: "Valor Coleta" }
+                ],
+                //buttons: [
+                //    { extend: 'collection', text: 'Exportar', buttons: ['copy', 'excel', 'csv', 'pdf', 'print'] }
+                //],
+                fixedHeader: {
+                    header: true,
+                    footer: true
+                },
+                "searching": false,
+                "ordering": false,
+                //"scrollX": true,
+                "autoWidth": true,
+                "autoHeight": true,
+                //"scrollCollapse": true,
+                //"scrollY": "300px",
+                //lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                pageLength: 12,
+                responsive: true,
+                //paginate: true,
+                //paging: false,
+                //bSort: false,
+                //loadingRecords: true,
+                destroy: true,
+                info: false,
 
-            //});
+            });
+
+            new $.fn.dataTable.Buttons(table, {
+                buttons: [
+                    {
+                        extend: 'print',
+                        text: 'Imprimir',
+                        customize: function (win) {
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        },
+                        exportOptions: {
+                            columns: ':visible'
+                        }                        
+                    },
+                    {
+                        extend: 'excelHtml5',
+
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    'pdf',
+                ]
+            });
+
+            table.buttons(0, null).container().prependTo(
+                table.table().container()
+            );
+
         }
 
         /*Auxiliares*/
