@@ -366,7 +366,6 @@ namespace SgqSystem.Controllers.Api.Manutencao
         //    return _mockEvolucao;
         //}
 
-
         [HttpPost]
         [Route("CriaGraficoAcompanhamento")]
         public List<Acompanhamento> CriaGraficoAcompanhamento(VisaoPainel visaoPainel)
@@ -417,8 +416,8 @@ namespace SgqSystem.Controllers.Api.Manutencao
             var query2 = "SELECT " +
                         "\n day(Calendario.Data) as diaMes " +
                         "\n , CONVERT(VARCHAR(10),Calendario.Data, 103) as data " +
-                        "\n , ISNULL(Man." + realizado + ", 0) as 'real' " +
-                        "\n , ISNULL(Man." + orcado + ", 0) as 'targetAjustado' " +
+                        "\n , ISNULL(CAST(" + realizado + " AS DECIMAL(30,10)), 0.00) as 'real' " +
+                        "\n , ISNULL(CAST(" + orcado + " AS DECIMAL(30,10)), 0.00) as 'targetAjustado' " +
                         "\n , ISNULL(isnull(Man.userAlter, Man.userAdd), '') as userResp " +
                         "\n , ISNULL(Dim.DimName, '') as Indicador " +
                         "\n , ISNULL(valores.targetAjustado, 0.00) as budget " +
@@ -451,7 +450,6 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
             return list2;
         }
-
 
     }
 
