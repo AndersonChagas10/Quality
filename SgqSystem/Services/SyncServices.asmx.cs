@@ -347,10 +347,7 @@ namespace SgqSystem.Services
                         string reauditlevel = result[46];
                         //Convert Reauditoria Pendente para valor correto
                         reauditlevel = DefaultValueReturn(haveReaudit, "0");
-                        if (reauditlevel != "0")
-                        {
-                            reauditlevel = "1";
-                        }
+                        
                         //Se Ação corretiva ficou pendente
                         string haveCorrectiveAction = result[25];
                         //Converte ação corretiva para valor correto
