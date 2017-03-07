@@ -1931,6 +1931,7 @@
     <Content Include="Scripts\theme\font-awesome-4.7.0\css\font-awesome.min.css" />
     <Content Include="Scripts\theme\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
     <Content Include="Scripts\theme\font-awesome-4.7.0\HELP-US-OUT.txt" />
+    <Content Include="Scripts\theme\img\remove-icon-small.png" />
     <Content Include="Scripts\theme\js\app.min.js" />
     <Content Include="Scripts\theme\js\jquery.slimscroll.min.js" />
     <Content Include="Scripts\Timeout\timeout-dialog.js" />

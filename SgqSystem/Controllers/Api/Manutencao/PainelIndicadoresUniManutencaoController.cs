@@ -1,9 +1,9 @@
-﻿using Dominio;
-using DTO.DTO.Manutencao;
+﻿using DTO.DTO.Manutencao;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using Dominio;
 
 namespace SgqSystem.Controllers.Api.Manutencao
 {
@@ -152,10 +152,8 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
                 if (obj.subRegional == "Todas")
                 {
-
                     tipo = "SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegionalGrupo = '" + obj.regional + "' and ParCompany_id is not null";
                     tipo2 = "Select distinct ParCompany_id, EmpresaSigla, DimManBaseReg_id, EmpresaRegional, DimManBaseRegGrup_id, EmpresaRegionalGrupo, EmpresaCluster from DimManBaseUni where EmpresaRegionalGrupo = '" + obj.regional + "' and ParCompany_id is not null";
-
                 }
                 else
                 {
@@ -374,6 +372,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
         public List<Acompanhamento> CriaGraficoAcompanhamento(obj3 obj)
         {
             List<Acompanhamento> list = new List<Acompanhamento>();
+            List<Acompanhamento> list2 = new List<Acompanhamento>();
 
             string parametro = obj.indicador;
             var realizado = "";
@@ -395,26 +394,64 @@ namespace SgqSystem.Controllers.Api.Manutencao
                 realizado = item.realizado;
             }
 
-            var query2 = "select day(Base_dateRef) diaMes " +
-                        "\n ,isnull(Sum(case when " + realizado + " = 0 then 0.00 else " + realizado + " end),0.00) [real] " +
-                        "\n ,0.00 [targetAjustado] " +
-                        "\n ,isnull(Sum(case when " + orcado + " = 0 then 0.00 else " + orcado + " end),0.00) [budget] " +
-                        "\n from[ManColetaDados] " +
-                        "\n left join ManCalendario on[ManColetaDados].Base_dateRef = ManCalendario.Data " +
-                        "\n where " +
-                        "\n convert(varchar(7),[ManColetaDados].Base_dateRef,120) = convert(varchar(7),DATEFROMPARTS('" + obj.ano + "','" + obj.mes + "',01),120)  " +
-                        "\n and[ManColetaDados].Base_parCompany_id in (SELECT id FROM ParCompany WHERE Name = '" + obj.unidade + "')" +
-                        "\n and ManCalendario.DiaUtil = 1 " +
-                        "\n group by day(Base_dateRef) " +
-                        "\n order by 1,2";
+            //var query2 = "select day(Base_dateRef) diaMes " +
+            //            "\n ,isnull(Sum(case when " + realizado + " = 0 then 0.00 else " + realizado + " end),0.00) [real] " +
+            //            "\n ,0.00 [targetAjustado] " +
+            //            "\n ,isnull(Sum(case when " + orcado + " = 0 then 0.00 else " + orcado + " end),0.00) [budget] " +
+            //            "\n from [ManColetaDados] " +
+            //            "\n left join ManCalendario on[ManColetaDados].Base_dateRef = ManCalendario.Data " +
+            //            "\n where " +
+            //            "\n convert(varchar(7),[ManColetaDados].Base_dateRef,120) = convert(varchar(7),DATEFROMPARTS('" + obj.ano + "','" + obj.mes + "',01),120)  " +
+            //            "\n and[ManColetaDados].Base_parCompany_id in (SELECT id FROM ParCompany WHERE Name = '" + obj.unidade + "')" +
+            //            "\n and ManCalendario.DiaUtil = 1 " +
+            //            "\n group by day(Base_dateRef) " +
+            //            "\n order by 1,2";
+
+
+            //using (var db = new SgqDbDevEntities())
+            //{
+            //    list = db.Database.SqlQuery<Acompanhamento>(query2).ToList();
+            //}
+
+
+            var query2 = "SELECT " +
+                        "\n day(Calendario.Data) as diaMes " +
+                        "\n , CONVERT(VARCHAR(10),Calendario.Data, 103) as data " +
+                        "\n , ISNULL(Man." + realizado + ", 0) as 'real' " +
+                        "\n , ISNULL(isnull(Man.userAlter, Man.userAdd), '') as userResp " +
+                        "\n , ISNULL(Dim.DimName, '') as Indicador " +
+                        "\n , ISNULL(valores.targetAjustado, 0.00) as targetAjustado " +
+                        "\n , ISNULL(valores.budget, 0.00) as budget " +
+                        "\n FROM(select Data, day(Data) Dia from ManCalendario WHERE CONVERT(VARCHAR(7), Data, 120) = CONVERT(VARCHAR(7), DATEFROMPARTS('" + obj.ano + "', '" + obj.mes + "', 01), 120)) Calendario " +
+                              "\n LEFT join(SELECT * FROM ManColetaDados WHERE CONVERT(VARCHAR(7), Base_dateRef, 120) = CONVERT(VARCHAR(7), DATEFROMPARTS('" + obj.ano + "', '" + obj.mes + "', 01), 120) AND " + realizado + " IS NOT NULL AND Base_parCompany_id in (SELECT id FROM ParCompany WHERE Name = '" + obj.unidade + "')) Man on Calendario.Data = Man.Base_dateRef " +
+                        "\n Inner Join DimManColetaDados Dim on '" + realizado + "' = Dim.Name " +
+                        "\n left join " +
+                        "\n ( " +
+                           "\n select day(Base_dateRef) diaMes " +
+                           "\n , isnull(Sum(case when " + realizado + " = 0 then 0.00 else " + realizado + " end), 0.00)[real] " +
+                           "\n , 0.00[targetAjustado] " +
+                           "\n , isnull(Sum(case when " + orcado + " = 0 then 0.00 else " + orcado + " end), 0.00)[budget] " +
+                           "\n from[ManColetaDados] " +
+                           "\n left join ManCalendario on[ManColetaDados].Base_dateRef = ManCalendario.Data " +
+                           "\n where " +
+                           "\n convert(varchar(7),[ManColetaDados].Base_dateRef, 120) = convert(varchar(7), DATEFROMPARTS('" + obj.ano + "', '" + obj.mes + "', 01), 120) " +
+                           "\n and[ManColetaDados].Base_parCompany_id in (SELECT id FROM ParCompany WHERE Name = '" + obj.unidade + "') " +
+                           "\n and ManCalendario.DiaUtil = 1 " +
+                           "\n group by day(Base_dateRef) " +
+                        "\n ) " +
+                        "\n as valores " +
+                        "\n on valores.diaMes = day(Calendario.Data) " +
+                        "\n ORDER BY 1";
 
             using (var db = new SgqDbDevEntities())
             {
-                list = db.Database.SqlQuery<Acompanhamento>(query2).ToList();
+                list2 = db.Database.SqlQuery<Acompanhamento>(query2).ToList();
             }
 
-            return list;
+            return list2;
         }
+
+
     }
 
     public class listaDelistas
@@ -451,10 +488,10 @@ namespace SgqSystem.Controllers.Api.Manutencao
     public class Acompanhamento
     {
         public int diaMes { get; set; }
+        public string data { get; set; }
         public decimal? real { get; set; }
         public decimal? targetAjustado { get; set; }
         public decimal? budget { get; set; }
-        public string userAdd { get; set; }
-        public string userAlter { get; set; }
+        public string userResp { get; set; }
     }
 }
