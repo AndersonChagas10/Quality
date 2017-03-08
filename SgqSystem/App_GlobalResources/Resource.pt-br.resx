@@ -1404,4 +1404,37 @@
   <data name="select_the_period" xml:space="preserve">
     <value>Selecione o período...</value>
   </data>
+  <data name="cannot_finish_action" xml:space="preserve">
+    <value>Não foi possivel concluir a ação.</value>
+  </data>
+  <data name="consolidation" xml:space="preserve">
+    <value>Consolidação</value>
+  </data>
+  <data name="data_consolidated" xml:space="preserve">
+    <value>Dados consolidados</value>
+  </data>
+  <data name="data_not_saved_continue" xml:space="preserve">
+    <value>Existem dados que não foram salvos. Deseja continuar?</value>
+  </data>
+  <data name="ev" xml:space="preserve">
+    <value>Av.</value>
+  </data>
+  <data name="evaluation_and_sample" xml:space="preserve">
+    <value>Avaliação e Amostra</value>
+  </data>
+  <data name="goal" xml:space="preserve">
+    <value>Meta</value>
+  </data>
+  <data name="results" xml:space="preserve">
+    <value>Resultados</value>
+  </data>
+  <data name="sd" xml:space="preserve">
+    <value>Am.</value>
+  </data>
+  <data name="sending" xml:space="preserve">
+    <value>Enviando</value>
+  </data>
+  <data name="slaughter" xml:space="preserve">
+    <value>Indicadores</value>
+  </data>
 </root>
