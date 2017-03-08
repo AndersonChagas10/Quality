@@ -626,13 +626,15 @@ public class ScorecardResultSet
         "\n         FROM CollectionLevel2 C2 " +
         "\n         LEFT JOIN Result_Level3 C3 " +
         "\n         ON C3.CollectionLevel2_Id = C2.Id " +
-        "\n         WHERE convert(date, C2.CollectionDate) BETWEEN '20160801' AND '20160831' " +
-        "\n         AND C2.ParLevel1_Id = 3 " +
-        "\n         AND C2.UnitId = 14 " +
+        "\n         WHERE convert(date, C2.CollectionDate) BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59'" +
+        "\n         AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 where Hashkey = 1) " +
+        "\n         AND C2.UnitId = " + unidadeId + " " +
         "\n         AND IsNotEvaluate = 1 " +
         "\n         GROUP BY C2.ID " +
         "\n         ) NA " +
         "\n         WHERE NA = 2 " +
+
+     
 
         "\n SELECT " +
 

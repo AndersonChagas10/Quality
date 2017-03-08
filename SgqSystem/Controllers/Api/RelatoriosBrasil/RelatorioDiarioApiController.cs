@@ -295,6 +295,30 @@ namespace SgqSystem.Controllers.Api
         internal static string QueryIndicadores(FormularioParaRelatorioViewModel form)
         {
             var queryGrafico1 = "" +
+
+
+                "\n DECLARE @RESS INT " +
+
+                "\n SELECT " +
+                "\n       @RESS =  " +
+
+                "\n         COUNT(1) " +
+                "\n         FROM " +
+                "\n         ( " +
+                "\n         SELECT " +
+                "\n         COUNT(1) AS NA " +
+                "\n         FROM CollectionLevel2 C2 " +
+                "\n         LEFT JOIN Result_Level3 C3 " +
+                "\n         ON C3.CollectionLevel2_Id = C2.Id " +
+                "\n         WHERE convert(date, C2.CollectionDate) BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
+                "\n         AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 where Hashkey = 1) " +
+                "\n         AND C2.UnitId = " + form.unitId + " " +
+                "\n         AND IsNotEvaluate = 1 " +
+                "\n         GROUP BY C2.ID " +
+                "\n         ) NA " +
+                "\n         WHERE NA = 2 " +
+
+
                "\n SELECT " +
                "\n  level1_Id " +
                "\n ,Level1Name " +
@@ -324,17 +348,17 @@ namespace SgqSystem.Controllers.Api
                 "\n          ((SELECT sum(Amostras) * 2 as AV FROM VolumePcc1b WHERE ParCompany_id = " + form.unitId + " and CONVERT(Date, Data) BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "')" +
                 "\n          -" +
                 "\n          (" +
-                "\n              SELECT COUNT(1) FROM" +
-                "\n              (" +
-                "\n              SELECT C2.ID, CASE WHEN COUNT(1) = sum(CAST(C3.IsNotEvaluate AS INT)) THEN 'NA' ELSE 'A' END NA FROM CollectionLevel2 C2" +
-                "\n              LEFT JOIN Result_Level3 C3" +
-                "\n              ON C3.CollectionLevel2_Id = C2.Id" +
-                "\n              WHERE CONVERT(Date,C2.CollectionDate) BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
-                "\n              AND C2.ParLevel1_Id = IND.Id" +
-                "\n             AND C2.UnitId = " + form.unitId + "" +
-                "\n              GROUP BY C2.ID" +
-                "\n              ) NA" +
-                "\n              WHERE NA = 'NA'" +
+                "\n              SELECT @RESS --COUNT(1) FROM" +
+                "\n              --(" +
+                "\n              --SELECT C2.ID, CASE WHEN COUNT(1) = sum(CAST(C3.IsNotEvaluate AS INT)) THEN 'NA' ELSE 'A' END NA FROM CollectionLevel2 C2" +
+                "\n              --LEFT JOIN Result_Level3 C3" +
+                "\n              --ON C3.CollectionLevel2_Id = C2.Id" +
+                "\n              --WHERE CONVERT(Date,C2.CollectionDate) BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
+                "\n              --AND C2.ParLevel1_Id = IND.Id" +
+                "\n              --AND C2.UnitId = " + form.unitId + "" +
+                "\n              --GROUP BY C2.ID" +
+                "\n              --) NA" +
+                "\n              --WHERE NA = 'NA'" +
                 "\n          )) ELSE" +
 
                "\n         CASE " +
@@ -369,6 +393,28 @@ namespace SgqSystem.Controllers.Api
         internal static string QueryGraficoTendencia(FormularioParaRelatorioViewModel form)
         {
             var queryGraficoTendencia = "" +
+
+                 "\n DECLARE @RESS INT " +
+
+                "\n SELECT " +
+                "\n       @RESS =  " +
+
+                "\n         COUNT(1) " +
+                "\n         FROM " +
+                "\n         ( " +
+                "\n         SELECT " +
+                "\n         COUNT(1) AS NA " +
+                "\n         FROM CollectionLevel2 C2 " +
+                "\n         LEFT JOIN Result_Level3 C3 " +
+                "\n         ON C3.CollectionLevel2_Id = C2.Id " +
+                "\n         WHERE convert(date, C2.CollectionDate) BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
+                "\n         AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 where Hashkey = 1) " +
+                "\n         AND C2.UnitId = " + form.unitId + " " +
+                "\n         AND IsNotEvaluate = 1 " +
+                "\n         GROUP BY C2.ID " +
+                "\n         ) NA " +
+                "\n         WHERE NA = 2 " +
+
                "\n SELECT " +
                "\n  level1_Id " +
                "\n ,Level1Name " +
@@ -399,17 +445,17 @@ namespace SgqSystem.Controllers.Api
                 "\n          ((SELECT sum(Amostras) * 2 as AV FROM VolumePcc1b WHERE ParCompany_id = " + form.unitId + " and CONVERT(Date, Data) BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "')" +
                 "\n          -" +
                 "\n          (" +
-                "\n              SELECT COUNT(1) FROM" +
-                "\n              (" +
-                "\n              SELECT C2.ID, CASE WHEN COUNT(1) = sum(CAST(C3.IsNotEvaluate AS INT)) THEN 'NA' ELSE 'A' END NA FROM CollectionLevel2 C2" +
-                "\n              LEFT JOIN Result_Level3 C3" +
-                "\n              ON C3.CollectionLevel2_Id = C2.Id" +
-                "\n              WHERE CONVERT(Date,C2.CollectionDate) BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
-                "\n              AND C2.ParLevel1_Id = IND.Id" +
-                "\n             AND C2.UnitId = " + form.unitId + "" +
-                "\n              GROUP BY C2.ID" +
-                "\n              ) NA" +
-                "\n              WHERE NA = 'NA'" +
+                "\n              SELECT @RESS --COUNT(1) FROM" +
+                "\n              --(" +
+                "\n              --SELECT C2.ID, CASE WHEN COUNT(1) = sum(CAST(C3.IsNotEvaluate AS INT)) THEN 'NA' ELSE 'A' END NA FROM CollectionLevel2 C2" +
+                "\n              --LEFT JOIN Result_Level3 C3" +
+                "\n              --ON C3.CollectionLevel2_Id = C2.Id" +
+                "\n              --WHERE CONVERT(Date,C2.CollectionDate) BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
+                "\n              --AND C2.ParLevel1_Id = IND.Id" +
+                "\n              --AND C2.UnitId = " + form.unitId + "" +
+                "\n              --GROUP BY C2.ID" +
+                "\n              --) NA" +
+                "\n              --WHERE NA = 'NA'" +
                 "\n          )) ELSE" +
                "\n 		CASE  " +
                "\n 		WHEN IND.ParConsolidationType_Id = 1 THEN WeiEvaluation " +
@@ -442,6 +488,28 @@ namespace SgqSystem.Controllers.Api
         internal static string QueryGrafico3(FormularioParaRelatorioViewModel form, string indicadores)
         {
             var queryGrafico3 = "" +
+
+                "\n DECLARE @RESS INT " +
+
+                "\n SELECT " +
+                "\n       @RESS =  " +
+
+                "\n         COUNT(1) " +
+                "\n         FROM " +
+                "\n         ( " +
+                "\n         SELECT " +
+                "\n         COUNT(1) AS NA " +
+                "\n         FROM CollectionLevel2 C2 " +
+                "\n         LEFT JOIN Result_Level3 C3 " +
+                "\n         ON C3.CollectionLevel2_Id = C2.Id " +
+                "\n         WHERE convert(date, C2.CollectionDate) BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
+                "\n         AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 where Hashkey = 1) " +
+                "\n         AND C2.UnitId = " + form.unitId + " " +
+                "\n         AND IsNotEvaluate = 1 " +
+                "\n         GROUP BY C2.ID " +
+                "\n         ) NA " +
+                "\n         WHERE NA = 2 " +
+
                 "\n SELECT " +
                 "\n  " +
                 "\n  level1_Id " +
@@ -467,17 +535,17 @@ namespace SgqSystem.Controllers.Api
                 "\n          ((SELECT sum(Amostras) * 2 as AV FROM VolumePcc1b WHERE ParCompany_id = " + form.unitId + " and CONVERT(Date, Data) BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "')" +
                 "\n          -" +
                 "\n          (" +
-                "\n              SELECT COUNT(1) FROM" +
-                "\n              (" +
-                "\n              SELECT C2.ID, CASE WHEN COUNT(1) = sum(CAST(C3.IsNotEvaluate AS INT)) THEN 'NA' ELSE 'A' END NA FROM CollectionLevel2 C2" +
-                "\n              LEFT JOIN Result_Level3 C3" +
-                "\n              ON C3.CollectionLevel2_Id = C2.Id" +
-                "\n              WHERE CONVERT(Date,C2.CollectionDate) BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
-                "\n              AND C2.ParLevel1_Id = IND.Id" +
-                "\n             AND C2.UnitId = " + form.unitId + "" +
-                "\n              GROUP BY C2.ID" +
-                "\n              ) NA" +
-                "\n              WHERE NA = 'NA'" +
+                "\n              SELECT @RESS --COUNT(1) FROM" +
+                "\n              --(" +
+                "\n              --SELECT C2.ID, CASE WHEN COUNT(1) = sum(CAST(C3.IsNotEvaluate AS INT)) THEN 'NA' ELSE 'A' END NA FROM CollectionLevel2 C2" +
+                "\n              --LEFT JOIN Result_Level3 C3" +
+                "\n              --ON C3.CollectionLevel2_Id = C2.Id" +
+                "\n              --WHERE CONVERT(Date,C2.CollectionDate) BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
+                "\n              --AND C2.ParLevel1_Id = IND.Id" +
+                "\n              --AND C2.UnitId = " + form.unitId + "" +
+                "\n              --GROUP BY C2.ID" +
+                "\n              --) NA" +
+                "\n              --WHERE NA = 'NA'" +
                 "\n          )) ELSE" +
                 "\n 	CASE  " +
                 "\n 	WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiEvaluation " +
@@ -539,6 +607,7 @@ namespace SgqSystem.Controllers.Api
              "\n WHERE 1 = 1 --IND.Id IN (" + indicadores + ") " +
              "\n /* and MON.Id = 1 */" +
              "\n and UNI.Id = " + form.unitId +
+             "\n and CL2.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
              "\n GROUP BY " +
              "\n  IND.Id " +
              "\n ,IND.Name " +
@@ -583,6 +652,7 @@ namespace SgqSystem.Controllers.Api
                 "\n WHERE 1 = 1 --IND.Id IN (" + indicadores + ") " + //
                 "\n /* and MON.Id = 1 */" +
                 "\n and UNI.Id = " + form.unitId +
+                "\n and CL2.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
                 "\n GROUP BY " +
                 "\n  IND.Id " +
                 "\n ,IND.Name " +
