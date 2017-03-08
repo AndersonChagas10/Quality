@@ -2317,7 +2317,7 @@ namespace SgqSystem.Services
                               html.option("3", Resources.Resource.period+" 3") +
                               html.option("4", Resources.Resource.period+" 4");
 
-            selectPeriod = html.select(selectPeriod, id: "period", classe: "period", style: "width: 160px");
+            selectPeriod = html.select(selectPeriod, id: "period", classe: "", style: "width: 160px");
 
             selectPeriod = "<li class='painel list-group-item'>"+ selectPeriod + " </li>";
 
@@ -2449,7 +2449,7 @@ namespace SgqSystem.Services
                            "            <a class=\"navbar-brand\" id=\"SGQName\" href=\"#\"><i class=\"fa fa-chevron-left hide iconReturn\" style=\"margin-left: 8px; font-size: 24px;\" aria-hidden=\"true\"></i> SGQ </a>                 " +
                            "            <div class=\"buttonMenu navbar-brand hide\" id=\"btnShowImage\" level01id=\"2\">Show Image</div>                                                                        " +
                            selectUserCompanys(UserSgq_Id, ParCompany_Id) +
-                           "            <span style='color: #ffffff; margin: 14px;' class='periodShift'></span><span style='color: #ffffff; margin: 14px;' class='shift'>shift</span> " +
+                           "            <span style='color: #ffffff; margin: 14px;' class='period'></span> / <span style='color: #ffffff; margin: 14px;' class='shift'>shift</span> " +
                            "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div><span id='btnDate' style='color: #ffffff; margin: 14px;' class='atualDate pull-right'></span>" +
                            "        </div>                                                                                                                                                                      " +
                            "    </div>                                                                                                                                                                          " +
