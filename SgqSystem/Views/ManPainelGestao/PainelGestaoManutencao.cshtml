@@ -27,7 +27,7 @@
 <div class="page-content" style="min-height: 600px;">
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
     <div id="formBodyContent">
-        <table id="results" class="display nowrap responsive" cellspacing="0" style="width:100%"></table>
+        <table id="results" class="display nowrap responsive table table-striped table-bordered" cellspacing="0" style="width:100%"></table>
 
     </div>
 </div>
@@ -109,7 +109,6 @@
             var table = $('#results').empty().DataTable({
                 data: retornoArray,
                 columns: getIndex(retornoArray),
-                
                 fixedHeader: {
                     header: true,
                     footer: true
@@ -177,25 +176,25 @@
                 table.table().container()
             );
 
-        } 
+        }
 
         function getIndex(obj) {
 
             var titles = [];
-           
-            for (var key in obj[0]){
-                
-                titles.push({title: key, mData: key});
-                            
+
+            for (var key in obj[0]) {
+
+                titles.push({ title: key, mData: key });
+
             }
-            
+
             return titles;
         }
 
         function formatDate(obj) {
             $(obj).each(function () {
 
-               
+
 
             });
         }
