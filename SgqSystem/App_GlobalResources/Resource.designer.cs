@@ -232,7 +232,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allow the audit of detached level 3.
+        ///   Looks up a localized string similar to &quot;Other&quot; on Level 3.
         /// </summary>
         internal static string allow_the_audit_of_detached_level3 {
             get {
@@ -1393,7 +1393,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Emit alert.
+        ///   Looks up a localized string similar to Send Alert.
         /// </summary>
         internal static string has_alert {
             get {
@@ -1420,7 +1420,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Has groups on level 3.
+        ///   Looks up a localized string similar to Level 3 Grouped By Level 2.
         /// </summary>
         internal static string has_group_on_level3 {
             get {

@@ -1,1 +1,14 @@
-﻿
+﻿@using DTO
+
+<script>
+    var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
+    
+    $(document).ready(function() {
+        if(config){
+            if($('#level1Title').html().indexOf("New") > -1){
+                $('#level1Title').html("Level 1");
+            }
+        }
+    })
+
+</script>
