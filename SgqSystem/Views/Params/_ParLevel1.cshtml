@@ -210,7 +210,13 @@
 
                                     @*Obj Hora*@
                                     <div id="objHora" style="display:none;">
+                                        teste
                                         <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Hora" id="btnIncluirHora" onclick="Cabecalhos.IncluirSalvarTexto(true);" />
+                                    </div>
+
+                                    @*Obj Hora*@
+                                    <div id="objIntegracoes" style="display:none;">
+                                        <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Integrações" id="btnIncluirIntegracoes" onclick="Cabecalhos.IncluirSalvarIntegracoes(true);" />
                                     </div>
 
                                     @*tabela cabecalho itens inputados*@
@@ -537,25 +543,7 @@
         },
         BtnExcluir:  function(){ return '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParMultiplaEscolhaOpcoes.length + ');"><i class="fa fa-times"></i></button>'; },
         BtnExcluir2: function(){ return '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParBinario.length +', true);"><i class="fa fa-times"></i></button>'; },
-        //ParMultipleValues: new {
-        //    Id: '',
-        //    ParHeaderField_Id: '',
-        //    Name: '',
-        //    Description: '',
-        //    PunishmentValue: '',
-        //    Conformity: '',
-        //    IsActive: true,
-        //},
-        //ParHeaderField: new {
-        //    Id: '',
-        //    ParFieldType_Id: '',
-        //    Name: '',
-        //    Description: '',
-        //    ParLevelDefinition_Id: '',
-        //    LinkNumberEvaluetion: '',
-        //    IsActive: true,
-        //    ParMultipleValues: []
-        //},
+      
         ListaDeCabecalhos: [],
 
         listParHeaderFieldDto: [],
@@ -598,6 +586,7 @@
             $('#btnIncluirHora').hide();
             $('#btnIncluirIntegracoes').hide();
             $('#salvarCabecalho1Div').hide();
+            $('#objIntegracoes').hide();
 
             /*Esconde mensagens*/
             Cabecalhos.EscondeMensagemValidacaoCabecalho();
@@ -628,6 +617,7 @@
                     Cabecalhos.ShowMutiplaEscolha();
                     break;
                 case 2:
+                    Cabecalhos.ShowIntergacoes();
                     break;
                 case 3: //Binario
                     Cabecalhos.ShowBinario();
@@ -647,6 +637,11 @@
                 default:
                     Cabecalhos.hideAllObj();
             }
+        },
+
+        //Integracoes
+        ShowIntergacoes: function() {
+            $('#objIntegracoes').show();
         },
 
         //MULTIPLA ESCOLHA

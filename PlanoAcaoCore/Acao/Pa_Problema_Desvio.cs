@@ -8,7 +8,7 @@ namespace PlanoAcaoCore
         public string Name { get; set; }
         public static List<Pa_Problema_Desvio> Listar()
         {
-            var query = "SELECT TOP 2000 MIN(id) AS Id , Name FROM Pa_Problema_Desvio GROUP BY name";
+            var query = "SELECT TOP 1000 MIN(id) AS Id , Name FROM Pa_Problema_Desvio GROUP BY name";
             return ListarGenerico<Pa_Problema_Desvio>(query);
         }
 
