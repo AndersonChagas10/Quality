@@ -88,8 +88,8 @@
     <Compile Include="Planejamento\Pa_Coordenacao.cs" />
     <Compile Include="Planejamento\Pa_IndicadoresDiretriz.cs" />
     <Compile Include="Planejamento\Pa_IndicadoresDeProjeto.cs" />
-    <Compile Include="Planejamento\Pa_IndicadorSgqAcao.cs" />
-    <Compile Include="Planejamento\Pa_Problema_Desvio.cs" />
+    <Compile Include="Acao\Pa_IndicadorSgqAcao.cs" />
+    <Compile Include="Acao\Pa_Problema_Desvio.cs" />
     <Compile Include="Planejamento\Pa_Objetivo.cs" />
     <Compile Include="Planejamento\Pa_UnidadeMedida.cs" />
     <Compile Include="Planejamento\Pa_ObjetivoGeral.cs" />
