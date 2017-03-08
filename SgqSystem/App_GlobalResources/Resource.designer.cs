@@ -799,7 +799,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Customization.
+        ///   Looks up a localized string similar to Parameterization.
         /// </summary>
         internal static string customization {
             get {

@@ -186,6 +186,26 @@
 </div>
 <script>
     
+    $(document).ready(function() {
+        $('#QtdadeFamiliaProduto').val("");
+        $('#ParCompany_id').on('change', function () {
+            if ($('#ParCompany_id').val() > 0) {
+                $.post('@Url.Action("GetVolumeDesossa", "api/Volume")' + "/" +  $('#ParCompany_id').val(), {}, function (r) {
+                    $('#QtdadeFamiliaProduto').val(r);
+                });
+            }else {
+                $('#QtdadeFamiliaProduto').val("");
+            }
+        });
+
+        var parcompany = @Html.Raw(Json.Encode(Model.ParCompany_id));
+        if(parcompany != undefined && parcompany != null && parcompany > 0){
+            $('#ParCompany_id').val(parcompany).change();
+        }
+
+    });
+
+
     function habilitar(){
 
         $('#Avaliacoes').attr('disabled', false)

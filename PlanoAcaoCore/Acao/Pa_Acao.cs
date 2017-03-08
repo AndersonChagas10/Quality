@@ -1,5 +1,4 @@
-﻿using DTO.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
@@ -9,6 +8,18 @@ namespace PlanoAcaoCore
 {
     public class Pa_Acao : Pa_BaseObject, ICrudPa<Pa_Acao>
     {
+
+        [Display(Name = "Indicador SGQ ou Ação")]
+        public int? Pa_IndicadoresDeProjeto_Id { get; set; }
+        public string _Pa_IndicadoresDeProjeto { get; set; }
+
+        [Display(Name = "Indicador SGQ ou Ação")]
+        public int? Pa_IndicadorSgqAcao_Id { get; set; }
+        public string _Pa_IndicadorSgqAcao { get; set; }
+
+        [Display(Name = "Problema ou Desvio")]
+        public int? Pa_Problema_Desvio_Id { get; set; }
+        public string _Problema_Desvio_Id { get; set; }
 
         [Display(Name = "Unidade")]
         public int? Unidade_Id { get; set; }
@@ -73,7 +84,7 @@ namespace PlanoAcaoCore
                 if (QuandoFim > agora)
                     return string.Format("Faltam {0} dias.", Math.Round((QuandoFim - agora).TotalDays));
                 else if (QuandoFim < agora)
-                    return string.Format("-{0} Dias", Math.Round((QuandoFim - agora).TotalDays));
+                    return string.Format("{0} Dias", Math.Round((QuandoFim - agora).TotalDays));
 
                 return string.Empty;
             }
@@ -144,16 +155,18 @@ namespace PlanoAcaoCore
             if (Id > 0)
             {
 
-                query = "UPDATE [dbo].[Pa_Acao]                                 " +
-                   "\n    SET [QuandoInicio] = @QuandoInicio                    " +
-                   "\n       ,[DuracaoDias] = @DuracaoDias                      " +
-                   "\n       ,[QuandoFim] = @QuandoFim                          " +
-                   "\n       ,[ComoPontosimportantes] = @ComoPontosimportantes  " +
-                   "\n       ,[QuantoCusta] = @QuantoCusta                      " +
-                   "\n       ,[Status] = @Status                                " +
-                   "\n       ,[PraQue] = @PraQue                                " +
-                   "\n       ,[Panejamento_Id] = @Panejamento_Id                " +
-                   "\n  WHERE Id = @Id                                          ";
+                query = "UPDATE [dbo].[Pa_Acao]                                             " +
+                   "\n    SET [QuandoInicio] = @QuandoInicio                                " +
+                   "\n       ,[DuracaoDias] = @DuracaoDias                                  " +
+                   "\n       ,[QuandoFim] = @QuandoFim                                      " +
+                   "\n       ,[ComoPontosimportantes] = @ComoPontosimportantes              " +
+                   "\n       ,[QuantoCusta] = @QuantoCusta                                  " +
+                   "\n       ,[Status] = @Status                                            " +
+                   "\n       ,[Pa_Problema_Desvio_Id] = @Pa_Problema_Desvio_Id    " +
+                   "\n       ,[Pa_IndicadorSgqAcao_Id] = @Pa_IndicadorSgqAcao_Id            " +
+                   "\n       ,[PraQue] = @PraQue                                            " +
+                   "\n       ,[Panejamento_Id] = @Panejamento_Id                            " +
+                   "\n  WHERE Id = @Id                                                      ";
 
                 query += " SELECT CAST(1 AS int)";
 
@@ -169,6 +182,8 @@ namespace PlanoAcaoCore
                 cmd.Parameters.AddWithValue("@PraQue", PraQue);
                 cmd.Parameters.AddWithValue("@Panejamento_Id", Panejamento_Id);
                 cmd.Parameters.AddWithValue("@Id", Id);
+                cmd.Parameters.AddWithValue("@Pa_Problema_Desvio_Id", Pa_Problema_Desvio_Id);
+                cmd.Parameters.AddWithValue("@Pa_IndicadorSgqAcao_Id", Pa_IndicadorSgqAcao_Id);
 
                 Salvar(cmd);
 
@@ -199,24 +214,28 @@ namespace PlanoAcaoCore
             else
             {
 
-                query = "INSERT INTO [dbo].[Pa_Acao]        " +
-                        "\n       ([QuandoInicio]           " +
-                        "\n        ,[DuracaoDias]           " +
-                        "\n        ,[QuandoFim]             " +
-                        "\n        ,[ComoPontosimportantes] " +
-                        "\n        ,[PraQue]                " +
-                        "\n        ,[QuantoCusta]           " +
-                        "\n        ,[Status]                " +
-                        "\n        ,[Panejamento_Id])       " +
-                        "\n  VALUES                         " +
-                        "\n        (@QuandoInicio           " +
-                        "\n        ,@DuracaoDias            " +
-                        "\n        ,@QuandoFim              " +
-                        "\n        ,@ComoPontosimportantes  " +
-                        "\n        ,@PraQue                 " +
-                        "\n        ,@QuantoCusta            " +
-                        "\n        ,@Status                 " +
-                        "\n        ,@Panejamento_Id);       ";
+                query = "INSERT INTO [dbo].[Pa_Acao]               " +
+                        "\n       ([QuandoInicio]                  " +
+                        "\n        ,[DuracaoDias]                  " +
+                        "\n        ,[QuandoFim]                    " +
+                        "\n        ,[ComoPontosimportantes]        " +
+                        "\n        ,[PraQue]                       " +
+                        "\n        ,[QuantoCusta]                  " +
+                        "\n        ,[Status]                       " +
+                        "\n        ,[Pa_Problema_Desvio_Id]   " +
+                        "\n        ,[Pa_IndicadorSgqAcao_Id]       " +
+                        "\n        ,[Panejamento_Id])              " +
+                        "\n  VALUES                                " +
+                        "\n        (@QuandoInicio                  " +
+                        "\n        ,@DuracaoDias                   " +
+                        "\n        ,@QuandoFim                     " +
+                        "\n        ,@ComoPontosimportantes         " +
+                        "\n        ,@PraQue                        " +
+                        "\n        ,@QuantoCusta                   " +
+                        "\n        ,@Status                        " +
+                        "\n        ,@Pa_Problema_Desvio_Id    " +
+                        "\n        ,@Pa_IndicadorSgqAcao_Id        " +
+                        "\n        ,@Panejamento_Id);              ";
 
                 query += "SELECT CAST(scope_identity() AS int)";
 
@@ -230,6 +249,8 @@ namespace PlanoAcaoCore
                 cmd.Parameters.AddWithValue("@PraQue", PraQue);
                 cmd.Parameters.AddWithValue("@QuantoCusta", QuantoCusta);
                 cmd.Parameters.AddWithValue("@Status", Status);
+                cmd.Parameters.AddWithValue("@Pa_Problema_Desvio_Id", Pa_Problema_Desvio_Id);
+                cmd.Parameters.AddWithValue("@Pa_IndicadorSgqAcao_Id", Pa_IndicadorSgqAcao_Id);
                 cmd.Parameters.AddWithValue("@Panejamento_Id", Panejamento_Id);
 
                 Id = Salvar(cmd);
