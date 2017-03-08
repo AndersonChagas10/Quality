@@ -2231,7 +2231,7 @@ namespace SgqSystem.Services
 
         public int getEvaluate(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluatePadrao)
         {
-            int evaluate = 1;
+            int evaluate = 0;
             var evaluateConf = ParEvaluateCompany.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
             if (evaluateConf != null)
             {
@@ -2245,12 +2245,16 @@ namespace SgqSystem.Services
                     evaluate = evaluateConf.Evaluate;
                 }
             }
+            if (evaluate == 0)
+            {
+                evaluate = 0;
+            }
             return evaluate;
         }
 
         public int getSample(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Sample> ParSampleCompany, IEnumerable<SGQDBContext.ParLevel2Sample> ParSamplePadrao)
         {
-            int sample = 1;
+            int sample = 0;
             var sampleConf = ParSampleCompany.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
             if (sampleConf != null)
             {
@@ -2266,7 +2270,7 @@ namespace SgqSystem.Services
             }
             if (sample == 0)
             {
-                sample = 1;
+                sample = 0;
             }
             return sample;
         }

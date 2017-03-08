@@ -277,6 +277,41 @@ namespace SGQDBContext
 
         public bool IsReaudit { get; set; }
 
+        public int getExisteAvaliacao(int ParCompany_Id, int ParLevel2_Id)
+        {
+
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "" +
+                "\n  select count(1) from " +
+                "\n ( " +
+                "\n select * from ParEvaluation where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id = " + ParCompany_Id + " " +
+                "\n union all " +
+                "\n select * from ParEvaluation where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id is Null " +
+                "\n ) temAv ";
+
+            SqlCommand command = new SqlCommand(sql, db);
+            return command.ExecuteNonQuery();
+
+        }
+
+        public int getExisteAmostra(int ParCompany_Id, int ParLevel2_Id)
+        {
+
+            SqlConnection db = new SqlConnection(conexao);
+
+            string sql = "" +
+                "\n  select count(1) from " +
+                "\n ( " +
+                "\n select * from ParSample where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id = " + ParCompany_Id + " " +
+                "\n union all " +
+                "\n select * from ParSample where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id is Null " +
+                "\n ) temAm ";
+
+            SqlCommand command = new SqlCommand(sql, db);
+            return command.ExecuteNonQuery();
+        }
+
         //public int? Evaluate { get; set; }
         //public int? Sample { get; set; }
         //public int? ParCompany_Id_Evaluate { get; set; }
@@ -301,7 +336,7 @@ namespace SGQDBContext
         }
         public IEnumerable<ParLevel2> getLevel2ByIdLevel1(int ParLevel1_Id, int ParCompany_Id)
         {
-            SqlConnection db = new SqlConnection(conexao);
+            SqlConnection db = new SqlConnection(conexao);            
 
             bool parLevel1Familia = false;
 
@@ -362,17 +397,39 @@ namespace SGQDBContext
             else
             {
 
-                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit " +
-                         "FROM ParLevel3Level2 P32                                      " +
-                         "INNER JOIN ParLevel3Level2Level1 P321                         " +
-                         "ON P321.ParLevel3Level2_Id = P32.Id                           " +
-                         "INNER JOIN ParLevel2 PL2                                      " +
-                         "ON PL2.Id = P32.ParLevel2_Id                                  " +
-                         " LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
-                         " ON AL.ParLevel2_Id = PL2.Id                                                                                                 " +
-                         "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'              " +
-                         "AND PL2.IsActive = 1                                          " +
-                         "GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value                ";
+               
+
+                
+
+                string sql = "\n SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit " +
+                         "\n FROM ParLevel3Level2 P32                                      " +
+                         "\n INNER JOIN ParLevel3Level2Level1 P321                         " +
+                         "\n ON P321.ParLevel3Level2_Id = P32.Id                           " +
+                         "\n INNER JOIN ParLevel2 PL2                                      " +
+                         "\n ON PL2.Id = P32.ParLevel2_Id                                  " +
+                         "\n LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
+                         "\n ON AL.ParLevel2_Id = PL2.Id                                                                                                 " +
+                        "\n WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'              " +
+                         "\n AND PL2.IsActive = 1                                          " +
+
+                         "\n AND " +
+                         "\n  (select sum(a) from " +
+                         "\n ( " +
+                         "\n select number as a  from ParEvaluation where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " " +
+                         "\n union all " +
+                         "\n select number as a  from ParEvaluation where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null " +
+                         "\n ) temAv) > 0 " +
+
+                         "\n AND " +
+                         "\n  (select sum(a) from " +
+                         "\n ( " +
+                         "\n select number as a  from ParSample where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " " +
+                         "\n union all " +
+                         "\n select number as a  from ParSample where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null " +
+                         "\n ) temAm) > 0 " +
+
+                         "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value                " +
+                         "\n ";
 
                 var parLevel2List = db.Query<ParLevel2>(sql);
 
@@ -394,6 +451,8 @@ namespace SGQDBContext
 
             SqlConnection db = new SqlConnection(conexao);
             string queryCompany = null;
+
+
 
 
             if (ParLevel1.hashKey == 2 && ParCompany_Id != null)
@@ -490,6 +549,10 @@ namespace SGQDBContext
                 if (ParCompany_Id > 0)
                 {
                     queryCompany = " AND PE.ParCompany_Id = '" + ParCompany_Id + "'";
+                }
+                else
+                {
+                    queryCompany = " AND PE.ParCompany_Id IS NULL ";
                 }
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PE.Number AS Evaluate                " +
