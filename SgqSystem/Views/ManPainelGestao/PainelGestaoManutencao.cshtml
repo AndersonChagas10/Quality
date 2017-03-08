@@ -109,7 +109,6 @@
             var table = $('#results').empty().DataTable({
                 data: retornoArray,
                 columns: getIndex(retornoArray),
-                
                 fixedHeader: {
                     header: true,
                     footer: true
@@ -177,25 +176,25 @@
                 table.table().container()
             );
 
-        } 
+        }
 
         function getIndex(obj) {
 
             var titles = [];
-           
-            for (var key in obj[0]){
-                
-                titles.push({title: key, mData: key});
-                            
+
+            for (var key in obj[0]) {
+
+                titles.push({ title: key, mData: key });
+
             }
-            
+
             return titles;
         }
 
         function formatDate(obj) {
             $(obj).each(function () {
 
-               
+
 
             });
         }

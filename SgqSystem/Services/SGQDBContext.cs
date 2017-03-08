@@ -78,7 +78,7 @@ namespace SGQDBContext
                          " WHERE CC.ParCompany_Id = '" + ParCompany_Id + "'                                                                           " +
                          "                                                                                                        " +
                          " AND P1.IsActive = 1                                                                                                        " +
-                         " ORDER BY CL.Name                                                                                                           ";
+                         " ORDER BY CL.Name, P1.Name                                                                                                           ";
 
             //var parLevel1List = (List<ParLevel1>)db.Query<ParLevel1>(sql);
 
