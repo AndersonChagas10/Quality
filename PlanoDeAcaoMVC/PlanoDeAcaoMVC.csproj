@@ -351,6 +351,8 @@
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\jquery.dataTables.min.css" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
+    <Content Include="Content\Reports\Reports - Copy.css" />
+    <Content Include="Content\Reports\Reports1.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -388,6 +390,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\DataTableRowsGroup.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap4.js" />
@@ -491,6 +494,8 @@
     <Content Include="Content\DataTables\css\common.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\semanticui.scss" />
+    <Content Include="Scripts\Reports\Reports1.js" />
+    <Content Include="Scripts\Reports\ReportsHC.js" />
     <Content Include="Scripts\i18n\Portuguese-Brasil.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\GuardJs.js" />
@@ -1383,10 +1388,15 @@
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-TW.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\Relatives.js" />
+    <Content Include="Scripts\Reports\Rewrer.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
+    <Content Include="Views\Relatorios\CSS.css" />
+    <Content Include="Views\Relatorios\GeralRelatorios.js" />
+    <Content Include="Views\Relatorios\HcExport.js" />
+    <Content Include="Views\Relatorios\HighChartsRelatorios.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -17,7 +17,8 @@ namespace PlanoDeAcaoMVC.Controllers
             ViewBag.Quem = Pa_Quem.Listar();
             ViewBag.Predecessora = Pa_Planejamento.Listar();
             ViewBag.Status = Pa_Status.Listar();
-
+            ViewBag.Pa_IndicadorSgqAcao = Pa_IndicadorSgqAcao.Listar();
+            ViewBag.Pa_Problema_Desvio = Pa_Problema_Desvio.Listar();
         }
         
         // GET: Pa_Acao
