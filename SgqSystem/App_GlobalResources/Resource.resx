@@ -331,7 +331,7 @@
     <value>Absent</value>
   </data>
   <data name="allow_the_audit_of_detached_level3" xml:space="preserve">
-    <value>Allow the audit of detached level 3</value>
+    <value>"Other" on Level 3</value>
   </data>
   <data name="allow_the_audit_of_detached_level3_popover" xml:space="preserve">
     <value>Define se existirá um campo para gravar desvios não previstos.</value>
@@ -409,7 +409,7 @@
     <value>Define if the the units can edit the level 1. If yes, the field "specific register" will show up to define which registers the units will be able to edit.</value>
   </data>
   <data name="has_alert" xml:space="preserve">
-    <value>Emit alert</value>
+    <value>Send Alert</value>
   </data>
   <data name="has_alert_popover" xml:space="preserve">
     <value>Define is this level will emit alert. The rules of the alert will be defined after the link between level 2 and level 3.</value>
@@ -502,7 +502,7 @@
     <value>Groups</value>
   </data>
   <data name="has_group_on_level3" xml:space="preserve">
-    <value>Has groups on level 3</value>
+    <value>Level 3 Grouped By Level 2</value>
   </data>
   <data name="level2_description" xml:space="preserve">
     <value>Level 2 description</value>

@@ -1090,4 +1090,11 @@
         timeout: timeoutAjax //Time in milliseconds
     });
 
+    var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
+    
+    $(document).ready(function() {
+        if(config){
+            $('#level1Title').html("Level 1");
+        }
+    })
 </script>

@@ -7,7 +7,19 @@ namespace DTO
 
         public static bool Brasil { get; set; } = false;
         public static bool Eua { get; set; } = true;
-        public static string linkDataCollect { get; set; }
+        public static string linkDataCollect
+        {
+            get
+            {
+                var retorno = string.Empty;
+                if (Brasil)
+                    retorno =  "http://mtzsvmqsc/AppColeta/";
+                else if (Eua)
+                    retorno =  "http://10.190.2.34/AppSgqHml/";
+
+                return retorno;
+            }
+        }
         public static bool corrigeLinkDataCollect { get; set; } = false;
         public static bool linkDataCollectJaConfigurado { get; set; } = false;
 
