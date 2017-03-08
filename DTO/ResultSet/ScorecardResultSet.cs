@@ -236,7 +236,7 @@ public class ScorecardResultSet
                 "\n --ON(G.ParCompany_Id = C.Id OR G.ParCompany_Id IS NULL) AND G.ParLevel1_Id = L1.Id " +
 
                 "\n WHERE(ConsolidationDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59') " +
-                "\n AND(L1.IsActive <> 0) " +
+                "\n --AND(L1.IsActive <> 0) " +
                 "\n AND(C.Id = " + unidadeId + ") " +
 
                 "\n GROUP BY " +
@@ -593,6 +593,7 @@ public class ScorecardResultSet
             "\n  --ON (G.ParCompany_Id = C.Id OR G.ParCompany_Id IS NULL) AND G.ParLevel1_Id = L1.Id                                                                                           " +
             "\n  WHERE C.Id = " + unidadeId + " " +
             "\n  AND L1.Id <> 25 " +
+            "\n  AND L1.AddDate <= '" + dtFim.ToString("yyyyMMdd") + " 23:59'" +
             "\n  AND L1.IsActive <> 0 " +
             "\n  AND L1.Id NOT IN (SELECT CCC.ParLevel1_Id FROM ConsolidationLevel1 CCC WHERE CCC.UnitId = " + unidadeId + "                                                                 " +
             "\n  AND CCC.ConsolidationDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59')                                             ";
