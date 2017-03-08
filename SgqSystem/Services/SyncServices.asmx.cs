@@ -346,7 +346,7 @@ namespace SgqSystem.Services
                         }
                         string reauditlevel = result[46];
                         //Convert Reauditoria Pendente para valor correto
-                        reauditlevel = DefaultValueReturn(haveReaudit, "0");
+                        reauditlevel = DefaultValueReturn(reauditlevel, "0");
                         
                         //Se Ação corretiva ficou pendente
                         string haveCorrectiveAction = result[25];
@@ -696,7 +696,9 @@ namespace SgqSystem.Services
                         var consolidationLevel1XConsolidationLevel2 = ConsolidationLevel1XConsolidationLevel2DB.getConsolidation(ConsolidationLevel1_Id);
 
                         var updateConsolidationLevel1Id = updateConsolidationLevel1(ConsolidationLevel1_Id, AlertLevel, avaliacaoultimoalerta, monitoramentoultimoalerta, consolidationLevel1XConsolidationLevel2);
+
                     }
+
                 }
 
                 return null;
@@ -1152,6 +1154,13 @@ namespace SgqSystem.Services
             }
             key += "-" + CollectionDate.ToString("yyyyMMdd");
 
+            var keySolid = key;
+
+            if (Reaudit)
+            {
+                key += "-r";
+            }
+
             if (id == "0")
             {
                 sql = "INSERT INTO CollectionLevel2 ([Key],[ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit],[ReauditLevel], [HaveCorrectiveAction],[HavePhase],[Completed],[AlertLevel],[Sequential],[Side],[WeiEvaluation],[Defects],[WeiDefects],[TotalLevel3WithDefects], [TotalLevel3Evaluation], [LastEvaluationAlert],[LastLevel2Alert],[EvaluatedResult],[DefectsResult],[IsEmptyLevel3]) " +
@@ -1181,6 +1190,17 @@ namespace SgqSystem.Services
                         //Se o script for executado corretamente retorna o Id
                         if (i > 0)
                         {
+
+
+                            var UpdateCollectionLevel2DB = new SGQDBContext.UpdateCollectionLevel2();
+                            
+                            if (Reaudit)
+                            {
+                                UpdateCollectionLevel2DB.UpdateIsReauditByKey(keySolid, "0");
+                            }else
+                            {
+                                UpdateCollectionLevel2DB.UpdateHaveReauditByConsolidationLevel2("1", ConsolidationLevel2.Id);
+                            }
                             return i;
                         }
                         else
@@ -1225,6 +1245,16 @@ namespace SgqSystem.Services
                 int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel2");
                 throw ex;
             }
+
+            //updates reaudit
+            if (Reaudit)
+            {
+
+            }
+            
+
+
+
         }
         public int ResultLevel3Delete(int CollectionLevel2_Id)
         {
@@ -1763,7 +1793,7 @@ namespace SgqSystem.Services
                     }
 
                     // Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\" havecorrectiveaction=\"false\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + "\"></div>";
-                    Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" LastLevel2AlertL1=\"" + consolidationResultL1L2.LastLevel2AlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\" havecorrectiveaction=\"" + consolidationResultL1L2.haveCorrectiveAction.ToString().ToLower() + "\" havereaudit=\"" + consolidationResultL1L2.haveReaudit.ToString().ToLower() + "\" reauditlevel=\"" + consolidationResultL1L2.ReauditLevel.ToString().ToLower() + "\" more3defectsEvaluate=\"" + consolidationResultL1L2.More3DefectsEvaluate + "\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + "\" CollectionLevel2_Period_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_Period_CorrectiveAction + "\">" +
+                    Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" LastLevel2AlertL1=\"" + consolidationResultL1L2.LastLevel2AlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\" havecorrectiveaction=\"" + consolidationResultL1L2.haveCorrectiveAction.ToString().ToLower() + "\" havereaudit=\"" + consolidationResultL1L2.haveReaudit.ToString().ToLower() + "\" reauditlevel=\"" + consolidationResultL1L2.ReauditLevel.ToString().ToLower() + "\" isreaudit=\""+consolidationResultL1L2.IsReaudit.ToString().ToLower()+"\" more3defectsEvaluate=\"" + consolidationResultL1L2.More3DefectsEvaluate + "\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + "\" CollectionLevel2_Period_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_Period_CorrectiveAction + "\">" +
                                 partialResults +
                                "</div>";
                 }
@@ -2231,7 +2261,7 @@ namespace SgqSystem.Services
 
         public int getEvaluate(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluatePadrao)
         {
-            int evaluate = 1;
+            int evaluate = 0;
             var evaluateConf = ParEvaluateCompany.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
             if (evaluateConf != null)
             {
@@ -2245,12 +2275,16 @@ namespace SgqSystem.Services
                     evaluate = evaluateConf.Evaluate;
                 }
             }
+            if (evaluate == 0)
+            {
+                evaluate = 0;
+            }
             return evaluate;
         }
 
         public int getSample(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Sample> ParSampleCompany, IEnumerable<SGQDBContext.ParLevel2Sample> ParSamplePadrao)
         {
-            int sample = 1;
+            int sample = 0;
             var sampleConf = ParSampleCompany.Where(p => p.Id == parlevel2.Id).FirstOrDefault();
             if (sampleConf != null)
             {
@@ -2266,7 +2300,7 @@ namespace SgqSystem.Services
             }
             if (sample == 0)
             {
-                sample = 1;
+                sample = 0;
             }
             return sample;
         }
@@ -2274,12 +2308,22 @@ namespace SgqSystem.Services
         public string getAPPMain(int UserSgq_Id, int ParCompany_Id, DateTime Date, string culture = "pt-br")
         {
             var html = new Html();
-
+            
             string breadCrumb = "<ol class=\"breadcrumb\" breadmainlevel=\"Slaughter\"></ol>";
+
+            string selectPeriod = html.option("0", Resources.Resource.select_the_period) +
+                              html.option("1", Resources.Resource.period+" 1") +
+                              html.option("2", Resources.Resource.period+" 2") +
+                              html.option("3", Resources.Resource.period+" 3") +
+                              html.option("4", Resources.Resource.period+" 4");
+
+            selectPeriod = html.select(selectPeriod, id: "period", classe: "period", style: "width: 160px");
+
+            selectPeriod = "<li class='painel list-group-item'>"+ selectPeriod + " </li>";
 
             string container = html.div(
 
-                                         outerhtml: breadCrumb +
+                                         outerhtml: breadCrumb + selectPeriod+
                                                     GetLevel01(ParCompany_Id: ParCompany_Id,                     /****** PORQUE ESTA MOKADO ESSA UNIDADE 1? *******/
                                                                dateCollect: Date)
 
@@ -2375,17 +2419,16 @@ namespace SgqSystem.Services
 
                            "</div> ";
 
-
-
+            
             return html.div(
                             outerhtml: navBar(UserSgq_Id, ParCompany_Id) +
-                                       rightMenu() +
+                                       rightMenu() + 
                                        html.div(classe: "overlay", style: "display:none") +
                                        container +
                                        buttons +
                                        footer(),
                              classe: "App hide",
-                             tags: "breadmainlevel=\"Indicadores\" culture=\"" + culture + "\" turningtime=\"03:00\""
+                             tags: "breadmainlevel=\""+Resources.Resource.slaughter + "\" culture=\"" + culture + "\" turningtime=\"03:00\""
                            ) +
                            correctiveAction() +
                            viewModal +
@@ -2407,7 +2450,7 @@ namespace SgqSystem.Services
                            "            <div class=\"buttonMenu navbar-brand hide\" id=\"btnShowImage\" level01id=\"2\">Show Image</div>                                                                        " +
                            selectUserCompanys(UserSgq_Id, ParCompany_Id) +
                            "            <span style='color: #ffffff; margin: 14px;' class='periodShift'></span><span style='color: #ffffff; margin: 14px;' class='shift'>shift</span> " +
-                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div><span style='color: #ffffff; margin: 14px;' class='atualDate pull-right'></span>" +
+                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div><span id='btnDate' style='color: #ffffff; margin: 14px;' class='atualDate pull-right'></span>" +
                            "        </div>                                                                                                                                                                      " +
                            "    </div>                                                                                                                                                                          " +
                            "</div>                                                                                                                                                                              ";
@@ -2572,7 +2615,7 @@ namespace SgqSystem.Services
                 foreach (var parlevel1 in parLevel1Group)
                 {
                     string tipoTela = "";
-
+                    
                     var variableList = ParLevel1VariableProductionDB.getVariable(parlevel1.Id).ToList();
 
                     if (variableList.Count > 0)
@@ -2773,6 +2816,8 @@ namespace SgqSystem.Services
             //Inicaliza ParFieldType
             var ParFieldTypeDB = new SGQDBContext.ParFieldType();
             var ParNCRuleDB = new SGQDBContext.NotConformityRule();
+            
+            var reauditFlag = "<li class='painel row list-group-item hide reauditFlag'> Reaudit </li>";
 
             var html = new Html();
 
@@ -2827,12 +2872,12 @@ namespace SgqSystem.Services
                 #region Cabecalhos e Contadores
                 string headerCounter =
                                      html.div(
-                                               outerhtml: "<b>Av.</b>",
+                                               outerhtml: "<b>"+Resources.Resource.ev+"</b>",
                                                classe: "col-xs-6",
                                                style: "text-align:center"
                                              ) +
                                      html.div(
-                                               outerhtml: "<b>Am.</b>",
+                                               outerhtml: "<b>"+ Resources.Resource.sd + "</b>",
                                                classe: "col-xs-6",
                                                style: "text-align:center"
                                               );
@@ -3105,7 +3150,8 @@ namespace SgqSystem.Services
             {
                 //Gera agrupamento dw Level2 para o Level1
                 ParLevel2List = html.listgroup(
-                                                outerhtml: painelLevel2HeaderListHtml +
+                                                outerhtml: reauditFlag +
+                                                           painelLevel2HeaderListHtml +
                                                            painelCounters +
                                                            ParLevel2List,
                                                 tags: "level01Id=\"" + ParLevel1.Id + "\""
@@ -3226,6 +3272,8 @@ namespace SgqSystem.Services
         {
             var html = new Html();
 
+            var reauditFlag = "<li class='painel row list-group-item hide reauditFlag'> Reaudit </li>";
+
             //Inicializa ParLevel3
             var ParLevel3DB = new SGQDBContext.ParLevel3();
 
@@ -3297,11 +3345,11 @@ namespace SgqSystem.Services
 
                 //Avaliações e amostas para painel
                 string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + Resources.Resource.evaluation + "</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+Resources.Resource.samples+"</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -3540,11 +3588,11 @@ namespace SgqSystem.Services
 
                 //Avaliações e amostas para painel
                 string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + Resources.Resource.evaluation +"</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+Resources.Resource.samples +"</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -3689,11 +3737,11 @@ namespace SgqSystem.Services
                                     classe: "col-xs-6");
 
                 string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+Resources.Resource.evaluation+"</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+Resources.Resource.samples+"</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -3794,11 +3842,11 @@ namespace SgqSystem.Services
 
                 //Avaliações e amostas para painel
                 string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+Resources.Resource.evaluation+"</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + Resources.Resource.samples + "</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -3851,7 +3899,8 @@ namespace SgqSystem.Services
                                                classe: "level3Group",
                                                tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
 
-                                               outerhtml: painellevel3 + panelButton +
+                                               outerhtml: reauditFlag +
+                                                          painellevel3 + panelButton +
                                                           parLevel3Group
                                              );
                 }
@@ -4095,9 +4144,9 @@ namespace SgqSystem.Services
             if (configuracoes != null && configuracoes.HaveShitLogin == true)
             {
                 inputsDesabilitados = true;
-                selectShit = html.option("0", "Select the shift") +
-                              html.option("1", "Shift A") +
-                              html.option("2", "Shift B");
+                selectShit = html.option("0", Resources.Resource.select_the_shift) +
+                              html.option("1", Resources.Resource.shift_a) +
+                              html.option("2", Resources.Resource.shift_b);
 
                 selectShit = html.select(selectShit, id: "shift");
             }

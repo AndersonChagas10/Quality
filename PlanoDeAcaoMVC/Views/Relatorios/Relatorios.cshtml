@@ -10,12 +10,17 @@
     <meta name="viewport" content="width=device-width" />
     <title>Relatorios - Plano de Ação</title>
 
-    <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+   @*<script src="https://code.jquery.com/jquery-1.11.3.js"></script>*@
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    @*<script src="https://code.highcharts.com/highcharts.js"></script>*@
+    @*<script src="https://code.highcharts.com/modules/exporting.js"></script>*@
+    <script src="~/Scripts/Reports/ReportsHC.js"></script>
 
-    <!-- Bootstrap core CSS -->
+    <link href="~/Content/Reports/Reports1.css" rel="stylesheet" />
+    <script src="~/Scripts/Reports/Reports1.js"></script>
+
+   @* <!-- Bootstrap core CSS -->
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
@@ -23,10 +28,12 @@
 
     <!-- Custom styles for this template -->
     <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
+*@
+
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="http://getbootstrap.com/assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="http://getbootstrap.com/assets/js/ie-emulation-modes-warning.js"></script>
+    @*<script src="http://getbootstrap.com/assets/js/ie-emulation-modes-warning.js"></script>*@
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -34,16 +41,17 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <!-- Font Awesome -->
-    <link href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css" rel="stylesheet">
+    @*<link href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css" rel="stylesheet">*@
 
-    <script src="https://use.fonticons.com/ffe176a3.js"></script>
+    @*<script src="https://use.fonticons.com/ffe176a3.js"></script>*@
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/r/bs-3.3.5/jq-2.1.4,dt-1.10.8/datatables.min.css" />
+    @*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/r/bs-3.3.5/jq-2.1.4,dt-1.10.8/datatables.min.css" />
 
-    <script type="text/javascript" src="https://cdn.datatables.net/r/bs-3.3.5/jqc-1.11.3,dt-1.10.8/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/r/bs-3.3.5/jqc-1.11.3,dt-1.10.8/datatables.min.js"></script>*@
+
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
-          $('#exampleTD1').DataTable();
+          //$('#exampleTD1').DataTable();
       });
 
     </script>
@@ -255,6 +263,27 @@
 
         </div>
 
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 ">
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Meus indicadores</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12" id="divIndicador" style="height:300px;"></div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+
         <!--modallllll-->
         <div class="modal fade in" role="dialog" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" style="display: none;">
             <div class="modal-dialog" role="document" style="width:100%;">
@@ -292,11 +321,14 @@
         <!-- Placed at the end of the document so the pages load faster -->
 
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="http://getbootstrap.com/assets/js/vendor/jquery.min.js"><\/script>')</script>
-        <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+        @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>*@
+        @*<script>window.jQuery || document.write('<script src="http://getbootstrap.com/assets/js/vendor/jquery.min.js"><\/script>')</script>*@
+
+    <script src="~/Scripts/Reports/Rewrer.js"></script> 
+
+     @*<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>*@
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+        @*<script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>*@
 
 </body>
 
@@ -681,7 +713,6 @@
             }]
         });
 
-
     Highcharts.chart('divEstoque2', {
         credits: {
             enabled: false
@@ -771,7 +802,6 @@
 
         }]
     });
-
 
     Highcharts.chart('divEstoque3', {
         credits: {
@@ -877,7 +907,85 @@
         }]
     });
 
+    Highcharts.chart('divIndicador', {
+        credits: {
+            enabled: false
+        },
+        exporting: {
+            enabled: false
+        },
+        chart: {
+            zoomType: 'xy'
+        },
+        title: {
+            text: 'Evolução do Resultado vs Ações executadas'
+        },
+        subtitle: {
+            text: false
+        },
+        xAxis: [{
+            categories: meses,
+            crosshair: true
+        }],
+        yAxis: [{ // Primary yAxis
+            labels: {
+                
+                style: {
+                    color: Highcharts.getOptions().colors[1]
+                }
+            },
+            title: {
+                text: 'Resultado',
+                style: {
+                    color: Highcharts.getOptions().colors[1]
+                }
+            }
+        }, { // Secondary yAxis
+            title: {
+                text: 'Número de Ações',
+                style: {
+                    color: Highcharts.getOptions().colors[0]
+                }
+            },
+            labels: {
+               
+                style: {
+                    color: Highcharts.getOptions().colors[0]
+                }
+            },
+            opposite: true
+        }],
+        tooltip: {
+            shared: true
+        },
+        legend: {
+            layout: 'horizontal',
+            align: 'center',
+            
+            verticalAlign: 'bottom',
+            
+            floating: false,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+        },
+        series: [{
+            name: 'Número de Ações Concluídas',
+            type: 'spline',
+            yAxis: 1,
+            data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
+         
 
+        }, {
+            name: 'Meta',
+            type: 'spline',
+            data: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
+         
+        }, {
+            name: 'Realizado',
+            type: 'spline',
+            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
+            
+        }]
+    });
 
     $('body .dropdown-toggle').dropdown();
 

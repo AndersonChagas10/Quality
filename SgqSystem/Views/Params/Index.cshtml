@@ -455,7 +455,7 @@
                     } catch (e) {
                         closeLoader();
                         $btn.button('reset');
-                        openMessageModal("Alerta", "Não foi possivel concluir a ação.");
+                        openMessageModal("@Resources.Resource.warning", "@Resources.Resource.cannot_finish_action");
                         console.log(e);
                     }
                 });
@@ -475,7 +475,7 @@
                     indexParamsLevel3.resetaForm();
                     if(dirtForm($(initialFormLevel1), $($('form')[0]))){
                         openConfirm(
-                            'Existem dados que não foram salvos. Deseja continuar?',
+                            '@Resources.Resource.data_not_saved_continue',
                             function(){
                                 indexParamsLevel1.selectLevel1();
                             },
@@ -633,7 +633,7 @@
                     indexParamsLevel3.resetaForm();
                     if(dirtForm($(initialFormLevel2), $($('form')[1]))){
                         openConfirm(
-                            'Existem dados que não foram salvos. Deseja continuar?',
+                            '@Resources.Resource.data_not_saved_continue',
                             function(){
                                 indexParamsLevel2.selectLevel2();
                             },
@@ -822,7 +822,7 @@
 
                     if(dirtForm($(initialFormLevel3), $($('form')[2]))){
                         openConfirm(
-                            'Existem dados que não foram salvos. Deseja continuar?',
+                            '@Resources.Resource.data_not_saved_continue',
                             function(){
                                 indexParamsLevel3.selectLevel3();
                             },
@@ -1081,7 +1081,7 @@
     });
 
 
-    timeoutAjax = 20000;
+    timeoutAjax = 500000;
     if(window.location.host.indexOf("localhost") != -1){
         timeoutAjax = 500000;
     }
@@ -1090,4 +1090,11 @@
         timeout: timeoutAjax //Time in milliseconds
     });
 
+    var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
+
+    $(document).ready(function() {
+        if(config){
+            $('#level1Title').html("Level 1");
+        }
+    })
 </script>

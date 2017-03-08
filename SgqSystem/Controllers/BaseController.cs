@@ -12,7 +12,6 @@ namespace SgqSystem.Controllers
         public BaseController()
         {
             //GlobalConfig.linkDataCollect = "http://192.168.25.200/AppColeta/";
-            GlobalConfig.linkDataCollect = "http://mtzsvmqsc/AppColeta/";
             ViewBag.UrlDataCollect = GlobalConfig.linkDataCollect;
             //UrlHelper u = new UrlHelper(this.ControllerContext.RequestContext);
             //ViewBag.UrlScorecard = u.Action("Scorecard", "RelatoriosSgq");

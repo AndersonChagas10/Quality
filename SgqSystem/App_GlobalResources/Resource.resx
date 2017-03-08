@@ -331,7 +331,7 @@
     <value>Absent</value>
   </data>
   <data name="allow_the_audit_of_detached_level3" xml:space="preserve">
-    <value>Allow the audit of detached level 3</value>
+    <value>"Other" on Level 3</value>
   </data>
   <data name="allow_the_audit_of_detached_level3_popover" xml:space="preserve">
     <value>Define se existirá um campo para gravar desvios não previstos.</value>
@@ -409,7 +409,7 @@
     <value>Define if the the units can edit the level 1. If yes, the field "specific register" will show up to define which registers the units will be able to edit.</value>
   </data>
   <data name="has_alert" xml:space="preserve">
-    <value>Emit alert</value>
+    <value>Send Alert</value>
   </data>
   <data name="has_alert_popover" xml:space="preserve">
     <value>Define is this level will emit alert. The rules of the alert will be defined after the link between level 2 and level 3.</value>
@@ -457,7 +457,7 @@
     <value>Define the value of the punishment and/or reward on regard of the options according to the last one</value>
   </data>
   <data name="customization" xml:space="preserve">
-    <value>Customization</value>
+    <value>Parameterization</value>
   </data>
   <data name="edit_level1" xml:space="preserve">
     <value>Edit level 1</value>
@@ -490,7 +490,7 @@
     <value>Define if the units will be able to create/edit the connection with the level 3</value>
   </data>
   <data name="link_number_evaluation" xml:space="preserve">
-    <value>Link of the evaluation number</value>
+    <value>Link with the evaluation number</value>
   </data>
   <data name="evaluation" xml:space="preserve">
     <value>Evaluation </value>
@@ -502,7 +502,7 @@
     <value>Groups</value>
   </data>
   <data name="has_group_on_level3" xml:space="preserve">
-    <value>Has groups on level 3</value>
+    <value>Level 3 Grouped By Level 2</value>
   </data>
   <data name="level2_description" xml:space="preserve">
     <value>Level 2 description</value>
@@ -1387,15 +1387,57 @@
     <value>Total Defects</value>
   </data>
   <data name="level1_line" xml:space="preserve">
-    <value>Level 1 Line</value>
+    <value>Level 1 Row</value>
   </data>
   <data name="level2_header" xml:space="preserve">
     <value>Level 2 Header</value>
   </data>
   <data name="level2_line" xml:space="preserve">
-    <value>Level 2 Line</value>
+    <value>Level 2 Row</value>
   </data>
   <data name="level3_header" xml:space="preserve">
     <value>Level 3 Header</value>
+  </data>
+  <data name="select_the_shift" xml:space="preserve">
+    <value>Select the shift...</value>
+  </data>
+  <data name="shift_a" xml:space="preserve">
+    <value>Shift A</value>
+  </data>
+  <data name="shift_b" xml:space="preserve">
+    <value>Shift B</value>
+  </data>
+  <data name="select_the_period" xml:space="preserve">
+    <value>Select the period...</value>
+  </data>
+  <data name="cannot_finish_action" xml:space="preserve">
+    <value>Cannot finish action.</value>
+  </data>
+  <data name="data_consolidated" xml:space="preserve">
+    <value>Data consolidated</value>
+  </data>
+  <data name="data_not_saved_continue" xml:space="preserve">
+    <value>There is not saved data. Do want to continue?</value>
+  </data>
+  <data name="ev" xml:space="preserve">
+    <value>Ev</value>
+  </data>
+  <data name="evaluation_and_sample" xml:space="preserve">
+    <value>Evaluation and sample</value>
+  </data>
+  <data name="goal" xml:space="preserve">
+    <value>Goal</value>
+  </data>
+  <data name="results" xml:space="preserve">
+    <value>Resultados</value>
+  </data>
+  <data name="sd" xml:space="preserve">
+    <value>Sd</value>
+  </data>
+  <data name="sending" xml:space="preserve">
+    <value>Sending</value>
+  </data>
+  <data name="slaughter" xml:space="preserve">
+    <value>Slaughter</value>
   </data>
 </root>

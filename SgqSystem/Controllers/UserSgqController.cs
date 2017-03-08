@@ -9,9 +9,11 @@ using DTO.DTO.Params;
 using DTO.DTO;
 using AutoMapper;
 using System.Collections.Generic;
+using Helper;
 
 namespace SgqSystem.Controllers
 {
+    [HandleController()]
     public class UserSgqController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();

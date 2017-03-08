@@ -1,5 +1,6 @@
 ﻿@model SgqSystem.ViewModels.ParamsViewModel
 @using SgqSystem.Helpers
+@using DTO
 @{
     ViewBag.Title = "ParLeve2";
     var url = Url.Action("AddUpdateLevel2", "api/ParamsApi"); //URL relativa
@@ -39,7 +40,7 @@
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.IsEmptyLevel3, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_audit_of_detached_level3), Table.PosicaoLabel.left, null, Resources.Resource.allow_the_audit_of_detached_level3_popover)
                         </tr>
 
-                        <tr class="row">
+                        <tr id="showlevel3"class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasShowLevel03, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.show_group_on_level3), Table.PosicaoLabel.left, null, null)
                         </tr>
 
@@ -179,6 +180,14 @@
 </div>
 
 <script>
+
+    var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
+
+    $(document).ready(function() {
+        if(config){
+            $('#showlevel3').hide();
+        }
+    })
 
     var _PermiteEditarVinculoComTarefa = @Html.Raw(Json.Encode(Model.paramsDto.parLevel2Dto._PermiteEditarVinculoComTarefa));
 
@@ -425,7 +434,7 @@
     });
 
     $(document).ready(function () {
-     
+
         defaults();
         loadSelect2();
 
