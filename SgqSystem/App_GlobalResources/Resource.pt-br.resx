@@ -1392,4 +1392,16 @@
   <data name="level3_header" xml:space="preserve">
     <value>Cabeçalho da tarefa</value>
   </data>
+  <data name="select_the_shift" xml:space="preserve">
+    <value>Selecione o turno...</value>
+  </data>
+  <data name="shift_a" xml:space="preserve">
+    <value>Turno 1</value>
+  </data>
+  <data name="shift_b" xml:space="preserve">
+    <value>Turno 2</value>
+  </data>
+  <data name="select_the_period" xml:space="preserve">
+    <value>Selecione o período...</value>
+  </data>
 </root>

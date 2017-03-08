@@ -3229,11 +3229,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the period....
+        /// </summary>
+        internal static string select_the_period {
+            get {
+                return ResourceManager.GetString("select_the_period", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please, select the place..
         /// </summary>
         internal static string select_the_place {
             get {
                 return ResourceManager.GetString("select_the_place", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the shift....
+        /// </summary>
+        internal static string select_the_shift {
+            get {
+                return ResourceManager.GetString("select_the_shift", resourceCulture);
             }
         }
         
@@ -3297,6 +3315,24 @@ namespace Resources {
         internal static string shift {
             get {
                 return ResourceManager.GetString("shift", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shift A.
+        /// </summary>
+        internal static string shift_a {
+            get {
+                return ResourceManager.GetString("shift_a", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shift B.
+        /// </summary>
+        internal static string shift_b {
+            get {
+                return ResourceManager.GetString("shift_b", resourceCulture);
             }
         }
         

@@ -1398,4 +1398,16 @@
   <data name="level3_header" xml:space="preserve">
     <value>Level 3 Header</value>
   </data>
+  <data name="select_the_shift" xml:space="preserve">
+    <value>Select the shift...</value>
+  </data>
+  <data name="shift_a" xml:space="preserve">
+    <value>Shift A</value>
+  </data>
+  <data name="shift_b" xml:space="preserve">
+    <value>Shift B</value>
+  </data>
+  <data name="select_the_period" xml:space="preserve">
+    <value>Select the period...</value>
+  </data>
 </root>

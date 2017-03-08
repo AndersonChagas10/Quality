@@ -2311,11 +2311,11 @@ namespace SgqSystem.Services
             
             string breadCrumb = "<ol class=\"breadcrumb\" breadmainlevel=\"Slaughter\"></ol>";
 
-            string selectPeriod = html.option("0", "Select the period...") +
-                              html.option("1", "Period 1") +
-                              html.option("2", "Period 2") +
-                              html.option("3", "Period 3") +
-                              html.option("4", "Period 4");
+            string selectPeriod = html.option("0", Resources.Resource.select_the_period) +
+                              html.option("1", Resources.Resource.period+" 1") +
+                              html.option("2", Resources.Resource.period+" 2") +
+                              html.option("3", Resources.Resource.period+" 3") +
+                              html.option("4", Resources.Resource.period+" 4");
 
             selectPeriod = html.select(selectPeriod, id: "period", classe: "period", style: "width: 160px");
 
@@ -4144,9 +4144,9 @@ namespace SgqSystem.Services
             if (configuracoes != null && configuracoes.HaveShitLogin == true)
             {
                 inputsDesabilitados = true;
-                selectShit = html.option("0", "Select the shift") +
-                              html.option("1", "Shift A") +
-                              html.option("2", "Shift B");
+                selectShit = html.option("0", Resources.Resource.select_the_shift) +
+                              html.option("1", Resources.Resource.shift_a) +
+                              html.option("2", Resources.Resource.shift_b);
 
                 selectShit = html.select(selectShit, id: "shift");
             }
