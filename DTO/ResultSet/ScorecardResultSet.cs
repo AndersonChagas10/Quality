@@ -110,17 +110,17 @@ public class ScorecardResultSet
                 "\n          ((SELECT sum(Amostras) * 2 as AV FROM VolumePcc1b WHERE ParCompany_id = " + unidadeId + " and Data BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59')" +
                 "\n          -" +
                 "\n          (" +
-                "\n              SELECT COUNT(1) FROM" +
-                "\n              (" +
-                "\n              SELECT C2.ID, CASE WHEN COUNT(1) = sum(CAST(C3.IsNotEvaluate AS INT)) THEN 'NA' ELSE 'A' END NA FROM CollectionLevel2 C2" +
-                "\n              LEFT JOIN Result_Level3 C3" +
-                "\n              ON C3.CollectionLevel2_Id = C2.Id" +
-                "\n              WHERE C2.CollectionDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59'" +
-                "\n              AND C2.ParLevel1_Id = L1.Id" +
-                "\n             AND C2.UnitId = " + unidadeId + "" +
-                "\n              GROUP BY C2.ID" +
-                "\n              ) NA" +
-                "\n              WHERE NA = 'NA'" +
+                "\n              @RESS --SELECT COUNT(1) FROM" +
+                "\n              --(" +
+                "\n              --SELECT C2.ID, CASE WHEN COUNT(1) = sum(CAST(C3.IsNotEvaluate AS INT)) THEN 'NA' ELSE 'A' END NA FROM CollectionLevel2 C2" +
+                "\n              --LEFT JOIN Result_Level3 C3" +
+                "\n              --ON C3.CollectionLevel2_Id = C2.Id" +
+                "\n              --WHERE C2.CollectionDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59'" +
+                "\n              --AND C2.ParLevel1_Id = L1.Id" +
+                "\n              --AND C2.UnitId = " + unidadeId + "" +
+                "\n              --GROUP BY C2.ID" +
+                "\n              --) NA" +
+                "\n              --WHERE NA = 'NA'" +
                 "\n          )) ELSE" +
 
 
@@ -160,17 +160,17 @@ public class ScorecardResultSet
                 "\n          ((SELECT sum(Amostras) * 2 as AV FROM VolumePcc1b WHERE ParCompany_id = " + unidadeId + " and Data BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59')" +
                 "\n          -" +
                 "\n          (" +
-                "\n              SELECT COUNT(1) FROM" +
-                "\n              (" +
-                "\n              SELECT C2.ID, CASE WHEN COUNT(1) = sum(CAST(C3.IsNotEvaluate AS INT)) THEN 'NA' ELSE 'A' END NA FROM CollectionLevel2 C2" +
-                "\n              LEFT JOIN Result_Level3 C3" +
-                "\n              ON C3.CollectionLevel2_Id = C2.Id" +
-                "\n              WHERE C2.CollectionDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59'" +
-                "\n              AND C2.ParLevel1_Id = L1.Id" +
-                "\n             AND C2.UnitId = " + unidadeId + "" +
-                "\n              GROUP BY C2.ID" +
-                "\n              ) NA" +
-                "\n              WHERE NA = 'NA'" +
+                "\n              @RESS --SELECT COUNT(1) FROM" +
+                "\n              --(" +
+                "\n              --SELECT C2.ID, CASE WHEN COUNT(1) = sum(CAST(C3.IsNotEvaluate AS INT)) THEN 'NA' ELSE 'A' END NA FROM CollectionLevel2 C2" +
+                "\n              --LEFT JOIN Result_Level3 C3" +
+                "\n              --ON C3.CollectionLevel2_Id = C2.Id" +
+                "\n              --WHERE C2.CollectionDate BETWEEN '" + dtInicio.ToString("yyyyMMdd") + " 00:00' AND '" + dtFim.ToString("yyyyMMdd") + " 23:59'" +
+                "\n              --AND C2.ParLevel1_Id = L1.Id" +
+                "\n              --AND C2.UnitId = " + unidadeId + "" +
+                "\n              --GROUP BY C2.ID" +
+                "\n              --) NA" +
+                "\n              --WHERE NA = 'NA'" +
                 "\n          )) ELSE" +
 
                 "\n   CASE " +
@@ -611,7 +611,30 @@ public class ScorecardResultSet
 
         int numMeses = (12 * (_dtFim.Year - _dtIni.Year) + _dtFim.Month - _dtIni.Month) + 1;
 
-        var sql = "SELECT " +
+        var sql =
+
+        "\n DECLARE @RESS INT " +
+
+        "\n SELECT " +
+        "\n       @RESS =  " +
+
+        "\n         COUNT(1) " +
+        "\n         FROM " +
+        "\n         ( " +
+        "\n         SELECT " +
+        "\n         COUNT(1) AS NA " +
+        "\n         FROM CollectionLevel2 C2 " +
+        "\n         LEFT JOIN Result_Level3 C3 " +
+        "\n         ON C3.CollectionLevel2_Id = C2.Id " +
+        "\n         WHERE convert(date, C2.CollectionDate) BETWEEN '20160801' AND '20160831' " +
+        "\n         AND C2.ParLevel1_Id = 3 " +
+        "\n         AND C2.UnitId = 14 " +
+        "\n         AND IsNotEvaluate = 1 " +
+        "\n         GROUP BY C2.ID " +
+        "\n         ) NA " +
+        "\n         WHERE NA = 2 " +
+
+        "\n SELECT " +
 
         "\n   Cluster " +
         "\n , ClusterName " +
