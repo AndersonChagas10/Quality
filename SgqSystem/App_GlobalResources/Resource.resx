@@ -457,7 +457,7 @@
     <value>Define the value of the punishment and/or reward on regard of the options according to the last one</value>
   </data>
   <data name="customization" xml:space="preserve">
-    <value>Customization</value>
+    <value>Parameterization</value>
   </data>
   <data name="edit_level1" xml:space="preserve">
     <value>Edit level 1</value>
