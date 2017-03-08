@@ -282,7 +282,8 @@ namespace Dominio.Services
 
                     try
                     {
-                        var existentesSomenteSgqGlobal = _baseParCompanyXUserSgq.GetAll();
+                        //var existentesSomenteSgqGlobal = _baseParCompanyXUserSgq.GetAll();
+                        var existentesSomenteSgqGlobal = _baseParCompanyXUserSgq.GetAll().Where(r => r.UserSgq_Id == userDto.Id);
                         var todosOsPerfisSgqBrAssociados = db.Perfil.Where(r => usuarioPerfilEmpresaSgqBr.Any(upe => upe.nCdPerfil == r.nCdPerfil));
                         if (todosOsPerfisSgqBrAssociados != null)
                         {

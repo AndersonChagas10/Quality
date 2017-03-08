@@ -16,14 +16,20 @@ namespace PlanoAcaoCore
 
         public static List<Pa_ObjetivoGeral> Listar()
         {
-            var query = "SELECT * FROM Pa_Iniciativa";
+            var query = "SELECT * FROM Pa_ObjetivoGeral";
             return ListarGenerico<Pa_ObjetivoGeral>(query);
         }
 
         public static Pa_ObjetivoGeral Get(int Id)
         {
-            var query = "SELECT * FROM Pa_Iniciativa WHERE Id = " + Id;
+            var query = "SELECT * FROM Pa_ObjetivoGeral WHERE Id = " + Id;
             return GetGenerico<Pa_ObjetivoGeral>(query);
+        }
+
+        public static List<Pa_ObjetivoGeral> GetObjetivoXIndicadoresProjeto(int id)
+        {
+            var query = "SELECT * FROM Pa_ObjetivoGeral WHERE Pa_IndicadoresDeProjeto_Id = " + id;
+            return ListarGenerico<Pa_ObjetivoGeral>(query);
         }
 
         public void AddOrUpdate()

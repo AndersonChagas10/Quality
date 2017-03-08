@@ -32,6 +32,25 @@
                         </td>
                         <td></td>
                     </tr>*@
+                    <tr>
+                        <td>
+                            @Html.LabelFor(r=>r.Pa_IndicadorSgqAcao_Id, htmlAttributes: new { @class = "control-label " })
+                        </td>
+                        <td>
+                            @Html.DropDownList("Pa_IndicadorSgqAcao_Id", new SelectList(ViewBag.Pa_IndicadorSgqAcao, "Id", "name"), "Selecione", new { @class = "form-control input-sm" })
+                        </td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            @Html.LabelFor(r => r.Pa_Problema_Desvio_Id, htmlAttributes: new { @class = "control-label " })
+                        </td>
+                        <td>
+                            @Html.DropDownList("Pa_Problema_Desvio_Id", new SelectList(ViewBag.Pa_Problema_Desvio, "Id", "name"), "Selecione", new { @class = "form-control input-sm" })
+                        </td>
+                        <td></td>
+                    </tr>
 
                     <tr>
                         <td>
@@ -87,7 +106,7 @@
                         <td>
                             @Html.DropDownList("AcaoXQuemDdl", new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
                         </td>
-                        <td style="text-align: center; vertical-align: bottom;" id="CausaMedidasXAcaoAdd">
+                        <td style="text-align: center; display:none; vertical-align: bottom;" id="CausaMedidasXAcaoAdd">
 
                             <button id="adicionar" type="button" class="btn btn-default btn-sm" onclick="Adicionar(this);">
                                 <span class="glyphicon glyphicon-plus"></span> Adicionar
@@ -109,7 +128,7 @@
                         </td>
                         <td></td>
                     </tr>
-                    <tr>
+                    @*<tr>
                         <td>
                             @Html.LabelFor(model => model.DuracaoDias, htmlAttributes: new { @class = "control-label " })
                         </td>
@@ -118,7 +137,7 @@
                             @Html.ValidationMessageFor(model => model.DuracaoDias, "", new { @class = "text-danger" })
                         </td>
                         <td></td>
-                    </tr>
+                    </tr>*@
                     <tr>
                         <td>
                             @Html.LabelFor(model => model.QuandoFim, htmlAttributes: new { @class = "control-label " })

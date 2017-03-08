@@ -28,6 +28,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         [Route("Save")]
         public Pa_Acao Save([FromBody] Pa_Acao acao)
         {
+            //throw new Exception("treste");
             acao.QuantoCusta = NumericExtensions.CustomParseDecimal(acao._QuantoCusta).GetValueOrDefault();
             acao.QuandoInicio = Guard.ParseDateToSqlV2(acao._QuandoInicio);
             acao.QuandoFim = Guard.ParseDateToSqlV2(acao._QuandoFim);

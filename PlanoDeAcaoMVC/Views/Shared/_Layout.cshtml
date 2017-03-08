@@ -59,8 +59,12 @@
         /*
             http://plentz.github.io/jquery-maskmoney/
         */
-        function MoneyMask() {
-            $(".money").maskMoney({ prefix: 'R$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: false })
+        function MoneyMask(preffix) {
+            var config = { prefix: '', allowNegative: true, thousands: '.', decimal: ',', affixesStay: false }
+            if (preffix != undefined) {
+                config.prefix = preffix
+            }
+            $(".money").maskMoney(config);
         }
         /*
             https://bootstrap-datepicker.readthedocs.io/en/latest/
