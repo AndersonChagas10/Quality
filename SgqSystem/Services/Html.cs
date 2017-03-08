@@ -184,7 +184,7 @@ namespace SgqSystem.Services
         /// <param name="classe">Atributo class</param>
         /// <param name="disabled">Desabilitado</param>
         /// <returns></returns>
-        public string select(string options, string id = null, string classe = null, bool disabled = false)
+        public string select(string options, string id = null, string classe = null, bool disabled = false, string style = null)
         {
             string disabledTag = null;
             if (disabled == true)
@@ -194,7 +194,7 @@ namespace SgqSystem.Services
 
             classe += " form-control";
 
-            return "<select id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + disabledTag + ">" + options + "</select>";
+            return "<select id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + disabledTag + " style=\""+ style + "\">" + options + "</select>";
         }
         /// <summary>
         /// Retorna option do select

@@ -2304,12 +2304,22 @@ namespace SgqSystem.Services
         public string getAPPMain(int UserSgq_Id, int ParCompany_Id, DateTime Date, string culture = "pt-br")
         {
             var html = new Html();
-
-            string breadCrumb = "<ol class=\"breadcrumb\" breadmainlevel=\"Slaughter\"></ol>";
             
+            string breadCrumb = "<ol class=\"breadcrumb\" breadmainlevel=\"Slaughter\"></ol>";
+
+            string selectPeriod = html.option("0", "Select the period...") +
+                              html.option("1", "Period 1") +
+                              html.option("2", "Period 2") +
+                              html.option("3", "Period 3") +
+                              html.option("4", "Period 4");
+
+            selectPeriod = html.select(selectPeriod, id: "period", classe: "period", style: "width: 160px");
+
+            selectPeriod = "<li class='painel list-group-item'>"+ selectPeriod + " </li>";
+
             string container = html.div(
 
-                                         outerhtml: breadCrumb +
+                                         outerhtml: breadCrumb + selectPeriod+
                                                     GetLevel01(ParCompany_Id: ParCompany_Id,                     /****** PORQUE ESTA MOKADO ESSA UNIDADE 1? *******/
                                                                dateCollect: Date)
 
@@ -2405,11 +2415,10 @@ namespace SgqSystem.Services
 
                            "</div> ";
 
-
-
+            
             return html.div(
                             outerhtml: navBar(UserSgq_Id, ParCompany_Id) +
-                                       rightMenu() +
+                                       rightMenu() + 
                                        html.div(classe: "overlay", style: "display:none") +
                                        container +
                                        buttons +
@@ -2437,7 +2446,7 @@ namespace SgqSystem.Services
                            "            <div class=\"buttonMenu navbar-brand hide\" id=\"btnShowImage\" level01id=\"2\">Show Image</div>                                                                        " +
                            selectUserCompanys(UserSgq_Id, ParCompany_Id) +
                            "            <span style='color: #ffffff; margin: 14px;' class='periodShift'></span><span style='color: #ffffff; margin: 14px;' class='shift'>shift</span> " +
-                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div><span style='color: #ffffff; margin: 14px;' class='atualDate pull-right'></span>" +
+                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div><span id='btnDate' style='color: #ffffff; margin: 14px;' class='atualDate pull-right'></span>" +
                            "        </div>                                                                                                                                                                      " +
                            "    </div>                                                                                                                                                                          " +
                            "</div>                                                                                                                                                                              ";
