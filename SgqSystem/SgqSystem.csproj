@@ -317,6 +317,7 @@
     <Compile Include="Controllers\Api\UserSgqApiController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacaoController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacaoResultadosController.cs" />
+    <Compile Include="Controllers\Api\Volume\VolumeController.cs" />
     <Compile Include="Controllers\Api\VTVerificacaoTipificacaoApiController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ExemploInputController.cs" />
