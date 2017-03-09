@@ -691,14 +691,14 @@
 
         function ModalAcao(isOpenModal, isFukingNewClicked) {
 
-            if (!(planejamentoCorrentId > 0)) {
-                BuscarPlanejamentos();
-                return;
-            } else {
-                if (!$('#body > table').length) {
+            //if (!(planejamentoCorrentId > 0)) {
+            //    BuscarPlanejamentos();
+            //    return;
+            //} else {
+                //if (!$('#body > table').length) {
                     ModalOpcoesEstrategico('Planejamento Operacional', planejamentoCorrentId);
-                }
-            }
+                //}
+            //}
 
             if (isFukingNewClicked) {
 
@@ -948,6 +948,8 @@
                     { title: "Responsavel pelo Projeto/Iniciativa", mData: "Responsavel_Projeto_Quem.Name" },
                     /*Fim Tático*/
 
+                    { title: "Problema ou Desvio", mData: "Acao._Pa_Problema_Desvio_Id.Name" },
+                    { title: "Indicador Operacional", mData: "Acao._Pa_IndicadorSgqAcao.Name" },
                     { title: "Causa Genérica", mData: "Acao.CausaMedidasXAcao.CausaGenerica" },
                     { title: "Grupo Causa", mData: "Acao.CausaMedidasXAcao.GrupoCausa" },
                     { title: "Contramedida Genérica", mData: "Acao.CausaMedidasXAcao.ContramedidaGenerica" },
@@ -960,8 +962,14 @@
                     { title: "Pra que", mData: "Acao.PraQue" },
                     { title: "Quanto custa", mData: "Acao.QuantoCusta" },
                     { title: "Status", mData: "Acao.StatusName" },
-                    { title: "Prazo", mData: "Acao._Prazo" },
+                    { title: "Prazo", mData: "Acao._Prazo" },//29 + 2
                     /*Fim Operacional*/
+
+                    //{ title: "Data (Início)", mData: "_DataInicio" },
+                    //{ title: "Unidade", mData: "Acao.Unidade" },
+                    //{ title: "Indicadores do Projeto/Iniciativa", mData: "IndicadoresDeProjeto" },
+
+                    /*JBS hoje*/
 
                     //{ title: "Tema / Assunto", mData: "TemaAssunto" },
                     //{ title: "Indicador SGQ", mData: null },
@@ -1151,10 +1159,10 @@
                             bgColorStatus = "#ADD8E6";
                         } else if (data.Acao.StatusName.indexOf('Ativo') > -1 && data.Acao.StatusName.indexOf('Atrasado') > -1) {
                             bgColorStatus = "#458fa8"
-                        } else if (data.Acao.StatusName.indexOf('Concluído') > -1 && data.Acao.StatusName.indexOf('Prazo') > -1) {
+                        } else if (data.Acao.StatusName.indexOf('Concluído')/* > -1 && data.Acao.StatusName.indexOf('Prazo') > -1*/) {
                             bgColorPrazo = "rgb(126, 194, 253)";
                             bgColorStatus = "cyan"
-                        } else if (data.Acao.StatusName.indexOf('Concluído') > -1 && data.Acao.StatusName.indexOf('Atrasado') > -1) {
+                        } else if (data.Acao.StatusName.indexOf('Concluído') > -1 && data.Acao.StatusName.indexOf('Atraso') > -1) {
                             bgColorPrazo = "rgb(126, 194, 253)";
                             bgColorStatus = "steelblue"
                         } else if (data.Acao.StatusName.indexOf('Replanejado') > -1) {

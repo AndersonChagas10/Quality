@@ -125,34 +125,48 @@ namespace PlanoAcaoCore
         internal static Pa_CausaMedidasXAcao GetByAcaoId(int id)
         {
 
-            var query = "select * from Pa_GrupoCausa";
-            var GruposCausas = ListarGenerico<Pa_GrupoCausa>(query);
-
-            var query1 = "select * from Pa_ContramedidaGenerica";
-            var ContramedidasGenericas = ListarGenerico<Pa_ContramedidaGenerica>(query1);
-
-            var query2 = "select * from Pa_CausaGenerica";
-            var CausasGenericas = ListarGenerico<Pa_CausaGenerica>(query2);
-
-            var query4 = "select * from Pa_CausaEspecifica";
-            var causaEspecifica = ListarGenerico<Pa_CausaEspecifica>(query4);
-
-            var query5 = "select * from Pa_ContramedidaEspecifica";
-            var contramedidaEspecifica = ListarGenerico<Pa_ContramedidaEspecifica>(query5);
-
             var query3 = "select * from Pa_CausaMedidaXAcao where Acao_Id = " + id;
             var CausaMedidaXAcoes = GetGenerico<Pa_CausaMedidasXAcao>(query3);
 
-            CausaMedidaXAcoes.CausaGenerica = CausasGenericas.FirstOrDefault(r => r.Id == CausaMedidaXAcoes.CausaGenerica_Id)?.CausaGenerica;
+            if (CausaMedidaXAcoes != null)
+            {
+                if (CausaMedidaXAcoes.GrupoCausa_Id.GetValueOrDefault() > 0)
+                {
+                    var query = "select * from Pa_GrupoCausa where Id = " + id;
+                    var GruposCausas = ListarGenerico<Pa_GrupoCausa>(query);
+                    CausaMedidaXAcoes.GrupoCausa = GruposCausas.FirstOrDefault(r => r.Id ==     CausaMedidaXAcoes.GrupoCausa_Id)?.GrupoCausa;
+                }
 
-            CausaMedidaXAcoes.ContramedidaGenerica = ContramedidasGenericas.FirstOrDefault(r => r.Id == CausaMedidaXAcoes.ContramedidaGenerica_Id)?.ContramedidaGenerica;
+                if (CausaMedidaXAcoes.ContramedidaGenerica_Id.GetValueOrDefault() > 0)
+                {
+                    var query1 = "select * from Pa_ContramedidaGenerica where Id = " + id;
+                    var ContramedidasGenericas = ListarGenerico<Pa_ContramedidaGenerica>(query1);
+                    CausaMedidaXAcoes.ContramedidaGenerica = ContramedidasGenericas.FirstOrDefault(r => r.Id == CausaMedidaXAcoes.ContramedidaGenerica_Id)?.ContramedidaGenerica;
+                }
 
-            CausaMedidaXAcoes.GrupoCausa = GruposCausas.FirstOrDefault(r => r.Id == CausaMedidaXAcoes.GrupoCausa_Id)?.GrupoCausa;
+                if (CausaMedidaXAcoes.CausaGenerica_Id.GetValueOrDefault() > 0)
+                {
+                    var query2 = "select * from Pa_CausaGenerica where Id = " + id;
+                    var CausasGenericas = ListarGenerico<Pa_CausaGenerica>(query2);
+                    CausaMedidaXAcoes.CausaGenerica = CausasGenericas.FirstOrDefault(r => r.Id == CausaMedidaXAcoes.CausaGenerica_Id)?.CausaGenerica;
+                }
 
-            CausaMedidaXAcoes.CausaEspecifica = causaEspecifica.FirstOrDefault(r => r.Id == CausaMedidaXAcoes.CausaEspecifica_Id)?.Text;
+                if (CausaMedidaXAcoes.CausaEspecifica_Id.GetValueOrDefault() > 0)
+                {
+                    var query4 = "select * from Pa_CausaEspecifica where Id = " + id;
+                    var causaEspecifica = ListarGenerico<Pa_CausaEspecifica>(query4);
+                    CausaMedidaXAcoes.CausaEspecifica = causaEspecifica.FirstOrDefault(r => r.Id == CausaMedidaXAcoes.CausaEspecifica_Id)?.Text;
+                }
 
-            CausaMedidaXAcoes.ContramedidaEspecifica = contramedidaEspecifica.FirstOrDefault(r => r.Id == CausaMedidaXAcoes.ContramedidaEspecifica_Id)?.Text;
+                if (CausaMedidaXAcoes.ContramedidaEspecifica_Id.GetValueOrDefault() > 0)
+                {
+                    var query5 = "select * from Pa_ContramedidaEspecifica where Id = " + id;
+                    var contramedidaEspecifica = ListarGenerico<Pa_ContramedidaEspecifica>(query5);
+                    CausaMedidaXAcoes.ContramedidaEspecifica = contramedidaEspecifica.FirstOrDefault(r => r.Id == CausaMedidaXAcoes.ContramedidaEspecifica_Id)?.Text;
+                }
 
+            }
+            
             return CausaMedidaXAcoes;
         }
 
