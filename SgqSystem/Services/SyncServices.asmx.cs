@@ -2515,95 +2515,97 @@ namespace SgqSystem.Services
         }
         public string correctiveAction()
         {
-            string correctiveAction = "<div id=\"correctiveActionModal\" class=\"container panel panel-default modal-padrao\" style=\"display:none\">" +
-                                          "<div class=\"panel-body\">" +
-                                          "<!--<div class=\"modal-header\">" +
-                                          "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">×</button>" +
-                                          "</div>-->" +
-                                          "<div class=\"modal-body\">" +
-                                               "<h2>" + Resources.Resource.corrective_action + "</h2>" +
-                                          "<div id=\"messageAlert\" class=\"alert alert-info hide\" role=\"alert\">" +
-                                          "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>" +
-                                          "</div>" +
-                                          "<div class=\"row formCorrectiveAction\">" +
-                                            "<div class=\"panel panel-default\">" +
-                                                "<div class=\"panel-body\">" +
-                                                    "<div class=\"row\">" +
-                                                        "<div class=\"col-xs-6\" id=\"CorrectiveActionTaken\">" +
-                                                            "<b class=\"font16\">" + Resources.Resource.corrective_action_taken + ":<br /></b>" +
-                                                            "<b>" + Resources.Resource.date_time +":</b> <span id=\"datetime\"></span><br/>" +
-                                                            "<b>"+Resources.Resource.auditor+": </b><span id=\"auditor\"></span><br/>" +
-                                                            "<b>"+ Resources.Resource.shift + ": </b><span id=\"shift\"></span><br/>" +
-                                                            "</div>" +
-                                                            "<div class=\"col-xs-6\" id=\"AuditInformation\">" +
-                                                            "<b class=\"font16\">"+Resources.Resource.audit_information+":<br/></b>" +
-                                                            "<b>"+Resources.Resource.slaughter+": </b><span id=\"auditText\"></span><br/>" +
-                                                            "<b>"+Resources.Resource.initial_date+":</b><span id=\"starttime\"></span><br/>" +
-                                                            "<b>"+Resources.Resource.period+":</b><span id=\"correctivePeriod\"></span>" +
-                                                            "</div>" +
-                                                            "</div>" +
-                                                      "</div>" +
-                                                    "</div>" +
-                                                      "<div class=\"form-group\">" +
-                                                        "<label>"+Resources.Resource.failure_description + ":</label>" +
-                                                        "<textarea id=\"DescriptionFailure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
-                                                    "</div>" +
-                                                    "<div class=\"form-group\">" +
-                                                        "<label>"+Resources.Resource.immediate_corrective_action+ ":</label>" +
-                                                        "<textarea id=\"ImmediateCorrectiveAction\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
-                                                    "</div>" +
-                                                    "<div class=\"form-group\">" +
-                                                        "<label>"+Resources.Resource.product_disposition+":</label>" +
-                                                        "<textarea id=\"ProductDisposition\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
-                                                    "</div>" +
-                                                    "<div class=\"form-group\">" +
-                                                        "<label>"+Resources.Resource.preventive_measure + ":</label>" +
-                                                        "<textarea id=\"PreventativeMeasure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
-                                                    "</div>";
+            string correctiveAction = 
+                "<div id=\"correctiveActionModal\" class=\"container panel panel-default modal-padrao\" style=\"display:none\">" +
+                    "<div class=\"panel-body\">" +
+                        "<div class=\"modal-body\">" +
+                            "<h2>" + Resources.Resource.corrective_action + "</h2>" +
+                            "<div id=\"messageAlert\" class=\"alert alert-info hide\" role=\"alert\">" +
+                                "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>" +
+                            "</div>" +
+                            "<div class=\"row formCorrectiveAction\">" +
+                                "<div class=\"panel panel-default\">" +
+                                    "<div class=\"panel-body\">" +
+                                        "<div class=\"row\">" +
+                                            "<div class=\"col-xs-6\" id=\"CorrectiveActionTaken\">" +
+                                                "<b class=\"font16\">" + Resources.Resource.corrective_action_taken + ":<br /></b>" +
+                                                "<b>" + Resources.Resource.date_time +":</b> <span id=\"datetime\"></span><br/>" +
+                                                "<b>"+Resources.Resource.auditor+": </b><span id=\"auditor\"></span><br/>" +
+                                                "<b>"+ Resources.Resource.shift + ": </b><span id=\"shift\"></span><br/>" +
+                                            "</div>" +
+                                            "<div class=\"col-xs-6\" id=\"AuditInformation\">" +
+                                                "<b class=\"font16\">"+Resources.Resource.audit_information+":<br/></b>" +
+                                                "<b>"+Resources.Resource.slaughter+": </b><span id=\"auditText\"></span><br/>" +
+                                                "<b>"+Resources.Resource.initial_date+":</b><span id=\"starttime\"></span><br/>" +
+                                                "<b>"+Resources.Resource.period+":</b><span id=\"correctivePeriod\"></span>" +
+                                            "</div>" +
+                                        "</div>" +
+                                    "</div>" +
+                                "</div>" +
+                                "<div class=\"form-group\">" +
+                                    "<label>"+Resources.Resource.failure_description + ":</label>" +
+                                    "<textarea id=\"DescriptionFailure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
+                                "</div>" +
+                                "<div class=\"form-group\">" +
+                                    "<label>"+Resources.Resource.immediate_corrective_action+ ":</label>" +
+                                    "<textarea id=\"ImmediateCorrectiveAction\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
+                                "</div>" +
+                                "<div class=\"form-group\">" +
+                                    "<label>"+Resources.Resource.product_disposition+":</label>" +
+                                    "<textarea id=\"ProductDisposition\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
+                                "</div>" +
+                                "<div class=\"form-group\">" +
+                                    "<label>"+Resources.Resource.preventive_measure + ":</label>" +
+                                    "<textarea id=\"PreventativeMeasure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
+                                "</div>";
             if (GlobalConfig.Eua)
             {
-                correctiveAction += "<div class=\"row\">" +
-                                                     "<div class=\"col-xs-6\">" +
-                                                         "<div class=\"SlaugtherSignature hide\">" +
-                                                         "<h4>Slaughter Signature</h4>" +
-                                                         "<div class=\"name\">Admin</div>" +
-                                                         "<div class=\"date\">08/24/2016 10:31</div>" +
-                                                          "<button class=\"btn btn-link btnSlaugtherSignatureRemove\">Remove Signature</button>" +
-                                                     "</div>" +
-                                                 "</div>" +
-                                                 "<div class=\"col-xs-6\">" +
-                                                     "<div class=\"TechinicalSignature hide\">" +
-                                                     "<h4>Technical Signature</h4>" +
-                                                     "<div class=\"name\">Admin2</div>" +
-                                                     "<div class=\"date\">08/24/2016</div>" +
-                                                     "<button class=\"btn btn-link btnTechinicalSignatureRemove\">Remove Signature</button>" +
-                                                                 "</div>" +
-                                                             "</div>" +
-                                                         "</div>" +
-                                                     "</div>" +
-                                                 "</div>";
+                correctiveAction += 
+                                "<div class=\"row\">" +
+                                    "<div class=\"col-xs-6\">" +
+                                        "<div class=\"SlaugtherSignature hide\">" +
+                                            "<h4>Slaughter Signature</h4>" +
+                                            "<div class=\"name\">Admin</div>" +
+                                            "<div class=\"date\">08/24/2016 10:31</div>" +
+                                            "<button class=\"btn btn-link btnSlaugtherSignatureRemove\">Remove Signature</button>" +
+                                        "</div>" +
+                                    "</div>" +
+                                    "<div class=\"col-xs-6\">" +
+                                        "<div class=\"TechinicalSignature hide\">" +
+                                            "<h4>Technical Signature</h4>" +
+                                            "<div class=\"name\">Admin2</div>" +
+                                            "<div class=\"date\">08/24/2016</div>" +
+                                            "<button class=\"btn btn-link btnTechinicalSignatureRemove\">Remove Signature</button>" +
+                                        "</div>" +
+                                    "</div>" +
+                                "</div>";
             }
 
 
-            correctiveAction += "<div class=\"modal-footer\">";
+            correctiveAction += 
+                                "<div class=\"modal-footer\">";
 
             if (GlobalConfig.Eua)
             {
-                correctiveAction += "<span class=\"pull-left\">" +
-                                                        "<button class=\"btn btn-default btnSignature btnSlaugtherSignature\">" +
-                                                            Resources.Resource.slaughter_signature +
-                                                        "</button>" +
-                                                        "<button class=\"btn btn-default btnSignature btnTechinicalSignature\">" +
-                                                            Resources.Resource.technical_signature +
-                                                        "</button>" +
-                                                        "</span>";
+                correctiveAction += 
+                                    "<span class=\"pull-left\">" +
+                                        "<button class=\"btn btn-default btnSignature btnSlaugtherSignature\">" +
+                                            Resources.Resource.slaughter_signature +
+                                        "</button>" +
+                                        "<button class=\"btn btn-default btnSignature btnTechinicalSignature\">" +
+                                            Resources.Resource.technical_signature +
+                                        "</button>" +
+                                    "</span>";
             }
             
-            correctiveAction += "<button class=\"btn btn-danger modal-close-ca\">Fechar</button>" +
-                                                        "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">"+Resources.Resource.send+"</button>" +
-                                                    "</div>" +
-                                                "</div>" +
-                                                "</div>";
+            correctiveAction += 
+                                    "<button class=\"btn btn-danger modal-close-ca\">Fechar</button>" +
+                                    "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">"+Resources.Resource.send+"</button>" +
+                                "</div>" +
+                            "</div>" +
+                        "</div>" +
+                        "</div>" +
+                    "</div>";
 
             if (GlobalConfig.Eua)
             {
@@ -2645,7 +2647,8 @@ namespace SgqSystem.Services
                                 "<button type=\"button\" class=\"btn btn-primary\" id=\"btnSignatureLogin\">"+Resources.Resource.sign+"</button>"+
                             "</div>" +
                         "</div>" +
-                    "</div>";
+                    "</div>" +
+                "</div>";
             }
 
                 return correctiveAction;
