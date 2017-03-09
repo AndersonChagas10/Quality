@@ -18,6 +18,7 @@ using System.Threading;
 using System.Transactions;
 using System.Globalization;
 using System.Collections;
+using DTO;
 
 namespace SgqSystem.Services
 {
@@ -388,6 +389,7 @@ namespace SgqSystem.Services
                                 ProcessJson(null, iSql);
                             }
                         }
+                        
                         else
                         {
                             //Se não ocorre sem problemas, retorna um erro
@@ -1793,9 +1795,44 @@ namespace SgqSystem.Services
                     }
 
                     // Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\" havecorrectiveaction=\"false\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + "\"></div>";
-                    Results += "<div class=\"Resultlevel2\" AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + "\" LastLevel2AlertL1=\"" + consolidationResultL1L2.LastLevel2AlertL1 + "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + "\"  EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + "\"  DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + "\" Level1Id=\"" + Level2Result.ParLevel1_Id + "\" Level2Id=\"" + Level2Result.ParLevel2_Id + "\" UnitId=\"" + Level2Result.Unit_Id + "\" Shift=\"" + Level2Result.Shift + "\" Period=\"" + Level2Result.Period + "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + "\" Evaluation=\"" + Level2Result.EvaluateLast + "\" Sample=\"" + Level2Result.SampleLast + "\" havecorrectiveaction=\"" + consolidationResultL1L2.haveCorrectiveAction.ToString().ToLower() + "\" havereaudit=\"" + consolidationResultL1L2.haveReaudit.ToString().ToLower() + "\" reauditlevel=\"" + consolidationResultL1L2.ReauditLevel.ToString().ToLower() + "\" isreaudit=\""+consolidationResultL1L2.IsReaudit.ToString().ToLower()+"\" more3defectsEvaluate=\"" + consolidationResultL1L2.More3DefectsEvaluate + "\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + "\" CollectionLevel2_Period_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_Period_CorrectiveAction + "\">" +
-                                partialResults +
-                               "</div>";
+                    Results += "<div class=\"Resultlevel2\" "+
+                        "AlertLevelL1=\"" + consolidationResultL1L2.AlertLevelL1 + 
+                        "\" WeiEvaluationL1=\"" + consolidationResultL1L2.WeiEvaluationL1 + 
+                        "\" EvaluateTotalL1=\"" + consolidationResultL1L2.EvaluateTotalL1 + 
+                        "\" DefectsTotalL1=\"" + consolidationResultL1L2.DefectsTotalL1 + 
+                        "\" WeiDefectsL1=\"" + consolidationResultL1L2.WeiDefectsL1 + 
+                        "\" TotalLevel3EvaluationL1=\"" + consolidationResultL1L2.TotalLevel3EvaluationL1 + 
+                        "\" TotalLevel3WithDefectsL1=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL1 + 
+                        "\" LastEvaluationAlertL1=\"" + consolidationResultL1L2.LastEvaluationAlertL1 + 
+                        "\" LastLevel2AlertL1=\"" + consolidationResultL1L2.LastLevel2AlertL1 + 
+                        "\" EvaluatedResultL1=\"" + consolidationResultL1L2.EvaluatedResultL1 + 
+                        "\" DefectsResultL1=\"" + consolidationResultL1L2.DefectsResultL1 + 
+                        "\" EvaluateTotalL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + 
+                        "\" DefectsTotalL2=\"" + consolidationResultL1L2.DefectsTotalL2 + 
+                        "\" WeiEvaluationL2=\"" + consolidationResultL1L2.WeiEvaluationL2 + 
+                        "\" DefectsL2=\"" + consolidationResultL1L2.DefectsL2 + 
+                        "\" WeiDefectsL2=\"" + consolidationResultL1L2.WeiDefectsL2 + 
+                        "\" TotalLevel3WithDefectsL2=\"" + consolidationResultL1L2.TotalLevel3WithDefectsL2 + 
+                        "\" TotalLevel3EvaluationL2=\"" + consolidationResultL1L2.TotalLevel3EvaluationL2 + 
+                        "\" EvaluatedResultL2=\"" + consolidationResultL1L2.EvaluateTotalL2 + 
+                        "\" DefectsResultL2=\"" + consolidationResultL1L2.DefectsResultL2 + 
+                        "\" Level1Id=\"" + Level2Result.ParLevel1_Id + 
+                        "\" Level2Id=\"" + Level2Result.ParLevel2_Id + 
+                        "\" UnitId=\"" + Level2Result.Unit_Id + 
+                        "\" Shift=\"" + Level2Result.Shift + 
+                        "\" Period=\"" + Level2Result.Period + 
+                        "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + 
+                        "\" Evaluation=\"" + Level2Result.EvaluateLast + 
+                        "\" Sample=\"" + Level2Result.SampleLast + 
+                        "\" havecorrectiveaction=\"" + consolidationResultL1L2.haveCorrectiveAction.ToString().ToLower() + 
+                        "\" havereaudit=\"" + consolidationResultL1L2.haveReaudit.ToString().ToLower() + 
+                        "\" reauditlevel=\"" + consolidationResultL1L2.ReauditLevel.ToString().ToLower() + 
+                        "\" isreaudit=\""+consolidationResultL1L2.IsReaudit.ToString().ToLower()+
+                        "\" more3defectsEvaluate=\"" + consolidationResultL1L2.More3DefectsEvaluate + 
+                        "\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + 
+                        "\" CollectionLevel2_Period_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_Period_CorrectiveAction + "\">" +
+                           partialResults +
+                        "</div>";
                 }
             }
             return Results;
@@ -2484,7 +2521,7 @@ namespace SgqSystem.Services
                                           "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">×</button>" +
                                           "</div>-->" +
                                           "<div class=\"modal-body\">" +
-                                               "<h2>Ação Corretiva</h2>" +
+                                               "<h2>" + Resources.Resource.corrective_action + "</h2>" +
                                           "<div id=\"messageAlert\" class=\"alert alert-info hide\" role=\"alert\">" +
                                           "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>" +
                                           "</div>" +
@@ -2493,73 +2530,125 @@ namespace SgqSystem.Services
                                                 "<div class=\"panel-body\">" +
                                                     "<div class=\"row\">" +
                                                         "<div class=\"col-xs-6\" id=\"CorrectiveActionTaken\">" +
-                                                            "<b class=\"font16\">Ação Corretiva Tomada:<br /></b>" +
-                                                            "<b>Data/Hora:</b> <span id=\"datetime\"></span><br/>" +
-                                                            "<b> Auditor: </b><span id=\"auditor\"></span><br/>" +
-                                                            //"<b> Shift: </b><span id=\"shift\"></span><br/>" +
+                                                            "<b class=\"font16\">" + Resources.Resource.corrective_action_taken + ":<br /></b>" +
+                                                            "<b>" + Resources.Resource.date_time +":</b> <span id=\"datetime\"></span><br/>" +
+                                                            "<b>"+Resources.Resource.auditor+": </b><span id=\"auditor\"></span><br/>" +
+                                                            "<b>"+ Resources.Resource.shift + ": </b><span id=\"shift\"></span><br/>" +
                                                             "</div>" +
                                                             "<div class=\"col-xs-6\" id=\"AuditInformation\">" +
-                                                            "<b class=\"font16\">Informação da Auditoria:<br/></b>" +
-                                                            "<b>Indicador: </b><span id=\"auditText\"></span><br/>" +
-                                                            "<b>Data Início:</b><span id=\"starttime\"></span><br/>" +
-                                                            //"<b>Period:</b><span id=\"correctivePeriod\"></span>" +
+                                                            "<b class=\"font16\">"+Resources.Resource.audit_information+":<br/></b>" +
+                                                            "<b>"+Resources.Resource.slaughter+": </b><span id=\"auditText\"></span><br/>" +
+                                                            "<b>"+Resources.Resource.initial_date+":</b><span id=\"starttime\"></span><br/>" +
+                                                            "<b>"+Resources.Resource.period+":</b><span id=\"correctivePeriod\"></span>" +
                                                             "</div>" +
                                                             "</div>" +
                                                       "</div>" +
                                                     "</div>" +
                                                       "<div class=\"form-group\">" +
-                                                        "<label>Descrição da Falha:</label>" +
+                                                        "<label>"+Resources.Resource.failure_description + ":</label>" +
                                                         "<textarea id=\"DescriptionFailure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
                                                     "</div>" +
                                                     "<div class=\"form-group\">" +
-                                                        "<label>Ação corretiva imediata:</label>" +
+                                                        "<label>"+Resources.Resource.immediate_corrective_action+ ":</label>" +
                                                         "<textarea id=\"ImmediateCorrectiveAction\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
                                                     "</div>" +
                                                     "<div class=\"form-group\">" +
-                                                        "<label>Disposição do Produto:</label>" +
+                                                        "<label>"+Resources.Resource.product_disposition+":</label>" +
                                                         "<textarea id=\"ProductDisposition\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
                                                     "</div>" +
                                                     "<div class=\"form-group\">" +
-                                                        "<label>Medida Preventiva:</label>" +
+                                                        "<label>"+Resources.Resource.preventive_measure + ":</label>" +
                                                         "<textarea id=\"PreventativeMeasure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
-                                                    "</div>" +
-                                                    "<div class=\"row\">" +
-                                                        "<div class=\"col-xs-6\">" +
-                                                            "<div class=\"SlaugtherSignature hide\">" +
-                                                            "<h4>Slaughter Signature</h4>" +
-                                                            "<div class=\"name\">Admin</div>" +
-                                                            "<div class=\"date\">08/24/2016 10:31</div>" +
-                                                             "<button class=\"btn btn-link btnSlaugtherSignatureRemove\">Remove Signature</button>" +
-                                                        "</div>" +
-                                                    "</div>" +
-                                                    "<div class=\"col-xs-6\">" +
-                                                        "<div class=\"TechinicalSignature hide\">" +
-                                                        "<h4>Technical Signature</h4>" +
-                                                        "<div class=\"name\">Admin2</div>" +
-                                                        "<div class=\"date\">08/24/2016</div>" +
-                                                        "<button class=\"btn btn-link btnTechinicalSignatureRemove\">Remove Signature</button>" +
-                                                                    "</div>" +
-                                                                "</div>" +
-                                                            "</div>" +
-                                                        "</div>" +
-                                                    "</div>" +
-                                                    "<div class=\"modal-footer\">" +
-                                                        "<span class=\"pull-left\">" +
-                                                        //"<button class=\"btn btn-default btnSignature btnSlaugtherSignature hide\">" +
-                                                        //    "Slaughter Signature" +
-                                                        //"</button>" +
-                                                        //"<button class=\"btn btn-default btnSignature btnTechinicalSignature hide\">" +
-                                                        //    "Technical Signature" +
-                                                        //"</button>" +
-                                                        "</span>" +
+                                                    "</div>";
+            if (GlobalConfig.Eua)
+            {
+                correctiveAction += "<div class=\"row\">" +
+                                                     "<div class=\"col-xs-6\">" +
+                                                         "<div class=\"SlaugtherSignature hide\">" +
+                                                         "<h4>Slaughter Signature</h4>" +
+                                                         "<div class=\"name\">Admin</div>" +
+                                                         "<div class=\"date\">08/24/2016 10:31</div>" +
+                                                          "<button class=\"btn btn-link btnSlaugtherSignatureRemove\">Remove Signature</button>" +
+                                                     "</div>" +
+                                                 "</div>" +
+                                                 "<div class=\"col-xs-6\">" +
+                                                     "<div class=\"TechinicalSignature hide\">" +
+                                                     "<h4>Technical Signature</h4>" +
+                                                     "<div class=\"name\">Admin2</div>" +
+                                                     "<div class=\"date\">08/24/2016</div>" +
+                                                     "<button class=\"btn btn-link btnTechinicalSignatureRemove\">Remove Signature</button>" +
+                                                                 "</div>" +
+                                                             "</div>" +
+                                                         "</div>" +
+                                                     "</div>" +
+                                                 "</div>";
+            }
 
-                                                        "<button class=\"btn btn-danger modal-close-ca\">Fechar</button>" +
-                                                        "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">Enviar</button>" +
+
+            correctiveAction += "<div class=\"modal-footer\">";
+
+            if (GlobalConfig.Eua)
+            {
+                correctiveAction += "<span class=\"pull-left\">" +
+                                                        "<button class=\"btn btn-default btnSignature btnSlaugtherSignature\">" +
+                                                            Resources.Resource.slaughter_signature +
+                                                        "</button>" +
+                                                        "<button class=\"btn btn-default btnSignature btnTechinicalSignature\">" +
+                                                            Resources.Resource.technical_signature +
+                                                        "</button>" +
+                                                        "</span>";
+            }
+            
+            correctiveAction += "<button class=\"btn btn-danger modal-close-ca\">Fechar</button>" +
+                                                        "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">"+Resources.Resource.send+"</button>" +
                                                     "</div>" +
                                                 "</div>" +
                                                 "</div>";
 
-            return correctiveAction;
+            if (GlobalConfig.Eua)
+            {
+                correctiveAction += 
+                    "<div id=\"modalSignatureCorrectiveAction\" class=\"panel panel-default modal-padrao signature\" style=\"display:none\">"+
+                        "<div class=\"panel-body\">"+
+                            "<div class=\"modal-header\">"+
+                                "<h3 class=\"slaughtersig head hide\">"+Resources.Resource.slaughter_signature+"</h3>"+
+                                "<h3 class=\"techinicalsig head hide\">"+ Resources.Resource.technical_signature + "</h3>"+
+                                "<div id=\"messageAlert\" class=\"alert alert-info hide\">"+
+                                    "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>"+
+                                "</div>"+
+                            "</div>"+
+                            "<div class=\"modal-body\">"+
+                                "<div class=\"row\">"+
+                                    "<div class=\"col-xs-12\">"+
+                                        "<div class=\"form-group\">"+
+                                            "<label>"+Resources.Resource.login+":</label>"+
+                                            "<input type=\"text\" class=\"form-control\" id=\"signatureLogin\">"+
+                                        "</div>"+
+                                        "<div class=\"form-group\">"+
+                                            "<label>"+Resources.Resource.password+":</label>"+
+                                            "<input type=\"password\" class=\"form-control\" id=\"signaturePassword\">"+
+                                        "</div>"+
+                                        "<div id=\"messageError\" class=\"alert alert-danger hide\">"+
+                                            "<span class=\"icon-remove-sign\"></span><strong>"+Resources.Resource.error+"! </strong><span id=\"mensagemErro\"> </span>"+
+                                        "</div>"+
+                                        "<div id=\"messageAlert\" class=\"alert alert-info hide\">"+
+                                            "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>"+
+                                        "</div>"+
+                                        "<div id=\"messageSuccess\" class=\"alert alert-success hide\">"+
+                                            "<span id=\"mensagemSucesso\" class=\"icon-ok-circle\"></span>"+
+                                        "</div>"+
+                                    "</div>"+
+                                "</div>"+
+                            "</div>"+
+                            "<div class=\"modal-footer\">"+
+                                "<button class=\"btn btn-danger modal-close-signature\">"+Resources.Resource.close+"</button>"+
+                                "<button type=\"button\" class=\"btn btn-primary\" id=\"btnSignatureLogin\">"+Resources.Resource.sign+"</button>"+
+                            "</div>" +
+                        "</div>" +
+                    "</div>";
+            }
+
+                return correctiveAction;
         }
 
         public string footer()
@@ -3076,11 +3165,18 @@ namespace SgqSystem.Services
 
                 //                               classe: "painel painelLevel03 row");
 
+                string botoesTodos = null;
+
+                if (GlobalConfig.Brasil)
+                {
+                    botoesTodos +=
+                        "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>"+
+                        "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>";
+                }
+
                 string panelButton = html.listgroupItem(
                                                            outerhtml: accordeonbuttons +
-                                                                      "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
-
-                                                                      "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>",
+                                                                      botoesTodos,
                                                            classe: "painel painelLevel02 row"
                                                         );
 

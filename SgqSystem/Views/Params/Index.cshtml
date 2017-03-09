@@ -312,23 +312,23 @@
 
     $('#btnNewLevel3').click(function () {
         $('#parLevel3Select2').val('-1').trigger('select2:select').change();
-        $('#level3_collapse').collapse('show');
+        $('#level3_collapse').collapse('show'); 
         $('#paramsDto_parLevel3Dto_Name').focus();
     });
 
     var monthNames = [
-        '@Resources.Resource.january',
-        '@Resources.Resource.february',
-        '@Resources.Resource.march',
-        '@Resources.Resource.april',
-        '@Resources.Resource.may',
-        '@Resources.Resource.june',
-        '@Resources.Resource.july',
-        '@Resources.Resource.august',
-        '@Resources.Resource.september',
-        '@Resources.Resource.october',
-        '@Resources.Resource.november',
-        '@Resources.Resource.december'];
+        '@Html.Raw(Resources.Resource.january)',
+        '@Html.Raw(Resources.Resource.february)',
+        '@Html.Raw(Resources.Resource.march)',
+        '@Html.Raw(Resources.Resource.april)',
+        '@Html.Raw(Resources.Resource.may)',
+        '@Html.Raw(Resources.Resource.june)'),
+        '@Html.Raw(Resources.Resource.july)',
+        '@Html.Raw(Resources.Resource.august)',
+        '@Html.Raw(Resources.Resource.september)',
+        '@Html.Raw(Resources.Resource.october)',
+        '@Html.Raw(Resources.Resource.november)',
+        '@Html.Raw(Resources.Resource.december)'];
 
     function twoDigits(str) {
         str = ("000" + str).slice(-2);
