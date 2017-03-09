@@ -398,39 +398,39 @@
 
             if (
             indicador == 'Bois Abatidos' ||
-            //indicador == 'Manutenção R$' ||
+                //indicador == 'Manutenção R$' ||
             indicador == 'Eficiên.Programção' ||
             indicador == 'Apropr Planej...to' ||
             indicador == 'Scorecard Unidade' ||
-            //indicador == 'Scorecard Vácuo' ||
-            //indicador == 'Head Count' ||
-            //indicador == 'Scorecard Aspersão' ||
+                //indicador == 'Scorecard Vácuo' ||
+                //indicador == 'Head Count' ||
+                //indicador == 'Scorecard Aspersão' ||
             indicador == 'Scorecard Energia' ||
             indicador == 'Scorecard Vapor' ||
-            //indicador == 'Pilar Manutenção' ||
-            //indicador == 'Devoluções %' ||
-            //indicador == 'R$/CB Manut' ||
-            //indicador == 'R$/CB Manut+Utilid' ||
-            //indicador == 'Sobra de Animais' ||
-            //indicador == 'R$ Manut Comb.' ||
-            //indicador == 'Energia R$' ||
-            //indicador == 'KWh/Boi Proc' ||
-            //indicador == 'Caldeira R$' ||
-            //indicador == 'Mcal/Boi Proc' ||
+                //indicador == 'Pilar Manutenção' ||
+                //indicador == 'Devoluções %' ||
+                //indicador == 'R$/CB Manut' ||
+                //indicador == 'R$/CB Manut+Utilid' ||
+                //indicador == 'Sobra de Animais' ||
+                //indicador == 'R$ Manut Comb.' ||
+                //indicador == 'Energia R$' ||
+                //indicador == 'KWh/Boi Proc' ||
+                //indicador == 'Caldeira R$' ||
+                //indicador == 'Mcal/Boi Proc' ||
             indicador == 'Fator de Potência' ||
-            //indicador == 'Água M³/Boi' ||
-            //indicador == 'M³ de Lenha' ||
+                //indicador == 'Água M³/Boi' ||
+                //indicador == 'M³ de Lenha' ||
             indicador == 'Disponibilidade Ab' ||
             indicador == 'Disponibilidade Des' ||
             indicador == 'Disponibilidade Total' ||
             indicador == 'Paradas Total' ||
-            //indicador == 'KWh' ||
-            //indicador == 'Parada Abate (min)' ||
-            //indicador == 'Parada Des. (min)' ||
-            //indicador == 'OBRAS' ||
-            //indicador == 'Horas Extras R$' ||
-            //indicador == 'Horas Extras Nº' ||
-            //indicador == 'CAPEX' ||
+                //indicador == 'KWh' ||
+                //indicador == 'Parada Abate (min)' ||
+                //indicador == 'Parada Des. (min)' ||
+                //indicador == 'OBRAS' ||
+                //indicador == 'Horas Extras R$' ||
+                //indicador == 'Horas Extras Nº' ||
+                //indicador == 'CAPEX' ||
             indicador == 'Apropriação de O.S' ||
             indicador == 'CARTA METAS') {
                 corPositivo = '#ff7575';
@@ -1031,7 +1031,7 @@
             table.buttons(0, null).container().prependTo(
                 table.table().container()
             );
-           
+
             //Titulo da Tabela no modal
             $("#titleTable").empty();
             $("#titleTable").append("Tabela de Exportação - Indicador " + indicador + " de " + unidade + " - " + mes + "");
@@ -1125,10 +1125,15 @@
 
                 if ($('#tipoRelatorio option:selected').val() == "Por Unidade") {
                     $("#SubRegionalId option[value='Todas']").remove();
+                    $("#RegionalId option[value='Todas']").remove();
                     $("#mouthId").val(0);
+                    $('#RegionalId').change();
                     $('#SubRegionalId').change();
+                    
                 } else {
-                    $("#SubRegionalId").append('<option value="Todas">Todas</option>');
+                    $("#SubRegionalId").append('<option value="Todas">Todas</option>');                   
+                    $("#RegionalId").append('<option value="Todas">Todas</option>');
+                    $('#RegionalId').change();
                     $('#SubRegionalId').change();
                 }
 
@@ -1154,11 +1159,23 @@
 
                 $("#SubRegionalId").val($("#SubRegionalId").find("option:visible:first").val());
 
-                if ($('#tipoRelatorio option:selected').val() == "Por Unidade") {
-                    $("#SubRegionalId option[value='Todas']").hide();
+                if ($(this).val() == 'Todas') {
+
+                    $("#SubRegionalId").val(0);
+                    $("#SubRegionalId").prop('disabled', true);
 
                 } else {
-                    $("#SubRegionalId option[value='Todas']").show();
+
+                    $("#SubRegionalId").prop('disabled', false);
+
+                    if ($('#tipoRelatorio option:selected').val() == "Por Unidade") {
+                        $("#RegionalId option[value='Todas']").hide();
+                        $("#SubRegionalId option[value='Todas']").hide();
+
+                    } else {
+                        $("#RegionalId option[value='Todas']").show();
+                        $("#SubRegionalId option[value='Todas']").show();
+                    }
                 }
 
                 if (ConfirmaEnvio()) {
@@ -1257,20 +1274,54 @@
 
             switch (tipo) {
                 case "Por Unidade":
-                    if (tipo != undefined && indicador != undefined && unidade != "" && regional != undefined && subRegional != "" && ano != undefined && mes != undefined && indicador != undefined) {
+                    if (tipo != undefined &&
+                        indicador != undefined &&
+                        unidade != "" &&
+                        regional != undefined &&
+                        subRegional != "" &&
+                        ano != undefined &&
+                        mes != undefined &&
+                        indicador != undefined) {
                         return true;
                     } else
                         return false;
                     break;
                 case "Por Regional":
-                    if (tipo != undefined && indicador != undefined && regional != undefined && subRegional != "" && ano != undefined && mes != undefined && indicador != undefined) {
-                        return true;
-                    } else
-                        return false;
-                    break;
+
+                    if (regional == 'Todas') {
+
+                        if (tipo != undefined &&
+                            indicador != undefined &&
+                            regional != undefined &&
+                            //subRegional != "" &&
+                            ano != undefined &&
+                            mes != undefined &&
+                            indicador != undefined
+                            ) {
+                            return true;
+                        } else
+                            return false;
+                        break;
+
+                    } else {
+
+                        if (tipo != undefined &&
+                            indicador != undefined &&
+                            regional != undefined &&
+                            subRegional != "" &&
+                            ano != undefined &&
+                            mes != undefined &&
+                            indicador != undefined
+                            ) {
+                            return true;
+                        } else
+                            return false;
+                        break;
+                    }
                 default:
                     alert("Tipo de relatório inválido!");
                     break;
+
             }
         }
 

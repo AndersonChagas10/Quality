@@ -59,13 +59,33 @@ namespace SgqSystem.Controllers.Api.Manutencao
                     //return d;
                 }
 
+                //string sqlTarget = "select * into #ManColetaDadosRealConsolidado from ManColetaDadosRealConsolidado " +
 
-                if (mockRetorno)
-                {
-                    return "Salvo com Sucesso!";
-                }
-                else
-                    return "Sua meta para essa coleta é de 19% , com a informação de 20% ela foi reajustada para 18%";
+                //                    "\n UPDATE Coleta " +
+                //                    "\n SET Coleta.HeadCount_Meta = SgqDbDev.dbo.fn_ManColetaDadosMetas(Man.Base_parCompany_id, Man.Base_dateRef, Man.IndicadorReal) " +
+                //                    "\n FROM ManColetaDados Coleta " +
+                //                    "\n INNER JOIN #ManColetaDadosRealConsolidado Man " +
+                //                     "\n ON Coleta.Base_parCompany_id = Man.Base_parCompany_id " +
+                //                     "\n AND Coleta.Base_dateRef = Man.Base_dateRef " +
+                //                    "\n WHERE " +
+                //                     "\n Man.IndicadorMeta = " + obj.indicadorNome + "" +
+                //                    "\n AND " +
+                //                     "\n Coleta.Base_DateRef = '" + obj.data.ToString("yyyy-MM-dd HH:mm:ss") + "', " +
+                //                    "\n AND " +
+                //                     "\n Coleta.Base_parCompany_id = " + obj.parCompany + "";
+
+
+                //using (var db = new SgqDbDevEntities())
+                //{
+                //    var rs = db.Database.ExecuteSqlCommand(sql);
+                //}
+
+                    if (mockRetorno)
+                    {
+                        return "Salvo com Sucesso!";
+                    }
+                    else
+                        return "Sua meta para essa coleta é de 19% , com a informação de 20% ela foi reajustada para 18%";
 
             }
             catch (Exception e)
