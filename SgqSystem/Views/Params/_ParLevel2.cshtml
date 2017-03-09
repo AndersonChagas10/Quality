@@ -168,9 +168,9 @@
                         </div>
                     </div>
                 </div>
-
-                @Html.Partial("_ReincidenciaXLevel", Model)
-
+                <div class="hide">
+                    @Html.Partial("_ReincidenciaXLevel", Model)
+                </div>
                 @Html.Partial("_CounterXLevel", Model)
 
                 <button type="button" id="btnSaveNewLevel2" data-loading-text="@Resources.Resource.saving_the_level2" onclick="indexParamsLevel2.enviarDadosParaApi();" class="btn btn-warning">@Resources.Resource.save_level2</button>

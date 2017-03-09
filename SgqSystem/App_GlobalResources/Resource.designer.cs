@@ -2527,6 +2527,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The number of evaluations is completed..
+        /// </summary>
+        internal static string number_of_evaluation_completed {
+            get {
+                return ResourceManager.GetString("number_of_evaluation_completed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to October.
         /// </summary>
         internal static string october {
