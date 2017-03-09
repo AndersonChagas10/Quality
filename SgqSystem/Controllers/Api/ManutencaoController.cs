@@ -1285,52 +1285,52 @@ namespace SgqSystem.Controllers.Api
 
                 if (conta == "ENERGIA ELÉTRICA CONTRATADA")
                 {
-                    sql = "SELECT ";
-                    sql += "	EmpresaSigla ";
-                    sql += "	,CONCAT(YEAR(MesAno), '-', CASE WHEN LEN(MONTH(MesAno)) = 1 THEN CONCAT('0', CAST(MONTH(MesAno) AS VARCHAR)) ELSE CAST(MONTH(MesAno) AS VARCHAR) END) AnoMes ";
+                    sql = "\n SELECT ";
+                    sql += "\n 	EmpresaSigla ";
+                    sql += "\n 	,CONCAT(YEAR(MesAno), '-', CASE WHEN LEN(MONTH(MesAno)) = 1 THEN CONCAT('0', CAST(MONTH(MesAno) AS VARCHAR)) ELSE CAST(MONTH(MesAno) AS VARCHAR) END) AnoMes ";
 
-                    sql += "	,SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)) BOIS_MORTOS ";
+                    sql += "\n 	,SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)) BOIS_MORTOS ";
 
-                    sql += "	,SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE 0 END AS FLOAT)) BOIS_MARCADOS_PARA_MORRER ";
+                    sql += "\n 	,SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE 0 END AS FLOAT)) BOIS_MARCADOS_PARA_MORRER ";
 
-                    sql += "	,NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN ConsumoRealizado ELSE 0 END AS FLOAT)) ,0) ";
-                    sql += "			/  ";
-                    sql += "	 NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN ConsumoOrcado ELSE 0 END AS FLOAT)),0) - 1 AS DesvQtdeConsumoUN ";
+                    sql += "\n 	,NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN ConsumoRealizado ELSE 0 END AS FLOAT)) ,0) ";
+                    sql += "\n 			/  ";
+                    sql += "\n 	 NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN ConsumoOrcado ELSE 0 END AS FLOAT)),0) - 1 AS DesvQtdeConsumoUN ";
 
-                    sql += "	,NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)),0) ";
-                    sql += "			/  ";
-                    sql += "	 NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE 0 END AS FLOAT)),0) - 1 AS DesvQtdeBoi ";
+                    sql += "\n 	,NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)),0) ";
+                    sql += "\n 			/  ";
+                    sql += "\n 	 NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE 0 END AS FLOAT)),0) - 1 AS DesvQtdeBoi ";
 
-                    sql += "	,NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN ConsumoRealizado ELSE 0 END AS FLOAT)),0) ";
-                    sql += "		/  ";
-                    sql += "	 NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN ConsumoOrcado ELSE 0 END AS FLOAT)),0) - 1  AS DesvQtdeConsumoUN ";
+                    sql += "\n 	,NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN ConsumoRealizado ELSE 0 END AS FLOAT)),0) ";
+                    sql += "\n 		/  ";
+                    sql += "\n 	 NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN ConsumoOrcado ELSE 0 END AS FLOAT)),0) - 1  AS DesvQtdeConsumoUN ";
 
-                    sql += "	,NULLIF(SUM(CAST(CASE WHEN ContaContabil = 'ÁGUA' AND TipoInformacao = 'CustoFixo' THEN DespesaRealizada ELSE 0 END AS FLOAT)),0)  ";
-                    sql += "			/  ";
-                    sql += "	 NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN ConsumoRealizado ELSE 0 END AS FLOAT)),0) ";
-                    sql += "		/  ";
-                    sql += "	 (NULLIF(SUM(CAST(CASE WHEN ContaContabil = 'ÁGUA' AND TipoInformacao = 'CustoFixo' THEN DespesaOrcada ELSE 0 END AS FLOAT)),0) ";
-                    sql += "			/  ";
-                    sql += "	  NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN ConsumoOrcado ELSE 0 END AS FLOAT)),0)) - 1 AS DesvPrecoUN ";
+                    sql += "\n 	,NULLIF(SUM(CAST(CASE WHEN ContaContabil = 'ENERGIA ELÉTRICA CONTRATADA' AND TipoInformacao = 'CustoFixo' THEN DespesaRealizada ELSE 0 END AS FLOAT)),0)  ";
+                    sql += "\n 			/  ";
+                    sql += "\n 	 NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN ConsumoRealizado ELSE 0 END AS FLOAT)),0) ";
+                    sql += "\n 		/  ";
+                    sql += "\n 	 (NULLIF(SUM(CAST(CASE WHEN ContaContabil = 'ENERGIA ELÉTRICA CONTRATADA' AND TipoInformacao = 'CustoFixo' THEN DespesaOrcada ELSE 0 END AS FLOAT)),0) ";
+                    sql += "\n 			/  ";
+                    sql += "\n 	  NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN ConsumoOrcado ELSE 0 END AS FLOAT)),0)) - 1 AS DesvPrecoUN ";
 
-                    sql += "	,NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN ConsumoRealizado ELSE 0 END AS FLOAT)),0) ";
-                    sql += "			/  ";
-                    sql += "	 NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)),0)  ";
-                    sql += "		/  ";
-                    sql += "	 NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN ConsumoOrcado ELSE 0 END AS FLOAT)),0)  ";
-                    sql += "			/ ";
-                    sql += "	 NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE 0 END AS FLOAT)),0) AS DesvUNBoi ";
-                    sql += "FROM ";
-                    sql += "manutencao ";
-                    sql += "WHERE ";
-                    sql += sqlData;
+                    sql += "\n 	,(NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN ConsumoRealizado ELSE 0 END AS FLOAT)),0) ";
+                    sql += "\n 			/  ";
+                    sql += "\n 	 NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)),0)  ";
+                    sql += "\n 		)/(  ";
+                    sql += "\n 	 NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '001.KWH. Energia Eletrica - Concessionaria' THEN ConsumoOrcado ELSE 0 END AS FLOAT)),0)  ";
+                    sql += "\n 			/ ";
+                    sql += "\n 	 NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE 0 END AS FLOAT)),0)) -1 AS DesvUNBoi ";
+                    sql += "\n FROM ";
+                    sql += "\n manutencao ";
+                    sql += "\n WHERE ";
+                    sql += "\n " + sqlData;
                     //sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
-                    sql += "and EmpresaSigla = \'" + unidadeDecode + "\' ";
-                    sql += regionaisFiltradas;
-                    sql += "GROUP BY ";
-                    sql += "EmpresaSigla, CONCAT(YEAR(MesAno), '-', CASE WHEN LEN(MONTH(MesAno)) = 1 THEN CONCAT('0', CAST(MONTH(MesAno) AS VARCHAR)) ELSE CAST(MONTH(MesAno) AS VARCHAR) END)  ";
+                    sql += "\n and EmpresaSigla = \'" + unidadeDecode + "\' ";
+                    sql += "\n "+ regionaisFiltradas;
+                    sql += "\n GROUP BY ";
+                    sql += "\n EmpresaSigla, CONCAT(YEAR(MesAno), '-', CASE WHEN LEN(MONTH(MesAno)) = 1 THEN CONCAT('0', CAST(MONTH(MesAno) AS VARCHAR)) ELSE CAST(MONTH(MesAno) AS VARCHAR) END)  ";
                     //sql += "HAVING SUM(CAST(CASE WHEN TipoConsumo = '002.M3. Agua' then(CASE WHEN ConsumoRealizado = 0 THEN ConsumoOrcado ELSE ConsumoRealizado END) ELSE 0 END AS FLOAT)) > 0 ";
-                    sql += "ORDER BY 2 ";
+                    sql += "\n ORDER BY 2 ";
                 }
                 else if (conta == "COMBUSTÍVEL PARA CALDEIRA")
                 {
@@ -1354,21 +1354,21 @@ namespace SgqSystem.Controllers.Api
                     sql += "		/  ";
                     sql += "	 NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN ConsumoOrcado ELSE 0 END AS FLOAT)),0) - 1  AS DesvQtdeConsumoUN ";
 
-                    sql += "	,NULLIF(SUM(CAST(CASE WHEN ContaContabil = 'ÁGUA' AND TipoInformacao = 'CustoFixo' THEN DespesaRealizada ELSE 0 END AS FLOAT)),0)  ";
+                    sql += "	,NULLIF(SUM(CAST(CASE WHEN ContaContabil = 'COMBUSTÍVEL PARA CALDEIRA' AND TipoInformacao = 'CustoFixo' THEN DespesaRealizada ELSE 0 END AS FLOAT)),0)  ";
                     sql += "			/  ";
                     sql += "	 NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN ConsumoRealizado ELSE 0 END AS FLOAT)),0) ";
                     sql += "		/  ";
-                    sql += "	 (NULLIF(SUM(CAST(CASE WHEN ContaContabil = 'ÁGUA' AND TipoInformacao = 'CustoFixo' THEN DespesaOrcada ELSE 0 END AS FLOAT)),0) ";
+                    sql += "	 (NULLIF(SUM(CAST(CASE WHEN ContaContabil = 'COMBUSTÍVEL PARA CALDEIRA' AND TipoInformacao = 'CustoFixo' THEN DespesaOrcada ELSE 0 END AS FLOAT)),0) ";
                     sql += "			/  ";
                     sql += "	  NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN ConsumoOrcado ELSE 0 END AS FLOAT)),0)) - 1 AS DesvPrecoUN ";
 
-                    sql += "	,NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN ConsumoRealizado ELSE 0 END AS FLOAT)),0) ";
+                    sql += "	,(NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN ConsumoRealizado ELSE 0 END AS FLOAT)),0) ";
                     sql += "			/  ";
                     sql += "	 NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)),0)  ";
-                    sql += "		/  ";
+                    sql += "		)/(  ";
                     sql += "	 NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '003.MCAL. Vapor' THEN ConsumoOrcado ELSE 0 END AS FLOAT)),0)  ";
                     sql += "			/ ";
-                    sql += "	 NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE 0 END AS FLOAT)),0) AS DesvUNBoi ";
+                    sql += "	 NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE 0 END AS FLOAT)),0))-1 AS DesvUNBoi ";
 
                     sql += "FROM ";
                     sql += "manutencao ";
@@ -1412,13 +1412,13 @@ namespace SgqSystem.Controllers.Api
                     sql += "			/  ";
                     sql += "	  NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '002.M3. Agua' THEN ConsumoOrcado ELSE 0 END AS FLOAT)),0)) - 1 AS DesvPrecoUN ";
 
-                    sql += "	,NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '002.M3. Agua' THEN ConsumoRealizado ELSE 0 END AS FLOAT)),0) ";
+                    sql += "	,(NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '002.M3. Agua' THEN ConsumoRealizado ELSE 0 END AS FLOAT)),0) ";
                     sql += "			/  ";
                     sql += "	 NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoRealizada ELSE 0 END AS FLOAT)),0)  ";
-                    sql += "		/  ";
+                    sql += "		)/(  ";
                     sql += "	 NULLIF(SUM(CAST(CASE WHEN TipoConsumo = '002.M3. Agua' THEN ConsumoOrcado ELSE 0 END AS FLOAT)),0)  ";
                     sql += "			/ ";
-                    sql += "	 NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE 0 END AS FLOAT)),0) AS DesvUNBoi ";
+                    sql += "	 NULLIF(SUM(CAST(CASE WHEN TipoProducao = '011.QT. Bois Processados' THEN ProducaoOrcada ELSE 0 END AS FLOAT)),0))-1 AS DesvUNBoi ";
 
                     sql += " FROM Manutencao ";
                     sql += " WHERE ";
