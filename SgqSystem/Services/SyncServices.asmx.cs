@@ -2487,7 +2487,7 @@ namespace SgqSystem.Services
                            "            <div class=\"buttonMenu navbar-brand hide\" id=\"btnShowImage\" level01id=\"2\">Show Image</div>                                                                        " +
                            selectUserCompanys(UserSgq_Id, ParCompany_Id) +
                            "            <span style='color: #ffffff; margin: 14px;' class='period'></span> / <span style='color: #ffffff; margin: 14px;' class='shift'>shift</span> " +
-                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px;\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div><span id='btnDate' style='color: #ffffff; margin: 14px;' class='atualDate pull-right'></span>" +
+                           "            <div id=\"btnMore\" class=\"iconMoreMenu pull-right\" style=\"padding: 12px; margin-right: 10px\"><i class=\"fa fa-ellipsis-v iconMoreMenu\" aria-hidden=\"true\"></i></div><span id='btnDate' style='color: #ffffff; margin: 14px;' class='atualDate pull-right'></span>" +
                            "        </div>                                                                                                                                                                      " +
                            "    </div>                                                                                                                                                                          " +
                            "</div>                                                                                                                                                                              ";
@@ -3980,13 +3980,19 @@ namespace SgqSystem.Services
                 //+
                 //                                html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
-                string panelButton = html.listgroupItem(
-                                                           outerhtml: accordeonbuttons +
-                                                                      "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right btnAllNA'> Todos N/A </button>" +
 
-                                                                      "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right  btnAllNC' style='margin-right: 10px;'> Clicar em Todos </button>",
-                                                           classe: "painel painelLevel02 row"
-                                                        );
+                string botoesTodos = null;
+
+                if (GlobalConfig.Brasil)
+                {
+                    botoesTodos = "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right btnAllNA'> Todos N/A </button>" +
+                                  "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right  btnAllNC' style='margin-right: 10px;'> Clicar em Todos </button>";
+                }
+
+                string panelButton = html.listgroupItem(
+                                                        outerhtml: accordeonbuttons + botoesTodos,
+                                                        classe: "painel painelLevel02 row"
+                                                    );
 
                 //Se tiver level3 gera o agrupamento no padrão
                 if (!string.IsNullOrEmpty(parLevel3Group) && ParLevel1.HasGroupLevel2 != true)
