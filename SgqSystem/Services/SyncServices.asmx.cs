@@ -2311,11 +2311,11 @@ namespace SgqSystem.Services
             
             string breadCrumb = "<ol class=\"breadcrumb\" breadmainlevel=\"Slaughter\"></ol>";
 
-            string selectPeriod = html.option("0", "Select the period...") +
-                              html.option("1", "Period 1") +
-                              html.option("2", "Period 2") +
-                              html.option("3", "Period 3") +
-                              html.option("4", "Period 4");
+            string selectPeriod = html.option("0", Resources.Resource.select_the_period) +
+                              html.option("1", Resources.Resource.period+" 1") +
+                              html.option("2", Resources.Resource.period+" 2") +
+                              html.option("3", Resources.Resource.period+" 3") +
+                              html.option("4", Resources.Resource.period+" 4");
 
             selectPeriod = html.select(selectPeriod, id: "period", classe: "period", style: "width: 160px");
 
@@ -2428,7 +2428,7 @@ namespace SgqSystem.Services
                                        buttons +
                                        footer(),
                              classe: "App hide",
-                             tags: "breadmainlevel=\"Indicadores\" culture=\"" + culture + "\" turningtime=\"03:00\""
+                             tags: "breadmainlevel=\""+Resources.Resource.slaughter + "\" culture=\"" + culture + "\" turningtime=\"03:00\""
                            ) +
                            correctiveAction() +
                            viewModal +
@@ -2872,12 +2872,12 @@ namespace SgqSystem.Services
                 #region Cabecalhos e Contadores
                 string headerCounter =
                                      html.div(
-                                               outerhtml: "<b>Av.</b>",
+                                               outerhtml: "<b>"+Resources.Resource.ev+"</b>",
                                                classe: "col-xs-6",
                                                style: "text-align:center"
                                              ) +
                                      html.div(
-                                               outerhtml: "<b>Am.</b>",
+                                               outerhtml: "<b>"+ Resources.Resource.sd + "</b>",
                                                classe: "col-xs-6",
                                                style: "text-align:center"
                                               );
@@ -3345,11 +3345,11 @@ namespace SgqSystem.Services
 
                 //Avaliações e amostas para painel
                 string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + Resources.Resource.evaluation + "</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+Resources.Resource.samples+"</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -3588,11 +3588,11 @@ namespace SgqSystem.Services
 
                 //Avaliações e amostas para painel
                 string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + Resources.Resource.evaluation +"</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+Resources.Resource.samples +"</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -3737,11 +3737,11 @@ namespace SgqSystem.Services
                                     classe: "col-xs-6");
 
                 string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+Resources.Resource.evaluation+"</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+Resources.Resource.samples+"</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -3842,11 +3842,11 @@ namespace SgqSystem.Services
 
                 //Avaliações e amostas para painel
                 string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Avaliações</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+Resources.Resource.evaluation+"</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">Amostras</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + Resources.Resource.samples + "</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -4144,9 +4144,9 @@ namespace SgqSystem.Services
             if (configuracoes != null && configuracoes.HaveShitLogin == true)
             {
                 inputsDesabilitados = true;
-                selectShit = html.option("0", "Select the shift") +
-                              html.option("1", "Shift A") +
-                              html.option("2", "Shift B");
+                selectShit = html.option("0", Resources.Resource.select_the_shift) +
+                              html.option("1", Resources.Resource.shift_a) +
+                              html.option("2", Resources.Resource.shift_b);
 
                 selectShit = html.select(selectShit, id: "shift");
             }

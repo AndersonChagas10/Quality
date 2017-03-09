@@ -1,4 +1,5 @@
-﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+﻿@using DTO
+@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
 @{
     var GetListLevel1 = Url.Action("GetListLevel1", "api/ParamsApi");
     var GetListLevel2 = Url.Action("GetListLevel2", "api/ParamsApi");
@@ -496,7 +497,7 @@
                         <td><input type="radio" name="optradio" value="Sebo Flotado">Sebo Flotado</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="optradio" value="Rend.(Sebo+Farinha)">Rend.(Sebo+Farinha)</td>
+                        <td><input type="radio" name="optradio" value="Rend.(Sebo+Farinha)">Rend.(Sebo+Farinha) %</td>
                     </tr>
                     <tr class="tituloIndicadores">
                         <td colspan="2">Custos & Indicadores Técnicos</td>
@@ -558,20 +559,20 @@
                         <td><input type="radio" name="optradio" value="Paradas Total">Paradas Total</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="optradio" value="Disponibilidade Ab">Disponibilidade Ab</td>
-                        <td><input type="radio" name="optradio" value="Disponibilidade Des">Disponibilidade Des</td>
+                        <td><input type="radio" name="optradio" value="Disponibilidade Ab">Disponibilidade Ab %</td>
+                        <td><input type="radio" name="optradio" value="Disponibilidade Des">Disponibilidade Des %</td>
                     </tr>
                     <tr>
                         <td><input type="radio" name="optradio" value="Parada Abate (min)">Parada Abate (min)</td>
                         <td><input type="radio" name="optradio" value="Parada Des. (min)">Parada Des. (min)</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="optradio" value="Eficiên.Programção">Eficiên.Programção</td>
-                        <td><input type="radio" name="optradio" value="Apropr Planej...to">Apropr Planej...to</td>
+                        <td><input type="radio" name="optradio" value="Eficiên.Programção">Eficiên.Programção %</td>
+                        <td><input type="radio" name="optradio" value="Apropr Planej...to">Apropr Planej...to %</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="optradio" value="Apropriação de O.S">Apropriação de O.S</td>
-                        <td><input type="radio" name="optradio" value="Pilar Manutenção">Pilar Manutenção</td>
+                        <td><input type="radio" name="optradio" value="Apropriação de O.S">Apropriação de O.S %</td>
+                        <td><input type="radio" name="optradio" value="Pilar Manutenção">Pilar Manutenção %</td>
                     </tr>
                     <tr>
                         <td><input type="radio" name="optradio" value="Nº OS Programadas">Nº OS Programadas</td>
@@ -582,14 +583,15 @@
                         <td><input type="radio" name="optradio" value="Nº OS Executadas">Nº OS Executadas</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="optradio" value="CARTA METAS">CARTA METAS</td>
+                        <td><input type="radio" name="optradio" value="CARTA METAS">CARTA METAS %</td>
                     </tr>
                     <tr class="tituloIndicadores">
                         <td colspan="2">Motivação</td>
                     </tr>
                     <tr>
                         <td><input type="radio" name="optradio" value="Head Count">Head Count</td>
-                        <td><input type="radio" name="optradio" value="Absenteísmo">Absenteísmo</td>
+                        <td><input type="radio" name="optradio" value="Rotatividade">Rotatividade %</td>
+                        @*<td><input type="radio" name="optradio" value="Absenteísmo">Absenteísmo</td>*@
                     </tr>
                     <tr>
                         <td><input type="radio" name="optradio" value="Horas Extras R$">Horas Extras R$</td>
@@ -604,36 +606,36 @@
                         <td><input type="radio" name="optradio" value="Nº Colaboradores Registrados">Nº Colaboradores Registrados</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="optradio" value="Taxa de Frequência">Taxa de Frequência</td>
-                        <td><input type="radio" name="optradio" value="Rotatividade">Rotatividade</td>
+                        <td><input type="radio" name="optradio" value="Taxa de Frequência">Taxa de Frequência %</td>
+                        
                     </tr>
                     <tr class="tituloIndicadores">
                         <td colspan="2">Parâmetros De Continuidade</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="optradio" value="Scorecard Água">Scorecard Água</td>
-                        <td><input type="radio" name="optradio" value="Scorecard Aspersão">Scorecard Aspersão</td>
+                        <td><input type="radio" name="optradio" value="Scorecard Água">Scorecard Água %</td>
+                        <td><input type="radio" name="optradio" value="Scorecard Aspersão">Scorecard Aspersão %</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="optradio" value="Scorecard Unidade">Scorecard Unidade</td>
-                        <td><input type="radio" name="optradio" value="Scorecard Energia">Scorecard Energia</td>
+                        <td><input type="radio" name="optradio" value="Scorecard Unidade">Scorecard Unidade %</td>
+                        <td><input type="radio" name="optradio" value="Scorecard Energia">Scorecard Energia %</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="optradio" value="Scorecard Vácuo">Scorecard Vácuo</td>
-                        <td><input type="radio" name="optradio" value="Scorecard Vapor">Scorecard Vapor</td>
+                        <td><input type="radio" name="optradio" value="Scorecard Vácuo">Scorecard Vácuo %</td>
+                        <td><input type="radio" name="optradio" value="Scorecard Vapor">Scorecard Vapor %</td>
                     </tr>
-                    <tr>
+                    @*<tr>
                         <td><input type="radio" name="optradio" value="Devoluções %">Devoluções %</td>
                         <td><input type="radio" name="optradio" value="Devoluções R$">Devoluções R$</td>
-                    </tr>
+                    </tr>*@
                     <tr>
-                        <td><input type="radio" name="optradio" value="Scorecard M. Amb">Scorecard M. Amb</td>
+                        <td><input type="radio" name="optradio" value="Scorecard M. Amb">Scorecard M. Amb %</td>
                     </tr>
                     <tr class="tituloIndicadores">
                         <td colspan="2">OBRAS</td>
                     </tr>
                     <tr>
-                        <td><input type="radio" name="optradio" value="CAPEX">CAPEX</td>
+                        <td><input type="radio" name="optradio" value="CAPEX">CAPEX R$</td>
                         <td><input type="radio" name="optradio" value="OBRAS">OBRAS</td>
                     </tr>
                 </table>
@@ -856,6 +858,42 @@
             enviar['startDate'] = start.format();
             enviar['endDate'] = end.format();
         }
+        var configQueryData = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+        var configCallendar = {};
+        if(configQueryData){
+            $('#reportrange').daterangepicker({
+                startDate: start,
+                endDate: end,
+                //opens: "left",
+                locale: {
+                    "format": "DD/MM/YYYY",
+                    "separator": " - ",
+                    "applyLabel": "Aplicar",
+                    "cancelLabel": "Cancelar",
+                    "customRangeLabel": "Seleção",
+                },
+                //autoApply: false,
+                alwaysShowCalendars: true,
+                showDropdowns: true,
+                ranges: rangesBR,
+                linkedCalendars: false
+            }, cb);
+        }else{
+            $('#reportrange').daterangepicker({
+                startDate: start,
+                endDate: end,
+                //autoApply: false,
+                locale: {
+                    "format": "MM/DD/YYYY",
+                    "separator": " - ",
+                },
+                alwaysShowCalendars: true,
+                showDropdowns: true,
+                ranges: rangesBR,
+                linkedCalendars: false
+            }, cb);
+        }
+        
 
         $('#reportrange').daterangepicker({
             startDate: start,

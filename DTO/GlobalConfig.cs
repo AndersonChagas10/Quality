@@ -7,6 +7,7 @@ namespace DTO
 
         public static bool Brasil { get; set; } = false;
         public static bool Eua { get; set; } = true;
+
         public static string linkDataCollect
         {
             get
@@ -19,7 +20,9 @@ namespace DTO
 
                 return retorno;
             }
+            set { linkDataCollect = value; }
         }
+
         public static bool corrigeLinkDataCollect { get; set; } = false;
         public static bool linkDataCollectJaConfigurado { get; set; } = false;
 
