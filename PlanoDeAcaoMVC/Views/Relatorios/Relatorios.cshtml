@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width" />
     <title>Relatorios - Plano de Ação</title>
 
-   @*<script src="https://code.jquery.com/jquery-1.11.3.js"></script>*@
+    @*<script src="https://code.jquery.com/jquery-1.11.3.js"></script>*@
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
     @*<script src="https://code.highcharts.com/highcharts.js"></script>*@
@@ -20,15 +20,15 @@
     <link href="~/Content/Reports/Reports1.css" rel="stylesheet" />
     <script src="~/Scripts/Reports/Reports1.js"></script>
 
-   @* <!-- Bootstrap core CSS -->
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    @* <!-- Bootstrap core CSS -->
+        <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="http://getbootstrap.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <link href="http://getbootstrap.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
-*@
+        <!-- Custom styles for this template -->
+        <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
+    *@
 
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
@@ -47,12 +47,12 @@
 
     @*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/r/bs-3.3.5/jq-2.1.4,dt-1.10.8/datatables.min.css" />
 
-    <script type="text/javascript" src="https://cdn.datatables.net/r/bs-3.3.5/jqc-1.11.3,dt-1.10.8/datatables.min.js"></script>*@
+        <script type="text/javascript" src="https://cdn.datatables.net/r/bs-3.3.5/jqc-1.11.3,dt-1.10.8/datatables.min.js"></script>*@
 
     <script type="text/javascript" charset="utf-8">
-      $(document).ready(function() {
-          //$('#exampleTD1').DataTable();
-      });
+        $(document).ready(function () {
+            //$('#exampleTD1').DataTable();
+        });
 
     </script>
 
@@ -99,7 +99,7 @@
                     </li>
                 </ul>-->
                 <ul class="nav navbar-nav navbar-right">
-                    
+
                     <li class="active"><a href="#">By GRJ Soluções</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
@@ -314,21 +314,19 @@
                 </div>
             </div>
         </div>
-</div>
+    </div>
 
-        <!-- Bootstrap core JavaScript
-        ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>*@
+    @*<script>window.jQuery || document.write('<script src="http://getbootstrap.com/assets/js/vendor/jquery.min.js"><\/script>')</script>*@
 
+    <script src="~/Scripts/Reports/Rewrer.js"></script>
 
-        @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>*@
-        @*<script>window.jQuery || document.write('<script src="http://getbootstrap.com/assets/js/vendor/jquery.min.js"><\/script>')</script>*@
-
-    <script src="~/Scripts/Reports/Rewrer.js"></script> 
-
-     @*<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>*@
-        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        @*<script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>*@
+    @*<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>*@
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    @*<script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>*@
 
 </body>
 
@@ -336,6 +334,12 @@
 
 <script>
 
+    function MapeiaValorParaHC(array, prop) {
+        var arrayRetorno = $.map(array, function (o, c) {
+            return o[prop];
+        });
+        return arrayRetorno;
+    }
 
     // Radialize the colors
     Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
@@ -358,7 +362,7 @@
                 { name: 'Concluído (Prazo)', y: 17 },
                 { name: 'Concluído (Atrasado)', y: 8 },
                 { name: 'Replanejado', y: 4 },
-                { name: 'Cancelado', y: 16 }        
+                { name: 'Cancelado', y: 16 }
     ];
 
     acoesConcluidas = 25;
@@ -380,15 +384,51 @@
     tituloBar = 'Status das Ações por Indicadores';
     tituloColumn = 'Status das Ações por Responsável';
 
-    categoriesBar = ['Indicador 1', 'Indicador 2', 'Indicador 3',];
-    categoriesColumn = ['Pessoa 1', 'Pessoa 2', 'Pessoa 3',];
+    categoriesBar = ['Indicador 1', 'Indicador 2', 'Indicador 3', ];
+    categoriesColumn = ['Pessoa 1', 'Pessoa 2', 'Pessoa 3', ];
+
+    //seriesBar = [{
+    //    name: 'Ativo',
+    //    data: [11, 20, 2]
+    //}, {
+    //    name: 'Ativo (Atrasado)',
+    //    data: [7, 7, 7]
+    //}, {
+    //    name: 'Concluído (Prazo)',
+    //    data: [1, 10, 6]
+    //}, {
+    //    name: 'Concluído (Atrasado)',
+    //    data: [0, 4, 4]
+    //}, {
+    //    name: 'Replanejado',
+    //    data: [2, 0, 2]
+    //}, {
+    //    name: 'Cancelado',
+    //    data: [2, 6, 6]
+    //}];
+
+    $.post('http://localhost:59908/api/Relatorios/GetGrafico1', { dataInicio: '20170201', dataFim: '20170401' }, function (r) {
+        console.log(r);
+
+        seriesBar = [];
+
+        r.forEach(function (o, c) {
+            var objSerie = {};
+            categoriesBar.push(MapeiaValorParaHC(r, "filtro").filtro)
+            objSerie["Name"] = o.status;
+            objSerie["data"] = MapeiaValorParaHC(o, "quantidade").quantidade;
+            seriesBar.push(objSerie);
+        })
+        
+
+    })
 
     seriesBar = [{
         name: 'Ativo',
-        data: [11, 20, 2] 
+        data: [11, 20, 2]
     }, {
         name: 'Ativo (Atrasado)',
-        data: [7, 7, 7] 
+        data: [7, 7, 7]
     }, {
         name: 'Concluído (Prazo)',
         data: [1, 10, 6]
@@ -405,10 +445,10 @@
 
     seriesColumn = [{
         name: 'Ativo',
-        data: [11, 20, 2] 
+        data: [11, 20, 2]
     }, {
         name: 'Ativo (Atrasado)',
-        data: [7, 7, 7] 
+        data: [7, 7, 7]
     }, {
         name: 'Concluído (Prazo)',
         data: [1, 10, 6]
@@ -438,7 +478,7 @@
                     'Dez'
     ];
 
-    acoesIniciadas  = [1, 4, 8, 1, 1];
+    acoesIniciadas = [1, 4, 8, 1, 1];
     acoesEncerradas = [0, 0, 1, 1, 2];
 
 
@@ -637,81 +677,81 @@
 
         },
 
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Número de ações estabelecidas',
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Número de ações estabelecidas',
+            style: {
+                color: Highcharts.getOptions().colors[0],
+                fontSize: '12px',
+                fontWeight: 'bold'
+            }
+
+        },
+        subtitle: {
+            text: false
+        },
+        xAxis: {
+            categories: meses,
+            labels: {
                 style: {
-                    color: Highcharts.getOptions().colors[0],
-                    fontSize: '12px',
-                    fontWeight: 'bold'
+                    fontSize: '10px',
+                    fontWeight: 'normal'
+                }
+            },
+            crosshair: true,
+            title: {
+                text: 'Mes de Início',
+                style: {
+                    color: Highcharts.getOptions().colors[1],
+                    fontSize: '10px',
+                    fontWeight: 'normal'
                 }
 
             },
-            subtitle: {
-                text: false
-            },
-            xAxis: {
-                categories: meses,
-                labels: {
-                    style: {
-                        fontSize: '10px',
-                        fontWeight: 'normal'
-                    }
-                },
-                crosshair: true,
-                title: {
-                    text: 'Mes de Início',
-                    style: {
-                        color: Highcharts.getOptions().colors[1],
-                        fontSize: '10px',
-                        fontWeight: 'normal'
-                    }
-
-                },
-            },
-            yAxis: {
-                labels: {
-                    format: '{value}',
-                    style: {
-                        color: Highcharts.getOptions().colors[1],
-                        fontSize: '8px',
-                        fontWeight: 'normal'
-                    }
-                },
-                min: 0,
-
-                title: {
-                    text: 'Número de ações',
-                    style: {
-                        color: Highcharts.getOptions().colors[1],
-                        fontSize: '10px',
-                        fontWeight: 'normal'
-
-                    }
-                },
-            },
-            tooltip: {
-                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                footerFormat: '</table>',
-                shared: true,
-                useHTML: true
-            },
-            plotOptions: {
-                column: {
-                    pointPadding: 0.2,
-                    borderWidth: 0
+        },
+        yAxis: {
+            labels: {
+                format: '{value}',
+                style: {
+                    color: Highcharts.getOptions().colors[1],
+                    fontSize: '8px',
+                    fontWeight: 'normal'
                 }
             },
-            series: [{
-                name: 'Tokyo',
-                data: acoesIniciadas
+            min: 0,
 
-            }]
-        });
+            title: {
+                text: 'Número de ações',
+                style: {
+                    color: Highcharts.getOptions().colors[1],
+                    fontSize: '10px',
+                    fontWeight: 'normal'
+
+                }
+            },
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: 'Tokyo',
+            data: acoesIniciadas
+
+        }]
+    });
 
     Highcharts.chart('divEstoque2', {
         credits: {
@@ -929,7 +969,7 @@
         }],
         yAxis: [{ // Primary yAxis
             labels: {
-                
+
                 style: {
                     color: Highcharts.getOptions().colors[1]
                 }
@@ -948,7 +988,7 @@
                 }
             },
             labels: {
-               
+
                 style: {
                     color: Highcharts.getOptions().colors[0]
                 }
@@ -961,9 +1001,9 @@
         legend: {
             layout: 'horizontal',
             align: 'center',
-            
+
             verticalAlign: 'bottom',
-            
+
             floating: false,
             backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
         },
@@ -972,18 +1012,18 @@
             type: 'spline',
             yAxis: 1,
             data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
-         
+
 
         }, {
             name: 'Meta',
             type: 'spline',
             data: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
-         
+
         }, {
             name: 'Realizado',
             type: 'spline',
             data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
-            
+
         }]
     });
 

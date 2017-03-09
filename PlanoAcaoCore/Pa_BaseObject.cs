@@ -12,10 +12,16 @@ namespace PlanoAcaoCore
         public DateTime AddDate { get; set; }
         public DateTime AlterDate { get; set; }
 
-        protected static string catalog { get { return "PlanoDeAcao"; } }
-        protected static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
-        protected static string user { get { return "sa"; } }
-        protected static string pass { get { return "1qazmko0"; } }
+        //protected static string catalog { get { return "PlanoDeAcao"; } }
+        //protected static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
+        //protected static string user { get { return "sa"; } }
+        //protected static string pass { get { return "1qazmko0"; } }
+
+        protected static string catalog { get { return "dbGQualidadeTeste"; } }
+        protected static string dataSource { get { return @"10.255.0.41"; } }
+        protected static string user { get { return "UserGQualidade"; } }
+        protected static string pass { get { return "grJsoluco3s"; } }
+
 
         protected int Update(SqlCommand cmd)
         {
@@ -44,7 +50,7 @@ namespace PlanoAcaoCore
 
         }
 
-        protected static List<T> ListarGenerico<T>(string query)
+        public static List<T> ListarGenerico<T>(string query)
         {
             List<T> listReturn;
             using (var db = new Factory(dataSource, catalog, pass, user))
@@ -52,7 +58,7 @@ namespace PlanoAcaoCore
             return listReturn;
         }
 
-        protected static T GetGenerico<T>(string query)
+        public static T GetGenerico<T>(string query)
         {
             T objReturn;
             using (var db = new Factory(dataSource, catalog, pass, user))
