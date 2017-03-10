@@ -1437,4 +1437,46 @@
   <data name="slaughter" xml:space="preserve">
     <value>Indicadores</value>
   </data>
+  <data name="audit_information" xml:space="preserve">
+    <value>Audit Information</value>
+  </data>
+  <data name="corrective_action" xml:space="preserve">
+    <value>Ação Corretiva</value>
+  </data>
+  <data name="corrective_action_taken" xml:space="preserve">
+    <value>Ação Corretiva Tomada</value>
+  </data>
+  <data name="date_time" xml:space="preserve">
+    <value>Data/Hora</value>
+  </data>
+  <data name="failure_description" xml:space="preserve">
+    <value>Failure Description</value>
+  </data>
+  <data name="immediate_corrective_action" xml:space="preserve">
+    <value>Immediate Corrective Action</value>
+  </data>
+  <data name="initial_date" xml:space="preserve">
+    <value>Initial Date</value>
+  </data>
+  <data name="preventive_measure" xml:space="preserve">
+    <value>Acão Preventiva</value>
+  </data>
+  <data name="product_disposition" xml:space="preserve">
+    <value>Product Disposition</value>
+  </data>
+  <data name="select_the_period_first" xml:space="preserve">
+    <value>Selecione o período antes de entrar no indicador</value>
+  </data>
+  <data name="sign" xml:space="preserve">
+    <value>Sign</value>
+  </data>
+  <data name="slaughter_signature" xml:space="preserve">
+    <value>Slaughter Signature</value>
+  </data>
+  <data name="technical_signature" xml:space="preserve">
+    <value>Technical Signature</value>
+  </data>
+  <data name="number_of_evaluation_completed" xml:space="preserve">
+    <value>O número de avaliações desse indicador foi completado.</value>
+  </data>
 </root>

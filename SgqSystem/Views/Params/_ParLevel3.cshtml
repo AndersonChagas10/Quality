@@ -106,8 +106,9 @@
                 @{
                     Model.levelControl = 3;
                 }
-
-                @Html.Partial("_ReincidenciaXLevel", Model)
+                <div>
+                    @Html.Partial("_ReincidenciaXLevel", Model)
+                </div>
 
                 @if (Model.paramsDto.parLevel3Dto.hasVinculo)
                 {

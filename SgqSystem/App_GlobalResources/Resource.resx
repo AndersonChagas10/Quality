@@ -1440,4 +1440,46 @@
   <data name="slaughter" xml:space="preserve">
     <value>Slaughter</value>
   </data>
+  <data name="audit_information" xml:space="preserve">
+    <value>Informação da Auditoria</value>
+  </data>
+  <data name="corrective_action" xml:space="preserve">
+    <value>Corrective Action</value>
+  </data>
+  <data name="corrective_action_taken" xml:space="preserve">
+    <value>Corrective Action Taken</value>
+  </data>
+  <data name="date_time" xml:space="preserve">
+    <value>Date/Time</value>
+  </data>
+  <data name="failure_description" xml:space="preserve">
+    <value>Descrição da Falha</value>
+  </data>
+  <data name="immediate_corrective_action" xml:space="preserve">
+    <value>Ação Corretiva Imediata</value>
+  </data>
+  <data name="initial_date" xml:space="preserve">
+    <value>Data Inicial</value>
+  </data>
+  <data name="preventive_measure" xml:space="preserve">
+    <value>Preventive Action</value>
+  </data>
+  <data name="product_disposition" xml:space="preserve">
+    <value>Disposição do produto</value>
+  </data>
+  <data name="select_the_period_first" xml:space="preserve">
+    <value>The period need to be selected</value>
+  </data>
+  <data name="sign" xml:space="preserve">
+    <value>Assinar</value>
+  </data>
+  <data name="slaughter_signature" xml:space="preserve">
+    <value>Assinatura do Abate</value>
+  </data>
+  <data name="technical_signature" xml:space="preserve">
+    <value>Assinatura do Técnico</value>
+  </data>
+  <data name="number_of_evaluation_completed" xml:space="preserve">
+    <value>The number of evaluations is completed.</value>
+  </data>
 </root>
