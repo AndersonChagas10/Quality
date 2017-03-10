@@ -243,7 +243,27 @@
                }
            });
 
+
+        var rangesEUA = {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+
+        var rangesBR = {
+            'Hoje': [moment(), moment()],
+            'Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
+            'Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
+            'Este mês': [moment().startOf('month'), moment().endOf('month')],
+            'Último mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+
         var configLayout = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+        var rangesCalendar;
     
         /*Configura date range picker para PT-BR*/
         if(configLayout){
@@ -285,40 +305,20 @@
                 //"firstDay": 0
             });
 
+            rangesCalendar = rangesBR;
+
         }else {
             moment.defaultFormat = "MM/DD/YYYY";
             $.fn.daterangepicker('locale', {
                 "format": "MM/DD/YYYY",
                 "separator": " - ",
             });
+
+            rangesCalendar = rangesEUA;
         }
 
-        var rangesEUA = {
-            'Today': [moment(), moment()],
-            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        }
+        $.fn.daterangepicker('ranges', rangesCalendar);
 
-        var rangesBR = {
-            'Hoje': [moment(), moment()],
-            'Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
-            'Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
-            'Este mês': [moment().startOf('month'), moment().endOf('month')],
-            'Último mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        }
-
-        //Arrumar os textos do calendários
-        if(configLayout){
-
-            $.fn.daterangepicker('ranges', rangesBR);
-        }
-        else{
-            $.fn.daterangepicker('ranges', rangesEUA);
-        }
 
         var monthNames = [
             '@Resources.Resource.january',
