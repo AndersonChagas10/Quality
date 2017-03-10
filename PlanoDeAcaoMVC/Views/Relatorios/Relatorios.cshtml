@@ -116,6 +116,15 @@
                     <div class="panel-heading" style="text-align:center;">
                         <h3 class="panel-title">Situação geral das ações no período</h3>
                     </div>
+                    <div>
+                        <label>Data Inicio</label>
+                        <input type="text" class="datepicker" />
+                        <label>Data Fim</label>
+                        <input type="text" class="datepicker" />
+
+                        <label>Outro</label>
+
+                    </div>
                     <div class="panel-body">
                         <div id="divPie" style="height:215px;"></div>
 
@@ -334,6 +343,16 @@
 
 <script>
 
+    function InitDatePiker() {
+        $('.datepicker').datepicker({
+            startDate: 0,
+            todayBtn: "linked",
+            language: "pt-BR",
+            multidate: false,
+            todayHighlight: true
+        });
+    }
+
     function MapeiaValorParaHC(array, prop) {
         var arrayRetorno = $.map(array, function (o, c) {
             return o[prop];
@@ -406,21 +425,87 @@
     //    name: 'Cancelado',
     //    data: [2, 6, 6]
     //}];
+    function atualizar() {
+        $.post('http://localhost:59907/api/Relatorios/GetGrafico1', { dataInicio: '20170201', dataFim: '20170401' }, function (r) {
+            console.log(r);
 
-    $.post('http://localhost:59908/api/Relatorios/GetGrafico1', { dataInicio: '20170201', dataFim: '20170401' }, function (r) {
-        console.log(r);
+            seriesBar = [];
+            categoriesBar = MapeiaValorParaHC(r, "filtro");
 
-        seriesBar = [];
+            r.forEach(function (o, c) {
+                var objSerie = {};
+                objSerie["name"] = o.status;
+                objSerie["data"] = MapeiaValorParaHC(r, "filtro");
+                r.forEach(function (oo, cc) {
+                    objSerie["data"][cc] = oo.quantidade;
+                })
+                seriesBar.push(objSerie);
+            })
+         Highcharts.chart('divBar', {
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: tituloBar,
+                style: {
+                    fontSize: '14px',
+                }
+            },
+            xAxis: {
+                categories: categoriesBar,
+                labels: {
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+                }
+            },
+            yAxis: {
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '8px',
+                        fontWeight: 'normal'
+                    }
+                },
+                min: 0,
+                title: {
+                    text: tituloXBar,
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+                }
+            },
+            legend: {
+                align: 'center',
+                verticalAlign: 'bottom',
+                layout: 'horizontal',
+                itemStyle: {
+                    fontSize: '10px',
+                    fontWeight: 'normal',
+                },
+            },
+            plotOptions: {
+                series: {
+                    stacking: 'normal'
+                }
+            },
+            series: seriesBar
+        });
 
-        r.forEach(function (o, c) {
-            var objSerie = {};
-            categoriesBar.push(MapeiaValorParaHC(r, "filtro").filtro)
-            objSerie["Name"] = o.status;
-            objSerie["data"] = MapeiaValorParaHC(o, "quantidade").quantidade;
-            seriesBar.push(objSerie);
-        })
-        
+        });
 
+    }
+    $(document).ready(function() {
+       atualizar();
     })
 
     seriesBar = [{
@@ -1031,4 +1116,3 @@
 
 
 </script>
-
