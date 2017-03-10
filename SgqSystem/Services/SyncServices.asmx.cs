@@ -19,6 +19,7 @@ using System.Transactions;
 using System.Globalization;
 using System.Collections;
 using DTO;
+using SgqSystem.Helpers;
 
 namespace SgqSystem.Services
 {
@@ -297,7 +298,7 @@ namespace SgqSystem.Services
                         string sequential = result[43];
                         string side = result[44];
                         string monitoramentoultimoalerta = result[45];
-                        //string alertaAtual = result[40];
+                        string startphaseevaluation = result[47];
 
                         //Gera o Cabeçalho do Level02
                         string level02HeaderJSon = result[13];
@@ -328,6 +329,7 @@ namespace SgqSystem.Services
                         level02HeaderJSon += ";" + hassampletotal;
                         level02HeaderJSon += ";" + hashKey;
                         level02HeaderJSon += ";" + monitoramentoultimoalerta;
+                        level02HeaderJSon += ";" + startphaseevaluation;
 
                         //level02HeaderJSon += ";" + alertaAtual;
 
@@ -590,10 +592,12 @@ namespace SgqSystem.Services
                     monitoramentoultimoalerta = arrayHeader[27];
                     monitoramentoultimoalerta = DefaultValueReturn(monitoramentoultimoalerta, "0");
 
+                    string startphaseevaluation = DefaultValueReturn(arrayHeader[28], "0");
+
                     int CollectionLevel2Id = InsertCollectionLevel2(consolidationLevel1, consolidationLevel2, c.AuditorId, c.Shift, c.Period, Phase, c.Reaudit, c.ReauditNumber, c.Level02CollectionDate,
                                                 StartPhase, c.Evaluate, sampleCollect, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel,
                                                 haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel, sequential, side,
-                                                weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, hashKey);
+                                                weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, startphaseevaluation, hashKey);
 
                     if (CollectionLevel2Id > 0)
                     {
@@ -1134,7 +1138,7 @@ namespace SgqSystem.Services
                                            string StartPhase, int Evaluation, int Sample, string ConsecuticeFalireIs, string ConsecutiveFailureTotal, string NotEvaluateIs,
                                            string Duplicated, string haveReaudit, int reauditLevel, string haveCorrectiveAction, string HavePhase, string Completed, string id, string AlertLevel,
                                            string sequential, string side, string WeiEvaluation, string Defects, string WeiDefects, string TotalLevel3WithDefects, string totalLevel3evaluation,
-                                           string avaliacaoultimoalerta, string monitoramentoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3, string hashKey = null)
+                                           string avaliacaoultimoalerta, string monitoramentoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3, string startphaseevaluation, string hashKey = null)
         {
             //Converte a data da coleta
             string sql = null;
@@ -1165,9 +1169,9 @@ namespace SgqSystem.Services
 
             if (id == "0")
             {
-                sql = "INSERT INTO CollectionLevel2 ([Key],[ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit],[ReauditLevel], [HaveCorrectiveAction],[HavePhase],[Completed],[AlertLevel],[Sequential],[Side],[WeiEvaluation],[Defects],[WeiDefects],[TotalLevel3WithDefects], [TotalLevel3Evaluation], [LastEvaluationAlert],[LastLevel2Alert],[EvaluatedResult],[DefectsResult],[IsEmptyLevel3]) " +
+                sql = "INSERT INTO CollectionLevel2 ([Key],[ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit],[ReauditLevel], [HaveCorrectiveAction],[HavePhase],[Completed],[AlertLevel],[Sequential],[Side],[WeiEvaluation],[Defects],[WeiDefects],[TotalLevel3WithDefects], [TotalLevel3Evaluation], [LastEvaluationAlert],[LastLevel2Alert],[EvaluatedResult],[DefectsResult],[IsEmptyLevel3], [StartPhaseEvaluation]) " +
                 "VALUES " +
-                "('" + key + "', '" + ConsolidationLevel2.Id + "','" + ConsolidationLevel1.ParLevel1_Id + "','" + ConsolidationLevel2.ParLevel2_Id + "','" + ConsolidationLevel1.UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + BoolConverter(Reaudit.ToString()) + "','" + ReauditNumber + "', CAST(N'" + CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") + "' AS DateTime), " + StartPhase + ",'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', " + reauditLevel + ", '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "', '" + sequential + "', '" + side + "','" + WeiEvaluation + "','" + Defects + "','" + WeiDefects + "','" + TotalLevel3WithDefects + "', '" + totalLevel3evaluation + "', '" + avaliacaoultimoalerta + "', '" + monitoramentoultimoalerta + "', '" + evaluatedresult + "', '" + defectsresult + "', '" + isemptylevel3 + "') ";
+                "('" + key + "', '" + ConsolidationLevel2.Id + "','" + ConsolidationLevel1.ParLevel1_Id + "','" + ConsolidationLevel2.ParLevel2_Id + "','" + ConsolidationLevel1.UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + BoolConverter(Reaudit.ToString()) + "','" + ReauditNumber + "', CAST(N'" + CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") + "' AS DateTime), " + StartPhase + ",'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', " + reauditLevel + ", '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "', '" + sequential + "', '" + side + "','" + WeiEvaluation + "','" + Defects + "','" + WeiDefects + "','" + TotalLevel3WithDefects + "', '" + totalLevel3evaluation + "', '" + avaliacaoultimoalerta + "', '" + monitoramentoultimoalerta + "', '" + evaluatedresult + "', '" + defectsresult + "', '" + isemptylevel3 + "', '" + startphaseevaluation + "') ";
 
                 sql += " SELECT @@IDENTITY AS 'Identity' ";
             }
@@ -1223,7 +1227,7 @@ namespace SgqSystem.Services
                         var CollectionLevel2DB = new SGQDBContext.CollectionLevel2();
                         var collectionLevel2 = CollectionLevel2DB.GetByKey(key);
 
-                        var updateLevel2Id = InsertCollectionLevel2(ConsolidationLevel1, ConsolidationLevel2, AuditorId, Shift, Period, Phase, Reaudit, ReauditNumber, CollectionDate, StartPhase, Evaluation, Sample, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel, haveCorrectiveAction, HavePhase, Completed, collectionLevel2.Id.ToString(), AlertLevel, sequential, side, WeiEvaluation, Defects, WeiDefects, TotalLevel3WithDefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, hashKey);
+                        var updateLevel2Id = InsertCollectionLevel2(ConsolidationLevel1, ConsolidationLevel2, AuditorId, Shift, Period, Phase, Reaudit, ReauditNumber, CollectionDate, StartPhase, Evaluation, Sample, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel, haveCorrectiveAction, HavePhase, Completed, collectionLevel2.Id.ToString(), AlertLevel, sequential, side, WeiEvaluation, Defects, WeiDefects, TotalLevel3WithDefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, startphaseevaluation, hashKey);
                         if (updateLevel2Id > 0)
                         {
                             int removeLevel3 = ResultLevel3Delete(collectionLevel2.Id);
@@ -1824,6 +1828,9 @@ namespace SgqSystem.Services
                         "\" CollectionDate=\"" + Level2Result.CollectionDate.ToString("MMddyyyy") + 
                         "\" Evaluation=\"" + Level2Result.EvaluateLast + 
                         "\" Sample=\"" + Level2Result.SampleLast + 
+                        "\" Phase=\"" + consolidationResultL1L2.Phase + 
+                        "\" StartPhaseDate=\"" + consolidationResultL1L2.StartPhaseDate +
+                        "\" StartPhaseEvaluation=\"" + consolidationResultL1L2.StartPhaseEvaluation +
                         "\" havecorrectiveaction=\"" + consolidationResultL1L2.haveCorrectiveAction.ToString().ToLower() + 
                         "\" havereaudit=\"" + consolidationResultL1L2.haveReaudit.ToString().ToLower() + 
                         "\" reauditlevel=\"" + consolidationResultL1L2.ReauditLevel.ToString().ToLower() + 
@@ -2275,9 +2282,16 @@ namespace SgqSystem.Services
         }
         public string GetResource()
         {
+            if (GlobalConfig.Brasil)
+            {
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+            }else
+            {
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
+            }
             //setup temporário
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
 
             System.Reflection.Assembly assembly = this.GetType().Assembly;
 
@@ -2348,11 +2362,11 @@ namespace SgqSystem.Services
             
             string breadCrumb = "<ol class=\"breadcrumb\" breadmainlevel=\"Slaughter\"></ol>";
 
-            string selectPeriod = html.option("0", Resources.Resource.select_the_period) +
-                              html.option("1", Resources.Resource.period+" 1") +
-                              html.option("2", Resources.Resource.period+" 2") +
-                              html.option("3", Resources.Resource.period+" 3") +
-                              html.option("4", Resources.Resource.period+" 4");
+            string selectPeriod = html.option("0", CommonData.getResource("select_the_period").Value.ToString() +
+                              html.option("1", CommonData.getResource("period").Value.ToString()+" 1") +
+                              html.option("2", CommonData.getResource("period").Value.ToString()+" 2") +
+                              html.option("3", CommonData.getResource("period").Value.ToString()+" 3") +
+                              html.option("4", CommonData.getResource("period").Value.ToString() + " 4"));
 
             selectPeriod = html.select(selectPeriod, id: "period", classe: "", style: "width: 160px");
 
@@ -2367,7 +2381,7 @@ namespace SgqSystem.Services
                                         , classe: "container");
 
             string buttons = " <button id=\"btnSave\" class=\"btn btn-lg btn-warning hide\"><i id=\"saveIcon\" class=\"fa fa-save\"></i><i id=\"loadIcon\" class=\"fa fa-circle-o-notch fa-spin\" style=\"display:none;\"></i></button><!--Save-->" +
-                             " <button class=\"btn btn-lg btn-danger btnCA hide\">Ação Corretiva</button><!--Corrective Action-->";
+                             " <button class=\"btn btn-lg btn-danger btnCA hide\">"+ CommonData.getResource("corrective_action").Value.ToString() + "</button><!--Corrective Action-->";
 
             string message = "<div class=\"message padding20\" style=\"display:none\">                                                                                      " +
                              "   <h1 class=\"head\">Titulo</h1>                                                                                                           " +
@@ -2392,8 +2406,8 @@ namespace SgqSystem.Services
                                         "    <div class=\"body font16\"> <div class=\"txtMessage\"></div>                                                                                               " +
                                         "        <input type=\"password\" id=\"passMessageComfirm\" placeholder=\"Password\" class=\"form-control input-sm\" style=\"max-width:160px;\" />        " +
                                         "        <input type=\"text\" masc=\"date\" id=\"inputDate\" placeholder=\"99/99/9999\" class=\"form-control input-sm hide\" style=\"max-width:160px;\" /> </div>       " +
-                                        "    <div class=\"foot\"><button id=\"btnMessageYes\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> Sim </button></div>                 " +
-                                        "    <div class=\"foot\"><button id=\"btnMessageNo\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> Não </button></div>                   " +
+                                        "    <div class=\"foot\"><button id=\"btnMessageYes\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> "+ CommonData.getResource("yes").Value.ToString() + " </button></div>                 " +
+                                        "    <div class=\"foot\"><button id=\"btnMessageNo\" class=\"btn btn-lg marginRight30 btn-primary pull-right btnMessage\"> "+ CommonData.getResource("no").Value.ToString() + " </button></div>                   " +
                                         "</div>                                                                                                                                                         ";
 
             //string viewModal = "<div class=\"viewModal\" style=\"display:none;\">                                                                                                                                                       " +
@@ -2465,7 +2479,7 @@ namespace SgqSystem.Services
                                        buttons +
                                        footer(),
                              classe: "App hide",
-                             tags: "breadmainlevel=\""+Resources.Resource.slaughter + "\" culture=\"" + culture + "\" turningtime=\"03:00\""
+                             tags: "breadmainlevel=\""+ CommonData.getResource("slaughter").Value.ToString() + "\" culture=\"" + culture + "\" turningtime=\"03:00\""
                            ) +
                            correctiveAction() +
                            viewModal +
@@ -2498,15 +2512,15 @@ namespace SgqSystem.Services
         {
             string menu = "<div class=\"rightMenu\">                                                                                                  " +
                            "     <div class=\"list-group list-group-inverse rightMenuList\">                                                           " +
-                           "         <a href=\"#\" id=\"btnSync\" class=\"list-group-item\" style=\"background-color: black; font-weight: bold;\">Sincronizar Resultados</a>                                                  " +
-                           "         <a href=\"#\" id=\"btnSyncParam\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">Sincronizar Parametrizações</a>                                                  " +
+                           "         <a href=\"#\" id=\"btnSync\" class=\"list-group-item\" style=\"background-color: black; font-weight: bold;\">"+CommonData.getResource("sync_results").Value.ToString()+"</a>                                                  " +
+                           "         <a href=\"#\" id=\"btnSyncParam\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">" + CommonData.getResource("sync_parameretrization").Value.ToString() + "</a>                                                  " +
 
-                           "         <a href=\"#\" id=\"btnLogout\" class=\"list-group-item\">Logout</a>                                              " +
-                           "         <a href=\"#\" id=\"btnLog\" class=\"list-group-item\">Visualizar Log</a>                                               " +
-                           "         <a href=\"#\" id=\"btnCollectDB\" class=\"list-group-item\">Visualizar banco de dados</a>                                    " +
-                           "         <a href=\"#\" id=\"btnClearDatabase\" class=\"list-group-item\">Limpar banco de dados</a>                                " +
-                           "         <a href=\"#\" id=\"btnMostrarContadores\" class=\"list-group-item\">Mostrar contadores</a>                                " +
-                           "         <span id=\"version\" class=\"list-group-item\">Versão: <span class=\"number\"></span></span>                     " +
+                           "         <a href=\"#\" id=\"btnLogout\" class=\"list-group-item\">" + CommonData.getResource("logout").Value.ToString() + "</a>                                              " +
+                           "         <a href=\"#\" id=\"btnLog\" class=\"list-group-item\">" + CommonData.getResource("view_log").Value.ToString() + "</a>                                               " +
+                           "         <a href=\"#\" id=\"btnCollectDB\" class=\"list-group-item\">" + CommonData.getResource("view_db").Value.ToString() + "</a>                                    " +
+                           "         <a href=\"#\" id=\"btnClearDatabase\" class=\"list-group-item\">" + CommonData.getResource("clean_db").Value.ToString() + "</a>                                " +
+                           "         <a href=\"#\" id=\"btnMostrarContadores\" class=\"list-group-item\">" + CommonData.getResource("show_counters").Value.ToString() + "</a>                                " +
+                           "         <span id=\"version\" class=\"list-group-item\">" + CommonData.getResource("version").Value.ToString() + ": <span class=\"number\"></span></span>                     " +
                            "         <span id=\"ambiente\" class=\"list-group-item\"><span class=\"base\"></span></span>                               " +
                            "     </div>                                                                                                                " +
                            " </div>                                                                                                                    ";
@@ -2519,7 +2533,7 @@ namespace SgqSystem.Services
                 "<div id=\"correctiveActionModal\" class=\"container panel panel-default modal-padrao\" style=\"display:none\">" +
                     "<div class=\"panel-body\">" +
                         "<div class=\"modal-body\">" +
-                            "<h2>" + Resources.Resource.corrective_action + "</h2>" +
+                            "<h2>" + CommonData.getResource("corrective_action").Value.ToString() + " </h2>" +
                             "<div id=\"messageAlert\" class=\"alert alert-info hide\" role=\"alert\">" +
                                 "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>" +
                             "</div>" +
@@ -2528,34 +2542,34 @@ namespace SgqSystem.Services
                                     "<div class=\"panel-body\">" +
                                         "<div class=\"row\">" +
                                             "<div class=\"col-xs-6\" id=\"CorrectiveActionTaken\">" +
-                                                "<b class=\"font16\">" + Resources.Resource.corrective_action_taken + ":<br /></b>" +
-                                                "<b>" + Resources.Resource.date_time +":</b> <span id=\"datetime\"></span><br/>" +
-                                                "<b>"+Resources.Resource.auditor+": </b><span id=\"auditor\"></span><br/>" +
-                                                "<b>"+ Resources.Resource.shift + ": </b><span id=\"shift\"></span><br/>" +
+                                                "<b class=\"font16\">" + CommonData.getResource("corrective_action_taken").Value.ToString() + ":<br/></b>" +
+                                                "<b>" + CommonData.getResource("date_time").Value.ToString() + ":</b> <span id=\"datetime\"></span><br/>" +
+                                                "<b>"+ CommonData.getResource("auditor").Value.ToString() + ": </b><span id=\"auditor\"></span><br/>" +
+                                                "<b>"+ CommonData.getResource("shift").Value.ToString() + ": </b><span id=\"shift\"></span><br/>" +
                                             "</div>" +
                                             "<div class=\"col-xs-6\" id=\"AuditInformation\">" +
-                                                "<b class=\"font16\">"+Resources.Resource.audit_information+":<br/></b>" +
-                                                "<b>"+Resources.Resource.slaughter+": </b><span id=\"auditText\"></span><br/>" +
-                                                "<b>"+Resources.Resource.initial_date+":</b><span id=\"starttime\"></span><br/>" +
-                                                "<b>"+Resources.Resource.period+":</b><span id=\"correctivePeriod\"></span>" +
+                                                "<b class=\"font16\">"+ CommonData.getResource("audit_information").Value.ToString() + ":<br/></b>" +
+                                                "<b>"+ CommonData.getResource("slaughter").Value.ToString() + ": </b><span id=\"auditText\"></span><br/>" +
+                                                "<b>"+ CommonData.getResource("initial_date").Value.ToString() + ":</b><span id=\"starttime\"></span><br/>" +
+                                                "<b>"+ CommonData.getResource("period").Value.ToString() + ":</b><span id=\"correctivePeriod\"></span>" +
                                             "</div>" +
                                         "</div>" +
                                     "</div>" +
                                 "</div>" +
                                 "<div class=\"form-group\">" +
-                                    "<label>"+Resources.Resource.failure_description + ":</label>" +
+                                    "<label>"+ CommonData.getResource("failure_description").Value.ToString() + ":</label>" +
                                     "<textarea id=\"DescriptionFailure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
                                 "</div>" +
                                 "<div class=\"form-group\">" +
-                                    "<label>"+Resources.Resource.immediate_corrective_action+ ":</label>" +
+                                    "<label>"+ CommonData.getResource("immediate_corrective_action").Value.ToString() + ":</label>" +
                                     "<textarea id=\"ImmediateCorrectiveAction\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
                                 "</div>" +
                                 "<div class=\"form-group\">" +
-                                    "<label>"+Resources.Resource.product_disposition+":</label>" +
+                                    "<label>"+ CommonData.getResource("product_disposition").Value.ToString() + ":</label>" +
                                     "<textarea id=\"ProductDisposition\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
                                 "</div>" +
                                 "<div class=\"form-group\">" +
-                                    "<label>"+Resources.Resource.preventive_measure + ":</label>" +
+                                    "<label>"+ CommonData.getResource("preventive_measure").Value.ToString() + ":</label>" +
                                     "<textarea id=\"PreventativeMeasure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
                                 "</div>";
             if (GlobalConfig.Eua)
@@ -2567,7 +2581,7 @@ namespace SgqSystem.Services
                                             "<h4>Slaughter Signature</h4>" +
                                             "<div class=\"name\">Admin</div>" +
                                             "<div class=\"date\">08/24/2016 10:31</div>" +
-                                            "<button class=\"btn btn-link btnSlaugtherSignatureRemove\">Remove Signature</button>" +
+                                            "<button class=\"btn btn-link btnSlaugtherSignatureRemove\">" + CommonData.getResource("remove_signature").Value.ToString() + "</button>" +
                                         "</div>" +
                                     "</div>" +
                                     "<div class=\"col-xs-6\">" +
@@ -2575,7 +2589,7 @@ namespace SgqSystem.Services
                                             "<h4>Technical Signature</h4>" +
                                             "<div class=\"name\">Admin2</div>" +
                                             "<div class=\"date\">08/24/2016</div>" +
-                                            "<button class=\"btn btn-link btnTechinicalSignatureRemove\">Remove Signature</button>" +
+                                            "<button class=\"btn btn-link btnTechinicalSignatureRemove\">" + CommonData.getResource("remove_signature").Value.ToString() + "</button>" +
                                         "</div>" +
                                     "</div>" +
                                 "</div>";
@@ -2590,17 +2604,17 @@ namespace SgqSystem.Services
                 correctiveAction += 
                                     "<span class=\"pull-left\">" +
                                         "<button class=\"btn btn-default btnSignature btnSlaugtherSignature\">" +
-                                            Resources.Resource.slaughter_signature +
+                                            CommonData.getResource("slaughter_signature").Value.ToString() +
                                         "</button>" +
                                         "<button class=\"btn btn-default btnSignature btnTechinicalSignature\">" +
-                                            Resources.Resource.technical_signature +
+                                            CommonData.getResource("technical_signature").Value.ToString() +
                                         "</button>" +
                                     "</span>";
             }
             
             correctiveAction += 
-                                    "<button class=\"btn btn-danger modal-close-ca\">Fechar</button>" +
-                                    "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">"+Resources.Resource.send+"</button>" +
+                                    "<button class=\"btn btn-danger modal-close-ca\">" + CommonData.getResource("close").Value.ToString() + "</button>" +
+                                    "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">"+ CommonData.getResource("send").Value.ToString() + " </button>" +
                                 "</div>" +
                             "</div>" +
                         "</div>" +
@@ -2613,8 +2627,8 @@ namespace SgqSystem.Services
                     "<div id=\"modalSignatureCorrectiveAction\" class=\"panel panel-default modal-padrao signature\" style=\"display:none\">"+
                         "<div class=\"panel-body\">"+
                             "<div class=\"modal-header\">"+
-                                "<h3 class=\"slaughtersig head hide\">"+Resources.Resource.slaughter_signature+"</h3>"+
-                                "<h3 class=\"techinicalsig head hide\">"+ Resources.Resource.technical_signature + "</h3>"+
+                                "<h3 class=\"slaughtersig head hide\">"+ CommonData.getResource("slaughter_signature").Value.ToString() + " </h3>"+
+                                "<h3 class=\"techinicalsig head hide\">"+ CommonData.getResource("technical_signature").Value.ToString() + " </h3>"+
                                 "<div id=\"messageAlert\" class=\"alert alert-info hide\">"+
                                     "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>"+
                                 "</div>"+
@@ -2623,15 +2637,15 @@ namespace SgqSystem.Services
                                 "<div class=\"row\">"+
                                     "<div class=\"col-xs-12\">"+
                                         "<div class=\"form-group\">"+
-                                            "<label>"+Resources.Resource.login+":</label>"+
+                                            "<label>"+ CommonData.getResource("login").Value.ToString() + ":</label>"+
                                             "<input type=\"text\" class=\"form-control\" id=\"signatureLogin\">"+
                                         "</div>"+
                                         "<div class=\"form-group\">"+
-                                            "<label>"+Resources.Resource.password+":</label>"+
+                                            "<label>"+ CommonData.getResource("password").Value.ToString() + ":</label>"+
                                             "<input type=\"password\" class=\"form-control\" id=\"signaturePassword\">"+
                                         "</div>"+
                                         "<div id=\"messageError\" class=\"alert alert-danger hide\">"+
-                                            "<span class=\"icon-remove-sign\"></span><strong>"+Resources.Resource.error+"! </strong><span id=\"mensagemErro\"> </span>"+
+                                            "<span class=\"icon-remove-sign\"></span><strong>"+ CommonData.getResource("error").Value.ToString() + "! </strong><span id=\"mensagemErro\"> </span>"+
                                         "</div>"+
                                         "<div id=\"messageAlert\" class=\"alert alert-info hide\">"+
                                             "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>"+
@@ -2643,8 +2657,8 @@ namespace SgqSystem.Services
                                 "</div>"+
                             "</div>"+
                             "<div class=\"modal-footer\">"+
-                                "<button class=\"btn btn-danger modal-close-signature\">"+Resources.Resource.close+"</button>"+
-                                "<button type=\"button\" class=\"btn btn-primary\" id=\"btnSignatureLogin\">"+Resources.Resource.sign+"</button>"+
+                                "<button class=\"btn btn-danger modal-close-signature\">"+ CommonData.getResource("close").Value.ToString() + " </button>"+
+                                "<button type=\"button\" class=\"btn btn-primary\" id=\"btnSignatureLogin\">"+ CommonData.getResource("sign").Value.ToString() + " </button>"+
                             "</div>" +
                         "</div>" +
                     "</div>" +
@@ -2969,12 +2983,12 @@ namespace SgqSystem.Services
                 #region Cabecalhos e Contadores
                 string headerCounter =
                                      html.div(
-                                               outerhtml: "<b>"+Resources.Resource.ev+"</b>",
+                                               outerhtml: "<b>"+ CommonData.getResource("ev").Value.ToString() + " </b>",
                                                classe: "col-xs-6",
                                                style: "text-align:center"
                                              ) +
                                      html.div(
-                                               outerhtml: "<b>"+ Resources.Resource.sd + "</b>",
+                                               outerhtml: "<b>"+ CommonData.getResource("sd").Value.ToString() + " </b>",
                                                classe: "col-xs-6",
                                                style: "text-align:center"
                                               );
@@ -3304,7 +3318,7 @@ namespace SgqSystem.Services
                             }
                         }
                         if (!hasDefault)
-                            optionsMultiple = "<option selected=\"selected\" value=\"0\">" + Resources.Resource.select + "...</option>" + optionsMultiple;
+                            optionsMultiple = "<option selected=\"selected\" value=\"0\">" + CommonData.getResource("select").Value.ToString() + "...</option>" + optionsMultiple;
 
                         form_control = "<select class=\"form-control input-sm\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">" + optionsMultiple + "</select>";
                         break;
@@ -3449,11 +3463,11 @@ namespace SgqSystem.Services
 
                 //Avaliações e amostas para painel
                 string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + Resources.Resource.evaluation + "</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("evaluation").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+Resources.Resource.samples+"</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+ CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -3692,11 +3706,11 @@ namespace SgqSystem.Services
 
                 //Avaliações e amostas para painel
                 string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + Resources.Resource.evaluation +"</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("evaluation").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+Resources.Resource.samples +"</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+ CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -3841,11 +3855,11 @@ namespace SgqSystem.Services
                                     classe: "col-xs-6");
 
                 string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+Resources.Resource.evaluation+"</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+ CommonData.getResource("evaluation").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+Resources.Resource.samples+"</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+ CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -3946,11 +3960,11 @@ namespace SgqSystem.Services
 
                 //Avaliações e amostas para painel
                 string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+Resources.Resource.evaluation+"</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+ CommonData.getResource("evaluation").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + Resources.Resource.samples + "</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -4254,9 +4268,9 @@ namespace SgqSystem.Services
             if (configuracoes != null && configuracoes.HaveShitLogin == true)
             {
                 inputsDesabilitados = true;
-                selectShit = html.option("0", Resources.Resource.select_the_shift) +
-                              html.option("1", Resources.Resource.shift_a) +
-                              html.option("2", Resources.Resource.shift_b);
+                selectShit = html.option("0", CommonData.getResource("select_the_shift").Value.ToString()) +
+                              html.option("1", CommonData.getResource("shift_a").Value.ToString()) +
+                              html.option("2", CommonData.getResource("shift_b").Value.ToString());
 
                 selectShit = html.select(selectShit, id: "shift");
             }
@@ -4267,14 +4281,14 @@ namespace SgqSystem.Services
             //                          html.option("http://192.168.25.200/SgqMaster", "GRT") +
             //                          html.option("http://localhost:8090/SgqSystem", "GCN");
 
-            string formOuterHtml = html.head(Html.h.h2, outerhtml: "Entre com seu Login") +
+            string formOuterHtml = html.head(Html.h.h2, outerhtml: CommonData.getResource("login").Value.ToString()) +
                                   selectUnit +
                                   selectShit +
-                                  html.label(labelfor: "inputUserName", classe: "sr-only", outerhtml: "Username") +
-                                  html.input(id: "inputUserName", placeholder: "Username", required: true, disabled: inputsDesabilitados) +
-                                  html.label(labelfor: "inputPassword", classe: "sr-only", outerhtml: "Password") +
-                                  html.input(type: Html.type.password, id: "inputPassword", placeholder: "Password", required: true, disabled: inputsDesabilitados) +
-                                  html.button(label: "Entrar", id: "btnLogin", classe: "btn-lg btn-primary btn-block marginTop10", dataloading: "<i class='fa fa-spinner fa-spin'></i> <span class='wMessage' style='font-size:14px;'>Autenticando</span>") +
+                                  html.label(labelfor: "inputUserName", classe: "sr-only", outerhtml: CommonData.getResource("username").Value.ToString()) +
+                                  html.input(id: "inputUserName", placeholder: CommonData.getResource("username").Value.ToString(), required: true, disabled: inputsDesabilitados) +
+                                  html.label(labelfor: "inputPassword", classe: "sr-only", outerhtml: CommonData.getResource("password").Value.ToString()) +
+                                  html.input(type: Html.type.password, id: "inputPassword", placeholder: CommonData.getResource("password").Value.ToString(), required: true, disabled: inputsDesabilitados) +
+                                  html.button(label: CommonData.getResource("enter").Value.ToString(), id: "btnLogin", classe: "btn-lg btn-primary btn-block marginTop10", dataloading: "<i class='fa fa-spinner fa-spin'></i> <span class='wMessage' style='font-size:14px;'>"+CommonData.getResource("authenticating").Value.ToString() +"</span>") +
 
                                   html.div(id: "messageError", classe: "alert alert-danger hide", tags: "role=\"alert\"",
                                            outerhtml: html.span(classe: "icon-remove-sign") + "<strong>Erro! </strong>" + html.span(id: "mensagemErro")) +
@@ -4305,7 +4319,7 @@ namespace SgqSystem.Services
                                    html.br() +
                                    html.br() +
                                    html.span(
-                                              outerhtml: "Versão " +
+                                              outerhtml: CommonData.getResource("version").Value.ToString() +
                                                          html.span(classe: "number")
                                              , id: "versionLogin") +
                                    html.span(

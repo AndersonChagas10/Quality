@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using DTO;
 using DTO.Helpers;
 using System;
 using System.Collections;
@@ -1720,19 +1721,22 @@ namespace SgqSystem.Helpers
 
         public static DictionaryEntry getResource(string value)
         {
-
             System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
 
-            var list = resourceManager.GetResourceSet(
-                Thread.CurrentThread.CurrentUICulture, true, false);
-
-            if (list == null) //se portugues
+            if (GlobalConfig.Brasil)
+            {
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-br");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-br");
+            }
+            else
             {
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("");
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
-
-                list = resourceManager.GetResourceSet(Thread.CurrentThread.CurrentUICulture, true, false);
             }
+
+            var list = resourceManager.GetResourceSet(
+                Thread.CurrentThread.CurrentUICulture, true, false);
+            
 
             var listRes = list.Cast<DictionaryEntry>();
 

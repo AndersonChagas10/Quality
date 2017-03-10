@@ -1441,7 +1441,7 @@
     <value>Slaughter</value>
   </data>
   <data name="audit_information" xml:space="preserve">
-    <value>Informação da Auditoria</value>
+    <value>Audit Information</value>
   </data>
   <data name="corrective_action" xml:space="preserve">
     <value>Corrective Action</value>
@@ -1453,19 +1453,19 @@
     <value>Date/Time</value>
   </data>
   <data name="failure_description" xml:space="preserve">
-    <value>Descrição da Falha</value>
+    <value>Failure Description</value>
   </data>
   <data name="immediate_corrective_action" xml:space="preserve">
-    <value>Ação Corretiva Imediata</value>
+    <value>Immediate Corrective Action</value>
   </data>
   <data name="initial_date" xml:space="preserve">
-    <value>Data Inicial</value>
+    <value>Initial date</value>
   </data>
   <data name="preventive_measure" xml:space="preserve">
     <value>Preventive Action</value>
   </data>
   <data name="product_disposition" xml:space="preserve">
-    <value>Disposição do produto</value>
+    <value>Product Disposition</value>
   </data>
   <data name="select_the_period_first" xml:space="preserve">
     <value>The period need to be selected</value>
@@ -1474,12 +1474,39 @@
     <value>Assinar</value>
   </data>
   <data name="slaughter_signature" xml:space="preserve">
-    <value>Assinatura do Abate</value>
+    <value>Slaughter signature</value>
   </data>
   <data name="technical_signature" xml:space="preserve">
-    <value>Assinatura do Técnico</value>
+    <value>Technical signature</value>
   </data>
   <data name="number_of_evaluation_completed" xml:space="preserve">
     <value>The number of evaluations is completed.</value>
+  </data>
+  <data name="aa" xml:space="preserve">
+    <value />
+  </data>
+  <data name="clean_db" xml:space="preserve">
+    <value>Clean database</value>
+  </data>
+  <data name="logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="remove_signature" xml:space="preserve">
+    <value>Remove Signature</value>
+  </data>
+  <data name="show_counters" xml:space="preserve">
+    <value>Show counters</value>
+  </data>
+  <data name="sync_parameretrization" xml:space="preserve">
+    <value>Sync parameretrization</value>
+  </data>
+  <data name="sync_results" xml:space="preserve">
+    <value>Sync results</value>
+  </data>
+  <data name="view_db" xml:space="preserve">
+    <value>View database</value>
+  </data>
+  <data name="view_log" xml:space="preserve">
+    <value>View log</value>
   </data>
 </root>

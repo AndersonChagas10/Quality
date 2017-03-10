@@ -70,6 +70,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string aa {
+            get {
+                return ResourceManager.GetString("aa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Absent.
         /// </summary>
         internal static string absent {
@@ -376,7 +385,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Informação da Auditoria.
+        ///   Looks up a localized string similar to Audit Information.
         /// </summary>
         internal static string audit_information {
             get {
@@ -516,6 +525,15 @@ namespace Resources {
         internal static string chronic_problems_and_anomaly_reports {
             get {
                 return ResourceManager.GetString("chronic_problems_and_anomaly_reports", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clean database.
+        /// </summary>
+        internal static string clean_db {
+            get {
+                return ResourceManager.GetString("clean_db", resourceCulture);
             }
         }
         
@@ -1240,7 +1258,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Descrição da Falha.
+        ///   Looks up a localized string similar to Failure Description.
         /// </summary>
         internal static string failure_description {
             get {
@@ -1582,7 +1600,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ação Corretiva Imediata.
+        ///   Looks up a localized string similar to Immediate Corrective Action.
         /// </summary>
         internal static string immediate_corrective_action {
             get {
@@ -1690,7 +1708,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Data Inicial.
+        ///   Looks up a localized string similar to Initial date.
         /// </summary>
         internal static string initial_date {
             get {
@@ -2145,6 +2163,15 @@ namespace Resources {
         internal static string login_error_try_again {
             get {
                 return ResourceManager.GetString("login_error_try_again", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logout.
+        /// </summary>
+        internal static string logout {
+            get {
+                return ResourceManager.GetString("logout", resourceCulture);
             }
         }
         
@@ -2779,7 +2806,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Disposição do produto.
+        ///   Looks up a localized string similar to Product Disposition.
         /// </summary>
         internal static string product_disposition {
             get {
@@ -2910,6 +2937,15 @@ namespace Resources {
         internal static string register_total_evaluated {
             get {
                 return ResourceManager.GetString("register_total_evaluated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Signature.
+        /// </summary>
+        internal static string remove_signature {
+            get {
+                return ResourceManager.GetString("remove_signature", resourceCulture);
             }
         }
         
@@ -3517,6 +3553,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show counters.
+        /// </summary>
+        internal static string show_counters {
+            get {
+                return ResourceManager.GetString("show_counters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show Level 3 Grouped With Level 2.
         /// </summary>
         internal static string show_group_on_level3 {
@@ -3589,7 +3634,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Assinatura do Abate.
+        ///   Looks up a localized string similar to Slaughter signature.
         /// </summary>
         internal static string slaughter_signature {
             get {
@@ -3706,6 +3751,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sync parameretrization.
+        /// </summary>
+        internal static string sync_parameretrization {
+            get {
+                return ResourceManager.GetString("sync_parameretrization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sync results.
+        /// </summary>
+        internal static string sync_results {
+            get {
+                return ResourceManager.GetString("sync_results", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The target was exceed.
         /// </summary>
         internal static string target_exceed {
@@ -3715,7 +3778,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Assinatura do Técnico.
+        ///   Looks up a localized string similar to Technical signature.
         /// </summary>
         internal static string technical_signature {
             get {
@@ -4080,6 +4143,24 @@ namespace Resources {
         internal static string version {
             get {
                 return ResourceManager.GetString("version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View database.
+        /// </summary>
+        internal static string view_db {
+            get {
+                return ResourceManager.GetString("view_db", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View log.
+        /// </summary>
+        internal static string view_log {
+            get {
+                return ResourceManager.GetString("view_log", resourceCulture);
             }
         }
         
