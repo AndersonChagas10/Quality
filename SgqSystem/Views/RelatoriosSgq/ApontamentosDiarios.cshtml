@@ -1,6 +1,6 @@
 ﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
 @{
-    ViewBag.Title = "Apontamentos Diarios";
+    ViewBag.Title = Resources.Resource.daily_apointments; //"Apontamentos Diarios";
     var url = Url.Action("Index", "Home");
     var urlGet = Url.Action("Get", "api/ApontamentosDiarios");
     var urlEdit = Url.Action("Edit", "api/ApontamentosDiarios");
@@ -9,12 +9,12 @@
 
 <div class="page-content" style="min-height: 600px;">
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
-    
-    <div id="formBodyContent" >
+
+    <div id="formBodyContent">
 
         <div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
 
-            <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">Atualizar</button>
+            <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
         </div>
 
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
@@ -30,7 +30,7 @@
 @section Scripts {
 
     <script type="text/javascript">
-        
+
         $(".sidebar-toggler").removeClass("hide");
         $(".page-sidebar-wrapper").removeClass("hide");
 
@@ -68,30 +68,30 @@
             var table = $('#results').empty().DataTable({
                 data: retornoArray,
                 columns: [
-                    { title: "Editar", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Editar</button>' },
-                    { title: "Unidade", mData: "Unidade" }, //{ title: "Unidade", mData: "Unidade" },
-                    { title: "Data", mData: "_Data" },
-                    { title: "Indicador", mData: "Indicador" },
-                    { title: "Monitoramento", mData: "Monitoramento" },
-                    { title: "Tarefa", mData: "Tarefa" },
-                    { title: "Peso", mData: "Peso" },
+                    { title: "@Resources.Resource.edit", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>' },
+                    { title: "@Resources.Resource.unit", mData: "Unidade" }, //{ title: "Unidade", mData: "Unidade" },
+                    { title: "@Resources.Resource.date", mData: "_Data" },
+                    { title: "@Resources.Resource.audit", mData: "Indicador" },
+                    { title: "@Resources.Resource.monitoring", mData: "Monitoramento" },
+                    { title: "@Resources.Resource.task", mData: "Tarefa" },
+                    { title: "@Resources.Resource.weight", mData: "Peso" },
                     {
-                        title: "Intervalo Mínimo", mData: "IntervaloMinimo", mRender: function (data, type, full) {
+                        title: "@Resources.Resource.min_interval", mData: "IntervaloMinimo", mRender: function (data, type, full) {
                             return data.toString().match(/\d+(\.\d{1,2})?/g)[0];
                         }
                     },
                     {
-                        title: "Intervalo Máximo", mData: "IntervaloMaximo", mRender: function (data, type, full) {
+                        title: "@Resources.Resource.max_interval ", mData: "IntervaloMaximo", mRender: function (data, type, full) {
                             return data.toString().match(/\d+(\.\d{1,2})?/g)[0];
                         }
                     },
-                    { title: "Valor Lançado", mData: "Lancado" },
-                    { title: "Conforme", mData: "_Conforme" },
-                    { title: "Não Avaliado", mData: "_NA" },
-                    { title: "Avaliado (Com peso)", mData: "AV_Peso" },
-                    { title: "Não Conforme (Com peso)", mData: "NC_Peso" },
-                    { title: "Avaliação.", mData: "Avaliacao" },
-                    { title: "Amostra", mData: "Amostra" },
+                    { title: "@Resources.Resource.value", mData: "Lancado" },
+                    { title: "@Resources.Resource.derivation ?", mData: "_Conforme" },
+                    { title: "@Resources.Resource.na ?", mData: "_NA" },
+                    { title: "@Resources.Resource.weighted_ev", mData: "AV_Peso" },
+                    { title: "@Resources.Resource.weighted_defects", mData: "NC_Peso" },
+                    { title: "@Resources.Resource.evaluation", mData: "Avaliacao" },
+                    { title: "@Resources.Resource.sample", mData: "Amostra" },
 
                 ],
                 scrollX: true,
@@ -114,19 +114,19 @@
                     $('#results tbody').on('click', 'button', function (data, a, b) {
 
                         var data = table.row($(this).parents('tr')).data();
-                        console.log(data);
+                        //console.log(data);
                         $.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
 
                             $('#estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
                             $('#ResultLevel3_Id').val(r.Id);
-                            
+
                             $('#changeConform').empty();
                             $('#changeConform').append($(r.showIntervalos));
                             $('#changeConform').append($(r.showConform));
                             $('#changeConform').append($(r.showCalculado));
                             $('#changeConform').append($(r.showNumeroDefeitos));
 
-                            console.log(r.Id);
+                            //console.log(r.Id);
                         });
 
                     });
@@ -145,7 +145,7 @@
                 buttons: [
                     {
                         extend: 'print',
-                        text: 'Imprimir',
+                        text: '@Resources.Resource.print',
                         customize: function (win) {
                             $(win.document.body).find('table')
                                 .addClass('compact')
@@ -171,7 +171,7 @@
                      },
                       {
                           extend: 'colvis',
-                          text: 'Colunas Visíveis',
+                          text: '@Resources.Resource.visible_columns',
                           exportOptions: {
                               columns: ':visible'
                           }
@@ -189,7 +189,7 @@
 
             var dadosResultLevel3 = {};
 
-            if ($('#sample') != undefined){
+            if ($('#sample') != undefined) {
                 if ($('#sample').val() > $('#numeroDeDefeitos').val()) {
                     openMessageModal("O numero de defeitos não pode ser maior que o numero avaliado.")
                     return;
@@ -204,11 +204,11 @@
             if ($('#decimal').length)
                 dadosResultLevel3["Value"] = $('#decimal').val() + "x10^" + $('#precisao').val();
             if ($('#numeroDeDefeitos').length)
-                    dadosResultLevel3["Value"] = $('#numeroDeDefeitos').val();
+                dadosResultLevel3["Value"] = $('#numeroDeDefeitos').val();
             if ($('#intervaloValor').length)
                 dadosResultLevel3["Value"] = $('#intervaloValor').val();
 
-            
+
             $.post(urlSave, dadosResultLevel3, function (r, x, e) {
                 openMessageModal("Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
             }).fail(function (r, x, e) {
@@ -234,7 +234,7 @@
         $(document).ready(function () {
             formControl.showFullCallendar();
             formControl.showUnit();
-            formControl.showLevel2();
+            //formControl.showLevel2();
             formControl.showLevel1();
 
             closeLeftSidebar();

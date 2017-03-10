@@ -1,6 +1,6 @@
 ﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
 @{
-    ViewBag.Title = "Não Conformidades";
+    ViewBag.Title = Resources.Resource.defects_reports; //"Não Conformidades";
     var url = Url.Action("Index", "Home");
     var urlGraficoUnidades = Url.Action("GraficoUnidades", "api/NaoConformidade");
     var urlGetPanelResultSet = Url.Action("GetPanelResultSet", "api/NaoConformidade");
@@ -77,15 +77,15 @@
 @section Scripts {
     
     <script type="text/javascript">
-        
+
         $(".sidebar-toggler").removeClass("hide");
         $(".page-sidebar-wrapper").removeClass("hide");
 
-        var Grafico1 = 'NC por unidade';
+        var Grafico1 = '@Resources.Resource.defects_per_unit:'; //'NC por unidade';
         var GraficoDepto = 'NC por departamento: ';
-        var GraficoIndic = 'NC por Indicador: ';
-        var GraficoMon = 'NC por Monitoramento: ';
-        var GraficoTarefa = 'NC por Tarefa: ';
+        var GraficoIndic = '@Resources.Resource.defects_per_audit:'; //'NC por Indicador: ';
+        var GraficoMon = '@Resources.Resource.defects_per_monitoring:'; //'NC por Monitoramento: ';
+        var GraficoTarefa = '@Resources.Resource.defects_per_tasks:'; //'NC por Tarefa: ';
         var GraficoTarefasAcumuladas = 'NC por Tarefas acumuladas: ';
         var GraficoMoncomTarefa = 'NC por Monitoramento na Tarefa: ';
         var $btn = $('#btnSend');
@@ -129,7 +129,7 @@
             }
 
             EasyAjax(urlGraficoUnidades, enviar, GraficoUnidade, "RGUnidadesGrafico", toggle);//AJAX
-        
+
         };
 
         function ValidaDadosParaEnvio() {
@@ -440,7 +440,7 @@
                 return {
                     type: 'line',
                     yAxis: 1,
-                    name: 'Gráfico de Pareto',
+                    name: '@Resources.Resource.pareto_chart',
                     color: "Red",
                     data: data,
                     tooltip: {
@@ -549,7 +549,7 @@
                     allowDecimals: false,
                     min: 0,
                     title: {
-                        text: 'Numero Amostras'
+                        text: '@Resources.Resource.number_samplers'
                     },
                     labels: {
                         format: '{value}',
@@ -566,7 +566,7 @@
                         }
                     },
                     title: {
-                        text: '% NC',
+                        text: '% @Resources.Resource.nonconformity',
                     },
                     opposite: true
                 }];
@@ -579,7 +579,7 @@
             },
             NC: function (data, func, nome, id, funcParaAcumuladas) {
                 return {
-                    name: 'NC',
+                    name: '@Resources.Resource.nonconformity',
                     color: Chart.CorTotalNc(),//'rgba(77,143,189,1)',
                     data: data,
                     yAxis: 0,
@@ -606,7 +606,7 @@
                     data[a] = parseFloat(b) > 100 ? 100 : b;
                 });
                 return {
-                    name: '% NC',
+                    name: '% @Resources.Resource.nonconformity',
                     color: Chart.CorTotalProcNc(),//'rgba(240,124,0,1)',
                     data: data,
                     yAxis: 1,
@@ -626,7 +626,7 @@
                     },
                     tooltip: {
                         valueDecimals: 2,
-                        valueSuffix: ' % (NC * Peso)'
+                        valueSuffix: ' % (@Resources.Resource.nonconformity * @Resources.Resource.weight)'
                     }
                 };
 
@@ -635,7 +635,7 @@
 
                 return {
                     visible: false,
-                    name: '% Meta',
+                    name: '% @Resources.Resource.goal',
                     data: data,
                     color: Chart.CorMeta(),//'rgba(81,207,64,1)',
                     //pointPadding: 0.4,
@@ -661,7 +661,7 @@
 
                 return {
                     visible: false,
-                    name: 'Avaliações',
+                    name: '@Resources.Resource.evaluation',
                     data: data,
                     color: Chart.CorTotalAv(),//'rgba(81,207,64,1)',
                     //pointPadding: 0.4,

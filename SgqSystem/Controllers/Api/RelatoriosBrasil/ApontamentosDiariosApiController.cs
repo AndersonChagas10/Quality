@@ -331,16 +331,16 @@ namespace SgqSystem.Controllers.Api
                             {
                                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
                                 return "<div>" +
-                                            "<label for='Conforme: '> Intervalo Max: </label>" + IntervalMax +
+                                            "<label for='Conforme: '> " + Resources.Resource.max_interval + ": </label>" + IntervalMax +
                                             "<br>" +
-                                            "<label for='Conforme: '> Intervalo Min: </label>" + IntervalMin +
+                                            "<label for='Conforme: '> " + Resources.Resource.min_interval + ": </label>" + IntervalMin +
                                             "<br>" +
-                                            "<label for='Conforme: '> Valor atual: </label>" + Value +
+                                            "<label for='Conforme: '> " + Resources.Resource.current_value + ": </label>" + Value +
                                             "<br>" +
-                                            "<label for='Conforme: '> Novo Valor: </label> &nbsp " +
+                                            "<label for='Conforme: '> " + Resources.Resource.new_value + ": </label> &nbsp " +
                                              "<input type='text' id='intervaloValor' class='form-control decimal' value=" + Value + " />" +
                                             "<br>" +
-                                            "<label for='Conforme: '> Não Avaliado: </label> &nbsp " +
+                                            "<label for='Conforme: '> " + Resources.Resource.na + ": </label> &nbsp " +
                                              "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                                         "</div>";
                             }

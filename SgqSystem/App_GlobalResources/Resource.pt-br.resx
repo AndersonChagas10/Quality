@@ -1438,7 +1438,7 @@
     <value>Indicadores</value>
   </data>
   <data name="audit_information" xml:space="preserve">
-    <value>Audit Information</value>
+    <value>Informação da Auditoria</value>
   </data>
   <data name="corrective_action" xml:space="preserve">
     <value>Ação Corretiva</value>
@@ -1450,19 +1450,19 @@
     <value>Data/Hora</value>
   </data>
   <data name="failure_description" xml:space="preserve">
-    <value>Failure Description</value>
+    <value>Descrição da Falha</value>
   </data>
   <data name="immediate_corrective_action" xml:space="preserve">
-    <value>Immediate Corrective Action</value>
+    <value>Ação Corretiva Imediata</value>
   </data>
   <data name="initial_date" xml:space="preserve">
-    <value>Initial Date</value>
+    <value>Data Inicial</value>
   </data>
   <data name="preventive_measure" xml:space="preserve">
     <value>Acão Preventiva</value>
   </data>
   <data name="product_disposition" xml:space="preserve">
-    <value>Product Disposition</value>
+    <value>Disposição do produto</value>
   </data>
   <data name="select_the_period_first" xml:space="preserve">
     <value>Selecione o período antes de entrar no indicador</value>
@@ -1471,12 +1471,99 @@
     <value>Sign</value>
   </data>
   <data name="slaughter_signature" xml:space="preserve">
-    <value>Slaughter Signature</value>
+    <value>Assinatura do abate</value>
   </data>
   <data name="technical_signature" xml:space="preserve">
-    <value>Technical Signature</value>
+    <value>Assinatura Técnica</value>
   </data>
   <data name="number_of_evaluation_completed" xml:space="preserve">
     <value>O número de avaliações desse indicador foi completado.</value>
+  </data>
+  <data name="audit" xml:space="preserve">
+    <value>Indicador</value>
+  </data>
+  <data name="defects_per_audit" xml:space="preserve">
+    <value>NC Por Indicador</value>
+  </data>
+  <data name="defects_per_monitoring" xml:space="preserve">
+    <value>NC Por Monitoramento</value>
+  </data>
+  <data name="defects_per_tasks" xml:space="preserve">
+    <value>NC Por Tarefa</value>
+  </data>
+  <data name="defects_per_unit" xml:space="preserve">
+    <value>NC Por Unidade</value>
+  </data>
+  <data name="defects_reports" xml:space="preserve">
+    <value>Não Conformidades</value>
+  </data>
+  <data name="derivation" xml:space="preserve">
+    <value>Conforme</value>
+  </data>
+  <data name="max_interval" xml:space="preserve">
+    <value>Intervalo Máximo</value>
+  </data>
+  <data name="min_interval" xml:space="preserve">
+    <value>Intervalo Mínimo</value>
+  </data>
+  <data name="monitoring" xml:space="preserve">
+    <value>Monitoramento</value>
+  </data>
+  <data name="na" xml:space="preserve">
+    <value>Não Avaliado</value>
+  </data>
+  <data name="nonconformity" xml:space="preserve">
+    <value>NC</value>
+  </data>
+  <data name="number_samplers" xml:space="preserve">
+    <value>Numero Amostras</value>
+  </data>
+  <data name="pareto_chart" xml:space="preserve">
+    <value>Grafico de Pareto</value>
+  </data>
+  <data name="refresh" xml:space="preserve">
+    <value>Atualizar</value>
+  </data>
+  <data name="select_the_unit_first" xml:space="preserve">
+    <value>Por favor selecione uma unidade.</value>
+  </data>
+  <data name="task" xml:space="preserve">
+    <value>Tarefa</value>
+  </data>
+  <data name="weighted_defects" xml:space="preserve">
+    <value>Não Conforme (Com peso)</value>
+  </data>
+  <data name="weighted_ev" xml:space="preserve">
+    <value>Avaliado (Com peso)</value>
+  </data>
+  <data name="clean_db" xml:space="preserve">
+    <value>Limpar banco de dados</value>
+  </data>
+  <data name="logout" xml:space="preserve">
+    <value>Sair</value>
+  </data>
+  <data name="remove_signature" xml:space="preserve">
+    <value>Remover assinatura</value>
+  </data>
+  <data name="show_counters" xml:space="preserve">
+    <value>Mostrar contadores</value>
+  </data>
+  <data name="sync_parameretrization" xml:space="preserve">
+    <value>Sincronizar parametrização</value>
+  </data>
+  <data name="sync_results" xml:space="preserve">
+    <value>Sincronizar resultados</value>
+  </data>
+  <data name="view_db" xml:space="preserve">
+    <value>Visualizar banco de dados</value>
+  </data>
+  <data name="view_log" xml:space="preserve">
+    <value>Visualizar log</value>
+  </data>
+  <data name="current_value" xml:space="preserve">
+    <value>Valor Atual</value>
+  </data>
+  <data name="new_value" xml:space="preserve">
+    <value>Novo Valor</value>
   </data>
 </root>
