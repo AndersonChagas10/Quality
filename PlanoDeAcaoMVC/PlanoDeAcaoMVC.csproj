@@ -17,7 +17,7 @@
     <AssemblyName>PlanoDeAcaoMVC</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -497,6 +497,8 @@
     <Content Include="Scripts\Reports\Reports1.js" />
     <Content Include="Scripts\Reports\ReportsHC.js" />
     <Content Include="Scripts\i18n\Portuguese-Brasil.json" />
+    <None Include="Properties\PublishProfiles\pa_GRT.pubxml" />
+    <None Include="Properties\PublishProfiles\Pa_Local.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\GuardJs.js" />
     <Content Include="Scripts\highcharts\4.2.0\adapters\standalone-framework.js" />
@@ -1424,6 +1426,10 @@
     <Content Include="Views\Pa_Planejamento\Editar.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">
+      <Project>{31925FCA-E0F6-428D-9A7D-59CA8879D6F8}</Project>
+      <Name>ADOFactory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DTO\DTO.csproj">
       <Project>{0ED5466D-2A8F-4E37-8D4A-C2F2760BD687}</Project>
       <Name>DTO</Name>
@@ -1463,7 +1469,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>59907</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:59907/</IISUrl>
+          <IISUrl>http://localhost/PlanoDeAcaoMVC</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

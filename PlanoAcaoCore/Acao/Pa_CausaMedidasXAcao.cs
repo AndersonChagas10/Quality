@@ -1,7 +1,5 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
-using System.Linq;
 
 namespace PlanoAcaoCore
 {
@@ -10,26 +8,81 @@ namespace PlanoAcaoCore
 
         [Display(Name = "Causa generica")]
         public int? CausaGenerica_Id { get; set; }
-        public string CausaGenerica { get; set; }
+        public string CausaGenerica
+        {
+            get
+            {
+                var retorno = string.Empty;
+                if (Acao_Id.GetValueOrDefault() > 0 && CausaGenerica_Id.GetValueOrDefault() > 0)
+                {
+                    retorno = Pa_CausaGenerica.Get(CausaGenerica_Id.GetValueOrDefault())?.CausaGenerica;
+                }
+                return retorno;
+            }
+        }
 
         [Display(Name = "Causa especifica")]
         public int? CausaEspecifica_Id { get; set; }
-        public string CausaEspecifica { get; set; }
+        public string CausaEspecifica
+        {
+            get
+            {
+                var retorno = string.Empty;
+                if (Acao_Id.GetValueOrDefault() > 0 && CausaEspecifica_Id.GetValueOrDefault() > 0)
+                {
+                    retorno = Pa_CausaEspecifica.Get(CausaEspecifica_Id.GetValueOrDefault())?.Text;
+                }
+                return retorno;
+            }
+        }
 
         [Display(Name = "Contramedida generica")]
         public int? ContramedidaGenerica_Id { get; set; }
-        public string ContramedidaGenerica { get; set; }
+        public string ContramedidaGenerica
+        {
+            get
+            {
+                var retorno = string.Empty;
+                if (Acao_Id.GetValueOrDefault() > 0 && ContramedidaGenerica_Id.GetValueOrDefault() > 0)
+                {
+                    retorno = Pa_ContramedidaGenerica.Get(ContramedidaGenerica_Id.GetValueOrDefault())?.ContramedidaGenerica;
+                }
+                return retorno;
+            }
+        }
 
         [Display(Name = "Contramedida especifica")]
         public int? ContramedidaEspecifica_Id { get; set; }
-        public string ContramedidaEspecifica { get; set; }
+        public string ContramedidaEspecifica
+        {
+            get
+            {
+                var retorno = string.Empty;
+                if (Acao_Id.GetValueOrDefault() > 0 && ContramedidaEspecifica_Id.GetValueOrDefault() > 0)
+                {
+                    retorno = Pa_ContramedidaEspecifica.Get(ContramedidaEspecifica_Id.GetValueOrDefault())?.Text;
+                }
+                return retorno;
+            }
+        }
 
         [Display(Name = "Grupo causa")]
         public int? GrupoCausa_Id { get; set; }
-        public string GrupoCausa { get; set; }
+        public string GrupoCausa
+        {
+            get
+            {
+                var retorno = string.Empty;
+                if (Acao_Id.GetValueOrDefault() > 0 && GrupoCausa_Id.GetValueOrDefault() > 0)
+                {
+                    retorno = Pa_GrupoCausa.Get(GrupoCausa_Id.GetValueOrDefault())?.GrupoCausa;
+                }
+                return retorno;
+            }
+        }
 
         [Display(Name = "Acao")]
-        public int Acao_Id { get; set; }
+        public int? Acao_Id { get; set; }
 
         public void AddOrUpdate()
         {
@@ -125,33 +178,47 @@ namespace PlanoAcaoCore
         internal static Pa_CausaMedidasXAcao GetByAcaoId(int id)
         {
 
-            var query = "select * from Pa_GrupoCausa";
-            var GruposCausas = ListarGenerico<Pa_GrupoCausa>(query);
-
-            var query1 = "select * from Pa_ContramedidaGenerica";
-            var ContramedidasGenericas = ListarGenerico<Pa_ContramedidaGenerica>(query1);
-
-            var query2 = "select * from Pa_CausaGenerica";
-            var CausasGenericas = ListarGenerico<Pa_CausaGenerica>(query2);
-
-            var query4 = "select * from Pa_CausaEspecifica";
-            var causaEspecifica = ListarGenerico<Pa_CausaEspecifica>(query4);
-
-            var query5 = "select * from Pa_ContramedidaEspecifica";
-            var contramedidaEspecifica = ListarGenerico<Pa_ContramedidaEspecifica>(query5);
-
             var query3 = "select * from Pa_CausaMedidaXAcao where Acao_Id = " + id;
             var CausaMedidaXAcoes = GetGenerico<Pa_CausaMedidasXAcao>(query3);
 
-            CausaMedidaXAcoes.CausaGenerica = CausasGenericas.FirstOrDefault(r => r.Id == CausaMedidaXAcoes.CausaGenerica_Id)?.CausaGenerica;
+            //if (CausaMedidaXAcoes != null)
+            //{
+            //    if (CausaMedidaXAcoes.GrupoCausa_Id.GetValueOrDefault() > 0)
+            //    {
+            //        var query = "select * from Pa_GrupoCausa where Id = " + id;
+            //        var GruposCausas = ListarGenerico<Pa_GrupoCausa>(query);
+            //        CausaMedidaXAcoes.GrupoCausa = GruposCausas.FirstOrDefault(r => r.Id == CausaMedidaXAcoes.GrupoCausa_Id)?.GrupoCausa;
+            //    }
 
-            CausaMedidaXAcoes.ContramedidaGenerica = ContramedidasGenericas.FirstOrDefault(r => r.Id == CausaMedidaXAcoes.ContramedidaGenerica_Id)?.ContramedidaGenerica;
+            //    if (CausaMedidaXAcoes.ContramedidaGenerica_Id.GetValueOrDefault() > 0)
+            //    {
+            //        var query1 = "select * from Pa_ContramedidaGenerica where Id = " + id;
+            //        var ContramedidasGenericas = ListarGenerico<Pa_ContramedidaGenerica>(query1);
+            //        CausaMedidaXAcoes.ContramedidaGenerica = ContramedidasGenericas.FirstOrDefault(r => r.Id == CausaMedidaXAcoes.ContramedidaGenerica_Id)?.ContramedidaGenerica;
+            //    }
 
-            CausaMedidaXAcoes.GrupoCausa = GruposCausas.FirstOrDefault(r => r.Id == CausaMedidaXAcoes.GrupoCausa_Id)?.GrupoCausa;
+            //    if (CausaMedidaXAcoes.CausaGenerica_Id.GetValueOrDefault() > 0)
+            //    {
+            //        var query2 = "select * from Pa_CausaGenerica where Id = " + id;
+            //        var CausasGenericas = ListarGenerico<Pa_CausaGenerica>(query2);
+            //        CausaMedidaXAcoes.CausaGenerica = CausasGenericas.FirstOrDefault(r => r.Id == CausaMedidaXAcoes.CausaGenerica_Id)?.CausaGenerica;
+            //    }
 
-            CausaMedidaXAcoes.CausaEspecifica = causaEspecifica.FirstOrDefault(r => r.Id == CausaMedidaXAcoes.CausaEspecifica_Id)?.Text;
+            //    if (CausaMedidaXAcoes.CausaEspecifica_Id.GetValueOrDefault() > 0)
+            //    {
+            //        var query4 = "select * from Pa_CausaEspecifica where Id = " + id;
+            //        var causaEspecifica = ListarGenerico<Pa_CausaEspecifica>(query4);
+            //        CausaMedidaXAcoes.CausaEspecifica = causaEspecifica.FirstOrDefault(r => r.Id == CausaMedidaXAcoes.CausaEspecifica_Id)?.Text;
+            //    }
 
-            CausaMedidaXAcoes.ContramedidaEspecifica = contramedidaEspecifica.FirstOrDefault(r => r.Id == CausaMedidaXAcoes.ContramedidaEspecifica_Id)?.Text;
+            //    if (CausaMedidaXAcoes.ContramedidaEspecifica_Id.GetValueOrDefault() > 0)
+            //    {
+            //        var query5 = "select * from Pa_ContramedidaEspecifica where Id = " + id;
+            //        var contramedidaEspecifica = ListarGenerico<Pa_ContramedidaEspecifica>(query5);
+            //        CausaMedidaXAcoes.ContramedidaEspecifica = contramedidaEspecifica.FirstOrDefault(r => r.Id == CausaMedidaXAcoes.ContramedidaEspecifica_Id)?.Text;
+            //    }
+
+            //}
 
             return CausaMedidaXAcoes;
         }
@@ -163,13 +230,13 @@ namespace PlanoAcaoCore
 
         public static Pa_CausaMedidasXAcao Get(int Id)
         {
-            var query = "select *                                                                                   "+ 
-                        "\n from Pa_CausaMedidaXAcao CMA                                                            "+
-                        "\n left join Pa_CausaGenerica CG on CMA.CausaGEnerica_Id = CG.Id                           "+
-                        "\n left join Pa_CausaEspecifica CE on CMA.CausaEspecifica_Id = CE.Id                       "+
-                        "\n left join Pa_ContramedidaGenerica CMG on CMA.ContramedidaGenerica_Id = CMG.Id           "+
-                        "\n left join Pa_ContramedidaEspecifica CME on CMA.ContramedidaEspecifica_Id = CME.Id       "+
-                        "\n left join Pa_GrupoCausa GC on CMA.GrupoCausa_Id = GC.Id                                 "+
+            var query = "select *                                                                                   " +
+                        "\n from Pa_CausaMedidaXAcao CMA                                                            " +
+                        "\n left join Pa_CausaGenerica CG on CMA.CausaGEnerica_Id = CG.Id                           " +
+                        "\n left join Pa_CausaEspecifica CE on CMA.CausaEspecifica_Id = CE.Id                       " +
+                        "\n left join Pa_ContramedidaGenerica CMG on CMA.ContramedidaGenerica_Id = CMG.Id           " +
+                        "\n left join Pa_ContramedidaEspecifica CME on CMA.ContramedidaEspecifica_Id = CME.Id       " +
+                        "\n left join Pa_GrupoCausa GC on CMA.GrupoCausa_Id = GC.Id                                 " +
                         "\n where CMA.Acao_Id = " + Id;
 
             return GetGenerico<Pa_CausaMedidasXAcao>(query);

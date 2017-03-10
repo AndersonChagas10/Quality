@@ -8,18 +8,34 @@ namespace PlanoAcaoCore
 {
     public class Pa_Acao : Pa_BaseObject, ICrudPa<Pa_Acao>
     {
-
-        [Display(Name = "Indicador SGQ ou Ação")]
-        public int? Pa_IndicadoresDeProjeto_Id { get; set; }
-        public string _Pa_IndicadoresDeProjeto { get; set; }
-
-        [Display(Name = "Indicador SGQ ou Ação")]
-        public int? Pa_IndicadorSgqAcao_Id { get; set; }
-        public string _Pa_IndicadorSgqAcao { get; set; }
-
         [Display(Name = "Problema ou Desvio")]
         public int? Pa_Problema_Desvio_Id { get; set; }
-        public string _Problema_Desvio_Id { get; set; }
+        public Pa_Problema_Desvio _Pa_Problema_Desvio_Id
+        {
+            get
+            {
+                if (Pa_Problema_Desvio_Id > 0)
+                    return Pa_Problema_Desvio.Get(Pa_Problema_Desvio_Id.GetValueOrDefault());
+                else
+                    return new Pa_Problema_Desvio();
+            }
+        }
+
+        //[Display(Name = "Indicador SGQ ou Ação")]
+        [Display(Name = "Indicador Operacional")]
+        public int? Pa_IndicadorSgqAcao_Id { get; set; }
+        public Pa_IndicadorSgqAcao _Pa_IndicadorSgqAcao
+        {
+            get
+            {
+                if (Pa_IndicadorSgqAcao_Id > 0)
+                    return Pa_IndicadorSgqAcao.Get(Pa_IndicadorSgqAcao_Id.GetValueOrDefault());
+                else
+                    return new Pa_IndicadorSgqAcao();
+            }
+        }
+
+
 
         [Display(Name = "Unidade")]
         public int? Unidade_Id { get; set; }
@@ -30,6 +46,8 @@ namespace PlanoAcaoCore
         public string Departamento { get; set; }
 
         public int? Pa_CausaMedidasXAcao_Id { get; set; }
+      
+
 
         [Display(Name = "Duracao dias")]
         public int DuracaoDias { get; set; }
@@ -99,14 +117,14 @@ namespace PlanoAcaoCore
         {
             get
             {
-                return "SELECT ACAO.* ,                                                     " +
+                return "SELECT TOP 200 ACAO.* ,                                                     " +
                         "\n STA.Name as StatusName,                                         " +
                         "\n UN.Name as Unidade,                                             " +
                         "\n DPT.Name as Departamento                                        " +
                         "\n FROM pa_acao ACAO                                               " +
                         "\n LEFT JOIN Pa_Unidade UN ON UN.Id = ACAO.Unidade_Id              " +
                         "\n LEFT JOIN Pa_Departamento DPT ON DPT.Id = ACAO.Departamento_Id  " +
-                        "\n LEFT JOIN Pa_Status STA ON STA.Id = ACAO.[Status]               ";
+                        "\n LEFT JOIN Pa_Status STA ON STA.Id = ACAO.[Status]  where acao.id in (select Acao_Id from Pa_CausaMedidaXAcao where Acao_Id is not null)   ";
 
             }
         }
