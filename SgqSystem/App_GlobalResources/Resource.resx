@@ -1485,6 +1485,12 @@
   <data name="audit" xml:space="preserve">
     <value>Audit</value>
   </data>
+  <data name="consolidation" xml:space="preserve">
+    <value>Consolidation</value>
+  </data>
+  <data name="current_value" xml:space="preserve">
+    <value>Current Value</value>
+  </data>
   <data name="defects_per_audit" xml:space="preserve">
     <value>Defects Per Audit</value>
   </data>
@@ -1515,6 +1521,9 @@
   <data name="na" xml:space="preserve">
     <value>N/A</value>
   </data>
+  <data name="new_value" xml:space="preserve">
+    <value>New Value</value>
+  </data>
   <data name="nonconformity" xml:space="preserve">
     <value>Defects</value>
   </data>
@@ -1524,6 +1533,9 @@
   <data name="pareto_chart" xml:space="preserve">
     <value>Pareto</value>
   </data>
+  <data name="print" xml:space="preserve">
+    <value>Print</value>
+  </data>
   <data name="refresh" xml:space="preserve">
     <value>Refresh</value>
   </data>
@@ -1532,6 +1544,9 @@
   </data>
   <data name="task" xml:space="preserve">
     <value>Task</value>
+  </data>
+  <data name="visible_columns" xml:space="preserve">
+    <value>Visible Columns</value>
   </data>
   <data name="weighted_defects" xml:space="preserve">
     <value>Weighted Defects</value>

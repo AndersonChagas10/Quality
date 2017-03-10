@@ -1536,4 +1536,16 @@
   <data name="weighted_ev" xml:space="preserve">
     <value>Avaliado (Com peso)</value>
   </data>
+  <data name="current_value" xml:space="preserve">
+    <value>Valor Atual</value>
+  </data>
+  <data name="new_value" xml:space="preserve">
+    <value>Novo Valor</value>
+  </data>
+  <data name="print" xml:space="preserve">
+    <value>Imprimir</value>
+  </data>
+  <data name="visible_columns" xml:space="preserve">
+    <value>Colunas Visíveis</value>
+  </data>
 </root>
