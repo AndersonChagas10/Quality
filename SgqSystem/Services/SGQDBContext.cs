@@ -285,9 +285,9 @@ namespace SGQDBContext
             string sql = "" +
                 "\n  select count(1) from " +
                 "\n ( " +
-                "\n select * from ParEvaluation where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id = " + ParCompany_Id + " " +
+                "\n select * from ParEvaluation where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id = " + ParCompany_Id + " AND IsActive = 1 " +
                 "\n union all " +
-                "\n select * from ParEvaluation where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id is Null " +
+                "\n select * from ParEvaluation where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id is Null  AND IsActive = 1 " +
                 "\n ) temAv ";
 
             SqlCommand command = new SqlCommand(sql, db);
@@ -303,9 +303,9 @@ namespace SGQDBContext
             string sql = "" +
                 "\n  select count(1) from " +
                 "\n ( " +
-                "\n select * from ParSample where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id = " + ParCompany_Id + " " +
+                "\n select * from ParSample where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id = " + ParCompany_Id + " and IsActive = 1 " +
                 "\n union all " +
-                "\n select * from ParSample where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id is Null " +
+                "\n select * from ParSample where ParLevel2_id = " + ParLevel2_Id + " and ParCompany_Id is Null  and IsActive = 1 " +
                 "\n ) temAm ";
 
             SqlCommand command = new SqlCommand(sql, db);
@@ -565,6 +565,7 @@ namespace SGQDBContext
                              "INNER JOIN ParEvaluation PE                                                 " +
                              "ON PE.ParLevel2_Id = PL2.Id                                                 " +
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
+                             " AND PE.IsActive = 1 " +
                              queryCompany +
                              "GROUP BY PL2.Id, PL2.Name, PE.Number                                        ";
 
@@ -706,6 +707,7 @@ namespace SGQDBContext
                              "INNER JOIN ParSample PS                                          " +
                              "ON PS.ParLevel2_Id = PL2.Id                                      " +
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                 " +
+                             " AND PS.IsActive = 1 " +
                              queryCompany +
                              "GROUP BY PL2.Id, PL2.Name, PS.Number, PS.ParCompany_Id           ";
 
