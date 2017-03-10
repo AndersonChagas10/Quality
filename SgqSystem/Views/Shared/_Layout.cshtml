@@ -243,12 +243,12 @@
                }
            });
 
-        var configLayout = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+        @*var configLayout = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
     
         /*Configura date range picker para PT-BR*/
-        if(configLayout){
+        if(configLayout){*@
             moment.locale("Pt-Br");
-            moment.defaultFormat = "MM/DD/YYYY";
+            moment.defaultFormat = "DD/MM/YYYY";
 
             $.fn.daterangepicker('locale', {
                 "format": "DD/MM/YYYY",
@@ -285,13 +285,13 @@
                 //"firstDay": 0
             });
 
-        }else {
-            moment.defaultFormat = "MM/DD/YYYY";
-            $.fn.daterangepicker('locale', {
-                "format": "MM/DD/YYYY",
-                "separator": " - ",
-            });
-        }
+        //}else {
+        //    moment.defaultFormat = "MM/DD/YYYY";
+        //    $.fn.daterangepicker('locale', {
+        //        "format": "MM/DD/YYYY",
+        //        "separator": " - ",
+        //    });
+        //}
 
         var rangesEUA = {
             'Today': [moment(), moment()],

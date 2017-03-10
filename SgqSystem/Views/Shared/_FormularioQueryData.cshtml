@@ -858,9 +858,9 @@
             enviar['startDate'] = start.format();
             enviar['endDate'] = end.format();
         }
-        var configQueryData = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+        @*var configQueryData = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
         var configCallendar = {};
-        if(configQueryData){
+        if(configQueryData){*@
             $('#reportrange').daterangepicker({
                 startDate: start,
                 endDate: end,
@@ -878,21 +878,21 @@
                 ranges: rangesBR,
                 linkedCalendars: false
             }, cb);
-        }else{
-            $('#reportrange').daterangepicker({
-                startDate: start,
-                endDate: end,
-                //autoApply: false,
-                locale: {
-                    "format": "MM/DD/YYYY",
-                    "separator": " - ",
-                },
-                alwaysShowCalendars: true,
-                showDropdowns: true,
-                ranges: rangesBR,
-                linkedCalendars: false
-            }, cb);
-        }
+        //}else{
+        //    $('#reportrange').daterangepicker({
+        //        startDate: start,
+        //        endDate: end,
+        //        //autoApply: false,
+        //        locale: {
+        //            "format": "MM/DD/YYYY",
+        //            "separator": " - ",
+        //        },
+        //        alwaysShowCalendars: true,
+        //        showDropdowns: true,
+        //        ranges: rangesBR,
+        //        linkedCalendars: false
+        //    }, cb);
+        //}
         
 
         $('#reportrange').daterangepicker({
