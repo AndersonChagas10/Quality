@@ -1482,4 +1482,61 @@
   <data name="number_of_evaluation_completed" xml:space="preserve">
     <value>The number of evaluations is completed.</value>
   </data>
+  <data name="audit" xml:space="preserve">
+    <value>Audit</value>
+  </data>
+  <data name="defects_per_audit" xml:space="preserve">
+    <value>Defects Per Audit</value>
+  </data>
+  <data name="defects_per_monitoring" xml:space="preserve">
+    <value>Defects Per Monitoring</value>
+  </data>
+  <data name="defects_per_tasks" xml:space="preserve">
+    <value>Defects Per Tasks</value>
+  </data>
+  <data name="defects_per_unit" xml:space="preserve">
+    <value>Defects Per Unit</value>
+  </data>
+  <data name="defects_reports" xml:space="preserve">
+    <value>Defects Reports</value>
+  </data>
+  <data name="derivation" xml:space="preserve">
+    <value>Derivation</value>
+  </data>
+  <data name="max_interval" xml:space="preserve">
+    <value>Max Interval</value>
+  </data>
+  <data name="min_interval" xml:space="preserve">
+    <value>Min Interval</value>
+  </data>
+  <data name="monitoring" xml:space="preserve">
+    <value>Monitoring</value>
+  </data>
+  <data name="na" xml:space="preserve">
+    <value>N/A</value>
+  </data>
+  <data name="nonconformity" xml:space="preserve">
+    <value>Defects</value>
+  </data>
+  <data name="number_samplers" xml:space="preserve">
+    <value>Samplers</value>
+  </data>
+  <data name="pareto_chart" xml:space="preserve">
+    <value>Pareto</value>
+  </data>
+  <data name="refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="select_the_unit_first" xml:space="preserve">
+    <value>Please select a unit.</value>
+  </data>
+  <data name="task" xml:space="preserve">
+    <value>Task</value>
+  </data>
+  <data name="weighted_defects" xml:space="preserve">
+    <value>Weighted Defects</value>
+  </data>
+  <data name="weighted_ev" xml:space="preserve">
+    <value>Weighted EV</value>
+  </data>
 </root>

@@ -13,7 +13,7 @@
 
         <div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
 
-            <button type="button" style="margin-top: 5px;" class="btn btn-primary" id="btnSend" onclick="Send();">Atualizar Scorecard</button>
+            <button type="button" style="margin-top: 5px;" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
         </div>
 
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
@@ -168,7 +168,7 @@
             GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
             /*Especifico*/
             if (!($('#unitId :selected').val() > 0)) {
-                GuardJs.exibirMensagemAlerta("Por favor selecione uma unidade.");
+                GuardJs.exibirMensagemAlerta("@Resources.Resource.select_the_unit_first");
                 return false;
             }
             if (!GuardJs.isValid)
