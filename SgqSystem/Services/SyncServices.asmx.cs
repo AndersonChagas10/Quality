@@ -4095,6 +4095,17 @@ namespace SgqSystem.Services
                                                 intervalMax: parLevel3.IntervalMax,
                                                 unitName: parLevel3.ParMeasurementUnit_Name);
             }
+            else if (parLevel3.ParLevel3InputType_Id == 5)
+            {
+                classInput = " texto";
+                labels = html.div(
+                                           outerhtml: "",
+                                           classe: "font10",
+                                           style: "font-size: 11px; margin-top:7px;"
+                                       );
+
+                input = html.campoTexto(id: parLevel3.Id.ToString());
+            }
             else
             {
                 ///Campo interval está repetindo , falta o campo defeitos
