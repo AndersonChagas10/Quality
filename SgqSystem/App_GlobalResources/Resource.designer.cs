@@ -2959,7 +2959,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Repetition.
+        ///   Looks up a localized string similar to Phase.
         /// </summary>
         internal static string repetition {
             get {

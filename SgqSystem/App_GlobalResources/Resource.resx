@@ -532,7 +532,7 @@
     <value>Number of not conformity</value>
   </data>
   <data name="repetition" xml:space="preserve">
-    <value>Repetition</value>
+    <value>Phase</value>
   </data>
   <data name="save_level2" xml:space="preserve">
     <value>Save level 2</value>
