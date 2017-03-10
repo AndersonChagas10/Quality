@@ -1184,6 +1184,29 @@ namespace SGQDBContext
         }
     }
 
+    public partial class ParRelapse
+    {
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public int Id { get; set; }
+        public int ParFrequency_Id { get; set; }
+        public int NcNumber { get; set; }
+        public int EffectiveLength { get; set; }
+
+        public IEnumerable<ParRelapse> getRelapses(int ParLevel1_Id)
+        {
+            SqlConnection db = new SqlConnection(conexao);
+
+
+            string sql = "SELECT Id, ParFrequency_Id, NcNumber, EffectiveLength FROM ParRelapse                 " +
+                         "WHERE ParLevel1_Id = '" + ParLevel1_Id + "' and IsActive = 1;                         ";
+
+            var parRelapses = db.Query<ParRelapse>(sql);
+
+            return parRelapses;
+        }
+    }
+
     public partial class ParLevel1VariableProduction
     {
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;

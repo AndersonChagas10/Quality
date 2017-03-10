@@ -2679,6 +2679,7 @@ namespace SgqSystem.Services
             var ParCounterDB = new SGQDBContext.ParCounter();
             //Inicaliza ParLevel1VariableProduction
             var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction();
+            var ParRelapseDB = new SGQDBContext.ParRelapse();
 
             //Buscamos os ParLevel11 para a unidade selecionada
             var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id);
@@ -2802,6 +2803,8 @@ namespace SgqSystem.Services
                             painelCounters = html.painelCounters(listCounter, "margin-top: 40px;font-size: 12px;");
                         }
 
+                        var listParRelapse = ParRelapseDB.getRelapses(parlevel1.Id);
+
                         string level01 = html.level1(parlevel1,
                                                      tipoTela: tipoTela,
                                                      totalAvaliado: 0,
@@ -2818,7 +2821,8 @@ namespace SgqSystem.Services
                                                      monitoramentoultimoalerta: 0,
                                                      volumeAlertaIndicador: volumeAlerta,
                                                      metaIndicador: meta,
-                                                     IsLimitedEvaluetionNumber: parlevel1.IsLimitedEvaluetionNumber);
+                                                     IsLimitedEvaluetionNumber: parlevel1.IsLimitedEvaluetionNumber,
+                                                     listParRelapse: listParRelapse);
                         //Incrementa level1
                         parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row", outerhtml: level01 + painelCounters);
                     }
@@ -2903,13 +2907,13 @@ namespace SgqSystem.Services
             //Pega uma lista de ParLevel2
             //Tem que confirmar a company e colocar na query dentro do método, ainda não foi validado
             var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(ParLevel1.Id, ParCompany_Id);
-
+            
             //Inicializa Cabecalhos
             var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader();
             //Inicaliza ParFieldType
             var ParFieldTypeDB = new SGQDBContext.ParFieldType();
             var ParNCRuleDB = new SGQDBContext.NotConformityRule();
-            
+
             var reauditFlag = "<li class='painel row list-group-item hide reauditFlag'> Reaudit </li>";
 
             var html = new Html();
@@ -3093,7 +3097,7 @@ namespace SgqSystem.Services
                 {
                     ruleValue = parNCRuleDB.Value;
                 }
-
+                
                 //podemos aplicar os defeitos
                 string level2 = html.level2(id: parlevel2.Id.ToString(),
                                             label: parlevel2.Name,
