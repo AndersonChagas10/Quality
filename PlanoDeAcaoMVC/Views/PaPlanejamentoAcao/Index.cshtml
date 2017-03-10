@@ -948,6 +948,7 @@
                     { title: "Responsavel pelo Projeto/Iniciativa", mData: "Responsavel_Projeto_Quem.Name" },
                     /*Fim Tático*/
 
+                    { title: "Unidade", mData: "Acao.Unidade" },
                     { title: "Problema ou Desvio", mData: "Acao._Pa_Problema_Desvio_Id.Name" },
                     { title: "Indicador Operacional", mData: "Acao._Pa_IndicadorSgqAcao.Name" },
                     { title: "Causa Genérica", mData: "Acao.CausaMedidasXAcao.CausaGenerica" },
@@ -966,7 +967,6 @@
                     /*Fim Operacional*/
 
                     //{ title: "Data (Início)", mData: "_DataInicio" },
-                    //{ title: "Unidade", mData: "Acao.Unidade" },
                     //{ title: "Indicadores do Projeto/Iniciativa", mData: "IndicadoresDeProjeto" },
 
                     /*JBS hoje*/
@@ -1168,7 +1168,7 @@
                         } else if (data.Acao.StatusName.indexOf('Replanejado') > -1) {
                             bgColorStatus = "yellow"
                         }
-                        $(row.cells[28]).css("background", bgColorStatus);
+                        $(row.cells[29]).css("background", bgColorStatus);
 
 
                         /*Prazo*/
@@ -1182,7 +1182,7 @@
                             bgColorPrazo = "rgb(250, 128, 114)"
                         }
 
-                        $(row.cells[29]).css("background", bgColorPrazo);
+                        $(row.cells[30]).css("background", bgColorPrazo);
 
                     } catch (e) {
 

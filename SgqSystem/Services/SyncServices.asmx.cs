@@ -2817,7 +2817,8 @@ namespace SgqSystem.Services
                                                      avaliacaoultimoalerta: 0,
                                                      monitoramentoultimoalerta: 0,
                                                      volumeAlertaIndicador: volumeAlerta,
-                                                     metaIndicador: meta);
+                                                     metaIndicador: meta,
+                                                     IsLimitedEvaluetionNumber: parlevel1.IsLimitedEvaluetionNumber);
                         //Incrementa level1
                         parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row", outerhtml: level01 + painelCounters);
                     }

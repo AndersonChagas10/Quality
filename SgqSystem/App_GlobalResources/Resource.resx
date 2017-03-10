@@ -1479,4 +1479,7 @@
   <data name="technical_signature" xml:space="preserve">
     <value>Assinatura do Técnico</value>
   </data>
+  <data name="number_of_evaluation_completed" xml:space="preserve">
+    <value>The number of evaluations is completed.</value>
+  </data>
 </root>
