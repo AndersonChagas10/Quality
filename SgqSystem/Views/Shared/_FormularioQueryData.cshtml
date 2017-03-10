@@ -893,25 +893,6 @@
                 linkedCalendars: false
             }, cb);
         }
-        
-
-        //$('#reportrange').daterangepicker({
-        //    startDate: start,
-        //    endDate: end,
-        //    //opens: "left",
-        //    locale: {
-        //        "format": "DD/MM/YYYY",
-        //        "separator": " - ",
-        //        "applyLabel": "Aplicar",
-        //        "cancelLabel": "Cancelar",
-        //        "customRangeLabel": "Seleção",
-        //    },
-        //    //autoApply: false,
-        //    alwaysShowCalendars: true,
-        //    showDropdowns: true,
-        //    ranges: rangesBR,
-        //    linkedCalendars: false
-        //}, cb);
 
         cb(start, end);
         //End config datepickerrange full
@@ -920,7 +901,7 @@
         enviar['endDate'] = moment().format();
     });
 
-    
+
     (function (H) {
    
         //H.wrap(H.Series.prototype, 'drawGraph', function (proceed) {
