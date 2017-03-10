@@ -48,7 +48,7 @@
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasGroupLevel3, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_group_on_level3), Table.PosicaoLabel.left, null, null)
                         </tr>
 
-                        <tr class="row">
+                        <tr id="HasSampleTotaltr"class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasSampleTotal, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_sample_total), Table.PosicaoLabel.left, null, null)
                         </tr>
 
@@ -61,11 +61,13 @@
                 
                 @Html.Partial("_AvaliacaoAmostra", Model)
 
+                
                 @if (Model.paramsDto.parLevel2Dto.cabecalhosInclusos != null)
                 {
                     if (Model.paramsDto.parLevel2Dto.cabecalhosInclusos.Count > 0)
                     {
-                        <div class="panel-group accordion" id="level2_header_accordion">
+
+                        <div class="panel-group accordion" style="" id="level2_header_accordion">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
@@ -186,6 +188,8 @@
     $(document).ready(function() {
         if(config){
             $('#showlevel3').hide();
+            $('#level2_header_accordion').hide();
+            $('#HasSampleTotaltr').hide();
         }
     })
 

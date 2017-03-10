@@ -329,7 +329,7 @@
             <div data-ng-controller="MainCtrl" id="showLevel1" style="display:none; margin-left:0px!important">
                 <div>
                     <span class="redLabel">@Resources.Resource.level1</span>
-                    <select data-ng-model="level1Value"
+                    <select id="level1Id" data-ng-model="level1Value"
                             data-ng-options="s.Id as s.Name for s in level1"
                             data-ng-change="GetListLevel2VinculadoLevel1()" class="form-control" style="width:210px">
                         <option value="">@Resources.Resource.select</option>
@@ -338,7 +338,7 @@
 
                 <div>
                     <span class="redLabel">@Resources.Resource.level2</span>
-                    <select data-ng-model="level2Value"
+                    <select id="level2Id" data-ng-model="level2Value"
                             @*data-ng-disabled="!level2"*@
                             data-ng-options="s.Id as s.Name for s in level2"
                             data-ng-change="GetListLevel3VinculadoLevel2()" class="form-control" style="width:210px">
@@ -348,7 +348,7 @@
 
                 <div>
                     <span class="redLabel">@Resources.Resource.level3</span>
-                    <select data-ng-model="level3Value"
+                    <select id="level3Id" data-ng-model="level3Value"
                             @*data-ng-disabled="!level3"*@
                             data-ng-options="s.Id as s.Name for s in level3"
                             data-ng-change="" class="form-control" style="width:210px">
@@ -359,7 +359,7 @@
             </div>
         </li>
 
-        <li>
+        @*<li>
             <div id="showLevel2" style="display:none">
                 <span class="redLabel">@Resources.Resource.level2</span>
                 @Html.DropDownList("level2Id", new SelectList(ViewBag.Level2, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2Init", @style = "width:210px" })
@@ -371,7 +371,7 @@
                 <span class="redLabel">@Resources.Resource.level3</span>
                 @Html.DropDownList("level3Id", new SelectList(ViewBag.Level3, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2Init", @style = "width:210px" })
             </div>
-        </li>
+        </li>*@
 
         <li>
             <div id="showShift" style="display:none">
@@ -788,15 +788,15 @@
     $(function () {
 
         $('#level1Id').on('change', function (e) {
-            enviar['level1Id'] = $('#level1Id option:selected').val();
+            enviar['level1Id'] = parseInt( $('#level1Id').val().replace(/\D/g, ''), 10);
         });
 
         $('#level2Id').on('change', function (e) {
-            enviar['level2Id'] = $('#level2Id option:selected').val();
+            enviar['level2Id'] = parseInt( $('#level2Id').val().replace(/\D/g, ''), 10);
         });
 
         $('#level3Id').on('change', function (e) {
-            enviar['level3Id'] = $('#level3Id option:selected').val();
+            enviar['level3Id'] = parseInt( $('#level3Id').val().replace(/\D/g, ''), 10);
         });
 
         $('#unitId').on('change', function (e) {

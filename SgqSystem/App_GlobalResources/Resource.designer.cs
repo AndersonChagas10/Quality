@@ -727,6 +727,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Consolidation.
+        /// </summary>
+        internal static string consolidation {
+            get {
+                return ResourceManager.GetString("consolidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Consolidation Type.
         /// </summary>
         internal static string consolidation_type {
