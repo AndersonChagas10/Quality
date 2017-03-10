@@ -871,6 +871,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current Value.
+        /// </summary>
+        internal static string current_value {
+            get {
+                return ResourceManager.GetString("current_value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parameterization.
         /// </summary>
         internal static string customization {
@@ -2536,6 +2545,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Value.
+        /// </summary>
+        internal static string new_value {
+            get {
+                return ResourceManager.GetString("new_value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
         internal static string no {
@@ -2928,6 +2946,15 @@ namespace Resources {
         internal static string preview {
             get {
                 return ResourceManager.GetString("preview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Print.
+        /// </summary>
+        internal static string print {
+            get {
+                return ResourceManager.GetString("print", resourceCulture);
             }
         }
         
@@ -3940,7 +3967,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Assinatura do Técnico.
+        ///   Looks up a localized string similar to Technical signature.
         /// </summary>
         internal static string technical_signature {
             get {
@@ -4323,6 +4350,15 @@ namespace Resources {
         internal static string view_log {
             get {
                 return ResourceManager.GetString("view_log", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visible Columns.
+        /// </summary>
+        internal static string visible_columns {
+            get {
+                return ResourceManager.GetString("visible_columns", resourceCulture);
             }
         }
         

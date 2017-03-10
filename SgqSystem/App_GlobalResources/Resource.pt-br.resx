@@ -1560,4 +1560,10 @@
   <data name="view_log" xml:space="preserve">
     <value>Visualizar log</value>
   </data>
+  <data name="current_value" xml:space="preserve">
+    <value>Valor Atual</value>
+  </data>
+  <data name="new_value" xml:space="preserve">
+    <value>Novo Valor</value>
+  </data>
 </root>
