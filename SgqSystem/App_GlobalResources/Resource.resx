@@ -1566,4 +1566,13 @@
   <data name="view_log" xml:space="preserve">
     <value>View log</value>
   </data>
+  <data name="auto_send_off" xml:space="preserve">
+    <value>Auto-send off</value>
+  </data>
+  <data name="auto_send_on" xml:space="preserve">
+    <value>Auto-send on</value>
+  </data>
+  <data name="sync_finished" xml:space="preserve">
+    <value>Syncronization finished.</value>
+  </data>
 </root>

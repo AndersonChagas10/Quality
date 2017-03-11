@@ -421,6 +421,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auto-send off.
+        /// </summary>
+        internal static string auto_send_off {
+            get {
+                return ResourceManager.GetString("auto_send_off", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto-send on.
+        /// </summary>
+        internal static string auto_send_on {
+            get {
+                return ResourceManager.GetString("auto_send_on", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         internal static string back {
@@ -750,15 +768,6 @@ namespace Resources {
         internal static string consolidated_results {
             get {
                 return ResourceManager.GetString("consolidated_results", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Consolidation.
-        /// </summary>
-        internal static string consolidation {
-            get {
-                return ResourceManager.GetString("consolidation", resourceCulture);
             }
         }
         
@@ -3904,6 +3913,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Syncronization finished..
+        /// </summary>
+        internal static string sync_finished {
+            get {
+                return ResourceManager.GetString("sync_finished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sync parameretrization.
         /// </summary>
         internal static string sync_parameretrization {
@@ -3940,7 +3958,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Assinatura do Técnico.
+        ///   Looks up a localized string similar to Technical signature.
         /// </summary>
         internal static string technical_signature {
             get {
