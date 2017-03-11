@@ -1,5 +1,7 @@
 ﻿@model SgqSystem.ViewModels.ParamsViewModel
 @using SgqSystem.Helpers
+@using DTO
+
 @{
     ViewBag.Title = "ParLeve3";
     //  var url = Url.Action("AddUpdateLevel3", "api/ParamsApi"); //URL relativa
@@ -106,7 +108,8 @@
                 @{
                     Model.levelControl = 3;
                 }
-                <div>
+
+                <div id="reincidencia">
                     @Html.Partial("_ReincidenciaXLevel", Model)
                 </div>
 
@@ -175,6 +178,15 @@
 
 </div>
 <script>
+
+    
+    var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
+
+    $(document).ready(function() {
+        if(config){
+            $('#reincidencia').hide();
+        }
+    })
 
 
     function UpdateUnidadeMedidas() {

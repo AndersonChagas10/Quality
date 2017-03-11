@@ -2,12 +2,14 @@
 using DTO;
 using DTO.DTO;
 using DTO.Helpers;
+using SgqSystem.Helpers;
 using SgqSystem.ViewModels;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
 namespace SgqSystem.Controllers.Api
 {
+    
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/RelatorioColeta")]
     public class RelatorioColetaController : ApiController

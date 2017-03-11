@@ -33,8 +33,8 @@ F
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
-                    @if (GlobalConfig.Brasil)
-                    {
+                    @*@if (GlobalConfig.Brasil)
+                    {*@
                         <li class="nav-item">
                             <a href="@Url.Action("Scorecard", "RelatoriosSgq")" class="nav-link nav-toggle">
                                 <span class="title">@Resources.Resource.scorecard</span>
@@ -55,7 +55,7 @@ F
                                 <span class="title">@Resources.Resource.daily_apointments</span>
                             </a>
                         </li>
-                    }
+                    @*}*@
 
                     @if (GlobalConfig.Eua)
                     {
@@ -69,7 +69,7 @@ F
                                 <span class="title">@Resources.Resource.data_collection_reports</span>
                             </a>
                         </li>
-                    }
+                     } 
 
                 </ul>
             </li>
@@ -97,11 +97,14 @@ F
             }
 
             <li class="nav-item" id="navbar7">
+@if (!GlobalConfig.Eua)
+{
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="fa fa-tasks"></i>
                     <span class="title">@Resources.Resource.volume</span>
                     <span class="arrow"></span>
                 </a>
+}
                 <ul class="sub-menu">
                     <li class="nav-item">
                         <a href="@Url.Action("Index", "CepDesossas")" class="nav-link nav-toggle">

@@ -102,7 +102,6 @@ $(document).ready(function () {
     $('.select2ddl').each(function (index) {
         $(this).select2();
     });
-
     /*FIM Select 2*/
 
     $('.DataPiker').daterangepicker({
