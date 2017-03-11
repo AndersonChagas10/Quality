@@ -282,6 +282,12 @@ namespace SgqSystem.Controllers
             return tabela;
         }
 
+        [FormularioPesquisa(filtraUnidadePorUsuario = true, parLevel1e2 = true)]
+        public ActionResult CartasCep()
+        {
+            return View(form);
+        }
+
     }
 
     public class TabelaDinamicaResultados
