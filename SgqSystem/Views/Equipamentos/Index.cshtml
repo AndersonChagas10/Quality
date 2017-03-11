@@ -1,0 +1,144 @@
+﻿@using DTO
+@model IEnumerable<Dominio.Equipamentos>
+
+@{
+    ViewBag.Title = "Equipamentos";
+}
+
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content" style="min-height: 600px;">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>Volume de @Resources.Resource.cep_desossa</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+                <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.cep_desossa</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+                                <p>
+
+                                    <div class="" id="complexCallendar" style="float:right;display:inline;width:550px;">
+                                        <button id="btnFilter" class="btn-success" style="float:right;margin-left:5px;padding:7px;margin-top:-12px;">Filtrar</button>
+                                        @Html.DropDownList("ParCompanyName", new SelectList(ViewBag.UnidadeUsuario, "Name", "Name"), Resources.Resource.select + "...", new { @class = "form-control", @style = "width:200px;float:right;margin-top:-12px;margin-left:5px;" })
+                                        <span style="float:right;margin-top:-5px;margin-left:5px;">Filtro: </span>
+
+                                    </div>
+
+                                    @Html.ActionLink("Novo equipamento", "Create")
+                                </p>
+                                <table class="table table-condensed">
+                                    <tr>
+                                        <th>
+                                            Unidade
+                                        </th>
+                                        <th>
+                                            Nome
+                                        </th>
+                                        <th>
+                                            Tipo
+                                        </th>
+                                        <th>
+                                            Subtipo
+                                        </th>
+                                        <th></th>
+                                    </tr>
+
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ParCompanyName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Nome)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Tipo)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Subtipo)
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
+                                                @*@Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
+                                                @Html.ActionLink("Excluir", "Delete", new { id = item.Id })
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+
+@*Referencing the Angular library to the page*@
+@Scripts.Render("~/Scripts/angular.js")
+<script>
+
+    var enviar = {};
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+    navbarSelect("navbar7");
+
+    $(function () {
+
+        if (getParameterByName("ParCompanyName") != null) {
+            $('#ParCompanyName option[value="' + getParameterByName("ParCompanyName") + '"]').prop('selected', true);
+        }
+
+        function getParameterByName(name, url) {
+            if (!url) {
+                url = window.location.href;
+            }
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        $("#btnFilter").on('click',function(){
+            var filterUrlCall = "@Url.Action("Index", "Equipamentos")?"+
+                (($('#ParCompanyName').val()) ? "ParCompanyName=" + $('#ParCompanyName').val() + "&" : "");
+            window.location = filterUrlCall;
+        });
+    });
+
+</script>
