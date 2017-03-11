@@ -87,11 +87,23 @@ namespace SgqSystem.Controllers
             if (vacuoGRD.Data == null)
                 ModelState.AddModelError("Data", Guard.MesangemModelError("Data", false));
 
+            if (vacuoGRD.ParCompany_id == null)
+                ModelState.AddModelError("ParCompany_id", Guard.MesangemModelError("Unidade", false));
+
             if (vacuoGRD.HorasTrabalhadasPorDia == null)
                 ModelState.AddModelError("HorasTrabalhadasPorDia", Guard.MesangemModelError("Horas trabalhadas por dia", false));
+            else
+            if (vacuoGRD.HorasTrabalhadasPorDia.Value <= 0)
+                ModelState.AddModelError("HorasTrabalhadasPorDia", "O campo \"Horas trabalhadas por dia\" precisa ter valor maior que 0.");
 
             if (vacuoGRD.QtdadeFamiliaProduto == null)
                 ModelState.AddModelError("QtdadeFamiliaProduto", Guard.MesangemModelError("Número de famílias cadastradas", false));
+
+            /*if (vacuoGRD.Avaliacoes == null)
+                ModelState.AddModelError("Avaliacoes", Guard.MesangemModelError("Avaliacoes", false));
+
+            if (vacuoGRD.Amostras == null)
+                ModelState.AddModelError("Amostras", Guard.MesangemModelError("Amostras por Avaliação", false));*/
         }
 
         // GET: VacuoGRDs/Edit/5

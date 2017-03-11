@@ -118,11 +118,10 @@
                                                 <select id="AmostraPorDia" name="AmostraPorDia" class="form-control valid">
                                                     <option value="60">60</option>
                                                     <option value="120">120</option>
-                                                    <option value="180">180</option>
-                                                    <option value="360">360</option>
-                                                    <option value="1160">1160</option>
-                                                    <option value="1260">1260</option>
-                                                    <option value="3260">3260</option>
+                                                    <option value="240">240</option>
+                                                    <option value="450">450</option>
+                                                    <option value="900">900</option>
+                                                    <option value="1800">1800</option>
                                                 </select>
 
                                                 <script>
@@ -152,6 +151,7 @@
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Avaliacoes, new { htmlAttributes = new { @class = "form-control", @disabled = true } })
                                                 @Html.HiddenFor(model => model.Avaliacoes, htmlAttributes: new { @id = "avaliacaoHidden" })
+                                                @Html.ValidationMessageFor(model => model.Avaliacoes, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
 
@@ -160,6 +160,7 @@
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Amostras, new { htmlAttributes = new { @class = "form-control", @disabled = true } })
                                                 @Html.HiddenFor(model => model.Amostras, htmlAttributes: new { @id = "amostraHidden" })
+                                                @Html.ValidationMessageFor(model => model.Amostras, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
 
@@ -190,11 +191,13 @@
             if ($('#ParCompany_id').val() > 0) {
                 $.post('@Url.Action("GetVolumeGRD", "api/Volume")' + "/" +  $('#ParCompany_id').val(), {}, function (r) {
                     $('#QtdadeFamiliaProduto').val(r);
+                    applyMath();
                 });
             }else{
                 $('#QtdadeFamiliaProduto').val("");
             }
         });
+        $('#ParCompany_id').change();
 
         var parcompany = @Html.Raw(Json.Encode(Model.ParCompany_id));
         if(parcompany != undefined && parcompany != null && parcompany > 0){
@@ -216,11 +219,11 @@
     $('#HorasTrabalhadasPorDia').on('input', function () {        
         $('#Avaliacoes').val($(this).val());
         $('#avaliacaoHidden').val($(this).val());
+        applyMath();
     });
 
     $('#AmostraPorDia, #QtdadeFamiliaProduto').on('input', function () {
-        $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
-        $('#amostraHidden').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
+        applyMath();
     });
 
 
@@ -239,5 +242,11 @@
         $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
 
     });
+
+    //TASK FORCE
+    function applyMath() {
+        $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
+        $('#amostraHidden').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
+    }
 
 </script>

@@ -94,12 +94,21 @@ namespace SgqSystem.Controllers
 
             if (cepDesossa.HorasTrabalhadasPorDia == null)
                 ModelState.AddModelError("HorasTrabalhadasPorDia", "O campo \"Horas trabalhadas por dia\" precisa ser preenchido.");
+            else
+            if (cepDesossa.HorasTrabalhadasPorDia.Value <= 0)
+                ModelState.AddModelError("HorasTrabalhadasPorDia", "O campo \"Horas trabalhadas por dia\" precisa ter valor maior que 0.");
 
             if (cepDesossa.AmostraPorDia == null)
                 ModelState.AddModelError("AmostraPorDia", "O campo \"Amostra por dia\" precisa ser selecionado.");
 
             if (cepDesossa.QtdadeFamiliaProduto == null)
                 ModelState.AddModelError("QtdadeFamiliaProduto", "O campo \"Número de famílias cadastradas\" precisa ser preenchido.");
+
+            /*if (cepDesossa.Avaliacoes == null)
+                ModelState.AddModelError("Avaliacoes", Guard.MesangemModelError("Avaliacoes", false));
+
+            if (cepDesossa.Amostras == null)
+                ModelState.AddModelError("Amostras", Guard.MesangemModelError("Amostras por Avaliação", false));*/
         }
 
         // GET: CepDesossas/Edit/5
