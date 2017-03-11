@@ -661,7 +661,7 @@
 
                 return {
                     visible: false,
-                    name: '@Resources.Resource.evaluation',
+                    name: @Html.Raw(Json.Encode(Resources.Resource.evaluation)),
                     data: data,
                     color: Chart.CorTotalAv(),//'rgba(81,207,64,1)',
                     //pointPadding: 0.4,
