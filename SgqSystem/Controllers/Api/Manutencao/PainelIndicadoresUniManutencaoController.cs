@@ -24,6 +24,17 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
             switch (indicador[0])
             {
+                case "Manutenção R$":
+                    indicador.Add("Custo Fixo Manutenção");
+                    indicador.Add("Custo Fixo Utilidades");
+                    tipoCalculo = "Soma";
+                    break;
+                case "R$/CB Manut":
+                    indicador.Add("Custo Fixo Manutenção");
+                    indicador.Add("Custo Fixo Utilidades");
+                    indicador.Add("Bois Processados");
+                    tipoCalculo = "CustoCabeca";
+                    break;
                 case "KWh/Boi Proc":
                     indicador.Add("KWh");
                     indicador.Add("Bois Processados");
@@ -37,7 +48,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                     indicador.Add("Bois Abatidos");
                     break;
                 case "Rend.(Sebo+Farinha)":
-                    indicador.Add("Consumo Agua m³");
+                    indicador.Add("Quilo Sebo");
                     indicador.Add("Bois Abatidos");
                     break;
                 case "Sebo Flotado":
@@ -169,6 +180,41 @@ namespace SgqSystem.Controllers.Api.Manutencao
                     }
                 }
 
+                string querytipocalculo = "";
+                string tipoCalculo2 = "";
+                string Calculo = "";
+
+                querytipocalculo = "SELECT top 1 Calculo_Acumulado FROM DimManColetaDadosCalc WHERE Indicadores = (select DimName from DimManColetaDados where Name = '" + realizado + "')";
+
+
+                using (var db = new SgqDbDevEntities())
+                {
+                    tipoCalculo2 = db.Database.SqlQuery<string>(querytipocalculo).FirstOrDefault();
+                }
+
+
+                switch (tipoCalculo2)
+                {
+                    case "Soma":
+                        Calculo = "SUM";
+                        break;
+                    case "Média":
+                        Calculo = "AVG";
+                        break;
+                    case "Maior Valor no Mês":
+                        Calculo = "MAX";
+                        break;
+                    case "Menor Valor no Mês":
+                        Calculo = "MIN";
+                        break;
+                    case "Ultimo Valor no Mês":
+                        Calculo = "MIN";
+                        break;
+                    default:
+                        Calculo = "SUM";
+                        break;
+                }
+
                 var query2 = "\n SELECT " +
                              "\n BASONA.Dado " +
                             "\n ,BASONA.Realizado " +
@@ -185,8 +231,9 @@ namespace SgqSystem.Controllers.Api.Manutencao
                             "\n FROM MANANOMES MES " +
                             "\n LEFT JOIN " +
                             "\n ( " +
-                                "\n SELECT MONTH(ISNULL(Base_dateRef, cast(Base_dateAdd AS varchar(10)))) Mes, " +
-                                        "\n SUM(ISNULL(CASE " +
+                            //Real por unidade    
+                            "\n SELECT MONTH(ISNULL(Base_dateRef, cast(Base_dateAdd AS varchar(10)))) Mes, " +
+                                        "\n " + Calculo + "(ISNULL(CASE " +
                                             "\n WHEN " + realizado + " = '0' THEN 0.00 " +
                                             "\n ELSE " + realizado + " " +
                                         "\n END, 0.00)) realizado, " +
@@ -203,6 +250,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                     "\n AND Man.Base_parCompany_id in (SELECT id FROM ParCompany WHERE Name = '" + visaoPainel.unidade + "')" +
                                 "\n GROUP BY MONTH(ISNULL(Base_dateRef, cast(Base_dateAdd AS varchar(10)))) " +
                                 "\n union all " +
+                                //Orcado por Unidade
                                 "\n SELECT  " +
                                 "\n MONTH(ISNULL(dateRef, NULL)) " +
                                 "\n ,0.00 " +
@@ -227,8 +275,9 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                 "\n , SUM(isnull(qtde, 0)) qtde " +
                             "\n FROM (" + tipo2 + ") Uni " + //AQUI
                             "\n LEFT JOIN( " +
+                                //Real por Regional    
                                 "SELECT Man.Base_parCompany_id, " +
-                                        "\n SUM(ISNULL(CASE " +
+                                        "\n " + Calculo + "(ISNULL(CASE " +
                                             "\n WHEN  " + realizado + "  = '0' THEN 0.00 " +
                                             "\n ELSE  " + realizado + "  " +
                                         "\n END, 0)) realizado, " +
@@ -245,6 +294,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                     "\n AND Man.Base_parCompany_id in (" + tipo + ") " +
                                 "\n GROUP BY Man.Base_parCompany_id " +
                                 "\n union all " +
+                                //Orcado por Regional    
                                 "\n SELECT  " +
                                 "\n parCompany_id " +
                                 "\n ,0.00 " +
@@ -333,6 +383,14 @@ namespace SgqSystem.Controllers.Api.Manutencao
                             }
 
                         }
+                        else if (tipoCalculo == "Soma")
+                        {
+                            f[i].realizado = vetor1.lista[i].realizado + vetor2.lista[i].realizado;
+                        }
+                        else if (tipoCalculo == "CustoCabeca")
+                        {
+                            f[i].realizado = (vetor1.lista[i].realizado + vetor2.lista[i].realizado) / vetor3.lista[i].realizado;
+                        }
                         else
 
                             f[i].realizado = vetor1.lista[i].realizado / vetor2.lista[i].realizado;
@@ -357,6 +415,15 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                 f[i].orcado = 1 - ((vetor2.lista[i].orcado) / ((vetor1.lista[i].orcado * 60)));
                             }
 
+                        }
+
+                        else if (tipoCalculo == "Soma")
+                        {
+                            f[i].orcado = vetor1.lista[i].orcado + vetor2.lista[i].orcado;
+                        }
+                        else if (tipoCalculo == "CustoCabeca")
+                        {
+                            f[i].orcado = (vetor1.lista[i].orcado + vetor2.lista[i].orcado) / vetor3.lista[i].orcado;
                         }
                         else
                             f[i].orcado = vetor1.lista[i].orcado / vetor2.lista[i].orcado;

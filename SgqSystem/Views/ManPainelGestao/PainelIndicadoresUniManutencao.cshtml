@@ -256,7 +256,7 @@
 
             if (
                 dados.indicador == 'Bois Abatidos' ||
-                //indicador == 'Manutenção R$' ||
+                indicador == 'Manutenção R$' ||
                 dados.indicador == 'Eficiên.Programção' ||
                 dados.indicador == 'Apropr Planej...to' ||
                 dados.indicador == 'Scorecard Unidade' ||
@@ -267,7 +267,7 @@
                 dados.indicador == 'Scorecard Vapor' ||
                 //indicador == 'Pilar Manutenção' ||
                 //indicador == 'Devoluções %' ||
-                //indicador == 'R$/CB Manut' ||
+                indicador == 'R$/CB Manut' ||
                 //indicador == 'R$/CB Manut+Utilid' ||
                 //indicador == 'Sobra de Animais' ||
                 //indicador == 'R$ Manut Comb.' ||
@@ -409,7 +409,7 @@
             indicador == 'Scorecard Vapor' ||
                 //indicador == 'Pilar Manutenção' ||
                 //indicador == 'Devoluções %' ||
-                //indicador == 'R$/CB Manut' ||
+                indicador == 'R$/CB Manut' ||
                 //indicador == 'R$/CB Manut+Utilid' ||
                 //indicador == 'Sobra de Animais' ||
                 //indicador == 'R$ Manut Comb.' ||
@@ -546,7 +546,7 @@
                 indicador == 'Scorecard Vapor' ||
                 //indicador == 'Pilar Manutenção' ||
                 //indicador == 'Devoluções %' ||
-                //indicador == 'R$/CB Manut' ||
+                indicador == 'R$/CB Manut' ||
                 //indicador == 'R$/CB Manut+Utilid' ||
                 //indicador == 'Sobra de Animais' ||
                 //indicador == 'R$ Manut Comb.' ||
@@ -722,7 +722,7 @@
                 indicador == 'Scorecard Vapor' ||
                 //indicador == 'Pilar Manutenção' ||
                 //indicador == 'Devoluções %' ||
-                //indicador == 'R$/CB Manut' ||
+                indicador == 'R$/CB Manut' ||
                 //indicador == 'R$/CB Manut+Utilid' ||
                 //indicador == 'Sobra de Animais' ||
                 //indicador == 'R$ Manut Comb.' ||
@@ -1329,6 +1329,8 @@
 
             if ($("#tipoRelatorio :selected").val() == 'Por Regional' ||
                 $("#showIndicadoresManutencao input:radio:checked").val() == 'KWh/Boi Proc' ||
+                $("#showIndicadoresManutencao input:radio:checked").val() == 'Manutenção R$' ||
+                $("#showIndicadoresManutencao input:radio:checked").val() == 'R$/CB Manut' ||
                 $("#showIndicadoresManutencao input:radio:checked").val() == 'Mcal/Boi Proc' ||
                 $("#showIndicadoresManutencao input:radio:checked").val() == 'Água M³/Boi' ||
                 $("#showIndicadoresManutencao input:radio:checked").val() == 'Rend.(Sebo+Farinha)' ||
