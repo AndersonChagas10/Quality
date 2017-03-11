@@ -1,21 +1,39 @@
 ﻿using AutoMapper;
 using Dominio;
+using DTO;
 using DTO.DTO.Params;
 using DTO.Helpers;
+using SgqSystem.Helpers;
 using SgqSystem.Services;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
 namespace SgqSystem.Controllers.Api
 {
+ 
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/ApontamentosDiarios")]
     public class ApontamentosDiariosApiController : ApiController
     {
+        public ApontamentosDiariosApiController()
+        {
+            //if (GlobalConfig.Brasil)
+            //{
+            //    Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-br");
+            //    Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-br");
+            //}
+            //else
+            //{
+            //    Thread.CurrentThread.CurrentCulture = new CultureInfo("");
+            //    Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
+            //}
+        }
 
         private List<ApontamentosDiariosResultSet> _mock { get; set; }
         private List<ApontamentosDiariosResultSet> _list { get; set; }
@@ -252,12 +270,7 @@ namespace SgqSystem.Controllers.Api
                         {
                             return _IsConform.Equals("0") ? 1 : 0;
                         }
-                        //else if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == unit && r.ParLevel3InputType_Id == 2) != null)//N° DEFEITOS
-                        //{
-                        //    return Convert.ToDecimal(_Value, System.Globalization.CultureInfo.InvariantCulture); ;
-                        //}
                     }
-
 
                     return defects;
 
@@ -331,16 +344,17 @@ namespace SgqSystem.Controllers.Api
                             {
                                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
                                 return "<div>" +
+                                            //"<label for='Conforme: '> Intervalo Max: </label>" + IntervalMax +
                                             "<label for='Conforme: '> " + Resources.Resource.max_interval + ": </label>" + IntervalMax +
                                             "<br>" +
-                                            "<label for='Conforme: '> " + Resources.Resource.min_interval + ": </label>" + IntervalMin +
+                                            "<label for='Conforme: '> Intervalo Min: </label>" + IntervalMin +
                                             "<br>" +
-                                            "<label for='Conforme: '> " + Resources.Resource.current_value + ": </label>" + Value +
+                                            "<label for='Conforme: '> Valor atual: </label>" + Value +
                                             "<br>" +
-                                            "<label for='Conforme: '> " + Resources.Resource.new_value + ": </label> &nbsp " +
+                                            "<label for='Conforme: '> Novo Valor: </label> &nbsp " +
                                              "<input type='text' id='intervaloValor' class='form-control decimal' value=" + Value + " />" +
                                             "<br>" +
-                                            "<label for='Conforme: '> " + Resources.Resource.na + ": </label> &nbsp " +
+                                            "<label for='Conforme: '> Não Avaliado: </label> &nbsp " +
                                              "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                                         "</div>";
                             }
