@@ -15,14 +15,47 @@ namespace SgqSystem.Controllers
     public class CepDesossasController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
-        
+
         // GET: CepDesossas
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult Index()
         {
             var userId = Guard.GetUsuarioLogado_Id(HttpContext);
-            var userLogado = db.UserSgq.Where(r=>r.Id == userId);
-            var cepDesossa = db.VolumeCepDesossa.Where(VCD => userLogado.FirstOrDefault().ParCompanyXUserSgq.Any(c=>c.ParCompany_Id == VCD.ParCompany_id) || VCD.ParCompany_id == userLogado.FirstOrDefault().ParCompany_Id).Include(c => c.ParCompany).Include(c => c.ParLevel1).OrderByDescending(c => c.Data);
-            return View(cepDesossa.ToList());
+            var userLogado = db.UserSgq.Where(r => r.Id == userId);
+
+            var cepDesossa = db.VolumeCepDesossa.Where(VCD => userLogado.FirstOrDefault().ParCompanyXUserSgq.Any(c => c.ParCompany_Id == VCD.ParCompany_id) || VCD.ParCompany_id == userLogado.FirstOrDefault().ParCompany_Id)
+                .Include(c => c.ParCompany)
+                .Include(c => c.ParLevel1);
+
+            //Date filter
+            if (!string.IsNullOrEmpty(Request.QueryString["startDate"]) && !string.IsNullOrEmpty(Request.QueryString["endDate"]))
+            {
+                //Date filter
+                System.DateTime startDate = Guard.ParseDateToSqlV2(Request.QueryString["startDate"]);
+                System.DateTime endDate = Guard.ParseDateToSqlV2(Request.QueryString["endDate"]);
+
+                cepDesossa = cepDesossa.Where(VCD => VCD.Data >= startDate && VCD.Data <= endDate);
+            }
+            else
+            {
+                System.DateTime startDate = System.DateTime.Now.AddDays(-2);
+                System.DateTime endDate = System.DateTime.Now;
+                cepDesossa = cepDesossa.Where(VCD => VCD.Data >= startDate && VCD.Data <= endDate);
+            }
+
+            //Company filter
+            if (!string.IsNullOrEmpty(Request.QueryString["ParCompany_id"]))
+            {
+                int id = System.Convert.ToInt32(Request.QueryString["ParCompany_id"]);
+                cepDesossa = cepDesossa.Where(VCD => VCD.ParCompany_id == id);
+            }
+
+            cepDesossa = cepDesossa.OrderByDescending(c => c.Data);
+
+            if (cepDesossa.Count() > 0)
+                return View(cepDesossa.ToList());
+            else
+                return View(new System.Collections.Generic.List<VolumeCepDesossa>());
         }
 
         // GET: CepDesossas/Details/5
@@ -57,7 +90,7 @@ namespace SgqSystem.Controllers
             var naoCorporativas = CommonData.GetNumeroDeFamiliasPorUnidadeDoUsuario(HttpContext, 2);
             var corporativos = CommonData.GetNumeroDeFamiliasCorporativo(HttpContext, 2);
             model.QtdadeFamiliaProduto = corporativos + naoCorporativas;
-            model.ParLevel1_id = db.ParLevel1.AsNoTracking().FirstOrDefault(r=>r.hashKey == 2).Id;
+            model.ParLevel1_id = db.ParLevel1.AsNoTracking().FirstOrDefault(r => r.hashKey == 2).Id;
         }
 
         // POST: CepDesossas/Create

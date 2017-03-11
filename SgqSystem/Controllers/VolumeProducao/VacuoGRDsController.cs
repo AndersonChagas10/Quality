@@ -26,13 +26,42 @@ namespace SgqSystem.Controllers
         }
 
         // GET: VacuoGRDs
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult Index()
         {
             var userId = Guard.GetUsuarioLogado_Id(HttpContext);
             var userLogado = db.UserSgq.Where(r => r.Id == userId);
-            var vacuoGRD = db.VolumeVacuoGRD.Where(VCD => userLogado.FirstOrDefault().ParCompanyXUserSgq.Any(c => c.ParCompany_Id == VCD.ParCompany_id) || VCD.ParCompany_id == userLogado.FirstOrDefault().ParCompany_Id).Include(c => c.ParCompany).Include(c => c.ParLevel1).OrderByDescending(c => c.Data);
+            var vacuoGRD = db.VolumeVacuoGRD.Where(VCD => userLogado.FirstOrDefault().ParCompanyXUserSgq.Any(c => c.ParCompany_Id == VCD.ParCompany_id) || VCD.ParCompany_id == userLogado.FirstOrDefault().ParCompany_Id).Include(c => c.ParCompany).Include(c => c.ParLevel1);
             //var vacuoGRD = db.VolumeVacuoGRD.Include(v => v.ParCompany).Include(v => v.ParLevel1).OrderByDescending(v => v.Data);
-            return View(vacuoGRD.ToList());
+
+            //Date filter
+            if (!string.IsNullOrEmpty(Request.QueryString["startDate"]) && !string.IsNullOrEmpty(Request.QueryString["endDate"]))
+            {
+                //Date filter
+                System.DateTime startDate = Guard.ParseDateToSqlV2(Request.QueryString["startDate"]);
+                System.DateTime endDate = Guard.ParseDateToSqlV2(Request.QueryString["endDate"]);
+
+                vacuoGRD = vacuoGRD.Where(VCD => VCD.Data >= startDate && VCD.Data <= endDate);
+            }else
+            {
+                System.DateTime startDate = System.DateTime.Now.AddDays(-2);
+                System.DateTime endDate = System.DateTime.Now;
+                vacuoGRD = vacuoGRD.Where(VCD => VCD.Data >= startDate && VCD.Data <= endDate);
+            }
+
+            //Company filter
+            if (!string.IsNullOrEmpty(Request.QueryString["ParCompany_id"]))
+            {
+                int id = System.Convert.ToInt32(Request.QueryString["ParCompany_id"]);
+                vacuoGRD = vacuoGRD.Where(VCD => VCD.ParCompany_id == id);
+            }
+
+            vacuoGRD = vacuoGRD.OrderByDescending(c => c.Data);
+
+            if (vacuoGRD.Count() > 0)
+                return View(vacuoGRD.ToList());
+            else
+                return View(new System.Collections.Generic.List<VolumeVacuoGRD>());
         }
 
         // GET: VacuoGRDs/Details/5
