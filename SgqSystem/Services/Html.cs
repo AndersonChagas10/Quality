@@ -330,6 +330,24 @@ namespace SgqSystem.Services
             return intervalo;
         }
 
+        public string campoTexto(string id, string classe = null)
+        {
+            //definir min value //min=\"0\" 
+            //definir max value
+            //definir default value
+
+            if (!string.IsNullOrEmpty(classe))
+            {
+                classe = " " + classe;
+            }
+
+            string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\">                            " +
+                                 "    <span class=\"input-group-btn btn-minus\"> </span>             " +
+                                 "         <input type=\"text\" class=\"form-control text-center levelValue texto\">     " +                                                                                                                               
+                                 "</div>                                                    ";
+            return texto;
+        }
+
         public string campoNumeroDeDefeitos(string id, decimal intervalMin, decimal intervalMax, decimal defaultValue = 0, string unitName = null, string classe = null)
         {
             //definir min value //min=\"0\" 
