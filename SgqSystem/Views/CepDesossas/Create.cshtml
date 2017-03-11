@@ -223,8 +223,8 @@
 
     }
 
-    $('#QtdadeFamiliaProduto').inputmask("integer", { rightAlign: false });
-    $('#HorasTrabalhadasPorDia').inputmask("integer", { rightAlign: false });
+    $('#QtdadeFamiliaProduto').inputmask("integer", { rightAlign: false  });
+    $('#HorasTrabalhadasPorDia').inputmask("integer", { rightAlign: false , min:0, max:24 });
 
     //$('input[name="birthdate"]').daterangepicker({
     //    singleDatePicker: true,

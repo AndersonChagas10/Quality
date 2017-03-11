@@ -210,7 +210,7 @@
 
     $(document).ready(function () {
 
-        $('#HorasTrabalhadasPorDia').inputmask("integer", { rightAlign: false });
+        $('#HorasTrabalhadasPorDia').inputmask("integer", { rightAlign: false , min:0 , max: 24});
         $('#QtdadeFamiliaProduto').inputmask("integer", { rightAlign: false });
 
         $('#Data').daterangepicker({
