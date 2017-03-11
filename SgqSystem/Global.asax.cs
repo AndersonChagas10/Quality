@@ -2,11 +2,14 @@
 using Microsoft.ApplicationInsights.Extensibility;
 using SgqSystem.Handlres;
 using SgqSystem.Mappers;
+using System;
 using System.Diagnostics;
+using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using System.Web.Security;
 
 namespace SgqSystem
 {
@@ -22,9 +25,9 @@ namespace SgqSystem
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AutoMapperConfig.RegisterMappings();
             DisableApplicationInsightsOnDebug();
-            #if DEBUG
+#if DEBUG
             TelemetryConfiguration.Active.DisableTelemetry = true;
-            #endif
+#endif
 
         }
 
@@ -36,6 +39,7 @@ namespace SgqSystem
         {
             //TelemetryConfiguration.Active.DisableTelemetry = true;
         }
+
     }
-    
+
 }

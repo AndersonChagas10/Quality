@@ -1,12 +1,12 @@
-﻿using System.Data.Entity;
+﻿using Dominio;
+using DTO.Helpers;
+using Helper;
+using SgqSystem.Helpers;
+using SgqSystem.Secirity;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using Dominio;
-using DTO.Helpers;
-using SgqSystem.Secirity;
-using SgqSystem.Helpers;
-using Helper;
 
 namespace SgqSystem.Controllers
 {
@@ -167,6 +167,6 @@ namespace SgqSystem.Controllers
             base.Dispose(disposing);
         }
 
-       
+
     }
 }

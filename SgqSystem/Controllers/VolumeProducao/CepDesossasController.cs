@@ -1,12 +1,12 @@
-﻿using System.Data.Entity;
+﻿using Dominio;
+using DTO.Helpers;
+using Helper;
+using SgqSystem.Helpers;
+using SgqSystem.Secirity;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using Dominio;
-using DTO.Helpers;
-using SgqSystem.Secirity;
-using SgqSystem.Helpers;
-using Helper;
 
 namespace SgqSystem.Controllers
 {
@@ -15,13 +15,13 @@ namespace SgqSystem.Controllers
     public class CepDesossasController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
-        
+
         // GET: CepDesossas
         public ActionResult Index()
         {
             var userId = Guard.GetUsuarioLogado_Id(HttpContext);
-            var userLogado = db.UserSgq.Where(r=>r.Id == userId);
-            var cepDesossa = db.VolumeCepDesossa.Where(VCD => userLogado.FirstOrDefault().ParCompanyXUserSgq.Any(c=>c.ParCompany_Id == VCD.ParCompany_id) || VCD.ParCompany_id == userLogado.FirstOrDefault().ParCompany_Id).Include(c => c.ParCompany).Include(c => c.ParLevel1).OrderByDescending(c => c.Data);
+            var userLogado = db.UserSgq.Where(r => r.Id == userId);
+            var cepDesossa = db.VolumeCepDesossa.Where(VCD => userLogado.FirstOrDefault().ParCompanyXUserSgq.Any(c => c.ParCompany_Id == VCD.ParCompany_id) || VCD.ParCompany_id == userLogado.FirstOrDefault().ParCompany_Id).Include(c => c.ParCompany).Include(c => c.ParLevel1).OrderByDescending(c => c.Data);
             return View(cepDesossa.ToList());
         }
 
@@ -57,7 +57,7 @@ namespace SgqSystem.Controllers
             var naoCorporativas = CommonData.GetNumeroDeFamiliasPorUnidadeDoUsuario(HttpContext, 2);
             var corporativos = CommonData.GetNumeroDeFamiliasCorporativo(HttpContext, 2);
             model.QtdadeFamiliaProduto = corporativos + naoCorporativas;
-            model.ParLevel1_id = db.ParLevel1.AsNoTracking().FirstOrDefault(r=>r.hashKey == 2).Id;
+            model.ParLevel1_id = db.ParLevel1.AsNoTracking().FirstOrDefault(r => r.hashKey == 2).Id;
         }
 
         // POST: CepDesossas/Create

@@ -1,7 +1,7 @@
-﻿using SgqSystem.Secirity;
+﻿using Helper;
+using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
 using System.Web.Mvc;
-using Helper;
 
 namespace SgqSystem.Controllers
 {
@@ -12,7 +12,7 @@ namespace SgqSystem.Controllers
         #region Constructor
 
         private FormularioParaRelatorioViewModel form;
-      
+
 
         public ManutencaoController()
         {

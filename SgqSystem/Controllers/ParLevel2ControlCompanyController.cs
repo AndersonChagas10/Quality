@@ -1,11 +1,11 @@
 ﻿using Dominio;
 using Dominio.Interfaces.Services;
 using DTO.DTO.Params;
+using Helper;
 using SgqSystem.Secirity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Helper;
 
 namespace SgqSystem.Controllers
 {
@@ -65,7 +65,7 @@ namespace SgqSystem.Controllers
                 }
 
                 ViewBag.ParLevel2Todos = todosLevel321.Select(r => r.ParLevel3Level2.ParLevel2).GroupBy(r => r.Id).Select(group => group.First()).ToList();
-                ViewBag.ParLevel2Ids = level2Comporativo?.Select(r=>r.Id);
+                ViewBag.ParLevel2Ids = level2Comporativo?.Select(r => r.Id);
                 ViewBag.level2Number = _baseLevel1.GetById(id).level2Number;
             }
             else
@@ -82,11 +82,11 @@ namespace SgqSystem.Controllers
             {
                 var allControlCompany = _baseParLevel2ControlCompany.GetAll().Where(r => r.ParLevel1_Id == id);
 
-                var lastDate = allControlCompany.Where(r=>r.ParCompany_Id == null).OrderByDescending(r => r.InitDate).FirstOrDefault()?.InitDate;
+                var lastDate = allControlCompany.Where(r => r.ParCompany_Id == null).OrderByDescending(r => r.InitDate).FirstOrDefault()?.InitDate;
                 var level2Comporativo = allControlCompany.Where(r => r.InitDate == lastDate)?.Select(r => r.ParLevel2);
 
                 var todosLevel321 = _baseParLevel3Level2Level1.GetAll().Where(r => r.ParLevel1_Id == id);
-                var level2DisponivelParaEmpresa = todosLevel321.Where(r=> !level2Comporativo.Any(c=>c.Id == r.ParLevel3Level2.ParLevel2.Id)).Select(r => r.ParLevel3Level2.ParLevel2);
+                var level2DisponivelParaEmpresa = todosLevel321.Where(r => !level2Comporativo.Any(c => c.Id == r.ParLevel3Level2.ParLevel2.Id)).Select(r => r.ParLevel3Level2.ParLevel2);
 
                 var lastDateCompany = allControlCompany.Where(r => r.ParCompany_Id == companyId).OrderByDescending(r => r.InitDate).FirstOrDefault()?.InitDate;
                 var level2SelecionadosParaEmpresa = allControlCompany.Where(r => r.ParCompany_Id == companyId && r.InitDate == lastDateCompany).Select(r => r.ParLevel2);
@@ -95,7 +95,7 @@ namespace SgqSystem.Controllers
                 ViewBag.level2Comporativo = level2Comporativo;
                 ViewBag.level2ComporativoIds = level2Comporativo.Select(r => r.Id);
                 ViewBag.level2DisponivelParaEmpresa = level2DisponivelParaEmpresa.GroupBy(r => r.Id)
-                    .Select(group => group.First()).ToList(); 
+                    .Select(group => group.First()).ToList();
                 ViewBag.level2SelecionadosParaEmpresaIds = level2SelecionadosParaEmpresa?.Select(r => r.Id);
             }
             else

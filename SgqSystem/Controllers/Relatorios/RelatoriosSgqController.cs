@@ -1,12 +1,12 @@
-﻿using Dominio.Interfaces.Services;
+﻿using Dominio;
+using Dominio.Interfaces.Services;
+using Helper;
 using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
-using System.Collections.Generic;
-using System.Web.Mvc;
-using Helper;
-using Dominio;
-using System.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
@@ -18,7 +18,7 @@ namespace SgqSystem.Controllers
         #region Constructor
 
         private FormularioParaRelatorioViewModel form;
-       
+
 
         public RelatoriosSgqController(IRelatorioColetaDomain relatorioColetaDomain)
         {

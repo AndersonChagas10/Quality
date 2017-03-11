@@ -1,12 +1,13 @@
 ﻿using Dominio;
 using Dominio.Interfaces.Services;
 using DTO.DTO;
-using SgqSystem.Services;
+using Helper;
 using System;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
+    [CustomAuthorize]
     public class RoleController : BaseController
     {
 
@@ -54,14 +55,14 @@ namespace SgqSystem.Controllers
                     lines += component.RoleType.Type;
 
                 lines += "</td>" +
-                    "<td>"+
-                        "<button type='button' class='btn btn-primary btn-sm' "+
-                        "onclick='indexScreenComponent.openComponent("+component.Id+")'>" + 
-                        Resources.Resource.edit+"</button>"+
-                    "</td>"+
+                    "<td>" +
+                        "<button type='button' class='btn btn-primary btn-sm' " +
+                        "onclick='indexScreenComponent.openComponent(" + component.Id + ")'>" +
+                        Resources.Resource.edit + "</button>" +
+                    "</td>" +
                 "</tr>";
-            }            
-            
+            }
+
             var body = "<tbody>" + lines + "</tbody>";
 
             return body;
@@ -88,7 +89,7 @@ namespace SgqSystem.Controllers
                         component.Role +
                     "</td>" +
                     "<td> " +
-                        "<button onclick='indexRoleJBS.openRole("+component.Id+")' class='btn btn-primary btn-sm'>" + Resources.Resource.edit + "</button>" +
+                        "<button onclick='indexRoleJBS.openRole(" + component.Id + ")' class='btn btn-primary btn-sm'>" + Resources.Resource.edit + "</button>" +
                     "</td>" +
                 "</tr>";
             }
@@ -110,7 +111,7 @@ namespace SgqSystem.Controllers
             {
                 lines +=
                 "<tr>" +
-                    "<td id='RoleSGQRow_"+component.Id+"' class='hide'>" +
+                    "<td id='RoleSGQRow_" + component.Id + "' class='hide'>" +
                         component.Id +
                     "</td>" +
                     "<td> " +
@@ -120,7 +121,7 @@ namespace SgqSystem.Controllers
                         component.Role +
                     "</td>" +
                     "<td> " +
-                        "<button onclick='indexRoleSGQ.openRole("+component.Id+")' class='btn btn-primary btn-sm'>" + Resources.Resource.edit + "</button>" +
+                        "<button onclick='indexRoleSGQ.openRole(" + component.Id + ")' class='btn btn-primary btn-sm'>" + Resources.Resource.edit + "</button>" +
                     "</td>" +
                 "</tr>";
             }
