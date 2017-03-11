@@ -288,6 +288,18 @@ namespace SgqSystem.Controllers
             return View(form);
         }
 
+        [FormularioPesquisa(filtraUnidadePorUsuario = true, parLevel1e2 = true)]
+        public ActionResult CartasCepP()
+        {
+            return View(form);
+        }
+
+        [FormularioPesquisa(filtraUnidadePorUsuario = true, parLevel1e2 = true)]
+        public ActionResult CartasCepX()
+        {
+            return View(form);
+        }
+
     }
 
     public class TabelaDinamicaResultados

@@ -3868,6 +3868,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Statistical Report.
+        /// </summary>
+        internal static string statistical_report {
+            get {
+                return ResourceManager.GetString("statistical_report", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quantidade.
         /// </summary>
         internal static string String1 {

@@ -55,6 +55,7 @@ F
                                 <span class="title">@Resources.Resource.daily_apointments</span>
                             </a>
                         </li>
+                        
                     @*}*@
 
                     @if (GlobalConfig.Eua)
@@ -70,6 +71,12 @@ F
                             </a>
                         </li>
                      } 
+
+                    <li class="nav-item">
+                        <a href="@Url.Action("CartasCep","RelatoriosSgq")" class="nav-link nav-toggle">
+                            <span class="title">@Resources.Resource.statistical_report</span>
+                        </a>
+                    </li>
 
                 </ul>
             </li>
