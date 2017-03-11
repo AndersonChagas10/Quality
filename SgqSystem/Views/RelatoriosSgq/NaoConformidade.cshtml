@@ -240,7 +240,7 @@
             $('#' + selector).empty().highcharts({
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
-                title: Chart.Titulo(GraficoIndic),
+                title: Chart.Titulo(GraficoIndic, enviar["unitName"]),
                 xAxis: Chart.Xaxis(nome),
                 yAxis: Chart.yAxisPadraoRelNc(),
                 legend: {
@@ -288,7 +288,7 @@
             $('#' + selector).empty().highcharts({
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
-                title: Chart.Titulo(GraficoMon, tarefa),
+                title: Chart.Titulo(GraficoMon, enviar["level1Name"]),
                 xAxis: Chart.Xaxis(nome),
                 yAxis: Chart.yAxisPadraoRelNc(),
                 legend: {
@@ -332,7 +332,7 @@
             $('#' + selector).empty().highcharts({
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
-                title: Chart.Titulo(GraficoTarefa, monitoramento),
+                title: Chart.Titulo(GraficoTarefa, enviar["level2Name"]),
                 xAxis: Chart.Xaxis(nome),
                 yAxis: Chart.yAxisPadraoRelNc(),
                 legend: {
