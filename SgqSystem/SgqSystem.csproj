@@ -309,10 +309,11 @@
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
     <Compile Include="Controllers\Api\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Api\PCC1BController.cs" />
-    <Compile Include="Controllers\Api\Relatorios\NaoConformidadeApiController.cs" />
-    <Compile Include="Controllers\Api\Relatorios\RelatorioDiarioApiController.cs" />
-    <Compile Include="Controllers\Api\Relatorios\ScorecardApiController.cs" />
-    <Compile Include="Controllers\Api\Relatorios\VisaoGeralDaAreaApiController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\CartasCepApiController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\NaoConformidadeApiController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\RelatorioDiarioApiController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\ScorecardApiController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\VisaoGeralDaAreaApiController.cs" />
     <Compile Include="Controllers\Api\RoleApiController.cs" />
     <Compile Include="Controllers\Api\UserSgqApiController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacaoController.cs" />
@@ -2125,6 +2126,7 @@
     <Content Include="Views\ParGoalScorecard\Details.cshtml" />
     <Content Include="Views\ParGoalScorecard\Index.cshtml" />
     <Content Include="Views\Params\Blank.cshtml" />
+    <Content Include="Views\RelatoriosSgq\CartasCep.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

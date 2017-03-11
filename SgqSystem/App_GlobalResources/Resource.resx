@@ -1590,4 +1590,7 @@
   <data name="sync_finished" xml:space="preserve">
     <value>Syncronization finished.</value>
   </data>
+  <data name="control_charts" xml:space="preserve">
+    <value>Control Charts (SPC)</value>
+  </data>
 </root>
