@@ -68,7 +68,7 @@
             var table = $('#results').empty().DataTable({
                 data: retornoArray,
                 columns: [
-                    { title: "@Resources.Resource.edit", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">'+"@Resources.Resource.edit"+'</button>' },
+                    { title: "@Resources.Resource.edit", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>' },
                     { title: "@Resources.Resource.unit", mData: "Unidade" }, //{ title: "Unidade", mData: "Unidade" },
                     { title: "@Resources.Resource.date", mData: "_Data" },
                     { title: "@Resources.Resource.audit", mData: "Indicador" },
@@ -78,12 +78,12 @@
                     {
                         title: "@Resources.Resource.min_interval", mData: "IntervaloMinimo", mRender: function (data, type, full) {
                             return data.toString().match(/\d+(\.\d{1,2})?/g)[0];
-                            }
+                        }
                     },
                     {
                         title: "@Resources.Resource.max_interval ", mData: "IntervaloMaximo", mRender: function (data, type, full) {
                             return data.toString().match(/\d+(\.\d{1,2})?/g)[0];
-                     }
+                        }
                     },
                     { title: "@Resources.Resource.value", mData: "Lancado" },
                     { title: "@Resources.Resource.derivation ?", mData: "_Conforme" },
@@ -114,7 +114,7 @@
                     $('#results tbody').on('click', 'button', function (data, a, b) {
 
                         var data = table.row($(this).parents('tr')).data();
-                        console.log(data);
+                        //console.log(data);
                         $.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
 
                             $('#estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
@@ -126,7 +126,7 @@
                             $('#changeConform').append($(r.showCalculado));
                             $('#changeConform').append($(r.showNumeroDefeitos));
 
-                            console.log(r.Id);
+                            //console.log(r.Id);
                         });
 
                     });
@@ -145,7 +145,7 @@
                 buttons: [
                     {
                         extend: 'print',
-                        text: 'Imprimir',
+                        text: '@Resources.Resource.print',
                         customize: function (win) {
                             $(win.document.body).find('table')
                                 .addClass('compact')
@@ -171,7 +171,7 @@
                      },
                       {
                           extend: 'colvis',
-                          text: 'Colunas Visíveis',
+                          text: '@Resources.Resource.visible_columns',
                           exportOptions: {
                               columns: ':visible'
                           }

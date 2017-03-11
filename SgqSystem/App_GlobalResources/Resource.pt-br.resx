@@ -1560,4 +1560,13 @@
   <data name="view_log" xml:space="preserve">
     <value>Visualizar log</value>
   </data>
+  <data name="auto_send_off" xml:space="preserve">
+    <value>Envio automático desligado</value>
+  </data>
+  <data name="auto_send_on" xml:space="preserve">
+    <value>Envio automático ligado</value>
+  </data>
+  <data name="sync_finished" xml:space="preserve">
+    <value>Sincronização feita com sucesso.</value>
+  </data>
 </root>

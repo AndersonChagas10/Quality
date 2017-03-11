@@ -2356,9 +2356,19 @@ namespace SgqSystem.Services
             return sample;
         }
 
-        public string getAPPMain(int UserSgq_Id, int ParCompany_Id, DateTime Date, string culture = "pt-br")
+        public string getAPPMain(int UserSgq_Id, int ParCompany_Id, DateTime Date)
         {
             var html = new Html();
+            string culture;
+
+            if (GlobalConfig.Brasil)
+            {
+                culture = "pt-br";
+            }
+            else
+            {
+                culture = "en-us";
+            }
             
             string breadCrumb = "<ol class=\"breadcrumb\" breadmainlevel=\"Slaughter\"></ol>";
 
@@ -2515,15 +2525,16 @@ namespace SgqSystem.Services
                            "         <a href=\"#\" id=\"btnSync\" class=\"list-group-item\" style=\"background-color: black; font-weight: bold;\">"+CommonData.getResource("sync_results").Value.ToString()+"</a>                                                  " +
                            "         <a href=\"#\" id=\"btnSyncParam\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">" + CommonData.getResource("sync_parameretrization").Value.ToString() + "</a>                                                  " +
 
-                           "         <a href=\"#\" id=\"btnLogout\" class=\"list-group-item\">" + CommonData.getResource("logout").Value.ToString() + "</a>                                              " +
-                           "         <a href=\"#\" id=\"btnLog\" class=\"list-group-item\">" + CommonData.getResource("view_log").Value.ToString() + "</a>                                               " +
-                           "         <a href=\"#\" id=\"btnCollectDB\" class=\"list-group-item\">" + CommonData.getResource("view_db").Value.ToString() + "</a>                                    " +
-                           "         <a href=\"#\" id=\"btnClearDatabase\" class=\"list-group-item\">" + CommonData.getResource("clean_db").Value.ToString() + "</a>                                " +
-                           "         <a href=\"#\" id=\"btnMostrarContadores\" class=\"list-group-item\">" + CommonData.getResource("show_counters").Value.ToString() + "</a>                                " +
-                           "         <span id=\"version\" class=\"list-group-item\">" + CommonData.getResource("version").Value.ToString() + ": <span class=\"number\"></span></span>                     " +
-                           "         <span id=\"ambiente\" class=\"list-group-item\"><span class=\"base\"></span></span>                               " +
-                           "     </div>                                                                                                                " +
-                           " </div>                                                                                                                    ";
+                           "         <a href=\"#\" id=\"btnLogout\" class=\"list-group-item\">" + CommonData.getResource("logout").Value.ToString() + "</a>                                                     " +
+                           "         <a href=\"#\" id=\"btnLog\" class=\"list-group-item\">" + CommonData.getResource("view_log").Value.ToString() + "</a>                                                      " +
+                           "         <a href=\"#\" id=\"btnCollectDB\" class=\"list-group-item\">" + CommonData.getResource("view_db").Value.ToString() + "</a>                                                 " +
+                           "         <a href=\"#\" id=\"btnClearDatabase\" class=\"list-group-item\">" + CommonData.getResource("clean_db").Value.ToString() + "</a>                                            " +
+                           "         <a href=\"#\" id=\"btnMostrarContadores\" class=\"list-group-item\">" + CommonData.getResource("show_counters").Value.ToString() + "</a>                                   " +
+                           "         <a href=\"#\" id=\"btnAutoSend\" class=\"list-group-item\">" + CommonData.getResource("auto_send_on").Value.ToString() + "</a>                                   " +
+                           "         <span id=\"version\" class=\"list-group-item\">" + CommonData.getResource("version").Value.ToString() + ": <span class=\"number\"></span></span>                           " +
+                           "         <span id=\"ambiente\" class=\"list-group-item\"><span class=\"base\"></span></span>                                                                                        " +
+                           "     </div>                                                                                                                                                                         " +
+                           " </div>                                                                                                                                                                             ";
 
             return menu;
         }
@@ -4094,6 +4105,17 @@ namespace SgqSystem.Services
                                                 intervalMin: parLevel3.IntervalMin,
                                                 intervalMax: parLevel3.IntervalMax,
                                                 unitName: parLevel3.ParMeasurementUnit_Name);
+            }
+            else if (parLevel3.ParLevel3InputType_Id == 5)
+            {
+                classInput = " texto";
+                labels = html.div(
+                                           outerhtml: "",
+                                           classe: "font10",
+                                           style: "font-size: 11px; margin-top:7px;"
+                                       );
+
+                input = html.campoTexto(id: parLevel3.Id.ToString());
             }
             else
             {

@@ -1,9 +1,9 @@
-﻿using DTO.DTO.Manutencao;
+﻿using Dominio;
+using DTO.DTO.Manutencao;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
-using Dominio;
 
 namespace SgqSystem.Controllers.Api.Manutencao
 {
@@ -179,9 +179,9 @@ namespace SgqSystem.Controllers.Api.Manutencao
                             "\n SELECT " +
                                 "\n 'Por Unidade' TipoRelatorio " +
                                 "\n , Mes.Mes dado " +
-                                "\n , isnull(Base.Realizado, 0) realizado " +
-                                "\n , isnull(Base.Orcado, 0)    orcado " +
-                                "\n , isnull(qtde, 0) qtde " +
+                                "\n , SUM(isnull(Base.Realizado, 0.00)) realizado " +
+                                "\n , SUM(isnull(Base.Orcado, 0.00))    orcado " +
+                                "\n , SUM(isnull(qtde, 0)) qtde " +
                             "\n FROM MANANOMES MES " +
                             "\n LEFT JOIN " +
                             "\n ( " +
@@ -189,11 +189,11 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                         "\n SUM(ISNULL(CASE " +
                                             "\n WHEN " + realizado + " = '0' THEN 0.00 " +
                                             "\n ELSE " + realizado + " " +
-                                        "\n END, 0)) realizado, " +
+                                        "\n END, 0.00)) realizado, " +
                                         "\n SUM(ISNULL(CASE " +
-                                           "\n WHEN " + orcado + " = '0' THEN 0.00 " +
-                                           "\n ELSE " + orcado + " " +
-                                        "\n END, 0)) orcado, " +
+                                           "\n WHEN 0.00 = '0' THEN 0.00 " +
+                                           "\n ELSE 0.00 " +
+                                        "\n END, 0.00)) orcado, " +
                                         "\n count(1) as qtde " +
                                 "\n FROM MANCOLETADADOS Man " +
                                 "\n WHERE " +
@@ -202,14 +202,29 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                     "\n AND ISNULL(MONTH(BASE_DATEREF), MONTH(BASE_DATEADD)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END " +
                                     "\n AND Man.Base_parCompany_id in (SELECT id FROM ParCompany WHERE Name = '" + visaoPainel.unidade + "')" +
                                 "\n GROUP BY MONTH(ISNULL(Base_dateRef, cast(Base_dateAdd AS varchar(10)))) " +
-                            "\n )Base on MES.MesInt = Base.Mes " +
+                                "\n union all " +
+                                "\n SELECT  " +
+                                "\n MONTH(ISNULL(dateRef, NULL)) " +
+                                "\n ,0.00 " +
+                                "\n ,SUM(ISNULL(ValueBudgetedIndicators,0)) " +
+                                "\n ,0 " +
+                                "\n FROM ManBudgetedIndicators Budget " +
+                                "\n WHERE  " +
+                                "\n ISNULL(YEAR(DATEREF), YEAR(DATEREF)) = '" + visaoPainel.ano + "' " +
+                                "\n AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%'ELSE '" + visaoPainel.mes + "'END " +
+                                "\n AND parCompany_id IN (SELECT id FROM ParCompany WHERE Name = '" + visaoPainel.unidade + "') " +
+                                "\n AND (SELECT top 1 DimManCMDColetaDados_id FROM DimManColetaDados where name = '" + orcado + "') = Budget.DimManCMDColetaDados_id " +
+                                "\n AND (MONTH (DATEREF) <= MONTH(GETDATE())) " +
+                                "\n GROUP BY MONTH(ISNULL(dateRef, NULL)) " +
+                                "\n )Base on MES.MesInt = Base.Mes " +
+                                "\n GROUP BY Mes.Mes " +
                             "\n union all " +
                             "\n SELECT " +
                                 "\n 'Por Regional' TipoRelatorio " +
                                 "\n , Uni.EmpresaSigla dado " +
-                                "\n , isnull(Base.Realizado, 0) Realizado " +
-                                "\n , isnull(Base.Orcado, 0)    Orcado " +
-                                "\n , isnull(qtde, 0) qtde " +
+                                "\n , SUM(isnull(Base.Realizado, 0.00)) Realizado " +
+                                "\n , SUM(isnull(Base.Orcado, 0.00))    Orcado " +
+                                "\n , SUM(isnull(qtde, 0)) qtde " +
                             "\n FROM (" + tipo2 + ") Uni " + //AQUI
                             "\n LEFT JOIN( " +
                                 "SELECT Man.Base_parCompany_id, " +
@@ -218,9 +233,9 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                             "\n ELSE  " + realizado + "  " +
                                         "\n END, 0)) realizado, " +
                                         "\n SUM(ISNULL(CASE " +
-                                            "\n WHEN " + orcado + " = '0' THEN 0.00 " +
-                                            "\n ELSE " + orcado + " " +
-                                        "\n END, 0)) orcado, " +
+                                            "\n WHEN 0 = '0' THEN 0.00 " +
+                                            "\n ELSE 0.00 " +
+                                        "\n END, 0.00)) orcado, " +
                                         "\n count(1) as qtde " +
                                 "\n FROM MANCOLETADADOS Man " +
                                 "\n WHERE " +
@@ -229,10 +244,40 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                     "\n AND ISNULL(MONTH(BASE_DATEREF), MONTH(BASE_DATEADD)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END " +
                                     "\n AND Man.Base_parCompany_id in (" + tipo + ") " +
                                 "\n GROUP BY Man.Base_parCompany_id " +
+                                "\n union all " +
+                                "\n SELECT  " +
+                                "\n parCompany_id " +
+                                "\n ,0.00 " +
+                                "\n ,SUM(ISNULL(ValueBudgetedIndicators,0.00)) " +
+                                "\n ,0 " +
+                                "\n FROM ManBudgetedIndicators Budget " +
+                                "\n WHERE  " +
+                                "\n ISNULL(YEAR(DATEREF), YEAR(DATEREF)) = '" + visaoPainel.ano + "' " +
+                                "\n AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%'ELSE '" + visaoPainel.mes + "'END " +
+                                "\n AND (SELECT top 1 DimManCMDColetaDados_id FROM DimManColetaDados where name = '" + orcado + "') = Budget.DimManCMDColetaDados_id " +
+                                "\n AND parCompany_id in (" + tipo + ") " +
+                                "\n AND (MONTH (DATEREF) <= MONTH(GETDATE())) " +
+                                "\n GROUP BY parCompany_id " +
                             "\n )Base on uni.Parcompany_id = Base.Base_parCompany_id " +
                         //"\n WHERE Base.realizado != 0 AND Base.orcado != 0 " +
-                        "\n )BASONA " +
-                        "\n WHERE BASONA.TipoRelatorio = '" + visaoPainel.tipoRelatorio + "' ";
+                        "\n GROUP BY Uni.EmpresaSigla)BASONA " +
+                        "\n WHERE BASONA.TipoRelatorio = '" + visaoPainel.tipoRelatorio + "' " +
+                        "\n ORDER BY " +
+                        "\n CASE " +
+                        "\n 	WHEN DADO = 'JAN' THEN 1 " +
+                        "\n 	WHEN DADO = 'FEV' THEN 2 " +
+                        "\n 	WHEN DADO = 'MAR' THEN 3 " +
+                        "\n 	WHEN DADO = 'ABR' THEN 4 " +
+                        "\n 	WHEN DADO = 'MAI' THEN 5 " +
+                        "\n 	WHEN DADO = 'JUN' THEN 6 " +
+                        "\n 	WHEN DADO = 'JUL' THEN 7 " +
+                        "\n 	WHEN DADO = 'AGO' THEN 8 " +
+                        "\n 	WHEN DADO = 'SET' THEN 9 " +
+                        "\n 	WHEN DADO = 'OUT' THEN 10" +
+                        "\n 	WHEN DADO = 'NOV' THEN 11" +
+                        "\n 	WHEN DADO = 'DEZ' THEN 12" +
+                        "\n ELSE 1                    " +
+                        "\n END                          ";
 
                 using (var db = new SgqDbDevEntities())
                 {

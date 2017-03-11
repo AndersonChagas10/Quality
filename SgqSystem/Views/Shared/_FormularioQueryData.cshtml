@@ -360,18 +360,18 @@
         </li>
 
         @*<li>
-            <div id="showLevel2" style="display:none">
-                <span class="redLabel">@Resources.Resource.level2</span>
-                @Html.DropDownList("level2Id", new SelectList(ViewBag.Level2, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2Init", @style = "width:210px" })
-            </div>
-        </li>
+                <div id="showLevel2" style="display:none">
+                    <span class="redLabel">@Resources.Resource.level2</span>
+                    @Html.DropDownList("level2Id", new SelectList(ViewBag.Level2, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2Init", @style = "width:210px" })
+                </div>
+            </li>
 
-        <li>
-            <div id="showLevel3" style="display:none">
-                <span class="redLabel">@Resources.Resource.level3</span>
-                @Html.DropDownList("level3Id", new SelectList(ViewBag.Level3, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2Init", @style = "width:210px" })
-            </div>
-        </li>*@
+            <li>
+                <div id="showLevel3" style="display:none">
+                    <span class="redLabel">@Resources.Resource.level3</span>
+                    @Html.DropDownList("level3Id", new SelectList(ViewBag.Level3, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2Init", @style = "width:210px" })
+                </div>
+            </li>*@
 
         <li>
             <div id="showShift" style="display:none">
@@ -502,9 +502,13 @@
                     <tr class="tituloIndicadores">
                         <td colspan="2">Custos & Indicadores Técnicos</td>
                     </tr>
+
                     <tr>
-                        <td><input type="radio" name="optradio" value="Manutenção R$">Manutenção R$</td>
                         <td><input type="radio" name="optradio" value="R$/CB Manut">R$/CB Manut</td>
+                    </tr>
+                    <tr>
+                        <td><input type="radio" name="optradio" value="Custo Fixo Utilidades">Custo Fixo Utilidades</td>
+                        <td><input type="radio" name="optradio" value="Custo Fixo Manutenção">Custo Fixo Manutenção</td>
                     </tr>
                     <tr>
                         <td><input type="radio" name="optradio" value="Energia R$ (Variável)">Energia R$ (Variável)</td>
@@ -534,18 +538,18 @@
                         <td><input type="radio" name="optradio" value="Consumo Agua m³">Consumo Agua m³</td>
                         <td><input type="radio" name="optradio" value="Água M³/Boi">Água M³/Boi</td>
                     </tr>
-                    <tr>
+                    @*<tr>
                         <td><input type="radio" name="optradio" value="R$/CB Manut+Utilid">R$/CB Manut+Utilid</td>
                         <td><input type="radio" name="optradio" value="R$ Manut Comb.">R$ Manut Comb.</td>
-                    </tr>
-                    <tr>
+                    </tr>*@
+                    @*<tr>
                         <td><input type="radio" name="optradio" value="Total Vendas R$">Total Vendas R$</td>
                         <td><input type="radio" name="optradio" value="Total Devolvido R$">Total Devolvido R$</td>
-                    </tr>
-                    <tr>
-                        <td><input type="radio" name="optradio" value="Custo Fixo Utilidades">Custo Fixo Utilidades</td>
-                        <td><input type="radio" name="optradio" value="Custo Fixo Manutenção">Custo Fixo Manutenção</td>
-                    </tr>
+                    </tr>*@
+                    @*<tr>
+                            <td><input type="radio" name="optradio" value="Custo Fixo Utilidades">Custo Fixo Utilidades</td>
+                            <td><input type="radio" name="optradio" value="Custo Fixo Manutenção">Custo Fixo Manutenção</td>
+                        </tr>*@
                     <tr>
                         <td><input type="radio" name="optradio" value="Energia R$">Energia R$</td>
                         <td><input type="radio" name="optradio" value="Litros de Sebo">Litros de Sebo</td>
@@ -607,7 +611,7 @@
                     </tr>
                     <tr>
                         <td><input type="radio" name="optradio" value="Taxa de Frequência">Taxa de Frequência %</td>
-                        
+
                     </tr>
                     <tr class="tituloIndicadores">
                         <td colspan="2">Parâmetros De Continuidade</td>
@@ -625,9 +629,9 @@
                         <td><input type="radio" name="optradio" value="Scorecard Vapor">Scorecard Vapor %</td>
                     </tr>
                     @*<tr>
-                        <td><input type="radio" name="optradio" value="Devoluções %">Devoluções %</td>
-                        <td><input type="radio" name="optradio" value="Devoluções R$">Devoluções R$</td>
-                    </tr>*@
+                            <td><input type="radio" name="optradio" value="Devoluções %">Devoluções %</td>
+                            <td><input type="radio" name="optradio" value="Devoluções R$">Devoluções R$</td>
+                        </tr>*@
                     <tr>
                         <td><input type="radio" name="optradio" value="Scorecard M. Amb">Scorecard M. Amb %</td>
                     </tr>
@@ -903,24 +907,24 @@
 
 
     (function (H) {
-   
+
         //H.wrap(H.Series.prototype, 'drawGraph', function (proceed) {
 
         //    // Before the original function
         //    console.log("We are about to draw the graph:", this.graph);
 
-        //    // Now apply the original function with the original arguments, 
+        //    // Now apply the original function with the original arguments,
         //    // which are sliced off this function's arguments
         //    proceed.apply(this, Array.prototype.slice.call(arguments, 1));
 
         //    // Add some code after the original function
         //    console.log("We just finished drawing the graph:", this.graph);
 
-                //$(Highcharts.charts).each(function (c, chart) {
-                //    if (chart != undefined) {
-                //        chart.reflow()
-                //    }
-                //});
+        //$(Highcharts.charts).each(function (c, chart) {
+        //    if (chart != undefined) {
+        //        chart.reflow()
+        //    }
+        //});
         //});
 
     }(Highcharts));

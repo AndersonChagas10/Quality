@@ -421,6 +421,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auto-send off.
+        /// </summary>
+        internal static string auto_send_off {
+            get {
+                return ResourceManager.GetString("auto_send_off", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto-send on.
+        /// </summary>
+        internal static string auto_send_on {
+            get {
+                return ResourceManager.GetString("auto_send_on", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         internal static string back {
@@ -754,15 +772,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Consolidation.
-        /// </summary>
-        internal static string consolidation {
-            get {
-                return ResourceManager.GetString("consolidation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Consolidation Type.
         /// </summary>
         internal static string consolidation_type {
@@ -867,6 +876,15 @@ namespace Resources {
         internal static string current_side {
             get {
                 return ResourceManager.GetString("current_side", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Value.
+        /// </summary>
+        internal static string current_value {
+            get {
+                return ResourceManager.GetString("current_value", resourceCulture);
             }
         }
         
@@ -2536,6 +2554,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Value.
+        /// </summary>
+        internal static string new_value {
+            get {
+                return ResourceManager.GetString("new_value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
         internal static string no {
@@ -2928,6 +2955,15 @@ namespace Resources {
         internal static string preview {
             get {
                 return ResourceManager.GetString("preview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Print.
+        /// </summary>
+        internal static string print {
+            get {
+                return ResourceManager.GetString("print", resourceCulture);
             }
         }
         
@@ -3904,6 +3940,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Syncronization finished..
+        /// </summary>
+        internal static string sync_finished {
+            get {
+                return ResourceManager.GetString("sync_finished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sync parameretrization.
         /// </summary>
         internal static string sync_parameretrization {
@@ -3940,7 +3985,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Assinatura do Técnico.
+        ///   Looks up a localized string similar to Technical signature.
         /// </summary>
         internal static string technical_signature {
             get {
@@ -4323,6 +4368,15 @@ namespace Resources {
         internal static string view_log {
             get {
                 return ResourceManager.GetString("view_log", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visible Columns.
+        /// </summary>
+        internal static string visible_columns {
+            get {
+                return ResourceManager.GetString("visible_columns", resourceCulture);
             }
         }
         
