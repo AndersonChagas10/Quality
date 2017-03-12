@@ -62,6 +62,7 @@ namespace Dominio
         public Nullable<bool> IsEmptyLevel3 { get; set; }
         public Nullable<int> LastLevel2Alert { get; set; }
         public Nullable<int> ReauditLevel { get; set; }
+        public Nullable<int> StartPhaseEvaluation { get; set; }
     
         public virtual ConsolidationLevel2 ConsolidationLevel2 { get; set; }
         public virtual ParLevel1 ParLevel1 { get; set; }

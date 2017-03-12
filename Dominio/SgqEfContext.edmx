@@ -73,6 +73,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.budgets' does not have a primary key 
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="Key" Type="nvarchar(max)" Nullable="false" />
           <Property Name="TTP" Type="nvarchar(max)" />
+          <Property Name="ReauditLevel" Type="int" />
         </EntityType>
         <EntityType Name="CollectionLevel02">
           <Key>
@@ -169,6 +170,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.budgets' does not have a primary key 
           <Property Name="IsEmptyLevel3" Type="bit" />
           <Property Name="LastLevel2Alert" Type="int" />
           <Property Name="ReauditLevel" Type="int" />
+          <Property Name="StartPhaseEvaluation" Type="int" />
         </EntityType>
         <EntityType Name="CollectionLevel2XParHeaderField">
           <Key>
@@ -365,6 +367,15 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
           <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="SelectedElement" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LeftControlRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Controller" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Action" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Role" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Level01">
           <Key>
@@ -2901,6 +2912,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySet Name="DimManutencaoColetaITs" EntityType="Self.DimManutencaoColetaITs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Example" EntityType="Self.Example" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LeftControlRole" EntityType="Self.LeftControlRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level01" EntityType="Self.Level01" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level02" EntityType="Self.Level02" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level03" EntityType="Self.Level03" Schema="dbo" store:Type="Tables" />
@@ -4254,6 +4266,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             <End Role="Result_Level3" EntitySet="Result_Level3" />
           </AssociationSet>
           <EntitySet Name="ManColetaDados" EntityType="SgqDbModel.ManColetaDados" />
+          <EntitySet Name="LeftControlRole" EntityType="SgqDbModel.LeftControlRole" />
           </EntityContainer>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -4479,6 +4492,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Key" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="TTP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReauditLevel" Type="Int32" />
         </EntityType>
         <EntityType Name="CollectionLevel02">
           <Key>
@@ -7067,6 +7081,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_CollectionLevel2_UserSgq" FromRole="CollectionLevel2" ToRole="UserSgq" />
           <NavigationProperty Name="CollectionLevel2XParHeaderField" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_CollectionLevel2" FromRole="CollectionLevel2" ToRole="CollectionLevel2XParHeaderField" />
           <NavigationProperty Name="Result_Level3" Relationship="SgqDbModel.FK_Result_Level3_CollectionLevel2" FromRole="CollectionLevel2" ToRole="Result_Level3" />
+          <Property Name="StartPhaseEvaluation" Type="Int32" />
         </EntityType>
         <Association Name="FK_CollectionLevel2_ConsolidationLevel2">
           <End Type="SgqDbModel.ConsolidationLevel2" Role="ConsolidationLevel2" Multiplicity="1" />
@@ -7307,6 +7322,15 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="KgFarinha_Real" Type="Decimal" Precision="30" Scale="10" />
           <Property Name="KgFarinha_Meta" Type="Decimal" Precision="30" Scale="10" />
         </EntityType>
+        <EntityType Name="LeftControlRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Controller" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Action" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7497,6 +7521,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySetMapping Name="CollectionJson">
             <EntityTypeMapping TypeName="SgqDbModel.CollectionJson">
               <MappingFragment StoreEntitySet="CollectionJson">
+                <ScalarProperty Name="ReauditLevel" ColumnName="ReauditLevel" />
                 <ScalarProperty Name="TTP" ColumnName="TTP" />
                 <ScalarProperty Name="Key" ColumnName="Key" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
@@ -8753,6 +8778,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySetMapping Name="CollectionLevel2">
             <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel2">
               <MappingFragment StoreEntitySet="CollectionLevel2">
+                <ScalarProperty Name="StartPhaseEvaluation" ColumnName="StartPhaseEvaluation" />
                 <ScalarProperty Name="ReauditLevel" ColumnName="ReauditLevel" />
                 <ScalarProperty Name="LastLevel2Alert" ColumnName="LastLevel2Alert" />
                 <ScalarProperty Name="IsEmptyLevel3" ColumnName="IsEmptyLevel3" />
@@ -8962,6 +8988,16 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
                 <ScalarProperty Name="Base_dateAdd" ColumnName="Base_dateAdd" />
                 <ScalarProperty Name="Base_parCompany_id" ColumnName="Base_parCompany_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LeftControlRole">
+            <EntityTypeMapping TypeName="SgqDbModel.LeftControlRole">
+              <MappingFragment StoreEntitySet="LeftControlRole">
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="Controller" ColumnName="Controller" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
