@@ -47,8 +47,7 @@ namespace Helper
                 {
                     dataSenhaUsuario = DateTime.ParseExact(cookie.Values["passwordDate"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
                 }
-
-                if (!string.IsNullOrEmpty(cookie.Values["alterDate"]))
+                else if (!string.IsNullOrEmpty(cookie.Values["alterDate"]))
                 {
                     dataSenhaUsuario = DateTime.ParseExact(cookie.Values["alterDate"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
                 }
