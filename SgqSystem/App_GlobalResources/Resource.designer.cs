@@ -115,6 +115,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Action.
+        /// </summary>
+        internal static string action {
+            get {
+                return ResourceManager.GetString("action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Pesquisa uma cadeia de caracteres localizada semelhante a Action not allowed .
         /// </summary>
         internal static string action_not_allowed {
@@ -129,6 +138,15 @@ namespace Resources {
         internal static string action_plan {
             get {
                 return ResourceManager.GetString("action_plan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Action Required.
+        /// </summary>
+        internal static string action_required {
+            get {
+                return ResourceManager.GetString("action_required", resourceCulture);
             }
         }
         
@@ -804,6 +822,24 @@ namespace Resources {
         internal static string consolidation_type_popover {
             get {
                 return ResourceManager.GetString("consolidation_type_popover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Controller.
+        /// </summary>
+        internal static string controller {
+            get {
+                return ResourceManager.GetString("controller", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Controller Required.
+        /// </summary>
+        internal static string controller_required {
+            get {
+                return ResourceManager.GetString("controller_required", resourceCulture);
             }
         }
         
@@ -1951,6 +1987,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Left Menu Control.
+        /// </summary>
+        internal static string left_menu_control {
+            get {
+                return ResourceManager.GetString("left_menu_control", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Pesquisa uma cadeia de caracteres localizada semelhante a Letters CEP.
         /// </summary>
         internal static string letters_cep {
@@ -2851,6 +2896,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Password Expired.
+        /// </summary>
+        internal static string password_expired {
+            get {
+                return ResourceManager.GetString("password_expired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Pesquisa uma cadeia de caracteres localizada semelhante a Password is required.
         /// </summary>
         internal static string password_required {
@@ -3405,6 +3459,15 @@ namespace Resources {
         internal static string save {
             get {
                 return ResourceManager.GetString("save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Saved successfully!.
+        /// </summary>
+        internal static string saved_successfully {
+            get {
+                return ResourceManager.GetString("saved_successfully", resourceCulture);
             }
         }
         

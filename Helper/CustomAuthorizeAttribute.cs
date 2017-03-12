@@ -42,6 +42,12 @@ namespace Helper
                 #region Vrificação Senha Expirada
 
                 var dataSenhaUsuario = new DateTime();
+
+                if (!string.IsNullOrEmpty(cookie.Values["passwordDate"]))
+                {
+                    dataSenhaUsuario = DateTime.ParseExact(cookie.Values["passwordDate"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                }
+
                 if (!string.IsNullOrEmpty(cookie.Values["alterDate"]))
                 {
                     dataSenhaUsuario = DateTime.ParseExact(cookie.Values["alterDate"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
@@ -62,8 +68,8 @@ namespace Helper
                 if (timeSpan.Days >= timeSpanTwoMonths.Days)
                 {
                     UrlHelper urlHelper = new UrlHelper(filterContext.RequestContext);
-                    //filterContext.Result = new RedirectResult(urlHelper.Action("Perfil", "UserSgq", new { motivo = "senhaExpirada" }));
-                    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "UserSgq", action = "Perfil" }));
+                    filterContext.Result = new RedirectResult(urlHelper.Action("Perfil", "UserSgq", new { motivo = "passwordExpired" }));
+                    //filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "UserSgq", action = "Perfil" }));
                 }
 
                 #endregion

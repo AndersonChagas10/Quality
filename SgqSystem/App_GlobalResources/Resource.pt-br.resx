@@ -1590,4 +1590,25 @@
   <data name="remain_logged_in" xml:space="preserve">
     <value>Sua sessão irá expirar. Deseja permanecer conectado?</value>
   </data>
+  <data name="password_expired" xml:space="preserve">
+    <value>Senha Expirada</value>
+  </data>
+  <data name="left_menu_control" xml:space="preserve">
+    <value>Controle do Menu Esquerdo</value>
+  </data>
+  <data name="action" xml:space="preserve">
+    <value>Ação</value>
+  </data>
+  <data name="action_required" xml:space="preserve">
+    <value>Ação Necessária</value>
+  </data>
+  <data name="controller" xml:space="preserve">
+    <value>Controlador</value>
+  </data>
+  <data name="controller_required" xml:space="preserve">
+    <value>Controlador Necessário</value>
+  </data>
+  <data name="saved_successfully" xml:space="preserve">
+    <value>Salvo com sucesso!</value>
+  </data>
 </root>

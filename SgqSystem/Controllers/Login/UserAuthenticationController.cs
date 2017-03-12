@@ -36,10 +36,10 @@ namespace SgqSystem.Controllers.Api
             return View();
         }
 
-        [HttpPost]  
+        [HttpPost]
         public ActionResult LogIn(UserViewModel user)
         {
-          
+
             var isAuthorized = _userDomain.AuthenticationLogin(user);
 
             if (isAuthorized.Retorno.IsNotNull())
@@ -86,6 +86,15 @@ namespace SgqSystem.Controllers.Api
 
                 myCookie.Values.Add("addDate", isAuthorized.AddDate.ToString("dd/MM/yyyy"));
 
+                if (isAuthorized.PasswordDate != null)
+                {
+                    myCookie.Values.Add("passwordDate", isAuthorized.PasswordDate.GetValueOrDefault().ToString("dd/MM/yyyy"));
+                }
+                else
+                {
+                    myCookie.Values.Add("passwordDate", "");
+                }
+
                 if (isAuthorized.Role != null)
                     myCookie.Values.Add("roles", isAuthorized.Role.Replace(';', ',').ToString());//"admin, teste, operacional, 3666,344, 43434,...."
                 else
@@ -122,13 +131,13 @@ namespace SgqSystem.Controllers.Api
                 currentUserCookie.Value = null;
                 Response.SetCookie(currentUserCookie);
             }
-           
+
         }
 
         [HttpGet]
         public ActionResult KeepAlive(int id)
         {
-            var isAuthorized =  _userBaseDomain.GetByIdNoLazyLoad(id);
+            var isAuthorized = _userBaseDomain.GetByIdNoLazyLoad(id);
             CreateCookieFromUserDTO(isAuthorized);
             return Json("OK", JsonRequestBehavior.AllowGet);
         }

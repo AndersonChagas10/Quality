@@ -2127,6 +2127,8 @@
     <Content Include="Views\ParGoalScorecard\Index.cshtml" />
     <Content Include="Views\Params\Blank.cshtml" />
     <Content Include="Views\UserSgq\Perfil.cshtml" />
+    <Content Include="Views\Role\LeftControlRole.cshtml" />
+    <Content Include="Views\Role\EditLeftControlRole.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

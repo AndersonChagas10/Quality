@@ -71,11 +71,13 @@ namespace SgqSystem.Controllers
         /// <summary>
         /// Tela de Perfil Usuário
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="motivo">Quando obtiver um motivo, é por cause da expiração da senha</param>
         /// <returns></returns>
-        public ActionResult Perfil()
+        public ActionResult Perfil(string motivo = "")
         {
             ViewBag.Title = "Perfil";
+
+            ViewBag.Motivo = motivo;
 
             var idUsuario = Guard.GetUsuarioLogado_Id(ControllerContext.HttpContext);
 
@@ -241,6 +243,7 @@ namespace SgqSystem.Controllers
                 if (Guard.Descriptografar3DES(senhaAntiga).Equals(model.SenhaAntiga))
                 {
                     userSgq.AlterDate = DateTime.Now;
+                    userSgq.PasswordDate = DateTime.Now;
                     userSgq.Password = Guard.Criptografar3DES(model.Password);
 
                     db.Entry(userSgq).State = EntityState.Modified;
