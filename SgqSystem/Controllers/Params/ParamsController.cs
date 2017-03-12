@@ -2,8 +2,8 @@
 using DTO;
 using Helper;
 using SgqSystem.Helpers;
-using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
+using System.Web;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Params
@@ -21,7 +21,7 @@ namespace SgqSystem.Controllers.Params
         public ParamsController(IParamsDomain paramDomain)
         {
             _paramDomain = paramDomain;
-            if(ViewModel == null)
+            if (ViewModel == null)
                 ViewModel = new ParamsViewModel(_paramDomain.CarregaDropDownsParams());/*Cria view model vazio.*/
         }
 
@@ -29,16 +29,34 @@ namespace SgqSystem.Controllers.Params
 
         public ActionResult Index()
         {
+            ViewBag.Role = VerificarRole();
             return View(ViewModel);
+        }
+
+        private string VerificarRole()
+        {
+            HttpCookie cookie = HttpContext.Request.Cookies.Get("webControlCookie");
+
+            string _userSgqRoles = "";
+
+            if (!string.IsNullOrEmpty(cookie.Values["roles"]))
+            {
+                _userSgqRoles = cookie.Values["roles"].ToString();
+            }
+
+            return _userSgqRoles;
         }
 
         #region Get L1, L2 e L3
 
         public ActionResult GetParLevel1ById(int id)
         {
+
+            ViewBag.Role = VerificarRole();
+
             ViewModel.levelControl = 1;
             if (id == -1)/*Retorna View Vazia*/
-                if(!GlobalConfig.Eua)
+                if (!GlobalConfig.Eua)
                     return PartialView("_ParLevel1", ViewModel);
                 else
                     return PartialView("Blank");
@@ -49,19 +67,21 @@ namespace SgqSystem.Controllers.Params
             if (ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal != null)
                 for (int i = 0; i < ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal.Count; i++)
                 {
-                    ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParCounter.Name = 
+                    ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParCounter.Name =
                         CommonData.getResource(ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParCounter.Name).Value.ToString();
 
                     ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParLocal.Name =
                         CommonData.getResource(ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParLocal.Name).Value.ToString();
                 }
-            
+
 
             return PartialView("_ParLevel1", ViewModel);/*Retorna View com Model ParLevel1 encontrado no DB.*/
         }
 
         public ActionResult GetParLevel2ById(int level2Id, int level3Id = 0, int level1Id = 0)
         {
+            ViewBag.Role = VerificarRole();
+
             if (level2Id <= 0) /*Retorna View Vazia*/
                 return PartialView("_ParLevel2", ViewModel);
 
@@ -71,7 +91,7 @@ namespace SgqSystem.Controllers.Params
             if (ViewModel.paramsDto.parLevel2Dto.listParCounterXLocal != null)
                 for (int i = 0; i < ViewModel.paramsDto.parLevel2Dto.listParCounterXLocal.Count; i++)
                 {
-                    ViewModel.paramsDto.parLevel2Dto.listParCounterXLocal[i].ParCounter.Name = 
+                    ViewModel.paramsDto.parLevel2Dto.listParCounterXLocal[i].ParCounter.Name =
                         CommonData.getResource(ViewModel.paramsDto.parLevel2Dto.listParCounterXLocal[i].ParCounter.Name).Value.ToString();
 
                     ViewModel.paramsDto.parLevel2Dto.listParCounterXLocal[i].ParLocal.Name =
@@ -81,9 +101,11 @@ namespace SgqSystem.Controllers.Params
 
             return PartialView("_ParLevel2", ViewModel);/*Retorna View com Model ParLevel2 encontrado no DB.*/
         }
-        
+
         public ActionResult GetParLevel3ById(int id, int? idParLevel2 = 0)
         {
+            ViewBag.Role = VerificarRole();
+
             ViewModel.levelControl = 3;
             if (id <= 0) /*Retorna View Vazia*/
                 return PartialView("_ParLevel3", ViewModel);
@@ -118,7 +140,7 @@ namespace SgqSystem.Controllers.Params
         }
 
         #endregion
-        
+
         #region Testes
 
         public ActionResult Index2()

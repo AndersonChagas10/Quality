@@ -1096,5 +1096,29 @@
         if(config){
             $('#level1Title').html("Level 1");
         }
+
+        if ("@ViewBag.Role" == "Admin") {
+
+            $("#newLevel1Modal > form input").attr("disabled", true);
+            $("#newLevel1Modal > form select").attr("disabled", true);
+            $("#newLevel1Modal > form button").attr("disabled", true);
+            $("#newLevel1Modal > form input:checkbox").bootstrapSwitch('readonly', "true");
+
+            $("#newLevel2Modal > form input").attr("disabled", true);
+            $("#newLevel2Modal > form select").attr("disabled", true);
+            $("#newLevel2Modal > form button").attr("disabled", true);
+            $("#newLevel2Modal > form input:checkbox").bootstrapSwitch('readonly', "true");
+
+            $("#newLevel3Modal > form input").attr("disabled", true);
+            $("#newLevel3Modal > form select").attr("disabled", true);
+            $("#newLevel3Modal > form button").attr("disabled", true);
+            $("#newLevel3Modal > form input:checkbox").bootstrapSwitch('readonly', "true");
+
+            $("#btnNewLevel1").attr("disabled", true);
+            $("#btnNewLevel2").attr("disabled", true);
+            $("#btnNewLevel3").attr("disabled", true);
+
+        }
+
     })
 </script>

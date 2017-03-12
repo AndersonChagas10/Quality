@@ -247,7 +247,7 @@
     <value>Allow specific register by unit</value>
   </data>
   <data name="allow_the_edition_of_the_evaluation_number" xml:space="preserve">
-    <value>Allow the edition of the evaluation number</value>
+    <value>Allow the edition of the evaluation number/samples</value>
   </data>
   <data name="allow_the_edition_of_the_goal_of_the_level1_by_unit" xml:space="preserve">
     <value>Allow the edition of the goal of the indicator by unit</value>

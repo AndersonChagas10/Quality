@@ -244,7 +244,7 @@
     <value>Permite cadastro especifico por unidade</value>
   </data>
   <data name="allow_the_edition_of_the_evaluation_number" xml:space="preserve">
-    <value>Permite editar número de avaliações</value>
+    <value>Permite editar número de avaliações / amostras</value>
   </data>
   <data name="allow_the_edition_of_the_goal_of_the_level1_by_unit" xml:space="preserve">
     <value>Permite editar meta do indicador por unidade</value>

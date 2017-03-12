@@ -277,7 +277,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Allow the edition of the evaluation number.
+        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Allow the edition of the evaluation number/samples.
         /// </summary>
         internal static string allow_the_edition_of_the_evaluation_number {
             get {

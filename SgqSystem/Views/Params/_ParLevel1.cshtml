@@ -63,19 +63,19 @@
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecific, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_specific_register_by_unit), Table.PosicaoLabel.left, null, Resources.Resource.allow_specific_register_by_unit_popover)
                         </tr>
-                        <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
+                        <tr class="row groupCadastroEspecificoUnidade padding-left hidden" style="display:none">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificHeaderField, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_field_edition_of_the_header, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
                         </tr>
                         <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_evaluation_number, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
                         </tr>
-                        <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
+                        <tr class="row groupCadastroEspecificoUnidade padding-left hidden" style="display:none">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberSample, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_sample_number, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
                         </tr>
                         <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificLevel3, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_level3_connection, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.allow_the_edition_of_the_level3_connection_popover)
                         </tr>
-                        <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
+                        <tr class="row groupCadastroEspecificoUnidade padding-left hidden" style="display:none">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificGoal, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_goal_of_the_level1_by_unit, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
                         </tr>
                         <tr class="row">
@@ -487,9 +487,9 @@
 
 
 <script>
-    
+
     var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
-    
+
     $(document).ready(function() {
         if(config){
             $('#registerTotalEv').hide();
@@ -543,7 +543,7 @@
         },
         BtnExcluir:  function(){ return '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParMultiplaEscolhaOpcoes.length + ');"><i class="fa fa-times"></i></button>'; },
         BtnExcluir2: function(){ return '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParBinario.length +', true);"><i class="fa fa-times"></i></button>'; },
-      
+
         ListaDeCabecalhos: [],
 
         listParHeaderFieldDto: [],
@@ -1370,6 +1370,12 @@
 
     $(document).ready(function () {
 
+        $("#paramsDto_parLevel1Dto_IsSpecificNumberEvaluetion").on('switchChange.bootstrapSwitch', function (e, data) {
+
+            $("#paramsDto_parLevel1Dto_IsSpecificNumberSample").bootstrapSwitch('state', data);
+
+        });
+
         defaults();
         loadSelect2();
 
@@ -1426,6 +1432,39 @@
             console.log(e);
         }
 
+
+        if ("@ViewBag.Role" == "Admin") {
+
+            $("#newLevel1Modal > form input").attr("disabled", true);
+            $("#newLevel1Modal > form select").attr("disabled", true);
+            $("#newLevel1Modal > form button").attr("disabled", true);
+            $("#newLevel1Modal > form input:checkbox").bootstrapSwitch('readonly', "true");
+
+            $("#newLevel2Modal > form input").attr("disabled", true);
+            $("#newLevel2Modal > form select").attr("disabled", true);
+            $("#newLevel2Modal > form button").attr("disabled", true);
+            $("#newLevel2Modal > form input:checkbox").bootstrapSwitch('readonly', "true");
+
+            $("#newLevel3Modal > form input").attr("disabled", true);
+            $("#newLevel3Modal > form select").attr("disabled", true);
+            $("#newLevel3Modal > form button").attr("disabled", true);
+            $("#newLevel3Modal > form input:checkbox").bootstrapSwitch('readonly', "true");
+
+            $("#btnNewLevel1").attr("disabled", true);
+            $("#btnNewLevel2").attr("disabled", true);
+            $("#btnNewLevel3").attr("disabled", true);
+
+            $("#paramsDto_parLevel3Dto_Name").attr("disabled", true);
+            $("#paramsDto_parLevel3Dto_Description").attr("disabled", true);
+            $("#paramsDto_parLevel3Dto_IsActive").bootstrapSwitch('readonly', "true");
+            
+        }
+
+            if ($("#paramsDto_parLevel1Dto_IsSpecificNumberSample").bootstrapSwitch('state') == "true") {
+                $("#avAmCompany").attr("disabled", false);
+                $("#avaliacao").attr("disabled", false);
+                $("#amostra").attr("disabled", false);
+        }    
     });
 
 </script>

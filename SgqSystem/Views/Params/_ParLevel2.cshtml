@@ -40,7 +40,7 @@
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.IsEmptyLevel3, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_audit_of_detached_level3), Table.PosicaoLabel.left, null, Resources.Resource.allow_the_audit_of_detached_level3_popover)
                         </tr>
 
-                        <tr id="showlevel3"class="row">
+                        <tr id="showlevel3" class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasShowLevel03, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.show_group_on_level3), Table.PosicaoLabel.left, null, null)
                         </tr>
 
@@ -48,7 +48,7 @@
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasGroupLevel3, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_group_on_level3), Table.PosicaoLabel.left, null, null)
                         </tr>
 
-                        <tr id="HasSampleTotaltr"class="row">
+                        <tr id="HasSampleTotaltr" class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasSampleTotal, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_sample_total), Table.PosicaoLabel.left, null, null)
                         </tr>
 
@@ -58,10 +58,10 @@
 
                     </tbody>
                 </table>
-                
+
                 @Html.Partial("_AvaliacaoAmostra", Model)
 
-                
+
                 @if (Model.paramsDto.parLevel2Dto.cabecalhosInclusos != null)
                 {
                     if (Model.paramsDto.parLevel2Dto.cabecalhosInclusos.Count > 0)
@@ -492,6 +492,42 @@
         //    $('#vinculoLevel1').show();
         //    $('#desVinculoLevel1').show();
         //}
+
+
+
+
+        if ("@ViewBag.Role" == "Admin") {
+
+            $("#newLevel1Modal > form input").attr("disabled", true);
+            $("#newLevel1Modal > form select").attr("disabled", true);
+            $("#newLevel1Modal > form button").attr("disabled", true);
+            $("#newLevel1Modal > form input:checkbox").bootstrapSwitch('readonly', "true");
+
+            $("#newLevel2Modal > form input").attr("disabled", true);
+            $("#newLevel2Modal > form select").attr("disabled", true);
+            $("#newLevel2Modal > form button").attr("disabled", true);
+            $("#newLevel2Modal > form input:checkbox").bootstrapSwitch('readonly', "true");
+
+            $("#newLevel3Modal > form input").attr("disabled", true);
+            $("#newLevel3Modal > form select").attr("disabled", true);
+            $("#newLevel3Modal > form button").attr("disabled", true);
+            $("#newLevel3Modal > form input:checkbox").bootstrapSwitch('readonly', "true");
+
+            $("#btnNewLevel1").attr("disabled", true);
+            $("#btnNewLevel2").attr("disabled", true);
+            $("#btnNewLevel3").attr("disabled", true);
+
+            $("#paramsDto_parLevel3Dto_Name").attr("disabled", true);
+            $("#paramsDto_parLevel3Dto_Description").attr("disabled", true);
+            $("#paramsDto_parLevel3Dto_IsActive").bootstrapSwitch('readonly', "true");
+
+        }
+
+            if ($("#paramsDto_parLevel1Dto_IsSpecificNumberSample").bootstrapSwitch('state') == "true") {
+                $("#avAmCompany").attr("disabled", false);
+                $("#avaliacao").attr("disabled", false);
+                $("#amostra").attr("disabled", false);
+        }
 
     });
 

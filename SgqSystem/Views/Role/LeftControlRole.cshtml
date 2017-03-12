@@ -42,19 +42,16 @@
                         <div class="tab-content">
 
                             <div class="tab-pane active" id="setup_tab">
-                                <p>
-                                    @Html.ActionLink(Resources.Resource._new, "Create")
-                                </p>
                                 <table class="table">
                                     <tr>
                                         <th>
-                                            Controller
+                                            @Resources.Resource.controller
                                         </th>
                                         <th>
-                                            Action
+                                            @Resources.Resource.action
                                         </th>
                                         <th>
-                                            Role
+                                            @Resources.Resource.role
                                         </th>
                                         <th></th>
                                     </tr>
@@ -73,9 +70,6 @@
                                             </td>
                                             <td>
                                                 @Html.ActionLink(Resources.Resource.edit, "EditLeftControlRole", new { id = item.Id })
-                                                @*|
-                                                @Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }, htmlAttributes) |
-                                                @Html.ActionLink(Resources.Resource.delete, "Delete", new { id = item.Id })*@
                                             </td>
                                         </tr>
                                     }
