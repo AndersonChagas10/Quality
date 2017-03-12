@@ -54,9 +54,9 @@ namespace Dominio
     
         public virtual Level01 Level01 { get; set; }
         public virtual Level02 Level02 { get; set; }
-        public virtual UserSgq UserSgq { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionLevel03> CollectionLevel03 { get; set; }
         public virtual ConsolidationLevel02 ConsolidationLevel02 { get; set; }
+        public virtual UserSgq UserSgq { get; set; }
     }
 }

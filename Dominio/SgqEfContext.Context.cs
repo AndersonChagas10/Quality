@@ -106,7 +106,6 @@ namespace Dominio
         public virtual DbSet<Shift> Shift { get; set; }
         public virtual DbSet<Unit> Unit { get; set; }
         public virtual DbSet<UnitUser> UnitUser { get; set; }
-        public virtual DbSet<UserSgq> UserSgq { get; set; }
         public virtual DbSet<VolumeCepDesossa> VolumeCepDesossa { get; set; }
         public virtual DbSet<VolumeCepRecortes> VolumeCepRecortes { get; set; }
         public virtual DbSet<VolumePcc1b> VolumePcc1b { get; set; }
@@ -130,6 +129,7 @@ namespace Dominio
         public virtual DbSet<CollectionLevel2> CollectionLevel2 { get; set; }
         public virtual DbSet<ManColetaDados> ManColetaDados { get; set; }
         public virtual DbSet<LeftControlRole> LeftControlRole { get; set; }
+        public virtual DbSet<UserSgq> UserSgq { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
