@@ -1,10 +1,9 @@
-﻿using System.Data.Entity;
+﻿using Dominio;
+using Helper;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using Dominio;
-using SgqSystem.Secirity;
-using Helper;
 
 namespace SgqSystem.Controllers
 {

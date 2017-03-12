@@ -1590,4 +1590,25 @@
   <data name="sync_finished" xml:space="preserve">
     <value>Syncronization finished.</value>
   </data>
+  <data name="perfil_user" xml:space="preserve">
+    <value>User Profile</value>
+  </data>
+  <data name="old_password" xml:space="preserve">
+    <value>Old Password</value>
+  </data>
+  <data name="confirmation_password_required" xml:space="preserve">
+    <value>Confirmation password required</value>
+  </data>
+  <data name="old_password_required" xml:space="preserve">
+    <value>Old Password Required</value>
+  </data>
+  <data name="Passwords_do_not_match" xml:space="preserve">
+    <value>Passwords do Not Match</value>
+  </data>
+  <data name="old_password_incorrect" xml:space="preserve">
+    <value>Old password is incorrect</value>
+  </data>
+  <data name="remain_logged_in" xml:space="preserve">
+    <value>Your session will expire. Do you want to stay connected?</value>
+  </data>
 </root>

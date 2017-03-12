@@ -74,6 +74,18 @@ namespace SgqSystem.Controllers.Api
                 //Add key-values in the cookie
                 myCookie.Values.Add("userId", isAuthorized.Id.ToString());
                 myCookie.Values.Add("userName", isAuthorized.Name);
+
+                if (isAuthorized.AlterDate != null)
+                {
+                    myCookie.Values.Add("alterDate", isAuthorized.AlterDate.GetValueOrDefault().ToString("dd/MM/yyyy"));
+                }
+                else
+                {
+                    myCookie.Values.Add("alterDate", "");
+                }
+
+                myCookie.Values.Add("addDate", isAuthorized.AddDate.ToString("dd/MM/yyyy"));
+
                 if (isAuthorized.Role != null)
                     myCookie.Values.Add("roles", isAuthorized.Role.Replace(';', ',').ToString());//"admin, teste, operacional, 3666,344, 43434,...."
                 else
