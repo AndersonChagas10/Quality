@@ -1,4 +1,5 @@
-﻿using Dominio;
+﻿using AutoMapper;
+using Dominio;
 using Dominio.Interfaces.Services;
 using DTO.DTO;
 using DTO.DTO.Params;
@@ -89,7 +90,7 @@ namespace SgqSystem.Controllers
                 Name = userSgq.Name,
                 FullName = userSgq.FullName,
                 Email = userSgq.Email,
-                Roles = userSgq.Role.Split(';'),
+                Roles = userSgq.Role == null ? new string[0] : userSgq.Role.Split(';'),
                 Password = userSgq.Password,
                 Phone = userSgq.Phone,
                 Empresa = parCompanyXUserSgq != null ? (from comp in parCompanyXUserSgq select new EmpresaDTO { Role = comp.Role, Nome = comp.ParCompany.Name }).ToList() : new List<EmpresaDTO>()
@@ -246,8 +247,7 @@ namespace SgqSystem.Controllers
                     db.Entry(userSgq).State = EntityState.Modified;
 
                     db.SaveChanges();
-
-                    return "";
+                    CreateCookieFromUserDTO(Mapper.Map<UserDTO>(userSgq));
                 }
                 else
                 {
@@ -258,6 +258,7 @@ namespace SgqSystem.Controllers
             {
                 return Resources.Resource.try_again_contact_support;
             }
+            return "";
         }
 
 
