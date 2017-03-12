@@ -1575,4 +1575,10 @@
   <data name="statistical_report" xml:space="preserve">
     <value>Relatório Estatístico</value>
   </data>
+  <data name="impossible_refresh_result" xml:space="preserve">
+    <value>Não foi possível atualizar o resultado</value>
+  </data>
+  <data name="registry_alter_success" xml:space="preserve">
+    <value>Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).</value>
+  </data>
 </root>

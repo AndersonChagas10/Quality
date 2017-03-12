@@ -1726,6 +1726,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to It is not possible refresh the result.
+        /// </summary>
+        internal static string impossible_refresh_result {
+            get {
+                return ResourceManager.GetString("impossible_refresh_result", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inactive.
         /// </summary>
         internal static string inactive {
@@ -3135,6 +3144,15 @@ namespace Resources {
         internal static string register_total_evaluated {
             get {
                 return ResourceManager.GetString("register_total_evaluated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Record successfully changed (Please refresh the dealy reports table)..
+        /// </summary>
+        internal static string registry_alter_success {
+            get {
+                return ResourceManager.GetString("registry_alter_success", resourceCulture);
             }
         }
         
