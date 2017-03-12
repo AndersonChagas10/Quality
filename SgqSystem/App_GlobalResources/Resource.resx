@@ -1599,4 +1599,10 @@
   <data name="statistical_report" xml:space="preserve">
     <value>Statistical Report</value>
   </data>
+  <data name="impossible_refresh_result" xml:space="preserve">
+    <value>It is not possible refresh the result</value>
+  </data>
+  <data name="registry_alter_success" xml:space="preserve">
+    <value>Record successfully changed (Please refresh the dealy reports table).</value>
+  </data>
 </root>

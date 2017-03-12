@@ -210,12 +210,12 @@
 
 
             $.post(urlSave, dadosResultLevel3, function (r, x, e) {
-                openMessageModal("Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
+                openMessageModal('@Resources.Resource.done','@Resources.Resource.registry_alter_success'); //"Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
             }).fail(function (r, x, e) {
                 console.log(r);
                 console.log(x);
                 console.log(e);
-                openMessageModal("Impossível realizar a ação: ", "Não foi possível atualizar o resultado.");
+                openMessageModal('@Resources.Resource.impossible_refresh_result', '@Resources.Resource.impossible_refresh_result');//"Impossível realizar a ação: ", "Não foi possível atualizar o resultado.");
             });
         }
 
