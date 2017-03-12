@@ -33,29 +33,30 @@ F
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
-                    @if (GlobalConfig.Brasil)
-                    {
-                        <li class="nav-item">
-                            <a href="@Url.Action("Scorecard", "RelatoriosSgq")" class="nav-link nav-toggle">
-                                <span class="title">@Resources.Resource.scorecard</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("RelatorioDiario", "RelatoriosSgq")" class="nav-link nav-toggle">
-                                <span class="title">@Resources.Resource.daily_report</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("NaoConformidade", "RelatoriosSgq")" class="nav-link nav-toggle">
-                                <span class="title">@Resources.Resource.nc_report</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("ApontamentosDiarios", "RelatoriosSgq")" class="nav-link nav-toggle">
-                                <span class="title">@Resources.Resource.daily_apointments</span>
-                            </a>
-                        </li>
-                    }
+                    @*@if (GlobalConfig.Brasil)
+                        {*@
+                    <li class="nav-item">
+                        <a href="@Url.Action("Scorecard", "RelatoriosSgq")" class="nav-link nav-toggle">
+                            <span class="title">@Resources.Resource.scorecard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("RelatorioDiario", "RelatoriosSgq")" class="nav-link nav-toggle">
+                            <span class="title">@Resources.Resource.daily_report</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("NaoConformidade", "RelatoriosSgq")" class="nav-link nav-toggle">
+                            <span class="title">@Resources.Resource.nc_report</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("ApontamentosDiarios", "RelatoriosSgq")" class="nav-link nav-toggle">
+                            <span class="title">@Resources.Resource.daily_apointments</span>
+                        </a>
+                    </li>
+
+                    @*}*@
 
                     @if (GlobalConfig.Eua)
                     {
@@ -71,6 +72,19 @@ F
                         </li>
                     }
 
+                    <li class="nav-item">
+                        <a href="javascript:;" class="nav-link nav-toggle">
+                            <span class="title">@Resources.Resource.statistical_report</span>
+                            <span class="arrow"></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li class="nav-item">
+                                <a href="@Url.Action("CartasCep","RelatoriosSgq")" class="nav-link">
+                                    <span class="title">@Resources.Resource.control_charts</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item" id="navbar1">
@@ -97,11 +111,14 @@ F
             }
 
             <li class="nav-item" id="navbar7">
-                <a href="javascript:;" class="nav-link nav-toggle">
-                    <i class="fa fa-tasks"></i>
-                    <span class="title">@Resources.Resource.volume</span>
-                    <span class="arrow"></span>
-                </a>
+                @if (!GlobalConfig.Eua)
+                {
+                    <a href="javascript:;" class="nav-link nav-toggle">
+                        <i class="fa fa-tasks"></i>
+                        <span class="title">@Resources.Resource.volume</span>
+                        <span class="arrow"></span>
+                    </a>
+                }
                 <ul class="sub-menu">
                     <li class="nav-item">
                         <a href="@Url.Action("Index", "CepDesossas")" class="nav-link nav-toggle">
@@ -148,7 +165,7 @@ F
                     <span class="title">@Resources.Resource.company</span>
                     <span class="arrow"></span>
                 </a>
-            </li>            
+            </li>
             <li class="nav-item" id="navbar4">
                 <a href="@Url.Action("Index", "ParDepartments")" class="nav-link nav-toggle">
                     <i class="fa fa-users" aria-hidden="true"></i>
@@ -176,8 +193,8 @@ F
                     <span class="title">@Resources.Resource.users</span>
                     <span class="arrow"></span>
                 </a>
-            </li>     
-                   
+            </li>
+
         </ul>
     </div>
 </div>

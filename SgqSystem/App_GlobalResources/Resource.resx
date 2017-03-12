@@ -1593,4 +1593,10 @@
   <data name="phase" xml:space="preserve">
     <value>Phase</value>
   </data>
+  <data name="control_charts" xml:space="preserve">
+    <value>Control Charts (SPC)</value>
+  </data>
+  <data name="statistical_report" xml:space="preserve">
+    <value>Statistical Report</value>
+  </data>
 </root>

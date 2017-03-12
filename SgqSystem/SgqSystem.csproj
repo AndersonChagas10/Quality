@@ -298,7 +298,7 @@
     <Compile Include="Controllers\Api\Manutencao\ManColetaDadosController.cs" />
     <Compile Include="Controllers\Api\Manutencao\ManDataCollectITsController.cs" />
     <Compile Include="Controllers\Api\Manutencao\PainelIndicadoresUniManutencaoController.cs" />
-    <Compile Include="Controllers\Api\RelatoriosBrasil\ApontamentosDiariosApiController.cs" />
+    <Compile Include="Controllers\Api\Relatorios\ApontamentosDiariosApiController.cs" />
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\CorrectiveActionController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
@@ -309,6 +309,7 @@
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
     <Compile Include="Controllers\Api\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Api\PCC1BController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\CartasCepApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\NaoConformidadeApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\RelatorioDiarioApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\ScorecardApiController.cs" />
@@ -327,8 +328,8 @@
     <Compile Include="Controllers\Manutencao\ManPainelGestaoController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\ParLevel2ControlCompanyController.cs" />
-    <Compile Include="Controllers\RelatoriosBrasil\ParGoalScorecardController.cs" />
-    <Compile Include="Controllers\RelatoriosBrasil\RelatoriosSgqController.cs" />
+    <Compile Include="Controllers\Relatorios\ParGoalScorecardController.cs" />
+    <Compile Include="Controllers\Relatorios\RelatoriosSgqController.cs" />
     <Compile Include="Controllers\Role\RoleController.cs" />
     <Compile Include="Controllers\UserSgqController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepDesossasController.cs" />
@@ -365,6 +366,7 @@
     <Compile Include="Handlres\HandleController.cs" />
     <Compile Include="Handlres\ValidateModelAttribute.cs" />
     <Compile Include="Helpers\CommonData.cs" />
+    <Compile Include="Helpers\HandleCultureAPI.cs" />
     <Compile Include="Helpers\Table.cs" />
     <Compile Include="Helpers\Teste.cs" />
     <Compile Include="Helpers\ValidadorEstiloRazor.cs" />
@@ -2124,6 +2126,7 @@
     <Content Include="Views\ParGoalScorecard\Details.cshtml" />
     <Content Include="Views\ParGoalScorecard\Index.cshtml" />
     <Content Include="Views\Params\Blank.cshtml" />
+    <Content Include="Views\RelatoriosSgq\CartasCep.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

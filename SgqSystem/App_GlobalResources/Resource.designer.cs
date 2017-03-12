@@ -808,6 +808,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Control Charts (SPC).
+        /// </summary>
+        internal static string control_charts {
+            get {
+                return ResourceManager.GetString("control_charts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Corrective Action.
         /// </summary>
         internal static string corrective_action {
@@ -3864,6 +3873,15 @@ namespace Resources {
         internal static string standard {
             get {
                 return ResourceManager.GetString("standard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Statistical Report.
+        /// </summary>
+        internal static string statistical_report {
+            get {
+                return ResourceManager.GetString("statistical_report", resourceCulture);
             }
         }
         

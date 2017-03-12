@@ -1569,6 +1569,12 @@
   <data name="sync_finished" xml:space="preserve">
     <value>Sincronização feita com sucesso.</value>
   </data>
+  <data name="control_charts" xml:space="preserve">
+    <value>Cartas CEP</value>
+  </data>
+  <data name="statistical_report" xml:space="preserve">
+    <value>Relatório Estatístico</value>
+  </data>
   <data name="phase" xml:space="preserve">
     <value>Fase</value>
   </data>
