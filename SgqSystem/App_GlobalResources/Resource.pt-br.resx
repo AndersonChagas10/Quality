@@ -1569,4 +1569,7 @@
   <data name="sync_finished" xml:space="preserve">
     <value>Sincronização feita com sucesso.</value>
   </data>
+  <data name="phase" xml:space="preserve">
+    <value>Fase</value>
+  </data>
 </root>

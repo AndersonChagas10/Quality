@@ -772,6 +772,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Consolidation.
+        /// </summary>
+        internal static string consolidation {
+            get {
+                return ResourceManager.GetString("consolidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Consolidation Type.
         /// </summary>
         internal static string consolidation_type {
@@ -2851,6 +2860,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Phase.
+        /// </summary>
+        internal static string phase {
+            get {
+                return ResourceManager.GetString("phase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Phone.
         /// </summary>
         internal static string phone {
@@ -3220,7 +3238,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resultados.
+        ///   Looks up a localized string similar to Results.
         /// </summary>
         internal static string results {
             get {
