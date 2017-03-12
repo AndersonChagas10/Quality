@@ -1097,7 +1097,7 @@
             $('#level1Title').html("Level 1");
         }
 
-        if ("@ViewBag.Role" == "Admin") {
+        if ("@ViewBag.Role" != "Admin") {
 
             $("#newLevel1Modal > form input").attr("disabled", true);
             $("#newLevel1Modal > form select").attr("disabled", true);

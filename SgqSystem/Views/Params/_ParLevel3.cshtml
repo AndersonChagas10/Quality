@@ -717,7 +717,7 @@
         initialFormLevel3 = $($('form')[2]).clone();
 
 
-        if ("@ViewBag.Role" == "Admin") {
+        if ("@ViewBag.Role" != "Admin") {
 
             $("#newLevel1Modal > form input").attr("disabled", true);
             $("#newLevel1Modal > form select").attr("disabled", true);
