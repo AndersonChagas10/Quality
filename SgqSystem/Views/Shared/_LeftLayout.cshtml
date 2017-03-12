@@ -7,7 +7,7 @@
 @using DTO
 F
 <div class="page-sidebar-wrapper hide">
-    <div class="page-sidebar navbar-collapse collapse" style="position: fixed !important; height: 100% !important; z-index: 2000;">
+    <div class="page-sidebar navbar-collapse collapse" height: 100% !important; z-index: 2000;">
         <ul class="page-sidebar-menu  page-header-fixed" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
             <li class="sidebar-toggler-wrapper hide">
                 <div class="sidebar-toggler">
@@ -95,12 +95,13 @@ F
                     <span class="arrow closed"></span>
                 </a>
             </li>
-            <li class="heading">
-                <h3 class="uppercase">@Resources.Resource.controls</h3>
-            </li>
 
             @if (!GlobalConfig.Eua)
             {
+
+                <li class="heading">
+                    <h3 class="uppercase">@Resources.Resource.controls</h3>
+                </li>
                 <li class="nav-item" id="navbar6">
                     <a href="@Url.Action("Index", "ParLevel2ControlCompany")" class="nav-link nav-toggle">
                         <i class="fa fa-sliders"></i>
@@ -108,40 +109,37 @@ F
                         <span class="arrow"></span>
                     </a>
                 </li>
-            }
+                <li class="nav-item" id="navbar7">
 
-            <li class="nav-item" id="navbar7">
-                @if (!GlobalConfig.Eua)
-                {
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="fa fa-tasks"></i>
                         <span class="title">@Resources.Resource.volume</span>
                         <span class="arrow"></span>
                     </a>
-                }
-                <ul class="sub-menu">
-                    <li class="nav-item">
-                        <a href="@Url.Action("Index", "CepDesossas")" class="nav-link nav-toggle">
-                            <span class="title">@Resources.Resource.cep_desossa</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="@Url.Action("Index", "CepRecortes")" class="nav-link nav-toggle">
-                            <span class="title">@Resources.Resource.cep_recortes</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="@Url.Action("Index", "VacuoGRDs")" class="nav-link nav-toggle">
-                            <span class="title">@Resources.Resource.vacuo_grd</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="@Url.Action("Index", "Pcc1b")" class="nav-link nav-toggle">
-                            <span class="title">@Resources.Resource.pcc1b</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+                    <ul class="sub-menu">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "CepDesossas")" class="nav-link nav-toggle">
+                                <span class="title">@Resources.Resource.cep_desossa</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "CepRecortes")" class="nav-link nav-toggle">
+                                <span class="title">@Resources.Resource.cep_recortes</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "VacuoGRDs")" class="nav-link nav-toggle">
+                                <span class="title">@Resources.Resource.vacuo_grd</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "Pcc1b")" class="nav-link nav-toggle">
+                                <span class="title">@Resources.Resource.pcc1b</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            }
             <li class="heading">
                 <h3 class="uppercase">@Resources.Resource.register</h3>
             </li>
