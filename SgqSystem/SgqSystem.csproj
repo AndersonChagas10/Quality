@@ -765,6 +765,7 @@
     <Content Include="Scripts\angular-touch.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -2121,6 +2122,9 @@
     <Content Include="Views\ParGoalScorecard\Details.cshtml" />
     <Content Include="Views\ParGoalScorecard\Index.cshtml" />
     <Content Include="Views\Params\Blank.cshtml" />
+    <Content Include="Views\UserSgq\Perfil.cshtml" />
+    <Content Include="Views\Role\LeftControlRole.cshtml" />
+    <Content Include="Views\Role\EditLeftControlRole.cshtml" />
     <Content Include="Views\RelatoriosSgq\CartasCep.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>

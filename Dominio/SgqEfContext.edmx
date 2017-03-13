@@ -73,6 +73,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.budgets' does not have a primary key 
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="Key" Type="nvarchar(max)" Nullable="false" />
           <Property Name="TTP" Type="nvarchar(max)" />
+          <Property Name="ReauditLevel" Type="int" />
         </EntityType>
         <EntityType Name="CollectionLevel02">
           <Key>
@@ -169,6 +170,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.budgets' does not have a primary key 
           <Property Name="IsEmptyLevel3" Type="bit" />
           <Property Name="LastLevel2Alert" Type="int" />
           <Property Name="ReauditLevel" Type="int" />
+          <Property Name="StartPhaseEvaluation" Type="int" />
         </EntityType>
         <EntityType Name="CollectionLevel2XParHeaderField">
           <Key>
@@ -365,6 +367,15 @@ warning 6002: The table/view 'SgqDbDev.dbo.Deviation' does not have a primary ke
           <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="SelectedElement" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LeftControlRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Controller" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Action" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Role" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Level01">
           <Key>
@@ -1370,6 +1381,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.ResultLevel2HeaderField' does not hav
           <Property Name="Email" Type="nvarchar(max)" />
           <Property Name="Phone" Type="nvarchar(max)" />
           <Property Name="ParCompany_Id" Type="int" />
+          <Property Name="PasswordDate" Type="datetime" />
         </EntityType>
         <EntityType Name="VolumeCepDesossa">
           <Key>
@@ -2901,6 +2913,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySet Name="DimManutencaoColetaITs" EntityType="Self.DimManutencaoColetaITs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Example" EntityType="Self.Example" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LeftControlRole" EntityType="Self.LeftControlRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level01" EntityType="Self.Level01" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level02" EntityType="Self.Level02" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Level03" EntityType="Self.Level03" Schema="dbo" store:Type="Tables" />
@@ -3815,7 +3828,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySet Name="Shift" EntityType="SgqDbModel.Shift" />
           <EntitySet Name="Unit" EntityType="SgqDbModel.Unit" />
           <EntitySet Name="UnitUser" EntityType="SgqDbModel.UnitUser" />
-          <EntitySet Name="UserSgq" EntityType="SgqDbModel.UserSgq" />
           <EntitySet Name="VolumeCepDesossa" EntityType="SgqDbModel.VolumeCepDesossa" />
           <EntitySet Name="VolumeCepRecortes" EntityType="SgqDbModel.VolumeCepRecortes" />
           <EntitySet Name="VolumePcc1b" EntityType="SgqDbModel.VolumePcc1b" />
@@ -3831,10 +3843,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           </AssociationSet>
           <AssociationSet Name="FK_CollectionLevel02_Level02" Association="SgqDbModel.FK_CollectionLevel02_Level02">
             <End Role="Level02" EntitySet="Level02" />
-            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel02_UserSgq" Association="SgqDbModel.FK_CollectionLevel02_UserSgq">
-            <End Role="UserSgq" EntitySet="UserSgq" />
             <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
           </AssociationSet>
           <AssociationSet Name="FK_CollectionLevel03_CollectionLevel02" Association="SgqDbModel.FK_CollectionLevel03_CollectionLevel02">
@@ -3877,18 +3885,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             <End Role="ParLevel2" EntitySet="ParLevel2" />
             <End Role="ConsolidationLevel2" EntitySet="ConsolidationLevel2" />
           </AssociationSet>
-          <AssociationSet Name="FK_CorrectiveAction_UserSgq" Association="SgqDbModel.FK_CorrectiveAction_UserSgq">
-            <End Role="UserSgq" EntitySet="UserSgq" />
-            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CorrectiveAction_UserSgq1" Association="SgqDbModel.FK_CorrectiveAction_UserSgq1">
-            <End Role="UserSgq" EntitySet="UserSgq" />
-            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CorrectiveAction_UserSgq2" Association="SgqDbModel.FK_CorrectiveAction_UserSgq2">
-            <End Role="UserSgq" EntitySet="UserSgq" />
-            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
-          </AssociationSet>
           <AssociationSet Name="FK__Departmen__deptm__434CCEA9" Association="SgqDbModel.FK__Departmen__deptm__434CCEA9">
             <End Role="Employees" EntitySet="Employees" />
             <End Role="Departments" EntitySet="Departments" />
@@ -3908,10 +3904,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <AssociationSet Name="FK_ParCompanyXStructure_ParStructure" Association="SgqDbModel.FK_ParCompanyXStructure_ParStructure">
             <End Role="ParStructure" EntitySet="ParStructure" />
             <End Role="ParCompanyXStructure" EntitySet="ParCompanyXStructure" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParCompanyXUserSgq_UserSgq" Association="SgqDbModel.FK_ParCompanyXUserSgq_UserSgq">
-            <End Role="UserSgq" EntitySet="UserSgq" />
-            <End Role="ParCompanyXUserSgq" EntitySet="ParCompanyXUserSgq" />
           </AssociationSet>
           <AssociationSet Name="FK_ParLevel1_ParConsolidationType" Association="SgqDbModel.FK_ParLevel1_ParConsolidationType">
             <End Role="ParConsolidationType" EntitySet="ParConsolidationType" />
@@ -4109,10 +4101,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             <End Role="Unit" EntitySet="Unit" />
             <End Role="UnitUser" EntitySet="UnitUser" />
           </AssociationSet>
-          <AssociationSet Name="FK_UnitUser_UserSgq" Association="SgqDbModel.FK_UnitUser_UserSgq">
-            <End Role="UserSgq" EntitySet="UserSgq" />
-            <End Role="UnitUser" EntitySet="UnitUser" />
-          </AssociationSet>
           <EntitySet Name="DimManutencaoColetaITs" EntityType="SgqDbModel.DimManutencaoColetaITs" />
           <EntitySet Name="ManDataCollectIT" EntityType="SgqDbModel.ManDataCollectIT" />
           <AssociationSet Name="FK_ManDataCollectIT_DimManutencaoColetaITs_id" Association="SgqDbModel.FK_ManDataCollectIT_DimManutencaoColetaITs_id">
@@ -4241,10 +4229,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             <End Role="ParLevel2" EntitySet="ParLevel2" />
             <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
           </AssociationSet>
-          <AssociationSet Name="FK_CollectionLevel2_UserSgq" Association="SgqDbModel.FK_CollectionLevel2_UserSgq">
-            <End Role="UserSgq" EntitySet="UserSgq" />
-            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
-          </AssociationSet>
           <AssociationSet Name="FK_CollectionLevel2XParHeaderField_CollectionLevel2" Association="SgqDbModel.FK_CollectionLevel2XParHeaderField_CollectionLevel2">
             <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
             <End Role="CollectionLevel2XParHeaderField" EntitySet="CollectionLevel2XParHeaderField" />
@@ -4254,6 +4238,36 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             <End Role="Result_Level3" EntitySet="Result_Level3" />
           </AssociationSet>
           <EntitySet Name="ManColetaDados" EntityType="SgqDbModel.ManColetaDados" />
+          <EntitySet Name="LeftControlRole" EntityType="SgqDbModel.LeftControlRole" />
+          <EntitySet Name="UserSgq" EntityType="SgqDbModel.UserSgq" />
+          <AssociationSet Name="FK_CollectionLevel02_UserSgq" Association="SgqDbModel.FK_CollectionLevel02_UserSgq">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLevel2_UserSgq" Association="SgqDbModel.FK_CollectionLevel2_UserSgq">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CorrectiveAction_UserSgq" Association="SgqDbModel.FK_CorrectiveAction_UserSgq">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CorrectiveAction_UserSgq1" Association="SgqDbModel.FK_CorrectiveAction_UserSgq1">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CorrectiveAction_UserSgq2" Association="SgqDbModel.FK_CorrectiveAction_UserSgq2">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParCompanyXUserSgq_UserSgq" Association="SgqDbModel.FK_ParCompanyXUserSgq_UserSgq">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="ParCompanyXUserSgq" EntitySet="ParCompanyXUserSgq" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UnitUser_UserSgq" Association="SgqDbModel.FK_UnitUser_UserSgq">
+            <End Role="UserSgq" EntitySet="UserSgq" />
+            <End Role="UnitUser" EntitySet="UnitUser" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -4479,6 +4493,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="Key" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="TTP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReauditLevel" Type="Int32" />
         </EntityType>
         <EntityType Name="CollectionLevel02">
           <Key>
@@ -4517,9 +4532,9 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="DefectsResult" Type="Int32" />
           <NavigationProperty Name="Level01" Relationship="SgqDbModel.FK_CollectionLevel02_Level01" FromRole="CollectionLevel02" ToRole="Level01" />
           <NavigationProperty Name="Level02" Relationship="SgqDbModel.FK_CollectionLevel02_Level02" FromRole="CollectionLevel02" ToRole="Level02" />
-          <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_CollectionLevel02_UserSgq" FromRole="CollectionLevel02" ToRole="UserSgq" />
           <NavigationProperty Name="CollectionLevel03" Relationship="SgqDbModel.FK_CollectionLevel03_CollectionLevel02" FromRole="CollectionLevel02" ToRole="CollectionLevel03" />
           <NavigationProperty Name="ConsolidationLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02" FromRole="CollectionLevel02" ToRole="ConsolidationLevel02" />
+          <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_CollectionLevel02_UserSgq" FromRole="CollectionLevel02" ToRole="UserSgq" />
         </EntityType>
         <EntityType Name="CollectionLevel03">
           <Key>
@@ -4855,8 +4870,8 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="UserSgq_Id" Type="Int32" Nullable="false" />
           <Property Name="ParCompany_Id" Type="Int32" Nullable="false" />
           <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_ParCompanyXUserSgq_UserSgq" FromRole="ParCompanyXUserSgq" ToRole="UserSgq" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParCompanyXUserSgq_ParCompany" FromRole="ParCompanyXUserSgq" ToRole="ParCompany" />
+          <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_ParCompanyXUserSgq_UserSgq" FromRole="ParCompanyXUserSgq" ToRole="UserSgq" />
         </EntityType>
         <EntityType Name="ParConfSGQ">
           <Key>
@@ -5485,29 +5500,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <NavigationProperty Name="Unit" Relationship="SgqDbModel.FK_UnitUser_Unit" FromRole="UnitUser" ToRole="Unit" />
           <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_UnitUser_UserSgq" FromRole="UnitUser" ToRole="UserSgq" />
         </EntityType>
-        <EntityType Name="UserSgq">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AcessDate" Type="DateTime" Precision="3" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AlterDate" Type="DateTime" Precision="3" />
-          <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="FullName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ParCompany_Id" Type="Int32" />
-          <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_UserSgq" FromRole="UserSgq" ToRole="CollectionLevel02" />
-          <NavigationProperty Name="CorrectiveAction" Relationship="SgqDbModel.FK_CorrectiveAction_UserSgq" FromRole="UserSgq" ToRole="CorrectiveAction" />
-          <NavigationProperty Name="CorrectiveAction1" Relationship="SgqDbModel.FK_CorrectiveAction_UserSgq1" FromRole="UserSgq" ToRole="CorrectiveAction" />
-          <NavigationProperty Name="CorrectiveAction2" Relationship="SgqDbModel.FK_CorrectiveAction_UserSgq2" FromRole="UserSgq" ToRole="CorrectiveAction" />
-          <NavigationProperty Name="ParCompanyXUserSgq" Relationship="SgqDbModel.FK_ParCompanyXUserSgq_UserSgq" FromRole="UserSgq" ToRole="ParCompanyXUserSgq" />
-          <NavigationProperty Name="UnitUser" Relationship="SgqDbModel.FK_UnitUser_UserSgq" FromRole="UserSgq" ToRole="UnitUser" />
-          <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_UserSgq" FromRole="UserSgq" ToRole="CollectionLevel2" />
-        </EntityType>
         <EntityType Name="VolumeCepDesossa">
           <Key>
             <PropertyRef Name="Id" />
@@ -5707,18 +5699,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CollectionLevel02_UserSgq">
-          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="1" />
-          <End Type="SgqDbModel.CollectionLevel02" Role="CollectionLevel02" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserSgq">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel02">
-              <PropertyRef Name="AuditorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CollectionLevel03_CollectionLevel02">
           <End Type="SgqDbModel.CollectionLevel02" Role="CollectionLevel02" Multiplicity="1" />
           <End Type="SgqDbModel.CollectionLevel03" Role="CollectionLevel03" Multiplicity="*" />
@@ -5839,42 +5819,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CorrectiveAction_UserSgq">
-          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="1" />
-          <End Type="SgqDbModel.CorrectiveAction" Role="CorrectiveAction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserSgq">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CorrectiveAction">
-              <PropertyRef Name="AuditorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CorrectiveAction_UserSgq1">
-          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="0..1" />
-          <End Type="SgqDbModel.CorrectiveAction" Role="CorrectiveAction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserSgq">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CorrectiveAction">
-              <PropertyRef Name="TechinicalId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CorrectiveAction_UserSgq2">
-          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="0..1" />
-          <End Type="SgqDbModel.CorrectiveAction" Role="CorrectiveAction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserSgq">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CorrectiveAction">
-              <PropertyRef Name="SlaughterId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Departmen__deptm__434CCEA9">
           <End Type="SgqDbModel.Employees" Role="Employees" Multiplicity="0..1" />
           <End Type="SgqDbModel.Departments" Role="Departments" Multiplicity="*" />
@@ -5932,18 +5876,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Principal>
             <Dependent Role="ParCompanyXStructure">
               <PropertyRef Name="ParStructure_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParCompanyXUserSgq_UserSgq">
-          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="1" />
-          <End Type="SgqDbModel.ParCompanyXUserSgq" Role="ParCompanyXUserSgq" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserSgq">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParCompanyXUserSgq">
-              <PropertyRef Name="UserSgq_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6535,18 +6467,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UnitUser_UserSgq">
-          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="1" />
-          <End Type="SgqDbModel.UnitUser" Role="UnitUser" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserSgq">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UnitUser">
-              <PropertyRef Name="UserSgqId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="DimManutencaoColetaITs">
           <Key>
             <PropertyRef Name="id" />
@@ -7064,9 +6984,10 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <NavigationProperty Name="ConsolidationLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2" FromRole="CollectionLevel2" ToRole="ConsolidationLevel2" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel1" FromRole="CollectionLevel2" ToRole="ParLevel1" />
           <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel2" FromRole="CollectionLevel2" ToRole="ParLevel2" />
-          <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_CollectionLevel2_UserSgq" FromRole="CollectionLevel2" ToRole="UserSgq" />
           <NavigationProperty Name="CollectionLevel2XParHeaderField" Relationship="SgqDbModel.FK_CollectionLevel2XParHeaderField_CollectionLevel2" FromRole="CollectionLevel2" ToRole="CollectionLevel2XParHeaderField" />
           <NavigationProperty Name="Result_Level3" Relationship="SgqDbModel.FK_Result_Level3_CollectionLevel2" FromRole="CollectionLevel2" ToRole="Result_Level3" />
+          <Property Name="StartPhaseEvaluation" Type="Int32" />
+          <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_CollectionLevel2_UserSgq" FromRole="CollectionLevel2" ToRole="UserSgq" />
         </EntityType>
         <Association Name="FK_CollectionLevel2_ConsolidationLevel2">
           <End Type="SgqDbModel.ConsolidationLevel2" Role="ConsolidationLevel2" Multiplicity="1" />
@@ -7101,18 +7022,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
             </Principal>
             <Dependent Role="CollectionLevel2">
               <PropertyRef Name="ParLevel2_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CollectionLevel2_UserSgq">
-          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="1" />
-          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserSgq">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel2">
-              <PropertyRef Name="AuditorId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7307,6 +7216,123 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <Property Name="KgFarinha_Real" Type="Decimal" Precision="30" Scale="10" />
           <Property Name="KgFarinha_Meta" Type="Decimal" Precision="30" Scale="10" />
         </EntityType>
+        <EntityType Name="LeftControlRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Controller" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Action" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="UserSgq">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AcessDate" Type="DateTime" Precision="3" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AlterDate" Type="DateTime" Precision="3" />
+          <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ParCompany_Id" Type="Int32" />
+          <Property Name="PasswordDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="CollectionLevel02" Relationship="SgqDbModel.FK_CollectionLevel02_UserSgq" FromRole="UserSgq" ToRole="CollectionLevel02" />
+          <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_UserSgq" FromRole="UserSgq" ToRole="CollectionLevel2" />
+          <NavigationProperty Name="CorrectiveAction" Relationship="SgqDbModel.FK_CorrectiveAction_UserSgq" FromRole="UserSgq" ToRole="CorrectiveAction" />
+          <NavigationProperty Name="CorrectiveAction1" Relationship="SgqDbModel.FK_CorrectiveAction_UserSgq1" FromRole="UserSgq" ToRole="CorrectiveAction" />
+          <NavigationProperty Name="CorrectiveAction2" Relationship="SgqDbModel.FK_CorrectiveAction_UserSgq2" FromRole="UserSgq" ToRole="CorrectiveAction" />
+          <NavigationProperty Name="ParCompanyXUserSgq" Relationship="SgqDbModel.FK_ParCompanyXUserSgq_UserSgq" FromRole="UserSgq" ToRole="ParCompanyXUserSgq" />
+          <NavigationProperty Name="UnitUser" Relationship="SgqDbModel.FK_UnitUser_UserSgq" FromRole="UserSgq" ToRole="UnitUser" />
+        </EntityType>
+        <Association Name="FK_CollectionLevel02_UserSgq">
+          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel02" Role="CollectionLevel02" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel02">
+              <PropertyRef Name="AuditorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLevel2_UserSgq">
+          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2">
+              <PropertyRef Name="AuditorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CorrectiveAction_UserSgq">
+          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="1" />
+          <End Type="SgqDbModel.CorrectiveAction" Role="CorrectiveAction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveAction">
+              <PropertyRef Name="AuditorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CorrectiveAction_UserSgq1">
+          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="0..1" />
+          <End Type="SgqDbModel.CorrectiveAction" Role="CorrectiveAction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveAction">
+              <PropertyRef Name="TechinicalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CorrectiveAction_UserSgq2">
+          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="0..1" />
+          <End Type="SgqDbModel.CorrectiveAction" Role="CorrectiveAction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorrectiveAction">
+              <PropertyRef Name="SlaughterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParCompanyXUserSgq_UserSgq">
+          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="1" />
+          <End Type="SgqDbModel.ParCompanyXUserSgq" Role="ParCompanyXUserSgq" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParCompanyXUserSgq">
+              <PropertyRef Name="UserSgq_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UnitUser_UserSgq">
+          <End Type="SgqDbModel.UserSgq" Role="UserSgq" Multiplicity="1" />
+          <End Type="SgqDbModel.UnitUser" Role="UnitUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSgq">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UnitUser">
+              <PropertyRef Name="UserSgqId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7497,6 +7523,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySetMapping Name="CollectionJson">
             <EntityTypeMapping TypeName="SgqDbModel.CollectionJson">
               <MappingFragment StoreEntitySet="CollectionJson">
+                <ScalarProperty Name="ReauditLevel" ColumnName="ReauditLevel" />
                 <ScalarProperty Name="TTP" ColumnName="TTP" />
                 <ScalarProperty Name="Key" ColumnName="Key" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
@@ -8441,23 +8468,6 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserSgq">
-            <EntityTypeMapping TypeName="SgqDbModel.UserSgq">
-              <MappingFragment StoreEntitySet="UserSgq">
-                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="FullName" ColumnName="FullName" />
-                <ScalarProperty Name="Role" ColumnName="Role" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="AcessDate" ColumnName="AcessDate" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="VolumeCepDesossa">
             <EntityTypeMapping TypeName="SgqDbModel.VolumeCepDesossa">
               <MappingFragment StoreEntitySet="VolumeCepDesossa">
@@ -8753,6 +8763,7 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
           <EntitySetMapping Name="CollectionLevel2">
             <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel2">
               <MappingFragment StoreEntitySet="CollectionLevel2">
+                <ScalarProperty Name="StartPhaseEvaluation" ColumnName="StartPhaseEvaluation" />
                 <ScalarProperty Name="ReauditLevel" ColumnName="ReauditLevel" />
                 <ScalarProperty Name="LastLevel2Alert" ColumnName="LastLevel2Alert" />
                 <ScalarProperty Name="IsEmptyLevel3" ColumnName="IsEmptyLevel3" />
@@ -8962,6 +8973,34 @@ warning 6002: The table/view 'SgqDbDev.dbo.VWCFFResults' does not have a primary
                 <ScalarProperty Name="Base_dateAdd" ColumnName="Base_dateAdd" />
                 <ScalarProperty Name="Base_parCompany_id" ColumnName="Base_parCompany_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LeftControlRole">
+            <EntityTypeMapping TypeName="SgqDbModel.LeftControlRole">
+              <MappingFragment StoreEntitySet="LeftControlRole">
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="Controller" ColumnName="Controller" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserSgq">
+            <EntityTypeMapping TypeName="SgqDbModel.UserSgq">
+              <MappingFragment StoreEntitySet="UserSgq">
+                <ScalarProperty Name="PasswordDate" ColumnName="PasswordDate" />
+                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="AcessDate" ColumnName="AcessDate" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

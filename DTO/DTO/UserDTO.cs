@@ -33,6 +33,8 @@ namespace DTO.DTO
         public bool isBrasil { get; set; }
         public Nullable<int> ParCompany_Id { get; set; }
 
+        public DateTime? PasswordDate { get; set; }
+
         /// <summary>
         /// Construtor Padrão
         /// </summary>
@@ -65,7 +67,7 @@ namespace DTO.DTO
         {
             Guard.ForNullOrEmpty(name, "The Username is required.");
             Guard.CheckStringFull(out name, "Username", name, requerido: true, mensagem: "The Username is required.");
-            
+
             //Name = name;
         }
 

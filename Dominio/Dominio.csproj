@@ -271,6 +271,9 @@
     <Compile Include="Interfaces\Services\ISaveConsolidateDataCollectionDomain.cs" />
     <Compile Include="Interfaces\Services\IBaseDomain.cs" />
     <Compile Include="Interfaces\Services\IUserDomain.cs" />
+    <Compile Include="LeftControlRole.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Level01.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
