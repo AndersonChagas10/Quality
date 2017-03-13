@@ -1,5 +1,5 @@
-﻿using System.Web.Mvc;
-using Helper;
+﻿using Helper;
+using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {

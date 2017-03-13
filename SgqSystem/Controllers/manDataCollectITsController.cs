@@ -1,15 +1,15 @@
-﻿using System.Data.Entity;
+﻿using Dominio;
+using Dominio.Interfaces.Services;
+using DTO.DTO.Manutencao;
+using DTO.DTO.Params;
+using DTO.Helpers;
+using Helper;
+using SgqSystem.Secirity;
+using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using Dominio;
-using DTO.DTO.Params;
-using Dominio.Interfaces.Services;
-using DTO.Helpers;
-using SgqSystem.Secirity;
-using System;
-using DTO.DTO.Manutencao;
-using Helper;
 
 
 namespace SgqSystem.Controllers
@@ -168,7 +168,7 @@ namespace SgqSystem.Controllers
             if (Request.Cookies["webControlCookie"] != null)
             {
                 //HttpCookieCollection cookie = Request.Cookies["webControlCookie"];
-                
+
                 if (Request.Cookies["webControlCookie"]["roles"] != null)
                 {
                     role = Request.Cookies["webControlCookie"]["roles"];
@@ -177,12 +177,13 @@ namespace SgqSystem.Controllers
                     if (role != "somentemanutencao-sgq,adminManutencao")
                     {
                         ViewBag.DataRole = false;
-                    }else
+                    }
+                    else
                         //Colocar true pra filtar
                         ViewBag.DataRole = false;
 
                 }
-                
+
             }
 
             return View(new ManDataCollectIT() { AmountData = 0 });

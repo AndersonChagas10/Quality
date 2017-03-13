@@ -244,7 +244,7 @@
     <value>Permite cadastro especifico por unidade</value>
   </data>
   <data name="allow_the_edition_of_the_evaluation_number" xml:space="preserve">
-    <value>Permite editar número de avaliações</value>
+    <value>Permite editar número de avaliações / amostras</value>
   </data>
   <data name="allow_the_edition_of_the_goal_of_the_level1_by_unit" xml:space="preserve">
     <value>Permite editar meta do indicador por unidade</value>
@@ -1583,5 +1583,47 @@
   </data>
   <data name="phase" xml:space="preserve">
     <value>Fase</value>
+  </data>
+  <data name="perfil_user" xml:space="preserve">
+    <value>Perfil de Usuário</value>
+  </data>
+  <data name="old_password" xml:space="preserve">
+    <value>Senha Antiga</value>
+  </data>
+  <data name="confirmation_password_required" xml:space="preserve">
+    <value>Senha de Confirmação Necessária</value>
+  </data>
+  <data name="old_password_required" xml:space="preserve">
+    <value>Senha Antiga Requirida</value>
+  </data>
+  <data name="Passwords_do_not_match" xml:space="preserve">
+    <value>As Senhas Não Coincidem</value>
+  </data>
+  <data name="old_password_incorrect" xml:space="preserve">
+    <value>Senha antiga incorreta</value>
+  </data>
+  <data name="remain_logged_in" xml:space="preserve">
+    <value>Sua sessão irá expirar. Deseja permanecer conectado?</value>
+  </data>
+  <data name="password_expired" xml:space="preserve">
+    <value>Senha Expirada</value>
+  </data>
+  <data name="left_menu_control" xml:space="preserve">
+    <value>Controle do Menu Esquerdo</value>
+  </data>
+  <data name="action" xml:space="preserve">
+    <value>Ação</value>
+  </data>
+  <data name="action_required" xml:space="preserve">
+    <value>Ação Necessária</value>
+  </data>
+  <data name="controller" xml:space="preserve">
+    <value>Controlador</value>
+  </data>
+  <data name="controller_required" xml:space="preserve">
+    <value>Controlador Necessário</value>
+  </data>
+  <data name="saved_successfully" xml:space="preserve">
+    <value>Salvo com sucesso!</value>
   </data>
 </root>

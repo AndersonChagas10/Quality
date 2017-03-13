@@ -264,7 +264,7 @@
 
         var configLayout = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
         var rangesCalendar;
-    
+
         /*Configura date range picker para PT-BR*/
         if(configLayout){
             moment.locale("Pt-Br");
@@ -396,10 +396,83 @@
 
         }
 
+
+        //Começo Metodo de exibir Modal de alerta de expirar sessão
+        var msgLogued = '@Resources.Resource.remain_logged_in';
+        var yes = '@Resources.Resource.yes';
+        var no ='@Resources.Resource.no';
+        var timer = null;
+
+        function logoutTimeout() {
+            timer = setTimeout(function(){
+                document.location.href = "/UserAuthentication/LogOut";
+            }, 300000);
+            //}, 3000);
+        }
+
+        var timerSession = {
+
+            verificarCookieExiste: function () {
+                $.post("@Url.Action("VerificarCookieExiste", "UserSgq")", function (retorno) {
+                    if (retorno == "True") {
+                        timerSession.questionResetSession();
+                    }
+                }).fail(function () {
+                });
+            },
+
+            postResetSession: function () {
+                $.post("@Url.Action("ResetSessionTimer", "UserSgq")", function () {
+                }).fail(function () {
+                });
+            },
+
+            cancelLogout: function myStopFunction() {
+                clearTimeout(timer);
+            },
+            questionResetSession: function(){
+                setTimeout(function () {
+
+                    bootbox.confirm({
+                        message: msgLogued,
+                        buttons: {
+                            confirm: {
+                                label: yes,
+                                className: 'btn-success'
+                            },
+                            cancel: {
+                                label: no,
+                                className: 'btn-danger'
+                            }
+                        },
+                        callback: function (result) {
+                            if (result == true) {
+                                timerSession.questionResetSession();
+                                timerSession.postResetSession();
+                                timerSession.cancelLogout();
+                            }
+                            else {
+                                document.location.href = "/UserAuthentication/LogOut";
+                            }
+                        }
+                    });
+
+                    logoutTimeout();
+
+                }, 3300000);
+                //}, 4000);
+
+            },
+
+        };
+        timerSession.verificarCookieExiste();
+         //FIM Metodo de exibir Modal de alerta de expirar sessão
+
+
         $(document).ready(function () {
-            //var settngs = $.data($('form')[0], 'validator').settings;
-            //settngs.ignore = ".ignore";
-        });
+             //var settngs = $.data($('form')[0], 'validator').settings;
+             //settngs.ignore = ".ignore";
+         });
 
         @*var cccccounter = 0;
         if (!!getCookie('webControlCookie')) {

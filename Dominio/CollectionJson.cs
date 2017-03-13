@@ -41,5 +41,6 @@ namespace Dominio
         public Nullable<System.DateTime> AlterDate { get; set; }
         public string Key { get; set; }
         public string TTP { get; set; }
+        public Nullable<int> ReauditLevel { get; set; }
     }
 }

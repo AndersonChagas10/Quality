@@ -247,7 +247,7 @@
     <value>Allow specific register by unit</value>
   </data>
   <data name="allow_the_edition_of_the_evaluation_number" xml:space="preserve">
-    <value>Allow the edition of the evaluation number</value>
+    <value>Allow the edition of the evaluation number/samples</value>
   </data>
   <data name="allow_the_edition_of_the_goal_of_the_level1_by_unit" xml:space="preserve">
     <value>Allow the edition of the goal of the indicator by unit</value>
@@ -1589,6 +1589,48 @@
   </data>
   <data name="sync_finished" xml:space="preserve">
     <value>Syncronization finished.</value>
+  </data>
+  <data name="perfil_user" xml:space="preserve">
+    <value>User Profile</value>
+  </data>
+  <data name="old_password" xml:space="preserve">
+    <value>Old Password</value>
+  </data>
+  <data name="confirmation_password_required" xml:space="preserve">
+    <value>Confirmation password required</value>
+  </data>
+  <data name="old_password_required" xml:space="preserve">
+    <value>Old Password Required</value>
+  </data>
+  <data name="Passwords_do_not_match" xml:space="preserve">
+    <value>Passwords do Not Match</value>
+  </data>
+  <data name="old_password_incorrect" xml:space="preserve">
+    <value>Old password is incorrect</value>
+  </data>
+  <data name="remain_logged_in" xml:space="preserve">
+    <value>Your session will expire. Do you want to stay connected?</value>
+  </data>
+  <data name="password_expired" xml:space="preserve">
+    <value>Password Expired</value>
+  </data>
+  <data name="left_menu_control" xml:space="preserve">
+    <value>Left Menu Control</value>
+  </data>
+  <data name="action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="action_required" xml:space="preserve">
+    <value>Action Required</value>
+  </data>
+  <data name="controller" xml:space="preserve">
+    <value>Controller</value>
+  </data>
+  <data name="controller_required" xml:space="preserve">
+    <value>Controller Required</value>
+  </data>
+  <data name="saved_successfully" xml:space="preserve">
+    <value>Saved successfully!</value>
   </data>
   <data name="phase" xml:space="preserve">
     <value>Phase</value>

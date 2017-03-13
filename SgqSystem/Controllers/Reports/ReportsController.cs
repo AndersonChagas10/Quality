@@ -2,16 +2,16 @@
 using Dominio.Interfaces.Services;
 using DTO.DTO;
 using DTO.DTO.Params;
+using Helper;
 using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
 using System.Web.Mvc;
-using Helper;
 
 
 namespace SgqSystem.Controllers
 {
     //techservices
-    [CustomAuthorize()]
+    [CustomAuthorize]
     public class ReportsController : BaseController
     {
 
