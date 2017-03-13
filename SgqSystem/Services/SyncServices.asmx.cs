@@ -2373,13 +2373,18 @@ namespace SgqSystem.Services
             
             string breadCrumb = "<ol class=\"breadcrumb\" breadmainlevel=\"Slaughter\"></ol>";
 
-            string selectPeriod = html.option("0", CommonData.getResource("select_the_period").Value.ToString() +
-                              html.option("1", CommonData.getResource("period").Value.ToString()+" 1") +
+            string selectPeriod = html.option("1", CommonData.getResource("period").Value.ToString()+" 1") +
                               html.option("2", CommonData.getResource("period").Value.ToString()+" 2") +
                               html.option("3", CommonData.getResource("period").Value.ToString()+" 3") +
-                              html.option("4", CommonData.getResource("period").Value.ToString() + " 4"));
+                              html.option("4", CommonData.getResource("period").Value.ToString() + " 4");
 
-            selectPeriod = html.select(selectPeriod, id: "period", classe: "", style: "width: 160px");
+            string disabled = null;
+            if (GlobalConfig.Brasil)
+            {
+                disabled = "disabled";
+            }
+
+            selectPeriod = html.select(selectPeriod, id: "period", classe: disabled, disabled: true, style: "width: 160px");
 
             selectPeriod = "<li class='painel list-group-item'>"+ selectPeriod + " </li>";
 
@@ -3162,13 +3167,28 @@ namespace SgqSystem.Services
 
                 if (ParLevel1.HasGroupLevel2 == true)
                 {
+                    var othersTags = "defects=\"" + 1 +
+                           "\" evaluate=\"" + evaluate +
+                           "\" sample=\"" + sample +
+                           "\" weievaluation=\"0" +
+                           "\" evaluatetotal=\"0" +
+                           "\" defectstotal=\"0\" weidefects=\"0\"" +
+                           " totallevel3evaluation=\"0\"" +
+                           " totallevel3withdefects=\"0\"" +
+                           " hassampletotal=\"" + parlevel2.HasSampleTotal.ToString().ToLower() + "\"" +
+                           " isemptylevel3=\"" + parlevel2.IsEmptyLevel3.ToString().ToLower()
+                           + "\" ParNotConformityRule_id=\"" + parlevel2.ParNotConformityRule_id
+                           + "\" ParNotConformityRule_value=\"" + ruleValue.ToString()
+                           + "\" AlertValue=\"" + 0
+                           + "\" reaudit=\"" + parlevel2.IsReaudit.ToString().ToLower()+"\"";
+
                     groupLevel3 = html.accordeon(
                                                     id: parlevel2.Id.ToString(),
                                                     label: parlevel2.Name,
                                                     classe: "level2 row",
                                                     outerhtml: groupLevel3,
-                                                    accordeonId: parlevel2.Id
-
+                                                    accordeonId: parlevel2.Id,
+                                                    othersTags: othersTags
                                                 );
 
                     groupLevel3Level2 += groupLevel3;

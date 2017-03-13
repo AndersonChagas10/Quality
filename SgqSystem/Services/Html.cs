@@ -237,7 +237,7 @@ namespace SgqSystem.Services
             return "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + ">" + outerhtml + "</li>";
         }
 
-        public string accordeon(string id, string label, string classe = null, string outerhtml = null, bool aberto = false, bootstrapcolor? color = null, int accordeonId = 0)
+        public string accordeon(string id, string label, string classe = null, string outerhtml = null, bool aberto = false, bootstrapcolor? color = null, int accordeonId = 0, string othersTags = null)
         {
             string collapseIn = " in";
             if (aberto == false)
@@ -262,7 +262,7 @@ namespace SgqSystem.Services
                 accordeonIdTag = " id=\"" + accordeonId + "\"";
             }
 
-            return "  <div class=\"panel-group" + classe + "\"" + accordeonIdTag + ">                                                                                                          " +
+            return "  <div class=\"panel-group" + classe + "\"" + accordeonIdTag + " "+ othersTags + ">                                                                                                          " +
                     "    <div class=\"panel panel-" + colorPanel + "\">                                                                                          " +
                     "      <div class=\"panel-heading\" role=\"tab\" id=\"heading" + id + "\">                                                                                                    " +
                     "        <h4 class=\"panel-title\">                                                                                                     " +
@@ -413,7 +413,16 @@ namespace SgqSystem.Services
                            id: id,
                            classe: "level2 " + classe,
                            // tags: "defects=\"" + defects + "\" evaluate=\"" + evaluate + "\" sample=\"" + sample + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\"",
-                           tags: "defects=\"" + defects + "\" evaluate=\"" + evaluate + "\" sample=\"" + sample + "\" weievaluation=\"0\" evaluatetotal=\"0\" defectstotal=\"0\" weidefects=\"0\" totallevel3evaluation=\"0\" totallevel3withdefects=\"0\" hassampletotal=\"" + HasSampleTotal.ToString().ToLower() + "\" isemptylevel3=\"" + IsEmptyLevel3.ToString().ToLower()
+                           tags: "defects=\"" + defects + 
+                           "\" evaluate=\"" + evaluate + 
+                           "\" sample=\"" + sample + 
+                           "\" weievaluation=\"0"+
+                           "\" evaluatetotal=\"0"+
+                           "\" defectstotal=\"0\" weidefects=\"0\""+
+                           " totallevel3evaluation=\"0\""+
+                           " totallevel3withdefects=\"0\""+
+                           " hassampletotal=\"" + HasSampleTotal.ToString().ToLower() + "\""+
+                           " isemptylevel3=\"" + IsEmptyLevel3.ToString().ToLower()
                            + "\" ParNotConformityRule_id=\"" + RuleId.ToString()
                            + "\" ParNotConformityRule_value=\"" + RuleValue
                            + "\" AlertValue=\"" + AlertValue.ToString()
