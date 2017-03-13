@@ -37,20 +37,23 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                        @if (ViewBag.Motivo != "")
-                        {
-                            <a style="color:red;" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" class="caption-subject bold uppercase">@Resources.Resource.change_password</a>
-                            <small style="color:red;">- @Resources.Resource.password_expired</small>
-                        }
-                        else
-                        {
-                            <a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" class="caption-subject font-dark bold uppercase">@Resources.Resource.change_password</a>
-                        }
+                            @if (ViewBag.Motivo != "")
+                            {
+                                @*<a style="color:red;" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" class="caption-subject bold uppercase">@Resources.Resource.change_password</a>*@
+                                <span class="caption-subject font-dark bold uppercase">@Resources.Resource.change_password</span>
+                                <small style="color:red; font-weight:bold; text-transform: uppercase"> - @Resources.Resource.password_expired</small>
+                            }
+                            else
+                            {
+                                @*<a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" class="caption-subject font-dark bold uppercase">@Resources.Resource.change_password</a>*@
+                                <span> @Resources.Resource.change_password </span>
+                            }
 
                         </div>
                     </div>
 
-                    <div class="collapse" id="collapseExample">
+                    @*<div class="collapse" id="collapseExample">*@
+                    <div class="form-group" id="collapseExample">
                         <div class="card card-block">
 
 
@@ -239,19 +242,26 @@
             }
 
             $.post("@Url.Action("AlterarSenha", "UserSgq")", $('form').serializeObject(), function (retorno) {
+
                 if (retorno == "") {
                     openMessageModal('@Resources.Resource.user_save_success', '');
                     $("#SenhaAntiga").val("");
                     $("#Password").val("");
                     $("#ConfirmarSenha").val("");
+
+                    if ('@ViewBag.Motivo' == 'passwordExpired') {
+
+                        setTimeout(function () {
+                            window.location.href = '@Url.Action("Index", "Home")';
+                        }, 2000);
+                    }
                 }
                 else {
                     openMessageModal(retorno, '');
                 }
             }).fail(function () {
-                 openMessageModal(retorno, '');
+                openMessageModal(retorno, '');
             });
-
         });
 
 
