@@ -87,6 +87,10 @@
         };
 
         function CallbackGraficos(r) {
+            if (!(r.listResultSetLevel1.length > 0)) {
+                GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(Resources.Resource.no_data_to_show)));
+                return;
+            }
             try {
                 $('#plotPrincipal').empty().show();
 

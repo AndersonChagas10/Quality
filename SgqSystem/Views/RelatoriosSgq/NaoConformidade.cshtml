@@ -33,7 +33,7 @@
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
     <div id="formBodyContent">
-
+        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
         <div id="inicio"></div>
         <div id="btnRGUnidadesGrafico"></div>
         <div id="RGUnidadesGrafico"></div>
@@ -171,6 +171,10 @@
 
         /*Charts*/
         function GraficoUnidade(data) {
+            if(!(data.length > 0)){
+                GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(Resources.Resource.no_data_to_show)));
+                return;
+            }
             //UNIDADE
             //if (data == null) {
             //    data = _result.unidadeTemp;

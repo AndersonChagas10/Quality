@@ -1647,4 +1647,7 @@
   <data name="registry_alter_success" xml:space="preserve">
     <value>Record successfully changed (Please refresh the dealy reports table).</value>
   </data>
+  <data name="no_data_to_show" xml:space="preserve">
+    <value>There's no data to show.</value>
+  </data>
 </root>
