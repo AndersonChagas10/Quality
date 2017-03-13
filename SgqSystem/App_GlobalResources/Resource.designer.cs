@@ -1726,6 +1726,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to It is not possible refresh the result.
+        /// </summary>
+        internal static string impossible_refresh_result {
+            get {
+                return ResourceManager.GetString("impossible_refresh_result", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inactive.
         /// </summary>
         internal static string inactive {
@@ -2869,6 +2878,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Phase.
+        /// </summary>
+        internal static string phase {
+            get {
+                return ResourceManager.GetString("phase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Phone.
         /// </summary>
         internal static string phone {
@@ -3139,6 +3157,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Record successfully changed (Please refresh the dealy reports table)..
+        /// </summary>
+        internal static string registry_alter_success {
+            get {
+                return ResourceManager.GetString("registry_alter_success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove Signature.
         /// </summary>
         internal static string remove_signature {
@@ -3238,7 +3265,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resultados.
+        ///   Looks up a localized string similar to Results.
         /// </summary>
         internal static string results {
             get {

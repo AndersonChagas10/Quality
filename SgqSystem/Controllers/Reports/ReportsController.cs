@@ -61,12 +61,12 @@ namespace SgqSystem.Controllers
         }
 
         #endregion
-
+        [FormularioPesquisa(filtraUnidadeDoUsuario = true)]
         public ActionResult DataCollectionReport()
         {
             return View(form);
         }
-
+        [FormularioPesquisa(filtraUnidadeDoUsuario = true)]
         public ActionResult CorrectiveActionReport()
         {
             return View(form);

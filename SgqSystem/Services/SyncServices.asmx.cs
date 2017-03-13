@@ -1847,8 +1847,9 @@ namespace SgqSystem.Services
                         "\" StartPhaseEvaluation=\"" + consolidationResultL1L2.StartPhaseEvaluation +
                         "\" havecorrectiveaction=\"" + consolidationResultL1L2.haveCorrectiveAction.ToString().ToLower() + 
                         "\" havereaudit=\"" + consolidationResultL1L2.haveReaudit.ToString().ToLower() + 
-                        "\" reauditlevel=\"" + consolidationResultL1L2.ReauditLevel.ToString().ToLower() + 
-                        "\" isreaudit=\""+consolidationResultL1L2.IsReaudit.ToString().ToLower()+
+                        "\" reauditlevel=\"" + consolidationResultL1L2.ReauditLevel.ToString().ToLower() +
+                        "\" reauditnumber=\"" + consolidationResultL1L2.ReauditNumber.ToString().ToLower() +
+                        "\" isreaudit=\"" +consolidationResultL1L2.IsReaudit.ToString().ToLower()+
                         "\" more3defectsEvaluate=\"" + consolidationResultL1L2.More3DefectsEvaluate + 
                         "\" CollectionLevel2_ID_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_ID_CorrectiveAction + 
                         "\" CollectionLevel2_Period_CorrectiveAction=\"" + consolidationResultL1L2.CollectionLevel2_Period_CorrectiveAction + "\">" +
@@ -2827,7 +2828,7 @@ namespace SgqSystem.Services
                             {
                                 alertaNivel1 = alertas.Nivel1;
                                 alertaNivel2 = alertas.Nivel2;
-                                alertaNivel3 = "a1";
+                                alertaNivel3 = "a0";
                                 volumeAlerta = alertas.VolumeAlerta;
                                 meta = alertas.Meta;
                             }
@@ -2953,7 +2954,7 @@ namespace SgqSystem.Services
             var ParFieldTypeDB = new SGQDBContext.ParFieldType();
             var ParNCRuleDB = new SGQDBContext.NotConformityRule();
 
-            var reauditFlag = "<li class='painel row list-group-item hide reauditFlag'> Reaudit </li>";
+            var reauditFlag = "<li class='painel row list-group-item hide reauditFlag'> Reaudit <span reauditnumber='0'></span></li>";
 
             var html = new Html();
 
@@ -3099,7 +3100,7 @@ namespace SgqSystem.Services
                     if (parlevel2.IsReaudit)
                     {
                         btnReaudit = "<button class=\"btn btn-primary hide btnReaudit\"> " +
-                                      "<span>R.</span></button>";
+                                      "<span>R</span></button>";
                     }
                     buttons = html.div(
                                  //aqui vai os botoes

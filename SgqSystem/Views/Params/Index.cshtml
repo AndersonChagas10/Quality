@@ -535,13 +535,13 @@
                 }
 
                 updateAllTables();
-                initialFormLevel1 = $($('form')[0]).clone();
 
                 reloadPopovers();
 
                 /*Reseta Validação*/
                 indexParamsLevel1.resetaValidacao();
-
+                
+                initialFormLevel1 = $($('form')[0]).clone();
                 //closeLoader();
             });
 
@@ -1062,9 +1062,10 @@
             }
 
         });
-        //initialFormLevel1 = $('form')[0];
-        //initialFormLevel2 = $('form')[1];
-        //initialFormLevel3 = $('form')[2];
+
+        initialFormLevel1 = $('form')[0];
+        initialFormLevel2 = $('form')[1];
+        initialFormLevel3 = $('form')[2];
     });
 
     $( document ).ajaxStart(function() {
