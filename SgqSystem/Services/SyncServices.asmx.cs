@@ -40,11 +40,16 @@ namespace SgqSystem.Services
 
         #region Funções
 
+
         /// <summary>
         /// Converter a Data do Tablet
         /// </summary>
         /// <param name="collectionDate">Data Formatada do Tablet</param>
         /// <returns></returns>
+        /// 
+
+        bool naoAvaliado = true; //variavel que verifica se o monitoramento (level2) é não avaliado inteiro
+
         private DateTime DateCollectConvert(string collectionDate)
         {
             if (!collectionDate.Contains("/"))
@@ -1167,6 +1172,8 @@ namespace SgqSystem.Services
                 key += "-r";
             }
 
+            NotEvaluateIs = (naoAvaliado) ? "1" : "0";
+
             if (id == "0")
             {
                 sql = "INSERT INTO CollectionLevel2 ([Key],[ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit],[ReauditLevel], [HaveCorrectiveAction],[HavePhase],[Completed],[AlertLevel],[Sequential],[Side],[WeiEvaluation],[Defects],[WeiDefects],[TotalLevel3WithDefects], [TotalLevel3Evaluation], [LastEvaluationAlert],[LastLevel2Alert],[EvaluatedResult],[DefectsResult],[IsEmptyLevel3], [StartPhaseEvaluation]) " +
@@ -1452,6 +1459,8 @@ namespace SgqSystem.Services
 
                 id = DefaultValueReturn(id, "0");
 
+                naoAvaliado = true;
+
                 if (id == "0")
                 {
                     sql += "INSERT INTO Result_Level3 ([CollectionLevel2_Id],[ParLevel3_Id],[ParLevel3_Name],[Weight],[IntervalMin],[IntervalMax],[Value],[ValueText],[IsConform],[IsNotEvaluate],[PunishmentValue],[Defects],[Evaluation],[WeiEvaluation],[WeiDefects]) " +
@@ -1466,6 +1475,11 @@ namespace SgqSystem.Services
                     sql += "UPDATE Result_Level3 SET IsConform='" + conform + "', IsNotEvaluate='" + isnotEvaluate + "', Value='" + value + "', ValueText='" + valueText + "' WHERE Id='" + id + "' ";
                     sql += " SELECT '" + id + "' AS 'Identity'";
 
+                }
+
+                if (isnotEvaluate == "0")
+                {
+                    naoAvaliado = false;
                 }
 
             }
@@ -5216,15 +5230,10 @@ namespace SgqSystem.Services
         {
 
             string sql = "SELECT CL2.Id, CL2.ParLevel2_Id, CL2.ConsolidationLevel1_Id FROM ConsolidationLevel2 CL2 " +
-                         " INNER JOIN ConsolidationLevel1 CL1 ON CL2.ConsolidationLevel1_Id=CL1.ID " +
+                         "\n INNER JOIN ConsolidationLevel1 CL1 ON CL2.ConsolidationLevel1_Id=CL1.ID " +
+               "WHERE CL2.UnitId='" + ParCompany_Id + "' AND CL1.ParLevel1_Id='" + ParLevel1_Id + "' AND CAST(CL1.ConsolidationDate AS DATE) = '" + ConsolidationDate.ToString("yyyyMMdd") + "'";
 
-
-
-
-
-
-               " WHERE CL2.UnitId='" + ParCompany_Id + "' AND CL1.ParLevel1_Id='" + ParLevel1_Id + "' AND CAST(CL1.ConsolidationDate AS DATE) = '" + ConsolidationDate.ToString("yyyyMMdd") + "'";
-
+           
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
