@@ -1,0 +1,57 @@
+﻿@model QualidadeTotal.Models.Equipamentos
+
+@{
+    ViewBag.Title = Resources.Detalhes;
+}
+
+<ul class="breadcrumb">
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li>@Html.ActionLink(Resources.Parametros, "Parametros", "Home")</li>
+    <li>@Html.ActionLink(Model.Nome, "Index", "ParEquipamentos")</li>
+    <li class="active">@ViewBag.Title</li>
+</ul>
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <h4>@Resources.Equipamentos</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName(Resources.Nome)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+
+        <dt>
+            @Html.DisplayName(Resources.Tipo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tipo)
+        </dd>
+
+        <dt>
+            @Html.DisplayName(Resources.Subtipo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Subtipo)
+        </dd>
+
+        <dt>
+            @Html.DisplayName(Resources.Unidade)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Unidades.Sigla)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink(Resources.Editar, "Edit", new { id = Model.Id }) |
+    @Html.ActionLink(Resources.Voltar, "Index")
+</p>

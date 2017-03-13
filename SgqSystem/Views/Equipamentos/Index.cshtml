@@ -1,8 +1,8 @@
 ﻿@using DTO
-@model IEnumerable<Dominio.VolumeCepDesossa>
+@model IEnumerable<Dominio.Equipamentos>
 
 @{
-    ViewBag.Title = "CEP Dessosa - Volume";
+    ViewBag.Title = "Equipamentos";
 }
 
 
@@ -47,33 +47,26 @@
 
                                     <div class="" id="complexCallendar" style="float:right;display:inline;width:550px;">
                                         <button id="btnFilter" class="btn-success" style="float:right;margin-left:5px;padding:7px;margin-top:-12px;">Filtrar</button>
-                                        <div id="reportrange" class="" style="background: #fff; cursor: pointer; border: 1px solid #ccc; width: 210px;padding:5px;margin-left:5px;margin-top:-12px;float:right;">
-                                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
-                                            <span></span> <b class="caret"></b>
-                                        </div>
-                                        @Html.DropDownList("ParCompany_id", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control", @style = "width:200px;float:right;margin-top:-12px;margin-left:5px;" })
+                                        @Html.DropDownList("ParCompanyName", new SelectList(ViewBag.UnidadeUsuario, "Name", "Name"), Resources.Resource.select + "...", new { @class = "form-control", @style = "width:200px;float:right;margin-top:-12px;margin-left:5px;" })
                                         <span style="float:right;margin-top:-5px;margin-left:5px;">Filtro: </span>
-                                  
+
                                     </div>
 
-                                    @Html.ActionLink("Novo volume de CEP Desossa", "Create")
+                                    @Html.ActionLink("Novo equipamento", "Create")
                                 </p>
                                 <table class="table table-condensed">
                                     <tr>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.Data)
-                                        </th>
-                                        @*<th>
-                                                @Html.DisplayNameFor(model => model.ParLevel1.Name)
-                                            </th>*@
-                                        <th>
                                             Unidade
                                         </th>
                                         <th>
-                                            Avaliações
+                                            Nome
                                         </th>
                                         <th>
-                                            Amostras
+                                            Tipo
+                                        </th>
+                                        <th>
+                                            Subtipo
                                         </th>
                                         <th></th>
                                     </tr>
@@ -82,23 +75,16 @@
                                     {
                                         <tr>
                                             <td>
-
-                                                @*@Html.DisplayFor(modelItem => item.Data.Value)*@
-
-                                                @item.Data.Value.ToString("dd/MM/yyyy")
-
-                                            </td>
-                                            @*<td>
-                                                    @Html.DisplayFor(modelItem => item.ParLevel1.Name)
-                                                </td>*@
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.ParCompany.Name)
+                                                @Html.DisplayFor(modelItem => item.ParCompanyName)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Avaliacoes)
+                                                @Html.DisplayFor(modelItem => item.Nome)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.Amostras)
+                                                @Html.DisplayFor(modelItem => item.Tipo)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Subtipo)
                                             </td>
                                             <td>
                                                 @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
@@ -132,65 +118,8 @@
 
     $(function () {
 
-        //Start config datepickerrange full
-        var start = moment();
-        var end = moment();
-
-        function cb(start, end) {
-            $('#reportrange span').html(start.format() + ' - ' + end.format());
-            enviar['startDate'] = start.format();
-            enviar['endDate'] = end.format();
-        }
-        var configQueryData = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
-        var configCallendar = {};
-        if(configQueryData){
-            $('#reportrange').daterangepicker({
-                startDate: start,
-                endDate: end,
-                opens: "left",
-                locale: {
-                    "format": "DD/MM/YYYY",
-                    "separator": " - ",
-                    "applyLabel": "Aplicar",
-                    "cancelLabel": "Cancelar",
-                    "customRangeLabel": "Seleção",
-                },
-                //autoApply: false,
-                alwaysShowCalendars: true,
-                showDropdowns: true,
-                ranges: rangesCalendar,
-                linkedCalendars: false
-            }, cb);
-        }else{
-            $('#reportrange').daterangepicker({
-                startDate: start,
-                endDate: end,
-                //autoApply: false,
-                locale: {
-                    "format": "MM/DD/YYYY",
-                    "separator": " - ",
-                },
-                alwaysShowCalendars: true,
-                showDropdowns: true,
-                ranges: rangesCalendar,
-                linkedCalendars: false
-            }, cb);
-        }
-
-        //cb(start, end);
-        //End config datepickerrange full
-
-        //GET UPDATE DATE CALLBACK
-        if(getParameterByName("startDate") == null || getParameterByName("endDate") == null){
-            $('#reportrange span').html("");
-        }else{
-            $('#reportrange span').html(getParameterByName("startDate") + ' - ' + getParameterByName("endDate"));
-            enviar['startDate'] = getParameterByName("startDate");
-            enviar['endDate'] = getParameterByName("endDate");
-        }
-
-        if(getParameterByName("ParCompany_id") != null){
-            $('#ParCompany_id option[value="'+getParameterByName("ParCompany_id")+'"]').prop('selected', true);
+        if (getParameterByName("ParCompanyName") != null) {
+            $('#ParCompanyName option[value="' + getParameterByName("ParCompanyName") + '"]').prop('selected', true);
         }
 
         function getParameterByName(name, url) {
@@ -206,10 +135,8 @@
         }
 
         $("#btnFilter").on('click',function(){
-            var filterUrlCall = "@Url.Action("Index", "CepDesossas")?"+
-                ((enviar['startDate']!= null)?"startDate="+enviar['startDate']+"&":"")+
-                ((enviar['endDate']!= null)?"endDate="+enviar['endDate']+"&":"")+
-                (($('#ParCompany_id').val() > 0)?"ParCompany_id="+$('#ParCompany_id').val()+"&":"");
+            var filterUrlCall = "@Url.Action("Index", "Equipamentos")?"+
+                (($('#ParCompanyName').val()) ? "ParCompanyName=" + $('#ParCompanyName').val() + "&" : "");
             window.location = filterUrlCall;
         });
     });
