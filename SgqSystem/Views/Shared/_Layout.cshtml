@@ -398,6 +398,18 @@
 
 
         //Começo Metodo de exibir Modal de alerta de expirar sessão
+        var msgLogued = '@Resources.Resource.remain_logged_in';
+        var yes = '@Resources.Resource.yes';
+        var no ='@Resources.Resource.no';
+        var timer = null;
+
+        function logoutTimeout() {
+            timer = setTimeout(function(){
+                document.location.href = "/UserAuthentication/LogOut";
+            }, 300000);
+            //}, 3000);
+        }
+
         var timerSession = {
 
             verificarCookieExiste: function () {
@@ -415,18 +427,21 @@
                 });
             },
 
-	        questionResetSession: function(){
-            setTimeout(function () {
+            cancelLogout: function myStopFunction() {
+                clearTimeout(timer);
+            },
+            questionResetSession: function(){
+                setTimeout(function () {
 
                     bootbox.confirm({
-                        message: '@Resources.Resource.remain_logged_in',
+                        message: msgLogued,
                         buttons: {
                             confirm: {
-                                label: '@Resources.Resource.yes',
+                                label: yes,
                                 className: 'btn-success'
                             },
                             cancel: {
-                                label: '@Resources.Resource.no',
+                                label: no,
                                 className: 'btn-danger'
                             }
                         },
@@ -434,6 +449,7 @@
                             if (result == true) {
                                 timerSession.questionResetSession();
                                 timerSession.postResetSession();
+                                timerSession.cancelLogout();
                             }
                             else {
                                 document.location.href = "/UserAuthentication/LogOut";
@@ -441,7 +457,10 @@
                         }
                     });
 
+                    logoutTimeout();
+
                 }, 3300000);
+                //}, 4000);
 
             },
 
