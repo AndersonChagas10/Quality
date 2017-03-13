@@ -200,13 +200,13 @@ F
 
     var RequestRoleLink = {
         request: function (idDiv, action, controller) {
-            $.post("@Url.Action("VerificarRoleLink", "role")", { controller: controller, action: action }, function (retorno) {
+            @*$.post("@Url.Action("VerificarRoleLink", "role")", { controller: controller, action: action }, function (retorno) {
                 if (retorno != "True") {
                     $("#" + idDiv).hide();
                 }
             }).fail(function () { 
                //$("#" + idDiv).hide();
-            });
+            });*@
         },
     };
 
