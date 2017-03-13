@@ -1,15 +1,18 @@
-﻿using System;
+﻿using AutoMapper;
+using Dominio;
+using Dominio.Interfaces.Services;
+using DTO.DTO;
+using DTO.DTO.Params;
+using DTO.Helpers;
+using Helper;
+using SgqSystem.ViewModels;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
-using Dominio;
-using Dominio.Interfaces.Services;
-using DTO.DTO.Params;
-using DTO.DTO;
-using AutoMapper;
-using System.Collections.Generic;
-using Helper;
 
 namespace SgqSystem.Controllers
 {
@@ -64,6 +67,38 @@ namespace SgqSystem.Controllers
                 return HttpNotFound();
             }
             return View(userSgq);
+        }
+
+        /// <summary>
+        /// Tela de Perfil Usuário
+        /// </summary>
+        /// <param name="motivo">Quando obtiver um motivo, é por cause da expiração da senha</param>
+        /// <returns></returns>
+        public ActionResult Perfil(string motivo = "")
+        {
+            ViewBag.Title = "Perfil";
+
+            ViewBag.Motivo = motivo;
+
+            var idUsuario = Guard.GetUsuarioLogado_Id(ControllerContext.HttpContext);
+
+            var userSgq = db.UserSgq.Where(x => x.Id == idUsuario).FirstOrDefault();
+
+            List<ParCompanyXUserSgq> parCompanyXUserSgq = db.ParCompanyXUserSgq.Where(x => x.UserSgq_Id == idUsuario).ToList();
+
+            var model = new UserViewModel()
+            {
+                Id = userSgq.Id,
+                Name = userSgq.Name,
+                FullName = userSgq.FullName,
+                Email = userSgq.Email,
+                Roles = userSgq.Role == null ? new string[0] : userSgq.Role.Split(';'),
+                Password = userSgq.Password,
+                Phone = userSgq.Phone,
+                Empresa = parCompanyXUserSgq != null ? (from comp in parCompanyXUserSgq select new EmpresaDTO { Role = comp.Role, Nome = comp.ParCompany.Name }).ToList() : new List<EmpresaDTO>()
+            };
+
+            return View(model);
         }
 
         // GET: UserSgq/Create
@@ -159,6 +194,121 @@ namespace SgqSystem.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public void ResetSessionTimer()
+        {
+            try
+            {
+                HttpCookie currentUserCookie = Request.Cookies["webControlCookie"];
+                if (currentUserCookie != null)
+                {
+                    currentUserCookie.Expires = DateTime.Now.AddHours(1);
+                    Response.SetCookie(currentUserCookie);
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        [HttpPost]
+        public bool VerificarCookieExiste()
+        {
+            try
+            {
+                HttpCookie currentUserCookie = Request.Cookies["webControlCookie"];
+                if (currentUserCookie != null)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public string AlterarSenha(UserViewModel model)
+        {
+            try
+            {
+                var userSgq = db.UserSgq.Where(x => x.Id == model.Id).FirstOrDefault();
+
+                var senhaAntiga = userSgq.Password;
+
+                if (Guard.Descriptografar3DES(senhaAntiga).Equals(model.SenhaAntiga))
+                {
+                    userSgq.AlterDate = DateTime.Now;
+                    userSgq.PasswordDate = DateTime.Now.AddMonths(2);
+                    userSgq.Password = Guard.Criptografar3DES(model.Password);
+
+                    db.Entry(userSgq).State = EntityState.Modified;
+
+                    db.SaveChanges();
+
+                    #region Criar cookie novamente
+
+                    //create a cookie
+                    HttpCookie myCookie = new HttpCookie("webControlCookie");
+
+                    //Add key-values in the cookie
+                    myCookie.Values.Add("userId", userSgq.Id.ToString());
+                    myCookie.Values.Add("userName", userSgq.Name);
+
+
+                    if (userSgq.PasswordDate != null)
+                    {
+                        myCookie.Values.Add("passwordDate", userSgq.PasswordDate.GetValueOrDefault().ToString("dd/MM/yyyy"));
+                    }
+                    else if (userSgq.AlterDate != null)
+                    {
+                        myCookie.Values.Add("alterDate", userSgq.AlterDate.GetValueOrDefault().ToString("dd/MM/yyyy"));
+                    }
+                    else
+                    {
+                        myCookie.Values.Add("alterDate", "");
+                    }
+
+                    myCookie.Values.Add("addDate", userSgq.AddDate.ToString("dd/MM/yyyy"));
+
+                    if (userSgq.Role != null)
+                        myCookie.Values.Add("roles", userSgq.Role.Replace(';', ',').ToString());//"admin, teste, operacional, 3666,344, 43434,...."
+                    else
+                        myCookie.Values.Add("roles", "");
+
+                    if (userSgq.ParCompanyXUserSgq != null)
+                        if (userSgq.ParCompanyXUserSgq.Any(r => r.Role != null))
+                            myCookie.Values.Add("rolesCompany", string.Join(",", userSgq.ParCompanyXUserSgq.Select(n => n.Role).Distinct().ToArray()));
+                        else
+                            myCookie.Values.Add("rolesCompany", "");
+
+                    //set cookie expiry date-time. Made it to last for next 12 hours.
+                    myCookie.Expires = DateTime.Now.AddMinutes(60);
+
+                    //Most important, write the cookie to client.
+                    Response.Cookies.Add(myCookie);
+
+                    #endregion
+
+                }
+                else
+                {
+                    return Resources.Resource.old_password_incorrect;
+                }
+            }
+            catch (Exception)
+            {
+                return Resources.Resource.try_again_contact_support;
+            }
+            return "";
+        }
+
+
 
         protected override void Dispose(bool disposing)
         {

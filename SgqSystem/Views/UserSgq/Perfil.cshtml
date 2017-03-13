@@ -1,0 +1,265 @@
+﻿@model SgqSystem.ViewModels.UserViewModel
+
+@{
+    var urlHome = Url.Action("Index", "Home");
+}
+
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content" style="min-height: 650px;">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE TITLE-->
+        <h1 class="page-title">
+            @ViewBag.Title
+            <small>@Resources.Resource.perfil_user</small>
+        </h1>
+        <!-- END PAGE TITLE-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@urlHome">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span> @ViewBag.Title </span>
+                </li>
+            </ul>
+            @*<div class="page-toolbar">
+
+                </div>*@
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                        @if (ViewBag.Motivo != "")
+                        {
+                            <a style="color:red;" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" class="caption-subject bold uppercase">@Resources.Resource.change_password</a>
+                            <small style="color:red;">- @Resources.Resource.password_expired</small>
+                        }
+                        else
+                        {
+                            <a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" class="caption-subject font-dark bold uppercase">@Resources.Resource.change_password</a>
+                        }
+
+                        </div>
+                    </div>
+
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-block">
+
+
+                            <div class="portlet-body">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="setup_tab">
+
+                                        @using (Html.BeginForm())
+                                        {
+                                            @Html.AntiForgeryToken()
+
+                                            @Html.HiddenFor(model => model.Id)
+
+                                            <div class="form-horizontal">
+                                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                                <div class="form-group">
+                                                    @Html.Label(Resources.Resource.old_password, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                    <div class="col-md-10">
+                                                        @Html.EditorFor(model => model.SenhaAntiga, new { htmlAttributes = new { @class = "form-control" } })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    @Html.Label(Resources.Resource.password, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                    <div class="col-md-10">
+                                                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    @Html.Label(Resources.Resource.confirm_password, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                    <div class="col-md-10">
+                                                        @Html.EditorFor(model => model.ConfirmarSenha, new { htmlAttributes = new { @class = "form-control" } })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-offset-2 col-md-10">
+                                                        <button type="button" id="btnSave" class="btn btn-default">@Resources.Resource.save</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.perfil_user</span>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+
+                                <div class="form-horizontal">
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                    <div class="form-group">
+                                        @Html.Label(Resources.Resource.username, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10" style="padding-top: 9px;">
+                                            @Html.DisplayFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.Label(Resources.Resource.fullname, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10" style="padding-top: 9px;">
+                                            @Html.DisplayFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        @Html.Label(Resources.Resource.email, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10" style="padding-top: 9px;">
+                                            @Html.DisplayFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.Label(Resources.Resource.phone, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10" style="padding-top: 9px;">
+                                            @Html.DisplayFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.Label(Resources.Resource.company, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10" style="height:120px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+                                            <table class="table col-md-2">
+                                                <tr>
+                                                    <th>@Resources.Resource.company</th>
+                                                    <th>Role</th>
+                                                </tr>
+                                                @foreach (var item in Model.Empresa)
+                                                {
+                                                    <tr>
+                                                        <td>@item.Nome</td>
+                                                        <td>@item.Role</td>
+                                                    </tr>
+                                                }
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.Label(Resources.Resource.role, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10" style="height:120px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+                                            <table class="table col-md-2">
+                                                <tr>
+                                                    <th>Role</th>
+                                                </tr>
+                                                @foreach (var item in Model.Roles)
+                                                {
+                                                    <tr>
+                                                        <td>@item</td>
+                                                    </tr>
+                                                }
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+
+    <script type="text/javascript">
+
+        $(".sidebar-toggler").removeClass("hide");
+        $(".page-sidebar-wrapper").removeClass("hide");
+
+        $("#SenhaAntiga").val("");
+        $("#Password").val("");
+        $("#ConfirmarSenha").val("");
+
+        $(document).on("click", "#btnSave", function () {
+
+            var valid = true;
+
+            if ($("#SenhaAntiga").val().trim() == "" || $("#SenhaAntiga").val().trim().length < 3) {
+                openMessageModal('@Resources.Resource.old_password_required', '');
+                return;
+            }
+
+            if ($("#Password").val().trim() == "" || $("#Password").val().trim().length < 3) {
+                openMessageModal('@Resources.Resource.password_required', '');
+                return;
+            }
+
+            if ($("#ConfirmarSenha").val().trim() == "" || $("#ConfirmarSenha").val().trim().length < 3) {
+                openMessageModal('@Resources.Resource.confirmation_password_required', '');
+                return;
+            }
+
+            if ($("#ConfirmarSenha").val() != $("#Password").val()) {
+                openMessageModal('@Resources.Resource.Passwords_do_not_match', '');
+                return;
+            }
+
+            $.post("@Url.Action("AlterarSenha", "UserSgq")", $('form').serializeObject(), function (retorno) {
+                if (retorno == "") {
+                    openMessageModal('@Resources.Resource.user_save_success', '');
+                    $("#SenhaAntiga").val("");
+                    $("#Password").val("");
+                    $("#ConfirmarSenha").val("");
+                }
+                else {
+                    openMessageModal(retorno, '');
+                }
+            }).fail(function () {
+                 openMessageModal(retorno, '');
+            });
+
+        });
+
+
+        $(document).ready(function () {
+            //formControl.showFullCallendar();
+            //formControl.showUnit();
+
+            closeLeftSidebar();
+        });
+    </script>
+}

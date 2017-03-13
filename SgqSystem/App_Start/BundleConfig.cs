@@ -26,10 +26,11 @@ namespace SgqSystem
             bundles.Add(new ScriptBundle("~/bundles/mask")
              .Include("~/Scripts/inputmask/min/jquery.inputmask.bundle.min.js")
             );
-           
+
             bundles.Add(new ScriptBundle("~/bundles/bootstrap")
                 .Include("~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js",
+                      "~/Scripts/bootbox.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/ScriptTables").Include(
                     //"~/Scripts/DataTables/datatables.min.js",
@@ -49,17 +50,17 @@ namespace SgqSystem
                     //"~/Scripts/jbs.jquery.dataTables.configuration.js",
                     //"~/Scripts/dataTable.CRUD.js",
                     ));
-            
+
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                       "~/Scripts/modernizr-*"));
-            
+
             bundles.Add(new ScriptBundle("~/bundles/theme").Include(
                         "~/Content/bootstrap-switch/js/bootstrap-switch.min.js",
                         "~/Scripts/theme/js/app.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/select2js").Include(
                      "~/Scripts/select2.min.js"
-                     ,"~/Scripts/i18n/pt-BR.js"));
+                     , "~/Scripts/i18n/pt-BR.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/DatePikerContent").Include(
                     //"~/Scripts/moment.min.js",

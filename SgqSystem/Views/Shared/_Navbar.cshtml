@@ -34,7 +34,7 @@
 
         @*@if (Session["username"] != null)*@
         @if (HttpContext.Current.Request.Cookies["webControlCookie"] != null)
-            {
+        {
             <div class="hor-menu hide" id="navbarLeft">
                 <ul class="nav navbar-nav pull-left">
                     <li class="mega-menu-dropdown" aria-haspopup="true">
@@ -137,7 +137,7 @@
 
                     <ul class="dropdown-menu dropdown-menu-default">
                         <li>
-                            <a href="page_user_lock_1.html">
+                            <a href="@Url.Action("Perfil", "UserSgq")">
                                 <i class="fa fa-user" aria-hidden="true"></i> Perfil
                             </a>
                         </li>
@@ -191,7 +191,7 @@
             $('body').removeClass('page-sidebar-closed');
             $('#sidebar-wrapper').css('margin-left', '-65px');
             $('.report-wrapper').css('margin-left', '240px');
-            $('.page-content').css('padding-right', '230px');
+            //$('.page-content').css('padding-right', '230px');
 
         }
 

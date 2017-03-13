@@ -1,13 +1,13 @@
-﻿using System.Data.Entity;
+﻿using Dominio;
+using DTO.Helpers;
+using Helper;
+using SgqSystem.Secirity;
+using System;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using Dominio;
-using System.Data.Entity.Infrastructure;
-using System;
-using SgqSystem.Secirity;
-using DTO.Helpers;
-using Helper;
 
 namespace SgqSystem.Controllers
 {
@@ -37,7 +37,7 @@ namespace SgqSystem.Controllers
                 amostra = result.Amostra;
             }
 
-            return amostra ;
+            return amostra;
         }
 
         // GET: CepRecortes

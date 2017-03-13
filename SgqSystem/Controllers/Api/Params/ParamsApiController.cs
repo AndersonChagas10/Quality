@@ -47,6 +47,9 @@ namespace SgqSystem.Controllers.Api.Params
         [Route("AddUpdateLevel1")]
         public ParamsViewModel AddUpdateLevel1([FromBody] ParamsViewModel paramsViewModel)
         {
+            #region GAMBIARRA LEVEL 100!
+            paramsViewModel.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion = paramsViewModel.paramsDto.parLevel1Dto.IsSpecificNumberSample; 
+            #endregion
             paramsViewModel.paramsDto = _paramdDomain.AddUpdateLevel1(paramsViewModel.paramsDto);
             return paramsViewModel;
         }
