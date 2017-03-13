@@ -58,27 +58,27 @@ namespace SGQDBContext
         public IEnumerable<ParLevel1> getParLevel1ParCriticalLevelList(int ParCompany_Id)
         {
             SqlConnection db = new SqlConnection(conexao);
-            string sql = " SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
-                         " P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate, P1.IsLimitedEvaluetionNumber, P1.IsPartialSave" +
-                         " ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, AL.IsReaudit AS IsReaudit, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2                                                                                                                                     " +
-                         " FROM ParLevel1 P1                                                                                                          " +
-                         " INNER JOIN (SELECT ParLevel1_Id FROM ParLevel3Level2Level1 GROUP BY ParLevel1_Id) P321                                     " +
-                         " ON P321.ParLevel1_Id = P1.Id                                                                                               " +
-                         " INNER JOIN ParLevel1XCluster P1C                                                                                           " +
-                         " ON P1C.ParLevel1_Id = P1.Id                                                                                                " +
-                         " INNER JOIN ParCluster C                                                                                                    " +
-                         " ON C.Id = P1C.ParCluster_Id                                                                                                " +
-                         " INNER JOIN ParCompanyCluster CC                                                                                            " +
-                         " ON CC.ParCluster_Id = P1C.ParCluster_Id                                                                                    " +
-                         " INNER JOIN ParCriticalLevel CL                                                                                             " +
-                         " ON CL.Id = P1C.ParCriticalLevel_Id                                                                                         " +
-                         " LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
-                         " ON AL.ParLevel1_Id = P1.Id   AND AL.IsActive = 1                                                                                               " +
+            string sql = "\n SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
+                         "\n P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate, P1.IsLimitedEvaluetionNumber, P1.IsPartialSave" +
+                         "\n ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, AL.IsReaudit AS IsReaudit, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2                                                                                                                                     " +
+                         "\n FROM ParLevel1 P1                                                                                                          " +
+                         "\n INNER JOIN (SELECT ParLevel1_Id FROM ParLevel3Level2Level1 GROUP BY ParLevel1_Id) P321                                     " +
+                         "\n ON P321.ParLevel1_Id = P1.Id                                                                                               " +
+                         "\n INNER JOIN ParLevel1XCluster P1C                                                                                           " +
+                         "\n ON P1C.ParLevel1_Id = P1.Id                                                                                                " +
+                         "\n INNER JOIN ParCluster C                                                                                                    " +
+                         "\n ON C.Id = P1C.ParCluster_Id                                                                                                " +
+                         "\n INNER JOIN ParCompanyCluster CC                                                                                            " +
+                         "\n ON CC.ParCluster_Id = P1C.ParCluster_Id                                                                                    " +
+                         "\n INNER JOIN ParCriticalLevel CL                                                                                             " +
+                         "\n ON CL.Id = P1C.ParCriticalLevel_Id                                                                                         " +
+                         "\n LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
+                         "\n ON AL.ParLevel1_Id = P1.Id   AND AL.IsActive = 1                                                                                               " +
 
-                         " WHERE CC.ParCompany_Id = '" + ParCompany_Id + "'                                                                           " +
-                         "                                                                                                        " +
-                         " AND P1.IsActive = 1                                                                                                        " +
-                         " ORDER BY CL.Name, P1.Name                                                                                                           ";
+                         "\n WHERE CC.ParCompany_Id = '" + ParCompany_Id + "'                                                                           " +
+                         "\n                                                                                                        " +
+                         "\n AND P1.IsActive = 1                                                                                                        " +
+                         "\n ORDER BY CL.Name, P1.Name                                                                                                           ";
 
             //var parLevel1List = (List<ParLevel1>)db.Query<ParLevel1>(sql);
 
