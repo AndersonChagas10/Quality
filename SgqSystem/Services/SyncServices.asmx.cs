@@ -2392,15 +2392,15 @@ namespace SgqSystem.Services
                               html.option("3", CommonData.getResource("period").Value.ToString()+" 3") +
                               html.option("4", CommonData.getResource("period").Value.ToString() + " 4");
 
-            string disabled = null;
+            string hide = null;
             if (GlobalConfig.Brasil)
             {
-                disabled = "disabled";
+                hide = " hide";
             }
 
-            selectPeriod = html.select(selectPeriod, id: "period", classe: disabled, disabled: true, style: "width: 160px");
+            selectPeriod = html.select(selectPeriod, id: "period", disabled: true, style: "width: 160px");
 
-            selectPeriod = "<li class='painel list-group-item'>"+ selectPeriod + " </li>";
+            selectPeriod = "<li class='painel list-group-item" + hide + "'>"+ selectPeriod + " </li>";
 
             string container = html.div(
 
@@ -4500,7 +4500,7 @@ namespace SgqSystem.Services
             if (string.IsNullOrEmpty(deviations))
             {
                 return null;
-            }
+            }   
             //var result = deviation.attr('parcompany_id'); // 0
             //result += ";" + deviation.attr('parlevel1_id'); // 1  
             //result += ";" + deviation.attr('parlevel2_id');// 2
