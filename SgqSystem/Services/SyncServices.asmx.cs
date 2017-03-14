@@ -1172,7 +1172,7 @@ namespace SgqSystem.Services
                 key += "-r";
             }
 
-            NotEvaluateIs = (naoAvaliado) ? "1" : "0";
+            //NotEvaluateIs = (naoAvaliado) ? "1" : "0";
 
             if (id == "0")
             {
@@ -2392,15 +2392,15 @@ namespace SgqSystem.Services
                               html.option("3", CommonData.getResource("period").Value.ToString()+" 3") +
                               html.option("4", CommonData.getResource("period").Value.ToString() + " 4");
 
-            string disabled = null;
+            string hide = string.Empty;
             if (GlobalConfig.Brasil)
             {
-                disabled = "disabled";
+                hide = "hide";
             }
 
-            selectPeriod = html.select(selectPeriod, id: "period", classe: disabled, disabled: true, style: "width: 160px");
+            selectPeriod = html.select(selectPeriod, id: "period", disabled: true, style: "width: 160px");
 
-            selectPeriod = "<li class='painel list-group-item'>"+ selectPeriod + " </li>";
+            selectPeriod = "<li class='painel list-group-item "+ hide +" '>"+ selectPeriod + " </li>";
 
             string container = html.div(
 
