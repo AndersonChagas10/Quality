@@ -4500,7 +4500,7 @@ namespace SgqSystem.Services
             if (string.IsNullOrEmpty(deviations))
             {
                 return null;
-            }
+            }   
             //var result = deviation.attr('parcompany_id'); // 0
             //result += ";" + deviation.attr('parlevel1_id'); // 1  
             //result += ";" + deviation.attr('parlevel2_id');// 2
