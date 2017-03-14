@@ -247,13 +247,13 @@
     <value>Allow specific register by unit</value>
   </data>
   <data name="allow_the_edition_of_the_evaluation_number" xml:space="preserve">
-    <value>Allow the edition of the evaluation number/samples</value>
+    <value>Edit evaluation/sample</value>
   </data>
   <data name="allow_the_edition_of_the_goal_of_the_level1_by_unit" xml:space="preserve">
-    <value>Allow the edition of the goal of the indicator by unit</value>
+    <value>Edit Goal</value>
   </data>
   <data name="allow_the_edition_of_the_sample_number" xml:space="preserve">
-    <value>Allow the edition of the sample number</value>
+    <value>Edit sample</value>
   </data>
   <data name="allow_the_not_applicable_button_on_level2" xml:space="preserve">
     <value>Allow the not applicable button (NA) on level2</value>
@@ -274,7 +274,7 @@
     <value>Select the consolidation type</value>
   </data>
   <data name="level1_clusters" xml:space="preserve">
-    <value>Level 1 Clusters</value>
+    <value>Cluste</value>
   </data>
   <data name="level1_counter" xml:space="preserve">
     <value>Level 1 counter</value>
@@ -301,7 +301,7 @@
     <value>Emit warning</value>
   </data>
   <data name="goal_value" xml:space="preserve">
-    <value>Goal value  (%)</value>
+    <value>Goal (%)</value>
   </data>
   <data name="limited_number_of_evaluations" xml:space="preserve">
     <value>Limited number of evaluations</value>
@@ -313,10 +313,10 @@
     <value>Register Total Evaluated</value>
   </data>
   <data name="standard" xml:space="preserve">
-    <value>Standard</value>
+    <value>Adit counts</value>
   </data>
   <data name="field_level" xml:space="preserve">
-    <value>Field level</value>
+    <value>Field Level</value>
   </data>
   <data name="field_level_popover" xml:space="preserve">
     <value>Define on which header (Level 1 or Level 2) the field will be inserted</value>
@@ -484,7 +484,7 @@
     <value>Main data</value>
   </data>
   <data name="allow_the_edition_of_the_level3_connection" xml:space="preserve">
-    <value>Allow the edition of the level 3 connection</value>
+    <value>Edit Level 3 links</value>
   </data>
   <data name="allow_the_edition_of_the_level3_connection_popover" xml:space="preserve">
     <value>Define if the units will be able to create/edit the connection with the level 3</value>
@@ -1207,7 +1207,7 @@
     <value>Invalid value for:</value>
   </data>
   <data name="level" xml:space="preserve">
-    <value>Level</value>
+    <value>Group</value>
   </data>
   <data name="level2_linked_to_level3_successfully" xml:space="preserve">
     <value>Level2 linked to the level 3 successfully!</value>

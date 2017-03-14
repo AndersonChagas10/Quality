@@ -277,7 +277,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allow the edition of the evaluation number/samples.
+        ///   Looks up a localized string similar to Edit evaluation/sample.
         /// </summary>
         internal static string allow_the_edition_of_the_evaluation_number {
             get {
@@ -286,7 +286,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allow the edition of the goal of the indicator by unit.
+        ///   Looks up a localized string similar to Edit Goal.
         /// </summary>
         internal static string allow_the_edition_of_the_goal_of_the_level1_by_unit {
             get {
@@ -295,7 +295,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allow the edition of the level 3 connection.
+        ///   Looks up a localized string similar to Edit Level 3 links.
         /// </summary>
         internal static string allow_the_edition_of_the_level3_connection {
             get {
@@ -313,7 +313,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allow the edition of the sample number.
+        ///   Looks up a localized string similar to Edit sample.
         /// </summary>
         internal static string allow_the_edition_of_the_sample_number {
             get {
@@ -1447,7 +1447,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field level.
+        ///   Looks up a localized string similar to Field Level.
         /// </summary>
         internal static string field_level {
             get {
@@ -1609,7 +1609,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Goal value  (%).
+        ///   Looks up a localized string similar to Goal (%).
         /// </summary>
         internal static string goal_value {
             get {
@@ -2023,7 +2023,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Level.
+        ///   Looks up a localized string similar to Group.
         /// </summary>
         internal static string level {
             get {
@@ -2041,7 +2041,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Level 1 Clusters.
+        ///   Looks up a localized string similar to Cluste.
         /// </summary>
         internal static string level1_clusters {
             get {
@@ -4021,7 +4021,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Standard.
+        ///   Looks up a localized string similar to Adit counts.
         /// </summary>
         internal static string standard {
             get {
