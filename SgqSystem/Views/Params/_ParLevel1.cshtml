@@ -63,24 +63,21 @@
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecific, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_specific_register_by_unit), Table.PosicaoLabel.left, null, Resources.Resource.allow_specific_register_by_unit_popover)
                         </tr>
-                        @*<tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
+                        <tr class="row groupCadastroEspecificoUnidade padding-left hidden" style="display:none">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificHeaderField, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_field_edition_of_the_header, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
-                        </tr>*@
-                        @*<tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_evaluation_number, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
                         </tr>
                         <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_evaluation_number, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
-                        </tr>*@
+                        </tr>
                         <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberSample, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_evaluation_number, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberSample, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_sample_number, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
                         </tr>
                         <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificLevel3, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_level3_connection, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.allow_the_edition_of_the_level3_connection_popover)
                         </tr>
-                        @*<tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
+                        <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificGoal, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_goal_of_the_level1_by_unit, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
-                        </tr>*@
+                        </tr>
                         <tr class="row">
                             <!-- Table.GerarColunaRadioButton(Html.Label(Resources.Resource.standard), Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "true", new { class = "icheck" }), Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "false", new { class = "icheck" }), Resources.Resource.conform, Resources.Resource.not_conform, Table.PosicaoLabel.top, null, null)-->
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.standard, new { @class = "" }), Table.PosicaoLabel.left, null, null)

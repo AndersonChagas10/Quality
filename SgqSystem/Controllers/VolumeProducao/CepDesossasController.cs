@@ -1,12 +1,12 @@
-﻿using Dominio;
-using DTO.Helpers;
-using Helper;
-using SgqSystem.Helpers;
-using SgqSystem.Secirity;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using Dominio;
+using DTO.Helpers;
+using SgqSystem.Secirity;
+using SgqSystem.Helpers;
+using Helper;
 
 namespace SgqSystem.Controllers
 {
@@ -17,12 +17,45 @@ namespace SgqSystem.Controllers
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
         // GET: CepDesossas
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult Index()
         {
             var userId = Guard.GetUsuarioLogado_Id(HttpContext);
             var userLogado = db.UserSgq.Where(r => r.Id == userId);
-            var cepDesossa = db.VolumeCepDesossa.Where(VCD => userLogado.FirstOrDefault().ParCompanyXUserSgq.Any(c => c.ParCompany_Id == VCD.ParCompany_id) || VCD.ParCompany_id == userLogado.FirstOrDefault().ParCompany_Id).Include(c => c.ParCompany).Include(c => c.ParLevel1).OrderByDescending(c => c.Data);
-            return View(cepDesossa.ToList());
+
+            var cepDesossa = db.VolumeCepDesossa.Where(VCD => userLogado.FirstOrDefault().ParCompanyXUserSgq.Any(c => c.ParCompany_Id == VCD.ParCompany_id) || VCD.ParCompany_id == userLogado.FirstOrDefault().ParCompany_Id)
+                .Include(c => c.ParCompany)
+                .Include(c => c.ParLevel1);
+
+            //Date filter
+            if (!string.IsNullOrEmpty(Request.QueryString["startDate"]) && !string.IsNullOrEmpty(Request.QueryString["endDate"]))
+            {
+                //Date filter
+                System.DateTime startDate = Guard.ParseDateToSqlV2(Request.QueryString["startDate"]);
+                System.DateTime endDate = Guard.ParseDateToSqlV2(Request.QueryString["endDate"]);
+
+                cepDesossa = cepDesossa.Where(VCD => VCD.Data >= startDate && VCD.Data <= endDate);
+            }
+            else
+            {
+                System.DateTime startDate = System.DateTime.Now.AddDays(-2);
+                System.DateTime endDate = System.DateTime.Now;
+                cepDesossa = cepDesossa.Where(VCD => VCD.Data >= startDate && VCD.Data <= endDate);
+            }
+
+            //Company filter
+            if (!string.IsNullOrEmpty(Request.QueryString["ParCompany_id"]))
+            {
+                int id = System.Convert.ToInt32(Request.QueryString["ParCompany_id"]);
+                cepDesossa = cepDesossa.Where(VCD => VCD.ParCompany_id == id);
+            }
+
+            cepDesossa = cepDesossa.OrderByDescending(c => c.Data);
+
+            if (cepDesossa.Count() > 0)
+                return View(cepDesossa.ToList());
+            else
+                return View(new System.Collections.Generic.List<VolumeCepDesossa>());
         }
 
         // GET: CepDesossas/Details/5
@@ -94,12 +127,21 @@ namespace SgqSystem.Controllers
 
             if (cepDesossa.HorasTrabalhadasPorDia == null)
                 ModelState.AddModelError("HorasTrabalhadasPorDia", "O campo \"Horas trabalhadas por dia\" precisa ser preenchido.");
+            else
+            if (cepDesossa.HorasTrabalhadasPorDia.Value <= 0)
+                ModelState.AddModelError("HorasTrabalhadasPorDia", "O campo \"Horas trabalhadas por dia\" precisa ter valor maior que 0.");
 
             if (cepDesossa.AmostraPorDia == null)
                 ModelState.AddModelError("AmostraPorDia", "O campo \"Amostra por dia\" precisa ser selecionado.");
 
             if (cepDesossa.QtdadeFamiliaProduto == null)
                 ModelState.AddModelError("QtdadeFamiliaProduto", "O campo \"Número de famílias cadastradas\" precisa ser preenchido.");
+
+            /*if (cepDesossa.Avaliacoes == null)
+                ModelState.AddModelError("Avaliacoes", Guard.MesangemModelError("Avaliacoes", false));
+
+            if (cepDesossa.Amostras == null)
+                ModelState.AddModelError("Amostras", Guard.MesangemModelError("Amostras por Avaliação", false));*/
         }
 
         // GET: CepDesossas/Edit/5

@@ -35,11 +35,6 @@
 
     table {
         text-align: left;
-        /*line-height: 40px;
-      border-collapse: separate;
-      border-spacing: 0;*/
-        /*width: 500px;
-      margin: 50px auto;*/
         border-radius: .25rem;
     }
 
@@ -49,7 +44,6 @@
 
     thead tr:first-child {
         background: #ffffff;
-        /*color: #fff;*/
         border: none;
         height: 60px;
     }
@@ -59,10 +53,6 @@
         padding: 0 15px 0 20px;
     }
 
-    /*thead tr:last-child th {
-      border-bottom: 3px solid #ddd;
-    }*/
-
     tbody tr:hover {
         background-color: rgba(170, 170, 170, 0.20);
         cursor: default;
@@ -71,10 +61,6 @@
     tbody tr:last-child td {
         border: none;
     }
-
-    /*tbody td {
-      border-bottom: 1px solid #ddd;
-    }*/
 
     td:last-child {
         text-align: right;
@@ -94,9 +80,6 @@
     .delete:hover {
         color: #dc2a2a;
     }
-
-
-
 
     .modal-header .btnGrp {
         position: absolute;
@@ -164,6 +147,7 @@
         right: 1px;
         z-index: 9999;
     }
+
 </style>
 
 <h2>Plano de Ação</h2>
@@ -980,7 +964,7 @@
                     //{ title: "Duração", mData: "Acao.DuracaoDias" },
                     //{ title: "Predecessora", mData: null },
 
-                    { title: "Ação", mData: null, defaultContent: '<p><span class="glyphicon glyphicon-edit" style="cursor:pointer"><span style="color:white">__</span></span><span style="cursor:pointer" class="glyphicon glyphicon-list-alt"></span></p>' },
+                    { title: "Ação", mData: null, defaultContent: '<p><span title="Editar" class="glyphicon glyphicon-edit" style="cursor:pointer"><span style="color:white">__</span></span><span title="Detalhes" style="cursor:pointer" class="glyphicon glyphicon-list-alt"></span></p>' },
                 ],
                 fixedColumns: {
                     //leftColumns: 1,

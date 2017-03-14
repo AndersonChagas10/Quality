@@ -1626,4 +1626,7 @@
   <data name="saved_successfully" xml:space="preserve">
     <value>Salvo com sucesso!</value>
   </data>
+  <data name="no_data_to_show" xml:space="preserve">
+    <value>Sem dados.</value>
+  </data>
 </root>
