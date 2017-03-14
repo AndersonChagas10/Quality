@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Dominio.VolumeVacuoGRD>
+﻿@using DTO
+@model IEnumerable<Dominio.VolumeVacuoGRD>
 
 @{
     ViewBag.Title = "CEP Vácuo GRD - Volume";
@@ -42,6 +43,17 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
                                 <p>
+
+                                    <div class="" id="complexCallendar" style="float:right;display:inline;width:550px;">
+                                        <button id="btnFilter" class="btn-success" style="float:right;margin-left:5px;padding:7px;margin-top:-12px;">Filtrar</button>
+                                        <div id="reportrange" class="" style="background: #fff; cursor: pointer; border: 1px solid #ccc; width: 210px;padding:5px;margin-left:5px;margin-top:-12px;float:right;">
+                                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                                            <span></span> <b class="caret"></b>
+                                        </div>
+                                        @Html.DropDownList("ParCompany_id", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control", @style = "width:200px;float:right;margin-top:-12px;margin-left:5px;" })
+                                        <span style="float:right;margin-top:-5px;margin-left:5px;">Filtro: </span>
+
+                                    </div>
                                     @Html.ActionLink("Novo volume de CEP Vácuo GRD", "Create")
                                 </p>
                                 <table class="table table-condensed">
@@ -107,5 +119,101 @@
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar7");
+
+</script>
+
+@*Referencing the Angular library to the page*@
+@Scripts.Render("~/Scripts/angular.js")
+<script>
+
+    var enviar = {};
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+    navbarSelect("navbar7");
+
+    $(function () {
+
+        //Start config datepickerrange full
+        var start = moment();
+        var end = moment();
+
+        function cb(start, end) {
+            $('#reportrange span').html(start.format() + ' - ' + end.format());
+            enviar['startDate'] = start.format();
+            enviar['endDate'] = end.format();
+        }
+        var configQueryData = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+        var configCallendar = {};
+        if(configQueryData){
+            $('#reportrange').daterangepicker({
+                startDate: start,
+                endDate: end,
+                opens: "left",
+                locale: {
+                    "format": "DD/MM/YYYY",
+                    "separator": " - ",
+                    "applyLabel": "Aplicar",
+                    "cancelLabel": "Cancelar",
+                    "customRangeLabel": "Seleção",
+                },
+                //autoApply: false,
+                alwaysShowCalendars: true,
+                showDropdowns: true,
+                ranges: rangesCalendar,
+                linkedCalendars: false
+            }, cb);
+        }else{
+            $('#reportrange').daterangepicker({
+                startDate: start,
+                endDate: end,
+                //autoApply: false,
+                locale: {
+                    "format": "MM/DD/YYYY",
+                    "separator": " - ",
+                },
+                alwaysShowCalendars: true,
+                showDropdowns: true,
+                ranges: rangesCalendar,
+                linkedCalendars: false
+            }, cb);
+        }
+
+        //cb(start, end);
+        //End config datepickerrange full
+
+        //GET UPDATE DATE CALLBACK
+        if(getParameterByName("startDate") == null || getParameterByName("endDate") == null){
+            $('#reportrange span').html("");
+        }else{
+            $('#reportrange span').html(getParameterByName("startDate") + ' - ' + getParameterByName("endDate"));
+            enviar['startDate'] = getParameterByName("startDate");
+            enviar['endDate'] = getParameterByName("endDate");
+        }
+
+        if(getParameterByName("ParCompany_id") != null){
+            $('#ParCompany_id option[value="'+getParameterByName("ParCompany_id")+'"]').prop('selected', true);
+        }
+
+        function getParameterByName(name, url) {
+            if (!url) {
+                url = window.location.href;
+            }
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        $("#btnFilter").on('click',function(){
+            var filterUrlCall = "@Url.Action("Index", "VacuoGRDs")?"+
+                ((enviar['startDate']!= null)?"startDate="+enviar['startDate']+"&":"")+
+                ((enviar['endDate']!= null)?"endDate="+enviar['endDate']+"&":"")+
+                (($('#ParCompany_id').val() > 0)?"ParCompany_id="+$('#ParCompany_id').val()+"&":"");
+            window.location = filterUrlCall;
+        });
+    });
 
 </script>

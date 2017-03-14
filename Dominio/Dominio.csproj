@@ -53,7 +53,7 @@
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="BkpCollection.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="budgets.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
@@ -198,7 +198,7 @@
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Example.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="FamiliaProdutos.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
@@ -271,6 +271,9 @@
     <Compile Include="Interfaces\Services\ISaveConsolidateDataCollectionDomain.cs" />
     <Compile Include="Interfaces\Services\IBaseDomain.cs" />
     <Compile Include="Interfaces\Services\IUserDomain.cs" />
+    <Compile Include="LeftControlRole.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Level01.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -281,7 +284,7 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="LogAlteracoes.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="LogJson.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
@@ -291,7 +294,7 @@
     </Compile>
     <Compile Include="LogService\LoggerNLog.cs" />
     <Compile Include="LogSgq.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="LogSgqGlobal.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
@@ -658,7 +661,7 @@
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="sysdiagrams.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
+      <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="TarefaAmostras.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>

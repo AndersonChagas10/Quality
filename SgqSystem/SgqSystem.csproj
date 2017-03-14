@@ -321,6 +321,7 @@
     <Compile Include="Controllers\manDataCollectITsController.cs" />
     <Compile Include="Controllers\ManutencaoController.cs" />
     <Compile Include="Controllers\Manutencao\ManPainelGestaoController.cs" />
+    <Compile Include="Controllers\Params\EquipamentosController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Relatorios\ParGoalScorecardController.cs" />
@@ -765,6 +766,7 @@
     <Content Include="Scripts\angular-touch.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -2121,6 +2123,9 @@
     <Content Include="Views\ParGoalScorecard\Details.cshtml" />
     <Content Include="Views\ParGoalScorecard\Index.cshtml" />
     <Content Include="Views\Params\Blank.cshtml" />
+    <Content Include="Views\UserSgq\Perfil.cshtml" />
+    <Content Include="Views\Role\LeftControlRole.cshtml" />
+    <Content Include="Views\Role\EditLeftControlRole.cshtml" />
     <Content Include="Views\RelatoriosSgq\CartasCep.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -2130,6 +2135,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Arquivos\uploads\" />
     <Folder Include="DataCollect\" />
+    <Folder Include="obj\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\EspecificarMonitoramentos\" />
     <Folder Include="Views\RelatorioController\" />

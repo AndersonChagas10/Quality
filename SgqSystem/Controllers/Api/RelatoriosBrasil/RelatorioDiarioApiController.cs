@@ -249,7 +249,8 @@ namespace SgqSystem.Controllers.Api
 
                 _todosOsGraficos.listResultSetLevel1 = db.Database.SqlQuery<RelDiarioResultSet>(queryIndicadores).ToList();
                 _todosOsGraficos.listResultSetTendencia = db.Database.SqlQuery<RelDiarioResultSet>(queryTendencia).ToList();
-
+                if(_todosOsGraficos.listResultSetLevel1.Count() == 0)
+                    return _todosOsGraficos;
 
                 var indicadores = _todosOsGraficos._idLevel1QueryIndicadores;
                 /*Estas 3 demais queryes dependem do resultado da queryIndicadores*/

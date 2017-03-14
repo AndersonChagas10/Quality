@@ -1,0 +1,102 @@
+﻿@model IEnumerable<Dominio.LeftControlRole>
+
+@{
+    var urlHome = Url.Action("Index", "Home");
+}
+
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content" style="min-height: 650px;">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE TITLE-->
+        <h1 class="page-title">
+            @ViewBag.Title
+        </h1>
+        <!-- END PAGE TITLE-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@urlHome">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span> @ViewBag.Title </span>
+                </li>
+            </ul>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.users</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+
+                            <div class="tab-pane active" id="setup_tab">
+                                <table class="table">
+                                    <tr>
+                                        <th>
+                                            @Resources.Resource.controller
+                                        </th>
+                                        <th>
+                                            @Resources.Resource.action
+                                        </th>
+                                        <th>
+                                            @Resources.Resource.role
+                                        </th>
+                                        <th></th>
+                                    </tr>
+
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Controller)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Action)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Role)
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink(Resources.Resource.edit, "EditLeftControlRole", new { id = item.Id })
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
+            navbarSelect("navbar15");
+        });
+
+    </script>
+}

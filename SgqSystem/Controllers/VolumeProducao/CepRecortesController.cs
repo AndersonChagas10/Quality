@@ -1,13 +1,13 @@
-﻿using System.Data.Entity;
+﻿using Dominio;
+using DTO.Helpers;
+using Helper;
+using SgqSystem.Secirity;
+using System;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using Dominio;
-using System.Data.Entity.Infrastructure;
-using System;
-using SgqSystem.Secirity;
-using DTO.Helpers;
-using Helper;
 
 namespace SgqSystem.Controllers
 {
@@ -37,17 +37,47 @@ namespace SgqSystem.Controllers
                 amostra = result.Amostra;
             }
 
-            return amostra ;
+            return amostra;
         }
 
         // GET: CepRecortes
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult Index()
         {
             var userId = Guard.GetUsuarioLogado_Id(HttpContext);
             var userLogado = db.UserSgq.Where(r => r.Id == userId);
-            var cepRecortes = db.VolumeCepRecortes.Where(VCD => userLogado.FirstOrDefault().ParCompanyXUserSgq.Any(c => c.ParCompany_Id == VCD.ParCompany_id) || VCD.ParCompany_id == userLogado.FirstOrDefault().ParCompany_Id).Include(c => c.ParCompany).Include(c => c.ParLevel1).OrderByDescending(c => c.Data);
+            var cepRecortes = db.VolumeCepRecortes.Where(VCD => userLogado.FirstOrDefault().ParCompanyXUserSgq.Any(c => c.ParCompany_Id == VCD.ParCompany_id) || VCD.ParCompany_id == userLogado.FirstOrDefault().ParCompany_Id).Include(c => c.ParCompany).Include(c => c.ParLevel1);
             //var cepRecortes = db.VolumeCepRecortes.Include(c => c.ParCompany).Include(c => c.ParLevel1).OrderByDescending(c => c.Data);
-            return View(cepRecortes.ToList());
+
+            //Date filter
+            if (!string.IsNullOrEmpty(Request.QueryString["startDate"]) && !string.IsNullOrEmpty(Request.QueryString["endDate"]))
+            {
+                //Date filter
+                System.DateTime startDate = Guard.ParseDateToSqlV2(Request.QueryString["startDate"]);
+                System.DateTime endDate = Guard.ParseDateToSqlV2(Request.QueryString["endDate"]);
+
+                cepRecortes = cepRecortes.Where(VCD => VCD.Data >= startDate && VCD.Data <= endDate);
+            }
+            else
+            {
+                System.DateTime startDate = System.DateTime.Now.AddDays(-2);
+                System.DateTime endDate = System.DateTime.Now;
+                cepRecortes = cepRecortes.Where(VCD => VCD.Data >= startDate && VCD.Data <= endDate);
+            }
+
+            //Company filter
+            if (!string.IsNullOrEmpty(Request.QueryString["ParCompany_id"]))
+            {
+                int id = System.Convert.ToInt32(Request.QueryString["ParCompany_id"]);
+                cepRecortes = cepRecortes.Where(VCD => VCD.ParCompany_id == id);
+            }
+
+            cepRecortes = cepRecortes.OrderByDescending(c => c.Data);
+
+            if (cepRecortes.Count() > 0)
+                return View(cepRecortes.ToList());
+            else
+                return View(new System.Collections.Generic.List<VolumeCepRecortes>());
         }
 
         // GET: CepRecortes/Details/5

@@ -115,6 +115,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Action.
+        /// </summary>
+        internal static string action {
+            get {
+                return ResourceManager.GetString("action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Action not allowed .
         /// </summary>
         internal static string action_not_allowed {
@@ -129,6 +138,15 @@ namespace Resources {
         internal static string action_plan {
             get {
                 return ResourceManager.GetString("action_plan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Action Required.
+        /// </summary>
+        internal static string action_required {
+            get {
+                return ResourceManager.GetString("action_required", resourceCulture);
             }
         }
         
@@ -259,7 +277,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allow the edition of the evaluation number.
+        ///   Looks up a localized string similar to Allow the edition of the evaluation number/samples.
         /// </summary>
         internal static string allow_the_edition_of_the_evaluation_number {
             get {
@@ -727,6 +745,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirmation password required.
+        /// </summary>
+        internal static string confirmation_password_required {
+            get {
+                return ResourceManager.GetString("confirmation_password_required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete this.
         /// </summary>
         internal static string confirm_delete {
@@ -795,6 +822,24 @@ namespace Resources {
         internal static string consolidation_type_popover {
             get {
                 return ResourceManager.GetString("consolidation_type_popover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Controller.
+        /// </summary>
+        internal static string controller {
+            get {
+                return ResourceManager.GetString("controller", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Controller Required.
+        /// </summary>
+        internal static string controller_required {
+            get {
+                return ResourceManager.GetString("controller_required", resourceCulture);
             }
         }
         
@@ -1960,6 +2005,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Left Menu Control.
+        /// </summary>
+        internal static string left_menu_control {
+            get {
+                return ResourceManager.GetString("left_menu_control", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Letters CEP.
         /// </summary>
         internal static string letters_cep {
@@ -2689,6 +2743,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There&apos;s no data to show..
+        /// </summary>
+        internal static string no_data_to_show {
+            get {
+                return ResourceManager.GetString("no_data_to_show", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There&apos;s no volumn on this level..
         /// </summary>
         internal static string no_volumn_level {
@@ -2761,6 +2824,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Old Password.
+        /// </summary>
+        internal static string old_password {
+            get {
+                return ResourceManager.GetString("old_password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Old password is incorrect.
+        /// </summary>
+        internal static string old_password_incorrect {
+            get {
+                return ResourceManager.GetString("old_password_incorrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Old Password Required.
+        /// </summary>
+        internal static string old_password_required {
+            get {
+                return ResourceManager.GetString("old_password_required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You need to be online to change the language.
         /// </summary>
         internal static string online_to_change_language {
@@ -2824,6 +2914,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Passwords do Not Match.
+        /// </summary>
+        internal static string Passwords_do_not_match {
+            get {
+                return ResourceManager.GetString("Passwords_do_not_match", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password Expired.
+        /// </summary>
+        internal static string password_expired {
+            get {
+                return ResourceManager.GetString("password_expired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password is required.
         /// </summary>
         internal static string password_required {
@@ -2856,6 +2964,15 @@ namespace Resources {
         internal static string percentage {
             get {
                 return ResourceManager.GetString("percentage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Profile.
+        /// </summary>
+        internal static string perfil_user {
+            get {
+                return ResourceManager.GetString("perfil_user", resourceCulture);
             }
         }
         
@@ -3166,6 +3283,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your session will expire. Do you want to stay connected?.
+        /// </summary>
+        internal static string remain_logged_in {
+            get {
+                return ResourceManager.GetString("remain_logged_in", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove Signature.
         /// </summary>
         internal static string remove_signature {
@@ -3378,6 +3504,15 @@ namespace Resources {
         internal static string save {
             get {
                 return ResourceManager.GetString("save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saved successfully!.
+        /// </summary>
+        internal static string saved_successfully {
+            get {
+                return ResourceManager.GetString("saved_successfully", resourceCulture);
             }
         }
         

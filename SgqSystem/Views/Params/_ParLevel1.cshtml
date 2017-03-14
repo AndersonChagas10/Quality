@@ -63,7 +63,7 @@
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecific, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_specific_register_by_unit), Table.PosicaoLabel.left, null, Resources.Resource.allow_specific_register_by_unit_popover)
                         </tr>
-                        <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
+                        <tr class="row groupCadastroEspecificoUnidade padding-left hidden" style="display:none">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificHeaderField, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_field_edition_of_the_header, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
                         </tr>
                         <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
