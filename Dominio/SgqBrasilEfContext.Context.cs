@@ -150,19 +150,19 @@ namespace Dominio
         public virtual DbSet<VinculoParticipanteProjeto> VinculoParticipanteProjeto { get; set; }
         public virtual DbSet<VolumeAbate> VolumeAbate { get; set; }
         public virtual DbSet<VolumeProducao> VolumeProducao { get; set; }
+        public virtual DbSet<VTVerificacaoContagem> VTVerificacaoContagem { get; set; }
+        public virtual DbSet<VTVerificacaoTipificacao> VTVerificacaoTipificacao { get; set; }
+        public virtual DbSet<VTVerificacaoTipificacaoComparacao> VTVerificacaoTipificacaoComparacao { get; set; }
+        public virtual DbSet<VTVerificacaoTipificacaoResultados> VTVerificacaoTipificacaoResultados { get; set; }
+        public virtual DbSet<VTVerificacaoTipificacaoTarefaIntegracao> VTVerificacaoTipificacaoTarefaIntegracao { get; set; }
+        public virtual DbSet<VTVerificacaoTipificacaoValidacao> VTVerificacaoTipificacaoValidacao { get; set; }
         public virtual DbSet<Z_Sistema> Z_Sistema { get; set; }
         public virtual DbSet<ControleMetaTolerancia> ControleMetaTolerancia { get; set; }
         public virtual DbSet<Resultados_BKP_OCT> Resultados_BKP_OCT { get; set; }
         public virtual DbSet<ScorecardConsolidadoDia> ScorecardConsolidadoDia { get; set; }
         public virtual DbSet<Tipificacao> Tipificacao { get; set; }
         public virtual DbSet<VerificacaoTipificacaoJBS> VerificacaoTipificacaoJBS { get; set; }
-        public virtual DbSet<VTVerificacaoContagem> VTVerificacaoContagem { get; set; }
-        public virtual DbSet<VTVerificacaoTipificacaoComparacao> VTVerificacaoTipificacaoComparacao { get; set; }
-        public virtual DbSet<VTVerificacaoTipificacaoResultados> VTVerificacaoTipificacaoResultados { get; set; }
-        public virtual DbSet<VTVerificacaoTipificacaoTarefaIntegracao> VTVerificacaoTipificacaoTarefaIntegracao { get; set; }
-        public virtual DbSet<VTVerificacaoTipificacaoValidacao> VTVerificacaoTipificacaoValidacao { get; set; }
         public virtual DbSet<VTVerificacaoTipificacaoJBS> VTVerificacaoTipificacaoJBS { get; set; }
-        public virtual DbSet<VTVerificacaoTipificacao> VTVerificacaoTipificacao { get; set; }
     
         public virtual ObjectResult<GetOperacoes_Result> GetOperacoes()
         {

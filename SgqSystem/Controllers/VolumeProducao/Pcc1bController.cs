@@ -16,13 +16,43 @@ namespace SgqSystem.Controllers
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
         // GET: Pcc1b
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult Index()
         {
             var userId = Guard.GetUsuarioLogado_Id(HttpContext);
             var userLogado = db.UserSgq.Where(r => r.Id == userId);
-            var pcc1b = db.VolumePcc1b.Where(VCD => userLogado.FirstOrDefault().ParCompanyXUserSgq.Any(c => c.ParCompany_Id == VCD.ParCompany_id) || VCD.ParCompany_id == userLogado.FirstOrDefault().ParCompany_Id).Include(c => c.ParCompany).Include(c => c.ParLevel1).OrderByDescending(c => c.Data);
+            var pcc1b = db.VolumePcc1b.Where(VCD => userLogado.FirstOrDefault().ParCompanyXUserSgq.Any(c => c.ParCompany_Id == VCD.ParCompany_id) || VCD.ParCompany_id == userLogado.FirstOrDefault().ParCompany_Id).Include(c => c.ParCompany).Include(c => c.ParLevel1);
             //var pcc1b = db.VolumePcc1b.Include(p => p.ParCompany).Include(p => p.ParLevel1).OrderByDescending(p => p.Data);
-            return View(pcc1b.ToList());
+
+            //Date filter
+            if (!string.IsNullOrEmpty(Request.QueryString["startDate"]) && !string.IsNullOrEmpty(Request.QueryString["endDate"]))
+            {
+                //Date filter
+                System.DateTime startDate = Guard.ParseDateToSqlV2(Request.QueryString["startDate"]);
+                System.DateTime endDate = Guard.ParseDateToSqlV2(Request.QueryString["endDate"]);
+
+                pcc1b = pcc1b.Where(VCD => VCD.Data >= startDate && VCD.Data <= endDate);
+            }
+            else
+            {
+                System.DateTime startDate = System.DateTime.Now.AddDays(-2);
+                System.DateTime endDate = System.DateTime.Now;
+                pcc1b = pcc1b.Where(VCD => VCD.Data >= startDate && VCD.Data <= endDate);
+            }
+
+            //Company filter
+            if (!string.IsNullOrEmpty(Request.QueryString["ParCompany_id"]))
+            {
+                int id = System.Convert.ToInt32(Request.QueryString["ParCompany_id"]);
+                pcc1b = pcc1b.Where(VCD => VCD.ParCompany_id == id);
+            }
+
+            pcc1b = pcc1b.OrderByDescending(c => c.Data);
+
+            if (pcc1b.Count() > 0)
+                return View(pcc1b.ToList());
+            else
+                return View(new System.Collections.Generic.List<VolumePcc1b>());
         }
 
         // GET: Pcc1b/Details/5

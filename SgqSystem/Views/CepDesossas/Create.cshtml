@@ -116,13 +116,12 @@
                                             @Html.LabelFor(model => model.AmostraPorDia, "Amostra por dia", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 <select id="AmostraPorDia" name="AmostraPorDia" class="form-control valid">
-                                                    <option>60</option>
-                                                    <option>120</option>
-                                                    <option>180</option>
-                                                    <option>360</option>
-                                                    <option>1160</option>
-                                                    <option>1260</option>
-                                                    <option>3260</option>
+                                                    <option value="60">60</option>
+                                                    <option value="120">120</option>
+                                                    <option value="240">240</option>
+                                                    <option value="450">450</option>
+                                                    <option value="900">900</option>
+                                                    <option value="1800">1800</option>
                                                 </select>
                                                 @*@Html.EditorFor(model => model.AmostraPorDia, new { htmlAttributes = new { @class = "form-control" } })*@
                                                 @Html.ValidationMessageFor(model => model.AmostraPorDia, "", new { @class = "text-danger" })
@@ -152,7 +151,7 @@
                                             @Html.LabelFor(model => model.Amostras, "Amostras por Avaliação", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Amostras, new { htmlAttributes = new { @class = "form-control", @disabled = "true" } })
-                                                @*@Html.ValidationMessageFor(model => model.Amostras, "", new { @class = "text-danger" })*@
+                                                @Html.ValidationMessageFor(model => model.Amostras, "", new { @class = "text-danger" })
                                                 @Html.HiddenFor(model => model.Amostras, htmlAttributes: new {@id = "amostraHidden" })
                                             </div>
                                         </div>
@@ -185,11 +184,13 @@
             if ($('#ParCompany_id').val() > 0) {
                 $.post('@Url.Action("GetVolumeDesossa", "api/Volume")' + "/" + $('#ParCompany_id').val(), {}, function (r) {
                     $('#QtdadeFamiliaProduto').val(r);
+                    applyMath();
                 });
             } else {
                 $('#QtdadeFamiliaProduto').val("");
             }
         });
+        $('#ParCompany_id').change();
     })
 
 
@@ -222,8 +223,8 @@
 
     }
 
-    $('#QtdadeFamiliaProduto').inputmask("integer", { rightAlign: false });
-    $('#HorasTrabalhadasPorDia').inputmask("integer", { rightAlign: false });
+    $('#QtdadeFamiliaProduto').inputmask("integer", { rightAlign: false  });
+    $('#HorasTrabalhadasPorDia').inputmask("integer", { rightAlign: false , min:0, max:24 });
 
     //$('input[name="birthdate"]').daterangepicker({
     //    singleDatePicker: true,
@@ -241,12 +242,13 @@
     $('#HorasTrabalhadasPorDia').on('input', function () {        
         $('#Avaliacoes').val($(this).val());
         $('#avaliacaoHidden').val($(this).val());
+        applyMath();
     });
 
     $('#AmostraPorDia, #QtdadeFamiliaProduto').on('input', function () {
-        $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
-        $('#amostraHidden').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
+        applyMath();
     });
+
     function habilitar() {
 
         $('#Avaliacoes').attr('disabled', false)
@@ -266,6 +268,12 @@
         $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
 
     });
+
+    //TASK FORCE
+    function applyMath() {
+        $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
+        $('#amostraHidden').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
+    }
 
 </script>
 <script>

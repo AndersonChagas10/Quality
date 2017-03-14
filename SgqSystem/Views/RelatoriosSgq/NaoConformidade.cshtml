@@ -33,7 +33,7 @@
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
     <div id="formBodyContent">
-
+        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
         <div id="inicio"></div>
         <div id="btnRGUnidadesGrafico"></div>
         <div id="RGUnidadesGrafico"></div>
@@ -171,6 +171,10 @@
 
         /*Charts*/
         function GraficoUnidade(data) {
+            if(!(data.length > 0)){
+                GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(Resources.Resource.no_data_to_show)));
+                return;
+            }
             //UNIDADE
             //if (data == null) {
             //    data = _result.unidadeTemp;
@@ -240,7 +244,7 @@
             $('#' + selector).empty().highcharts({
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
-                title: Chart.Titulo(GraficoIndic),
+                title: Chart.Titulo(GraficoIndic, enviar["unitName"]),
                 xAxis: Chart.Xaxis(nome),
                 yAxis: Chart.yAxisPadraoRelNc(),
                 legend: {
@@ -288,7 +292,7 @@
             $('#' + selector).empty().highcharts({
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
-                title: Chart.Titulo(GraficoMon, tarefa),
+                title: Chart.Titulo(GraficoMon, enviar["level1Name"]),
                 xAxis: Chart.Xaxis(nome),
                 yAxis: Chart.yAxisPadraoRelNc(),
                 legend: {
@@ -332,7 +336,7 @@
             $('#' + selector).empty().highcharts({
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
-                title: Chart.Titulo(GraficoTarefa, monitoramento),
+                title: Chart.Titulo(GraficoTarefa, enviar["level2Name"]),
                 xAxis: Chart.Xaxis(nome),
                 yAxis: Chart.yAxisPadraoRelNc(),
                 legend: {
@@ -661,7 +665,7 @@
 
                 return {
                     visible: false,
-                    name: '@Resources.Resource.evaluation',
+                    name: @Html.Raw(Json.Encode(Resources.Resource.evaluation)),
                     data: data,
                     color: Chart.CorTotalAv(),//'rgba(81,207,64,1)',
                     //pointPadding: 0.4,

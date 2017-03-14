@@ -287,7 +287,7 @@
 
     $(document).ready(function () {
 
-        $('#HorasTrabalhadasPorDia').inputmask("integer", { rightAlign: false });
+        $('#HorasTrabalhadasPorDia').inputmask("integer", { rightAlign: false , min:0 , max : 24});
         $('#QtdadeMediaKgRecProdDia').inputmask("integer", { rightAlign: false });
         $('#QtadeTrabEsteiraRecortes').inputmask("integer", { rightAlign: false });
         $('#TotalAvaliaColaborEsteirHoraProd').inputmask("integer", { rightAlign: false });
