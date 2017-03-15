@@ -99,8 +99,9 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="hide" id="modalCompanyObj">
-                        <div class="col-xs-6">
-                            <form>
+                        <form>
+                            <div class="col-xs-6">
+
                                 <table class="table-erp">
                                     <tbody>
                                         <tr class="row hide">
@@ -129,36 +130,38 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </form>
-                        </div>
-                        <div class="col-xs-6">
-                            <table class="table-erp">
-                                <tbody>
-                                    <tr class="row">
-                                        @Table.GerarColunaButton(@Html.DropDownList("structureGroupListId", new SelectList(ViewBag.listaParStructureXCompany, "Id", "Name"), Resources.Resource.select + "...", new { @id = "structureGroupListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.structure_group), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='" + Resources.Resource.saving + "' id='btnSaveCompany' onclick='structureGroupListAdd()' class='btn btn-primary btn-sm margin'><i class='fa fa-plus'></i></button>")
-                                    </tr>
-                                </tbody>
-                            </table>
 
-                            <table class="table-erp table table-condensed table-bordered table-margin" id="structureGroupList">
-                                <tbody></tbody>
-                            </table>
+                            </div>
+                            <div class="col-xs-6">
+                                <table class="table-erp">
+                                    <tbody>
+                                        <tr class="row">
+                                            @Table.GerarColunaButton(@Html.DropDownList("structureGroupListId", new SelectList(ViewBag.listaParStructureXCompany, "Id", "Name"), Resources.Resource.select + "...", new { @id = "structureGroupListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.structure_group), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='" + Resources.Resource.saving + "' id='btnSaveCompany' onclick='modalStructureGroupListAdd()' class='btn btn-primary btn-sm margin'><i class='fa fa-plus'></i></button>")
+                                        </tr>
+                                    </tbody>
+                                </table>
 
-                            <br />
+                                <table class="table-erp table table-condensed table-bordered table-margin" id="structureGroupList">
+                                    <tbody></tbody>
+                                </table>
 
-                            <table class="table-erp">
-                                <tbody>
-                                    <tr class="row">
-                                        @Table.GerarColunaButton(@Html.DropDownList("clusterListId", new SelectList(ViewBag.listaParCluster, "Id", "Name"), Resources.Resource.select + "...", new { @id = "clusterListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.cluster), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='" + Resources.Resource.saving + "' id='btnSaveCompany' onclick='clusterListAdd()' class='btn btn-primary btn-sm margin'><i class='fa fa-plus'></i></button>")
-                                    </tr>
-                                </tbody>
-                            </table>
+                                <br />
 
-                            <table class="table-erp table table-condensed table-bordered table-margin" id="clusterList">
-                                <tbody></tbody>
-                            </table>
-                        </div>
+                                <table class="table-erp">
+                                    <tbody>
+                                        <tr class="row">
+                                            @Table.GerarColunaButton(@Html.DropDownList("clusterListId", new SelectList(ViewBag.listaParCluster, "Id", "Name"), Resources.Resource.select + "...", new { @id = "clusterListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.cluster), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='" + Resources.Resource.saving + "' id='btnSaveCompany' onclick='modalClusterListAdd()' class='btn btn-primary btn-sm margin'><i class='fa fa-plus'></i></button>")
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <table class="table-erp table table-condensed table-bordered table-margin" id="clusterList">
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </form>
                     </div>
+
                     <div class="col-xs-12 hide" id="modalStructureObj">
                         <form>
                             <table class="table-erp">
@@ -167,7 +170,7 @@
                                         @Table.GerarColuna(@Html.Editor("parStructureDTO.Id", new { @id = "parStructureDTO_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
                                     </tr>
                                     <tr class="row">
-                                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Name", new { htmlAttributes = new { @id = "parStructureDTO_Name",  @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
+                                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Name", new { htmlAttributes = new { @id = "parStructureDTO_Name",  @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.group_name2), Table.PosicaoLabel.top)
                                         @Table.GerarColuna(@Html.Editor("parStructureDTO.Description", new { htmlAttributes = new { @id = "parStructureDTO_Description",  @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top)
                                         @Table.GerarColunaButton(@Html.DropDownList("parStructureDTO.ParStructureGroup_Id", new SelectList(ViewBag.listaParStructureGroup, "Id", "Name"), Resources.Resource.select + "...", new { @id = "parStructureDTO_ParStructureGroup_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group), Table.PosicaoLabel.top)
                                     </tr>
@@ -385,6 +388,7 @@
         closeCompanyModal();
     });
 
+    //Controles dentro do modal
     function closeCompanyModal() {
         $('#modalCompanyObj').addClass('hide');
         $('#modalStructureObj').addClass('hide');
@@ -393,5 +397,30 @@
         $('#modalCompany').modal('hide');
     }
 
+    function modalClusterListAdd() {
+        if ($('#modalCompany #clusterListId :selected').val() != "") {
+            if ($('#modalCompany #clusterList').children('tbody').children('tr[value=' + $('#modalCompany #clusterListId :selected').val() + ']').length == 0)
+                $('#modalCompany #clusterList').children('tbody').append('<tr value=' + $('#modalCompany #clusterListId :selected').val() + '><td>' + $('#modalCompany #clusterListId :selected').text() + '<i class="fa fa-close pull-right text-danger" onclick="removeClusterList(' + $('#modalCompany #clusterListId :selected').val() + ')" style="margin: 4px;"></i></td></tr>');
+
+            if ($('#modalCompany #clusterList').children('tbody').children('tr[value=' + $('#modalCompany #clusterListId :selected').val() + ']').length == 1)
+                $("#modalCompany #btnAddCluster").addClass("disabled");
+        }
+    }
+
+    function modalStructureGroupListAdd() {
+        if ($('#modalCompany #structureGroupListId :selected').val() != "") {
+            if ($('#modalCompany #structureGroupList').children('tbody').children('tr[value=' + $('#modalCompany #structureGroupListId :selected').val() + ']').length == 0)
+                $('#modalCompany #structureGroupList').children('tbody').append('<tr value=' + $('#modalCompany #structureGroupListId :selected').val() + '><td>' + $('#modalCompany #structureGroupListId :selected').text() + '<i class="fa fa-close pull-right text-danger" onclick="removeStructureGroupList(' + $('#modalCompany #structureGroupListId :selected').val() + ')" style="margin: 4px;"></i></td></tr>');
+        }
+    }
+
+    function modalRemoveClusterList(value) {
+        $('#modalCompany #clusterList').children('tbody').children('tr[value=' + value + ']').remove();
+        $("#modalCompany #btnAddCluster").removeClass("disabled");
+    }
+
+    function modalRemoveStructureGroupList(value, modal) {
+        $('#modalCompany #structureGroupList').children('tbody').children('tr[value=' + value + ']').remove();
+    }
 
 </script>

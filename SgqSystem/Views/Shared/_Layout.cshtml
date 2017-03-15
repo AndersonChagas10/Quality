@@ -405,7 +405,7 @@
 
         function logoutTimeout() {
             timer = setTimeout(function(){
-                document.location.href = "/UserAuthentication/LogOut";
+                document.location.href = '@Url.Action("LogOut", "UserAuthentication")';
             }, 300000);
             //}, 3000);
         }
@@ -452,7 +452,9 @@
                                 timerSession.cancelLogout();
                             }
                             else {
-                                document.location.href = "/UserAuthentication/LogOut";
+                                document.location.href = '@Url.Action("LogOut", "UserAuthentication")';
+
+
                             }
                         }
                     });
@@ -466,13 +468,13 @@
 
         };
         timerSession.verificarCookieExiste();
-         //FIM Metodo de exibir Modal de alerta de expirar sessão
+        //FIM Metodo de exibir Modal de alerta de expirar sessão
 
 
         $(document).ready(function () {
-             //var settngs = $.data($('form')[0], 'validator').settings;
-             //settngs.ignore = ".ignore";
-         });
+            //var settngs = $.data($('form')[0], 'validator').settings;
+            //settngs.ignore = ".ignore";
+        });
 
         @*var cccccounter = 0;
         if (!!getCookie('webControlCookie')) {
@@ -513,4 +515,3 @@
 
 </body>
 </html>
-
