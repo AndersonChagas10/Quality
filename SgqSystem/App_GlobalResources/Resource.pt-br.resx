@@ -1629,4 +1629,10 @@
   <data name="no_data_to_show" xml:space="preserve">
     <value>Sem dados.</value>
   </data>
+  <data name="company_list" xml:space="preserve">
+    <value>Lista de Empresas</value>
+  </data>
+  <data name="new_company" xml:space="preserve">
+    <value>Nova empresa</value>
+  </data>
 </root>

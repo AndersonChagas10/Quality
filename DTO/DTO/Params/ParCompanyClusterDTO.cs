@@ -12,5 +12,7 @@ namespace DTO.DTO.Params
         public int ParCompany_Id { get; set; }
         public int ParCluster_Id { get; set; }
         public bool Active { get; set; }
-    }
+
+        public ParClusterDTO ParCluster;
+    } 
 }

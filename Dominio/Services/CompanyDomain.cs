@@ -3,6 +3,10 @@ using AutoMapper;
 using Dominio.Interfaces.Repositories;
 using Dominio.Interfaces.Services;
 using DTO.DTO.Params;
+using System.Collections.Generic;
+using DTO.Helpers;
+using System.Linq;
+using System.Data.Entity;
 
 namespace Dominio.Services
 {
@@ -74,6 +78,89 @@ namespace Dominio.Services
 
             return parCompanyDTO;
         }
+
+        public void SaveParCompany(ParCompany parCompany)
+        {
+
+            if (parCompany.Id == 0)
+            {
+                _baseRepoParCompany.Add(parCompany);
+            }
+            else
+            {
+                Guard.verifyDate(parCompany, "AlterDate");
+                _baseRepoParCompany.Update(parCompany);
+            }
+        }
+
+        public void SaveParCompanyCluster(List<ParCompanyCluster> listParCompanyCluster, ParCompany parCompany)
+        {
+            List<ParCompanyCluster> dbList = _baseRepoParCompanyCluster.GetAll().Where(r => r.ParCompany_Id == parCompany.Id && r.Active == true).ToList();
+
+            foreach (ParCompanyCluster companyCluster in dbList)
+            {
+                ParCompanyCluster save = listParCompanyCluster.Where(r => r.ParCluster_Id == companyCluster.ParCluster_Id &&
+                                            r.ParCompany_Id == companyCluster.ParCompany_Id &&
+                                            r.Active == true).FirstOrDefault();
+
+                if (save == null)
+                {
+                    companyCluster.Active = false;
+                    Guard.verifyDate(companyCluster, "AlterDate");
+                    _baseRepoParCompanyCluster.Update(companyCluster);
+                }
+                else
+                {
+                    save.ParCompany_Id = companyCluster.ParCompany_Id;
+                    save.Id = companyCluster.Id;
+                    Guard.verifyDate(companyCluster, "AlterDate");
+                    _baseRepoParCompanyCluster.Update(companyCluster);
+                }
+                listParCompanyCluster.Remove(save);
+            }
+
+            foreach (ParCompanyCluster companyCluster in listParCompanyCluster)
+            {
+                companyCluster.Active = true;
+                _baseRepoParCompanyCluster.Add(companyCluster);
+            }
+        }
+
+        public void SaveParCompanyXStructure(List<ParCompanyXStructure> listParCompanyXStructure, ParCompany parCompany)
+        {
+            List<ParCompanyXStructure> dbList = _baseRepoParCompanyXStructure.GetAll().Where(r => r.ParCompany_Id == parCompany.Id && r.Active == true).ToList();
+
+            foreach (ParCompanyXStructure companyStructure in dbList)
+            {
+                ParCompanyXStructure save = listParCompanyXStructure.Where(r => r.ParStructure_Id == companyStructure.ParStructure_Id &&
+                                            r.ParCompany_Id == companyStructure.ParCompany_Id &&
+                                            r.Active == true).FirstOrDefault();
+
+                if (save == null)
+                {
+                    companyStructure.Active = false;
+                    Guard.verifyDate(companyStructure, "AlterDate");
+                    _baseRepoParCompanyXStructure.Update(companyStructure);
+                }
+                else
+                {
+                    save.ParCompany_Id = companyStructure.ParCompany_Id;
+                    save.Id = companyStructure.Id;
+                    Guard.verifyDate(companyStructure, "AlterDate");
+                    _baseRepoParCompanyXStructure.Update(companyStructure);
+                }
+                listParCompanyXStructure.Remove(save);
+            }
+
+            foreach (ParCompanyXStructure companyStructure in listParCompanyXStructure)
+            {
+                companyStructure.Active = true;
+                _baseRepoParCompanyXStructure.Add(companyStructure);
+            }
+
+
+        }
+
 
         public ParCompanyXStructureDTO AddUpdateParCompanyXStructureDTO(ParCompanyXStructureDTO parCompanyXStructureDTO)
         {
