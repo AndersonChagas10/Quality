@@ -1644,4 +1644,10 @@
   <data name="time_interval_consolidation" xml:space="preserve">
     <value>Intervalo de tempo para a consolidação em tempo real</value>
   </data>
+  <data name="company_list" xml:space="preserve">
+    <value>Lista de Empresas</value>
+  </data>
+  <data name="new_company" xml:space="preserve">
+    <value>Nova empresa</value>
+  </data>
 </root>

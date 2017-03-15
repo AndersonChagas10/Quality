@@ -518,13 +518,7 @@ namespace Dominio.Services
             return paramsDto;
         }
 
-        public ParamsDTO AddUpdateParCompany(ParamsDTO paramsDto)
-        {
-            ParCompany saveParCompany = Mapper.Map<ParCompany>(paramsDto.parCompanyDto);
-            _paramsRepo.SaveParCompany(saveParCompany);
-            paramsDto.parCompanyDto.Id = saveParCompany.Id;
-            return paramsDto;
-        }
+        
 
         #endregion
 

@@ -709,6 +709,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Company List.
+        /// </summary>
+        internal static string company_list {
+            get {
+                return ResourceManager.GetString("company_list", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Company Number.
         /// </summary>
         internal static string company_number {
@@ -2577,6 +2586,15 @@ namespace Resources {
         internal static string new_cluster {
             get {
                 return ResourceManager.GetString("new_cluster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New company.
+        /// </summary>
+        internal static string new_company {
+            get {
+                return ResourceManager.GetString("new_company", resourceCulture);
             }
         }
         

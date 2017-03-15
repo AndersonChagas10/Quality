@@ -2,7 +2,7 @@
 
 @{
 
-    ViewBag.Title = @Resources.Resource.company_register;
+    ViewBag.Title = @Resources.Resource.company;
 
     var urlCompany = Url.Action("AddUpdateParCompany", "api/Company"); //URL relativa
     var urlStructure = Url.Action("AddUpdateParStructure", "api/Company"); //URL relativa
@@ -17,8 +17,7 @@
         <!-- BEGIN PAGE HEADER-->
         <!-- BEGIN PAGE TITLE-->
         <h1 class="page-title">
-            @Resources.Resource.company_register
-            <small>@Resources.Resource.register_company_and_its_structure</small>
+            @Resources.Resource.company_list
         </h1>
         <!-- END PAGE TITLE-->
         <!-- BEGIN PAGE BAR -->
@@ -29,7 +28,7 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span> @Resources.Resource.company_register </span>
+                    <span> @Resources.Resource.company </span>
                 </li>
             </ul>
             <div class="page-toolbar">
@@ -47,33 +46,14 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.company_register</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.company_list</span>
                         </div>
                     </div>
                     <div class="portlet-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
                                 
-                                <div class="panel-group accordion" id="company_accordion">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <div class="row panel-title">
-                                                <div class="col-xs-12">
-                                                    <h4 class="panel-title">
-                                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#company_accordion" href="#company_collapse" aria-expanded="false" id="level2Title"> @Resources.Resource.company </a>
-                                                    </h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="company_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                                            <div class="panel-body">
-                                                <div id="ParLevel2">
-                                                    @Html.Partial("~/Views/ParCompany/ParCompany.cshtml")
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @Html.Partial("~/Views/ParCompany/ParCompany.cshtml")
 
                             </div>
 
@@ -128,6 +108,7 @@
                                         <tr class="row">
                                             @Table.GerarColuna(@Html.Editor("parCompanyDTO.DBServer", new { htmlAttributes = new { @id = "parCompanyDTO_DBServer", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.db_server), Table.PosicaoLabel.top)
                                         </tr>
+                                        <tr></tr>
                                     </tbody>
                                 </table>
 
@@ -162,38 +143,6 @@
                         </form>
                     </div>
 
-                    <div class="col-xs-12 hide" id="modalStructureObj">
-                        <form>
-                            <table class="table-erp">
-                                <tbody>
-                                    <tr class="row hide">
-                                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Id", new { @id = "parStructureDTO_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
-                                    </tr>
-                                    <tr class="row">
-                                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Name", new { htmlAttributes = new { @id = "parStructureDTO_Name",  @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.group_name2), Table.PosicaoLabel.top)
-                                        @Table.GerarColuna(@Html.Editor("parStructureDTO.Description", new { htmlAttributes = new { @id = "parStructureDTO_Description",  @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top)
-                                        @Table.GerarColunaButton(@Html.DropDownList("parStructureDTO.ParStructureGroup_Id", new SelectList(ViewBag.listaParStructureGroup, "Id", "Name"), Resources.Resource.select + "...", new { @id = "parStructureDTO_ParStructureGroup_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.group), Table.PosicaoLabel.top)
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </form>
-                    </div>
-                    <div class="col-xs-12 hide" id="modalStructureGroupObj">
-                        <form>
-                            <table class="table-erp">
-                                <tbody>
-                                    <tr class="row hide">
-                                        @Table.GerarColuna(@Html.Editor("parStructureGroupDTO.Id", new { @id = "parStructureGroupDTO_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.id), Table.PosicaoLabel.top, null, null)
-                                    </tr>
-                                    <tr class="row">
-                                        @Table.GerarColuna(@Html.Editor("parStructureGroupDTO.Name", new { htmlAttributes = new { @id = "parStructureGroupDTO_Name", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.name), Table.PosicaoLabel.top)
-                                        @Table.GerarColuna(@Html.Editor("parStructureGroupDTO.Description", new { htmlAttributes = new { @id = "parStructureGroupDTO_Description", @class = "form-control input-sm" } }), @Html.Label(Resources.Resource.description), Table.PosicaoLabel.top)
-                                        @Table.GerarColunaButton(@Html.DropDownList("parStructureGroupDTO.ParStructureGroupParent_Id", new SelectList(ViewBag.listaParStructureGroup, "Id", "Name"), Resources.Resource.select + "...", new { @id = "parStructureGroupDTO_ParStructureGroupParent_Id", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.structure_group), Table.PosicaoLabel.top)
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </form>
-                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -304,6 +253,30 @@
                 var obj = object[key];
                 $('#modalCompanyObj #parCompanyDTO_' + key).val(obj);
             }
+
+            $('#modalCompany #structureGroupList').children('tbody').empty();
+            if (object.ListParCompanyXStructure.length > 0) {
+                object.ListParCompanyXStructure.forEach(function (value) {
+                    $('#modalCompany #structureGroupList').children('tbody').append('<tr value=' + value.ParStructure_Id + '><td>' + value.ParStructure.Name + '<i class="fa fa-close pull-right text-danger" onclick="removeStructureGroupList(' + value.ParStructure_Id + ')" style="margin: 4px;"></i></td></tr>');
+                });
+            }
+
+            $('#modalCompany #clusterList').children('tbody').empty();
+            if (object.ListParCompanyCluster.length > 0) {
+                object.ListParCompanyCluster.forEach(function (value) {
+                    $('#modalCompany #clusterList').children('tbody').append('<tr value=' + value.ParCluster_Id + '><td>' + value.ParCluster.Name + '<i class="fa fa-close pull-right text-danger" onclick="removeClusterList(' + value.ParCluster_Id + ')" style="margin: 4px;"></i></td></tr>');
+                });
+            }
+        },
+        novo: function () {
+            $('#modalCompany .modal-dialog').addClass('modal-xl');
+            $('#modalCompany').modal();
+            $('#modalCompanyObj').removeClass('hide');
+            $('#modalCompany #structureGroupList').children('tbody').empty();
+            $('#modalCompany #clusterList').children('tbody').empty();
+            $('#modalCompany .modal-header').text('@Resources.Resource.new_company');
+
+            $('#modalCompanyObj input, #modalCompanyObj select').val("");
         }
     }
 
@@ -337,12 +310,14 @@
                 var obj = object[key];
                 $('#modalStructureObj #parStructureDTO_' + key).val(obj);
             }
+
+            
         }
     }
 
     var indexParStructureGroup = {
         enviarDadosParaApi: function (result) {
-            
+
             var dados = $('#formParStructureGroup').serializeObject();
             if (result)
                 dados = result;

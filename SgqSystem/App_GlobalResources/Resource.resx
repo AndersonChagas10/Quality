@@ -1650,6 +1650,12 @@
   <data name="no_data_to_show" xml:space="preserve">
     <value>There's no data to show.</value>
   </data>
+  <data name="company_list" xml:space="preserve">
+    <value>Company List</value>
+  </data>
+  <data name="new_company" xml:space="preserve">
+    <value>New company</value>
+  </data>
   <data name="defines_consolidation_indicator" xml:space="preserve">
     <value>Defines real-time consolidation for the indicator</value>
   </data>
