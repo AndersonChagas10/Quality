@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/cssBootstrap")
     @Styles.Render("~/bundles/hcstyle")
     @Styles.Render("~/Content/Tables")
     @Styles.Render("~/Content/select2css")
@@ -43,6 +43,7 @@
 
     @Scripts.Render("~/bundles/ScriptTables")
     @Scripts.Render("~/bundles/select2js")
+    @Scripts.Render("~/bundles/loadingoverlay")
 
     @RenderSection("scripts", required: false)
 
