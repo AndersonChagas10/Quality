@@ -1653,6 +1653,12 @@
   <data name="equipaments" xml:space="preserve">
     <value>Equipamentos</value>
   </data>
+  <data name="fill_the_equipaments" xml:space="preserve">
+    <value>Preencha o campo de equipamentos</value>
+  </data>
+  <data name="fill_the_integration_field_name" xml:space="preserve">
+    <value>Preencha o campo de integração</value>
+  </data>
   <data name="alert" xml:space="preserve">
     <value>Alerta</value>
   </data>

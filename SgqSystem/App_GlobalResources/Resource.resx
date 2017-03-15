@@ -1674,6 +1674,12 @@
   <data name="equipaments" xml:space="preserve">
     <value>Equipaments</value>
   </data>
+  <data name="fill_the_equipaments" xml:space="preserve">
+    <value>Fill the equipaments field</value>
+  </data>
+  <data name="fill_the_integration_field_name" xml:space="preserve">
+    <value>Fill the field integration</value>
+  </data>
   <data name="alert" xml:space="preserve">
     <value>Alert</value>
   </data>
