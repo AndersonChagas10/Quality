@@ -1537,6 +1537,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fill the equipaments field.
+        /// </summary>
+        internal static string fill_the_equipaments {
+            get {
+                return ResourceManager.GetString("fill_the_equipaments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fill the field integration.
+        /// </summary>
+        internal static string fill_the_integration_field_name {
+            get {
+                return ResourceManager.GetString("fill_the_integration_field_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fill the the numeric field name.
         /// </summary>
         internal static string fill_the_numeric_field_name {

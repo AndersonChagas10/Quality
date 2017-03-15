@@ -136,7 +136,7 @@
                                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parHeaderFieldDto.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.field_name), Table.PosicaoLabel.top, @Html.ErrorManual("nomeCampoCabecalho", "O campo Nome deve ser preenchido para Nível do Campo"), null)
                                             @if (GlobalConfig.Brasil)
                                             {
-                                                @Table.GerarColuna(@Html.DropDownListFor(m => m.paramsDto.parHeaderFieldDto.Name, Model.paramsDdl.DdlEquipamentos, new { @class = "form-control input-sm equipamentos" }), @Html.Label(Resources.Resource.field_name), Table.PosicaoLabel.top, @Html.ErrorManual("tipoCampoCabecalho", "O campo Tipo deve ser selecionado para Nível do Campo"))
+                                                @Table.GerarColuna(@Html.DropDownListFor(m => m.paramsDto.parHeaderFieldDto.Description, Model.paramsDdl.DdlEquipamentos, new { @class = "form-control input-sm equipamentos" }), @Html.Label(Resources.Resource.equipaments), Table.PosicaoLabel.top, null)
                                             }                                            
                                             @Table.GerarColunaCheckbox(@Html.EditorFor(m => m.paramsDto.parHeaderFieldDto.LinkNumberEvaluetion, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.link_number_evaluation), Table.PosicaoLabel.top, null, null)
                                         </tr>
@@ -507,9 +507,9 @@
 
 
 <script>
-    
+
     var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
-    
+
     $(document).ready(function() {
         if(config){
             $('#registerTotalEv').hide();
@@ -563,7 +563,7 @@
         },
         BtnExcluir:  function(){ return '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParMultiplaEscolhaOpcoes.length + ');"><i class="fa fa-times"></i></button>'; },
         BtnExcluir2: function(){ return '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParBinario.length +', true);"><i class="fa fa-times"></i></button>'; },
-      
+
         ListaDeCabecalhos: [],
 
         listParHeaderFieldDto: [],
@@ -633,8 +633,7 @@
             Cabecalhos.ParMultiplaEscolhaOpcoes = [];
             Cabecalhos.ParBinario = [];
 
-            $('.equipamentos').parents('td').hide();
-            $('#paramsDto_parHeaderFieldDto_Name').parents('td').show();
+            $('#paramsDto_parHeaderFieldDto_Description').parents('td').hide();
 
             switch (escolhaSelecionada) {
                 case 1: //Multipla Escolha
@@ -666,8 +665,6 @@
         //Integracoes
         ShowIntegracoes: function() {
             $('#objIntegracoes').show();
-            $('#paramsDto_parHeaderFieldDto_Name').parents('td').hide();
-            $('.equipamentos').parents('td').show();
         },
 
         //MULTIPLA ESCOLHA
@@ -1095,8 +1092,7 @@
         ShowIntegracoes: function () {
             $('#btnIncluirIntegracoes').show();
             $('#objIntegracoes').show();
-            $('#paramsDto_parHeaderFieldDto_Name').parents('td').hide();
-            $('.equipamentos').parents('td').show();
+            $('#paramsDto_parHeaderFieldDto_Description').parents('td').show();
             $('#btnIncluirCabecalho input').hide();
         },
 
@@ -1171,13 +1167,20 @@
                 return;
             }
 
-            if($('.equipamentos').val().length == 0){
-                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.fill_the_numeric_field_name");
+            if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
+                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.fill_the_integration_field_name");
                 //alert('Digite o nome para o Campo Numerico');
                 return;
             }
 
-            var nome = $('.equipamentos').val();
+            if($('#paramsDto_parHeaderFieldDto_Description').val().length == 0){
+                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.fill_the_equipaments");
+                //alert('Digite o nome para o Campo Numerico');
+                return;
+            }
+
+            var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
+            var description = $('#paramsDto_parHeaderFieldDto_Description').val();
             var nivelCabecalho = $('#headerLevel option:selected').val();
             var tipo = $('#parFieldType option:selected').val();
             var linkedNumberEvaluation = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked');
@@ -1187,7 +1190,7 @@
                 Nivel: nivelCabecalho,
                 Type: tipo,
                 IsRemoved: false,
-                Description: "",
+                Description: description,
                 Link: linkedNumberEvaluation
             });
 
