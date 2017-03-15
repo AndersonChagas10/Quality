@@ -23,8 +23,8 @@ namespace PlanoDeAcaoMVC
                       "~/Scripts/bootstrap-datepicker.min.js",
                       "~/Scripts/locales/bootstrap-datepicker.pt-BR.min.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+            bundles.Add(new StyleBundle("~/Content/cssBootstrap").Include(
+                      "~/Content/bootstrap.min.css",
                       "~/Content/site.css"));
 
             //HighCharts
