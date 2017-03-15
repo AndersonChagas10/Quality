@@ -247,13 +247,13 @@
     <value>Allow specific register by unit</value>
   </data>
   <data name="allow_the_edition_of_the_evaluation_number" xml:space="preserve">
-    <value>Allow the edition of the evaluation number/samples</value>
+    <value>Edit evaluation/sample</value>
   </data>
   <data name="allow_the_edition_of_the_goal_of_the_level1_by_unit" xml:space="preserve">
-    <value>Allow the edition of the goal of the indicator by unit</value>
+    <value>Edit Goal</value>
   </data>
   <data name="allow_the_edition_of_the_sample_number" xml:space="preserve">
-    <value>Allow the edition of the sample number</value>
+    <value>Edit sample</value>
   </data>
   <data name="allow_the_not_applicable_button_on_level2" xml:space="preserve">
     <value>Allow the not applicable button (NA) on level2</value>
@@ -274,7 +274,7 @@
     <value>Select the consolidation type</value>
   </data>
   <data name="level1_clusters" xml:space="preserve">
-    <value>Level 1 Clusters</value>
+    <value>Cluste</value>
   </data>
   <data name="level1_counter" xml:space="preserve">
     <value>Level 1 counter</value>
@@ -301,7 +301,7 @@
     <value>Emit warning</value>
   </data>
   <data name="goal_value" xml:space="preserve">
-    <value>Goal value  (%)</value>
+    <value>Goal (%)</value>
   </data>
   <data name="limited_number_of_evaluations" xml:space="preserve">
     <value>Limited number of evaluations</value>
@@ -313,16 +313,16 @@
     <value>Register Total Evaluated</value>
   </data>
   <data name="standard" xml:space="preserve">
-    <value>Standard</value>
+    <value>Adit counts</value>
   </data>
   <data name="field_level" xml:space="preserve">
-    <value>Field level</value>
+    <value>Field Level</value>
   </data>
   <data name="field_level_popover" xml:space="preserve">
     <value>Define on which header (Level 1 or Level 2) the field will be inserted</value>
   </data>
   <data name="field_name" xml:space="preserve">
-    <value>Field name</value>
+    <value>Header name</value>
   </data>
   <data name="header_fields" xml:space="preserve">
     <value>Header fields</value>
@@ -334,7 +334,7 @@
     <value>"Other" on Level 3</value>
   </data>
   <data name="allow_the_audit_of_detached_level3_popover" xml:space="preserve">
-    <value>Define se existirá um campo para gravar desvios não previstos.</value>
+    <value>Defines whether a field exists for recording unplanned deviations.</value>
   </data>
   <data name="conform" xml:space="preserve">
     <value>Conform</value>
@@ -484,7 +484,7 @@
     <value>Main data</value>
   </data>
   <data name="allow_the_edition_of_the_level3_connection" xml:space="preserve">
-    <value>Allow the edition of the level 3 connection</value>
+    <value>Edit Level 3 links</value>
   </data>
   <data name="allow_the_edition_of_the_level3_connection_popover" xml:space="preserve">
     <value>Define if the units will be able to create/edit the connection with the level 3</value>
@@ -544,7 +544,7 @@
     <value>Validation</value>
   </data>
   <data name="data_type_entry" xml:space="preserve">
-    <value>Data type entry</value>
+    <value>Data type </value>
   </data>
   <data name="maximum_range" xml:space="preserve">
     <value>Maximum range</value>
@@ -652,7 +652,7 @@
     <value>Structure register</value>
   </data>
   <data name="structure_group" xml:space="preserve">
-    <value>Structure Group</value>
+    <value>Group Above</value>
   </data>
   <data name="saving" xml:space="preserve">
     <value>Saving</value>
@@ -709,7 +709,7 @@
     <value>IP Server</value>
   </data>
   <data name="sif" xml:space="preserve">
-    <value>SIF</value>
+    <value>Establishment Code</value>
   </data>
   <data name="close" xml:space="preserve">
     <value>Close</value>
@@ -1138,7 +1138,7 @@
     <value>Unit changed. The unit was changed, login again to update the indicators</value>
   </data>
   <data name="update_parameters_must_be_online" xml:space="preserve">
-    <value>Para atualizar os parâmetros, você precisa estar on-line</value>
+    <value>You must be online to update parameters</value>
   </data>
   <data name="updating_parameters" xml:space="preserve">
     <value>Updating parameters</value>
@@ -1207,7 +1207,7 @@
     <value>Invalid value for:</value>
   </data>
   <data name="level" xml:space="preserve">
-    <value>Level</value>
+    <value>Group</value>
   </data>
   <data name="level2_linked_to_level3_successfully" xml:space="preserve">
     <value>Level2 linked to the level 3 successfully!</value>
@@ -1471,7 +1471,7 @@
     <value>The period need to be selected</value>
   </data>
   <data name="sign" xml:space="preserve">
-    <value>Assinar</value>
+    <value>Sing</value>
   </data>
   <data name="slaughter_signature" xml:space="preserve">
     <value>Slaughter signature</value>
@@ -1655,5 +1655,20 @@
   </data>
   <data name="new_company" xml:space="preserve">
     <value>New company</value>
+  </data>
+  <data name="defines_consolidation_indicator" xml:space="preserve">
+    <value>Defines real-time consolidation for the indicator</value>
+  </data>
+  <data name="group_name2" xml:space="preserve">
+    <value>Group Name</value>
+  </data>
+  <data name="has_real_time_consolidation" xml:space="preserve">
+    <value>Has real-time consolidation</value>
+  </data>
+  <data name="time_interval_above_item" xml:space="preserve">
+    <value>Sets the time interval for the above item</value>
+  </data>
+  <data name="time_interval_consolidation" xml:space="preserve">
+    <value>Time interval for real-time consolidation</value>
   </data>
 </root>

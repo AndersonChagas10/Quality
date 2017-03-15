@@ -177,14 +177,14 @@ public class ScorecardResultSet
 
                    "\n  WHEN CT.Id IN (1,2) THEN " +
 
-                    "\n  CASE WHEN SUM(CL1.WeiEvaluation) = 0 THEN 0 " +
-                    "\n  WHEN SUM(CL1.WeiDefects) = 0 THEN 1 " +
-                    "\n  ELSE SUM(CL1.WeiDefects) / SUM(CL1.WeiEvaluation) END " +
-                    "\n  WHEN CT.Id = 3 THEN " +
-                    "\n  CASE WHEN SUM(CL1.EvaluatedResult) = 0 THEN 0 " +
-                    "\n  WHEN SUM(CL1.DefectsResult) = 0 THEN 1 " +
-                    "\n  ELSE(CAST(SUM(CL1.DefectsResult) AS DECIMAL) / CAST(SUM(CL1.EvaluatedResult) AS DECIMAL)) END " +
-                    "\n  END END * 100 AS Real " +
+                    "\n  CASE WHEN SUM(CL1.WeiEvaluation) = 0 THEN 0                                                    " +
+                    "\n  WHEN SUM(CL1.WeiDefects) = 0 THEN 1                                                            " +
+                    "\n  ELSE SUM(CL1.WeiDefects) / SUM(CL1.WeiEvaluation) END                                          " +
+                    "\n  WHEN CT.Id = 3 THEN                                                                            " +
+                    "\n  CASE WHEN SUM(CL1.EvaluatedResult) = 0 THEN 0                                                  " +
+                    "\n  WHEN SUM(CL1.DefectsResult) = 0 THEN 1                                                         " +
+                    "\n  ELSE(CAST(SUM(CL1.DefectsResult) AS DECIMAL) / CAST(SUM(CL1.EvaluatedResult) AS DECIMAL)) END  " +
+                    "\n  END END * 100 AS Real                                                                          " +
 
                 
                 "\n ,ST.Name AS TipoScore " +

@@ -268,7 +268,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Define se existirá um campo para gravar desvios não previstos..
+        ///   Looks up a localized string similar to Defines whether a field exists for recording unplanned deviations..
         /// </summary>
         internal static string allow_the_audit_of_detached_level3_popover {
             get {
@@ -277,7 +277,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allow the edition of the evaluation number/samples.
+        ///   Looks up a localized string similar to Edit evaluation/sample.
         /// </summary>
         internal static string allow_the_edition_of_the_evaluation_number {
             get {
@@ -286,7 +286,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allow the edition of the goal of the indicator by unit.
+        ///   Looks up a localized string similar to Edit Goal.
         /// </summary>
         internal static string allow_the_edition_of_the_goal_of_the_level1_by_unit {
             get {
@@ -295,7 +295,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allow the edition of the level 3 connection.
+        ///   Looks up a localized string similar to Edit Level 3 links.
         /// </summary>
         internal static string allow_the_edition_of_the_level3_connection {
             get {
@@ -313,7 +313,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allow the edition of the sample number.
+        ///   Looks up a localized string similar to Edit sample.
         /// </summary>
         internal static string allow_the_edition_of_the_sample_number {
             get {
@@ -1060,7 +1060,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Data type entry.
+        ///   Looks up a localized string similar to Data type .
         /// </summary>
         internal static string data_type_entry {
             get {
@@ -1173,6 +1173,15 @@ namespace Resources {
         internal static string defined_weight {
             get {
                 return ResourceManager.GetString("defined_weight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Defines real-time consolidation for the indicator.
+        /// </summary>
+        internal static string defines_consolidation_indicator {
+            get {
+                return ResourceManager.GetString("defines_consolidation_indicator", resourceCulture);
             }
         }
         
@@ -1456,7 +1465,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field level.
+        ///   Looks up a localized string similar to Field Level.
         /// </summary>
         internal static string field_level {
             get {
@@ -1474,7 +1483,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field name.
+        ///   Looks up a localized string similar to Header name.
         /// </summary>
         internal static string field_name {
             get {
@@ -1618,7 +1627,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Goal value  (%).
+        ///   Looks up a localized string similar to Goal (%).
         /// </summary>
         internal static string goal_value {
             get {
@@ -1650,6 +1659,15 @@ namespace Resources {
         internal static string group_name {
             get {
                 return ResourceManager.GetString("group_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group Name.
+        /// </summary>
+        internal static string group_name2 {
+            get {
+                return ResourceManager.GetString("group_name2", resourceCulture);
             }
         }
         
@@ -1704,6 +1722,15 @@ namespace Resources {
         internal static string has_group_on_level3 {
             get {
                 return ResourceManager.GetString("has_group_on_level3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Has real-time consolidation.
+        /// </summary>
+        internal static string has_real_time_consolidation {
+            get {
+                return ResourceManager.GetString("has_real_time_consolidation", resourceCulture);
             }
         }
         
@@ -2032,7 +2059,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Level.
+        ///   Looks up a localized string similar to Group.
         /// </summary>
         internal static string level {
             get {
@@ -2050,7 +2077,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Level 1 Clusters.
+        ///   Looks up a localized string similar to Cluste.
         /// </summary>
         internal static string level1_clusters {
             get {
@@ -3985,7 +4012,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SIF.
+        ///   Looks up a localized string similar to Establishment Code.
         /// </summary>
         internal static string sif {
             get {
@@ -3994,7 +4021,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Assinar.
+        ///   Looks up a localized string similar to Sing.
         /// </summary>
         internal static string sign {
             get {
@@ -4039,7 +4066,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Standard.
+        ///   Looks up a localized string similar to Adit counts.
         /// </summary>
         internal static string standard {
             get {
@@ -4066,7 +4093,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Structure Group.
+        ///   Looks up a localized string similar to Group Above.
         /// </summary>
         internal static string structure_group {
             get {
@@ -4237,6 +4264,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sets the time interval for the above item.
+        /// </summary>
+        internal static string time_interval_above_item {
+            get {
+                return ResourceManager.GetString("time_interval_above_item", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time interval for real-time consolidation.
+        /// </summary>
+        internal static string time_interval_consolidation {
+            get {
+                return ResourceManager.GetString("time_interval_consolidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tipification Verification.
         /// </summary>
         internal static string tipification_verification {
@@ -4345,7 +4390,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Para atualizar os parâmetros, você precisa estar on-line.
+        ///   Looks up a localized string similar to You must be online to update parameters.
         /// </summary>
         internal static string update_parameters_must_be_online {
             get {

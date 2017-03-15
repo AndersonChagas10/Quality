@@ -1172,7 +1172,7 @@ namespace SgqSystem.Services
                 key += "-r";
             }
 
-            NotEvaluateIs = (naoAvaliado) ? "1" : "0";
+            //NotEvaluateIs = (naoAvaliado) ? "1" : "0";
 
             if (id == "0")
             {
@@ -2392,15 +2392,15 @@ namespace SgqSystem.Services
                               html.option("3", CommonData.getResource("period").Value.ToString()+" 3") +
                               html.option("4", CommonData.getResource("period").Value.ToString() + " 4");
 
-            string hide = null;
+            string hide = string.Empty;
             if (GlobalConfig.Brasil)
             {
-                hide = " hide";
+                hide = "hide";
             }
 
             selectPeriod = html.select(selectPeriod, id: "period", disabled: true, style: "width: 160px");
 
-            selectPeriod = "<li class='painel list-group-item" + hide + "'>"+ selectPeriod + " </li>";
+            selectPeriod = "<li class='painel list-group-item "+ hide +" '>"+ selectPeriod + " </li>";
 
             string container = html.div(
 
@@ -3324,7 +3324,8 @@ namespace SgqSystem.Services
 
             return ParLevel2List;
         }
-        public string GetHeaderHtml(IEnumerable<ParLevelHeader> list, ParFieldType ParFieldTypeDB, Html html, int ParLevel1_Id = 0, int ParLevel2_Id = 0, ParLevelHeader ParLevelHeaderDB = null)
+
+        public string GetHeaderHtml(IEnumerable<ParLevelHeader> list, ParFieldType ParFieldTypeDB, Html html, int ParLevel1_Id = 0, int ParLevel2_Id = 0, ParLevelHeader ParLevelHeaderDB = null, int ParCompany_id = 0)
         {
             string retorno = "";
 
@@ -3342,7 +3343,7 @@ namespace SgqSystem.Services
                 var label = "<label class=\"font-small\">" + header.ParHeaderField_Name + "</label>";
 
                 var form_control = "";
-
+                
                 //ParFieldType 
                 switch (header.ParFieldType_Id)
                 {
@@ -3370,7 +3371,26 @@ namespace SgqSystem.Services
                         break;
                     //Integrações
                     case 2:
-                        form_control = "<div class=\"form-control input-sm\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id = \"" + header.ParFieldType_Id + "\">" + header.ParHeaderField_Name + "</div>";
+                        var listIntegration = ParFieldTypeDB.getIntegrationValues(header.ParHeaderField_Id, header.ParHeaderField_Description, ParCompany_id);
+                        var optionsIntegration = "";
+                        bool hasDefaultIntegration = false;
+                        foreach (var value in listIntegration)
+                        {
+                            if (value.IsDefaultOption == 1)
+                            {
+                                optionsIntegration += "<option selected=\"selected\" value=\"" + value.Id + "\" PunishmentValue=\"0\">" + value.Name + "</option>";
+                                hasDefaultIntegration = true;
+                            }
+                            else
+                            {
+                                optionsIntegration += "<option value=\"" + value.Id + "\" PunishmentValue=\"0\">" + value.Name + "</option>";
+                            }
+                        }
+                        if (!hasDefaultIntegration)
+                            optionsIntegration = "<option selected=\"selected\" value=\"0\">" + CommonData.getResource("select").Value.ToString() + "...</option>" + optionsIntegration;
+
+                        form_control = "<select class=\"form-control input-sm\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">" + optionsIntegration + "</select>";
+                        break;
                         break;
                     //Binário
                     case 3:
@@ -4027,7 +4047,7 @@ namespace SgqSystem.Services
                 //O interessante é um painel só mas no momento está um painel para cada level3group
 
                 var painelLevel3HeaderListHtml = GetHeaderHtml(
-                    ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.Id, ParLevel2.Id), ParFieldTypeDB, html, ParLevel1.Id, ParLevel2.Id, ParLevelHeaderDB);
+                    ParLevelHeaderDB.getHeaderByLevel1Level2(ParLevel1.Id, ParLevel2.Id), ParFieldTypeDB, html, ParLevel1.Id, ParLevel2.Id, ParLevelHeaderDB, ParCompany_Id);
 
                 //string HeaderLevel02 = null;
 
