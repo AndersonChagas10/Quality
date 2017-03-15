@@ -523,7 +523,7 @@
     <value>Local</value>
   </data>
   <data name="number_nc" xml:space="preserve">
-    <value>Número de NC</value>
+    <value>Derivation #</value>
   </data>
   <data name="repetition" xml:space="preserve">
     <value>Reincidência</value>
@@ -1468,7 +1468,7 @@
     <value>Selecione o período antes de entrar no indicador</value>
   </data>
   <data name="sign" xml:space="preserve">
-    <value>Sign</value>
+    <value>Assinar</value>
   </data>
   <data name="slaughter_signature" xml:space="preserve">
     <value>Assinatura do abate</value>
@@ -1628,5 +1628,29 @@
   </data>
   <data name="no_data_to_show" xml:space="preserve">
     <value>Sem dados.</value>
+  </data>
+  <data name="defines_consolidation_indicator" xml:space="preserve">
+    <value>Define consilidação em tempo real para o indicador</value>
+  </data>
+  <data name="group_name2" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="has_real_time_consolidation" xml:space="preserve">
+    <value>Possui consolidação em tempo real</value>
+  </data>
+  <data name="time_interval_above_item" xml:space="preserve">
+    <value>Define intervalo de tempo para o item acima</value>
+  </data>
+  <data name="time_interval_consolidation" xml:space="preserve">
+    <value>Intervalo de tempo para a consolidação em tempo real</value>
+  </data>
+  <data name="company_list" xml:space="preserve">
+    <value>Lista de Empresas</value>
+  </data>
+  <data name="new_company" xml:space="preserve">
+    <value>Nova empresa</value>
+  </data>
+  <data name="equipaments" xml:space="preserve">
+    <value>Equipamentos</value>
   </data>
 </root>

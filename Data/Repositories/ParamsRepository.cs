@@ -753,22 +753,7 @@ namespace Data.Repositories
             }
         }
 
-        public void SaveParCompany(ParCompany paramCompany)
-        {
-
-            if (paramCompany.Id == 0)
-            {
-                db.ParCompany.Add(paramCompany);
-            }
-            else
-            {
-                Guard.verifyDate(paramCompany, "AlterDate");
-                db.ParCompany.Attach(paramCompany);
-                db.Entry(paramCompany).State = EntityState.Modified;
-            }
-        }
-
-
+        
         #region ParLevel3Level2
 
         public void AddUpdateParLevel3Level2(ParLevel3Level2 paramParLevel3Level2)
@@ -830,6 +815,11 @@ namespace Data.Repositories
         public void ExecuteSql(string sql)
         {
             db.Database.ExecuteSqlCommand(sql);
+        }
+
+        public void SaveParCompany(ParCompany paramCompany)
+        {
+            throw new NotImplementedException();
         }
 
         #region Não implementado

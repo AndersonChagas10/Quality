@@ -7,6 +7,7 @@ using System.Linq;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System;
+using DTO;
 
 namespace Dominio.Services
 {
@@ -58,6 +59,7 @@ namespace Dominio.Services
         private IBaseRepository<ParLevel3Level2Level1> _baseRepoParLevel3Level2Level1;
         private IBaseRepository<ParCriticalLevel> _baseRepoParCriticalLevel;
         private IBaseRepository<ParCompany> _baseRepoParCompany;
+        private IBaseRepository<Equipamentos> _baseRepoEquipamentos;
         private IParLevel3Repository _repoParLevel3;
         /*Repo Especifico, manejam os itens*/
         private IParamsRepository _paramsRepo;
@@ -102,10 +104,12 @@ namespace Dominio.Services
                             IParLevel3Repository repoParLevel3,
                             IBaseRepository<ParCriticalLevel> baseRepoParCriticalLevel,
                             IBaseRepository<ParCompany> baseRepoParCompany,
+                            IBaseRepository<Equipamentos> baseRepoEquipamentos,
                             IBaseRepositoryNoLazyLoad<ParLevel2Level1> baseRepoParLevel2Level1)
         {
             _baseRepoParLevel2Level1 = baseRepoParLevel2Level1;
             _baseRepoParCompany = baseRepoParCompany;
+            _baseRepoEquipamentos = baseRepoEquipamentos;
             _baseRepoParCriticalLevel = baseRepoParCriticalLevel;
             _paramsRepo = paramsRepo;
             _baseRepoParCounterXLocal = baseRepoParCounterXLocal;
@@ -518,13 +522,7 @@ namespace Dominio.Services
             return paramsDto;
         }
 
-        public ParamsDTO AddUpdateParCompany(ParamsDTO paramsDto)
-        {
-            ParCompany saveParCompany = Mapper.Map<ParCompany>(paramsDto.parCompanyDto);
-            _paramsRepo.SaveParCompany(saveParCompany);
-            paramsDto.parCompanyDto.Id = saveParCompany.Id;
-            return paramsDto;
-        }
+        
 
         #endregion
 
@@ -562,6 +560,8 @@ namespace Dominio.Services
                 var DdlparCrit = Mapper.Map<List<ParCriticalLevelDTO>>(_baseRepoParCriticalLevel.GetAllAsNoTracking());
 
                 var DdlparCompany = Mapper.Map<List<ParCompanyDTO>>(_baseRepoParCompany.GetAllAsNoTracking());
+
+                //var DdlEquipamentos = Mapper.Map<List<Equipamentos>>(_baseRepoEquipamentos.GetAllAsNoTracking());
 
                 var retorno = new ParamsDdl();
 

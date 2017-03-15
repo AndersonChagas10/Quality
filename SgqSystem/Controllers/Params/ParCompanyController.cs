@@ -17,26 +17,40 @@ namespace SgqSystem.Controllers
         private IBaseDomain<ParStructure, ParStructureDTO> _baseDomainParStructure;
         private IBaseDomain<ParStructureGroup, ParStructureGroupDTO> _baseDomainParStructureGroup;
         private IBaseDomain<ParCluster, ParClusterDTO> _baseDomainParCluster;
+        private IBaseDomain<ParCompanyCluster, ParCompanyClusterDTO> _baseDomainParCompanyCluster;
 
         public ParCompanyController(IBaseDomain<ParCompany, ParCompanyDTO> baseDomainParCompany,
                     IBaseDomain<ParCompanyXStructure, ParCompanyXStructureDTO> baseDomainParCompanyXStructure,
                     IBaseDomain<ParStructure, ParStructureDTO> baseDomainParStructure,
                     IBaseDomain<ParStructureGroup, ParStructureGroupDTO> baseDomainParStructureGroup,
-                    IBaseDomain<ParCluster, ParClusterDTO> baseDomainParCluster)
+                    IBaseDomain<ParCluster, ParClusterDTO> baseDomainParCluster,
+                    IBaseDomain<ParCompanyCluster, ParCompanyClusterDTO> baseDomainParCompanyCluster
+                    )
         {
             _baseDomainParCompany = baseDomainParCompany;
             _baseDomainParCompanyXStructure = baseDomainParCompanyXStructure;
             _baseDomainParStructure = baseDomainParStructure;
             _baseDomainParStructureGroup = baseDomainParStructureGroup;
             _baseDomainParCluster = baseDomainParCluster;
+            _baseDomainParCompanyCluster = baseDomainParCompanyCluster;
 
-            ViewBag.listaParCompany = _baseDomainParCompany.GetAll();
-            ViewBag.listaParCompanyStructure = _baseDomainParCompanyXStructure.GetAllNoLazyLoad();
-            ViewBag.listaParStructure = _baseDomainParStructure.GetAll();
-            ViewBag.listaParStructureGroup = _baseDomainParStructureGroup.GetAll();
-            ViewBag.listaParCluster = _baseDomainParCluster.GetAll();
+            ViewBag.listaParCompany = _baseDomainParCompany.GetAll().Where(r => r.IsActive == true).ToList();
+            ViewBag.listaParCompanyStructure = _baseDomainParCompanyXStructure.GetAllNoLazyLoad().Where(r => r.Active == true).ToList();
+            ViewBag.listaParStructure = _baseDomainParStructure.GetAll().Where(r => r.IsActive == true).ToList();
+            ViewBag.listaParStructureGroup = _baseDomainParStructureGroup.GetAll().Where(r => r.IsActive == true).ToList();
+            ViewBag.listaParCluster = _baseDomainParCluster.GetAll().Where(r=>r.IsActive == true).ToList();
             ViewBag.listaParStructureXCompany = _baseDomainParStructure.GetAll().Where(
-                r=>r.ParStructureGroup_Id == _baseDomainParStructure.GetAllNoLazyLoad().Max(x => x.ParStructureGroup_Id));
+                r=>r.ParStructureGroup_Id == _baseDomainParStructure.GetAllNoLazyLoad().Where(y => y.IsActive == true).Max(x => x.ParStructureGroup_Id) && r.IsActive == true);
+
+            foreach(ParCompanyDTO company in ViewBag.listaParCompany)
+            {
+                company.ListParCompanyCluster = _baseDomainParCompanyCluster.GetAll().Where(
+                    r => r.ParCompany_Id == company.Id && r.Active == true).ToList();
+
+                company.ListParCompanyXStructure = _baseDomainParCompanyXStructure.GetAll().Where(
+                    r => r.ParCompany_Id == company.Id && r.Active == true).ToList();
+            }
+            
 
         }
 

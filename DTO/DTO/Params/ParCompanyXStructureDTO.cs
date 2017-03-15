@@ -6,6 +6,9 @@ namespace DTO.DTO.Params
     {
         public int ParStructure_Id { get; set; }
         public int ParCompany_Id { get; set; }
-        public bool IsActive { get; set; } = true;
+        public bool Active { get; set; } = true;
+
+        public ParStructureDTO ParStructure { get; set; }
+
     }
 }

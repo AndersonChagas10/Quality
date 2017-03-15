@@ -9,24 +9,47 @@ namespace PlanoDeAcaoMVC
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
-
-            // Use the development version of Modernizr to develop with and learn from. Then, when you're
-            // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
-            bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
+                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/jquery.moneymask.js"));
+            
+             // Use the development version of Modernizr to develop with and learn from. Then, when you're
+             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
+             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js",
+                      "~/Scripts/bootstrap-datepicker.min.js",
+                      "~/Scripts/locales/bootstrap-datepicker.pt-BR.min.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+            bundles.Add(new StyleBundle("~/Content/cssBootstrap").Include(
+                      "~/Content/bootstrap.min.css",
                       "~/Content/site.css"));
 
             //HighCharts
             bundles.Add(new ScriptBundle("~/bundles/hc")
                 .Include("~/Scripts/highcharts/4.2.0/highcharts.js")
+            );
+
+            bundles.Add(new StyleBundle("~/bundles/hcstyle")
+                .Include("~/Content/bootstrap-datepicker.min.css")
+            );
+
+            //Loading Overlay
+            bundles.Add(new ScriptBundle("~/bundles/loadingoverlay")
+                .Include("~/Scripts/loadingoverlay.min.js",
+                "~/Scripts/loadingoverlay_progress.min.js")
+            );
+
+            //Reports
+            bundles.Add(new StyleBundle("~/bundles/reportsstyle")
+                .Include("~/Content/Reports/Reports1.css")
+            );
+
+            bundles.Add(new ScriptBundle("~/bundles/reportsscript")
+                .Include("~/Scripts/Reports/Reports1.js",
+                "~/Scripts/Reports/ReportsHC.js")
             );
 
             #region DataTable

@@ -4,8 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    @Styles.Render("~/Content/css")
-    <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+    @Styles.Render("~/Content/cssBootstrap")
+    @Styles.Render("~/bundles/hcstyle")
     @Styles.Render("~/Content/Tables")
     @Styles.Render("~/Content/select2css")
 
@@ -43,14 +43,7 @@
 
     @Scripts.Render("~/bundles/ScriptTables")
     @Scripts.Render("~/bundles/select2js")
-
-    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
-    <script src="~/Scripts/locales/bootstrap-datepicker.pt-BR.min.js"></script>
-    @*<script src="~/Scripts/GuardJs.js"></script>*@
-    <script src="~/Scripts/jquery.moneymask.js"></script>
-
-    <script src="~/Scripts/loadingoverlay.min.js"></script>
-    <script src="~/Scripts/loadingoverlay_progress.min.js"></script>
+    @Scripts.Render("~/bundles/loadingoverlay")
 
     @RenderSection("scripts", required: false)
 

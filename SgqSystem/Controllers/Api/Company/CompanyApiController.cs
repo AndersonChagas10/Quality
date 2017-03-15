@@ -1,6 +1,9 @@
-﻿using Dominio.Interfaces.Services;
+﻿using AutoMapper;
+using Dominio;
+using Dominio.Interfaces.Services;
 using SgqSystem.Handlres;
 using SgqSystem.ViewModels;
+using System.Collections.Generic;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api.Company
@@ -28,7 +31,13 @@ namespace SgqSystem.Controllers.Api.Company
         [Route("AddUpdateParCompany")]
         public void AddUpdateParCompany([FromBody] CompanyViewModel companyViewModel)
         {
-            _companyDomain.AddUpdateParCompany(companyViewModel.parCompanyDTO);
+            ParCompany parCompanySalvar = Mapper.Map<ParCompany>(companyViewModel.parCompanyDTO);
+            List<ParCompanyCluster> parCompanyClusterSalvar = Mapper.Map<List<ParCompanyCluster>>(companyViewModel.parCompanyDTO.ListParCompanyCluster);
+            List<ParCompanyXStructure> parCompanyXStructureSalvar = Mapper.Map<List<ParCompanyXStructure>>(companyViewModel.parCompanyDTO.ListParCompanyXStructure);
+
+            _companyDomain.SaveParCompany(parCompanySalvar);
+            _companyDomain.SaveParCompanyCluster(parCompanyClusterSalvar, parCompanySalvar);
+            _companyDomain.SaveParCompanyXStructure(parCompanyXStructureSalvar, parCompanySalvar);
         }
 
         [HttpPost]

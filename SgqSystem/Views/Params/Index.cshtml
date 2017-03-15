@@ -210,6 +210,9 @@
                 $(this).hide();
             }
         });
+
+        if($('#parFieldType').val() != "2")
+        $('.equipamentos').parents('td').hide();
     }
 
     $(".sidebar-toggler").removeClass("hide");
