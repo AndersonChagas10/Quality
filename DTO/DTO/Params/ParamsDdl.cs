@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Linq;
+using ADOFactory;
+using System.Data.SqlClient;
 
 namespace DTO.DTO.Params
 {
@@ -35,6 +37,7 @@ namespace DTO.DTO.Params
         public IEnumerable<SelectListItem> DdlParLevel3BoolTrue { get; set; }
 
         public IEnumerable<SelectListItem> DdlParCompany { get; set; }
+        public IEnumerable<SelectListItem> DdlEquipamentos { get; set; }
 
         private List<SelectListItem> CreateSelectListParamsViewModelListLevel<T>(IEnumerable<T> enumerable)
         {
@@ -94,6 +97,11 @@ namespace DTO.DTO.Params
             DdlParLevel3BoolTrue = Guard.CreateDropDownList(ddlParLevel3BoolTrue.OrderBy(r => r.Name));
             DdlparCrit = Guard.CreateDropDownList(ddlparCrit.OrderBy(r => r.Name));
 
+            if (GlobalConfig.Brasil)
+            {
+                DdlEquipamentos = CreateSelectListEquipamentos();
+            }
+            
         }
 
         public void SetDdlsNivel123(List<ParLevel1DTO> ddlparLevel1, List<ParLevel2DTO> ddlparLevel2, List<ParLevel3DTO> ddlparLevel3)
@@ -139,6 +147,25 @@ namespace DTO.DTO.Params
                 counter++;
             }
 
+            return retorno;
+        }
+
+        private IEnumerable<SelectListItem> CreateSelectListEquipamentos()
+        {
+            IEnumerable<SelectListItem> retorno;
+
+            var context = "SGQ_GlobalADO";
+            
+            using (var db = new Factory(context))
+            {
+                string query = "SELECT                                                      "+
+                                "Tipo + ' - ' + ISNULL(Subtipo, 'Todos') as Value,          "+
+                                "Tipo + ' - ' + ISNULL(Subtipo, 'Todos') as Text            "+
+                                "FROM Equipamentos GROUP BY Tipo, Subtipo                   ";
+
+                retorno = db.SearchQuery<SelectListItem>(query);
+            }
+            
             return retorno;
         }
 

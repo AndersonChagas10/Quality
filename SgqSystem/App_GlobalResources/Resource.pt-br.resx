@@ -1650,4 +1650,7 @@
   <data name="new_company" xml:space="preserve">
     <value>Nova empresa</value>
   </data>
+  <data name="equipaments" xml:space="preserve">
+    <value>Equipamentos</value>
+  </data>
 </root>
