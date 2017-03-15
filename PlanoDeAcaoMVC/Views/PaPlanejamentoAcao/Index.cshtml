@@ -502,7 +502,7 @@
             filtro["IndicadoresDeProjeto_Id"] = $('#IndicadoresDeProjeto_Id').val();
             filtro["IndicadoresDiretriz_Id"] = $('#IndicadoresDiretriz_Id').val();
 
-            $.post(urlFiltraPlanejamentos, filtro, function (r) {
+            $.post(urlFiltraPlanejamentos, $('#PlanejamentoBuscar').serializeObject(), function (r) {
                 $('#planejamentosFiltrado').empty().append(r);
                 $('#planejamentosFiltrado > select').on('change', function (e) {
                     if (e.currentTarget.selectedIndex > 0) {
@@ -675,14 +675,14 @@
 
         function ModalAcao(isOpenModal, isFukingNewClicked) {
 
-            //if (!(planejamentoCorrentId > 0)) {
-            //    BuscarPlanejamentos();
-            //    return;
-            //} else {
-                //if (!$('#body > table').length) {
+            if (!(planejamentoCorrentId > 0)) {
+                BuscarPlanejamentos();
+                return;
+            } else {
+                if (!$('#body > table').length) {
                     ModalOpcoesEstrategico('Planejamento Operacional', planejamentoCorrentId);
-                //}
-            //}
+                }
+            }
 
             if (isFukingNewClicked) {
 
@@ -1152,8 +1152,7 @@
                         } else if (data.Acao.StatusName.indexOf('Replanejado') > -1) {
                             bgColorStatus = "yellow"
                         }
-                        $(row.cells[29]).css("background", bgColorStatus);
-
+                        $(row.cells[31]).css("background", bgColorStatus);
 
                         /*Prazo*/
                         if (data.Acao.StatusName == "Cancelado") {
@@ -1166,7 +1165,7 @@
                             bgColorPrazo = "rgb(250, 128, 114)"
                         }
 
-                        $(row.cells[30]).css("background", bgColorPrazo);
+                        $(row.cells[32]).css("background", bgColorPrazo);
 
                     } catch (e) {
 

@@ -1,89 +1,93 @@
 ﻿@model PlanoAcaoCore.Pa_Planejamento
 
 
-<form data-ng-app="myApp" id="Planejamento">
+<form  id="PlanejamentoBuscar">
 
     <table class="nowrap .col-md-6 .col-md-offset-3" style="width: 100%;">
         <tbody>
             <tr>
                 <td style="width: 43%;">
-                    @Html.LabelFor(model => model.Diretoria_Id, htmlAttributes: new { @class = "control-label" })
+                    @Html.LabelFor(model => model.Diretoria_Id, htmlAttributes: new { @class = "control-label " })
                 </td>
-                <td style="width: 43%;">
+                <td style="min-width: 43%;">
                     @Html.DropDownList("Diretoria_Id", new SelectList(ViewBag.Diretoria, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
                     @Html.ValidationMessageFor(model => model.Diretoria_Id, "", new { @class = "text-danger" })
                 </td>
                 <td style="width: 16%;"></td>
             </tr>
+           
+        
             <tr>
-                <td style="width: 43%;">
-                    @Html.LabelFor(model => model.Gerencia_Id, htmlAttributes: new { @class = "control-label" })
+                <td>
+                    @Html.LabelFor(model => model.Missao_Id, htmlAttributes: new { @class = "control-label " })
                 </td>
-                <td style="width: 43%;">
-                    @Html.DropDownList("Gerencia_Id", new SelectList(ViewBag.Gerencia, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                    @Html.ValidationMessageFor(model => model.Gerencia_Id, "", new { @class = "text-danger" })
+                <td>
+                    @Html.DropDownList("Missao_Id", new SelectList(ViewBag.Missao, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    @Html.ValidationMessageFor(model => model.Missao_Id, "", new { @class = "text-danger" })
                 </td>
-                <td style="width: 16%;"></td>
+                <td></td>
             </tr>
             <tr>
-                <td style="width: 43%;">
-                    @Html.LabelFor(model => model.Coordenacao_Id, htmlAttributes: new { @class = "control-label" })
+                <td>
+                    @Html.LabelFor(model => model.Visao_Id, htmlAttributes: new { @class = "control-label " })
                 </td>
-                <td style="width: 43%;">
-                    @Html.DropDownList("Coordenacao_Id", new SelectList(ViewBag.Coordenacao, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                    @Html.ValidationMessageFor(model => model.Coordenacao_Id, "", new { @class = "text-danger" })
+                <td>
+                    @Html.DropDownList("Visao_Id", new SelectList(ViewBag.Visao, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    @Html.ValidationMessageFor(model => model.Visao_Id, "", new { @class = "text-danger" })
                 </td>
-                <td style="width: 16%;"></td>
+                <td></td>
+            </tr>
+          
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Dimensao_Id, htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td>
+                    @Html.DropDownList("Dimensao_Id", new SelectList(ViewBag.Dimensao, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    @Html.ValidationMessageFor(model => model.Dimensao_Id, "", new { @class = "text-danger" })
+                </td>
+                <td></td>
             </tr>
             <tr>
-                <td style="width: 43%;">
-                    @Html.LabelFor(model => model.TemaAssunto_Id, htmlAttributes: new { @class = "control-label" })
+                <td>
+                    @Html.LabelFor(model => model.Objetivo_Id, htmlAttributes: new { @class = "control-label " })
                 </td>
-                <td style="width: 43%;">
-                    @Html.DropDownList("TemaAssunto_Id", new SelectList(ViewBag.TemaAssunto, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                    @Html.ValidationMessageFor(model => model.TemaAssunto_Id, "", new { @class = "text-danger" })
+                <td>
+                    @Html.DropDownList("Objetivo_Id", new SelectList(ViewBag.Objetivo, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    @Html.ValidationMessageFor(model => model.Objetivo_Id, "", new { @class = "text-danger" })
                 </td>
-                <td style="width: 16%;"></td>
+                <td>
+                </td>
             </tr>
             <tr>
-                <td style="width: 43%;">
-                    @Html.LabelFor(model => model.ObjetivoGerencial_Id, htmlAttributes: new { @class = "control-label" })
+                <td>
+                    @Html.LabelFor(model => model.IndicadoresDiretriz_Id, htmlAttributes: new { @class = "control-label " })
                 </td>
-                <td style="width: 43%;">
-                    @Html.DropDownList("ObjetivoGerencial_Id", new SelectList(ViewBag.ObjetivoGerencial, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                    @Html.ValidationMessageFor(model => model.ObjetivoGerencial_Id, "", new { @class = "text-danger" })
-                </td>
-                <td style="width: 16%;"></td>
-            </tr>
-            <tr>
-                <td style="width: 43%;">
-                    @Html.LabelFor(model => model.IndicadoresDeProjeto_Id, htmlAttributes: new { @class = "control-label" })
-                </td>
-                <td style="width: 43%;">
-                    @Html.DropDownList("IndicadoresDeProjeto_Id", new SelectList(ViewBag.IndicadoresDeProjeto, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                    @Html.ValidationMessageFor(model => model.IndicadoresDeProjeto_Id, "", new { @class = "text-danger" })
-                </td>
-                <td style="width: 16%;"></td>
-            </tr>
-            <tr>
-                <td style="width: 43%;">
-                    @Html.LabelFor(model => model.IndicadoresDiretriz_Id, htmlAttributes: new { @class = "control-label" })
-                </td>
-                <td style="width: 43%;">
+                <td>
                     @Html.DropDownList("IndicadoresDiretriz_Id", new SelectList(ViewBag.IndicadoresDiretriz, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                    @Html.ValidationMessageFor(model => model.IndicadoresDiretriz_Id, "", new { @class = "text-danger" })
                 </td>
-                <td style="width: 16%;"></td>
+                <td>
+                </td>
             </tr>
+
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Responsavel_Diretriz, htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td>
+                    @Html.DropDownList("Responsavel_Diretriz", new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                </td>
+                <td></td>
+            </tr>
+
             <tr>
                 <td style="width: 43%;">
                     <button type="button" data-ng-change="" class="btn btn-primary" id="filtrarPlanejamento" onclick="FiltrarPlanejamento();" style="display: inline-block;">Filtrar</button>
                 </td>
-                <td style="width: 43%;">
-                </td>
+                <td style="width: 43%;"></td>
                 <td style="width: 16%;"></td>
             </tr>
-            
+
         </tbody>
     </table>
 

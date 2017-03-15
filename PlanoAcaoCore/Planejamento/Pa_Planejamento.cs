@@ -5,19 +5,14 @@ using System.Linq;
 
 namespace PlanoAcaoCore
 {
-    public class Pa_Planejamento : Pa_BaseObject, ICrudPa<Pa_Planejamento>
+    public class Pa_Planejamento : Pa_BaseObject
     {
+
+        #region Estrategico
+
         [Display(Name = "Diretoria")]
         public int Diretoria_Id { get; set; }
         public string Diretoria { get; set; }
-
-        [Display(Name = "Gerência")]
-        public int Gerencia_Id { get; set; }
-        public string Gerencia { get; set; }
-
-        [Display(Name = "Coordenação")]
-        public int Coordenacao_Id { get; set; }
-        public string Coordenacao { get; set; }
 
         [Display(Name = "Missão")]
         public int Missao_Id { get; set; }
@@ -27,9 +22,13 @@ namespace PlanoAcaoCore
         public int Visao_Id { get; set; }
         public string Visao { get; set; }
 
-        [Display(Name = "Tema / Assunto")]
-        public int TemaAssunto_Id { get; set; }
-        public string TemaAssunto { get; set; }
+        [Display(Name = "Dimensão")]
+        public int Dimensao_Id { get; set; }
+        public string Dimensao { get; set; }
+
+        [Display(Name = "Diretrizes / Objetivos")]
+        public int Objetivo_Id { get; set; }
+        public string Objetivo { get; set; }
 
         [Display(Name = "Indicadores da Diretrizes / Objetivos")]
         public int IndicadoresDiretriz_Id { get; set; }
@@ -48,38 +47,39 @@ namespace PlanoAcaoCore
             }
         }
 
-        [Display(Name = "Responsavel pelo Projeto / Iniciativa")]
-        public int Responsavel_Projeto { get; set; }
-        public Pa_Quem Responsavel_Projeto_Quem
-        {
-            get
-            {
-                if (Responsavel_Projeto > 0)
-                    return Pa_Quem.Get(Responsavel_Projeto);
-                else
-                    return new Pa_Quem();
-            }
-        }
+        public int? Estrategico_Id { get; set; }
 
-        [Display(Name = "Indicadores do Projeto / Iniciativa")]
-        public int IndicadoresDeProjeto_Id { get; set; }
-        public string IndicadoresDeProjeto { get; set; }
+        #endregion
+
+        #region Tático
+
+        [Display(Name = "Gerência")]
+        public int Gerencia_Id { get; set; }
+        public string Gerencia { get; set; }
+
+        [Display(Name = "Coordenação")]
+        public int Coordenacao_Id { get; set; }
+        public string Coordenacao { get; set; }
 
         [Display(Name = "Projeto / Iniciativa")]
         public int Iniciativa_Id { get; set; }
         public string Iniciativa { get; set; }
 
+        [Display(Name = "Indicadores do Projeto / Iniciativa")]
+        public int IndicadoresDeProjeto_Id { get; set; }
+        public string IndicadoresDeProjeto { get; set; }
+
         [Display(Name = "Objetivo Gerencial")]
         public int ObjetivoGerencial_Id { get; set; }
         public string ObjetivoGerencial { get; set; }
 
-        [Display(Name = "Dimensão")]
-        public int Dimensao_Id { get; set; }
-        public string Dimensao { get; set; }
+        [Display(Name = "Valor de")]
+        public decimal ValorDe { get; set; }
+        public string _ValorDe { get; set; }
 
-        [Display(Name = "Diretrizes / Objetivos")]
-        public int Objetivo_Id { get; set; }
-        public string Objetivo { get; set; }
+        [Display(Name = "Valor para")]
+        public decimal ValorPara { get; set; }
+        public string _ValorPara { get; set; }
 
         [Display(Name = "Unidade de medida")]
         public int UnidadeDeMedida_Id { get; set; }
@@ -94,14 +94,6 @@ namespace PlanoAcaoCore
             }
         }
 
-        [Display(Name = "Valor de")]
-        public decimal ValorDe { get; set; }
-        public string _ValorDe { get; set; }
-
-        [Display(Name = "Valor para")]
-        public decimal ValorPara { get; set; }
-        public string _ValorPara { get; set; }
-
         [Display(Name = "Data inicio")]
         public DateTime? DataInicio { get; set; }
 
@@ -114,7 +106,29 @@ namespace PlanoAcaoCore
         [Display(Name = "_DataFim")]
         public string _DataFim { get; set; }
 
-        public int? Estrategico_Id { get; set; }
+        [Display(Name = "Responsavel pelo Projeto / Iniciativa")]
+        public int Responsavel_Projeto { get; set; }
+        public Pa_Quem Responsavel_Projeto_Quem
+        {
+            get
+            {
+                if (Responsavel_Projeto > 0)
+                    return Pa_Quem.Get(Responsavel_Projeto);
+                else
+                    return new Pa_Quem();
+            }
+        }
+
+        public int? Tatico_Id { get; set; }
+        #endregion
+
+        #region Depreciado
+
+        [Display(Name = "Tema / Assunto")]
+        public int TemaAssunto_Id { get; set; }
+        public string TemaAssunto { get; set; }
+
+        #endregion
 
         public Pa_Acao Acao { get; set; }
 
@@ -158,9 +172,9 @@ namespace PlanoAcaoCore
                     "\n INDIC.Name AS IndicadoresDiretriz,                                                   " +
                     "\n INDICProj.Name AS IndicadoresDeProjeto,                                              " +
                     "\n OBJT.Name AS ObjetivoGerencial,                                                      " +
-                    "\n OBJ.Name AS Dimensao,                                                                " +
+                    "\n DIME.Name AS Dimensao,                                                                " +
                     "\n INICI.Name AS Iniciativa,                                                            " +
-                    "\n DIME.Name AS Objetivo                                                                " +
+                    "\n OBJ.Name AS Objetivo                                                                " +
                     "\n  FROM Pa_planejamento Pl                                                             " +
                     "\n LEFT JOIN Pa_Iniciativa INI on INI.Id = Pl.Iniciativa_Id                             " +
                     "\n LEFT JOIN Pa_Diretoria DIR on DIR.Id = Pl.Diretoria_Id                               " +
@@ -235,24 +249,7 @@ namespace PlanoAcaoCore
 
             return retorno;
         }
-        public void AddOrUpdateteste()
-        {
-
-        }
-        public void AddOrUpdate()
-        {
-            IsValid();
-
-            if (Id > 0)
-            {
-
-            }
-            else
-            {
-
-            }
-        }
-
+       
     }
 
 }

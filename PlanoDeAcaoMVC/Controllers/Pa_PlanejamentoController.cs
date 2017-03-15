@@ -65,23 +65,23 @@ namespace PlanoDeAcaoMVC.Controllers
             if (filtro.Diretoria_Id > 0)
                 lista = lista.Where(r => r.Diretoria_Id == filtro.Diretoria_Id).ToList();
 
-            if (filtro.Gerencia_Id > 0)
-                lista = lista.Where(r => r.Gerencia_Id == filtro.Gerencia_Id).ToList();
+            if (filtro.Missao_Id > 0)
+                lista = lista.Where(r => r.Missao_Id == filtro.Gerencia_Id).ToList();
 
-            if (filtro.Coordenacao_Id > 0)
-                lista = lista.Where(r => r.Coordenacao_Id == filtro.Coordenacao_Id).ToList();
+            if (filtro.Visao_Id > 0)
+                lista = lista.Where(r => r.Visao_Id == filtro.Coordenacao_Id).ToList();
 
-            if (filtro.TemaAssunto_Id > 0)
-                lista = lista.Where(r => r.TemaAssunto_Id == filtro.TemaAssunto_Id).ToList();
+            if (filtro.Dimensao_Id > 0)
+                lista = lista.Where(r => r.Dimensao_Id == filtro.TemaAssunto_Id).ToList();
 
-            if (filtro.ObjetivoGerencial_Id > 0)
-                lista = lista.Where(r => r.ObjetivoGerencial_Id == filtro.ObjetivoGerencial_Id).ToList();
-
-            if (filtro.IndicadoresDeProjeto_Id > 0)
-                lista = lista.Where(r => r.IndicadoresDeProjeto_Id == filtro.IndicadoresDeProjeto_Id).ToList();
+            if (filtro.Objetivo_Id > 0)
+                lista = lista.Where(r => r.Objetivo_Id == filtro.ObjetivoGerencial_Id).ToList();
 
             if (filtro.IndicadoresDiretriz_Id > 0)
-                lista = lista.Where(r => r.IndicadoresDiretriz_Id == filtro.IndicadoresDiretriz_Id).ToList();
+                lista = lista.Where(r => r.IndicadoresDiretriz_Id == filtro.IndicadoresDeProjeto_Id).ToList();
+
+            if (filtro.Responsavel_Diretriz > 0)
+                lista = lista.Where(r => r.Responsavel_Diretriz == filtro.IndicadoresDiretriz_Id).ToList();
 
             ViewBag.Filtradas = lista;
 
