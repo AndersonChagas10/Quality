@@ -169,6 +169,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alert.
+        /// </summary>
+        internal static string alert {
+            get {
+                return ResourceManager.GetString("alert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alert emissor.
         /// </summary>
         internal static string alert_emissor {
@@ -2086,7 +2095,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cluste.
+        ///   Looks up a localized string similar to Cluster.
         /// </summary>
         internal static string level1_clusters {
             get {
@@ -2514,6 +2523,15 @@ namespace Resources {
         internal static string monitoring {
             get {
                 return ResourceManager.GetString("monitoring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Monitoring and Task linked to the Indicator successfully!.
+        /// </summary>
+        internal static string monitoring_task_linked_indicator_successfully {
+            get {
+                return ResourceManager.GetString("monitoring_task_linked_indicator_successfully", resourceCulture);
             }
         }
         
@@ -3697,7 +3715,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sd.
+        ///   Looks up a localized string similar to SMP.
         /// </summary>
         internal static string sd {
             get {
@@ -3711,6 +3729,24 @@ namespace Resources {
         internal static string select {
             get {
                 return ResourceManager.GetString("select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select audit first.
+        /// </summary>
+        internal static string select_audit_first {
+            get {
+                return ResourceManager.GetString("select_audit_first", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select monitoring first.
+        /// </summary>
+        internal static string select_monitoring_first {
+            get {
+                return ResourceManager.GetString("select_monitoring_first", resourceCulture);
             }
         }
         
@@ -3738,6 +3774,15 @@ namespace Resources {
         internal static string select_positive_value_for_binary_field {
             get {
                 return ResourceManager.GetString("select_positive_value_for_binary_field", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select task first.
+        /// </summary>
+        internal static string select_task_first {
+            get {
+                return ResourceManager.GetString("select_task_first", resourceCulture);
             }
         }
         
@@ -4075,7 +4120,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adit counts.
+        ///   Looks up a localized string similar to Audit counts.
         /// </summary>
         internal static string standard {
             get {

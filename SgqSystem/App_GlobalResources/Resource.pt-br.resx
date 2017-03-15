@@ -1653,4 +1653,19 @@
   <data name="equipaments" xml:space="preserve">
     <value>Equipamentos</value>
   </data>
+  <data name="alert" xml:space="preserve">
+    <value>Alerta</value>
+  </data>
+  <data name="monitoring_task_linked_indicator_successfully" xml:space="preserve">
+    <value>Monitoramento e Tarefa vinculados ao Indicador com sucesso!</value>
+  </data>
+  <data name="select_audit_first" xml:space="preserve">
+    <value>É necessario selecionar um indicador para realizar este vínculo</value>
+  </data>
+  <data name="select_monitoring_first" xml:space="preserve">
+    <value>É necessario selecionar um monitoramento para realizar este vínculo</value>
+  </data>
+  <data name="select_task_first" xml:space="preserve">
+    <value>É necessario selecionar uma tarefa para realizar este vínculo</value>
+  </data>
 </root>
