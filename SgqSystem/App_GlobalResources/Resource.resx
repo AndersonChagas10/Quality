@@ -316,7 +316,7 @@
     <value>Audit counts</value>
   </data>
   <data name="field_level" xml:space="preserve">
-    <value>Field Level</value>
+    <value>Where</value>
   </data>
   <data name="field_level_popover" xml:space="preserve">
     <value>Define on which header (Level 1 or Level 2) the field will be inserted</value>

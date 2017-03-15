@@ -1483,7 +1483,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field Level.
+        ///   Looks up a localized string similar to Where.
         /// </summary>
         internal static string field_level {
             get {
