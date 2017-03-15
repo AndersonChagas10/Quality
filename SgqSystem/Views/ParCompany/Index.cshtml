@@ -272,8 +272,11 @@
             $('#modalCompany .modal-dialog').addClass('modal-xl');
             $('#modalCompany').modal();
             $('#modalCompanyObj').removeClass('hide');
-
+            $('#modalCompany #structureGroupList').children('tbody').empty();
+            $('#modalCompany #clusterList').children('tbody').empty();
             $('#modalCompany .modal-header').text('@Resources.Resource.new_company');
+
+            $('#modalCompanyObj input, #modalCompanyObj select').val("");
         }
     }
 
