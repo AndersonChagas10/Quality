@@ -24,7 +24,7 @@ namespace PlanoDeAcaoMVC.Controllers
         // GET: Pa_Acao
         public ActionResult Index()
         {
-            //ViewBag.Panejamento             = Pa_Planejamento
+            //ViewBag.Panejamento = Pa_Planejamento
             return PartialView();
         }
         

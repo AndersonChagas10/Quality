@@ -1,6 +1,8 @@
 ﻿using ADOFactory;
+using DTO.Helpers;
 using PlanoAcaoCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 
 namespace PlanoDeAcaoMVC.Controllers.Api
@@ -8,58 +10,116 @@ namespace PlanoDeAcaoMVC.Controllers.Api
     [RoutePrefix("api/Relatorios")]
     public class ApiRelatoriosController : ApiController
     {
-      
+
 
         //api/Relatorios/GetGrafico1
         [HttpPost]
-        [Route("GetGrafico1")]
-        public List<Pa_RelatorioGrafico> GetGrafico1([FromBody] filtros filtro)
+        [Route("GetGrafico")]
+        public List<RetornoGrafico1> GetGrafico([FromBody] filtros filtro)
         {
+            var where  = " where QuandoInicio <= '" + filtro.dataFim + "' and QuandoFim <= '" + filtro.dataFim + "' ";
+            var orderby1 = " order by 1";
+            var indicadores = Pa_IndicadorSgqAcao.Listar();
+            var status = Pa_Status.Listar();
 
-            string sql = "" +
-            "\n SELECT                                                                                  " +
-            "\n count(1) as quantidade,                                                                 " +
-            "\n S.Name AS status,                                                                       " +
-            "\n i.Name AS filtro                                                                        " +
-            "\n from pa_acao A                                                                          " +
-            "\n INNER JOIN PA_STATUS S                                                                  " +
-            "\n ON S.ID = A.Status                                                                      " +
-            "\n INNER JOIN Pa_IndicadorSgqAcao I                                                        " +
-            "\n ON I.ID = A.Pa_IndicadorSgqAcao_Id                                                      " +
-            "\n where A.QuandoInicio between '" + filtro.dataInicio + "' and '" + filtro.dataFim + "'   " +
-            "\n group by i.Name, S.Name                                                                 " +
-            "";
+            var sql1 = "select distinct(Pa_IndicadorSgqAcao_Id) as valor from pa_acao";
+            sql1 += where;
+            sql1 += orderby1;
 
-            var retorno = Pa_BaseObject.ListarGenerico<Pa_RelatorioGrafico>(sql);
+            var sql2 = "select distinct([Status]) as valor from pa_acao";
+            sql2 += where;
+            sql2 += orderby1;
+
+            var ret1 = Pa_BaseObject.ListarGenerico<RetornoInt>(sql1);
+            var ret2 = Pa_BaseObject.ListarGenerico<RetornoInt>(sql2);
+            var retorno = new List<RetornoGrafico1>();
+
+            foreach (var i in ret1)
+            {
+                var temp1 = new RetornoGrafico1() { Indicador_Id = i.valor, Indicador = indicadores.FirstOrDefault(r => r.Id == i.valor).Name };
+                temp1.Status = new List<Status>();
+
+                foreach (var b in ret2)
+                {
+                    var statusObj = new Status() { Id = b.valor, Name = status.FirstOrDefault(r => r.Id == b.valor).Name };
+                    statusObj.QuantidadeAcoes = new List<int>();
+
+                    foreach (var ii in ret1)
+                    {
+                        var sqlQtd = "select count(id) as valor from Pa_Acao"; 
+                        sqlQtd += where;
+                        sqlQtd += " and Pa_IndicadorSgqAcao_Id = " + ii.valor + " and[Status] = " + b.valor;
+                        sqlQtd += orderby1;
+
+                        var qtd = Pa_BaseObject.ListarGenerico<RetornoInt>(sqlQtd).FirstOrDefault().valor;
+                        statusObj.QuantidadeAcoes.Add(qtd);
+                    }
+
+                    temp1.Status.Add(statusObj);
+
+                }
+
+                retorno.Add(temp1);
+            }
 
             return retorno;
 
         }
-
-
+  
         [HttpPost]
-        [Route("GetGrafico2")]
-        public void GetGrafico2([FromBody] filtros filtro)
+        [Route("GraficoPie")]
+        public List<GraficoPieSet> GraficoPie([FromBody] filtros filtro)
         {
+      
+            var listStatus = Pa_Status.Listar();
+            var total = Pa_BaseObject.ListarGenerico<RetornoInt>("Select count(*) from Pa_Acao").FirstOrDefault().valor;
+            var retorno = new List<GraficoPieSet>();
+            foreach (var i in listStatus)
+            {
+                var queryCount = "select count(id) as valor from pa_acao where [status] = " + i.Id;
+                var count = Pa_BaseObject.ListarGenerico<RetornoInt>(queryCount).FirstOrDefault().valor;
+                retorno.Add(new GraficoPieSet() { name = i.Name, y = count });
+            }
 
+            return retorno;
         }
+
 
         [HttpPost]
         [Route("GetGrafico3")]
         public void GetGrafico3([FromBody] filtros filtro)
         {
-
+           
         }
 
     }
 
-    public class Pa_RelatorioGrafico
+    public class GraficoPieSet
     {
-        public int quantidade { get; set; }
-        public string status { get; set; }
-        public string filtro { get; set; }
+        public string name { get; set; }
+        public int y { get; set; }
     }
 
+    public class RetornoInt
+    {
+        public int valor { get; set; }
+    }
+
+    public class RetornoGrafico1
+    {
+        public string Indicador { get; set; }
+        public int Indicador_Id { get; set; }
+        public List<Status> Status { get; set; }
+    }
+
+    public class Status
+    {
+        public string Name { get; set; }
+        public int Id { get; set; }
+        public List<int> QuantidadeAcoes { get; set; }
+    }
+
+  
     /// <summary>
     /// Json : 
     /// { 
