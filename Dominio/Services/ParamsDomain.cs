@@ -560,9 +560,7 @@ namespace Dominio.Services
                 var DdlparCrit = Mapper.Map<List<ParCriticalLevelDTO>>(_baseRepoParCriticalLevel.GetAllAsNoTracking());
 
                 var DdlparCompany = Mapper.Map<List<ParCompanyDTO>>(_baseRepoParCompany.GetAllAsNoTracking());
-
-                //var DdlEquipamentos = Mapper.Map<List<Equipamentos>>(_baseRepoEquipamentos.GetAllAsNoTracking());
-
+                
                 var retorno = new ParamsDdl();
 
                 retorno.SetDdlsNivel123(DdlparLevel1,
