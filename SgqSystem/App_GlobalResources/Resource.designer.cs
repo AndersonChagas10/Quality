@@ -1339,6 +1339,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Equipaments.
+        /// </summary>
+        internal static string equipaments {
+            get {
+                return ResourceManager.GetString("equipaments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         internal static string error {

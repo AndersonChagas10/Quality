@@ -1671,4 +1671,7 @@
   <data name="time_interval_consolidation" xml:space="preserve">
     <value>Time interval for real-time consolidation</value>
   </data>
+  <data name="equipaments" xml:space="preserve">
+    <value>Equipaments</value>
+  </data>
 </root>

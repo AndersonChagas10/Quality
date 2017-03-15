@@ -132,8 +132,12 @@
                                     <tbody>
                                         <tr class="row">
                                             @Table.GerarColuna(@Html.DropDownList("headerLevel", Model.paramsDdl.DdlparLevelDefinition, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.field_level), Table.PosicaoLabel.top, @Html.ErrorManual("nivelCampoCabecalho", "O Nível do Campo deve ser selecionado"), null)
-                                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parHeaderFieldDto.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.field_name), Table.PosicaoLabel.top, @Html.ErrorManual("nomeCampoCabecalho", "O campo Nome deve ser preenchido para Nível do Campo"), null)
                                             @Table.GerarColuna(@Html.DropDownList("parFieldType", Model.paramsDdl.DdlParFieldType, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.type), Table.PosicaoLabel.top, @Html.ErrorManual("tipoCampoCabecalho", "O campo Tipo deve ser selecionado para Nível do Campo"), null)
+                                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parHeaderFieldDto.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.field_name), Table.PosicaoLabel.top, @Html.ErrorManual("nomeCampoCabecalho", "O campo Nome deve ser preenchido para Nível do Campo"), null)
+                                            @if (GlobalConfig.Brasil)
+                                            {
+                                                @Table.GerarColuna(@Html.DropDownListFor(m => m.paramsDto.parHeaderFieldDto.Name, Model.paramsDdl.DdlEquipamentos, new { @class = "form-control input-sm equipamentos" }), @Html.Label(Resources.Resource.field_name), Table.PosicaoLabel.top, @Html.ErrorManual("tipoCampoCabecalho", "O campo Tipo deve ser selecionado para Nível do Campo"))
+                                            }                                            
                                             @Table.GerarColunaCheckbox(@Html.EditorFor(m => m.paramsDto.parHeaderFieldDto.LinkNumberEvaluetion, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.link_number_evaluation), Table.PosicaoLabel.top, null, null)
                                         </tr>
                                     </tbody>
@@ -192,7 +196,11 @@
                                         </table>
                                     </div>
 
-                                    @*Obj Texto*@
+                                    @*Obj Integrações*@
+                                    <div id="objIntegracoes" style="display:none;">
+                                        <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Integrações" id="btnIncluirIntegracoes" onclick="Cabecalhos.IncluirIntegracoes();" />
+                                    </div>
+
                                     <div id="objTexto" style="display:none;">
                                         @*@Table.GerarColuna(@Html.Editor("objTextoName", new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 200px;", @class = "form-control input-erp" } }), @Html.Label(Resources.Resource.option), Table.PosicaoLabel.top, @Html.ErrorManual("objTextoName", "*"), null)*@
                                         <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Texto" id="btnIncluirTexto" onclick="Cabecalhos.IncluirSalvarTexto();" />
@@ -216,7 +224,7 @@
 
                                     @*Obj Hora*@
                                     <div id="objIntegracoes" style="display:none;">
-                                        <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Integrações" id="btnIncluirIntegracoes" onclick="Cabecalhos.IncluirSalvarIntegracoes(true);" />
+                                        <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Integrações" id="btn ntegracoes" onclick="Cabecalhos.IncluirSalvarIntegracoes(true);" />
                                     </div>
 
                                     @*tabela cabecalho itens inputados*@
@@ -306,6 +314,18 @@
 
                                                             }
 
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 2)
+                                                            {
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+                                                                <td>
+
+                                                                    @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
+                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
+                                                                </td>
+
+                                                            }
 
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 3)
                                                             {
@@ -578,6 +598,7 @@
             /*Esconde campos*/
             $('#objMultiplaEscolha').hide();
             $('#objBinario').hide();
+            $('#objIntegracao').hide();
             $('#salvarCabecalho').hide().val('');
             $('#btnIncluirCabecalho input').hide();
             $('#btnIncluirTexto').hide();
@@ -612,12 +633,15 @@
             Cabecalhos.ParMultiplaEscolhaOpcoes = [];
             Cabecalhos.ParBinario = [];
 
+            $('.equipamentos').parents('td').hide();
+            $('#paramsDto_parHeaderFieldDto_Name').parents('td').show();
+
             switch (escolhaSelecionada) {
                 case 1: //Multipla Escolha
                     Cabecalhos.ShowMutiplaEscolha();
                     break;
                 case 2:
-                    Cabecalhos.ShowIntergacoes();
+                    Cabecalhos.ShowIntegracoes();
                     break;
                 case 3: //Binario
                     Cabecalhos.ShowBinario();
@@ -640,8 +664,10 @@
         },
 
         //Integracoes
-        ShowIntergacoes: function() {
+        ShowIntegracoes: function() {
             $('#objIntegracoes').show();
+            $('#paramsDto_parHeaderFieldDto_Name').parents('td').hide();
+            $('.equipamentos').parents('td').show();
         },
 
         //MULTIPLA ESCOLHA
@@ -1067,8 +1093,10 @@
 
         //INTEGRAÇÕES
         ShowIntegracoes: function () {
-            $('#btnIncluirNumerico').show();
-            $('#objNumerico').show();
+            $('#btnIncluirIntegracoes').show();
+            $('#objIntegracoes').show();
+            $('#paramsDto_parHeaderFieldDto_Name').parents('td').hide();
+            $('.equipamentos').parents('td').show();
             $('#btnIncluirCabecalho input').hide();
         },
 
@@ -1136,7 +1164,59 @@
         ExcluirCampoTexto: function (e) {
             e.parent().remove();
         },
+        IncluirIntegracoes: function () {
+            if($('#headerLevel option:selected').val() == -1){
+                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
+                //lert('Selecione o Nivel do Cabecalho');
+                return;
+            }
 
+            if($('.equipamentos').val().length == 0){
+                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.fill_the_numeric_field_name");
+                //alert('Digite o nome para o Campo Numerico');
+                return;
+            }
+
+            var nome = $('.equipamentos').val();
+            var nivelCabecalho = $('#headerLevel option:selected').val();
+            var tipo = $('#parFieldType option:selected').val();
+            var linkedNumberEvaluation = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked');
+
+            Cabecalhos.AtualizaPreviewCampoIntegracoes({
+                Name: nome,
+                Nivel: nivelCabecalho,
+                Type: tipo,
+                IsRemoved: false,
+                Description: "",
+                Link: linkedNumberEvaluation
+            });
+
+            updateAllTables();
+        },
+        AtualizaPreviewCampoIntegracoes: function (o) {
+
+            var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
+            example += '<td id=""><label class="fixed-width"> ' + $('.equipamentos').val() + '</label></td>' + // nome
+                       '<td id=""><label class="fixed-width"> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
+
+            //var example = '<div>';
+            //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
+            example += '<td>';
+            example += '<input class="form-control input-sm fixed-width" type="number" />';//Input
+
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + o.Type + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + o.Name + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Description"            value="' + o.Description + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParLevelDefinition_Id"  value="' + o.Nivel + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + o.Link + '"/>';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
+            example += '</td>';
+            example += '<td>';
+            example += '&nbsp;' + Cabecalhos.BtnExcluir();
+            //example += '</div>';
+            example += '</td>';
+            $('#tableCabecalhosPreview').append(example);
+        },
         //DATA
         ShowData: function () {
             $('#btnIncluirCabecalho input').hide();

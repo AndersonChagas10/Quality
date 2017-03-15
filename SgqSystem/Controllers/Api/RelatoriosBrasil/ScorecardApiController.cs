@@ -8,6 +8,7 @@ using System.Web.Http.Cors;
 
 namespace SgqSystem.Controllers.Api
 {
+
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/Scorecard")]
     public class ScorecardController : ApiController
@@ -15,12 +16,68 @@ namespace SgqSystem.Controllers.Api
         private List<ScorecardResultSet> _mock { get; set; }
         private List<ScorecardResultSet> _list { get; set; }
 
+        public decimal[] SelectPontosScorecard(DateTime dtInicio, DateTime dtFim, int unidadeId, int tipo) //Se 0, tras pontos , se 1, tras tudo                                                                                                                                                                                               
+        {
+
+            decimal[] pontosTotais = { 0, 0 };
+            decimal pontosAtingidos = 0;
+            decimal pontosDisputados = 0;
+
+            DateTime _dtIni = dtInicio;
+            DateTime _dtFim = dtFim;
+
+            DateTime _novaDataIni = _dtIni;
+            DateTime _novaDataFim = _dtIni;
+
+            int numMeses = (12 * (_dtFim.Year - _dtIni.Year) + _dtFim.Month - _dtIni.Month) + 1;
+
+            var sql = "";
+
+            for (int i = 0; i < numMeses; i++)
+            {
+                if (i > 0)
+                {
+                    _novaDataIni = new DateTime(_novaDataIni.AddMonths(1).Year, _novaDataIni.AddMonths(1).Month, 1);
+                }
+
+                _novaDataFim = new DateTime(_novaDataIni.Year, _novaDataIni.Month, DateTime.DaysInMonth(_novaDataIni.Year, _novaDataIni.Month));
+
+                if (i == numMeses - 1)
+                {
+                    _novaDataFim = _dtFim;
+                }
+
+                sql = new ScorecardResultSet().SelectScorecardCompleto(_novaDataIni, _novaDataFim, unidadeId, 0);
+                using (var db = new SgqDbDevEntities())
+                {
+
+                    _list = db.Database.SqlQuery<ScorecardResultSet>(sql).ToList();
+
+                    foreach (var r in _list.ToList())
+                    {
+                        pontosDisputados = r.PontosAtingidosIndicador.Value;
+
+                        pontosAtingidos = r.PontosAtingidos.Value;
+                    }
+                }
+
+                pontosTotais[0] += pontosDisputados;
+                pontosTotais[1] += pontosAtingidos;
+
+            }
+
+            return pontosTotais;
+        }
+
         [HttpPost]
         [Route("GetScorecard")]
         public List<ScorecardResultSet> GetScorecard([FromBody] FormularioParaRelatorioViewModel form)
         {
             //CriaMock();
-            var query = new ScorecardResultSet().SelectScorecard(form._dataInicio, form._dataFim, form.unitId);
+
+            decimal[] pontosTotais = SelectPontosScorecard(form._dataInicio, form._dataFim, form.unitId, 0);
+
+            var query = new ScorecardResultSet().SelectScorecardCompleto(form._dataInicio, form._dataFim, form.unitId, 1);
             using (var db = new SgqDbDevEntities())
             {
 
@@ -58,11 +115,10 @@ namespace SgqSystem.Controllers.Api
 
                 totalScorecard = totalPontosDisputados == 0 ? 0 : Math.Round((totalPontosAtingidos / totalPontosDisputados * 100) , 2);
 
-                _list.Add(new ScorecardResultSet() { Level1Name = "Total:", PontosIndicador = totalPontosDisputados, Scorecard = totalScorecard, PontosAtingidosIndicador = totalPontosAtingidos });
+                //_list.Add(new ScorecardResultSet() { Level1Name = "Total:", PontosIndicador = totalPontosDisputados, Scorecard = totalScorecard, PontosAtingidosIndicador = totalPontosAtingidos });
+
+                _list.Add(new ScorecardResultSet() { Level1Name = "Total:", PontosIndicador = totalPontosDisputados, Scorecard = (pontosTotais[0] == 0 ? 0 : pontosTotais[1] / pontosTotais[0] ) * 100, PontosAtingidosIndicador = totalPontosAtingidos });
             }
-
-
-            
 
             return _list;
         }
