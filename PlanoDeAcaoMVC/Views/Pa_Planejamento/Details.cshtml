@@ -11,7 +11,7 @@ aaaaaaa
             </td>
             <td style="width: 16%;"></td>
         </tr>
-        <tr>
+        @*<tr>
             <td>
                 @Html.DisplayNameFor(model => model.Gerencia_Id)
             </td>
@@ -28,7 +28,7 @@ aaaaaaa
                 @Html.DisplayFor(model => model.Coordenacao)
             </td>
             <td></td>
-        </tr>
+        </tr>*@
         <tr>
             <td>
                 @Html.DisplayNameFor(model => model.Missao_Id)
@@ -47,7 +47,7 @@ aaaaaaa
             </td>
             <td></td>
         </tr>
-        <tr>
+        @*<tr>
             <td>
                 @Html.DisplayNameFor(model => model.TemaAssunto_Id)
             </td>
@@ -62,15 +62,6 @@ aaaaaaa
             </td>
             <td>
                 @Html.DisplayFor(model => model.IndicadoresDeProjeto)
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                @Html.DisplayNameFor(model => model.IndicadoresDiretriz_Id)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.IndicadoresDiretriz)
             </td>
             <td></td>
         </tr>
@@ -91,7 +82,7 @@ aaaaaaa
                 @Html.DisplayFor(model => model.ObjetivoGerencial)
             </td>
             <td></td>
-        </tr>
+        </tr>*@
         <tr>
             <td>
                 @Html.DisplayNameFor(model => model.Dimensao)
@@ -111,6 +102,15 @@ aaaaaaa
             <td></td>
         </tr>
         <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.IndicadoresDiretriz_Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.IndicadoresDiretriz)
+            </td>
+            <td></td>
+        </tr>        
+        @*<tr>
             <td>
                 @Html.DisplayNameFor(model => model.ValorDe)
             </td>
@@ -143,6 +143,15 @@ aaaaaaa
             </td>
             <td>
                 @Html.DisplayFor(model => model.DataFim)
+            </td>
+            <td></td>
+        </tr>*@
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Responsavel_Diretriz)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Responsavel_Diretriz_Quem.Name)
             </td>
             <td></td>
         </tr>
@@ -219,8 +228,8 @@ aaaaaaa
                 @Html.DisplayNameFor(model => model.UnidadeDeMedida_Id)
             </td>
             <td>
-                @*Esta com problema*@
-                @*@Html.DisplayFor(model => model._UnidadeDeMedida_Id)*@
+                
+                @Html.DisplayFor(model => model._UnidadeDeMedida_Id.Name)
             </td>
             <td></td>
         </tr>
@@ -247,8 +256,7 @@ aaaaaaa
                 @Html.DisplayNameFor(model => model.Responsavel_Projeto)
             </td>
             <td>
-                @*Esta com problema*@
-                @*@Html.DisplayFor(model => model.Responsavel_Projeto_Quem)*@
+                @Html.DisplayFor(model => model.Responsavel_Projeto_Quem.Name)
             </td>
             <td></td>
         </tr>
