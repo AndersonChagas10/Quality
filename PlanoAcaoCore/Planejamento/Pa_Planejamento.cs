@@ -95,13 +95,13 @@ namespace PlanoAcaoCore
             }
         }
 
-        [Display(Name = "Data inicio")]
+        [Display(Name = "Data inicio Projeto / Iniciativa")]
         public DateTime? DataInicio { get; set; }
 
         [Display(Name = "_DataInicio")]
         public string _DataInicio { get; set; }
 
-        [Display(Name = "Data fim")]
+        [Display(Name = "Data fim Projeto / Iniciativa")]
         public DateTime? DataFim { get; set; }
 
         [Display(Name = "_DataFim")]
