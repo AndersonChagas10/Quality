@@ -254,7 +254,7 @@ namespace PlanoAcaoCore
                         "\nLEFT JOIN Pa_Visao VIS on VIS.Id = Pl.Visao_Id " +
                         "\nLEFT JOIN Pa_TemaAssunto TEM on TEM.Id = Pl.TemaAssunto_Id " +
                         "\nLEFT JOIN Pa_IndicadoresDiretriz INDIC on INDIC.Id = Pl.IndicadoresDiretriz_Id " +
-                        "\nLEFT JOIN Pa_IndicadoresDeProjeto INDICProj on INDIC.Id = Pl.IndicadoresDeProjeto_Id " +
+                        "\nLEFT JOIN Pa_IndicadoresDeProjeto INDICProj on INDICProj.Id = Pl.IndicadoresDeProjeto_Id " +
                         "\nLEFT JOIN Pa_Iniciativa INICI on INICI.Id = Pl.Iniciativa_Id " +
                         "\nLEFT JOIN Pa_ObjetivoGeral OBJT on OBJT.Id = Pl.ObjetivoGerencial_Id " +
                         "\nLEFT JOIN Pa_Objetivo OBJ on OBJ.Id = Pl.Objetivo_Id " +
