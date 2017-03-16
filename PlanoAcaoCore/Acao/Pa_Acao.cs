@@ -234,7 +234,7 @@ namespace PlanoAcaoCore
 
                 query = "INSERT INTO [dbo].[Pa_Acao]               " +
                         "\n       ([QuandoInicio]                  " +
-                        "\n        ,[DuracaoDias]                  " +
+                        //"\n        ,[DuracaoDias]                  " +
                         "\n        ,[QuandoFim]                    " +
                         "\n        ,[ComoPontosimportantes]        " +
                         "\n        ,[PraQue]                       " +
@@ -245,7 +245,7 @@ namespace PlanoAcaoCore
                         "\n        ,[Panejamento_Id])              " +
                         "\n  VALUES                                " +
                         "\n        (@QuandoInicio                  " +
-                        "\n        ,@DuracaoDias                   " +
+                        //"\n        ,@DuracaoDias                   " +
                         "\n        ,@QuandoFim                     " +
                         "\n        ,@ComoPontosimportantes         " +
                         "\n        ,@PraQue                        " +
@@ -261,7 +261,7 @@ namespace PlanoAcaoCore
                 cmd = new SqlCommand(query);
 
                 cmd.Parameters.AddWithValue("@QuandoInicio", QuandoInicio);
-                cmd.Parameters.AddWithValue("@DuracaoDias", DuracaoDias);
+                //cmd.Parameters.AddWithValue("@DuracaoDias", DuracaoDias);
                 cmd.Parameters.AddWithValue("@QuandoFim", QuandoFim);
                 cmd.Parameters.AddWithValue("@ComoPontosimportantes", ComoPontosimportantes);
                 cmd.Parameters.AddWithValue("@PraQue", PraQue);
