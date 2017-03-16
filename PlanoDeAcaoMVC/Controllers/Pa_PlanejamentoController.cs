@@ -60,7 +60,7 @@ namespace PlanoDeAcaoMVC.Controllers
         public ActionResult Filtrar(Pa_Planejamento filtro)
         {
             var lista = Pa_Planejamento.Listar();
-            lista = lista.Where(r => r.Estrategico_Id.GetValueOrDefault() == 0 || r.Estrategico_Id == null).ToList();
+            
 
             if (filtro.Diretoria_Id > 0)
                 lista = lista.Where(r => r.Diretoria_Id == filtro.Diretoria_Id).ToList();
@@ -82,6 +82,11 @@ namespace PlanoDeAcaoMVC.Controllers
 
             if (filtro.Responsavel_Diretriz > 0)
                 lista = lista.Where(r => r.Responsavel_Diretriz == filtro.IndicadoresDiretriz_Id).ToList();
+
+            if (filtro.IsfiltrarAcao)
+                lista = lista.Where(r => r.Estrategico_Id != null).ToList();
+            else
+                lista = lista.Where(r => r.Diretoria_Id > 0 && r.Missao_Id > 0 && r.Dimensao_Id > 0).ToList();
 
             ViewBag.Filtradas = lista;
 

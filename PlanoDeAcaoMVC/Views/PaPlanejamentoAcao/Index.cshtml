@@ -3,24 +3,19 @@
 }
 
 <style>
-    .dataTable td {
-        /* essential */
-        /*text-overflow: ellipsis;*/
+
+    /*.dataTable td {
         max-width: 150px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        /*width: 200px;
-        white-space: nowrap;
-        overflow: hidden;*/
-        /* for good looks */
         padding: 10px;
     }
 
-        .dataTable td:hover {
-            overflow: visible;
-            white-space: normal;
-        }
+    .dataTable td:hover {
+        overflow: visible;
+        white-space: normal;
+    }*/
 
     * {
         margin: 0;
@@ -276,7 +271,6 @@
 
         var urlSalvarNovoItem = '@Url.Action("Save", "api/Generics")';
 
-
         /*Btn Minimizar Modal*/
         $(document).ready(function () {
 
@@ -492,17 +486,12 @@
             $('#Selecionar').prop('disabled', true);
             $('#Selecionar').off('click');
 
-            var filtro = {};
-            filtro["Diretoria_Id"] = $('#Diretoria_Id').val();
-            filtro["Gerencia_Id"] = $('#Gerencia_Id').val();
-            filtro["Coordenacao_Id"] = $('#Coordenacao_Id').val();
-            filtro["TemaAssunto_Id"] = $('#TemaAssunto_Id').val();
-            filtro["ObjetivoGerencial_Id"] = $('#ObjetivoGerencial_Id').val();
-            filtro["Indicadores_Id"] = $('#Indicadores_Id').val();
-            filtro["IndicadoresDeProjeto_Id"] = $('#IndicadoresDeProjeto_Id').val();
-            filtro["IndicadoresDiretriz_Id"] = $('#IndicadoresDiretriz_Id').val();
+            var enviarObj  = $('#PlanejamentoBuscar').serializeObject();
+            if (isNovaAcao) {
+                enviarObj["IsfiltrarAcao"] = true;
+            }
 
-            $.post(urlFiltraPlanejamentos, $('#PlanejamentoBuscar').serializeObject(), function (r) {
+            $.post(urlFiltraPlanejamentos, enviarObj, function (r) {
                 $('#planejamentosFiltrado').empty().append(r);
                 $('#planejamentosFiltrado > select').on('change', function (e) {
                     if (e.currentTarget.selectedIndex > 0) {
@@ -645,7 +634,6 @@
             $('#Iniciativa_Id').change();
 
         }
-
         /*Fim Planejamento*/
 
         /*Acao*/
@@ -778,6 +766,7 @@
             });
 
         }
+
         var jaLiberouCallback = false;
         function SalvarAcaoAvulsa(o, isEdit) {
 
@@ -819,7 +808,6 @@
         function RemoveAcao(btn) {
             $(btn).parents('#obj').remove();
         }
-
         /*Fim Acao*/
 
         function Adicionar(btn) {
