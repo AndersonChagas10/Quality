@@ -88,8 +88,10 @@ namespace PlanoAcaoCore
         {
             get
             {
-                if (Responsavel_Projeto > 0)
-                    return Pa_UnidadeMedida.Get(UnidadeDeMedida_Id);
+                if (UnidadeDeMedida_Id > 0) {
+                    var unidade = Pa_UnidadeMedida.Get(UnidadeDeMedida_Id);
+                    return unidade;
+                }
                 else
                     return new Pa_UnidadeMedida();
             }
@@ -165,7 +167,7 @@ namespace PlanoAcaoCore
 
         #endregion
 
-        public bool IsfiltrarAcao { get; set; }
+        public bool? IsfiltrarAcao { get; set; }
 
         public Pa_Acao Acao { get; set; }
 

@@ -83,7 +83,7 @@ namespace PlanoDeAcaoMVC.Controllers
             if (filtro.Responsavel_Diretriz > 0)
                 lista = lista.Where(r => r.Responsavel_Diretriz == filtro.IndicadoresDiretriz_Id).ToList();
 
-            if (filtro.IsfiltrarAcao)
+            if (filtro.IsfiltrarAcao.GetValueOrDefault())
                 lista = lista.Where(r => r.Estrategico_Id != null).ToList();
             else
                 lista = lista.Where(r => r.Diretoria_Id > 0 && r.Missao_Id > 0 && r.Dimensao_Id > 0).ToList();
