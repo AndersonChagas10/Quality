@@ -176,7 +176,7 @@ namespace PlanoAcaoCore
                 var retorno = string.Empty;
                 if (Id > 0)
                 {
-                    retorno += "Diretoria: " + Diretoria +
+                    retorno += "Id: " + Id + " - Diretoria: " + Diretoria +
                         " \n Missão: " + Missao +
                         " \n Visão" + Visao +
                         " \n Dimensão" + Dimensao +
