@@ -193,8 +193,34 @@ namespace PlanoAcaoCore
 
         public void IsValid()
         {
-            //Name = Guard.CheckStringFullSimple(Name);
+           
+            if (Estrategico_Id.GetValueOrDefault() > 0)//é planejamento Operacional
+            {
+
+            }
+            else
+            {
+                if (Diretoria_Id <= 0)
+                    message += "\n Diretoria,";
+                if (Missao_Id <= 0)
+                    message += "\n Missão,";
+                if (Visao_Id <= 0)
+                    message += "\n Visão,";
+                if (Dimensao_Id <= 0)
+                    message += "\n Dimensão,";
+                if (Objetivo_Id <= 0)
+                    message += "\n Diretrizes / Objetivos,";
+                if (IndicadoresDiretriz_Id <= 0)
+                    message += "\n Indicadores da Diretrizes / Objetivos,";
+                if (Responsavel_Diretriz <= 0)
+                    message += "\n Responsavel pela Diretriz,";
+            }
+
+            VerificaMensagemCamposObrigatorios(message);
+
         }
+
+       
 
         private static string query
         {

@@ -477,7 +477,11 @@
                 $.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
 
             }).fail(function (e, h, x) {
-                alert('Não foi possível salvar o registro: ' + e)
+                //console.log(e);
+                //console.log(h);
+                //console.log(x);
+
+                alert('Não foi possível salvar o registro: ' + e.responseJSON.ExceptionMessage)
             });
 
         }/*planejamentoCorrentId*/
