@@ -31,9 +31,9 @@ namespace PlanoAcaoCore
             if (!string.IsNullOrEmpty(message))
             {
                 message = "\n Campos necessários para o cadastro não foram preenchidos: " + message;
+
                 throw new Exception(message.TrimEnd(',') + ".");
             }
-
         }
 
         #endregion
