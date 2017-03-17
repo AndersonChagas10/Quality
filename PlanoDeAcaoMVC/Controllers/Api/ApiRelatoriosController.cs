@@ -13,20 +13,26 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
 
         //api/Relatorios/GetGrafico1
+        //Retorna Categorias Series e Dados
         [HttpPost]
         [Route("GetGrafico")]
         public List<RetornoGrafico1> GetGrafico([FromBody] filtros filtro)
         {
+
+            var categoria = filtro.categoria;
+            var series = "[Status]";
+            var filtroCategoria = "";
+
             var where  = " where QuandoInicio <= '" + filtro.dataFim + "' and QuandoFim <= '" + filtro.dataFim + "' ";
             var orderby1 = " order by 1";
             var indicadores = Pa_IndicadorSgqAcao.Listar();
             var status = Pa_Status.Listar();
 
-            var sql1 = "select distinct(Pa_IndicadorSgqAcao_Id) as valor from pa_acao";
+            var sql1 = "select distinct("+categoria+") as valor from pa_acao";
             sql1 += where;
             sql1 += orderby1;
 
-            var sql2 = "select distinct([Status]) as valor from pa_acao";
+            var sql2 = "select distinct("+series+") as valor from pa_acao";
             sql2 += where;
             sql2 += orderby1;
 
@@ -46,9 +52,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
                     foreach (var ii in ret1)
                     {
-                        var sqlQtd = "select count(id) as valor from Pa_Acao"; 
+                        var sqlQtd = "select count(1) as valor from Pa_Acao"; 
                         sqlQtd += where;
-                        sqlQtd += " and Pa_IndicadorSgqAcao_Id = " + ii.valor + " and[Status] = " + b.valor;
+                        sqlQtd += " and "+categoria+" = " + ii.valor + " and "+series+" = " + b.valor;
                         sqlQtd += orderby1;
 
                         var qtd = Pa_BaseObject.ListarGenerico<RetornoInt>(sqlQtd).FirstOrDefault().valor;
@@ -66,6 +72,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
         }
   
+        //Retorna apenas Series e Dados
         [HttpPost]
         [Route("GraficoPie")]
         public List<GraficoPieSet> GraficoPie([FromBody] filtros filtro)
@@ -84,13 +91,6 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             return retorno;
         }
 
-
-        [HttpPost]
-        [Route("GetGrafico3")]
-        public void GetGrafico3([FromBody] filtros filtro)
-        {
-           
-        }
 
     }
 
@@ -135,6 +135,10 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         public int gerencia { get; set; }
         public string dataInicio { get; set; }
         public string dataFim { get; set; }
+        public string categoria { get; set; }
+        public string serie { get; set; }
+        public string[] filtroCategoria { get; set; }
+        public int relatorio { get; set; }
     }
 
 }
