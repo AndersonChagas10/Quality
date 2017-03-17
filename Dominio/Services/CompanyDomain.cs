@@ -122,6 +122,7 @@ namespace Dominio.Services
             foreach (ParCompanyCluster companyCluster in listParCompanyCluster)
             {
                 companyCluster.Active = true;
+                companyCluster.ParCompany_Id = parCompany.Id;
                 _baseRepoParCompanyCluster.Add(companyCluster);
             }
         }
@@ -152,11 +153,13 @@ namespace Dominio.Services
                 listParCompanyXStructure.Remove(save);
             }
 
-            foreach (ParCompanyXStructure companyStructure in listParCompanyXStructure)
-            {
-                companyStructure.Active = true;
-                _baseRepoParCompanyXStructure.Add(companyStructure);
-            }
+            if(listParCompanyXStructure != null)
+                foreach (ParCompanyXStructure companyStructure in listParCompanyXStructure)
+                {
+                    companyStructure.Active = true;
+                    companyStructure.ParCompany_Id = parCompany.Id;
+                    _baseRepoParCompanyXStructure.Add(companyStructure);
+                }
 
 
         }

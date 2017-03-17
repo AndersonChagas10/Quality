@@ -1199,6 +1199,9 @@ namespace SgqSystem.Services
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         connection.Open();
+
+                        //var teste = command.ExecuteScalar();
+
                         var i = Convert.ToInt32(command.ExecuteScalar());
                         //Se o script for executado corretamente retorna o Id
                         if (i > 0)
@@ -2299,8 +2302,8 @@ namespace SgqSystem.Services
         {
             if (GlobalConfig.Brasil)
             {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+                Thread.CurrentThread.CurrentCulture = new CultureInfo(Guard.LANGUAGE_PT_BR);
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(Guard.LANGUAGE_PT_BR);
             }else
             {
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("");
@@ -3195,7 +3198,7 @@ namespace SgqSystem.Services
                            + "\" ParNotConformityRule_value=\"" + ruleValue.ToString()
                            + "\" AlertValue=\"" + 0
                            + "\" reaudit=\"" + parlevel2.IsReaudit.ToString().ToLower()+"\"";
-
+                    
                     groupLevel3 = html.accordeon(
                                                     id: parlevel2.Id.ToString(),
                                                     label: parlevel2.Name,
