@@ -27,6 +27,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         [Route("Save")]
         public Pa_Planejamento Save([FromBody]Pa_Planejamento planejamento)
         {
+            planejamento.IsValid();
+
+            planejamento.IsfiltrarAcao = null;
             if (planejamento.Estrategico_Id.GetValueOrDefault() > 0)
             {
                 planejamento.ValorDe = NumericExtensions.CustomParseDecimal(planejamento._ValorDe).GetValueOrDefault();

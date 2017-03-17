@@ -12,16 +12,33 @@ namespace PlanoAcaoCore
         public DateTime AddDate { get; set; }
         public DateTime AlterDate { get; set; }
 
-        protected static string catalog { get { return "PlanoDeAcao"; } }
-        protected static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
-        protected static string user { get { return "sa"; } }
-        protected static string pass { get { return "1qazmko0"; } }
 
-        //protected static string catalog { get { return "dbGQualidadeTeste"; } }
-        //protected static string dataSource { get { return @"10.255.0.41"; } }
-        //protected static string user { get { return "UserGQualidade"; } }
-        //protected static string pass { get { return "grJsoluco3s"; } }
+        //protected static string catalog { get { return "PlanoDeAcao"; } }
+        //protected static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
+        //protected static string user { get { return "sa"; } }
+        //protected static string pass { get { return "1qazmko0"; } }
 
+        protected static string catalog { get { return "dbGQualidadeTeste"; } }
+        protected static string dataSource { get { return @"10.255.0.41"; } }
+        protected static string user { get { return "UserGQualidade"; } }
+        protected static string pass { get { return "grJsoluco3s"; } }
+
+        #region Validação de campos Front end
+
+        protected string message { get; set; }
+        protected static void VerificaMensagemCamposObrigatorios(string message)
+        {
+            if (!string.IsNullOrEmpty(message))
+            {
+                message = "\n Campos necessários para o cadastro não foram preenchidos: " + message;
+
+                throw new Exception(message.TrimEnd(',') + ".");
+            }
+        }
+
+        #endregion
+
+        #region DataBase
 
         protected int Update(SqlCommand cmd)
         {
@@ -33,7 +50,7 @@ namespace PlanoAcaoCore
         {
             using (var db = new Factory(dataSource, catalog, pass, user))
                 return db.InsertUpdateData(cmd);
-            
+
         }
 
         protected static int SalvarStatic(SqlCommand cmd)
@@ -91,9 +108,9 @@ namespace PlanoAcaoCore
 
             query = " INSERT INTO [dbo].[" + table + "] " +
                     "\n       ([Name],                  " +
-                    "\n        " + fk +"     )          " +
+                    "\n        " + fk + "     )          " +
                     "\n VALUES                          " +
-                    "\n       (@Name,                   "+
+                    "\n       (@Name,                   " +
                     "\n        @predecessor)            " +
                     "\n       SELECT CAST(scope_identity() AS int) ";
 
@@ -111,7 +128,9 @@ namespace PlanoAcaoCore
             using (var db = new Factory(dataSource, catalog, pass, user))
                 retorno = db.ExecuteSql(sql);
             return retorno;
-        }
+        } 
+
+        #endregion
 
     }
 }

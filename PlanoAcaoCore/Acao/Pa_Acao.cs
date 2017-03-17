@@ -35,8 +35,6 @@ namespace PlanoAcaoCore
             }
         }
 
-
-
         [Display(Name = "Unidade")]
         public int? Unidade_Id { get; set; }
         public string Unidade { get; set; }
@@ -46,8 +44,6 @@ namespace PlanoAcaoCore
         public string Departamento { get; set; }
 
         public int? Pa_CausaMedidasXAcao_Id { get; set; }
-      
-
 
         [Display(Name = "Duracao dias")]
         public int DuracaoDias { get; set; }
@@ -87,6 +83,8 @@ namespace PlanoAcaoCore
 
         public Pa_CausaMedidasXAcao CausaMedidasXAcao { get; set; }
 
+     
+
         public string _Prazo
         {
             get
@@ -110,7 +108,55 @@ namespace PlanoAcaoCore
 
         public void IsValid()
         {
-            //Name = Guard.CheckStringFullSimple(Name);
+            if (Pa_IndicadorSgqAcao_Id <= 0)
+                message += "\n Indicador Operacional,";
+            
+            if (Pa_Problema_Desvio_Id <= 0)
+                message += "\n Problema ou Desvio,";
+
+            if (AcaoXQuem != null)
+            {
+                foreach (var i in AcaoXQuem)
+                    if (i.Quem_Id <= 0)
+                        message = "\n Quem";
+            }
+            else
+                message = "\n Quem";
+
+            if (CausaMedidasXAcao.CausaGenerica_Id <= 0)
+                message += "\n Causa generica,";
+
+            if (CausaMedidasXAcao.GrupoCausa_Id <= 0)
+                message += "\n Grupo causa,";
+            
+            if (CausaMedidasXAcao.ContramedidaGenerica_Id <= 0)
+                message += "\n Contramedida generica,";
+
+            if (string.IsNullOrEmpty(CausaMedidasXAcao._CausaEspecifica))
+                message += "\n Causa Específica,";
+
+            if (string.IsNullOrEmpty(CausaMedidasXAcao._ContramedidaEspecifica))
+                message += "\n Contramedida Específica,";
+
+            if (string.IsNullOrEmpty(_QuandoInicio))
+                message += "\n Quando início,";
+
+            if (string.IsNullOrEmpty(_QuandoFim))
+                message += "\n Quando fim,";
+
+            if (string.IsNullOrEmpty(ComoPontosimportantes))
+                message += "\n Como pontos importantes,";
+
+            if (string.IsNullOrEmpty(PraQue))
+                message += "\n Pra que,";
+
+            if (string.IsNullOrEmpty(_QuantoCusta))
+                message += "\n Quanto custa,";
+
+            if (Status <= 0)
+                message += "\n Status,";
+
+            VerificaMensagemCamposObrigatorios(message);
         }
 
         private static string query
@@ -162,11 +208,11 @@ namespace PlanoAcaoCore
 
         public void AddOrUpdate()
         {
-            IsValid();
-            CausaMedidasXAcao.IsValid();
+            //IsValid();
+            //CausaMedidasXAcao.IsValid();
 
-            foreach (var j in AcaoXQuem)
-                j.IsValid();
+            //foreach (var j in AcaoXQuem)
+            //    j.IsValid();
 
             string query;
 
@@ -234,7 +280,7 @@ namespace PlanoAcaoCore
 
                 query = "INSERT INTO [dbo].[Pa_Acao]               " +
                         "\n       ([QuandoInicio]                  " +
-                        "\n        ,[DuracaoDias]                  " +
+                        //"\n        ,[DuracaoDias]                  " +
                         "\n        ,[QuandoFim]                    " +
                         "\n        ,[ComoPontosimportantes]        " +
                         "\n        ,[PraQue]                       " +
@@ -245,7 +291,7 @@ namespace PlanoAcaoCore
                         "\n        ,[Panejamento_Id])              " +
                         "\n  VALUES                                " +
                         "\n        (@QuandoInicio                  " +
-                        "\n        ,@DuracaoDias                   " +
+                        //"\n        ,@DuracaoDias                   " +
                         "\n        ,@QuandoFim                     " +
                         "\n        ,@ComoPontosimportantes         " +
                         "\n        ,@PraQue                        " +
@@ -261,7 +307,7 @@ namespace PlanoAcaoCore
                 cmd = new SqlCommand(query);
 
                 cmd.Parameters.AddWithValue("@QuandoInicio", QuandoInicio);
-                cmd.Parameters.AddWithValue("@DuracaoDias", DuracaoDias);
+                //cmd.Parameters.AddWithValue("@DuracaoDias", DuracaoDias);
                 cmd.Parameters.AddWithValue("@QuandoFim", QuandoFim);
                 cmd.Parameters.AddWithValue("@ComoPontosimportantes", ComoPontosimportantes);
                 cmd.Parameters.AddWithValue("@PraQue", PraQue);
@@ -273,8 +319,8 @@ namespace PlanoAcaoCore
 
                 Id = Salvar(cmd);
 
-                var causaEsp = new Pa_CausaEspecifica() { Text = CausaMedidasXAcao.CausaEspecifica };
-                var contramedidaEsp = new Pa_ContramedidaEspecifica() { Text = CausaMedidasXAcao.ContramedidaEspecifica };
+                var causaEsp = new Pa_CausaEspecifica() { Text = CausaMedidasXAcao._CausaEspecifica };
+                var contramedidaEsp = new Pa_ContramedidaEspecifica() { Text = CausaMedidasXAcao._ContramedidaEspecifica };
                 causaEsp.AddOrUpdate();
                 contramedidaEsp.AddOrUpdate();
 

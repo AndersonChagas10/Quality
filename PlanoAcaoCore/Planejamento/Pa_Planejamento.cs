@@ -1,23 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data.SqlClient;
 using System.Linq;
 
 namespace PlanoAcaoCore
 {
-    public class Pa_Planejamento : Pa_BaseObject, ICrudPa<Pa_Planejamento>
+    public class Pa_Planejamento : Pa_BaseObject
     {
+
+        #region Estrategico
+
         [Display(Name = "Diretoria")]
         public int Diretoria_Id { get; set; }
         public string Diretoria { get; set; }
-
-        [Display(Name = "Gerência")]
-        public int Gerencia_Id { get; set; }
-        public string Gerencia { get; set; }
-
-        [Display(Name = "Coordenação")]
-        public int Coordenacao_Id { get; set; }
-        public string Coordenacao { get; set; }
 
         [Display(Name = "Missão")]
         public int Missao_Id { get; set; }
@@ -27,9 +23,13 @@ namespace PlanoAcaoCore
         public int Visao_Id { get; set; }
         public string Visao { get; set; }
 
-        [Display(Name = "Tema / Assunto")]
-        public int TemaAssunto_Id { get; set; }
-        public string TemaAssunto { get; set; }
+        [Display(Name = "Dimensão")]
+        public int Dimensao_Id { get; set; }
+        public string Dimensao { get; set; }
+
+        [Display(Name = "Diretrizes / Objetivos")]
+        public int Objetivo_Id { get; set; }
+        public string Objetivo { get; set; }
 
         [Display(Name = "Indicadores da Diretrizes / Objetivos")]
         public int IndicadoresDiretriz_Id { get; set; }
@@ -48,6 +48,67 @@ namespace PlanoAcaoCore
             }
         }
 
+        public int? Estrategico_Id { get; set; }
+
+        #endregion
+
+        #region Tático
+
+        [Display(Name = "Gerência")]
+        public int Gerencia_Id { get; set; }
+        public string Gerencia { get; set; }
+
+        [Display(Name = "Coordenação")]
+        public int Coordenacao_Id { get; set; }
+        public string Coordenacao { get; set; }
+
+        [Display(Name = "Projeto / Iniciativa")]
+        public int Iniciativa_Id { get; set; }
+        public string Iniciativa { get; set; }
+
+        [Display(Name = "Indicadores do Projeto / Iniciativa")]
+        public int IndicadoresDeProjeto_Id { get; set; }
+        public string IndicadoresDeProjeto { get; set; }
+
+        [Display(Name = "Objetivo Gerencial")]
+        public int ObjetivoGerencial_Id { get; set; }
+        public string ObjetivoGerencial { get; set; }
+
+        [Display(Name = "Valor de")]
+        public decimal ValorDe { get; set; }
+        public string _ValorDe { get; set; }
+
+        [Display(Name = "Valor para")]
+        public decimal ValorPara { get; set; }
+        public string _ValorPara { get; set; }
+
+        [Display(Name = "Unidade de medida")]
+        public int UnidadeDeMedida_Id { get; set; }
+        public Pa_UnidadeMedida _UnidadeDeMedida_Id
+        {
+            get
+            {
+                if (UnidadeDeMedida_Id > 0) {
+                    var unidade = Pa_UnidadeMedida.Get(UnidadeDeMedida_Id);
+                    return unidade;
+                }
+                else
+                    return new Pa_UnidadeMedida();
+            }
+        }
+
+        [Display(Name = "Data inicio Projeto / Iniciativa")]
+        public DateTime? DataInicio { get; set; }
+
+        [Display(Name = "_DataInicio")]
+        public string _DataInicio { get; set; }
+
+        [Display(Name = "Data fim Projeto / Iniciativa")]
+        public DateTime? DataFim { get; set; }
+
+        [Display(Name = "_DataFim")]
+        public string _DataFim { get; set; }
+
         [Display(Name = "Responsavel pelo Projeto / Iniciativa")]
         public int Responsavel_Projeto { get; set; }
         public Pa_Quem Responsavel_Projeto_Quem
@@ -61,60 +122,52 @@ namespace PlanoAcaoCore
             }
         }
 
-        [Display(Name = "Indicadores do Projeto / Iniciativa")]
-        public int IndicadoresDeProjeto_Id { get; set; }
-        public string IndicadoresDeProjeto { get; set; }
+        public int? Tatico_Id { get; set; }
 
-        [Display(Name = "Projeto / Iniciativa")]
-        public int Iniciativa_Id { get; set; }
-        public string Iniciativa { get; set; }
-
-        [Display(Name = "Objetivo Gerencial")]
-        public int ObjetivoGerencial_Id { get; set; }
-        public string ObjetivoGerencial { get; set; }
-
-        [Display(Name = "Dimensão")]
-        public int Dimensao_Id { get; set; }
-        public string Dimensao { get; set; }
-
-        [Display(Name = "Diretrizes / Objetivos")]
-        public int Objetivo_Id { get; set; }
-        public string Objetivo { get; set; }
-
-        [Display(Name = "Unidade de medida")]
-        public int UnidadeDeMedida_Id { get; set; }
-        public Pa_UnidadeMedida _UnidadeDeMedida_Id
+        public void Update()
         {
-            get
-            {
-                if (Responsavel_Projeto > 0)
-                    return Pa_UnidadeMedida.Get(UnidadeDeMedida_Id);
-                else
-                    return new Pa_UnidadeMedida();
-            }
+           var query = "UPDATE [dbo].[Pa_Planejamento]                                             " +
+                   "\n    SET [Gerencia_Id] = @Gerencia_Id                                " +
+                   "\n       ,[Coordenacao_Id] = @Coordenacao_Id                                  " +
+                   "\n       ,[Iniciativa_Id] = @Iniciativa_Id                                      " +
+                   "\n       ,[IndicadoresDeProjeto_Id] = @IndicadoresDeProjeto_Id              " +
+                   "\n       ,[ObjetivoGerencial_Id] = @ObjetivoGerencial_Id                                  " +
+                   "\n       ,[ValorDe] = @ValorDe                                  " +
+                   "\n       ,[ValorPara] = @ValorPara                                  " +
+                   "\n       ,[DataInicio] = @DataInicio                                  " +
+                   "\n       ,[DataFim] = @DataFim                                  " +
+                   "\n  WHERE Id = @Id                                                      ";
+
+            query += " SELECT CAST(1 AS int)";
+
+            SqlCommand cmd;
+            cmd = new SqlCommand(query);
+
+            cmd.Parameters.AddWithValue("@Gerencia_Id", Gerencia_Id);
+            cmd.Parameters.AddWithValue("@Coordenacao_Id", Coordenacao_Id);
+            cmd.Parameters.AddWithValue("@Iniciativa_Id", Iniciativa_Id);
+            cmd.Parameters.AddWithValue("@IndicadoresDeProjeto_Id", IndicadoresDeProjeto_Id);
+            cmd.Parameters.AddWithValue("@ObjetivoGerencial_Id", ObjetivoGerencial_Id);
+            cmd.Parameters.AddWithValue("@ValorDe", ValorDe);
+            cmd.Parameters.AddWithValue("@ValorPara", ValorPara);
+            cmd.Parameters.AddWithValue("@DataInicio", DataInicio);
+            cmd.Parameters.AddWithValue("@DataFim", DataFim);
+            cmd.Parameters.AddWithValue("@Id", Id);
+
+            Salvar(cmd);
         }
 
-        [Display(Name = "Valor de")]
-        public decimal ValorDe { get; set; }
-        public string _ValorDe { get; set; }
+        #endregion
 
-        [Display(Name = "Valor para")]
-        public decimal ValorPara { get; set; }
-        public string _ValorPara { get; set; }
+        #region Depreciado
 
-        [Display(Name = "Data inicio")]
-        public DateTime? DataInicio { get; set; }
+        [Display(Name = "Tema / Assunto")]
+        public int TemaAssunto_Id { get; set; }
+        public string TemaAssunto { get; set; }
 
-        [Display(Name = "_DataInicio")]
-        public string _DataInicio { get; set; }
+        #endregion
 
-        [Display(Name = "Data fim")]
-        public DateTime? DataFim { get; set; }
-
-        [Display(Name = "_DataFim")]
-        public string _DataFim { get; set; }
-
-        public int? Estrategico_Id { get; set; }
+        public bool? IsfiltrarAcao { get; set; }
 
         public Pa_Acao Acao { get; set; }
 
@@ -125,7 +178,7 @@ namespace PlanoAcaoCore
                 var retorno = string.Empty;
                 if (Id > 0)
                 {
-                    retorno += "Diretoria: " + Diretoria +
+                    retorno += "Id: " + Id + " - Diretoria: " + Diretoria +
                         " \n Missão: " + Missao +
                         " \n Visão" + Visao +
                         " \n Dimensão" + Dimensao +
@@ -140,41 +193,127 @@ namespace PlanoAcaoCore
 
         public void IsValid()
         {
-            //Name = Guard.CheckStringFullSimple(Name);
+           
+            if (Tatico_Id.GetValueOrDefault() > 0)//é planejamento Operacional
+            {
+
+            }           
+            else if (Estrategico_Id.GetValueOrDefault() > 0)
+            {
+                if (Gerencia_Id <= 0)
+                    message += "\n Gerencia,";
+                if (Coordenacao_Id <= 0)
+                    message += "\n Coordenação,";
+                if (Iniciativa_Id <= 0)
+                    message += "\n Projeto / Iniciativa,";
+                if (IndicadoresDeProjeto_Id <= 0)
+                    message += "\n Indicadores do Projeto / Iniciativa,";
+                if (ObjetivoGerencial_Id <= 0)
+                    message += "\n Objetivo Gerencial,";
+                if (ValorDe <= 0)
+                    message += "\n Valor De,";
+                if (ValorPara <= 0)
+                    message += "\n Valor Para,";
+                if (UnidadeDeMedida_Id <= 0)
+                    message += "\n Unidade de Medida,";
+                if (DataInicio == null)
+                    message += "\n Data inicio do Projeto / Iniciativa,";
+                if (DataFim == null)
+                    message += "\n Data fim Projeto / Iniciativa,,";
+                if (Responsavel_Projeto < 0)
+                    message += "\n Responsavel pelo Projeto / Iniciativa,";
+
+            }
+            else 
+            {
+                if (Diretoria_Id <= 0)
+                    message += "\n Diretoria,";
+                if (Missao_Id <= 0)
+                    message += "\n Missão,";
+                if (Visao_Id <= 0)
+                    message += "\n Visão,";
+                if (Dimensao_Id <= 0)
+                    message += "\n Dimensão,";
+                if (Objetivo_Id <= 0)
+                    message += "\n Diretrizes / Objetivos,";
+                if (IndicadoresDiretriz_Id <= 0)
+                    message += "\n Indicadores da Diretrizes / Objetivos,";
+                if (Responsavel_Diretriz <= 0)
+                    message += "\n Responsavel pela Diretriz,";
+
+            }
+
+                VerificaMensagemCamposObrigatorios(message);
+
         }
+
+       
 
         private static string query
         {
             get
             {
-                return "SELECT Pl.*,                                                                         " +
-                    "\n INI.Name AS Inciativa,                                                               " +
-                    "\n DIR.Name AS Diretoria,                                                               " +
-                    "\n GER.Name AS Gerencia,                                                                " +
-                    "\n CORD.Name AS Coordenacao,                                                            " +
-                    "\n MISS.Name AS Missao,                                                                 " +
-                    "\n VIS.Name AS Visao,                                                                   " +
-                    "\n TEM.Name AS TemaAssunto,                                                             " +
-                    "\n INDIC.Name AS IndicadoresDiretriz,                                                   " +
-                    "\n INDICProj.Name AS IndicadoresDeProjeto,                                              " +
-                    "\n OBJT.Name AS ObjetivoGerencial,                                                      " +
-                    "\n OBJ.Name AS Dimensao,                                                                " +
-                    "\n INICI.Name AS Iniciativa,                                                            " +
-                    "\n DIME.Name AS Objetivo                                                                " +
-                    "\n  FROM Pa_planejamento Pl                                                             " +
-                    "\n LEFT JOIN Pa_Iniciativa INI on INI.Id = Pl.Iniciativa_Id                             " +
-                    "\n LEFT JOIN Pa_Diretoria DIR on DIR.Id = Pl.Diretoria_Id                               " +
-                    "\n LEFT JOIN Pa_Gerencia GER on Pl.Gerencia_Id = GER.Id                                 " +
-                    "\n LEFT JOIN Pa_Coordenacao CORD on CORD.Id = Pl.Coordenacao_Id                         " +
-                    "\n LEFT JOIN Pa_Missao MISS on MISS.Id = Pl.Missao_Id                                   " +
-                    "\n LEFT JOIN Pa_Visao VIS on VIS.Id = Pl.Visao_Id                                       " +
-                    "\n LEFT JOIN Pa_TemaAssunto TEM on TEM.Id = Pl.TemaAssunto_Id                           " +
-                    "\n LEFT JOIN Pa_IndicadoresDiretriz INDIC on INDIC.Id = Pl.IndicadoresDiretriz_Id       " +
-                    "\n LEFT JOIN Pa_IndicadoresDeProjeto INDICProj on INDIC.Id = Pl.IndicadoresDeProjeto_Id " +
-                    "\n LEFT JOIN Pa_Iniciativa INICI on INICI.Id = Pl.Iniciativa_Id                         " +
-                    "\n LEFT JOIN Pa_ObjetivoGeral OBJT on OBJT.Id = Pl.ObjetivoGerencial_Id                 " +
-                    "\n LEFT JOIN Pa_Objetivo OBJ on OBJ.Id = Pl.Objetivo_Id                                 " +
-                    "\n LEFT JOIN Pa_Dimensao DIME on DIME.Id = Pl.Dimensao_Id                               ";
+                //return "SELECT Pl.*,                                                                         " +
+                //    "\n INI.Name AS Inciativa,                                                               " +
+                //    "\n DIR.Name AS Diretoria,                                                               " +
+                //    "\n GER.Name AS Gerencia,                                                                " +
+                //    "\n CORD.Name AS Coordenacao,                                                            " +
+                //    "\n MISS.Name AS Missao,                                                                 " +
+                //    "\n VIS.Name AS Visao,                                                                   " +
+                //    "\n TEM.Name AS TemaAssunto,                                                             " +
+                //    "\n INDIC.Name AS IndicadoresDiretriz,                                                   " +
+                //    "\n INDICProj.Name AS IndicadoresDeProjeto,                                              " +
+                //    "\n OBJT.Name AS ObjetivoGerencial,                                                      " +
+                //    "\n DIME.Name AS Dimensao,                                                                " +
+                //    "\n INICI.Name AS Iniciativa,                                                            " +
+                //    "\n OBJ.Name AS Objetivo                                                                " +
+                //    "\n  FROM Pa_planejamento Pl                                                             " +
+                //    "\n LEFT JOIN Pa_Iniciativa INI on INI.Id = Pl.Iniciativa_Id                             " +
+                //    "\n LEFT JOIN Pa_Diretoria DIR on DIR.Id = Pl.Diretoria_Id                               " +
+                //    "\n LEFT JOIN Pa_Gerencia GER on Pl.Gerencia_Id = GER.Id                                 " +
+                //    "\n LEFT JOIN Pa_Coordenacao CORD on CORD.Id = Pl.Coordenacao_Id                         " +
+                //    "\n LEFT JOIN Pa_Missao MISS on MISS.Id = Pl.Missao_Id                                   " +
+                //    "\n LEFT JOIN Pa_Visao VIS on VIS.Id = Pl.Visao_Id                                       " +
+                //    "\n LEFT JOIN Pa_TemaAssunto TEM on TEM.Id = Pl.TemaAssunto_Id                           " +
+                //    "\n LEFT JOIN Pa_IndicadoresDiretriz INDIC on INDIC.Id = Pl.IndicadoresDiretriz_Id       " +
+                //    "\n LEFT JOIN Pa_IndicadoresDeProjeto INDICProj on INDIC.Id = Pl.IndicadoresDeProjeto_Id " +
+                //    "\n LEFT JOIN Pa_Iniciativa INICI on INICI.Id = Pl.Iniciativa_Id                         " +
+                //    "\n LEFT JOIN Pa_ObjetivoGeral OBJT on OBJT.Id = Pl.ObjetivoGerencial_Id                 " +
+                //    "\n LEFT JOIN Pa_Objetivo OBJ on OBJ.Id = Pl.Objetivo_Id                                 " +
+                //    "\n LEFT JOIN Pa_Dimensao DIME on DIME.Id = Pl.Dimensao_Id                               ";
+
+                return  "\nSELECT Pl.* ,             " +                                                          
+                        "\nINI.Name AS Inciativa,                          " +                                    
+                        "\nDIR.Name AS Diretoria,                          " +                                    
+                        "\nGER.Name AS Gerencia,                           " +                                    
+                        "\nCORD.Name AS Coordenacao,                       " +                                    
+                        "\nMISS.Name AS Missao,                            " +                                    
+                        "\nVIS.Name AS Visao,                              " +                                    
+                        "\nTEM.Name AS TemaAssunto,                        " +                                    
+                        "\nINDIC.Name AS IndicadoresDiretriz,              " +                                    
+                        "\nINDICProj.Name AS IndicadoresDeProjeto,         " +                                    
+                        "\nOBJT.Name AS ObjetivoGerencial,                 " +                                    
+                        "\nDIME.Name AS Dimensao,                          " +                                    
+                        "\nINICI.Name AS Iniciativa,                       " +                                    
+                        "\nOBJ.Name AS Objetivo                            " +
+                        " FROM(SELECT Pl2.Id, Pl1.AddDate, Pl1.AlterDate, Pl1.Diretoria_Id, Pl2.Gerencia_Id, Pl2.Coordenacao_Id, Pl1.Missao_Id, Pl1.Visao_Id, Pl1.TemaAssunto_Id, Pl1.Indicadores_Id, Pl2.Iniciativa_Id, Pl2.ObjetivoGerencial_Id, Pl1.Dimensao, Pl1.Objetivo, Pl2.ValorDe, Pl2.ValorPara, Pl2.DataInicio, Pl2.DataFim, Pl1.[Order], Pl1.Dimensao_Id, Pl1.Objetivo_Id, Pl1.IndicadoresDiretriz_Id, Pl2.IndicadoresDeProjeto_Id, Pl2.Estrategico_Id, Pl1.Responsavel_Diretriz, Pl2.Responsavel_Projeto, Pl2.UnidadeDeMedida_Id FROM Pa_planejamento Pl1 "+
+                        "  INNER JOIN Pa_planejamento Pl2 on Pl1.Id = Pl2.Estrategico_Id "+
+                        "  UNION ALL " +
+                        "  SELECT DISTINCT pl1.* FROM Pa_planejamento Pl1 LEFT JOIN Pa_planejamento Pl2 on Pl1.Id = Pl2.Estrategico_Id  where Pl1.Estrategico_Id is null and Pl2.Estrategico_Id is null " +
+                        "  ) Pl " +
+                        "\nLEFT JOIN Pa_Iniciativa INI on INI.Id = Pl.Iniciativa_Id " +
+                        "\nLEFT JOIN Pa_Diretoria DIR on DIR.Id = Pl.Diretoria_Id " +
+                        "\nLEFT JOIN Pa_Gerencia GER on Pl.Gerencia_Id = GER.Id " +
+                        "\nLEFT JOIN Pa_Coordenacao CORD on CORD.Id = Pl.Coordenacao_Id " +
+                        "\nLEFT JOIN Pa_Missao MISS on MISS.Id = Pl.Missao_Id " +
+                        "\nLEFT JOIN Pa_Visao VIS on VIS.Id = Pl.Visao_Id " +
+                        "\nLEFT JOIN Pa_TemaAssunto TEM on TEM.Id = Pl.TemaAssunto_Id " +
+                        "\nLEFT JOIN Pa_IndicadoresDiretriz INDIC on INDIC.Id = Pl.IndicadoresDiretriz_Id " +
+                        "\nLEFT JOIN Pa_IndicadoresDeProjeto INDICProj on INDICProj.Id = Pl.IndicadoresDeProjeto_Id " +
+                        "\nLEFT JOIN Pa_Iniciativa INICI on INICI.Id = Pl.Iniciativa_Id " +
+                        "\nLEFT JOIN Pa_ObjetivoGeral OBJT on OBJT.Id = Pl.ObjetivoGerencial_Id " +
+                        "\nLEFT JOIN Pa_Objetivo OBJ on OBJ.Id = Pl.Objetivo_Id " +
+                        "\nLEFT JOIN Pa_Dimensao DIME on DIME.Id = Pl.Dimensao_Id";
 
             }
         }
@@ -194,7 +333,7 @@ namespace PlanoAcaoCore
 
         public static Pa_Planejamento Get(int Id)
         {
-            return GetGenerico<Pa_Planejamento>(query + "WHERE Pl.Id = " + Id);
+            return GetGenerico<Pa_Planejamento>(query + " WHERE Pl.Id = " + Id);
         }
 
         public static List<Pa_Planejamento> GetPlanejamentoAcao()
@@ -202,9 +341,16 @@ namespace PlanoAcaoCore
             var retorno = new List<Pa_Planejamento>();
             var planejamentos = Listar();
             var acoes = Pa_Acao.Listar();
+            var remover = new List<int>();
+
 
             foreach (var i in planejamentos)
             {
+                //if(i.Estrategico_Id.GetValueOrDefault() >0)
+                //{
+                //    remover.Add(i.Estrategico_Id.GetValueOrDefault());
+                //}
+
                 var acoesTmp = acoes.Where(r => r.Panejamento_Id == i.Id);
                 if (acoesTmp.Count() > 0)
                 {
@@ -233,26 +379,11 @@ namespace PlanoAcaoCore
                 }
             }
 
+            //retorno.RemoveAll(r => remover.Any(c => c == r.Id));
+
             return retorno;
         }
-        public void AddOrUpdateteste()
-        {
-
-        }
-        public void AddOrUpdate()
-        {
-            IsValid();
-
-            if (Id > 0)
-            {
-
-            }
-            else
-            {
-
-            }
-        }
-
+       
     }
 
 }

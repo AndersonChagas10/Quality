@@ -50,11 +50,11 @@
                 </li>
             </ul>
             @*<div class="page-toolbar">
-                <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                    <i class="fa fa-calendar"></i>&nbsp;
-                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                </div>
-            </div>*@
+                    <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                    </div>
+                </div>*@
         </div>
         <!-- END PAGE BAR -->
         <!-- END PAGE HEADER-->
@@ -314,7 +314,7 @@
 
     $('#btnNewLevel3').click(function () {
         $('#parLevel3Select2').val('-1').trigger('select2:select').change();
-        $('#level3_collapse').collapse('show'); 
+        $('#level3_collapse').collapse('show');
         $('#paramsDto_parLevel3Dto_Name').focus();
     });
 
@@ -348,7 +348,7 @@
         var second = date.getSeconds();
 
         $("#currentDate").text(twoDigits(day) + ' @Resources.Resource.of ' + monthNames[monthIndex] + ' @Resources.Resource.of ' + year + ' ' + twoDigits(hour) + ':' + twoDigits(minute) + ':' + twoDigits(second));
-        
+
         setTimeout(watcher, 1000);
     }
 
@@ -542,7 +542,7 @@
 
                 /*Reseta Validação*/
                 indexParamsLevel1.resetaValidacao();
-                
+
                 initialFormLevel1 = $($('form')[0]).clone();
                 //closeLoader();
             });
@@ -927,19 +927,19 @@
         var idLevel3Level2 = 0;
 
         if (idLevel1 <= 0) {
-            openMessageModal("Alerta", "É necessario selecionar um indicador para realizar este vínculo.");
+            openMessageModal("@Resources.Resource.alert", "@Resources.Resource.select", "@Resources.Resource.select_audit_first");
             //alert("É necessario selecionar um level 1 para realizar este vinculo.");
             return;
         }
 
         if (idLevel2 <= 0) {
-            openMessageModal("Alerta", "É necessario selecionar um monitoramento para realizar este vínculo.");
+            openMessageModal("@Resources.Resource.alert", "@Resources.Resource.select_monitoring_first");
             //alert("É necessario selecionar um level 2 para realizar este vinculo.");
             return;
         }
 
         if (idLevel3 <= 0) {
-            openMessageModal("Alerta", "É necessario selecionar uma tarefa para realizar este vínculo.");
+            openMessageModal("@Resources.Resource.alert", "@Resources.Resource.select_task_first");
             //alert("É necessario selecionar um level 3 realizar este vinculo.");
             return;
         }
@@ -954,7 +954,7 @@
                     return str;
                 }).join(", ");
 
-                openMessageModal("Feito!", "Monitoramento e Tarefa vinculados ao Indicador com sucesso! #" +  ids);
+                openMessageModal("@Resources.Resource.done", "@Resources.Resource.monitoring_task_linked_indicator_successfully" +  ids);
                 //alert("Vinculado L3 com L2 ID: " + obj.Id);
                 $('#desVinculoLevel1').show();
                 UpdateSelect2Level2(idLevel1);

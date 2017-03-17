@@ -6,6 +6,10 @@ namespace PlanoAcaoCore
     public class Pa_CausaMedidasXAcao : Pa_BaseObject, ICrudPa<Pa_CausaMedidasXAcao>
     {
 
+        public string _CausaEspecifica { get; set; }
+
+        public string _ContramedidaEspecifica { get; set; }
+
         [Display(Name = "Causa generica")]
         public int? CausaGenerica_Id { get; set; }
         public string CausaGenerica
@@ -225,6 +229,13 @@ namespace PlanoAcaoCore
 
         public void IsValid()
         {
+            if (string.IsNullOrEmpty(_CausaEspecifica))
+                message += "\n Causa Específica,";
+
+            if (string.IsNullOrEmpty(_ContramedidaEspecifica))
+                message += "\n Contramedida Específica,";
+
+            VerificaMensagemCamposObrigatorios(message);
             //throw new NotImplementedException();
         }
 

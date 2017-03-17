@@ -274,7 +274,7 @@
     <value>Select the consolidation type</value>
   </data>
   <data name="level1_clusters" xml:space="preserve">
-    <value>Cluste</value>
+    <value>Cluster</value>
   </data>
   <data name="level1_counter" xml:space="preserve">
     <value>Level 1 counter</value>
@@ -313,10 +313,10 @@
     <value>Register Total Evaluated</value>
   </data>
   <data name="standard" xml:space="preserve">
-    <value>Adit counts</value>
+    <value>Audit counts</value>
   </data>
   <data name="field_level" xml:space="preserve">
-    <value>Field Level</value>
+    <value>Where</value>
   </data>
   <data name="field_level_popover" xml:space="preserve">
     <value>Define on which header (Level 1 or Level 2) the field will be inserted</value>
@@ -1432,7 +1432,7 @@
     <value>Results</value>
   </data>
   <data name="sd" xml:space="preserve">
-    <value>Sd</value>
+    <value>SMP</value>
   </data>
   <data name="sending" xml:space="preserve">
     <value>Sending</value>
@@ -1679,5 +1679,20 @@
   </data>
   <data name="fill_the_integration_field_name" xml:space="preserve">
     <value>Fill the field integration</value>
+  </data>
+  <data name="alert" xml:space="preserve">
+    <value>Alert</value>
+  </data>
+  <data name="monitoring_task_linked_indicator_successfully" xml:space="preserve">
+    <value>Monitoring and Task linked to the Indicator successfully!</value>
+  </data>
+  <data name="select_audit_first" xml:space="preserve">
+    <value>Select audit first</value>
+  </data>
+  <data name="select_monitoring_first" xml:space="preserve">
+    <value>Select monitoring first</value>
+  </data>
+  <data name="select_task_first" xml:space="preserve">
+    <value>Select task first</value>
   </data>
 </root>
