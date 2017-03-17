@@ -161,6 +161,9 @@
     <button type="button" onclick="Relatorios();" class="btn btn-primary">
         Relatórios
     </button>
+    <button type="button" onclick="GetDataTable();" class="btn btn-primary" style="float:right">
+        Atualizar
+    </button>
 </div>
 
 <hr />
@@ -906,7 +909,7 @@
         });
         /*Table*/
         $(document).ready(function () {
-            $.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
+            GetDataTable();
         });
 
         function GerarTabela(retornoArray) {
@@ -1264,6 +1267,11 @@
                 win.focus();
             //}
         }
+
+        function GetDataTable() {
+            $.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
+        }
+
     </script>
 
 }

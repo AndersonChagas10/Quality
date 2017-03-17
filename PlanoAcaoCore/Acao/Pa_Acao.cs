@@ -108,55 +108,65 @@ namespace PlanoAcaoCore
 
         public void IsValid()
         {
-            if (Pa_IndicadorSgqAcao_Id <= 0)
-                message += "\n Indicador Operacional,";
-            
-            if (Pa_Problema_Desvio_Id <= 0 || Pa_Problema_Desvio_Id == null)
-                message += "\n Problema ou Desvio,";
 
-            if (AcaoXQuem != null)
+            if(Id <= 0)
             {
-                foreach (var i in AcaoXQuem)
-                    if (i.Quem_Id <= 0)
-                        message = "\n Quem";
+                Pa_Status status = Pa_Status.Listar().FirstOrDefault(r => r.Name.Equals("Em Andamento"));
+
+                //status.Name 
+
             }
-            else
-                message = "\n Quem";
 
-            if (CausaMedidasXAcao.CausaGenerica_Id <= 0)
-                message += "\n Causa generica,";
+            //if (Pa_IndicadorSgqAcao_Id <= 0)
+            //    message += "\n Indicador Operacional,";
 
-            if (CausaMedidasXAcao.GrupoCausa_Id <= 0)
-                message += "\n Grupo causa,";
+            //if (Pa_Problema_Desvio_Id <= 0 || Pa_Problema_Desvio_Id == null)
+            //    message += "\n Problema ou Desvio,";
+
+            //if (AcaoXQuem != null)
+            //{
+            //    foreach (var i in AcaoXQuem)
+            //        if (i.Quem_Id <= 0)
+            //            message = "\n Quem";
+            //}
+            //else
+                
+            //    message = "\n Quem";
+
+            //if (CausaMedidasXAcao.CausaGenerica_Id <= 0)
+            //    message += "\n Causa generica,";
+
+            //if (CausaMedidasXAcao.GrupoCausa_Id <= 0)
+            //    message += "\n Grupo causa,";
             
-            if (CausaMedidasXAcao.ContramedidaGenerica_Id <= 0)
-                message += "\n Contramedida generica,";
+            //if (CausaMedidasXAcao.ContramedidaGenerica_Id <= 0)
+            //    message += "\n Contramedida generica,";
 
-            if (string.IsNullOrEmpty(CausaMedidasXAcao._CausaEspecifica))
-                message += "\n Causa Específica,";
+            //if (string.IsNullOrEmpty(CausaMedidasXAcao._CausaEspecifica))
+            //    message += "\n Causa Específica,";
 
-            if (string.IsNullOrEmpty(CausaMedidasXAcao._ContramedidaEspecifica))
-                message += "\n Contramedida Específica,";
+            //if (string.IsNullOrEmpty(CausaMedidasXAcao._ContramedidaEspecifica))
+            //    message += "\n Contramedida Específica,";
 
-            if (string.IsNullOrEmpty(_QuandoInicio))
-                message += "\n Quando início,";
+            //if (string.IsNullOrEmpty(_QuandoInicio))
+            //    message += "\n Quando início,";
 
-            if (string.IsNullOrEmpty(_QuandoFim))
-                message += "\n Quando fim,";
+            //if (string.IsNullOrEmpty(_QuandoFim))
+            //    message += "\n Quando fim,";
 
-            if (string.IsNullOrEmpty(ComoPontosimportantes))
-                message += "\n Como pontos importantes,";
+            //if (string.IsNullOrEmpty(ComoPontosimportantes))
+            //    message += "\n Como pontos importantes,";
 
-            if (string.IsNullOrEmpty(PraQue))
-                message += "\n Pra que,";
+            //if (string.IsNullOrEmpty(PraQue))
+            //    message += "\n Pra que,";
 
-            if (string.IsNullOrEmpty(_QuantoCusta))
-                message += "\n Quanto custa,";
+            //if (string.IsNullOrEmpty(_QuantoCusta))
+            //    message += "\n Quanto custa,";
 
-            if (Status <= 0)
-                message += "\n Status,";
+            //if (Status <= 0)
+            //    message += "\n Status,";
 
-            VerificaMensagemCamposObrigatorios(message);
+            //VerificaMensagemCamposObrigatorios(message);
         }
 
         private static string query
