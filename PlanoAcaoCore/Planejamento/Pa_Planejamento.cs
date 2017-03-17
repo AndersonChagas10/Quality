@@ -194,11 +194,37 @@ namespace PlanoAcaoCore
         public void IsValid()
         {
            
-            if (Estrategico_Id.GetValueOrDefault() > 0)//é planejamento Operacional
+            if (Tatico_Id.GetValueOrDefault() > 0)//é planejamento Operacional
             {
 
+            }           
+            else if (Estrategico_Id.GetValueOrDefault() > 0)
+            {
+                if (Gerencia_Id <= 0)
+                    message += "\n Gerencia,";
+                if (Coordenacao_Id <= 0)
+                    message += "\n Coordenação,";
+                if (Iniciativa_Id <= 0)
+                    message += "\n Projeto / Iniciativa,";
+                if (IndicadoresDeProjeto_Id <= 0)
+                    message += "\n Indicadores do Projeto / Iniciativa,";
+                if (ObjetivoGerencial_Id <= 0)
+                    message += "\n Objetivo Gerencial,";
+                if (ValorDe <= 0)
+                    message += "\n Valor De,";
+                if (ValorPara <= 0)
+                    message += "\n Valor Para,";
+                if (UnidadeDeMedida_Id <= 0)
+                    message += "\n Unidade de Medida,";
+                if (DataInicio == null)
+                    message += "\n Data inicio do Projeto / Iniciativa,";
+                if (DataFim == null)
+                    message += "\n Data fim Projeto / Iniciativa,,";
+                if (Responsavel_Projeto < 0)
+                    message += "\n Responsavel pelo Projeto / Iniciativa,";
+
             }
-            else
+            else 
             {
                 if (Diretoria_Id <= 0)
                     message += "\n Diretoria,";
@@ -214,9 +240,10 @@ namespace PlanoAcaoCore
                     message += "\n Indicadores da Diretrizes / Objetivos,";
                 if (Responsavel_Diretriz <= 0)
                     message += "\n Responsavel pela Diretriz,";
+
             }
 
-            VerificaMensagemCamposObrigatorios(message);
+                VerificaMensagemCamposObrigatorios(message);
 
         }
 
