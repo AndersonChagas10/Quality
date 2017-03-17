@@ -476,7 +476,7 @@
                         }
                     },
                     title: {
-                        text: 'Valor em milhões',
+                        text: 'Valores',
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -709,7 +709,7 @@
             var corPositivo = "";
             var corNegativo = "";
 
-            if (
+            if ( //Melhor Maior
                 indicador == 'Bois Abatidos' ||
                 //indicador == 'Manutenção R$' ||
                 indicador == 'Eficiên.Programção' ||
@@ -750,7 +750,7 @@
                 corNegativo = '#aef2ae';
                 legendaPositivo = "Positivo";
                 legendaNegativo = "Negativo";
-            } else {
+            } else {//Melhor Menor
                 corPositivo = '#AEF2AE';
                 corNegativo = '#FF7575';
                 legendaPositivo = "Negativo";
@@ -802,7 +802,7 @@
 
 
                     title: {
-                        text: 'Valor do desvio em milhões'
+                        text: 'Valor do desvio'
                     }
                 },
 
