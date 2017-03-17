@@ -111,7 +111,7 @@ namespace PlanoAcaoCore
             if (Pa_IndicadorSgqAcao_Id <= 0)
                 message += "\n Indicador Operacional,";
             
-            if (Pa_Problema_Desvio_Id <= 0)
+            if (Pa_Problema_Desvio_Id <= 0 || Pa_Problema_Desvio_Id == null)
                 message += "\n Problema ou Desvio,";
 
             if (AcaoXQuem != null)
