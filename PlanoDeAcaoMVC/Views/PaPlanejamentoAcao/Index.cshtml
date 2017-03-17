@@ -464,14 +464,14 @@
 
             $('#Fechar2').off('click').on('click', function () { ModalOpcoesEstrategico(title) });
             /*Fim Botões*/
-        }s
+        }
 
         function SalvarPlanejamento() {
             var sendObj = $('#Planejamento').serializeObject();
             $.post(urlSalvarPlanejamento, sendObj, function (r) {
                 //ModalOpcoesEstrategico('');
                 planejamentoCorrentId = parseInt(r.Id);
-                alert('Registro salvo com sucesso!');
+                openMessageModal('Registro salvo com sucesso!');
                 $('#modalLindo').modal('hide');
 
                 $.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
@@ -775,7 +775,7 @@
                     //if (counter == 1 && !jaLiberouCallback) {
                     jaLiberouCallback = true;
                     $('#modalLindo').modal('hide');
-                    alert('Registro salvo com sucesso!');
+                    openMessageModal('Registro salvo com sucesso!');
                     //}
                     GerarTabela(r);
 
