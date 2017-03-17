@@ -117,6 +117,16 @@
                                 <table class="table-erp">
                                     <tbody>
                                         <tr class="row">
+                                            @Table.GerarColuna(@Html.DropDownList("clusterListId", new SelectList(ViewBag.listaParCluster, "Id", "Name"), Resources.Resource.select + "...", new { @id = "clusterListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.cluster), Table.PosicaoLabel.top)
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <br />
+
+                                <table class="table-erp">
+                                    <tbody>
+                                        <tr class="row">
                                             @Table.GerarColunaButton(@Html.DropDownList("structureGroupListId", new SelectList(ViewBag.listaParStructureXCompany, "Id", "Name"), Resources.Resource.select + "...", new { @id = "structureGroupListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.structure_group), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='" + Resources.Resource.saving + "' id='btnSaveCompany' onclick='modalStructureGroupListAdd()' class='btn btn-primary btn-sm margin'><i class='fa fa-plus'></i></button>")
                                         </tr>
                                     </tbody>
@@ -126,19 +136,6 @@
                                     <tbody></tbody>
                                 </table>
 
-                                <br />
-
-                                <table class="table-erp">
-                                    <tbody>
-                                        <tr class="row">
-                                            @Table.GerarColunaButton(@Html.DropDownList("clusterListId", new SelectList(ViewBag.listaParCluster, "Id", "Name"), Resources.Resource.select + "...", new { @id = "clusterListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.cluster), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='" + Resources.Resource.saving + "' id='btnSaveCompany' onclick='modalClusterListAdd()' class='btn btn-primary btn-sm margin'><i class='fa fa-plus'></i></button>")
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                                <table class="table-erp table table-condensed table-bordered table-margin" id="clusterList">
-                                    <tbody></tbody>
-                                </table>
                             </div>
                         </form>
                     </div>
@@ -222,13 +219,9 @@
                 var ParCompanyXStructureDTO = { 'ParStructure_Id': $(structureGroupList[i]).attr('value'), 'ParCompany_Id': $('#parCompanyDTO_Id').val() };
                 dados['parCompanyDTO.ListParCompanyXStructure'].push(ParCompanyXStructureDTO);
             }
-
-            var clusterList = $('#clusterList').children('tbody').children('tr');
-
-            for (var i = 0; i < clusterList.length; i++) {
-                var ParCompanyClusterDTO = { 'ParCompany_Id': $('#parCompanyDTO_Id').val(), 'ParCluster_Id': $(clusterList[i]).attr('value') };
-                dados['parCompanyDTO.ListParCompanyCluster'].push(ParCompanyClusterDTO);
-            }
+            
+            var ParCompanyClusterDTO = { 'ParCompany_Id': $('#parCompanyDTO_Id').val(), 'ParCluster_Id': $('#clusterListId').val() };
+            dados['parCompanyDTO.ListParCompanyCluster'].push(ParCompanyClusterDTO);
 
             $.post(urlCompany, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                 console.log(objetoReturn);
@@ -264,7 +257,7 @@
             $('#modalCompany #clusterList').children('tbody').empty();
             if (object.ListParCompanyCluster.length > 0) {
                 object.ListParCompanyCluster.forEach(function (value) {
-                    $('#modalCompany #clusterList').children('tbody').append('<tr value=' + value.ParCluster_Id + '><td>' + value.ParCluster.Name + '<i class="fa fa-close pull-right text-danger" onclick="removeClusterList(' + value.ParCluster_Id + ')" style="margin: 4px;"></i></td></tr>');
+                    $('#clusterListId').val(value.ParCluster_Id);
                 });
             }
         },
