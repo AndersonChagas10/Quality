@@ -11,6 +11,10 @@ namespace DTO.Helpers
 {
     public static class Guard
     {
+        public static String LANGUAGE_PT_BR = "pt-BR";
+        public static String LANGUAGE_EN_US = "en-US";
+        public static String LANGUAGE_DEFAULT = "default";
+
         public static DateTime GetNextWeekday(DateTime start, DayOfWeek day)
         {
             // The (... + 7) % 7 ensures we end up with a value in the range [0, 6]

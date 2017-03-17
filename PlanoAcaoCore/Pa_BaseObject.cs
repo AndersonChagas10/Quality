@@ -12,7 +12,7 @@ namespace PlanoAcaoCore
         public DateTime AddDate { get; set; }
         public DateTime AlterDate { get; set; }
 
-       
+
         protected static string catalog { get { return "PlanoDeAcao"; } }
         protected static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
         protected static string user { get { return "sa"; } }

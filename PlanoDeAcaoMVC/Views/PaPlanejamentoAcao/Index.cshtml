@@ -471,7 +471,7 @@
             $.post(urlSalvarPlanejamento, sendObj, function (r) {
                 //ModalOpcoesEstrategico('');
                 planejamentoCorrentId = parseInt(r.Id);
-                alert('Registro salvo com sucesso!');
+                openMessageModal('Registro salvo com sucesso!');
                 $('#modalLindo').modal('hide');
 
                 $.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
@@ -481,7 +481,7 @@
                 //console.log(h);
                 //console.log(x);
 
-                alert('Não foi possível salvar o registro: ' + e.responseJSON.ExceptionMessage)
+                openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
             });
 
         }/*planejamentoCorrentId*/
@@ -762,10 +762,34 @@
         } /*Causa Medida Etc...*/
 
         function SalvarAcao() {
-
+            var listaAcoes = [];
             $('.Acao').not(':first').each(function (c, o) {
 
-                SalvarAcaoAvulsa(o);
+               listaAcoes.push(SalvarAcaoAvulsa(o));
+
+            });
+
+            $.post(urlSalvarAcao, { "": listaAcoes }, function (r) {
+                $.post(urlGetPlanejamentoAcao, {}, function (r) {
+
+                    //if (counter == 1 && !jaLiberouCallback) {
+                    jaLiberouCallback = true;
+                    $('#modalLindo').modal('hide');
+                    openMessageModal('Registro salvo com sucesso!');
+                    //}
+                    GerarTabela(r);
+
+                }).fail(function (e, h, x) {
+
+                    openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
+
+                }).always(function () {
+
+                });
+            })
+            .fail(function (e, h, x) {
+
+                openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
 
             });
 
@@ -788,24 +812,7 @@
 
             });
 
-            $.post(urlSalvarAcao, sendObj, function (r) {
-                $.post(urlGetPlanejamentoAcao, {}, function (r) {
-
-                    if (counter == 1 && !jaLiberouCallback) {
-                        jaLiberouCallback = true;
-                        $('#modalLindo').modal('hide');
-                        alert('Registro salvo com sucesso!');
-                    }
-                    GerarTabela(r);
-
-                }).fail(function (e, h, x) {
-
-                    alert('Não foi possível salvar o registro: ' + e);
-
-                }).always(function () {
-
-                });
-            });
+            return sendObj;
 
         }
 
@@ -891,6 +898,13 @@
             counter--;
         });
 
+        $(document).ajaxError(function (e, h, x) {
+            console.log(e);
+            console.log(h);
+            console.log(x);
+            //alert('Não foi possível salvar o registro: ' + e.responseJSON.ExceptionMessage);
+            counter--;
+        });
         /*Table*/
         $(document).ready(function () {
             $.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })

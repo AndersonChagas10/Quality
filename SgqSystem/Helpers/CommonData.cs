@@ -1725,8 +1725,8 @@ namespace SgqSystem.Helpers
 
             if (GlobalConfig.Brasil)
             {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-br");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-br");
+                Thread.CurrentThread.CurrentCulture = new CultureInfo(Guard.LANGUAGE_PT_BR);
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(Guard.LANGUAGE_PT_BR);
             }
             else
             {
