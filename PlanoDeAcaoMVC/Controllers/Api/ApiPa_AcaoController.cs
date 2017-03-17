@@ -26,18 +26,26 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
         [HttpPost]
         [Route("Save")]
-        public Pa_Acao Save([FromBody] Pa_Acao acao)
+        public List<Pa_Acao> Save([FromBody] List<Pa_Acao> acao)
         {
-            //throw new Exception("treste");
-            acao.QuantoCusta = NumericExtensions.CustomParseDecimal(acao._QuantoCusta).GetValueOrDefault();
-            acao.QuandoInicio = Guard.ParseDateToSqlV2(acao._QuandoInicio);
-            acao.QuandoFim = Guard.ParseDateToSqlV2(acao._QuandoFim);
-            acao._QuandoInicio = null;
-            acao._QuandoFim = null;
-            //Pa_BaseObject.SalvarGenerico(acao);
-            //Pa_BaseObject.SalvarGenerico(acao.CausaMedidasXAcao);
+            foreach(var i in acao)
+                i.IsValid();
 
-            acao.AddOrUpdate();
+            foreach (var i in acao)
+            {
+                //throw new Exception("treste");
+                i.QuantoCusta = NumericExtensions.CustomParseDecimal(i._QuantoCusta).GetValueOrDefault();
+                i.QuandoInicio = Guard.ParseDateToSqlV2(i._QuandoInicio);
+                i.QuandoFim = Guard.ParseDateToSqlV2(i._QuandoFim);
+                i._QuandoInicio = null;
+                i._QuandoFim = null;
+                
+                //Pa_BaseObject.SalvarGenerico(acao);
+                //Pa_BaseObject.SalvarGenerico(acao.CausaMedidasXAcao);
+
+                i.AddOrUpdate();
+            }
+
             return acao;
         }
     }
