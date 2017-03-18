@@ -3,13 +3,18 @@
 }
 
 <style>
-
+   
     /*.dataTable td {
-        max-width: 150px;
+        max-width: 15ch;
+        height: 125px !important;
+        max-height: 125px !important;
         overflow: hidden;
-        text-overflow: ellipsis;
+        text-overflow: clip;
         white-space: nowrap;
+       
         padding: 10px;
+
+     
     }
 
     .dataTable td:hover {
@@ -145,7 +150,7 @@
 
 </style>
 
-<h2>Plano de Ação</h2>
+@*<h2>Plano de Ação</h2>*@
 
 <div>
     <button type="button" class="btn btn-success" id="NovoPlanejamento" onclick="Clicked(false, false, false); ModalOpcoesEstrategico('Planejamento Estratégico', undefined, NovoPlanejamento);" data-toggle="modal"> Novo Planejamento Estratégico</button>
@@ -158,9 +163,10 @@
     <button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="Clicked(false, true); ModalOpcoesEstrategico('Planejamento Operacional'); ">
         Planejamento Operacional
     </button>*@
-    <button type="button" onclick="Relatorios();" class="btn btn-primary">
+    @*<button type="button" class="btn btn-primary" id="NovaAcao" onclick="Clicked(isTaticoClicked, isNovaAcao); ModalAcao(true, true);" style="">Nova Ação</button>*@
+    @*<button type="button" onclick="Relatorios();" class="btn btn-primary">
         Relatórios
-    </button>
+    </button>*@
     <button type="button" onclick="GetDataTable();" class="btn btn-primary" style="float:right">
         Atualizar
     </button>
@@ -169,7 +175,7 @@
 <hr />
 
 <div>
-    <table id="paTable" class="table-striped dt-body-justify dt-body-nowrap"></table>
+    <table id="paTable" class="table-striped dt-body-justify "></table>
 </div>
 
 <div class="container">
@@ -196,7 +202,7 @@
                     <button type="button" class="btn btn-info" id="BuscarPlanejamentos" onclick="BuscarPlanejamentos();">Buscar Planejamento</button>
                     <button type="button" class="btn btn-info" id="TaticoVinculado" onclick="BuscarPlanejamentos(); Clicked(true, false, true);" style="display:none">Novo Planejamento Tático Vinculado a um Planejamento Estratégico</button>
 
-                    <button type="button" class="btn btn-primary" id="NovaAcao" onclick="Clicked(isTaticoClicked, isNovaAcao); ModalAcao(true, true);" style="display:none">Nova Ação</button>
+                    
                     <button type="button" class="btn btn-default" value="" id="new" style="display:none">Adicionar Ação</button>
                     <button type="button" class="btn btn-default" value="" id="Edit" style="display:none" onclick="SalvarAcaoAvulsa($('.Acao'), true)">Editar Ação</button>
 
@@ -237,7 +243,7 @@
 
 <div class="minmaxCon"></div>
 
-<script src="~/Scripts/angular.min.js"></script>
+@*<script src="~/Scripts/angular.min.js"></script>*@
 @*<script src="~/Scripts/DataTableRowsGroup.js"></script>*@
 
 @section Scripts {
@@ -492,7 +498,7 @@
             $('#Selecionar').prop('disabled', true);
             $('#Selecionar').off('click');
 
-            var enviarObj  = $('#PlanejamentoBuscar').serializeObject();
+            var enviarObj = $('#PlanejamentoBuscar').serializeObject();
             if (isNovaAcao) {
                 enviarObj["IsfiltrarAcao"] = true;
             }
@@ -674,15 +680,17 @@
                 return;
             } else {
                 if (!$('#body > table').length) {
-                    ModalOpcoesEstrategico('Planejamento Operacional', planejamentoCorrentId);
+                    ModalOpcoesEstrategico('Planejamento Operacional', planejamentoCorrentId, function () {
+                        if (isTableClick) {
+                            $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
+                                $('#modalLindo').find('.modal-body').empty().append(r);
+                            });
+                        }
+                    });
                 }
             }
 
-            if (isTableClick) {
-                $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
-                    $('#modalLindo').find('.modal-body').empty().append(r);
-                });
-            }
+
 
             if (isFukingNewClicked) {
 
@@ -773,7 +781,7 @@
             var listaAcoes = [];
             $('.Acao').not(':first').each(function (c, o) {
 
-               listaAcoes.push(SalvarAcaoAvulsa(o));
+                listaAcoes.push(SalvarAcaoAvulsa(o));
 
             });
 
@@ -921,11 +929,11 @@
         function GerarTabela(retornoArray) {
 
             //console.log(retornoArray);
-            
-            var btnEditar = '<span title="Editar" class="glyphicon glyphicon-edit" style="cursor:pointer"></span>';
-            var btnDetalhes = '<span title="Detalhes" style="cursor:pointer" class="glyphicon glyphicon-list-alt"></span>';
-            var btnNovoTatico = '<span title="Novo Planejamento Tático para este Planejamento Estratégico" style="cursor:pointer" class="btnNovoTatico glyphicon glyphicon-th-list"></span>';
-            var btnNovoOperacional = '<span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="btnNovoOperacional glyphicon glyphicon-th"></span>';
+
+            var btnEditar = '<button type="button" class="btn btn-default btn-sm" style="width:100%"><span title="Editar" class="glyphicon glyphicon-edit" style="cursor:pointer"></span>&nbsp Editar</button>';
+            var btnDetalhes = '<button type="button" class="btn btn-default btn-sm" style="width:100%"><span title="Detalhes" style="cursor:pointer" class="glyphicon glyphicon-list-alt"></span>&nbsp Detalhes</button>';
+            var btnNovoTatico = '<button type="button" class="btnNovoTatico btn btn-default btn-sm" style="width:100%"><span title="Novo Planejamento Tático para este Planejamento Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tag"></span>&nbsp Nova Tático</button>';
+            var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="width:100%"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp &nbsp Nova Acao</button>';
 
             var table = $('#paTable').empty().DataTable({
                 data: retornoArray,
@@ -983,10 +991,10 @@
                     //{ title: "Duração", mData: "Acao.DuracaoDias" },
                     //{ title: "Predecessora", mData: null },
 
-                    { title: "Ação", mData: null, defaultContent: '<p>' + btnEditar + btnDetalhes + btnNovoTatico + btnNovoOperacional + '</p>' },
+                    { title: "Ação", mData: null, defaultContent: btnEditar + "<br>" + btnDetalhes + "<br>" + btnNovoTatico + "<br>" + btnNovoOperacional },
                 ],
                 fixedColumns: {
-                    //leftColumns: 1,
+                    leftColumns: 0,
                     rightColumns: 2,
                 },
                 scrollX: true,
@@ -1120,8 +1128,12 @@
                         console.log(data);
 
                         Clicked(true, false, true);
+                        //$('#modalLindo').modal();
+                        //$('#modalLindo').find('.modal-body').empty();
+                        //$('#Header').html("Novo Planejamento Tático Vinculado");
 
                         $.get(urlGetPlanejamento, { id: data.Id }, function (r) {
+                            //EditarPlanejamento(r) 
                             ModalOpcoesEstrategico("Novo Planejamento Tático Vinculado", 0, function () { EditarPlanejamento(r) });
                         });
 
@@ -1132,9 +1144,17 @@
                         console.log(data);
                         planejamentoCorrentId = data.Id;
                         Clicked(isTaticoClicked, isNovaAcao);
-                       
-                        ModalAcao(true, true, true);
-                       
+
+                        $('#modalLindo').modal();
+                        $('#modalLindo').find('.modal-body').empty();
+                        $('#Header').html("Planejamento Operacional");
+
+                        $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
+                            $('#modalLindo').find('.modal-body').empty().append(r);
+                            $('#NovaAcao').show();
+                            $('#NovaAcao').click();
+                        });
+
                     });
 
                 },
@@ -1227,7 +1247,7 @@
                     } else {
                         $(row.cells[33]).find('.btnNovoTatico').hide();
                     }
-                   
+
 
                 },
                 fnDrawCallback: function (data, d, o) {
@@ -1313,8 +1333,8 @@
 
         function Relatorios() {
             //function openInNewTab(url) {
-                var win = window.open('@Url.Action("Relatorios", "Relatorios")', '_blank');
-                win.focus();
+            var win = window.open('@Url.Action("Relatorios", "Relatorios")', '_blank');
+            win.focus();
             //}
         }
 

@@ -123,24 +123,8 @@ namespace PlanoAcaoCore
             }
         }
 
-        public int? Tatico_Id
-        {
-            get
-            {
-
-                if (Estrategico_Id.GetValueOrDefault() > 0)
-                {
-                    try
-                    {
-                        return Pa_BaseObject.ListarGenerico<Pa_Planejamento>("Select * from Pa_Planejamento where Estrategico_Id = " + Estrategico_Id.GetValueOrDefault()).FirstOrDefault().Id;
-                    }
-                    catch (Exception e)
-                    {
-                    }
-                }
-                return null;
-            }
-        }
+        public int? Tatico_Id { get; set; }
+     
 
         public void Update()
         {
