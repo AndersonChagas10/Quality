@@ -1,60 +1,4 @@
 ﻿
-@{
-    Layout = null;
-}
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-
-    <title>Relatorios - Plano de Ação</title>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/ScriptTables")
-    @*@Scripts.Render("~/bundles/hc")*@
-    @Scripts.Render("~/bundles/reportsscript")
-    @Styles.Render("~/bundles/reportsstyle")
-    @Scripts.Render("~/bundles/bootstrap")
-    <style>
-        .panel-title {
-            font-size: small;
-        }
-    </style>
-
-</head>
-
-<body>
-
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <div class="navbar-brand" style="display:inline-block; padding:2px;"><img src="http://www.systems2win.com/images/illustrations/PDCA-notext-200.png" style="height:45px;" /> </div>
-
-                <div class="navbar-brand" style="display:inline-block; margin-left:5px;"><a href="#" style="font-family:'Century Gothic'; font-size:20px; font-weight:bold; color:#080533;">Plano de Ação</a></div>
-
-                <div class="navbar-brand" style="display:inline-block; margin-left:5px;"><a href="/PaPlanejamentoAcao/Index" style="font-family:'Century Gothic'; font-size:15px; color:#080533;">Novo</a></div>
-
-                @*<div class="navbar-brand" style="display:inline-block; margin-left:5px;"><a href="#" style="font-family:'Century Gothic'; font-size:15px; color:#080533;">API</a></div>*@
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="active"><a href="#">By GRJ Soluções</a></li>
-                </ul>
-            </div>
-            <!--/.nav-collapse -->
-        </div>
-    </nav>
-    <div class="container" style="margin-top:20px;">
         <div class="row">
             <div class="col-xs-12 col-sm-6 col-lg-4" style="min-height:500px;">
 
@@ -235,7 +179,7 @@
                 </div>
             </div>
         </div>
-    </div>
+   
 
 
     <script>
@@ -1189,6 +1133,3 @@
 
     </script>
 
-</body>
-
-</html>
