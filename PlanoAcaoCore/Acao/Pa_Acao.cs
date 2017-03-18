@@ -113,8 +113,8 @@ namespace PlanoAcaoCore
             {
                 Pa_Status status = Pa_Status.Listar().FirstOrDefault(r => r.Name.Equals("Em Andamento"));
 
-                //status.Name 
-
+                Status = status.Id;
+                StatusName = status.Name;
             }
 
             //if (Pa_IndicadorSgqAcao_Id <= 0)
