@@ -1,7 +1,9 @@
 ﻿using ADOFactory;
 using DTO.Helpers;
 using PlanoAcaoCore;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Http;
 
@@ -10,29 +12,32 @@ namespace PlanoDeAcaoMVC.Controllers.Api
     [RoutePrefix("api/Relatorios")]
     public class ApiRelatoriosController : ApiController
     {
-
-
         //api/Relatorios/GetGrafico1
         //Retorna Categorias Series e Dados
         [HttpPost]
         [Route("GetGrafico")]
         public List<RetornoGrafico1> GetGrafico([FromBody] filtros filtro)
         {
-
             var categoria = filtro.categoria;
             var series = "[Status]";
             var filtroCategoria = "";
 
-            var where  = " where QuandoInicio <= '" + filtro.dataFim + "' and QuandoFim <= '" + filtro.dataFim + "' ";
+            var dataInicio = Guard.ParseDateToSqlV2(filtro.dataInicio).ToString("yyyyMMdd");
+            var dataFim = Guard.ParseDateToSqlV2(filtro.dataFim).ToString("yyyyMMdd");
+
+            //var dataInicio = DateTime.ParseExact(filtro.dataInicio, "yyyyMMdd", CultureInfo.InvariantCulture); 
+            //var dataFim = DateTime.ParseExact(filtro.dataFim, "yyyyMMdd", CultureInfo.InvariantCulture).ToString();
+
+            var where = " where QuandoInicio <= '" + dataFim + "' and QuandoFim <= '" + dataFim + "' ";
             var orderby1 = " order by 1";
             var indicadores = Pa_IndicadorSgqAcao.Listar();
             var status = Pa_Status.Listar();
 
-            var sql1 = "select distinct("+categoria+") as valor from pa_acao";
+            var sql1 = "select distinct(" + categoria + ") as valor from pa_acao";
             sql1 += where;
             sql1 += orderby1;
 
-            var sql2 = "select distinct("+series+") as valor from pa_acao";
+            var sql2 = "select distinct(" + series + ") as valor from pa_acao";
             sql2 += where;
             sql2 += orderby1;
 
@@ -52,32 +57,26 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
                     foreach (var ii in ret1)
                     {
-                        var sqlQtd = "select count(1) as valor from Pa_Acao"; 
+                        var sqlQtd = "select count(1) as valor from Pa_Acao";
                         sqlQtd += where;
-                        sqlQtd += " and "+categoria+" = " + ii.valor + " and "+series+" = " + b.valor;
+                        sqlQtd += " and " + categoria + " = " + ii.valor + " and " + series + " = " + b.valor;
                         sqlQtd += orderby1;
 
                         var qtd = Pa_BaseObject.ListarGenerico<RetornoInt>(sqlQtd).FirstOrDefault().valor;
                         statusObj.QuantidadeAcoes.Add(qtd);
                     }
-
                     temp1.Status.Add(statusObj);
-
                 }
-
                 retorno.Add(temp1);
             }
-
             return retorno;
-
         }
-  
+
         //Retorna apenas Series e Dados
         [HttpPost]
         [Route("GraficoPie")]
         public List<GraficoPieSet> GraficoPie([FromBody] filtros filtro)
         {
-      
             var listStatus = Pa_Status.Listar();
             var total = Pa_BaseObject.ListarGenerico<RetornoInt>("Select count(*) from Pa_Acao").FirstOrDefault().valor;
             var retorno = new List<GraficoPieSet>();
@@ -90,8 +89,6 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             return retorno;
         }
-
-
     }
 
     public class GraficoPieSet
@@ -119,7 +116,6 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         public List<int> QuantidadeAcoes { get; set; }
     }
 
-  
     /// <summary>
     /// Json : 
     /// { 
