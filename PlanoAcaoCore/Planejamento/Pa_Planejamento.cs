@@ -212,56 +212,56 @@ namespace PlanoAcaoCore
         public void IsValid()
         {
 
-            if (Tatico_Id.GetValueOrDefault() > 0)//é planejamento Operacional
-            {
+            //if (Tatico_Id.GetValueOrDefault() > 0)//é planejamento Operacional
+            //{
 
-            }
-            else if (Estrategico_Id.GetValueOrDefault() > 0)
-            {
-                if (Gerencia_Id <= 0)
-                    message += "\n Gerencia,";
-                if (Coordenacao_Id <= 0)
-                    message += "\n Coordenação,";
-                if (Iniciativa_Id <= 0)
-                    message += "\n Projeto / Iniciativa,";
-                if (IndicadoresDeProjeto_Id <= 0)
-                    message += "\n Indicadores do Projeto / Iniciativa,";
-                if (ObjetivoGerencial_Id <= 0)
-                    message += "\n Objetivo Gerencial,";
-                if (_ValorDe == null || _ValorDe == "")
-                    message += "\n Valor De,";
-                if (_ValorPara == null || _ValorPara == "")
-                    message += "\n Valor Para,";
-                if (UnidadeDeMedida_Id <= 0)
-                    message += "\n Unidade de Medida,";
-                if (_DataInicio == null || _DataInicio == "")
-                    message += "\n Data inicio do Projeto / Iniciativa,";
-                if (_DataFim == null || _DataFim == "")
-                    message += "\n Data fim Projeto / Iniciativa,,";
-                if (Responsavel_Projeto < 0)
-                    message += "\n Responsavel pelo Projeto / Iniciativa,";
+            //}
+            //else if (Estrategico_Id.GetValueOrDefault() > 0)
+            //{
+                //if (Gerencia_Id <= 0)
+                //    message += "\n Gerencia,";
+                //if (Coordenacao_Id <= 0)
+                //    message += "\n Coordenação,";
+                //if (Iniciativa_Id <= 0)
+                //    message += "\n Projeto / Iniciativa,";
+                //if (IndicadoresDeProjeto_Id <= 0)
+                //    message += "\n Indicadores do Projeto / Iniciativa,";
+                //if (ObjetivoGerencial_Id <= 0)
+                //    message += "\n Objetivo Gerencial,";
+                //if (_ValorDe == null || _ValorDe == "")
+                //    message += "\n Valor De,";
+                //if (_ValorPara == null || _ValorPara == "")
+                //    message += "\n Valor Para,";
+                //if (UnidadeDeMedida_Id <= 0)
+                //    message += "\n Unidade de Medida,";
+                //if (_DataInicio == null || _DataInicio == "")
+                //    message += "\n Data inicio do Projeto / Iniciativa,";
+                //if (_DataFim == null || _DataFim == "")
+                //    message += "\n Data fim Projeto / Iniciativa,,";
+                //if (Responsavel_Projeto < 0)
+                //    message += "\n Responsavel pelo Projeto / Iniciativa,";
 
-            }
-            else
-            {
-                if (Diretoria_Id <= 0)
-                    message += "\n Diretoria,";
-                if (Missao_Id <= 0)
-                    message += "\n Missão,";
-                if (Visao_Id <= 0)
-                    message += "\n Visão,";
-                if (Dimensao_Id <= 0)
-                    message += "\n Dimensão,";
-                if (Objetivo_Id <= 0)
-                    message += "\n Diretrizes / Objetivos,";
-                if (IndicadoresDiretriz_Id <= 0)
-                    message += "\n Indicadores da Diretrizes / Objetivos,";
-                if (Responsavel_Diretriz <= 0)
-                    message += "\n Responsavel pela Diretriz,";
+            //}
+            //else
+            //{
+                //if (Diretoria_Id <= 0)
+                //    message += "\n Diretoria,";
+                //if (Missao_Id <= 0)
+                //    message += "\n Missão,";
+                //if (Visao_Id <= 0)
+                //    message += "\n Visão,";
+                //if (Dimensao_Id <= 0)
+                //    message += "\n Dimensão,";
+                //if (Objetivo_Id <= 0)
+                //    message += "\n Diretrizes / Objetivos,";
+                //if (IndicadoresDiretriz_Id <= 0)
+                //    message += "\n Indicadores da Diretrizes / Objetivos,";
+                //if (Responsavel_Diretriz <= 0)
+                //    message += "\n Responsavel pela Diretriz,";
 
-            }
+            //}
 
-            VerificaMensagemCamposObrigatorios(message);
+            //VerificaMensagemCamposObrigatorios(message);
 
         }
 
