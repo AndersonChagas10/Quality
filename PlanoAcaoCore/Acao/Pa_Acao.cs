@@ -6,42 +6,21 @@ using System.Linq;
 
 namespace PlanoAcaoCore
 {
-    public class Pa_Acao : Pa_BaseObject, ICrudPa<Pa_Acao>
+    public class Pa_Acao : Pa_BaseObject
     {
         [Display(Name = "Problema ou Desvio")]
         public int? Pa_Problema_Desvio_Id { get; set; }
-        public Pa_Problema_Desvio _Pa_Problema_Desvio_Id
-        {
-            get
-            {
-                if (Pa_Problema_Desvio_Id > 0)
-                    return Pa_Problema_Desvio.Get(Pa_Problema_Desvio_Id.GetValueOrDefault());
-                else
-                    return new Pa_Problema_Desvio();
-            }
-        }
-
+       
         //[Display(Name = "Indicador SGQ ou Ação")]
         [Display(Name = "Indicador Operacional")]
         public int? Pa_IndicadorSgqAcao_Id { get; set; }
-        public Pa_IndicadorSgqAcao _Pa_IndicadorSgqAcao
-        {
-            get
-            {
-                if (Pa_IndicadorSgqAcao_Id > 0)
-                    return Pa_IndicadorSgqAcao.Get(Pa_IndicadorSgqAcao_Id.GetValueOrDefault());
-                else
-                    return new Pa_IndicadorSgqAcao();
-            }
-        }
+      
 
         [Display(Name = "Unidade")]
         public int? Unidade_Id { get; set; }
-        public string Unidade { get; set; }
-
+        
         [Display(Name = "Departamento")]
         public int? Departamento_Id { get; set; }
-        public string Departamento { get; set; }
 
         public int? Pa_CausaMedidasXAcao_Id { get; set; }
 
@@ -59,7 +38,7 @@ namespace PlanoAcaoCore
 
         [Display(Name = "Quanto custa")]
         public decimal QuantoCusta { get; set; }
-        public string _QuantoCusta { get; set; }
+       
 
         [Display(Name = "Status")]
         public int Status { get; set; }
@@ -71,19 +50,44 @@ namespace PlanoAcaoCore
 
         [Display(Name = "Quando início")]
         public DateTime QuandoInicio { get; set; }
-        public string _QuandoInicio { get; set; }
 
         [Display(Name = "Quando fim")]
         public DateTime QuandoFim { get; set; }
-        public string _QuandoFim { get; set; }
+
 
         public List<Pa_AcaoXQuem> AcaoXQuem { get; set; }
+
         public List<string> _Quem { get; set; }
+
         public List<Pa_Quem> _QuemObj { get; set; }
 
-        public Pa_CausaMedidasXAcao CausaMedidasXAcao { get; set; }
+        public Pa_Problema_Desvio _Pa_Problema_Desvio_Id
+        {
+            get
+            {
+                if (Pa_Problema_Desvio_Id > 0)
+                    return Pa_Problema_Desvio.Get(Pa_Problema_Desvio_Id.GetValueOrDefault());
+                else
+                    return new Pa_Problema_Desvio();
+            }
+        }
 
-     
+        public Pa_IndicadorSgqAcao _Pa_IndicadorSgqAcao
+        {
+            get
+            {
+                if (Pa_IndicadorSgqAcao_Id > 0)
+                    return Pa_IndicadorSgqAcao.Get(Pa_IndicadorSgqAcao_Id.GetValueOrDefault());
+                else
+                    return new Pa_IndicadorSgqAcao();
+            }
+        }
+
+        public string Unidade { get; set; }
+        public string Departamento { get; set; }
+        public string _QuantoCusta { get; set; }
+        public string _QuandoInicio { get; set; }
+        public string _QuandoFim { get; set; }
 
         public string _Prazo
         {
@@ -109,12 +113,12 @@ namespace PlanoAcaoCore
         public void IsValid()
         {
 
-            if(Id <= 0)
+            if (Id <= 0)
             {
                 Pa_Status status = Pa_Status.Listar().FirstOrDefault(r => r.Name.Equals("Em Andamento"));
 
-                //status.Name 
-
+                Status = status.Id;
+                StatusName = status.Name;
             }
 
             //if (Pa_IndicadorSgqAcao_Id <= 0)
@@ -130,7 +134,7 @@ namespace PlanoAcaoCore
             //            message = "\n Quem";
             //}
             //else
-                
+
             //    message = "\n Quem";
 
             //if (CausaMedidasXAcao.CausaGenerica_Id <= 0)
@@ -138,7 +142,7 @@ namespace PlanoAcaoCore
 
             //if (CausaMedidasXAcao.GrupoCausa_Id <= 0)
             //    message += "\n Grupo causa,";
-            
+
             //if (CausaMedidasXAcao.ContramedidaGenerica_Id <= 0)
             //    message += "\n Contramedida generica,";
 
@@ -215,6 +219,8 @@ namespace PlanoAcaoCore
 
             return retorno;
         }
+
+        public Pa_CausaMedidasXAcao CausaMedidasXAcao { get; set; }
 
         public void AddOrUpdate()
         {
@@ -348,5 +354,7 @@ namespace PlanoAcaoCore
 
             }
         }
+
+
     }
 }
