@@ -216,15 +216,6 @@
             };
         });
 
-        //dadosPie = [
-        //            { name: 'Ativo', y: 33 },
-        //            { name: 'Ativo (Atrasado)', y: 21 },
-        //            { name: 'Concluído (Prazo)', y: 17 },
-        //            { name: 'Concluído (Atrasado)', y: 8 },
-        //            { name: 'Replanejado', y: 4 },
-        //            { name: 'Cancelado', y: 16 }
-        //];
-
         acoesConcluidas = 25;
         acoesAtrasadas = 21;
         acoesAVencer = 10;
@@ -243,9 +234,6 @@
 
         tituloBar = 'Status das Ações por Indicadores';
         tituloColumn = 'Status das Ações por Responsável';
-
-        //categoriesBar = ['Indicador 1', 'Indicador 2'];
-        //categoriesColumn = ['Pessoa 1', 'Pessoa 2', 'Pessoa 3', ];
 
         var urlGetGrafico = '@Url.Action("GetGrafico", "api/Relatorios")';
         var urlGetGraficoPie = '@Url.Action("GraficoPie", "api/Relatorios")';
@@ -467,29 +455,13 @@
 
         $(document).ready(function () {
 
-            //diretoria
-            //gerencia
-            //dataInicio
-            //dataFim
-            //categoria
-            //serie
-            //filtroCategoria
-            //relatorio
-
             $("#btnFiltro").click(function () {
                 InitDatePiker();
 
-
-
                 $("form").on("submit", function (event) {
-
-                    //$(this).serialize()
 
                     var dataInicio = $('#dataInicio').val();
                     var dataFim = $('#dataFim').val();
-
-                    //var dataInicio = $('#dataInicio').val();
-                    //var dataFim = $('#dataFim').val();
 
                     var obj = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 1 };
                     //var obj2 = { categoria: 'Pa_Problema_Desvio_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 2 };
@@ -500,59 +472,14 @@
                 });
             });
 
-            //var obj = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: '20170101', dataFim: '20170401', relatorio: 1 };
-            //var obj2 = { categoria: 'Pa_Problema_Desvio_Id', dataInicio: '20170201', dataFim: '20170401', relatorio: 2 };
-
-            //atualizar(GraficoBar, urlGetGrafico, obj);
-            //atualizar(GraficoCol, urlGetGrafico, obj2);
-            //atualizar(GraficoPizza, urlGetGraficoPie, obj);
-
             $('#exampleTD1').DataTable();
 
             $('#exampleTD1')
                 .removeClass('display')
                 .addClass('table table-striped table-bordered');
+
+
         })
-
-        //seriesBar = [{
-        //    name: 'Ativo',
-        //    data: [11, 20, 2]
-        //}, {
-        //    name: 'Ativo (Atrasado)',
-        //    data: [7, 7, 7]
-        //}, {
-        //    name: 'Concluído (Prazo)',
-        //    data: [1, 10, 6]
-        //}, {
-        //    name: 'Concluído (Atrasado)',
-        //    data: [0, 4, 4]
-        //}, {
-        //    name: 'Replanejado',
-        //    data: [2, 0, 2]
-        //}, {
-        //    name: 'Cancelado',
-        //    data: [2, 6, 6]
-        //}];
-
-        //seriesColumn = [{
-        //    name: 'Ativo',
-        //    data: [11, 20, 2]
-        //}, {
-        //    name: 'Ativo (Atrasado)',
-        //    data: [7, 7, 7]
-        //}, {
-        //    name: 'Concluído (Prazo)',
-        //    data: [1, 10, 6]
-        //}, {
-        //    name: 'Concluído (Atrasado)',
-        //    data: [0, 4, 4]
-        //}, {
-        //    name: 'Replanejado',
-        //    data: [2, 0, 2]
-        //}, {
-        //    name: 'Cancelado',
-        //    data: [2, 6, 6]
-        //}];
 
         meses = [
                         'Jan',
@@ -571,187 +498,6 @@
 
         acoesIniciadas = [1, 4, 8, 1, 1];
         acoesEncerradas = [0, 0, 1, 1, 2];
-
-        // Build the chart
-        //Highcharts.chart('divPie', {
-        //    credits: {
-        //        enabled: false
-        //    },
-        //    exporting: {
-        //        enabled: false
-        //    },
-        //    chart: {
-        //        plotBackgroundColor: null,
-        //        plotBorderWidth: null,
-        //        plotShadow: false,
-        //        type: 'pie'
-        //    },
-        //    legend: {
-        //        align: 'center',
-        //        verticalAlign: 'bottom',
-        //        layout: 'horizontal',
-        //        enabled: true,
-        //        itemStyle: {
-        //            fontSize: '10px',
-        //            fontWeight: 'normal',
-        //        },
-        //    },
-        //    title: {
-        //        text: false
-        //    },
-        //    tooltip: {
-        //        pointFormat: '<b>{point.percentage:.1f}%</b>'
-        //    },
-        //    plotOptions: {
-        //        pie: {
-        //            allowPointSelect: true,
-        //            cursor: 'pointer',
-        //            showInLegend: true,
-        //            dataLabels: {
-        //                enabled: false,
-        //                format: '{point.name}' + ': ' + '{point.percentage:.1f} %',
-        //                style: {
-        //                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
-        //                    fontSize: '10px',
-        //                    fontWeight: 'normal',
-        //                },
-        //                connectorColor: 'silver'
-        //            }
-        //        }
-        //    },
-        //    series: [{
-        //        name: '',
-        //        data: dadosPie
-        //    }]
-        //});
-
-        //Highcharts.chart('divBar', {
-        //    credits: {
-        //        enabled: false
-        //    },
-        //    exporting: {
-        //        enabled: false
-        //    },
-        //    chart: {
-        //        type: 'bar'
-        //    },
-        //    title: {
-        //        text: tituloBar,
-        //        style: {
-        //            fontSize: '14px',
-        //        }
-        //    },
-        //    xAxis: {
-        //        categories: categoriesBar,
-        //        labels: {
-        //            style: {
-        //                fontSize: '10px',
-        //                fontWeight: 'normal'
-        //            }
-        //        }
-        //    },
-        //    yAxis: {
-        //        labels: {
-        //            format: '{value}',
-        //            style: {
-        //                color: Highcharts.getOptions().colors[1],
-        //                fontSize: '8px',
-        //                fontWeight: 'normal'
-        //            }
-        //        },
-        //        min: 0,
-        //        title: {
-        //            text: tituloXBar,
-        //            style: {
-        //                fontSize: '10px',
-        //                fontWeight: 'normal'
-        //            }
-        //        }
-        //    },
-        //    legend: {
-        //        align: 'center',
-        //        verticalAlign: 'bottom',
-        //        layout: 'horizontal',
-        //        itemStyle: {
-        //            fontSize: '10px',
-        //            fontWeight: 'normal',
-        //        },
-        //    },
-        //    plotOptions: {
-        //        series: {
-        //            stacking: 'normal'
-        //        }
-        //    },
-        //    series: seriesBar
-        //});
-
-        //Highcharts.chart('divCol', {
-        //    credits: {
-        //        enabled: false
-        //    },
-        //    exporting: {
-        //        enabled: false
-        //    },
-        //    chart: {
-        //        type: 'column'
-        //    },
-        //    title: {
-        //        text: tituloColumn,
-        //        style: {
-        //            fontSize: '14px',
-        //        }
-        //    },
-        //    xAxis: {
-        //        categories: categoriesColumn,
-        //        labels: {
-        //            style: {
-        //                fontSize: '10px',
-        //                fontWeight: 'normal'
-        //            }
-        //        },
-        //        title: {
-        //            text: tituloYColumn,
-        //            style: {
-        //                fontSize: '10px',
-        //                fontWeight: 'normal'
-        //            }
-        //        }
-        //    },
-        //    yAxis: {
-        //        labels: {
-        //            format: '{value}',
-        //            style: {
-        //                color: Highcharts.getOptions().colors[1],
-        //                fontSize: '8px',
-        //                fontWeight: 'normal'
-        //            }
-        //        },
-        //        min: 0,
-        //        title: {
-        //            text: tituloXColumn,
-        //            style: {
-        //                fontSize: '10px',
-        //                fontWeight: 'normal'
-        //            }
-        //        }
-        //    },
-        //    legend: {
-        //        align: 'center',
-        //        verticalAlign: 'bottom',
-        //        layout: 'horizontal',
-        //        enabled: true,
-        //        itemStyle: {
-        //            fontSize: '10px',
-        //            fontWeight: 'normal',
-        //        },
-        //    },
-        //    plotOptions: {
-        //        series: {
-        //            stacking: 'normal'
-        //        }
-        //    },
-        //    series: seriesColumn
-        //});
 
         Highcharts.chart('divEstoque1', {
             credits: {
