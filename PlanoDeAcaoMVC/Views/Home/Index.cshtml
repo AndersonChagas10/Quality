@@ -472,13 +472,18 @@
                 });
             });
 
+            var obj = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: '01/01/2015', dataFim: '01/01/2019', relatorio: 1 };
+            //var obj2 = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: '01/01/2015', dataFim: '01/01/2019', relatorio: 2 };
+
+            atualizar(GraficoBar, urlGetGrafico, obj);
+            atualizar(GraficoCol, urlGetGrafico, obj);
+            atualizar(GraficoPizza, urlGetGraficoPie, obj);
+
             $('#exampleTD1').DataTable();
 
             $('#exampleTD1')
                 .removeClass('display')
                 .addClass('table table-striped table-bordered');
-
-
         })
 
         meses = [
