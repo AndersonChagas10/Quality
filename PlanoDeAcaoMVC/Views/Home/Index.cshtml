@@ -456,6 +456,7 @@
         $(document).ready(function () {
 
             $("#btnFiltro").click(function () {
+
                 InitDatePiker();
 
                 $("form").on("submit", function (event) {
@@ -466,10 +467,16 @@
                     var obj = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 1 };
                     //var obj2 = { categoria: 'Pa_Problema_Desvio_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 2 };
 
+                    $('#divBar').highcharts().destroy();
+                    $('#divCol').highcharts().destroy();
+                    $('#divPie').highcharts().destroy();
+
                     atualizar(GraficoBar, urlGetGrafico, obj);
                     atualizar(GraficoCol, urlGetGrafico, obj);
                     atualizar(GraficoPizza, urlGetGraficoPie, obj);
+
                 });
+
             });
 
             var obj = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: '01/01/2015', dataFim: '01/01/2019', relatorio: 1 };
