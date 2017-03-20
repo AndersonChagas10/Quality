@@ -77,12 +77,14 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         [Route("GraficoPie")]
         public List<GraficoPieSet> GraficoPie([FromBody] filtros filtro)
         {
+            var dataInicio = Guard.ParseDateToSqlV2(filtro.dataInicio).ToString("yyyyMMdd");
+            var dataFim = Guard.ParseDateToSqlV2(filtro.dataFim).ToString("yyyyMMdd");
             var listStatus = Pa_Status.Listar();
             var total = Pa_BaseObject.ListarGenerico<RetornoInt>("Select count(*) from Pa_Acao").FirstOrDefault().valor;
             var retorno = new List<GraficoPieSet>();
             foreach (var i in listStatus)
             {
-                var queryCount = "select count(id) as valor from pa_acao where [status] = " + i.Id;
+                var queryCount = "select count(id) as valor from pa_acao where [status] = " + i.Id + "and QuandoInicio <= '" + dataFim + "' and QuandoFim <= '" + dataFim + "' ";;
                 var count = Pa_BaseObject.ListarGenerico<RetornoInt>(queryCount).FirstOrDefault().valor;
                 retorno.Add(new GraficoPieSet() { name = i.Name, y = count });
             }
