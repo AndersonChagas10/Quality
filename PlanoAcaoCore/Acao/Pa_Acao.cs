@@ -127,30 +127,32 @@ namespace PlanoAcaoCore
             //if (Pa_Problema_Desvio_Id <= 0 || Pa_Problema_Desvio_Id == null)
             //    message += "\n Problema ou Desvio,";
 
-            //if (AcaoXQuem != null)
-            //{
-            //    foreach (var i in AcaoXQuem)
-            //        if (i.Quem_Id <= 0)
-            //            message = "\n Quem";
-            //}
-            //else
+            if (AcaoXQuem != null)
+            {
+                foreach (var i in AcaoXQuem)
+                    if (i.Quem_Id <= 0)
+                        message = "\n Quem,";
+            }
+            else
+                message = "\n Quem,";
 
-            //    message = "\n Quem";
+            if (CausaMedidasXAcao == null)
+                CausaMedidasXAcao = new Pa_CausaMedidasXAcao();
 
-            //if (CausaMedidasXAcao.CausaGenerica_Id <= 0)
-            //    message += "\n Causa generica,";
+            if (CausaMedidasXAcao.CausaGenerica_Id <= 0)
+                message += "\n Causa generica,";
 
-            //if (CausaMedidasXAcao.GrupoCausa_Id <= 0)
-            //    message += "\n Grupo causa,";
+            if (CausaMedidasXAcao.GrupoCausa_Id <= 0)
+                message += "\n Grupo causa,";
 
-            //if (CausaMedidasXAcao.ContramedidaGenerica_Id <= 0)
-            //    message += "\n Contramedida generica,";
+            if (CausaMedidasXAcao.ContramedidaGenerica_Id <= 0)
+                message += "\n Contramedida generica,";
 
-            //if (string.IsNullOrEmpty(CausaMedidasXAcao._CausaEspecifica))
-            //    message += "\n Causa Específica,";
+            if (string.IsNullOrEmpty(CausaMedidasXAcao._CausaEspecifica))
+                message += "\n Causa Específica,";
 
-            //if (string.IsNullOrEmpty(CausaMedidasXAcao._ContramedidaEspecifica))
-            //    message += "\n Contramedida Específica,";
+            if (string.IsNullOrEmpty(CausaMedidasXAcao._ContramedidaEspecifica))
+                message += "\n Contramedida Específica,";
 
             //if (string.IsNullOrEmpty(_QuandoInicio))
             //    message += "\n Quando início,";
@@ -170,7 +172,7 @@ namespace PlanoAcaoCore
             //if (Status <= 0)
             //    message += "\n Status,";
 
-            //VerificaMensagemCamposObrigatorios(message);
+            VerificaMensagemCamposObrigatorios(message);
         }
 
         private static string query
