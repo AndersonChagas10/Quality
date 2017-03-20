@@ -1397,10 +1397,6 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
-    <Content Include="Views\Relatorios\CSS.css" />
-    <Content Include="Views\Relatorios\GeralRelatorios.js" />
-    <Content Include="Views\Relatorios\HcExport.js" />
-    <Content Include="Views\Relatorios\HighChartsRelatorios.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1424,7 +1420,6 @@
     <Content Include="Views\Pa_Acao\Index.cshtml" />
     <Content Include="Views\Shared\_DdlGenerica.cshtml" />
     <Content Include="Views\Pa_Acao\Edit.cshtml" />
-    <Content Include="Views\Relatorios\Relatorios.cshtml" />
     <Content Include="Views\Pa_Planejamento\Editar.cshtml" />
   </ItemGroup>
   <ItemGroup>
