@@ -353,7 +353,22 @@
                                                         //tabela += "<td height=\"" + alturaDasCelulasDeValor + "\" onclick=\"secoundTable(this)\"align=\"center\" x=\"" + dadosPrincipais[i][j][1] + "\" y=\"" + dadosPrincipais[i][j][2] + "\"style=\"min-width:" + larguraDasCelulasDeValor + ";  background-color: " + dadosPrincipais[i][j][4] + "\">" + (dadosPrincipais[i][j][3] == '%' ? '<i>' + dadosPrincipais[i][j][0] + '<i>%' : float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000))) + "</td>";
 
                                                         tabela += "<td onclick=\"clickTabela(" + id + ", this)\"align=\"center\" x=\"" + dadosPrincipais[i][j][1] + "\" y=\"" + dadosPrincipais[i][j][2] + "\" align=\"center\" style=\"min-width:" + larguraDasCelulasDeValor + "; padding:0px; height: " + alturaDasCelulasDeValor + ";\">";
-                                                        tabela += (dadosPrincipais[i][j][3] == '%' ? "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + dadosPrincipais[i][j][0] + "%</b><i></div> <div style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + dadosPrincipais[i][j][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>" : k == 1 && dadosPrincipais[i][j - 1][0] < dadosPrincipais[i][j][0] ? '<span style=\'color: red;\'>' + float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000)) + '</span>' : float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000))) + "</td>";
+
+                                                        if (dadosPrincipais[i][j][3] == '%') {
+
+                                                            tabela += "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + dadosPrincipais[i][j][0] + "%</b><i></div> <div id=\"penis\" style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + dadosPrincipais[i][j][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>";
+
+                                                        }else if(dadosPrincipais[i][j][3] == '$'){
+
+                                                            tabela += "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000)) + "</b><i></div> <div id=\"boceta\" style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + dadosPrincipais[i][j][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>";
+
+                                                        } else {
+
+                                                            tabela += k == 1 && dadosPrincipais[i][j - 1][0] < dadosPrincipais[i][j][0] ? '<span style=\'color: red;\'>' + float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000)) + '</span>' : float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000));
+                                                        }
+
+                                                        tabela += "</td>";
+                                                        
                                                         if (k == 3) {
                                                             k = 0;
                                                         } else {
@@ -385,7 +400,22 @@
                                                     }
 
                                                     tabela += "<td align=\"center\" style=\"background-color: " + color + "; min-width:" + larguraDasCelulasDeValor + "; padding:0px; height: " + alturaDasCelulasDeValor + ";\">";
-                                                    tabela += (footerColumnsBody[0][i][3] == '%' ? "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + footerColumnsBody[0][i][0] + "%</b><i></div> <div style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + footerColumnsBody[0][i][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>" : k == 1 && footerColumnsBody[0][i - 1][0] < footerColumnsBody[0][i][0] ? '<span style=\'color: red;\'>' + float2moeda(Math.ceil(footerColumnsBody[0][i][0] / 1000)) + '</span>' : float2moeda(Math.ceil(footerColumnsBody[0][i][0] / 1000))) + "</td>";
+
+                                                    if (footerColumnsBody[0][i][3] == '%') {
+
+                                                        tabela += "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + footerColumnsBody[0][i][0] + "%</b><i></div> <div id=\"penis\" style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + footerColumnsBody[0][i][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>";
+
+                                                    } else if (footerColumnsBody[0][i][3] == '$') {
+
+                                                        tabela += "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + float2moeda(Math.ceil(footerColumnsBody[0][i][0] / 1000)) + "</b><i></div> <div id=\"boceta\" style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + footerColumnsBody[0][i][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>";
+
+                                                    } else {
+
+                                                        tabela += k == 1 && footerColumnsBody[0][i - 1][0] < footerColumnsBody[0][i][0] ? '<span style=\'color: red;\'>' + float2moeda(Math.ceil(footerColumnsBody[0][i][0] / 1000)) + '</span>' : float2moeda(Math.ceil(footerColumnsBody[0][i][0] / 1000));
+                                                    }
+
+                                                    tabela += "</td>";
+                                                  
                                                     if (k == 3) {
                                                         k = 0;
                                                     } else {
@@ -455,7 +485,23 @@
                                                     for (var j = 0; j < columnsTotal[i].length; j++) {
 
                                                         tabela += "<td align=\"center\" style=\"min-width:" + larguraDasCelulasDeValor + "; padding:0px; height: " + alturaDasCelulasDeValor + ";\">";
-                                                        tabela += (columnsTotal[i][j][3] == '%' ? "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + columnsTotal[i][j][0] + "%</b><i></div> <div style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + columnsTotal[i][j][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>" : k == 1 && columnsTotal[i][j - 1][0] < columnsTotal[i][j][0] ? '<span style=\'color: red;\'>' + float2moeda(Math.ceil(columnsTotal[i][j][0] / 1000)) + '</span>' : float2moeda(Math.ceil(columnsTotal[i][j][0] / 1000))) + "</td>";
+
+                                                        if (columnsTotal[i][j][3] == '%') {
+
+                                                            tabela += "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + columnsTotal[i][j][0] + "%</b><i></div> <div id=\"penis\" style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + columnsTotal[i][j][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>";
+
+                                                        } else if (columnsTotal[i][j][3] == '$') {
+
+                                                            tabela += "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + float2moeda(Math.ceil(columnsTotal[i][j][0] / 1000)) + "</b><i></div> <div id=\"boceta\" style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + columnsTotal[i][j][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>";
+
+                                                        } else {
+
+                                                            tabela += k == 1 && columnsTotal[i][j - 1][0] < columnsTotal[i][j][0] ? '<span style=\'color: red;\'>' + float2moeda(Math.ceil(columnsTotal[i][j][0] / 1000)) + '</span>' : float2moeda(Math.ceil(columnsTotal[i][j][0] / 1000));
+                                                        }
+
+                                                        tabela += "</td>";
+
+
                                                         if (k == 3) {
                                                             k = 0;
                                                         } else {
@@ -1840,8 +1886,8 @@
                                                         /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                         entry.ListaRegionais.forEach(function (valor) {
                                                             //atribui valores de porcentagem nas variáveis
-                                                            valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
-                                                            orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
+                                                            valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(-1 * valor.DesvioReal);
+                                                            orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(-1 * valor.DesvioReal);
                                                             i++;
 
                                                         });
@@ -1903,8 +1949,8 @@
                                                             desvioR.push(entry.ListaRegionais[i].DesvioReal);
                                                             desvioR.push(name);
                                                             desvioR.push(entry.ListaRegionais[i].Regional);
-                                                            desvioR.push(0);
-                                                            desvioR.push(0);
+                                                            desvioR.push('$');
+                                                            desvioR.push(buscaCor(arrayCor[i])); /****** GERAÇÃO DO MAPA DE CALOR *********/
                                                             line.push(orcada);
                                                             line.push(real);
                                                             line.push(desvioP);
@@ -1926,8 +1972,8 @@
 
                                                     /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                     lista.forEach(function (valor) {
-                                                        valorMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(valor.total.DesvioPorc);
-                                                        orderMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(valor.total.DesvioPorc);
+                                                        valorMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(-1 * valor.total.DesvioReal);
+                                                        orderMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(-1 * valor.total.DesvioReal);
                                                         i++;
 
                                                     });
@@ -1985,8 +2031,8 @@
                                                         desvioR.push(entry.total == null ? 0 : entry.total.DesvioReal);
                                                         desvioR.push(0);
                                                         desvioR.push(0);
-                                                        desvioR.push(0);
-                                                        desvioR.push(0);
+                                                        desvioR.push('$');
+                                                        desvioR.push(buscaCor(arrayCor[i])); /****** GERAÇÃO DO MAPA DE CALOR *********/
                                                         dataColumn.push(orcada);
                                                         dataColumn.push(real);
                                                         dataColumn.push(desvioP);
@@ -2043,7 +2089,7 @@
                                                     lineDR.push(desvioR);
                                                     lineDR.push(0);
                                                     lineDR.push(0);
-                                                    lineDR.push(0);
+                                                    lineDR.push('$');
 
                                                     dados.push(lineO);
                                                     dados.push(lineR);
@@ -2063,8 +2109,8 @@
 
                                                     /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                     lista[0].totalColunaReg.forEach(function (valor) {
-                                                        valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
-                                                        orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
+                                                        valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(-1 * valor.DesvioReal);
+                                                        orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(-1 * valor.DesvioReal);
                                                         i++;
                                                     });
 
@@ -2119,8 +2165,8 @@
                                                         desvioR.push(lista[0].totalColunaReg[i].DesvioReal);
                                                         desvioR.push(0);
                                                         desvioR.push(lista[0].totalColunaReg[i].Regional);
-                                                        desvioR.push(0);
-                                                        desvioR.push(0);
+                                                        desvioR.push('$');
+                                                        desvioR.push(buscaCor(arrayCor[i]));/****** GERAÇÃO DO MAPA DE CALOR *********/
                                                         line.push(orcada);
                                                         line.push(real);
                                                         line.push(desvioP);
@@ -2214,8 +2260,8 @@
                                                             /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                             entry.ListaRegionais.forEach(function (valor) {
                                                                 //atribui valores de porcentagem nas variáveis
-                                                                valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
-                                                                orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
+                                                                valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(-1 * valor.DesvioReal);
+                                                                orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(-1 * valor.DesvioReal);
                                                                 i++;
 
                                                             });
@@ -2277,8 +2323,8 @@
                                                                 desvioR.push(entry.ListaRegionais[i].DesvioReal);
                                                                 desvioR.push(name);
                                                                 desvioR.push(entry.ListaRegionais[i].Regional);
-                                                                desvioR.push(0);
-                                                                desvioR.push(0);
+                                                                desvioR.push('$');
+                                                                desvioR.push(buscaCor(arrayCor[i])); /****** GERAÇÃO DO MAPA DE CALOR *********/
                                                                 line.push(orcada);
                                                                 line.push(real);
                                                                 line.push(desvioP);
@@ -2300,8 +2346,8 @@
 
                                                         /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                         lista.forEach(function (valor) {
-                                                            valorMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(valor.total.DesvioPorc);
-                                                            orderMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(valor.total.DesvioPorc);
+                                                            valorMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(-1 * valor.total.DesvioReal);
+                                                            orderMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(-1 * valor.total.DesvioReal);
                                                             i++;
 
                                                         });
@@ -2360,8 +2406,8 @@
                                                             desvioR.push(entry.total == null ? 0 : entry.total.DesvioReal);
                                                             desvioR.push(0);
                                                             desvioR.push(0);
-                                                            desvioR.push(0);
-                                                            desvioR.push(0);
+                                                            desvioR.push('$');
+                                                            desvioR.push(buscaCor(arrayCor[i])); /* GERAÇÃO DO MAPA DE CALOR ***/
                                                             x.push(orcada);
                                                             x.push(real);
                                                             x.push(desvioP);
@@ -2420,7 +2466,7 @@
                                                         lineDR.push(desvioR);
                                                         lineDR.push(0);
                                                         lineDR.push(0);
-                                                        lineDR.push(0);
+                                                        lineDR.push('$');
 
                                                         dados.push(lineO);
                                                         dados.push(lineR);
@@ -2440,8 +2486,8 @@
 
                                                         /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                         lista[0].totalColunaReg.forEach(function (valor) {
-                                                            valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
-                                                            orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(valor.DesvioPorc);
+                                                            valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(-1 * valor.DesvioReal);
+                                                            orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(-1 * valor.DesvioReal);
                                                             i++;
                                                         });
 
@@ -2496,8 +2542,8 @@
                                                             desvioR.push(lista[0].totalColunaReg[i].DesvioReal);
                                                             desvioR.push(0);
                                                             desvioR.push(lista[0].totalColunaReg[i].Regional);
-                                                            desvioR.push(0);
-                                                            desvioR.push(0);
+                                                            desvioR.push('$');
+                                                            desvioR.push(buscaCor(arrayCor[i])); /****** GERAÇÃO DO MAPA DE CALOR *********/
                                                             line.push(orcada);
                                                             line.push(real);
                                                             line.push(desvioP);
