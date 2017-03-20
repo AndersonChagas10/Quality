@@ -201,7 +201,7 @@
                     <button type="button" class="btn btn-primary" id="Salvar" onclick="" style="display:none">Salvar</button>
                     <button type="button" class="btn btn-info" id="BuscarPlanejamentos" onclick="BuscarPlanejamentos();">Buscar Planejamento</button>
                     <button type="button" class="btn btn-info" id="TaticoVinculado" onclick="BuscarPlanejamentos(); Clicked(true, false, true);" style="display:none">Novo Planejamento Tático Vinculado a um Planejamento Estratégico</button>
-
+                    <button type="button" class="btn btn-primary" id="NovaAcao" onclick="Clicked(isTaticoClicked, isNovaAcao); ModalAcao(true, true);" style="">Nova Ação</button>
                     
                     <button type="button" class="btn btn-default" value="" id="new" style="display:none">Adicionar Ação</button>
                     <button type="button" class="btn btn-default" value="" id="Edit" style="display:none" onclick="SalvarAcaoAvulsa($('.Acao'), true)">Editar Ação</button>
@@ -690,8 +690,6 @@
                 }
             }
 
-
-
             if (isFukingNewClicked) {
 
                 if (isOpenModal)
@@ -726,6 +724,7 @@
                 $('#Salvar').off('click').on('click', SalvarAcao);
                 /*Fim Botões*/
             }
+
         }
 
         function EditarAcao(html, data) {
@@ -1181,7 +1180,9 @@
                         "sSortDescending": ": Ordenar colunas de forma descendente"
                     }
                 },
-                fixedHeader: true,
+                fixedHeader: {
+                    headerOffset: 50
+                },
                 createdRow: function (row, data, index) {
 
                     try {
