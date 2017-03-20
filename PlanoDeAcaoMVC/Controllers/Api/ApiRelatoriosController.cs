@@ -47,7 +47,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             foreach (var i in ret1)
             {
-                var temp1 = new RetornoGrafico1() { Indicador_Id = i.valor, Indicador = indicadores.FirstOrDefault(r => r.Id == i.valor).Name };
+                var temp1 = new RetornoGrafico1() { Indicador_Id = i.valor, Indicador = indicadores.FirstOrDefault(r => r.Id == i.valor)?.Name };
+                if (temp1 == null)
+                    continue;
                 temp1.Status = new List<Status>();
 
                 foreach (var b in ret2)
