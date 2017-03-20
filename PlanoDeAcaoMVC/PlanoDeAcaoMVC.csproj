@@ -501,6 +501,7 @@
     <Content Include="Scripts\i18n\Portuguese-Brasil.json" />
     <None Include="Properties\PublishProfiles\pa_GRT.pubxml" />
     <None Include="Properties\PublishProfiles\Pa_Local.pubxml" />
+    <None Include="Properties\PublishProfiles\PLANOACAOLOCAL.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\GuardJs.js" />
     <Content Include="Scripts\highcharts\4.2.0\adapters\standalone-framework.js" />
