@@ -32,13 +32,15 @@
                         <div class="panel-body">
                             <div style="height:98px;">
                                 <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
-                                    <i class="fa fa-thumbs-up fa-3" aria-hidden="true" style="font-size:30px; color: green"></i>
+                                    <!--<i class="fa fa-thumbs-up fa-3" aria-hidden="true" style="font-size:30px; color: green"></i>-->
+                                    <img src="https://cdn3.iconfinder.com/data/icons/social-icons-24/24/Thumbs-Up-24.png" />
                                 </div>
                                 <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
                                     <span id="acoesConcluidas" style="font-size:25px; font-weight:bold; color:#444;"></span>
                                 </div>
 
                                 <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
+                                    
                                     <span style="font-size: 10px;">Ações concluídas</span>
                                 </div>
                             </div>
@@ -50,7 +52,9 @@
                         <div class="panel-body">
                             <div style="height:98px;">
                                 <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
-                                    <i class="fa fa-thumbs-down fa-3" aria-hidden="true" style="font-size:30px; color:red"></i>
+                                    <!--<i class="fa fa-thumbs-down fa-3" aria-hidden="true" style="font-size:30px; color:red"></i>-->
+                                    
+                                    <img src="https://cdn3.iconfinder.com/data/icons/social-icons-24/24/Thumbs-Down-24.png" />
                                 </div>
                                 <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
                                     <span id="acoesAtrasadas" style="font-size:25px; font-weight:bold; color:#444;"></span>
@@ -456,6 +460,7 @@
         $(document).ready(function () {
 
             $("#btnFiltro").click(function () {
+
                 InitDatePiker();
 
                 $("form").on("submit", function (event) {
@@ -466,10 +471,16 @@
                     var obj = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 1 };
                     //var obj2 = { categoria: 'Pa_Problema_Desvio_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 2 };
 
+                    $('#divBar').highcharts().destroy();
+                    $('#divCol').highcharts().destroy();
+                    $('#divPie').highcharts().destroy();
+
                     atualizar(GraficoBar, urlGetGrafico, obj);
                     atualizar(GraficoCol, urlGetGrafico, obj);
                     atualizar(GraficoPizza, urlGetGraficoPie, obj);
+
                 });
+
             });
 
             var obj = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: '01/01/2015', dataFim: '01/01/2019', relatorio: 1 };

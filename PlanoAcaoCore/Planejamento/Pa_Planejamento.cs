@@ -267,7 +267,7 @@ namespace PlanoAcaoCore
                 //    "\n DIME.Name AS Dimensao,                                                                " +
                 //    "\n INICI.Name AS Iniciativa,                                                            " +
                 //    "\n OBJ.Name AS Objetivo                                                                " +
-                //    "\n  FROM Pa_planejamento Pl                                                             " +
+                //    "\n  FROM Pa_Planejamento Pl                                                             " +
                 //    "\n LEFT JOIN Pa_Iniciativa INI on INI.Id = Pl.Iniciativa_Id                             " +
                 //    "\n LEFT JOIN Pa_Diretoria DIR on DIR.Id = Pl.Diretoria_Id                               " +
                 //    "\n LEFT JOIN Pa_Gerencia GER on Pl.Gerencia_Id = GER.Id                                 " +
@@ -296,10 +296,10 @@ namespace PlanoAcaoCore
                         "\nDIME.Name AS Dimensao,                          " +
                         "\nINICI.Name AS Iniciativa,                       " +
                         "\nOBJ.Name AS Objetivo                            " +
-                        " FROM(SELECT Pl1.Id, Pl1.AddDate, Pl1.AlterDate, Pl1.Diretoria_Id, Pl2.Gerencia_Id, Pl2.Coordenacao_Id, Pl1.Missao_Id, Pl1.Visao_Id, Pl1.TemaAssunto_Id, Pl1.Indicadores_Id, Pl2.Iniciativa_Id, Pl2.ObjetivoGerencial_Id, Pl1.Dimensao, Pl1.Objetivo, Pl2.ValorDe, Pl2.ValorPara, Pl2.DataInicio, Pl2.DataFim, Pl1.[Order], Pl1.Dimensao_Id, Pl1.Objetivo_Id, Pl1.IndicadoresDiretriz_Id, Pl2.IndicadoresDeProjeto_Id, Pl2.Estrategico_Id, Pl1.Responsavel_Diretriz, Pl2.Responsavel_Projeto, Pl2.UnidadeDeMedida_Id FROM Pa_planejamento Pl1 " +
-                        "  INNER JOIN Pa_planejamento Pl2 on Pl1.Id = Pl2.Estrategico_Id " +
+                        " FROM(SELECT Pl1.Id, Pl1.AddDate, Pl1.AlterDate, Pl1.Diretoria_Id, Pl2.Gerencia_Id, Pl2.Coordenacao_Id, Pl1.Missao_Id, Pl1.Visao_Id, Pl1.TemaAssunto_Id, Pl1.Indicadores_Id, Pl2.Iniciativa_Id, Pl2.ObjetivoGerencial_Id, Pl1.Dimensao, Pl1.Objetivo, Pl2.ValorDe, Pl2.ValorPara, Pl2.DataInicio, Pl2.DataFim, Pl1.[Order], Pl1.Dimensao_Id, Pl1.Objetivo_Id, Pl1.IndicadoresDiretriz_Id, Pl2.IndicadoresDeProjeto_Id, Pl2.Estrategico_Id, Pl1.Responsavel_Diretriz, Pl2.Responsavel_Projeto, Pl2.UnidadeDeMedida_Id FROM Pa_Planejamento Pl1 " +
+                        "  INNER JOIN Pa_Planejamento Pl2 on Pl1.Id = Pl2.Estrategico_Id " +
                         "  UNION ALL " +
-                        "  SELECT DISTINCT pl1.* FROM Pa_planejamento Pl1 LEFT JOIN Pa_planejamento Pl2 on Pl1.Id = Pl2.Estrategico_Id  where Pl1.Estrategico_Id is null and Pl2.Estrategico_Id is null " +
+                        "  SELECT DISTINCT pl1.* FROM Pa_Planejamento Pl1 LEFT JOIN Pa_Planejamento Pl2 on Pl1.Id = Pl2.Estrategico_Id  where Pl1.Estrategico_Id is null and Pl2.Estrategico_Id is null " +
                         "  ) Pl " +
                         "\nLEFT JOIN Pa_Iniciativa INI on INI.Id = Pl.Iniciativa_Id " +
                         "\nLEFT JOIN Pa_Diretoria DIR on DIR.Id = Pl.Diretoria_Id " +

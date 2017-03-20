@@ -778,7 +778,7 @@
                                                                         setTimeout(resizeHighcharts(), 200);
                                                                         MountGraficoDespesaTodasRegionais(this.category);
                                                                         MountGraficoDespesaTodasRegionaisGrupoPorPacote(this.category);
-                                                                        MountGrafDespRegGrup(this.category);
+                                                                        MountGrafDespRegGrup(this.category, null);
                                                                     }
                                                                 }
                                                             }
@@ -814,7 +814,7 @@
                                                                         setTimeout(resizeHighcharts(), 200);
                                                                         MountGraficoDespesaTodasRegionais(this.category);
                                                                         MountGraficoDespesaTodasRegionaisGrupoPorPacote(this.category);
-                                                                        MountGrafDespRegGrup(this.category);
+                                                                        MountGrafDespRegGrup(this.category,null);
                                                                     }
                                                                 }
                                                             }
@@ -842,7 +842,7 @@
                                                                         $('#GrafDespReg').empty();
                                                                         MountGraficoDespesaTodasRegionais(this.category);
                                                                         MountGraficoDespesaTodasRegionaisGrupoPorPacote(this.category);
-                                                                        MountGrafDespRegGrup(this.category);
+                                                                        MountGrafDespRegGrup(this.category,null);
                                                                     }
                                                                 }
                                                             }
@@ -1137,8 +1137,8 @@
                                                             point: {
                                                                 events: {
                                                                     click: function () {
-
-                                                                        MountGrafDespReg(this.category)
+                                                                        console.log(this.category.split("<br><br>")[0] + "gabriel" + this.category.split("<br><br>")[1]),
+                                                                        MountGrafDespReg(this.category.split("<br><br>")[0], this.category.split("<br><br>")[1])
                                                                     }
                                                                 }
                                                             }
@@ -1152,7 +1152,10 @@
 
                                                             point: {
                                                                 events: {
-                                                                    click: function () { MountGrafDespReg(this.category) }
+                                                                    click: function () {
+                                                                        console.log(this.category.split("<br><br>")[0] + "gabriel" + this.category.split("<br><br>")[1]),
+                                                                        MountGrafDespReg(this.category.split("<br><br>")[0], this.category.split("<br><br>")[1])
+                                                                    }
                                                                 }
                                                             }
                                                         }, {
@@ -1173,7 +1176,10 @@
 
                                                             point: {
                                                                 events: {
-                                                                    click: function () { MountGrafDespReg(this.category) }
+                                                                    click: function () {
+                                                                        console.log(this.category.split("<br><br>")[0] + "gabriel" + this.category.split("<br><br>")[1]),
+                                                                        MountGrafDespReg(this.category.split("<br><br>")[0], this.category.split("<br><br>")[1])
+                                                                    }
                                                                 }
                                                             }
                                                         }
@@ -1406,7 +1412,7 @@
                                                                         $('#GraficoDespesaTodasRegionaisPorPacote').empty();
                                                                         $('#GrafDespReg').empty();
                                                                         MountGraficoDespesaTodasRegionaisPorPacote(this.category),
-                                                                        MountGrafDespReg(this.category)
+                                                                        MountGrafDespReg(this.category,null)
                                                                     }
                                                                 }
                                                             }
@@ -1424,7 +1430,7 @@
                                                                         $('#GraficoDespesaTodasRegionaisPorPacote').empty();
                                                                         $('#GrafDespReg').empty();
                                                                         MountGraficoDespesaTodasRegionaisPorPacote(this.category),
-                                                                        MountGrafDespReg(this.category)
+                                                                        MountGrafDespReg(this.category, null)
                                                                     }
                                                                 }
                                                             }
@@ -1450,7 +1456,7 @@
                                                                         $('#GraficoDespesaTodasRegionaisPorPacote').empty();
                                                                         $('#GrafDespReg').empty();
                                                                         MountGraficoDespesaTodasRegionaisPorPacote(),
-                                                                        MountGrafDespReg(this.category)
+                                                                        MountGrafDespReg(this.category,null)
                                                                     }
                                                                 }
                                                             }
@@ -1494,8 +1500,8 @@
                                             }
 
                                             //ajax - monta GRÁFICO DE DESPESA POR REGIONAL
-                                            function MountGrafDespReg(regional) {
-                                                $.post('../api/Manutencao/getSelectGrafDespReg/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + escape(regional.replace(/[/]/g, '|')) + '/' + getManutencaoRegional() + '/', function (lista) {
+                                            function MountGrafDespReg(regional, pacote) {
+                                                $.post('../api/Manutencao/getSelectGrafDespReg/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + escape(regional.replace(/[/]/g, '|')) +  '/' + escape(pacote.replace(/[/]/g, '|')) + '/', function (lista) {
 
                                                     var titleLine = [];
 
@@ -1537,7 +1543,7 @@
                                                         }
                                                     }
 
-                                                    GrafDespReg(titleLine, xOrçada, xRealizada, mediaDesvio, media, regional);
+                                                    GrafDespReg(titleLine, xOrçada, xRealizada, mediaDesvio, media, regional, pacote);
 
                                                     $btn.button('reset');
 
@@ -1545,7 +1551,7 @@
                                             }
 
                                             //ajax - monta GRÁFICO DE DESPESA POR REGIONAL GRUPO
-                                            function MountGrafDespRegGrup(regional) {
+                                            function MountGrafDespRegGrup(regional,pacote) {
 
                                                 var obj = {
 
@@ -1554,7 +1560,8 @@
                                                     'meses': getManutencaoMes(),
                                                     'anos': getManutencaoAno(),
                                                     'regFiltro': getManutencaoRegional(),
-                                                    'regional': regional
+                                                    'regional': regional,
+                                                    'pacote': pacote
                                                 };
 
                                                 $.post(urlDespRegGrup, obj, function (lista) {
@@ -1607,9 +1614,13 @@
                                             }
 
                                             //locação e exibição do GRÁFICO DE DESPESA POR REGIONAL
-                                            function GrafDespReg(name, xOrçada, xRealizada, mediaDesvio, media, regional) {
+                                            function GrafDespReg(name, xOrçada, xRealizada, mediaDesvio, media, regional, pacote) {
                                                 $(function () {
 
+                                                    var titPacote = "";
+                                                    if (pacote != null) {
+                                                        titPacote = " - " + pacote;
+                                                    }
 
                                                     (function (H) {
                                                         var Axis = H.Axis,
@@ -1679,7 +1690,7 @@
                                                         },
 
                                                         title: {
-                                                            text: 'Despesas por Unidade - ' + regional,
+                                                            text: 'Despesas por Unidade - ' + regional + titPacote,
                                                             style: {
                                                                 fontSize: 'small'
                                                             }
@@ -1886,8 +1897,8 @@
                                                         /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                         entry.ListaRegionais.forEach(function (valor) {
                                                             //atribui valores de porcentagem nas variáveis
-                                                            valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(-1 * valor.DesvioReal);
-                                                            orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(-1 * valor.DesvioReal);
+                                                            valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(1 * valor.DesvioReal);
+                                                            orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(1 * valor.DesvioReal);
                                                             i++;
 
                                                         });
@@ -1972,8 +1983,8 @@
 
                                                     /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                     lista.forEach(function (valor) {
-                                                        valorMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(-1 * valor.total.DesvioReal);
-                                                        orderMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(-1 * valor.total.DesvioReal);
+                                                        valorMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(1 * valor.total.DesvioReal);
+                                                        orderMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(1 * valor.total.DesvioReal);
                                                         i++;
 
                                                     });
@@ -2109,8 +2120,8 @@
 
                                                     /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                     lista[0].totalColunaReg.forEach(function (valor) {
-                                                        valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(-1 * valor.DesvioReal);
-                                                        orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(-1 * valor.DesvioReal);
+                                                        valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(1 * valor.DesvioReal);
+                                                        orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(1 * valor.DesvioReal);
                                                         i++;
                                                     });
 
@@ -2260,8 +2271,8 @@
                                                             /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                             entry.ListaRegionais.forEach(function (valor) {
                                                                 //atribui valores de porcentagem nas variáveis
-                                                                valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(-1 * valor.DesvioReal);
-                                                                orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(-1 * valor.DesvioReal);
+                                                                valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(1 * valor.DesvioReal);
+                                                                orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(1 * valor.DesvioReal);
                                                                 i++;
 
                                                             });
@@ -2346,8 +2357,8 @@
 
                                                         /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                         lista.forEach(function (valor) {
-                                                            valorMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(-1 * valor.total.DesvioReal);
-                                                            orderMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(-1 * valor.total.DesvioReal);
+                                                            valorMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(1 * valor.total.DesvioReal);
+                                                            orderMapaDeCalor[i] = valor.total == null ? 0 : parseFloat(1 * valor.total.DesvioReal);
                                                             i++;
 
                                                         });
@@ -2486,8 +2497,8 @@
 
                                                         /****** INI GERAÇÃO DO MAPA DE CALOR *********/
                                                         lista[0].totalColunaReg.forEach(function (valor) {
-                                                            valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(-1 * valor.DesvioReal);
-                                                            orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(-1 * valor.DesvioReal);
+                                                            valorMapaDeCalor[i] = valor == null ? 0 : parseFloat(1 * valor.DesvioReal);
+                                                            orderMapaDeCalor[i] = valor == null ? 0 : parseFloat(1 * valor.DesvioReal);
                                                             i++;
                                                         });
 
