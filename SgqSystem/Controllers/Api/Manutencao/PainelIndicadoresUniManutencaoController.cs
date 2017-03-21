@@ -357,6 +357,8 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
             List<Busca2> f = new List<Busca2>();
             f = vetor0.lista;
+            var queryAbat = "";
+            var orcadoAbat = "";
 
             if (vetor1.lista != null)
             {
@@ -406,13 +408,21 @@ namespace SgqSystem.Controllers.Api.Manutencao
                             f[i].orcado = vetor1.lista[i].orcado / vetor1.lista[i].qtde;
                         else if (tipoCalculo == "Disponibilidade")
                         {
+                            queryAbat = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id = (select id from ParCompany where name like '%" + visaoPainel.unidade + "%')";
+
+                            using (var db = new SgqDbDevEntities())
+                            {
+                                orcadoAbat = db.Database.SqlQuery<string>(queryAbat).FirstOrDefault();
+                            }
                             if (vetor4.lista != null)
                             {
-                                f[i].orcado = 1 - ((vetor3.lista[i].orcado + vetor4.lista[i].orcado) / ((vetor1.lista[i].orcado * 60) + (vetor2.lista[i].orcado * 60)));
+                                f[i].orcado = Convert.ToDecimal(orcadoAbat) / 100; // COLOCAR O INDICADOR DIRETO DA TABELA ManBudgetedIndicators
+
                             }
                             else
                             {
-                                f[i].orcado = 1 - ((vetor2.lista[i].orcado) / ((vetor1.lista[i].orcado * 60)));
+                                f[i].orcado = Convert.ToDecimal(orcadoAbat) / 100;
+
                             }
 
                         }

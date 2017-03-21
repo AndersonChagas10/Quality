@@ -19,8 +19,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         public List<RetornoGrafico1> GetGrafico([FromBody] filtros filtro)
         {
             var categoria = filtro.categoria;
-            var series = "[Status]";
-            var filtroCategoria = "";
+            var series = filtro.serie;
+            //var series = "[Status]";
+            //var filtroCategoria = "";
 
             var dataInicio = Guard.ParseDateToSqlV2(filtro.dataInicio).ToString("yyyyMMdd");
             var dataFim = Guard.ParseDateToSqlV2(filtro.dataFim).ToString("yyyyMMdd");
