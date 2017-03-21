@@ -30,10 +30,12 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             var where = " where QuandoInicio <= '" + dataFim + "' and QuandoFim <= '" + dataFim + "' ";
             var orderby1 = " order by 1";
-            var indicadores = Pa_IndicadorSgqAcao.Listar();
-            var status = Pa_Status.Listar();
 
-            var sql1 = "select distinct(" + categoria + ") as valor from pa_acao";
+            var indicadores = Pa_Qualquer_Name.Listar(categoria);
+            
+            var status = Pa_Qualquer_Name.Listar(series);
+
+            var sql1 = "select distinct(" + categoria + ") as valor from pa_acao a left join Pa_acaoXQuem xq on xq.Acao_Id = a.Id left join Pa_Quem q on q.id = xq.Quem_Id";
             sql1 += where;
             sql1 += orderby1;
 
@@ -59,7 +61,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
                     foreach (var ii in ret1)
                     {
-                        var sqlQtd = "select count(1) as valor from Pa_Acao";
+                        var sqlQtd = "select count(1) as valor from Pa_Acao a left join Pa_acaoXQuem xq on xq.Acao_Id = a.Id left join Pa_Quem q on q.id = xq.Quem_Id";
                         sqlQtd += where;
                         sqlQtd += " and " + categoria + " = " + ii.valor + " and " + series + " = " + b.valor;
                         sqlQtd += orderby1;

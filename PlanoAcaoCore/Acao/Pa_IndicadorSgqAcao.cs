@@ -17,6 +17,6 @@ namespace PlanoAcaoCore
             var query = "SELECT * FROM Pa_IndicadorSgqAcao WHERE Id = " + Id;
             return GetGenerico<Pa_IndicadorSgqAcao>(query);
         }
-        
+
     }
 }
