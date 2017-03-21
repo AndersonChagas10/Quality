@@ -418,8 +418,23 @@ namespace SgqSystem.Controllers.Api.Manutencao
                         //else 
                         if (tipoCalculo == "Disponibilidade")
                         {
-                            queryAbat = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id = (select id from ParCompany where name like '%" + visaoPainel.unidade + "%')";
+                            //queryAbat = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id = (select id from ParCompany where name like '%" + visaoPainel.unidade + "%')";
+                            if (visaoPainel.tipoRelatorio == "Por Regional")
+                            {
+                                if (visaoPainel.regional == "Todas")
+                                {
+                                    queryAbat = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id in (select id from ParCompany')";
+                                }
+                                else if (visaoPainel.subRegional == "Todas")
+                                {
+                                    queryAbat = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id IN (SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegionalGrupo = '" + visaoPainel.regional + "' and ParCompany_id is not null)";
+                                }
+                                else
+                                {
+                                    queryAbat = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id IN (SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegional = '" + visaoPainel.subRegional + "' and ParCompany_id is not null)";
+                                }
 
+                            }
                             using (var db = new SgqDbDevEntities())
                             {
                                 orcadoAbat = db.Database.SqlQuery<string>(queryAbat).FirstOrDefault();
