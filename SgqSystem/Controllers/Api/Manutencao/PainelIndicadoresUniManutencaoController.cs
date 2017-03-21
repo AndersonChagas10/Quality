@@ -31,9 +31,9 @@ namespace SgqSystem.Controllers.Api.Manutencao
                     break;
                 case "R$/CB Manut":
                     indicador.Add("Custo Fixo Manutenção");
-                    indicador.Add("Custo Fixo Utilidades");
-                    indicador.Add("Bois Processados");
-                    tipoCalculo = "CustoCabeca";
+                    //indicador.Add("Custo Fixo Utilidades");
+                    indicador.Add("Bois Abatidos");
+                    //tipoCalculo = "CustoCabeca";
                     break;
                 case "KWh/Boi Proc":
                     indicador.Add("KWh");
@@ -80,14 +80,17 @@ namespace SgqSystem.Controllers.Api.Manutencao
                 case "Eficiên.Programção":
                     indicador.Add("Nº OS Programadas");
                     indicador.Add("Nº OS Executadas");
+                    tipoCalculo = "Variadas"; // Para retornar o Orcado diretamente
                     break;
                 case "Apropr Planej...to":
                     indicador.Add("Nº OS Planejadas");
                     indicador.Add("Nº OS Programadas");
+                    tipoCalculo = "Variadas";
                     break;
                 case "Apropriação de O.S":
                     indicador.Add("Nº Hrs Apropriadas OS");
                     indicador.Add("Nº Hrs Disponíveis Trabalhar");
+                    tipoCalculo = "Variadas";
                     break;
                 case "Absenteísmo":
                     indicador.Add("Nº Colaboradores Registrados");
@@ -216,10 +219,10 @@ namespace SgqSystem.Controllers.Api.Manutencao
                 }
 
                 var query2 = "\n SELECT " +
-                             "\n BASONA.Dado " +
-                            "\n ,BASONA.Realizado " +
-                            "\n ,BASONA.Orcado " +
-                            "\n ,BASONA.qtde " +
+                             "\n   BASONA.Dado " +
+                             "\n ,BASONA.Realizado " +
+                             "\n ,BASONA.Orcado " +
+                             "\n ,BASONA.qtde " +
                         "\n FROM " +
                         "\n (" +
                             "\n SELECT " +
@@ -358,7 +361,9 @@ namespace SgqSystem.Controllers.Api.Manutencao
             List<Busca2> f = new List<Busca2>();
             f = vetor0.lista;
             var queryAbat = "";
+            var queryVar = "";
             var orcadoAbat = "";
+            var orcadoVar = "";
 
             if (vetor1.lista != null)
             {
@@ -371,7 +376,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                     {
                         if (tipoCalculo == "media")
                         {
-                            f[i].realizado = vetor1.lista[i].realizado / vetor1.lista[i].qtde;
+                            f[i].realizado = vetor1.lista[i].realizado / vetor1.lista[i].qtde * vetor1.lista[i].qtde;
                         }
                         else if (tipoCalculo == "Disponibilidade")
                         {
@@ -393,6 +398,10 @@ namespace SgqSystem.Controllers.Api.Manutencao
                         {
                             f[i].realizado = (vetor1.lista[i].realizado + vetor2.lista[i].realizado) / vetor3.lista[i].realizado;
                         }
+                        else if (tipoCalculo == "Variadas")
+                        {
+                            f[i].realizado = vetor1.lista[i].realizado / vetor2.lista[i].realizado;
+                        }
                         else
 
                             f[i].realizado = vetor1.lista[i].realizado / vetor2.lista[i].realizado;
@@ -404,9 +413,10 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
                     try
                     {
-                        if (tipoCalculo == "media")
-                            f[i].orcado = vetor1.lista[i].orcado / vetor1.lista[i].qtde;
-                        else if (tipoCalculo == "Disponibilidade")
+                        //if (tipoCalculo == "media")
+                        //    f[i].orcado = vetor1.lista[i].orcado / vetor1.lista[i].qtde;
+                        //else 
+                        if (tipoCalculo == "Disponibilidade")
                         {
                             queryAbat = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id = (select id from ParCompany where name like '%" + visaoPainel.unidade + "%')";
 
@@ -434,6 +444,16 @@ namespace SgqSystem.Controllers.Api.Manutencao
                         else if (tipoCalculo == "CustoCabeca")
                         {
                             f[i].orcado = (vetor1.lista[i].orcado + vetor2.lista[i].orcado) / vetor3.lista[i].orcado;
+                        }
+                        else if (tipoCalculo == "Variadas" || tipoCalculo == "media")
+                        {
+                            queryVar = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id = (select id from ParCompany where name like '%" + visaoPainel.unidade + "%')";
+
+                            using (var db = new SgqDbDevEntities())
+                            {
+                                orcadoVar = db.Database.SqlQuery<string>(queryVar).FirstOrDefault();
+                            }
+                            f[i].orcado = Convert.ToDecimal(orcadoVar);
                         }
                         else
                             f[i].orcado = vetor1.lista[i].orcado / vetor2.lista[i].orcado;
