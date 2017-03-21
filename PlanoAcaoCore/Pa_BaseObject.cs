@@ -33,11 +33,6 @@ namespace PlanoAcaoCore
         protected static string user { get { return "grjqualidadedev"; } }
         protected static string pass { get { return "Mi3UpU0J35<_"; } }
 
-        //protected static string catalog { get { return "SgqDbDev2"; } }
-        //protected static string dataSource { get { return @"SgqDbDev2.mssql.somee.com"; } }
-        //protected static string user { get { return "gcnunes7_SQLLogin_1"; } }
-        //protected static string pass { get { return "12y3srpfp5"; } }
-
         //protected static string catalog { get { return "dbGQualidadeTeste"; } }
         //protected static string dataSource { get { return @"10.255.0.41"; } }
         //protected static string user { get { return "UserGQualidade"; } }

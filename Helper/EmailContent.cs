@@ -17,7 +17,7 @@ namespace Helper
         public bool IsBodyHtml { get; set; }
         public string Subject { get; set; }
         public string From { get; set; }
-        private string _ConnectionPa = "PlanoDeAcao";
+        //private string _ConnectionPa = "PlanoDeAcao";
 
         private void IsValidCreateEntryMail()
         {
@@ -52,7 +52,7 @@ namespace Helper
             cmd.Parameters.AddWithValue("@From", From);
             cmd.Parameters.AddWithValue("@Id", Id);
 
-            using (var db = new Factory(_ConnectionPa))
+            using (var db = new Factory("PlanoDeAcao"))
                 db.InsertUpdateData(cmd);
         }
 
@@ -87,7 +87,7 @@ namespace Helper
             cmd.Parameters.AddWithValue("@IsBodyHtml", IsBodyHtml);
             cmd.Parameters.AddWithValue("@Subject", Subject);
 
-            using (var db = new Factory(_ConnectionPa))
+            using (var db = new Factory("PlanoDeAcao"))
                 Id = db.InsertUpdateData(cmd);
 
         }
