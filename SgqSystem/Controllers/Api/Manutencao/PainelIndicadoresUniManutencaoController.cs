@@ -485,9 +485,19 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
                             using (var db = new SgqDbDevEntities())
                             {
+                                if (visaoPainel.indicador == "CARTA METAS")
+                                {
+                                }
                                 orcadoVar = db.Database.SqlQuery<string>(queryVar).FirstOrDefault();
                             }
-                            f[i].orcado = Convert.ToDecimal(orcadoVar);
+                            if (visaoPainel.indicador == "CARTA METAS")
+                            {
+                                f[i].orcado = Convert.ToDecimal(orcadoVar);
+                            }
+                            else
+                            {
+                                f[i].orcado = Convert.ToDecimal(orcadoVar) / 100;
+                            }
                         }
                         else
                             f[i].orcado = vetor1.lista[i].orcado / vetor2.lista[i].orcado;
