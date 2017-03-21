@@ -2,6 +2,7 @@
 using Helper;
 using PlanoAcaoCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 
 namespace PlanoDeAcaoMVC.Controllers.Api
@@ -20,7 +21,12 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         [Route("GET")]
         public Pa_Planejamento Get(int id)
         {
-            return Pa_Planejamento.Get(id);
+            var planejamento = Pa_Planejamento.Get(id);
+            if (planejamento.Estrategico_Id.GetValueOrDefault() > 0)
+            {
+                planejamento.Tatico_Id = Pa_BaseObject.ListarGenerico<Pa_Planejamento>("Select * from Pa_Planejamento where Estrategico_Id = " + planejamento.Estrategico_Id.GetValueOrDefault()).FirstOrDefault().Id;
+            }
+            return planejamento;
         }
 
         [HttpPost]
@@ -30,6 +36,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             planejamento.IsValid();
 
             planejamento.IsfiltrarAcao = null;
+            planejamento.Tatico_Id = null;
             if (planejamento.Estrategico_Id.GetValueOrDefault() > 0)
             {
                 planejamento.ValorDe = NumericExtensions.CustomParseDecimal(planejamento._ValorDe).GetValueOrDefault();
@@ -37,7 +44,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 planejamento.DataInicio = Guard.ParseDateToSqlV2(planejamento._DataInicio);
                 planejamento.DataFim = Guard.ParseDateToSqlV2(planejamento._DataFim);
             }
-           
+
             Pa_BaseObject.SalvarGenerico(planejamento);
             return planejamento;
         }
@@ -47,6 +54,14 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         public IEnumerable<Pa_Planejamento> GetPlanejamentoAcao()
         {
             var retorno = Pa_Planejamento.GetPlanejamentoAcao();
+            foreach (var i in retorno)
+            {
+                var planejamento = i;
+                if (planejamento.Estrategico_Id.GetValueOrDefault() > 0)
+                {
+                    planejamento.Tatico_Id = Pa_BaseObject.ListarGenerico<Pa_Planejamento>("Select * from Pa_Planejamento where Estrategico_Id = " + planejamento.Estrategico_Id.GetValueOrDefault()).FirstOrDefault().Id;
+                }
+            }
             return retorno;
         }
 

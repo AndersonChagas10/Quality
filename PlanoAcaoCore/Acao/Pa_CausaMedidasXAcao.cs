@@ -229,13 +229,13 @@ namespace PlanoAcaoCore
 
         public void IsValid()
         {
-            if (string.IsNullOrEmpty(_CausaEspecifica))
-                message += "\n Causa Específica,";
+            //if (string.IsNullOrEmpty(_CausaEspecifica))
+            //    message += "\n Causa Específica,";
 
-            if (string.IsNullOrEmpty(_ContramedidaEspecifica))
-                message += "\n Contramedida Específica,";
+            //if (string.IsNullOrEmpty(_ContramedidaEspecifica))
+            //    message += "\n Contramedida Específica,";
 
-            VerificaMensagemCamposObrigatorios(message);
+            //VerificaMensagemCamposObrigatorios(message);
             //throw new NotImplementedException();
         }
 

@@ -170,7 +170,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -190,6 +189,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\HandleApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -356,6 +356,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Imagens\Logo.png" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-aria.js" />
@@ -500,6 +501,7 @@
     <Content Include="Scripts\i18n\Portuguese-Brasil.json" />
     <None Include="Properties\PublishProfiles\pa_GRT.pubxml" />
     <None Include="Properties\PublishProfiles\Pa_Local.pubxml" />
+    <None Include="Properties\PublishProfiles\PLANOACAOLOCAL.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\GuardJs.js" />
     <Content Include="Scripts\highcharts\4.2.0\adapters\standalone-framework.js" />
@@ -1396,10 +1398,6 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
-    <Content Include="Views\Relatorios\CSS.css" />
-    <Content Include="Views\Relatorios\GeralRelatorios.js" />
-    <Content Include="Views\Relatorios\HcExport.js" />
-    <Content Include="Views\Relatorios\HighChartsRelatorios.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1423,7 +1421,6 @@
     <Content Include="Views\Pa_Acao\Index.cshtml" />
     <Content Include="Views\Shared\_DdlGenerica.cshtml" />
     <Content Include="Views\Pa_Acao\Edit.cshtml" />
-    <Content Include="Views\Relatorios\Relatorios.cshtml" />
     <Content Include="Views\Pa_Planejamento\Editar.cshtml" />
   </ItemGroup>
   <ItemGroup>

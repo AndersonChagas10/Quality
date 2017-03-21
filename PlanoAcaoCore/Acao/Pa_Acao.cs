@@ -6,42 +6,21 @@ using System.Linq;
 
 namespace PlanoAcaoCore
 {
-    public class Pa_Acao : Pa_BaseObject, ICrudPa<Pa_Acao>
+    public class Pa_Acao : Pa_BaseObject
     {
         [Display(Name = "Problema ou Desvio")]
         public int? Pa_Problema_Desvio_Id { get; set; }
-        public Pa_Problema_Desvio _Pa_Problema_Desvio_Id
-        {
-            get
-            {
-                if (Pa_Problema_Desvio_Id > 0)
-                    return Pa_Problema_Desvio.Get(Pa_Problema_Desvio_Id.GetValueOrDefault());
-                else
-                    return new Pa_Problema_Desvio();
-            }
-        }
 
         //[Display(Name = "Indicador SGQ ou Ação")]
         [Display(Name = "Indicador Operacional")]
         public int? Pa_IndicadorSgqAcao_Id { get; set; }
-        public Pa_IndicadorSgqAcao _Pa_IndicadorSgqAcao
-        {
-            get
-            {
-                if (Pa_IndicadorSgqAcao_Id > 0)
-                    return Pa_IndicadorSgqAcao.Get(Pa_IndicadorSgqAcao_Id.GetValueOrDefault());
-                else
-                    return new Pa_IndicadorSgqAcao();
-            }
-        }
+
 
         [Display(Name = "Unidade")]
         public int? Unidade_Id { get; set; }
-        public string Unidade { get; set; }
 
         [Display(Name = "Departamento")]
         public int? Departamento_Id { get; set; }
-        public string Departamento { get; set; }
 
         public int? Pa_CausaMedidasXAcao_Id { get; set; }
 
@@ -59,7 +38,7 @@ namespace PlanoAcaoCore
 
         [Display(Name = "Quanto custa")]
         public decimal QuantoCusta { get; set; }
-        public string _QuantoCusta { get; set; }
+
 
         [Display(Name = "Status")]
         public int Status { get; set; }
@@ -71,19 +50,44 @@ namespace PlanoAcaoCore
 
         [Display(Name = "Quando início")]
         public DateTime QuandoInicio { get; set; }
-        public string _QuandoInicio { get; set; }
 
         [Display(Name = "Quando fim")]
         public DateTime QuandoFim { get; set; }
-        public string _QuandoFim { get; set; }
+
 
         public List<Pa_AcaoXQuem> AcaoXQuem { get; set; }
+
         public List<string> _Quem { get; set; }
+
         public List<Pa_Quem> _QuemObj { get; set; }
 
-        public Pa_CausaMedidasXAcao CausaMedidasXAcao { get; set; }
+        public Pa_Problema_Desvio _Pa_Problema_Desvio_Id
+        {
+            get
+            {
+                if (Pa_Problema_Desvio_Id > 0)
+                    return Pa_Problema_Desvio.Get(Pa_Problema_Desvio_Id.GetValueOrDefault());
+                else
+                    return new Pa_Problema_Desvio();
+            }
+        }
 
-     
+        public Pa_IndicadorSgqAcao _Pa_IndicadorSgqAcao
+        {
+            get
+            {
+                if (Pa_IndicadorSgqAcao_Id > 0)
+                    return Pa_IndicadorSgqAcao.Get(Pa_IndicadorSgqAcao_Id.GetValueOrDefault());
+                else
+                    return new Pa_IndicadorSgqAcao();
+            }
+        }
+
+        public string Unidade { get; set; }
+        public string Departamento { get; set; }
+        public string _QuantoCusta { get; set; }
+        public string _QuandoInicio { get; set; }
+        public string _QuandoFim { get; set; }
 
         public string _Prazo
         {
@@ -108,27 +112,39 @@ namespace PlanoAcaoCore
 
         public void IsValid()
         {
-            if (Pa_IndicadorSgqAcao_Id <= 0)
-                message += "\n Indicador Operacional,";
-            
-            if (Pa_Problema_Desvio_Id <= 0)
-                message += "\n Problema ou Desvio,";
+
+            if (Id <= 0)
+            {
+                Pa_Status status = Pa_Status.Listar().FirstOrDefault(r => r.Name.Equals("Em Andamento"));
+
+                Status = status.Id;
+                StatusName = status.Name;
+            }
+
+            //if (Pa_IndicadorSgqAcao_Id <= 0)
+            //    message += "\n Indicador Operacional,";
+
+            //if (Pa_Problema_Desvio_Id <= 0 || Pa_Problema_Desvio_Id == null)
+            //    message += "\n Problema ou Desvio,";
 
             if (AcaoXQuem != null)
             {
                 foreach (var i in AcaoXQuem)
                     if (i.Quem_Id <= 0)
-                        message = "\n Quem";
+                        message = "\n Quem,";
             }
             else
-                message = "\n Quem";
+                message = "\n Quem,";
+
+            if (CausaMedidasXAcao == null)
+                CausaMedidasXAcao = new Pa_CausaMedidasXAcao();
 
             if (CausaMedidasXAcao.CausaGenerica_Id <= 0)
                 message += "\n Causa generica,";
 
             if (CausaMedidasXAcao.GrupoCausa_Id <= 0)
                 message += "\n Grupo causa,";
-            
+
             if (CausaMedidasXAcao.ContramedidaGenerica_Id <= 0)
                 message += "\n Contramedida generica,";
 
@@ -138,23 +154,23 @@ namespace PlanoAcaoCore
             if (string.IsNullOrEmpty(CausaMedidasXAcao._ContramedidaEspecifica))
                 message += "\n Contramedida Específica,";
 
-            if (string.IsNullOrEmpty(_QuandoInicio))
-                message += "\n Quando início,";
+            //if (string.IsNullOrEmpty(_QuandoInicio))
+            //    message += "\n Quando início,";
 
-            if (string.IsNullOrEmpty(_QuandoFim))
-                message += "\n Quando fim,";
+            //if (string.IsNullOrEmpty(_QuandoFim))
+            //    message += "\n Quando fim,";
 
-            if (string.IsNullOrEmpty(ComoPontosimportantes))
-                message += "\n Como pontos importantes,";
+            //if (string.IsNullOrEmpty(ComoPontosimportantes))
+            //    message += "\n Como pontos importantes,";
 
-            if (string.IsNullOrEmpty(PraQue))
-                message += "\n Pra que,";
+            //if (string.IsNullOrEmpty(PraQue))
+            //    message += "\n Pra que,";
 
-            if (string.IsNullOrEmpty(_QuantoCusta))
-                message += "\n Quanto custa,";
+            //if (string.IsNullOrEmpty(_QuantoCusta))
+            //    message += "\n Quanto custa,";
 
-            if (Status <= 0)
-                message += "\n Status,";
+            //if (Status <= 0)
+            //    message += "\n Status,";
 
             VerificaMensagemCamposObrigatorios(message);
         }
@@ -205,6 +221,8 @@ namespace PlanoAcaoCore
 
             return retorno;
         }
+
+        public Pa_CausaMedidasXAcao CausaMedidasXAcao { get; set; }
 
         public void AddOrUpdate()
         {
@@ -281,25 +299,37 @@ namespace PlanoAcaoCore
                 query = "INSERT INTO [dbo].[Pa_Acao]               " +
                         "\n       ([QuandoInicio]                  " +
                         //"\n        ,[DuracaoDias]                  " +
-                        "\n        ,[QuandoFim]                    " +
-                        "\n        ,[ComoPontosimportantes]        " +
-                        "\n        ,[PraQue]                       " +
-                        "\n        ,[QuantoCusta]                  " +
-                        "\n        ,[Status]                       " +
-                        "\n        ,[Pa_Problema_Desvio_Id]   " +
-                        "\n        ,[Pa_IndicadorSgqAcao_Id]       " +
-                        "\n        ,[Panejamento_Id])              " +
-                        "\n  VALUES                                " +
-                        "\n        (@QuandoInicio                  " +
-                        //"\n        ,@DuracaoDias                   " +
-                        "\n        ,@QuandoFim                     " +
-                        "\n        ,@ComoPontosimportantes         " +
-                        "\n        ,@PraQue                        " +
-                        "\n        ,@QuantoCusta                   " +
-                        "\n        ,@Status                        " +
-                        "\n        ,@Pa_Problema_Desvio_Id    " +
-                        "\n        ,@Pa_IndicadorSgqAcao_Id        " +
-                        "\n        ,@Panejamento_Id);              ";
+                        "\n        ,[QuandoFim]                    ";
+                if (ComoPontosimportantes != null)
+                    query += "\n        ,[ComoPontosimportantes]        ";
+                if (PraQue != null)
+                    query += "\n        ,[PraQue]                       ";
+
+                query += "\n        ,[QuantoCusta]                  " +
+                "\n        ,[Status]                       ";
+                if (Pa_Problema_Desvio_Id != null)
+                    query += "\n        ,[Pa_Problema_Desvio_Id]   ";
+                if (Pa_IndicadorSgqAcao_Id != null)
+                    query += "\n        ,[Pa_IndicadorSgqAcao_Id]       ";
+
+                query += "\n        ,[Panejamento_Id])              " +
+                "\n  VALUES                                " +
+                "\n        (@QuandoInicio                  " +
+                //"\n        ,@DuracaoDias                   " +
+                "\n        ,@QuandoFim                     ";
+                if (ComoPontosimportantes != null)
+                    query += "\n        ,@ComoPontosimportantes         ";
+                if (PraQue != null)
+                    query += "\n        ,@PraQue                        ";
+
+                query += "\n        ,@QuantoCusta                   " +
+                        "\n        ,@Status                        ";
+                if (Pa_Problema_Desvio_Id != null)
+                    query += "\n        ,@Pa_Problema_Desvio_Id    ";
+                if (Pa_IndicadorSgqAcao_Id != null)
+                    query += "\n        ,@Pa_IndicadorSgqAcao_Id        ";
+
+                query += "\n        ,@Panejamento_Id);              ";
 
                 query += "SELECT CAST(scope_identity() AS int)";
 
@@ -309,12 +339,16 @@ namespace PlanoAcaoCore
                 cmd.Parameters.AddWithValue("@QuandoInicio", QuandoInicio);
                 //cmd.Parameters.AddWithValue("@DuracaoDias", DuracaoDias);
                 cmd.Parameters.AddWithValue("@QuandoFim", QuandoFim);
-                cmd.Parameters.AddWithValue("@ComoPontosimportantes", ComoPontosimportantes);
-                cmd.Parameters.AddWithValue("@PraQue", PraQue);
+                if (ComoPontosimportantes != null)
+                    cmd.Parameters.AddWithValue("@ComoPontosimportantes", ComoPontosimportantes);
+                if (PraQue != null)
+                    cmd.Parameters.AddWithValue("@PraQue", PraQue);
                 cmd.Parameters.AddWithValue("@QuantoCusta", QuantoCusta);
                 cmd.Parameters.AddWithValue("@Status", Status);
-                cmd.Parameters.AddWithValue("@Pa_Problema_Desvio_Id", Pa_Problema_Desvio_Id);
-                cmd.Parameters.AddWithValue("@Pa_IndicadorSgqAcao_Id", Pa_IndicadorSgqAcao_Id);
+                if (Pa_Problema_Desvio_Id != null)
+                    cmd.Parameters.AddWithValue("@Pa_Problema_Desvio_Id", Pa_Problema_Desvio_Id);
+                if (Pa_IndicadorSgqAcao_Id != null)
+                    cmd.Parameters.AddWithValue("@Pa_IndicadorSgqAcao_Id", Pa_IndicadorSgqAcao_Id);
                 cmd.Parameters.AddWithValue("@Panejamento_Id", Panejamento_Id);
 
                 Id = Salvar(cmd);
@@ -338,5 +372,7 @@ namespace PlanoAcaoCore
 
             }
         }
+
+
     }
 }

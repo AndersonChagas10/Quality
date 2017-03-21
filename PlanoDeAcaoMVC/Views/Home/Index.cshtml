@@ -1,24 +1,896 @@
-﻿<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+﻿
 <div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
-        a broad range of clients, including browsers and mobile devices. ASP.NET Web API
-        is an ideal platform for building RESTful applications on the .NET Framework.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a></p>
+    <div class="col-xs-12 col-sm-6 col-lg-4" style="min-height:500px;">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading" style="text-align:center;">
+                <h3 class="panel-title">Situação geral das ações no período</h3>
+            </div>
+
+            <div class="panel-body">
+                <div class="popover-markup">
+                    <a id="btnFiltro" href="#" class="trigger btn btn-default">Filtro</a>
+                    <div class="head hide">Filtro</div>
+                    <div class="content hide">
+                        <form>
+                            <div class="form-group">
+                                <span>Data Inicio</span>
+                                <input type="text" class="datepicker form-control" placeholder="" id="dataInicio" />
+                                <span>Data Fim</span>
+                                <input type="text" class="datepicker form-control" placeholder="" id="dataFim" />
+                            </div>
+                            <button id="enviar" type="submit" class="btn btn-primary btn-block">
+                                Filtrar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="divPie" style="height:215px;"></div>
+                <div class="col-xs-6 col-sm-6 ">
+                    <div class="panel panel-default" data-toggle="modal" data-target="#myModal" style="cursor:pointer;">
+                        <div class="panel-body">
+                            <div style="height:98px;">
+                                <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
+                                    <!--<i class="fa fa-thumbs-up fa-3" aria-hidden="true" style="font-size:30px; color: green"></i>-->
+                                    <img src="https://cdn3.iconfinder.com/data/icons/social-icons-24/24/Thumbs-Up-24.png" />
+                                </div>
+                                <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
+                                    <span id="acoesConcluidas" style="font-size:25px; font-weight:bold; color:#444;"></span>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
+                                    
+                                    <span style="font-size: 10px;">Ações concluídas</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-6 ">
+                    <div class="panel panel-default" data-toggle="modal" data-target="#myModal" style="cursor:pointer;">
+                        <div class="panel-body">
+                            <div style="height:98px;">
+                                <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
+                                    <!--<i class="fa fa-thumbs-down fa-3" aria-hidden="true" style="font-size:30px; color:red"></i>-->
+                                    
+                                    <img src="https://cdn3.iconfinder.com/data/icons/social-icons-24/24/Thumbs-Down-24.png" />
+                                </div>
+                                <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
+                                    <span id="acoesAtrasadas" style="font-size:25px; font-weight:bold; color:#444;"></span>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
+                                    <span style="font-size: 10px;">Ações Atrasadas</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-6 ">
+                    <div class="panel panel-default" data-toggle="modal" data-target="#myModal" style="cursor:pointer;">
+                        <div class="panel-body">
+                            <div style="height:98px;">
+                                <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
+                                    <i class="fa fa-calendar fa-3" aria-hidden="true" style="font-size:30px;"></i>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
+                                    <span id="acoesAVencer" style="font-size:25px; font-weight:bold; color:#444;"></span>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
+                                    <span style="font-size: 10px;">Ações a vencer</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-6 col-sm-6 ">
+
+                    <div class="panel panel-default" data-toggle="modal" data-target="#myModal" style="cursor:pointer;">
+                        <div class="panel-body">
+                            <div style="height:98px;">
+                                <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
+                                    <i class="fa fa-users fa-3" aria-hidden="true" style="font-size:30px;"></i>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
+                                    <span id="pessoasEnvolvidas" style="font-size:25px; font-weight:bold; color:#444;"></span>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
+                                    <span style="font-size: 10px;">Pessoas envolvidas</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301871">Learn more &raquo;</a></p>
+    <div class="col-xs-12 col-sm-6 col-lg-8">
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div id="divBar" style="height:250px;"></div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a></p>
+    <div class="col-xs-12 col-sm-6 col-lg-8 ">
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div id="divCol" style="height:250px;"></div>
+            </div>
+        </div>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 ">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Estoque de ações</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12 col-md-3" id="divEstoque1" style="height:200px;"></div>
+                    <div class="col-xs-12 col-md-3" id="divEstoque2" style="height:200px;"></div>
+                    <div class="col-xs-12 col-md-6" id="divEstoque3" style="height:200px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 ">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Meus indicadores</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12" id="divIndicador" style="height:300px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--modallllll-->
+<div class="modal fade in" role="dialog" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" style="display: none;">
+    <div class="modal-dialog" role="document" style="width:100%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Ações Concluídas</h4>
+            </div>
+            <div class="modal-body" style="overflow-x:auto;">
+
+
+                <table id="exampleTD1" class="display" cellspacing="0" width="100%"><thead><tr><th>Name</th><th>Position</th><th>Office</th><th>Salary</th></tr></thead><tbody><tr><td>Tiger Nixon</td><td>System Architect</td><td>Edinburgh</td><td>$320,800</td></tr><tr><td>Garrett Winters</td><td>Accountant</td><td>Tokyo</td><td>$170,750</td></tr><tr><td>Ashton Cox</td><td>Junior Technical Author</td><td>San Francisco</td><td>$86,000</td></tr><tr><td>Cedric Kelly</td><td>Senior Javascript Developer</td><td>Edinburgh</td><td>$433,060</td></tr><tr><td>Airi Satou</td><td>Accountant</td><td>Tokyo</td><td>$162,700</td></tr><tr><td>Brielle Williamson</td><td>Integration Specialist</td><td>New York</td><td>$372,000</td></tr><tr><td>Herrod Chandler</td><td>Sales Assistant</td><td>San Francisco</td><td>$137,500</td></tr><tr><td>Rhona Davidson</td><td>Integration Specialist</td><td>Tokyo</td><td>$327,900</td></tr><tr><td>Colleen Hurst</td><td>Javascript Developer</td><td>San Francisco</td><td>$205,500</td></tr><tr><td>Sonya Frost</td><td>Software Engineer</td><td>Edinburgh</td><td>$103,600</td></tr><tr><td>Jena Gaines</td><td>Office Manager</td><td>London</td><td>$90,560</td></tr><tr><td>Quinn Flynn</td><td>Support Lead</td><td>Edinburgh</td><td>$342,000</td></tr><tr><td>Charde Marshall</td><td>Regional Director</td><td>San Francisco</td><td>$470,600</td></tr><tr><td>Haley Kennedy</td><td>Senior Marketing Designer</td><td>London</td><td>$313,500</td></tr><tr><td>Tatyana Fitzpatrick</td><td>Regional Director</td><td>London</td><td>$385,750</td></tr><tr><td>Michael Silva</td><td>Marketing Designer</td><td>London</td><td>$198,500</td></tr><tr><td>Paul Byrd</td><td>Chief Financial Officer (CFO)</td><td>New York</td><td>$725,000</td></tr><tr><td>Gloria Little</td><td>Systems Administrator</td><td>New York</td><td>$237,500</td></tr><tr><td>Bradley Greer</td><td>Software Engineer</td><td>London</td><td>$132,000</td></tr><tr><td>Dai Rios</td><td>Personnel Lead</td><td>Edinburgh</td><td>$217,500</td></tr><tr><td>Jenette Caldwell</td><td>Development Lead</td><td>New York</td><td>$345,000</td></tr><tr><td>Yuri Berry</td><td>Chief Marketing Officer (CMO)</td><td>New York</td><td>$675,000</td></tr><tr><td>Caesar Vance</td><td>Pre-Sales Support</td><td>New York</td><td>$106,450</td></tr><tr><td>Doris Wilder</td><td>Sales Assistant</td><td>Sidney</td><td>$85,600</td></tr><tr><td>Angelica Ramos</td><td>Chief Executive Officer (CEO)</td><td>London</td><td>$1,200,000</td></tr><tr><td>Gavin Joyce</td><td>Developer</td><td>Edinburgh</td><td>$92,575</td></tr><tr><td>Jennifer Chang</td><td>Regional Director</td><td>Singapore</td><td>$357,650</td></tr><tr><td>Brenden Wagner</td><td>Software Engineer</td><td>San Francisco</td><td>$206,850</td></tr><tr><td>Fiona Green</td><td>Chief Operating Officer (COO)</td><td>San Francisco</td><td>$850,000</td></tr><tr><td>Shou Itou</td><td>Regional Marketing</td><td>Tokyo</td><td>$163,000</td></tr><tr><td>Michelle House</td><td>Integration Specialist</td><td>Sidney</td><td>$95,400</td></tr><tr><td>Suki Burks</td><td>Developer</td><td>London</td><td>$114,500</td></tr><tr><td>Prescott Bartlett</td><td>Technical Author</td><td>London</td><td>$145,000</td></tr><tr><td>Gavin Cortez</td><td>Team Leader</td><td>San Francisco</td><td>$235,500</td></tr><tr><td>Martena Mccray</td><td>Post-Sales support</td><td>Edinburgh</td><td>$324,050</td></tr><tr><td>Unity Butler</td><td>Marketing Designer</td><td>San Francisco</td><td>$85,675</td></tr><tr><td>Howard Hatfield</td><td>Office Manager</td><td>San Francisco</td><td>$164,500</td></tr><tr><td>Hope Fuentes</td><td>Secretary</td><td>San Francisco</td><td>$109,850</td></tr><tr><td>Vivian Harrell</td><td>Financial Controller</td><td>San Francisco</td><td>$452,500</td></tr><tr><td>Timothy Mooney</td><td>Office Manager</td><td>London</td><td>$136,200</td></tr><tr><td>Jackson Bradshaw</td><td>Director</td><td>New York</td><td>$645,750</td></tr><tr><td>Olivia Liang</td><td>Support Engineer</td><td>Singapore</td><td>$234,500</td></tr><tr><td>Bruno Nash</td><td>Software Engineer</td><td>London</td><td>$163,500</td></tr><tr><td>Sakura Yamamoto</td><td>Support Engineer</td><td>Tokyo</td><td>$139,575</td></tr><tr><td>Thor Walton</td><td>Developer</td><td>New York</td><td>$98,540</td></tr><tr><td>Finn Camacho</td><td>Support Engineer</td><td>San Francisco</td><td>$87,500</td></tr><tr><td>Serge Baldwin</td><td>Data Coordinator</td><td>Singapore</td><td>$138,575</td></tr><tr><td>Zenaida Frank</td><td>Software Engineer</td><td>New York</td><td>$125,250</td></tr><tr><td>Zorita Serrano</td><td>Software Engineer</td><td>San Francisco</td><td>$115,000</td></tr><tr><td>Jennifer Acosta</td><td>Junior Javascript Developer</td><td>Edinburgh</td><td>$75,650</td></tr><tr><td>Cara Stevens</td><td>Sales Assistant</td><td>New York</td><td>$145,600</td></tr><tr><td>Hermione Butler</td><td>Regional Director</td><td>London</td><td>$356,250</td></tr><tr><td>Lael Greer</td><td>Systems Administrator</td><td>London</td><td>$103,500</td></tr><tr><td>Jonas Alexander</td><td>Developer</td><td>San Francisco</td><td>$86,500</td></tr><tr><td>Shad Decker</td><td>Regional Director</td><td>Edinburgh</td><td>$183,000</td></tr><tr><td>Michael Bruce</td><td>Javascript Developer</td><td>Singapore</td><td>$183,000</td></tr><tr><td>Donna Snider</td><td>Customer Support</td><td>New York</td><td>$112,000</td></tr></tbody></table>
+
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+
+        function InitDatePiker() {
+            $('.datepicker').datepicker({
+                startDate: 0,
+                todayBtn: "linked",
+                language: "pt-BR",
+                multidate: false,
+                todayHighlight: true
+            });
+        }
+
+        function MapeiaValorParaHC(array, prop) {
+            var arrayRetorno = $.map(array, function (o, c) {
+                return o[prop];
+            });
+            return arrayRetorno;
+        }
+
+        // Radialize the colors
+        Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
+            return {
+                radialGradient: {
+                    cx: 0.5,
+                    cy: 0.3,
+                    r: 0.7
+                },
+                stops: [
+                    [0, color],
+                    [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+                ]
+            };
+        });
+
+        acoesConcluidas = 25;
+        acoesAtrasadas = 21;
+        acoesAVencer = 10;
+        pessoasEnvolvidas = 12;
+
+        $('#acoesConcluidas').text(acoesConcluidas);
+        $('#acoesAtrasadas').text(acoesAtrasadas);
+        $('#acoesAVencer').text(acoesAVencer);
+        $('#pessoasEnvolvidas').text(pessoasEnvolvidas);
+
+        tituloXBar = 'Status das Ações';
+        tituloXColumn = "Status das Ações";
+
+        tituloYBar = 'Número de ações';
+        tituloYColumn = 'Número de ações';
+
+        tituloBar = 'Status das Ações por Indicadores';
+        tituloColumn = 'Status das Ações por Responsável';
+
+        var urlGetGrafico = '@Url.Action("GetGrafico", "api/Relatorios")';
+        var urlGetGraficoPie = '@Url.Action("GraficoPie", "api/Relatorios")';
+
+        function atualizar(callback, url, obj) {
+
+            $.post(url, obj, function (r) {
+
+                //console.log(r);
+
+                callback(r);
+            });
+
+        }
+
+        function GraficoBar(r) {
+            seriesBar = [];
+            categoriesBar = MapeiaValorParaHC(r, "Indicador");
+
+            r[0].Status.forEach(function (oo, cc) {
+                seriesBar.push({ name: oo.Name, data: oo.QuantidadeAcoes })
+            })
+
+            Highcharts.chart('divBar', {
+                credits: {
+                    enabled: false
+                },
+                exporting: {
+                    enabled: false
+                },
+                chart: {
+                    type: 'bar'
+                },
+                title: {
+                    text: tituloBar,
+                    style: {
+                        fontSize: '14px',
+                    }
+                },
+                xAxis: {
+                    categories: categoriesBar,
+                    labels: {
+                        style: {
+                            fontSize: '10px',
+                            fontWeight: 'normal'
+                        }
+                    }
+                },
+                yAxis: {
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[1],
+                            fontSize: '8px',
+                            fontWeight: 'normal'
+                        }
+                    },
+                    min: 0,
+                    title: {
+                        text: tituloXBar,
+                        style: {
+                            fontSize: '10px',
+                            fontWeight: 'normal'
+                        }
+                    }
+                },
+                legend: {
+                    align: 'center',
+                    verticalAlign: 'bottom',
+                    layout: 'horizontal',
+                    itemStyle: {
+                        fontSize: '10px',
+                        fontWeight: 'normal',
+                    },
+                },
+                plotOptions: {
+                    series: {
+                        stacking: 'normal'
+                    }
+                },
+                series: seriesBar
+            });
+        }
+
+        function GraficoCol(r) {
+
+            seriesColumn = [];
+            categoriesColumn = MapeiaValorParaHC(r, "Indicador");
+
+            r[0].Status.forEach(function (oo, cc) {
+                seriesColumn.push({ name: oo.Name, data: oo.QuantidadeAcoes })
+            })
+
+            Highcharts.chart('divCol', {
+                credits: {
+                    enabled: false
+                },
+                exporting: {
+                    enabled: false
+                },
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: tituloColumn,
+                    style: {
+                        fontSize: '14px',
+                    }
+                },
+                xAxis: {
+                    categories: categoriesColumn,
+                    labels: {
+                        style: {
+                            fontSize: '10px',
+                            fontWeight: 'normal'
+                        }
+                    },
+                    title: {
+                        text: tituloYColumn,
+                        style: {
+                            fontSize: '10px',
+                            fontWeight: 'normal'
+                        }
+                    }
+                },
+                yAxis: {
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[1],
+                            fontSize: '8px',
+                            fontWeight: 'normal'
+                        }
+                    },
+                    min: 0,
+                    title: {
+                        text: tituloXColumn,
+                        style: {
+                            fontSize: '10px',
+                            fontWeight: 'normal'
+                        }
+                    }
+                },
+                legend: {
+                    align: 'center',
+                    verticalAlign: 'bottom',
+                    layout: 'horizontal',
+                    enabled: true,
+                    itemStyle: {
+                        fontSize: '10px',
+                        fontWeight: 'normal',
+                    },
+                },
+                plotOptions: {
+                    series: {
+                        stacking: 'normal'
+                    }
+                },
+                series: seriesColumn
+            });
+        }
+
+        function GraficoPizza(r) {
+
+            dadosPie = r;
+
+            Highcharts.chart('divPie', {
+                credits: {
+                    enabled: false
+                },
+                exporting: {
+                    enabled: false
+                },
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                legend: {
+                    align: 'center',
+                    verticalAlign: 'bottom',
+                    layout: 'horizontal',
+                    enabled: true,
+                    itemStyle: {
+                        fontSize: '10px',
+                        fontWeight: 'normal',
+                    },
+                },
+                title: {
+                    text: false
+                },
+                tooltip: {
+                    pointFormat: '<b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        showInLegend: true,
+                        dataLabels: {
+                            enabled: false,
+                            format: '{point.name}' + ': ' + '{point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                                fontSize: '10px',
+                                fontWeight: 'normal',
+                            },
+                            connectorColor: 'silver'
+                        }
+                    }
+                },
+                series: [{
+                    name: '',
+                    data: dadosPie
+                }]
+            });
+        }
+
+        $(document).ready(function () {
+
+            $("#btnFiltro").click(function () {
+
+                InitDatePiker();
+
+                $("form").on("submit", function (event) {
+
+                    var dataInicio = $('#dataInicio').val();
+                    var dataFim = $('#dataFim').val();
+
+                    var obj = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 1 };
+                    //var obj2 = { categoria: 'Pa_Problema_Desvio_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 2 };
+
+                    $('#divBar').highcharts().destroy();
+                    $('#divCol').highcharts().destroy();
+                    $('#divPie').highcharts().destroy();
+
+                    atualizar(GraficoBar, urlGetGrafico, obj);
+                    atualizar(GraficoCol, urlGetGrafico, obj);
+                    atualizar(GraficoPizza, urlGetGraficoPie, obj);
+
+                });
+
+            });
+
+            var obj = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: '01/01/2015', dataFim: '01/01/2019', relatorio: 1 };
+            //var obj2 = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: '01/01/2015', dataFim: '01/01/2019', relatorio: 2 };
+
+            atualizar(GraficoBar, urlGetGrafico, obj);
+            atualizar(GraficoCol, urlGetGrafico, obj);
+            atualizar(GraficoPizza, urlGetGraficoPie, obj);
+
+            $('#exampleTD1').DataTable();
+
+            $('#exampleTD1')
+                .removeClass('display')
+                .addClass('table table-striped table-bordered');
+        })
+
+        meses = [
+                        'Jan',
+                        'Fev',
+                        'Mar',
+                        'Abr',
+                        'Mai',
+                        'Jun',
+                        'Jul',
+                        'Ago',
+                        'Set',
+                        'Out',
+                        'Nov',
+                        'Dez'
+        ];
+
+        acoesIniciadas = [1, 4, 8, 1, 1];
+        acoesEncerradas = [0, 0, 1, 1, 2];
+
+        Highcharts.chart('divEstoque1', {
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            legend: {
+
+                enabled: false,
+
+            },
+
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Número de ações estabelecidas',
+                style: {
+                    color: Highcharts.getOptions().colors[0],
+                    fontSize: '12px',
+                    fontWeight: 'bold'
+                }
+
+            },
+            subtitle: {
+                text: false
+            },
+            xAxis: {
+                categories: meses,
+                labels: {
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+                },
+                crosshair: true,
+                title: {
+                    text: 'Mes de Início',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+
+                },
+            },
+            yAxis: {
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '8px',
+                        fontWeight: 'normal'
+                    }
+                },
+                min: 0,
+
+                title: {
+                    text: 'Número de ações',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+
+                    }
+                },
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Tokyo',
+                data: acoesIniciadas
+
+            }]
+        });
+
+        Highcharts.chart('divEstoque2', {
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            legend: {
+
+                enabled: false,
+
+            },
+            chart: {
+                type: 'column'
+            },
+
+            title: {
+                text: 'Número de ações concluídas',
+                style: {
+                    color: Highcharts.getOptions().colors[0],
+                    fontSize: '12px',
+                    fontWeight: 'bold'
+                }
+
+            },
+            subtitle: {
+                text: false
+            },
+
+            xAxis: {
+                categories: meses,
+                labels: {
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+                },
+                crosshair: true,
+                title: {
+                    text: 'Mes de Término',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+
+                },
+
+            },
+            yAxis: {
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '8px',
+                        fontWeight: 'normal'
+                    }
+                },
+                min: 0,
+
+                title: {
+                    text: 'Número de ações',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+                },
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Tokyo',
+                data: acoesEncerradas
+
+            }]
+        });
+
+        Highcharts.chart('divEstoque3', {
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            chart: {
+                zoomType: 'xy'
+            },
+
+            title: {
+                text: 'Estoque de Ações',
+                style: {
+                    color: Highcharts.getOptions().colors[0],
+                    fontSize: '12px',
+                    fontWeight: 'bold'
+                }
+
+            },
+            subtitle: {
+                text: false
+            },
+
+            xAxis: [{
+                categories: meses,
+                labels: {
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+                },
+                crosshair: true,
+                title: {
+                    text: 'Meses',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+
+                }
+
+            }],
+            yAxis: [{ // Primary yAxis
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '8px',
+                        fontWeight: 'normal'
+                    }
+                },
+                title: {
+                    text: 'Número de ações',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+                }
+                //opposite: true
+            }],
+            tooltip: {
+                shared: true
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom',
+                itemStyle: {
+
+                    fontSize: '10px',
+                    fontWeight: 'normal'
+                }
+            },
+            series: [{
+                name: 'Iniciadas',
+                type: 'column',
+                data: [1, 5, 13, 14, 15],
+                tooltip: {
+                    valueSuffix: ' mm'
+                },
+                color: Highcharts.getOptions().colors[2],
+
+            }, {
+                name: 'Concluídas',
+                type: 'column',
+                data: [0, 0, 1, 2, 4],
+                tooltip: {
+                    valueSuffix: '°C'
+                },
+                color: Highcharts.getOptions().colors[3],
+            }, {
+                name: 'Acumuladas',
+                type: 'spline',
+                data: [1, 5, 12, 12, 11],
+                tooltip: {
+                    valueSuffix: '°C'
+                },
+                color: Highcharts.getOptions().colors[0],
+            }]
+        });
+
+        Highcharts.chart('divIndicador', {
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            chart: {
+                zoomType: 'xy'
+            },
+            title: {
+                text: 'Evolução do Resultado vs Ações executadas'
+            },
+            subtitle: {
+                text: false
+            },
+            xAxis: [{
+                categories: meses,
+                crosshair: true
+            }],
+            yAxis: [{ // Primary yAxis
+                labels: {
+
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                },
+                title: {
+                    text: 'Resultado',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                }
+            }, { // Secondary yAxis
+                title: {
+                    text: 'Número de Ações',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                labels: {
+
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                opposite: true
+            }],
+            tooltip: {
+                shared: true
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+
+                verticalAlign: 'bottom',
+
+                floating: false,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+            },
+            series: [{
+                name: 'Número de Ações Concluídas',
+                type: 'spline',
+                yAxis: 1,
+                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
+
+
+            }, {
+                name: 'Meta',
+                type: 'spline',
+                data: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
+
+            }, {
+                name: 'Realizado',
+                type: 'spline',
+                data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
+
+            }]
+        });
+
+        $('body .dropdown-toggle').dropdown();
+
+        $('.popover-markup>.trigger').popover({
+            html: true,
+            title: function () {
+                return $(this).parent().find('.head').html();
+            },
+            content: function () {
+                return $(this).parent().find('.content').html();
+            }
+        });
+
+    </script>
+
+}
+
