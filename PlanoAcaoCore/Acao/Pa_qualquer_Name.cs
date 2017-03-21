@@ -8,28 +8,48 @@ namespace PlanoAcaoCore
         public string Name { get; set; }
         public static List<Pa_Qualquer_Name> Listar(string campo)
         {
+            //ser somente para tabelas com id e name
+            var tabela = "";
+
             switch (campo)
             {
                 case "[Status]":
-                    campo = "Pa_Status";
+                    tabela = "Pa_Status";
                     break;
                 case "q.Id":
-                    campo = "Pa_Quem";
+                    tabela = "Pa_Quem";
                     break;
                 case "Pa_IndicadorSgqAcao_Id":
-                    campo = "Pa_IndicadorSgqAcao";
+                    tabela = "Pa_IndicadorSgqAcao";
                     break;
                 default:
                     break;
             }
-            var query = "SELECT * FROM "+ campo +"";
+            var query = "SELECT * FROM "+ tabela + "";
             return ListarGenerico<Pa_Qualquer_Name>(query);
         }
 
         public static Pa_Qualquer_Name Get(int Id, string campo)
         {
-            campo = campo.Replace("_id", "");
-            var query = "SELECT * FROM "+ campo +" WHERE Id = " + Id;
+            //ser somente para tabelas com id e name
+            var tabela = "";
+
+            switch (campo)
+            {
+                case "[Status]":
+                    tabela = "Pa_Status";
+                    break;
+                case "q.Id":
+                    tabela = "Pa_Quem";
+                    break;
+                case "Pa_IndicadorSgqAcao_Id":
+                    tabela = "Pa_IndicadorSgqAcao";
+                    break;
+                default:
+                    break;
+            }
+
+            var query = "SELECT * FROM "+ tabela +" WHERE Id = " + Id;
             return GetGenerico<Pa_Qualquer_Name>(query);
         }
         
