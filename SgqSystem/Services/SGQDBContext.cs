@@ -1877,35 +1877,20 @@ namespace SGQDBContext
         public int ReauditLevel { get; set; }
 
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-
-        public void UpdateHaveReauditByConsolidationLevel2(string HaveReaudit, int ConsolidationLevel2)
+        
+        public void UpdateIsReauditByKey(string Key, bool IsReaudit, int HaveReaudit, int ReauditNumber)
         {
             try
             {
-                string sql = "SELECT ConsolidationLevel2_Id, ReauditLevel FROM CollectionLevel2 WHERE ConsolidationLevel2_Id = '" + ConsolidationLevel2 + "' AND HaveReaudit = 1";
+                string sql = "";
 
-                SqlConnection db = new SqlConnection(conexao);
-                var obj = db.Query<UpdateCollectionLevel2>(sql).FirstOrDefault();
-
-                if(obj != null)
+                if (IsReaudit == true && HaveReaudit == 1)
                 {
-                    sql = "UPDATE CollectionLevel2 SET HaveReaudit = " + HaveReaudit + ", ReauditLevel = " + obj.ReauditLevel + " WHERE ConsolidationLevel2_Id = '" + ConsolidationLevel2 + "' AND ReauditIs = 0";
-
-                    db.Execute(sql);
+                    sql = "UPDATE CollectionLevel2 SET HaveReaudit = '" + HaveReaudit + "', ReauditNumber = '" + ReauditNumber + "' WHERE [Key] = '" + Key + "'";
+                }else if (IsReaudit == true && HaveReaudit == 0)
+                {
+                    sql = "UPDATE CollectionLevel2 SET HaveReaudit = 0, ReauditNumber = 0 WHERE [Key] = '" + Key + "'";
                 }
-                
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public void UpdateIsReauditByKey(string Key, string HaveReaudit)
-        {
-            try
-            {
-                string sql = "UPDATE CollectionLevel2 SET HaveReaudit = '" + HaveReaudit + "' WHERE [Key] = '" + Key + "'";
 
                 SqlConnection db = new SqlConnection(conexao);
                 db.Execute(sql);

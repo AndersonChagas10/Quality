@@ -1169,7 +1169,7 @@ namespace SgqSystem.Services
 
             if (Reaudit)
             {
-                key += "-r";
+                key += "-r"+ ReauditNumber;
             }
 
             //NotEvaluateIs = (naoAvaliado) ? "1" : "0";
@@ -1212,10 +1212,7 @@ namespace SgqSystem.Services
                             
                             if (Reaudit)
                             {
-                                UpdateCollectionLevel2DB.UpdateIsReauditByKey(keySolid, "0");
-                            }else
-                            {
-                                UpdateCollectionLevel2DB.UpdateHaveReauditByConsolidationLevel2("1", ConsolidationLevel2.Id);
+                                UpdateCollectionLevel2DB.UpdateIsReauditByKey(keySolid, Reaudit, Int16.Parse(haveReaudit), ReauditNumber);
                             }
                             return i;
                         }
@@ -1846,7 +1843,7 @@ namespace SgqSystem.Services
                         "\" Evaluation=\"" + Level2Result.EvaluateLast + 
                         "\" Sample=\"" + Level2Result.SampleLast + 
                         "\" Phase=\"" + consolidationResultL1L2.Phase + 
-                        "\" StartPhaseDate=\"" + consolidationResultL1L2.StartPhaseDate +
+                        "\" StartPhaseDate=\"" + consolidationResultL1L2.StartPhaseDate.ToString("MMddyyyy") +
                         "\" StartPhaseEvaluation=\"" + consolidationResultL1L2.StartPhaseEvaluation +
                         "\" havecorrectiveaction=\"" + consolidationResultL1L2.haveCorrectiveAction.ToString().ToLower() + 
                         "\" havereaudit=\"" + consolidationResultL1L2.haveReaudit.ToString().ToLower() + 
@@ -2962,7 +2959,7 @@ namespace SgqSystem.Services
             var ParFieldTypeDB = new SGQDBContext.ParFieldType();
             var ParNCRuleDB = new SGQDBContext.NotConformityRule();
 
-            var reauditFlag = "<li class='painel row list-group-item hide reauditFlag'> Reaudit <span reauditnumber='0'></span></li>";
+            var reauditFlag = "<li class='painel row list-group-item hide reauditFlag'> Reaudit <span class='reauditnumber'></span></li>";
 
             var html = new Html();
 
@@ -3459,7 +3456,7 @@ namespace SgqSystem.Services
         {
             var html = new Html();
 
-            var reauditFlag = "<li class='painel row list-group-item hide reauditFlag'> Reaudit </li>";
+            var reauditFlag = "<li class='painel row list-group-item hide reauditFlag'> Reaudit <span class='reauditnumber'></span></li>";
 
             //Inicializa ParLevel3
             var ParLevel3DB = new SGQDBContext.ParLevel3();
