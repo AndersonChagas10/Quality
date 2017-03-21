@@ -1151,6 +1151,9 @@ namespace SgqSystem.Services
 
             string key = ConsolidationLevel2.UnitId.ToString();
 
+            key += "-" + Shift;
+            key += "-" + Period;
+
             key += "-" + ConsolidationLevel1.ParLevel1_Id.ToString();
             key += "-" + ConsolidationLevel2.ParLevel2_Id.ToString();
             if (hashKey == "1")
