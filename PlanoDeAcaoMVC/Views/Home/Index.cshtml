@@ -8,13 +8,13 @@
             </div>
             <div class="panel-body">
                 <div class="popover-markup" style="margin-top:-12px;margin-left:-12px;">
-                    <a id="btnFiltro" href="#" class="trigger btn btn-default">Datas</a>
-
+                    <a id="btnFiltro" href="#" class="trigger btn btn-default">Datas <i>[Em Desenvolvimento]</i></a>
+                    
                     <div class="content hide">
                         <form>
                             <div class="form-group">
                                 <span>Data Inicio</span>
-                                <input type="text" class="datepicker form-control" placeholder="" id="dataInicio" />
+                                <input type="text" class="datepicker form-control" placeholder="" id="dataInicio"/>
                                 <span>Data Fim</span>
                                 <input type="text" class="datepicker form-control" placeholder="" id="dataFim" />
                             </div>
@@ -113,14 +113,14 @@
             <div class="panel-body">
                 <div class="popover-markup" style="margin-top:-12px;margin-left:-12px;">
 
-                    <a id="btnFiltroBar" href="#" class="trigger btn btn-default">Filtro</a>
-
+                    <a id="btnFiltroBar" href="#" class="trigger btn btn-default">Filtro <i>[Em Desenvolvimento]</i></a>
+                    
                     <div class="content hide">
                         <form>
                             <div class="form-group">
                                 <span>Filtro</span>
                                 <br />
-                                <select class="selectpicker" id="filtroBar">
+                                <select id="filtroBar">
                                     <option value="0">Selecione</option>
                                     <option value="1">Diretoria</option>
                                     <option value="2">Dimensao</option>
@@ -134,13 +134,13 @@
                                     <option value="10">Grupo Causa</option>
                                     <option value="11" selected>Causa Genérica</option>
                                     <option value="12">Contramedida Genérica</option>
-                                    <option value="13">Quem</option>
+                                    <option value="13">Quem</option>                                    
                                     <option value="14">Status</option>
                                 </select>
                                 <br />
                                 <span>Series</span>
                                 <br />
-                                <select class="selectpicker" id="seriesBar">
+                                <select id="seriesBar">
                                     <option value="0">Selecione</option>
                                     <option value="1">Diretoria</option>
                                     <option value="2">Dimensao</option>
@@ -157,8 +157,8 @@
                                     <option value="13">Quem</option>
                                     <option value="14" selected>Status</option>
                                 </select>
-
-
+                                
+                           
                             </div>
                             <button id="enviar" type="submit" class="btn btn-primary btn-block">
                                 Filtrar
@@ -178,14 +178,14 @@
 
                 <div class="popover-markup" style="margin-top:-12px;margin-left:-12px;">
 
-                    <a id="btnFiltroCol" href="#" class="trigger btn btn-default">Filtro</a>
-
+                    <a id="btnFiltroCol" href="#" class="trigger btn btn-default">Filtro <i>[Em Desenvolvimento]</i></a>
+                    
                     <div class="content hide">
                         <form>
                             <div class="form-group">
                                 <span>Filtro</span>
                                 <br />
-                                <select class="selectpicker" id="filtroBar">
+                                <select id="filtroBar">
                                     <option value="0">Selecione</option>
                                     <option value="1">Diretoria</option>
                                     <option value="2">Dimensao</option>
@@ -205,7 +205,7 @@
                                 <br />
                                 <span>Series</span>
                                 <br />
-                                <select class="selectpicker" id="seriesBar">
+                                <select id="seriesBar">
                                     <option value="0">Selecione</option>
                                     <option value="1">Diretoria</option>
                                     <option value="2">Dimensao</option>
@@ -222,6 +222,8 @@
                                     <option value="13">Quem</option>
                                     <option value="14" selected>Status</option>
                                 </select>
+
+
                             </div>
                             <button id="enviar" type="submit" class="btn btn-primary btn-block">
                                 Filtrar
@@ -241,13 +243,13 @@
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">Estoque de ações</h3>
+                <h3 class="panel-title">Estoque de ações <i>[Em desenvolvimento]</i></h3>
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-xs-12 col-md-3" id="divEstoque1" style="height:200px;"></div>
-                    <div class="col-xs-12 col-md-3" id="divEstoque2" style="height:200px;"></div>
-                    <div class="col-xs-12 col-md-6" id="divEstoque3" style="height:200px;"></div>
+                    <div class="col-xs-12 col-md-3" id="divEstoque1" style="height:200px;padding:0px !important;"></div>
+                    <div class="col-xs-12 col-md-3" id="divEstoque2" style="height:200px;padding:0px !important;"></div>
+                    <div class="col-xs-12 col-md-6" id="divEstoque3" style="height:200px;padding:0px !important;"></div>
                 </div>
             </div>
         </div>
@@ -259,11 +261,11 @@
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">Meus indicadores</h3>
+                <h3 class="panel-title">Meus indicadores<i>[Em desenvolvimento / Integrações]</i></h3>
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-xs-12 col-md-12" id="divIndicador" style="height:300px;"></div>
+                    <div class="col-xs-12 col-md-12" id="divIndicador" style="height:300px;padding:0px !important;"></div>
                 </div>
             </div>
         </div>
@@ -579,12 +581,10 @@
                     var obj = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 1 };
                     //var obj2 = { categoria: 'Pa_Problema_Desvio_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 2 };
 
-                    $('#divBar').highcharts().destroy();
-                    $('#divCol').highcharts().destroy();
+                 
                     $('#divPie').highcharts().destroy();
 
-                    atualizar(GraficoBar, urlGetGrafico, obj);
-                    atualizar(GraficoCol, urlGetGrafico, obj);
+                  
                     atualizar(GraficoPizza, urlGetGraficoPie, obj);
 
                 });
@@ -604,12 +604,10 @@
                     //var obj2 = { categoria: 'Pa_Problema_Desvio_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 2 };
 
                     $('#divBar').highcharts().destroy();
-                    $('#divCol').highcharts().destroy();
-                    $('#divPie').highcharts().destroy();
+                    
 
                     atualizar(GraficoBar, urlGetGrafico, obj);
-                    atualizar(GraficoCol, urlGetGrafico, obj);
-                    atualizar(GraficoPizza, urlGetGraficoPie, obj);
+                    
 
                 });
 
@@ -624,25 +622,25 @@
                     var dataInicio = $('#dataInicio').val();
                     var dataFim = $('#dataFim').val();
 
-                    var obj = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 1 };
+                    var obj = { categoria: 'q.Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 1 };
                     //var obj2 = { categoria: 'Pa_Problema_Desvio_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 2 };
 
-                    $('#divBar').highcharts().destroy();
+                    
                     $('#divCol').highcharts().destroy();
-                    $('#divPie').highcharts().destroy();
+                    
 
-                    atualizar(GraficoBar, urlGetGrafico, obj);
+                    
                     atualizar(GraficoCol, urlGetGrafico, obj);
-                    atualizar(GraficoPizza, urlGetGraficoPie, obj);
+                   
 
                 });
 
             });
 
-            var obj = { categoria: 'Pa_IndicadorSgqAcao_Id', serie: "[Status]", dataInicio: '01/01/2015', dataFim: '01/01/2019', relatorio: 1 };
-            //var obj2 = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: '01/01/2015', dataFim: '01/01/2019', relatorio: 2 };
+            var obj = { categoria: 'q.Id', dataInicio: '01/01/2015', dataFim: '01/01/2019', relatorio: 1 };
+            var obj2 = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: '01/01/2015', dataFim: '01/01/2019', relatorio: 2 };
 
-            atualizar(GraficoBar, urlGetGrafico, obj);
+            atualizar(GraficoBar, urlGetGrafico, obj2);
             atualizar(GraficoCol, urlGetGrafico, obj);
             atualizar(GraficoPizza, urlGetGraficoPie, obj);
 

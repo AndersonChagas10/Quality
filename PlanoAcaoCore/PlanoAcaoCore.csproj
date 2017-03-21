@@ -61,6 +61,8 @@
     <Compile Include="Acao\Pa_ContramedidaGenerica.cs" />
     <Compile Include="Acao\Pa_Departamento.cs" />
     <Compile Include="Acao\Pa_GrupoCausa.cs" />
+    <Compile Include="Acao\Pa_IndicadorSgqAcao.cs" />
+    <Compile Include="Acao\Pa_qualquer_Name.cs" />
     <Compile Include="Acao\Pa_Quem.cs" />
     <Compile Include="Acao\Pa_Status.cs" />
     <Compile Include="Acao\Pa_Unidade.cs" />
@@ -88,7 +90,6 @@
     <Compile Include="Planejamento\Pa_Coordenacao.cs" />
     <Compile Include="Planejamento\Pa_IndicadoresDiretriz.cs" />
     <Compile Include="Planejamento\Pa_IndicadoresDeProjeto.cs" />
-    <Compile Include="Acao\Pa_IndicadorSgqAcao.cs" />
     <Compile Include="Acao\Pa_Problema_Desvio.cs" />
     <Compile Include="Planejamento\Pa_Objetivo.cs" />
     <Compile Include="Planejamento\Pa_UnidadeMedida.cs" />
