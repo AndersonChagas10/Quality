@@ -32,7 +32,7 @@ namespace PlanoDeAcaoMVC.Controllers
         public ActionResult Edit(int id)
         {
             var obj = Pa_Acao.Get(id);
-            return PartialView(obj);
+            return PartialView("Index", obj);
         }
 
         public ActionResult GETGrupoCausa(int id)

@@ -210,7 +210,7 @@ namespace PlanoAcaoCore
 
         public static Pa_Acao Get(int Id)
         {
-            var retorno = GetGenerico<Pa_Acao>(query + " WHERE ACAO.Id = " + Id);
+            var retorno = GetGenerico<Pa_Acao>(query + " AND ACAO.Id = " + Id);
 
             retorno._Quem = Pa_Quem.GetQuemXAcao(retorno.Id).Select(r => r.Name).ToList();
             retorno.AcaoXQuem = Pa_AcaoXQuem.Get(retorno.Id).ToList();

@@ -6,9 +6,7 @@ namespace PlanoAcaoCore
     public class Pa_CausaMedidasXAcao : Pa_BaseObject, ICrudPa<Pa_CausaMedidasXAcao>
     {
 
-        public string _CausaEspecifica { get; set; }
 
-        public string _ContramedidaEspecifica { get; set; }
 
         [Display(Name = "Causa generica")]
         public int? CausaGenerica_Id { get; set; }
@@ -26,7 +24,8 @@ namespace PlanoAcaoCore
         }
 
         [Display(Name = "Causa especifica")]
-        public int? CausaEspecifica_Id { get; set; }
+        public string _CausaEspecifica { get; set; }// ID no DB
+        public int? CausaEspecifica_Id { get; set; }// Usada para SAVE/UPDATE
         public string CausaEspecifica
         {
             get
@@ -38,10 +37,11 @@ namespace PlanoAcaoCore
                 }
                 return retorno;
             }
-        }
+        }//Valor em String ndo DB
 
         [Display(Name = "Contramedida generica")]
-        public int? ContramedidaGenerica_Id { get; set; }
+        public int? ContramedidaGenerica_Id { get; set; } // ID no DB
+        public string _ContramedidaEspecifica { get; set; } // Usada para SAVE/UPDATE
         public string ContramedidaGenerica
         {
             get
@@ -53,7 +53,7 @@ namespace PlanoAcaoCore
                 }
                 return retorno;
             }
-        }
+        } //Valor em String ndo DB
 
         [Display(Name = "Contramedida especifica")]
         public int? ContramedidaEspecifica_Id { get; set; }

@@ -9,7 +9,9 @@
     <div style="height: 0px;" aria-expanded="false" id="collapsible_obj_0" class="collapse">
 
         <form id="Acao" class="Acao">
-
+            
+            @Html.HiddenFor(r=>r.Id)
+            
             <table class="nowrap .col-md-6 .col-md-offset-3" style="width: 100%;">
                 <tbody>
                     @*<tr>
@@ -72,6 +74,7 @@
                             @Html.LabelFor(r=>r.Pa_IndicadorSgqAcao_Id, htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
+                            @*@Html.DropDownListFor(r => r.Pa_IndicadorSgqAcao_Id, new SelectList(ViewBag.Pa_IndicadorSgqAcao, "Id", "name"), "Selecione", new { @class = "form-control input-sm" })*@
                             @Html.DropDownList("Pa_IndicadorSgqAcao_Id", new SelectList(ViewBag.Pa_IndicadorSgqAcao, "Id", "name"), "Selecione", new { @class = "form-control input-sm" })
                         </td>
                         <td></td>
@@ -82,6 +85,7 @@
                             @Html.LabelFor(r => r.Pa_Problema_Desvio_Id, htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
+                            @*@Html.DropDownListFor(r => r.Pa_Problema_Desvio_Id, new SelectList(ViewBag.Pa_Problema_Desvio, "Id", "name"), "Selecione", new { @class = "form-control input-sm" })*@
                             @Html.DropDownList("Pa_Problema_Desvio_Id", new SelectList(ViewBag.Pa_Problema_Desvio, "Id", "name"), "Selecione", new { @class = "form-control input-sm" })
                         </td>
                         <td></td>

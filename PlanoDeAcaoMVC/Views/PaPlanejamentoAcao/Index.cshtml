@@ -3,7 +3,6 @@
 }
 
 <style>
-   
     /*.dataTable td {
         max-width: 15ch;
         height: 125px !important;
@@ -11,10 +10,10 @@
         overflow: hidden;
         text-overflow: clip;
         white-space: nowrap;
-       
+
         padding: 10px;
 
-     
+
     }
 
     .dataTable td:hover {
@@ -147,7 +146,6 @@
         right: 1px;
         z-index: 9999;
     }
-
 </style>
 
 @*<h2>Plano de Ação</h2>*@
@@ -158,15 +156,15 @@
 
         </button>*@
     @*<button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="Clicked(true, false); ModalOpcoesEstrategico('Planejamento Tático'); ">
-        Planejamento Tático
-    </button>
-    <button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="Clicked(false, true); ModalOpcoesEstrategico('Planejamento Operacional'); ">
-        Planejamento Operacional
-    </button>*@
+            Planejamento Tático
+        </button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="Clicked(false, true); ModalOpcoesEstrategico('Planejamento Operacional'); ">
+            Planejamento Operacional
+        </button>*@
     @*<button type="button" class="btn btn-primary" id="NovaAcao" onclick="Clicked(isTaticoClicked, isNovaAcao); ModalAcao(true, true);" style="">Nova Ação</button>*@
     @*<button type="button" onclick="Relatorios();" class="btn btn-primary">
-        Relatórios
-    </button>*@
+            Relatórios
+        </button>*@
     <button type="button" onclick="GetDataTable();" class="btn btn-primary" style="float:right">
         Atualizar
     </button>
@@ -202,7 +200,7 @@
                     <button type="button" class="btn btn-info" id="BuscarPlanejamentos" onclick="BuscarPlanejamentos();">Buscar Planejamento</button>
                     <button type="button" class="btn btn-info" id="TaticoVinculado" onclick="BuscarPlanejamentos(); Clicked(true, false, true);" style="display:none">Novo Planejamento Tático Vinculado a um Planejamento Estratégico</button>
                     <button type="button" class="btn btn-primary" id="NovaAcao" onclick="Clicked(isTaticoClicked, isNovaAcao); ModalAcao(true, true);" style="">Nova Ação</button>
-                    
+
                     <button type="button" class="btn btn-default" value="" id="new" style="display:none">Adicionar Ação</button>
                     <button type="button" class="btn btn-default" value="" id="Edit" style="display:none" onclick="SalvarAcaoAvulsa($('.Acao'), true)">Editar Ação</button>
 
@@ -929,10 +927,27 @@
 
             //console.log(retornoArray);
 
-            var btnEditar = '<button type="button" class="btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Editar" class="glyphicon glyphicon-edit" style="cursor:pointer"></span>&nbsp Editar</button>';
-            var btnDetalhes = '<button type="button" class="btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Detalhes" style="cursor:pointer" class="glyphicon glyphicon-list-alt"></span>&nbsp Detalhes</button>';
+            var btnEditar = '<button type="button" class="edit btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Editar" class="glyphicon glyphicon-edit" style="cursor:pointer"></span>&nbsp Editar</button>';
+            var btnDetalhes = '<button type="button" class="details btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Detalhes" style="cursor:pointer" class="glyphicon glyphicon-list-alt"></span>&nbsp Detalhes</button>';
             var btnNovoTatico = '<button type="button" class="btnNovoTatico btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Novo Planejamento Tático para este Planejamento Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tag"></span>&nbsp Novo Tático</button>';
             var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp Nova Acao</button>';
+            var arrEstragy = [0, 1, 2, 3, 4, 5, 6];
+            var arrEstragyH = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+            //var visibilidadeDefault = [];
+
+            //arrEstragy.forEach(function (o, c) {
+            //    visibilidadeDefault.push({
+            //        targets: o,
+            //        visible: true
+            //    })
+            //})
+
+            //arrEstragyH.forEach(function (o, c) {
+            //    visibilidadeDefault.push({
+            //        targets: o,
+            //        visible: false
+            //    })
+            //})
 
             var table = $('#paTable').empty().DataTable({
                 data: retornoArray,
@@ -1009,25 +1024,59 @@
                 destroy: true,
                 info: true,
                 responsive: true,
-                //columnDefs: [
-                //    {
-                //        targets: 0,
-                //        visible: false
-                //    },
-              
-                //],
+                //columnDefs: visibilidadeDefault,
                 initComplete: function () {
 
-                    $('table > tbody > tr > td > p > span.glyphicon.glyphicon-edit').on('click', function (data, a, b) {
+                    $('table > tbody').on('click', '.edit', function (data, a, b) {
                         var data = table.row($(this).parents('tr')).data();
                         console.log(data);
+                        $('#modalLindo').find('.modal-body').empty();
+                        
                         $.get(urlEditAcao, { id: data.Acao.Id },
                               function (r) {
-                                  EditarAcao(r, data);
-                              });
+                                  var acao = data.Acao;
+
+                                  $('#modalLindo').modal();
+                                  $('#Header').html("Editar Ação");
+                                  $('#modalLindo').find('.modal-body').append(html);
+                                  $('#modalLindo').find('.modal-footer button').hide();
+                                  myfunction();
+
+                                  $('#CausaMedidasXAcao_CausaGenerica_Id').val(acao.CausaMedidasXAcao.CausaGenerica_Id).change();
+                                  $('[name="_QuandoInicio"]').val(acao._QuandoInicio.split(" ")[0]);
+                                  $('[name="_QuandoFim"]').val(acao._QuandoFim.split(" ")[0]);
+                                  $('#Status').val(acao.Status);
+                                  MoneyMask();
+                                  $('#_QuantoCusta').val(acao.QuantoCusta);
+                                  $('#_QuantoCusta').trigger('mask.maskMoney');
+                                  $('#_QuantoCusta').trigger('blur');
+
+                                  acao.AcaoXQuem.forEach(function (o, c) {
+                                      $($('[id=AcaoXQuemDdl]')[c]).val(o.Quem_Id).change();
+                                      $($('[id=AcaoXQuemDdlId]')[c]).val(o.Id).change();
+                                      if (acao._QuemObj.length > 1 && acao._QuemObj.length - 1 != c)
+                                          $($('[id=adicionar]')[c]).click();
+                                  });
+
+                                  $('#Edit').show();
+                                  InitDatePiker();
+                              }
+                        );
+
+                        $.get(urlEditPlanEstrat, { id: data.Acao.Id },
+                             function (r) {
+                                 
+                             }
+                       );
+                        $.get(urlEditPlanOp, { id: data.Acao.Id },
+                             function (r) {
+                                 EditarAcao(r, data);
+                             }
+                       );
+
                     });
 
-                    $('table > tbody > tr > td > p > span.glyphicon.glyphicon-list-alt').on('click', function (data, a, b) {
+                    $('table > tbody').on('click', '.details', function (data, a, b) {
                         var data = table.row($(this).parents('tr')).data();
                         console.log(data);
                     });
@@ -1042,7 +1091,7 @@
                         //$('#Header').html("Novo Planejamento Tático Vinculado");
 
                         $.get(urlGetPlanejamento, { id: data.Id }, function (r) {
-                            //EditarPlanejamento(r) 
+                            //EditarPlanejamento(r)
                             ModalOpcoesEstrategico("Novo Planejamento Tático Vinculado", 0, function () { EditarPlanejamento(r) });
                         });
 
@@ -1115,6 +1164,7 @@
                         } else if (data.Acao.StatusName.indexOf('Replanejado') > -1) {
                             bgColorStatus = "yellow"
                         }
+
                         $(row.cells[31]).css("background", bgColorStatus);
 
                         /*Prazo*/
@@ -1143,9 +1193,7 @@
                             $(row.cells[33]).find('.btnNovoTatico').hide();
                         }
 
-                    } catch (e) {
-
-                    }
+                    } catch (e) { }
 
                     if (data.Tatico_Id > 0) { // possui plan tatico
                         $(row.cells[33]).find('.btnNovoOperacional').show();
@@ -1179,14 +1227,13 @@
             //    headerOffset: 50
             //});
 
-            //var arrayEstrategicos = [0, 1, 2, 3, 4, 5, 6];
             new $.fn.dataTable.Buttons(table, {
                 buttons: [
                      {
                          extend: 'colvisGroup',
                          text: 'Planejamento Estratégicos',
-                         show: [0, 1, 2, 3, 4, 5, 6],
-                         hide: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+                         show: arrEstragy,
+                         hide: arrEstragyH
                      },
                       {
                           extend: 'colvisGroup',
@@ -1234,7 +1281,7 @@
                       {
                           extend: 'colvis',
                           text: 'Colunas Visíveis',
-                        collectionLayout: 'fixed two-column',
+                          collectionLayout: 'fixed two-column',
                           exportOptions: {
                               columns: ':visible',
                           }
