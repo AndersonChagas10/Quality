@@ -5,6 +5,7 @@ using System.Web.Mvc;
 
 namespace PlanoDeAcaoMVC.Controllers
 {
+    [IntegraSgq]
     public class Pa_AcaoController : Controller
     {
         public Pa_AcaoController()
@@ -27,7 +28,7 @@ namespace PlanoDeAcaoMVC.Controllers
             //ViewBag.Panejamento = Pa_Planejamento
             return PartialView();
         }
-        
+
         // GET: Pa_Acao
         public ActionResult Edit(int id)
         {
