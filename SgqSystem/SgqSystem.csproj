@@ -2126,6 +2126,7 @@
     <Content Include="Views\Role\LeftControlRole.cshtml" />
     <Content Include="Views\Role\EditLeftControlRole.cshtml" />
     <Content Include="Views\RelatoriosSgq\CartasCep.cshtml" />
+    <Content Include="Views\Manutencao\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
