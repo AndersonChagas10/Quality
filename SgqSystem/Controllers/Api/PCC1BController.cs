@@ -70,15 +70,33 @@ namespace SgqSystem.Controllers.Api
                 company = db.ParCompany.FirstOrDefault(r => r.Id == receive.Unit);
             }
 
-            using (var db = new FactoryADO(company.IPServer, company.DBServer, pass, userName))
+            try
             {
-                var query = "EXEC FBED_GRTTipificacao '" + receive.Data + "', " + company.CompanyNumber.ToString() + ", " + receive.sequencialAtual.ToString();
-                var resultQuery = db.SearchQuery<ResultadosSequencialBanda>(query).ToList();
-                if (resultQuery != null && resultQuery.Count() > 0)
-                    retorno.Sequential = resultQuery.FirstOrDefault().iSequencial;
 
+            
+                using (var db = new FactoryADO(company.IPServer, company.DBServer, pass, userName))
+                {
+                    var query = "EXEC FBED_GRTTipificacao '" + receive.Data + "', " + company.CompanyNumber.ToString() + ", " + receive.sequencialAtual.ToString();
+                    var resultQuery = db.SearchQuery<ResultadosSequencialBanda>(query).ToList();
+                    if (resultQuery != null && resultQuery.Count() > 0)
+                    {
+                        retorno.Sequential = resultQuery.FirstOrDefault().iSequencial;
+                    }else
+                    {
+                        retorno.Sequential = receive.sequencialAtual + 1;
+                    }
+
+                    retorno.serverSide = company.IPServer + company.DBServer + pass + userName;
+                    return retorno;
+                }
+
+            }
+            catch (Exception)
+            {
+                retorno.Sequential = receive.sequencialAtual + 1;
                 retorno.serverSide = company.IPServer + company.DBServer + pass + userName;
                 return retorno;
+                
             }
 
         }

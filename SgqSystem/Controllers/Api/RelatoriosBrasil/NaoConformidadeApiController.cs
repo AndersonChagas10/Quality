@@ -22,6 +22,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             //_list = CriaMockGraficoUnidades();
 
         var query = "" +
+
+                "\n DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + "'                                                                                                                                                                                                                    " +
+                "\n DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + "'                                                                                                                                                                                                                    " +
+
                 "\n SELECT " +
 
                 "\n Unidade as UnidadeName" +
@@ -35,8 +39,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n     SELECT " +
                 "\n       Unidade  " +
                 "\n     , Unidade_Id " +
-                "\n     , sum(av) as av " +
-                "\n     , sum(nc) as nc " +
+                "\n     , sum(avSemPeso) as av " +
+                "\n     , sum(ncSemPeso) as nc " +
                 "\n     , CASE WHEN sum(AV) IS NULL OR sum(AV) = 0 THEN 0 ELSE sum(NC) / sum(AV) * 100 END AS ProcentagemNc " +
 
                 "\n     FROM " +
@@ -47,11 +51,21 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         , UNI.Id         AS Unidade_Id " +
                 "\n         , UNI.Name       AS Unidade " +
                 "\n         , CASE " +
+                "\n         WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
                 "\n         ELSE 0 " +
                 "\n        END AS Av " +
+
+                "\n       , CASE " +
+                "\n         WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
+                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN EvaluateTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN EvaluateTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
+                "\n         ELSE 0 " +
+                "\n        END AS AvSemPeso " +
+
                 "\n         , CASE " +
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN WeiDefects " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiDefects " +
@@ -59,14 +73,24 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         ELSE 0 " +
 
                 "\n         END AS NC " +
+
+                "\n         , CASE " +
+                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN DefectsTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN DefectsTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult " +
+                "\n         ELSE 0 " +
+
+                "\n         END AS NCSemPeso " +
+
                 "\n         , (SELECT TOP 1 PercentValue FROM ParGoal WHERE ParLevel1_Id = CL1.ParLevel1_Id AND(ParCompany_Id = CL1.UnitId OR ParCompany_Id IS NULL) ORDER BY ParCompany_Id DESC) AS Meta " +
                 "\n         FROM ConsolidationLevel1 CL1 " +
                 "\n         INNER JOIN ParLevel1 IND " +
                 "\n         ON IND.Id = CL1.ParLevel1_Id " +
                 "\n         INNER JOIN ParCompany UNI " +
                 "\n         ON UNI.Id = CL1.UnitId " +
-                "\n         WHERE CL1.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
-             
+                "\n         WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL " +
+                "\n         AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) " +
+
                 "\n     ) S1 " +
 
                 "\n     GROUP BY Unidade, Unidade_Id " +
@@ -104,6 +128,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             //public decimal Proc { get; internal set; }
 
             var query = "" +
+
+                "\n DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + "'                                                                                                                                                                                                                    " +
+                "\n DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + "'                                                                                                                                                                                                                    " +
+                
                 "\n SELECT " +
 
                 "\n  CONVERT(varchar, Unidade) as UnidadeName" +
@@ -116,6 +144,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                 "\n ,nc" +
                 "\n ,av " +
+                "\n ,Meta " +
                 "\n FROM " +
                 "\n ( " +
                 "\n     SELECT " +
@@ -123,9 +152,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n     , Unidade_Id " +
                 "\n     , Level1Name " +
                 "\n     , level1_Id " +
-                "\n     , sum(av) as av " +
-                "\n     , sum(nc) as nc " +
+
+                "\n     , sum(avSemPeso) as av " +
+                "\n     , sum(ncSemPeso) as nc " +
                 "\n     , CASE WHEN sum(AV) IS NULL OR sum(AV) = 0 THEN 0 ELSE sum(NC) / sum(AV) * 100 END AS ProcentagemNc " +
+                "\n     , max(Meta) as Meta" +
 
                 "\n     FROM " +
                 "\n     ( " +
@@ -135,11 +166,21 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         , UNI.Id         AS Unidade_Id " +
                 "\n         , UNI.Name       AS Unidade " +
                 "\n         , CASE " +
+                "\n         WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
                 "\n         ELSE 0 " +
                 "\n        END AS Av " +
+
+                "\n       , CASE " +
+                "\n         WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
+                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN EvaluateTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN EvaluateTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
+                "\n         ELSE 0 " +
+                "\n        END AS AvSemPeso " +
+
                 "\n         , CASE " +
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN WeiDefects " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiDefects " +
@@ -147,14 +188,23 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         ELSE 0 " +
 
                 "\n         END AS NC " +
+
+                "\n         , CASE " +
+                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN DefectsTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN DefectsTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult " +
+                "\n         ELSE 0 " +
+
+                "\n         END AS NCSemPeso " +
                 "\n         , (SELECT TOP 1 PercentValue FROM ParGoal WHERE ParLevel1_Id = CL1.ParLevel1_Id AND(ParCompany_Id = CL1.UnitId OR ParCompany_Id IS NULL) ORDER BY ParCompany_Id DESC) AS Meta " +
                 "\n         FROM ConsolidationLevel1 CL1 " +
                 "\n         INNER JOIN ParLevel1 IND " +
                 "\n         ON IND.Id = CL1.ParLevel1_Id " +
                 "\n         INNER JOIN ParCompany UNI " +
                 "\n         ON UNI.Id = CL1.UnitId " +
-                "\n         WHERE CL1.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
+                "\n         WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL " +
                 "\n         AND UNI.Name = '" + form.unitName + "'" +
+                "\n         AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) " +
 
                 "\n     ) S1 " +
 
@@ -184,6 +234,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
 
             var query = "" +
+
+                "\n DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + "'                                                                                                                                                                                                                    " +
+                "\n DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + "'       " +
+
                "\n SELECT " +
                "\n  " +
                "\n  --level1_Id " +
@@ -192,9 +246,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                "\n Level2Name AS MonitoramentoName " +
                "\n --,Unidade_Id " +
                "\n --,Unidade " +
-               "\n ,sum(Av) as av " +
-               "\n ,sum(NC) as nc " +
-               "\n ,sum(NC) / Sum(Av) * 100 AS [Proc] " +
+
+               "\n     , sum(avSemPeso) as av " +
+                "\n     , sum(ncSemPeso) as nc " +
+                "\n     , CASE WHEN sum(AV) IS NULL OR sum(AV) = 0 THEN 0 ELSE sum(NC) / sum(AV) * 100 END AS [Proc] " +
+
                "\n FROM " +
                "\n ( " +
                "\n 	SELECT " +
@@ -204,18 +260,43 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                "\n 	,IND.Name AS Level1Name " +
                "\n 	,UNI.Id			AS Unidade_Id " +
                "\n 	,UNI.Name		AS Unidade " +
-               "\n 	,CASE  " +
-               "\n 	WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiEvaluation " +
-               "\n 	WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation " +
-               "\n 	WHEN IND.ParConsolidationType_Id = 3 THEN CL2.EvaluatedResult " +
-               "\n 	ELSE 0 " +
-               "\n 	END AS Av " +
-               "\n 	,CASE  " +
-               "\n 	WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiDefects " +
-               "\n 	WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiDefects " +
-               "\n 	WHEN IND.ParConsolidationType_Id = 3 THEN CL2.DefectsResult " +
-               "\n 	ELSE 0 " +
-               "\n 	END AS NC " +
+
+
+                               "\n         , CASE " +
+                "\n         WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos)/2 FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
+                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiEvaluation " +
+                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation " +
+                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL2.EvaluatedResult " +
+                "\n         ELSE 0 " +
+                "\n        END AS Av " +
+
+                "\n       , CASE " +
+                "\n         WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
+                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL2.EvaluateTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL2.EvaluateTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL2.EvaluatedResult " +
+                "\n         ELSE 0 " +
+                "\n        END AS AvSemPeso " +
+
+                "\n         , CASE " +
+                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiDefects " +
+                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiDefects " +
+                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL2.DefectsResult " +
+                "\n         ELSE 0 " +
+
+                "\n         END AS NC " +
+
+                "\n         , CASE " +
+                "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL2.DefectsTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL2.DefectsTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL2.DefectsResult " +
+                "\n         ELSE 0 " +
+
+                "\n         END AS NCSemPeso " +
+
+
+
+
                "\n 	FROM ConsolidationLevel2 CL2 " +
                "\n 	INNER JOIN ConsolidationLevel1 CL1 " +
                "\n 	ON CL1.Id = CL2.ConsolidationLevel1_Id " +
@@ -225,7 +306,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                "\n 	ON MON.Id = CL2.ParLevel2_Id " +
                "\n 	INNER JOIN ParCompany UNI " +
                "\n 	ON UNI.Id = CL1.UnitId " +
-               "\n 	WHERE CL2.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
+               "\n 	WHERE CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL" +
                "\n 	AND UNI.Name = '" + form.unitName + "'" +
                "\n 	AND IND.Name = '" + form.level1Name + "' " + //
                
@@ -257,7 +338,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                     //Proc = proc + i,
                     //TarefaName = tarefaName + i.ToString()
 
-            var query = "SELECT " +
+            var query = "" +
+
+                "\n DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + "'                                                                                                                                                                                                                    " +
+                "\n DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + "'       " +
+
+                "\n SELECT " +
+                "\n TarefaName, NcSemPeso as Nc, AvSemPeso as Av, [Proc] FROM (" +
+                "\n SELECT " +
                          "\n  " +
                     //     "\n  IND.Id AS level1_Id " +
                     //     "\n ,IND.Name AS Level1Name " +
@@ -268,8 +356,17 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                     //     "\n ,UNI.Name AS Unidade " +
                     //     "\n ,UNI.Id AS Unidade_Id " +
                          "\n ,SUM(R3.WeiDefects) AS Nc " +
-                         "\n ,SUM(R3.WeiEvaluation) AS Av " +
-                         "\n ,SUM(R3.WeiDefects) / SUM(R3.WeiEvaluation) * 100 AS [Proc] " +
+                         "\n ,SUM(R3.Defects) AS NcSemPeso " +
+                         "\n ,CASE " +                 
+                         "\n WHEN IND.HashKey = 1 THEN(SELECT TOP 1 SUM(Quartos) / 2 FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
+                         "\n ELSE SUM(R3.WeiEvaluation) END AS Av " +
+                         "\n ,CASE " +
+                         "\n WHEN IND.HashKey = 1 THEN(SELECT TOP 1 SUM(Quartos) / 2 FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
+                         "\n ELSE SUM(R3.Evaluation) END AS AvSemPeso " +
+                         "\n ,SUM(R3.WeiDefects) / " +
+                         "\n CASE " +                 
+                         "\n WHEN IND.HashKey = 1 THEN(SELECT TOP 1 SUM(Quartos) / 2 FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
+                         "\n ELSE SUM(R3.WeiEvaluation) END * 100 AS [Proc] " +
                          "\n FROM Result_Level3 R3 " +
                          "\n INNER JOIN CollectionLevel2 C2 " +
                          "\n ON C2.Id = R3.CollectionLevel2_Id " +
@@ -278,11 +375,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                          "\n INNER JOIN ConsolidationLevel1 CL1 " +
                          "\n ON CL1.Id = CL2.ConsolidationLevel1_Id " +
                          "\n INNER JOIN ParCompany UNI " +
-                         "\n ON UNI.Id = CL1.UnitId " +
+                         "\n ON UNI.Id = C2.UnitId " +
                          "\n INNER JOIN ParLevel1 IND  " +
-                         "\n ON IND.Id = CL1.ParLevel1_Id " +
+                         "\n ON IND.Id = C2.ParLevel1_Id " +
                          "\n INNER JOIN ParLevel2 MON " +
-                         "\n ON MON.Id = CL2.ParLevel2_Id " +
+                         "\n ON MON.Id = C2.ParLevel2_Id " +
                          "\n WHERE IND.Name = '" + form.level1Name + "' " +
                          "\n    and MON.Name = '" + form.level2Name + "' " +
                          "\n 	AND UNI.Name = '" + form.unitName + "'" +
@@ -294,8 +391,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                          "\n ,R3.ParLevel3_Name " +
                          "\n ,UNI.Name " +
                          "\n ,UNI.Id " +
+                          "\n ,ind.hashKey " +
+                        
                          "\n HAVING SUM(R3.WeiDefects) > 0" +
-                         "\n ORDER BY 4 DESC";
+                         "\n ) TAB ORDER BY 4 DESC";
 
             using (var db = new SgqDbDevEntities())
             {
