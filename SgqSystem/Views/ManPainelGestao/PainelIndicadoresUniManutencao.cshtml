@@ -372,13 +372,13 @@
 
             });
 
-            porcDesvioTotal = (SomaVetor(realizado) / SomaVetor(orcado) - 1) * 100
+            porcDesvioTotal = (SomaVetor(realizado, VerificaConta(dados.indicador)) / SomaVetor(orcado, VerificaConta(dados.indicador)) - 1) * 100
             
             if (isNaN(porcDesvioTotal) || !isFinite(porcDesvioTotal))
                 porcDesvioTotal = 0;
 
             //Adiciona "dataTables_scrollFoot" na DataTable
-            $("#primeiro .dataTables_scroll").append('<div class="dataTables_scrollFoot" style="font-size: 11px;><div class="dataTables_scrollFootInner"><table class="display no-footer dataTable" cellspacing="0" role="grid"><thead><tr role="row"><th class="dt-center sorting_disabled" rowspan="1" colspan="1">Total</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">' + formatReal(Math.round(SomaVetor(orcado) * 100) / 100) + '</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">' + formatReal(Math.round(SomaVetor(realizado) * 100) / 100) + '</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1"><i>' + formatReal(Math.round(SomaVetor(desvio) * 100) / 100) + '</i></th><th class="dt-center sorting_disabled" rowspan="1" colspan="1"><i>' + Math.round(porcDesvioTotal * 100) / 100 + '%</i></th></tr></thead></table></div></div>');
+            $("#primeiro .dataTables_scroll").append('<div class="dataTables_scrollFoot" style="font-size: 11px;><div class="dataTables_scrollFootInner"><table class="display no-footer dataTable" cellspacing="0" role="grid"><thead><tr role="row"><th class="dt-center sorting_disabled" rowspan="1" colspan="1">Total</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">' + formatReal(Math.round(SomaVetor(orcado, VerificaConta(dados.indicador)) * 100) / 100) + '</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1">' + formatReal(Math.round(SomaVetor(realizado, VerificaConta(dados.indicador)) * 100) / 100) + '</th><th class="dt-center sorting_disabled" rowspan="1" colspan="1"><i>' + formatReal(Math.round(SomaVetor(desvio, VerificaConta(dados.indicador)) * 100) / 100) + '</i></th><th class="dt-center sorting_disabled" rowspan="1" colspan="1"><i>' + Math.round(porcDesvioTotal * 100) / 100 + '%</i></th></tr></thead></table></div></div>');
 
             CallbackGraficoEvolucao(orcado, realizado, dado);
             CallbackGraficoAcumulado(orcado, realizado, desvio);
@@ -581,7 +581,7 @@
                 legendaNegativo = "Positivo";
             }
 
-            var somaDesvio = Math.round(SomaVetor(desvio) * 100) / 100;
+            var somaDesvio = Math.round(SomaVetor(desvio, VerificaConta(dados.indicador)) * 100) / 100;
 
             if (somaDesvio <= 0) {
 
@@ -681,11 +681,11 @@
                     colorByPoint: true,
                     data: [{
                         name: 'Orcado',
-                        y: Math.round(SomaVetor(orcado) * 100) / 100,
+                        y: Math.round(SomaVetor(orcado, VerificaConta(dados.indicador)) * 100) / 100,
                         drilldown: null
                     }, {
                         name: 'Real',
-                        y: Math.round(SomaVetor(realizado) * 100) / 100,
+                        y: Math.round(SomaVetor(realizado, VerificaConta(dados.indicador)) * 100) / 100,
                         drilldown: null
                     }, somaDesvio
                     //{
@@ -868,7 +868,7 @@
             var linha = [];
             var dataTableVetor = [];
             var indicador = $("#showIndicadoresManutencao input:radio:checked").val();
-            var budget2 = SomaVetor(budget);
+            var budget2 = SomaVetor(budget, VerificaConta(dados.indicador));
             var unidade = $('#UnidadeId :selected').text();
             var mes = $('#AcumuladoMouthId option:selected').text();
 
@@ -1242,15 +1242,65 @@
             return arrayTable
         }
 
-        function SomaVetor(vetor) {
+        function VerificaConta(indicador) {
+            var conta = "";
 
-            var vetorSomado = 0;
-
-            for (var i = 0; i < vetor.length; i++) {
-
-                vetorSomado += vetor[i];
+            if (
+                indicador == "Taxa de Frequência"||
+                indicador == "Pilar Manutenção"||
+                indicador == "CARTA METAS"||
+                indicador == "Scorecard Energia" ||
+                indicador == "Scorecard Vapor"||
+                indicador == "R$/CB Manut" ||
+                indicador == "KWh/Boi Proc" ||
+                indicador == "Mcal/Boi Proc" ||
+                indicador == "Água M³/Boi"||
+                indicador == "Disponibilidade Ab"||
+                indicador == "Disponibilidade Des"||
+                indicador == "Disponibilidade Total"||
+                indicador == "Eficiên.Programção"||
+                indicador == "Apropr Planej...to"||
+                indicador == "Apropriação de O.S"||
+                indicador == "Absenteísmo"
+                )
+            {
+                conta = "media"
+            } else
+            {
+                conta = "soma"
             }
 
+            return conta;
+        }
+
+        function SomaVetor(vetor,conta) {
+
+            var vetorSomado = 0;
+            var qte = 0;
+            if (conta == "media") {
+                for (var i = 0; i < vetor.length; i++) {
+
+                    if (vetor[i] == 0) {
+                        qte += 0
+                        vetorSomado += vetor[i];
+                    } else {
+                        qte += 1
+                        vetorSomado += vetor[i];
+                    }
+                }
+                vetorSomado = vetorSomado / qte
+            } else //Soma o resto
+            {
+                for (var i = 0; i < vetor.length; i++) {
+
+                    vetorSomado += vetor[i];
+                }
+            }
+            
+            if (isNaN(vetorSomado)) {
+                vetorSomado = 0;
+            }
+                
             return vetorSomado;
         }
 
