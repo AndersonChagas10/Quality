@@ -394,11 +394,11 @@ namespace SgqSystem.Controllers.Api.Manutencao
                         {
                             if (vetor4.lista != null)
                             {
-                                f[i].realizado = 1 - ((vetor3.lista[i].realizado + vetor4.lista[i].realizado) / ((vetor1.lista[i].realizado * 60) + (vetor2.lista[i].realizado * 60)));
+                                f[i].realizado = 1 - ((vetor3.lista[i].realizado + vetor4.lista[i].realizado) / ((vetor1.lista[i].realizado /** 60*/) + (vetor2.lista[i].realizado /** 60*/))); //Retirado o calculo de conversão horas para minutos
                             }
                             else
                             {
-                                f[i].realizado = 1 - ((vetor2.lista[i].realizado) / ((vetor1.lista[i].realizado * 60)));
+                                f[i].realizado = 1 - ((vetor2.lista[i].realizado) / ((vetor1.lista[i].realizado /** 60*/))); //Retirado o calculo de conversão horas para minutos
                             }
 
                         }
