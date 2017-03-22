@@ -45,8 +45,8 @@ namespace SgqSystem.Controllers.Api
         public _PCC1B Next(_Receive receive)
         {
 
-            string pass = "grJsoluco3s";
-            string userName = "UserGQualidade";
+            string connectionString = "SgqDbDevEntities";
+
             ParCompany company;
             var retorno = new _PCC1B();
             retorno.Side = 1;
@@ -70,14 +70,14 @@ namespace SgqSystem.Controllers.Api
                 company = db.ParCompany.FirstOrDefault(r => r.Id == receive.Unit);
             }
 
-            using (var db = new FactoryADO(company.IPServer, company.DBServer, pass, userName))
+            using (var db = new FactoryADO(connectionString))
             {
                 var query = "EXEC FBED_GRTTipificacao '" + receive.Data + "', " + company.CompanyNumber.ToString() + ", " + receive.sequencialAtual.ToString();
                 var resultQuery = db.SearchQuery<ResultadosSequencialBanda>(query).ToList();
                 if (resultQuery != null && resultQuery.Count() > 0)
                     retorno.Sequential = resultQuery.FirstOrDefault().iSequencial;
 
-                retorno.serverSide = company.IPServer + company.DBServer + pass + userName;
+                retorno.serverSide = company.IPServer + company.DBServer;
                 return retorno;
             }
 
