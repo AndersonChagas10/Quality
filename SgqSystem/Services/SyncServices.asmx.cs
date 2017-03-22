@@ -1151,6 +1151,9 @@ namespace SgqSystem.Services
 
             string key = ConsolidationLevel2.UnitId.ToString();
 
+            key += "-" + Shift;
+            key += "-" + Period;
+
             key += "-" + ConsolidationLevel1.ParLevel1_Id.ToString();
             key += "-" + ConsolidationLevel2.ParLevel2_Id.ToString();
             if (hashKey == "1")
@@ -3469,10 +3472,6 @@ namespace SgqSystem.Services
             var ParFieldTypeDB = new SGQDBContext.ParFieldType();
             //Inicaliza ParLevel1VariableProduction
             var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction();
-            //Inicaliza CaracteristicaTipificacao
-            var CaracteristicaTipificacaoDB = new SGQDBContext.CaracteristicaTipificacao();
-            //Inicaliza VerificacaoTipificacaoTarefaIntegracao
-            var VerificacaoTipificacaoTarefaIntegracaoDB = new SGQDBContext.VerificacaoTipificacaoTarefaIntegracao();
 
             //Pega uma lista de parleve3
             //pode colocar par level3 por unidades, como nos eua
@@ -3592,6 +3591,11 @@ namespace SgqSystem.Services
             //Tela da verificação da tipificação
             else if (tipoTela.Equals("VF"))
             {
+                //Inicaliza CaracteristicaTipificacao
+                var CaracteristicaTipificacaoDB = new SGQDBContext.CaracteristicaTipificacao();
+                //Inicaliza VerificacaoTipificacaoTarefaIntegracao
+                var VerificacaoTipificacaoTarefaIntegracaoDB = new SGQDBContext.VerificacaoTipificacaoTarefaIntegracao();
+
                 //Instancia uma veriavel para gerar o agrupamento
                 string parLevel3Group = null;
 

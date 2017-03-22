@@ -753,11 +753,30 @@
                     $($('[id=adicionar]')[c]).click();
             });
 
+         
+
             $('#Edit').show();
             InitDatePiker();
         }
 
         function myfunction() {
+
+            $('[id=tipoIndicador]').off('change').on('change', function () {
+
+                var valor = $(this).val();
+                var form = $(this).parents('form');
+
+                form.find('.IndicadorOutros').hide();
+                form.find('.IndicadorSgq').hide();
+
+                if (valor == 1) {
+                    form.find('.IndicadorOutros').show();
+                } else if (valor == 2) {
+                    form.find('.IndicadorSgq').show();
+                }
+
+            });
+
             $('[id=CausaMedidasXAcao_CausaGenerica_Id]').off('change').on('change', function () {
                 var valor = $(this).val();
                 var form = $(this).parents('form');
