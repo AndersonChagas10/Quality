@@ -34,6 +34,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             foreach (var i in acao)
             {
+               
                 //throw new Exception("treste");
                 if (i._QuantoCusta != null)
                     i.QuantoCusta = NumericExtensions.CustomParseDecimal(i._QuantoCusta).GetValueOrDefault();
@@ -53,6 +54,8 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
                 //Pa_BaseObject.SalvarGenerico(acao);
                 //Pa_BaseObject.SalvarGenerico(acao.CausaMedidasXAcao);
+
+                Pa_BaseObject.SalvarGenerico(i);
 
                 i.AddOrUpdate();
             }

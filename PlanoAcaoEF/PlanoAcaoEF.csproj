@@ -30,41 +30,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="EFPlanoAcao.cs" />
-    <Compile Include="EmailContent.cs" />
-    <Compile Include="Email_ConfiguracaoEmailSgq.cs" />
+    <Compile Include="EfPa.cs" />
     <Compile Include="Pa_Acao.cs" />
     <Compile Include="Pa_AcaoXQuem.cs" />
-    <Compile Include="Pa_CausaEspecifica.cs" />
-    <Compile Include="Pa_CausaGenerica.cs" />
     <Compile Include="Pa_CausaMedidaXAcao.cs" />
-    <Compile Include="Pa_ContramedidaEspecifica.cs" />
-    <Compile Include="Pa_ContramedidaGenerica.cs" />
-    <Compile Include="Pa_Coordenacao.cs" />
-    <Compile Include="Pa_Departamento.cs" />
-    <Compile Include="Pa_Dimensao.cs" />
-    <Compile Include="Pa_Diretoria.cs" />
-    <Compile Include="Pa_Gerencia.cs" />
-    <Compile Include="Pa_GrupoCausa.cs" />
-    <Compile Include="Pa_Indicadores.cs" />
-    <Compile Include="Pa_IndicadoresDeProjeto.cs" />
-    <Compile Include="Pa_IndicadoresDiretriz.cs" />
-    <Compile Include="Pa_IndicadorSgqAcao.cs" />
-    <Compile Include="Pa_Iniciativa.cs" />
-    <Compile Include="Pa_Missao.cs" />
-    <Compile Include="Pa_Objetivo.cs" />
-    <Compile Include="Pa_ObjetivoGeral.cs" />
-    <Compile Include="Pa_Planejamento.cs" />
-    <Compile Include="Pa_Problema_Desvio.cs" />
-    <Compile Include="Pa_Quem.cs" />
-    <Compile Include="Pa_Query.cs" />
-    <Compile Include="Pa_Status.cs" />
-    <Compile Include="Pa_TemaAssunto.cs" />
-    <Compile Include="Pa_Unidade.cs" />
-    <Compile Include="Pa_UnidadeMedida.cs" />
-    <Compile Include="Pa_Visao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="sysdiagrams.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
