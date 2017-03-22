@@ -2083,9 +2083,6 @@
     <Content Include="Views\Shared\_ModalLoader.cshtml" />
     <Content Include="Views\ParLevel2ControlCompany\_ControlCompanySelectBoxLevel2UserCompany.cshtml" />
     <Content Include="Views\RelatoriosSgq\Scorecard.cshtml" />
-    <Content Include="..\..\..\..\Desktop\Index.cshtml">
-      <Link>Views\Manutencao\Index.cshtml</Link>
-    </Content>
     <Content Include="Views\RelatoriosSgq\RelatorioDiario.cshtml" />
     <Content Include="Views\Shared\_RelatorioLayout.cshtml" />
     <Content Include="Views\Example\TesteSelect2.cshtml" />
@@ -2140,6 +2137,7 @@
     <Folder Include="obj\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\EspecificarMonitoramentos\" />
+    <Folder Include="Views\Manutencao\" />
     <Folder Include="Views\RelatorioController\" />
     <Folder Include="Views\RoleApi\" />
     <Folder Include="Views\ScorecardConfig\" />

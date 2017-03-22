@@ -238,75 +238,75 @@ namespace PlanoAcaoCore
 
         public void AddOrUpdate()
         {
-            //IsValid();
-            //CausaMedidasXAcao.IsValid();
+            ////IsValid();
+            ////CausaMedidasXAcao.IsValid();
 
-            //foreach (var j in AcaoXQuem)
-            //    j.IsValid();
+            ////foreach (var j in AcaoXQuem)
+            ////    j.IsValid();
 
-            string query;
+            //string query;
 
-            if (Id > 0)
-            {
+            //if (Id > 0)
+            //{
 
-                query = "UPDATE [dbo].[Pa_Acao]                                             " +
-                   "\n    SET [QuandoInicio] = @QuandoInicio                                " +
-                   "\n       ,[DuracaoDias] = @DuracaoDias                                  " +
-                   "\n       ,[QuandoFim] = @QuandoFim                                      " +
-                   "\n       ,[ComoPontosimportantes] = @ComoPontosimportantes              " +
-                   "\n       ,[QuantoCusta] = @QuantoCusta                                  " +
-                   "\n       ,[Status] = @Status                                            " +
-                   "\n       ,[Pa_Problema_Desvio_Id] = @Pa_Problema_Desvio_Id    " +
-                   "\n       ,[Pa_IndicadorSgqAcao_Id] = @Pa_IndicadorSgqAcao_Id            " +
-                   "\n       ,[PraQue] = @PraQue                                            " +
-                   "\n       ,[Panejamento_Id] = @Panejamento_Id                            " +
-                   "\n  WHERE Id = @Id                                                      ";
+            //    query = "UPDATE [dbo].[Pa_Acao]                                             " +
+            //       "\n    SET [QuandoInicio] = @QuandoInicio                                " +
+            //       "\n       ,[DuracaoDias] = @DuracaoDias                                  " +
+            //       "\n       ,[QuandoFim] = @QuandoFim                                      " +
+            //       "\n       ,[ComoPontosimportantes] = @ComoPontosimportantes              " +
+            //       "\n       ,[QuantoCusta] = @QuantoCusta                                  " +
+            //       "\n       ,[Status] = @Status                                            " +
+            //       "\n       ,[Pa_Problema_Desvio_Id] = @Pa_Problema_Desvio_Id    " +
+            //       "\n       ,[Pa_IndicadorSgqAcao_Id] = @Pa_IndicadorSgqAcao_Id            " +
+            //       "\n       ,[PraQue] = @PraQue                                            " +
+            //       "\n       ,[Panejamento_Id] = @Panejamento_Id                            " +
+            //       "\n  WHERE Id = @Id                                                      ";
 
-                query += " SELECT CAST(1 AS int)";
+            //    query += " SELECT CAST(1 AS int)";
 
-                SqlCommand cmd;
-                cmd = new SqlCommand(query);
+            //    SqlCommand cmd;
+            //    cmd = new SqlCommand(query);
 
-                cmd.Parameters.AddWithValue("@QuandoInicio", QuandoInicio);
-                //cmd.Parameters.AddWithValue("@DuracaoDias", DuracaoDias);
-                cmd.Parameters.AddWithValue("@QuandoFim", QuandoFim);
-                cmd.Parameters.AddWithValue("@ComoPontosimportantes", ComoPontosimportantes);
-                cmd.Parameters.AddWithValue("@QuantoCusta", QuantoCusta);
-                cmd.Parameters.AddWithValue("@Status", Status);
-                cmd.Parameters.AddWithValue("@PraQue", PraQue);
-                cmd.Parameters.AddWithValue("@Panejamento_Id", Panejamento_Id);
-                cmd.Parameters.AddWithValue("@Id", Id);
-                cmd.Parameters.AddWithValue("@Pa_Problema_Desvio_Id", Pa_Problema_Desvio_Id);
-                cmd.Parameters.AddWithValue("@Pa_IndicadorSgqAcao_Id", Pa_IndicadorSgqAcao_Id);
+            //    cmd.Parameters.AddWithValue("@QuandoInicio", QuandoInicio);
+            //    //cmd.Parameters.AddWithValue("@DuracaoDias", DuracaoDias);
+            //    cmd.Parameters.AddWithValue("@QuandoFim", QuandoFim);
+            //    cmd.Parameters.AddWithValue("@ComoPontosimportantes", ComoPontosimportantes);
+            //    cmd.Parameters.AddWithValue("@QuantoCusta", QuantoCusta);
+            //    cmd.Parameters.AddWithValue("@Status", Status);
+            //    cmd.Parameters.AddWithValue("@PraQue", PraQue);
+            //    cmd.Parameters.AddWithValue("@Panejamento_Id", Panejamento_Id);
+            //    cmd.Parameters.AddWithValue("@Id", Id);
+            //    cmd.Parameters.AddWithValue("@Pa_Problema_Desvio_Id", Pa_Problema_Desvio_Id);
+            //    cmd.Parameters.AddWithValue("@Pa_IndicadorSgqAcao_Id", Pa_IndicadorSgqAcao_Id);
 
-                Salvar(cmd);
+            //    Salvar(cmd);
 
-                var causaEsp = new Pa_CausaEspecifica()
-                {
-                    Id = CausaMedidasXAcao.CausaEspecifica_Id.GetValueOrDefault(),
-                    Text = CausaMedidasXAcao.CausaEspecifica
-                };
+            //    var causaEsp = new Pa_CausaEspecifica()
+            //    {
+            //        Id = CausaMedidasXAcao.CausaEspecifica_Id.GetValueOrDefault(),
+            //        Text = CausaMedidasXAcao.CausaEspecifica
+            //    };
 
-                var contramedidaEsp = new Pa_ContramedidaEspecifica()
-                {
-                    Id = CausaMedidasXAcao.ContramedidaEspecifica_Id.GetValueOrDefault(),
-                    Text = CausaMedidasXAcao.ContramedidaEspecifica
-                };
+            //    var contramedidaEsp = new Pa_ContramedidaEspecifica()
+            //    {
+            //        Id = CausaMedidasXAcao.ContramedidaEspecifica_Id.GetValueOrDefault(),
+            //        Text = CausaMedidasXAcao.ContramedidaEspecifica
+            //    };
 
-                causaEsp.AddOrUpdate();
-                contramedidaEsp.AddOrUpdate();
+            //    causaEsp.AddOrUpdate();
+            //    contramedidaEsp.AddOrUpdate();
 
-                CausaMedidasXAcao.AddOrUpdate();
+            //    CausaMedidasXAcao.AddOrUpdate();
 
-                foreach (var j in AcaoXQuem)
-                {
-                    j.Acao_Id = Id;
-                    j.AddOrUpdate();
-                }
+            //    foreach (var j in AcaoXQuem)
+            //    {
+            //        j.Acao_Id = Id;
+            //        j.AddOrUpdate();
+            //    }
 
-            }
-            else
-            {
+            //}
+            //else
+            //{
 
                 var causaEsp = new Pa_CausaEspecifica() { Text = CausaMedidasXAcao._CausaEspecifica };
                 var contramedidaEsp = new Pa_ContramedidaEspecifica() { Text = CausaMedidasXAcao._ContramedidaEspecifica };
@@ -325,7 +325,7 @@ namespace PlanoAcaoCore
                     j.AddOrUpdate();
                 }
 
-            }
+            //}
         }
 
 
