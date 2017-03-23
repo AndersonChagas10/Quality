@@ -72,15 +72,19 @@ namespace PlanoAcaoCore
 
         [Display(Name = "Quem")]
         public int Quem_Id { get; set; }
+        public string _Quem { get; set; }
 
         [Display(Name = "Causa Generica")]
         public int CausaGenerica_Id { get; set; }
+        public string _CausaGenerica { get; set; }
 
         [Display(Name = "Contramedida Genérica")]
         public int ContramedidaGenerica_Id { get; set; }
+        public string _ContramedidaGenerica { get; set; }
 
         [Display(Name = "Grupo Causa")]
         public int GrupoCausa_Id { get; set; }
+        public string _GrupoCausa { get; set; }
 
         [Display(Name = "Causa Especifica")]
         public string CausaEspecifica { get; set; }
@@ -209,14 +213,22 @@ namespace PlanoAcaoCore
         {
             get
             {
-                return "SELECT TOP 200 ACAO.* ,                                                     " +
-                        "\n STA.Name as StatusName,                                         " +
-                        "\n UN.Name as Unidade,                                             " +
-                        "\n DPT.Name as Departamento                                        " +
-                        "\n FROM pa_acao ACAO                                               " +
-                        "\n LEFT JOIN Pa_Unidade UN ON UN.Id = ACAO.Unidade_Id              " +
-                        "\n LEFT JOIN Pa_Departamento DPT ON DPT.Id = ACAO.Departamento_Id  " +
-                        "\n LEFT JOIN Pa_Status STA ON STA.Id = ACAO.[Status] ";
+                return  " \n SELECT TOP 200 ACAO.* ,                                                           " +
+                        " \n STA.Name as StatusName,                                                           " +
+                        " \n UN.Name as Unidade,                                                               " +
+                        " \n DPT.Name as Departamento,                                                         " +
+                        " \n Q.Name as _Quem,                                                                  " +
+                        " \n CG.CausaGenerica as _CausaGenerica,                                               " +
+                        " \n CMG.ContramedidaGenerica as _ContramedidaGenerica,                                " +
+                        " \n GC.GrupoCausa as _GrupoCausa                                                      " +
+                        " \n FROM pa_acao ACAO                                                                 " +
+                        " \n LEFT JOIN Pa_Unidade UN ON UN.Id = ACAO.Unidade_Id                                " +
+                        " \n LEFT JOIN Pa_Quem Q ON Q.Id = ACAO.Quem_Id                                        " +
+                        " \n LEFT JOIN Pa_CausaGenerica CG ON CG.Id = ACAO.CausaGenerica_Id                    " +
+                        " \n LEFT JOIN Pa_ContramedidaGenerica CMG ON CMG.Id = ACAO.ContramedidaGenerica_Id    " +
+                        " \n LEFT JOIN Pa_GrupoCausa GC ON GC.Id = ACAO.GrupoCausa_Id                          " +
+                        " \n LEFT JOIN Pa_Departamento DPT ON DPT.Id = ACAO.Departamento_Id                    " +
+                        " \n LEFT JOIN Pa_Status STA ON STA.Id = ACAO.[Status]";
 
             }
         }
