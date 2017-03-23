@@ -64,13 +64,13 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         }
 
         
-        [HttpPost]
-        [Route("SaveAcompnhamento")]
-        public Pa_Acompanhamento Acompanhamento(Pa_Acompanhamento id)
-        {
-            var obj = Pa_Acao.Get(id);
-            return Pa_Acompanhamento
-        }
+        //[HttpPost]
+        //[Route("SaveAcompnhamento")]
+        //public Pa_Acompanhamento Acompanhamento(Pa_Acompanhamento id)
+        //{
+        //    var obj = Pa_Acao.Get(id);
+        //    return Pa_Acompanhamento
+        //}
 
 
     }
