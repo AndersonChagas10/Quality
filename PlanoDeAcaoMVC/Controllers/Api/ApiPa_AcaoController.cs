@@ -1,6 +1,7 @@
 ﻿using DTO.Helpers;
 using Helper;
 using PlanoAcaoCore;
+using PlanoAcaoCore.Acao;
 using System;
 using System.Collections.Generic;
 using System.Web.Http;
@@ -63,13 +64,15 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             return acao;
         }
 
-        
+
         [HttpPost]
         [Route("SaveAcompnhamento")]
-        public Pa_Acompanhamento Acompanhamento(Pa_Acompanhamento id)
+        public Pa_Acompanhamento Acompanhamento(Pa_Acompanhamento obj)
         {
-            var obj = Pa_Acao.Get(id);
-            return Pa_Acompanhamento
+            //Pa_BaseObject.SalvarGenerico(obj);
+            //Pa_Acompanhamento.SalvarGenerico(obj);
+            //var obj = Pa_Acao.Get(id);
+            return Pa_BaseObject.SalvarGenerico(obj); 
         }
 
 

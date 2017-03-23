@@ -320,6 +320,12 @@
                 //$(this).next('.modalMinimize').find("i").removeClass('fa fa-clone').addClass( 'fa fa-minus');
             });
 
+            $("#acompanhamento").on("submit", function (event) {
+                //event.preventDefault();
+                var obj = $("#acompanhamento").serializeArray();
+                SalvarAcompanhamento(obj);
+            });
+
         });
         /*FIM Btn Minimizar Modal*/
 
@@ -1103,7 +1109,7 @@
 
 
                                       $('#modalLindo').find('.modal-body .content3').append(r);
-
+                                      
                                       $('#Edit').show();
                                       $('#obj').show(); //Apagar depois
                                       InitDatePiker();
@@ -1383,6 +1389,7 @@
                 form.find('table > tbody > tr:nth-child(17)').find('input, select').val(model._DataFim);
                 form.find('table > tbody > tr:nth-child(18)').find('input, select').val(model.Responsavel_Projeto);
                 $('#modalLindo').find('.modal-body .content2').append(form);
+                $('#modalLindo').find('.modal-body .content2').append('<button type="button" class="btn btn-default" style="float:right;">Editar</button>');
                 $('#modalLindo').find('.modal-body .content2').append('<hr>');
 
             } else {
@@ -1410,7 +1417,8 @@
                 form.find('table > tbody > tr:nth-child(18)').hide();
 
                 $('#modalLindo').find('.modal-body .content1').append(form);
-                $('#modalLindo').find('.modal-body .content2').append('<hr>');
+                $('#modalLindo').find('.modal-body .content1').append('<button type="button" class="btn btn-default" style="float:right;>Editar</button>');
+                $('#modalLindo').find('.modal-body .content1').append('<hr>');
                 //}
 
                 //else {
@@ -1426,6 +1434,21 @@
             //$('#modalLindo').find('.modal-body .content3').append(form);
             InitDatePiker();
             MoneyMask();
+        }
+
+        function SalvarAcompanhamento(obj) {
+
+            $.post(urlSalvarAcompanhamento, obj, function (r) {
+                
+                //Colocar o retorno no modal
+                
+            })
+            .fail(function (e, h, x) {
+
+                openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
+
+            });
+
         }
 
     </script>
