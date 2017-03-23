@@ -60,46 +60,46 @@
       
         <tr>
             <td>
-                @Html.DisplayNameFor(model => model.CausaMedidasXAcao.CausaGenerica_Id)
+                @Html.DisplayNameFor(model => model.CausaGenerica_Id)
             </td>
             <td>
-                @Html.DisplayFor(model => model.CausaMedidasXAcao.CausaGenerica)
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                @Html.DisplayNameFor(model => model.CausaMedidasXAcao.GrupoCausa_Id)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.CausaMedidasXAcao.GrupoCausa)
+                @Html.DisplayFor(model => model._CausaGenerica)
             </td>
             <td></td>
         </tr>
         <tr>
             <td>
-                @Html.DisplayNameFor(model => model.CausaMedidasXAcao.ContramedidaGenerica_Id)
+                @Html.DisplayNameFor(model => model.GrupoCausa_Id)
             </td>
             <td>
-                @Html.DisplayFor(model => model.CausaMedidasXAcao.ContramedidaGenerica)
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                @Html.DisplayNameFor(model => model.CausaMedidasXAcao.CausaEspecifica_Id)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.CausaMedidasXAcao.CausaEspecifica)
+                @Html.DisplayFor(model => model._GrupoCausa)
             </td>
             <td></td>
         </tr>
         <tr>
             <td>
-                @Html.DisplayNameFor(model => model.CausaMedidasXAcao.ContramedidaEspecifica_Id)
+                @Html.DisplayNameFor(model => model.ContramedidaGenerica_Id)
             </td>
             <td>
-                @Html.DisplayFor(model => model.CausaMedidasXAcao.ContramedidaEspecifica)
+                @Html.DisplayFor(model => model._ContramedidaGenerica)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.CausaEspecifica)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.CausaEspecifica)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.ContramedidaEspecifica)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.ContramedidaEspecifica)
             </td>
             <td></td>
         </tr>
@@ -109,7 +109,7 @@
                 @Html.DisplayName("Quem:")
             </td>
             <td>
-                @Html.DisplayFor(model => model._QuemObj.FirstOrDefault().Name)
+                @Html.DisplayFor(model => model._Quem)
             </td>
             <td></td>
         </tr>

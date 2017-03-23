@@ -49,7 +49,7 @@ namespace PlanoDeAcaoMVC.Controllers
         {
             if (id > 0)
             {
-                var model = Pa_Planejamento.Get(id.GetValueOrDefault());
+                var model = Pa_Planejamento.GetTatico(id.GetValueOrDefault());
                 if (model != null)
                     return PartialView("Details", model);
             }

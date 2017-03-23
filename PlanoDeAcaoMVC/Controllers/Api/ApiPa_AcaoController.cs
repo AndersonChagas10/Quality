@@ -57,7 +57,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
                 Pa_BaseObject.SalvarGenerico(i);
 
-                i.AddOrUpdate();
+              
             }
 
             return acao;

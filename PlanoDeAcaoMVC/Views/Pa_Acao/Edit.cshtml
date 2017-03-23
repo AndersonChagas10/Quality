@@ -10,7 +10,7 @@
                             @Html.Label("Causa generica", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @Html.DropDownList("CausaMedidasXAcao.CausaGenerica_Id", new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione", new { @class = "form-control input-sm" })
+                            @Html.DropDownList("CausaGenerica_Id", new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione", new { @class = "form-control input-sm" })
                         </td>
                         <td></td>
                     </tr>
@@ -19,7 +19,7 @@
                             @Html.Label("Grupo causa", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td id="GrupoCausa">
-                            @Html.DropDownList("CausaMedidasXAcao.GrupoCausa_Id", new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
+                            @Html.DropDownList("GrupoCausa_Id", new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
                         </td>
                         <td></td>
                     </tr>
@@ -28,7 +28,7 @@
                             @Html.Label("Contramedida generica", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td id="ContramedidaGenerica">
-                            @Html.DropDownList("CausaMedidasXAcao.ContramedidaGenerica_Id", new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
+                            @Html.DropDownList("ContramedidaGenerica_Id", new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
                         </td>
                         <td></td>
                     </tr>
@@ -37,8 +37,7 @@
                             @Html.Label("Causa Específica", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @Html.Editor("CausaMedidasXAcao.CausaEspecifica", new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.Hidden("CausaMedidasXAcao.CausaEspecifica_Id", Model.CausaMedidasXAcao.CausaEspecifica_Id)
+                            @Html.EditorFor(r=>r.CausaEspecifica, new { htmlAttributes = new { @class = "form-control" } })
                         </td>
                         <td></td>
                     </tr>
@@ -47,8 +46,7 @@
                             @Html.Label("Contramedida Específica", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @Html.Editor("CausaMedidasXAcao.ContramedidaEspecifica", new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.Hidden("CausaMedidasXAcao.ContramedidaEspecifica_Id", Model.CausaMedidasXAcao.ContramedidaEspecifica_Id)
+                            @Html.EditorFor(r=>r.ContramedidaEspecifica, new { htmlAttributes = new { @class = "form-control" } })
                         </td>
                         <td></td>
                     </tr>
@@ -58,18 +56,18 @@
                             @Html.Label("Quem", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @Html.DropDownList("AcaoXQuemDdl", new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                            @Html.Hidden("AcaoXQuemDdlId")
+                            @Html.DropDownList("Quem_Id", new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                            
                         </td>
                         <td style="text-align: center; vertical-align: bottom;" id="CausaMedidasXAcaoAdd">
 
-                            <button id="adicionar" type="button" class="btn btn-default btn-sm" onclick="Adicionar(this);">
+                            @*<button id="adicionar" type="button" class="btn btn-default btn-sm" onclick="Adicionar(this);">
                                 <span class="glyphicon glyphicon-plus"></span> Adicionar
                             </button>
 
                             <button id="remove" style="display:none" type="button" class="btn btn-default btn-sm" onclick="Remover(this);">
                                 <span class="glyphicon glyphicon-remove"></span> Remover
-                            </button>
+                            </button>*@
 
                         </td>
                     </tr>
@@ -83,16 +81,7 @@
                         </td>
                         <td></td>
                     </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.DuracaoDias, htmlAttributes: new { @class = "control-label " })
-                        </td>
-                        <td>
-                            @Html.EditorFor(model => model.DuracaoDias, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.DuracaoDias, "", new { @class = "text-danger" })
-                        </td>
-                        <td></td>
-                    </tr>
+                  
                     <tr>
                         <td>
                             @Html.LabelFor(model => model.QuandoFim, htmlAttributes: new { @class = "control-label " })
@@ -156,7 +145,7 @@
 
             @Html.Hidden("Id", Model.Id)
             @Html.Hidden("Panejamento_Id", Model.Panejamento_Id)
-            @Html.Hidden("CausaMedidasXAcao.Id", Model.CausaMedidasXAcao.Id)
+            
             
         </form>
 

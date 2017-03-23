@@ -53,11 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Acao\Pa_Acao.cs" />
-    <Compile Include="Acao\Pa_AcaoXQuem.cs" />
     <Compile Include="Acao\Pa_Acompanhamento.cs" />
     <Compile Include="Acao\Pa_CausaEspecifica.cs" />
     <Compile Include="Acao\Pa_CausaGenerica.cs" />
-    <Compile Include="Acao\Pa_CausaMedidasXAcao.cs" />
     <Compile Include="Acao\Pa_ContramedidaEspecifica.cs" />
     <Compile Include="Acao\Pa_ContramedidaGenerica.cs" />
     <Compile Include="Acao\Pa_Departamento.cs" />

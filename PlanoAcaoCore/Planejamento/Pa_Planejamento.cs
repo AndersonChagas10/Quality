@@ -312,6 +312,11 @@ namespace PlanoAcaoCore
             return GetGenerico<Pa_Planejamento>(query + " WHERE Pl.Id = " + Id);
         }
 
+        public static Pa_Planejamento GetTatico(int Id)
+        {
+            return GetGenerico<Pa_Planejamento>(query + " WHERE Pl.Tatico_Id = " + Id);
+        }
+
         public static List<Pa_Planejamento> GetPlanejamentoAcao()
         {
             var retorno = new List<Pa_Planejamento>();
@@ -327,7 +332,7 @@ namespace PlanoAcaoCore
                 //    remover.Add(i.Estrategico_Id.GetValueOrDefault());
                 //}
 
-                var acoesTmp = acoes.Where(r => r.Panejamento_Id == i.Id);
+                var acoesTmp = acoes.Where(r => r.Panejamento_Id == i.Tatico_Id);
                 if (acoesTmp.Count() > 0)
                 {
                     foreach (var k in acoesTmp)
@@ -349,7 +354,7 @@ namespace PlanoAcaoCore
                 }
                 else
                 {
-                    i.Acao = new Pa_Acao() { CausaMedidasXAcao = new Pa_CausaMedidasXAcao() };
+                    i.Acao = new Pa_Acao();
 
                     retorno.Add(i);
                 }
