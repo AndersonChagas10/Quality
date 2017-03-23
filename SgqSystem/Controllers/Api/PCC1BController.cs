@@ -1,9 +1,7 @@
 ﻿using Dominio;
 using Dominio.ADO;
-using DTO;
 using SgqSystem.Handlres;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 
@@ -53,6 +51,10 @@ namespace SgqSystem.Controllers.Api
 
             ResultadosSequencialBanda _result = new ResultadosSequencialBanda();
 
+            var userName = "UserGQualidade";
+            var pass = "grJsoluco3s";
+
+
             //if (GlobalConfig.Brasil)
             //{
             //    userName = "sa";
@@ -73,7 +75,7 @@ namespace SgqSystem.Controllers.Api
             try
             {
 
-            
+
                 using (var db = new FactoryADO(company.IPServer, company.DBServer, pass, userName))
                 {
                     var query = "EXEC FBED_GRTTipificacao '" + receive.Data + "', " + company.CompanyNumber.ToString() + ", " + receive.sequencialAtual.ToString();
@@ -81,7 +83,8 @@ namespace SgqSystem.Controllers.Api
                     if (resultQuery != null && resultQuery.Count() > 0)
                     {
                         retorno.Sequential = resultQuery.FirstOrDefault().iSequencial;
-                    }else
+                    }
+                    else
                     {
                         retorno.Sequential = receive.sequencialAtual + 1;
                     }
@@ -96,7 +99,7 @@ namespace SgqSystem.Controllers.Api
                 retorno.Sequential = receive.sequencialAtual + 1;
                 retorno.serverSide = company.IPServer + company.DBServer + pass + userName;
                 return retorno;
-                
+
             }
 
         }
