@@ -386,9 +386,22 @@ namespace SgqSystem.Controllers.Api
                                                          select p).FirstOrDefault();
 
 
-                                        var ParLevel2 = (from p in db2.ParLevel2
-                                                         where p.Description == "183"
-                                                         select p).FirstOrDefault();
+                                        var ParLevel2_old = db2.ParLevel1
+                                            .Join(db2.ParLevel3Level2Level1, p1 => p1.Id, p321 => p321.ParLevel1_Id, (p1, p321) => new { p1, p321 })
+                                            .Join(db2.ParLevel3Level2, p321xp1 => p321xp1.p321.ParLevel3Level2_Id, p32 => p32.Id, (p321, p32) => new { p321, p32 })
+                                            .Join(db2.ParLevel2, p32xp1 => p32xp1.p321.p321.ParLevel3Level2_Id, p2 => p2.Id, (p32, p2) => new { p32, p2})
+                                            .Select(x => new { x.p2 }).FirstOrDefault();
+
+                                        var ParLevel2 = ParLevel2_old.p2;
+
+       
+
+                                        //var ParLevel2 = (from p1 in db2.ParLevel1
+                                        //                 join p321 in db2.ParLevel3Level2Level1 on p1.Id  equals p321.ParLevel1_Id
+                                        //                 join p32  in db2.ParLevel3Level2       on p32.Id equals p321.ParLevel3Level2_Id
+                                        //                 join p2   in db2.ParLevel2             on p2.Id  equals p32.ParLevel2_Id
+                                        //                 where p1.Id == ParLevel1.Id
+                                        //                 select p2).FirstOrDefault();
 
                                         var collectionLevel2 = (from p in db2.CollectionLevel2
                                                                 where p.Key == verificacaoTipificacaoChave
@@ -501,7 +514,7 @@ namespace SgqSystem.Controllers.Api
                                                                   select x).FirstOrDefault().TarefaId;
 
                                             var ParLevel3 = (from p in ParLevel3List
-                                                             where p.Description == resultIdTarefa.ToString()
+                                                             where p.Id == resultIdTarefa
                                                              select p).FirstOrDefault();
 
                                             bool conforme = true;

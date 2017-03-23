@@ -235,32 +235,52 @@ namespace SgqSystem.Controllers.Api
             if (anos == "null") anos = "";
             if (meses == "null") meses = "";
 
-            var regionalDecode = HttpUtility.UrlDecode(regional, System.Text.Encoding.Default);
-            regionalDecode = regionalDecode.Replace("|", "/");
+            var eRegional = "";
 
-            regionalDecode = regional;
+            using (var db = new SgqDbDevEntities())
+            {
+                var sql = "";
+                sql = "SELECT TOP 1 RETORNO FROM ( ";
+                sql += "SELECT top 1 '1' retorno FROM DimManBaseRegGrup WHERE EmpresaRegionalGrupo like '%" + regional + "%' UNION ALL ";
+                sql += "SELECT '0') AS RETORNO ";
+
+                eRegional = db.Database.SqlQuery<string>(sql).FirstOrDefault();
+            }
+
+            var regionalDecode = HttpUtility.UrlDecode(regional, System.Text.Encoding.Default);
+
+            if (eRegional == "1")
+            {
+                regionalDecode = regionalDecode.Trim();
+            }
+            else
+            {
+                regionalDecode = regionalDecode.Replace("|", "/").Trim();
+            }
+
+            //regionalDecode = regional;
 
             var pacoteDecode = HttpUtility.UrlDecode(pacote, System.Text.Encoding.Default);
-            pacoteDecode = pacoteDecode.Replace("|", "/");
+            pacoteDecode = pacoteDecode.Replace("|", "/").Trim();
 
             var lista = new List<Reg>();
 
             //var regionalFiltDecode = HttpUtility.UrlDecode(regFiltro, System.Text.Encoding.Default);
             //regionalFiltDecode = regionalFiltDecode.Replace("|", "/");
 
-            string regionaisFiltradas = "";
-            string regionalFiltDecode = "";
+            //string regionaisFiltradas = "";
+            //string regionalFiltDecode = "";
 
-            if (regionalFiltDecode != "null")
-            {
-                regionaisFiltradas = queryReg(regionalFiltDecode);
-            }
+            //if (regionalFiltDecode != "null")
+            //{
+            //    regionaisFiltradas = queryReg(regionalFiltDecode);
+            //}
 
             string pacotes = "";
 
             if (pacote != null)
             {
-                pacotes = "AND Pacote = '" + pacoteDecode + "'";
+                pacotes = " AND Pacote = '" + pacoteDecode + "' ";
             }
 
             using (var db = new SgqDbDevEntities())
@@ -273,7 +293,7 @@ namespace SgqSystem.Controllers.Api
                 sql += "from Manutencao ";
                 sql += "WHERE MesAno BETWEEN \'" + dataIni + "\' AND \'" + dataFim + "\' ";
                 sql += "AND TipoInformacao = 'CustoFixo' ";
-                sql += "\n and EmpresaRegionalGrupo in (\'" + regionalDecode + "\')";
+                sql += "\n and (EmpresaRegionalGrupo like \'%" + regionalDecode + "%\' OR EmpresaRegional like \'%" + regionalDecode + "%\') ";
                 sql += pacotes;
                 //sql += regionaisFiltradas;
                 sql += " group by EmpresaSigla ";
@@ -325,7 +345,7 @@ namespace SgqSystem.Controllers.Api
                 sql += "from Manutencao ";
                 sql += "WHERE MesAno BETWEEN \'" + obj.dataIni + "\' AND \'" + obj.dataFim + "\' ";
                 sql += "AND TipoInformacao = 'CustoFixo' ";
-                sql += "\n and EmpresaRegionalGrupo in (\'" + regionalDecode + "\')";
+                sql += "\n and (EmpresaRegionalGrupo like \'%" + regionalDecode + "%\' OR EmpresaRegional like \'%" + regionalDecode + "%\') ";
                 sql += pacotes;
                 //sql += regionaisFiltradas;
                 sql += "group by EmpresaSigla ";
@@ -809,7 +829,7 @@ namespace SgqSystem.Controllers.Api
 
                 sql += "\n SELECT ";
                 sql += "\n EmpresaSigla, AnoMes,  ";
-                sql += "\n "+ tipoDeSQL;
+                sql += "\n " + tipoDeSQL;
                 sql += "\n FROM ( ";
                 sql += "\n SELECT ";
                 sql += "\n EmpresaSigla, CONCAT(YEAR(MesAno), '-', CASE WHEN LEN(MONTH(MesAno)) = 1 THEN CONCAT('0', CAST(MONTH(MesAno) AS VARCHAR)) ELSE CAST(MONTH(MesAno) AS VARCHAR) END) AnoMes ";
@@ -837,7 +857,7 @@ namespace SgqSystem.Controllers.Api
                 sql += "\n " + sqlData;
                 //sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
                 sql += "\n and EmpresaSigla = \'" + unidadeDecode + "\'  ";
-                sql += "\n "+ regionaisFiltradas;
+                sql += "\n " + regionaisFiltradas;
                 sql += "\n GROUP BY EmpresaSigla, CONCAT(YEAR(MesAno), '-', CASE WHEN LEN(MONTH(MesAno)) = 1 THEN CONCAT('0', CAST(MONTH(MesAno) AS VARCHAR)) ELSE CAST(MONTH(MesAno) AS VARCHAR) END) ";
                 sql += "\n ) TABELA ORDER BY 2, 1";
 
@@ -1348,7 +1368,7 @@ namespace SgqSystem.Controllers.Api
                     sql += "\n " + sqlData;
                     //sql += "and EmpresaCluster != 'Cluster 1 [Desossa 0%]' ";
                     sql += "\n and EmpresaSigla = \'" + unidadeDecode + "\' ";
-                    sql += "\n "+ regionaisFiltradas;
+                    sql += "\n " + regionaisFiltradas;
                     sql += "\n GROUP BY ";
                     sql += "\n EmpresaSigla, CONCAT(YEAR(MesAno), '-', CASE WHEN LEN(MONTH(MesAno)) = 1 THEN CONCAT('0', CAST(MONTH(MesAno) AS VARCHAR)) ELSE CAST(MONTH(MesAno) AS VARCHAR) END)  ";
                     //sql += "HAVING SUM(CAST(CASE WHEN TipoConsumo = '002.M3. Agua' then(CASE WHEN ConsumoRealizado = 0 THEN ConsumoOrcado ELSE ConsumoRealizado END) ELSE 0 END AS FLOAT)) > 0 ";

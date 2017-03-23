@@ -199,8 +199,36 @@
                                         <table id="tblIntegracoes">
                                             <tbody>
                                                 <tr class="row">
-                                                    @Table.GerarColuna(@Html.DropDownListFor(m => m.paramsDto.parHeaderFieldDto.Description, Model.paramsDdl.DdlEquipamentos, new { @class = "form-control input-sm equipamentos" }), @Html.Label(Resources.Resource.equipaments), Table.PosicaoLabel.top, null)
+
+                                                    <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoEquipamento" value="integracaoEquipamentoValor"></td>
+                                                    <td style="padding:5px;">Equipamento</td>
+                                                    <td style="padding:5px;">@Html.DropDownList("integracaoEquipamentoList", Model.paramsDdl.DdlEquipamentos, new { @class = "form-control input-sm equipamentos" })</td>
+
                                                 </tr>
+                                                <tr class="row">
+
+                                                    <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoCamara" value="integracaoCamaraValor"></td>
+                                                    <td style="padding:5px;">Câmara</td>
+                                                    <td style="padding:5px;">@Html.DropDownList("integracaoCamaraList", Model.paramsDdl.DdlCamaras, new { @class = "form-control input-sm equipamentos" })</td>
+
+                                                </tr>
+
+                                                <tr class="row">
+
+                                                    <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoPontoDeColeta" value="integracaoPontoDeColetaValor"></td>
+                                                    <td style="padding:5px;">Ponto de Coleta</td>
+                                                    <td style="padding:5px;">@Html.DropDownList("integracaoPontoDeColetaList", Model.paramsDdl.DdlPontosDeColeta, new { @class = "form-control input-sm equipamentos" })</td>
+
+                                                </tr>
+
+                                                <tr class="row">
+
+                                                    <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoProduto"></td>
+                                                    <td style="padding:5px;">Produtos</td>
+                                                    <td style="padding:5px;"></td>
+
+                                                </tr>
+
                                             </tbody>
                                         </table>
                                         <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Integrações" id="btnIncluirIntegracoes" onclick="Cabecalhos.IncluirIntegracoes();" />
@@ -1178,14 +1206,28 @@
                 return;
             }
 
-            if($('#paramsDto_parHeaderFieldDto_Description').val().length == 0){
-                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.fill_the_equipaments");
-                //alert('Digite o nome para o Campo Numerico');
-                return;
-            }
+            var description = "";
 
             var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
-            var description = $('#paramsDto_parHeaderFieldDto_Description').val();
+
+            switch ($('input[name=integracaoRB]:checked').val()) {
+                case "integracaoEquipamentoValor":
+                    description = $('#integracaoEquipamentoList').val();
+                    break;
+                case "integracaoCamaraValor":
+                    description = $('#integracaoCamaraList').val();
+                    break;
+                case "integracaoPontoDeColetaValor":
+                    description = $('#integracaoPontoDeColetaList').val();
+                    break;
+                case "integracaoProduto":
+                    description = "Produto";
+                default:
+                    description = "";
+                    break;
+            }
+
+
             var nivelCabecalho = $('#headerLevel option:selected').val();
             var tipo = $('#parFieldType option:selected').val();
             var linkedNumberEvaluation = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked');
