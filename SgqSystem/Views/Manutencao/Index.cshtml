@@ -142,16 +142,16 @@
                                                 listaCor[13] = ['#FFDD00', 13, 0.52];
                                                 listaCor[14] = ['#FFCC00', 14, 0.56];
                                                 listaCor[15] = ['#FFBB00', 15, 0.6];
-                                                listaCor[16] = ['#FF9900', 16, 0.64];
-                                                listaCor[17] = ['#FF8800', 17, 0.68];
-                                                listaCor[18] = ['#FF7700', 18, 0.72];
-                                                listaCor[19] = ['#FF6600', 19, 0.76];
-                                                listaCor[20] = ['#FF5500', 20, 0.8];
-                                                listaCor[21] = ['#FF4400', 21, 0.84];
-                                                listaCor[22] = ['#FF3300', 22, 0.88];
-                                                listaCor[23] = ['#FF2200', 23, 0.92];
-                                                listaCor[24] = ['#FF1100', 24, 0.96];
-                                                listaCor[25] = ['#FF0000', 25, 1];
+                                                listaCor[16] = ['#FFBB00', 16, 0.64];
+                                                listaCor[17] = ['#FFBB00', 17, 0.68];
+                                                listaCor[18] = ['#FFBB00', 18, 0.72];
+                                                listaCor[19] = ['#FFBB00', 19, 0.76];
+                                                listaCor[20] = ['#FFBB00', 20, 0.8];
+                                                listaCor[21] = ['#FFBB00', 21, 0.84];
+                                                listaCor[22] = ['#FFBB00', 22, 0.88];
+                                                listaCor[23] = ['#FFBB00', 23, 0.92];
+                                                listaCor[24] = ['#FFBB00', 24, 0.96];
+                                                listaCor[25] = ['#FFBB00', 25, 1];
 
 
                                                 for (i = 0; i < listaCor.length; i++) {
@@ -775,6 +775,7 @@
                                                                         if ($('#GrafDespReg').highcharts() != undefined) {
                                                                             $('#GrafDespReg').highcharts().destroy()
                                                                         }
+
                                                                         setTimeout(resizeHighcharts(), 200);
                                                                         MountGraficoDespesaTodasRegionais(this.category);
                                                                         MountGraficoDespesaTodasRegionaisGrupoPorPacote(this.category);
@@ -1404,7 +1405,7 @@
                                                             data: x1,
                                                             //data: [1,2,3,4],
                                                             yAxis: 1,
-                                                            color: ' #ADB4D8',
+                                                            color: '#ADB4D8',
 
                                                             point: {
                                                                 events: {
@@ -1412,7 +1413,13 @@
                                                                         $('#GraficoDespesaTodasRegionaisPorPacote').empty();
                                                                         $('#GrafDespReg').empty();
                                                                         MountGraficoDespesaTodasRegionaisPorPacote(this.category),
-                                                                        MountGrafDespReg(this.category,null)
+                                                                        //MountGrafDespReg(this.category, null)
+                                                                        MountGrafDespRegGrup(this.category, null)
+
+                                                                        console.log(this.category.split("<br><br>")[0] + null),
+                                                                        MountGrafDespReg(this.category.split("<br><br>")[0], null)
+
+
                                                                     }
                                                                 }
                                                             }
@@ -1421,7 +1428,7 @@
                                                             data: x2,
                                                             //data: [4,3,2,1],
                                                             yAxis: 1,
-                                                            color: '#aef2ae',
+                                                            color: '#AEF2AE',
 
 
                                                             point: {
@@ -1430,7 +1437,11 @@
                                                                         $('#GraficoDespesaTodasRegionaisPorPacote').empty();
                                                                         $('#GrafDespReg').empty();
                                                                         MountGraficoDespesaTodasRegionaisPorPacote(this.category),
-                                                                        MountGrafDespReg(this.category, null)
+                                                                        //MountGrafDespReg(this.category, null)
+                                                                        MountGrafDespRegGrup(this.category, null)
+
+                                                                        console.log(this.category.split("<br><br>")[0] + null),
+                                                                        MountGrafDespReg(this.category.split("<br><br>")[0], null)
                                                                     }
                                                                 }
                                                             }
@@ -1455,8 +1466,12 @@
                                                                     click: function () {
                                                                         $('#GraficoDespesaTodasRegionaisPorPacote').empty();
                                                                         $('#GrafDespReg').empty();
-                                                                        MountGraficoDespesaTodasRegionaisPorPacote(),
-                                                                        MountGrafDespReg(this.category,null)
+                                                                        MountGraficoDespesaTodasRegionaisPorPacote(this.category),
+                                                                        //MountGrafDespReg(this.category, null)
+                                                                        MountGrafDespRegGrup(this.category, null)
+
+                                                                        console.log(this.category.split("<br><br>")[0] + null),
+                                                                        MountGrafDespReg(this.category.split("<br><br>")[0], null)
                                                                     }
                                                                 }
                                                             }
@@ -2730,7 +2745,7 @@
                                                         data: orcado,
                                                         //data: [1,2,3,4],
                                                         yAxis: 1,
-                                                        color: ' #ADB4D8',
+                                                        color: ' #ADB4D8'
 
                                                         //point: {
                                                         //    events: {
@@ -2741,7 +2756,7 @@
                                                         name: 'Despesa Real',
                                                         data: real,
                                                         yAxis: 1,
-                                                        color: '#aef2ae',
+                                                        color: '#aef2ae'
 
 
                                                         //point: {
@@ -2761,7 +2776,7 @@
                                                             formatter: function () {
                                                                 return this.y + '%';
                                                             }
-                                                        },
+                                                        }
 
 
                                                         //point: {
