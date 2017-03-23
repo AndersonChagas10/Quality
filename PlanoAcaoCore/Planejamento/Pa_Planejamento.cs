@@ -123,8 +123,9 @@ namespace PlanoAcaoCore
             }
         }
 
+        public bool IsTatico { get; set; }
+
         public int? Tatico_Id { get; set; }
-     
 
         public void Update()
         {
@@ -159,6 +160,8 @@ namespace PlanoAcaoCore
             Salvar(cmd);
         }
 
+
+
         #endregion
 
         #region Depreciado
@@ -173,7 +176,7 @@ namespace PlanoAcaoCore
 
         public Pa_Acao Acao { get; set; }
 
-        public string resumo
+        public string _resumo
         {
             get
             {
@@ -253,35 +256,7 @@ namespace PlanoAcaoCore
         {
             get
             {
-                //return "SELECT Pl.*,                                                                         " +
-                //    "\n INI.Name AS Inciativa,                                                               " +
-                //    "\n DIR.Name AS Diretoria,                                                               " +
-                //    "\n GER.Name AS Gerencia,                                                                " +
-                //    "\n CORD.Name AS Coordenacao,                                                            " +
-                //    "\n MISS.Name AS Missao,                                                                 " +
-                //    "\n VIS.Name AS Visao,                                                                   " +
-                //    "\n TEM.Name AS TemaAssunto,                                                             " +
-                //    "\n INDIC.Name AS IndicadoresDiretriz,                                                   " +
-                //    "\n INDICProj.Name AS IndicadoresDeProjeto,                                              " +
-                //    "\n OBJT.Name AS ObjetivoGerencial,                                                      " +
-                //    "\n DIME.Name AS Dimensao,                                                                " +
-                //    "\n INICI.Name AS Iniciativa,                                                            " +
-                //    "\n OBJ.Name AS Objetivo                                                                " +
-                //    "\n  FROM Pa_Planejamento Pl                                                             " +
-                //    "\n LEFT JOIN Pa_Iniciativa INI on INI.Id = Pl.Iniciativa_Id                             " +
-                //    "\n LEFT JOIN Pa_Diretoria DIR on DIR.Id = Pl.Diretoria_Id                               " +
-                //    "\n LEFT JOIN Pa_Gerencia GER on Pl.Gerencia_Id = GER.Id                                 " +
-                //    "\n LEFT JOIN Pa_Coordenacao CORD on CORD.Id = Pl.Coordenacao_Id                         " +
-                //    "\n LEFT JOIN Pa_Missao MISS on MISS.Id = Pl.Missao_Id                                   " +
-                //    "\n LEFT JOIN Pa_Visao VIS on VIS.Id = Pl.Visao_Id                                       " +
-                //    "\n LEFT JOIN Pa_TemaAssunto TEM on TEM.Id = Pl.TemaAssunto_Id                           " +
-                //    "\n LEFT JOIN Pa_IndicadoresDiretriz INDIC on INDIC.Id = Pl.IndicadoresDiretriz_Id       " +
-                //    "\n LEFT JOIN Pa_IndicadoresDeProjeto INDICProj on INDIC.Id = Pl.IndicadoresDeProjeto_Id " +
-                //    "\n LEFT JOIN Pa_Iniciativa INICI on INICI.Id = Pl.Iniciativa_Id                         " +
-                //    "\n LEFT JOIN Pa_ObjetivoGeral OBJT on OBJT.Id = Pl.ObjetivoGerencial_Id                 " +
-                //    "\n LEFT JOIN Pa_Objetivo OBJ on OBJ.Id = Pl.Objetivo_Id                                 " +
-                //    "\n LEFT JOIN Pa_Dimensao DIME on DIME.Id = Pl.Dimensao_Id                               ";
-
+              
                 return "\nSELECT Pl.* ,             " +
                         "\nINI.Name AS Inciativa,                          " +
                         "\nDIR.Name AS Diretoria,                          " +
@@ -296,7 +271,7 @@ namespace PlanoAcaoCore
                         "\nDIME.Name AS Dimensao,                          " +
                         "\nINICI.Name AS Iniciativa,                       " +
                         "\nOBJ.Name AS Objetivo                            " +
-                        " FROM(SELECT Pl1.Id, Pl1.AddDate, Pl1.AlterDate, Pl1.Diretoria_Id, Pl2.Gerencia_Id, Pl2.Coordenacao_Id, Pl1.Missao_Id, Pl1.Visao_Id, Pl1.TemaAssunto_Id, Pl1.Indicadores_Id, Pl2.Iniciativa_Id, Pl2.ObjetivoGerencial_Id, Pl1.Dimensao, Pl1.Objetivo, Pl2.ValorDe, Pl2.ValorPara, Pl2.DataInicio, Pl2.DataFim, Pl1.[Order], Pl1.Dimensao_Id, Pl1.Objetivo_Id, Pl1.IndicadoresDiretriz_Id, Pl2.IndicadoresDeProjeto_Id, Pl2.Estrategico_Id, Pl1.Responsavel_Diretriz, Pl2.Responsavel_Projeto, Pl2.UnidadeDeMedida_Id FROM Pa_Planejamento Pl1 " +
+                        " FROM(SELECT Pl1.Id, Pl1.AddDate, Pl1.AlterDate, Pl1.Diretoria_Id, Pl2.Gerencia_Id, Pl2.Coordenacao_Id, Pl1.Missao_Id, Pl1.Visao_Id, Pl1.TemaAssunto_Id, Pl1.Indicadores_Id, Pl2.Iniciativa_Id, Pl2.ObjetivoGerencial_Id, Pl1.Dimensao, Pl1.Objetivo, Pl2.ValorDe, Pl2.ValorPara, Pl2.DataInicio, Pl2.DataFim, Pl1.[Order], Pl1.Dimensao_Id, Pl1.Objetivo_Id, Pl1.IndicadoresDiretriz_Id, Pl2.IndicadoresDeProjeto_Id, Pl2.Estrategico_Id, Pl1.Responsavel_Diretriz, Pl2.Responsavel_Projeto, Pl2.UnidadeDeMedida_Id, Pl2.IsTatico, Pl2.Tatico_Id FROM Pa_Planejamento Pl1 " +
                         "  INNER JOIN Pa_Planejamento Pl2 on Pl1.Id = Pl2.Estrategico_Id " +
                         "  UNION ALL " +
                         "  SELECT DISTINCT pl1.* FROM Pa_Planejamento Pl1 LEFT JOIN Pa_Planejamento Pl2 on Pl1.Id = Pl2.Estrategico_Id  where Pl1.Estrategico_Id is null and Pl2.Estrategico_Id is null " +

@@ -173,14 +173,24 @@ namespace ADOFactory
         public T InsertUpdateData<T>(T obj)
         {
             SqlCommand cmd = GetQuery(obj);
-
+   
+            
             cmd.CommandType = CommandType.Text;
             cmd.Connection = connection;
             try
             {
-                int newID;
-                newID = (int)cmd.ExecuteScalar();
-                obj.GetType().GetProperty("Id").SetValue(obj, newID);
+                if (obj.GetType().GetProperty("Id") != null)
+                {
+                    var id = (int)obj.GetType().GetProperty("Id").GetValue(obj, null);
+                    if (id > 0)
+                        cmd.ExecuteNonQuery();
+                    else
+                    {
+                        int newID;
+                        newID = (int)cmd.ExecuteScalar();
+                        obj.GetType().GetProperty("Id").SetValue(obj, newID);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -198,6 +208,77 @@ namespace ADOFactory
 
         private static SqlCommand GetQuery<T>(T obj)
         {
+            SqlCommand cmd = new SqlCommand();
+
+            if (obj.GetType().GetProperty("Id") != null)
+            {
+                var id = (int)obj.GetType().GetProperty("Id").GetValue(obj, null);
+                if (id > 0)
+                    cmd = UpdateQuery(obj, id);
+                else
+                    cmd = InsertQuery(obj);
+            }
+
+            return cmd;
+        }
+
+        private static SqlCommand UpdateQuery<T>(T obj, int id)
+        {
+
+            var query = "UPDATE " + obj.GetType().Name;
+            var queryProps = " SET ";
+
+            foreach (var item in obj.GetType().GetProperties())
+            {
+                if (item != null && item.Name != "Id" && item.Name != "AddDate" && item.Name != "AlterDate" && !item.Name.StartsWith("_"))
+                {
+                    if (obj.GetType().GetProperty(item.Name).GetValue(obj) == null)
+                        continue;
+
+                    if (item.PropertyType.Name == "String")
+                        if (string.IsNullOrEmpty(obj.GetType().GetProperty(item.Name).GetValue(obj) as string))
+                            continue;
+
+                    if (item.PropertyType.IsClass && item.PropertyType.Name != "String")
+                        continue;
+
+                    queryProps += "\n " + item.Name + " = @" + item.Name + ", ";
+                }
+            }
+
+            queryProps = queryProps.Substring(0, queryProps.LastIndexOf(", ")) + "\n ";
+
+            query += queryProps;
+            query += " WHERE Id = " + id;
+            query += " \n SELECT CAST(scope_identity() AS int)";
+
+            SqlCommand cmd;
+            cmd = new SqlCommand(query);
+
+            foreach (var item in obj.GetType().GetProperties())
+            {
+                if (item != null && item.Name != "Id" && item.Name != "AddDate" && item.Name != "AlterDate")
+                {
+                    if (obj.GetType().GetProperty(item.Name).GetValue(obj) == null)
+                        continue;
+
+                    if (item.PropertyType.Name == "String")
+                        if (string.IsNullOrEmpty(obj.GetType().GetProperty(item.Name).GetValue(obj) as string))
+                            continue;
+
+                    if (item.PropertyType.IsClass && item.PropertyType.Name != "String")
+                        continue;
+
+                    cmd.Parameters.AddWithValue("@" + item.Name, obj.GetType().GetProperty(item.Name).GetValue(obj));
+                }
+            }
+
+            return cmd;
+
+        }
+
+        private static SqlCommand InsertQuery<T>(T obj)
+        {
             var query = "INSERT INTO " + obj.GetType().Name;
             var queryProps = "(";
             var queryValues = " VALUES (";
@@ -206,13 +287,13 @@ namespace ADOFactory
             {
                 if (item != null && item.Name != "Id" && item.Name != "AddDate" && item.Name != "AlterDate" && !item.Name.StartsWith("_"))
                 {
-                    if(obj.GetType().GetProperty(item.Name).GetValue(obj) == null)
+                    if (obj.GetType().GetProperty(item.Name).GetValue(obj) == null)
                         continue;
 
                     if (item.PropertyType.Name == "String")
                         if (string.IsNullOrEmpty(obj.GetType().GetProperty(item.Name).GetValue(obj) as string))
                             continue;
-                  
+
                     if (item.PropertyType.IsClass && item.PropertyType.Name != "String")
                         continue;
 

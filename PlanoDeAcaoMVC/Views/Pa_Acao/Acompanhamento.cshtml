@@ -190,11 +190,10 @@
                 
                 @Html.HiddenFor(r => r.Id)
 
-                <input type="text" id="detalhes" />
+                <input type="textarea" id="detalhes" />
 
                 @Html.DropDownList("Status", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
 
-                <button>Enviar</button>
             </form>
         </td>
     </tr>
