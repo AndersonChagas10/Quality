@@ -38,6 +38,8 @@ namespace DTO.DTO.Params
 
         public IEnumerable<SelectListItem> DdlParCompany { get; set; }
         public IEnumerable<SelectListItem> DdlEquipamentos { get; set; }
+        public IEnumerable<SelectListItem> DdlCamaras { get; set; }
+        public IEnumerable<SelectListItem> DdlPontosDeColeta { get; set; }
 
         private List<SelectListItem> CreateSelectListParamsViewModelListLevel<T>(IEnumerable<T> enumerable)
         {
@@ -106,7 +108,9 @@ namespace DTO.DTO.Params
 
             if (GlobalConfig.Brasil)
             {
-                DdlEquipamentos = CreateSelectListEquipamentos();
+                DdlEquipamentos = CreateSelectListEquipamentos("Equipamento");
+                DdlCamaras = CreateSelectListEquipamentos("Câmara");
+                DdlPontosDeColeta = CreateSelectListEquipamentos("Ponto de Coleta");
             }
             
         }
@@ -157,7 +161,7 @@ namespace DTO.DTO.Params
             return retorno;
         }
 
-        private IEnumerable<SelectListItem> CreateSelectListEquipamentos()
+        private IEnumerable<SelectListItem> CreateSelectListEquipamentos(string tipo)
         {
             IEnumerable<SelectListItem> retorno;
 
@@ -166,9 +170,9 @@ namespace DTO.DTO.Params
             using (var db = new Factory(context))
             {
                 string query = "SELECT                                                      "+
-                                "Tipo + ' - ' + ISNULL(Subtipo, 'Todos') as Value,          "+
+                                "Tipo + '|' + ISNULL(Subtipo, '') as Value,          "+
                                 "Tipo + ' - ' + ISNULL(Subtipo, 'Todos') as Text            "+
-                                "FROM Equipamentos GROUP BY Tipo, Subtipo                   ";
+                                "FROM Equipamentos WHERE Tipo = '"+ tipo + "' GROUP BY Tipo, Subtipo ";
 
                 retorno = db.SearchQuery<SelectListItem>(query);
             }
