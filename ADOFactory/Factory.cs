@@ -21,6 +21,7 @@ namespace ADOFactory
         /// <param name="user">User.</param>
         public Factory(string dataSource, string catalog, string password, string user)
         {
+            //var teste = System.Configuration.ConfigurationManager.AppSettings["SgqDbDev"];
             connectionString = new SqlConnectionStringBuilder();
             connectionString.DataSource = dataSource;//@"SERVERGRT\MSSQLSERVER2014";
             connectionString.InitialCatalog = catalog;//"SgqDbDev";
@@ -203,7 +204,7 @@ namespace ADOFactory
 
             foreach (var item in obj.GetType().GetProperties())
             {
-                if (item != null && item.Name != "Id" && item.Name != "AddDate" && item.Name != "AlterDate")
+                if (item != null && item.Name != "Id" && item.Name != "AddDate" && item.Name != "AlterDate" && !item.Name.StartsWith("_"))
                 {
                     if(obj.GetType().GetProperty(item.Name).GetValue(obj) == null)
                         continue;
@@ -211,8 +212,8 @@ namespace ADOFactory
                     if (item.PropertyType.Name == "String")
                         if (string.IsNullOrEmpty(obj.GetType().GetProperty(item.Name).GetValue(obj) as string))
                             continue;
-
-                    if (item.PropertyType.IsClass)
+                  
+                    if (item.PropertyType.IsClass && item.PropertyType.Name != "String")
                         continue;
 
                     queryProps += "\n " + item.Name + ", ";
@@ -241,7 +242,7 @@ namespace ADOFactory
                         if (string.IsNullOrEmpty(obj.GetType().GetProperty(item.Name).GetValue(obj) as string))
                             continue;
 
-                    if (item.PropertyType.IsClass)
+                    if (item.PropertyType.IsClass && item.PropertyType.Name != "String")
                         continue;
 
                     cmd.Parameters.AddWithValue("@" + item.Name, obj.GetType().GetProperty(item.Name).GetValue(obj));

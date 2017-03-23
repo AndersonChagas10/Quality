@@ -5,16 +5,22 @@ using System.Web.Mvc;
 
 namespace PlanoDeAcaoMVC.Controllers
 {
+    [IntegraSgq]
     public class Pa_AcaoController : Controller
     {
         public Pa_AcaoController()
         {
-            ViewBag.Unidade = Pa_Unidade.Listar();
+
+            if (ViewBag.Unidade == null)
+                ViewBag.Unidade = Pa_Unidade.Listar();
+
+            if (ViewBag.Quem == null)
+                ViewBag.Quem = Pa_Quem.Listar();
+
             ViewBag.Departamento = Pa_Departamento.Listar();
             ViewBag.CausaGenerica = Pa_CausaGenerica.Listar();
             ViewBag.GrupoCausa = Pa_GrupoCausa.Listar();
             ViewBag.ContramedidaGenerica = Pa_ContramedidaGenerica.Listar();
-            ViewBag.Quem = Pa_Quem.Listar();
             ViewBag.Predecessora = Pa_Planejamento.Listar();
             ViewBag.Status = Pa_Status.Listar();
             ViewBag.Pa_IndicadorSgqAcao = Pa_IndicadorSgqAcao.Listar();
@@ -27,7 +33,7 @@ namespace PlanoDeAcaoMVC.Controllers
             //ViewBag.Panejamento = Pa_Planejamento
             return PartialView();
         }
-        
+
         // GET: Pa_Acao
         public ActionResult Edit(int id)
         {
@@ -75,5 +81,12 @@ namespace PlanoDeAcaoMVC.Controllers
           
             return PartialView("_DdlGenerica");
         }
+
+        public ActionResult Acompanhamento(int id)
+        {
+            var obj = Pa_Acao.Get(id);
+            return PartialView("Acompanhamento", obj);
+        }
+
     }
 }

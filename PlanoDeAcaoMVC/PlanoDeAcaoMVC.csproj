@@ -44,6 +44,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.6\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -181,6 +182,7 @@
     <Compile Include="Controllers\Api\ApiPa_PlanejamentoController.cs" />
     <Compile Include="Controllers\Api\GenericsController.cs" />
     <Compile Include="Controllers\Api\ApiRelatoriosController.cs" />
+    <Compile Include="Controllers\Api\OperacionalController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PaPlanejamentoAcaoController.cs" />
     <Compile Include="Controllers\Pa_AcaoController.cs" />
@@ -191,6 +193,8 @@
     </Compile>
     <Compile Include="Models\HandleApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SgqIntegracao\IntegraSgq.cs" />
+    <Compile Include="ViewModel\Pa_AcaoViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-datepicker.css" />
@@ -653,6 +657,7 @@
     <Content Include="Views\Shared\_DdlGenerica.cshtml" />
     <Content Include="Views\Pa_Acao\Edit.cshtml" />
     <Content Include="Views\Pa_Planejamento\Editar.cshtml" />
+    <Content Include="Views\Pa_Acao\Acompanhamento.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">
@@ -670,6 +675,10 @@
     <ProjectReference Include="..\PlanoAcaoCore\PlanoAcaoCore.csproj">
       <Project>{9f15cca3-ec01-46b6-91ec-3f408e7417bc}</Project>
       <Name>PlanoAcaoCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlanoAcaoEF\PlanoAcaoEF.csproj">
+      <Project>{2901B555-2F1A-4B5A-BE9D-1D50844E0F2A}</Project>
+      <Name>PlanoAcaoEF</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,7 @@ namespace PlanoAcaoCore
     public class Pa_Unidade : Pa_BaseObject
     {
         public string Name { get; set; }
+        public string Description { get; set; }
         public static List<Pa_Unidade> Listar()
         {
             var query = "SELECT * FROM Pa_Unidade";

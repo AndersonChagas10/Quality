@@ -16,7 +16,6 @@ namespace PlanoAcaoEF
         [Column(TypeName = "datetime2")]
         public DateTime? AlterDate { get; set; }
 
-        [Required]
         public int? Unidade_Id { get; set; }
 
         public int? Departamento_Id { get; set; }
@@ -44,5 +43,11 @@ namespace PlanoAcaoEF
         public int? Pa_IndicadorSgqAcao_Id { get; set; }
 
         public int? Pa_Problema_Desvio_Id { get; set; }
+
+        public int? Level1Id { get; set; }
+
+        public int? Level2Id { get; set; }
+
+        public int? Level3Id { get; set; }
     }
 }
