@@ -1194,11 +1194,36 @@ namespace SGQDBContext
         {
             SqlConnection db = new SqlConnection(conexao);
 
+            var sql = "SELECT null Id, null as Name, 0 as PunishmentValue, 0 as IsDefaultOption";
 
-            string sql = "\n SELECT Id, Nome as Name, 0 as PunishmentValue, 0 as IsDefaultOption " +
-                         "\n FROM Equipamentos " +
-                         "\n WHERE (Tipo = '" + integracao + "' OR subtipo = '" + integracao + "') " +
-                         "\n AND ParCompany_id = " + ParCompany_Id ;
+            var valores = integracao.Split('|');
+
+            if (valores[0] == "Equipamento" || valores[0] == "Câmara" || valores[0] == "Ponto de Coleta")
+            {
+
+                var subtipo = "";
+
+                if (string.IsNullOrEmpty(valores[1]))
+                {
+                    subtipo = "subtipo is null";
+                }
+                else
+                {
+                    subtipo = "subtipo = '" + valores[1] + "'";
+                }
+
+
+                sql = "\n SELECT Id, Nome as Name, 0 as PunishmentValue, 0 as IsDefaultOption " +
+                             "\n FROM Equipamentos " +
+                             "\n WHERE (Tipo = '" + valores[0] + "' AND " + subtipo + ") " +
+                             "\n AND ParCompany_id = " + ParCompany_Id;
+
+            }else if(valores[0] == "Produto")
+            {
+                sql = "\n SELECT nCdProduto Id, cast(nCdProduto as varchar) + ' | ' + cNmProduto as Name, 0 as PunishmentValue, 0 as IsDefaultOption  " +
+                      "\n FROM Produto ";
+                            
+            }
 
             var multipleValues = db.Query<ParFieldType>(sql);
 

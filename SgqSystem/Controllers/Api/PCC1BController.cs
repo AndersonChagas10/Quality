@@ -53,6 +53,9 @@ namespace SgqSystem.Controllers.Api
 
             ResultadosSequencialBanda _result = new ResultadosSequencialBanda();
 
+            var userName = "UserGQualidade";
+            var pass = "grJsoluco3s";
+
             //if (GlobalConfig.Brasil)
             //{
             //    userName = "sa";
