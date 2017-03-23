@@ -216,7 +216,7 @@ namespace PlanoAcaoCore
                         "\n FROM pa_acao ACAO                                               " +
                         "\n LEFT JOIN Pa_Unidade UN ON UN.Id = ACAO.Unidade_Id              " +
                         "\n LEFT JOIN Pa_Departamento DPT ON DPT.Id = ACAO.Departamento_Id  " +
-                        "\n LEFT JOIN Pa_Status STA ON STA.Id = ACAO.[Status]  where acao.id in (select Acao_Id from Pa_CausaMedidaXAcao where Acao_Id is not null)   ";
+                        "\n LEFT JOIN Pa_Status STA ON STA.Id = ACAO.[Status] ";
 
             }
         }
