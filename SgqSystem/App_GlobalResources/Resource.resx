@@ -502,7 +502,7 @@
     <value>Groups</value>
   </data>
   <data name="has_group_on_level3" xml:space="preserve">
-    <value>Level 3 Grouped By Level 2</value>
+    <value>Has Group on Level 3</value>
   </data>
   <data name="level2_description" xml:space="preserve">
     <value>Level 2 description</value>
@@ -1153,7 +1153,7 @@
     <value>We are verifying the laptop parameters</value>
   </data>
   <data name="has_group_level2" xml:space="preserve">
-    <value>Has Group on Level2</value>
+    <value>Level 3 Grouped By Level 2</value>
   </data>
   <data name="acceptable_value_equal_or_greater_than" xml:space="preserve">
     <value>The acceptable value should be equal ou greater than</value>

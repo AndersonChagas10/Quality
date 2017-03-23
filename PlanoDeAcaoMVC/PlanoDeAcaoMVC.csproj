@@ -657,6 +657,7 @@
     <Content Include="Views\Shared\_DdlGenerica.cshtml" />
     <Content Include="Views\Pa_Acao\Edit.cshtml" />
     <Content Include="Views\Pa_Planejamento\Editar.cshtml" />
+    <Content Include="Views\Pa_Acao\Acompanhamento.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">

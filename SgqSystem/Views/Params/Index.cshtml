@@ -72,10 +72,10 @@
                             <div class="tab-pane active" id="setup_tab">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        @if (!GlobalConfig.Eua)
-                                        {
+                                        @*@if (!GlobalConfig.Eua)
+                                        {*@
                                             <button class="btn btn-primary btn-block" id="btnNewLevel1">@Resources.Resource.new_level1</button>
-                                        }
+                                        @*}*@
                                     </div>
                                     <div class="col-xs-9">
                                         @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2" })
@@ -93,10 +93,10 @@
                                             <div class="panel-body">
                                                 <div id="ParLevel1">
 
-                                                    @if (!GlobalConfig.Eua)
-                                                    {
+                                                    @*@if (!GlobalConfig.Eua)
+                                                    {*@
                                                         @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
-                                                    }
+                                                    @*}*@
 
                                                 </div>
                                             </div>
@@ -499,7 +499,7 @@
             var valorSelecionado = $('#parLevel1Select2 option:selected').val();
 
             if (valorSelecionado == "") {/*Reseta Form*/
-                if(!gcEua)
+                //if(!gcEua)
                     indexParamsLevel1.resetaForm();
             } else {
                 indexParamsLevel1.GetLevel1(valorSelecionado);

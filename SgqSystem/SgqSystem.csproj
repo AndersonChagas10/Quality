@@ -2138,6 +2138,7 @@
     <Folder Include="obj\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\EspecificarMonitoramentos\" />
+    <Folder Include="Views\Manutencao\" />
     <Folder Include="Views\RelatorioController\" />
     <Folder Include="Views\RoleApi\" />
     <Folder Include="Views\ScorecardConfig\" />

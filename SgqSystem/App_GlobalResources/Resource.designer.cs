@@ -1744,7 +1744,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Has Group on Level2.
+        ///   Looks up a localized string similar to Level 3 Grouped By Level 2.
         /// </summary>
         internal static string has_group_level2 {
             get {
@@ -1753,7 +1753,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Level 3 Grouped By Level 2.
+        ///   Looks up a localized string similar to Has Group on Level 3.
         /// </summary>
         internal static string has_group_on_level3 {
             get {

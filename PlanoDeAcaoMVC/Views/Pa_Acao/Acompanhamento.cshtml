@@ -1,0 +1,203 @@
+﻿
+@model PlanoAcaoCore.Pa_Acao
+<h5>Acompanhamento da Ação</h5>
+<table class="borderedNinja nowrap .col-md-6 .col-md-offset-3 display" cellspacing="0" style="width: 100%;">
+    <tbody>
+        <tr>
+            <td style="width: 43%;">
+                @Html.DisplayNameFor(model => model.Unidade_Id)
+            </td>
+            <td style="width: 43%;">
+                @Html.DisplayFor(model => model.Unidade)
+            </td>
+            <td style="width: 16%;"></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Pa_Problema_Desvio_Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model._Pa_Problema_Desvio_Id)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Pa_IndicadorSgqAcao_Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model._Pa_IndicadorSgqAcao)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Level1Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Level1Id)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Level2Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Level2Id)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Level3Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Level3Id)
+            </td>
+            <td></td>
+        </tr>
+      
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.CausaMedidasXAcao.CausaGenerica_Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.CausaMedidasXAcao.CausaGenerica)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.CausaMedidasXAcao.GrupoCausa_Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.CausaMedidasXAcao.GrupoCausa)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.CausaMedidasXAcao.ContramedidaGenerica_Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.CausaMedidasXAcao.ContramedidaGenerica)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.CausaMedidasXAcao.CausaEspecifica_Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.CausaMedidasXAcao.CausaEspecifica)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.CausaMedidasXAcao.ContramedidaEspecifica_Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.CausaMedidasXAcao.ContramedidaEspecifica)
+            </td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayName("Quem:")
+            </td>
+            <td>
+                @Html.DisplayFor(model => model._QuemObj.FirstOrDefault().Name)
+            </td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.QuandoInicio)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.QuandoInicio)
+            </td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.QuandoFim)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.QuandoFim)
+            </td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.ComoPontosimportantes)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.ComoPontosimportantes)
+            </td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.StatusName)
+            </td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayName("Prazo")
+            </td>
+            <td>
+                @*@Html.DisplayFor()*@
+            </td>
+            <td></td>
+        </tr>
+        
+     
+
+    
+
+    </tbody>
+</table>
+
+<br />
+
+<table class="borderedNinja nowrap .col-md-6 .col-md-offset-3 display" cellspacing="0" style="width: 100%;">
+    @*Histórico*@
+    <tr>
+        <td colspan="3"></td>
+    </tr>
+</table>
+
+<br />
+
+<table class="borderedNinja nowrap .col-md-6 .col-md-offset-3 display" cellspacing="0" style="width: 100%;">
+    @*Histórico*@
+    <tr>
+        <td colspan="3">
+            <form id="acompanhamento">
+                
+                @Html.HiddenFor(r => r.Id)
+
+                <input type="text" id="detalhes" />
+
+                @Html.DropDownList("Status", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+
+                <button>Enviar</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<br />
