@@ -47,7 +47,7 @@ namespace PlanoDeAcaoMVC.Controllers
                 ViewBag.Disabled = "false";
             else
                 ViewBag.Disabled = "true";
-            ViewBag.DdlName = "CausaMedidasXAcao.GrupoCausa_Id";
+            ViewBag.DdlName = "GrupoCausa_Id";
 
             var results = Pa_GrupoCausa.GrupoCausaPorCausaGenerica(id);
             if (results == null)
@@ -68,7 +68,7 @@ namespace PlanoDeAcaoMVC.Controllers
             else
                 ViewBag.Disabled = false;
 
-            ViewBag.DdlName = "CausaMedidasXAcao.ContramedidaGenerica_Id";
+            ViewBag.DdlName = "ContramedidaGenerica_Id";
 
             var results = Pa_ContramedidaGenerica.ContramedidaGenericaPorGrupoCausa(id);
             if (results == null)
