@@ -81,5 +81,12 @@ namespace PlanoDeAcaoMVC.Controllers
           
             return PartialView("_DdlGenerica");
         }
+
+        public ActionResult Acompanhamento(int id)
+        {
+            var obj = Pa_Acao.Get(id);
+            return PartialView("Acompanhamento", obj);
+        }
+
     }
 }

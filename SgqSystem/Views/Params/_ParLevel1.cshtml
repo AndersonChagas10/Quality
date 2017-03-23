@@ -192,6 +192,8 @@
                                         </table>
                                     </div>
 
+@if (!GlobalConfig.Eua)
+{
                                     @*Obj Integrações*@
                                     <div id="objIntegracoes" style="display:none;">
                                         <table id="tblIntegracoes">
@@ -203,7 +205,7 @@
                                         </table>
                                         <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Integrações" id="btnIncluirIntegracoes" onclick="Cabecalhos.IncluirIntegracoes();" />
                                     </div>
-
+}
                                     <div id="objTexto" style="display:none;">
                                         @*@Table.GerarColuna(@Html.Editor("objTextoName", new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 200px;", @class = "form-control input-erp" } }), @Html.Label(Resources.Resource.option), Table.PosicaoLabel.top, @Html.ErrorManual("objTextoName", "*"), null)*@
                                         <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Texto" id="btnIncluirTexto" onclick="Cabecalhos.IncluirSalvarTexto();" />
@@ -514,12 +516,12 @@
     var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
 
     $(document).ready(function() {
-        if(config){
-            $('#registerTotalEv').hide();
-            if($('#level1Title').html().indexOf("New") > -1){
-                $('#level1Title').html("Level 1");
-            }
-        }
+        //if(config){
+        //    $('#registerTotalEv').hide();
+        //    if($('#level1Title').html().indexOf("New") > -1){
+        //        $('#level1Title').html("Level 1");
+        //    }
+        //}
     })
 
     $('#paramsDto_parLevel1Dto_IsSpecific').on('switchChange.bootstrapSwitch', function (event, state) {

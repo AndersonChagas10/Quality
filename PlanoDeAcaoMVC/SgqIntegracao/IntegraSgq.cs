@@ -19,7 +19,7 @@ namespace PlanoDeAcaoMVC
             var parcompany = new List<ParCompanyDTO>();
             var usersgq = new List<UserDTO>();
             
-                using (var db = new Factory(dataSource, catalog, pass, user))
+            using (var db = new Factory(dataSource, catalog, pass, user))
             {
                 var level1 = db.SearchQuery<ParLevel1DTO>("Select * from parlevel1").Where(r=>r.IsActive).ToList();
                 var level2 = db.SearchQuery<ParLevel1DTO>("Select * from parlevel2").Where(r=>r.IsActive).ToList();
