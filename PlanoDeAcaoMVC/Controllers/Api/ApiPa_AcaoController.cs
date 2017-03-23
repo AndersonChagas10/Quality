@@ -66,7 +66,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
 
         [HttpPost]
-        [Route("SaveAcompnhamento")]
+        [Route("SaveAcompanhamento")]
         public Pa_Acompanhamento Acompanhamento(Pa_Acompanhamento obj)
         {
             //Pa_BaseObject.SalvarGenerico(obj);

@@ -280,6 +280,8 @@
 
         var urlSalvarNovoItem = '@Url.Action("Save", "api/Generics")';
 
+        var urlSalvarAcompanhamento = '@Url.Action("SaveAcompanhamento", "api/Pa_Acao")'
+
         /*Btn Minimizar Modal*/
         $(document).ready(function () {
 
@@ -318,12 +320,6 @@
                 $(this).closest(".modal").removeClass("min");
                 $(".container").removeClass($apnData);
                 //$(this).next('.modalMinimize').find("i").removeClass('fa fa-clone').addClass( 'fa fa-minus');
-            });
-
-            $("#acompanhamento").on("submit", function (event) {
-                //event.preventDefault();
-                var obj = $("#acompanhamento").serializeArray();
-                SalvarAcompanhamento(obj);
             });
 
         });

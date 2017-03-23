@@ -194,18 +194,18 @@
                 @Html.HiddenFor(r => r.Id)
 
                 <div class="form-group">
-                    <label class="redLabel" for="inputlg">Detalhes</label>
-                    <textarea class="form-control input-sm" id="detalhes"></textarea>
+                    <label class="redLabel" for="inputlg">Descrição:</label>
+                    <textarea name="description" class="form-control input-sm" id="description"></textarea>
                 </div>
 
                 <div class="form-group">                    
-                    <label class="redLabel" for="inputlg">Enviar Para:</label>
-                    @Html.DropDownList("Quem", new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control selectpicker", multiple = "true" })
+                    <label class="redLabel" for="inputlg">Destinatário:</label>
+                    @Html.DropDownList("MailTo", new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control selectpicker", multiple = "true" })
                 </div>
 
                 <div class="form-group">
                     <label class="redLabel" for="inputlg">Status</label>
-                    @Html.DropDownList("Status", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    @Html.DropDownList("Status_Id", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
                 </div>
                 <input type="submit" value="Enviar" class="btn btn-primary">
                 @*<button id="btnAcompanhamento" type="button" class="btn btn-primary">Enviar</button>*@
