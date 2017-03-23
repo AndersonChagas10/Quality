@@ -280,6 +280,8 @@
 
         var urlSalvarNovoItem = '@Url.Action("Save", "api/Generics")';
 
+        var urlSalvarAcompanhamento = '@Url.Action("SaveAcompanhamento", "api/Pa_Acao")'
+
         /*Btn Minimizar Modal*/
         $(document).ready(function () {
 
@@ -1166,6 +1168,7 @@
                                       $(r).attr("id", "formEditAcao")
 
                                       $('#modalLindo').find('.modal-body .content3').append(r);
+                                      
                                       $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarAcaoEditada();\" >Salvar Operacional</button><hr>");
 
                                       $('#Edit').show();
@@ -1474,6 +1477,21 @@
             //$('#modalLindo').find('.modal-body .content3').append(form);
             InitDatePiker();
             MoneyMask();
+        }
+
+        function SalvarAcompanhamento(obj) {
+
+            $.post(urlSalvarAcompanhamento, obj, function (r) {
+                
+                //Colocar o retorno no modal
+                
+            })
+            .fail(function (e, h, x) {
+
+                openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
+
+            });
+
         }
 
     </script>
