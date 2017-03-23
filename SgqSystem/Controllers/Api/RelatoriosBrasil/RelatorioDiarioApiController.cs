@@ -395,7 +395,7 @@ namespace SgqSystem.Controllers.Api
         {
             var queryGraficoTendencia = "" +
 
-                 "\n DECLARE @RESS INT " +
+                "\n DECLARE @RESS INT " +
 
                 "\n SELECT " +
                 "\n       @RESS =  " +
@@ -477,7 +477,7 @@ namespace SgqSystem.Controllers.Api
                "\n 		ON IND.Id = CL1.ParLevel1_Id " +
                "\n 		INNER JOIN ParCompany UNI " +
                "\n 		ON UNI.Id = CL1.UnitId " +
-               "\n 		WHERE CL1.ConsolidationDate BETWEEN '" + new DateTime(form._dataInicio.AddMonths(-1).Year, form._dataInicio.AddMonths(-1).Month, 1).ToString("yyyyMMdd") + "' AND '" + form._dataFimSQL + "'" +
+               "\n 		WHERE CL1.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
                "\n    		AND CL1.UnitId = " + form.unitId +
                 "\n	) S1 " +
                "\n ) S2 " +
