@@ -134,6 +134,7 @@
                         </td>
                         <td>
                             @Html.Editor("CausaMedidasXAcao._CausaEspecifica", new { htmlAttributes = new { @class = "form-control" } })
+                            
                         </td>
                         <td></td>
                     </tr>
@@ -142,7 +143,7 @@
                             @Html.Label("Contramedida Específica", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @Html.Editor("CausaMedidasXAcao._ContramedidaEspecifica", new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.Editor("CausaMedidasXAcao._ContramedidaEspecifica", new { htmlAttributes = new { @class = "form-control" } })                          
                         </td>
                         <td></td>
                     </tr>
@@ -232,7 +233,8 @@
                         </td>
                         <td>
                             @Html.Editor("_QuantoCusta", new { htmlAttributes = new { @class = "form-control money" } })
-                            @Html.ValidationMessageFor(model => model.QuantoCusta, "", new { @class = "text-danger" })
+                            @*@Html.ValidationMessageFor(model => model.QuantoCusta, "", new { @class = "text-danger" })*@
+                            @Html.ValidationMessageFor(model => model._QuantoCusta, "", new { @class = "text-danger" })
                         </td>
                         <td></td>
                     </tr>

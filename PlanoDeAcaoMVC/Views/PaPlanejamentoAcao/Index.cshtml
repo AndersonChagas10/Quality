@@ -152,9 +152,7 @@
 
 <div>
     <button type="button" class="btn btn-success" id="NovoPlanejamento" onclick="Clicked(false, false, false); ModalOpcoesEstrategico('Planejamento Estratégico', undefined, NovoPlanejamento);" data-toggle="modal"> Novo Planejamento Estratégico</button>
-    @*<button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="Clicked(false, false); ModalOpcoesEstrategico('Planejamento Estratégico'); ">
-
-        </button>*@
+    @*<button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="Clicked(false, false); ModalOpcoesEstrategico('Planejamento Estratégico'); "></button>*@
     @*<button type="button" class="btn btn-primary" data-toggle="modal" id="" onclick="Clicked(true, false); ModalOpcoesEstrategico('Planejamento Tático'); ">
             Planejamento Tático
         </button>
@@ -241,8 +239,10 @@
 
 <div class="minmaxCon"></div>
 
-@*<script src="~/Scripts/angular.min.js"></script>*@
-@*<script src="~/Scripts/DataTableRowsGroup.js"></script>*@
+@*
+    <script src="~/Scripts/angular.min.js"></script>*@
+@*
+    <script src="~/Scripts/DataTableRowsGroup.js"></script>*@
 
 @section Scripts {
 
@@ -259,6 +259,9 @@
         var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")';
         var urlNovaAcao = '@Url.Action("Index", "Pa_Acao")';
         var urlEditAcao = '@Url.Action("Edit", "Pa_Acao")';
+        var urlEditPlanEstrat = '@Url.Action("Editar", "Pa_Planejamento")';
+        var urlEditPlanOp = '@Url.Action("Editar", "Pa_Planejamento")';
+
 
         var PlanejamentoDetalhes = '@Url.Action("Details", "Pa_Planejamento")';
         var urlNovoPlanejamento = '@Url.Action("Index", "Pa_Planejamento")';
@@ -385,7 +388,6 @@
             else {
                 $('#NovoPlanejamento').show();
             }
-
 
             /*Fim Botões*/
 
@@ -1048,51 +1050,68 @@
 
                     $('table > tbody').on('click', '.edit', function (data, a, b) {
                         var data = table.row($(this).parents('tr')).data();
-                        console.log(data);
+
+                        //console.log(data);
+
                         $('#modalLindo').find('.modal-body').empty();
-                        
-                        $.get(urlEditAcao, { id: data.Acao.Id },
-                              function (r) {
-                                  var acao = data.Acao;
+                        $('#modalLindo').find('.modal-body').append('<div class="content1"></div><div class="content2"></div><div class="content3"></div>');
 
-                                  $('#modalLindo').modal();
-                                  $('#Header').html("Editar Ação");
-                                  $('#modalLindo').find('.modal-body').append(html);
-                                  $('#modalLindo').find('.modal-footer button').hide();
-                                  myfunction();
+                        if (data.Id > 0) {
+                            $.get(urlEditPlanOp, { id: data.Id },
+                                 function (r) {
 
-                                  $('#CausaMedidasXAcao_CausaGenerica_Id').val(acao.CausaMedidasXAcao.CausaGenerica_Id).change();
-                                  $('[name="_QuandoInicio"]').val(acao._QuandoInicio.split(" ")[0]);
-                                  $('[name="_QuandoFim"]').val(acao._QuandoFim.split(" ")[0]);
-                                  $('#Status').val(acao.Status);
-                                  MoneyMask();
-                                  $('#_QuantoCusta').val(acao.QuantoCusta);
-                                  $('#_QuantoCusta').trigger('mask.maskMoney');
-                                  $('#_QuantoCusta').trigger('blur');
+                                     TesteRenan(r, 'Estrategico', data);
+                                 }
+                            );
+                        }
 
-                                  acao.AcaoXQuem.forEach(function (o, c) {
-                                      $($('[id=AcaoXQuemDdl]')[c]).val(o.Quem_Id).change();
-                                      $($('[id=AcaoXQuemDdlId]')[c]).val(o.Id).change();
-                                      if (acao._QuemObj.length > 1 && acao._QuemObj.length - 1 != c)
-                                          $($('[id=adicionar]')[c]).click();
-                                  });
+                        if (data.Id > 0) {
+                            $.get(urlEditPlanEstrat, { id: data.Id },
+                                 function (r) {
+                                     TesteRenan(r, 'Tatico', data);
+                                 }
+                            );
+                        }
 
-                                  $('#Edit').show();
-                                  InitDatePiker();
-                              }
-                        );
+                        if (data.Acao.Id > 0) {
 
-                        $.get(urlEditPlanEstrat, { id: data.Acao.Id },
-                             function (r) {
-                                 
-                             }
-                       );
-                        $.get(urlEditPlanOp, { id: data.Acao.Id },
-                             function (r) {
-                                 EditarAcao(r, data);
-                             }
-                       );
+                            $.get(urlEditAcao, { id: data.Acao.Id },
+                                  function (r) {
+                                      var acao = data.Acao;
 
+                                      $('#modalLindo').modal();
+                                      $('#Header').html("Editar Ação");
+                                      //$('#modalLindo').find('.modal-body').append(r); //colocar html depois
+                                      $('#modalLindo').find('.modal-footer button').hide();
+                                      myfunction();
+
+                                      $('#CausaMedidasXAcao_CausaGenerica_Id').val(acao.CausaMedidasXAcao.CausaGenerica_Id).change();
+                                      $('[name="_QuandoInicio"]').val(acao._QuandoInicio.split(" ")[0]);
+                                      $('[name="_QuandoFim"]').val(acao._QuandoFim.split(" ")[0]);
+                                      $('#Status').val(acao.Status);
+                                      MoneyMask();
+                                      $('#_QuantoCusta').val(acao.QuantoCusta);
+                                      $('#_QuantoCusta').trigger('mask.maskMoney');
+                                      $('#_QuantoCusta').trigger('blur');
+
+                                      acao.AcaoXQuem.forEach(function (o, c) {
+                                          $($('[id=AcaoXQuemDdl]')[c]).val(o.Quem_Id).change();
+                                          $($('[id=AcaoXQuemDdlId]')[c]).val(o.Id).change();
+                                          if (acao._QuemObj.length > 1 && acao._QuemObj.length - 1 != c)
+                                              $($('[id=adicionar]')[c]).click();
+                                      });
+
+
+                                      $('#modalLindo').find('.modal-body .content3').append(r);
+
+                                      $('#Edit').show();
+                                      $('#obj').show(); //Apagar depois
+                                      InitDatePiker();
+
+                                  }
+                            );
+
+                        }
                     });
 
                     $('table > tbody').on('click', '.details', function (data, a, b) {
@@ -1324,6 +1343,89 @@
 
         function GetDataTable() {
             $.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
+        }
+
+        function TesteRenan(r, tipo, model) {
+
+            //$('#modalLindo').find('.modal-body').empty().append(r);
+
+            var form = $(r); //$('#Planejamento')
+
+            $('.novoItem ').hide();
+
+            if (tipo == 'Tatico') { //Novo tatico
+
+                form.find('table > tbody > tr:nth-child(1)').find('input, select').attr('disabled', true);
+                form.find('table > tbody > tr:nth-child(4)').find('input, select').attr('disabled', true);
+                form.find('table > tbody > tr:nth-child(5)').find('input, select').attr('disabled', true);
+                form.find('table > tbody > tr:nth-child(6)').find('input, select').attr('disabled', true);
+                form.find('table > tbody > tr:nth-child(7)').find('input, select').attr('disabled', true);
+                form.find('table > tbody > tr:nth-child(8)').find('input, select').attr('disabled', true);
+                form.find('table > tbody > tr:nth-child(9)').find('input, select').attr('disabled', true);
+
+                form.find('#Tatico_Id').val(model.Id);
+                form.find('table > tbody > tr:nth-child(1)').find('input, select').val(model.Diretoria_Id);
+                form.find('table > tbody > tr:nth-child(2)').find('input, select').val(model.Gerencia_Id);
+                form.find('table > tbody > tr:nth-child(3)').find('input, select').val(model.Coordenacao_Id);
+                form.find('table > tbody > tr:nth-child(4)').find('input, select').val(model.Missao_Id);
+                form.find('table > tbody > tr:nth-child(5)').find('input, select').val(model.Visao_Id);
+                form.find('table > tbody > tr:nth-child(6)').find('input, select').val(model.Dimensao_Id);
+                form.find('table > tbody > tr:nth-child(7)').find('input, select').val(model.Objetivo_Id);
+                form.find('table > tbody > tr:nth-child(8)').find('input, select').val(model.IndicadoresDiretriz_Id);
+                form.find('table > tbody > tr:nth-child(9)').find('input, select').val(model.Responsavel_Diretriz);
+                form.find('table > tbody > tr:nth-child(10)').find('input, select').val(model.Iniciativa_Id);
+                form.find('table > tbody > tr:nth-child(11)').find('input, select').val(model.IndicadoresDeProjeto_Id);
+                form.find('table > tbody > tr:nth-child(12)').find('input, select').val(model.ObjetivoGerencial_Id);
+                form.find('table > tbody > tr:nth-child(13)').find('input, select').val(model._ValorDe);
+                form.find('table > tbody > tr:nth-child(14)').find('input, select').val(model._ValorPara);
+                form.find('table > tbody > tr:nth-child(15)').find('input, select').val(model.UnidadeDeMedida_Id);
+                form.find('table > tbody > tr:nth-child(16)').find('input, select').val(model._DataInicio);
+                form.find('table > tbody > tr:nth-child(17)').find('input, select').val(model._DataFim);
+                form.find('table > tbody > tr:nth-child(18)').find('input, select').val(model.Responsavel_Projeto);
+                $('#modalLindo').find('.modal-body .content2').append(form);
+                $('#modalLindo').find('.modal-body .content2').append('<hr>');
+
+            } else {
+                //if (tipo == 'Estrategico') {
+                //$('#Id').val(model.Id);
+                form.find('#Estrategico_Id').val(model.Id);
+                form.find('table > tbody > tr:nth-child(1)').find('input, select').val(model.Diretoria_Id);
+                form.find('table > tbody > tr:nth-child(4)').find('input, select').val(model.Missao_Id);
+                form.find('table > tbody > tr:nth-child(5)').find('input, select').val(model.Visao_Id);
+                form.find('table > tbody > tr:nth-child(6)').find('input, select').val(model.Dimensao_Id);
+                form.find('table > tbody > tr:nth-child(7)').find('input, select').val(model.Objetivo_Id);
+                form.find('table > tbody > tr:nth-child(8)').find('input, select').val(model.IndicadoresDiretriz_Id);
+                form.find('table > tbody > tr:nth-child(9)').find('input, select').val(model.Responsavel_Diretriz);
+
+                form.find('table > tbody > tr:nth-child(2)').hide();
+                form.find('table > tbody > tr:nth-child(3)').hide();
+                form.find('table > tbody > tr:nth-child(10)').hide();
+                form.find('table > tbody > tr:nth-child(11)').hide();
+                form.find('table > tbody > tr:nth-child(12)').hide();
+                form.find('table > tbody > tr:nth-child(13)').hide();
+                form.find('table > tbody > tr:nth-child(14)').hide();
+                form.find('table > tbody > tr:nth-child(15)').hide();
+                form.find('table > tbody > tr:nth-child(16)').hide();
+                form.find('table > tbody > tr:nth-child(17)').hide();
+                form.find('table > tbody > tr:nth-child(18)').hide();
+
+                $('#modalLindo').find('.modal-body .content1').append(form);
+                $('#modalLindo').find('.modal-body .content2').append('<hr>');
+                //}
+
+                //else {
+                //    $('#Planejamento > table > tbody > tr:nth-child(1)').hide();
+                //    $('#Planejamento > table > tbody > tr:nth-child(4)').hide();
+                //    $('#Planejamento > table > tbody > tr:nth-child(5)').hide();
+                //    $('#Planejamento > table > tbody > tr:nth-child(6)').hide();
+                //    $('#Planejamento > table > tbody > tr:nth-child(7)').hide();
+                //    $('#Planejamento > table > tbody > tr:nth-child(8)').hide();
+                //}
+            }
+            
+            //$('#modalLindo').find('.modal-body .content3').append(form);
+            InitDatePiker();
+            MoneyMask();
         }
 
     </script>
