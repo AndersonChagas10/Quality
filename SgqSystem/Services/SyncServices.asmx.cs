@@ -2998,6 +2998,10 @@ namespace SgqSystem.Services
             string groupLevel3Level2 = null;
             string painelLevel3 = null;
 
+         
+
+            
+
             //Enquando houver lista de level2
             foreach (var parlevel2 in parlevel02List)
             {
@@ -3236,18 +3240,10 @@ namespace SgqSystem.Services
 
                 //                               classe: "painel painelLevel03 row");
 
-                string botoesTodos = null;
-
-                if (GlobalConfig.Brasil)
-                {
-                    botoesTodos +=
-                        "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>"+
-                        "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>";
-                }
+               
 
                 string panelButton = html.listgroupItem(
-                                                           outerhtml: accordeonbuttons +
-                                                                      botoesTodos,
+                                                           outerhtml: accordeonbuttons ,
                                                            classe: "painel painelLevel02 row"
                                                         );
 
@@ -4072,19 +4068,24 @@ namespace SgqSystem.Services
                 //+
                 //                                html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
-
-                string botoesTodos = null;
+                var botoesTodos = "";
 
                 if (GlobalConfig.Brasil)
                 {
-                    botoesTodos = "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right btnAllNA'> Todos N/A </button>" +
-                                  "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right  btnAllNC' style='margin-right: 10px;'> Clicar em Todos </button>";
+                    botoesTodos =
+
+                        "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
+
+                        "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>";
+
+                        
                 }
 
                 string panelButton = html.listgroupItem(
-                                                        outerhtml: accordeonbuttons + botoesTodos,
-                                                        classe: "painel painelLevel02 row"
-                                                    );
+                                                           outerhtml: 
+                                                                      botoesTodos,
+                                                           classe: "painel row"
+                                                        );
 
                 //Se tiver level3 gera o agrupamento no padrão
                 if (!string.IsNullOrEmpty(parLevel3Group) && ParLevel1.HasGroupLevel2 != true)

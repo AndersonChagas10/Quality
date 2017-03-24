@@ -72,11 +72,11 @@
                     { title: "AV", mData: "AV" },
                     { title: "NC/C", mData: "NC" },
                     { title: "Critério", mData: "CriterioName" },
-                    { title: "Pontos", mData: "PontosIndicador" },
+                    { title: "Pontos", mData: "Pontos" },
                     { title: "Pontos Disputados", mData: "PontosIndicador" },
                     { title: "Meta %", mData: "Meta" },
                     { title: "Real %", mData: "Real" },
-                    { title: "Pontos Ating.", mData: "PontosAtingidosIndicador" },
+                    { title: "Pontos Ating.", mData: "PontosAtingidos" },
                     { title: "Scorecard", mData: "Scorecard" },
                 ],
                 destroy: true,
@@ -114,10 +114,10 @@
                         $('td', row).eq(14).css("background-color", 'yellow');
                     }
 
-                    if (data["AV"] == 0 || data["AV"] == undefined || data["AV"] == null) {
+                    //if (data["AV"] == 0 || data["AV"] == undefined || data["AV"] == null) {
                         
-                        $('td', row).eq(10).html(0);
-                    }
+                    //    $('td', row).eq(10).html(0);
+                    //}
 
                 },
                 fnDrawCallback: function (data, d, o) {
