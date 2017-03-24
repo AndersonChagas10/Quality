@@ -66,17 +66,17 @@
                 columns: [{ title: "Cluster", mData: "ClusterName" },
                     { title: "Regional", mData: "RegionalName" },
                     { title: "Empresa", mData: "ParCompanyName" },
-                    { title: "Tipo Scorecard", mData: "TipoScore" },
-                    { title: "Tipo Indicador", mData: "TipoIndicadorName" },
-                    { title: "Indicador", mData: "Level1Name" },
-                    { title: "AV", mData: "AV" },
-                    { title: "NC/C", mData: "NC" },
-                    { title: "Critério", mData: "CriterioName" },
-                    { title: "Pontos", mData: "PontosIndicador" },
-                    { title: "Pontos Disputados", mData: "PontosIndicador" },
-                    { title: "Meta %", mData: "Meta" },
+                    { title: "@Resources.Resource.scorecard_type", mData: "TipoScore" },
+                    { title: "@Resources.Resource.audit_type", mData: "TipoIndicadorName" },
+                    { title: "@Resources.Resource.audit", mData: "Level1Name" },
+                    { title: "@Resources.Resource.smp", mData: "AV" },
+                    { title: "@Resources.Resource.ncc", mData: "NC" },
+                    { title: "@Resources.Resource.group2", mData: "CriterioName" },
+                    { title: "@Resources.Resource.points2", mData: "PontosIndicador" },
+                    { title: "@Resources.Resource.points_possible", mData: "PontosIndicador" },
+                    { title: "@Resources.Resource.goal %", mData: "Meta" },
                     { title: "Real %", mData: "Real" },
-                    { title: "Pontos Ating.", mData: "PontosAtingidosIndicador" },
+                    { title: "@Resources.Resource.points_achieved", mData: "PontosAtingidosIndicador" },
                     { title: "Scorecard", mData: "Scorecard" },
                 ],
                 destroy: true,
@@ -115,7 +115,7 @@
                     }
 
                     if (data["AV"] == 0 || data["AV"] == undefined || data["AV"] == null) {
-                        
+
                         $('td', row).eq(10).html(0);
                     }
 
@@ -129,37 +129,37 @@
                 buttons: [
                      {
                          extend: 'colvisGroup',
-                         text: 'Sintético',
+                         text: '@Resources.Resource.synthetic',
 
                          //show: [3, 4, 5, 6, 9, 10, 12],
                          show: [5, 6, 7, 8, 11, 12, 13],
                          //hide: [0, 1, 2, 7, 8, 11]
                          hide: [0, 1, 2, 3, 4, 9, 10]
                      },
-                    {
-                        extend: 'colvisGroup',
-                        text: 'Analítico',
-                        show: ':hidden'
-                    },
-                    {
-                        extend: 'print',
-                        customize: function (win) {
-                            $(win.document.body).find('table')
-                                .addClass('compact')
-                                .css('font-size', 'inherit');
-                        },
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'excelHtml5',
+        {
+            extend: 'colvisGroup',
+            text: '@Resources.Resource.analytical',
+            show: ':hidden'
+        },
+        {
+            extend: 'print',
+            customize: function (win) {
+                $(win.document.body).find('table')
+                    .addClass('compact')
+                    .css('font-size', 'inherit');
+            },
+            exportOptions: {
+                columns: ':visible'
+            }
+        },
+        {
+            extend: 'excelHtml5',
 
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    'pdf',
+            exportOptions: {
+                columns: ':visible'
+            }
+        },
+        'pdf',
                 ]
             });
 

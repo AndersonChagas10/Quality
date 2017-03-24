@@ -94,7 +94,7 @@
                         },
                     },
                     title: {
-                        text: 'Temperatura',
+                        text: '@Resources.Resource.performance',
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
@@ -107,7 +107,7 @@
                             //dashStyle: 'dash',
                             zIndex: 4,
                             label: {
-                                text: 'Média ' + parseFloat(valorAbsoluto.media).toFixed(2),
+                                text: '@Resources.Resource.average ' + parseFloat(valorAbsoluto.media).toFixed(2),
                                 align: 'right',
                                 y: -10,
                                 x: 0
@@ -144,7 +144,7 @@
                                 }
 
                             if (this.series.name.indexOf("Series") != 0) {
-                                if (this.series.name.indexOf("Nível") != 0 && this.series.name.indexOf("LCS") != 0 && this.series.name.indexOf("LCI") != 0) {
+                                if (this.series.name.indexOf("Nível") != 0 && this.series.name.indexOf("@Resources.Resource.ucl") != 0 && this.series.name.indexOf("@Resources.Resource.lcl") != 0) {
                                     s.push('<a> <b>' + point.series.name + '</b> : ' + point.y + '</a> <br/>');
                                 } else {
                                     s.push('<a>' + point.series.name + '</a><br/>');
@@ -168,7 +168,7 @@
                     borderWidth: 0
                 },
                 series: [{
-                    name: "Temperatura",
+                    name: "@Resources.Resource.performance",
                     data: valorAbsoluto.dados,
                     type: 'spline',
                     yAxis: 0,
@@ -182,7 +182,7 @@
                 },
 
                 {
-                    name: "LCS: " + valorAbsoluto.lcs,//.toFixed(2),
+                    name: "@Resources.Resource.ucl: " + valorAbsoluto.lcs,//.toFixed(2),
                     data: valorAbsoluto.lcsData,
                     visible: (valorAbsoluto.lcs != 0) ? true : false,
                     color: "red",
@@ -199,7 +199,7 @@
                     }
                 },
                 {
-                    name: "LCI: " + valorAbsoluto.lci,//.toFixed(2),
+                    name: "@Resources.Resource.lcl: " + valorAbsoluto.lci,//.toFixed(2),
                     data: valorAbsoluto.lciData,
                     visible: (valorAbsoluto.lci != 0) ? true : false,
                     color: "red",
@@ -216,7 +216,7 @@
                     }
                 },
                 {
-                    name: "Média: " + parseFloat(valorAbsoluto.media).toFixed(2),
+                    name: "@Resources.Resource.average: " + parseFloat(valorAbsoluto.media).toFixed(2),
                     color: "green",
                     type: 'line',
                     marker: {
@@ -225,7 +225,7 @@
                 },
                 //Nivel 1
                 {
-                    name: 'Nível 1 Min: ' + (valorAbsoluto.nivel1Min[0] + " | Max: " + valorAbsoluto.nivel1Max[0]),
+                    name: '@Resources.Resource.levelSpc 1 Min: ' + (valorAbsoluto.nivel1Min[0] + " | Max: " + valorAbsoluto.nivel1Max[0]),
                     data: valorAbsoluto.nivel1Min,
                     color: 'black',
                     pointStart: 0,
@@ -261,7 +261,7 @@
                 },
                //Nivel 2
                 {
-                    name: 'Nível 2 Min: ' + (valorAbsoluto.nivel2Min[0] + " | Max: " + valorAbsoluto.nivel2Max[0]),
+                    name: '@Resources.Resource.levelSpc 2 Min: ' + (valorAbsoluto.nivel2Min[0] + " | Max: " + valorAbsoluto.nivel2Max[0]),
                     data: valorAbsoluto.nivel2Min,
                     visible: (valorAbsoluto.nivel2Min[0] != 0 || valorAbsoluto.nivel2Max[0] != 0) ? true : false,
                     pointStart: 0,
@@ -297,7 +297,7 @@
                 },
                 //Nivel 3
                  {
-                     name: 'Nível 3 Min: ' + (valorAbsoluto.nivel3Min[0] + " | Max: " + valorAbsoluto.nivel3Max[0]),
+                     name: '@Resources.Resource.levelSpc 3 Min: ' + (valorAbsoluto.nivel3Min[0] + " | Max: " + valorAbsoluto.nivel3Max[0]),
                      data: valorAbsoluto.nivel3Min,
                      color: 'black',
                      visible: (valorAbsoluto.nivel3Min[0] != 0 || valorAbsoluto.nivel3Max[0] != 0) ? true : false,
