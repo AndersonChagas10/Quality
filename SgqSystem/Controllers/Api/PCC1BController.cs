@@ -44,20 +44,15 @@ namespace SgqSystem.Controllers.Api
         [Route("Next")]
         public _PCC1B Next(_Receive receive)
         {
-
-            string connectionString = "SgqDbDevEntities";
-
+            
             ParCompany company;
             var retorno = new _PCC1B();
             retorno.Side = 1;
 
             ResultadosSequencialBanda _result = new ResultadosSequencialBanda();
 
-            //if (GlobalConfig.Brasil)
-            //{
-            //    userName = "sa";
-            //    pass = "1qazmko0";
-            //}
+            var userName = "sa";
+            var pass = "1qazmko0";
 
             if (receive.sequencialAtual == 0)
             {
