@@ -238,16 +238,24 @@
                         </td>
                         <td></td>
                     </tr>
-                    @*<tr>
-                            <td>
-                                @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label " })
-                            </td>
-                            <td>
-                                @Html.DropDownList("Status", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-                            </td>
-                            <td></td>
-                        </tr>*@
+                    
+                    @if (Model != null)
+                    {
+                        if (Model.Id > 0)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label " })
+                                </td>
+                                <td>
+                                    @Html.DropDownList("Status", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                                </td>
+                                <td></td>
+                            </tr>
+                        }
+                    }
+
                     @if (ViewBag.Panejamento != null)
                     {
                         <tr>
@@ -273,23 +281,3 @@
 
 </div>
 
-@*<div id="obj" class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingOne">
-            <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-target="#collapsible_obj_0" data-parent="#accordion" aria-expanded="false" aria-controls="collapseOne">
-                    Collapsible Group Item #1
-                </a>
-            </h4>
-        </div>
-        <div id="collapsible_obj_0" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-            <div class="panel-body">
-
-            </div>
-        </div>
-    </div>*@
-
-@*var teste = $('#body').clone()
-    var nameCollapse = 'collapseT'
-    teste.find('a').attr('href', '#' + nameCollapse)
-    teste.find('#collapseOne').attr('id', nameCollapse )
-    teste.find('a').attr('aria-controls', nameCollapse )*@

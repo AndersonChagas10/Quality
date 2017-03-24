@@ -88,5 +88,10 @@ namespace PlanoDeAcaoMVC.Controllers
             return PartialView("Acompanhamento", obj);
         }
 
+        public ActionResult NewFTA(Pa_Acao fta)
+        {
+            fta.VerificaFTA();
+            return View(fta);
+        }
     }
 }

@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Acao\FTA.cs" />
     <Compile Include="Acao\Pa_Acao.cs" />
     <Compile Include="Acao\Pa_Acompanhamento.cs" />
     <Compile Include="Acao\Pa_CausaEspecifica.cs" />

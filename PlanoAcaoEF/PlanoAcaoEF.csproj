@@ -30,10 +30,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="EfPa.cs" />
-    <Compile Include="Pa_Acao.cs" />
-    <Compile Include="Pa_AcaoXQuem.cs" />
-    <Compile Include="Pa_CausaMedidaXAcao.cs" />
+    <Compile Include="EfPa.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EfPa.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EfPa.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EfPa.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EfPa.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EfPa.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Pa_Acao.cs">
+      <DependentUpon>EfPa.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Pa_Planejamento.cs">
+      <DependentUpon>EfPa.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -54,7 +71,29 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="EfPa.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>EfPa.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="EfPa.edmx.diagram">
+      <DependentUpon>EfPa.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="EfPa.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EfPa.edmx</DependentUpon>
+      <LastGenOutput>EfPa.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="EfPa.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EfPa.edmx</DependentUpon>
+      <LastGenOutput>EfPa.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

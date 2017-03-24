@@ -35,7 +35,6 @@ namespace PlanoAcaoCore
         [Display(Name = "Departamento")]
         public int? Departamento_Id { get; set; }
 
-        public int? Pa_CausaMedidasXAcao_Id { get; set; }
 
         //[Display(Name = "Duracao dias")]
         //public int DuracaoDias { get; set; }
@@ -57,7 +56,7 @@ namespace PlanoAcaoCore
         [Display(Name = "Status")]
         public int Status { get; set; }
 
-        public string StatusName { get; set; }
+        public string _StatusName { get; set; }
 
         [Display(Name = "Planejamento")]
         public int Panejamento_Id { get; set; }
@@ -92,6 +91,8 @@ namespace PlanoAcaoCore
         [Display(Name = "Causa Generica")]
         public string ContramedidaEspecifica { get; set; }
 
+        public int TipoIndicador { get; set; }
+
         //public List<Pa_AcaoXQuem> AcaoXQuem { get; set; }
 
         //public List<string> _Quem { get; set; }
@@ -109,6 +110,11 @@ namespace PlanoAcaoCore
             }
         }
 
+        public void VerificaFTA()
+        {
+            //throw new NotImplementedException();
+        }
+
         public Pa_IndicadorSgqAcao _Pa_IndicadorSgqAcao
         {
             get
@@ -120,8 +126,8 @@ namespace PlanoAcaoCore
             }
         }
 
-        public string Unidade { get; set; }
-        public string Departamento { get; set; }
+        public string _Unidade { get; set; }
+        public string _Departamento { get; set; }
 
         public string _Prazo
         {
@@ -130,8 +136,8 @@ namespace PlanoAcaoCore
                 if (QuandoFim == DateTime.MinValue)
                     return "-";
 
-                if (!string.IsNullOrEmpty(StatusName))
-                    if (StatusName.Contains("Concluido") || StatusName.Contains("Concluído") || StatusName.Contains("Cancelado"))
+                if (!string.IsNullOrEmpty(_StatusName))
+                    if (_StatusName.Contains("Concluido") || _StatusName.Contains("Concluído") || _StatusName.Contains("Cancelado"))
                         return "Finalizado";
 
                 var agora = DateTime.Now;
@@ -214,9 +220,9 @@ namespace PlanoAcaoCore
             get
             {
                 return  " \n SELECT TOP 200 ACAO.* ,                                                           " +
-                        " \n STA.Name as StatusName,                                                           " +
-                        " \n UN.Name as Unidade,                                                               " +
-                        " \n DPT.Name as Departamento,                                                         " +
+                        " \n STA.Name as _StatusName,                                                           " +
+                        " \n UN.Name as _Unidade,                                                               " +
+                        " \n DPT.Name as _Departamento,                                                         " +
                         " \n Q.Name as _Quem,                                                                  " +
                         " \n CG.CausaGenerica as _CausaGenerica,                                               " +
                         " \n CMG.ContramedidaGenerica as _ContramedidaGenerica,                                " +

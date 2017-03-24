@@ -1,4 +1,5 @@
-﻿using DTO.Helpers;
+﻿using AutoMapper;
+using DTO.Helpers;
 using Helper;
 using PlanoAcaoCore;
 using System.Collections.Generic;
@@ -49,46 +50,72 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         [Route("Save")]
         public Pa_Planejamento Save([FromBody]Pa_Planejamento planejamento)
         {
-            planejamento.IsValid();
-
-            planejamento.IsfiltrarAcao = null;
-
-            if (planejamento.Estrategico_Id.GetValueOrDefault() > 0)
+            using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
             {
-                planejamento.ValorDe = NumericExtensions.CustomParseDecimal(planejamento._ValorDe).GetValueOrDefault();
-                planejamento.ValorPara = NumericExtensions.CustomParseDecimal(planejamento._ValorPara).GetValueOrDefault();
-                planejamento.DataInicio = Guard.ParseDateToSqlV2(planejamento._DataInicio);
-                planejamento.DataFim = Guard.ParseDateToSqlV2(planejamento._DataFim);
+                planejamento.IsValid();
+
+                planejamento.IsfiltrarAcao = null;
+
+                if (planejamento.Estrategico_Id.GetValueOrDefault() > 0)
+                {
+                    planejamento.ValorDe = NumericExtensions.CustomParseDecimal(planejamento._ValorDe).GetValueOrDefault();
+                    planejamento.ValorPara = NumericExtensions.CustomParseDecimal(planejamento._ValorPara).GetValueOrDefault();
+                    planejamento.DataInicio = Guard.ParseDateToSqlV2(planejamento._DataInicio);
+                    planejamento.DataFim = Guard.ParseDateToSqlV2(planejamento._DataFim);
+                }
+
+                if (!planejamento.IsTatico)
+                {
+                    planejamento.Tatico_Id = null;
+                    planejamento.Gerencia_Id = 0;
+                    planejamento.Coordenacao_Id = 0;
+                    planejamento.Iniciativa_Id = 0;
+                    planejamento.ObjetivoGerencial_Id = 0;
+                    planejamento.Responsavel_Projeto = 0;
+                    planejamento.UnidadeDeMedida_Id = 0;
+                    planejamento.IndicadoresDeProjeto_Id = 0;
+                }
+                else if (planejamento.IsTatico && planejamento.Tatico_Id.GetValueOrDefault() > 0)
+                {
+                    planejamento.Id = planejamento.Tatico_Id.GetValueOrDefault();
+                }
+
+                //Pa_BaseObject.SalvarGenerico(planejamento);
+                var a = Mapper.Map<PlanoAcaoEF.Pa_Planejamento>(planejamento);
+
+                if (a.Id > 0)
+                {
+                    db.Pa_Planejamento.Attach(a);
+                    var entry = db.Entry(a);
+                    entry.State = System.Data.Entity.EntityState.Modified;
+                    //entry.Property(e => e.Email).IsModified = true;
+                    // other changed properties
+                    db.SaveChanges();
+                }
+                else
+                {
+                    db.Pa_Planejamento.Add(a);
+                    db.SaveChanges();
+                }
+
+                #region GAMBIARRA FDP
+
+                if (planejamento.IsTatico)
+                {
+                    a.Tatico_Id = a.Id;
+                    //Pa_BaseObject.SalvarGenerico(planejamento);
+
+                    db.Pa_Planejamento.Attach(a);
+                    var entry = db.Entry(a);
+                    entry.State = System.Data.Entity.EntityState.Modified;
+                    //entry.Property(e => e.Email).IsModified = true;
+                    // other changed properties
+                    db.SaveChanges();
+
+                }
+
+                #endregion
             }
-
-            if (!planejamento.IsTatico)
-            {
-                planejamento.Tatico_Id = null;
-                planejamento.Gerencia_Id = 0;
-                planejamento.Coordenacao_Id = 0;
-                planejamento.Iniciativa_Id = 0;
-                planejamento.ObjetivoGerencial_Id = 0;
-                planejamento.Responsavel_Projeto = 0;
-                planejamento.UnidadeDeMedida_Id = 0;
-                planejamento.IndicadoresDeProjeto_Id = 0;
-            }
-            else if(planejamento.IsTatico && planejamento.Tatico_Id.GetValueOrDefault() > 0)
-            {
-                planejamento.Id = planejamento.Tatico_Id.GetValueOrDefault();
-            }
-
-            Pa_BaseObject.SalvarGenerico(planejamento);
-
-            #region GAMBIARRA FDP
-
-            if (planejamento.IsTatico)
-            {
-                planejamento.Tatico_Id = planejamento.Id;
-                Pa_BaseObject.SalvarGenerico(planejamento);
-            }
-
-            #endregion
-
             return planejamento;
         }
 

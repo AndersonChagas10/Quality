@@ -1060,7 +1060,7 @@
                     { title: "Responsavel pelo Projeto/Iniciativa", mData: "Responsavel_Projeto_Quem.Name" },
                     /*Fim Tático*/
 
-                    { title: "Unidade", mData: "Acao.Unidade" },
+                    { title: "Unidade", mData: "Acao._Unidade" },
                     { title: "Problema ou Desvio", mData: "Acao._Pa_Problema_Desvio_Id.Name" },
                     { title: "Indicador Operacional", mData: "Acao._Pa_IndicadorSgqAcao.Name" },
                     { title: "Causa Genérica", mData: "Acao._CausaGenerica" },
@@ -1074,7 +1074,7 @@
                     { title: "Como/Pontos importantes", mData: "Acao.ComoPontosimportantes" },
                     { title: "Pra que", mData: "Acao.PraQue" },
                     { title: "Quanto custa", mData: "Acao.QuantoCusta" },
-                    { title: "Status", mData: "Acao.StatusName" },
+                    { title: "Status", mData: "Acao._StatusName" },
                     { title: "Prazo", mData: "Acao._Prazo" },//29 + 2
                     /*Fim Operacional*/
 
@@ -1117,7 +1117,7 @@
                     $('table > tbody').on('click', '.edit', function (data, a, b) {
                         var data = table.row($(this).parents('tr')).data();
 
-                        //console.log(data);
+                        console.log(data);
 
                         $('#modalLindo').find('.modal-body').empty();
                         $('#modalLindo').find('.modal-body').append('<div class="content1"></div><div class="content2"></div><div class="content3"></div>');
@@ -1148,16 +1148,16 @@
                                       $('#Header').html("Editar Ação");
                                       //$('#modalLindo').find('.modal-body').append(r); //colocar html depois
                                       $('#modalLindo').find('.modal-footer button').hide();
-                                      myfunction();
+                                      $('#modalLindo').find('.modal-body .content3').append(r);
 
-                                      $('#CausaGenerica_Id').val(acao.CausaGenerica_Id).change();
-                                      $('[name="_QuandoInicio"]').val(acao._QuandoInicio.split(" ")[0]);
-                                      $('[name="_QuandoFim"]').val(acao._QuandoFim.split(" ")[0]);
-                                      $('#Status').val(acao.Status);
-                                      MoneyMask();
-                                      $('#_QuantoCusta').val(acao.QuantoCusta);
-                                      $('#_QuantoCusta').trigger('mask.maskMoney');
-                                      $('#_QuantoCusta').trigger('blur');
+                                      $('#modalLindo').find('.modal-body .content3').find('#CausaGenerica_Id').val(acao.CausaGenerica_Id).change();
+                                      $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoInicio"]').val(acao._QuandoInicio.split(" ")[0]);
+                                      $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoFim"]').val(acao._QuandoFim.split(" ")[0]);
+                                      $('#modalLindo').find('.modal-body .content3').find('#Status').val(acao.Status);
+                                      $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').val(acao.QuantoCusta);
+                                      $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('mask.maskMoney');
+                                      $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('blur');
+                                      $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
 
                                       //acao.AcaoXQuem.forEach(function (o, c) {
                                       //    $($('[id=AcaoXQuemDdl]')[c]).val(o.Quem_Id).change();
@@ -1167,7 +1167,8 @@
                                       //});
                                       $(r).attr("id", "formEditAcao")
 
-                                      $('#modalLindo').find('.modal-body .content3').append(r);
+                                      MoneyMask();
+                                      myfunction();
                                       
                                       $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarAcaoEditada();\" >Salvar Operacional</button><hr>");
 

@@ -230,14 +230,14 @@ namespace ADOFactory
 
             foreach (var item in obj.GetType().GetProperties())
             {
-                if (item != null && item.Name != "Id" && item.Name != "AddDate" && item.Name != "AlterDate" && !item.Name.StartsWith("_"))
+                if (/*item != null &&*/ item.Name != "Id" && item.Name != "AddDate" && item.Name != "AlterDate" && !item.Name.StartsWith("_"))
                 {
-                    if (obj.GetType().GetProperty(item.Name).GetValue(obj) == null)
-                        continue;
+                    //if (obj.GetType().GetProperty(item.Name).GetValue(obj) == null)
+                    //    continue;
 
-                    if (item.PropertyType.Name == "String")
-                        if (string.IsNullOrEmpty(obj.GetType().GetProperty(item.Name).GetValue(obj) as string))
-                            continue;
+                    //if (item.PropertyType.Name == "String")
+                    //    if (string.IsNullOrEmpty(obj.GetType().GetProperty(item.Name).GetValue(obj) as string))
+                    //        continue;
 
                     if (item.PropertyType.IsClass && item.PropertyType.Name != "String")
                         continue;
@@ -245,6 +245,29 @@ namespace ADOFactory
                     queryProps += "\n " + item.Name + " = @" + item.Name + ", ";
                 }
             }
+
+            var queryDebug = "UPDATE " + obj.GetType().Name;
+            var queryPropsDebug = " SET ";
+
+            foreach (var item in obj.GetType().GetProperties())
+            {
+                if (/*item != null &&*/ item.Name != "Id" && item.Name != "AddDate" && item.Name != "AlterDate" && !item.Name.StartsWith("_"))
+                {
+                    //if (obj.GetType().GetProperty(item.Name).GetValue(obj) == null)
+                    //    continue;
+
+                    //if (item.PropertyType.Name == "String")
+                    //    if (string.IsNullOrEmpty(obj.GetType().GetProperty(item.Name).GetValue(obj) as string))
+                    //        continue;
+
+                    if (item.PropertyType.IsClass && item.PropertyType.Name != "String")
+                        continue;
+
+                    queryPropsDebug += "\n " + item.Name + " = " + (obj.GetType().GetProperty(item.Name).GetValue(obj) == null ? "null" : item.GetValue(obj)) + ", ";
+                }
+            }
+
+            var resultDebug = queryDebug + queryPropsDebug;
 
             queryProps = queryProps.Substring(0, queryProps.LastIndexOf(", ")) + "\n ";
 
@@ -254,22 +277,33 @@ namespace ADOFactory
 
             SqlCommand cmd;
             cmd = new SqlCommand(query);
-
+            var pqp = string.Empty;
             foreach (var item in obj.GetType().GetProperties())
             {
-                if (item != null && item.Name != "Id" && item.Name != "AddDate" && item.Name != "AlterDate")
+                if (/*item != null &&*/ item.Name != "Id" && item.Name != "AddDate" && item.Name != "AlterDate")
                 {
-                    if (obj.GetType().GetProperty(item.Name).GetValue(obj) == null)
-                        continue;
-
                     if (item.PropertyType.Name == "String")
                         if (string.IsNullOrEmpty(obj.GetType().GetProperty(item.Name).GetValue(obj) as string))
+                        {
+                            cmd.Parameters.AddWithValue("@" + item.Name, "");
                             continue;
+                        }
+
+                    if (obj.GetType().GetProperty(item.Name).GetValue(obj) == null)
+                    {
+                        //if(item.PropertyType.Name ==)
+                        cmd.Parameters.AddWithValue("@" + item.Name, obj.GetType().GetProperty(item.Name).GetValue(obj));
+                        pqp += "@" + item.Name + " = " + obj.GetType().GetProperty(item.Name).GetValue(obj);
+                        continue;
+                    }
+
 
                     if (item.PropertyType.IsClass && item.PropertyType.Name != "String")
                         continue;
 
                     cmd.Parameters.AddWithValue("@" + item.Name, obj.GetType().GetProperty(item.Name).GetValue(obj));
+                    pqp += "@" + item.Name + " = " + obj.GetType().GetProperty(item.Name).GetValue(obj);
+
                 }
             }
 
