@@ -10,7 +10,7 @@ namespace PlanoAcaoCore.Acao
     {
         public string Description { get; set; }
         public int Acao_Id { get; set; }
-        public int Order { get; set; }
+        public int? Order { get; set; }
         public int Status_Id { get; set; }
         public string MailTo { get; set; }
         public string Name { get; set; }
@@ -26,6 +26,12 @@ namespace PlanoAcaoCore.Acao
         {
             var query = "SELECT * FROM Pa_Acompanhamento WHERE Id = " + Id;
             return GetGenerico<Pa_Acompanhamento>(query);
+        }
+
+        public static List<Pa_Acompanhamento> GetByAcaoId(int Acao_Id)
+        {
+            var query = "SELECT * FROM Pa_Acompanhamento Where Acao_Id = " + Acao_Id;
+            return ListarGenerico<Pa_Acompanhamento>(query);
         }
 
     }
