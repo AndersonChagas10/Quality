@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PlanoAcaoCore.Acao;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
@@ -98,6 +99,19 @@ namespace PlanoAcaoCore
         //public List<string> _Quem { get; set; }
 
         //public List<Pa_Quem> _QuemObj { get; set; }
+
+        public List<Pa_Acompanhamento> _Acompanhamento
+        {
+            get
+            {
+                var RenanConvulsao = new List<Pa_Acompanhamento>();
+
+                if (Id > 0)                
+                    RenanConvulsao = Pa_Acompanhamento.GetByAcaoId(Id);
+                                        
+                return RenanConvulsao;                
+            }
+        }
 
         public Pa_Problema_Desvio _Pa_Problema_Desvio_Id
         {
@@ -272,7 +286,7 @@ namespace PlanoAcaoCore
 
         //public Pa_CausaMedidasXAcao CausaMedidasXAcao { get; set; }
 
-        
+
 
 
     }
