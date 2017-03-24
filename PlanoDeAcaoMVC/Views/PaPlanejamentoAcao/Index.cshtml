@@ -280,6 +280,8 @@
 
         var urlSalvarNovoItem = '@Url.Action("Save", "api/Generics")';
 
+        var urlSalvarAcompanhamento = '@Url.Action("SaveAcompanhamento", "api/Pa_Acao")'
+
         /*Btn Minimizar Modal*/
         $(document).ready(function () {
 
@@ -403,7 +405,7 @@
                 $('#modalLindo').find('.modal-body').empty().append(r);
                 if (isTaticoClicked) {
                     $('.novoItem ').hide();
-
+                  
                     if (isClickedTaticoVinculado) {
                         //$('#Planejamento > table > tbody > tr:nth-child(1)').attr('disabled', true);
                         //$('#Planejamento > table > tbody > tr:nth-child(4)').attr('disabled', true);
@@ -474,8 +476,13 @@
             /*Fim Botões*/
         }
 
-        function SalvarPlanejamento() {
+        function SalvarPlanejamento(form) {
+
             var sendObj = $('#Planejamento').serializeObject();
+
+            if (isClickedTaticoVinculado)
+                sendObj['IsTAtico'] = true;
+
             $.post(urlSalvarPlanejamento, sendObj, function (r) {
                 //ModalOpcoesEstrategico('');
                 planejamentoCorrentId = parseInt(r.Id);
@@ -485,6 +492,7 @@
                 $.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
 
             }).fail(function (e, h, x) {
+
                 //console.log(e);
                 //console.log(h);
                 //console.log(x);
@@ -494,6 +502,33 @@
 
         }/*planejamentoCorrentId*/
 
+        function SalvarPlanejamentoEditado(form) {
+
+            var sendObj = {};
+
+            if (isClickedTaticoVinculado)
+                sendObj['IsTAtico'] = true;
+
+            sendObj = $(form).serializeObject();
+
+            $.post(urlSalvarPlanejamento, sendObj, function (r) {
+                //ModalOpcoesEstrategico('');
+                planejamentoCorrentId = parseInt(r.Id);
+                openMessageModal('Registro salvo com sucesso!', '');
+                $('#modalLindo').modal('hide');
+
+                $.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
+
+            }).fail(function (e, h, x) {
+
+                //console.log(e);
+                //console.log(h);
+                //console.log(x);
+
+                openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
+            });
+
+        }/*planejamentoCorrentId*/
         function FiltrarPlanejamento() {
             $('#Selecionar').prop('disabled', true);
             $('#Selecionar').off('click');
@@ -537,14 +572,12 @@
             } else {
                 $('#Header').html(title + title2);
             }
-
             $.get(urlNovoPlanejamento, function (r) {
                 $('#modalLindo').find('.modal-body').empty().append(r);
                 if (isTaticoClicked) {
                     $('.novoItem ').hide();
-
                     if (isClickedTaticoVinculado) {//Novo tatico
-
+                        $('#Planejamento > #IsTatico').val(true);
                         $('#Planejamento > table > tbody > tr:nth-child(1)').find('input, select').attr('disabled', true);
                         $('#Planejamento > table > tbody > tr:nth-child(4)').find('input, select').attr('disabled', true);
                         $('#Planejamento > table > tbody > tr:nth-child(5)').find('input, select').attr('disabled', true);
@@ -552,17 +585,23 @@
                         $('#Planejamento > table > tbody > tr:nth-child(7)').find('input, select').attr('disabled', true);
                         $('#Planejamento > table > tbody > tr:nth-child(8)').find('input, select').attr('disabled', true);
                         $('#Planejamento > table > tbody > tr:nth-child(9)').find('input, select').attr('disabled', true);
-
                         if (model != undefined) {
                             //$('#Id').val(model.Id);
                             $('#Estrategico_Id').val(model.Id);
-                            $('#Planejamento > table > tbody > tr:nth-child(1)').find('input, select').val(model.Diretoria_Id);
-                            $('#Planejamento > table > tbody > tr:nth-child(4)').find('input, select').val(model.Missao_Id);
-                            $('#Planejamento > table > tbody > tr:nth-child(5)').find('input, select').val(model.Visao_Id);
-                            $('#Planejamento > table > tbody > tr:nth-child(6)').find('input, select').val(model.Dimensao_Id);
-                            $('#Planejamento > table > tbody > tr:nth-child(7)').find('input, select').val(model.Objetivo_Id);
-                            $('#Planejamento > table > tbody > tr:nth-child(8)').find('input, select').val(model.IndicadoresDiretriz_Id);
-                            $('#Planejamento > table > tbody > tr:nth-child(9)').find('input, select').val(model.Responsavel_Diretriz);
+                            if (model.Diretoria_Id > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(1)').find('input, select').val(model.Diretoria_Id);
+                            if (model.Missao_Id > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(4)').find('input, select').val(model.Missao_Id);
+                            if (model.Visao_Id > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(5)').find('input, select').val(model.Visao_Id);
+                            if (model.Dimensao_Id > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(6)').find('input, select').val(model.Dimensao_Id);
+                            if (model.Objetivo_Id > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(7)').find('input, select').val(model.Objetivo_Id);
+                            if (model.IndicadoresDiretriz_Id > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(8)').find('input, select').val(model.IndicadoresDiretriz_Id);
+                            if (model.Responsavel_Diretriz > 0)
+                                $('#Planejamento > table > tbody > tr:nth-child(9)').find('input, select').val(model.Responsavel_Diretriz);
                         }
                         $('.novoTatico').show();
                         DdlChangeTatico();
@@ -575,7 +614,6 @@
                         $('#Planejamento > table > tbody > tr:nth-child(8)').hide();
                         DdlChangeEstrategico();
                     }
-
                 } else {
                     $('.novoItem ').show();
                     $('#Planejamento > table > tbody > tr:nth-child(2)').hide();
@@ -590,19 +628,14 @@
                     $('#Planejamento > table > tbody > tr:nth-child(17)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(18)').hide();
                 }
-
                 InitDatePiker();
                 MoneyMask();
-
             });
-
-            /*Botões*/
+                    /*Botões*/
             $('#modalLindo').find('.modal-footer button').hide()
             $('#Fechar').show();
             $('#Salvar').show();
-
             $('#Salvar').off('click').on('click', SalvarPlanejamento);
-
             //$('#Fechar2').off('click').on('click', function () { ModalOpcoesEstrategico(title) });
             /*Fim Botões*/
         }
@@ -702,8 +735,8 @@
 
                     $('#modalLindo').find('.modal-body').append('<hr>');
                     $('#modalLindo').find('.modal-body').append(r);
-                    $('#CausaMedidasXAcao_GrupoCausa_Id').empty().attr('disabled', true);
-                    $('#CausaMedidasXAcao_ContramedidaGenerica_Id').empty().attr('disabled', true);
+                    $('#GrupoCausa_Id').empty().attr('disabled', true);
+                    $('#ContramedidaGenerica_Id').empty().attr('disabled', true);
 
                     myfunction();
                     MoneyMask('R$ ');
@@ -737,7 +770,7 @@
             $('#modalLindo').find('.modal-footer button').hide();
             myfunction();
 
-            $('#CausaMedidasXAcao_CausaGenerica_Id').val(acao.CausaMedidasXAcao.CausaGenerica_Id).change();
+            $('#CausaGenerica_Id').val(acao.CausaGenerica_Id).change();
             $('[name="_QuandoInicio"]').val(acao._QuandoInicio.split(" ")[0]);
             $('[name="_QuandoFim"]').val(acao._QuandoFim.split(" ")[0]);
             $('#Status').val(acao.Status);
@@ -746,14 +779,12 @@
             $('#_QuantoCusta').trigger('mask.maskMoney');
             $('#_QuantoCusta').trigger('blur');
 
-            acao.AcaoXQuem.forEach(function (o, c) {
-                $($('[id=AcaoXQuemDdl]')[c]).val(o.Quem_Id).change();
-                $($('[id=AcaoXQuemDdlId]')[c]).val(o.Id).change();
-                if (acao._QuemObj.length > 1 && acao._QuemObj.length - 1 != c)
-                    $($('[id=adicionar]')[c]).click();
-            });
-
-         
+            //acao.AcaoXQuem.forEach(function (o, c) {
+            //    $($('[id=AcaoXQuemDdl]')[c]).val(o.Quem_Id).change();
+            //    $($('[id=AcaoXQuemDdlId]')[c]).val(o.Id).change();
+            //    if (acao._QuemObj.length > 1 && acao._QuemObj.length - 1 != c)
+            //        $($('[id=adicionar]')[c]).click();
+            //});
 
             $('#Edit').show();
             InitDatePiker();
@@ -777,7 +808,7 @@
 
             });
 
-            $('[id=CausaMedidasXAcao_CausaGenerica_Id]').off('change').on('change', function () {
+            $('[id=CausaGenerica_Id]').off('change').on('change', function () {
                 var valor = $(this).val();
                 var form = $(this).parents('form');
                 if (valor) {
@@ -789,8 +820,8 @@
                     });
                 }
                 else {
-                    form.find('#CausaMedidasXAcao_GrupoCausa_Id').empty().attr('disabled', true);
-                    form.find('#CausaMedidasXAcao_ContramedidaGenerica_Id').empty().attr('disabled', true);
+                    form.find('#GrupoCausa_Id').empty().attr('disabled', true);
+                    form.find('#ContramedidaGenerica_Id').empty().attr('disabled', true);
                 }
             });
         } /*Causa Medida Etc...*/
@@ -828,7 +859,42 @@
             });
 
         }
+     
+        function SalvarAcaoEditada() {
 
+            var listaAcoes = [];
+            $('.Acao').each(function (c, o) {
+
+                listaAcoes.push(SalvarAcaoAvulsa(o, true));
+
+            });
+
+            $.post(urlSalvarAcao, { "": listaAcoes }, function (r) {
+                $.post(urlGetPlanejamentoAcao, {}, function (r) {
+
+                    //if (counter == 1 && !jaLiberouCallback) {
+                    jaLiberouCallback = true;
+                    $('#modalLindo').modal('hide');
+                    openMessageModal('Registro salvo com sucesso!', '');
+                    //}
+                    GerarTabela(r);
+
+                }).fail(function (e, h, x) {
+
+                    openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
+
+                }).always(function () {
+
+                });
+            })
+            .fail(function (e, h, x) {
+
+                openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
+
+            });
+
+        }
+      
         var jaLiberouCallback = false;
         function SalvarAcaoAvulsa(o, isEdit) {
 
@@ -836,15 +902,15 @@
             if (isEdit == undefined) {
                 sendObj['Panejamento_Id'] = planejamentoCorrentId;
             }
-            sendObj['AcaoXQuem'] = [];
+            //sendObj['AcaoXQuem'] = [];
 
-            $('.quemClone').each(function (c, o) {
-                if ($('#AcaoXQuemDdlId').length)
-                    sendObj['AcaoXQuem'].push({ Id: $(o).find('#AcaoXQuemDdlId').val(), Quem_Id: $(o).find('select').val() });
-                else if ($(o).find('select').val())
-                    sendObj['AcaoXQuem'].push({ Quem_Id: $(o).find('select').val() });
+            //$('.quemClone').each(function (c, o) {
+            //    if ($('#AcaoXQuemDdlId').length)
+            //        sendObj['AcaoXQuem'].push({ Id: $(o).find('#AcaoXQuemDdlId').val(), Quem_Id: $(o).find('select').val() });
+            //    else if ($(o).find('select').val())
+            //        sendObj['AcaoXQuem'].push({ Quem_Id: $(o).find('select').val() });
 
-            });
+            //});
 
             return sendObj;
 
@@ -994,21 +1060,21 @@
                     { title: "Responsavel pelo Projeto/Iniciativa", mData: "Responsavel_Projeto_Quem.Name" },
                     /*Fim Tático*/
 
-                    { title: "Unidade", mData: "Acao.Unidade" },
+                    { title: "Unidade", mData: "Acao._Unidade" },
                     { title: "Problema ou Desvio", mData: "Acao._Pa_Problema_Desvio_Id.Name" },
                     { title: "Indicador Operacional", mData: "Acao._Pa_IndicadorSgqAcao.Name" },
-                    { title: "Causa Genérica", mData: "Acao.CausaMedidasXAcao.CausaGenerica" },
-                    { title: "Grupo Causa", mData: "Acao.CausaMedidasXAcao.GrupoCausa" },
-                    { title: "Contramedida Genérica", mData: "Acao.CausaMedidasXAcao.ContramedidaGenerica" },
-                    { title: "Causa Específica", mData: "Acao.CausaMedidasXAcao.CausaEspecifica" },
-                    { title: "Contramedida Específica", mData: "Acao.CausaMedidasXAcao.ContramedidaEspecifica" },
-                    { title: "Quem", mData: "Acao._Quem[, ]" },
+                    { title: "Causa Genérica", mData: "Acao._CausaGenerica" },
+                    { title: "Grupo Causa", mData: "Acao._GrupoCausa" },
+                    { title: "Contramedida Genérica", mData: "Acao._ContramedidaGenerica" },
+                    { title: "Causa Específica", mData: "Acao.CausaEspecifica" },
+                    { title: "Contramedida Específica", mData: "Acao.ContramedidaEspecifica" },
+                    { title: "Quem", mData: "Acao._Quem" },
                     { title: "Quando (Início)", mData: "Acao._QuandoInicio" },
                     { title: "Quando (Fim)", mData: "Acao._QuandoFim" },
                     { title: "Como/Pontos importantes", mData: "Acao.ComoPontosimportantes" },
                     { title: "Pra que", mData: "Acao.PraQue" },
                     { title: "Quanto custa", mData: "Acao.QuantoCusta" },
-                    { title: "Status", mData: "Acao.StatusName" },
+                    { title: "Status", mData: "Acao._StatusName" },
                     { title: "Prazo", mData: "Acao._Prazo" },//29 + 2
                     /*Fim Operacional*/
 
@@ -1051,7 +1117,7 @@
                     $('table > tbody').on('click', '.edit', function (data, a, b) {
                         var data = table.row($(this).parents('tr')).data();
 
-                        //console.log(data);
+                        console.log(data);
 
                         $('#modalLindo').find('.modal-body').empty();
                         $('#modalLindo').find('.modal-body').append('<div class="content1"></div><div class="content2"></div><div class="content3"></div>');
@@ -1059,13 +1125,12 @@
                         if (data.Id > 0) {
                             $.get(urlEditPlanOp, { id: data.Id },
                                  function (r) {
-
                                      TesteRenan(r, 'Estrategico', data);
                                  }
                             );
                         }
 
-                        if (data.Id > 0) {
+                        if (data.Estrategico_Id > 0) {
                             $.get(urlEditPlanEstrat, { id: data.Id },
                                  function (r) {
                                      TesteRenan(r, 'Tatico', data);
@@ -1079,30 +1144,33 @@
                                   function (r) {
                                       var acao = data.Acao;
 
-                                      $('#modalLindo').modal();
+
                                       $('#Header').html("Editar Ação");
                                       //$('#modalLindo').find('.modal-body').append(r); //colocar html depois
                                       $('#modalLindo').find('.modal-footer button').hide();
-                                      myfunction();
-
-                                      $('#CausaMedidasXAcao_CausaGenerica_Id').val(acao.CausaMedidasXAcao.CausaGenerica_Id).change();
-                                      $('[name="_QuandoInicio"]').val(acao._QuandoInicio.split(" ")[0]);
-                                      $('[name="_QuandoFim"]').val(acao._QuandoFim.split(" ")[0]);
-                                      $('#Status').val(acao.Status);
-                                      MoneyMask();
-                                      $('#_QuantoCusta').val(acao.QuantoCusta);
-                                      $('#_QuantoCusta').trigger('mask.maskMoney');
-                                      $('#_QuantoCusta').trigger('blur');
-
-                                      acao.AcaoXQuem.forEach(function (o, c) {
-                                          $($('[id=AcaoXQuemDdl]')[c]).val(o.Quem_Id).change();
-                                          $($('[id=AcaoXQuemDdlId]')[c]).val(o.Id).change();
-                                          if (acao._QuemObj.length > 1 && acao._QuemObj.length - 1 != c)
-                                              $($('[id=adicionar]')[c]).click();
-                                      });
-
-
                                       $('#modalLindo').find('.modal-body .content3').append(r);
+
+                                      $('#modalLindo').find('.modal-body .content3').find('#CausaGenerica_Id').val(acao.CausaGenerica_Id).change();
+                                      $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoInicio"]').val(acao._QuandoInicio.split(" ")[0]);
+                                      $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoFim"]').val(acao._QuandoFim.split(" ")[0]);
+                                      $('#modalLindo').find('.modal-body .content3').find('#Status').val(acao.Status);
+                                      $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').val(acao.QuantoCusta);
+                                      $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('mask.maskMoney');
+                                      $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('blur');
+                                      $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
+
+                                      //acao.AcaoXQuem.forEach(function (o, c) {
+                                      //    $($('[id=AcaoXQuemDdl]')[c]).val(o.Quem_Id).change();
+                                      //    $($('[id=AcaoXQuemDdlId]')[c]).val(o.Id).change();
+                                      //    if (acao._QuemObj.length > 1 && acao._QuemObj.length - 1 != c)
+                                      //        $($('[id=adicionar]')[c]).click();
+                                      //});
+                                      $(r).attr("id", "formEditAcao")
+
+                                      MoneyMask();
+                                      myfunction();
+                                      
+                                      $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarAcaoEditada();\" >Salvar Operacional</button><hr>");
 
                                       $('#Edit').show();
                                       $('#obj').show(); //Apagar depois
@@ -1112,6 +1180,8 @@
                             );
 
                         }
+
+                        $('#modalLindo').modal();
                     });
 
                     $('table > tbody').on('click', '.details', function (data, a, b) {
@@ -1138,7 +1208,7 @@
                     $('table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
                         var data = table.row($(this).parents('tr')).data();
                         console.log(data);
-                        planejamentoCorrentId = data.Id;
+                        planejamentoCorrentId = data.Tatico_Id;
                         Clicked(isTaticoClicked, isNovaAcao);
 
                         $('#modalLindo').modal();
@@ -1362,40 +1432,21 @@
                 form.find('table > tbody > tr:nth-child(7)').find('input, select').attr('disabled', true);
                 form.find('table > tbody > tr:nth-child(8)').find('input, select').attr('disabled', true);
                 form.find('table > tbody > tr:nth-child(9)').find('input, select').attr('disabled', true);
+                //form.find('#Tatico_Id').val(model.Id);
+                form.attr('id', 'formEditTatico');
+                
 
-                form.find('#Tatico_Id').val(model.Id);
-                form.find('table > tbody > tr:nth-child(1)').find('input, select').val(model.Diretoria_Id);
-                form.find('table > tbody > tr:nth-child(2)').find('input, select').val(model.Gerencia_Id);
-                form.find('table > tbody > tr:nth-child(3)').find('input, select').val(model.Coordenacao_Id);
-                form.find('table > tbody > tr:nth-child(4)').find('input, select').val(model.Missao_Id);
-                form.find('table > tbody > tr:nth-child(5)').find('input, select').val(model.Visao_Id);
-                form.find('table > tbody > tr:nth-child(6)').find('input, select').val(model.Dimensao_Id);
-                form.find('table > tbody > tr:nth-child(7)').find('input, select').val(model.Objetivo_Id);
-                form.find('table > tbody > tr:nth-child(8)').find('input, select').val(model.IndicadoresDiretriz_Id);
-                form.find('table > tbody > tr:nth-child(9)').find('input, select').val(model.Responsavel_Diretriz);
-                form.find('table > tbody > tr:nth-child(10)').find('input, select').val(model.Iniciativa_Id);
-                form.find('table > tbody > tr:nth-child(11)').find('input, select').val(model.IndicadoresDeProjeto_Id);
-                form.find('table > tbody > tr:nth-child(12)').find('input, select').val(model.ObjetivoGerencial_Id);
-                form.find('table > tbody > tr:nth-child(13)').find('input, select').val(model._ValorDe);
-                form.find('table > tbody > tr:nth-child(14)').find('input, select').val(model._ValorPara);
-                form.find('table > tbody > tr:nth-child(15)').find('input, select').val(model.UnidadeDeMedida_Id);
-                form.find('table > tbody > tr:nth-child(16)').find('input, select').val(model._DataInicio);
-                form.find('table > tbody > tr:nth-child(17)').find('input, select').val(model._DataFim);
-                form.find('table > tbody > tr:nth-child(18)').find('input, select').val(model.Responsavel_Projeto);
                 $('#modalLindo').find('.modal-body .content2').append(form);
-                $('#modalLindo').find('.modal-body .content2').append('<hr>');
+                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditTatico'))\" >Salvar Tático</button><hr>");
 
             } else {
                 //if (tipo == 'Estrategico') {
                 //$('#Id').val(model.Id);
-                form.find('#Estrategico_Id').val(model.Id);
-                form.find('table > tbody > tr:nth-child(1)').find('input, select').val(model.Diretoria_Id);
-                form.find('table > tbody > tr:nth-child(4)').find('input, select').val(model.Missao_Id);
-                form.find('table > tbody > tr:nth-child(5)').find('input, select').val(model.Visao_Id);
-                form.find('table > tbody > tr:nth-child(6)').find('input, select').val(model.Dimensao_Id);
-                form.find('table > tbody > tr:nth-child(7)').find('input, select').val(model.Objetivo_Id);
-                form.find('table > tbody > tr:nth-child(8)').find('input, select').val(model.IndicadoresDiretriz_Id);
-                form.find('table > tbody > tr:nth-child(9)').find('input, select').val(model.Responsavel_Diretriz);
+                form.find('#Estrategico_Id').remove();
+                form.find('#IsTatico').val(false).change();
+
+
+
 
                 form.find('table > tbody > tr:nth-child(2)').hide();
                 form.find('table > tbody > tr:nth-child(3)').hide();
@@ -1408,9 +1459,10 @@
                 form.find('table > tbody > tr:nth-child(16)').hide();
                 form.find('table > tbody > tr:nth-child(17)').hide();
                 form.find('table > tbody > tr:nth-child(18)').hide();
+                form.attr('id', 'formEditEstrategy');
 
                 $('#modalLindo').find('.modal-body .content1').append(form);
-                $('#modalLindo').find('.modal-body .content2').append('<hr>');
+                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditEstrategy'))\">Salvar Estratégico</button><hr>");
                 //}
 
                 //else {
@@ -1422,10 +1474,25 @@
                 //    $('#Planejamento > table > tbody > tr:nth-child(8)').hide();
                 //}
             }
-            
+
             //$('#modalLindo').find('.modal-body .content3').append(form);
             InitDatePiker();
             MoneyMask();
+        }
+
+        function SalvarAcompanhamento(obj) {
+
+            $.post(urlSalvarAcompanhamento, obj, function (r) {
+                
+                //Colocar o retorno no modal
+                openMessageModal('Registro salvo com sucesso!', '');
+            })
+            .fail(function (e, h, x) {
+
+                openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
+
+            });
+
         }
 
     </script>

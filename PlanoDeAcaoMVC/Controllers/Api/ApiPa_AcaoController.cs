@@ -1,6 +1,8 @@
-﻿using DTO.Helpers;
+﻿using AutoMapper;
+using DTO.Helpers;
 using Helper;
 using PlanoAcaoCore;
+using PlanoAcaoCore.Acao;
 using System;
 using System.Collections.Generic;
 using System.Web.Http;
@@ -31,45 +33,64 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         {
             foreach (var i in acao)
                 i.IsValid();
-
-            foreach (var i in acao)
+            using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
             {
-               
-                //throw new Exception("treste");
-                if (i._QuantoCusta != null)
-                    i.QuantoCusta = NumericExtensions.CustomParseDecimal(i._QuantoCusta).GetValueOrDefault();
+                foreach (var i in acao)
+                {
 
-                if (i._QuandoInicio != null)
-                    i.QuandoInicio = Guard.ParseDateToSqlV2(i._QuandoInicio);
-                else
-                    i.QuandoInicio = DateTime.Now;
+                    //throw new Exception("treste");
+                    if (i._QuantoCusta != null)
+                        i.QuantoCusta = NumericExtensions.CustomParseDecimal(i._QuantoCusta).GetValueOrDefault();
 
-                if (i._QuandoFim != null)
-                    i.QuandoFim = Guard.ParseDateToSqlV2(i._QuandoFim);
-                else
-                    i.QuandoFim = DateTime.Now;
+                    if (i._QuandoInicio != null)
+                        i.QuandoInicio = Guard.ParseDateToSqlV2(i._QuandoInicio);
+                    else
+                        i.QuandoInicio = DateTime.Now;
 
-                i._QuandoInicio = null;
-                i._QuandoFim = null;
+                    if (i._QuandoFim != null)
+                        i.QuandoFim = Guard.ParseDateToSqlV2(i._QuandoFim);
+                    else
+                        i.QuandoFim = DateTime.Now;
 
-                //Pa_BaseObject.SalvarGenerico(acao);
-                //Pa_BaseObject.SalvarGenerico(acao.CausaMedidasXAcao);
+                    i._QuandoInicio = null;
+                    i._QuandoFim = null;
 
-                Pa_BaseObject.SalvarGenerico(i);
+                    //Pa_BaseObject.SalvarGenerico(acao);
+                    //Pa_BaseObject.SalvarGenerico(acao.CausaMedidasXAcao);
 
-                i.AddOrUpdate();
+                    //Pa_BaseObject.SalvarGenerico(i);
+
+                    var a = Mapper.Map<PlanoAcaoEF.Pa_Acao>(i);
+
+                    if (a.Id > 0)
+                    {
+                        db.Pa_Acao.Attach(a);
+                        var entry = db.Entry(a);
+                        entry.State = System.Data.Entity.EntityState.Modified;
+                        //entry.Property(e => e.Email).IsModified = true;
+                        // other changed properties
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        db.Pa_Acao.Add(a);
+                        db.SaveChanges();
+                    }
+                }
             }
 
             return acao;
         }
 
-        
+
         [HttpPost]
-        [Route("SaveAcompnhamento")]
-        public Pa_Acompanhamento Acompanhamento(Pa_Acompanhamento id)
+        [Route("SaveAcompanhamento")]
+        public Pa_Acompanhamento Acompanhamento(Pa_Acompanhamento obj)
         {
-            var obj = Pa_Acao.Get(id);
-            return Pa_Acompanhamento
+            //Pa_BaseObject.SalvarGenerico(obj);
+            //Pa_Acompanhamento.SalvarGenerico(obj);
+            //var obj = Pa_Acao.Get(id);
+            return Pa_BaseObject.SalvarGenerico(obj); 
         }
 
 

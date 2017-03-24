@@ -32,32 +32,62 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
                 obj.indicadorNome = list[0].indicadorNome;
 
-                sql = "";
+                string verColeta = "";
+                int validaColeta = 1;
 
-                sql = "INSERT INTO dbo.ManColetaDados " +
-                "(" +
-                "Base_parCompany_id " +
-                ",Base_dateAdd " +
-                ",Base_dateRef " +
-                ",Comentarios " +
-                "," + obj.indicadorNome +
-                ", userAdd" +
-                ") " +
-                "VALUES " +
-                "(" +
-                "" + obj.parCompany + "," +
-                "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'," +
-                "'" + obj.data.ToString("yyyy-MM-dd HH:mm:ss") + "'," +
-                "'" + obj.comentarios + "'," +
-                " replace('" + obj.quantidade + "',',','.')," + //BS: Alteração feita=> Troca de Virgula (,) por Ponto (.): Replace()
-                "'" + obj.user + "'" +
-                ")";
 
-                using (var db = new SgqDbDevEntities())
+                using (var dbVerColeta = new SgqDbDevEntities())
                 {
-                    var d = db.Database.ExecuteSqlCommand(sql);
-                    //return d;
+                    verColeta = " \n SELECT  ";
+                    verColeta += "\n TOP 1 Retorno.Retorno ";
+                    verColeta += "\n FROM ( ";
+                    verColeta += "\n	SELECT 1 Retorno ";
+                    verColeta += "\n	FROM ManColetaDados  ";
+                    verColeta += "\n		WHERE Base_parCompany_id = " + obj.parCompany + "  ";
+                    verColeta += "\n		  AND Base_dateRef = \'" + obj.data.ToString("yyyy - MM - dd HH: mm: ss") + "\'  ";
+                    verColeta += "\n		  AND " + obj.indicadorNome + " IS NOT NULL ";
+                    verColeta += "\n		  UNION ALL  ";
+                    verColeta += "\n	SELECT 0 ";
+                    verColeta += "\n		  )Retorno ";
+                    validaColeta = dbVerColeta.Database.SqlQuery<int>(verColeta).FirstOrDefault();
                 }
+
+                if (validaColeta == 0)
+                {
+                    sql = "";
+
+                    sql = "INSERT INTO dbo.ManColetaDados " +
+                    "(" +
+                    "Base_parCompany_id " +
+                    ",Base_dateAdd " +
+                    ",Base_dateRef " +
+                    ",Comentarios " +
+                    "," + obj.indicadorNome +
+                    ", userAdd" +
+                    ") " +
+                    "VALUES " +
+                    "(" +
+                    "" + obj.parCompany + "," +
+                    "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'," +
+                    "'" + obj.data.ToString("yyyy-MM-dd HH:mm:ss") + "'," +
+                    "'" + obj.comentarios + "'," +
+                    " replace('" + obj.quantidade + "',',','.')," + //BS: Alteração feita=> Troca de Virgula (,) por Ponto (.): Replace()
+                    "'" + obj.user + "'" +
+                    ")";
+
+                    using (var db = new SgqDbDevEntities())
+                    {
+                        var d = db.Database.ExecuteSqlCommand(sql);
+                        //return d;
+                    }
+
+                }
+                else
+                {
+                    throw new Exception();
+                }
+
+
 
                 //string sqlTarget = "select * into #ManColetaDadosRealConsolidado from ManColetaDadosRealConsolidado " +
 
@@ -80,17 +110,17 @@ namespace SgqSystem.Controllers.Api.Manutencao
                 //    var rs = db.Database.ExecuteSqlCommand(sql);
                 //}
 
-                    if (mockRetorno)
-                    {
-                        return "Salvo com Sucesso!";
-                    }
-                    else
-                        return "Sua meta para essa coleta é de 19% , com a informação de 20% ela foi reajustada para 18%";
+                if (mockRetorno)
+                {
+                    return "Salvo com Sucesso!";
+                }
+                else
+                    return "Sua meta para essa coleta é de 19% , com a informação de 20% ela foi reajustada para 18%";
 
             }
             catch (Exception e)
             {
-                return "Erro ao Salvar no Banco: " + e;
+                return "     Coleta não realizada! \n Provavelmente você já fez essa coleta hoje!" /*+ e*/;
                 throw;
             }
 

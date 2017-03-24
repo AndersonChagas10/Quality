@@ -1,4 +1,5 @@
 ﻿using Helper;
+using PlanoDeAcaoMVC.MapperConfig;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,9 @@ namespace PlanoDeAcaoMVC
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            AutoMapperConfig.RegisterMappings();
+
         }
     }
 }

@@ -11,6 +11,7 @@
         <form id="Acao" class="Acao">
 
             @Html.HiddenFor(r => r.Id)
+            @Html.HiddenFor(r => r.Panejamento_Id)
 
             <table class="nowrap .col-md-6 .col-md-offset-3" style="width: 100%;">
                 <tbody>
@@ -36,17 +37,17 @@
                             <td></td>
                         </tr>*@
                     <tr>
-                        <td>
+                        <td style="width: 43%;">
                             @Html.Label("Tipo de Indicador:", htmlAttributes: new { @class = "control-label " })
                         </td>
-                        <td>
+                        <td style="width: 43%;">
                             <select name="TipoIndicador" class="form-control input-sm" id="tipoIndicador">
                                 <option value="0">Selecione</option>
                                 <option value="1">Indicadores outros</option>
                                 <option value="2">Indicador Sgq</option>
                             </select>
                         </td>
-                        <td></td>
+                        <td style="width: 16%;"></td>
                     </tr>
 
                     <tr style="display:none" class="IndicadorSgq">
@@ -105,8 +106,7 @@
                             @Html.Label("Causa generica", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @Html.DropDownList("CausaMedidasXAcao.CausaGenerica_Id", new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione", new { @class = "form-control input-sm" })
-                            @Html.ValidationMessageFor(model => model.Departamento_Id, "", new { @class = "text-danger" })
+                            @Html.DropDownListFor(r=>r.CausaGenerica_Id, new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione", new { @class = "form-control input-sm" })
                         </td>
                         <td></td>
                     </tr>
@@ -115,7 +115,7 @@
                             @Html.Label("Grupo causa", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td id="GrupoCausa">
-                            @Html.DropDownList("CausaMedidasXAcao.GrupoCausa_Id", new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
+                            @Html.DropDownListFor(r=>r.GrupoCausa_Id, new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
                         </td>
                         <td></td>
                     </tr>
@@ -124,7 +124,7 @@
                             @Html.Label("Contramedida generica", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td id="ContramedidaGenerica">
-                            @Html.DropDownList("CausaMedidasXAcao.ContramedidaGenerica_Id", new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
+                            @Html.DropDownListFor(r=>r.ContramedidaGenerica_Id, new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
                         </td>
                         <td></td>
                     </tr>
@@ -133,7 +133,7 @@
                             @Html.Label("Causa Específica", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @Html.Editor("CausaMedidasXAcao._CausaEspecifica", new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(r=>r.CausaEspecifica, new { htmlAttributes = new { @class = "form-control" } })
                             
                         </td>
                         <td></td>
@@ -143,7 +143,7 @@
                             @Html.Label("Contramedida Específica", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @Html.Editor("CausaMedidasXAcao._ContramedidaEspecifica", new { htmlAttributes = new { @class = "form-control" } })                          
+                            @Html.EditorFor(r => r.ContramedidaEspecifica, new { htmlAttributes = new { @class = "form-control" } })                          
                         </td>
                         <td></td>
                     </tr>
@@ -153,17 +153,17 @@
                             @Html.Label("Quem", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @Html.DropDownList("AcaoXQuemDdl", new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r=>r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
                         </td>
                         <td style="text-align: center; display:none; vertical-align: bottom;" id="CausaMedidasXAcaoAdd">
 
-                            <button id="adicionar" type="button" class="btn btn-default btn-sm" onclick="Adicionar(this);">
+                            @*<button id="adicionar" type="button" class="btn btn-default btn-sm" onclick="Adicionar(this);">
                                 <span class="glyphicon glyphicon-plus"></span> Adicionar
                             </button>
 
                             <button id="remove" style="display:none" type="button" class="btn btn-default btn-sm" onclick="Remover(this);">
                                 <span class="glyphicon glyphicon-remove"></span> Remover
-                            </button>
+                            </button>*@
 
                         </td>
                     </tr>
@@ -238,16 +238,24 @@
                         </td>
                         <td></td>
                     </tr>
-                    @*<tr>
-                            <td>
-                                @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label " })
-                            </td>
-                            <td>
-                                @Html.DropDownList("Status", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-                            </td>
-                            <td></td>
-                        </tr>*@
+                    
+                    @if (Model != null)
+                    {
+                        if (Model.Id > 0)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label " })
+                                </td>
+                                <td>
+                                    @Html.DropDownList("Status", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                                </td>
+                                <td></td>
+                            </tr>
+                        }
+                    }
+
                     @if (ViewBag.Panejamento != null)
                     {
                         <tr>
@@ -273,23 +281,3 @@
 
 </div>
 
-@*<div id="obj" class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingOne">
-            <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-target="#collapsible_obj_0" data-parent="#accordion" aria-expanded="false" aria-controls="collapseOne">
-                    Collapsible Group Item #1
-                </a>
-            </h4>
-        </div>
-        <div id="collapsible_obj_0" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-            <div class="panel-body">
-
-            </div>
-        </div>
-    </div>*@
-
-@*var teste = $('#body').clone()
-    var nameCollapse = 'collapseT'
-    teste.find('a').attr('href', '#' + nameCollapse)
-    teste.find('#collapseOne').attr('id', nameCollapse )
-    teste.find('a').attr('aria-controls', nameCollapse )*@

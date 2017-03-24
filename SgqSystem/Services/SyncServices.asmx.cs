@@ -3240,10 +3240,10 @@ namespace SgqSystem.Services
 
                 //                               classe: "painel painelLevel03 row");
 
-               
+                
 
-                string panelButton = html.listgroupItem(
-                                                           outerhtml: accordeonbuttons ,
+                string panelAccordeon = html.listgroupItem(
+                                                           outerhtml: accordeonbuttons,
                                                            classe: "painel painelLevel02 row"
                                                         );
 
@@ -3254,7 +3254,7 @@ namespace SgqSystem.Services
                                                classe: "level3Group",
                                                tags: "level1idgroup=\"" + ParLevel1.Id + "\"",
 
-                                               outerhtml: painelLevel3 + panelButton +
+                                               outerhtml: painelLevel3 + panelAccordeon +
                                                           groupLevel3Level2
                                              );
 
@@ -3284,7 +3284,7 @@ namespace SgqSystem.Services
 
             //aqui tem que fazer a pesquisa se tem itens sao do level1 ex: cca,htp
             //quando tiver cabecalhos tem que replicar no level1
-
+            
             ParLevel2List = headerList +
                             ParLevel2List;
 
@@ -4082,10 +4082,9 @@ namespace SgqSystem.Services
                 }
 
                 string panelButton = html.listgroupItem(
-                                                           outerhtml: 
-                                                                      botoesTodos,
-                                                           classe: "painel row"
-                                                        );
+                                                        outerhtml: botoesTodos,
+                                                        classe: "painel row"
+                                                    );
 
                 //Se tiver level3 gera o agrupamento no padrão
                 if (!string.IsNullOrEmpty(parLevel3Group) && ParLevel1.HasGroupLevel2 != true)

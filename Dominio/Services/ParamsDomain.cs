@@ -229,7 +229,8 @@ namespace Dominio.Services
             parlevel1Dto.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(parlevel1.ParCounterXLocal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));/*Contadores*/
             parlevel1Dto.listParGoalLevel1 = Mapper.Map<List<ParGoalDTO>>(parlevel1.ParGoal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));/*Meta*/
             parlevel1Dto.listLevel1XClusterDto = Mapper.Map<List<ParLevel1XClusterDTO>>(parlevel1.ParLevel1XCluster.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));/*Clusters*/
-            parlevel1Dto.listParLevel3Level2Level1Dto = Mapper.Map<List<ParLevel3Level2Level1DTO>>(parlevel1.ParLevel3Level2Level1.Where(r => r.Active == true));/*Level 2 e 3 vinculados*/
+            var listL3L2L1 = parlevel1.ParLevel3Level2Level1.ToList();
+            parlevel1Dto.listParLevel3Level2Level1Dto = Mapper.Map<List<ParLevel3Level2Level1DTO>>(listL3L2L1.Where(r => r.Active == true).ToList());/*Level 2 e 3 vinculados*/
             parlevel1Dto.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(parlevel1.ParRelapse.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));/*Reincidencia*/
             parlevel1Dto.listParNotConformityRuleXLevelDto = Mapper.Map<List<ParNotConformityRuleXLevelDTO>>(parlevel1.ParNotConformityRuleXLevel.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive));/*Regra de alerta (Regra de NC)*/
 

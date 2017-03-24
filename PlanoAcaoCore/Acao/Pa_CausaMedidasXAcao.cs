@@ -24,8 +24,8 @@ namespace PlanoAcaoCore
         }
 
         [Display(Name = "Causa especifica")]
-        public string _CausaEspecifica { get; set; }// ID no DB
-        public int? CausaEspecifica_Id { get; set; }// Usada para SAVE/UPDATE
+        public int? CausaEspecifica_Id { get; set; }// ID no DB
+        public string _CausaEspecifica { get; set; }// Usada para SAVE/UPDATE
         public string CausaEspecifica
         {
             get
