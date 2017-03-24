@@ -32,18 +32,24 @@ namespace PlanoDeAcaoMVC.Controllers
         }
 
         // GET: Pa_Planejamento
-        public ActionResult Index()
+        public ActionResult Index(int? id = 0)
         {
             ViewBag.urlSend = Url.Action("Save", "api/Pa_Planejamento");
             ViewBag.urlList = Url.Action("List", "api/Pa_Planejamento");
-            return PartialView();
+
+            var model = new Pa_Planejamento();
+
+            if(id.GetValueOrDefault() > 0)
+               model = Pa_Planejamento.Get(id.GetValueOrDefault());
+
+            return PartialView("Index", model);
         }
 
         public ActionResult Details(int? id = 0)
         {
             if (id > 0)
             {
-                var model = Pa_Planejamento.Get(id.GetValueOrDefault());
+                var model = Pa_Planejamento.GetTatico(id.GetValueOrDefault());
                 if (model != null)
                     return PartialView("Details", model);
             }

@@ -57,49 +57,49 @@
             </td>
             <td></td>
         </tr>
-      
+
         <tr>
             <td>
-                @Html.DisplayNameFor(model => model.CausaMedidasXAcao.CausaGenerica_Id)
+                @Html.DisplayNameFor(model => model.CausaGenerica_Id)
             </td>
             <td>
-                @Html.DisplayFor(model => model.CausaMedidasXAcao.CausaGenerica)
+                @Html.DisplayFor(model => model._CausaGenerica)
             </td>
             <td></td>
         </tr>
         <tr>
             <td>
-                @Html.DisplayNameFor(model => model.CausaMedidasXAcao.GrupoCausa_Id)
+                @Html.DisplayNameFor(model => model.GrupoCausa_Id)
             </td>
             <td>
-                @Html.DisplayFor(model => model.CausaMedidasXAcao.GrupoCausa)
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                @Html.DisplayNameFor(model => model.CausaMedidasXAcao.ContramedidaGenerica_Id)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.CausaMedidasXAcao.ContramedidaGenerica)
+                @Html.DisplayFor(model => model._GrupoCausa)
             </td>
             <td></td>
         </tr>
         <tr>
             <td>
-                @Html.DisplayNameFor(model => model.CausaMedidasXAcao.CausaEspecifica_Id)
+                @Html.DisplayNameFor(model => model.ContramedidaGenerica_Id)
             </td>
             <td>
-                @Html.DisplayFor(model => model.CausaMedidasXAcao.CausaEspecifica)
+                @Html.DisplayFor(model => model._ContramedidaGenerica)
             </td>
             <td></td>
         </tr>
         <tr>
             <td>
-                @Html.DisplayNameFor(model => model.CausaMedidasXAcao.ContramedidaEspecifica_Id)
+                @Html.DisplayNameFor(model => model.CausaEspecifica)
             </td>
             <td>
-                @Html.DisplayFor(model => model.CausaMedidasXAcao.ContramedidaEspecifica)
+                @Html.DisplayFor(model => model.CausaEspecifica)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.ContramedidaEspecifica)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.ContramedidaEspecifica)
             </td>
             <td></td>
         </tr>
@@ -109,7 +109,7 @@
                 @Html.DisplayName("Quem:")
             </td>
             <td>
-                @Html.DisplayFor(model => model._QuemObj.FirstOrDefault().Name)
+                @Html.DisplayFor(model => model._Quem)
             </td>
             <td></td>
         </tr>
@@ -163,10 +163,10 @@
             </td>
             <td></td>
         </tr>
-        
-     
 
-    
+
+
+
 
     </tbody>
 </table>
@@ -176,28 +176,42 @@
 <table class="borderedNinja nowrap .col-md-6 .col-md-offset-3 display" cellspacing="0" style="width: 100%;">
     @*Histórico*@
     <tr>
-        <td colspan="3"></td>
+        <td colspan="3">
+            @*<label class="redLabel" for="inputlg">Detalhes</label>
+            <textarea class="form-control input-sm" id="detalhes"></textarea>*@
+        </td>       
     </tr>
 </table>
 
 <br />
 
-<table class="borderedNinja nowrap .col-md-6 .col-md-offset-3 display" cellspacing="0" style="width: 100%;">
+@*<table class="borderedNinja nowrap .col-md-6 .col-md-offset-3 display" cellspacing="0" style="width: 100%;">*@
     @*Histórico*@
-    <tr>
-        <td colspan="3">
+    @*<tr>
+        <td colspan="3">*@
             <form id="acompanhamento">
-                
+
                 @Html.HiddenFor(r => r.Id)
 
-                <input type="text" id="detalhes" />
+                <div class="form-group">
+                    <label class="redLabel" for="inputlg">Descrição:</label>
+                    <textarea name="description" class="form-control input-sm" id="description"></textarea>
+                </div>
 
-                @Html.DropDownList("Status", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                <div class="form-group">                    
+                    <label class="redLabel" for="inputlg">Destinatário:</label>
+                    @Html.DropDownList("MailTo", new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control selectpicker", multiple = "true" })
+                </div>
 
-                <button>Enviar</button>
+                <div class="form-group">
+                    <label class="redLabel" for="inputlg">Status</label>
+                    @Html.DropDownList("Status_Id", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                </div>
+                <input type="submit" value="Enviar" class="btn btn-primary">
+                @*<button id="btnAcompanhamento" type="button" class="btn btn-primary">Enviar</button>*@
             </form>
-        </td>
+        @*</td>
     </tr>
-</table>
+</table>*@
 
 <br />

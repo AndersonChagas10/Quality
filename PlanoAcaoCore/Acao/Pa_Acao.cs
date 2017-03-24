@@ -70,11 +70,33 @@ namespace PlanoAcaoCore
         public DateTime QuandoFim { get; set; }
         public string _QuandoFim { get; set; }
 
-        public List<Pa_AcaoXQuem> AcaoXQuem { get; set; }
+        [Display(Name = "Quem")]
+        public int Quem_Id { get; set; }
+        public string _Quem { get; set; }
 
-        public List<string> _Quem { get; set; }
+        [Display(Name = "Causa Generica")]
+        public int CausaGenerica_Id { get; set; }
+        public string _CausaGenerica { get; set; }
 
-        public List<Pa_Quem> _QuemObj { get; set; }
+        [Display(Name = "Contramedida Genérica")]
+        public int ContramedidaGenerica_Id { get; set; }
+        public string _ContramedidaGenerica { get; set; }
+
+        [Display(Name = "Grupo Causa")]
+        public int GrupoCausa_Id { get; set; }
+        public string _GrupoCausa { get; set; }
+
+        [Display(Name = "Causa Especifica")]
+        public string CausaEspecifica { get; set; }
+
+        [Display(Name = "Causa Generica")]
+        public string ContramedidaEspecifica { get; set; }
+
+        //public List<Pa_AcaoXQuem> AcaoXQuem { get; set; }
+
+        //public List<string> _Quem { get; set; }
+
+        //public List<Pa_Quem> _QuemObj { get; set; }
 
         public Pa_Problema_Desvio _Pa_Problema_Desvio_Id
         {
@@ -139,32 +161,32 @@ namespace PlanoAcaoCore
             //if (Pa_Problema_Desvio_Id <= 0 || Pa_Problema_Desvio_Id == null)
             //    message += "\n Problema ou Desvio,";
 
-            if (AcaoXQuem != null)
-            {
-                foreach (var i in AcaoXQuem)
-                    if (i.Quem_Id <= 0)
-                        message = "\n Quem,";
-            }
-            else
-                message = "\n Quem,";
+            //if (AcaoXQuem != null)
+            //{
+            //    foreach (var i in AcaoXQuem)
+            //        if (i.Quem_Id <= 0)
+            //            message = "\n Quem,";
+            //}
+            //else
+            //    message = "\n Quem,";
 
-            if (CausaMedidasXAcao == null)
-                CausaMedidasXAcao = new Pa_CausaMedidasXAcao();
+            //if (CausaMedidasXAcao == null)
+            //    CausaMedidasXAcao = new Pa_CausaMedidasXAcao();
 
-            if (CausaMedidasXAcao.CausaGenerica_Id <= 0)
-                message += "\n Causa generica,";
+            //if (CausaMedidasXAcao.CausaGenerica_Id <= 0)
+            //    message += "\n Causa generica,";
 
-            if (CausaMedidasXAcao.GrupoCausa_Id <= 0)
-                message += "\n Grupo causa,";
+            //if (CausaMedidasXAcao.GrupoCausa_Id <= 0)
+            //    message += "\n Grupo causa,";
 
-            if (CausaMedidasXAcao.ContramedidaGenerica_Id <= 0)
-                message += "\n Contramedida generica,";
+            //if (CausaMedidasXAcao.ContramedidaGenerica_Id <= 0)
+            //    message += "\n Contramedida generica,";
 
-            if (string.IsNullOrEmpty(CausaMedidasXAcao._CausaEspecifica))
-                message += "\n Causa Específica,";
+            //if (string.IsNullOrEmpty(CausaMedidasXAcao._CausaEspecifica))
+            //    message += "\n Causa Específica,";
 
-            if (string.IsNullOrEmpty(CausaMedidasXAcao._ContramedidaEspecifica))
-                message += "\n Contramedida Específica,";
+            //if (string.IsNullOrEmpty(CausaMedidasXAcao._ContramedidaEspecifica))
+            //    message += "\n Contramedida Específica,";
 
             //if (string.IsNullOrEmpty(_QuandoInicio))
             //    message += "\n Quando início,";
@@ -191,14 +213,22 @@ namespace PlanoAcaoCore
         {
             get
             {
-                return "SELECT TOP 200 ACAO.* ,                                                     " +
-                        "\n STA.Name as StatusName,                                         " +
-                        "\n UN.Name as Unidade,                                             " +
-                        "\n DPT.Name as Departamento                                        " +
-                        "\n FROM pa_acao ACAO                                               " +
-                        "\n LEFT JOIN Pa_Unidade UN ON UN.Id = ACAO.Unidade_Id              " +
-                        "\n LEFT JOIN Pa_Departamento DPT ON DPT.Id = ACAO.Departamento_Id  " +
-                        "\n LEFT JOIN Pa_Status STA ON STA.Id = ACAO.[Status]  where acao.id in (select Acao_Id from Pa_CausaMedidaXAcao where Acao_Id is not null)   ";
+                return  " \n SELECT TOP 200 ACAO.* ,                                                           " +
+                        " \n STA.Name as StatusName,                                                           " +
+                        " \n UN.Name as Unidade,                                                               " +
+                        " \n DPT.Name as Departamento,                                                         " +
+                        " \n Q.Name as _Quem,                                                                  " +
+                        " \n CG.CausaGenerica as _CausaGenerica,                                               " +
+                        " \n CMG.ContramedidaGenerica as _ContramedidaGenerica,                                " +
+                        " \n GC.GrupoCausa as _GrupoCausa                                                      " +
+                        " \n FROM pa_acao ACAO                                                                 " +
+                        " \n LEFT JOIN Pa_Unidade UN ON UN.Id = ACAO.Unidade_Id                                " +
+                        " \n LEFT JOIN Pa_Quem Q ON Q.Id = ACAO.Quem_Id                                        " +
+                        " \n LEFT JOIN Pa_CausaGenerica CG ON CG.Id = ACAO.CausaGenerica_Id                    " +
+                        " \n LEFT JOIN Pa_ContramedidaGenerica CMG ON CMG.Id = ACAO.ContramedidaGenerica_Id    " +
+                        " \n LEFT JOIN Pa_GrupoCausa GC ON GC.Id = ACAO.GrupoCausa_Id                          " +
+                        " \n LEFT JOIN Pa_Departamento DPT ON DPT.Id = ACAO.Departamento_Id                    " +
+                        " \n LEFT JOIN Pa_Status STA ON STA.Id = ACAO.[Status]";
 
             }
         }
@@ -209,10 +239,10 @@ namespace PlanoAcaoCore
 
             foreach (var i in retorno)
             {
-                i._Quem = Pa_Quem.GetQuemXAcao(i.Id).Select(r => r.Name).ToList();
-                i._QuemObj = Pa_Quem.GetQuemXAcao(i.Id).ToList();
-                i.AcaoXQuem = Pa_AcaoXQuem.Get(i.Id).ToList();
-                i.CausaMedidasXAcao = Pa_CausaMedidasXAcao.GetByAcaoId(i.Id);
+                //i._Quem = Pa_Quem.GetQuemXAcao(i.Id).Select(r => r.Name).ToList();
+                //i._QuemObj = Pa_Quem.GetQuemXAcao(i.Id).ToList();
+                //i.AcaoXQuem = Pa_AcaoXQuem.Get(i.Id).ToList();
+                //i.CausaMedidasXAcao = Pa_CausaMedidasXAcao.GetByAcaoId(i.Id);
                 i._QuandoInicio = i.QuandoInicio.ToShortDateString() + " " + i.QuandoInicio.ToShortTimeString();
                 i._QuandoFim = i.QuandoFim.ToShortDateString() + " " + i.QuandoFim.ToShortTimeString();
             }
@@ -224,109 +254,19 @@ namespace PlanoAcaoCore
         {
             var retorno = GetGenerico<Pa_Acao>(query + " AND ACAO.Id = " + Id);
 
-            retorno._Quem = Pa_Quem.GetQuemXAcao(retorno.Id).Select(r => r.Name).ToList();
-            retorno.AcaoXQuem = Pa_AcaoXQuem.Get(retorno.Id).ToList();
-            retorno._QuemObj = Pa_Quem.GetQuemXAcao(retorno.Id).ToList();
-            retorno.CausaMedidasXAcao = Pa_CausaMedidasXAcao.GetByAcaoId(retorno.Id);
+            //retorno._Quem = Pa_Quem.GetQuemXAcao(retorno.Id).Select(r => r.Name).ToList();
+            //retorno.AcaoXQuem = Pa_AcaoXQuem.Get(retorno.Id).ToList();
+            //retorno._QuemObj = Pa_Quem.GetQuemXAcao(retorno.Id).ToList();
+            //retorno.CausaMedidasXAcao = Pa_CausaMedidasXAcao.GetByAcaoId(retorno.Id);
             retorno._QuandoInicio = retorno.QuandoInicio.ToShortDateString() + " " + retorno.QuandoInicio.ToShortTimeString();
             retorno._QuandoFim = retorno.QuandoFim.ToShortDateString() + " " + retorno.QuandoFim.ToShortTimeString();
 
             return retorno;
         }
 
-        public Pa_CausaMedidasXAcao CausaMedidasXAcao { get; set; }
+        //public Pa_CausaMedidasXAcao CausaMedidasXAcao { get; set; }
 
-        public void AddOrUpdate()
-        {
-            ////IsValid();
-            ////CausaMedidasXAcao.IsValid();
-
-            ////foreach (var j in AcaoXQuem)
-            ////    j.IsValid();
-
-            //string query;
-
-            //if (Id > 0)
-            //{
-
-            //    query = "UPDATE [dbo].[Pa_Acao]                                             " +
-            //       "\n    SET [QuandoInicio] = @QuandoInicio                                " +
-            //       "\n       ,[DuracaoDias] = @DuracaoDias                                  " +
-            //       "\n       ,[QuandoFim] = @QuandoFim                                      " +
-            //       "\n       ,[ComoPontosimportantes] = @ComoPontosimportantes              " +
-            //       "\n       ,[QuantoCusta] = @QuantoCusta                                  " +
-            //       "\n       ,[Status] = @Status                                            " +
-            //       "\n       ,[Pa_Problema_Desvio_Id] = @Pa_Problema_Desvio_Id    " +
-            //       "\n       ,[Pa_IndicadorSgqAcao_Id] = @Pa_IndicadorSgqAcao_Id            " +
-            //       "\n       ,[PraQue] = @PraQue                                            " +
-            //       "\n       ,[Panejamento_Id] = @Panejamento_Id                            " +
-            //       "\n  WHERE Id = @Id                                                      ";
-
-            //    query += " SELECT CAST(1 AS int)";
-
-            //    SqlCommand cmd;
-            //    cmd = new SqlCommand(query);
-
-            //    cmd.Parameters.AddWithValue("@QuandoInicio", QuandoInicio);
-            //    //cmd.Parameters.AddWithValue("@DuracaoDias", DuracaoDias);
-            //    cmd.Parameters.AddWithValue("@QuandoFim", QuandoFim);
-            //    cmd.Parameters.AddWithValue("@ComoPontosimportantes", ComoPontosimportantes);
-            //    cmd.Parameters.AddWithValue("@QuantoCusta", QuantoCusta);
-            //    cmd.Parameters.AddWithValue("@Status", Status);
-            //    cmd.Parameters.AddWithValue("@PraQue", PraQue);
-            //    cmd.Parameters.AddWithValue("@Panejamento_Id", Panejamento_Id);
-            //    cmd.Parameters.AddWithValue("@Id", Id);
-            //    cmd.Parameters.AddWithValue("@Pa_Problema_Desvio_Id", Pa_Problema_Desvio_Id);
-            //    cmd.Parameters.AddWithValue("@Pa_IndicadorSgqAcao_Id", Pa_IndicadorSgqAcao_Id);
-
-            //    Salvar(cmd);
-
-            //    var causaEsp = new Pa_CausaEspecifica()
-            //    {
-            //        Id = CausaMedidasXAcao.CausaEspecifica_Id.GetValueOrDefault(),
-            //        Text = CausaMedidasXAcao.CausaEspecifica
-            //    };
-
-            //    var contramedidaEsp = new Pa_ContramedidaEspecifica()
-            //    {
-            //        Id = CausaMedidasXAcao.ContramedidaEspecifica_Id.GetValueOrDefault(),
-            //        Text = CausaMedidasXAcao.ContramedidaEspecifica
-            //    };
-
-            //    causaEsp.AddOrUpdate();
-            //    contramedidaEsp.AddOrUpdate();
-
-            //    CausaMedidasXAcao.AddOrUpdate();
-
-            //    foreach (var j in AcaoXQuem)
-            //    {
-            //        j.Acao_Id = Id;
-            //        j.AddOrUpdate();
-            //    }
-
-            //}
-            //else
-            //{
-
-                var causaEsp = new Pa_CausaEspecifica() { Text = CausaMedidasXAcao._CausaEspecifica };
-                var contramedidaEsp = new Pa_ContramedidaEspecifica() { Text = CausaMedidasXAcao._ContramedidaEspecifica };
-                causaEsp.AddOrUpdate();
-                contramedidaEsp.AddOrUpdate();
-
-                CausaMedidasXAcao.CausaEspecifica_Id = causaEsp.Id;
-                CausaMedidasXAcao.ContramedidaEspecifica_Id = contramedidaEsp.Id;
-
-                CausaMedidasXAcao.Acao_Id = Id;
-                CausaMedidasXAcao.AddOrUpdate();
-
-                foreach (var j in AcaoXQuem)
-                {
-                    j.Acao_Id = Id;
-                    j.AddOrUpdate();
-                }
-
-            //}
-        }
+        
 
 
     }
