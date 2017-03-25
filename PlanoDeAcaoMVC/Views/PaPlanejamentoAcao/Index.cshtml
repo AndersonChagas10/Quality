@@ -1238,7 +1238,7 @@
                             $("#acompanhamento").on("submit", function (event) {
                                 //event.preventDefault();
                                 var obj = $("#acompanhamento").serializeObject();
-                                if (obj.Name == undefined || obj.Acao_Id == undefined || MailTo == undefined)
+                                if (obj.Name == "" || obj.Acao_Id == undefined || obj.MailTo == undefined)
                                     alert("Os campos devem ser preenchidos")
                                 else
                                     SalvarAcompanhamento(obj);
@@ -1467,8 +1467,6 @@
                 //$('#Id').val(model.Id);
                 form.find('#Estrategico_Id').remove();
                 form.find('#IsTatico').val(false).change();
-
-
 
 
                 form.find('table > tbody > tr:nth-child(2)').hide();
