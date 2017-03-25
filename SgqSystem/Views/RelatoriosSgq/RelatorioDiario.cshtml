@@ -1,6 +1,6 @@
 ﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
 @{
-    ViewBag.Title = "Relatorio Diario";
+    ViewBag.Title = Resources.Resource.daily_apointments;
     var url = Url.Action("Index", "Home");
     var urlGrafico1 = Url.Action("Grafico1", "api/RelDiario");
     var urlGetPanelResultSet = Url.Action("GetPanelResultSet", "api/RelDiario");
@@ -49,7 +49,8 @@
         $(".sidebar-toggler").removeClass("hide");
         $(".page-sidebar-wrapper").removeClass("hide");
 
-        var meses = new Array("Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
+        //var meses = new Array("Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
+        var meses = new Array("@Resources.Resource.january", "@Resources.Resource.february", "@Resources.Resource.march", "@Resources.Resource.april", "@Resources.Resource.may", "@Resources.Resource.june", "@Resources.Resource.july", "@Resources.Resource.august", "@Resources.Resource.september", "@Resources.Resource.october", "@Resources.Resource.november", "@Resources.Resource.december");
         var url1 = '@Html.Raw(@urlGrafico1)';
         var urlGetPanelResultSet = '@Html.Raw(@urlGetPanelResultSet)';
         var $btn = $('#btnSend');
@@ -83,7 +84,7 @@
             FTA._dataFim = FTA._dataInicio,
 
             EasyAjax(url1, enviar, CallbackGraficos, "load", toggle);//AJAX
-          
+
         };
 
         function CallbackGraficos(r) {
@@ -107,7 +108,7 @@
                     divClonada.find('.panel-heading').html(o.Level1Name); // Insere Titulo no Panel
 
                     var tendencia = $.grep(r.listResultSetTendencia, function (level2, c) { return level2.level1_Id == o.level1_Id });
-                    GraficoTendencia(tendencia, div, "Tendência do Indicador: " + tendencia[0].Level1Name + " - " + meses[0], tendencia[0].Data, tendencia[tendencia.length - 1].Data);
+                    GraficoTendencia(tendencia, div, "@Resources.Resource.audit_tendency :" + tendencia[0].Level1Name + " - " + meses[0], tendencia[0].Data, tendencia[tendencia.length - 1].Data);
 
                     //GraficoTendencia(listResults["Tendencia"], div, o);//Processa e cria grafico
                     var divMonitoramento = DivManager.criaDiv(idDivTendencia, o.level1_Id, "monitoramento");
@@ -117,12 +118,12 @@
 
                     var divTarefaIndicador = DivManager.criaDiv(divMonitoramento, o.level1_Id, "tarefaIndicador");
                     var tarefaPorIndicador = $.grep(r.listResultSetTarefaPorIndicador, function (level2, c) { return level2.level1_Id == o.level1_Id });
-                    GraficoTarefaIndicadores(tarefaPorIndicador, divTarefaIndicador, "NC por Tarefas acumuladas: " + tendencia[0].Level1Name);//Processa e cria grafico
+                    GraficoTarefaIndicadores(tarefaPorIndicador, divTarefaIndicador, "@Resources.Resource.derivations_per_defects: " + tendencia[0].Level1Name);//Processa e cria grafico
 
                     level2DoLevel1.forEach(function (oo, cc) {
                         var divTarefas = DivManager.criaDiv(divMonitoramento, oo.level2_Id, "monitoramento");
                         var level3DoLevel2 = $.grep(r.listResultSetLevel3, function (level2, c) { return level2.level2_Id == oo.level2_Id });
-                        GraficoTarefa(level3DoLevel2, divTarefas, "Nc por Tarefa: " + level3DoLevel2[0].Level2Name, o.level1_Id);//Processa e cria grafico
+                        GraficoTarefa(level3DoLevel2, divTarefas, "@Resources.Resource.deviations_per_monitoring:" + level3DoLevel2[0].Level2Name, o.level1_Id);//Processa e cria grafico
                     });
 
                 });
@@ -146,7 +147,7 @@
             //Cria GRafico
             $('#plotPrincipal').empty().highcharts({
                 credits: Chart.Credits(),
-                title: Chart.Titulo("NC Por Indicador: " + unidadeName),
+                title: Chart.Titulo("@Resources.Resource.defects_per_audit" + unidadeName),
                 xAxis: Chart.Xaxis(valoresX),
                 tooltip: Chart.ToolTip(true, true),
                 legend: Chart.Legend(),
@@ -169,8 +170,8 @@
                     Chart.ProcNc(percentual),
                     Chart.Meta(meta, true),
                     //, Chart.SimpleSerie(valoresY.meta, "% Meta", Chart.CorMeta(), true, 0, ' %')
-                    Chart.SimpleSerie(nc, "Total NC", Chart.CorTotalNc(), false, 1),
-                    Chart.SimpleSerie(totalAvaliado, "Total Av", Chart.CorTotalAv(), false, 1)
+                    Chart.SimpleSerie(nc, "@Resources.Resource.derivations", Chart.CorTotalNc(), false, 1),
+                    Chart.SimpleSerie(totalAvaliado, "@Resources.Resource.total_evaluated", Chart.CorTotalAv(), false, 1)
                 ],
 
             });
@@ -298,7 +299,7 @@
                         }
                     },
                     title: {
-                        text: '% NC',
+                        text: '% @Resources.Resource.defects',
                         style: {
                             color: "Black"
                         }
@@ -319,7 +320,7 @@
                 }, { // Secondary yAxis
                     gridLineWidth: 0,
                     title: {
-                        text: 'Numero Amostras',
+                        text: '@Resources.Resource.number_samplers',
                         style: {
                             color: "Black"
                         }
@@ -334,7 +335,7 @@
                 }],
                 series: [{
                     yAxis: 0,
-                    name: '% NC',
+                    name: '% @Resources.Resource.defects',
                     color: Chart.CorTotalProcNc(),
                     data: valoresYY.ProcNC,
                     tooltip: {
@@ -362,7 +363,7 @@
                 },
             {
                 type: 'spline',
-                name: 'Tendencia Acumulada',
+                name: '@Resources.Resource.accumulated_tendency',
                 color: Chart.CorTotalPareto(),
                 data: valoresYY.linhaTendencia,
                 yAxis: 0,
@@ -383,7 +384,7 @@
             },
             {
                 yAxis: 1,
-                name: 'Total NC',
+                name: '@Resources.Resource.derivations',
                 color: Chart.CorTotalNc(),
                 data: valoresYY.NC,
                 visible: false,
@@ -410,7 +411,7 @@
             },
             {
                 yAxis: 1,
-                name: 'Total Av',
+                name: '@Resources.Resource.total_evaluated',
                 data: valoresYY.totalAvaliado,
                 color: Chart.CorTotalAv(),
                 visible: false,
@@ -450,7 +451,7 @@
             var valoresX = MapeiaValorParaHC(data, "Level2Name")
             var NC = MapeiaValorParaHC(data, "NC")
             var TotalAvaliado = MapeiaValorParaHC(data, "Av")
-            var titulo = "Titulo: " + MapeiaValorParaHC(data, "Level1Name")[0];
+            var titulo = "@Resources.Resource.title : " + MapeiaValorParaHC(data, "Level1Name")[0];
             //Auxiliares.loading(idDiv);
 
             //Organiza dados do grafico
@@ -489,8 +490,8 @@
                     color: '#98FB98'
                 }],
                 series: [
-                      Chart.SimpleSerie(NC, "Total NC", Chart.CorTotalNc(), true)
-                    , Chart.SimpleSerie(TotalAvaliado, 'Total Av', Chart.CorTotalAv(), true)
+                      Chart.SimpleSerie(NC, "@Resources.Resource.derivations", Chart.CorTotalNc(), true)
+                    , Chart.SimpleSerie(TotalAvaliado, '@Resources.Resource.total_evaluated', Chart.CorTotalAv(), true)
                     , Chart.curvaPareto(pareto)
                 ],
             });
@@ -519,7 +520,7 @@
                     shadow: true
                 },
                 series: [
-                  Chart.SimpleSerie(dados.y.NC, "Total NC", Chart.CorTotalNc(), true, 0, undefined, undefined, true, [dados.idOperacao, dados.idMonitoramento, dados.idTarefa]),
+                  Chart.SimpleSerie(dados.y.NC, "@Resources.Resource.derivations", Chart.CorTotalNc(), true, 0, undefined, undefined, true, [dados.idOperacao, dados.idMonitoramento, dados.idTarefa]),
                   Chart.curvaPareto(dados.y.pareto)
                 ],
             });
@@ -564,7 +565,7 @@
                     }
                 },
                 series: [
-                    Chart.SimpleSerie(valoresY.NC, "Total NC", Chart.CorTotalNc(), true),
+                    Chart.SimpleSerie(valoresY.NC, "@Resources.Resource.derivations", Chart.CorTotalNc(), true),
                     Chart.curvaPareto(valoresY.pareto)
                 ],
             });
@@ -831,7 +832,7 @@
                             }
                         },
                         title: {
-                            text: (pareto == undefined || pareto == false) ? '% NC' : 'Gráfico de Pareto',
+                            text: (pareto == undefined || pareto == false) ? '% @Resources.Resource.defects' : '@Resources.Resource.pareto_chart',
                             style: {
                                 color: "Black"
                             }
@@ -840,7 +841,7 @@
                         allowDecimals: false,
                         gridLineWidth: 0,
                         title: {
-                            text: (totalNC == undefined || totalNC == false) ? 'Numero Amostras' : 'Total NC',
+                            text: (totalNC == undefined || totalNC == false) ? 'Numero Amostras' : '@Resources.Resource.derivations',
                             style: {
                                 color: "Black"
                             }
@@ -857,7 +858,7 @@
                     return [{ // Primary yAxis
                         gridLineWidth: 0,
                         title: {
-                            text: (totalNC == undefined || totalNC == false) ? 'Numero Amostras' : 'Total NC',
+                            text: (totalNC == undefined || totalNC == false) ? 'Numero Amostras' : '@Resources.Resource.derivations',
                             style: {
                                 color: "Black"
                             }
@@ -880,7 +881,7 @@
                             }
                         },
                         title: {
-                            text: (pareto == undefined || pareto == false) ? '% NC' : 'Gráfico de Pareto',
+                            text: (pareto == undefined || pareto == false) ? '% @Resources.Resource.defects' : '@Resources.Resource.pareto_chart',
                             style: {
                                 color: "Black"
                             }
@@ -924,7 +925,7 @@
                 return {
                     type: 'line',
                     yAxis: 1,
-                    name: 'Gráfico de Pareto',
+                    name: '@Resources.Resource.pareto_chart',
                     color: "Red",
                     data: dados,
                     yAxis: 1,
@@ -945,7 +946,7 @@
                 //    data[a] = parseFloat(b.toFixed(2));
                 //});
                 return {
-                    name: '% NC',
+                    name: '% @Resources.Resource.defects',
                     color: Chart.CorTotalProcNc(),//'rgba(240,124,0,1)',
                     data: data,
                     yAxis: 0,
@@ -977,7 +978,7 @@
 
                 return {
                     visible: !!isVisible,
-                    name: '% Meta',
+                    name: '% @Resources.Resource.goal',
                     data: data,
                     color: Chart.CorMeta(),//'rgba(81,207,64,1)',
                     //pointPadding: 0.4,

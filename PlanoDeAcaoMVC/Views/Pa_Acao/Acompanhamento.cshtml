@@ -17,7 +17,7 @@
                 @Html.DisplayNameFor(model => model.Pa_Problema_Desvio_Id)
             </td>
             <td>
-                @Html.DisplayFor(model => model._Pa_Problema_Desvio_Id)
+                @Html.DisplayFor(model => model._Pa_Problema_Desvio_Id.Name)
             </td>
             <td></td>
         </tr>
@@ -26,7 +26,7 @@
                 @Html.DisplayNameFor(model => model.Pa_IndicadorSgqAcao_Id)
             </td>
             <td>
-                @Html.DisplayFor(model => model._Pa_IndicadorSgqAcao)
+                @Html.DisplayFor(model => model._Pa_IndicadorSgqAcao.Name)
             </td>
             <td></td>
         </tr>
@@ -149,7 +149,7 @@
                 @Html.DisplayNameFor(model => model.Status)
             </td>
             <td>
-                @Html.DisplayFor(model => model.StatusName)
+                @Html.DisplayFor(model => model._StatusName)
             </td>
             <td></td>
         </tr>
@@ -173,29 +173,44 @@
 
 <br />
 
-<table class="borderedNinja nowrap .col-md-6 .col-md-offset-3 display" cellspacing="0" style="width: 100%;">
-    @*Histórico*@
-    <tr>
-        <td colspan="3">
+@*<div class="container">*@
+    <div class="row">
+        <div class="col-sm-12">
             @foreach (var i in Model._Acompanhamento)
             {
-                <div class="form-group">
-                    <label class="redLabel" for="inputlg">Detalhes</label>
-                    @Html.DisplayFor(r => i.Name)
-                </div>
-                <div class="form-group">
-                    <label class="redLabel" for="inputlg">Destinatário:</label>
-                    @Html.DisplayFor(r => i.MailTo)
-                </div>
+                <table class="borderedNinja nowrap .col-sm-4 display" cellspacing="0" style="float:left" @*style="width: 100%;"*@>
+                    @*Histórico*@
+                    <tr>
+                        <td>
+                            <label class="redLabel" for="inputlg">Detalhes:</label>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(r => i.Name)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="redLabel" for="inputlg">Destinatário:</label>
 
-                <div class="form-group">
-                    <label class="redLabel" for="inputlg">Status</label>
-                    @*@Html.Display(i.Status_Id)*@
-                </div>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(r => i.MailTo)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="redLabel" for="inputlg">Status:</label>
+                        </td>
+                        <td>
+                            @*@Html.Display(i._Status)*@
+                        </td>
+                    </tr>
+
+                </table>
             }
-        </td>
-    </tr>
-</table>
+        </div>
+    </div>
+@*</div>*@
 
 <br />
 
