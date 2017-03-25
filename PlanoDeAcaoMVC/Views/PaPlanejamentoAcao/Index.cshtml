@@ -1238,7 +1238,10 @@
                             $("#acompanhamento").on("submit", function (event) {
                                 //event.preventDefault();
                                 var obj = $("#acompanhamento").serializeObject();
-                                SalvarAcompanhamento(obj);
+                                if (obj.Name == undefined || obj.Acao_Id == undefined || MailTo == undefined)
+                                    alert("Os campos devem ser preenchidos")
+                                else
+                                    SalvarAcompanhamento(obj);
                             });
                         })
                     });

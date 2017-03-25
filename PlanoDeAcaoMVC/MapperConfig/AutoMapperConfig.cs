@@ -11,6 +11,7 @@ namespace PlanoDeAcaoMVC.MapperConfig
             {
                 x.AddProfile<AcaoMapper>();
                 x.AddProfile<PlanejamentoMapper>();
+                x.AddProfile<AcompanhamentoMapper>();
             });
         }
     }

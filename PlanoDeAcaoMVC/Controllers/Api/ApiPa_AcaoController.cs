@@ -90,9 +90,33 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             //Pa_BaseObject.SalvarGenerico(obj);
             //Pa_Acompanhamento.SalvarGenerico(obj);
             //var obj = Pa_Acao.Get(id);
-            return Pa_BaseObject.SalvarGenerico(obj); 
-        }
+            //return Pa_BaseObject.SalvarGenerico(obj);
 
+            using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
+            {
+
+                var a = Mapper.Map<PlanoAcaoEF.Pa_Acompanhamento>(obj);
+
+                if (a.Id > 0)
+                {
+                    a.AlterDate = DateTime.Now;
+                    db.Pa_Acompanhamento.Attach(a);
+                    var entry = db.Entry(a);
+                    entry.State = System.Data.Entity.EntityState.Modified;
+                    //entry.Property(e => e.Email).IsModified = true;
+                    // other changed properties
+                    db.SaveChanges();
+                }
+                else
+                {
+                    a.AddDate = DateTime.Now;
+                    db.Pa_Acompanhamento.Add(a);
+                    db.SaveChanges();
+                }
+            }
+
+            return obj;
+        }
 
     }
 }
