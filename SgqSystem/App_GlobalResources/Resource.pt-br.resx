@@ -1674,4 +1674,7 @@
   <data name="select_task_first" xml:space="preserve">
     <value>É necessario selecionar uma tarefa para realizar este vínculo</value>
   </data>
+  <data name="registerPerUnit" xml:space="preserve">
+    <value>Cadastro por unidade</value>
+  </data>
 </root>
