@@ -190,11 +190,14 @@
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <label class="redLabel" for="inputlg">Observação:</label><br />
                 @Html.DisplayFor(r => i.Name)
-            </div>           
+            </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="padding:0px">
                 <div class="short-div">
                     <label class="redLabel" for="inputlg">Destinatário:</label><br />
-                    @Html.DisplayFor(r => i._Quem.Name)
+                    @foreach (var quem in i._Quem)
+                    {
+                        @Html.DisplayFor(r => quem.Name) <br />
+                    }                   
                 </div>
                 <hr />
                 <div class="short-div">
@@ -222,12 +225,12 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label class="redLabel" for="inputlg">Notificar:</label>
-                    @Html.DropDownList("MailTo", new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control selectpicker", multiple = "true" })
+                    @Html.DropDownList("MailTo", new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione...", new { @class = "form-control select2Init", @style = "width:100%;" , @multiple = "multiple" })
                 </div>
 
                 <div class="form-group">
                     <label class="redLabel" for="inputlg">Status</label>
-                    @Html.DropDownList("Status_Id", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    @Html.DropDownList("Status_Id", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
                 </div>
             </div>
             <br />
@@ -237,5 +240,4 @@
         </form>
     </div>
 </div>
-
 

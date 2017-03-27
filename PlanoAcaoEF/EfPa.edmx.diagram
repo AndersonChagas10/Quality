@@ -4,11 +4,12 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2d0b2f43444e43308802f10bb8403f7b" Name="Diagram1">
+      <Diagram DiagramId="2d0b2f43444e43308802f10bb8403f7b" Name="Diagram1" ZoomLevel="92">
         <EntityTypeShape EntityType="PlanoDeAcaoModel.Pa_Acao" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="PlanoDeAcaoModel.Pa_Acompanhamento" Width="1.5" PointX="2.75" PointY="0.75" />
         <EntityTypeShape EntityType="PlanoDeAcaoModel.Pa_FTA" Width="1.5" PointX="4.75" PointY="0.75" />
         <EntityTypeShape EntityType="PlanoDeAcaoModel.Pa_Planejamento" Width="1.5" PointX="2.75" PointY="4.75" />
+        <EntityTypeShape EntityType="PlanoDeAcaoModel.Pa_AcompanhamentoXQuem" Width="1.5" PointX="5" PointY="4.125" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

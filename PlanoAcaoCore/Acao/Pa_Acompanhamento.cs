@@ -12,7 +12,7 @@ namespace PlanoAcaoCore.Acao
         public int Acao_Id { get; set; }
         public int? Order { get; set; }
         public int Status_Id { get; set; }
-        public int MailTo { get; set; }
+        public List<int> MailTo { get; set; }
         public string Name { get; set; }
         public int Author_Id { get; set; }
 
@@ -34,7 +34,8 @@ namespace PlanoAcaoCore.Acao
             return ListarGenerico<Pa_Acompanhamento>(query);
         }
 
-        public Pa_Status _Status {
+        public Pa_Status _Status
+        {
             get
             {
                 if (Status_Id >= 0)
@@ -44,16 +45,23 @@ namespace PlanoAcaoCore.Acao
             }
         }
 
-        public Pa_Quem _Quem
+        public List<Pa_Quem> _Quem
         {
             get
             {
-                if (MailTo >= 0)
-                    return Pa_Quem.Get(MailTo);
-                else
-                    return new Pa_Quem(); 
+                var PQP = new List<Pa_Quem>();
+                if (MailTo != null)
+                {
+                    if (MailTo.Count > 0)
+                    {
+                        foreach (var i in MailTo)
+                        {
+                            PQP.Add(Pa_Quem.Get(i));
+                        }
+                    }
+                }
+                return PQP;
             }
-            
         }
     }
 }

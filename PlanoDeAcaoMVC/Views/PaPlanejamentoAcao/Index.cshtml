@@ -1545,8 +1545,8 @@
 
         function formReset() {
             $('#acompanhamento #Name').val("");
-            $('#acompanhamento #MailTo').val(-1);
-            $('#acompanhamento #Status_Id').val(-1);
+            $('#acompanhamento #MailTo').val(0);
+            $('#acompanhamento #Status_Id').val(0);
         }
 
         function getAcompanhamento(acaoCorrentId) {
@@ -1556,6 +1556,7 @@
                 $('#modalLindo').modal();
                 $('#Header').html('Acompanhamento do Planejamento Operacional');
                 $('.modal .modal-footer').hide();
+                $(".select2Init").select2();
                 $("#SaveAcompanhamento").on("click", function (event) {
                     //event.preventDefault();
                     var obj = $("#acompanhamento").serializeObject();
