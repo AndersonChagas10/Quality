@@ -1554,6 +1554,8 @@
             $.get(urlAcompanhamentoDetalhes, { id: acaoCorrentId }, function (r) {
                 $('#modalLindo').find('.modal-body').empty().append(r);
                 $('#modalLindo').modal();
+                $('#Header').html('Acompanhamento do Planejamento Operacional');
+                $('.modal .modal-footer').hide();
                 $("#SaveAcompanhamento").on("click", function (event) {
                     //event.preventDefault();
                     var obj = $("#acompanhamento").serializeObject();
