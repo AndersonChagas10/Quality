@@ -27,6 +27,6 @@ namespace PlanoAcaoEF
     
         public virtual DbSet<Pa_Acao> Pa_Acao { get; set; }
         public virtual DbSet<Pa_Planejamento> Pa_Planejamento { get; set; }
-        public virtual DbSet<Pa_Acompanhamento> Pa_Acompanhamento { get; set; }
+        public virtual DbSet<Pa_FTA> Pa_FTA { get; set; }
     }
 }

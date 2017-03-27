@@ -3517,6 +3517,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Register per Unit.
+        /// </summary>
+        internal static string registerPerUnit {
+            get {
+                return ResourceManager.GetString("registerPerUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Register company and it&apos;s structure.
         /// </summary>
         internal static string register_company_and_its_structure {

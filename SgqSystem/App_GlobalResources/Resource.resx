@@ -1788,4 +1788,10 @@
   <data name="ucl" xml:space="preserve">
     <value>UCL</value>
   </data>
+  <data name="registerPerUnit" xml:space="preserve">
+    <value>Register per Unit</value>
+  </data>
+  <data name="tipoScore" xml:space="preserve">
+    <value>Type Score</value>
+  </data>
 </root>

@@ -183,7 +183,6 @@
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="times">&times;</span></button>
                     <button class="close modalMinimize"><span aria-hidden="true" class="minus">&minus;</span></button>
 
-
                     <h4 class="modal-title" id="Header">ID: Header</h4>
                 </div>
                 <div class="modal-body" id="body">
@@ -530,6 +529,7 @@
             });
 
         }/*planejamentoCorrentId*/
+
         function FiltrarPlanejamento() {
             $('#Selecionar').prop('disabled', true);
             $('#Selecionar').off('click');
@@ -641,23 +641,57 @@
             /*Fim Botões*/
         }
 
-        function DdlChangeEstrategico() {
+        function DdlChangeEstrategico(v1, v2, v3) {
+
+            var change1 = v1 != undefined ? v1 : "";
+            var change2 = v2 != undefined ? v2 : "";
+           
+
+            var rdy = true;
             $('#Dimensao_Id').off('change').on('change', function () {
-                var Dimensao_Id = $('#Dimensao_Id').val() > 0 ? $('#Dimensao_Id').val() : 0;
-                $.get(GETObjetivo, { id: Dimensao_Id }, function (r) {
-                    $('#Objetivo_Id').parent().append(r);
-                    $('#Objetivo_Id').remove();
-                    $('#Objetivo_Id').off('change').on('change', function () {
-                        var Objetivo_Id = $('#Objetivo_Id').val() > 0 ? $('#Objetivo_Id').val() : 0;
-                        $.get(GETIndicadoresDiretriz, { id: Objetivo_Id }, function (r) {
-                            $('#IndicadoresDiretriz_Id').parent().append(r);
-                            $('#IndicadoresDiretriz_Id').remove();
-                        });
-                    });
-                    $('#Objetivo_Id').change();
-                });
+                var valor = $(this).val();
+                var form = $(this).parents('form');
+                rdy = false;
+                if (valor) {
+                    $.get(GETObjetivo, { id: valor }, function (r) {
+                        $('#Objetivo_Id').empty().html(r).attr('disabled', false);
+                        rdy = true;
+                    })
+                }
+                else {
+                    $('#Objetivo_Id').val("").attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').val("").attr('disabled', true);
+                }
             });
-            $('#Dimensao_Id').change();
+
+            $('#Objetivo_Id').off('change').on('change', function () {
+                var valor = $(this).val();
+                var form = $(this).parents('form');
+
+                if (valor) {
+                    $.get(GETIndicadoresDiretriz, { id: valor }, function (r) {
+                        $('#IndicadoresDiretriz_Id').empty().html(r).attr('disabled', false);
+                    });
+                }
+                else {
+                    $('#IndicadoresDiretriz_Id').val("").attr('disabled', true);
+                }
+            });
+
+         
+
+          
+            $('#Dimensao_Id').val(change1).change();
+
+            if (v2 != undefined) {
+                setTimeout(function () { $('#Objetivo_Id').val(change2).change(); }, 1000)
+            } else {
+                $('#Objetivo_Id').val(change2).change();
+            }
+          
+            if (v3 != undefined) {
+                setTimeout(function () { $('#IndicadoresDiretriz_Id').val(v3).change(); }, 1500)
+            }
         }
 
         function DdlChangeTatico() {
@@ -825,6 +859,7 @@
                     form.find('#ContramedidaGenerica_Id').empty().attr('disabled', true);
                 }
             });
+
         } /*Causa Medida Etc...*/
 
         function SalvarAcao() {
@@ -1182,7 +1217,8 @@
                             );
 
                         }
-
+                        $('#modalLindo').find('.modal-footer button').hide();
+                        $('#Header').html("Editar");
                         $('#modalLindo').modal();
                     });
 
@@ -1462,6 +1498,7 @@
 
                 $('#modalLindo').find('.modal-body .content2').append(form);
                 $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditTatico'))\" >Salvar Tático</button><hr>");
+                myfunction();
 
             } else {
                 //if (tipo == 'Estrategico') {
@@ -1482,9 +1519,9 @@
                 form.find('table > tbody > tr:nth-child(17)').hide();
                 form.find('table > tbody > tr:nth-child(18)').hide();
                 form.attr('id', 'formEditEstrategy');
-
                 $('#modalLindo').find('.modal-body .content1').append(form);
                 $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditEstrategy'))\">Salvar Estratégico</button><hr>");
+                DdlChangeEstrategico(model.Dimensao_Id, model.Objetivo_Id, model.IndicadoresDiretriz_Id);
                 //}
 
                 //else {

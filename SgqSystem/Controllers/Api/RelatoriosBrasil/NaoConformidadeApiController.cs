@@ -82,7 +82,20 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                 "\n         END AS NCSemPeso " +
 
-                "\n         , (SELECT TOP 1 PercentValue FROM ParGoal WHERE ParLevel1_Id = CL1.ParLevel1_Id AND(ParCompany_Id = CL1.UnitId OR ParCompany_Id IS NULL) ORDER BY ParCompany_Id DESC) AS Meta " +
+
+                               "\n  ,                                                                                                                                                                                                                                                                  " +
+               "\n  CASE                                                                                                                                                                                                                                                               " +
+               "\n                                                                                                                                                                                                                                                                     " +
+               "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
+               "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, AddDate DESC)                                         " +
+               "\n                                                                                                                                                                                                                                                                     " +
+               "\n     ELSE                                                                                                                                                                                                                                                            " +
+               "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)                                                                      " +
+               "\n  END                                                                                                                                                                                                                                                                " +
+               "\n  AS Meta                                                                                                                                                                                                                                                            " +
+
+
+
                 "\n         FROM ConsolidationLevel1 CL1 " +
                 "\n         INNER JOIN ParLevel1 IND " +
                 "\n         ON IND.Id = CL1.ParLevel1_Id " +
@@ -142,13 +155,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 
                 "\n ,ProcentagemNc as [proc] " +
 
-                "\n ,nc" +
-                "\n ,av " +
-                "\n ,Meta " +
+               "\n ,(case when IsRuleConformity = 1 THEN (100 - META) ELSE Meta END) AS Meta  " +
+               "\n ,NC " +
+               "\n ,Av " +
                 "\n FROM " +
                 "\n ( " +
                 "\n     SELECT " +
                 "\n       Unidade  " +
+                "\n     , IsRuleConformity " +
                 "\n     , Unidade_Id " +
                 "\n     , Level1Name " +
                 "\n     , level1_Id " +
@@ -162,6 +176,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n     ( " +
                 "\n         SELECT " +
                 "\n          IND.Id         AS level1_Id " +
+                "\n         , IND.IsRuleConformity " +
                 "\n         , IND.Name       AS Level1Name " +
                 "\n         , UNI.Id         AS Unidade_Id " +
                 "\n         , UNI.Name       AS Unidade " +
@@ -196,7 +211,16 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         ELSE 0 " +
 
                 "\n         END AS NCSemPeso " +
-                "\n         , (SELECT TOP 1 PercentValue FROM ParGoal WHERE ParLevel1_Id = CL1.ParLevel1_Id AND(ParCompany_Id = CL1.UnitId OR ParCompany_Id IS NULL) ORDER BY ParCompany_Id DESC) AS Meta " +
+               "\n  ,                                                                                                                                                                                                                                                                  " +
+               "\n  CASE                                                                                                                                                                                                                                                               " +
+               "\n                                                                                                                                                                                                                                                                     " +
+               "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
+               "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, AddDate DESC)                                         " +
+               "\n                                                                                                                                                                                                                                                                     " +
+               "\n     ELSE                                                                                                                                                                                                                                                            " +
+               "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)                                                                      " +
+               "\n  END                                                                                                                                                                                                                                                                " +
+               "\n  AS Meta                                                                                                                                                                                                                                                            " +
                 "\n         FROM ConsolidationLevel1 CL1 " +
                 "\n         INNER JOIN ParLevel1 IND " +
                 "\n         ON IND.Id = CL1.ParLevel1_Id " +
@@ -208,7 +232,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                 "\n     ) S1 " +
 
-                "\n     GROUP BY Unidade, Unidade_Id, Level1Name, level1_Id  " +
+                "\n     GROUP BY Unidade, Unidade_Id, Level1Name, level1_Id, IsRuleConformity  " +
 
                 "\n ) S2 " +
                 "\n WHERE nc > 0 " +

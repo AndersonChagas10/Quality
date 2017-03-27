@@ -16,6 +16,7 @@ namespace DTO.DTO.Params
         public IEnumerable<SelectListItem> DdlparLevel3 { get; set; }
         public IEnumerable<SelectListItem> DdlparCluster { get; set; }
         public IEnumerable<SelectListItem> DdlparCrit { get; set; }
+        public IEnumerable<SelectListItem> DdlScoretype { get; set; }
         
         public IEnumerable<SelectListItem> DdlParDepartment { get; set; }
 
@@ -76,7 +77,9 @@ namespace DTO.DTO.Params
                             List<ParLevel3BoolFalseDTO> ddlParLevel3BoolFalse,
                             List<ParLevel3BoolTrueDTO> ddlParLevel3BoolTrue,
                             List<ParCriticalLevelDTO> ddlparCrit,
-                            List<ParCompanyDTO> ddlParCompany)
+                            List<ParCompanyDTO> ddlParCompany,
+                             List<ParScoreTypeDTO> ddlScoretype
+                            )
         {
             DdlParCompany = Guard.CreateDropDownList(ddlParCompany.OrderBy(r => r.Name));
             DdlParConsolidation = Guard.CreateDropDownList(ddlParConsolidation.OrderBy(r => r.Name));
@@ -112,7 +115,10 @@ namespace DTO.DTO.Params
                 DdlCamaras = CreateSelectListEquipamentos("Câmara");
                 DdlPontosDeColeta = CreateSelectListEquipamentos("Ponto de Coleta");
             }
-            
+
+            DdlScoretype = Guard.CreateDropDownList(ddlScoretype.OrderBy(r => r.Name));
+
+
         }
 
         public void SetDdlsNivel123(List<ParLevel1DTO> ddlparLevel1, List<ParLevel2DTO> ddlparLevel2, List<ParLevel3DTO> ddlparLevel3)

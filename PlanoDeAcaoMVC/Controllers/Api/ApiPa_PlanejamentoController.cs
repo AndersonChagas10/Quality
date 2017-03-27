@@ -58,8 +58,10 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
                 if (planejamento.Estrategico_Id.GetValueOrDefault() > 0)
                 {
-                    planejamento.ValorDe = NumericExtensions.CustomParseDecimal(planejamento._ValorDe).GetValueOrDefault();
-                    planejamento.ValorPara = NumericExtensions.CustomParseDecimal(planejamento._ValorPara).GetValueOrDefault();
+                    if(!string.IsNullOrEmpty(planejamento._ValorDe))
+                        planejamento.ValorDe = NumericExtensions.CustomParseDecimal(planejamento._ValorDe).GetValueOrDefault();
+                    if (!string.IsNullOrEmpty(planejamento._ValorPara))
+                        planejamento.ValorPara = NumericExtensions.CustomParseDecimal(planejamento._ValorPara).GetValueOrDefault();
                     planejamento.DataInicio = Guard.ParseDateToSqlV2(planejamento._DataInicio);
                     planejamento.DataFim = Guard.ParseDateToSqlV2(planejamento._DataFim);
                 }
