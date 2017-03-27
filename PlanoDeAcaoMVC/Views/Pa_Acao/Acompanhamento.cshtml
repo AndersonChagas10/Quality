@@ -183,31 +183,53 @@
 
 <br />
 
-<div class="container-fluid">
-    <div class="row">
-        @foreach (var i in Model._Acompanhamento)
-            {
-            <div class="col-sm-12">
-                <table class="borderedNinja nowrap display" cellspacing="0" style="width: 100%;">
-                    <tr>
-                        <th><label class="redLabel" for="inputlg">Observação:</label></th>
-                        <th><label class="redLabel" for="inputlg">Destinatário:</label></th>
-                    </tr>
-                    <tr>
-                        <td rowspan="3">@Html.DisplayFor(r => i.Name)</td>
-                        <td>@Html.DisplayFor(r => i._Quem.Name)</td>
-                    </tr>
-                    <tr>
-                        <th><label class="redLabel" for="inputlg">Status:</label></th>
-                    </tr>
-                    <tr>
-                        <td>@Html.DisplayFor(r => i._Status.Name)</td>
-                    </tr>
-                </table>
+@*<div class="container-fluid">
+        <div class="row">
+            @foreach (var i in Model._Acompanhamento)
+                {
+                <div class="col-sm-12">
+                    <table class="borderedNinja nowrap display" cellspacing="0" style="width: 100%;">
+                        <tr>
+                            <th><label class="redLabel" for="inputlg">Observação:</label></th>
+                            <th><label class="redLabel" for="inputlg">Destinatário:</label></th>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">@Html.DisplayFor(r => i.Name)</td>
+                            <td>@Html.DisplayFor(r => i._Quem.Name)</td>
+                        </tr>
+                        <tr>
+                            <th><label class="redLabel" for="inputlg">Status:</label></th>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayFor(r => i._Status.Name)</td>
+                        </tr>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>*@
+@foreach (var i in Model._Acompanhamento)
+{
+    <div class="container">
+        <div class="row" style="border: 2px solid #c1c1c1;">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <label class="redLabel" for="inputlg">Observação:</label><br />
+                @Html.DisplayFor(r => i.Name)
+            </div>           
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="padding:0px">
+                <div class="short-div">
+                    <label class="redLabel" for="inputlg">Destinatário:</label><br />
+                    @Html.DisplayFor(r => i._Quem.Name)
+                </div>
+                <hr />
+                <div class="short-div">
+                    <label class="redLabel" for="inputlg">Status:</label><br />
+                    @Html.DisplayFor(r => i._Status.Name)
+                </div>
             </div>
-        }
+        </div>
     </div>
-</div>
+}
 
 <br />
 
