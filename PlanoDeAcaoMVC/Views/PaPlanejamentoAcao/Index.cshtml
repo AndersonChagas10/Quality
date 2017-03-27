@@ -280,6 +280,7 @@
         var urlSalvarNovoItem = '@Url.Action("Save", "api/Generics")';
 
         var urlSalvarAcompanhamento = '@Url.Action("SaveAcompanhamento", "api/Pa_Acao")'
+        var urlAcompanhamentoDetalhes = '@Url.Action("Acompanhamento", "Pa_Acao")'
 
         /*Btn Minimizar Modal*/
         $(document).ready(function () {
@@ -404,7 +405,7 @@
                 $('#modalLindo').find('.modal-body').empty().append(r);
                 if (isTaticoClicked) {
                     $('.novoItem ').hide();
-                  
+
                     if (isClickedTaticoVinculado) {
                         //$('#Planejamento > table > tbody > tr:nth-child(1)').attr('disabled', true);
                         //$('#Planejamento > table > tbody > tr:nth-child(4)').attr('disabled', true);
@@ -631,7 +632,7 @@
                 InitDatePiker();
                 MoneyMask();
             });
-                    /*Botões*/
+            /*Botões*/
             $('#modalLindo').find('.modal-footer button').hide()
             $('#Fechar').show();
             $('#Salvar').show();
@@ -894,7 +895,7 @@
             });
 
         }
-     
+
         function SalvarAcaoEditada() {
 
             var listaAcoes = [];
@@ -929,7 +930,7 @@
             });
 
         }
-      
+
         var jaLiberouCallback = false;
         function SalvarAcaoAvulsa(o, isEdit) {
 
@@ -1053,6 +1054,7 @@
             var btnDetalhes = '<button type="button" class="details btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Detalhes" style="cursor:pointer" class="glyphicon glyphicon-list-alt"></span>&nbsp Detalhes</button>';
             var btnNovoTatico = '<button type="button" class="btnNovoTatico btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Novo Planejamento Tático para este Planejamento Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tag"></span>&nbsp Novo Tático</button>';
             var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp Nova Acao</button>';
+            var btnAcompanhamento = '<button type="button" class="btnAcompanhamento btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Acompanhamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Acompanhamento</button>';
             var arrEstragy = [0, 1, 2, 3, 4, 5, 6];
             var arrEstragyH = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
             //var visibilidadeDefault = [];
@@ -1127,7 +1129,7 @@
                     //{ title: "Duração", mData: "Acao.DuracaoDias" },
                     //{ title: "Predecessora", mData: null },
 
-                    { title: "Ação", mData: null, defaultContent: btnEditar + "<br>" + btnDetalhes + "<br>" + btnNovoTatico + "<br>" + btnNovoOperacional },
+                    { title: "Ação", mData: null, defaultContent: btnEditar + "<br>" + btnDetalhes + "<br>" + btnNovoTatico + "<br>" + btnNovoOperacional + "<br>" + btnAcompanhamento },
                 ],
                 fixedColumns: {
                     leftColumns: 0,
@@ -1204,7 +1206,7 @@
 
                                       MoneyMask();
                                       myfunction();
-                                      
+
                                       $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarAcaoEditada();\" >Salvar Operacional</button><hr>");
 
                                       $('#Edit').show();
@@ -1257,6 +1259,27 @@
                             $('#NovaAcao').click();
                         });
 
+                    });
+
+                    $('table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
+
+                        var data = table.row($(this).parents('tr')).data();
+                        console.log(data);
+                        acaoCorrentId = data.Acao.Id;
+                        //Clicked(isTaticoClicked, isNovaAcao);
+
+                        $.get(urlAcompanhamentoDetalhes, { id: acaoCorrentId }, function (r) {
+                            $('#modalLindo').find('.modal-body').empty().append(r);
+                            $('#modalLindo').modal();
+                            $("#acompanhamento").on("submit", function (event) {
+                                //event.preventDefault();
+                                var obj = $("#acompanhamento").serializeObject();
+                                if (obj.Name == "" || obj.Acao_Id == undefined || obj.MailTo == undefined)
+                                    alert("Os campos devem ser preenchidos")
+                                else
+                                    SalvarAcompanhamento(obj);
+                            });
+                        })
                     });
 
                 },
@@ -1471,6 +1494,7 @@
                 //form.find('#Tatico_Id').val(model.Id);
                 form.attr('id', 'formEditTatico');
 
+
                 $('#modalLindo').find('.modal-body .content2').append(form);
                 $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditTatico'))\" >Salvar Tático</button><hr>");
                 myfunction();
@@ -1480,6 +1504,7 @@
                 //$('#Id').val(model.Id);
                 form.find('#Estrategico_Id').remove();
                 form.find('#IsTatico').val(false).change();
+
 
                 form.find('table > tbody > tr:nth-child(2)').hide();
                 form.find('table > tbody > tr:nth-child(3)').hide();
@@ -1516,7 +1541,7 @@
         function SalvarAcompanhamento(obj) {
 
             $.post(urlSalvarAcompanhamento, obj, function (r) {
-                
+
                 //Colocar o retorno no modal
                 openMessageModal('Registro salvo com sucesso!', '');
             })

@@ -198,6 +198,7 @@
     </Compile>
     <Compile Include="MapperConfig\AcaoMapper.cs" />
     <Compile Include="MapperConfig\AutoMapperConfig.cs" />
+    <Compile Include="MapperConfig\AcompanhamentoMapper.cs" />
     <Compile Include="MapperConfig\PlanejamentoMapper.cs" />
     <Compile Include="Models\HandleApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

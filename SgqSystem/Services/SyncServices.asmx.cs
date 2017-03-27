@@ -2998,6 +2998,10 @@ namespace SgqSystem.Services
             string groupLevel3Level2 = null;
             string painelLevel3 = null;
 
+         
+
+            
+
             //Enquando houver lista de level2
             foreach (var parlevel2 in parlevel02List)
             {
@@ -4064,13 +4068,17 @@ namespace SgqSystem.Services
                 //+
                 //                                html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
-
-                string botoesTodos = null;
+                var botoesTodos = "";
 
                 if (GlobalConfig.Brasil)
                 {
-                    botoesTodos = "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right btnAllNA'> Todos N/A </button>" +
-                                  "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right  btnAllNC' style='margin-right: 10px;'> Clicar em Todos </button>";
+                    botoesTodos =
+
+                        "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
+
+                        "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>";
+
+                        
                 }
 
                 string panelButton = html.listgroupItem(

@@ -82,7 +82,7 @@ namespace SgqSystem.Controllers.Api
             {
 
                 _list = db.Database.SqlQuery<ScorecardResultSet>(query).ToList();
-                var total = new ScorecardResultSet() { Level1Name = "Total:", Pontos = 0, Scorecard = 0 };
+                var total = new ScorecardResultSet() { Level1Name = "Total:", PontosIndicador = 784, Scorecard = 0, PontosAtingidos = 0 };
 
                 var totalPontosDisputados = 0.0M;
                 var totalPontosAtingidos = 0.0M;
@@ -95,8 +95,8 @@ namespace SgqSystem.Controllers.Api
                 {
                     pontosDisputados = 0;
 
-                    if (i.Pontos != null)
-                        pontosDisputados = i.Pontos.Value;
+                    if (i.PontosIndicador != null)
+                        pontosDisputados = i.PontosIndicador.Value;
                     else
                         _list.Remove(i);
 
@@ -117,7 +117,8 @@ namespace SgqSystem.Controllers.Api
 
                 //_list.Add(new ScorecardResultSet() { Level1Name = "Total:", PontosIndicador = totalPontosDisputados, Scorecard = totalScorecard, PontosAtingidosIndicador = totalPontosAtingidos });
 
-                _list.Add(new ScorecardResultSet() { Level1Name = "Total:", PontosIndicador = totalPontosDisputados, Scorecard = (pontosTotais[0] == 0 ? 0 : pontosTotais[1] / pontosTotais[0] ) * 100, PontosAtingidosIndicador = totalPontosAtingidos });
+                _list.Add(new ScorecardResultSet() { Level1Name = "Total:", PontosIndicador = pontosTotais[0], Scorecard = (pontosTotais[0] == 0 ? 0 : Math.Round((pontosTotais[1] / pontosTotais[0] ) * 100,2)), PontosAtingidos = totalPontosAtingidos });
+
             }
 
             return _list;
