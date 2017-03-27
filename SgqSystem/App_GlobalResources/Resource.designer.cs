@@ -4363,6 +4363,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Type Score.
+        /// </summary>
+        internal static string tipoScore {
+            get {
+                return ResourceManager.GetString("tipoScore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The tolerance target was exceed.
         /// </summary>
         internal static string tolerance_target_exceed {

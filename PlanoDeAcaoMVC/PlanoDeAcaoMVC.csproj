@@ -176,7 +176,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Shared\DisplayTemplate\" />
-    <Folder Include="Views\Shared\EditorTemplate\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -202,6 +201,7 @@
     <Compile Include="MapperConfig\PlanejamentoMapper.cs" />
     <Compile Include="Models\HandleApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SgqIntegracao\IntegraFTA.cs" />
     <Compile Include="SgqIntegracao\IntegraSgq.cs" />
     <Compile Include="ViewModel\Pa_AcaoViewModel.cs" />
   </ItemGroup>
@@ -668,6 +668,7 @@
     <Content Include="Views\Pa_Planejamento\Editar.cshtml" />
     <Content Include="Views\Pa_Acao\Acompanhamento.cshtml" />
     <Content Include="Views\Pa_Acao\NewFTA.cshtml" />
+    <Content Include="Views\Shared\EditorTemplate\FTA.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">

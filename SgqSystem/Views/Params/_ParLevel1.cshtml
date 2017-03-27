@@ -6,7 +6,7 @@
 <div id="newLevel1Modal">
     @using (Html.BeginForm())
     {
-
+       
         <div class="row">
             <div class="col-lg-12">
                 <table class="table-erp">
@@ -30,6 +30,10 @@
                                        , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParConsolidationType_Id, null, new { @class = "text-danger" }))
                                 @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel1Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, info: Resources.Resource.frequency_popover, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
                             </tr>
+
+                        <tr class="row">
+                            @Table.GerarColuna(@Html.DropDownListFor(r=>r.paramsDto.parLevel1Dto.ParScoreType_Id, Model.paramsDdl.DdlScoretype, htmlAttributes: new { @class = "form-control input-sm", @id = "selectFrequencia" }), @Html.Label(Resources.Resource.tipoScore), Table.PosicaoLabel.top, info: Resources.Resource.frequency_popover, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel1Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
+                        </tr>
 
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasSaveLevel2, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.save_button_on_level2), Table.PosicaoLabel.left, null, Resources.Resource.save_button_on_level2_popover)
@@ -568,8 +572,6 @@
         }
     });
 
-
-
     var Cabecalhos = {
         SetMultipleDefault: function(elem){
             var idMultiple = $(elem).siblings('select').children('option:selected').val();
@@ -586,11 +588,11 @@
             });
         },
         SetRequired: function(e, id){
-            $.post(urlSetRequiredCCAB + "/" + id+"/"+parseInt($(e).val()), function(r){
+            $.post(urlSetRequiredCCAB + "/" + id + "/" + parseInt($(e).val()), function(r){
                 if(r){
-                    $(e).empty().append("<option value='0'>"+"@Resources.Resource.no"+"</option><option value='1' selected>"+@Resources.Resource.yes+"</option>");
+                    $(e).empty().append("<option value='0'>"+"@Resources.Resource.no"+"</option><option value='1' selected>"+"@Resources.Resource.yes"+"</option>");
                 }else{
-                    $(e).empty().append("<option value='0' selected>"+"@Resources.Resource.no" + "</option><option value='1'>"+@Resources.Resource.yes+"</option>");
+                    $(e).empty().append("<option value='0' selected>"+"@Resources.Resource.no" + "</option><option value='1'>"+"@Resources.Resource.yes"+"</option>");
                 }
             });
         },

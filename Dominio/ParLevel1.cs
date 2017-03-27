@@ -98,5 +98,6 @@ namespace Dominio
         public virtual ICollection<Defect> Defect { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }
+        public virtual ParScoreType ParScoreType { get; set; }
     }
 }

@@ -104,6 +104,15 @@ namespace PlanoDeAcaoMVC.Controllers
         {
             //var model = Pa_Planejamento.Listar().FirstOrDefault();
             var model = Pa_Planejamento.Get(id);
+
+            if(model.DataInicio != null)
+                model._DataInicio = model.DataInicio.GetValueOrDefault().ToString("dd/MM/yyyy");
+            if (model.DataFim != null)
+                model._DataFim = model.DataFim.GetValueOrDefault().ToString("dd/MM/yyyy");
+            if (model.ValorDe > 0)
+                model._ValorDe = model.ValorDe.ToString("G29");
+            if (model.ValorPara > 0)
+                model._ValorPara = model.ValorPara.ToString("G29");
             return PartialView("Index", model);
         }
 

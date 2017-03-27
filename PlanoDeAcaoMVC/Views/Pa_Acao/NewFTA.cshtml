@@ -1,21 +1,192 @@
-﻿@model PlanoAcaoCore.Pa_Acao
-@{
-    //Layout = null;
-}
+﻿@model PlanoAcaoCore.Acao.FTA
 
-    <div> 
+@using (Html.BeginForm())
+{
 
-        <table>
+    <div class="table-responsive">
 
-            @Html.DisplayFor(r => r.Level1Id)
-            @Html.DisplayFor(r => r.Level2Id)
-            @Html.DisplayFor(r => r.Level3Id)
-            @Html.DisplayFor(r => r.Level3Id)
-            @Html.DisplayFor(r => r.Level3Id)
-            @Html.DisplayFor(r => r.Level3Id)
-            @Html.DisplayFor(r => r.Level3Id)
-            @Html.DisplayFor(r => r.Level3Id)
+        <table class="table table-condensed" id="tabela" border="1" cellspacing="0">
+            <tbody>
+                <tr rowspan="2">
+                    <td colspan="6">
+                        <span style="font-family:Tahoma; font-size:20px;" align="center">RELATÓRIO DE ANÁLISE DE DESVIO</span>
+                    </td>
+                    <td colspan="4">
+                        Data Inicial do período selecionado - @Model._DataInicioFTA
+                        <hr />
+                        Data Final do período selecionado - @Model._DataFimFTA
+                    </td>
+                </tr>
 
+                <tr>
+                    <td colspan="4">INDICADORES COM DESVIOS</td>
+                    <td colspan="2">Supervisor</td>
+                    <td colspan="2">Unidade</td>
+                    <td colspan="2">Departamento</td>
+                </tr>
+
+                <tr>
+                    <td colspan="4">
+                        @Model._Level1
+                    </td>
+                    <td colspan="2">
+                        @Model._Supervisor
+                    </td>
+                    <td colspan="2">
+                        @Model._Unidade
+                    </td>
+                    <td colspan="2">
+                        @Model._Departamento
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="5">META DO INDICADOR</td>
+                    <td colspan="5">PERCENTUAL DE NÃO CONFORMIDADE DAS TAREFAS</td>
+                </tr>
+
+                <tr>
+                    <td colspan="5">
+                        <span>@Model.MetaFTA</span> %
+                    </td>
+                    <td colspan="5">
+                        <span>@Model.PercentualNCFTA</span> %
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="10">REINCIDÊNCIA DE DESVIOS NO PERÍODO</td>
+                </tr>
+
+                <tr>
+                    <td colspan="10">
+                        <span>@Model.ReincidenciaDesvioFTA</span> %
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td colspan="4">CAUSA GENÉRICA</td>
+                    <td colspan="2">GRUPO CAUSA</td>
+                    <td colspan="4">CONTRAMEDIDA GENÉRICA</td>
+                </tr>
+
+                <tr>
+                    <td colspan="4">
+                        @Html.DropDownListFor(r => r.CausaGenerica_Id, new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione", new { @class = "form-control input-sm" })
+                    </td>
+                    <td colspan="2">
+                        @Html.DropDownListFor(r => r.GrupoCausa_Id, new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione", new { @class = "form-control input-sm" })
+                    </td>
+                    <td colspan="4">
+                        @Html.DropDownListFor(r => r.ContramedidaGenerica_Id, new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), "Selecione", new { @class = "form-control input-sm" })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="4">
+                        CAUSA ESPECÍFICA
+                    </td>
+                    <td colspan="2"></td>
+                    <td colspan="4">
+                        CONTRAMEDIDA ESPECÍFICA
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td colspan="4">
+                        @Html.EditorFor(r => r.CausaEspecifica)
+                    </td>
+                    <td colspan="2"></td>
+                    <td colspan="4">
+                        @Html.EditorFor(r => r.ContramedidaEspecifica)
+                    </td>
+                </tr>
+
+                <tr>
+                    @*<td colspan="3">Contramedida</td>*@
+                    <td colspan="4">Quem</td>
+                    <td colspan="2">Entrega</td>
+                    <td colspan="4">Como</td>
+                </tr>
+
+                <tr>
+                    @*<td colspan="3">
+                            @Html.EditorFor(r => r.ContramedidaEspecifica)
+                        </td>*@
+                    <td colspan="4">
+                        @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    </td>
+                    <td colspan="2">
+                        @Html.EditorFor(r => r._QuandoFim)
+                    </td>
+                    <td colspan="4">
+                        @Html.EditorFor(r => r.ComoPontosimportantes)
+                    </td>
+                </tr>
+
+                <tr rowspan="2"></tr>
+
+
+                <tr>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                </tr>
         </table>
 
+
+
     </div>
+
+    @section Scripts {
+        <script>
+
+        var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
+        var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")';
+
+        $('[id=CausaGenerica_Id]').off('change').on('change', function () {
+            var valor = $(this).val();
+            var form = $(this).parents('form');
+            if (valor) {
+                $.get(GETGrupoCausa, { id: valor }, function (r) {
+                    form.find('#GrupoCausa_Id').empty().html(r);
+                });
+                $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
+                    form.find('#ContramedidaGenerica_Id').empty().html(rr);
+                });
+            }
+            else {
+                form.find('#GrupoCausa_Id').empty().attr('disabled', true);
+                form.find('#ContramedidaGenerica_Id').empty().attr('disabled', true);
+            }
+        });
+
+        $(document).ajaxStart(function () {
+            $.LoadingOverlay("show");
+        });
+
+        $(document).ajaxStop(function () {
+            $.LoadingOverlay("hide");
+        });
+
+        $(document).ajaxError(function (e, h, x) {
+            console.log(e);
+            console.log(h);
+            console.log(x);
+            //alert('Não foi possível salvar o registro: ' + e.responseJSON.ExceptionMessage);
+        });
+
+        </script>
+    }
+
+
+}

@@ -7,7 +7,7 @@
                  
                     <tr>
                         <td>
-                            @Html.Label("Causa generica", htmlAttributes: new { @class = "control-label " })
+                            @Html.Label("Causa generica", htmlAttributes: new { @class = "control-label " ,style = "size:36px;" })
                         </td>
                         <td>
                             @Html.DropDownList("CausaGenerica_Id", new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione", new { @class = "form-control input-sm" })

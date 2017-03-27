@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Data.SqlClient;
 using System.Linq;
 
 namespace PlanoAcaoCore
@@ -14,12 +13,15 @@ namespace PlanoAcaoCore
 
         [Display(Name = "Indicador")]
         public int? Level1Id { get; set; }
+        public string _Level1 { get; set; }
 
         [Display(Name = "Monitoramento")]
         public int? Level2Id { get; set; }
+        public string _Level2 { get; set; }
 
         [Display(Name = "Tarefa")]
         public int? Level3Id { get; set; }
+        public string _Level3 { get; set; }
 
         #endregion
 
@@ -32,10 +34,10 @@ namespace PlanoAcaoCore
 
         [Display(Name = "Unidade")]
         public int? Unidade_Id { get; set; }
+        public string _Unidade { get; set; }
 
         [Display(Name = "Departamento")]
         public int? Departamento_Id { get; set; }
-
 
         //[Display(Name = "Duracao dias")]
         //public int DuracaoDias { get; set; }
@@ -52,7 +54,6 @@ namespace PlanoAcaoCore
         [Display(Name = "Quanto custa")]
         public decimal QuantoCusta { get; set; }
         public string _QuantoCusta { get; set; }
-
 
         [Display(Name = "Status")]
         public int Status { get; set; }
@@ -106,13 +107,13 @@ namespace PlanoAcaoCore
             {
                 var RenanConvulsao = new List<Pa_Acompanhamento>();
 
-                if (Id > 0)                
+                if (Id > 0)
                     RenanConvulsao = Pa_Acompanhamento.GetByAcaoId(Id);
-                                        
-                return RenanConvulsao;                
+
+                return RenanConvulsao;
             }
         }
-
+      
         public Pa_Problema_Desvio _Pa_Problema_Desvio_Id
         {
             get
@@ -123,12 +124,7 @@ namespace PlanoAcaoCore
                     return new Pa_Problema_Desvio();
             }
         }
-
-        public void VerificaFTA()
-        {
-            //throw new NotImplementedException();
-        }
-
+       
         public Pa_IndicadorSgqAcao _Pa_IndicadorSgqAcao
         {
             get
@@ -139,9 +135,6 @@ namespace PlanoAcaoCore
                     return new Pa_IndicadorSgqAcao();
             }
         }
-
-        public string _Unidade { get; set; }
-        public string _Departamento { get; set; }
 
         public string _Prazo
         {
@@ -233,7 +226,7 @@ namespace PlanoAcaoCore
         {
             get
             {
-                return  " \n SELECT TOP 200 ACAO.* ,                                                           " +
+                return " \n SELECT TOP 200 ACAO.* ,                                                           " +
                         " \n STA.Name as _StatusName,                                                           " +
                         " \n UN.Name as _Unidade,                                                               " +
                         " \n DPT.Name as _Departamento,                                                         " +
@@ -285,9 +278,6 @@ namespace PlanoAcaoCore
         }
 
         //public Pa_CausaMedidasXAcao CausaMedidasXAcao { get; set; }
-
-
-
 
     }
 }

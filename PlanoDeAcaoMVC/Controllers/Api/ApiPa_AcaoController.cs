@@ -33,6 +33,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         {
             foreach (var i in acao)
                 i.IsValid();
+
             using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
             {
                 foreach (var i in acao)
@@ -93,6 +94,46 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             return Pa_BaseObject.SalvarGenerico(obj); 
         }
 
+        [HttpPost]
+        [Route("SaveFTA")]
+        public FTA SaveFTA(FTA obj)
+        {
+            obj.ValidaFTA();
 
+            var acao = Mapper.Map<PlanoAcaoEF.Pa_Acao>(obj);
+
+            var fta = Mapper.Map<PlanoAcaoEF.Pa_FTA>(obj);
+
+            using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
+            {
+                if (acao.Id > 0)
+                {
+                    db.Pa_Acao.Attach(acao);
+                    var entry = db.Entry(acao);
+                    entry.State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    db.Pa_Acao.Add(acao);
+                    db.SaveChanges();
+                }
+
+                if (fta.Id > 0)
+                {
+                    db.Pa_FTA.Attach(fta);
+                    var entry = db.Entry(acao);
+                    entry.State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    db.Pa_FTA.Add(fta);
+                    db.SaveChanges();
+                }
+
+            }
+            return Pa_BaseObject.SalvarGenerico(obj);
+        }
     }
 }

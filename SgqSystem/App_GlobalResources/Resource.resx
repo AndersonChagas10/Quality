@@ -1695,4 +1695,7 @@
   <data name="select_task_first" xml:space="preserve">
     <value>Select task first</value>
   </data>
+  <data name="tipoScore" xml:space="preserve">
+    <value>Type Score</value>
+  </data>
 </root>
