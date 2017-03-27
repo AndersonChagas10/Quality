@@ -1,6 +1,16 @@
 ﻿
 @model PlanoAcaoCore.Pa_Acao
+
+<style>
+    input,
+    select,
+    textarea {
+        max-width: 100% !important;
+    }
+</style>
+
 <h5>Acompanhamento da Ação</h5>
+
 <table class="borderedNinja nowrap .col-md-6 .col-md-offset-3 display" cellspacing="0" style="width: 100%;">
     <tbody>
         <tr>
@@ -173,74 +183,62 @@
 
 <br />
 
-@*<div class="container">*@
+<div class="container-fluid">
     <div class="row">
-        <div class="col-sm-12">
-            @foreach (var i in Model._Acompanhamento)
+        @foreach (var i in Model._Acompanhamento)
             {
-                <table class="borderedNinja nowrap .col-sm-4 display" cellspacing="0" style="float:left" @*style="width: 100%;"*@>
-                    @*Histórico*@
+            <div class="col-sm-12">
+                <table class="borderedNinja nowrap display" cellspacing="0" style="width: 100%;">
                     <tr>
-                        <td>
-                            <label class="redLabel" for="inputlg">Detalhes:</label>
-                        </td>
-                        <td>
-                            @Html.DisplayFor(r => i.Name)
-                        </td>
+                        <th><label class="redLabel" for="inputlg">Observação:</label></th>
+                        <th><label class="redLabel" for="inputlg">Destinatário:</label></th>
                     </tr>
                     <tr>
-                        <td>
-                            <label class="redLabel" for="inputlg">Destinatário:</label>
-
-                        </td>
-                        <td>
-                            @Html.DisplayFor(r => i.MailTo)
-                        </td>
+                        <td rowspan="3">@Html.DisplayFor(r => i.Name)</td>
+                        <td>@Html.DisplayFor(r => i._Quem.Name)</td>
                     </tr>
                     <tr>
-                        <td>
-                            <label class="redLabel" for="inputlg">Status:</label>
-                        </td>
-                        <td>
-                            @*@Html.Display(i._Status)*@
-                        </td>
+                        <th><label class="redLabel" for="inputlg">Status:</label></th>
                     </tr>
-
+                    <tr>
+                        <td>@Html.DisplayFor(r => i._Status.Name)</td>
+                    </tr>
                 </table>
-            }
-        </div>
+            </div>
+        }
     </div>
-@*</div>*@
+</div>
 
 <br />
 
-@*<table class="borderedNinja nowrap .col-md-6 .col-md-offset-3 display" cellspacing="0" style="width: 100%;">*@
-@*Histórico*@
-@*<tr>
-    <td colspan="3">*@
-<form id="acompanhamento">
+<div class="container-fluid">
+    <div class="row">
+        <form id="acompanhamento">
+            <div class="col-sm-6">
+                <input name="Acao_Id" type="hidden" id="Acao_Id" value="@Model.Id" />
 
-    <input name="Acao_Id" type="hidden" id="Acao_Id" value="@Model.Id" />
+                <div class="form-group">
+                    <label class="redLabel" for="inputlg">Observação:</label>
+                    <textarea name="Name" class="form-control input-sm" id="Name" style="width: 100%; height: 160px;"></textarea>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="redLabel" for="inputlg">Notificar:</label>
+                    @Html.DropDownList("MailTo", new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control selectpicker", multiple = "true" })
+                </div>
 
-    <div class="form-group">
-        <label class="redLabel" for="inputlg">Descrição:</label>
-        <textarea name="Name" class="form-control input-sm" id="Name"></textarea>
+                <div class="form-group">
+                    <label class="redLabel" for="inputlg">Status</label>
+                    @Html.DropDownList("Status_Id", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                </div>
+            </div>
+            <br />
+            <div class="col-sm-6">
+                <button id="SaveAcompanhamento" type="button" class="btn btn-primary">Enviar</button>
+            </div>
+        </form>
     </div>
+</div>
 
-    <div class="form-group">
-        <label class="redLabel" for="inputlg">Destinatário:</label>
-        @Html.DropDownList("MailTo", new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control selectpicker", multiple = "true" })
-    </div>
 
-    <div class="form-group">
-        <label class="redLabel" for="inputlg">Status</label>
-        @Html.DropDownList("Status_Id", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-    </div>
-    <input type="submit" value="Enviar" class="btn btn-primary">
-    @*<button id="btnAcompanhamento" type="button" class="btn btn-primary">Enviar</button>*@
-</form>
-@*</td>
-        </tr>
-    </table>*@
-
-<br />

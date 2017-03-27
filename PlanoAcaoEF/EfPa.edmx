@@ -48,7 +48,7 @@
           <Property Name="Acao_Id" Type="int" Nullable="false" />
           <Property Name="Order" Type="int" />
           <Property Name="Status_Id" Type="int" Nullable="false" />
-          <Property Name="MailTo" Type="nvarchar(max)" />
+          <Property Name="MailTo" Type="int" />
           <Property Name="Author_Id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Pa_Planejamento">
@@ -176,7 +176,7 @@
           <Property Name="Acao_Id" Type="Int32" Nullable="false" />
           <Property Name="Order" Type="Int32" />
           <Property Name="Status_Id" Type="Int32" Nullable="false" />
-          <Property Name="MailTo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MailTo" Type="Int32" />
           <Property Name="Author_Id" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>

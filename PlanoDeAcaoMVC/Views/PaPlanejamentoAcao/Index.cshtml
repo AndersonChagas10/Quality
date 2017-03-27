@@ -1232,18 +1232,8 @@
                         acaoCorrentId = data.Acao.Id;
                         //Clicked(isTaticoClicked, isNovaAcao);
 
-                        $.get(urlAcompanhamentoDetalhes, { id: acaoCorrentId }, function (r) {
-                            $('#modalLindo').find('.modal-body').empty().append(r);
-                            $('#modalLindo').modal();
-                            $("#acompanhamento").on("submit", function (event) {
-                                //event.preventDefault();
-                                var obj = $("#acompanhamento").serializeObject();
-                                if (obj.Name == "" || obj.Acao_Id == undefined || obj.MailTo == undefined)
-                                    alert("Os campos devem ser preenchidos")
-                                else
-                                    SalvarAcompanhamento(obj);
-                            });
-                        })
+                        getAcompanhamento(acaoCorrentId);
+
                     });
 
                 },
@@ -1324,6 +1314,12 @@
                             $(row.cells[33]).find('.btnNovoTatico').hide();
                         }
 
+                        if (data.Acao.Id > 0) { // Possui plan Operac
+                            $(row.cells[33]).find('.btnAcompanhamento').show();
+                        } else {
+                            $(row.cells[33]).find('.btnAcompanhamento').hide();
+                        }
+
                     } catch (e) { }
 
                     if (data.Tatico_Id > 0) { // possui plan tatico
@@ -1338,6 +1334,11 @@
                         $(row.cells[33]).find('.btnNovoTatico').hide();
                     }
 
+                    if (data.Acao.Id > 0) { // Possui plan Operac
+                        $(row.cells[33]).find('.btnAcompanhamento').show();
+                    } else {
+                        $(row.cells[33]).find('.btnAcompanhamento').hide();
+                    }
 
                 },
                 fnDrawCallback: function (data, d, o) {
@@ -1506,7 +1507,10 @@
             $.post(urlSalvarAcompanhamento, obj, function (r) {
 
                 //Colocar o retorno no modal
-                openMessageModal('Registro salvo com sucesso!', '');
+                formReset();
+                getAcompanhamento(obj.Acao_Id);
+                openMessageModal('Registro salvo com sucesso!', '');               
+                
             })
             .fail(function (e, h, x) {
 
@@ -1514,6 +1518,28 @@
 
             });
 
+        }
+
+        function formReset() {
+            $('#acompanhamento #Name').val("");
+            $('#acompanhamento #MailTo').val(-1);
+            $('#acompanhamento #Status_Id').val(-1);
+        }
+
+        function getAcompanhamento(acaoCorrentId) {
+
+            $.get(urlAcompanhamentoDetalhes, { id: acaoCorrentId }, function (r) {
+                $('#modalLindo').find('.modal-body').empty().append(r);
+                $('#modalLindo').modal();
+                $("#SaveAcompanhamento").on("click", function (event) {
+                    //event.preventDefault();
+                    var obj = $("#acompanhamento").serializeObject();
+                    if (obj.Name == "" || obj.Acao_Id == undefined || obj.MailTo == undefined)
+                        alert("Os campos devem ser preenchidos")
+                    else
+                        SalvarAcompanhamento(obj);
+                });
+            })
         }
 
     </script>
