@@ -19,8 +19,6 @@ namespace PlanoAcaoCore.Acao
         public string _Supervisor { get; set; }
         public int Supervisor_Id { get; set; }
 
-        public string _Unidade { get; set; }
-        
         public string _Departamento { get; set; }
 
         public int MetaFTA { get; set; }

@@ -28,15 +28,19 @@
                 <tr>
                     <td colspan="4">
                         @Model._Level1
+                        @Html.HiddenFor(r => r.Level1Id)
                     </td>
                     <td colspan="2">
                         @Model._Supervisor
+                        @Html.HiddenFor(r => r.Supervisor_Id)
                     </td>
                     <td colspan="2">
                         @Model._Unidade
+                        @Html.HiddenFor(r => r.Unidade_Id)
                     </td>
                     <td colspan="2">
                         @Model._Departamento
+                        @Html.HiddenFor(r => r.Departamento_Id)
                     </td>
                 </tr>
 
@@ -48,9 +52,11 @@
                 <tr>
                     <td colspan="5">
                         <span>@Model.MetaFTA</span> %
+                        @Html.HiddenFor(r => r.MetaFTA)
                     </td>
                     <td colspan="5">
                         <span>@Model.PercentualNCFTA</span> %
+                        @Html.HiddenFor(r => r.PercentualNCFTA)
                     </td>
                 </tr>
 
@@ -61,6 +67,7 @@
                 <tr>
                     <td colspan="10">
                         <span>@Model.ReincidenciaDesvioFTA</span> %
+                        @Html.HiddenFor(r => r.ReincidenciaDesvioFTA)
                     </td>
                 </tr>
 
@@ -119,7 +126,7 @@
                         @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
                     </td>
                     <td colspan="2">
-                        @Html.EditorFor(r => r._QuandoFim)
+                        @Html.EditorFor(r => r._QuandoFim, new { @class = "datepicker form-control input-sm" })
                     </td>
                     <td colspan="4">
                         @Html.EditorFor(r => r.ComoPontosimportantes)
@@ -150,40 +157,44 @@
     @section Scripts {
         <script>
 
-        var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
-        var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")';
+            var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
+            var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")';
 
-        $('[id=CausaGenerica_Id]').off('change').on('change', function () {
-            var valor = $(this).val();
-            var form = $(this).parents('form');
-            if (valor) {
-                $.get(GETGrupoCausa, { id: valor }, function (r) {
-                    form.find('#GrupoCausa_Id').empty().html(r);
-                });
-                $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
-                    form.find('#ContramedidaGenerica_Id').empty().html(rr);
-                });
-            }
-            else {
-                form.find('#GrupoCausa_Id').empty().attr('disabled', true);
-                form.find('#ContramedidaGenerica_Id').empty().attr('disabled', true);
-            }
-        });
+            $('[id=CausaGenerica_Id]').off('change').on('change', function () {
+                var valor = $(this).val();
+                var form = $(this).parents('form');
+                if (valor) {
+                    $.get(GETGrupoCausa, { id: valor }, function (r) {
+                        form.find('#GrupoCausa_Id').empty().html(r);
+                    });
+                    $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
+                        form.find('#ContramedidaGenerica_Id').empty().html(rr);
+                    });
+                }
+                else {
+                    form.find('#GrupoCausa_Id').empty().attr('disabled', true);
+                    form.find('#ContramedidaGenerica_Id').empty().attr('disabled', true);
+                }
+            });
 
-        $(document).ajaxStart(function () {
-            $.LoadingOverlay("show");
-        });
+            $(document).ajaxStart(function () {
+                $.LoadingOverlay("show");
+            });
 
-        $(document).ajaxStop(function () {
-            $.LoadingOverlay("hide");
-        });
+            $(document).ajaxStop(function () {
+                $.LoadingOverlay("hide");
+            });
 
-        $(document).ajaxError(function (e, h, x) {
-            console.log(e);
-            console.log(h);
-            console.log(x);
-            //alert('Não foi possível salvar o registro: ' + e.responseJSON.ExceptionMessage);
-        });
+            $(document).ajaxError(function (e, h, x) {
+                console.log(e);
+                console.log(h);
+                console.log(x);
+                //alert('Não foi possível salvar o registro: ' + e.responseJSON.ExceptionMessage);
+            });
+
+            $().ready(function () {
+                InitDatePiker();
+            });
 
         </script>
     }

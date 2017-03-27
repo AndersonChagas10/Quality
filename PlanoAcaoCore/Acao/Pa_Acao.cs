@@ -1,4 +1,6 @@
-﻿using PlanoAcaoCore.Acao;
+﻿using DTO.Helpers;
+using Helper;
+using PlanoAcaoCore.Acao;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -220,6 +222,26 @@ namespace PlanoAcaoCore
             //    message += "\n Status,";
 
             VerificaMensagemCamposObrigatorios(message);
+
+            #region Prepara obj para DB
+
+            //throw new Exception("treste");
+            if (_QuantoCusta != null)
+                QuantoCusta = NumericExtensions.CustomParseDecimal(_QuantoCusta).GetValueOrDefault();
+
+            if (_QuandoInicio != null)
+                QuandoInicio = Guard.ParseDateToSqlV2(_QuandoInicio);
+            else
+                QuandoInicio = DateTime.Now;
+
+            if (_QuandoFim != null)
+                QuandoFim = Guard.ParseDateToSqlV2(_QuandoFim);
+            else
+                QuandoFim = DateTime.Now;
+
+
+            #endregion
+
         }
 
         private static string query
