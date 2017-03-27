@@ -2,7 +2,6 @@
 
 @using (Html.BeginForm())
 {
-
     <div class="table-responsive">
 
         <table class="table table-condensed" id="tabela" border="1" cellspacing="0">
@@ -149,10 +148,10 @@
                     <td width="10%"></td>
                 </tr>
         </table>
-
-
-
+        <button type="button" class="btn btn-primary" id="Salvar" onclick="save();" style="display:none">Salvar</button>
     </div>
+
+}
 
     @section Scripts {
         <script>
@@ -192,12 +191,21 @@
                 //alert('Não foi possível salvar o registro: ' + e.responseJSON.ExceptionMessage);
             });
 
+            function save() {
+                var form = $('form').serializeObject();
+                $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', form, function (r) {
+                    openMessageModal('Registro salvo com sucesso!', '');
+                });
+            }
+            
+
             $().ready(function () {
                 InitDatePiker();
             });
+
+
 
         </script>
     }
 
 
-}
