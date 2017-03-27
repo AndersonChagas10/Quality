@@ -21,8 +21,6 @@ namespace PlanoAcaoEF
         public string PercentualNCFTA { get; set; }
         public string ReincidenciaDesvioFTA { get; set; }
         public Nullable<int> Supervisor_Id { get; set; }
-        public Nullable<System.DateTime> DataInicioFTA { get; set; }
-        public Nullable<System.DateTime> DataFimFTA { get; set; }
         public Nullable<int> Order { get; set; }
     }
 }

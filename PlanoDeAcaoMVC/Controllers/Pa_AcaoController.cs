@@ -121,12 +121,7 @@ namespace PlanoDeAcaoMVC.Controllers
 
             fta.ValidaFTA();
 
-            string catalog = "SgqDbDev";
-            string dataSource = @"SERVERGRT\MSSQLSERVER2014";
-            string user = "sa";
-            string pass = "1qazmko0";
-          
-            using (var db = new ADOFactory.Factory(dataSource, catalog, pass, user))
+            using (var db = new ADOFactory.Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
             {
 
                 var level1 = db.SearchQuery<ParLevel1DTO>("Select * from parlevel1 WHERE ID = " + fta.Level1Id).FirstOrDefault(r => r.IsActive);
@@ -140,8 +135,6 @@ namespace PlanoDeAcaoMVC.Controllers
                 fta._Supervisor = usersgq.Name;
 
             }
-
-         
 
             return View(fta);
         }

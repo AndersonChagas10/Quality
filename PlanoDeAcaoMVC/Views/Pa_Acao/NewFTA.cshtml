@@ -2,7 +2,6 @@
 
 @using (Html.BeginForm())
 {
-
     <div class="table-responsive">
 
         <table class="table table-condensed" id="tabela" border="1" cellspacing="0">
@@ -28,15 +27,19 @@
                 <tr>
                     <td colspan="4">
                         @Model._Level1
+                        @Html.HiddenFor(r => r.Level1Id)
                     </td>
                     <td colspan="2">
                         @Model._Supervisor
+                        @Html.HiddenFor(r => r.Supervisor_Id)
                     </td>
                     <td colspan="2">
                         @Model._Unidade
+                        @Html.HiddenFor(r => r.Unidade_Id)
                     </td>
                     <td colspan="2">
                         @Model._Departamento
+                        @Html.HiddenFor(r => r.Departamento_Id)
                     </td>
                 </tr>
 
@@ -48,9 +51,11 @@
                 <tr>
                     <td colspan="5">
                         <span>@Model.MetaFTA</span> %
+                        @Html.HiddenFor(r => r.MetaFTA)
                     </td>
                     <td colspan="5">
                         <span>@Model.PercentualNCFTA</span> %
+                        @Html.HiddenFor(r => r.PercentualNCFTA)
                     </td>
                 </tr>
 
@@ -61,6 +66,7 @@
                 <tr>
                     <td colspan="10">
                         <span>@Model.ReincidenciaDesvioFTA</span> %
+                        @Html.HiddenFor(r => r.ReincidenciaDesvioFTA)
                     </td>
                 </tr>
 
@@ -119,7 +125,7 @@
                         @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
                     </td>
                     <td colspan="2">
-                        @Html.EditorFor(r => r._QuandoFim)
+                        @Html.EditorFor(r => r._QuandoFim, new { @class = "datepicker form-control input-sm" })
                     </td>
                     <td colspan="4">
                         @Html.EditorFor(r => r.ComoPontosimportantes)
@@ -142,51 +148,64 @@
                     <td width="10%"></td>
                 </tr>
         </table>
-
-
-
+        <button type="button" class="btn btn-primary" id="Salvar" onclick="save();" style="display:none">Salvar</button>
     </div>
+
+}
 
     @section Scripts {
         <script>
 
-        var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
-        var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")';
+            var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
+            var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")';
 
-        $('[id=CausaGenerica_Id]').off('change').on('change', function () {
-            var valor = $(this).val();
-            var form = $(this).parents('form');
-            if (valor) {
-                $.get(GETGrupoCausa, { id: valor }, function (r) {
-                    form.find('#GrupoCausa_Id').empty().html(r);
-                });
-                $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
-                    form.find('#ContramedidaGenerica_Id').empty().html(rr);
+            $('[id=CausaGenerica_Id]').off('change').on('change', function () {
+                var valor = $(this).val();
+                var form = $(this).parents('form');
+                if (valor) {
+                    $.get(GETGrupoCausa, { id: valor }, function (r) {
+                        form.find('#GrupoCausa_Id').empty().html(r);
+                    });
+                    $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
+                        form.find('#ContramedidaGenerica_Id').empty().html(rr);
+                    });
+                }
+                else {
+                    form.find('#GrupoCausa_Id').empty().attr('disabled', true);
+                    form.find('#ContramedidaGenerica_Id').empty().attr('disabled', true);
+                }
+            });
+
+            $(document).ajaxStart(function () {
+                $.LoadingOverlay("show");
+            });
+
+            $(document).ajaxStop(function () {
+                $.LoadingOverlay("hide");
+            });
+
+            $(document).ajaxError(function (e, h, x) {
+                console.log(e);
+                console.log(h);
+                console.log(x);
+                //alert('Não foi possível salvar o registro: ' + e.responseJSON.ExceptionMessage);
+            });
+
+            function save() {
+                var form = $('form').serializeObject();
+                $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', form, function (r) {
+                    openMessageModal('Registro salvo com sucesso!', '');
                 });
             }
-            else {
-                form.find('#GrupoCausa_Id').empty().attr('disabled', true);
-                form.find('#ContramedidaGenerica_Id').empty().attr('disabled', true);
-            }
-        });
+            
 
-        $(document).ajaxStart(function () {
-            $.LoadingOverlay("show");
-        });
+            $().ready(function () {
+                InitDatePiker();
+            });
 
-        $(document).ajaxStop(function () {
-            $.LoadingOverlay("hide");
-        });
 
-        $(document).ajaxError(function (e, h, x) {
-            console.log(e);
-            console.log(h);
-            console.log(x);
-            //alert('Não foi possível salvar o registro: ' + e.responseJSON.ExceptionMessage);
-        });
 
         </script>
     }
 
 
-}
