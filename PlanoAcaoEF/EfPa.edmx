@@ -51,6 +51,21 @@
           <Property Name="MailTo" Type="int" />
           <Property Name="Author_Id" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Pa_FTA">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="MetaFTA" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PercentualNCFTA" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ReincidenciaDesvioFTA" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Supervisor_Id" Type="int" />
+          <Property Name="DataInicioFTA" Type="datetime2" Precision="7" />
+          <Property Name="DataFimFTA" Type="datetime2" Precision="7" />
+          <Property Name="Order" Type="int" />
+        </EntityType>
         <EntityType Name="Pa_Planejamento">
           <Key>
             <PropertyRef Name="Id" />
@@ -88,6 +103,7 @@
         <EntityContainer Name="PlanoDeAcaoModelStoreContainer">
           <EntitySet Name="Pa_Acao" EntityType="Self.Pa_Acao" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pa_Acompanhamento" EntityType="Self.Pa_Acompanhamento" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_FTA" EntityType="Self.Pa_FTA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pa_Planejamento" EntityType="Self.Pa_Planejamento" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -163,6 +179,7 @@
           <EntitySet Name="Pa_Acao" EntityType="Self.Pa_Acao" />
           <EntitySet Name="Pa_Planejamento" EntityType="Self.Pa_Planejamento" />
           <EntitySet Name="Pa_Acompanhamento" EntityType="PlanoDeAcaoModel.Pa_Acompanhamento" />
+          <EntitySet Name="Pa_FTA" EntityType="PlanoDeAcaoModel.Pa_FTA" />
         </EntityContainer>
         <EntityType Name="Pa_Acompanhamento">
           <Key>
@@ -178,6 +195,21 @@
           <Property Name="Status_Id" Type="Int32" Nullable="false" />
           <Property Name="MailTo" Type="Int32" />
           <Property Name="Author_Id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pa_FTA">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="MetaFTA" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PercentualNCFTA" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReincidenciaDesvioFTA" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Supervisor_Id" Type="Int32" />
+          <Property Name="DataInicioFTA" Type="DateTime" Precision="7" />
+          <Property Name="DataFimFTA" Type="DateTime" Precision="7" />
+          <Property Name="Order" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -262,6 +294,22 @@
                 <ScalarProperty Name="Acao_Id" ColumnName="Acao_Id" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_FTA">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_FTA">
+              <MappingFragment StoreEntitySet="Pa_FTA">
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="DataFimFTA" ColumnName="DataFimFTA" />
+                <ScalarProperty Name="DataInicioFTA" ColumnName="DataInicioFTA" />
+                <ScalarProperty Name="Supervisor_Id" ColumnName="Supervisor_Id" />
+                <ScalarProperty Name="ReincidenciaDesvioFTA" ColumnName="ReincidenciaDesvioFTA" />
+                <ScalarProperty Name="PercentualNCFTA" ColumnName="PercentualNCFTA" />
+                <ScalarProperty Name="MetaFTA" ColumnName="MetaFTA" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
