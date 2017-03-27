@@ -48,9 +48,6 @@
     <Compile Include="Pa_Acao.cs">
       <DependentUpon>EfPa.tt</DependentUpon>
     </Compile>
-    <Compile Include="Pa_Acompanhamento.cs">
-      <DependentUpon>EfPa.tt</DependentUpon>
-    </Compile>
     <Compile Include="Pa_FTA.cs">
       <DependentUpon>EfPa.tt</DependentUpon>
     </Compile>
