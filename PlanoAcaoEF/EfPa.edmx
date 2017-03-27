@@ -178,9 +178,25 @@
         <EntityContainer Name="PlanoDeAcaoEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Pa_Acao" EntityType="Self.Pa_Acao" />
           <EntitySet Name="Pa_Planejamento" EntityType="Self.Pa_Planejamento" />
+          <EntitySet Name="Pa_Acompanhamento" EntityType="PlanoDeAcaoModel.Pa_Acompanhamento" />
           <EntitySet Name="Pa_FTA" EntityType="PlanoDeAcaoModel.Pa_FTA" />
           <EntitySet Name="Pa_Acompanhamento" EntityType="PlanoDeAcaoModel.Pa_Acompanhamento" />
         </EntityContainer>
+        <EntityType Name="Pa_Acompanhamento">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Acao_Id" Type="Int32" Nullable="false" />
+          <Property Name="Order" Type="Int32" />
+          <Property Name="Status_Id" Type="Int32" Nullable="false" />
+          <Property Name="MailTo" Type="Int32" />
+          <Property Name="Author_Id" Type="Int32" Nullable="false" />
+        </EntityType>
         <EntityType Name="Pa_FTA">
           <Key>
             <PropertyRef Name="Id" />
@@ -281,6 +297,22 @@
                 <ScalarProperty Name="UnidadeDeMedida_Id" ColumnName="UnidadeDeMedida_Id" />
                 <ScalarProperty Name="IsTatico" ColumnName="IsTatico" />
                 <ScalarProperty Name="Tatico_Id" ColumnName="Tatico_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_Acompanhamento">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Acompanhamento">
+              <MappingFragment StoreEntitySet="Pa_Acompanhamento">
+                <ScalarProperty Name="Author_Id" ColumnName="Author_Id" />
+                <ScalarProperty Name="MailTo" ColumnName="MailTo" />
+                <ScalarProperty Name="Status_Id" ColumnName="Status_Id" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="Acao_Id" ColumnName="Acao_Id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
