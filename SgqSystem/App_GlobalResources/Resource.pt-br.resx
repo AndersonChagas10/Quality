@@ -1674,4 +1674,97 @@
   <data name="select_task_first" xml:space="preserve">
     <value>É necessario selecionar uma tarefa para realizar este vínculo</value>
   </data>
+  <data name="accumulated_tendency" xml:space="preserve">
+    <value>Tendência Acumulada</value>
+  </data>
+  <data name="analytical" xml:space="preserve">
+    <value>Analítico</value>
+  </data>
+  <data name="audit_tendency" xml:space="preserve">
+    <value>Tendência do Indicador</value>
+  </data>
+  <data name="audit_type" xml:space="preserve">
+    <value>Tipo Indicador</value>
+  </data>
+  <data name="average" xml:space="preserve">
+    <value>Média</value>
+  </data>
+  <data name="defects" xml:space="preserve">
+    <value>NC</value>
+  </data>
+  <data name="derivations" xml:space="preserve">
+    <value>Total NC</value>
+  </data>
+  <data name="derivations_per_defects" xml:space="preserve">
+    <value>NC por Tarefas acumuladas</value>
+  </data>
+  <data name="deviations_per_monitoring" xml:space="preserve">
+    <value>NC por Tarefas</value>
+  </data>
+  <data name="from" xml:space="preserve">
+    <value>de</value>
+  </data>
+  <data name="group2" xml:space="preserve">
+    <value>Critério</value>
+  </data>
+  <data name="lcl" xml:space="preserve">
+    <value>LCL</value>
+  </data>
+  <data name="levelSpc" xml:space="preserve">
+    <value>Nível</value>
+  </data>
+  <data name="ncc" xml:space="preserve">
+    <value>NC/C</value>
+  </data>
+  <data name="performance" xml:space="preserve">
+    <value>Temperatura</value>
+  </data>
+  <data name="points2" xml:space="preserve">
+    <value>Pontos</value>
+  </data>
+  <data name="points_achieved" xml:space="preserve">
+    <value>Pontos Ating.</value>
+  </data>
+  <data name="points_possible" xml:space="preserve">
+    <value>Pontos Disputados</value>
+  </data>
+  <data name="registers" xml:space="preserve">
+    <value>Registers</value>
+  </data>
+  <data name="resgisters_page" xml:space="preserve">
+    <value>Registros por Pagina</value>
+  </data>
+  <data name="scorecard_type" xml:space="preserve">
+    <value>Tipo Scorecard</value>
+  </data>
+  <data name="search" xml:space="preserve">
+    <value>Procurar</value>
+  </data>
+  <data name="show" xml:space="preserve">
+    <value>Mostrar</value>
+  </data>
+  <data name="showing" xml:space="preserve">
+    <value>Exibindo</value>
+  </data>
+  <data name="smp" xml:space="preserve">
+    <value>AV</value>
+  </data>
+  <data name="spc" xml:space="preserve">
+    <value>Carta CEP</value>
+  </data>
+  <data name="synthetic" xml:space="preserve">
+    <value>Sintético</value>
+  </data>
+  <data name="title" xml:space="preserve">
+    <value>Título</value>
+  </data>
+  <data name="to" xml:space="preserve">
+    <value>a</value>
+  </data>
+  <data name="total_evaluated" xml:space="preserve">
+    <value>Total AV</value>
+  </data>
+  <data name="ucl" xml:space="preserve">
+    <value>LCS</value>
+  </data>
 </root>

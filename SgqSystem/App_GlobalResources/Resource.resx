@@ -652,7 +652,7 @@
     <value>Structure register</value>
   </data>
   <data name="structure_group" xml:space="preserve">
-    <value>Group Above</value>
+    <value>Group Structure</value>
   </data>
   <data name="saving" xml:space="preserve">
     <value>Saving</value>
@@ -775,7 +775,7 @@
     <value>Controls</value>
   </data>
   <data name="daily_apointments" xml:space="preserve">
-    <value>Daily Apointments</value>
+    <value>Daily Appointments</value>
   </data>
   <data name="daily_report" xml:space="preserve">
     <value>Daily Report</value>
@@ -1694,5 +1694,98 @@
   </data>
   <data name="select_task_first" xml:space="preserve">
     <value>Select task first</value>
+  </data>
+  <data name="accumulated_tendency" xml:space="preserve">
+    <value>Accumulated Tendency</value>
+  </data>
+  <data name="analytical" xml:space="preserve">
+    <value>Analytical</value>
+  </data>
+  <data name="audit_tendency" xml:space="preserve">
+    <value>Audit Tendency</value>
+  </data>
+  <data name="audit_type" xml:space="preserve">
+    <value>Audit Type</value>
+  </data>
+  <data name="average" xml:space="preserve">
+    <value>Average</value>
+  </data>
+  <data name="defects" xml:space="preserve">
+    <value>Defects</value>
+  </data>
+  <data name="derivations" xml:space="preserve">
+    <value>Derivations</value>
+  </data>
+  <data name="derivations_per_defects" xml:space="preserve">
+    <value>Derivations per Defects</value>
+  </data>
+  <data name="deviations_per_monitoring" xml:space="preserve">
+    <value>Deviations per Monitoring</value>
+  </data>
+  <data name="from" xml:space="preserve">
+    <value>from</value>
+  </data>
+  <data name="group2" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="lcl" xml:space="preserve">
+    <value>LCI</value>
+  </data>
+  <data name="levelSpc" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="ncc" xml:space="preserve">
+    <value>Derivations</value>
+  </data>
+  <data name="performance" xml:space="preserve">
+    <value>Performance</value>
+  </data>
+  <data name="points2" xml:space="preserve">
+    <value>Points Achieved</value>
+  </data>
+  <data name="points_achieved" xml:space="preserve">
+    <value>Points achieved</value>
+  </data>
+  <data name="points_possible" xml:space="preserve">
+    <value>Points Possible</value>
+  </data>
+  <data name="registers" xml:space="preserve">
+    <value>Registers</value>
+  </data>
+  <data name="resgisters_page" xml:space="preserve">
+    <value>Resgisters</value>
+  </data>
+  <data name="scorecard_type" xml:space="preserve">
+    <value>Scorecard Type</value>
+  </data>
+  <data name="search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="show" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="showing" xml:space="preserve">
+    <value>Showing</value>
+  </data>
+  <data name="smp" xml:space="preserve">
+    <value>SMP</value>
+  </data>
+  <data name="spc" xml:space="preserve">
+    <value>SPC</value>
+  </data>
+  <data name="synthetic" xml:space="preserve">
+    <value>Synthetic</value>
+  </data>
+  <data name="title" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="to" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="total_evaluated" xml:space="preserve">
+    <value>Total evaluated</value>
+  </data>
+  <data name="ucl" xml:space="preserve">
+    <value>UCL</value>
   </data>
 </root>
