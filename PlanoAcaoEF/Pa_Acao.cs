@@ -40,5 +40,6 @@ namespace PlanoAcaoEF
         public string CausaEspecifica { get; set; }
         public string ContramedidaEspecifica { get; set; }
         public Nullable<int> TipoIndicador { get; set; }
+        public Nullable<int> Fta_Id { get; set; }
     }
 }

@@ -60,6 +60,7 @@ namespace Dominio.Services
         private IBaseRepository<ParCriticalLevel> _baseRepoParCriticalLevel;
         private IBaseRepository<ParCompany> _baseRepoParCompany;
         private IBaseRepository<Equipamentos> _baseRepoEquipamentos;
+        private IBaseRepository<ParScoreType> _baseRepoParScore;
         private IParLevel3Repository _repoParLevel3;
         /*Repo Especifico, manejam os itens*/
         private IParamsRepository _paramsRepo;
@@ -105,8 +106,10 @@ namespace Dominio.Services
                             IBaseRepository<ParCriticalLevel> baseRepoParCriticalLevel,
                             IBaseRepository<ParCompany> baseRepoParCompany,
                             IBaseRepository<Equipamentos> baseRepoEquipamentos,
-                            IBaseRepositoryNoLazyLoad<ParLevel2Level1> baseRepoParLevel2Level1)
+                            IBaseRepositoryNoLazyLoad<ParLevel2Level1> baseRepoParLevel2Level1,
+                            IBaseRepository<ParScoreType> baseRepoParScore)
         {
+            _baseRepoParScore = baseRepoParScore;
             _baseRepoParLevel2Level1 = baseRepoParLevel2Level1;
             _baseRepoParCompany = baseRepoParCompany;
             _baseRepoEquipamentos = baseRepoEquipamentos;
@@ -179,7 +182,7 @@ namespace Dominio.Services
             /*Inativar*/
             List<int> removerHeadField = paramsDto.parLevel1Dto.removerParHeaderField;
 
-            List<ParLevel1XHeaderField> listaParLevel1XHeaderField = new List<ParLevel1XHeaderField>();
+            //List<ParLevel1XHeaderField> listaParLevel1XHeaderField = new List<ParLevel1XHeaderField>();
 
             try
             {
@@ -561,8 +564,11 @@ namespace Dominio.Services
                 var DdlparCrit = Mapper.Map<List<ParCriticalLevelDTO>>(_baseRepoParCriticalLevel.GetAllAsNoTracking());
 
                 var DdlparCompany = Mapper.Map<List<ParCompanyDTO>>(_baseRepoParCompany.GetAllAsNoTracking());
+                var DdlScoretype = Mapper.Map<List<ParScoreTypeDTO>>(_baseRepoParScore.GetAllAsNoTracking());
                 
                 var retorno = new ParamsDdl();
+
+                 
 
                 retorno.SetDdlsNivel123(DdlparLevel1,
                                 DdlparLevel2,
@@ -570,7 +576,7 @@ namespace Dominio.Services
 
                 retorno.SetDdls(DdlParConsolidation, DdlFrequency, DdlparCluster, DdlparLevelDefinition, DdlParFieldType, DdlParDepartment, DdlParCounter_Level1,
                                 DdlParLocal_Level1, DdlParCounter_Level2, DdlParLocal_Level2, DdlParNotConformityRule, DdlParLevel3InputType, DdlParMeasurementUnit,
-                                DdlParLevel3BoolFalse, DdlParLevel3BoolTrue, DdlparCrit, DdlparCompany);
+                                DdlParLevel3BoolFalse, DdlParLevel3BoolTrue, DdlparCrit, DdlparCompany, DdlScoretype);
                 return retorno;
             }
         }

@@ -1674,6 +1674,9 @@
   <data name="select_task_first" xml:space="preserve">
     <value>É necessario selecionar uma tarefa para realizar este vínculo</value>
   </data>
+  <data name="reaudit_period" xml:space="preserve">
+    <value>Existe reauditoria para ser preenchida em outro periodo</value>
+  </data>
   <data name="accumulated_tendency" xml:space="preserve">
     <value>Tendência Acumulada</value>
   </data>
@@ -1766,5 +1769,11 @@
   </data>
   <data name="ucl" xml:space="preserve">
     <value>LCS</value>
+  </data>
+  <data name="registerPerUnit" xml:space="preserve">
+    <value>Cadastro por unidade</value>
+  </data>
+  <data name="tipoScore" xml:space="preserve">
+    <value>Tipo de Score</value>
   </data>
 </root>

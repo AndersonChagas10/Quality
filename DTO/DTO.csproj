@@ -117,6 +117,7 @@
     <Compile Include="DTO\Params\ParLevel3GroupDTO.cs" />
     <Compile Include="DTO\Params\ParLevel2DTO.cs" />
     <Compile Include="DTO\Params\ParLevelDefinitonDTO.cs" />
+    <Compile Include="DTO\Params\ParScoreTypeDTO.cs" />
     <Compile Include="DTO\Params\ParStructureDTO.cs" />
     <Compile Include="DTO\Params\ParStructureGroupDTO.cs" />
     <Compile Include="DTO\ParCompanyXUserSgqDTO.cs" />

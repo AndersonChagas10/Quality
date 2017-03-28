@@ -51,6 +51,12 @@
     <Compile Include="Pa_Acompanhamento.cs">
       <DependentUpon>EfPa.tt</DependentUpon>
     </Compile>
+    <Compile Include="Pa_AcompanhamentoXQuem.cs">
+      <DependentUpon>EfPa.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Pa_FTA.cs">
+      <DependentUpon>EfPa.tt</DependentUpon>
+    </Compile>
     <Compile Include="Pa_Planejamento.cs">
       <DependentUpon>EfPa.tt</DependentUpon>
     </Compile>

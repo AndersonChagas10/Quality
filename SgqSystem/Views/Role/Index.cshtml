@@ -29,13 +29,7 @@
                     <span> @Resources.Resource.profiles_and_roles </span>
                 </li>
             </ul>
-            <div class="page-toolbar">
-                <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
-                <div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                    <i class="fa fa-calendar"></i>&nbsp;
-                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                </div>
-            </div>
+            
         </div>
         <!-- END PAGE BAR -->
         <!-- END PAGE HEADER-->
@@ -114,6 +108,27 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="panel-group accordion" id="roles_leftcontrol_accordion">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="row panel-title">
+                                                <div class="col-xs-12">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#roles_leftcontrol_collapse" href="#roles_leftcontrol_collapse" aria-expanded="false" id="level2Title"> Controle de menus : @Resources.Resource.role_jbs </a>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="roles_leftcontrol_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                            <div class="panel-body">
+                                                <div id="RoleLeftControl">
+                                                    @Html.Partial("~/Views/Role/LeftControlRole.cshtml")
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>  
 
                             </div>
                         </div>
