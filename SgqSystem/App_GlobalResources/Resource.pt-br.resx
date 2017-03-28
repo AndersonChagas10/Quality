@@ -1674,6 +1674,9 @@
   <data name="select_task_first" xml:space="preserve">
     <value>É necessario selecionar uma tarefa para realizar este vínculo</value>
   </data>
+  <data name="reaudit_period" xml:space="preserve">
+    <value>Existe reauditoria para ser preenchida em outro periodo</value>
+  </data>
   <data name="accumulated_tendency" xml:space="preserve">
     <value>Tendência Acumulada</value>
   </data>
