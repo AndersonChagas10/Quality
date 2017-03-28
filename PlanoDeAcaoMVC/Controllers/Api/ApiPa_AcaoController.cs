@@ -49,8 +49,42 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         {
             //Pa_BaseObject.SalvarGenerico(obj);
             //Pa_Acompanhamento.SalvarGenerico(obj);
-            //var obj = Pa_Acao.Get(id);
+            //var obj = Pa_Acao.Get(id);   
+            
+            var acomXQuem = Mapper.Map<PlanoAcaoEF.Pa_AcompanhamentoXQuem>(obj);
+
+            var acompanhamento = Mapper.Map<PlanoAcaoEF.Pa_Acompanhamento>(obj);
+
+            using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
+            {
+
+                SalvarAcompanhamentoXQuem(db, acomXQuem);
+                acompanhamento.MailTo = acomXQuem.Id;
+                SalvarAcompanhamento(db, acompanhamento);
+            }
+
             return Pa_BaseObject.SalvarGenerico(obj); 
+        }
+
+        public static void SalvarAcompanhamentoXQuem(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_AcompanhamentoXQuem quem)
+        {
+            if (quem.Id > 0)
+            {
+                db.Pa_AcompanhamentoXQuem.Attach(quem);
+                var entry = db.Entry(quem);
+                entry.State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
+            else
+            {
+                db.Pa_AcompanhamentoXQuem.Add(quem);
+                db.SaveChanges();
+            }
+        }
+
+        public static void SalvarAcompanhamento(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_Acompanhamento acom)
+        {
+
         }
 
         [HttpPost]

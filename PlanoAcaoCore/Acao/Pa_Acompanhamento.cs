@@ -12,7 +12,7 @@ namespace PlanoAcaoCore.Acao
         public int Acao_Id { get; set; }
         public int? Order { get; set; }
         public int Status_Id { get; set; }
-        public List<int> MailTo { get; set; }
+        public int MailTo { get; set; }
         public string Name { get; set; }
         public int Author_Id { get; set; }
 
@@ -45,16 +45,18 @@ namespace PlanoAcaoCore.Acao
             }
         }
 
+        public List<int> _MailTo { get; set; }
+
         public List<Pa_Quem> _Quem
         {
             get
             {
                 var PQP = new List<Pa_Quem>();
-                if (MailTo != null)
+                if (_MailTo != null)
                 {
-                    if (MailTo.Count > 0)
+                    if (_MailTo.Count > 0)
                     {
-                        foreach (var i in MailTo)
+                        foreach (var i in _MailTo)
                         {
                             PQP.Add(Pa_Quem.Get(i));
                         }
