@@ -9,8 +9,7 @@ namespace PlanoDeAcaoMVC.MapperConfig
         {
             Mapper.Initialize(x =>
             {
-                x.AddProfile<AcaoMapper>();
-                x.AddProfile<PlanejamentoMapper>();
+                x.AddProfile<MapperUtil>();
             });
         }
     }

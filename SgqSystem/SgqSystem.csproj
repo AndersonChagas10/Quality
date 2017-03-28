@@ -419,6 +419,7 @@
     <Compile Include="Mappers\Audit\ConsolidationLevel02MapperProfile.cs" />
     <Compile Include="Mappers\Audit\Level01MapperProfile.cs" />
     <Compile Include="Mappers\Audit\Level02MapperProfile.cs" />
+    <Compile Include="Mappers\Params\ParScoreTypeMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParStructureGroupMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParStructureMapperProfile.cs" />
     <Compile Include="Mappers\ParCompanyXUserSgqMapperProfile.cs" />
@@ -2138,7 +2139,6 @@
     <Folder Include="obj\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\EspecificarMonitoramentos\" />
-    <Folder Include="Views\Manutencao\" />
     <Folder Include="Views\RelatorioController\" />
     <Folder Include="Views\RoleApi\" />
     <Folder Include="Views\ScorecardConfig\" />

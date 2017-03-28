@@ -33,7 +33,6 @@ namespace SgqSystem.Mappers
                 x.AddProfile<ParCompanyClusterProfile>();
                 x.AddProfile<ParGoalMapperProfile>();
 
-
                 /*
                  * Par Level1 Mapping
                  */
@@ -52,7 +51,7 @@ namespace SgqSystem.Mappers
                 x.AddProfile<ParLevel3Level2Level1MapperProfile>();
                 x.AddProfile<ParCriticalLevelMapperProfile>();
                 x.AddProfile<ParLevel2Level1MapperProfile>();
-
+                x.AddProfile<ParScoreTypeMapperProfile>();
 
                 /*
                 * Par Level2 Mapping

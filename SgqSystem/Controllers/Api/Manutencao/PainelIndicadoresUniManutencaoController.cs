@@ -78,8 +78,8 @@ namespace SgqSystem.Controllers.Api.Manutencao
                     tipoCalculo = "Soma";
                     break;
                 case "Eficiên.Programção":
-                    indicador.Add("Nº OS Programadas");
                     indicador.Add("Nº OS Executadas");
+                    indicador.Add("Nº OS Programadas");
                     tipoCalculo = "Variadas"; // Para retornar o Orcado diretamente
                     break;
                 case "Apropr Planej...to":

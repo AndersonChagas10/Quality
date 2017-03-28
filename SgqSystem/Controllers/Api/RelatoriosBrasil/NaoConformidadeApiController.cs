@@ -55,6 +55,41 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
+                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN " +
+                "\n         ( " +
+                "\n             SELECT " +
+                "\n             COUNT(1) AM " +
+
+                "\n             --SUM(DEF_AM) DEF_AM " +
+
+                "\n             FROM " +
+                "\n             ( " +
+                "\n                  SELECT " +
+
+                "\n                  cast(C2.CollectionDate as DATE) AS DATA " +
+                "\n                  , C2.ParLevel1_Id AS INDICADOR " +
+                "\n                  , C2.EvaluationNumber AS AV " +
+                "\n                  , C2.Sample AS AM " +
+                "\n                  , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
+
+
+                "\n                  FROM CollectionLevel2 C2 " +
+
+                "\n                  INNER JOIN ParLevel1 L1 " +
+
+                "\n                  ON L1.Id = C2.ParLevel1_Id " +
+
+                "\n                  where cast(C2.CollectionDate as DATE) BETWEEN @DATAINICIAL AND @DATAFINAL " +
+
+                "\n                  and C2.NotEvaluatedIs = 0 " +
+
+                "\n                  and C2.Duplicated = 0 " +
+
+                "\n                  and L1.Id = IND.Id " +
+
+                "\n                  group by ParLevel1_Id, EvaluationNumber, Sample, cast(CollectionDate as DATE) " +
+                "\n              ) TAB " +
+                "\n         ) " +
                 "\n         ELSE 0 " +
                 "\n        END AS Av " +
 
@@ -63,6 +98,41 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN EvaluateTotal " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN EvaluateTotal " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
+                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN " +
+                "\n         ( " +
+                "\n             SELECT " +
+                "\n             COUNT(1) AM " +
+
+                "\n             --SUM(DEF_AM) DEF_AM " +
+
+                "\n             FROM " +
+                "\n             ( " +
+                "\n                  SELECT " +
+
+                "\n                  cast(C2.CollectionDate as DATE) AS DATA " +
+                "\n                  , C2.ParLevel1_Id AS INDICADOR " +
+                "\n                  , C2.EvaluationNumber AS AV " +
+                "\n                  , C2.Sample AS AM " +
+                "\n                  , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
+
+
+                "\n                  FROM CollectionLevel2 C2 " +
+
+                "\n                  INNER JOIN ParLevel1 L1 " +
+
+                "\n                  ON L1.Id = C2.ParLevel1_Id " +
+
+                "\n                  where cast(C2.CollectionDate as DATE) BETWEEN @DATAINICIAL AND @DATAFINAL " +
+
+                "\n                  and C2.NotEvaluatedIs = 0 " +
+
+                "\n                  and C2.Duplicated = 0 " +
+
+                "\n                  and L1.Id = IND.Id " +
+
+                "\n                  group by ParLevel1_Id, EvaluationNumber, Sample, cast(CollectionDate as DATE) " +
+                "\n              ) TAB " +
+                "\n         ) " +
                 "\n         ELSE 0 " +
                 "\n        END AS AvSemPeso " +
 
@@ -70,6 +140,41 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN WeiDefects " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiDefects " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult " +
+                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN " +
+                "\n         ( " +
+                "\n             SELECT " +
+                "\n             --COUNT(1) AM " +
+
+                "\n             SUM(DEF_AM) DEF_AM " +
+
+                "\n             FROM " +
+                "\n             ( " +
+                "\n                  SELECT " +
+
+                "\n                  cast(C2.CollectionDate as DATE) AS DATA " +
+                "\n                  , C2.ParLevel1_Id AS INDICADOR " +
+                "\n                  , C2.EvaluationNumber AS AV " +
+                "\n                  , C2.Sample AS AM " +
+                "\n                  , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
+
+
+                "\n                  FROM CollectionLevel2 C2 " +
+
+                "\n                  INNER JOIN ParLevel1 L1 " +
+
+                "\n                  ON L1.Id = C2.ParLevel1_Id " +
+
+                "\n                  where cast(C2.CollectionDate as DATE) BETWEEN @DATAINICIAL AND @DATAFINAL " +
+
+                "\n                  and C2.NotEvaluatedIs = 0 " +
+
+                "\n                  and C2.Duplicated = 0 " +
+
+                "\n                  and L1.Id = IND.Id " +
+
+                "\n                  group by ParLevel1_Id, EvaluationNumber, Sample, cast(CollectionDate as DATE) " +
+                "\n              ) TAB " +
+                "\n         ) " +
                 "\n         ELSE 0 " +
 
                 "\n         END AS NC " +
@@ -78,11 +183,59 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN DefectsTotal " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN DefectsTotal " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult " +
+                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN " +
+                "\n         ( " +
+                "\n             SELECT " +
+                "\n             --COUNT(1) AM " +
+
+                "\n             SUM(DEF_AM) DEF_AM " +
+
+                "\n             FROM " +
+                "\n             ( " +
+                "\n                  SELECT " +
+
+                "\n                  cast(C2.CollectionDate as DATE) AS DATA " +
+                "\n                  , C2.ParLevel1_Id AS INDICADOR " +
+                "\n                  , C2.EvaluationNumber AS AV " +
+                "\n                  , C2.Sample AS AM " +
+                "\n                  , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
+
+
+                "\n                  FROM CollectionLevel2 C2 " +
+
+                "\n                  INNER JOIN ParLevel1 L1 " +
+
+                "\n                  ON L1.Id = C2.ParLevel1_Id " +
+
+                "\n                  where cast(C2.CollectionDate as DATE) BETWEEN @DATAINICIAL AND @DATAFINAL " +
+
+                "\n                  and C2.NotEvaluatedIs = 0 " +
+
+                "\n                  and C2.Duplicated = 0 " +
+
+                "\n                  and L1.Id = IND.Id " +
+
+                "\n                  group by ParLevel1_Id, EvaluationNumber, Sample, cast(CollectionDate as DATE) " +
+                "\n              ) TAB " +
+                "\n         ) " +
                 "\n         ELSE 0 " +
 
                 "\n         END AS NCSemPeso " +
 
-                "\n         , (SELECT TOP 1 PercentValue FROM ParGoal WHERE ParLevel1_Id = CL1.ParLevel1_Id AND(ParCompany_Id = CL1.UnitId OR ParCompany_Id IS NULL) ORDER BY ParCompany_Id DESC) AS Meta " +
+
+                               "\n  ,                                                                                                                                                                                                                                                                  " +
+               "\n  CASE                                                                                                                                                                                                                                                               " +
+               "\n                                                                                                                                                                                                                                                                     " +
+               "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
+               "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, AddDate DESC)                                         " +
+               "\n                                                                                                                                                                                                                                                                     " +
+               "\n     ELSE                                                                                                                                                                                                                                                            " +
+               "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)                                                                      " +
+               "\n  END                                                                                                                                                                                                                                                                " +
+               "\n  AS Meta                                                                                                                                                                                                                                                            " +
+
+
+
                 "\n         FROM ConsolidationLevel1 CL1 " +
                 "\n         INNER JOIN ParLevel1 IND " +
                 "\n         ON IND.Id = CL1.ParLevel1_Id " +
@@ -142,13 +295,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 
                 "\n ,ProcentagemNc as [proc] " +
 
-                "\n ,nc" +
-                "\n ,av " +
-                "\n ,Meta " +
+               "\n ,(case when IsRuleConformity = 1 THEN (100 - META) ELSE Meta END) AS Meta  " +
+               "\n ,NC " +
+               "\n ,Av " +
                 "\n FROM " +
                 "\n ( " +
                 "\n     SELECT " +
                 "\n       Unidade  " +
+                "\n     , IsRuleConformity " +
                 "\n     , Unidade_Id " +
                 "\n     , Level1Name " +
                 "\n     , level1_Id " +
@@ -162,6 +316,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n     ( " +
                 "\n         SELECT " +
                 "\n          IND.Id         AS level1_Id " +
+                "\n         , IND.IsRuleConformity " +
                 "\n         , IND.Name       AS Level1Name " +
                 "\n         , UNI.Id         AS Unidade_Id " +
                 "\n         , UNI.Name       AS Unidade " +
@@ -170,6 +325,41 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
+                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN " +
+                "\n         ( " +
+                "\n             SELECT " +
+                "\n             COUNT(1) AM " +
+
+                "\n             --SUM(DEF_AM) DEF_AM " +
+
+                "\n             FROM " +
+                "\n             ( " +
+                "\n                  SELECT " +
+
+                "\n                  cast(C2.CollectionDate as DATE) AS DATA " +
+                "\n                  , C2.ParLevel1_Id AS INDICADOR " +
+                "\n                  , C2.EvaluationNumber AS AV " +
+                "\n                  , C2.Sample AS AM " +
+                "\n                  , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
+
+
+                "\n                  FROM CollectionLevel2 C2 " +
+
+                "\n                  INNER JOIN ParLevel1 L1 " +
+
+                "\n                  ON L1.Id = C2.ParLevel1_Id " +
+
+                "\n                  where cast(C2.CollectionDate as DATE) BETWEEN @DATAINICIAL AND @DATAFINAL " +
+
+                "\n                  and C2.NotEvaluatedIs = 0 " +
+
+                "\n                  and C2.Duplicated = 0 " +
+
+                "\n                  and L1.Id = IND.Id " +
+
+                "\n                  group by ParLevel1_Id, EvaluationNumber, Sample, cast(CollectionDate as DATE) " +
+                "\n              ) TAB " +
+                "\n         ) " +
                 "\n         ELSE 0 " +
                 "\n        END AS Av " +
 
@@ -178,6 +368,41 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN EvaluateTotal " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN EvaluateTotal " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
+                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN " +
+                "\n         ( " +
+                "\n             SELECT " +
+                "\n             COUNT(1) AM " +
+
+                "\n             --SUM(DEF_AM) DEF_AM " +
+
+                "\n             FROM " +
+                "\n             ( " +
+                "\n                  SELECT " +
+
+                "\n                  cast(C2.CollectionDate as DATE) AS DATA " +
+                "\n                  , C2.ParLevel1_Id AS INDICADOR " +
+                "\n                  , C2.EvaluationNumber AS AV " +
+                "\n                  , C2.Sample AS AM " +
+                "\n                  , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
+
+
+                "\n                  FROM CollectionLevel2 C2 " +
+
+                "\n                  INNER JOIN ParLevel1 L1 " +
+
+                "\n                  ON L1.Id = C2.ParLevel1_Id " +
+
+                "\n                  where cast(C2.CollectionDate as DATE) BETWEEN @DATAINICIAL AND @DATAFINAL " +
+
+                "\n                  and C2.NotEvaluatedIs = 0 " +
+
+                "\n                  and C2.Duplicated = 0 " +
+
+                "\n                  and L1.Id = IND.Id " +
+
+                "\n                  group by ParLevel1_Id, EvaluationNumber, Sample, cast(CollectionDate as DATE) " +
+                "\n              ) TAB " +
+                "\n         ) " +
                 "\n         ELSE 0 " +
                 "\n        END AS AvSemPeso " +
 
@@ -185,6 +410,41 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN WeiDefects " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiDefects " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult " +
+                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN " +
+                "\n         ( " +
+                "\n             SELECT " +
+                "\n             --COUNT(1) AM " +
+
+                "\n             SUM(DEF_AM) DEF_AM " +
+
+                "\n             FROM " +
+                "\n             ( " +
+                "\n                  SELECT " +
+
+                "\n                  cast(C2.CollectionDate as DATE) AS DATA " +
+                "\n                  , C2.ParLevel1_Id AS INDICADOR " +
+                "\n                  , C2.EvaluationNumber AS AV " +
+                "\n                  , C2.Sample AS AM " +
+                "\n                  , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
+
+
+                "\n                  FROM CollectionLevel2 C2 " +
+
+                "\n                  INNER JOIN ParLevel1 L1 " +
+
+                "\n                  ON L1.Id = C2.ParLevel1_Id " +
+
+                "\n                  where cast(C2.CollectionDate as DATE) BETWEEN @DATAINICIAL AND @DATAFINAL " +
+
+                "\n                  and C2.NotEvaluatedIs = 0 " +
+
+                "\n                  and C2.Duplicated = 0 " +
+
+                "\n                  and L1.Id = IND.Id " +
+
+                "\n                  group by ParLevel1_Id, EvaluationNumber, Sample, cast(CollectionDate as DATE) " +
+                "\n              ) TAB " +
+                "\n         ) " +
                 "\n         ELSE 0 " +
 
                 "\n         END AS NC " +
@@ -193,10 +453,54 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN DefectsTotal " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN DefectsTotal " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult " +
+                "\n         WHEN IND.ParConsolidationType_Id = 4 THEN " +
+                "\n         ( " +
+                "\n             SELECT " +
+                "\n             --COUNT(1) AM " +
+
+                "\n             SUM(DEF_AM) DEF_AM " +
+
+                "\n             FROM " +
+                "\n             ( " +
+                "\n                  SELECT " +
+
+                "\n                  cast(C2.CollectionDate as DATE) AS DATA " +
+                "\n                  , C2.ParLevel1_Id AS INDICADOR " +
+                "\n                  , C2.EvaluationNumber AS AV " +
+                "\n                  , C2.Sample AS AM " +
+                "\n                  , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
+
+
+                "\n                  FROM CollectionLevel2 C2 " +
+
+                "\n                  INNER JOIN ParLevel1 L1 " +
+
+                "\n                  ON L1.Id = C2.ParLevel1_Id " +
+
+                "\n                  where cast(C2.CollectionDate as DATE) BETWEEN @DATAINICIAL AND @DATAFINAL " +
+
+                "\n                  and C2.NotEvaluatedIs = 0 " +
+
+                "\n                  and C2.Duplicated = 0 " +
+
+                "\n                  and L1.Id = IND.Id " +
+
+                "\n                  group by ParLevel1_Id, EvaluationNumber, Sample, cast(CollectionDate as DATE) " +
+                "\n              ) TAB " +
+                "\n         ) " +
                 "\n         ELSE 0 " +
 
                 "\n         END AS NCSemPeso " +
-                "\n         , (SELECT TOP 1 PercentValue FROM ParGoal WHERE ParLevel1_Id = CL1.ParLevel1_Id AND(ParCompany_Id = CL1.UnitId OR ParCompany_Id IS NULL) ORDER BY ParCompany_Id DESC) AS Meta " +
+               "\n  ,                                                                                                                                                                                                                                                                  " +
+               "\n  CASE                                                                                                                                                                                                                                                               " +
+               "\n                                                                                                                                                                                                                                                                     " +
+               "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL) > 0 THEN                                                                                                   " +
+               "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, AddDate DESC)                                         " +
+               "\n                                                                                                                                                                                                                                                                     " +
+               "\n     ELSE                                                                                                                                                                                                                                                            " +
+               "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)                                                                      " +
+               "\n  END                                                                                                                                                                                                                                                                " +
+               "\n  AS Meta                                                                                                                                                                                                                                                            " +
                 "\n         FROM ConsolidationLevel1 CL1 " +
                 "\n         INNER JOIN ParLevel1 IND " +
                 "\n         ON IND.Id = CL1.ParLevel1_Id " +
@@ -208,7 +512,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                 "\n     ) S1 " +
 
-                "\n     GROUP BY Unidade, Unidade_Id, Level1Name, level1_Id  " +
+                "\n     GROUP BY Unidade, Unidade_Id, Level1Name, level1_Id, IsRuleConformity  " +
 
                 "\n ) S2 " +
                 "\n WHERE nc > 0 " +
@@ -266,7 +570,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos)/2 FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation " +
-                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL2.EvaluatedResult " +
+                "\n         WHEN IND.ParConsolidationType_Id in (3,4) THEN CL2.EvaluatedResult " +
                 "\n         ELSE 0 " +
                 "\n        END AS Av " +
 
@@ -274,14 +578,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL2.EvaluateTotal " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL2.EvaluateTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL2.EvaluatedResult " +
+                "\n         WHEN IND.ParConsolidationType_Id in (3,4) THEN CL2.EvaluatedResult " +
                 "\n         ELSE 0 " +
                 "\n        END AS AvSemPeso " +
 
                 "\n         , CASE " +
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiDefects " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiDefects " +
-                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL2.DefectsResult " +
+                "\n         WHEN IND.ParConsolidationType_Id in (3,4) THEN CL2.DefectsResult " +
                 "\n         ELSE 0 " +
 
                 "\n         END AS NC " +
@@ -289,7 +593,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         , CASE " +
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL2.DefectsTotal " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL2.DefectsTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL2.DefectsResult " +
+                "\n         WHEN IND.ParConsolidationType_Id in (3,4) THEN CL2.DefectsResult " +
                 "\n         ELSE 0 " +
 
                 "\n         END AS NCSemPeso " +

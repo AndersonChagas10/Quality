@@ -122,7 +122,7 @@ namespace Helper
         {
             var roles = role.Split(new char[] { ',' });
             //return true;
-            return roles.Any(r => Roles.Contains(r));
+            return roles.Any(r => Roles.ToLowerInvariant().Contains(r.ToLowerInvariant()));
         }
 
     }

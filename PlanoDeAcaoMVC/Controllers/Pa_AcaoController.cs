@@ -1,4 +1,9 @@
-﻿using PlanoAcaoCore;
+﻿using DTO.DTO;
+using DTO.DTO.Params;
+using DTO.Helpers;
+using PlanoAcaoCore;
+using PlanoAcaoCore.Acao;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -88,9 +93,53 @@ namespace PlanoDeAcaoMVC.Controllers
             return PartialView("Acompanhamento", obj);
         }
 
-        public ActionResult NewFTA(Pa_Acao fta)
+        //Pa_Acao/NewFTA?MetaFTA=30&PercentualNCFTA=40&ReincidenciaDesvioFTA=60&Level1Id=1&Supervisor_Id=10&Unidade_Id=3&Departamento_Id=4&_DataInicioFTA="22-05-2017"&_DataFimFTA="22-05-2017"
+        [HttpGet]
+        public ActionResult NewFTA(FTA fta)
         {
-            fta.VerificaFTA();
+            #region MOCK
+
+            /*Recebe do AJAX*/
+            //Guard.ParseDateToSqlV2(fta._DataInicioFTA);
+            fta._DataInicioFTA = Guard.ParseDateToSqlV2(fta._DataInicioFTA).ToShortDateString();
+            fta._DataFimFTA = Guard.ParseDateToSqlV2(fta._DataFimFTA).ToShortDateString();
+            //fta.MetaFTA = 40;
+            //fta.PercentualNCFTA = 60;
+            //fta.ReincidenciaDesvioFTA = 50;
+            //fta.Level1Id = 8;
+            //fta.Supervisor_Id = 8;
+            //fta.Unidade_Id = 1;
+            //fta.Departamento_Id = 1;
+            
+            /*Preenche na tela*/
+            //fta.ContramedidaGenerica_Id = 1;
+            //fta.ContramedidaEspecifica = "ContramedidaEspecifica TESTE";
+            //fta.Quem_Id = 5;
+            //fta.QuandoInicio = DateTime.Now;
+            //fta.QuandoFim = DateTime.Now;
+            //fta.ComoPontosimportantes = "ComoPontosimportantes TESTE";
+
+            #endregion
+
+            fta.ValidaFTA();
+
+
+
+            using (var db = new ADOFactory.Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
+            {
+
+                var level1 = db.SearchQuery<ParLevel1DTO>("Select * from parlevel1 WHERE ID = " + fta.Level1Id).FirstOrDefault(r => r.IsActive);
+                var usersgq = db.SearchQuery<UserDTO>("Select * from usersgq WHERE ID = " + fta.Supervisor_Id).FirstOrDefault();
+                var parcompany = db.SearchQuery<ParCompanyDTO>("Select * from parcompany WHERE ID = " + fta.Unidade_Id).FirstOrDefault(r => r.IsActive);
+                var parDepartment = db.SearchQuery<ParDepartmentDTO>("Select * from ParDepartment WHERE ID = " + fta.Departamento_Id).FirstOrDefault();
+
+                fta._Level1 = level1.Name;
+                fta._Unidade = parcompany.Name;
+                fta._Departamento = parDepartment.Name;
+                fta._Supervisor = usersgq.Name;
+
+            }
+
             return View(fta);
         }
     }
