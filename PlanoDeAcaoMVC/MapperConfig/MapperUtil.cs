@@ -19,6 +19,9 @@ namespace SgqSystem.MapperConfig
 
             CreateMap<FTA, PlanoAcaoEF.Pa_FTA>();
             CreateMap<PlanoAcaoEF.Pa_FTA, FTA>();
+
+            CreateMap<Pa_AcompanhamentoXQuemVM, PlanoAcaoEF.Pa_AcompanhamentoXQuem>();
+            CreateMap<PlanoAcaoEF.Pa_AcompanhamentoXQuem, Pa_AcompanhamentoXQuemVM>();
         }
     }
 }
