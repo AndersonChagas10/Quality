@@ -169,6 +169,11 @@ namespace PlanoAcaoCore
                 Status = status.Id;
                 //StatusName = status.Name;
             }
+            else
+            {
+                var old = Pa_Acao.Get(Id);
+                Panejamento_Id = old.Panejamento_Id;
+            }
 
             //if (Pa_IndicadorSgqAcao_Id <= 0)
             //    message += "\n Indicador Operacional,";

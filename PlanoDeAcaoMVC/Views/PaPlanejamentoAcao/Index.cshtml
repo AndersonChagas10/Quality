@@ -282,51 +282,6 @@
         var urlSalvarAcompanhamento = '@Url.Action("SaveAcompanhamento", "api/Pa_Acao")'
         var urlAcompanhamentoDetalhes = '@Url.Action("Acompanhamento", "Pa_Acao")'
 
-        /*Btn Minimizar Modal*/
-        $(document).ready(function () {
-
-            var $content, $modal, $apnData, $modalCon;
-            $content = $(".min");
-
-            //To fire modal
-            $(".mdlFire").click(function (e) {
-                e.preventDefault();
-                var $id = $(this).attr("data-target");
-                $($id).modal({ backdrop: false, keyboard: false });
-            });
-
-            $(".modalMinimize").on("click", function () {
-
-                $modalCon = $(this).closest(".modal").attr("id");
-
-                $apnData = $(this).closest(".modal");
-
-                $modal = "#" + $modalCon;
-
-                $(".modal-backdrop").addClass("display-none");
-
-                $($modal).toggleClass("min");
-
-                if ($($modal).hasClass("min")) {
-                    $(".minmaxCon").append($apnData);
-                    ///$(this).find("i").toggleClass('fa-minus').toggleClass('fa-clone');
-                } else {
-                    $("body").append($apnData);
-                    ///$(this).find("i").toggleClass('fa-clone').toggleClass('fa-minus');
-                };
-            });
-
-            $("button[data-dismiss='modal']").click(function () {
-                $(this).closest(".modal").removeClass("min");
-                $(".container").removeClass($apnData);
-                //$(this).next('.modalMinimize').find("i").removeClass('fa fa-clone').addClass( 'fa fa-minus');
-            });
-
-        });
-        /*FIM Btn Minimizar Modal*/
-
-     
-
         function Clicked(isClickedTatico, isClickedAcao, isTaticoVinculado, clearId) {
             isTaticoClicked = isClickedTatico;
             isNovaAcao = isClickedAcao;
@@ -1293,29 +1248,32 @@
                         var bgColorStatus = ""
                         var bgColorPrazo = ""
                         /*Status*/
-                        if (data.Acao.StatusName.indexOf("Cancelado") > -1) {
+                        console.log(data.Acao.Status);
+                        if (data.Acao.Status == 2) {
                             bgColorStatus = "grey";
                             bgColorPrazo = "rgb(126, 194, 253)";
-                        } else if (data.Acao.StatusName.indexOf('Ativo') > -1) {
+                        } else if (data.Acao.Status == 5) {
                             bgColorStatus = "#ADD8E6";
-                        } else if (data.Acao.StatusName.indexOf('Ativo') > -1 && data.Acao.StatusName.indexOf('Atrasado') > -1) {
+                        } else if (data.Acao.Status == 5 && data.Acao.StatusName.indexOf('Atrasado') > -1) {
                             bgColorStatus = "#458fa8"
-                        } else if (data.Acao.StatusName.indexOf('Concluído')/* > -1 && data.Acao.StatusName.indexOf('Prazo') > -1*/) {
+                        } else if (data.Acao.Status == 3/* > -1 && data.Acao.StatusName.indexOf('Prazo') > -1*/) {
                             bgColorPrazo = "rgb(126, 194, 253)";
                             bgColorStatus = "cyan"
-                        } else if (data.Acao.StatusName.indexOf('Concluído') > -1 && data.Acao.StatusName.indexOf('Atraso') > -1) {
+                        } else if (data.Acao.Status == 4) {
                             bgColorPrazo = "rgb(126, 194, 253)";
                             bgColorStatus = "steelblue"
-                        } else if (data.Acao.StatusName.indexOf('Replanejado') > -1) {
-                            bgColorStatus = "yellow"
                         }
+
+                        //else if (data.Acao.StatusName.indexOf('Replanejado') > -1) {
+                        //    bgColorStatus = "yellow"
+                        //}
 
                         $(row.cells[31]).css("background", bgColorStatus);
 
                         /*Prazo*/
-                        if (data.Acao.StatusName == "Cancelado") {
+                        if (data.Acao.Status == 2) {
 
-                        } else if (data.Acao.StatusName.indexOf('Concluído') > -1) {
+                        } else if (data.Acao.Status == 3) {
 
                         } else if (data.Acao._Prazo.indexOf('Faltam') > -1) {
                             bgColorPrazo = "#90EE90"

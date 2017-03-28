@@ -192,6 +192,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Api\ApiPa_AcaoController.cs" />
     <Compile Include="Controllers\Api\ApiPa_PlanejamentoController.cs" />
+    <Compile Include="Controllers\Api\ApiPa_UserController.cs" />
     <Compile Include="Controllers\Api\GenericsController.cs" />
     <Compile Include="Controllers\Api\ApiRelatoriosController.cs" />
     <Compile Include="Controllers\Api\OperacionalController.cs" />
