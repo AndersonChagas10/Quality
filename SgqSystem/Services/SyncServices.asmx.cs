@@ -523,6 +523,7 @@ namespace SgqSystem.Services
                     havePhases = BoolConverter(havePhases);
 
                     AlertLevel = arrayHeader[11];
+                    AlertLevel = AlertLevel == "NaN" ? "0" : AlertLevel; //pog
                     AlertLevel = DefaultValueReturn(AlertLevel, "0");
 
                     string weievaluation = arrayHeader[14];

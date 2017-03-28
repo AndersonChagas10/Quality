@@ -1,5 +1,6 @@
 ﻿using DTO.DTO;
 using DTO.DTO.Params;
+using DTO.Helpers;
 using PlanoAcaoCore;
 using PlanoAcaoCore.Acao;
 using System;
@@ -99,8 +100,9 @@ namespace PlanoDeAcaoMVC.Controllers
             #region MOCK
 
             /*Recebe do AJAX*/
-            //fta._DataInicioFTA = DateTime.Now.ToShortDateString();
-            //fta._DataFimFTA = DateTime.Now.ToShortDateString();
+            //Guard.ParseDateToSqlV2(fta._DataInicioFTA);
+            fta._DataInicioFTA = Guard.ParseDateToSqlV2(fta._DataInicioFTA).ToShortDateString();
+            fta._DataFimFTA = Guard.ParseDateToSqlV2(fta._DataFimFTA).ToShortDateString();
             //fta.MetaFTA = 40;
             //fta.PercentualNCFTA = 60;
             //fta.ReincidenciaDesvioFTA = 50;
@@ -120,6 +122,8 @@ namespace PlanoDeAcaoMVC.Controllers
             #endregion
 
             fta.ValidaFTA();
+
+
 
             using (var db = new ADOFactory.Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
             {

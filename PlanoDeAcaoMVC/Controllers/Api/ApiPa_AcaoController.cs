@@ -34,9 +34,8 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             foreach (var i in acao)
                 i.IsValid();
 
-            using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
-                foreach (var i in acao)
-                    SalvarAcao(db, Mapper.Map<PlanoAcaoEF.Pa_Acao>(i));
+            foreach (var i in acao)
+                SalvarAcao(Mapper.Map<PlanoAcaoEF.Pa_Acao>(i));
 
             return acao;
         }
@@ -106,58 +105,65 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         public FTA SaveFTA(FTA obj)
         {
             obj.ValidaFTA();
-
             obj.IsValid();
 
             var acao = Mapper.Map<PlanoAcaoEF.Pa_Acao>(obj);
-
             var fta = Mapper.Map<PlanoAcaoEF.Pa_FTA>(obj);
-            
+
+            SalvaFTA(fta);
+            acao.Fta_Id = fta.Id;
+            SalvarAcao(acao);
+
+            return obj;
+        }
+
+        private void SalvarAcao(PlanoAcaoEF.Pa_Acao acao)
+        {
+            //var acao = Mapper.Map<PlanoAcaoEF.Pa_Acao>(obj);
+
             using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
             {
-                SalvaFTA(db, fta);
-                acao.Fta_Id = fta.Id;
-                SalvarAcao(db, acao);
+                if (acao.Id > 0)
+                {
+                    acao.AlterDate = DateTime.Now;
+                    db.Pa_Acao.Attach(acao);
+                    var entry = db.Entry(acao);
+                    entry.State = System.Data.Entity.EntityState.Modified;
+                    entry.Property(e => e.AddDate).IsModified = false;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    acao.AddDate = DateTime.Now;
+                    db.Pa_Acao.Add(acao);
+                    db.SaveChanges();
+                }
             }
 
-            return Pa_BaseObject.SalvarGenerico(obj);
         }
 
-        private static void SalvarAcao(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_Acao acao)
+        private void SalvaFTA(PlanoAcaoEF.Pa_FTA fta)
         {
-            if (acao.Id > 0)
-            {
-                acao.AlterDate = DateTime.Now;
-                db.Pa_Acao.Attach(acao);
-                var entry = db.Entry(acao);
-                entry.State = System.Data.Entity.EntityState.Modified;
-                entry.Property(e => e.AddDate).IsModified = false;
-                db.SaveChanges();
-            }
-            else
-            {
-                acao.AddDate = DateTime.Now;
-                db.Pa_Acao.Add(acao);
-                db.SaveChanges();
-            }
-        }
+            // var fta = Mapper.Map<PlanoAcaoEF.Pa_FTA>(obj);
 
-        private static void SalvaFTA(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_FTA fta)
-        {
-            if (fta.Id > 0)
+            using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
             {
-                fta.AddDate = DateTime.Now;
-                db.Pa_FTA.Attach(fta);
-                var entry = db.Entry(fta);
-                entry.State = System.Data.Entity.EntityState.Modified;
-                db.SaveChanges();
+                if (fta.Id > 0)
+                {
+                    fta.AddDate = DateTime.Now;
+                    db.Pa_FTA.Attach(fta);
+                    var entry = db.Entry(fta);
+                    entry.State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    fta.AddDate = DateTime.Now;
+                    db.Pa_FTA.Add(fta);
+                    db.SaveChanges();
+                }
             }
-            else
-            {
-                fta.AddDate = DateTime.Now;
-                db.Pa_FTA.Add(fta);
-                db.SaveChanges();
-            }
+
         }
     }
 }
