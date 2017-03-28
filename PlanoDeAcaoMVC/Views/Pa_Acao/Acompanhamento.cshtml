@@ -188,8 +188,13 @@
     <div class="container">
         <div class="row" style="border: 2px solid #c1c1c1;">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <div class="short-div">
+                    <label class="redLabel" for="inputlg">Data de Criação:</label><br />
+                    @Html.DisplayFor(r => i.AddDate)
+                </div>
+                <hr />
                 <label class="redLabel" for="inputlg">Observação:</label><br />
-                @Html.DisplayFor(r => i.Name)
+                @Html.DisplayFor(r => i.Name)                
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="padding:0px">
                 <div class="short-div">

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTO.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +12,8 @@ namespace PlanoAcaoCore.Acao
         public string Description { get; set; }
         public int Acao_Id { get; set; }
         public int? Order { get; set; }
+        public List<int> MailTo { get; set; }
         public int Status_Id { get; set; }
-        public int MailTo { get; set; }
         public string Name { get; set; }
         public int Author_Id { get; set; }
 
@@ -45,23 +46,25 @@ namespace PlanoAcaoCore.Acao
             }
         }
 
-        public List<int> _MailTo { get; set; }
-
         public List<Pa_Quem> _Quem
         {
             get
             {
+                var list = Pa_AcompanhamentoXQuemVM.GetByAcompanhamentoId(Id);
+
                 var PQP = new List<Pa_Quem>();
-                if (_MailTo != null)
+
+                if (list != null)
                 {
-                    if (_MailTo.Count > 0)
+                    if (list.Count > 0)
                     {
-                        foreach (var i in _MailTo)
+                        foreach (var i in list)
                         {
-                            PQP.Add(Pa_Quem.Get(i));
+                            PQP.Add(Pa_Quem.Get(i.Quem_Id));
                         }
                     }
                 }
+
                 return PQP;
             }
         }

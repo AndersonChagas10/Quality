@@ -41,29 +41,30 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             return acao;
         }
 
-       
-
         [HttpPost]
         [Route("SaveAcompanhamento")]
         public Pa_Acompanhamento Acompanhamento(Pa_Acompanhamento obj)
-        {
-            //Pa_BaseObject.SalvarGenerico(obj);
-            //Pa_Acompanhamento.SalvarGenerico(obj);
-            //var obj = Pa_Acao.Get(id);   
-            
-            var acomXQuem = Mapper.Map<PlanoAcaoEF.Pa_AcompanhamentoXQuem>(obj);
+        {          
 
             var acompanhamento = Mapper.Map<PlanoAcaoEF.Pa_Acompanhamento>(obj);
 
             using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
-            {
-
-                SalvarAcompanhamentoXQuem(db, acomXQuem);
-                acompanhamento.MailTo = acomXQuem.Id;
+            {              
                 SalvarAcompanhamento(db, acompanhamento);
+
+                foreach (var i in obj.MailTo)
+                {
+                    Pa_AcompanhamentoXQuemVM obj2 = new Pa_AcompanhamentoXQuemVM();
+
+                    var acomXQuem = Mapper.Map<PlanoAcaoEF.Pa_AcompanhamentoXQuem>(obj2);
+
+                    acomXQuem.Acompanhamento_Id = acompanhamento.Id;
+                    acomXQuem.Quem_Id = i;
+                    SalvarAcompanhamentoXQuem(db, acomXQuem);
+                }
             }
 
-            return Pa_BaseObject.SalvarGenerico(obj); 
+            return obj;
         }
 
         public static void SalvarAcompanhamentoXQuem(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_AcompanhamentoXQuem quem)
@@ -84,7 +85,20 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
         public static void SalvarAcompanhamento(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_Acompanhamento acom)
         {
-
+            if (acom.Id > 0)
+            {
+                acom.AlterDate = DateTime.Now;
+                db.Pa_Acompanhamento.Attach(acom);
+                var entry = db.Entry(acom);
+                entry.State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
+            else
+            {
+                acom.AddDate = DateTime.Now;
+                db.Pa_Acompanhamento.Add(acom);
+                db.SaveChanges();
+            }
         }
 
         [HttpPost]

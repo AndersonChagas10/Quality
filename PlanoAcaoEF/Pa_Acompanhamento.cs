@@ -22,7 +22,6 @@ namespace PlanoAcaoEF
         public int Acao_Id { get; set; }
         public Nullable<int> Order { get; set; }
         public int Status_Id { get; set; }
-        public Nullable<int> MailTo { get; set; }
         public int Author_Id { get; set; }
     }
 }
