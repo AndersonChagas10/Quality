@@ -802,7 +802,7 @@ namespace DTO.Helpers
                     break;
                 case 4: //Semanal
                     startDate = startDate.AddDays(-(int)startDate.DayOfWeek);
-                    endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, startDate.Day + 6, 23, 59, 59);
+                    endDate = startDate.AddDays(6);  //new DateTime(DateTime.Now.Year, DateTime.Now.Month, startDate.Day + 6, 23, 59, 59);
                     if (currentDate >= firstDayOfMonth && currentDate <= lastDayOfMonth)
                     {
                         return true;
