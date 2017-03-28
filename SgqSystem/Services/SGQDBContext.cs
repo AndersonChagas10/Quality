@@ -1953,7 +1953,7 @@ namespace SGQDBContext
                             "EvaluationNumber " + 
                             "FROM CollectionLevel2 c1                                                                                   " +
                             "WHERE CollectionDate                                                                                       " +
-                            "BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00'  and '" + EndDate.ToString("yyyyMMdd") + " 00:00' and Phase > 0                                                        " +
+                            "BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00'  and '" + EndDate.ToString("yyyyMMdd") + " 23:59' and Phase > 0                                                        " +
                             "AND CONCAT(c1.ParLevel1_id, c1.ParLevel2_Id, CAST(c1.CollectionDate AS VARCHAR(500))) IN                   " +
                             "  (SELECT CONCAT(c1b.ParLevel1_id, c1b.ParLevel2_Id, CAST(MAX(c1b.CollectionDate) AS VARCHAR(500)))        " +
                             "                                                                                                           " +
@@ -1961,7 +1961,7 @@ namespace SGQDBContext
                             "                                                                                                           " +
                             "          WHERE c1b.Phase > 0                                                                              " +
                             "                                                                                                           " +
-                            "          AND c1b.CollectionDate BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00' and '" + EndDate.ToString("yyyyMMdd") + " 00:00'                                     " +
+                            "          AND c1b.CollectionDate BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00' and '" + EndDate.ToString("yyyyMMdd") + " 23:59'                                     " +
                             "                                                                                                           " +
                             "      GROUP BY c1b.ParLevel1_id, c1b.ParLevel2_Id                                                          " +
                             "  )                                                                                                     " ;
