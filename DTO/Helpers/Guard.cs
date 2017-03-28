@@ -125,8 +125,7 @@ namespace DTO.Helpers
 
             return _dtvalue;
         }
-
-        
+      
         public static string ConverteValorCalculado(decimal valorDecimal)
         {
 

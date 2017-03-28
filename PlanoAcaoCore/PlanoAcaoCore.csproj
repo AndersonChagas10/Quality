@@ -55,6 +55,7 @@
     <Compile Include="Acao\FTA.cs" />
     <Compile Include="Acao\Pa_Acao.cs" />
     <Compile Include="Acao\Pa_Acompanhamento.cs" />
+    <Compile Include="Acao\Pa_AcompanhamentoXQuemVM.cs" />
     <Compile Include="Acao\Pa_CausaEspecifica.cs" />
     <Compile Include="Acao\Pa_CausaGenerica.cs" />
     <Compile Include="Acao\Pa_ContramedidaEspecifica.cs" />

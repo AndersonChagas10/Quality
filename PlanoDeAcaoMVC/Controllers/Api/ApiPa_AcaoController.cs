@@ -43,13 +43,61 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         [HttpPost]
         [Route("SaveAcompanhamento")]
         public Pa_Acompanhamento Acompanhamento(Pa_Acompanhamento obj)
+        {          
+
+            var acompanhamento = Mapper.Map<PlanoAcaoEF.Pa_Acompanhamento>(obj);
+
+            using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
+            {              
+                SalvarAcompanhamento(db, acompanhamento);
+
+                foreach (var i in obj.MailTo)
+                {
+                    Pa_AcompanhamentoXQuemVM obj2 = new Pa_AcompanhamentoXQuemVM();
+
+                    var acomXQuem = Mapper.Map<PlanoAcaoEF.Pa_AcompanhamentoXQuem>(obj2);
+
+                    acomXQuem.Acompanhamento_Id = acompanhamento.Id;
+                    acomXQuem.Quem_Id = i;
+                    SalvarAcompanhamentoXQuem(db, acomXQuem);
+                }
+            }
+
+            return obj;
+        }
+
+        public static void SalvarAcompanhamentoXQuem(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_AcompanhamentoXQuem quem)
         {
-            var acao = Pa_Acao.Get(obj.Acao_Id);
+            if (quem.Id > 0)
+            {
+                db.Pa_AcompanhamentoXQuem.Attach(quem);
+                var entry = db.Entry(quem);
+                entry.State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
+            else
+            {
+                db.Pa_AcompanhamentoXQuem.Add(quem);
+                db.SaveChanges();
+            }
+        }
 
-            acao.Status = obj.Status_Id;
-            SalvarAcao(Mapper.Map<PlanoAcaoEF.Pa_Acao>(acao));
-
-            return Pa_BaseObject.SalvarGenerico(obj);
+        public static void SalvarAcompanhamento(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_Acompanhamento acom)
+        {
+            if (acom.Id > 0)
+            {
+                acom.AlterDate = DateTime.Now;
+                db.Pa_Acompanhamento.Attach(acom);
+                var entry = db.Entry(acom);
+                entry.State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
+            else
+            {
+                acom.AddDate = DateTime.Now;
+                db.Pa_Acompanhamento.Add(acom);
+                db.SaveChanges();
+            }
         }
 
         [HttpPost]
