@@ -225,20 +225,6 @@ namespace Dominio.Services
                         throw new Exception("Erro ao buscar dados de roles do ERP da JBS", e);
                     }
 
-                    #region Verifica se existe role no SgqGlobal e não existe no ERP
-
-                    //using (var db1 = new SgqDbDevEntities())
-                    //{
-                    //    var existentes = db1.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == userDto.Id);
-                    //    foreach (var i in usuarioPerfilEmpresaSgqBr)
-                    //    {
-                    //        var empresa = db1.ParCompany.FirstOrDefault(r => i.nCdEmpresa == r.IntegrationId);
-                    //        if(existentes.FirstOrDefault(r=>r.ParCompany_Id == empresa.Id && r.Role.Equals(i.nCdPerfil))
-                    //    }
-                    //}
-
-                    #endregion
-
                     foreach (var upe in usuarioPerfilEmpresaSgqBr)
                     {
 
@@ -248,21 +234,7 @@ namespace Dominio.Services
                         {
                             if (rolesSgqGlobal.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id && r.Role == perfilSgqBr))/*Se existe no global e existe no ERP*/
                             {
-                                //try
-                                //{
-                                //    var atualizaRole = rolesSgqGlobal.FirstOrDefault(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id && r.Role == perfilSgqBr);
-                                //    //atualizaRole.Role = perfilSgqBr;
-                                //    var update = "UPDATE[dbo].[ParCompanyXUserSgq]"+
-                                //                "\n   SET[UserSgq_Id] = " + userDto.Id +
-                                //                "\n      ,[ParCompany_Id] = " + parCompanySgqGlobal.Id +
-                                //                "\n      ,[Role] = " + perfilSgqBr +
-                                //                "\n WHERE UserSgq_Id = " + atualizaRole.Id;
-                                //    _baseParCompanyXUserSgq.ExecuteSql(update);
-                                //}
-                                //catch (Exception e)
-                                //{
-                                //    throw new Exception("Erro ao atualizar uma role existente no SGQ Global e ERP JBS", e);
-                                //}
+                           
                             }
                             else if (!rolesSgqGlobal.Any(r => r.ParCompany_Id == parCompanySgqGlobal.Id && r.UserSgq_Id == userDto.Id))/*Se não existe no global*/
                             {
