@@ -2127,6 +2127,7 @@
     <Content Include="Views\Role\EditLeftControlRole.cshtml" />
     <Content Include="Views\RelatoriosSgq\CartasCep.cshtml" />
     <Content Include="Views\Manutencao\Index.cshtml" />
+    <Content Include="Views\Params\_EditParHeaderField.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2138,7 +2139,6 @@
     <Folder Include="obj\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\EspecificarMonitoramentos\" />
-    <Folder Include="Views\Manutencao\" />
     <Folder Include="Views\RelatorioController\" />
     <Folder Include="Views\RoleApi\" />
     <Folder Include="Views\ScorecardConfig\" />
