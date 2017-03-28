@@ -1,5 +1,49 @@
 ﻿@model PlanoAcaoCore.Acao.FTA
 
+<style>
+
+    /*td span {
+        padding: 2px 0;
+        text-align:center; 
+        vertical-align:middle;
+    }*/
+
+    td span.centerThis{display:block; text-align:center;  font-family: Tahoma; font-size: 16px; }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        margin: 0px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        border: 1px solid #CCC;
+    }
+
+    input, select, textarea {
+        max-width: none;
+    }
+
+    .noBorderT {
+        border-top: 0;
+    }
+
+    .noBorderTB {
+        border-bottom: 0;
+    }
+
+    .tdLabel {
+        font-family: Tahoma;
+        font-size: 20px;
+    }
+
+    .tdLabels {
+        font-family: Tahoma;
+        font-size: 16px;
+    }
+
+</style>
+
 @using (Html.BeginForm())
 {
     <div class="table-responsive">
@@ -8,20 +52,22 @@
             <tbody>
                 <tr rowspan="2">
                     <td colspan="6">
-                        <span style="font-family:Tahoma; font-size:20px;" align="center">RELATÓRIO DE ANÁLISE DE DESVIO</span>
+                        <span class="tdLabel; centerThis" style="font-size: 20px;">RELATÓRIO DE ANÁLISE DE DESVIO</span>
                     </td>
                     <td colspan="4">
-                        Data Inicial do período selecionado - @Model._DataInicioFTA
+                        <span class="tdLabels; centerThis">
+                            Data Inicial do período selecionado - @Model._DataInicioFTA
+                        </span>
                         <hr />
-                        Data Final do período selecionado - @Model._DataFimFTA
+                        <span class="tdLabels; centerThis">Data Final do período selecionado - @Model._DataFimFTA</span>
                     </td>
                 </tr>
 
                 <tr>
-                    <td colspan="4">INDICADORES COM DESVIOS</td>
-                    <td colspan="2">Supervisor</td>
-                    <td colspan="2">Unidade</td>
-                    <td colspan="2">Departamento</td>
+                    <td colspan="4"><span class="tdLabels">INDICADORES COM DESVIOS</span></td>
+                    <td colspan="2"><span class="tdLabels">Supervisor</span></td>
+                    <td colspan="2"><span class="tdLabels">Unidade</span></td>
+                    <td colspan="2"><span class="tdLabels">Departamento</span></td>
                 </tr>
 
                 <tr>
@@ -44,37 +90,37 @@
                 </tr>
 
                 <tr>
-                    <td colspan="5">META DO INDICADOR</td>
-                    <td colspan="5">PERCENTUAL DE NÃO CONFORMIDADE DAS TAREFAS</td>
+                    <td colspan="5"><span class="tdLabels">META DO INDICADOR</span></td>
+                    <td colspan="5"><span class="tdLabels">PERCENTUAL DE NÃO CONFORMIDADE DAS TAREFAS</span></td>
                 </tr>
 
                 <tr>
                     <td colspan="5">
-                        <span>@Model.MetaFTA</span> %
+                        <k>@Model.MetaFTA</k> %
                         @Html.HiddenFor(r => r.MetaFTA)
                     </td>
                     <td colspan="5">
-                        <span>@Model.PercentualNCFTA</span> %
+                        <k>@Model.PercentualNCFTA</k> %
                         @Html.HiddenFor(r => r.PercentualNCFTA)
                     </td>
                 </tr>
 
                 <tr>
-                    <td colspan="10">REINCIDÊNCIA DE DESVIOS NO PERÍODO</td>
+                    <td colspan="10"><span class="tdLabels">REINCIDÊNCIA DE DESVIOS NO PERÍODO</span></td>
                 </tr>
 
                 <tr>
                     <td colspan="10">
-                        <span>@Model.ReincidenciaDesvioFTA</span> %
+                        <k>@Model.ReincidenciaDesvioFTA</k> %
                         @Html.HiddenFor(r => r.ReincidenciaDesvioFTA)
                     </td>
                 </tr>
 
 
                 <tr>
-                    <td colspan="4">CAUSA GENÉRICA</td>
-                    <td colspan="2">GRUPO CAUSA</td>
-                    <td colspan="4">CONTRAMEDIDA GENÉRICA</td>
+                    <td colspan="4"><span class="tdLabels">CAUSA GENÉRICA</span></td>
+                    <td colspan="2"><span class="tdLabels">GRUPO CAUSA</span></td>
+                    <td colspan="4"><span class="tdLabels">CONTRAMEDIDA GENÉRICA</span></td>
                 </tr>
 
                 <tr>
@@ -91,11 +137,11 @@
 
                 <tr>
                     <td colspan="4">
-                        CAUSA ESPECÍFICA
+                        <span class="tdLabels">CAUSA ESPECÍFICA</span>
                     </td>
-                    <td colspan="2"></td>
+                    <td colspan="2" style="border-bottom:0;"></td>
                     <td colspan="4">
-                        CONTRAMEDIDA ESPECÍFICA
+                        <span class="tdLabels">CONTRAMEDIDA ESPECÍFICA</span>
                     </td>
                 </tr>
 
@@ -104,7 +150,7 @@
                     <td colspan="4">
                         @Html.EditorFor(r => r.CausaEspecifica)
                     </td>
-                    <td colspan="2"></td>
+                    <td colspan="2" style="border-top:0;"></td>
                     <td colspan="4">
                         @Html.EditorFor(r => r.ContramedidaEspecifica)
                     </td>
@@ -112,9 +158,9 @@
 
                 <tr>
                     @*<td colspan="3">Contramedida</td>*@
-                    <td colspan="4">Quem</td>
-                    <td colspan="2">Entrega</td>
-                    <td colspan="4">Como</td>
+                    <td colspan="4"><span class="tdLabels">Quem</span></td>
+                    <td colspan="2"><span class="tdLabels">Entrega</span></td>
+                    <td colspan="4"><span class="tdLabels">Como</span></td>
                 </tr>
 
                 <tr>
@@ -125,17 +171,33 @@
                         @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
                     </td>
                     <td colspan="2">
-                        @Html.EditorFor(r => r._QuandoFim, new { @class = "datepicker form-control input-sm" })
+                        @Html.EditorFor(r => r._QuandoFim, new { htmlAttributes = new { @class = "form-control datepicker" } })
                     </td>
                     <td colspan="4">
                         @Html.EditorFor(r => r.ComoPontosimportantes)
                     </td>
                 </tr>
 
-                <tr rowspan="2"></tr>
+                <tr>
+                    <td colspan="10" style="border-bottom:0;"><span class="tdLabels">Vistos</span></td>
+                </tr>
 
 
                 <tr>
+                    <td colspan="5" style="border-top:0;border-right:0;"><span class="tdLabels; centerThis">Assinatura1</span></td>
+                    <td colspan="5" style="border-top:0;border-left:0;"><span class="tdLabels; centerThis">Assinatura2</span></td>
+                </tr>
+
+                <tr>
+                    <td colspan="5">
+                        @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    </td>
+                    <td colspan="5">
+                        @Html.DropDownListFor(r => r.Assinatura2, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    </td>
+                </tr>
+
+                <tr style="display:none">
                     <td width="10%"></td>
                     <td width="10%"></td>
                     <td width="10%"></td>
@@ -148,64 +210,115 @@
                     <td width="10%"></td>
                 </tr>
         </table>
-        <button type="button" class="btn btn-primary" id="Salvar" onclick="save();" style="display:none">Salvar</button>
+        <button type="button" class="btn btn-primary" id="Salvar" onclick="save();" style="">Salvar</button>
     </div>
 
 }
 
-    @section Scripts {
-        <script>
+<div class="modal fade in" id="modalPass" tabindex="-1" role="dialog" aria-labelledby="">
+    <div class="modal-dialog" id="" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="times">×</span></button>
+                <button type="button" class="close modalMinimize" aria-label="Minimizar"><span aria-hidden="true" class="minus">−</span></button>
+                <h4 class="modal-title" id="novoHeader">Digite a Senha</h4>
+            </div>
+            <div class="modal-body" id="novoBody">
+                <form id="passCheck">
+                    <div class="form-group">
+                        <div>
+                            <input type="password" class="form-control" id="newItem">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="ValidaSenha();">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-            var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
-            var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")';
+@section Scripts {
 
-            $('[id=CausaGenerica_Id]').off('change').on('change', function () {
-                var valor = $(this).val();
-                var form = $(this).parents('form');
-                if (valor) {
-                    $.get(GETGrupoCausa, { id: valor }, function (r) {
-                        form.find('#GrupoCausa_Id').empty().html(r);
-                    });
-                    $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
-                        form.find('#ContramedidaGenerica_Id').empty().html(rr);
-                    });
-                }
-                else {
-                    form.find('#GrupoCausa_Id').empty().attr('disabled', true);
-                    form.find('#ContramedidaGenerica_Id').empty().attr('disabled', true);
-                }
+    <script>
+
+        function ValidaSenha() {
+            /*Encriptar aqui!!!!*/
+            var check = $('#passCheck').serializeObject();
+            $.post('@Url.Action("CheckPass", "api/Pa_User")', check, function (r) {
+                openMessageModal(r, '');
+                $('#modalPass').modal("hide");
+            }).fail(function (e, h, x) {
+
+                //console.log(e);
+                //console.log(h);
+                //console.log(x);
+
+                openMessageModal(e.responseJSON.Message, '');
             });
+        }
 
-            $(document).ajaxStart(function () {
-                $.LoadingOverlay("show");
-            });
+        $('[id=Assinatura1]').off('change').on('change', function () {
+            $('#modalPass').modal();
+        });
 
-            $(document).ajaxStop(function () {
-                $.LoadingOverlay("hide");
-            });
+        $('[id=Assinatura2]').off('change').on('change', function () {
+            $('#modalPass').modal();
+        });
 
-            $(document).ajaxError(function (e, h, x) {
-                console.log(e);
-                console.log(h);
-                console.log(x);
-                //alert('Não foi possível salvar o registro: ' + e.responseJSON.ExceptionMessage);
-            });
+        var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
+        var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")';
 
-            function save() {
-                var form = $('form').serializeObject();
-                $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', form, function (r) {
-                    openMessageModal('Registro salvo com sucesso!', '');
+        $('[id=CausaGenerica_Id]').off('change').on('change', function () {
+            var valor = $(this).val();
+            var form = $(this).parents('form');
+            if (valor) {
+                $.get(GETGrupoCausa, { id: valor }, function (r) {
+                    form.find('#GrupoCausa_Id').empty().html(r);
+                });
+                $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
+                    form.find('#ContramedidaGenerica_Id').empty().html(rr);
                 });
             }
-            
+            else {
+                form.find('#GrupoCausa_Id').empty().attr('disabled', true);
+                form.find('#ContramedidaGenerica_Id').empty().attr('disabled', true);
+            }
+        });
 
-            $().ready(function () {
-                InitDatePiker();
+        $(document).ajaxStart(function () {
+            $.LoadingOverlay("show");
+        });
+
+        $(document).ajaxStop(function () {
+            $.LoadingOverlay("hide");
+        });
+
+        $(document).ajaxError(function (e, h, x) {
+            console.log(e);
+            console.log(h);
+            console.log(x);
+            //alert('Não foi possível salvar o registro: ' + e.responseJSON.ExceptionMessage);
+        });
+
+        function save() {
+            var form = $('form').serializeObject();
+            $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', form, function (r) {
+                openMessageModal('Registro salvo com sucesso!', '');
             });
+        }
+
+
+        $().ready(function () {
+            InitDatePiker();
+        });
 
 
 
-        </script>
-    }
+    </script>
+
+}
 
 

@@ -27,5 +27,9 @@ namespace PlanoAcaoCore.Acao
 
         public int ReincidenciaDesvioFTA { get; set; }
 
+        public int Assinatura1 { get; set; }
+
+        public int Assinatura2 { get; set; }
+        
     }
 }
