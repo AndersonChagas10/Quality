@@ -1927,4 +1927,55 @@ namespace SGQDBContext
         }
     }
 
+    public partial class ResultPhase
+    {
+        public int ParLevel1_Id { get; set; }
+        public int ParLevel2_Id { get; set; }
+        public string CollectionDate { get; set; }
+        public int Period { get; set; }
+        public int Shift { get; set; }
+        public int EvaluationNumber { get; set; }
+        public int Phase { get; set; }
+
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public List<ResultPhase> GetByMonth(int ParCompany_Id, DateTime StartDate, DateTime EndDate)
+        {
+            try
+            {
+                string sql = "SELECT   " +
+                            "ParLevel1_Id, " +
+                            "ParLevel2_Id, " +
+                            "FORMAT(CollectionDate, 'MMddyyyy') as CollectionDate, " +
+                            "Period, " +
+                            "Shift, " +
+                            "Phase, " +
+                            "EvaluationNumber " + 
+                            "FROM CollectionLevel2 c1                                                                                   " +
+                            "WHERE CollectionDate                                                                                       " +
+                            "BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00'  and '" + EndDate.ToString("yyyyMMdd") + " 00:00' and Phase > 0                                                        " +
+                            "AND CONCAT(c1.ParLevel1_id, c1.ParLevel2_Id, CAST(c1.CollectionDate AS VARCHAR(500))) IN                   " +
+                            "  (SELECT CONCAT(c1b.ParLevel1_id, c1b.ParLevel2_Id, CAST(MAX(c1b.CollectionDate) AS VARCHAR(500)))        " +
+                            "                                                                                                           " +
+                            "      FROM CollectionLevel2 c1b                                                                            " +
+                            "                                                                                                           " +
+                            "          WHERE c1b.Phase > 0                                                                              " +
+                            "                                                                                                           " +
+                            "          AND c1b.CollectionDate BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00' and '" + EndDate.ToString("yyyyMMdd") + " 00:00'                                     " +
+                            "                                                                                                           " +
+                            "      GROUP BY c1b.ParLevel1_id, c1b.ParLevel2_Id                                                          " +
+                            "  )                                                                                                     " ;
+                
+
+                SqlConnection db = new SqlConnection(conexao);
+                var list = db.Query<ResultPhase>(sql).ToList();
+                return list;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
+
 }
