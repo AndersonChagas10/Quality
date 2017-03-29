@@ -142,5 +142,13 @@ namespace PlanoDeAcaoMVC.Controllers
 
             return View(fta);
         }
+
+        [HttpGet]
+        public ActionResult Details(int id)
+        {           
+            var obj = Pa_Acao.Get(id);
+            return PartialView("Details", obj);       
+        }
+
     }
 }

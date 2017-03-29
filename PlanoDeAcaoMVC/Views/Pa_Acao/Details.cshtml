@@ -1,0 +1,167 @@
+﻿
+@model PlanoAcaoCore.Pa_Acao
+<h5>Acompanhamento da Ação</h5>
+<table class="borderedNinja nowrap .col-md-6 .col-md-offset-3 display" cellspacing="0" style="width: 100%;">
+    <tbody>
+        <tr>
+            <td style="width: 43%;">
+                @Html.DisplayNameFor(model => model.Unidade_Id)
+            </td>
+            <td style="width: 43%;">
+                @Html.DisplayFor(model => model._Unidade)
+            </td>
+            <td style="width: 16%;"></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Pa_Problema_Desvio_Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model._Pa_Problema_Desvio_Id.Name)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Pa_IndicadorSgqAcao_Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model._Pa_IndicadorSgqAcao.Name)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Level1Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Level1Id)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Level2Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Level2Id)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Level3Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Level3Id)
+            </td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.CausaGenerica_Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model._CausaGenerica)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.GrupoCausa_Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model._GrupoCausa)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.ContramedidaGenerica_Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model._ContramedidaGenerica)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.CausaEspecifica)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.CausaEspecifica)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.ContramedidaEspecifica)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.ContramedidaEspecifica)
+            </td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayName("Quem:")
+            </td>
+            <td>
+                @Html.DisplayFor(model => model._Quem)
+            </td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.QuandoInicio)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.QuandoInicio)
+            </td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.QuandoFim)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.QuandoFim)
+            </td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.ComoPontosimportantes)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.ComoPontosimportantes)
+            </td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model._StatusName)
+            </td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayName("Prazo")
+            </td>
+            <td>
+                @*@Html.DisplayFor()*@
+            </td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
