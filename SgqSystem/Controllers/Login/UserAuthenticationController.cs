@@ -58,62 +58,6 @@ namespace SgqSystem.Controllers.Api
             CreateCookieFromUserDTO(isAuthorized.Retorno);
         }
 
-        private void CreateCookieFromUserDTO(UserDTO isAuthorized)
-        {
-            HttpCookie cookie = HttpContext.Request.Cookies.Get("webControlCookie");
-            if (cookie != null)
-            {
-                cookie.Expires = DateTime.Now.AddMinutes(60);
-                HttpContext.Response.Cookies.Set(cookie);
-            }
-            else
-            {
-                //create a cookie
-                HttpCookie myCookie = new HttpCookie("webControlCookie");
-
-                //Add key-values in the cookie
-                myCookie.Values.Add("userId", isAuthorized.Id.ToString());
-                myCookie.Values.Add("userName", isAuthorized.Name);
-
-                if (isAuthorized.AlterDate != null)
-                {
-                    myCookie.Values.Add("alterDate", isAuthorized.AlterDate.GetValueOrDefault().ToString("dd/MM/yyyy"));
-                }
-                else
-                {
-                    myCookie.Values.Add("alterDate", "");
-                }
-
-                myCookie.Values.Add("addDate", isAuthorized.AddDate.ToString("dd/MM/yyyy"));
-
-                if (isAuthorized.PasswordDate != null)
-                {
-                    myCookie.Values.Add("passwordDate", isAuthorized.PasswordDate.GetValueOrDefault().ToString("dd/MM/yyyy"));
-                }
-                else
-                {
-                    myCookie.Values.Add("passwordDate", "");
-                }
-
-                if (isAuthorized.Role != null)
-                    myCookie.Values.Add("roles", isAuthorized.Role.Replace(';', ',').ToString());//"admin, teste, operacional, 3666,344, 43434,...."
-                else
-                    myCookie.Values.Add("roles", "");
-
-                if (isAuthorized.ParCompanyXUserSgq != null)
-                    if (isAuthorized.ParCompanyXUserSgq.Any(r => r.Role != null))
-                        myCookie.Values.Add("rolesCompany", string.Join(",", isAuthorized.ParCompanyXUserSgq.Select(n => n.Role).Distinct().ToArray()));
-                    else
-                        myCookie.Values.Add("rolesCompany", "");
-
-                //set cookie expiry date-time. Made it to last for next 12 hours.
-                myCookie.Expires = DateTime.Now.AddMinutes(60);
-
-                //Most important, write the cookie to client.
-                Response.Cookies.Add(myCookie);
-            }
-        }
-
         public ActionResult LogOut(UserViewModel user)
         {
             // clear cookies
