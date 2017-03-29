@@ -1,6 +1,5 @@
 ﻿
 @model PlanoAcaoCore.Pa_Acao
-
 <style>
     input,
     select,
@@ -18,7 +17,8 @@
                 @Html.DisplayNameFor(model => model.Unidade_Id)
             </td>
             <td style="width: 43%;">
-                @Html.DisplayFor(model => model._Unidade)
+                @Html.DisplayFor(model => model.Unidade_Id) 
+                @*@Html.DisplayFor(model => model._Unidade)*@
             </td>
             <td style="width: 16%;"></td>
         </tr>
@@ -169,7 +169,7 @@
                 @Html.DisplayName("Prazo")
             </td>
             <td>
-                @*@Html.DisplayFor()*@
+                @Html.DisplayFor(model => model._Prazo)
             </td>
             <td></td>
         </tr>

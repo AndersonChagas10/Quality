@@ -1,153 +1,269 @@
 ﻿@model PlanoAcaoCore.Pa_Acao
 
-        <form id="Acao" class="Acao">
-            <table class="nowrap .col-md-6 .col-md-offset-3" style="width: 100%;">
-                <tbody>
-                 
-                    <tr>
-                        <td>
-                            @Html.Label("Causa generica", htmlAttributes: new { @class = "control-label " ,style = "size:36px;" })
-                        </td>
-                        <td>
-                            @Html.DropDownList("CausaGenerica_Id", new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione", new { @class = "form-control input-sm" })
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.Label("Grupo causa", htmlAttributes: new { @class = "control-label " })
-                        </td>
-                        <td id="GrupoCausa">
-                            @Html.DropDownList("GrupoCausa_Id", new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.Label("Contramedida generica", htmlAttributes: new { @class = "control-label " })
-                        </td>
-                        <td id="ContramedidaGenerica">
-                            @Html.DropDownList("ContramedidaGenerica_Id", new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.Label("Causa Específica", htmlAttributes: new { @class = "control-label " })
-                        </td>
-                        <td>
-                            @Html.EditorFor(r=>r.CausaEspecifica, new { htmlAttributes = new { @class = "form-control" } })
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.Label("Contramedida Específica", htmlAttributes: new { @class = "control-label " })
-                        </td>
-                        <td>
-                            @Html.EditorFor(r=>r.ContramedidaEspecifica, new { htmlAttributes = new { @class = "form-control" } })
-                        </td>
-                        <td></td>
-                    </tr>
+<form id="Acao" class="Acao">
+    <table class="nowrap .col-md-6 .col-md-offset-3" style="width: 100%;">
+        <tbody>
+            @*<tr>
+                    <td style="width: 43%;">
+                        @Html.LabelFor(model => model.Unidade_Id, htmlAttributes: new { @class = "control-label " })
+                    </td>
+                    <td style="width: 43%;">
+                        @Html.DropDownList("Unidade_Id", new SelectList(ViewBag.Unidade, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                        @Html.ValidationMessageFor(model => model.Unidade_Id, "", new { @class = "text-danger" })
+                    </td>
+                    <td style="width: 16%;"></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Departamento_Id, htmlAttributes: new { @class = "control-label " })
+                    </td>
+                    <td>
+                        @Html.DropDownList("Departamento_Id", new SelectList(ViewBag.Departamento, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                        @Html.ValidationMessageFor(model => model.Departamento_Id, "", new { @class = "text-danger" })
+                    </td>
+                    <td></td>
+                </tr>*@
+            <tr>
+                <td style="width: 43%;">
+                    @Html.Label("Tipo de Indicador:", htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td style="width: 43%;">
+                    <select name="TipoIndicador" class="form-control input-sm" id="tipoIndicador">
+                        <option value="0">Selecione</option>
+                        <option value="1">Indicadores outros</option>
+                        <option value="2">Indicador Sgq</option>
+                    </select>
+                </td>
+                <td style="width: 16%;"></td>
+            </tr>
 
-                    <tr rowspan="2" class="tr_clone quemClone" id="quem">
-                        <td>
-                            @Html.Label("Quem", htmlAttributes: new { @class = "control-label " })
-                        </td>
-                        <td>
-                            @Html.DropDownList("Quem_Id", new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                            
-                        </td>
-                        <td style="text-align: center; vertical-align: bottom;" id="CausaMedidasXAcaoAdd">
+            <tr style="display:none" class="IndicadorSgq">
+                <td>
+                    @Html.LabelFor(r => r.Level1Id, htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td>
+                    @Html.DropDownListFor(r => r.Level1Id, new SelectList(ViewBag.Level1, "Id", "name"), "Selecione", new { @class = "form-control input-sm" })
+                </td>
+                <td></td>
+            </tr>
+            <tr style="display:none" class="IndicadorSgq">
+                <td>
+                    @Html.LabelFor(r => r.Level2Id, htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td>
+                    @Html.DropDownListFor(r => r.Level2Id, new SelectList(ViewBag.Level2, "Id", "name"), "Selecione", new { @class = "form-control input-sm" })
+                </td>
+                <td></td>
+            </tr>
+            <tr style="display:none" class="IndicadorSgq">
+                <td>
+                    @Html.LabelFor(r => r.Level3Id, htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td>
+                    @Html.DropDownListFor(r => r.Level3Id, new SelectList(ViewBag.Level3, "Id", "name"), "Selecione", new { @class = "form-control input-sm" })
+                </td>
+                <td></td>
+            </tr>
 
-                            @*<button id="adicionar" type="button" class="btn btn-default btn-sm" onclick="Adicionar(this);">
-                                <span class="glyphicon glyphicon-plus"></span> Adicionar
-                            </button>
 
-                            <button id="remove" style="display:none" type="button" class="btn btn-default btn-sm" onclick="Remover(this);">
-                                <span class="glyphicon glyphicon-remove"></span> Remover
-                            </button>*@
+            <tr style="display:none" class="IndicadorOutros">
+                <td>
+                    @Html.LabelFor(r => r.Pa_IndicadorSgqAcao_Id, htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td>
+                    @*@Html.DropDownListFor(r => r.Pa_IndicadorSgqAcao_Id, new SelectList(ViewBag.Pa_IndicadorSgqAcao, "Id", "name"), "Selecione", new { @class = "form-control input-sm" })*@
+                    @Html.DropDownList("Pa_IndicadorSgqAcao_Id", new SelectList(ViewBag.Pa_IndicadorSgqAcao, "Id", "name"), "Selecione", new { @class = "form-control input-sm" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(r => r.Pa_Problema_Desvio_Id, htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td>
+                    @*@Html.DropDownListFor(r => r.Pa_Problema_Desvio_Id, new SelectList(ViewBag.Pa_Problema_Desvio, "Id", "name"), "Selecione", new { @class = "form-control input-sm" })*@
+                    @Html.DropDownList("Pa_Problema_Desvio_Id", new SelectList(ViewBag.Pa_Problema_Desvio, "Id", "name"), "Selecione", new { @class = "form-control input-sm" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Causa generica", htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td>
+                    @Html.DropDownListFor(r => r.CausaGenerica_Id, new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione", new { @class = "form-control input-sm" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Grupo causa", htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td id="GrupoCausa">
+                    @Html.DropDownListFor(r => r.GrupoCausa_Id, new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Contramedida generica", htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td id="ContramedidaGenerica">
+                    @Html.DropDownListFor(r => r.ContramedidaGenerica_Id, new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Causa Específica", htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td>
+                    @Html.EditorFor(r => r.CausaEspecifica, new { htmlAttributes = new { @class = "form-control" } })
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.QuandoInicio, htmlAttributes: new { @class = "control-label " })
-                        </td>
-                        <td>
-                            @Html.Editor("_QuandoInicio", new { htmlAttributes = new { @class = "form-control datepicker" } })
-                            @Html.ValidationMessageFor(model => model.QuandoInicio, "", new { @class = "text-danger" })
-                        </td>
-                        <td></td>
-                    </tr>
-                  
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.QuandoFim, htmlAttributes: new { @class = "control-label " })
-                        </td>
-                        <td>
-                            @Html.Editor("_QuandoFim", new { htmlAttributes = new { @class = "form-control datepicker" } })
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.ComoPontosimportantes, htmlAttributes: new { @class = "control-label " })
-                        </td>
-                        <td>
-                            @Html.EditorFor(model => model.ComoPontosimportantes, new { htmlAttributes = new { @class = "form-control" } })
-                        </td>
-                        <td></td>
-                    </tr>
-                  
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.PraQue, htmlAttributes: new { @class = "control-label " })
-                        </td>
-                        <td>
-                            @Html.EditorFor(model => model.PraQue, new { htmlAttributes = new { @class = "form-control" } })
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.QuantoCusta, htmlAttributes: new { @class = "control-label " })
-                        </td>
-                        <td>
-                            @Html.Editor("_QuantoCusta", new { htmlAttributes = new { @class = "form-control money" , @id= "_QuantoCusta" } } )
-                        </td>
-                        <td></td>
-                    </tr>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Contramedida Específica", htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td>
+                    @Html.EditorFor(r => r.ContramedidaEspecifica, new { htmlAttributes = new { @class = "form-control" } })
+                </td>
+                <td></td>
+            </tr>
+
+            <tr rowspan="2" class="tr_clone quemClone" id="quem">
+                <td>
+                    @Html.Label("Quem", htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td>
+                    @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                </td>
+                <td style="text-align: center; display:none; vertical-align: bottom;" id="CausaMedidasXAcaoAdd">
+
+                    @*<button id="adicionar" type="button" class="btn btn-default btn-sm" onclick="Adicionar(this);">
+                            <span class="glyphicon glyphicon-plus"></span> Adicionar
+                        </button>
+
+                        <button id="remove" style="display:none" type="button" class="btn btn-default btn-sm" onclick="Remover(this);">
+                            <span class="glyphicon glyphicon-remove"></span> Remover
+                        </button>*@
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.QuandoInicio, htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td>
+                    @Html.Editor("_QuandoInicio", new { htmlAttributes = new { @class = "form-control datepicker" } })
+                    @Html.ValidationMessageFor(model => model.QuandoInicio, "", new { @class = "text-danger" })
+                </td>
+                <td></td>
+            </tr>
+            @*<tr>
+                    <td>
+                        @Html.LabelFor(model => model.DuracaoDias, htmlAttributes: new { @class = "control-label " })
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.DuracaoDias, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DuracaoDias, "", new { @class = "text-danger" })
+                    </td>
+                    <td></td>
+                </tr>*@
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.QuandoFim, htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td>
+                    @Html.Editor("_QuandoFim", new { htmlAttributes = new { @class = "form-control datepicker" } })
+                    @Html.ValidationMessageFor(model => model.QuandoFim, "", new { @class = "text-danger" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.ComoPontosimportantes, htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.ComoPontosimportantes, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ComoPontosimportantes, "", new { @class = "text-danger" })
+                </td>
+                <td></td>
+            </tr>
+            @*<tr>
+                    <td>
+                        @Html.LabelFor(model => model.Predecessora_Id, htmlAttributes: new { @class = "control-label " })
+                    </td>
+                    <td>
+                        @Html.DropDownList("Predecessora_Id", new SelectList(ViewBag.Predecessora, "Id", "Id"), "Selecione", new { @class = "form-control input-sm" })
+                        @Html.ValidationMessageFor(model => model.Predecessora_Id, "", new { @class = "text-danger" })
+                    </td>
+                    <td></td>
+                </tr>*@
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.PraQue, htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.PraQue, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PraQue, "", new { @class = "text-danger" })
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.QuantoCusta, htmlAttributes: new { @class = "control-label" })
+                </td>
+                <td>
+                    @Html.Editor("_QuantoCusta", new { htmlAttributes = new { @class = "form-control money"} })
+                    @*@Html.EditorFor(model => model._QuantoCusta, new { htmlAttributes = new { @class = "form-control money" } })*@
+                    @*@Html.ValidationMessageFor(model => model.QuantoCusta, "", new { @class = "text-danger" })*@
+                    @Html.ValidationMessageFor(model => model._QuantoCusta, "", new { @class = "text-danger" })
+                </td>
+                <td></td>
+            </tr>
+
+            @if (Model != null)
+            {
+                if (Model.Id > 0)
+                {
                     <tr>
                         <td>
                             @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
                             @Html.DropDownList("Status", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                         </td>
                         <td></td>
                     </tr>
-                    @if (ViewBag.Panejamento != null)
-                    {
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.Panejamento_Id, htmlAttributes: new { @class = "control-label " })
-                            </td>
-                            <td>
-                                @Html.DropDownList("Panejamento_Id", new SelectList(ViewBag.Panejamento, "Id", "Id"), "Selecione", new { @class = "form-control input-sm" })
-                            </td>
-                            <td></td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                }
+            }
 
-            @Html.Hidden("Id", Model.Id)
-            @Html.Hidden("Panejamento_Id", Model.Panejamento_Id)
-            
-            
-        </form>
+            @if (ViewBag.Panejamento != null)
+            {
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Panejamento_Id, htmlAttributes: new { @class = "control-label " })
+                    </td>
+                    <td>
+                        @Html.DropDownList("Panejamento_Id", new SelectList(ViewBag.Panejamento, "Id", "Id"), "Selecione", new { @class = "form-control input-sm" })
+                        @Html.ValidationMessageFor(model => model.Panejamento_Id, "", new { @class = "text-danger" })
+                    </td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-  <script>
+    @Html.Hidden("Id", Model.Id)
+    @Html.Hidden("Panejamento_Id", Model.Panejamento_Id)
 
-  </script>
+
+</form>
+
+<script>
+
+</script>
