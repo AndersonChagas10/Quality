@@ -77,6 +77,24 @@
         var limitesMid = @Html.Raw(Json.Encode(ViewBag.PercentValueMid));
         var limitesHigh = @Html.Raw(Json.Encode(ViewBag.PercentValueHigh));
 
+        var arrSintShow = [5, 6, 7, 8, 11, 12, 13];
+        var arrSintHide = [0, 1, 2, 3, 4, 9, 10];
+        var visibilidadeDefault = [];
+
+        arrSintShow.forEach(function (o, c) {
+            visibilidadeDefault.push({
+                targets: o,
+                visible: true
+            })
+        })
+
+        arrSintHide.forEach(function (o, c) {
+            visibilidadeDefault.push({
+                targets: o,
+                visible: false
+            })
+        })
+
         function GerarTabela(retornoArray) {
             $('#divTable').show();
 
@@ -105,6 +123,14 @@
                     footer: true
                 },
                 */
+                //columnDefs: visibilidadeDefault,
+                //stateSave: true,
+                //stateSaveCallback: function(settings,data) {
+                //    localStorage.setItem( 'DataTables_' + settings.sInstance, JSON.stringify(data) )
+                //},
+                //stateLoadCallback: function(settings) {
+                //    return JSON.parse( localStorage.getItem( 'DataTables_' + settings.sInstance ) )
+                //},
                 scrollX: true,
                 paginate: false,
                 paging: false,
@@ -135,11 +161,6 @@
                         $('td', row).eq(14).css("background-color", 'yellow');
                     }
 
-                    //if (data["AV"] == 0 || data["AV"] == undefined || data["AV"] == null) {
-                        
-                    //    $('td', row).eq(10).html(0);
-                    //}
-
                 },
                 fnDrawCallback: function (data, d, o) {
 
@@ -153,9 +174,9 @@
                          text: '@Resources.Resource.synthetic',
 
                          //show: [3, 4, 5, 6, 9, 10, 12],
-                         show: [5, 6, 7, 8, 11, 12, 13],
+                         show: arrSintShow,
                          //hide: [0, 1, 2, 7, 8, 11]
-                         hide: [0, 1, 2, 3, 4, 9, 10]
+                         hide: arrSintHide
                      },
         {
             extend: 'colvisGroup',
