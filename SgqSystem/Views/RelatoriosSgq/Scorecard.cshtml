@@ -19,7 +19,26 @@
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
         <div id="load"></div>
         <div id="divTable">
-            <table id="results" class="display" cellspacing="0" style="width:100%"></table>
+
+            <style>
+
+                .dataTables_scroll{
+                   
+                    font-size:xx-small;
+                }
+                
+                table.dataTable thead th, table.dataTable thead td {
+                    padding:2px 12px !important;
+                }
+                    
+
+                table.dataTable tbody th, table.dataTable tbody td {
+                    padding:2px !important;
+                }
+
+            </style>
+
+            <table id="results" class="display" cellspacing="0"></table>
         </div>
     </div>
 </div>
@@ -80,17 +99,19 @@
                     { title: "Scorecard", mData: "Scorecard" },
                 ],
                 destroy: true,
+                /*
                 fixedHeader: {
                     header: true,
                     footer: true
                 },
+                */
                 scrollX: true,
                 paginate: false,
                 paging: false,
                 bSort: false,
-                loadingRecords: true,
+                loadingRecords: false,
                 destroy: true,
-                info: true,
+                info: false,
                 responsive: true,
                 initComplete: function () {
                     $('#loading').hide();
@@ -166,6 +187,25 @@
             table.buttons(0, null).container().prependTo(
                 table.table().container()
             );
+
+            //Filtros por coluna
+
+            $('.dataTable thead th').each(function (i) {
+                var title = $('.dataTable thead th').eq($(this).index()).text();
+                $(this).html(title + '<br><input type="text" style="font-size:xx-small; color: #555; text-align:center; width:50px" placeholder=" ' + title + '" data-index="' + i + '" />');
+            });
+
+            // DataTable
+            var table = $('.dataTable').DataTable();
+
+            // Filter event handler
+            $(table.table().container()).on('keyup', 'thead input', function () {
+                table
+                    .column($(this).data('index'))
+                    .search(this.value)
+                    .draw();
+            });
+
 
         }
 
