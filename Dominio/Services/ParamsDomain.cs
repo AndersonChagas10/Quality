@@ -182,7 +182,7 @@ namespace Dominio.Services
             /*Inativar*/
             List<int> removerHeadField = paramsDto.parLevel1Dto.removerParHeaderField;
 
-            List<ParLevel1XHeaderField> listaParLevel1XHeaderField = new List<ParLevel1XHeaderField>();
+            //List<ParLevel1XHeaderField> listaParLevel1XHeaderField = new List<ParLevel1XHeaderField>();
 
             try
             {

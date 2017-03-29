@@ -1471,7 +1471,7 @@
     <value>The period need to be selected</value>
   </data>
   <data name="sign" xml:space="preserve">
-    <value>Sing</value>
+    <value>Sign</value>
   </data>
   <data name="slaughter_signature" xml:space="preserve">
     <value>Slaughter signature</value>
@@ -1694,6 +1694,9 @@
   </data>
   <data name="select_task_first" xml:space="preserve">
     <value>Select task first</value>
+  </data>
+  <data name="reaudit_period" xml:space="preserve">
+    <value>There a reaudit to be completed in other period</value>
   </data>
   <data name="accumulated_tendency" xml:space="preserve">
     <value>Accumulated Tendency</value>

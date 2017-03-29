@@ -85,7 +85,14 @@ namespace SgqSystem.Controllers
                 var lastDate = allControlCompany.Where(r => r.ParCompany_Id == null).OrderByDescending(r => r.InitDate).FirstOrDefault()?.InitDate;
                 var level2Comporativo = allControlCompany.Where(r => r.InitDate == lastDate)?.Select(r => r.ParLevel2);
 
-                var todosLevel321 = _baseParLevel3Level2Level1.GetAll().Where(r => r.ParLevel1_Id == id);
+                var todosLevel321 = _baseParLevel3Level2Level1.GetAllNoLazyLoad().Where(r => r.ParLevel1_Id == id);
+
+                foreach (var i in todosLevel321)
+                {
+                    i.ParLevel3Level2 = _baseParLevel3Level2.GetByIdNoLazyLoad(i.ParLevel3Level2_Id);
+                    i.ParLevel3Level2.ParLevel2 = _baseLevel2.GetById(i.ParLevel3Level2.ParLevel2_Id);
+                }
+
                 var level2DisponivelParaEmpresa = todosLevel321.Where(r => !level2Comporativo.Any(c => c.Id == r.ParLevel3Level2.ParLevel2.Id)).Select(r => r.ParLevel3Level2.ParLevel2);
 
                 var lastDateCompany = allControlCompany.Where(r => r.ParCompany_Id == companyId).OrderByDescending(r => r.InitDate).FirstOrDefault()?.InitDate;

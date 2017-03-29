@@ -627,6 +627,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                         "\n , ISNULL(CAST(" + realizado + " AS DECIMAL(30,10)), 0.00) as 'real' " +
                         "\n , ISNULL(CAST(" + orcado + " AS DECIMAL(30,10)), 0.00) as 'targetAjustado' " +
                         "\n , ISNULL(isnull(Man.userAlter, Man.userAdd), '') as userResp " +
+                        "\n , ISNULL(isnull(Man.Comentarios, Man.Comentarios), '') as comentarioResp " +
                         "\n , ISNULL(Dim.DimName, '') as Indicador " +
                         "\n , ISNULL(valores.targetAjustado, 0.00) as budget " +
                         "\n , ISNULL(valores.budget, 0.00) as budget " +
@@ -700,5 +701,6 @@ namespace SgqSystem.Controllers.Api.Manutencao
         public decimal? targetAjustado { get; set; }
         public decimal? budget { get; set; }
         public string userResp { get; set; }
+        public string comentarioResp { get; set; }
     }
 }
