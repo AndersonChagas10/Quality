@@ -189,7 +189,7 @@
                 </div>
                 <hr />
                 <label class="redLabel" for="inputlg">Observação:</label><br />
-                @Html.DisplayFor(r => i.Name)                
+                @Html.DisplayFor(r => i.Name)
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="padding:0px">
                 <div class="short-div">
@@ -197,7 +197,7 @@
                     @foreach (var quem in i._Quem)
                     {
                         @Html.DisplayFor(r => quem.Name) <br />
-                    }                   
+                    }
                 </div>
                 <hr />
                 <div class="short-div">
@@ -220,23 +220,23 @@
 
                 <div class="form-group">
                     <label class="redLabel" for="inputlg">Observação:</label>
-                    <textarea name="Name" class="form-control input-sm" id="Name" style="width: 100%; height: 160px;"></textarea>
+                    <textarea name="Name" class="form-control input-sm" id="Name" style="width: 100%; height: 162px;"></textarea>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label class="redLabel" for="inputlg">Notificar:</label>
-                    @Html.DropDownList("MailTo", new SelectList(ViewBag.Quem, "Id", "Name"), @*"Selecione...",*@ new { @class = "form-control select2Init", @style = "width:100%;" , @multiple = "multiple" })
+                    @Html.DropDownList("MailTo", new SelectList(ViewBag.Quem, "Id", "Name"), @*"Selecione...",*@ new { @class = "form-control select2Init", @style = "width:100%;", @multiple = "multiple" })
                 </div>
 
                 <div class="form-group">
-                    <label class="redLabel" for="inputlg">Status</label>
+                    <label class="redLabel" for="inputlg">Status:</label>
                     @Html.DropDownList("Status_Id", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
                 </div>
             </div>
             <br />
             <div class="col-sm-6">
-                <button id="SaveAcompanhamento" type="button" class="btn btn-primary">Enviar</button>
+                <button id="SaveAcompanhamento" type="button" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Enviar</button>
             </div>
         </form>
     </div>
