@@ -42,7 +42,6 @@ namespace SgqSystem.Controllers
                 }
             }
 
-
             base.Initialize(requestContext);
         }
 
