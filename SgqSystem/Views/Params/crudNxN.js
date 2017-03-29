@@ -40,11 +40,11 @@
             $('#' + idTable).fadeOut();
         }
     },
-    btnRemove: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Remover" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcRemove($(this));"><i class="fa fa-times" aria-hidden="true"></i></button>',
+    btnRemove: '<button type="button" class="btn btn-danger btn-xs popovers remover" data-content="Remover" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcRemove($(this));"><i class="fa fa-times" aria-hidden="true"></i></button>',
     funcRemove: function (e) {
         $(e).parents('tr').remove();
     },
-    btnInactive: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Inativar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcInactive($(this));"><i class="fa fa-times" aria-hidden="true"></i></button>',
+    btnInactive: '<button type="button" class="btn btn-danger btn-xs popovers inativar" data-content="Inativar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcInactive($(this));"><i class="fa fa-times" aria-hidden="true"></i></button>',
     funcInactive: function (e) {
         var obj = $(e).parents('tr').data();
         obj["IsActive"] = false;
@@ -55,7 +55,7 @@
         element.find('td:last').append(crudNxN.btnReActive, crudNxN.btnEdit);
         reloadPopovers();
     },
-    btnReActive: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Reativar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcReActive($(this));"><i class="fa fa-undo" aria-hidden="true"></i></button>',
+    btnReActive: '<button type="button" class="btn btn-danger btn-xs popovers reativar" data-content="Reativar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcReActive($(this));"><i class="fa fa-undo" aria-hidden="true"></i></button>',
     funcReActive: function (e) {
         var obj = $(e).parents('tr').data();
         obj["IsActive"] = true;
@@ -66,7 +66,7 @@
         element.find('td:last').append(crudNxN.btnInactive, crudNxN.btnEdit);
         reloadPopovers();
     },
-    btnEdit: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>',
+    btnEdit: '<button type="button" class="btn btn-danger btn-xs popovers alterar" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>',
     funcEdit: function (e) {
 
         $('#crudNxNEdit > div > div > div.modal-body').empty();
