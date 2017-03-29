@@ -281,6 +281,7 @@
 
         var urlSalvarAcompanhamento = '@Url.Action("SaveAcompanhamento", "api/Pa_Acao")'
         var urlAcompanhamentoDetalhes = '@Url.Action("Acompanhamento", "Pa_Acao")'
+        var AcaoDetalhes = '@Url.Action("Details","Pa_Acao")'
 
         function Clicked(isClickedTatico, isClickedAcao, isTaticoVinculado, clearId) {
             isTaticoClicked = isClickedTatico;
@@ -764,7 +765,7 @@
             //        $($('[id=adicionar]')[c]).click();
             //});
 
-            $('#Edit').show();
+            //$('#Edit').show();
             InitDatePiker();
         }
 
@@ -1152,7 +1153,7 @@
 
                                       $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarAcaoEditada();\" >Salvar Operacional</button><hr>");
 
-                                      $('#Edit').show();
+                                      //$('#Edit').show();
                                       $('#obj').show(); //Apagar depois
                                       InitDatePiker();
 
@@ -1168,6 +1169,28 @@
                     $('table > tbody').on('click', '.details', function (data, a, b) {
                         var data = table.row($(this).parents('tr')).data();
                         console.log(data);
+
+                        planejamentoCorrentId = data.Tatico_Id;
+                        acaoCorrentId = data.Acao.Id;
+                        //Clicked(isTaticoClicked, isNovaAcao);
+
+                        $('#modalLindo').modal();
+                        $('#modalLindo').find('.modal-body').empty();
+                        $('#Header').html("Detalhes Gerais do Planejamento");
+                        $('#modalLindo').find('.modal-footer button').hide();
+
+                        $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
+                            $('#modalLindo').find('.modal-body').append(r);
+                            //$('#NovaAcao').show();
+                            //$('#NovaAcao').click();                            
+                        });
+
+                        $.get(AcaoDetalhes, { id: acaoCorrentId }, function (r) {
+                            $('#modalLindo').find('.modal-body').append(r);
+                            //$('#NovaAcao').show();
+                            //$('#NovaAcao').click();                            
+                        });
+
                     });
 
                     $('table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {

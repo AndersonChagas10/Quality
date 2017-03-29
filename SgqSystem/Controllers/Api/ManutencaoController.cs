@@ -769,58 +769,58 @@ namespace SgqSystem.Controllers.Api
             {
 
                 var TipoConsumo = "";
-                var tipoDeSQL = "NULL AS Orcado, NULL AS Realizado ";
+                var tipoDeSQL = "NULL AS Orcado, NULL AS Realizado, NULL AS Desvio ";
 
                 switch (tipoDecode)
                 {
                     case "MCAL":
                         TipoConsumo = "003.MCAL. Vapor";
-                        tipoDeSQL = "ConsumoOrcado AS Orcado, ConsumoRealizado AS Realizado ";
+                        tipoDeSQL = "ConsumoOrcado AS Orcado, ConsumoRealizado AS Realizado, NULLIF(ConsumoRealizado,0) / NULLIF( ConsumoOrcado ,0) - 1  AS Desvio";
                         break;
 
                     case "KW":
                         TipoConsumo = "001.KWH. Energia Eletrica - Concessionaria";
-                        tipoDeSQL = "ConsumoOrcado AS Orcado, ConsumoRealizado AS Realizado ";
+                        tipoDeSQL = "ConsumoOrcado AS Orcado, ConsumoRealizado AS Realizado, NULLIF(ConsumoRealizado,0) / NULLIF( ConsumoOrcado,0) - 1  AS Desvio ";
                         break;
 
                     case "M³":
                         TipoConsumo = "002.M3. Agua";
-                        tipoDeSQL = "ConsumoOrcado AS Orcado, ConsumoRealizado AS Realizado ";
+                        tipoDeSQL = "ConsumoOrcado AS Orcado, ConsumoRealizado AS Realizado, NULLIF(ConsumoRealizado,0) / NULLIF( ConsumoOrcado,0) - 1  AS Desvio ";
                         break;
 
                     case "Bois/Proc":
                         TipoConsumo = "001.KWH. Energia Eletrica - Concessionaria";
-                        tipoDeSQL = "ProducaoOrcada AS Orcado, ProducaoRealizada AS Realizado ";
+                        tipoDeSQL = "ProducaoOrcada AS Orcado, ProducaoRealizada AS Realizado, NULLIF(ProducaoRealizada,0) / NULLIF( ProducaoOrcada,0) - 1  AS Desvio ";
                         break;
 
                     case "MCAL/BOI":
                         TipoConsumo = "003.MCAL. Vapor";
-                        tipoDeSQL = "ConsumoPorBoiOrcado AS Orcado, ConsumoPorBoiRealizado AS Realizado ";
+                        tipoDeSQL = "ConsumoPorBoiOrcado AS Orcado, ConsumoPorBoiRealizado AS Realizado, NULLIF(ConsumoPorBoiRealizado,0) / NULLIF( ConsumoPorBoiOrcado,0) - 1  AS Desvio ";
                         break;
 
                     case "M³/BOI":
                         TipoConsumo = "002.M3. Agua";
-                        tipoDeSQL = "ConsumoPorBoiOrcado AS Orcado, ConsumoPorBoiRealizado AS Realizado ";
+                        tipoDeSQL = "ConsumoPorBoiOrcado AS Orcado, ConsumoPorBoiRealizado AS Realizado, NULLIF(ConsumoPorBoiRealizado,0) / NULLIF( ConsumoPorBoiOrcado,0) - 1  AS  AS Desvio ";
                         break;
 
                     case "KW/BOI":
                         TipoConsumo = "001.KWH. Energia Eletrica - Concessionaria";
-                        tipoDeSQL = "ConsumoPorBoiOrcado AS Orcado, ConsumoPorBoiRealizado AS Realizado ";
+                        tipoDeSQL = "ConsumoPorBoiOrcado AS Orcado, ConsumoPorBoiRealizado AS Realizado, NULLIF(ConsumoPorBoiRealizado,0) / NULLIF( ConsumoPorBoiOrcado,0) - 1  AS  AS Desvio ";
                         break;
 
                     case "Preço MCAL":
                         TipoConsumo = "003.MCAL. Vapor";
-                        tipoDeSQL = "ROUND(DespesaOrcada/NULLIF(ConsumoOrcado, 0),2) AS Orcado, ROUND(DespesaRealizada/NULLIF(ConsumoRealizado, 0),2) AS Realizado ";
+                        tipoDeSQL = "ROUND(DespesaOrcada/NULLIF(ConsumoOrcado, 0),2) AS Orcado, ROUND(DespesaRealizada/NULLIF(ConsumoRealizado, 0),2) AS Realizado, ( NULLIF( ROUND(DespesaRealizada/NULLIF(ConsumoRealizado, 0),2),0) / NULLIF( ROUND(DespesaOrcada/NULLIF(ConsumoOrcado, 0),2),0) ) - 1  AS Desvio";
                         break;
 
                     case "Preço M³":
                         TipoConsumo = "002.M3. Agua";
-                        tipoDeSQL = "ROUND(DespesaOrcada/NULLIF(ConsumoOrcado, 0),2) AS Orcado, ROUND(DespesaRealizada/NULLIF(ConsumoRealizado, 0),2) AS Realizado ";
+                        tipoDeSQL = "ROUND(DespesaOrcada/NULLIF(ConsumoOrcado, 0),2) AS Orcado, ROUND(DespesaRealizada/NULLIF(ConsumoRealizado, 0),2) AS Realizado, ( NULLIF( ROUND(DespesaRealizada/NULLIF(ConsumoRealizado, 0),2),0) / NULLIF( ROUND(DespesaOrcada/NULLIF(ConsumoOrcado, 0),2),0) ) - 1  AS Desvio";
                         break;
 
                     case "Preço KW":
                         TipoConsumo = "001.KWH. Energia Eletrica - Concessionaria";
-                        tipoDeSQL = "ROUND(DespesaOrcada/NULLIF(ConsumoOrcado, 0),2) AS Orcado, ROUND(DespesaRealizada/NULLIF(ConsumoRealizado, 0),2) AS Realizado ";
+                        tipoDeSQL = "ROUND(DespesaOrcada/NULLIF(ConsumoOrcado, 0),2) AS Orcado, ROUND(DespesaRealizada/NULLIF(ConsumoRealizado, 0),2) AS Realizado, ( NULLIF( ROUND(DespesaRealizada/NULLIF(ConsumoRealizado, 0),2),0) / NULLIF( ROUND(DespesaOrcada/NULLIF(ConsumoOrcado, 0),2),0) ) - 1  AS Desvio";
                         break;
                 }
 
@@ -1553,6 +1553,7 @@ public class FatoresTecnicosMateriaPrima
 
     public double? Orcado { get; set; }
     public double? Realizado { get; set; }
+    public double? Desvio { get; set; }
 
     public string EmpresaSigla { get; set; }
     public string AnoMes { get; set; }

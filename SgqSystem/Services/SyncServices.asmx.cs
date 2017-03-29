@@ -4193,7 +4193,7 @@ namespace SgqSystem.Services
             }
             else if (parLevel3.ParLevel3InputType_Id == 5)
             {
-                classInput = " texto";
+                classInput = " texto naoValidarInput";
                 labels = html.div(
                                            outerhtml: "",
                                            classe: "font10",

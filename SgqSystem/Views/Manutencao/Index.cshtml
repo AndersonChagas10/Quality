@@ -358,17 +358,17 @@
 
                                                             tabela += "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + dadosPrincipais[i][j][0] + "%</b><i></div> <div id=\"penis\" style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + dadosPrincipais[i][j][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>";
 
-                                                        }else if(dadosPrincipais[i][j][3] == '$'){
+                                                        } else if (dadosPrincipais[i][j][3] == '$') {
 
                                                             tabela += "<div style=\"position: relative; width:" + larguraDasCelulasDeValor + "; height: " + alturaDasCelulasDeMapaDeCalor + "; z-index:1; line-height: " + alturaDasCelulasDeMapaDeCalor + ";\"><i><b>" + float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000)) + "</b><i></div> <div id=\"boceta\" style=\"margin-top: -" + alturaDasCelulasDeValor + ";width:" + larguraDasCelulasDeValor + ";height: " + alturaDasCelulasDeValor + "; position:relative ;background-color: " + dadosPrincipais[i][j][4] + "; opacity: " + nivelDeTransparencia + "; z-index:0;\"></div>";
 
                                                         } else {
 
-                                                            tabela += k == 1 && dadosPrincipais[i][j - 1][0] < dadosPrincipais[i][j][0] ? '<span style=\'color: red;\'>' + float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000)) + '</span>' : float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000));
+                                                            tabela += k == 1 && dadosPrincipais[i][j - 1][0] < dadosPrincipais[i][j][0] ? '<span style=\'color: #ff0000;\'>' + float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000)) + '</span>' : (k == 1 && dadosPrincipais[i][j - 1][0] > dadosPrincipais[i][j][0] ? '<span style=\'color: #06D100;\'>' + float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000)) + '</span>' : float2moeda(Math.ceil(dadosPrincipais[i][j][0] / 1000)));
                                                         }
 
                                                         tabela += "</td>";
-                                                        
+
                                                         if (k == 3) {
                                                             k = 0;
                                                         } else {
@@ -415,7 +415,7 @@
                                                     }
 
                                                     tabela += "</td>";
-                                                  
+
                                                     if (k == 3) {
                                                         k = 0;
                                                     } else {
@@ -815,7 +815,7 @@
                                                                         setTimeout(resizeHighcharts(), 200);
                                                                         MountGraficoDespesaTodasRegionais(this.category);
                                                                         MountGraficoDespesaTodasRegionaisGrupoPorPacote(this.category);
-                                                                        MountGrafDespRegGrup(this.category,null);
+                                                                        MountGrafDespRegGrup(this.category, null);
                                                                     }
                                                                 }
                                                             }
@@ -843,7 +843,7 @@
                                                                         $('#GrafDespReg').empty();
                                                                         MountGraficoDespesaTodasRegionais(this.category);
                                                                         MountGraficoDespesaTodasRegionaisGrupoPorPacote(this.category);
-                                                                        MountGrafDespRegGrup(this.category,null);
+                                                                        MountGrafDespRegGrup(this.category, null);
                                                                     }
                                                                 }
                                                             }
@@ -1516,7 +1516,7 @@
 
                                             //ajax - monta GRÁFICO DE DESPESA POR REGIONAL
                                             function MountGrafDespReg(regional, pacote) {
-                                                $.post('../api/Manutencao/getSelectGrafDespReg/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + escape(regional.replace(/[/]/g, '|')) +  '/' + escape(pacote.replace(/[/]/g, '|')) + '/', function (lista) {
+                                                $.post('../api/Manutencao/getSelectGrafDespReg/' + enviar.startDate.substring(6, 10) + enviar.startDate.substring(3, 5) + enviar.startDate.substring(0, 2) + '/' + enviar.endDate.substring(6, 10) + enviar.endDate.substring(3, 5) + enviar.endDate.substring(0, 2) + '/' + getManutencaoMes() + '/' + getManutencaoAno() + '/' + escape(regional.replace(/[/]/g, '|')) + '/' + escape(pacote.replace(/[/]/g, '|')) + '/', function (lista) {
 
                                                     var titleLine = [];
 
@@ -1566,7 +1566,7 @@
                                             }
 
                                             //ajax - monta GRÁFICO DE DESPESA POR REGIONAL GRUPO
-                                            function MountGrafDespRegGrup(regional,pacote) {
+                                            function MountGrafDespRegGrup(regional, pacote) {
 
                                                 var obj = {
 
@@ -3519,14 +3519,21 @@
 
                                                     var x3 = [];
 
-                                                    UnitChart(titleLine, xOrcado, xRealizado, x3, x3, unidadeSelecionada, tipo);
+                                                    var xDesvio = [];
+
+                                                    lista.forEach(function (entry) {
+                                                        xDesvio.push(Math.round(entry.Desvio * 100));
+
+                                                    });
+
+                                                    UnitChart(titleLine, xOrcado, xRealizado, xDesvio, x3, x3, unidadeSelecionada, tipo);
 
                                                 });
 
                                             }
 
                                             //locação unit gráfico
-                                            function UnitChart(name, xOrcado, xRealizado, x3, line, unidade, tipo) {
+                                            function UnitChart(name, xOrcado, xRealizado, xDesvio, x3, line, unidade, tipo) {
                                                 $('#UnitChart').show();
                                                 $('#UnitChartMeses').show();
 
@@ -3546,14 +3553,20 @@
                                                         xAxis: {
                                                             categories: name
                                                         },
-                                                        yAxis: {
+                                                        yAxis: [{
 
                                                             title: {
-                                                                text: ''
+                                                                text: 'Consolidado'
                                                             },
                                                             subtitle: {
                                                                 text: document.ontouchstart === undefined ?
                                                                         'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                                                            }
+                                                            , labels: {
+                                                                format: '{value}',
+                                                                style: {
+                                                                    color: Highcharts.getOptions().colors[1]
+                                                                }
                                                             }
                                                             ,
                                                             stackLabels: {
@@ -3563,7 +3576,32 @@
                                                                     color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
                                                                 }
                                                             }
-                                                        },
+
+                                                        }, {
+
+                                                            title: {
+                                                                text: 'Desvio'
+                                                            },
+                                                            subtitle: {
+                                                                text: document.ontouchstart === undefined ?
+                                                                        'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                                                            }
+                                                            , labels: {
+                                                                format: '{value} %',
+                                                                style: {
+                                                                    color: Highcharts.getOptions().colors[1]
+                                                                }
+                                                            }
+                                                            ,
+                                                            stackLabels: {
+                                                                enabled: true,
+                                                                style: {
+                                                                    fontWeight: 'bold',
+                                                                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                                                                }
+                                                            }
+                                                            , opposite: true
+                                                        }],
 
                                                         plotOptions: {
                                                             series: {
@@ -3585,6 +3623,18 @@
                                                             name: 'Real',
                                                             data: xRealizado,
 
+
+                                                        }, {
+                                                            type: 'column',
+                                                            yAxis: 1,
+                                                            name: 'Desvio',
+                                                            data: xDesvio,
+                                                            tooltip: {
+                                                                headerFormat: '<b>{point.x}</b><br/>',
+                                                                pointFormat: '{series.name}: <i>{point.y}<i/><br/> ',
+                                                                valueSuffix: '%'
+                                                            
+                                                            },
 
                                                         }]
                                                     });
