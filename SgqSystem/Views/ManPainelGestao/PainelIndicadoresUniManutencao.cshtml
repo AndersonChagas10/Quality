@@ -864,6 +864,7 @@
             //Tabela
             var data = MapeiaValorParaHC(retornoArray, 'data');
             var userResp = MapeiaValorParaHC(retornoArray, 'userResp');
+            var comentarioResp = MapeiaValorParaHC(retornoArray, 'comentarioResp');
 
             var linha = [];
             var dataTableVetor = [];
@@ -955,9 +956,10 @@
                 linha[0] = data[i];
                 linha[1] = dia[i];
                 linha[2] = userResp[i];
-                linha[3] = formatReal(Math.round(real[i] * 100) / 100);
-                linha[4] = formatReal(Math.round(budget[i] * 100) / 100);
-                linha[5] = formatReal(Math.round(targetAjustado[i] * 100) / 100);
+                linha[3] = comentarioResp[i];
+                linha[4] = formatReal(Math.round(real[i] * 100) / 100);
+                linha[5] = formatReal(Math.round(budget[i] * 100) / 100);
+                linha[6] = formatReal(Math.round(targetAjustado[i] * 100) / 100);
 
                 dataTableVetor.push(linha);
                 linha = [];
@@ -970,6 +972,7 @@
                 { title: "Data" },
                 { title: "Dia" },
                 { title: "Usuário Responsável" },
+                { title: "Comentários" },
                 { title: "Valor Coleta" },
                 { title: "Orçamento" },
                 { title: "Target" }

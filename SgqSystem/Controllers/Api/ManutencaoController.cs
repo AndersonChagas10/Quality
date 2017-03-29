@@ -775,7 +775,7 @@ namespace SgqSystem.Controllers.Api
                 {
                     case "MCAL":
                         TipoConsumo = "003.MCAL. Vapor";
-                        tipoDeSQL = "ConsumoOrcado AS Orcado, ConsumoRealizado AS Realizado, NULLIF(ConsumoRealizado,0) / NULLIF( ConsumoOrcado - 1 Desvio ,0)  AS Desvio";
+                        tipoDeSQL = "ConsumoOrcado AS Orcado, ConsumoRealizado AS Realizado, NULLIF(ConsumoRealizado,0) / NULLIF( ConsumoOrcado ,0) - 1  AS Desvio";
                         break;
 
                     case "KW":
