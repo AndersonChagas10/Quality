@@ -345,7 +345,7 @@
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
 
-                                                                    @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
+                                                                    @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm", @id = parLevel1XHeaderField.ParHeaderField.Id })
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
                                                                 </td>
 
@@ -358,7 +358,7 @@
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
 
-                                                                    @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
+                                                                    @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm", @id = parLevel1XHeaderField.ParHeaderField.Id })
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
                                                                 </td>
 
@@ -385,7 +385,7 @@
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
-                                                                    @Html.TextBox("a", null, new { @class = "fixed-width form-control input-sm" })
+                                                                    @Html.TextBox("a", null, new { @class = "form-control input-sm" })
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
                                                                 </td>
                                                             }
@@ -396,7 +396,7 @@
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
-                                                                    <input type="number" class="fixed-width form-control input-sm" />
+                                                                    <input type="number" class="form-control input-sm" />
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
                                                                 </td>
                                                             }
@@ -438,8 +438,6 @@
                                                             <td>
                                                                 @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
                                                                 {
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-btn">
                                                                             <select class="form-control input-sm" id="@parLevel1XHeaderField.ParHeaderField_Id">
                                                                                 <option value="0" selected>Nenhum</option>
                                                                                 @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
@@ -454,9 +452,7 @@
                                                                                     }
                                                                                 }
                                                                             </select>
-                                                                            <button type="button" onclick="Cabecalhos.SetMultipleDefault($(this));" class="btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></button>
-                                                                        </div>
-                                                                    </div>
+                                                                            <button type="button" onclick="Cabecalhos.SetMultipleDefault($(this));" class="btn btn-default btn-sm">Aplicar <i class="fa fa-check" aria-hidden="true"></i></button>
                                                                 }
 
                                                             </td>
@@ -806,9 +802,9 @@
             <tr><th></th></tr>*/
 
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
-            example += '<td id=""><label class="fixed-width"> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
-                       '<td id=""><label class="fixed-width"> ' + $('#parFieldType :selected').text() + '</label></td>' + // Tipo
-                          '<td><select class="" id="" name="" class="form-control input-sm fixed-width" >' + //Preview
+            example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
+                       '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' + // Tipo
+                          '<td><select class="" id="" name="" class="form-control input-sm " >' + //Preview
                           '<option value="-1">Selecione...</option> ';
             Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, c) {
                 example += '<option value="1">' + o.Name + '</option>';
@@ -833,7 +829,7 @@
             });
 
             example += '</td>'
-            example += '<td>&nbsp;' + Cabecalhos.BtnExcluir() + '</td></tr>';//Btn excluir
+            example += '<td>' + Cabecalhos.BtnExcluir() + '</td></tr>';//Btn excluir
 
 
             $('#tableCabecalhosPreview').append(example);
@@ -984,8 +980,8 @@
 
             var fieldType = $('#parFieldType option:selected').val();
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
-            example += '<td id=""><label class="fixed-width"> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
-                       '<td id=""><label class="fixed-width"> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
+            example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
+                       '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
             //var example = '<div><label class="on-off fixed-width">';
             //example += '<label>' + $('#paramsDto_parHeaderFieldDto_Name').val() + ':&nbsp;</label>';
             /*Cria preview*/
@@ -1013,7 +1009,7 @@
             });
             example += '</td>';
 
-            example += '<td>&nbsp;' + Cabecalhos.BtnExcluir2() + '</td></tr>';//Btn excluir
+            example += '<td>' + Cabecalhos.BtnExcluir2() + '</td></tr>';//Btn excluir
 
             $('#tableCabecalhosPreview').append(example);
 
@@ -1079,15 +1075,15 @@
         AtualizaPreviewCampotexto: function (o) {
 
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
-            example += '<td id=""><label class="fixed-width"> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
-                       '<td id=""><label class="fixed-width"> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
+            example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
+                       '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
             //var example = '<div>';
             //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
             example += '<td>';
             if(o.isDataDefined){
-                example += '<input type="text" class="dataInput form-control input-sm fixed-width"/>';//Input Date
+                example += '<input type="text" class="dataInput form-control input-sm "/>';//Input Date
             }else{
-                example += '<input type="text" class="form-control input-sm fixed-width" />';//Input
+                example += '<input type="text" class="form-control input-sm " />';//Input
             }
 
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + o.Type + '" />';
@@ -1099,7 +1095,7 @@
             example += '</td>';
 
             example += '<td>';
-            example += '&nbsp;' +  Cabecalhos.BtnExcluir();
+            example += '' +  Cabecalhos.BtnExcluir();
             //example += '</div>';
             example += '</td>';
 
@@ -1163,13 +1159,13 @@
         AtualizaPreviewCampoNumerico: function (o) {
 
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
-            example += '<td id=""><label class="fixed-width"> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
-                       '<td id=""><label class="fixed-width"> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
+            example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
+                       '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
 
             //var example = '<div>';
             //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
             example += '<td>';
-            example += '<input class="form-control input-sm fixed-width" type="number" />';//Input
+            example += '<input class="form-control input-sm " type="number" />';//Input
 
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + o.Type + '" />';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + o.Name + '" />';
@@ -1179,7 +1175,7 @@
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
             example += '</td>';
             example += '<td>';
-            example += '&nbsp;' + Cabecalhos.BtnExcluir();
+            example += '' + Cabecalhos.BtnExcluir();
             //example += '</div>';
             example += '</td>';
             $('#tableCabecalhosPreview').append(example);
@@ -1240,13 +1236,13 @@
         AtualizaPreviewCampoIntegracoes: function (o) {
 
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
-            example += '<td id=""><label class="fixed-width"> ' + $('.equipamentos').val() + '</label></td>' + // nome
-                       '<td id=""><label class="fixed-width"> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
+            example += '<td id=""><label class=""> ' + $('.equipamentos').val() + '</label></td>' + // nome
+                       '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
 
             //var example = '<div>';
             //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
             example += '<td>';
-            example += '<input class="form-control input-sm fixed-width" type="number" />';//Input
+            example += '<input class="form-control input-sm" type="number" />';//Input
 
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + o.Type + '" />';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + o.Name + '" />';
@@ -1256,7 +1252,7 @@
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
             example += '</td>';
             example += '<td>';
-            example += '&nbsp;' + Cabecalhos.BtnExcluir();
+            example += '' + Cabecalhos.BtnExcluir();
             //example += '</div>';
             example += '</td>';
             $('#tableCabecalhosPreview').append(example);

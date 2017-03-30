@@ -441,12 +441,12 @@
             disableEvry();
 
             var existeCadastroPorUnidade = $.grep($('#tableAvAm > tbody > tr'), function(a,b) {
-                return $(a).data().companyId == getCookie('webControlCookie')[2].split('=')[1];
+                return $(a).data().companyId == unitId;
             });
 
             if(existeCadastroPorUnidade.length <= 0){
             
-                $('#level2__AvAmostra_collapse > div > table.table-erp').find('select option').not('[value='+ getCookie('webControlCookie')[2].split('=')[1] + ']').remove();
+                $('#level2__AvAmostra_collapse > div > table.table-erp').find('select option').not('[value='+ unitId + ']').remove();
                 $('#level2__AvAmostra_collapse > div > table.table-erp').find('select').attr("disabled", false);
                 $($('#level2__AvAmostra_collapse > div > table.table-erp').find('input')[1]).attr("disabled", false);
                 $($('#level2__AvAmostra_collapse > div > table.table-erp').find('input')[3]).attr("disabled", false);
@@ -458,11 +458,11 @@
                     salvarAvAm['evaluationNumber'] = $($('#level2__AvAmostra_collapse > div > table.table-erp').find('input')[1]).val();
                     salvarAvAm['sampleNumber'] = $($('#level2__AvAmostra_collapse > div > table.table-erp').find('input')[3]).val();
                     salvarAvAm['level2Id'] = $('#paramsDto_parLevel2Dto_Id').val();
-                    salvarAvAm['companyId'] = getCookie('webControlCookie')[2].split('=')[1];
+                    salvarAvAm['companyId'] = unitId;
                     salvarAvAm['IsActive'] = true;
 
                     $.post('@Url.Action("SalvarAvaliacaoAmostra", "api/ParamsApi")', salvarAvAm, function(r) {
-                        $('#parLevel2Select2').val($('#paramsDto_parLevel2Dto_Id').val()).change();
+                        $('#parLevel2Select2').change();
                     });
                 
                 });

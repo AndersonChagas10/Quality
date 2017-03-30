@@ -165,6 +165,34 @@ namespace SgqSystem.Controllers.Api.Params
             }
         }
 
+        [HttpPost]
+        [Route("AlteraVinculoLevel3")]
+        public void AlteraVinculoLevel3(ParLevel3Level2 l3l2)
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+                /*Busco do DB*/
+                var parLevel3Level2 = db.ParLevel3Level2.FirstOrDefault(r => r.Id == l3l2.Id);
+
+                /*Altero*/
+                parLevel3Level2.AlterDate = DateTime.Now;
+                parLevel3Level2.Weight = l3l2.Weight;
+               
+                parLevel3Level2.ParLevel3Group_Id = l3l2.ParLevel3Group_Id;
+
+                /*Explico para o EF que alterei*/
+                db.ParLevel3Level2.Attach(parLevel3Level2);
+                var entrySample = db.Entry(parLevel3Level2);
+                entrySample.Property(e => e.Weight).IsModified = true;
+                entrySample.Property(e => e.AlterDate).IsModified = true;
+                entrySample.Property(e => e.ParLevel3Group_Id).IsModified = true;
+
+                /*Salvo*/
+                db.SaveChanges();
+            }
+        }
+
+        
         #endregion
 
         #region Vinculo Level3 com Level2

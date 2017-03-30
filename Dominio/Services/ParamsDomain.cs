@@ -167,6 +167,9 @@ namespace Dominio.Services
             /*Validação*/
             //paramsDto.parLevel1Dto.IsValid();
             ParLevel1 saveParamLevel1 = Mapper.Map<ParLevel1>(paramsDto.parLevel1Dto);//ParLevel1
+            if (saveParamLevel1.ParScoreType_Id <= 0)
+                saveParamLevel1.ParScoreType_Id = null;
+
             List<ParGoal> listParGoal = Mapper.Map<List<ParGoal>>(paramsDto.parLevel1Dto.listParGoalLevel1);
             List<ParRelapse> listaReincidencia = Mapper.Map<List<ParRelapse>>(paramsDto.parLevel1Dto.listParRelapseDto);//Reincidencia do Level1
             if (paramsDto.listParHeaderFieldDto != null)
