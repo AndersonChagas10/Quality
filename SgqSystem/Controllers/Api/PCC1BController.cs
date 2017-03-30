@@ -1,9 +1,7 @@
-﻿using Dominio;
-using Dominio.ADO;
-using DTO;
+﻿using ADOFactory;
+using Dominio;
 using SgqSystem.Handlres;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 
@@ -77,7 +75,7 @@ namespace SgqSystem.Controllers.Api
             {
 
             
-                using (var db = new FactoryADO(company.IPServer, company.DBServer, pass, userName))
+                using (var db = new Factory(company.IPServer, company.DBServer, pass, userName))
                 {
                     var query = "EXEC FBED_GRTTipificacao '" + receive.Data + "', " + company.CompanyNumber.ToString() + ", " + receive.sequencialAtual.ToString();
                     var resultQuery = db.SearchQuery<ResultadosSequencialBanda>(query).ToList();

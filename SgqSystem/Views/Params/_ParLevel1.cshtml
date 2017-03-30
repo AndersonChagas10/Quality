@@ -547,14 +547,6 @@
 
     var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
 
-    $(document).ready(function() {
-        //if(config){
-        //    $('#registerTotalEv').hide();
-        //    if($('#level1Title').html().indexOf("New") > -1){
-        //        $('#level1Title').html("Level 1");
-        //    }
-        //}
-    })
 
     $('#paramsDto_parLevel1Dto_IsSpecific').on('switchChange.bootstrapSwitch', function (event, state) {
         if (state) {
@@ -1501,6 +1493,17 @@
 
 
     $(document).ready(function () {
+
+        //if(config){
+        //    $('#registerTotalEv').hide();
+        //    if($('#level1Title').html().indexOf("New") > -1){
+        //        $('#level1Title').html("Level 1");
+        //    }
+        //}
+
+        if(!hasperm){
+            disableEvry();
+        }
 
         defaults();
         loadSelect2();

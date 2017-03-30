@@ -24,7 +24,6 @@ namespace Dominio.Services
 
         private static string dominio = "global.corp.prod";
 
-
         public string erroUnidade = "É necessário ao menos uma unidade cadastrada para o usuario.";
         public string falhaGeral { get { return "It was not possible retrieve any data."; } }
 

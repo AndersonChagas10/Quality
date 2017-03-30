@@ -190,12 +190,16 @@
 
 <script>
 
-    function defaults() {
-        $.fn.bootstrapSwitch.defaults.size = 'small';
-        $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
-        $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
-        $(".check-box").bootstrapSwitch();
+    var hasperm = @Html.Raw(Json.Encode(ViewBag.IsAdmin));
+
+    function disableEvry() {
+        $('input, select').not("#crudNxNEdit, #parLevel1Select2, #parLevel2Select2, #parLevel3Select2").attr("disabled", true);
+        $('button').attr("disabled", true);
+        $(':checkbox').bootstrapSwitch('disabled',true);
+       
     }
+
+
 
     function reloadPopovers(){
         $(".popovers").attr("data-toggle", "popover");
@@ -884,6 +888,7 @@
                     }
                 }
 
+
                 reloadPopovers();
                 defaults();
                 initialFormLevel3 = $($('form')[2]).clone();
@@ -1032,6 +1037,18 @@
     var initialFormLevel3 = null;
 
     $(document).ready(function () {
+        
+        if(config){
+            $('#level1Title').html("Level 1");
+        }
+
+        if(!hasperm){
+            $('#btnNewLevel1').hide();
+            $('#btnNewLevel2').hide();
+            $('#btnNewLevel3').hide();
+            disableEvry();
+        }
+
         reloadPopovers();
 
         $('#desVinculoLevel1').on('click', function() {
@@ -1095,9 +1112,4 @@
 
     var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
 
-    $(document).ready(function() {
-        if(config){
-            $('#level1Title').html("Level 1");
-        }
-    })
 </script>

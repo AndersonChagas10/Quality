@@ -184,10 +184,6 @@
     <Compile Include="Empresas.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\DataCollection\DataCollection.cs" />
-    <Compile Include="Entities\DataCollection\DataCollectionResult.cs" />
-    <Compile Include="Entities\BaseEntity\DataCollectionBase.cs" />
-    <Compile Include="Entities\BaseEntity\EntityBase.cs" />
     <Compile Include="Equipamentos.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
@@ -252,7 +248,6 @@
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\Repositories\IBaseRepositoryNoLazyLoad.cs" />
-    <Compile Include="Interfaces\Repositories\ICorrectiveActionRepository.cs" />
     <Compile Include="Interfaces\Repositories\IBaseRepository.cs" />
     <Compile Include="Interfaces\Repositories\IGetDataResultRepository.cs" />
     <Compile Include="Interfaces\Repositories\IParamsRepository.cs" />
@@ -262,13 +257,10 @@
     <Compile Include="Interfaces\Repositories\IUserRepository.cs" />
     <Compile Include="Interfaces\Repositories\ICollectionLevel02Repo.cs" />
     <Compile Include="Interfaces\Services\IDefectDomain.cs" />
-    <Compile Include="Interfaces\Services\ICorrectiveActionDomain.cs" />
     <Compile Include="Interfaces\Services\ICompanyDomain.cs" />
-    <Compile Include="Interfaces\Services\IGetConsolidateDataCollectionDomain.cs" />
     <Compile Include="Interfaces\Services\IExampleDomain.cs" />
     <Compile Include="Interfaces\Services\IParamsDomain.cs" />
     <Compile Include="Interfaces\Services\IRelatorioColetaDomain.cs" />
-    <Compile Include="Interfaces\Services\ISaveConsolidateDataCollectionDomain.cs" />
     <Compile Include="Interfaces\Services\IBaseDomain.cs" />
     <Compile Include="Interfaces\Services\IUserDomain.cs" />
     <Compile Include="LeftControlRole.cs">
@@ -611,8 +603,6 @@
     </Compile>
     <Compile Include="Services\DefectDomain.cs" />
     <Compile Include="Services\CompanyDomain.cs" />
-    <Compile Include="ADO\FactoryADO.cs" />
-    <Compile Include="Services\GetConsolidateDataCollectionDomain.cs" />
     <Compile Include="Services\ExampleDomain.cs" />
     <Compile Include="Services\ParamsDomain.cs" />
     <Compile Include="Services\RelatorioColetaDomain.cs" />

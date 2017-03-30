@@ -91,6 +91,9 @@ namespace SgqSystem.Controllers
                 Response.Cookies.Add(myCookie);
             }
         }
+
+      
+
     }
 
 }

@@ -43,12 +43,12 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         [HttpPost]
         [Route("SaveAcompanhamento")]
         public Pa_Acompanhamento Acompanhamento(Pa_Acompanhamento obj)
-        {          
+        {
 
             var acompanhamento = Mapper.Map<PlanoAcaoEF.Pa_Acompanhamento>(obj);
 
             using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
-            {              
+            {
                 SalvarAcompanhamento(db, acompanhamento);
 
                 foreach (var i in obj.MailTo)
@@ -91,12 +91,14 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 var entry = db.Entry(acom);
                 entry.State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
+                db.Database.ExecuteSqlCommand("Update Pa_Acao set Status = " + acom.Status_Id + " where Id = " + acom.Acao_Id);
             }
             else
             {
                 acom.AddDate = DateTime.Now;
                 db.Pa_Acompanhamento.Add(acom);
                 db.SaveChanges();
+                db.Database.ExecuteSqlCommand("Update Pa_Acao set Status = " + acom.Status_Id + " where Id = " + acom.Acao_Id);
             }
         }
 
