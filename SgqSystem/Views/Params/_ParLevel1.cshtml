@@ -341,7 +341,9 @@
                                                                 <td>
                                                                     @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
-                                                                    @Html.ActionLink("Editar", "EditParHeaderField", new {@id = parLevel1XHeaderField.ParHeaderField.Id})
+                                                                    <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal" >
+                                                                        <span class="glyphicon glyphicon-pencil"></span>
+                                                                    </button>
                                                                 </td>
 
                                                                 }
@@ -355,7 +357,9 @@
 
                                                                         @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
                                                                         @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
-                                                                        @Html.ActionLink("Editar", "EditParHeaderField", new { @id = parLevel1XHeaderField.ParHeaderField.Id })
+                                                                        <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-pencil"></span>
+                                                                        </button>
                                                                     </td>
 
                                                                 }
@@ -372,7 +376,9 @@
                                                                             @Html.RadioButton("removerParHeaderField", true, new { @class = "" });
                                                                         }
                                                                         @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                                        @Html.ActionLink("Editar", "EditParHeaderField", new { @id = parLevel1XHeaderField.ParHeaderField.Id })
+                                                                        <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-pencil"></span>
+                                                                        </button>
                                                                     </td>
                                                                 }
 
@@ -384,7 +390,9 @@
                                                                     <td>
                                                                         @Html.TextBox("a", null, new { @class = "fixed-width form-control input-sm" })
                                                                         @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                                        @Html.ActionLink("Editar", "EditParHeaderField", new { @id = parLevel1XHeaderField.ParHeaderField.Id })
+                                                                        <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-pencil"></span>
+                                                                        </button>
                                                                     </td>
                                                                 }
 
@@ -397,7 +405,9 @@
                                                                         <input type="number" class="fixed-width form-control input-sm" />
 
                                                                         @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                                        @Html.ActionLink("Editar", "EditParHeaderField", new { @id = parLevel1XHeaderField.ParHeaderField.Id })
+                                                                        <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-pencil"></span>
+                                                                        </button>
                                                                     </td>
                                                                 }
                                                                 @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 6)
@@ -408,7 +418,9 @@
                                                                     <td>
                                                                         <input type="text" class="dataInput active form-control input-sm">
                                                                         @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                                        @Html.ActionLink("Editar", "EditParHeaderField", new { @id = parLevel1XHeaderField.ParHeaderField.Id })
+                                                                        <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-pencil"></span>
+                                                                        </button>
                                                                     </td>
                                                                 }
                                                                 <td>
