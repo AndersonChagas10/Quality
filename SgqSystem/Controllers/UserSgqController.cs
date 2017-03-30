@@ -138,6 +138,7 @@ namespace SgqSystem.Controllers
             }
 
             IEnumerable<int> listParCompany = userSgqDto.ListParCompany_Id;
+            userSgqDto.ParCompany_Id = userSgqDto.ListParCompany_Id.FirstOrDefault();
             userSgqDto = _baseDomainUserSgq.AddOrUpdate(userSgqDto);
 
             _baseDomainParCompanyXUserSgq.ExecuteSql("DELETE FROM ParCompanyXUserSgq WHERE UserSgq_Id = " + userSgqDto.Id);
