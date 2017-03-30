@@ -1797,4 +1797,7 @@
   <data name="tipoScore" xml:space="preserve">
     <value>Type Score</value>
   </data>
+  <data name="equipment_registration" xml:space="preserve">
+    <value>Equipment Registration</value>
+  </data>
 </root>
