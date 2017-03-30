@@ -2289,6 +2289,7 @@ namespace SgqSystem.Services
                               "<div class=\"ResultsConsolidation hide\"></div>" +
                                "<div class=\"ResultsKeys hide\"></div>" +
                                "<div class=\"ResultsPhase hide\"></div>" +
+                               "<div class=\"ResultsDefectsEvaluation hide\"></div>" +
                               "<div class=\"Deviations hide\"></div>" +
                               "<div class=\"Users hide\"></div>" +
                               "<div class=\"VerificacaoTipificacao hide\"></div>" +
@@ -5074,6 +5075,32 @@ namespace SgqSystem.Services
                     "shift=\"" + c.Shift + "\" " +
                     "phase=\"" + c.Phase + "\" " +
                     "class=\"PhaseResultlevel2\"></div>";
+            }
+            return PhaseResult;
+        }
+
+        [WebMethod]
+        public string getResultEvaluationDefects(int parCompany_Id, string date, int parLevel1_Id)
+        {
+
+            var ResultPhaseDB = new SGQDBContext.ResultEvaluationDefects();
+            //Instanciamos uma variável que irá 
+
+            DateTime dateAtual = DateCollectConvert(date);
+            
+            var ResultEvaluationDefectsList = ResultPhaseDB.GetByDay(parCompany_Id, dateAtual, parLevel1_Id);
+
+            string PhaseResult = null;
+            //Percorremos as consolidações de ParLevel1
+            foreach (var c in ResultEvaluationDefectsList)
+            {
+                PhaseResult += "<div                                                                            " +
+                    "date=\"" + date + "\"                                                                      " +
+                    "Defects=\"" + c.Defects + "\"                                                              " +
+                    "EvaluationNumber=\"" + c.EvaluationNumber + "\"                                            " +
+                    "Period=\"" + c.Period + "\"                                                                " +
+                    "Shift=\"" + c.Shift + "\"                                                                  " +
+                    "class=\"EvaluationDefects\"></div>";
             }
             return PhaseResult;
         }
