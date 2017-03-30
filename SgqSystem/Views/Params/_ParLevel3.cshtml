@@ -697,6 +697,14 @@
 
         if(!hasperm){
             disableEvry();
+
+            var l1 = $('#paramsDto_parLevel1Dto_Id').val();
+            var l2 = $('#paramsDto_parLevel2Dto_Id').val();
+            var l3 = $('#paramsDto_parLevel3Dto_Id').val();
+            if(l1 > 0 && l2 > 0 && l3 > 0){
+                $('#vinculoLevel1').attr('disabled', false);
+            }
+
         }
 
         var modalPontos = $('#modalPontos').detach();

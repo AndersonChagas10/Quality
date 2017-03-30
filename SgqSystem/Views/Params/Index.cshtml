@@ -191,12 +191,12 @@
 <script>
 
     var hasperm = @Html.Raw(Json.Encode(ViewBag.IsAdmin));
+    var unitId = @Html.Raw(Json.Encode(ViewBag.CompanyId));
 
     function disableEvry() {
         $('input, select').not("#crudNxNEdit, #parLevel1Select2, #parLevel2Select2, #parLevel3Select2").attr("disabled", true);
         $('button').attr("disabled", true);
         $(':checkbox').bootstrapSwitch('disabled',true);
-       
     }
 
 
@@ -950,7 +950,7 @@
         }
 
 
-        $.get(vinculoL1L2 + '/' + idLevel1 + '/' + idLevel2 + '/' + idLevel3, function (obj, responseText, xhr) {
+        $.get(vinculoL1L2 + '/' + idLevel1 + '/' + idLevel2 + '/' + idLevel3 + '/' + getCookie('webControlCookie')[0].split('=')[1], function (obj, responseText, xhr) {
             if (obj != null) {
                 console.log(obj);
 
@@ -1037,7 +1037,7 @@
     var initialFormLevel3 = null;
 
     $(document).ready(function () {
-        
+
         if(config){
             $('#level1Title').html("Level 1");
         }

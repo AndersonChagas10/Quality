@@ -3,6 +3,7 @@ using Dominio;
 using Dominio.Interfaces.Services;
 using DTO;
 using DTO.DTO.Params;
+using DTO.Helpers;
 using SgqSystem.Handlres;
 using SgqSystem.ViewModels;
 using System;
@@ -112,20 +113,23 @@ namespace SgqSystem.Controllers.Api.Params
                 /*Altero*/
                 sample.Number = alterObj.sampleNumber;
                 evaluation.Number = alterObj.evaluationNumber;
+                sample.AlterDate = DateTime.Now;
+                evaluation.AlterDate = DateTime.Now;
 
                 /*Explico para o EF que alterei*/
                 db.ParSample.Attach(sample);
                 var entrySample = db.Entry(sample);
                 entrySample.Property(e => e.Number).IsModified = true;
+                entrySample.Property(e => e.AlterDate).IsModified = true;
               
                 db.ParEvaluation.Attach(evaluation);
                 var entryEvaluation = db.Entry(evaluation);
                 entryEvaluation.Property(e => e.Number).IsModified = true;
+                entryEvaluation.Property(e => e.AlterDate).IsModified = true;
 
                 /*Salvo*/
                 db.SaveChanges();
             }
-          
         }
 
         #endregion
@@ -145,10 +149,10 @@ namespace SgqSystem.Controllers.Api.Params
         #region Vinculo Level1 com Level2
 
         [HttpGet]
-        [Route("AddVinculoL1L2/{idLevel1}/{idLevel2}/{idLevel3}")]
-        public List<ParLevel3Level2Level1DTO> AddVinculoL1L2(int idLevel1, int idLevel2,int idLevel3)
+        [Route("AddVinculoL1L2/{idLevel1}/{idLevel2}/{idLevel3}/{userId}")]
+        public List<ParLevel3Level2Level1DTO> AddVinculoL1L2(int idLevel1, int idLevel2,int idLevel3, int userId)
         {
-            return _paramdDomain.AddVinculoL1L2(idLevel1, idLevel2, idLevel3);
+            return _paramdDomain.AddVinculoL1L2(idLevel1, idLevel2, idLevel3, userId);
         }
 
         [HttpPost]
