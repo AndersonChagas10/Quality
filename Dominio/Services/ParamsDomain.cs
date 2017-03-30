@@ -584,18 +584,27 @@ namespace Dominio.Services
 
         #region Vinculo ParLevel2Level1
 
-        public List<ParLevel3Level2Level1DTO> AddVinculoL1L2(int idLevel1, int idLevel2, int idLevel3)
+        public List<ParLevel3Level2Level1DTO> AddVinculoL1L2(int idLevel1, int idLevel2, int idLevel3, int? userId = 0)
         {
 
             var retorno = new List<ParLevel3Level2Level1DTO>();
             using (var db = new SgqDbDevEntities())
             {
-             
+
                 ParLevel2Level1 existenteL2L1;
                 ParLevel3Level2 existenteL3L2;
                 ParLevel3Level2Level1 existenteL3L2L1;
                 ParLevel3Level2 salvarL3L2;
                 ParLevel2Level1 salvarL2L1;
+                UserSgq user;
+                int? companyId = null;
+
+                if (userId > 0)
+                {
+                    user = db.UserSgq.FirstOrDefault(r => r.Id == userId);
+                    if (user != null && !user.Role.ToLowerInvariant().Contains("Admin".ToLowerInvariant()))
+                        companyId = user.ParCompany_Id;
+                }
 
                 /**/
                 existenteL2L1 = db.ParLevel2Level1.FirstOrDefault(r => r.ParLevel1_Id == idLevel1 && r.ParLevel2_Id == idLevel2);
@@ -611,11 +620,11 @@ namespace Dominio.Services
                 {
                     /**/
                     var idL3L2 = 0;
-                    existenteL3L2 = db.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == idLevel3 && r.ParLevel2_Id == idLevel2);
+                    existenteL3L2 = db.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == idLevel3 && r.ParLevel2_Id == idLevel2 && r.ParCompany_Id == companyId);
                     if (existenteL3L2 == null)
                     {
                         //throw new Exception("");
-                        salvarL3L2 = new ParLevel3Level2() { ParLevel2_Id = idLevel2, ParLevel3_Id = idLevel3, ParCompany_Id = null , IsActive = true};
+                        salvarL3L2 = new ParLevel3Level2() { ParLevel2_Id = idLevel2, ParLevel3_Id = idLevel3, ParCompany_Id = companyId, IsActive = true};
                         db.ParLevel3Level2.Add(salvarL3L2);
                         db.SaveChanges();
                         idL3L2 = salvarL3L2.Id;
@@ -626,10 +635,10 @@ namespace Dominio.Services
                     }
 
                     /**/
-                    existenteL3L2L1 = db.ParLevel3Level2Level1.FirstOrDefault(r => r.ParLevel1_Id == idLevel1 && r.ParLevel3Level2_Id == idL3L2);
+                    existenteL3L2L1 = db.ParLevel3Level2Level1.FirstOrDefault(r => r.ParLevel1_Id == idLevel1 && r.ParLevel3Level2_Id == idL3L2 && r.ParCompany_Id == companyId);
                     if (existenteL3L2L1 == null)
                     {
-                        var salvarL3L2L1 = new ParLevel3Level2Level1() { ParLevel1_Id = idLevel1, ParLevel3Level2_Id = idL3L2, ParCompany_Id = null, Active = true};
+                        var salvarL3L2L1 = new ParLevel3Level2Level1() { ParLevel1_Id = idLevel1, ParLevel3Level2_Id = idL3L2, ParCompany_Id = companyId, Active = true};
                         db.ParLevel3Level2Level1.Add(salvarL3L2L1);
                         db.SaveChanges();
                     }
