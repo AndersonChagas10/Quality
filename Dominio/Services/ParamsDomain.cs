@@ -607,11 +607,11 @@ namespace Dominio.Services
                 }
 
                 /**/
-                existenteL2L1 = db.ParLevel2Level1.FirstOrDefault(r => r.ParLevel1_Id == idLevel1 && r.ParLevel2_Id == idLevel2);
+                existenteL2L1 = db.ParLevel2Level1.FirstOrDefault(r => r.ParLevel1_Id == idLevel1 && r.ParLevel2_Id == idLevel2 && r.ParCompany_Id == companyId);
 
                 if (existenteL2L1 == null)
                 {
-                    salvarL2L1 = new ParLevel2Level1() { ParLevel1_Id = idLevel1, ParLevel2_Id = idLevel2, AddDate = DateTime.Now, IsActive = true };
+                    salvarL2L1 = new ParLevel2Level1() { ParLevel1_Id = idLevel1, ParLevel2_Id = idLevel2, AddDate = DateTime.Now, IsActive = true, ParCompany_Id = companyId };
                     db.ParLevel2Level1.Add(salvarL2L1);
                     db.SaveChanges();
                 }
