@@ -110,11 +110,13 @@ namespace Data.Repositories
                         nonCoformitRule.ParCompany_Id = null;
 
                     db.Entry(nonCoformitRule).State = EntityState.Modified;
+                    db.Entry(nonCoformitRule).Property(e => e.AddDate).IsModified = false;
                 }
                 db.SaveChanges();
             }
         }
 
+    
         private void SalvaCounterLocalDoLevel1(ParLevel1 paramLevel1, ParCounterXLocal counterDoLevel1)
         {
             counterDoLevel1.ParLevel1_Id = paramLevel1.Id;
@@ -126,8 +128,9 @@ namespace Data.Repositories
             else
             {
                 Guard.verifyDate(counterDoLevel1, "AlterDate");
-                db.ParCounterXLocal.Attach(counterDoLevel1);
+                var entry = db.ParCounterXLocal.Attach(counterDoLevel1);
                 db.Entry(counterDoLevel1).State = EntityState.Modified;
+                db.Entry(counterDoLevel1).Property(e => e.AddDate).IsModified = false;
             }
             db.SaveChanges();
         }
@@ -143,6 +146,10 @@ namespace Data.Repositories
                 Guard.verifyDate(paramLevel1, "AlterDate");
                 db.ParLevel1.Attach(paramLevel1);
                 db.Entry(paramLevel1).State = EntityState.Modified;
+                db.Entry(paramLevel1).Property(e => e.AddDate).IsModified = false;
+                if(paramLevel1.ParScoreType_Id.GetValueOrDefault() <= 0)
+                    db.Entry(paramLevel1).Property(e => e.ParScoreType_Id).IsModified = false;
+
             }
             db.SaveChanges(); //Obtem Id do paramLevel1
         }
@@ -162,6 +169,7 @@ namespace Data.Repositories
                 Guard.verifyDate(parMultipleValues, "AlterDate");
                 db.ParMultipleValues.Attach(parMultipleValues);
                 db.Entry(parMultipleValues).State = EntityState.Modified;
+                db.Entry(parMultipleValues).Property(e => e.AddDate).IsModified = false;
             }
             db.SaveChanges();
         }
@@ -193,6 +201,7 @@ namespace Data.Repositories
                 Guard.verifyDate(parLevel1HeaderField, "AlterDate");
                 db.ParLevel1XHeaderField.Attach(parLevel1HeaderField);
                 db.Entry(parLevel1HeaderField).State = EntityState.Modified;
+                db.Entry(parLevel1HeaderField).Property(e => e.AddDate).IsModified = false;
             }
             db.SaveChanges(); /*Obtem id do ParLevel1XHeaderField*/
         }
@@ -215,6 +224,7 @@ namespace Data.Repositories
                 Guard.verifyDate(parHeadField, "AlterDate");
                 db.ParHeaderField.Attach(parHeadField);
                 db.Entry(parHeadField).State = EntityState.Modified;
+                db.Entry(parHeadField).Property(e => e.AddDate).IsModified = false;
             }
             db.SaveChanges(); /*Obtem id do ParHeadField*/
         }
@@ -234,6 +244,7 @@ namespace Data.Repositories
                 Guard.verifyDate(Level1XCluster, "AlterDate");
                 db.ParLevel1XCluster.Attach(Level1XCluster);
                 db.Entry(Level1XCluster).State = EntityState.Modified;
+                db.Entry(Level1XCluster).Property(e => e.AddDate).IsModified = false;
             }
             db.SaveChanges(); /*Obtem ID do NxN Level1XCluster*/
         }
@@ -258,6 +269,7 @@ namespace Data.Repositories
                 Guard.verifyDate(goal, "AlterDate");
                 db.ParGoal.Attach(goal);
                 db.Entry(goal).State = EntityState.Modified;
+                db.Entry(goal).Property(e => e.AddDate).IsModified = false;
             }
             db.SaveChanges(); 
         }
@@ -275,6 +287,7 @@ namespace Data.Repositories
                 Guard.verifyDate(parRelapse, "AlterDate");
                 db.ParRelapse.Attach(parRelapse);
                 db.Entry(parRelapse).State = EntityState.Modified;
+                db.Entry(parRelapse).Property(e => e.AddDate).IsModified = false;
             }
             db.SaveChanges();
         }
@@ -339,6 +352,7 @@ namespace Data.Repositories
                 Guard.verifyDate(paramLevel2, "AlterDate");
                 db.ParLevel2.Attach(paramLevel2);
                 db.Entry(paramLevel2).State = EntityState.Modified;
+                db.Entry(paramLevel2).Property(e => e.AddDate).IsModified = false;
             }
         }
 
@@ -356,6 +370,7 @@ namespace Data.Repositories
                 Guard.verifyDate(paramLevel3Group, "AlterDate");
                 db.ParLevel3Group.Attach(paramLevel3Group);
                 db.Entry(paramLevel3Group).State = EntityState.Modified;
+                db.Entry(paramLevel3Group).Property(e => e.AddDate).IsModified = false;
             }
         }
 
@@ -383,6 +398,7 @@ namespace Data.Repositories
                 Guard.verifyDate(paramNotConformityRuleXLevel, "AlterDate");
                 db.ParNotConformityRuleXLevel.Attach(paramNotConformityRuleXLevel);
                 db.Entry(paramNotConformityRuleXLevel).State = EntityState.Modified;
+                db.Entry(paramNotConformityRuleXLevel).Property(e => e.AddDate).IsModified = false;
             }
         }
 
@@ -404,6 +420,7 @@ namespace Data.Repositories
                 Guard.verifyDate(parEvaluation, "AlterDate");
                 db.ParEvaluation.Attach(parEvaluation);
                 db.Entry(parEvaluation).State = EntityState.Modified;
+                db.Entry(parEvaluation).Property(e => e.AddDate).IsModified = false;
             }
             db.SaveChanges();
         }
@@ -426,6 +443,7 @@ namespace Data.Repositories
                 Guard.verifyDate(parSample, "AlterDate");
                 db.ParSample.Attach(parSample);
                 db.Entry(parSample).State = EntityState.Modified;
+                //db.Entry(parSample).Property(e => e.AddDate).IsModified = false;
             }
             db.SaveChanges();
         }
@@ -442,6 +460,7 @@ namespace Data.Repositories
                 Guard.verifyDate(parCounterXLocal, "AlterDate");
                 db.ParCounterXLocal.Attach(parCounterXLocal);
                 db.Entry(parCounterXLocal).State = EntityState.Modified;
+                db.Entry(parCounterXLocal).Property(e => e.AddDate).IsModified = false;
             }
         }
 
@@ -457,6 +476,7 @@ namespace Data.Repositories
                 Guard.verifyDate(parRelapse, "AlterDate");
                 db.ParRelapse.Attach(parRelapse);
                 db.Entry(parRelapse).State = EntityState.Modified;
+                db.Entry(parRelapse).Property(e => e.AddDate).IsModified = false;
             }
         }
 
@@ -513,6 +533,7 @@ namespace Data.Repositories
                 Guard.verifyDate(parRelapse, "AlterDate");
                 db.ParRelapse.Attach(parRelapse);
                 db.Entry(parRelapse).State = EntityState.Modified;
+                db.Entry(parRelapse).Property(e => e.AddDate).IsModified = false;
             }
             db.SaveChanges();
         }
@@ -528,6 +549,7 @@ namespace Data.Repositories
                 Guard.verifyDate(paramLevel3, "AlterDate");
                 db.ParLevel3.Attach(paramLevel3);
                 db.Entry(paramLevel3).State = EntityState.Modified;
+                db.Entry(paramLevel3).Property(e => e.AddDate).IsModified = false;
             }
         }
 
@@ -543,6 +565,7 @@ namespace Data.Repositories
                 Guard.verifyDate(paramLevel3Value, "AlterDate");
                 db.ParLevel3Value.Attach(paramLevel3Value);
                 db.Entry(paramLevel3Value).State = EntityState.Modified;
+                db.Entry(paramLevel3Value).Property(e => e.AddDate).IsModified = false;
             }
             db.SaveChanges();
         }
@@ -577,6 +600,7 @@ namespace Data.Repositories
                             Guard.verifyDate(marcarObjetoInativo, "AlterDate");
                             db.ParCounterXLocal.Attach(marcarObjetoInativo);
                             db.Entry(marcarObjetoInativo).State = EntityState.Modified;
+                            db.Entry(marcarObjetoInativo).Property(e => e.AddDate).IsModified = false;
                             db.SaveChanges();
                         }
 
@@ -601,6 +625,7 @@ namespace Data.Repositories
                             Guard.verifyDate(marcarObjetoInativo, "AlterDate");
                             db.ParLevel1XHeaderField.Attach(marcarObjetoInativo);
                             db.Entry(marcarObjetoInativo).State = EntityState.Modified;
+                            db.Entry(marcarObjetoInativo).Property(e => e.AddDate).IsModified = false;
                             db.SaveChanges();
                         }
 
@@ -625,6 +650,7 @@ namespace Data.Repositories
                             Guard.verifyDate(marcarObjetoInativo, "AlterDate");
                             db.ParLevel1XCluster.Attach(marcarObjetoInativo);
                             db.Entry(marcarObjetoInativo).State = EntityState.Modified;
+                            db.Entry(marcarObjetoInativo).Property(e => e.AddDate).IsModified = false;
                             db.SaveChanges();
                         }
 
@@ -649,6 +675,7 @@ namespace Data.Repositories
                             Guard.verifyDate(marcarObjetoInativo, "AlterDate");
                             db.ParRelapse.Attach(marcarObjetoInativo);
                             db.Entry(marcarObjetoInativo).State = EntityState.Modified;
+                            db.Entry(marcarObjetoInativo).Property(e => e.AddDate).IsModified = false;
                             db.SaveChanges();
                         }
 
@@ -680,6 +707,7 @@ namespace Data.Repositories
                 Guard.verifyDate(paramLocal, "AlterDate");
                 db.ParLocal.Attach(paramLocal);
                 db.Entry(paramLocal).State = EntityState.Modified;
+                db.Entry(paramLocal).Property(e => e.AddDate).IsModified = false;
             }
         }
 
@@ -694,6 +722,7 @@ namespace Data.Repositories
                 Guard.verifyDate(paramCounter, "AlterDate");
                 db.ParCounter.Attach(paramCounter);
                 db.Entry(paramCounter).State = EntityState.Modified;
+                db.Entry(paramCounter).Property(e => e.AddDate).IsModified = false;
             }
         }
 
@@ -708,6 +737,7 @@ namespace Data.Repositories
                 Guard.verifyDate(paramCounterXLocal, "AlterDate");
                 db.ParCounterXLocal.Attach(paramCounterXLocal);
                 db.Entry(paramCounterXLocal).State = EntityState.Modified;
+                db.Entry(paramCounterXLocal).Property(e => e.AddDate).IsModified = false;
             }
         }
 
@@ -722,6 +752,8 @@ namespace Data.Repositories
                 Guard.verifyDate(paramRelapse, "AlterDate");
                 db.ParRelapse.Attach(paramRelapse);
                 db.Entry(paramRelapse).State = EntityState.Modified;
+                db.Entry(paramRelapse).Property(e => e.AddDate).IsModified = false;
+
             }
         }
 
@@ -736,6 +768,7 @@ namespace Data.Repositories
                 Guard.verifyDate(paramNotConformityRule, "AlterDate");
                 db.ParNotConformityRule.Attach(paramNotConformityRule);
                 db.Entry(paramNotConformityRule).State = EntityState.Modified;
+                db.Entry(paramNotConformityRule).Property(e => e.AddDate).IsModified = false;
             }
         }
 
@@ -750,6 +783,7 @@ namespace Data.Repositories
                 Guard.verifyDate(paramNotConformityRuleXLevel, "AlterDate");
                 db.ParNotConformityRuleXLevel.Attach(paramNotConformityRuleXLevel);
                 db.Entry(paramNotConformityRuleXLevel).State = EntityState.Modified;
+                db.Entry(paramNotConformityRuleXLevel).Property(e => e.AddDate).IsModified = false;
             }
         }
 
@@ -768,6 +802,7 @@ namespace Data.Repositories
                 Guard.verifyDate(paramParLevel3Level2, "AlterDate");
                 db.ParLevel3Level2.Attach(paramParLevel3Level2);
                 db.Entry(paramParLevel3Level2).State = EntityState.Modified;
+                db.Entry(paramParLevel3Level2).Property(e => e.AddDate).IsModified = false;
             }
         }
 
@@ -795,6 +830,7 @@ namespace Data.Repositories
                     Guard.verifyDate(parLevel2HeaderField, "AlterDate");
                     db.ParLevel2XHeaderField.Attach(parLevel2HeaderField);
                     db.Entry(parLevel2HeaderField).State = EntityState.Modified;
+                    db.Entry(parLevel2HeaderField).Property(e => e.AddDate).IsModified = false;
                 }
                 db.SaveChanges();
                 ts.Commit();
@@ -809,6 +845,8 @@ namespace Data.Repositories
             Guard.verifyDate(paramLevel03group, "AlterDate");
             db.ParLevel3Group.Attach(paramLevel03group);
             db.Entry(paramLevel03group).State = EntityState.Modified;
+            db.Entry(paramLevel03group).Property(e => e.AddDate).IsModified = false;
+
             db.SaveChanges();
         }
 

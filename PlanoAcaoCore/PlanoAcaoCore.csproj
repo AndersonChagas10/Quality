@@ -66,6 +66,7 @@
     <Compile Include="Acao\Pa_Quem.cs" />
     <Compile Include="Acao\Pa_Status.cs" />
     <Compile Include="Acao\Pa_Unidade.cs" />
+    <Compile Include="Conn.cs" />
     <Compile Include="Interfaces\ICrudPa.cs" />
     <Compile Include="Pa_BaseObject.cs" />
     <Compile Include="PaEfConenction.Context.cs">
@@ -109,6 +110,10 @@
     <ProjectReference Include="..\DTO\DTO.csproj">
       <Project>{0ED5466D-2A8F-4E37-8D4A-C2F2760BD687}</Project>
       <Name>DTO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Project>{026EFA70-BD6D-46C8-BD94-D7FCD42B9692}</Project>
+      <Name>Helper</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

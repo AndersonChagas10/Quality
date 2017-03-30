@@ -48,7 +48,14 @@
       <HintPath>..\packages\AutoMapper.6.0.2\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.6\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -176,7 +183,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Shared\DisplayTemplate\" />
-    <Folder Include="Views\Shared\EditorTemplate\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -186,6 +192,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Api\ApiPa_AcaoController.cs" />
     <Compile Include="Controllers\Api\ApiPa_PlanejamentoController.cs" />
+    <Compile Include="Controllers\Api\ApiPa_UserController.cs" />
     <Compile Include="Controllers\Api\GenericsController.cs" />
     <Compile Include="Controllers\Api\ApiRelatoriosController.cs" />
     <Compile Include="Controllers\Api\OperacionalController.cs" />
@@ -197,12 +204,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="MapperConfig\AcaoMapper.cs" />
+    <Compile Include="MapperConfig\MapperUtil.cs" />
     <Compile Include="MapperConfig\AutoMapperConfig.cs" />
-    <Compile Include="MapperConfig\AcompanhamentoMapper.cs" />
-    <Compile Include="MapperConfig\PlanejamentoMapper.cs" />
     <Compile Include="Models\HandleApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SgqIntegracao\IntegraFTA.cs" />
     <Compile Include="SgqIntegracao\IntegraSgq.cs" />
     <Compile Include="ViewModel\Pa_AcaoViewModel.cs" />
   </ItemGroup>
@@ -669,6 +675,7 @@
     <Content Include="Views\Pa_Planejamento\Editar.cshtml" />
     <Content Include="Views\Pa_Acao\Acompanhamento.cshtml" />
     <Content Include="Views\Pa_Acao\NewFTA.cshtml" />
+    <Content Include="Views\Shared\EditorTemplate\FTA.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">

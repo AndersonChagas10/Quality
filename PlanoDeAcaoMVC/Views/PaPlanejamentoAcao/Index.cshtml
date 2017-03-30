@@ -183,7 +183,6 @@
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="times">&times;</span></button>
                     <button class="close modalMinimize"><span aria-hidden="true" class="minus">&minus;</span></button>
 
-
                     <h4 class="modal-title" id="Header">ID: Header</h4>
                 </div>
                 <div class="modal-body" id="body">
@@ -283,65 +282,6 @@
         var urlSalvarAcompanhamento = '@Url.Action("SaveAcompanhamento", "api/Pa_Acao")'
         var urlAcompanhamentoDetalhes = '@Url.Action("Acompanhamento", "Pa_Acao")'
 
-        /*Btn Minimizar Modal*/
-        $(document).ready(function () {
-
-            var $content, $modal, $apnData, $modalCon;
-            $content = $(".min");
-
-            //To fire modal
-            $(".mdlFire").click(function (e) {
-                e.preventDefault();
-                var $id = $(this).attr("data-target");
-                $($id).modal({ backdrop: false, keyboard: false });
-            });
-
-            $(".modalMinimize").on("click", function () {
-
-                $modalCon = $(this).closest(".modal").attr("id");
-
-                $apnData = $(this).closest(".modal");
-
-                $modal = "#" + $modalCon;
-
-                $(".modal-backdrop").addClass("display-none");
-
-                $($modal).toggleClass("min");
-
-                if ($($modal).hasClass("min")) {
-                    $(".minmaxCon").append($apnData);
-                    ///$(this).find("i").toggleClass('fa-minus').toggleClass('fa-clone');
-                } else {
-                    $("body").append($apnData);
-                    ///$(this).find("i").toggleClass('fa-clone').toggleClass('fa-minus');
-                };
-            });
-
-            $("button[data-dismiss='modal']").click(function () {
-                $(this).closest(".modal").removeClass("min");
-                $(".container").removeClass($apnData);
-                //$(this).next('.modalMinimize').find("i").removeClass('fa fa-clone').addClass( 'fa fa-minus');
-            });
-
-        });
-        /*FIM Btn Minimizar Modal*/
-
-        $.fn.serializeObject = function () {
-            var o = {};
-            var a = this.serializeArray();
-            $.each(a, function () {
-                if (o[this.name] !== undefined) {
-                    if (!o[this.name].push) {
-                        o[this.name] = [o[this.name]];
-                    }
-                    o[this.name].push(this.value || '');
-                } else {
-                    o[this.name] = this.value || '';
-                }
-            });
-            return o;
-        };
-
         function Clicked(isClickedTatico, isClickedAcao, isTaticoVinculado, clearId) {
             isTaticoClicked = isClickedTatico;
             isNovaAcao = isClickedAcao;
@@ -390,8 +330,10 @@
             }
             else {
                 $('#NovoPlanejamento').show();
-            }
 
+            }
+            $('#Fechar').show();
+            $('#Salvar').show();
             /*Fim Botões*/
 
         }
@@ -530,6 +472,7 @@
             });
 
         }/*planejamentoCorrentId*/
+
         function FiltrarPlanejamento() {
             $('#Selecionar').prop('disabled', true);
             $('#Selecionar').off('click');
@@ -641,23 +584,57 @@
             /*Fim Botões*/
         }
 
-        function DdlChangeEstrategico() {
+        function DdlChangeEstrategico(v1, v2, v3) {
+
+            var change1 = v1 != undefined ? v1 : "";
+            var change2 = v2 != undefined ? v2 : "";
+           
+
+            var rdy = true;
             $('#Dimensao_Id').off('change').on('change', function () {
-                var Dimensao_Id = $('#Dimensao_Id').val() > 0 ? $('#Dimensao_Id').val() : 0;
-                $.get(GETObjetivo, { id: Dimensao_Id }, function (r) {
-                    $('#Objetivo_Id').parent().append(r);
-                    $('#Objetivo_Id').remove();
-                    $('#Objetivo_Id').off('change').on('change', function () {
-                        var Objetivo_Id = $('#Objetivo_Id').val() > 0 ? $('#Objetivo_Id').val() : 0;
-                        $.get(GETIndicadoresDiretriz, { id: Objetivo_Id }, function (r) {
-                            $('#IndicadoresDiretriz_Id').parent().append(r);
-                            $('#IndicadoresDiretriz_Id').remove();
-                        });
-                    });
-                    $('#Objetivo_Id').change();
-                });
+                var valor = $(this).val();
+                var form = $(this).parents('form');
+                rdy = false;
+                if (valor) {
+                    $.get(GETObjetivo, { id: valor }, function (r) {
+                        $('#Objetivo_Id').empty().html(r).attr('disabled', false);
+                        rdy = true;
+                    })
+                }
+                else {
+                    $('#Objetivo_Id').val("").attr('disabled', true);
+                    $('#IndicadoresDiretriz_Id').val("").attr('disabled', true);
+                }
             });
-            $('#Dimensao_Id').change();
+
+            $('#Objetivo_Id').off('change').on('change', function () {
+                var valor = $(this).val();
+                var form = $(this).parents('form');
+
+                if (valor) {
+                    $.get(GETIndicadoresDiretriz, { id: valor }, function (r) {
+                        $('#IndicadoresDiretriz_Id').empty().html(r).attr('disabled', false);
+                    });
+                }
+                else {
+                    $('#IndicadoresDiretriz_Id').val("").attr('disabled', true);
+                }
+            });
+
+         
+
+          
+            $('#Dimensao_Id').val(change1).change();
+
+            if (v2 != undefined) {
+                setTimeout(function () { $('#Objetivo_Id').val(change2).change(); }, 1000)
+            } else {
+                $('#Objetivo_Id').val(change2).change();
+            }
+          
+            if (v3 != undefined) {
+                setTimeout(function () { $('#IndicadoresDiretriz_Id').val(v3).change(); }, 1500)
+            }
         }
 
         function DdlChangeTatico() {
@@ -825,6 +802,7 @@
                     form.find('#ContramedidaGenerica_Id').empty().attr('disabled', true);
                 }
             });
+
         } /*Causa Medida Etc...*/
 
         function SalvarAcao() {
@@ -1182,7 +1160,8 @@
                             );
 
                         }
-
+                        $('#modalLindo').find('.modal-footer button').hide();
+                        $('#Header').html("Editar");
                         $('#modalLindo').modal();
                     });
 
@@ -1232,18 +1211,8 @@
                         acaoCorrentId = data.Acao.Id;
                         //Clicked(isTaticoClicked, isNovaAcao);
 
-                        $.get(urlAcompanhamentoDetalhes, { id: acaoCorrentId }, function (r) {
-                            $('#modalLindo').find('.modal-body').empty().append(r);
-                            $('#modalLindo').modal();
-                            $("#acompanhamento").on("submit", function (event) {
-                                //event.preventDefault();
-                                var obj = $("#acompanhamento").serializeObject();
-                                if (obj.Name == "" || obj.Acao_Id == undefined || obj.MailTo == undefined)
-                                    alert("Os campos devem ser preenchidos")
-                                else
-                                    SalvarAcompanhamento(obj);
-                            });
-                        })
+                        getAcompanhamento(acaoCorrentId);
+
                     });
 
                 },
@@ -1279,29 +1248,32 @@
                         var bgColorStatus = ""
                         var bgColorPrazo = ""
                         /*Status*/
-                        if (data.Acao.StatusName.indexOf("Cancelado") > -1) {
+                        console.log(data.Acao.Status);
+                        if (data.Acao.Status == 2) {
                             bgColorStatus = "grey";
                             bgColorPrazo = "rgb(126, 194, 253)";
-                        } else if (data.Acao.StatusName.indexOf('Ativo') > -1) {
+                        } else if (data.Acao.Status == 5) {
                             bgColorStatus = "#ADD8E6";
-                        } else if (data.Acao.StatusName.indexOf('Ativo') > -1 && data.Acao.StatusName.indexOf('Atrasado') > -1) {
+                        } else if (data.Acao.Status == 5 && data.Acao.StatusName.indexOf('Atrasado') > -1) {
                             bgColorStatus = "#458fa8"
-                        } else if (data.Acao.StatusName.indexOf('Concluído')/* > -1 && data.Acao.StatusName.indexOf('Prazo') > -1*/) {
+                        } else if (data.Acao.Status == 3/* > -1 && data.Acao.StatusName.indexOf('Prazo') > -1*/) {
                             bgColorPrazo = "rgb(126, 194, 253)";
                             bgColorStatus = "cyan"
-                        } else if (data.Acao.StatusName.indexOf('Concluído') > -1 && data.Acao.StatusName.indexOf('Atraso') > -1) {
+                        } else if (data.Acao.Status == 4) {
                             bgColorPrazo = "rgb(126, 194, 253)";
                             bgColorStatus = "steelblue"
-                        } else if (data.Acao.StatusName.indexOf('Replanejado') > -1) {
-                            bgColorStatus = "yellow"
                         }
+
+                        //else if (data.Acao.StatusName.indexOf('Replanejado') > -1) {
+                        //    bgColorStatus = "yellow"
+                        //}
 
                         $(row.cells[31]).css("background", bgColorStatus);
 
                         /*Prazo*/
-                        if (data.Acao.StatusName == "Cancelado") {
+                        if (data.Acao.Status == 2) {
 
-                        } else if (data.Acao.StatusName.indexOf('Concluído') > -1) {
+                        } else if (data.Acao.Status == 3) {
 
                         } else if (data.Acao._Prazo.indexOf('Faltam') > -1) {
                             bgColorPrazo = "#90EE90"
@@ -1324,6 +1296,12 @@
                             $(row.cells[33]).find('.btnNovoTatico').hide();
                         }
 
+                        if (data.Acao.Id > 0) { // Possui plan Operac
+                            $(row.cells[33]).find('.btnAcompanhamento').show();
+                        } else {
+                            $(row.cells[33]).find('.btnAcompanhamento').hide();
+                        }
+
                     } catch (e) { }
 
                     if (data.Tatico_Id > 0) { // possui plan tatico
@@ -1338,6 +1316,11 @@
                         $(row.cells[33]).find('.btnNovoTatico').hide();
                     }
 
+                    if (data.Acao.Id > 0) { // Possui plan Operac
+                        $(row.cells[33]).find('.btnAcompanhamento').show();
+                    } else {
+                        $(row.cells[33]).find('.btnAcompanhamento').hide();
+                    }
 
                 },
                 fnDrawCallback: function (data, d, o) {
@@ -1461,6 +1444,7 @@
 
                 $('#modalLindo').find('.modal-body .content2').append(form);
                 $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditTatico'))\" >Salvar Tático</button><hr>");
+                myfunction();
 
             } else {
                 //if (tipo == 'Estrategico') {
@@ -1481,9 +1465,9 @@
                 form.find('table > tbody > tr:nth-child(17)').hide();
                 form.find('table > tbody > tr:nth-child(18)').hide();
                 form.attr('id', 'formEditEstrategy');
-
                 $('#modalLindo').find('.modal-body .content1').append(form);
                 $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditEstrategy'))\">Salvar Estratégico</button><hr>");
+                DdlChangeEstrategico(model.Dimensao_Id, model.Objetivo_Id, model.IndicadoresDiretriz_Id);
                 //}
 
                 //else {
@@ -1506,7 +1490,10 @@
             $.post(urlSalvarAcompanhamento, obj, function (r) {
 
                 //Colocar o retorno no modal
-                openMessageModal('Registro salvo com sucesso!', '');
+                formReset();
+                getAcompanhamento(obj.Acao_Id);
+                openMessageModal('Registro salvo com sucesso!', '');               
+                
             })
             .fail(function (e, h, x) {
 
@@ -1514,6 +1501,30 @@
 
             });
 
+        }
+
+        function formReset() {
+            $('#acompanhamento #Name').val("");
+            $('#acompanhamento #MailTo').val(-1);
+            $('#acompanhamento #Status_Id').val(-1);
+        }
+
+        function getAcompanhamento(acaoCorrentId) {
+
+            $.get(urlAcompanhamentoDetalhes, { id: acaoCorrentId }, function (r) {
+                $('#modalLindo').find('.modal-body').empty().append(r);
+                $('#modalLindo').modal();
+                $('#Header').html('Acompanhamento do Planejamento Operacional');
+                $('.modal .modal-footer button').hide();
+                $("#SaveAcompanhamento").on("click", function (event) {
+                    //event.preventDefault();
+                    var obj = $("#acompanhamento").serializeObject();
+                    if (obj.Name == "" || obj.Acao_Id == undefined || obj.MailTo == undefined)
+                        alert("Os campos devem ser preenchidos")
+                    else
+                        SalvarAcompanhamento(obj);
+                });
+            })
         }
 
     </script>

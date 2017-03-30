@@ -12,10 +12,10 @@ namespace PlanoAcaoCore
         public DateTime AddDate { get; set; }
         public DateTime AlterDate { get; set; }
 
-        protected static string catalog { get { return "PlanoDeAcao"; } }
-        protected static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
-        protected static string user { get { return "sa"; } }
-        protected static string pass { get { return "1qazmko0"; } }
+        //protected static string catalog { get { return "PlanoDeAcao"; } }
+        //protected static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
+        //protected static string user { get { return "sa"; } }
+        //protected static string pass { get { return "1qazmko0"; } }
 
         //protected static string catalog { get { return "PlanoDeAcao"; } }
         //protected static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
@@ -33,20 +33,15 @@ namespace PlanoAcaoCore
         //protected static string user { get { return "grjqualidadedev"; } }
         //protected static string pass { get { return "Mi3UpU0J35<_"; } }
 
-        //protected static string catalog { get { return "dbGQualidadeTeste"; } }
-        //protected static string dataSource { get { return @"10.255.0.41"; } }
-        //protected static string user { get { return "UserGQualidade"; } }
-        //protected static string pass { get { return "grJsoluco3s"; } }
-
         #region Validação de campos Front end
 
         protected string message { get; set; }
+
         protected static void VerificaMensagemCamposObrigatorios(string message)
         {
             if (!string.IsNullOrEmpty(message))
             {
                 message = "\n Campos necessários para o cadastro não foram preenchidos: " + message;
-
                 throw new Exception(message.TrimEnd(',') + ".");
             }
         }
@@ -57,27 +52,27 @@ namespace PlanoAcaoCore
 
         protected int Update(SqlCommand cmd)
         {
-            using (var db = new Factory(dataSource, catalog, pass, user))
+            using (var db = new Factory(Conn.dataSource, Conn.catalog, Conn.pass, Conn.user))
                 return db.InsertUpdateData(cmd);
         }
 
         protected int Salvar(SqlCommand cmd)
         {
-            using (var db = new Factory(dataSource, catalog, pass, user))
+            using (var db = new Factory(Conn.dataSource, Conn.catalog, Conn.pass, Conn.user))
                 return db.InsertUpdateData(cmd);
 
         }
 
         protected static int SalvarStatic(SqlCommand cmd)
         {
-            using (var db = new Factory(dataSource, catalog, pass, user))
+            using (var db = new Factory(Conn.dataSource, Conn.catalog, Conn.pass, Conn.user))
                 return db.InsertUpdateData(cmd);
 
         }
 
         public static T SalvarGenerico<T>(T obj)
         {
-            using (var db = new Factory(dataSource, catalog, pass, user))
+            using (var db = new Factory(Conn.dataSource, Conn.catalog, Conn.pass, Conn.user))
                 return db.InsertUpdateData<T>(obj);
 
         }
@@ -85,7 +80,7 @@ namespace PlanoAcaoCore
         public static List<T> ListarGenerico<T>(string query)
         {
             List<T> listReturn;
-            using (var db = new Factory(dataSource, catalog, pass, user))
+            using (var db = new Factory(Conn.dataSource, Conn.catalog, Conn.pass, Conn.user))
                 listReturn = db.SearchQuery<T>(query);
             return listReturn;
         }
@@ -93,7 +88,7 @@ namespace PlanoAcaoCore
         public static T GetGenerico<T>(string query)
         {
             T objReturn;
-            using (var db = new Factory(dataSource, catalog, pass, user))
+            using (var db = new Factory(Conn.dataSource, Conn.catalog, Conn.pass, Conn.user))
                 objReturn = db.SearchQuery<T>(query).FirstOrDefault();
 
             return objReturn;
@@ -140,7 +135,7 @@ namespace PlanoAcaoCore
         public static int ExecutarSql(string sql)
         {
             var retorno = 0;
-            using (var db = new Factory(dataSource, catalog, pass, user))
+            using (var db = new Factory(Conn.dataSource, Conn.catalog, Conn.pass, Conn.user))
                 retorno = db.ExecuteSql(sql);
             return retorno;
         } 

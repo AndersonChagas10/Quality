@@ -12,17 +12,15 @@ namespace PlanoAcaoEF
     using System;
     using System.Collections.Generic;
     
-    public partial class Pa_Acompanhamento
+    public partial class Pa_FTA
     {
         public int Id { get; set; }
         public Nullable<System.DateTime> AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int Acao_Id { get; set; }
+        public string MetaFTA { get; set; }
+        public string PercentualNCFTA { get; set; }
+        public string ReincidenciaDesvioFTA { get; set; }
+        public Nullable<int> Supervisor_Id { get; set; }
         public Nullable<int> Order { get; set; }
-        public int Status_Id { get; set; }
-        public Nullable<int> MailTo { get; set; }
-        public int Author_Id { get; set; }
     }
 }

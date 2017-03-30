@@ -1767,4 +1767,10 @@
   <data name="ucl" xml:space="preserve">
     <value>LCS</value>
   </data>
+  <data name="registerPerUnit" xml:space="preserve">
+    <value>Cadastro por unidade</value>
+  </data>
+  <data name="tipoScore" xml:space="preserve">
+    <value>Tipo de Score</value>
+  </data>
 </root>
