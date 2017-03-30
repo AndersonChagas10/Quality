@@ -18,9 +18,10 @@
     var urlSetRequiredCCAB = Url.Action("SetRequiredCCAB", "api/ParamsApi");
     var urlSetDefaultCCAB = Url.Action("SetDefaultCCAB", "api/ParamsApi");
     var urlSaveMeassurementUnit = Url.Action("AddUnidadeDeMedida", "api/ParamsApi");
-
+    var urlAttCabecalho = Url.Action("atualizaCabecalho", "api/ParamsApi");
     var removeLevel3Group = Url.Action("RemoveParLevel3Group", "api/ParamsApi");
     var AddLevel3Group = Url.Action("AddUpdateParLevel3Group", "api/ParamsApi");
+    var urlEditCabecalho = @Url.Action("EditParHeaderField", "Params");
 
     var urlHome = Url.Action("Index", "Home");
 
@@ -172,8 +173,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>
 
                         </div>
@@ -188,6 +187,32 @@
 <!-- Modal Edição  crudNxN -->
 @Html.Partial("_crudNxNModal")
 
+<!--Modal Edição Cabeçalho-->
+<div class="container">
+    <div class="modal fade" id="modalEdicaoCabecalho" tabindex="-1" role="dialog" aria-labelledby="" data-backdrop="static">
+        <div class="modal-dialog" style="max-width:90%;  min-width:70%" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="times">&times;</span></button>
+                    <button class="close modalMinimize"><span aria-hidden="true" class="minus">&minus;</span></button>
+
+                    <h4 class="modal-title" id="Header">ID: Header</h4>
+                </div>
+                <div class="modal-body" id="body">
+                    ID: Body
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default" id="Fechar" onclick="Clicked(false, false, false);" data-dismiss="modal" style="display:none">Fechar</button>
+                    <button type="button" class="btn btn-primary" id="Salvar" onclick="" style="display:none">Salvar</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 
     var hasperm = @Html.Raw(Json.Encode(ViewBag.IsAdmin));
@@ -196,7 +221,7 @@
         $('input, select').not("#crudNxNEdit, #parLevel1Select2, #parLevel2Select2, #parLevel3Select2").attr("disabled", true);
         $('button').attr("disabled", true);
         $(':checkbox').bootstrapSwitch('disabled',true);
-       
+
     }
 
 
@@ -974,6 +999,7 @@
 
     });
 
+
     var vinculoL2L3 = '@Html.Raw(@vinculoL2L3)';
 
     function UpdateSelect2Level2(idLevel1, idNewLevel2, callback) {
@@ -1037,7 +1063,7 @@
     var initialFormLevel3 = null;
 
     $(document).ready(function () {
-        
+
         if(config){
             $('#level1Title').html("Level 1");
         }
@@ -1111,5 +1137,73 @@
     });
 
     var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
+
+    var urlAttCabecalho = '@Html.Raw(@urlAttCabecalho)';
+    var idpar = 0;
+    var idfieldType;
+    var idLvl1;
+    var indexCabecalho ={
+        enviarDadosParaApi : function (e) {
+            var dados = $('#ediCab > form').serializeObject();
+            dados['paramsDto.parHeaderFieldDto.ParFieldType_Id'] = idfieldType;
+            if (dados['paramsDto.parHeaderFieldDto.ParFieldType_Id'] == 1 || dados['paramsDto.parHeaderFieldDto.ParFieldType_Id'] == 3) {
+                var tam = dados['i.Id'].length;
+                var count = 0;
+                var ar = [];
+                while (count < tam) {
+                    ar.push({ Id: dados['i.Id'][count], Name: dados['i.Name'][count], PunishmentValue: dados['i.PunishmentValue'][count], ParHeaderField_Id : idpar});
+                    dados['paramsDto.parHeaderFieldDto.ParMultipleValues'] = ar;
+                    count++;
+                }
+            }
+            $.post(urlAttCabecalho, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+                if (idLvl1 > 0) {
+                    indexParamsLevel1.GetLevel1(idLvl1, true);
+                    openMessageModal("Alerta", statusmessage);
+                    idLvl1 = 0 ;
+                    $('#modalEdicaoCabecalho').modal('hide');
+                }
+
+            }).fail(function (e, h, x) {
+                //closeLoader();
+                try {
+                    closeLoader();
+                    openMessageModal("Alerta", e.responseJSON.Message);
+                } catch (e) {
+                    closeLoader();
+                    openMessageModal("@Resources.Resource.warning", "@Resources.Resource.cannot_finish_action");
+                    console.log(e);
+                }
+            });
+        }
+    }
+    var EditCabecalho = '@Html.Raw(@urlEditCabecalho)';
+    function ModalEdicaoCabecalho(title, idpH,idL1, idFT) {
+        idpar = idpH;
+        idfieldType = idFT;
+        idLvl1 = idL1;
+        $('#modalEdicaoCabecalho').modal();
+        $('#modalEdicaoCabecalho').find('.modal-body').empty();
+        $('#Header').html("Edição de Cabeçalho");
+
+        //if (callback != undefined) {
+        //    callback();
+        //    return false;
+        //}
+
+        $.get(EditCabecalho, { id: idpar, idLevel1: idL1 }, function (r) {
+            $('#modalEdicaoCabecalho').find('.modal-body').empty().append(r);
+            $('#paramsDto_parHeaderFieldDto_ParFieldType_Id').attr('disabled', true);
+        });
+
+        $('#Fechar').show();
+        $('#Salvar').show();
+        ///*Fim Botões*/
+
+    }
+    function CabecalhoAtualizado() {
+
+
+    }
 
 </script>
