@@ -825,15 +825,15 @@
                             <tr><th>Preview</th></tr>
                             <tr><th></th></tr>*/
 
-                            var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
-                            example += '<td id=""><label class="fixed-width"> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
-                                       '<td id=""><label class="fixed-width"> ' + $('#parFieldType :selected').text() + '</label></td>' + // Tipo
-                                          '<td><select class="" id="" name="" class="form-control input-sm fixed-width" >' + //Preview
-                                          '<option value="-1">Selecione...</option> ';
-                            Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, c) {
-                                example += '<option value="1">' + o.Name + '</option>';
-                            });
-                            example += '</select>';
+            var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
+            example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
+                       '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' + // Tipo
+                          '<td><select class="" id="" name="" class="form-control input-sm " >' + //Preview
+                          '<option value="-1">Selecione...</option> ';
+            Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, c) {
+                example += '<option value="1">' + o.Name + '</option>';
+            });
+            example += '</select>';
 
                             /*Cria inputs para objeto: */
                             var obj1 = Cabecalhos.ParMultiplaEscolhaOpcoes[0]
@@ -852,8 +852,8 @@
                                 }
                             });
 
-                            example += '</td>'
-                            example += '<td>&nbsp;' + Cabecalhos.BtnExcluir() + '</td></tr>';//Btn excluir
+            example += '</td>'
+            example += '<td>' + Cabecalhos.BtnExcluir() + '</td></tr>';//Btn excluir
 
 
                             $('#tableCabecalhosPreview').append(example);
@@ -1002,38 +1002,38 @@
                         },
                         SalvaBinario: function () {
 
-                            var fieldType = $('#parFieldType option:selected').val();
-                            var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
-                            example += '<td id=""><label class="fixed-width"> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
-                                       '<td id=""><label class="fixed-width"> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
-                            //var example = '<div><label class="on-off fixed-width">';
-                            //example += '<label>' + $('#paramsDto_parHeaderFieldDto_Name').val() + ':&nbsp;</label>';
-                            /*Cria preview*/
-                            example += '<td>';
-                            Cabecalhos.ParBinario.forEach(function (o, c) {
-                                example += o.Name;
-                                var a = c == 0 ? 'checked = "checked"' : '';
-                                var b = c == 0 ? "true" : "false";
-                                example += '<input disable="disabled" ' + a + ' type="radio" value="' + b + '" >'
-                            });
-                            //example += '</label>';
-                            /*Cria Hiddens*/
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + $('#parFieldType option:selected').val() + '" />';
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + $('#paramsDto_parHeaderFieldDto_Name').val() + '" />';
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Description"            value="" />';
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParLevelDefinition_Id"  value="' + Cabecalhos.ParBinario[0].ParLevelDefinition_Id + '" />';
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"  value="' + Cabecalhos.ParBinario[0].ParFieldType_Id + '" />';
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') + '"/>';
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
-                            Cabecalhos.ParBinario.forEach(function (o, counter) {
-                                /*Cria inputs para objeto: */
-                                for (var key in o) {
-                                    example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto["' + counter + '].' + key.toString() + '"  value="' + o[key].toString() + '" />';
-                                }
-                            });
-                            example += '</td>';
+            var fieldType = $('#parFieldType option:selected').val();
+            var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
+            example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
+                       '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
+            //var example = '<div><label class="on-off fixed-width">';
+            //example += '<label>' + $('#paramsDto_parHeaderFieldDto_Name').val() + ':&nbsp;</label>';
+            /*Cria preview*/
+            example += '<td>';
+            Cabecalhos.ParBinario.forEach(function (o, c) {
+                example += o.Name;
+                var a = c == 0 ? 'checked = "checked"' : '';
+                var b = c == 0 ? "true" : "false";
+                example += '<input disable="disabled" ' + a + ' type="radio" value="' + b + '" >'
+            });
+            //example += '</label>';
+            /*Cria Hiddens*/
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + $('#parFieldType option:selected').val() + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + $('#paramsDto_parHeaderFieldDto_Name').val() + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Description"            value="" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParLevelDefinition_Id"  value="' + Cabecalhos.ParBinario[0].ParLevelDefinition_Id + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"  value="' + Cabecalhos.ParBinario[0].ParFieldType_Id + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked') + '"/>';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
+            Cabecalhos.ParBinario.forEach(function (o, counter) {
+                /*Cria inputs para objeto: */
+                for (var key in o) {
+                    example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].' + key.toString() + '"     value="' + o[key].toString() + '" />';
+                }
+            });
+            example += '</td>';
 
-                            example += '<td>&nbsp;' + Cabecalhos.BtnExcluir2() + '</td></tr>';//Btn excluir
+            example += '<td>' + Cabecalhos.BtnExcluir2() + '</td></tr>';//Btn excluir
 
                             $('#tableCabecalhosPreview').append(example);
 
@@ -1098,17 +1098,17 @@
                         },
                         AtualizaPreviewCampotexto: function (o) {
 
-                            var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
-                            example += '<td id=""><label class="fixed-width"> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
-                                       '<td id=""><label class="fixed-width"> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
-                            //var example = '<div>';
-                            //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
-                            example += '<td>';
-                            if(o.isDataDefined){
-                                example += '<input type="text" class="dataInput form-control input-sm fixed-width"/>';//Input Date
-                            }else{
-                                example += '<input type="text" class="form-control input-sm fixed-width" />';//Input
-                            }
+            var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
+            example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
+                       '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
+            //var example = '<div>';
+            //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
+            example += '<td>';
+            if(o.isDataDefined){
+                example += '<input type="text" class="dataInput form-control input-sm "/>';//Input Date
+            }else{
+                example += '<input type="text" class="form-control input-sm " />';//Input
+            }
 
                             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + o.Type + '" />';
                             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + o.Name + '" />';
@@ -1118,10 +1118,10 @@
                             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
                             example += '</td>';
 
-                            example += '<td>';
-                            example += '&nbsp;' +  Cabecalhos.BtnExcluir();
-                            //example += '</div>';
-                            example += '</td>';
+            example += '<td>';
+            example += '' +  Cabecalhos.BtnExcluir();
+            //example += '</div>';
+            example += '</td>';
 
                             $('#tableCabecalhosPreview').append(example);
 
@@ -1182,37 +1182,37 @@
                         },
                         AtualizaPreviewCampoNumerico: function (o) {
 
-                            var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
-                            example += '<td id=""><label class="fixed-width"> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
-                                       '<td id=""><label class="fixed-width"> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
+            var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
+            example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
+                       '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
 
-                            //var example = '<div>';
-                            //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
-                            example += '<td>';
-                            example += '<input class="form-control input-sm fixed-width" type="number" />';//Input
+            //var example = '<div>';
+            //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
+            example += '<td>';
+            example += '<input class="form-control input-sm " type="number" />';//Input
 
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + o.Type + '" />';
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + o.Name + '" />';
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Description"            value="' + o.Description + '" />';
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParLevelDefinition_Id"  value="' + o.Nivel + '" />';
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + o.Link + '"/>';
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
-                            example += '</td>';
-                            example += '<td>';
-                            example += '&nbsp;' + Cabecalhos.BtnExcluir();
-                            //example += '</div>';
-                            example += '</td>';
-                            $('#tableCabecalhosPreview').append(example);
-                        },
-                        ExcluirCampoTexto: function (e) {
-                            e.parent().remove();
-                        },
-                        IncluirIntegracoes: function () {
-                            if($('#headerLevel option:selected').val() == -1){
-                                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
-                                //lert('Selecione o Nivel do Cabecalho');
-                                return;
-                            }
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + o.Type + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + o.Name + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Description"            value="' + o.Description + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParLevelDefinition_Id"  value="' + o.Nivel + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + o.Link + '"/>';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
+            example += '</td>';
+            example += '<td>';
+            example += '' + Cabecalhos.BtnExcluir();
+            //example += '</div>';
+            example += '</td>';
+            $('#tableCabecalhosPreview').append(example);
+        },
+        ExcluirCampoTexto: function (e) {
+            e.parent().remove();
+        },
+        IncluirIntegracoes: function () {
+            if($('#headerLevel option:selected').val() == -1){
+                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
+                //lert('Selecione o Nivel do Cabecalho');
+                return;
+            }
 
                             if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
                                 openMessageModal("@Resources.Resource.warning", "@Resources.Resource.fill_the_integration_field_name");
@@ -1259,34 +1259,34 @@
                         },
                         AtualizaPreviewCampoIntegracoes: function (o) {
 
-                            var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
-                            example += '<td id=""><label class="fixed-width"> ' + $('.equipamentos').val() + '</label></td>' + // nome
-                                       '<td id=""><label class="fixed-width"> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
+            var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
+            example += '<td id=""><label class=""> ' + $('.equipamentos').val() + '</label></td>' + // nome
+                       '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
 
-                            //var example = '<div>';
-                            //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
-                            example += '<td>';
-                            example += '<input class="form-control input-sm fixed-width" type="number" />';//Input
+            //var example = '<div>';
+            //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
+            example += '<td>';
+            example += '<input class="form-control input-sm" type="number" />';//Input
 
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + o.Type + '" />';
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + o.Name + '" />';
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Description"            value="' + o.Description + '" />';
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParLevelDefinition_Id"  value="' + o.Nivel + '" />';
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + o.Link + '"/>';
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
-                            example += '</td>';
-                            example += '<td>';
-                            example += '&nbsp;' + Cabecalhos.BtnExcluir();
-                            //example += '</div>';
-                            example += '</td>';
-                            $('#tableCabecalhosPreview').append(example);
-                        },
-                        //DATA
-                        ShowData: function () {
-                            $('#btnIncluirCabecalho input').hide();
-                            $('#objData').show();
-                            $('#btnIncluirData').show();
-                        },
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + o.Type + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + o.Name + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Description"            value="' + o.Description + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParLevelDefinition_Id"  value="' + o.Nivel + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + o.Link + '"/>';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
+            example += '</td>';
+            example += '<td>';
+            example += '' + Cabecalhos.BtnExcluir();
+            //example += '</div>';
+            example += '</td>';
+            $('#tableCabecalhosPreview').append(example);
+        },
+        //DATA
+        ShowData: function () {
+            $('#btnIncluirCabecalho input').hide();
+            $('#objData').show();
+            $('#btnIncluirData').show();
+        },
 
                         //HORA
                         ShowHora: function () {
@@ -1503,16 +1503,15 @@
 
                     });
 
-                    function RemoverReincidencia(e, isAlter){
-                        if(isAlter){
-                            e.parents()
-                        }else{
-                            e.parents('tr').remove();
-                        }
-                    }
-
-
-                    $(document).ready(function () {
+    function RemoverReincidencia(e, isAlter){
+        if(isAlter){
+            e.parents()
+        }else{
+            e.parents('tr').remove();
+        }
+    }
+    
+    $(document).ready(function () {
 
                         defaults();
                         loadSelect2();

@@ -119,6 +119,50 @@ public class ScorecardResultSet
            "\n DECLARE @ParCompany_Id INT = " + unidadeId + "                                                                                                                                                                                                                                     " +
            "\n DECLARE @DATAINICIAL DATETIME = '" + dtInicio.ToString("yyyyMMdd") + " 00:00'                                                                                                                                                                                                                    " +
            "\n DECLARE @DATAFINAL   DATETIME = '" + dtFim.ToString("yyyyMMdd") + " 23:59'                                                                                                                                                                                                                    " +
+
+
+               // Alteração
+               "\n CREATE TABLE #AMOSTRATIPO4 ( " +
+
+                "\n UNIDADE INT NULL, " +
+                "\n INDICADOR INT NULL, " +
+                "\n AM INT NULL, " +
+                "\n DEF_AM INT NULL " +
+                "\n ) " +
+
+
+                "\n INSERT INTO #AMOSTRATIPO4 " +
+
+                "\n SELECT " +
+                "\n  UNIDADE, INDICADOR, " +
+                "\n COUNT(1) AM " +
+                "\n ,SUM(DEF_AM) DEF_AM " +
+                "\n FROM " +
+                "\n ( " +
+                "\n     SELECT " +
+                "\n     cast(C2.CollectionDate as DATE) AS DATA " +
+                "\n     , C.Id AS UNIDADE " +
+                "\n     , C2.ParLevel1_Id AS INDICADOR " +
+                "\n     , C2.EvaluationNumber AS AV " +
+                "\n     , C2.Sample AS AM " +
+                "\n     , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
+                "\n     FROM CollectionLevel2 C2 " +
+                "\n     INNER JOIN ParLevel1 L1 " +
+                "\n     ON L1.Id = C2.ParLevel1_Id " +
+
+                "\n     INNER JOIN ParCompany C " +
+                "\n     ON C.Id = C2.UnitId " +
+                "\n     where cast(C2.CollectionDate as DATE) BETWEEN @DATAINICIAL AND @DATAFINAL " +
+                "\n     and C2.NotEvaluatedIs = 0 " +
+                "\n     and C2.Duplicated = 0 " +
+                "\n     and L1.ParConsolidationType_Id = 4 " +
+                "\n     group by C.Id, ParLevel1_Id, EvaluationNumber, Sample, cast(CollectionDate as DATE) " +
+                "\n ) TAB " +
+                "\n GROUP BY UNIDADE, INDICADOR " +
+
+
+
+
            "\n                                                                                                                                                                                                                                                                     " +
            "\n DECLARE @VOLUMEPCC INT                                                                                                                                                                                                                                              " +
            "\n DECLARE @DIASABATE INT                                                                                                                                                                                                                                              " +
@@ -377,6 +421,7 @@ public class ScorecardResultSet
            "\n     WHEN CT.Id IN(1, 2) THEN SUM(CL1.WeiEvaluation)                                                                                                                                                                                                                 " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n     WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                                " +
+           "\n     WHEN CT.Id IN(4) THEN SUM(A4.AM)" +
            "\n   END                                                                                                                                                                                                                                                               " +
            "\n   /*FIM AV----------------------------------------------------------*/                                                                                                                                                                                              " +
            "\n   AS AV                                                                                                                                                                                                                                                             " +
@@ -395,6 +440,7 @@ public class ScorecardResultSet
            "\n                                                                                                                                                                                                                                                                     " +
            "\n         WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
+           "\n         WHEN CT.Id IN(4) THEN SUM(A4.AM)                                                                                                                                                                                                                            " +
            "\n       END                                                                                                                                                                                                                                                           " +
            "\n         /*FIM AV----------------------------------------------------------*/                                                                                                                                                                                        " +
            "\n         -                                                                                                                                                                                                                                                           " +
@@ -407,6 +453,8 @@ public class ScorecardResultSet
            "\n                                                                                                                                                                                                                                                                     " +
            "\n         WHEN CT.Id IN(3)   THEN SUM(CL1.DefectsResult)                                                                                                                                                                                                              " +
            "\n                                                                                                                                                                                                                                                                     " +
+           "\n         WHEN CT.Id IN(4) THEN SUM(A4.DEF_AM)                                                                                                                                                                                                                        " +
+
            "\n       END                                                                                                                                                                                                                                                           " +
            "\n       /*FIM NC----------------------------------------------------------*/                                                                                                                                                                                          " +
            "\n    ELSE                                                                                                                                                                                                                                                             " +
@@ -419,6 +467,8 @@ public class ScorecardResultSet
            "\n                                                                                                                                                                                                                                                                     " +
            "\n         WHEN CT.Id IN(3)   THEN SUM(CL1.DefectsResult)                                                                                                                                                                                                              " +
            "\n                                                                                                                                                                                                                                                                     " +
+           "\n         WHEN CT.Id IN(4) THEN SUM(A4.DEF_AM)                                                                                                                                                                                                                        " +
+
            "\n       END                                                                                                                                                                                                                                                           " +
            "\n       /*FIM NC----------------------------------------------------------*/                                                                                                                                                                                          " +
            "\n    END                                                                                                                                                                                                                                                              " +
@@ -440,6 +490,8 @@ public class ScorecardResultSet
            "\n                                                                                                                                                                                                                                                                     " +
            "\n         WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
+           "\n         WHEN CT.Id IN(4) THEN SUM(A4.AM)                                                                                                                                                                                                                            " +
+
            "\n       END                                                                                                                                                                                                                                                           " +
            "\n       /*FIM AV----------------------------------------------------------*/                                                                                                                                                                                          " +
            "\n       = 0                                                                                                                                                                                                                                                           " +
@@ -460,6 +512,8 @@ public class ScorecardResultSet
            "\n                                                                                                                                                                                                                                                                     " +
            "\n             WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
+           "\n             WHEN CT.Id IN(4) THEN SUM(A4.AM)                                                                                                                                                                                                                            " +
+
            "\n           END                                                                                                                                                                                                                                                       " +
            "\n             /*FIM AV----------------------------------------------------------*/                                                                                                                                                                                    " +
            "\n             -  /* SUBTRAÇÃO */                                                                                                                                                                                                                                      " +
@@ -472,6 +526,7 @@ public class ScorecardResultSet
            "\n                                                                                                                                                                                                                                                                     " +
            "\n             WHEN CT.Id IN(3)   THEN SUM(CL1.DefectsResult)                                                                                                                                                                                                          " +
            "\n                                                                                                                                                                                                                                                                     " +
+           "\n             WHEN CT.Id IN(4) THEN SUM(A4.DEF_AM)                                                                                                                                                                                                                            " +
            "\n           END                                                                                                                                                                                                                                                       " +
            "\n           /*FIM NC----------------------------------------------------------*/                                                                                                                                                                                      " +
            "\n        ELSE                                                                                                                                                                                                                                                         " +
@@ -484,6 +539,8 @@ public class ScorecardResultSet
            "\n                                                                                                                                                                                                                                                                     " +
            "\n             WHEN CT.Id IN(3)   THEN SUM(CL1.DefectsResult)                                                                                                                                                                                                          " +
            "\n                                                                                                                                                                                                                                                                     " +
+           "\n             WHEN CT.Id IN(4) THEN SUM(A4.DEF_AM)                                                                                                                                                                                                                            " +
+
            "\n           END                                                                                                                                                                                                                                                       " +
            "\n           /*FIM NC----------------------------------------------------------*/                                                                                                                                                                                      " +
            "\n        END                                                                                                                                                                                                                                                          " +
@@ -502,6 +559,8 @@ public class ScorecardResultSet
            "\n                                                                                                                                                                                                                                                                     " +
            "\n         WHEN CT.Id IN(3)   THEN SUM(CL1.EvaluatedResult)                                                                                                                                                                                                            " +
            "\n                                                                                                                                                                                                                                                                     " +
+           "\n         WHEN CT.Id IN(4) THEN SUM(A4.AM)                                                                                                                                                                                                                            " +
+
            "\n       END                                                                                                                                                                                                                                                           " +
            "\n       /*FIM AV----------------------------------------------------------*/                                                                                                                                                                                          " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -531,6 +590,9 @@ public class ScorecardResultSet
            "\n LEFT JOIN ParCompany C                                                                                                                                                                                                                                              " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON C.Id = CL1.UnitId                                                                                                                                                                                                                                         " +
+           "\n LEFT JOIN #AMOSTRATIPO4 A4                                                                                                                                                                                                                                          " +
+           "\n         ON A4.UNIDADE = C.Id                                                                                                                                                                                                                                      " +
+           "\n         AND A4.INDICADOR = L1.ID                                                                                                                                 " +
            "\n LEFT JOIN ParCompanyXStructure CS                                                                                                                                                                                                                                   " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n        ON CS.ParCompany_Id = C.Id                                                                                                                                                                                                                                   " +
@@ -643,8 +705,8 @@ public class ScorecardResultSet
            "\n AND CCC.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL)                                                                                                                                                                                                      " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n  ) SC                                                                                                                                                                                                                                                               " +
-           "\n  " + orderby + "                                                                                                                                                                                                                                                    ";
-
+           "\n  " + orderby + "                                                                                                                                                                                                                                                    " +
+           "\n  DROP TABLE #AMOSTRATIPO4 ";
 
         return sql;
     }
@@ -663,4 +725,3 @@ public class ScorecardResultSet
 
 }
 
-    

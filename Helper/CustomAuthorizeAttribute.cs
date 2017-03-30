@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTO.Helpers;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -100,6 +101,7 @@ namespace Helper
                     }
 
                     filterContext.Controller.ViewBag.IsAdmin = VerificarRole("Admin");
+                    filterContext.Controller.ViewBag.CompanyId = cookie.Values["CompanyId"].ToString();
 
                     if (!string.IsNullOrEmpty(_userSgqRoles) && !Roles.Contains("somentemanutencao-sgq"))
                         if (_userSgqRoles.Contains("somentemanutencao-sgq") && !HttpContext.Current.Request.RawUrl.Contains("ManPainelGestao/Index"))

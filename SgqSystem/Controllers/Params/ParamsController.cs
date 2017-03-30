@@ -13,7 +13,7 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Params
 {
-    [CustomAuthorize(Roles = "Admin")]
+    [CustomAuthorize]
     [HandleController()]
     public class ParamsController : BaseController
     {
