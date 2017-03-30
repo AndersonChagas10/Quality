@@ -7,7 +7,6 @@ using System.Linq;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System;
-using DTO;
 
 namespace Dominio.Services
 {
@@ -907,23 +906,7 @@ namespace Dominio.Services
 
             return parLevel2XHeaderField;
         }
-
-        //public void verificaVinculos(int level1 = 0, int level2 = 0, int level3 = 0)
-        //{
-        //    var hasVinculoLevel32 = "select * from parlevel3level2 where  ParLevel3_Id = 1074";
-        //    var hasVinculoLevel321 = "select * from parlevel3level2level1 where ParLevel1_Id = 29 and ParLevel3Level2_id in (select id from parlevel3level2 where  ParLevel3_Id = 1074)";
-        //    var hasVinculoLevel12 = "select * from parlevel2level1 where ParLevel1_Id = 29";
-
-
-        //}
-
-
+      
     }
 
-    //public class Vinculos
-    //{
-    //    public bool isVinculadoLevel1 {get; set ;}
-    //    public bool isVinculadoLevel2 {get; set ;}
-    //    public bool isVinculadoLevel3 { get; set ;}
-    //}
 }

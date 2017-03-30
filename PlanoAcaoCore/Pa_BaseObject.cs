@@ -12,27 +12,6 @@ namespace PlanoAcaoCore
         public DateTime AddDate { get; set; }
         public DateTime AlterDate { get; set; }
 
-        //protected static string catalog { get { return "PlanoDeAcao"; } }
-        //protected static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
-        //protected static string user { get { return "sa"; } }
-        //protected static string pass { get { return "1qazmko0"; } }
-
-        //protected static string catalog { get { return "PlanoDeAcao"; } }
-        //protected static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
-        //protected static string user { get { return "sa"; } }
-        //protected static string pass { get { return "1qazmko0"; } }
-
-
-        //protected static string catalog { get { return "dbGQualidade_"; } }
-        //protected static string dataSource { get { return @"dellgabriel\mssql2014"; } }
-        //protected static string user { get { return "sa"; } }
-        //protected static string pass { get { return "betsy1"; } }
-
-        //protected static string catalog { get { return "grjqualidadedev"; } }
-        //protected static string dataSource { get { return @"mssql1.gear.host"; } }
-        //protected static string user { get { return "grjqualidadedev"; } }
-        //protected static string pass { get { return "Mi3UpU0J35<_"; } }
-
         #region Validação de campos Front end
 
         protected string message { get; set; }

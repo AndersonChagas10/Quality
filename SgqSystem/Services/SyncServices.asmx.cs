@@ -62,7 +62,7 @@ namespace SgqSystem.Services
             string ano = data[2].Substring(0, 4);
             string mes = data[0];
             string dia = data[1];
-
+            
             string hora = data[2].Substring(4, (data[2].Length - 4));
             hora = hora.Trim();
             if (hora.Length == 5)
@@ -1208,16 +1208,16 @@ namespace SgqSystem.Services
 
                         var i = Convert.ToInt32(command.ExecuteScalar());
                         //Se o script for executado corretamente retorna o Id
+                        
+                        //Atualiza a situação de reauditoria
+                        if (Reaudit)
+                        {
+                            var UpdateCollectionLevel2DB = new SGQDBContext.UpdateCollectionLevel2();
+                            UpdateCollectionLevel2DB.UpdateIsReauditByKey(keySolid, Reaudit, Int16.Parse(haveReaudit), ReauditNumber);
+                        }
+
                         if (i > 0)
                         {
-
-
-                            var UpdateCollectionLevel2DB = new SGQDBContext.UpdateCollectionLevel2();
-                            
-                            if (Reaudit)
-                            {
-                                UpdateCollectionLevel2DB.UpdateIsReauditByKey(keySolid, Reaudit, Int16.Parse(haveReaudit), ReauditNumber);
-                            }
                             return i;
                         }
                         else
@@ -2288,6 +2288,7 @@ namespace SgqSystem.Services
             string supports = "<div class=\"Results hide\"></div>" +
                               "<div class=\"ResultsConsolidation hide\"></div>" +
                                "<div class=\"ResultsKeys hide\"></div>" +
+                               "<div class=\"ResultsPhase hide\"></div>" +
                               "<div class=\"Deviations hide\"></div>" +
                               "<div class=\"Users hide\"></div>" +
                               "<div class=\"VerificacaoTipificacao hide\"></div>" +
@@ -2744,6 +2745,9 @@ namespace SgqSystem.Services
             string listlevel1 = null;
             string listLevel2 = null;
             string listLevel3 = null;
+
+            string excecao = null;
+            
             //Percorremos a lista de agrupada
             foreach (var parLevel1Group in parLevel1GroupByCriticalLevel)
             {
@@ -2767,7 +2771,7 @@ namespace SgqSystem.Services
                     //Se o ParLevel1 contem um ParCritialLevel_Id
                     var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas();
                     var alertas = ParLevel1AlertasDB.getAlertas(parlevel1.Id, ParCompany_Id, dateCollect);
-
+                    
                     if (parlevel1.ParCriticalLevel_Id > 0)
                     {
                         //O ParLevel1 vai estar dentro de um accordon
@@ -2852,6 +2856,11 @@ namespace SgqSystem.Services
                             painelCounters = html.painelCounters(listCounter, "margin-top: 40px;font-size: 12px;");
                         }
 
+                        if (GlobalConfig.Eua && parlevel1.Name.Contains("CFF"))
+                        {
+                            tipoTela = "CFF";
+                        }
+
                         var listParRelapse = ParRelapseDB.getRelapses(parlevel1.Id);
 
                         string level01 = html.level1(parlevel1,
@@ -2873,12 +2882,12 @@ namespace SgqSystem.Services
                                                      IsLimitedEvaluetionNumber: parlevel1.IsLimitedEvaluetionNumber,
                                                      listParRelapse: listParRelapse);
                         //Incrementa level1
-                        parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row", outerhtml: level01 + painelCounters);
+                        parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row "+excecao, outerhtml: level01 + painelCounters);
                     }
                     else
                     {
                         //Caso o ParLevel1 não contenha um ParCritialLevel_Id apenas incremento os itens de ParLevel1
-                        parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), outerhtml: parlevel1.Name);
+                        parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), outerhtml: parlevel1.Name, classe: excecao);
                     }
                     //Instancia variável para receber todos os level3
                     string level3Group = null;
@@ -3132,6 +3141,22 @@ namespace SgqSystem.Services
                 else
                 {
                     classXSLevel2 = " col-xs-8";
+                    string btnReaudit = null;
+                    if (parlevel2.IsReaudit)
+                    {
+                        btnReaudit = "<button class=\"btn btn-primary hide btnReaudit\"> " +
+                                      "<span>R</span></button>";
+
+                        buttons = html.div(
+                                     //aqui vai os botoes
+                                     outerhtml: btnReaudit,
+                                     style: "text-align: right",
+                                     classe: "userInfo col-xs-2"
+                                     );
+
+                        classXSLevel2 = " col-xs-6";
+                    }
+                    
                 }
 
                 string level02Header = html.div(classe: classXSLevel2) +
@@ -4168,7 +4193,7 @@ namespace SgqSystem.Services
             }
             else if (parLevel3.ParLevel3InputType_Id == 5)
             {
-                classInput = " texto";
+                classInput = " texto naoValidarInput";
                 labels = html.div(
                                            outerhtml: "",
                                            classe: "font10",
@@ -5020,6 +5045,37 @@ namespace SgqSystem.Services
                 int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel1Consolidation");
                 return 0;
             }
+        }
+
+        [WebMethod]
+        public string getPhaseLevel2(int ParCompany_Id, string date)
+        {
+
+            var ResultPhaseDB = new SGQDBContext.ResultPhase();
+            //Instanciamos uma variável que irá 
+
+            DateTime startDate = DateCollectConvert(date);
+            DateTime endDate = DateCollectConvert(date);
+
+            startDate = startDate.AddDays(-30);
+
+            var ResultPhaseList = ResultPhaseDB.GetByMonth(ParCompany_Id, startDate, endDate);
+            
+            string PhaseResult = null;
+            //Percorremos as consolidações de ParLevel1
+            foreach (var c in ResultPhaseList)
+            {
+                PhaseResult += "<div "+
+                    "parlevel1_id=\"" + c.ParLevel1_Id + "\" "+
+                    "parlevel2_id=\"" + c.ParLevel2_Id + "\" "+
+                    "collectiondate=\"" + c.CollectionDate + "\" " +
+                    "evaluationnumber=\"" + c.EvaluationNumber + "\" " +
+                    "period=\"" + c.Period + "\" " +
+                    "shift=\"" + c.Shift + "\" " +
+                    "phase=\"" + c.Phase + "\" " +
+                    "class=\"PhaseResultlevel2\"></div>";
+            }
+            return PhaseResult;
         }
 
         [WebMethod]

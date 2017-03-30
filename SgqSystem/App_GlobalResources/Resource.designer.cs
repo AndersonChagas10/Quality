@@ -3463,6 +3463,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There a reaudit to be completed in other period.
+        /// </summary>
+        internal static string reaudit_period {
+            get {
+                return ResourceManager.GetString("reaudit_period", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Receiving data.
         /// </summary>
         internal static string receiving_data {
@@ -4318,7 +4327,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sing.
+        ///   Looks up a localized string similar to Sign.
         /// </summary>
         internal static string sign {
             get {

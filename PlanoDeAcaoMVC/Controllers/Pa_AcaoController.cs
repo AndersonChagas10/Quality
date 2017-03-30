@@ -43,7 +43,8 @@ namespace PlanoDeAcaoMVC.Controllers
         public ActionResult Edit(int id)
         {
             var obj = Pa_Acao.Get(id);
-            return PartialView("Index", obj);
+            //return PartialView("Index", obj);
+            return PartialView("Edit", obj);
         }
 
         public ActionResult GETGrupoCausa(int id)
@@ -142,5 +143,13 @@ namespace PlanoDeAcaoMVC.Controllers
 
             return View(fta);
         }
+
+        [HttpGet]
+        public ActionResult Details(int id)
+        {           
+            var obj = Pa_Acao.Get(id);
+            return PartialView("Details", obj);       
+        }
+
     }
 }

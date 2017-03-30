@@ -125,14 +125,14 @@
                                             <div class="form-group">
                                                 @Html.Label(Resources.Resource.password, htmlAttributes: new { @class = "control-label col-md-2" })
                                                 <div class="col-md-10">
-                                                    @Html.Editor("userSgqDto.Password", new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                                                    @Html.Editor("userSgqDto.Password", new { htmlAttributes = new { @class = "form-control", @type = "password", @maxlength = "7" } })
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
                                                 @Html.Label(Resources.Resource.confirm_password, htmlAttributes: new { @class = "control-label col-md-2" })
                                                 <div class="col-md-10">
-                                                    @Html.Editor("userSgqDto.ConfirmPassword", new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                                                    @Html.Editor("userSgqDto.ConfirmPassword", new { htmlAttributes = new { @class = "form-control", @type = "password", @maxlength = "7" } })
                                                 </div>
                                             </div>
 

@@ -49,8 +49,15 @@
           <Property Name="Acao_Id" Type="int" Nullable="false" />
           <Property Name="Order" Type="int" />
           <Property Name="Status_Id" Type="int" Nullable="false" />
-          <Property Name="MailTo" Type="int" />
           <Property Name="Author_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pa_AcompanhamentoXQuem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Acompanhamento_Id" Type="int" Nullable="false" />
+          <Property Name="Quem_Id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Pa_FTA">
           <Key>
@@ -102,6 +109,7 @@
         <EntityContainer Name="PlanoDeAcaoModelStoreContainer">
           <EntitySet Name="Pa_Acao" EntityType="Self.Pa_Acao" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pa_Acompanhamento" EntityType="Self.Pa_Acompanhamento" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pa_AcompanhamentoXQuem" EntityType="Self.Pa_AcompanhamentoXQuem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pa_FTA" EntityType="Self.Pa_FTA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pa_Planejamento" EntityType="Self.Pa_Planejamento" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
@@ -112,6 +120,7 @@
         <EntityContainer Name="PlanoDeAcaoEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Pa_Acao" EntityType="PlanoDeAcaoModel.Pa_Acao" />
           <EntitySet Name="Pa_Acompanhamento" EntityType="PlanoDeAcaoModel.Pa_Acompanhamento" />
+          <EntitySet Name="Pa_AcompanhamentoXQuem" EntityType="PlanoDeAcaoModel.Pa_AcompanhamentoXQuem" />
           <EntitySet Name="Pa_FTA" EntityType="PlanoDeAcaoModel.Pa_FTA" />
           <EntitySet Name="Pa_Planejamento" EntityType="PlanoDeAcaoModel.Pa_Planejamento" />
         </EntityContainer>
@@ -159,8 +168,15 @@
           <Property Name="Acao_Id" Type="Int32" Nullable="false" />
           <Property Name="Order" Type="Int32" />
           <Property Name="Status_Id" Type="Int32" Nullable="false" />
-          <Property Name="MailTo" Type="Int32" />
           <Property Name="Author_Id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pa_AcompanhamentoXQuem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Acompanhamento_Id" Type="Int32" Nullable="false" />
+          <Property Name="Quem_Id" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Pa_FTA">
           <Key>
@@ -252,7 +268,6 @@
             <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Acompanhamento">
               <MappingFragment StoreEntitySet="Pa_Acompanhamento">
                 <ScalarProperty Name="Author_Id" ColumnName="Author_Id" />
-                <ScalarProperty Name="MailTo" ColumnName="MailTo" />
                 <ScalarProperty Name="Status_Id" ColumnName="Status_Id" />
                 <ScalarProperty Name="Order" ColumnName="Order" />
                 <ScalarProperty Name="Acao_Id" ColumnName="Acao_Id" />
@@ -260,6 +275,15 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_AcompanhamentoXQuem">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_AcompanhamentoXQuem">
+              <MappingFragment StoreEntitySet="Pa_AcompanhamentoXQuem">
+                <ScalarProperty Name="Quem_Id" ColumnName="Quem_Id" />
+                <ScalarProperty Name="Acompanhamento_Id" ColumnName="Acompanhamento_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
