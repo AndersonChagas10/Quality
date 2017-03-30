@@ -52,7 +52,9 @@
                          , @Html.Label(Resources.Resource.data_type_entry)
                          , Table.PosicaoLabel.top
                          , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Value.ParLevel3InputType_Id, null, new { @class = "text-danger" }), colspan: 3)
+                                       
                                     </tr>
+
 
                                     <tr class="row ParIntervalos" style="display: none;">
                                         @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
@@ -76,7 +78,7 @@
                                     </tr>
                                     <tr class="row" id="companyValueL3">
                                         @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeParL3Value" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top
-                   , button: "<button type='button' id='btnSaveCounter' onclick='level3Value.adiciona(); ' class='btn btn-primary btn-sm'><i class='fa fa-plus' aria-hidden='true'></i></button>")
+                                            , button: "<button type='button' id='btnSaveCounter' onclick='level3Value.adiciona(); ' class='btn btn-primary btn-sm'><i class='fa fa-plus' aria-hidden='true'></i></button>")
 
                                     </tr>
                                 </table>
@@ -210,7 +212,6 @@
             return;
         }
 
-
         var peso = 0;
         var groupoLevel2 = 0;
 
@@ -225,7 +226,6 @@
         });
 
     }
-
 
     var levelParamsDTO = @Html.Raw(Json.Encode(@Model.paramsDto));
 
@@ -277,6 +277,13 @@
                 parLevel3Value_IntervalMin = "";
                 parLevel3Value_IntervalMax = "";
                 parIntervalosTypeName  = "";
+            }
+
+            if(selectTipoInput == 5){
+                selectUnidadeDeMedidasName = "";
+                selectNaoConforme = "";
+                selectConforme = "";
+                selectUnidadeDeMedidas = "";
             }
 
             if(isEdit != undefined){
@@ -437,6 +444,15 @@
                         o["IntervalMinCalculado"] = o.IntervalMinCalculado;
                         o["IntervalMax"] = o.IntervalMaxCalculado;
                         o["IntervalMaxCalculado"] = o.IntervalMaxCalculado;
+                    }else if(o.ParLevel3InputType_Id == 5){
+                        o["ParMeasurementUnit_Name"] = "";
+                        o["ParLevel3BoolFalse_Name"] = "";
+                        o["ParLevel3BoolTrue_Name"] = "";
+                        o["AcceptableValueBetween_Name"] = "";
+                        o["IntervalMin"] = "";
+                        o["IntervalMinCalculado"] = "";
+                        o["IntervalMax"] = "";
+                        o["IntervalMaxCalculado"] = "";
                     }
                     //o["AcceptableValueBetween_Name"] = o.ParCriticalLevel.Name;
                     crudNxN.adiciona(o,  id, tdNamess);
@@ -643,6 +659,17 @@
             $('.ParBinarios').hide();
             $('.ParIntervalos').fadeIn();
         }
+
+        if ($("#selectTipoInput option:selected").val() == "5") {
+            resetaParIntervalos();
+            resetaParBinarios();
+            GuardJs.mascaraCampoCalculado('#parLevel3Value_IntervalMin');
+            GuardJs.mascaraCampoCalculado('#parLevel3Value_IntervalMax');
+            $('.ParBinarios').hide();
+            $('.ParIntervalos').hide();
+            $('#companyValueL3').show();
+        }
+
     });
 
     function resetaParCalculado(){
