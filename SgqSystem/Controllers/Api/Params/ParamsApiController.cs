@@ -40,7 +40,7 @@ namespace SgqSystem.Controllers.Api.Params
 
         #endregion
 
-        #region Metods
+        #region SET
 
         [HttpPost]
         [ValidateModel]
@@ -99,6 +99,34 @@ namespace SgqSystem.Controllers.Api.Params
             return paramsViewModel;
         }
 
+        [HttpPost]
+        [Route("AlteraAvaliacaoAmostra")]
+        public void AlteraAvaliacaoAmostra(ParLevel2SampleEvaluationDTO alterObj)
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+                /*Busco do DB*/
+                var sample = db.ParSample.FirstOrDefault(r => r.Id == alterObj.sampleId);
+                var evaluation = db.ParEvaluation.FirstOrDefault(r => r.Id == alterObj.evaluationId);
+
+                /*Altero*/
+                sample.Number = alterObj.sampleNumber;
+                evaluation.Number = alterObj.evaluationNumber;
+
+                /*Explico para o EF que alterei*/
+                db.ParSample.Attach(sample);
+                var entrySample = db.Entry(sample);
+                entrySample.Property(e => e.Number).IsModified = true;
+              
+                db.ParEvaluation.Attach(evaluation);
+                var entryEvaluation = db.Entry(evaluation);
+                entryEvaluation.Property(e => e.Number).IsModified = true;
+
+                /*Salvo*/
+                db.SaveChanges();
+            }
+          
+        }
 
         #endregion
 
@@ -138,14 +166,7 @@ namespace SgqSystem.Controllers.Api.Params
         }
 
         #endregion
-
-        [HttpPost]
-        [Route("ClearLevel1")]
-        public decimal teste([FromBody] decimal teste)
-        {
-            return teste;
-        }
-
+      
         [HttpPost]
         [Route("AddRemoveParHeaderLevel2")]
         public ParLevel2XHeaderField AddRemoveParHeaderLevel2(ParLevel2XHeaderField parLevel2XHeaderField)
@@ -165,7 +186,6 @@ namespace SgqSystem.Controllers.Api.Params
             }
             return save;
         }
-
 
         [HttpPost]
         [Route("GetListLevel1")]

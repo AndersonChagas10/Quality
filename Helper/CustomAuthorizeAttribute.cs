@@ -23,6 +23,7 @@ namespace Helper
             // I need to read cookie values here
             //Read the cookie from Request.
             HttpCookie cookie = filterContext.HttpContext.Request.Cookies.Get("webControlCookie");
+            
             if (cookie == null)
             {
                 //No cookie found or cookie expired.
@@ -98,6 +99,8 @@ namespace Helper
                         }
                     }
 
+                    filterContext.Controller.ViewBag.IsAdmin = VerificarRole("Admin");
+
                     if (!string.IsNullOrEmpty(_userSgqRoles) && !Roles.Contains("somentemanutencao-sgq"))
                         if (_userSgqRoles.Contains("somentemanutencao-sgq") && !HttpContext.Current.Request.RawUrl.Contains("ManPainelGestao/Index"))
                             filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "ManPainelGestao", action = "Index" }));
@@ -125,5 +128,9 @@ namespace Helper
             return roles.Any(r => Roles.ToLowerInvariant().Contains(r.ToLowerInvariant()));
         }
 
+        protected bool VerificarRole(string role)
+        {
+            return _userSgqRoles.ToLowerInvariant().Contains(role.ToLowerInvariant());
+        }
     }
 }

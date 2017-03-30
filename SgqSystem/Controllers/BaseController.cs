@@ -42,7 +42,6 @@ namespace SgqSystem.Controllers
                 }
             }
 
-
             base.Initialize(requestContext);
         }
 
@@ -92,6 +91,9 @@ namespace SgqSystem.Controllers
                 Response.Cookies.Add(myCookie);
             }
         }
+
+      
+
     }
 
 }

@@ -1,9 +1,6 @@
-﻿using Dominio.Entities.BaseEntity;
+﻿using DTO.BaseEntity;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 
 namespace SgqSystem.ViewModels
 {
