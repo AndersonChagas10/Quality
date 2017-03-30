@@ -26,16 +26,19 @@ namespace SgqSystem.Controllers.Api.Params
         private IBaseDomain<ParLevel1, ParLevel1DTO> _baseParLevel1;
         private IBaseDomain<ParLevel2, ParLevel2DTO> _baseParLevel2;
         private IBaseDomain<ParLevel3, ParLevel3DTO> _baseParLevel3;
+        private IBaseDomain<ParHeaderField, ParHeaderFieldDTO> _baseParHeaderField;
 
         public ParamsApiController(IParamsDomain paramdDomain
             ,IBaseDomain<ParLevel2, ParLevel2DTO> baseParLevel2
             ,IBaseDomain<ParLevel3, ParLevel3DTO> baseParLevel3
-            , IBaseDomain<ParLevel1, ParLevel1DTO> baseParLevel1)
+            , IBaseDomain<ParLevel1, ParLevel1DTO> baseParLevel1
+            ,IBaseDomain<ParHeaderField, ParHeaderFieldDTO> baseParHeaderField)
         {
             _baseParLevel1 = baseParLevel1;
             _baseParLevel2 = baseParLevel2;
             _baseParLevel3 = baseParLevel3;
             _paramdDomain = paramdDomain;
+            _baseParHeaderField = baseParHeaderField;
         }
 
         #endregion
@@ -165,9 +168,8 @@ namespace SgqSystem.Controllers.Api.Params
             }
             return save;
         }
-
-
-        [HttpPost]
+        
+        [HttpGet]
         [Route("GetListLevel1")]
         public List<ParLevel1DTO> GetListLevel1()
         {
@@ -236,6 +238,21 @@ namespace SgqSystem.Controllers.Api.Params
             }
 
             return list;
+        }
+
+        [HttpPost]
+        [HandleApi]
+        [Route("atualizaCabecalho")]
+        public ParHeaderFieldDTO atualizaCabecalho([FromBody] ParamsViewModel parr)
+        {
+            //ParHeaderFieldDTO par = parr;
+            return _baseParHeaderField.AddOrUpdate(parr.paramsDto.parHeaderFieldDto);
+            
+            //#region GAMBIARRA LEVEL 100!
+            //paramsViewModel.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion = paramsViewModel.paramsDto.parLevel1Dto.IsSpecificNumberSample;
+            //#endregion
+            //paramsViewModel.paramsDto = _paramdDomain.AddUpdateLevel1(paramsViewModel.paramsDto);
+            
         }
 
         [HttpGet]

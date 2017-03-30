@@ -31,7 +31,6 @@ namespace SgqSystem.Controllers.Params
             _paramDomain = paramDomain;
             _parHeaderField = parHeaderField;
             _parMultipleValues = parmultiplevalues;
-            
             if (ViewModel == null)
                 ViewModel = new ParamsViewModel(_paramDomain.CarregaDropDownsParams());/*Cria view model vazio.*/
         }
@@ -182,7 +181,20 @@ namespace SgqSystem.Controllers.Params
         public ActionResult EditParHeaderField(int id)
         {
             ViewModel.paramsDto.parHeaderFieldDto = _parHeaderField.GetById(id);
-            return PartialView("_EditParHeaderField", ViewModel);
+            
+            return View("EditParHeaderField" , ViewModel);
+        }
+
+        [HttpPost]
+        public JsonResult AttParHeaderField(ParHeaderField parHF)
+        {
+            ParHeaderField par = parHF;
+            //foreach (var i in h.parHeaderFieldDto.ParMultipleValues) {
+            //    _parMultipleValues.AddOrUpdate(i);
+            //}
+            //_parHeaderField.AddOrUpdate(ViewModel.paramsDto.parHeaderFieldDto);
+            //GetParLevel1ById(ViewModel.paramsDto.parLevel1Dto.Id);
+            return new JsonResult();
         }
     }
     

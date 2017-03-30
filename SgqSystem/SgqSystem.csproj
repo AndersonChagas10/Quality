@@ -498,6 +498,8 @@
     <Content Include="admin-lte\css\skins\_all-skins.min.css" />
     <Content Include="admin-lte\js\app.js" />
     <Content Include="admin-lte\js\app.min.js" />
+    <Content Include="Angular\app.js" />
+    <Content Include="Angular\EditParHeaderFieldController.js" />
     <Content Include="App_GlobalResources\Resource.pt-br.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <SubType>Designer</SubType>
@@ -2128,7 +2130,7 @@
     <Content Include="Views\Role\EditLeftControlRole.cshtml" />
     <Content Include="Views\RelatoriosSgq\CartasCep.cshtml" />
     <Content Include="Views\Manutencao\Index.cshtml" />
-    <Content Include="Views\Params\_EditParHeaderField.cshtml" />
+    <Content Include="Views\Params\EditParHeaderField.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

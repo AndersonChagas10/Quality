@@ -1,0 +1,121 @@
+﻿@model SgqSystem.ViewModels.ParamsViewModel
+
+@{
+    ViewBag.Title = "Edit Par Header Field";
+    var url = Url.Action("atualizaCabecalho", "api/ParamsApi");
+}
+@using (Html.BeginForm())
+{
+    
+    <div class="container-fluid" id="EditaHeaderField" style="background-color:white;padding:5%;" ng-app="EditarParHeaderField">
+        <span>@Html.EditorFor(m => m.paramsDto.parHeaderFieldDto.Id, new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 0px;visibility:hidden;" } })</span>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="table-responsive">
+                    <div class="col-md-3">
+                        <label>@Html.Label(Resources.Resource.field_level)</label>
+                        <span>@Html.DropDownListFor(m => m.paramsDto.parHeaderFieldDto.ParLevelDefinition_Id, Model.paramsDdl.DdlparLevelDefinition, new { @class = "form-control input-sm" })</span>
+                    </div>
+                    <div class="col-md-3">
+                        <label>@Html.Label(Resources.Resource.type)</label>
+                        <span>@Html.DropDownListFor(m => m.paramsDto.parHeaderFieldDto.ParFieldType_Id, Model.paramsDdl.DdlParFieldType, new { htmlAttributes = new { @style = "display:block;", @class = "form-control input-sm" } })</span>
+                    </div>
+                    <div class="col-md-3">
+                        <label>@Html.Label(Resources.Resource.field_name)</label>
+                        <span>@Html.TextBoxFor(m => Model.paramsDto.parHeaderFieldDto.Name)</span>
+                    </div>
+                    <div class="col-md-3">
+                        <label>@Html.Label(Resources.Resource.link_number_evaluation)</label><br />
+                        <span>@Html.EditorFor(m => m.paramsDto.parHeaderFieldDto.LinkNumberEvaluetion, new { @class = "form-control checkbox-erp" })</span>
+                    </div>
+                </div>
+                @if (Model.paramsDto.parHeaderFieldDto.ParFieldType.Id == 1)
+                {
+                    <form id="formMultipla">
+                        @foreach (var i in Model.paramsDto.parHeaderFieldDto.ParMultipleValues)
+                        {
+
+                        <span>@Html.EditorFor(r => i.Id, new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 0px;visibility:hidden;" } })</span>
+                        <div class="row">
+                            <div class="col-md-4" style="padding-left:2%;margin-top:2%;">
+                                <label>@Html.Label(Resources.Resource.option)</label>
+                                <span>@Html.EditorFor(r => i.Name, new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 200px;", @class = "form-control input-sm" } })</span>
+                            </div>
+                            <div class="col-md-4">
+                                <label>@Html.Label(Resources.Resource.punishment_value)</label>
+                                <span>@Html.EditorFor(r => i.PunishmentValue)</span>
+                            </div>
+                        </div>
+                        }
+                    </form>
+                }
+                @if (Model.paramsDto.parHeaderFieldDto.ParFieldType.Id == 3)
+                {
+                    foreach (var i in Model.paramsDto.parHeaderFieldDto.ParMultipleValues)
+                    {
+                        <form id="Mult">
+                            <div class="row" id="binario">
+                                <div class="col-md-4" style="padding-left:2%;margin-top:2%;">
+                                    <label>@Html.Label(Resources.Resource.option)</label>
+                                    <span>@Html.EditorFor(r => i.Name, new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 200px;", @class = "form-control input-sm" } })</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>@Html.Label(Resources.Resource.punishment_value)</label>
+                                    <span>@Html.EditorFor(r => i.PunishmentValue)</span>
+                                </div>
+                            </div>
+                        </form>
+                    }
+                }
+                <div style="width: 100%; float: left; margin-top:5%;" id="btnIncluirCabecalho">
+                    <button type="button" id="salvar" onclick="indexCabecalho.enviarDadosParaApi()" class="btn btn-primary">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        var url = '@Html.Raw(@url)';
+        var dados = $('form').serializeObject();
+        var tam = dados['i.Id'].length;
+        var count = 0;
+        while (count < tam) {
+                        
+            count++;
+        }
+        var teste = [{ id: dados['i.Id'][0], name: dados['i.Id'][0], punish: i.PunishmentValue[0] }]
+        console.log(dados);
+        console
+
+        var indexCabecalho ={
+            enviarDadosParaApi : function (e) {
+                var dados = $('form').serializeObject();
+                alert(dados.i.Id[0]);
+                var teste = [{ id: dados.i.Id[0], name: i.Name[0], punish: i.PunishmentValue[0] }]
+
+                    console.log(dados);
+                    $.post(url, dados, function (objetoReturn) {
+
+                        //closeLoader();
+                        if (objetoReturn.paramsDto.parLevel1Dto.Id > 0) {
+                            indexParamsLevel1.GetLevel1(objetoReturn.paramsDto.parLevel1Dto.Id, true);
+                            openMessageModal("Alerta", statusmessage);
+                        }
+
+                    }).fail(function (e, h, x) {
+                        //closeLoader();
+                        try {
+                            closeLoader();
+                            openMessageModal("Alerta", e.responseJSON.Message);
+                        } catch (e) {
+                            closeLoader();
+                            openMessageModal("@Resources.Resource.warning", "@Resources.Resource.cannot_finish_action");
+                            console.log(e);
+                        }
+                    });
+            }
+        }
+    </script>
+}
