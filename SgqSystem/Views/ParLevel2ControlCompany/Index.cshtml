@@ -140,6 +140,10 @@ else
 
                     if ($('#level2Number').val() <= 0) {
                         $('#level2SelecionadoPorCompany').attr('disabled', true);
+                        $('#send').attr('disabled', true);
+                    } else {
+                        $('#level2SelecionadoPorCompany').attr('disabled', false);
+                        $('#send').attr('disabled', false);
                     }
                 });
             });
