@@ -1,6 +1,6 @@
 ﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
 @{
-    ViewBag.Title = Resources.Resource.daily_apointments;
+    ViewBag.Title = Resources.Resource.daily_report; /* Trocado */
     var url = Url.Action("Index", "Home");
     var urlGrafico1 = Url.Action("Grafico1", "api/RelDiario");
     var urlGetPanelResultSet = Url.Action("GetPanelResultSet", "api/RelDiario");
@@ -62,7 +62,7 @@
             });
 
             formControl.showSimpleDate();
-            formControl.showUnit();
+            formControl.showOnlyUnit(); //showOnlyUnit showUnit
 
             closeLeftSidebar();
         });
@@ -764,7 +764,7 @@
             GuardJs.resetForValidation();
             GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
             /*Especifico*/
-            if (!($('#unitId :selected').val() > 0)) {
+            if (!($('#onlyunitId :selected').val() > 0)) {
                 GuardJs.exibirMensagemAlerta('@Resources.Resource.select_the_unit_first');//"Por favor selecione uma unidade.");
                 return false;
             }

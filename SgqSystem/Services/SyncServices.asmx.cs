@@ -3229,12 +3229,12 @@ namespace SgqSystem.Services
 
                 string counters =
                                       html.div(
-                                                outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + " / " + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
+                                                outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
                                                 classe: "col-xs-6",
                                                 style: "text-align:center"
                                               ) +
                                       html.div(
-                                                outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent hide") + html.span(outerhtml: "0", classe: "sampleCurrentTotal") + " / " + html.span(outerhtml: sample.ToString(), classe: "sampleTotal hide") + html.span(outerhtml: totalSampleXEvaluate.ToString(), classe: "sampleXEvaluateTotal"),
+                                                outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent hide") + html.span(outerhtml: "0", classe: "sampleCurrentTotal") + html.span(outerhtml: " / ", classe: "separator") + html.span(outerhtml: sample.ToString(), classe: "sampleTotal hide") + html.span(outerhtml: totalSampleXEvaluate.ToString(), classe: "sampleXEvaluateTotal"),
                                                 classe: "col-xs-6",
                                                 style: "text-align:center"
                                               );
@@ -3712,11 +3712,11 @@ namespace SgqSystem.Services
 
                 //Avaliações e amostas para painel
                 string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("evaluation").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("evaluation").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "evaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+ CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -3960,11 +3960,11 @@ namespace SgqSystem.Services
 
                 //Avaliações e amostas para painel
                 string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("evaluation").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("evaluation").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "evaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+ CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -4109,11 +4109,11 @@ namespace SgqSystem.Services
                                     classe: "col-xs-6");
 
                 string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("evaluation").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+ CommonData.getResource("evaluation").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "evaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+ CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -4214,11 +4214,11 @@ namespace SgqSystem.Services
 
                 //Avaliações e amostas para painel
                 string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("evaluation").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + " / " + html.span(classe: "evaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+ CommonData.getResource("evaluation").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "evaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + " / " + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
