@@ -5,9 +5,7 @@ using System.Web.Mvc;
 using Dominio;
 using DTO.Helpers;
 using SgqSystem.Secirity;
-using SgqSystem.Helpers;
 using Helper;
-using DTO.DTO;
 using System.Collections.Generic;
 
 namespace SgqSystem.Controllers.Params
