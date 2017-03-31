@@ -5,9 +5,7 @@ using System.Web.Mvc;
 using Dominio;
 using DTO.Helpers;
 using SgqSystem.Secirity;
-using SgqSystem.Helpers;
 using Helper;
-using DTO.DTO;
 using System.Collections.Generic;
 using System;
 
@@ -15,7 +13,7 @@ namespace SgqSystem.Controllers.Params
 {
     [FilterUnit]
     [CustomAuthorize]
-    public class EquipamentosController : Controller
+    public class EquipamentosController : BaseController
     {
 
         private SGQ_GlobalEntities db = new SGQ_GlobalEntities();
@@ -29,9 +27,7 @@ namespace SgqSystem.Controllers.Params
 
             var user = db2.UserSgq.FirstOrDefault(r => r.Id == userId); 
             var company = db2.ParCompany.FirstOrDefault(r => r.Id == user.ParCompany_Id);
-
-            var parCompanyXUserSgq = db2.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == user.Id);
-
+            var parCompanyXUserSgq = db2.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == user.Id).ToList();
             var equipamentos = db.Equipamentos.ToList();
 
             var companys = db2.ParCompany.ToList();

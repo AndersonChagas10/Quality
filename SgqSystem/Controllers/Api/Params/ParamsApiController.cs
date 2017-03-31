@@ -32,10 +32,10 @@ namespace SgqSystem.Controllers.Api.Params
         private IBaseDomain<ParMultipleValues, ParMultipleValuesDTO> _baseParMultipleValues;
 
         public ParamsApiController(IParamsDomain paramdDomain
-            ,IBaseDomain<ParLevel2, ParLevel2DTO> baseParLevel2
-            ,IBaseDomain<ParLevel3, ParLevel3DTO> baseParLevel3
+            , IBaseDomain<ParLevel2, ParLevel2DTO> baseParLevel2
+            , IBaseDomain<ParLevel3, ParLevel3DTO> baseParLevel3
             , IBaseDomain<ParLevel1, ParLevel1DTO> baseParLevel1
-            ,IBaseDomain<ParHeaderField, ParHeaderFieldDTO> baseParHeaderField
+            , IBaseDomain<ParHeaderField, ParHeaderFieldDTO> baseParHeaderField
             , IBaseDomain<ParMultipleValues, ParMultipleValuesDTO> baseParMultipleValues)
         {
             _baseParLevel1 = baseParLevel1;
@@ -162,11 +162,11 @@ namespace SgqSystem.Controllers.Api.Params
                     ParCompany_Id = alterObj.companyId,
                     ParLevel2_Id = alterObj.level2Id
                 };
-            
+
                 /*Explico para o EF que Adicionei*/
                 db.ParSample.Add(sample);
                 db.ParEvaluation.Add(evaluation);
-             
+
                 /*Salvo*/
                 db.SaveChanges();
             }
@@ -184,7 +184,7 @@ namespace SgqSystem.Controllers.Api.Params
                 /*Altero*/
                 parLevel3Level2.AlterDate = DateTime.Now;
                 parLevel3Level2.Weight = l3l2.Weight;
-               
+
                 parLevel3Level2.ParLevel3Group_Id = l3l2.ParLevel3Group_Id;
 
                 /*Explico para o EF que alterei*/
@@ -199,7 +199,7 @@ namespace SgqSystem.Controllers.Api.Params
             }
         }
 
-        
+
         #endregion
 
         #region Vinculo Level3 com Level2
@@ -230,6 +230,40 @@ namespace SgqSystem.Controllers.Api.Params
             return _paramdDomain.RemVinculoL1L2(idLevel1, idLevel2);
         }
 
+
+        [HttpPost]
+        [Route("RemVinculoL2L3/{idLevel1}/{idLevel2}/{idLevel3}/{companyId}")]
+        public string RemVinculoL2L3(int idLevel1, int idLevel2, int idLevel3, int? companyId = null)
+        {
+            var retorno = "Registro desvinculado.";
+            try
+            {
+                using (var db = new SgqDbDevEntities())
+                {
+                    //throw new Exception("teste");
+                    var parLevel3Level2Level1 = db.ParLevel3Level2Level1.Include("ParLevel3Level2").Where(r => r.ParLevel3Level2.ParLevel2_Id == idLevel2 && r.ParLevel3Level2.ParLevel3_Id == idLevel3);
+
+                    var existe = db.ParLevel3Level2Level1.Include("ParLevel3Level2").Where(r => r.ParLevel3Level2.ParLevel2_Id == idLevel2 && r.ParLevel3Level2.ParLevel3_Id == idLevel3).ToList();
+
+                    if (existe == null || existe.Count() == 0)
+                        return retorno;
+
+                    foreach (var i in parLevel3Level2Level1)
+                        db.ParLevel3Level2.Remove(i.ParLevel3Level2);
+
+                    db.ParLevel3Level2Level1.RemoveRange(parLevel3Level2Level1);
+
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            //return _paramdDomain.RemVinculoL1L2(idLevel1, idLevel2);
+            return retorno;
+        }
+
         [HttpPost]
         [Route("VerificaShowBtnRemVinculoL1L2/{idLevel1}/{idLevel2}")]
         public bool VerificaShowBtnRemVinculoL1L2(int idLevel1, int idLevel2)
@@ -239,12 +273,7 @@ namespace SgqSystem.Controllers.Api.Params
 
         #endregion
 
-        [HttpPost]
-        [Route("ClearLevel1")]
-        public decimal teste([FromBody] decimal teste)
-        {
-            return teste;
-        }
+
 
         [HttpPost]
         [Route("AddRemoveParHeaderLevel2")]
@@ -265,7 +294,7 @@ namespace SgqSystem.Controllers.Api.Params
             }
             return save;
         }
-        
+
         [HttpGet]
         [Route("GetListLevel1")]
         public List<ParLevel1DTO> GetListLevel1()
@@ -354,7 +383,7 @@ namespace SgqSystem.Controllers.Api.Params
                 }
             }
 
-            
+
             return _baseParHeaderField.AddOrUpdate(parr.paramsDto.parHeaderFieldDto);
 
         }

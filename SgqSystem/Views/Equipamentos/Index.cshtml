@@ -137,7 +137,7 @@
 
         $("#btnFilter").on('click',function(){
             var filterUrlCall = "@Url.Action("Index", "Equipamentos")?"+
-                (($('#ParCompanyName').val()) ? "ParCompanyName=" + $('#ParCompanyName').val() + "&" : "");
+                (($('#ParCompanyName').val()) ? "ParCompany_Id=" + $('#ParCompanyName selected').val() + "&" : "");
             window.location = filterUrlCall;
         });
     });
