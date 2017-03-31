@@ -57,6 +57,16 @@ namespace SGQDBContext
         }
         public IEnumerable<ParLevel1> getParLevel1ParCriticalLevelList(int ParCompany_Id)
         {
+
+            /*
+             * MOCK GABRIEL PARA TESTE DE TRAZER TAREFAS DO OUTRO INDICADOR
+             * 30/03/2017
+             */
+
+            string ParLevel1_IdFilho = "";
+
+            ParLevel1_IdFilho = " AND P1.Id NOT IN (1042) ";
+
             SqlConnection db = new SqlConnection(conexao);
             string sql = "\n SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
                          "\n P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate, P1.IsLimitedEvaluetionNumber, P1.IsPartialSave" +
@@ -69,14 +79,14 @@ namespace SGQDBContext
                          "\n INNER JOIN ParCluster C                                                                                                    " +
                          "\n ON C.Id = P1C.ParCluster_Id                                                                                                " +
                          "\n INNER JOIN ParCompanyCluster CC                                                                                            " +
-                         "\n ON CC.ParCluster_Id = P1C.ParCluster_Id  and CC.IsActive = 1                                                               " +
+                         "\n ON CC.ParCluster_Id = P1C.ParCluster_Id  and CC.Active = 1                                                               " +
                          "\n INNER JOIN ParCriticalLevel CL                                                                                             " +
                          "\n ON CL.Id = P1C.ParCriticalLevel_Id                                                                                         " +
                          "\n LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
                          "\n ON AL.ParLevel1_Id = P1.Id   AND AL.IsActive = 1                                                                                               " +
 
                          "\n WHERE CC.ParCompany_Id = '" + ParCompany_Id + "'                                                                           " +
-                         "\n                                                                                                        " +
+                         "\n " + ParLevel1_IdFilho + "                                                                                                       " +
                          "\n AND P1.IsActive = 1 AND C.IsActive = 1 AND P1C.IsActive = 1 AND CC.Active = 1                                                                                                       " +
                          "\n ORDER BY CL.Name, P1.Name                                                                                                           ";
 
@@ -410,7 +420,7 @@ namespace SGQDBContext
                          "\n INNER JOIN ParLevel2 PL2                                      " +
                          "\n ON PL2.Id = P32.ParLevel2_Id                                  " +
                          "\n LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
-                         "\n ON AL.ParLevel2_Id = PL2.Id                                                                                                 " +
+                         "\n ON AL.ParLevel2_Id = PL2.Id     AND AL.IsActive = 1                                                                                             " +
                         "\n WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'              " +
                          "\n AND PL2.IsActive = 1                                          " +
 
@@ -753,6 +763,17 @@ namespace SGQDBContext
             return parLevel3List;
 
         }
+
+        public IEnumerable<ParLevel3> getListPerLevel1Id(int ParLevel1_Id)
+        {
+            SqlConnection db = new SqlConnection(conexao);
+            string sql = "SELECT P3.Id, P3.Name FROM ParLevel3Level2Level1 P321 INNER JOIN ParLevel3Level2 P32 ON P32.Id = P321.ParLevel3Level2_Id INNER JOIN ParLevel3 P3 ON P3.Id = P32.ParLevel3_Id WHERE P321.ParLevel1_Id = " + ParLevel1_Id.ToString();
+            var parLevel3List = db.Query<ParLevel3>(sql);
+
+            return parLevel3List;
+
+        }
+
         //
         public IEnumerable<ParLevel3> getLevel3ByLevel2(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id, DateTime DateCollect)
         {
@@ -849,8 +870,76 @@ namespace SGQDBContext
             " , L3V.IntervalMax " +
             " , MU.Name " +
             " , L32.Weight " +
-            " , L32.ParCompany_Id " +
-            "  ORDER BY L3IT.Id ASC, L3G.Name ASC, L3.Name ASC, L32.ParCompany_Id  DESC  ";
+            " , L32.ParCompany_Id ";
+         
+
+            /*
+             * MOCK GABRIEL PARA TESTE DE TRAZER TAREFAS DO OUTRO INDICADOR
+             * 30/03/2017
+             */
+
+            string sqlFilho = "";
+
+            if(ParLevel1.Id == 22)
+            {
+
+                string ParLevel1_IdFilho = " AND L321.ParLevel1_Id IN (1042)";
+
+                sqlFilho = "UNION ALL SELECT L3.Id AS Id, L3.Name AS Name, L3G.Id AS ParLevel3Group_Id, L3G.Name AS ParLevel3Group_Name, L3IT.Id AS ParLevel3InputType_Id, L3IT.Name AS ParLevel3InputType_Name, L3V.ParLevel3BoolFalse_Id AS ParLevel3BoolFalse_Id, L3BF.Name AS ParLevel3BoolFalse_Name, L3V.ParLevel3BoolTrue_Id AS ParLevel3BoolTrue_Id, L3BT.Name AS ParLevel3BoolTrue_Name, " +
+                        "L3V.IntervalMin AS IntervalMin, L3V.IntervalMax AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, L32.Weight AS Weight, L32.ParCompany_Id                                                                                                                                                                                                                                     " +
+                        "FROM ParLevel3 L3                                                                                                                                                                                                                                                                                                                                           " +
+                        "INNER JOIN ParLevel3Value L3V                                                                                                                                                                                                                                                                                                                               " +
+                        "        ON L3V.ParLevel3_Id = L3.Id AND L3V.IsActive = 1                                                                                                                                                                                                                                                                                                                        " +
+                        "INNER JOIN ParLevel3InputType L3IT                                                                                                                                                                                                                                                                                                                          " +
+                        "        ON L3IT.Id = L3V.ParLevel3InputType_Id                                                                                                                                                                                                                                                                                                              " +
+                        "LEFT JOIN ParLevel3BoolFalse L3BF                                                                                                                                                                                                                                                                                                                           " +
+                        "        ON L3BF.Id = L3V.ParLevel3BoolFalse_Id                                                                                                                                                                                                                                                                                                              " +
+                        "LEFT JOIN ParLevel3BoolTrue L3BT                                                                                                                                                                                                                                                                                                                            " +
+                        "        ON L3BT.Id = L3V.ParLevel3BoolTrue_Id                                                                                                                                                                                                                                                                                                               " +
+                        "LEFT JOIN ParMeasurementUnit MU                                                                                                                                                                                                                                                                                                                             " +
+                        "        ON MU.Id = L3V.ParMeasurementUnit_Id                                                                                                                                                                                                                                                                                                                " +
+                        "LEFT JOIN ParLevel3Level2 L32                                                                                                                                                                                                                                                                                                                               " +
+                        "        ON L32.ParLevel3_Id = L3.Id                                                                                                                                                                                                                                                                                                                         " +
+                        "LEFT JOIN ParLevel3Group L3G                                                                                                                                                                                                                                                                                                                                " +
+                        "        ON L3G.Id = L32.ParLevel3Group_Id                                                                                                                                                                                                                                                                                                                   " +
+                        "INNER JOIN ParLevel2 L2                                                                                                                                                                                                                                                                                                                                     " +
+                        "        ON L2.Id = L32.ParLevel2_Id                                                                                                                                                                                                                                                                                                                         " +
+                        "INNER JOIN ParLevel3Level2Level1 AS L321 ON L321.ParLevel3Level2_Id = L32.Id                                                                                                                                                                                                                                                                                 " +
+                        "WHERE  L3.IsActive = 1 AND L32.IsActive = 1                                                                                                                                                                                                                                                                                                                 " +
+
+                        " AND(L32.ParCompany_Id = '" + ParCompany_Id + "' OR L32.ParCompany_Id IS NULL) " +
+                        ParLevel1_IdFilho +
+
+
+                        //queryResult + 
+
+
+                        " GROUP BY " +
+           "   L321.ParLevel1_Id " +
+           " , L2.Id " +
+           " , L3.Id " +
+           " , L3.Name " +
+           " , L3G.Id " +
+           " , L3G.Name " +
+           " , L3IT.Id " +
+           " , L3IT.Name " +
+           " , L3V.ParLevel3BoolFalse_Id " +
+           " , L3BF.Name " +
+           " , L3V.ParLevel3BoolTrue_Id " +
+           " , L3BT.Name " +
+           " , L3V.IntervalMin " +
+           " , L3V.IntervalMax " +
+           " , MU.Name " +
+           " , L32.Weight " +
+           " , L32.ParCompany_Id ";
+            
+
+
+            }
+
+            sql += sqlFilho;
+
+            sql += "  ORDER BY 5 ASC, 4 ASC, 2 ASC, 15  DESC  ";
 
             var parLevel3List = db.Query<ParLevel3>(sql);
 

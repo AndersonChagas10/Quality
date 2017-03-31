@@ -428,7 +428,7 @@ namespace SgqSystem.Services
         /// <returns></returns>
         /// Para chamar uma consolidação geral digite [web]
         [WebMethod]
-        public string ProcessJson(string device, int id)
+        public string ProcessJson(string device, int id, int? ParLevel1_Id = null)
         {
 
             try
@@ -468,6 +468,20 @@ namespace SgqSystem.Services
 
                 foreach (var c in collectionJson)
                 {
+
+                    /*
+                     * MOCK INDICADOR FILHO GABRIEL
+                     * 30/03/2017
+                     */
+                     if(c.level01_Id == 22)
+                    {
+                        ParLevel1_Id = 1042;
+                    }else
+                    {
+                        ParLevel1_Id = null;
+                    }
+
+
                     int ConsolidationLevel1_Id = 0;
                     int ConsolidationLevel2_Id = 0;
                     string AlertLevel = "0";
@@ -609,7 +623,7 @@ namespace SgqSystem.Services
                     if (CollectionLevel2Id > 0)
                     {
 
-                        int CollectionLevel3Id = InsertCollectionLevel3(CollectionLevel2Id.ToString(), c.level02_Id, c.Level03ResultJSon, c.AuditorId, Duplicated);
+                        int CollectionLevel3Id = InsertCollectionLevel3(CollectionLevel2Id.ToString(), c.level02_Id, c.Level03ResultJSon, c.AuditorId, Duplicated, ParLevel1_Id.GetValueOrDefault());
 
 
                         headersContadores = headersContadores.Replace("</header><header>", ";").Replace("<header>", "").Replace("</header>", "");
@@ -721,6 +735,9 @@ namespace SgqSystem.Services
                 throw ex;
             }
         }
+
+
+
         public int updateJson(int CollectionJson_Id)
         {
             string sql = "UPDATE CollectionJson SET IsProcessed=1 WHERE ID='" + CollectionJson_Id + "'";
@@ -1390,10 +1407,24 @@ namespace SgqSystem.Services
         /// <param name="auditorId">Id do Auditor</param>
         /// <param name="duplicated">Duplicado</param>
         /// <returns></returns>
-        public int InsertCollectionLevel3(string CollectionLevel02Id, int level02, string level03Results, int auditorId, string duplicated)
+        public int InsertCollectionLevel3(string CollectionLevel02Id, int level02, string level03Results, int auditorId, string duplicated, int? ParLevel1_Id = null, bool? TarefasIndicadorFilho = false)
         {
             ///coloquei uma @ para replace, mas podemos utilizar o padrão de ; ou <> desde que todos os campos venha do script com escape()
             //string obj, string collectionDate, string level01id, string unit, string period, string shift, string device, string version
+
+            IEnumerable<ParLevel3> parLevel3List_IndicadorFilho = null;
+
+            if (ParLevel1_Id != null)
+            {
+                /*
+                 * MOCK Gabriel para indicador filho
+                 * 30/03/2017
+                 */
+
+                var ParLevel3DB_IndicadorFilho = new SGQDBContext.ParLevel3();
+                parLevel3List_IndicadorFilho = ParLevel3DB_IndicadorFilho.getListPerLevel1Id(ParLevel1_Id.GetValueOrDefault());
+
+            }
 
             //Prepara a string para ser convertida em Array
             level03Results = level03Results.Replace("</level03><level03>", "@").Replace("<level03>", "").Replace("</level03>", "");
@@ -1411,11 +1442,44 @@ namespace SgqSystem.Services
             //Percorre o Array para gerar os inserts
             for (int i = 0; i < arrayResults.Length; i++)
             {
+
+               
+                
                 //Gera o array com o resultado
                 var result = arrayResults[i].Split(',');
 
                 //Instancia as variáveis para preencher o script
                 string Level03Id = result[0];
+
+                bool skip = false;
+
+                if (TarefasIndicadorFilho.GetValueOrDefault())
+                {
+                    skip = true;
+
+                    foreach (var l3_filho in parLevel3List_IndicadorFilho)
+                    {
+                        if (l3_filho.Id.ToString() == Level03Id)
+                        {
+                            skip = false;
+                        }
+                    }
+                }else
+                {
+                    foreach (var l3_filho in parLevel3List_IndicadorFilho)
+                    {
+                        if (l3_filho.Id.ToString() == Level03Id)
+                        {
+                            skip = true;
+                        }
+                    }
+                }
+
+                if (skip)
+                {
+                    continue;
+                }
+
                 string value = result[2];
                 value = DefaultValueReturn(value, "0");
 
@@ -1867,7 +1931,7 @@ namespace SgqSystem.Services
                             frequenciaDoLevel2 = clusterDaUnidade == "1" ? 6 : 4;
                         }
                     }
-                                       
+
 
                     getFrequencyDate(frequenciaDoLevel2, Level2Result.CollectionDate, ref dataInicio_Level2, ref dataFim_Level2);
 
@@ -2381,14 +2445,14 @@ namespace SgqSystem.Services
 
             string APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
 
-                    string supports = "<div class=\"Results hide\"></div>" +
-                              "<div class=\"ResultsConsolidation hide\"></div>" +
-                               "<div class=\"ResultsKeys hide\"></div>" +
-                               "<div class=\"ResultsPhase hide\"></div>" +
-                              "<div class=\"Deviations hide\"></div>" +
-                              "<div class=\"Users hide\"></div>" +
-                              "<div class=\"VerificacaoTipificacao hide\"></div>" +
-                              "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
+            string supports = "<div class=\"Results hide\"></div>" +
+                      "<div class=\"ResultsConsolidation hide\"></div>" +
+                       "<div class=\"ResultsKeys hide\"></div>" +
+                       "<div class=\"ResultsPhase hide\"></div>" +
+                      "<div class=\"Deviations hide\"></div>" +
+                      "<div class=\"Users hide\"></div>" +
+                      "<div class=\"VerificacaoTipificacao hide\"></div>" +
+                      "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
 
             string resource = GetResource();
 
@@ -2844,7 +2908,7 @@ namespace SgqSystem.Services
             string listLevel3 = null;
 
             string excecao = null;
-            
+
             //Percorremos a lista de agrupada
             foreach (var parLevel1Group in parLevel1GroupByCriticalLevel)
             {
@@ -2868,7 +2932,7 @@ namespace SgqSystem.Services
                     //Se o ParLevel1 contem um ParCritialLevel_Id
                     var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas();
                     var alertas = ParLevel1AlertasDB.getAlertas(parlevel1.Id, ParCompany_Id, dateCollect);
-                    
+
                     if (parlevel1.ParCriticalLevel_Id > 0)
                     {
                         //O ParLevel1 vai estar dentro de um accordon
@@ -2979,7 +3043,7 @@ namespace SgqSystem.Services
                                                      IsLimitedEvaluetionNumber: parlevel1.IsLimitedEvaluetionNumber,
                                                      listParRelapse: listParRelapse);
                         //Incrementa level1
-                        parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row "+excecao, outerhtml: level01 + painelCounters);
+                        parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row " + excecao, outerhtml: level01 + painelCounters);
                     }
                     else
                     {
@@ -4193,7 +4257,7 @@ namespace SgqSystem.Services
 
                 var botoesTodos = "";
 
-                CCCC
+
 
                 string panelButton = html.listgroupItem(
                                                         outerhtml: botoesTodos,
