@@ -1133,11 +1133,7 @@
 
     $( document ).ajaxStop(function() {
         closeLoader();
-        setTimeout(function() {
-            if(!hasperm){
-                disableEvry();
-            }
-        }, 400);
+        
     });
    
     function disableEvry() {
