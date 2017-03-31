@@ -330,9 +330,9 @@
                                             <tbody>
                                                 @if (Model.paramsDto.parLevel1Dto.cabecalhosInclusos != null)
                                                 {
-                                                 foreach (var parLevel1XHeaderField in Model.paramsDto.parLevel1Dto.cabecalhosInclusos)
-                                                 {
-                                                    <tr class="alteracao">
+                                                    foreach (var parLevel1XHeaderField in Model.paramsDto.parLevel1Dto.cabecalhosInclusos)
+                                                    {
+                                                        <tr class="alteracao">
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
                                                             {
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
@@ -341,16 +341,16 @@
                                                                 <td>
                                                                     @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
-                                                                    <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal" >
+                                                                    <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
                                                                         <span class="glyphicon glyphicon-pencil"></span>
                                                                     </button>
                                                                 </td>
 
-                                                                }
+                                                            }
 
-                                                                @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 2)
-                                                                {
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 2)
+                                                            {
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
                                                                     <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
                                                                     <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                     <td>
@@ -362,11 +362,11 @@
                                                                         </button>
                                                                     </td>
 
-                                                                }
+                                                            }
 
-                                                                @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 3)
-                                                                {
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 3)
+                                                            {
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
                                                                     <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
                                                                     <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                     <td>
@@ -380,11 +380,11 @@
                                                                             <span class="glyphicon glyphicon-pencil"></span>
                                                                         </button>
                                                                     </td>
-                                                                }
+                                                            }
 
-                                                                @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 4)
-                                                                {
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 4)
+                                                            {
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
                                                                     <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
                                                                     <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                     <td>
@@ -394,11 +394,11 @@
                                                                             <span class="glyphicon glyphicon-pencil"></span>
                                                                         </button>
                                                                     </td>
-                                                                }
+                                                            }
 
-                                                                @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 5)
-                                                                {
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 5)
+                                                            {
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
                                                                     <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
                                                                     <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                     <td>
@@ -409,10 +409,10 @@
                                                                             <span class="glyphicon glyphicon-pencil"></span>
                                                                         </button>
                                                                     </td>
-                                                                }
-                                                                @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 6)
-                                                                {
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
+                                                            }
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 6)
+                                                            {
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
                                                                     <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
                                                                     <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                     <td>
@@ -422,408 +422,408 @@
                                                                             <span class="glyphicon glyphicon-pencil"></span>
                                                                         </button>
                                                                     </td>
-                                                                }
-                                                                <td>
-                                                                    <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
-                                                                </td>
-                                                                <td>
-                                                                    <select id="parLevel1XHeaderField_ParHeaderField_IsRequired" class="form-control input-sm" onchange="Cabecalhos.SetRequired($(this), @parLevel1XHeaderField.ParHeaderField.Id);">
-                                                                        @if (parLevel1XHeaderField.ParHeaderField.IsRequired != null)
+                                                            }
+                                                            <td>
+                                                                <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
+                                                            </td>
+                                                            <td>
+                                                                <select id="parLevel1XHeaderField_ParHeaderField_IsRequired" class="form-control input-sm" onchange="Cabecalhos.SetRequired($(this), @parLevel1XHeaderField.ParHeaderField.Id);">
+                                                                    @if (parLevel1XHeaderField.ParHeaderField.IsRequired != null)
+                                                                    {
+                                                                        if (parLevel1XHeaderField.ParHeaderField.IsRequired.Value)
                                                                         {
-                                                                            if (parLevel1XHeaderField.ParHeaderField.IsRequired.Value)
-                                                                            {
-                                                                                <option value="0">@Resources.Resource.no</option>
+                                                                            <option value="0">@Resources.Resource.no</option>
                                                                                 <option value="1" selected>@Resources.Resource.yes</option>
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                <option value="0" selected>@Resources.Resource.no</option>
-                                                                                <option value="1">@Resources.Resource.yes</option>
-                                                                            }
                                                                         }
                                                                         else
                                                                         {
                                                                             <option value="0" selected>@Resources.Resource.no</option>
-                                                                            <option value="1">@Resources.Resource.yes</option>
+                                                                                <option value="1">@Resources.Resource.yes</option>
                                                                         }
-                                                                    </select>
-                                                                </td>
-                                                                <td>
-                                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
-                                                                    {
-                                                                        <div class="input-group">
-                                                                            <div class="input-group-btn">
-                                                                                <select class="form-control input-sm" id="@parLevel1XHeaderField.ParHeaderField_Id" style="padding-left:-10px;max-width:80px;">
-                                                                                    <option value="0" selected>Nenhum</option>
-                                                                                    @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
-                                                                                    {
-                                                                                        if (radioOpt.IsDefaultOption == true)
-                                                                                        {
-                                                                                            <option value="@radioOpt.Id" selected>@radioOpt.Name</option>
-                                                                                        }
-                                                                                        else
-                                                                                        {
-                                                                                            <option value="@radioOpt.Id">@radioOpt.Name</option>
-                                                                                        }
-                                                                                    }
-                                                                                </select>
-                                                                                <button type="button" onclick="Cabecalhos.SetMultipleDefault($(this));" class="btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></button>
-                                                                            </div>
-                                                                        </div>
                                                                     }
+                                                                    else
+                                                                    {
+                                                                        <option value="0" selected>@Resources.Resource.no</option>
+                                                                            <option value="1">@Resources.Resource.yes</option>
+                                                                    }
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
+                                                                {
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-btn">
+                                                                            <select class="form-control input-sm" id="@parLevel1XHeaderField.ParHeaderField_Id" style="padding-left:-10px;max-width:80px;">
+                                                                                <option value="0" selected>Nenhum</option>
+                                                                                @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
+                                                                                {
+                                                                                    if (radioOpt.IsDefaultOption == true)
+                                                                                    {
+                                                                                        <option value="@radioOpt.Id" selected>@radioOpt.Name</option>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <option value="@radioOpt.Id">@radioOpt.Name</option>
+                                                                                    }
+                                                                                }
+                                                                            </select>
+                                                                            <button type="button" onclick="Cabecalhos.SetMultipleDefault($(this));" class="btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></button>
+                                                                        </div>
+                                                                    </div>
+                                                                }
 
-                                                                </td>
+                                                            </td>
 
-                                                            </tr>
-                                                            }
-                                                            }
-                                                        </tbody>
-                                                        <tfoot></tfoot>
-                                                    </table>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                            <tfoot></tfoot>
+                                        </table>
 
-                                                    <div id="textPreview"></div>
-                                                    <div id="numericPreview"></div>
-                                                    <div id="multiplePreview"></div>
-                                                    <div id="binPreview"></div>
-                                                </div>
-
-                                            </div>
-                                        </div>
+                                        <div id="textPreview"></div>
+                                        <div id="numericPreview"></div>
+                                        <div id="multiplePreview"></div>
+                                        <div id="binPreview"></div>
                                     </div>
+
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
 
-                            @Html.Partial("_CounterXLevel", Model)
+                @Html.Partial("_CounterXLevel", Model)
 
-                            @*Regra de NC*@
-                            <div class="panel-group accordion" id="level1_nc_accordion">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h4 class="panel-title">
-                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1_nc_accordion" href="#level1_nc_collapse" aria-expanded="false"> @Resources.Resource.alert_rule</a>
-                                        </h4>
-                                    </div>
-                                    <div id="level1_nc_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                                        <div class="panel-body">
-                                            <table class="table-erp">
-                                                <tbody>
-                                                    <tr class="row">
-                                                        @Html.HiddenFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Id)
-                                                        @Table.GerarColuna(
+                @*Regra de NC*@
+                <div class="panel-group accordion" id="level1_nc_accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level1_nc_accordion" href="#level1_nc_collapse" aria-expanded="false"> @Resources.Resource.alert_rule</a>
+                            </h4>
+                        </div>
+                        <div id="level1_nc_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                            <div class="panel-body">
+                                <table class="table-erp">
+                                    <tbody>
+                                        <tr class="row">
+                                            @Html.HiddenFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Id)
+                                            @Table.GerarColuna(
                                     @Html.DropDownList("paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNotConformityRule" })
                                     , @Html.Label(Resources.Resource.not_conformity_rule)
                                     , Table.PosicaoLabel.top)
-                                                        @Table.GerarColuna(
+                                            @Table.GerarColuna(
                                     @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm", type = "number", min = "0" })
                                     , @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
-                                                        @Table.GerarColunaCheckbox(
+                                            @Table.GerarColunaCheckbox(
                                     @Html.EditorFor(model => model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" })
                                     , @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top, button: "<button type='button' class='btn btn-primary btn-sm' onclick='RegraNcL1.adiciona();'><i class='fa fa-plus' aria-hidden='true'></i></button>")
 
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                        </tr>
+                                    </tbody>
+                                </table>
 
-                                            <table id="tableRegraNc" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Regra de Alerta:">
-                                                <thead>
-                                                    <tr>
-                                                        <th>@Resources.Resource.not_conformity_rule</th>
-                                                        <th>@Resources.Resource.value</th>
-                                                        <th>@Resources.Resource.reaudit</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
+                                <table id="tableRegraNc" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Regra de Alerta:">
+                                    <thead>
+                                        <tr>
+                                            <th>@Resources.Resource.not_conformity_rule</th>
+                                            <th>@Resources.Resource.value</th>
+                                            <th>@Resources.Resource.reaudit</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
 
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
-
-                            @Html.Partial("_ReincidenciaXLevel", Model)
-
-
-                            <button type="button" data-loading-text="@Resources.Resource.saving_the_level1" id="btnSaveNewLevel1" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level1</button>
                         </div>
                     </div>
-                    }
-                    
                 </div>
 
+                @Html.Partial("_ReincidenciaXLevel", Model)
 
 
-                <script>
+                <button type="button" data-loading-text="@Resources.Resource.saving_the_level1" id="btnSaveNewLevel1" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level1</button>
+            </div>
+        </div>
+                    }
 
-                    var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
-
-                    $(document).ready(function() {
-                        //if(config){
-                        //    $('#registerTotalEv').hide();
-                        //    if($('#level1Title').html().indexOf("New") > -1){
-                        //        $('#level1Title').html("Level 1");
-                        //    }
-                        //}
-                    })
-
-                    $('#paramsDto_parLevel1Dto_IsSpecific').on('switchChange.bootstrapSwitch', function (event, state) {
-                        if (state) {
-                            $('.groupCadastroEspecificoUnidade').fadeIn();
-                        } else {
-                            $('.groupCadastroEspecificoUnidade').fadeOut();
-                        }
-                    });
-
-                    $('#paramsDto_parLevel1Dto_haveRealTimeConsolidation').on('switchChange.bootstrapSwitch', function (event, state) {
-                        if (state) {
-                            $('.RealTimeConsolitationUpdate').fadeIn();
-                        } else {
-                            $('.RealTimeConsolitationUpdate').fadeOut();
-                        }
-                    });
+</div>
 
 
 
-                    var Cabecalhos = {
-                        SetMultipleDefault: function(elem){
-                            var idMultiple = $(elem).siblings('select').children('option:selected').val();
-                            var idHeader = $(elem).siblings('select').attr('id');
-                            $.post(urlSetDefaultCCAB + "/" + idHeader+"/"+idMultiple, function(r){
-                                console.log(r);
-                                if(r){
-                                    if(r.IsDefaultOption == true){
-                                        openMessageModal("@Resources.Resource.success", r.Name+" se tornou o valor padrão.");
-                                    }else{
-                                        openMessageModal("@Resources.Resource.success", "@Resources.Resource.there_id_not_a_pattern_value");
-                                    }
-                                }
-                            });
-                        },
-                        SetRequired: function(e, id){
-                            $.post(urlSetRequiredCCAB + "/" + id+"/"+parseInt($(e).val()), function(r){
-                                if(r){
-                                    $(e).empty().append("<option value='0'>"+"@Resources.Resource.no"+"</option><option value='1' selected>"+"@Resources.Resource.yes"+"</option>");
-                                }else{
-                                    $(e).empty().append("<option value='0' selected>"+"@Resources.Resource.no" + "</option><option value='1'>"+"@Resources.Resource.yes"+"</option>");
-                                }
-                            });
-                        },
-                        BtnExcluir:  function(){ return '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParMultiplaEscolhaOpcoes.length + ');"><i class="fa fa-times"></i></button>'; },
-                        BtnExcluir2: function(){ return '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParBinario.length +', true);"><i class="fa fa-times"></i></button>'; },
+<script>
 
-                        ListaDeCabecalhos: [],
+    var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
 
-                        listParHeaderFieldDto: [],
+    $(document).ready(function() {
+        //if(config){
+        //    $('#registerTotalEv').hide();
+        //    if($('#level1Title').html().indexOf("New") > -1){
+        //        $('#level1Title').html("Level 1");
+        //    }
+        //}
+    })
 
-                        ValidaCamposCabecalho: function (isValid) {
+    $('#paramsDto_parLevel1Dto_IsSpecific').on('switchChange.bootstrapSwitch', function (event, state) {
+        if (state) {
+            $('.groupCadastroEspecificoUnidade').fadeIn();
+        } else {
+            $('.groupCadastroEspecificoUnidade').fadeOut();
+        }
+    });
 
-                            if ($('#headerLevel option:selected').val() == -1) {
-                                $('#nivelCampoCabecalho').show();
-                                isValid = false;
-                            }
-
-                            if ($('#parFieldType option:selected').val() == -1) {
-                                $('#tipoCampoCabecalho').show();
-                                isValid = false;
-                            }
-
-                            if ($('#paramsDto_parHeaderFieldDto_Name').val().length == 0) {
-                                $('#nomeCampoCabecalho').show();
-                                isValid = false;
-                            }
-
-                            return isValid;
-                        },
-                        tableMultiplaEscolha: $('#camposCabecalhoIncluidos').DataTable({
-                            info: false,
-                            searching: false,
-                            paging: false,
-                            ordering: true,
-                        }),
-                        hideAllObj: function () {
-
-                            /*Esconde campos*/
-                            $('#objMultiplaEscolha').hide();
-                            $('#objBinario').hide();
-                            $('#objIntegracao').hide();
-                            $('#salvarCabecalho').hide().val('');
-                            $('#btnIncluirCabecalho input').hide();
-                            $('#btnIncluirTexto').hide();
-                            $('#btnIncluirNumerico').hide();
-                            $('#btnIncluirData').hide();
-                            $('#btnIncluirHora').hide();
-                            $('#btnIncluirIntegracoes').hide();
-                            $('#salvarCabecalho1Div').hide();
-                            $('#objIntegracoes').hide();
-
-                            /*Esconde mensagens*/
-                            Cabecalhos.EscondeMensagemValidacaoCabecalho();
-                        },
-                        EscondeMensagemValidacaoCabecalho: function () {
-                            $('#nivelCampoCabecalho').hide();
-                            $('#tipoCampoCabecalho').hide();
-                            $('#nomeCampoCabecalho').hide();
-
-                            $('#multiplaEscolhaNameCabecalho').hide();
-                            $('#multiplaEscolhaPunishmentValueCabecalho').hide();
-                            $('#punishmentNameCabecalho1').hide();
-                            $('#punishmentNameCabecalho2').hide();
-                            $('#punishmentValueCabecalho1').hide();
-                            $('#punishmentValueCabecalho2').hide();
-                        },
-                        TipoChange: function () {
-
-                            var escolhaSelecionada = parseInt($('#parFieldType option:selected').val());
-                            Cabecalhos.hideAllObj();
-                            Cabecalhos.tableMultiplaEscolha.clear().draw();
-                            $('#divCamposCabecalhoIncluidos').hide();
-                            Cabecalhos.ParMultiplaEscolhaOpcoes = [];
-                            Cabecalhos.ParBinario = [];
-
-                            $('#paramsDto_parHeaderFieldDto_Description').parents('td').hide();
-
-                            switch (escolhaSelecionada) {
-                                case 1: //Multipla Escolha
-                                    Cabecalhos.ShowMutiplaEscolha();
-                                    break;
-                                case 2:
-                                    Cabecalhos.ShowIntegracoes();
-                                    break;
-                                case 3: //Binario
-                                    Cabecalhos.ShowBinario();
-                                    break;
-                                case 4: //Texto
-                                    Cabecalhos.ShowTexto();
-                                    break;
-                                case 5:
-                                    Cabecalhos.ShowNumerico();
-                                    break;
-                                case 6:
-                                    Cabecalhos.ShowData();
-                                    break;
-                                case 7:
-                                    Cabecalhos.ShowHora();
-                                    break;
-                                default:
-                                    Cabecalhos.hideAllObj();
-                            }
-                        },
-
-                        //Integracoes
-                        ShowIntegracoes: function() {
-                            $('#objIntegracoes').show();
-                        },
-
-                        //MULTIPLA ESCOLHA
-                        Counter: 0,
-                        ParMultiplaEscolhaOpcoes: [],
-                        ValidaMultiplaEscolha: function (isValid) {
-
-                            var isValid = true;
-                            isValid = Cabecalhos.ValidaCamposCabecalho(isValid);
-
-                            if ($('#objMultiplaEscolhaName').val().length == 0) {
-                                $('#multiplaEscolhaNameCabecalho').show();
-                                isValid = false;
-                            }
-
-                            if ($('#objMultiplaEscolhaPunishmentValue').val().length == 0) {
-                                $('#multiplaEscolhaPunishmentValueCabecalho').show();
-                                isValid = false;
-                            }
-                            return isValid;
-                        },
-    
-                        ShowMutiplaEscolha: function () {
-                            $('#objMultiplaEscolha').show();
-                            $('#btnIncluirCabecalho input').hide();
-                            $('#salvarCabecalho1').val('Salvar ' + $('#parFieldType option:selected').text());
-
-                            if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
-                                $('#salvarCabecalho1').fadeOut();
-                            else
-                                $('#salvarCabecalho1').fadeIn();
-
-                        },
-                        IncluirMultiplaEscolha: function (e) {
-
-                            /*Valida se os campos estão preenchidos*/
-                            if (Cabecalhos.ValidaMultiplaEscolha() == false) {
-                                setTimeout(Cabecalhos.EscondeMensagemValidacaoCabecalho, 10000);
-                                return;
-                            }
-
-                            var cod = "?";
-                            var nivelDoCampo = $('#headerLevel option:selected').text();
-                            var nivelDoCampoVal = $('#headerLevel option:selected').val();
-
-                            var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
-                            var vinculado = $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').is(':checked') ? "Sim" : "Não";
-                            var tipo = $('#parFieldType option:selected').text();
-                            var tipoVal = $('#parFieldType option:selected').val();
-                            var opcoes = $('#objMultiplaEscolhaName').val();
-                            var valor = $('#objMultiplaEscolhaPunishmentValue').val();
-                            var obj = '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParMultiplaEscolhaOpcoes.length + ');"><i class="fa fa-times"></i></button>';//Btn excluir;
+    $('#paramsDto_parLevel1Dto_haveRealTimeConsolidation').on('switchChange.bootstrapSwitch', function (event, state) {
+        if (state) {
+            $('.RealTimeConsolitationUpdate').fadeIn();
+        } else {
+            $('.RealTimeConsolitationUpdate').fadeOut();
+        }
+    });
 
 
-                            /*Obj*/
-                            Cabecalhos.ParMultiplaEscolhaOpcoes.push({
-                                //'Id': ' ',
-                                'Name': opcoes,
-                                'ParHeaderField_Id': '0',
-                                'Description': '',
-                                'ParFieldType_Id': tipoVal,
-                                'ParLevelDefinition_Id': nivelDoCampoVal,
-                                'IsDefaultOption' : false,
-                                'PunishmentValue': valor
-                            });
 
-                            /*Table*/
-                            Cabecalhos.tableMultiplaEscolha.row.add([
-                               //cod,
-                               nivelDoCampo,
-                               nome,
-                               vinculado,
-                               tipo,
-                               opcoes,
-                               valor,
-                               obj
-                            ]).draw(false);
+    var Cabecalhos = {
+        SetMultipleDefault: function(elem){
+            var idMultiple = $(elem).siblings('select').children('option:selected').val();
+            var idHeader = $(elem).siblings('select').attr('id');
+            $.post(urlSetDefaultCCAB + "/" + idHeader+"/"+idMultiple, function(r){
+                console.log(r);
+                if(r){
+                    if(r.IsDefaultOption == true){
+                        openMessageModal("@Resources.Resource.success", r.Name+" se tornou o valor padrão.");
+                    }else{
+                        openMessageModal("@Resources.Resource.success", "@Resources.Resource.there_id_not_a_pattern_value");
+                    }
+                }
+            });
+        },
+        SetRequired: function(e, id){
+            $.post(urlSetRequiredCCAB + "/" + id+"/"+parseInt($(e).val()), function(r){
+                if(r){
+                    $(e).empty().append("<option value='0'>"+"@Resources.Resource.no"+"</option><option value='1' selected>"+"@Resources.Resource.yes"+"</option>");
+                }else{
+                    $(e).empty().append("<option value='0' selected>"+"@Resources.Resource.no" + "</option><option value='1'>"+"@Resources.Resource.yes"+"</option>");
+                }
+            });
+        },
+        BtnExcluir:  function(){ return '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParMultiplaEscolhaOpcoes.length + ');"><i class="fa fa-times"></i></button>'; },
+        BtnExcluir2: function(){ return '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParBinario.length +', true);"><i class="fa fa-times"></i></button>'; },
 
-                            $('#divCamposCabecalhoIncluidos').show();
+        ListaDeCabecalhos: [],
 
-                            $('#objMultiplaEscolhaName').val('');
-                            $('#objMultiplaEscolhaPunishmentValue').val('0');
+        listParHeaderFieldDto: [],
 
-                            if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7){
-                                $('#salvarCabecalho1Div').fadeOut();
-                                $('#salvarCabecalho1').fadeOut();
-                            }
-                            else{
-                                $('#salvarCabecalho1Div').fadeIn();
-                                $('#salvarCabecalho1').fadeIn();
-                            }
+        ValidaCamposCabecalho: function (isValid) {
 
-                            updateAllTables();
+            if ($('#headerLevel option:selected').val() == -1) {
+                $('#nivelCampoCabecalho').show();
+                isValid = false;
+            }
 
-                            //var tempData = Cabecalhos.ParMultipleValues;
-                            //tempData.Id =
-                            //tempData.Name = opcoes
-                            //tempData.Description = ''
-                            //tempData.ParHeaderField_Id =  '0',
-                            //tempData.PunishmentValue = valor
-                            //tempData.ParHeaderField_Id = tipoVal
+            if ($('#parFieldType option:selected').val() == -1) {
+                $('#tipoCampoCabecalho').show();
+                isValid = false;
+            }
 
-                            //Cabecalhos.ParHeaderField.ParMultipleValues.push(ParMultipleValues)
+            if ($('#paramsDto_parHeaderFieldDto_Name').val().length == 0) {
+                $('#nomeCampoCabecalho').show();
+                isValid = false;
+            }
 
-                        },
-                        SalvaMultiplaEscolha: function () {
+            return isValid;
+        },
+        tableMultiplaEscolha: $('#camposCabecalhoIncluidos').DataTable({
+            info: false,
+            searching: false,
+            paging: false,
+            ordering: true,
+        }),
+        hideAllObj: function () {
 
-                            /* <tr><th>Nível do campo</th></tr>
-                            <tr><th>Nome</th></tr>
-                            <tr><th>Tipo</th></tr>
-                            <tr><th>Preview</th></tr>
-                            <tr><th></th></tr>*/
+            /*Esconde campos*/
+            $('#objMultiplaEscolha').hide();
+            $('#objBinario').hide();
+            $('#objIntegracao').hide();
+            $('#salvarCabecalho').hide().val('');
+            $('#btnIncluirCabecalho input').hide();
+            $('#btnIncluirTexto').hide();
+            $('#btnIncluirNumerico').hide();
+            $('#btnIncluirData').hide();
+            $('#btnIncluirHora').hide();
+            $('#btnIncluirIntegracoes').hide();
+            $('#salvarCabecalho1Div').hide();
+            $('#objIntegracoes').hide();
+
+            /*Esconde mensagens*/
+            Cabecalhos.EscondeMensagemValidacaoCabecalho();
+        },
+        EscondeMensagemValidacaoCabecalho: function () {
+            $('#nivelCampoCabecalho').hide();
+            $('#tipoCampoCabecalho').hide();
+            $('#nomeCampoCabecalho').hide();
+
+            $('#multiplaEscolhaNameCabecalho').hide();
+            $('#multiplaEscolhaPunishmentValueCabecalho').hide();
+            $('#punishmentNameCabecalho1').hide();
+            $('#punishmentNameCabecalho2').hide();
+            $('#punishmentValueCabecalho1').hide();
+            $('#punishmentValueCabecalho2').hide();
+        },
+        TipoChange: function () {
+
+            var escolhaSelecionada = parseInt($('#parFieldType option:selected').val());
+            Cabecalhos.hideAllObj();
+            Cabecalhos.tableMultiplaEscolha.clear().draw();
+            $('#divCamposCabecalhoIncluidos').hide();
+            Cabecalhos.ParMultiplaEscolhaOpcoes = [];
+            Cabecalhos.ParBinario = [];
+
+            $('#paramsDto_parHeaderFieldDto_Description').parents('td').hide();
+
+            switch (escolhaSelecionada) {
+                case 1: //Multipla Escolha
+                    Cabecalhos.ShowMutiplaEscolha();
+                    break;
+                case 2:
+                    Cabecalhos.ShowIntegracoes();
+                    break;
+                case 3: //Binario
+                    Cabecalhos.ShowBinario();
+                    break;
+                case 4: //Texto
+                    Cabecalhos.ShowTexto();
+                    break;
+                case 5:
+                    Cabecalhos.ShowNumerico();
+                    break;
+                case 6:
+                    Cabecalhos.ShowData();
+                    break;
+                case 7:
+                    Cabecalhos.ShowHora();
+                    break;
+                default:
+                    Cabecalhos.hideAllObj();
+            }
+        },
+
+        //Integracoes
+        ShowIntegracoes: function() {
+            $('#objIntegracoes').show();
+        },
+
+        //MULTIPLA ESCOLHA
+        Counter: 0,
+        ParMultiplaEscolhaOpcoes: [],
+        ValidaMultiplaEscolha: function (isValid) {
+
+            var isValid = true;
+            isValid = Cabecalhos.ValidaCamposCabecalho(isValid);
+
+            if ($('#objMultiplaEscolhaName').val().length == 0) {
+                $('#multiplaEscolhaNameCabecalho').show();
+                isValid = false;
+            }
+
+            if ($('#objMultiplaEscolhaPunishmentValue').val().length == 0) {
+                $('#multiplaEscolhaPunishmentValueCabecalho').show();
+                isValid = false;
+            }
+            return isValid;
+        },
+
+        ShowMutiplaEscolha: function () {
+            $('#objMultiplaEscolha').show();
+            $('#btnIncluirCabecalho input').hide();
+            $('#salvarCabecalho1').val('Salvar ' + $('#parFieldType option:selected').text());
+
+            if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
+                $('#salvarCabecalho1').fadeOut();
+            else
+                $('#salvarCabecalho1').fadeIn();
+
+        },
+        IncluirMultiplaEscolha: function (e) {
+
+            /*Valida se os campos estão preenchidos*/
+            if (Cabecalhos.ValidaMultiplaEscolha() == false) {
+                setTimeout(Cabecalhos.EscondeMensagemValidacaoCabecalho, 10000);
+                return;
+            }
+
+            var cod = "?";
+            var nivelDoCampo = $('#headerLevel option:selected').text();
+            var nivelDoCampoVal = $('#headerLevel option:selected').val();
+
+            var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
+            var vinculado = $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').is(':checked') ? "Sim" : "Não";
+            var tipo = $('#parFieldType option:selected').text();
+            var tipoVal = $('#parFieldType option:selected').val();
+            var opcoes = $('#objMultiplaEscolhaName').val();
+            var valor = $('#objMultiplaEscolhaPunishmentValue').val();
+            var obj = '<button type="button" class="btn btn-danger btn-xs" name="" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParMultiplaEscolhaOpcoes.length + ');"><i class="fa fa-times"></i></button>';//Btn excluir;
+
+
+            /*Obj*/
+            Cabecalhos.ParMultiplaEscolhaOpcoes.push({
+                //'Id': ' ',
+                'Name': opcoes,
+                'ParHeaderField_Id': '0',
+                'Description': '',
+                'ParFieldType_Id': tipoVal,
+                'ParLevelDefinition_Id': nivelDoCampoVal,
+                'IsDefaultOption' : false,
+                'PunishmentValue': valor
+            });
+
+            /*Table*/
+            Cabecalhos.tableMultiplaEscolha.row.add([
+               //cod,
+               nivelDoCampo,
+               nome,
+               vinculado,
+               tipo,
+               opcoes,
+               valor,
+               obj
+            ]).draw(false);
+
+            $('#divCamposCabecalhoIncluidos').show();
+
+            $('#objMultiplaEscolhaName').val('');
+            $('#objMultiplaEscolhaPunishmentValue').val('0');
+
+            if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7){
+                $('#salvarCabecalho1Div').fadeOut();
+                $('#salvarCabecalho1').fadeOut();
+            }
+            else{
+                $('#salvarCabecalho1Div').fadeIn();
+                $('#salvarCabecalho1').fadeIn();
+            }
+
+            updateAllTables();
+
+            //var tempData = Cabecalhos.ParMultipleValues;
+            //tempData.Id =
+            //tempData.Name = opcoes
+            //tempData.Description = ''
+            //tempData.ParHeaderField_Id =  '0',
+            //tempData.PunishmentValue = valor
+            //tempData.ParHeaderField_Id = tipoVal
+
+            //Cabecalhos.ParHeaderField.ParMultipleValues.push(ParMultipleValues)
+
+        },
+        SalvaMultiplaEscolha: function () {
+
+            /* <tr><th>Nível do campo</th></tr>
+            <tr><th>Nome</th></tr>
+            <tr><th>Tipo</th></tr>
+            <tr><th>Preview</th></tr>
+            <tr><th></th></tr>*/
 
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
             example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
@@ -835,172 +835,172 @@
             });
             example += '</select>';
 
-                            /*Cria inputs para objeto: */
-                            var obj1 = Cabecalhos.ParMultiplaEscolhaOpcoes[0]
-                            for (var key in obj1 ) {
-                                if(key == "Name")
-                                    example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].' + key + '"     value="' + $('#paramsDto_parHeaderFieldDto_Name').val() + '" />';
-                                else
-                                    example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].' + key + '"     value="' + obj1[key] + '" />';
-                            }
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"                value="true" />';
+            /*Cria inputs para objeto: */
+            var obj1 = Cabecalhos.ParMultiplaEscolhaOpcoes[0]
+            for (var key in obj1 ) {
+                if(key == "Name")
+                    example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].' + key + '"     value="' + $('#paramsDto_parHeaderFieldDto_Name').val() + '" />';
+                else
+                    example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].' + key + '"     value="' + obj1[key] + '" />';
+            }
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"                value="true" />';
 
-                            Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, counter) {
-                                /*Cria inputs para objeto: */
-                                for (var key in o) {
-                                    example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].' + key + '"     value="' + o[key] + '" />';
-                                }
-                            });
+            Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, counter) {
+                /*Cria inputs para objeto: */
+                for (var key in o) {
+                    example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].parMultipleValuesDto[' + counter + '].' + key + '"     value="' + o[key] + '" />';
+                }
+            });
 
             example += '</td>'
             example += '<td>' + Cabecalhos.BtnExcluir() + '</td></tr>';//Btn excluir
 
 
-                            $('#tableCabecalhosPreview').append(example);
+            $('#tableCabecalhosPreview').append(example);
 
-                            /*Limpa formulario Header*/
-                            $('#paramsDto_parHeaderFieldDto_Name').val('');
-                            $('#objMultiplaEscolhaName').val('');
-                            $('#objMultiplaEscolhaPunishmentValue').val('0');
-                            $('#parFieldType').val('-1').trigger('change');
-                            $('#headerLevel').val('-1').trigger('change');
-                            Cabecalhos.tableMultiplaEscolha.clear().draw();
-                            $('#divCamposCabecalhoIncluidos').hide();
-                            Cabecalhos.ParMultiplaEscolhaOpcoes = [];
+            /*Limpa formulario Header*/
+            $('#paramsDto_parHeaderFieldDto_Name').val('');
+            $('#objMultiplaEscolhaName').val('');
+            $('#objMultiplaEscolhaPunishmentValue').val('0');
+            $('#parFieldType').val('-1').trigger('change');
+            $('#headerLevel').val('-1').trigger('change');
+            Cabecalhos.tableMultiplaEscolha.clear().draw();
+            $('#divCamposCabecalhoIncluidos').hide();
+            Cabecalhos.ParMultiplaEscolhaOpcoes = [];
 
-                            updateAllTables();
-                        },
+            updateAllTables();
+        },
 
-                        //BINARIO
-                        CounterParBinario: 0,
-                        ParBinario: [],
-                        ValidaBinario: function () {
+        //BINARIO
+        CounterParBinario: 0,
+        ParBinario: [],
+        ValidaBinario: function () {
 
-                            var isValid = true;
-                            isValid = Cabecalhos.ValidaCamposCabecalho(isValid);
+            var isValid = true;
+            isValid = Cabecalhos.ValidaCamposCabecalho(isValid);
 
-                            if ($('#objBinarioPunishmentName1').val().length == 0) {
-                                $('#punishmentNameCabecalho1').show();
-                                isValid = false;
-                            }
+            if ($('#objBinarioPunishmentName1').val().length == 0) {
+                $('#punishmentNameCabecalho1').show();
+                isValid = false;
+            }
 
-                            if ($('#objBinarioPunishmentName2').val().length == 0) {
-                                $('#punishmentNameCabecalho2').show();
-                                isValid = false;
-                            }
+            if ($('#objBinarioPunishmentName2').val().length == 0) {
+                $('#punishmentNameCabecalho2').show();
+                isValid = false;
+            }
 
-                            if ($('#objBinarioPunishmentValue1').val().length == 0) {
-                                $('#punishmentValueCabecalho1').show();
-                                isValid = false;
-                            }
+            if ($('#objBinarioPunishmentValue1').val().length == 0) {
+                $('#punishmentValueCabecalho1').show();
+                isValid = false;
+            }
 
-                            if ($('#objBinarioPunishmentValue2').val().length == 0) {
-                                $('#punishmentValueCabecalho2').show();
-                                isValid = false;
-                            }
+            if ($('#objBinarioPunishmentValue2').val().length == 0) {
+                $('#punishmentValueCabecalho2').show();
+                isValid = false;
+            }
 
-                            return isValid;
+            return isValid;
 
-                        },
-                        IncluirBinario: function (e) {
+        },
+        IncluirBinario: function (e) {
 
-                            /*Valida se os campos estão preenchidos*/
-                            if (Cabecalhos.ValidaBinario() == false) {
-                                setTimeout(Cabecalhos.EscondeMensagemValidacaoCabecalho, 10000);
-                                return;
-                            }
-                            if($('#headerLevel option:selected').val() == -1){
-                                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
-                                //alert('Selecione o Nivel do Cabecalho')
-                                return;
-                            }
+            /*Valida se os campos estão preenchidos*/
+            if (Cabecalhos.ValidaBinario() == false) {
+                setTimeout(Cabecalhos.EscondeMensagemValidacaoCabecalho, 10000);
+                return;
+            }
+            if($('#headerLevel option:selected').val() == -1){
+                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
+                //alert('Selecione o Nivel do Cabecalho')
+                return;
+            }
 
-                            var cod = "?";
-                            var nivelDoCampo = $('#headerLevel option:selected').text();
-                            var nivelDoCampoVal = $('#headerLevel option:selected').val();
-                            var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
-                            var vinculado = $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').is(':checked') ? "Sim" : "Não";
-                            var tipo = $('#parFieldType option:selected').text();
-                            var tipoVal = $('#parFieldType option:selected').val();
+            var cod = "?";
+            var nivelDoCampo = $('#headerLevel option:selected').text();
+            var nivelDoCampoVal = $('#headerLevel option:selected').val();
+            var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
+            var vinculado = $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').is(':checked') ? "Sim" : "Não";
+            var tipo = $('#parFieldType option:selected').text();
+            var tipoVal = $('#parFieldType option:selected').val();
 
-                            var nameObjBinario1 = $('#objBinarioPunishmentName1').val();
-                            var nameObjBinario2 = $('#objBinarioPunishmentName2').val();
-                            var valorObjBinario1 = $('#objBinarioPunishmentValue1').val();
-                            var valorObjBinario2 = $('#objBinarioPunishmentValue2').val();
+            var nameObjBinario1 = $('#objBinarioPunishmentName1').val();
+            var nameObjBinario2 = $('#objBinarioPunishmentName2').val();
+            var valorObjBinario1 = $('#objBinarioPunishmentValue1').val();
+            var valorObjBinario2 = $('#objBinarioPunishmentValue2').val();
 
-                            var obj = '<input type="button" class="btn btn-danger btn-xs" name="" value="x" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParBinario.length + ', true);" />';//Btn excluir;
+            var obj = '<input type="button" class="btn btn-danger btn-xs" name="" value="x" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParBinario.length + ', true);" />';//Btn excluir;
 
-                            /*Obj1*/
-                            Cabecalhos.ParBinario.push({
-                                'Name': nameObjBinario1,
-                                'ParHeaderField_Id': '0',
-                                'Description': '',
-                                'ParLevelDefinition_Id': nivelDoCampoVal,
-                                'ParFieldType_Id': tipoVal,
-                                'PunishmentValue': valorObjBinario1,
-                                'Conformity': true
-                            });
+            /*Obj1*/
+            Cabecalhos.ParBinario.push({
+                'Name': nameObjBinario1,
+                'ParHeaderField_Id': '0',
+                'Description': '',
+                'ParLevelDefinition_Id': nivelDoCampoVal,
+                'ParFieldType_Id': tipoVal,
+                'PunishmentValue': valorObjBinario1,
+                'Conformity': true
+            });
 
-                            var obj2 = '<input type="button" class="btn btn-danger btn-xs" name="" value="x" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParBinario.length + ', true);" />';//Btn excluir;
+            var obj2 = '<input type="button" class="btn btn-danger btn-xs" name="" value="x" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParBinario.length + ', true);" />';//Btn excluir;
 
-                            /*Obj2*/
-                            Cabecalhos.ParBinario.push({
-                                'Name': nameObjBinario2,
-                                'ParHeaderField_Id': '0',
-                                'Description': '',
-                                'ParLevelDefinition_Id': nivelDoCampoVal,
-                                'ParFieldType_Id': tipoVal,
-                                'PunishmentValue': valorObjBinario2,
-                                'Conformity': false
-                            });
+            /*Obj2*/
+            Cabecalhos.ParBinario.push({
+                'Name': nameObjBinario2,
+                'ParHeaderField_Id': '0',
+                'Description': '',
+                'ParLevelDefinition_Id': nivelDoCampoVal,
+                'ParFieldType_Id': tipoVal,
+                'PunishmentValue': valorObjBinario2,
+                'Conformity': false
+            });
 
-                            Cabecalhos.tableMultiplaEscolha.row.add([
-                               //cod,
-                               nivelDoCampo,
-                               nome,
-                               vinculado,
-                               tipo,
-                               nameObjBinario1,
-                               valorObjBinario1,
-                               obj
-                            ]).draw(false);
+            Cabecalhos.tableMultiplaEscolha.row.add([
+               //cod,
+               nivelDoCampo,
+               nome,
+               vinculado,
+               tipo,
+               nameObjBinario1,
+               valorObjBinario1,
+               obj
+            ]).draw(false);
 
-                            Cabecalhos.tableMultiplaEscolha.row.add([
-                               //cod,
-                               nivelDoCampo,
-                               nome,
-                               vinculado,
-                               tipo,
-                               nameObjBinario2,
-                               valorObjBinario2,
-                               obj2
-                            ]).draw(false);
+            Cabecalhos.tableMultiplaEscolha.row.add([
+               //cod,
+               nivelDoCampo,
+               nome,
+               vinculado,
+               tipo,
+               nameObjBinario2,
+               valorObjBinario2,
+               obj2
+            ]).draw(false);
 
-                            if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
-                                $('#salvarCabecalho2').fadeOut();
-                            else
-                                $('#salvarCabecalho2').fadeIn();
+            if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
+                $('#salvarCabecalho2').fadeOut();
+            else
+                $('#salvarCabecalho2').fadeIn();
 
-                            $('#divCamposCabecalhoIncluidos').show();
+            $('#divCamposCabecalhoIncluidos').show();
 
-                            $('#objBinarioPunishmentName1').val('');
-                            $('#objBinarioPunishmentName2').val('');
-                            $('#objBinarioPunishmentValue1').val('0');
-                            $('#objBinarioPunishmentValue2').val('0');
+            $('#objBinarioPunishmentName1').val('');
+            $('#objBinarioPunishmentName2').val('');
+            $('#objBinarioPunishmentValue1').val('0');
+            $('#objBinarioPunishmentValue2').val('0');
 
-                            updateAllTables();
-                        },
-                        ShowBinario: function () {
-                            $('#objBinario').show();
-                            $('#btnIncluirCabecalho input').hide();
-                            $('#salvarCabecalho2').val('Salvar ' + $('#parFieldType option:selected').text()).show();
+            updateAllTables();
+        },
+        ShowBinario: function () {
+            $('#objBinario').show();
+            $('#btnIncluirCabecalho input').hide();
+            $('#salvarCabecalho2').val('Salvar ' + $('#parFieldType option:selected').text()).show();
 
-                            if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
-                                $('#salvarCabecalho2').fadeOut();
-                            else
-                                $('#salvarCabecalho2').fadeIn();
-                        },
-                        SalvaBinario: function () {
+            if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
+                $('#salvarCabecalho2').fadeOut();
+            else
+                $('#salvarCabecalho2').fadeIn();
+        },
+        SalvaBinario: function () {
 
             var fieldType = $('#parFieldType option:selected').val();
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
@@ -1035,68 +1035,68 @@
 
             example += '<td>' + Cabecalhos.BtnExcluir2() + '</td></tr>';//Btn excluir
 
-                            $('#tableCabecalhosPreview').append(example);
+            $('#tableCabecalhosPreview').append(example);
 
-                            /*Limpa formulario Header*/
-                            $('#paramsDto_parHeaderFieldDto_Name').val('');
+            /*Limpa formulario Header*/
+            $('#paramsDto_parHeaderFieldDto_Name').val('');
 
-                            $('#objBinarioPunishmentName1').val('');
-                            $('#objBinarioPunishmentName2').val('');
-                            $('#objBinarioPunishmentValue1').val('0');
-                            $('#objBinarioPunishmentValue2').val('0');
+            $('#objBinarioPunishmentName1').val('');
+            $('#objBinarioPunishmentName2').val('');
+            $('#objBinarioPunishmentValue1').val('0');
+            $('#objBinarioPunishmentValue2').val('0');
 
-                            $('#headerLevel').val('-1').trigger('change');
-                            $('#parFieldType').val('-1').trigger('change');
+            $('#headerLevel').val('-1').trigger('change');
+            $('#parFieldType').val('-1').trigger('change');
 
-                            Cabecalhos.tableMultiplaEscolha.clear().draw();
-                            $('#divCamposCabecalhoIncluidos').hide();
-                            $('#objBinario').hide();
-                            $('#salvarCabecalho2').hide();
-                            Cabecalhos.ParBinario = [];
+            Cabecalhos.tableMultiplaEscolha.clear().draw();
+            $('#divCamposCabecalhoIncluidos').hide();
+            $('#objBinario').hide();
+            $('#salvarCabecalho2').hide();
+            Cabecalhos.ParBinario = [];
 
-                            updateAllTables();
-                        },
+            updateAllTables();
+        },
 
-                        //TEXTO
-                        ShowTexto: function () {
-                            $('#btnIncluirTexto').show();
-                            $('#objTexto').show();
-                            $('#btnIncluirCabecalho input').hide();
-                        },
-                        IncluirSalvarTexto: function (isData) {
+        //TEXTO
+        ShowTexto: function () {
+            $('#btnIncluirTexto').show();
+            $('#objTexto').show();
+            $('#btnIncluirCabecalho input').hide();
+        },
+        IncluirSalvarTexto: function (isData) {
 
-                            if($('#headerLevel option:selected').val() == -1){
-                                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
-                                //alert('Selecione o Nivel do Cabecalho')
-                                return;
-                            }
+            if($('#headerLevel option:selected').val() == -1){
+                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
+                //alert('Selecione o Nivel do Cabecalho')
+                return;
+            }
 
 
-                            if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
-                                openMessageModal("Alerta", "Digite o nome para o Campo Texto");
-                                //alert('Digite o nome para o Campo Texto');
-                                return;
-                            }
+            if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
+                openMessageModal("Alerta", "Digite o nome para o Campo Texto");
+                //alert('Digite o nome para o Campo Texto');
+                return;
+            }
 
-                            var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
-                            var nivelCabecalho = $('#headerLevel option:selected').val();
-                            var tipo = $('#parFieldType option:selected').val();
-                            var linkedNumberEvaluation = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked');
+            var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
+            var nivelCabecalho = $('#headerLevel option:selected').val();
+            var tipo = $('#parFieldType option:selected').val();
+            var linkedNumberEvaluation = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked');
 
-                            Cabecalhos.AtualizaPreviewCampotexto({
-                                Name: nome,
-                                Nivel: nivelCabecalho,
-                                Type: tipo,
-                                IsRemoved: false,
-                                Description: "",
-                                Link: linkedNumberEvaluation,
-                                isDataDefined: isData
-                            });
+            Cabecalhos.AtualizaPreviewCampotexto({
+                Name: nome,
+                Nivel: nivelCabecalho,
+                Type: tipo,
+                IsRemoved: false,
+                Description: "",
+                Link: linkedNumberEvaluation,
+                isDataDefined: isData
+            });
 
-                            updateAllTables();
+            updateAllTables();
 
-                        },
-                        AtualizaPreviewCampotexto: function (o) {
+        },
+        AtualizaPreviewCampotexto: function (o) {
 
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
             example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
@@ -1110,77 +1110,77 @@
                 example += '<input type="text" class="form-control input-sm " />';//Input
             }
 
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + o.Type + '" />';
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + o.Name + '" />';
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Description"            value="' + o.Description + '" />';
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParLevelDefinition_Id"  value="' + o.Nivel + '" />';
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + o.Link + '"/>';
-                            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
-                            example += '</td>';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + o.Type + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + o.Name + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Description"            value="' + o.Description + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParLevelDefinition_Id"  value="' + o.Nivel + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + o.Link + '"/>';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
+            example += '</td>';
 
             example += '<td>';
             example += '' +  Cabecalhos.BtnExcluir();
             //example += '</div>';
             example += '</td>';
 
-                            $('#tableCabecalhosPreview').append(example);
+            $('#tableCabecalhosPreview').append(example);
 
-                            if (o.isDataDefined) {
-                                SingleCallendar.IntiFullCallendarByClass('dataInput');
-                            }
+            if (o.isDataDefined) {
+                SingleCallendar.IntiFullCallendarByClass('dataInput');
+            }
 
-                        },
-                        ExcluirCampoTexto: function (e) {
-                            e.parent().remove();
-                            updateAllTables();
-                        },
+        },
+        ExcluirCampoTexto: function (e) {
+            e.parent().remove();
+            updateAllTables();
+        },
 
-                        //INTEGRAÇÕES
-                        ShowIntegracoes: function () {
-                            $('#btnIncluirIntegracoes').show();
-                            $('#objIntegracoes').show();
-                            $('#paramsDto_parHeaderFieldDto_Description').parents('td').show();
-                            $('#btnIncluirCabecalho input').hide();
-                        },
+        //INTEGRAÇÕES
+        ShowIntegracoes: function () {
+            $('#btnIncluirIntegracoes').show();
+            $('#objIntegracoes').show();
+            $('#paramsDto_parHeaderFieldDto_Description').parents('td').show();
+            $('#btnIncluirCabecalho input').hide();
+        },
 
-                        //NUMERICO
-                        ShowNumerico: function () {
-                            $('#btnIncluirNumerico').show();
-                            $('#objNumerico').show();
-                            $('#btnIncluirCabecalho input').hide();
-                        },
-                        IncluirSalvarNumerico: function () {
+        //NUMERICO
+        ShowNumerico: function () {
+            $('#btnIncluirNumerico').show();
+            $('#objNumerico').show();
+            $('#btnIncluirCabecalho input').hide();
+        },
+        IncluirSalvarNumerico: function () {
 
-                            if($('#headerLevel option:selected').val() == -1){
-                                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
-                                //lert('Selecione o Nivel do Cabecalho');
-                                return;
-                            }
+            if($('#headerLevel option:selected').val() == -1){
+                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
+                //lert('Selecione o Nivel do Cabecalho');
+                return;
+            }
 
-                            if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
-                                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.fill_the_numeric_field_name");
-                                //alert('Digite o nome para o Campo Numerico');
-                                return;
-                            }
+            if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
+                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.fill_the_numeric_field_name");
+                //alert('Digite o nome para o Campo Numerico');
+                return;
+            }
 
-                            var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
-                            var nivelCabecalho = $('#headerLevel option:selected').val();
-                            var tipo = $('#parFieldType option:selected').val();
-                            var linkedNumberEvaluation = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked');
+            var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
+            var nivelCabecalho = $('#headerLevel option:selected').val();
+            var tipo = $('#parFieldType option:selected').val();
+            var linkedNumberEvaluation = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked');
 
-                            Cabecalhos.AtualizaPreviewCampoNumerico({
-                                Name: nome,
-                                Nivel: nivelCabecalho,
-                                Type: tipo,
-                                IsRemoved: false,
-                                Description: "",
-                                Link: linkedNumberEvaluation
-                            });
+            Cabecalhos.AtualizaPreviewCampoNumerico({
+                Name: nome,
+                Nivel: nivelCabecalho,
+                Type: tipo,
+                IsRemoved: false,
+                Description: "",
+                Link: linkedNumberEvaluation
+            });
 
-                            updateAllTables();
+            updateAllTables();
 
-                        },
-                        AtualizaPreviewCampoNumerico: function (o) {
+        },
+        AtualizaPreviewCampoNumerico: function (o) {
 
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
             example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
@@ -1214,50 +1214,50 @@
                 return;
             }
 
-                            if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
-                                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.fill_the_integration_field_name");
-                                //alert('Digite o nome para o Campo Numerico');
-                                return;
-                            }
+            if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
+                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.fill_the_integration_field_name");
+                //alert('Digite o nome para o Campo Numerico');
+                return;
+            }
 
-                            var description = "";
+            var description = "";
 
-                            var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
+            var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
 
-                            switch ($('input[name=integracaoRB]:checked').val()) {
-                                case "integracaoEquipamentoValor":
-                                    description = $('#integracaoEquipamentoList').val();
-                                    break;
-                                case "integracaoCamaraValor":
-                                    description = $('#integracaoCamaraList').val();
-                                    break;
-                                case "integracaoPontoDeColetaValor":
-                                    description = $('#integracaoPontoDeColetaList').val();
-                                    break;
-                                case "integracaoProduto":
-                                    description = "Produto";
-                                default:
-                                    description = "";
-                                    break;
-                            }
+            switch ($('input[name=integracaoRB]:checked').val()) {
+                case "integracaoEquipamentoValor":
+                    description = $('#integracaoEquipamentoList').val();
+                    break;
+                case "integracaoCamaraValor":
+                    description = $('#integracaoCamaraList').val();
+                    break;
+                case "integracaoPontoDeColetaValor":
+                    description = $('#integracaoPontoDeColetaList').val();
+                    break;
+                case "integracaoProduto":
+                    description = "Produto";
+                default:
+                    description = "";
+                    break;
+            }
 
 
-                            var nivelCabecalho = $('#headerLevel option:selected').val();
-                            var tipo = $('#parFieldType option:selected').val();
-                            var linkedNumberEvaluation = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked');
+            var nivelCabecalho = $('#headerLevel option:selected').val();
+            var tipo = $('#parFieldType option:selected').val();
+            var linkedNumberEvaluation = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked');
 
-                            Cabecalhos.AtualizaPreviewCampoIntegracoes({
-                                Name: nome,
-                                Nivel: nivelCabecalho,
-                                Type: tipo,
-                                IsRemoved: false,
-                                Description: description,
-                                Link: linkedNumberEvaluation
-                            });
+            Cabecalhos.AtualizaPreviewCampoIntegracoes({
+                Name: nome,
+                Nivel: nivelCabecalho,
+                Type: tipo,
+                IsRemoved: false,
+                Description: description,
+                Link: linkedNumberEvaluation
+            });
 
-                            updateAllTables();
-                        },
-                        AtualizaPreviewCampoIntegracoes: function (o) {
+            updateAllTables();
+        },
+        AtualizaPreviewCampoIntegracoes: function (o) {
 
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
             example += '<td id=""><label class=""> ' + $('.equipamentos').val() + '</label></td>' + // nome
@@ -1288,220 +1288,220 @@
             $('#btnIncluirData').show();
         },
 
-                        //HORA
-                        ShowHora: function () {
-                            $('#btnIncluirCabecalho input').hide();
-                            $('#objHora').show();
-                            $('#btnIncluirHora').show();
-                        },
+        //HORA
+        ShowHora: function () {
+            $('#btnIncluirCabecalho input').hide();
+            $('#objHora').show();
+            $('#btnIncluirHora').show();
+        },
 
-                        UpdateCabecalhos: function () {
-                            //.not('#textPreview').not('#numericPreview')
-                            Cabecalhos.Counter = 0;
-                            var objects = $('#tableCabecalhosPreview > tbody > tr').not('.alteracao')
-                            objects.each(function (c, o) {
+        UpdateCabecalhos: function () {
+            //.not('#textPreview').not('#numericPreview')
+            Cabecalhos.Counter = 0;
+            var objects = $('#tableCabecalhosPreview > tbody > tr').not('.alteracao')
+            objects.each(function (c, o) {
 
-                                if($(o).find('select').length){
-                                    var hasDefaultSelected  = $(o).find('select :selected').text();
-                                    var hasDefaultSelectedIndex  = $(o).find('select')[0].selectedIndex;
-                                    if(hasDefaultSelectedIndex > 0){
-                                        if($(o).find('td:eq(3) #jaExisteSelected').length == 0){
-                                            $(o).find('td:eq(3)').append($('<input type="hidden" id="jaExisteSelected" value="'+ hasDefaultSelected +'" name="paramsDto.listParHeaderFieldDto[~].DefaultOption" />'))
-                                        }
-                                    }
-                                }
-
-                                $(o).find('input[type=hidden]').each(function (cc, oo) {
-
-                                    var parte1 = oo.name.split('[')[0];
-                                    var parte2 = oo.name.split(']')[1];
-                                    if (oo.name.split(']').length > 2)
-                                        parte2 += ']' + oo.name.split(']')[2]; //MOCK
-
-                                    var tempName = parte1 + '[' + Cabecalhos.Counter + ']' + parte2;
-                                    oo.name = tempName;
-
-                                });
-
-                                Cabecalhos.Counter++;
-                            });
-                        },
-
-                        //EDIÇÃO
-                        CounterRemoveCabecalhoEDICAO: 0,
-                        RemoveCabecalhoEDICAO: function (e) {
-                            e.parents('tr').find('input[type="hidden"]').attr("disabled", false).attr("name", e.parents('tr').find('input[type="hidden"]').attr('name') + "[" + Cabecalhos.CounterRemoveCabecalhoEDICAO + "]");
-                            e.parents('tr').hide();
-                            Cabecalhos.CounterRemoveCabecalhoEDICAO++;
-                            console.log(e.parents('tr'));
-                            updateAllTables();
-                        },
-
-                        RemoverDaTabela: function(e, indexValueOfArray, isBinario){
-                            if(indexValueOfArray != undefined && isBinario == undefined){
-                                //Cabecalhos.ParMultiplaEscolhaOpcoes.splice(indexValueOfArray,1);
-
-                                if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
-                                    $('#salvarCabecalho2').fadeOut();
-                                else
-                                    $('#salvarCabecalho2').fadeIn();
-
-                            }
-
-                            if(indexValueOfArray != undefined && isBinario != undefined){
-                                //Cabecalhos.ParBinario.splice(indexValueOfArray,1);
-
-                                if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
-                                    $('#salvarCabecalho1').fadeOut();
-                                else
-                                    $('#salvarCabecalho1').fadeIn();
-
-                            }
-                            e.parents('tr').remove();
-
-                            if(Cabecalhos.tableMultiplaEscolha.rows()[0].length == 0){
-                                $('#camposCabecalhoIncluidos').hide();
-                            }
-
-                            updateAllTables();
-
-
-
-                        },
-
-                        ////INCLUSÃO
-                        //RemoveCabecalhoINCLUSAO: function (e) {
-                        //    e.parent().remove();
-                        //},
+                if($(o).find('select').length){
+                    var hasDefaultSelected  = $(o).find('select :selected').text();
+                    var hasDefaultSelectedIndex  = $(o).find('select')[0].selectedIndex;
+                    if(hasDefaultSelectedIndex > 0){
+                        if($(o).find('td:eq(3) #jaExisteSelected').length == 0){
+                            $(o).find('td:eq(3)').append($('<input type="hidden" id="jaExisteSelected" value="'+ hasDefaultSelected +'" name="paramsDto.listParHeaderFieldDto[~].DefaultOption" />'))
+                        }
                     }
+                }
 
-                    var RegraNcL1 = {
+                $(o).find('input[type=hidden]').each(function (cc, oo) {
 
-                        /*Setup*/
-                        level: 'ParLevel1',
-                        listObjSalvo: @Html.Raw(Json.Encode(@Model.paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto)),
-                        tdsNames: ['ParNotConformityRule_Name', 'Value', 'IsReauditShowTable', 'btn'],
-                        adiciona: function() {
-                            /*Valida se pode criar o objeto*/
-                            if($('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').val() <= 0){
-                                openMessageModal("@Resources.Resource.select_not_conformity_rule");
-                                return;
-                            }
+                    var parte1 = oo.name.split('[')[0];
+                    var parte2 = oo.name.split(']')[1];
+                    if (oo.name.split(']').length > 2)
+                        parte2 += ']' + oo.name.split(']')[2]; //MOCK
 
-                            if($('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, '') == ""){
-                                openMessageModal("@Resources.Resource.fill_the_alert_rule_value");
-                                return;
-                            }
+                    var tempName = parte1 + '[' + Cabecalhos.Counter + ']' + parte2;
+                    oo.name = tempName;
 
-                            /*Cria o objeto*/
-                            var object = {/*Objeto*/
-                                ParNotConformityRule_Id: $('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').val(),
-                                ParNotConformityRule_Name: $('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').text(),
-                                Value: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, ''),
-                                IsReaudit: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked"),
-                                IsReauditShowTable: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "Sim" : "Não",
-                                IsActive: true,
-                                //btn: crudNxN.btnRemove + crudNxN.btnEdit,
-                            }
+                });
 
-                            /*Conclui*/
-                            crudNxN.adiciona(object, RegraNcL1.level + ' #tableRegraNc', RegraNcL1.tdsNames);
-                        },
-                        incluiNoObjetoParaSubmit: function(dados){
+                Cabecalhos.Counter++;
+            });
+        },
 
-                            $('#' + RegraNcL1.level + ' #tableRegraNc > tbody > tr ').each(function(c, obj){
+        //EDIÇÃO
+        CounterRemoveCabecalhoEDICAO: 0,
+        RemoveCabecalhoEDICAO: function (e) {
+            e.parents('tr').find('input[type="hidden"]').attr("disabled", false).attr("name", e.parents('tr').find('input[type="hidden"]').attr('name') + "[" + Cabecalhos.CounterRemoveCabecalhoEDICAO + "]");
+            e.parents('tr').hide();
+            Cabecalhos.CounterRemoveCabecalhoEDICAO++;
+            console.log(e.parents('tr'));
+            updateAllTables();
+        },
 
-                                var o = $(obj).data();
+        RemoverDaTabela: function(e, indexValueOfArray, isBinario){
+            if(indexValueOfArray != undefined && isBinario == undefined){
+                //Cabecalhos.ParMultiplaEscolhaOpcoes.splice(indexValueOfArray,1);
 
-                                if((o.Id != null || o.Id != undefined) && o.Id > 0){
-                                    dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].Id"] = o.Id;
-                                }
+                if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
+                    $('#salvarCabecalho2').fadeOut();
+                else
+                    $('#salvarCabecalho2').fadeIn();
 
-                                dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].ParNotConformityRule_Id"] = o.ParNotConformityRule_Id;
-                                dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].ParNotConformityRule_Name"] = o.ParNotConformityRule_Name;
-                                dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].Value"] = o.Value;
-                                dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].IsReaudit"] = o.IsReaudit;
-                                dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].IsReauditShowTable"] = o.IsReauditShowTable;
-                                dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].IsActive"] = o.IsActive;
+            }
 
-                            });
+            if(indexValueOfArray != undefined && isBinario != undefined){
+                //Cabecalhos.ParBinario.splice(indexValueOfArray,1);
 
-                        },/*Ok*/
-                        carregaDadosDoDb: function(){
-                            if( RegraNcL1.listObjSalvo != null){ /*Carrega regras de NC*/
-                                RegraNcL1.listObjSalvo.forEach(function(o, c){
-                                    o["IsReauditShowTable"] = o.IsReaudit ? "Sim" : "Não";
-                                    o["ParNotConformityRule_Name"] = o.ParNotConformityRule.Name;
-                                    crudNxN.adiciona(o, RegraNcL1.level + ' #tableRegraNc', RegraNcL1.tdsNames);
-                                });
-                            }
-                        },/*Ok*/
+                if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
+                    $('#salvarCabecalho1').fadeOut();
+                else
+                    $('#salvarCabecalho1').fadeIn();
 
-                    };
+            }
+            e.parents('tr').remove();
 
-                    $('#salvarCabecalho1').on('click', Cabecalhos.SalvaMultiplaEscolha);
-                    $('#salvarCabecalho2').on('click', Cabecalhos.SalvaBinario);
+            if(Cabecalhos.tableMultiplaEscolha.rows()[0].length == 0){
+                $('#camposCabecalhoIncluidos').hide();
+            }
 
-                    Cabecalhos.hideAllObj();
-                    $('#parFieldType').on('change', Cabecalhos.TipoChange);
-                    $('#paramsDto_parHeaderFieldDto_ParFieldType_Id').on('change', Cabecalhos.TipoChange);
+            updateAllTables();
 
-                    var counterReincidencia = 0;
-                    function removeReincidencia(e) {
-                        e.parents('tr').find('input[type="hidden"]').attr("disabled", false).attr("name", e.parents('tr').find('input[type="hidden"]').attr('name') + "[" + counterReincidencia + "]");
-                        e.parents('tr').hide();
-                        counterReincidencia++;
-                        console.log(e.parents('tr'));
-                        updateAllTables();
-                    }
 
-                    $('#l1BtnAddFrequenciaReincidencia').click(function (e) {
 
-                        if($('#l1SelectFrequenciaReincidencia :selected').val() <= 0)
-                        {
-                            openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_frequency");
-                            //alert('É necessário selecionar a Frequência');
-                            return;
-                        }
+        },
 
-                        if($('#l1InputNumeroNC').val().length <= 0)
-                        {
+        ////INCLUSÃO
+        //RemoveCabecalhoINCLUSAO: function (e) {
+        //    e.parent().remove();
+        //},
+    }
 
-                            openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
-                            //alert('Selecione o Nivel do Cabecalho');
-                            return;
-                        }
+    var RegraNcL1 = {
 
-                        if($('#l1InputVigencia').val().length <= 0)
-                        {
+        /*Setup*/
+        level: 'ParLevel1',
+        listObjSalvo: @Html.Raw(Json.Encode(@Model.paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto)),
+        tdsNames: ['ParNotConformityRule_Name', 'Value', 'IsReauditShowTable', 'btn'],
+        adiciona: function() {
+            /*Valida se pode criar o objeto*/
+            if($('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').val() <= 0){
+                openMessageModal("@Resources.Resource.select_not_conformity_rule");
+                return;
+            }
 
-                            openMessageModal("@Resources.Resource.warning", "É necessário selecionar a Vigência");
-                            //alert('É necessário selecionar a Vigência');
-                            return;
-                        }
+            if($('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, '') == ""){
+                openMessageModal("@Resources.Resource.fill_the_alert_rule_value");
+                return;
+            }
 
-                        var NcNumber = $('#l1InputNumeroNC').val();
-                        var Vigencia = $('#l1InputVigencia').val();
-                        var idFrequencia = $('#l1SelectFrequenciaReincidencia').val()
-                        var includeItem = true;
+            /*Cria o objeto*/
+            var object = {/*Objeto*/
+                ParNotConformityRule_Id: $('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').val(),
+                ParNotConformityRule_Name: $('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').text(),
+                Value: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, ''),
+                IsReaudit: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked"),
+                IsReauditShowTable: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "Sim" : "Não",
+                IsActive: true,
+                //btn: crudNxN.btnRemove + crudNxN.btnEdit,
+            }
 
-                        if (includeItem == true) {
-                            var indexValue = $('#l1TableRepetition tbody tr').not('.existent').length -1;
+            /*Conclui*/
+            crudNxN.adiciona(object, RegraNcL1.level + ' #tableRegraNc', RegraNcL1.tdsNames);
+        },
+        incluiNoObjetoParaSubmit: function(dados){
 
-                            var inputHidden = '<input class="counterRegraReincidenciaClass" type="hidden" name="paramsDto.parLevel1Dto.listParRelapseDto[' + indexValue + '].NcNumber" value="' + NcNumber + '" />' +
-                                              '<input class="LocalLevel2Class" type="hidden" name="paramsDto.parLevel1Dto.listParRelapseDto[' + indexValue + '].EffectiveLength" value="' + Vigencia + '" />' +
-                                              '<input class="LocalLevel2Class" type="hidden" name="paramsDto.parLevel1Dto.listParRelapseDto[' + indexValue + '].ParFrequency_Id" value="' + idFrequencia + '" />';
+            $('#' + RegraNcL1.level + ' #tableRegraNc > tbody > tr ').each(function(c, obj){
 
-                            var elemento = $('<tr><td>' + 'Regra ' + (indexValue + 1) + " </td><td> " + NcNumber + " </td><td> " + Vigencia + " </td><td> " + $('#l1SelectFrequenciaReincidencia option:selected').text() + inputHidden + '</td><td><button type="button" class="btn btn-danger btn-xs pull-right" onclick="RemoverReincidencia($(this));"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</td><tr>');
-                            $('#l1TableRepetition > tbody').append(elemento[0]);
-                            $('#l1SelectFrequenciaReincidencia').prop('selectedIndex', 0);
-                            $('#l1InputNumeroNC, #l1InputVigencia').val("");
-                            $('#l1InputNumeroNC').focus();
+                var o = $(obj).data();
 
-                            updateAllTables();
-                        }
+                if((o.Id != null || o.Id != undefined) && o.Id > 0){
+                    dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].Id"] = o.Id;
+                }
 
-                    });
+                dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].ParNotConformityRule_Id"] = o.ParNotConformityRule_Id;
+                dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].ParNotConformityRule_Name"] = o.ParNotConformityRule_Name;
+                dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].Value"] = o.Value;
+                dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].IsReaudit"] = o.IsReaudit;
+                dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].IsReauditShowTable"] = o.IsReauditShowTable;
+                dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].IsActive"] = o.IsActive;
+
+            });
+
+        },/*Ok*/
+        carregaDadosDoDb: function(){
+            if( RegraNcL1.listObjSalvo != null){ /*Carrega regras de NC*/
+                RegraNcL1.listObjSalvo.forEach(function(o, c){
+                    o["IsReauditShowTable"] = o.IsReaudit ? "Sim" : "Não";
+                    o["ParNotConformityRule_Name"] = o.ParNotConformityRule.Name;
+                    crudNxN.adiciona(o, RegraNcL1.level + ' #tableRegraNc', RegraNcL1.tdsNames);
+                });
+            }
+        },/*Ok*/
+
+    };
+
+    $('#salvarCabecalho1').on('click', Cabecalhos.SalvaMultiplaEscolha);
+    $('#salvarCabecalho2').on('click', Cabecalhos.SalvaBinario);
+
+    Cabecalhos.hideAllObj();
+    $('#parFieldType').on('change', Cabecalhos.TipoChange);
+    $('#paramsDto_parHeaderFieldDto_ParFieldType_Id').on('change', Cabecalhos.TipoChange);
+
+    var counterReincidencia = 0;
+    function removeReincidencia(e) {
+        e.parents('tr').find('input[type="hidden"]').attr("disabled", false).attr("name", e.parents('tr').find('input[type="hidden"]').attr('name') + "[" + counterReincidencia + "]");
+        e.parents('tr').hide();
+        counterReincidencia++;
+        console.log(e.parents('tr'));
+        updateAllTables();
+    }
+
+    $('#l1BtnAddFrequenciaReincidencia').click(function (e) {
+
+        if($('#l1SelectFrequenciaReincidencia :selected').val() <= 0)
+        {
+            openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_frequency");
+            //alert('É necessário selecionar a Frequência');
+            return;
+        }
+
+        if($('#l1InputNumeroNC').val().length <= 0)
+        {
+
+            openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
+            //alert('Selecione o Nivel do Cabecalho');
+            return;
+        }
+
+        if($('#l1InputVigencia').val().length <= 0)
+        {
+
+            openMessageModal("@Resources.Resource.warning", "É necessário selecionar a Vigência");
+            //alert('É necessário selecionar a Vigência');
+            return;
+        }
+
+        var NcNumber = $('#l1InputNumeroNC').val();
+        var Vigencia = $('#l1InputVigencia').val();
+        var idFrequencia = $('#l1SelectFrequenciaReincidencia').val()
+        var includeItem = true;
+
+        if (includeItem == true) {
+            var indexValue = $('#l1TableRepetition tbody tr').not('.existent').length -1;
+
+            var inputHidden = '<input class="counterRegraReincidenciaClass" type="hidden" name="paramsDto.parLevel1Dto.listParRelapseDto[' + indexValue + '].NcNumber" value="' + NcNumber + '" />' +
+                              '<input class="LocalLevel2Class" type="hidden" name="paramsDto.parLevel1Dto.listParRelapseDto[' + indexValue + '].EffectiveLength" value="' + Vigencia + '" />' +
+                              '<input class="LocalLevel2Class" type="hidden" name="paramsDto.parLevel1Dto.listParRelapseDto[' + indexValue + '].ParFrequency_Id" value="' + idFrequencia + '" />';
+
+            var elemento = $('<tr><td>' + 'Regra ' + (indexValue + 1) + " </td><td> " + NcNumber + " </td><td> " + Vigencia + " </td><td> " + $('#l1SelectFrequenciaReincidencia option:selected').text() + inputHidden + '</td><td><button type="button" class="btn btn-danger btn-xs pull-right" onclick="RemoverReincidencia($(this));"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>' + '</td><tr>');
+            $('#l1TableRepetition > tbody').append(elemento[0]);
+            $('#l1SelectFrequenciaReincidencia').prop('selectedIndex', 0);
+            $('#l1InputNumeroNC, #l1InputVigencia').val("");
+            $('#l1InputNumeroNC').focus();
+
+            updateAllTables();
+        }
+
+    });
 
     function RemoverReincidencia(e, isAlter){
         if(isAlter){
@@ -1510,65 +1510,68 @@
             e.parents('tr').remove();
         }
     }
-    
+
     $(document).ready(function () {
 
-                        defaults();
-                        loadSelect2();
+        if(!hasperm){
+            disableEvry();
+        }
+        defaults();
+        loadSelect2();
 
-                        $('#paramsDto_parLevel1Dto_IsRuleConformity[value="false"]').trigger('click');
-                        $('#paramsDto_parLevel1Dto_IsFixedEvaluetionNumber[value="true"]').trigger('click');
+        $('#paramsDto_parLevel1Dto_IsRuleConformity[value="false"]').trigger('click');
+        $('#paramsDto_parLevel1Dto_IsFixedEvaluetionNumber[value="true"]').trigger('click');
 
-                        //Guard.mascaraInteger('#VolumeAnimais');
+        //Guard.mascaraInteger('#VolumeAnimais');
 
-                        if($('#paramsDto_parLevel1Dto_IsSpecific').is(':checked'))
-                            $('.groupCadastroEspecificoUnidade').fadeIn();
+        if($('#paramsDto_parLevel1Dto_IsSpecific').is(':checked'))
+            $('.groupCadastroEspecificoUnidade').fadeIn();
 
-                        if($('#paramsDto_parLevel1Dto_haveRealTimeConsolidation').is(':checked'))
-                            $('.RealTimeConsolitationUpdate').fadeIn();
+        if($('#paramsDto_parLevel1Dto_haveRealTimeConsolidation').is(':checked'))
+            $('.RealTimeConsolitationUpdate').fadeIn();
 
-                        updateAllTables();
+        updateAllTables();
 
-                        $('[data-toggle="popover"]').popover();
+        $('[data-toggle="popover"]').popover();
 
-                        SingleCallendar.IntiFullCallendarByClass('dataInput');
+        SingleCallendar.IntiFullCallendarByClass('dataInput');
 
-                        var parNotConformityRuleXLevelDto = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto));
-                        if(parNotConformityRuleXLevelDto.ParNotConformityRule_Id > 0)
-                            $('#newLevel1Modal').find('#selectNotConformityRule').val(parNotConformityRuleXLevelDto.ParNotConformityRule_Id).change();
+        var parNotConformityRuleXLevelDto = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto));
+        if(parNotConformityRuleXLevelDto.ParNotConformityRule_Id > 0)
+            $('#newLevel1Modal').find('#selectNotConformityRule').val(parNotConformityRuleXLevelDto.ParNotConformityRule_Id).change();
 
-                        $('#newLevel1Modal').find('#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val(parNotConformityRuleXLevelDto.Value)
+        $('#newLevel1Modal').find('#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val(parNotConformityRuleXLevelDto.Value)
 
-                        //Geral.TableShow();
-                        ///initialize form
+        //Geral.TableShow();
+        ///initialize form
 
-                        $('[data-toggle="popover"]').popover();
+        $('[data-toggle="popover"]').popover();
 
-                        RegraNcL1.carregaDadosDoDb();
-
-
-                        setTimeout(function(){
-                            reloadPopovers();
-                            initialFormLevel1 = $($('form')[0]).clone();
-                        }, 3000);
-
-                        $('input[name="paramsDto.parLevel1Dto.IsRuleConformity"]:first').prop("checked", true);
-
-                        try {
-
-                            var IsRuleConformity = @Html.Raw(Json.Encode(Model.paramsDto.parLevel1Dto.IsRuleConformity));
-                            var IsSpecificNumberEvaluetion = @Html.Raw(Json.Encode(Model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion));
-                            console.log("IsRuleConformity: " + IsRuleConformity);
-                            console.log("IsSpecificNumberEvaluetion: " + IsSpecificNumberEvaluetion);
-
-                            /*Seta as 2 fdp pra false*/
-                            $('#paramsDto_parLevel1Dto_IsFixedEvaluetionNumber').bootstrapSwitch('toggleState');
+        RegraNcL1.carregaDadosDoDb();
 
 
-                        } catch (e) {
-                            console.log(e);
-                        }
+        setTimeout(function(){
+            reloadPopovers();
+            initialFormLevel1 = $($('form')[0]).clone();
+        }, 3000);
 
-                    });
+        $('input[name="paramsDto.parLevel1Dto.IsRuleConformity"]:first').prop("checked", true);
 
-                </script>
+        try {
+
+            var IsRuleConformity = @Html.Raw(Json.Encode(Model.paramsDto.parLevel1Dto.IsRuleConformity));
+            var IsSpecificNumberEvaluetion = @Html.Raw(Json.Encode(Model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion));
+            console.log("IsRuleConformity: " + IsRuleConformity);
+            console.log("IsSpecificNumberEvaluetion: " + IsSpecificNumberEvaluetion);
+
+            /*Seta as 2 fdp pra false*/
+            $('#paramsDto_parLevel1Dto_IsFixedEvaluetionNumber').bootstrapSwitch('toggleState');
+
+
+        } catch (e) {
+            console.log(e);
+        }
+
+    });
+
+</script>

@@ -7,14 +7,15 @@ using DTO.Helpers;
 using SgqSystem.Secirity;
 using Helper;
 using System.Collections.Generic;
+using System;
 
 namespace SgqSystem.Controllers.Params
 {
     [FilterUnit]
     [CustomAuthorize]
-    public class EquipamentosController : Controller
+    public class EquipamentosController : BaseController
     {
-   
+
         private SGQ_GlobalEntities db = new SGQ_GlobalEntities();
         private SgqDbDevEntities db2 = new SgqDbDevEntities();
 
@@ -24,48 +25,43 @@ namespace SgqSystem.Controllers.Params
         {
             var userId = Guard.GetUsuarioLogado_Id(HttpContext);
 
-            //var company = 
-            var user = db2.UserSgq.FirstOrDefault(r => r.Id == userId); //db2.Database.ExecuteSqlCommand("SELECT ParCompany_Id FROM UserSgq where id = 56");
+            var user = db2.UserSgq.FirstOrDefault(r => r.Id == userId); 
             var company = db2.ParCompany.FirstOrDefault(r => r.Id == user.ParCompany_Id);
-
             var parCompanyXUserSgq = db2.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == user.Id).ToList();
-
             var equipamentos = db.Equipamentos.ToList();
 
-            
-
-            //var equipamentos = db.Equipamentos.Where(r => r.ParCompany_Id == user.ParCompany_Id).ToList();
-
             var companys = db2.ParCompany.ToList();
-            var equipRetorno = new List<Equipamentos>();
+            var equipRetorno = new List<Equipamentos>();            
+
+            if (!string.IsNullOrEmpty(Request.QueryString["ParCompany_Id"]))
+            {
+                int companyId = Convert.ToInt32(Request.QueryString["ParCompany_Id"]);
+
+                equipamentos = db.Equipamentos.Where(r => r.ParCompany_Id == companyId).ToList();
+
+            }
+            else
+            {
+                equipamentos = db.Equipamentos.ToList();
+
+            }
 
             foreach (var i in equipamentos)
             {
 
                 i.ParCompanyName = companys.FirstOrDefault(r => r.Id == i.ParCompany_Id).Name;
 
-
-                if(parCompanyXUserSgq.Any(r => r.ParCompany_Id == i.ParCompany_Id))
+                if (parCompanyXUserSgq.Any(r => r.ParCompany_Id == i.ParCompany_Id))
+                {
                     equipRetorno.Add(i);
+                }
 
             }
-
-            //var company = db2.Database.ExecuteSqlCommand("SELECT ParCompany_Id FROM UserSgq where id = 56");
-            //db2.
-            //Company filter
-            if (!string.IsNullOrEmpty(Request.QueryString["ParCompany_Id"]))
-            {
-                int id = System.Convert.ToInt32(Request.QueryString["ParCompany_Id"]);
-                //equipamentos = equipamentos.Where(eqp => eqp.ParCompany_Id == id);
-            }
-            
-            //var result = db.Database.ExecuteSqlCommand("Select * ");
-
 
             if (equipRetorno.Count() > 0)
                 return View(equipRetorno.ToList());
             else
-                return View(new System.Collections.Generic.List<Equipamentos>());
+                return View(new List<Equipamentos>());
         }
 
         // GET: Equipamentos/Details/5
@@ -97,9 +93,9 @@ namespace SgqSystem.Controllers.Params
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ParCompany_Id,Nome,Tipo")] Equipamentos equipamentos)
+        public ActionResult Create([Bind(Include = "ParCompany_Id,Nome,Tipo,Subtipo")] Equipamentos equipamentos)
         {
-           
+
             ValidaEquipamentos(equipamentos);
             if (ModelState.IsValid)
             {
@@ -110,7 +106,7 @@ namespace SgqSystem.Controllers.Params
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            
+
             return View(equipamentos);
         }
 
@@ -153,7 +149,7 @@ namespace SgqSystem.Controllers.Params
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ParCompany_Id,Nome,Tipo")] Equipamentos equipamentos)
+        public ActionResult Edit([Bind(Include = "Id,ParCompany_Id,Nome,Tipo,Subtipo")] Equipamentos equipamentos)
         {
             ValidaEquipamentos(equipamentos);
 
