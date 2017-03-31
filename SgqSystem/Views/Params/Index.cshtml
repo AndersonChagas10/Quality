@@ -1177,8 +1177,9 @@
             if (r._PermiteEditarVinculoComTarefa) {
                 $('#btnSaveNewLevel3').attr('disabled', false);
                 /*Libera os campos para Tipos de dados de entrada*/
+                $('#level3_data_type_accordion').find('input, select, button').attr("readonly", false);
                 $('#selectTipoInput').on('change', function() {
-                    $('#level3_accordion').find('input, select, button').attr("readonly", false);
+                    $('#level3_data_type_accordion').find('input, select, button').attr("readonly", false);
                 });
                 $('#level3_accordion').find('input').attr("readonly", true);
                 $('#selectUnidadeParL3Value').find('option').not('[value='+ unitId + ']').remove();
