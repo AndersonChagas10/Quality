@@ -40,14 +40,14 @@
                     </div>
                     <div class="col-md-2">
                         <div class="input-group">
-                            @Html.EditorFor(r => i.Name, new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 200px;", @class = "form-control checkbox-erp" } })
+                            @Html.EditorFor(r => i.Name, new { htmlAttributes = new { @type = "text", @style = "max-width: 200px;", @class = "form-control checkbox-erp" } })
                         </div>
                     </div>
                     <div class="col-md-2">
                         @Html.Label(Resources.Resource.punishment_value)
                     </div>
                     <div class="col-md-1">
-                        @Html.EditorFor(r => i.PunishmentValue)
+                        @Html.TextBoxFor(r => i.PunishmentValue, i.PunishmentValue.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture))
                     </div>
                 </div>
             }
@@ -56,7 +56,7 @@
         {
             foreach (var i in Model.paramsDto.parHeaderFieldDto.ParMultipleValues)
             {
-                @Html.EditorFor(r => i.Id, new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 0px;visibility:hidden;" } })
+                @Html.EditorFor(r => i.Id, new { htmlAttributes = new { @type = "text", @style = "max-width: 0px;visibility:hidden;" } })
                 <div class="row">
                     <div class="col-md-1">
                         @Html.Label(Resources.Resource.option)
@@ -68,7 +68,7 @@
                         @Html.Label(Resources.Resource.punishment_value)
                     </div>
                     <div class="col-md-1">
-                        @Html.EditorFor(r => i.PunishmentValue, new { htmlAttributes = new { @value = 0, @type = "number", @style = "max-width: 200px;", @class = "form-control input-sm" } })
+                        @Html.TextBoxFor(r => i.PunishmentValue, i.PunishmentValue.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture))
 
                     </div>
                 </div>

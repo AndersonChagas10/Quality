@@ -2,6 +2,7 @@
 using Dominio;
 using Dominio.Interfaces.Services;
 using DTO;
+using DTO.DTO;
 using DTO.DTO.Params;
 using DTO.Helpers;
 using SgqSystem.Handlres;
@@ -28,18 +29,21 @@ namespace SgqSystem.Controllers.Api.Params
         private IBaseDomain<ParLevel2, ParLevel2DTO> _baseParLevel2;
         private IBaseDomain<ParLevel3, ParLevel3DTO> _baseParLevel3;
         private IBaseDomain<ParHeaderField, ParHeaderFieldDTO> _baseParHeaderField;
+        private IBaseDomain<ParMultipleValues, ParMultipleValuesDTO> _baseParMultipleValues;
 
         public ParamsApiController(IParamsDomain paramdDomain
             ,IBaseDomain<ParLevel2, ParLevel2DTO> baseParLevel2
             ,IBaseDomain<ParLevel3, ParLevel3DTO> baseParLevel3
             , IBaseDomain<ParLevel1, ParLevel1DTO> baseParLevel1
-            ,IBaseDomain<ParHeaderField, ParHeaderFieldDTO> baseParHeaderField)
+            ,IBaseDomain<ParHeaderField, ParHeaderFieldDTO> baseParHeaderField
+            , IBaseDomain<ParMultipleValues, ParMultipleValuesDTO> baseParMultipleValues)
         {
             _baseParLevel1 = baseParLevel1;
             _baseParLevel2 = baseParLevel2;
             _baseParLevel3 = baseParLevel3;
             _paramdDomain = paramdDomain;
             _baseParHeaderField = baseParHeaderField;
+            _baseParMultipleValues = baseParMultipleValues;
         }
 
         #endregion
@@ -338,14 +342,21 @@ namespace SgqSystem.Controllers.Api.Params
         [Route("atualizaCabecalho")]
         public ParHeaderFieldDTO atualizaCabecalho([FromBody] ParamsViewModel parr)
         {
-            //ParHeaderFieldDTO par = parr;
+            if (parr.paramsDto.parHeaderFieldDto.ParFieldType_Id == 1 || parr.paramsDto.parHeaderFieldDto.ParFieldType_Id == 3)
+            {
+                List<ParMultipleValuesDTO> lista = parr.paramsDto.parHeaderFieldDto.ParMultipleValues;
+                int count = 0;
+                while (count < lista.Count())
+                {
+                    ParMultipleValuesDTO mv = lista[count];
+                    _baseParMultipleValues.AddOrUpdate(mv);
+                    count++;
+                }
+            }
+
+            
             return _baseParHeaderField.AddOrUpdate(parr.paramsDto.parHeaderFieldDto);
-            
-            //#region GAMBIARRA LEVEL 100!
-            //paramsViewModel.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion = paramsViewModel.paramsDto.parLevel1Dto.IsSpecificNumberSample;
-            //#endregion
-            //paramsViewModel.paramsDto = _paramdDomain.AddUpdateLevel1(paramsViewModel.paramsDto);
-            
+
         }
 
         [HttpGet]
