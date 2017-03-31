@@ -1267,7 +1267,6 @@ namespace SGQDBContext
     public partial class ParFieldType
     {
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-        string conexaoBR = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
 
         public int Id { get; set; }
         public string Name { get; set; }
@@ -1279,7 +1278,7 @@ namespace SGQDBContext
             SqlConnection db = new SqlConnection(conexao);
 
 
-            string sql = "SELECT Id, Name, PunishmentValue, IsDefaultOption FROM ParMultipleValues                       " +
+            string sql = "SELECT Id, Name, PunishmentValue, IsDefaultOption FROM ParMultipleValues       " +
                          "WHERE ParHeaderField_Id = '" + ParHeaderField_Id + "' and IsActive = 1;        ";
 
             var multipleValues = db.Query<ParFieldType>(sql);
@@ -1289,6 +1288,7 @@ namespace SGQDBContext
 
         public IEnumerable<ParFieldType> getIntegrationValues(int ParHeaderField_Id, string integracao, int ParCompany_Id)
         {
+            string conexaoBR = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
             SqlConnection db = new SqlConnection(conexaoBR);
 
             var sql = "SELECT null Id, null as Name, 0 as PunishmentValue, 0 as IsDefaultOption";
