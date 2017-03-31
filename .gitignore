@@ -254,3 +254,5 @@ paket-files/
 /MVC.API/NgrokStart.bat
 /MVC.API/NgrokStart - Nevegador.bat
 /MVC.API/ngrok.exe
+
+web.config

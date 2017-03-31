@@ -676,6 +676,7 @@
     <Content Include="Views\Pa_Acao\Acompanhamento.cshtml" />
     <Content Include="Views\Pa_Acao\NewFTA.cshtml" />
     <Content Include="Views\Shared\EditorTemplate\FTA.cshtml" />
+    <Content Include="Views\Pa_Acao\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">

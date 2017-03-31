@@ -2842,6 +2842,9 @@ namespace SgqSystem.Services
             string listlevel1 = null;
             string listLevel2 = null;
             string listLevel3 = null;
+
+            string excecao = null;
+            
             //Percorremos a lista de agrupada
             foreach (var parLevel1Group in parLevel1GroupByCriticalLevel)
             {
@@ -2865,7 +2868,7 @@ namespace SgqSystem.Services
                     //Se o ParLevel1 contem um ParCritialLevel_Id
                     var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas();
                     var alertas = ParLevel1AlertasDB.getAlertas(parlevel1.Id, ParCompany_Id, dateCollect);
-
+                    
                     if (parlevel1.ParCriticalLevel_Id > 0)
                     {
                         //O ParLevel1 vai estar dentro de um accordon
@@ -2950,6 +2953,11 @@ namespace SgqSystem.Services
                             painelCounters = html.painelCounters(listCounter, "margin-top: 40px;font-size: 12px;");
                         }
 
+                        if (GlobalConfig.Eua && parlevel1.Name.Contains("CFF"))
+                        {
+                            tipoTela = "CFF";
+                        }
+
                         var listParRelapse = ParRelapseDB.getRelapses(parlevel1.Id);
 
                         string level01 = html.level1(parlevel1,
@@ -2971,12 +2979,12 @@ namespace SgqSystem.Services
                                                      IsLimitedEvaluetionNumber: parlevel1.IsLimitedEvaluetionNumber,
                                                      listParRelapse: listParRelapse);
                         //Incrementa level1
-                        parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row", outerhtml: level01 + painelCounters);
+                        parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row "+excecao, outerhtml: level01 + painelCounters);
                     }
                     else
                     {
                         //Caso o ParLevel1 não contenha um ParCritialLevel_Id apenas incremento os itens de ParLevel1
-                        parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), outerhtml: parlevel1.Name);
+                        parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), outerhtml: parlevel1.Name, classe: excecao);
                     }
                     //Instancia variável para receber todos os level3
                     string level3Group = null;

@@ -42,7 +42,6 @@ namespace SgqSystem.Controllers
                 }
             }
 
-
             base.Initialize(requestContext);
         }
 
@@ -62,6 +61,7 @@ namespace SgqSystem.Controllers
                 //Add key-values in the cookie
                 myCookie.Values.Add("userId", isAuthorized.Id.ToString());
                 myCookie.Values.Add("userName", isAuthorized.Name);
+                myCookie.Values.Add("CompanyId", isAuthorized.ParCompany_Id.GetValueOrDefault().ToString());
 
                 if (isAuthorized.AlterDate != null)
                 {
@@ -92,6 +92,9 @@ namespace SgqSystem.Controllers
                 Response.Cookies.Add(myCookie);
             }
         }
+
+      
+
     }
 
 }

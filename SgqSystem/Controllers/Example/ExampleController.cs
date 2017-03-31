@@ -1,5 +1,5 @@
-﻿using Dominio;
-using Dominio.ADO;
+﻿using ADOFactory;
+using Dominio;
 using Helper;
 using SgqSystem.ViewModels;
 using System.Web.Mvc;
@@ -14,7 +14,7 @@ namespace SgqSystem.Controllers
     {
         public ActionResult Index()
         {
-            using (var db = new FactoryADO(@"SERVERGRT\MSSQLSERVER2014", "SgqDbDev", "1qazmko0", "sa"))
+            using (var db = new Factory(@"SERVERGRT\MSSQLSERVER2014", "SgqDbDev", "1qazmko0", "sa"))
             {
                var results = db.SearchQuery<UserSgq>("Select * from UserSgq");
             }
