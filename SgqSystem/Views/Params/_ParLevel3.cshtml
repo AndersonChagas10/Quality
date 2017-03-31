@@ -716,6 +716,8 @@
         $('#modalPositiveNegative').modal("hide");
     };
 
+    var urlLowPerm = '@Url.Action("AlteraVinculoLevel3", "api/ParamsApi")';
+
     $(document).ready(function () {
 
         if(config){
@@ -723,46 +725,50 @@
         }
 
         if(!hasperm){
+
             disableEvry();
 
-            var l1 = $('#paramsDto_parLevel1Dto_Id').val();
-            var l2 = $('#paramsDto_parLevel2Dto_Id').val();
-            var l3 = $('#paramsDto_parLevel3Dto_Id').val();
-            if(l1 > 0 && l2 > 0 && l3 > 0){
-                $('#vinculoLevel1').attr('disabled', false);
-            }
+            if (_PermiteEditarVinculoComTarefa) {
+    
+                var l1 = $('#paramsDto_parLevel1Dto_Id').val();
+                var l2 = $('#paramsDto_parLevel2Dto_Id').val();
+                var l3 = $('#paramsDto_parLevel3Dto_Id').val();
+                if(l1 > 0 && l2 > 0 && l3 > 0){
+                    $('#vinculoLevel1').attr('disabled', false);
+                }
 
-            /*habilita Edicao do Peso*/
-            if( $('#tablePeso > tbody > tr').length){
+                /*habilita Edicao do Peso*/
+                if( $('#tablePeso > tbody > tr').length){
 
-                $('#tablePeso > tbody > tr > td:nth-child(4)').each(function(c, o){
+                    $('#tablePeso > tbody > tr > td:nth-child(4)').each(function(c, o){
 
-                    var company = $(o).parents('tr').data().ParCompany_Id;
+                        var company = $(o).parents('tr').data().ParCompany_Id;
 
-                    if(company == unitId){
-                        $(o).find("button")[1].disabled = false;
+                        if(company == unitId){
+                            $(o).find("button")[1].disabled = false;
 
-                        $(o).find("button").on('click', function(e) {
-                            $('#crudNxNEdit').find('input').attr("disabled", false);
-                            $('#crudNxNEdit').find('button').attr("disabled", false);
-                            $('#crudNxNEdit').find('select')[1].disabled = false;
-                            var data = $(this).parents('tr').data();
+                            $(o).find("button").on('click', function(e) {
+                                $('#crudNxNEdit').find('input').attr("disabled", false);
+                                $('#crudNxNEdit').find('button').attr("disabled", false);
+                                $('#crudNxNEdit').find('select')[1].disabled = false;
+                                var data = $(this).parents('tr').data();
 
-                            //console.log(data);
-                            $($('#crudNxNEdit').find('button')[2]).on('click', function() {
+                                //console.log(data);
+                                $($('#crudNxNEdit').find('button')[2]).on('click', function() {
 
-                                data.Weight = $('#crudNxNEdit').find('input')[0].value;
-                                data.Group = $('#crudNxNEdit').find('select')[1].value;
+                                    data.Weight = $('#crudNxNEdit').find('input')[0].value;
+                                    data.Group = $('#crudNxNEdit').find('select')[1].value;
 
-                                $.post('@Url.Action("AlteraVinculoLevel3", "api/ParamsApi")', data, function(r) {
-                                    $('#parLevel3Select2').change();
+                                    $.post(urlLowPerm, data, function(r) {
+                                        $('#parLevel3Select2').change();
+                                    });
+
                                 });
-
                             });
+                        }
+                    });
 
-                        });
-                    }
-                });
+                }
 
             }
 

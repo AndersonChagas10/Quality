@@ -36,7 +36,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.cep_desossa</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.equipaments</span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -53,10 +53,10 @@
 
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParCompanyName, "Unidade", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParCompany_Id, "Unidade", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.DropDownList("ParCompanyName", new SelectList(ViewBag.UnidadeUsuario, "Name", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
-                                                @Html.ValidationMessageFor(model => model.ParCompanyName, "", new { @class = "text-danger" })
+                                                @Html.DropDownListFor(model => model.ParCompany_Id, new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.ParCompany_Id, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
 
@@ -72,9 +72,9 @@
                                             @Html.LabelFor(model => model.Tipo, "Tipo", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 <select id="Tipo" name="Tipo" class="form-control valid">
-                                                    <option value="Câmera">Câmera</option>
+                                                    <option value="Câmara">Câmara</option>
                                                     <option value="Equipamento">Equipamento</option>
-                                                    <option value="Ponto de Coleta de Água">Ponto de Coleta de Água</option>
+                                                    <option value="Ponto de Coleta">Ponto de Coleta de Água</option>
                                                 </select>
                                                 @*@Html.EditorFor(model => model.AmostraPorDia, new { htmlAttributes = new { @class = "form-control" } })*@
                                                 @Html.ValidationMessageFor(model => model.Tipo, "", new { @class = "text-danger" })
@@ -85,12 +85,13 @@
                                             @Html.LabelFor(model => model.Subtipo, "Subtipo", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 <select id="Subtipo" name="Subtipo" class="form-control valid">
+                                                    <option value="">Selecione...</option>
                                                     <option value="Esteiras">Esteiras</option>
-                                                    <option value="Tunes de Encolhimento">Tunes de Encolhimento</option>
+                                                    <option value="Tunel de Encolhimento">Tunel de Encolhimento</option>
                                                     <option value="VS">VS</option>
                                                 </select>
                                                 @*@Html.EditorFor(model => model.AmostraPorDia, new { htmlAttributes = new { @class = "form-control" } })*@
-                                                @Html.ValidationMessageFor(model => model.Subtipo, "", new { @class = "text-danger" })
+                                                @*@Html.ValidationMessageFor(model => model.Subtipo, "", new { @class = "text-danger" })*@
                                             </div>
                                         </div>
 

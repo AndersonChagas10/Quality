@@ -78,7 +78,15 @@ namespace Helper
                 else
                 {
                     if (!string.IsNullOrEmpty(cookie.Values["roles"]))
+                    {
                         _userSgqRoles = cookie.Values["roles"].ToString();
+                        filterContext.Controller.ViewBag.IsAdmin = VerificarRole("Admin");
+                        
+                    }
+                    else 
+                    {//NAO TEM ROLES
+                        filterContext.Controller.ViewBag.IsAdmin = false;
+                    }
                     //Extends cookie ttl
                     cookie.Expires = DateTime.Now.AddMinutes(60);
                     filterContext.HttpContext.Response.Cookies.Set(cookie);
@@ -100,7 +108,6 @@ namespace Helper
                         }
                     }
 
-                    filterContext.Controller.ViewBag.IsAdmin = VerificarRole("Admin");
                     filterContext.Controller.ViewBag.CompanyId = cookie.Values["CompanyId"].ToString();
 
                     if (!string.IsNullOrEmpty(_userSgqRoles) && !Roles.Contains("somentemanutencao-sgq"))

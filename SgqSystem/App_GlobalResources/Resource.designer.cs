@@ -1438,6 +1438,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Equipment Registration.
+        /// </summary>
+        internal static string equipment_registration {
+            get {
+                return ResourceManager.GetString("equipment_registration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         internal static string error {

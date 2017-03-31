@@ -1,8 +1,9 @@
 ﻿@using DTO
+@using SgqSystem.Controllers.Params
 @model IEnumerable<Dominio.Equipamentos>
 
 @{
-    ViewBag.Title = "Equipamentos";
+        ViewBag.Title = "Equipamentos";
 }
 
 
@@ -19,7 +20,7 @@
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>Volume de @Resources.Resource.cep_desossa</span>
+                    <span>Volume de @Resources.Resource.equipment_registration</span>
                 </li>
             </ul>
             <div class="page-toolbar">
@@ -37,7 +38,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.cep_desossa</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.equipment_registration</span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -47,7 +48,7 @@
 
                                     <div class="" id="complexCallendar" style="float:right;display:inline;width:550px;">
                                         <button id="btnFilter" class="btn-success" style="float:right;margin-left:5px;padding:7px;margin-top:-12px;">Filtrar</button>
-                                        @Html.DropDownList("ParCompanyName", new SelectList(ViewBag.UnidadeUsuario, "Name", "Name"), Resources.Resource.select + "...", new { @class = "form-control", @style = "width:200px;float:right;margin-top:-12px;margin-left:5px;" })
+                                        @Html.DropDownList("ParCompanyName", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control", @style = "width:200px;float:right;margin-top:-12px;margin-left:5px;" })
                                         <span style="float:right;margin-top:-5px;margin-left:5px;">Filtro: </span>
 
                                     </div>
@@ -136,7 +137,7 @@
 
         $("#btnFilter").on('click',function(){
             var filterUrlCall = "@Url.Action("Index", "Equipamentos")?"+
-                (($('#ParCompanyName').val()) ? "ParCompanyName=" + $('#ParCompanyName').val() + "&" : "");
+                (($('#ParCompanyName').val()) ? "ParCompany_Id=" + $('#ParCompanyName').val() + "&" : "");
             window.location = filterUrlCall;
         });
     });
