@@ -324,11 +324,11 @@
                 @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
-        <li>
+         <li>
             <div id="showOnlyUnit" style="display:none">
-                <span class="redLabel">@Resources.Resource.unit</span>
+                <span class="redLabel">Unidade</span>
 
-                @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.select, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                @Html.DropDownList("onlyunitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.select, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
         <li data-ng-app="myApp">
@@ -894,6 +894,10 @@
             enviar['unitId'] = $('#unitId option:selected').val();
         });
 
+        $('#onlyunitId').on('change', function (e) {
+            enviar['onlyunitId'] = $('#onlyunitId option:selected').val();
+        });
+
         $('#shift').on('change', function (e) {
             enviar['shift'] = $('#shift option:selected').val();
         });
@@ -1069,6 +1073,9 @@
         showUnit: function () {
             $('#showUnit').show();
         },
+        showOnlyUnit: function () {
+            $('#showOnlyUnit').show();
+        },
         showShift: function () {
             $('#showShift').show();
         },
@@ -1083,6 +1090,7 @@
             formControl.showFullCallendar();
             formControl.showShift();
             formControl.showUnit();
+            formControl.showOnlyUnit();
             formControl.showUsers();
         },
         orderDdls: function () {
@@ -1150,10 +1158,6 @@
 
         showSubRegionaisManutencao: function () {
             $("#showSubRegionaisManutencao").show();
-        },
-
-        showOnlyUnit: function (){
-            $('#showOnlyUnit').show();
         }
 
     }
