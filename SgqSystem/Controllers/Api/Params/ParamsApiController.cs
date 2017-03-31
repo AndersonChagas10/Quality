@@ -226,6 +226,15 @@ namespace SgqSystem.Controllers.Api.Params
             return _paramdDomain.RemVinculoL1L2(idLevel1, idLevel2);
         }
 
+
+        [HttpPost]
+        [Route("RemVinculoL2L3/{idLevel1}/{idLevel2}/{idLevel3}")]
+        public bool RemVinculoL2L3(int idLevel1, int idLevel2, int idLevel3)
+        {
+            //return _paramdDomain.RemVinculoL1L2(idLevel1, idLevel2);
+            return true;
+        }
+
         [HttpPost]
         [Route("VerificaShowBtnRemVinculoL1L2/{idLevel1}/{idLevel2}")]
         public bool VerificaShowBtnRemVinculoL1L2(int idLevel1, int idLevel2)
@@ -235,12 +244,7 @@ namespace SgqSystem.Controllers.Api.Params
 
         #endregion
 
-        [HttpPost]
-        [Route("ClearLevel1")]
-        public decimal teste([FromBody] decimal teste)
-        {
-            return teste;
-        }
+ 
 
         [HttpPost]
         [Route("AddRemoveParHeaderLevel2")]
