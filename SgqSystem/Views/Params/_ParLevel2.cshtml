@@ -12,87 +12,87 @@
 <div id="newLevel2Modal">
     @using (Html.BeginForm())
     {
-    <div class="row">
-        <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
 
-            <table class="table-erp">
-                <tbody>
+                <table class="table-erp">
+                    <tbody>
 
-                    <tr class="row hide">
-                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Id, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
-                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parEvaluationDto.ParCompany_Id, htmlAttributes: new { @Value = "1", @class = "" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
-                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parSampleDto.ParCompany_Id, htmlAttributes: new { @Value = "1", @class = "" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
-                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.ParCompany_Id, htmlAttributes: new { @Value = "1" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
-                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.Level, htmlAttributes: new { @Value = "2" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
-                    </tr>
+                        <tr class="row hide">
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Id, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parEvaluationDto.ParCompany_Id, htmlAttributes: new { @Value = "1", @class = "" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parSampleDto.ParCompany_Id, htmlAttributes: new { @Value = "1", @class = "" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.ParCompany_Id, htmlAttributes: new { @Value = "1" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parNotConformityRuleXLevelDto.Level, htmlAttributes: new { @Value = "2" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
+                        </tr>
 
-                    <tr class="row">
-                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2_name), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.Name, null, new { @class = "text-danger" }))
-                        @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Description, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2_description), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.Description, null, new { @class = "text-danger" }))
-                    </tr>
+                        <tr class="row">
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2_name), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.Name, null, new { @class = "text-danger" }))
+                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Description, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2_description), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.Description, null, new { @class = "text-danger" }))
+                        </tr>
 
-                    <tr class="row">
-                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel2Dto.ParDepartment_Id", Model.paramsDdl.DdlParDepartment, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.department), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.ParDepartment_Id, null, new { @class = "text-danger" }))
-                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel2Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
-                    </tr>
+                        <tr class="row">
+                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel2Dto.ParDepartment_Id", Model.paramsDdl.DdlParDepartment, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.department), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.ParDepartment_Id, null, new { @class = "text-danger" }))
+                            @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel2Dto.ParFrequency_Id", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.frequency), Table.PosicaoLabel.top, error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel2Dto.ParFrequency_Id, null, new { @class = "text-danger" }))
+                        </tr>
 
-                    <tr class="row">
-                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.IsEmptyLevel3, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_audit_of_detached_level3), Table.PosicaoLabel.left, null, Resources.Resource.allow_the_audit_of_detached_level3_popover)
-                    </tr>
+                        <tr class="row">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.IsEmptyLevel3, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_audit_of_detached_level3), Table.PosicaoLabel.left, null, Resources.Resource.allow_the_audit_of_detached_level3_popover)
+                        </tr>
 
-                    <tr id="showlevel3" class="row">
-                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasShowLevel03, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.show_group_on_level3), Table.PosicaoLabel.left, null, null)
-                    </tr>
+                        <tr id="showlevel3" class="row">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasShowLevel03, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.show_group_on_level3), Table.PosicaoLabel.left, null, null)
+                        </tr>
 
-                    <tr class="row">
-                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasGroupLevel3, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_group_on_level3), Table.PosicaoLabel.left, null, null)
-                    </tr>
+                        <tr class="row">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasGroupLevel3, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_group_on_level3), Table.PosicaoLabel.left, null, null)
+                        </tr>
 
-                    <tr id="HasSampleTotaltr" class="row">
-                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasSampleTotal, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_sample_total), Table.PosicaoLabel.left, null, null)
-                    </tr>
+                        <tr id="HasSampleTotaltr" class="row">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.HasSampleTotal, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_sample_total), Table.PosicaoLabel.left, null, null)
+                        </tr>
 
-                    <tr class="row">
-                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
-                    </tr>
+                        <tr class="row">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel2Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
+                        </tr>
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
 
-            @Html.Partial("_AvaliacaoAmostra", Model)
+                @Html.Partial("_AvaliacaoAmostra", Model)
 
 
-            @if (Model.paramsDto.parLevel2Dto.cabecalhosInclusos != null)
+                @if (Model.paramsDto.parLevel2Dto.cabecalhosInclusos != null)
                 {
                     if (Model.paramsDto.parLevel2Dto.cabecalhosInclusos.Count > 0)
                     {
 
-                <div class="panel-group accordion" style="" id="level2_header_accordion">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_header_accordion" href="#level2_header_collapse" aria-expanded="false"> @Resources.Resource.headers</a>
-                            </h4>
-                        </div>
-                        <div id="level2_header_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th style="width:50%">@Resources.Resource.header_name</th>
-                                            <th style="width:50%">@Resources.Resource.show_on_this_level?</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var parLevel1XHeaderField in Model.paramsDto.parLevel2Dto.cabecalhosInclusos)
+                        <div class="panel-group accordion" style="" id="level2_header_accordion">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_header_accordion" href="#level2_header_collapse" aria-expanded="false"> @Resources.Resource.headers</a>
+                                    </h4>
+                                </div>
+                                <div id="level2_header_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                    <div class="panel-body">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width:50%">@Resources.Resource.header_name</th>
+                                                    <th style="width:50%">@Resources.Resource.show_on_this_level?</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var parLevel1XHeaderField in Model.paramsDto.parLevel2Dto.cabecalhosInclusos)
                                                 {
                                                     var added = 0;
-                                                <tr>
-                                                    <td>@parLevel1XHeaderField.ParHeaderField.Name</td>
-                                                    <td>
-                                                        @if (Model.paramsDto.parLevel2Dto.cabecalhosExclusos.Count == 0)
+                                                    <tr>
+                                                        <td>@parLevel1XHeaderField.ParHeaderField.Name</td>
+                                                        <td>
+                                                            @if (Model.paramsDto.parLevel2Dto.cabecalhosExclusos.Count == 0)
                                                             {
-                                                            <button type="button" class="btn btn-danger btn-sm" onclick="HeaderLevel2.Add(@parLevel1XHeaderField.ParHeaderField_Id, $(this));"><i class="fa fa-times"></i>  @Resources.Resource.no</button>
+                                                                <button type="button" class="btn btn-danger btn-sm" onclick="HeaderLevel2.Add(@parLevel1XHeaderField.ParHeaderField_Id, $(this));"><i class="fa fa-times"></i>  @Resources.Resource.no</button>
                                                             }
                                                             else
                                                             {
@@ -101,83 +101,83 @@
                                                                     if (parLevel1XHeaderField.ParHeaderField.Id == parLevel2XHeaderField.ParHeaderField_Id)
                                                                     {
                                                                         added = 1;
-                                                            <button type="button" class="btn btn-primary btn-sm" onclick="HeaderLevel2.Remove(@parLevel2XHeaderField.Id, $(this));"><i class="fa fa-check"></i>  @Resources.Resource.yes</button>
+                                                                        <button type="button" class="btn btn-primary btn-sm" onclick="HeaderLevel2.Remove(@parLevel2XHeaderField.Id, $(this));"><i class="fa fa-check"></i>  @Resources.Resource.yes</button>
                                                                     }
                                                                 }
                                                                 if (added == 0)
                                                                 {
-                                                            <button type="button" class="btn btn-danger btn-sm" onclick="HeaderLevel2.Add(@parLevel1XHeaderField.ParHeaderField_Id, $(this));"><i class="fa fa-times"></i>  @Resources.Resource.no</button>
+                                                                    <button type="button" class="btn btn-danger btn-sm" onclick="HeaderLevel2.Add(@parLevel1XHeaderField.ParHeaderField_Id, $(this));"><i class="fa fa-times"></i>  @Resources.Resource.no</button>
                                                                 }
                                                             }
-                                                    </td>
+                                                        </td>
 
-                                                </tr>
+                                                    </tr>
                                                 }
 
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
+                @Html.Partial("_GroupXLevel", Model)
+
+                @*/*Regra de alerta*/*@
+                <div class="panel-group accordion" id="level2_nc_accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_nc_accordion" href="#level2_nc_collapse" aria-expanded="false"> @Resources.Resource.alert_rule</a>
+                            </h4>
+                        </div>
+                        <div id="level2_nc_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                            <div class="panel-body">
+                                <table class="table-erp">
+                                    <tbody>
+                                        <tr class="row">
+                                            @Html.HiddenFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Id)
+                                            @Table.GerarColuna(
+         @Html.DropDownList("paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNotConformityRule" })
+         , @Html.Label(Resources.Resource.not_conformity_rule)
+         , Table.PosicaoLabel.top)
+                                            @Table.GerarColuna(
+         @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm", type = "number", min = "0" })
+         , @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
+                                            @Table.GerarColunaCheckbox(
+             @Html.EditorFor(model => model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" })
+             , @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top, button: "<button type='button' class='btn btn-primary btn-sm'  onclick='RegraNcL2.adiciona();'><i class='fa fa-plus' aria-hidden='true'></i></button>")
+
+                                        </tr>
                                     </tbody>
                                 </table>
+
+                                <table id="tableRegraNc" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Regra de Alerta:">
+                                    <thead>
+                                        <tr>
+                                            <th>@Resources.Resource.not_conformity_rule</th>
+                                            <th>@Resources.Resource.value</th>
+                                            <th>@Resources.Resource.reaudit</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+
                             </div>
                         </div>
                     </div>
                 </div>
-                    }
-                }
-
-            @Html.Partial("_GroupXLevel", Model)
-
-            @*/*Regra de alerta*/*@
-            <div class="panel-group accordion" id="level2_nc_accordion">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#level2_nc_accordion" href="#level2_nc_collapse" aria-expanded="false"> @Resources.Resource.alert_rule</a>
-                        </h4>
-                    </div>
-                    <div id="level2_nc_collapse" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                        <div class="panel-body">
-                            <table class="table-erp">
-                                <tbody>
-                                    <tr class="row">
-                                        @Html.HiddenFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Id)
-                                        @Table.GerarColuna(
-         @Html.DropDownList("paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.ParNotConformityRule_Id", Model.paramsDdl.DdlParNotConformityRule, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNotConformityRule" })
-         , @Html.Label(Resources.Resource.not_conformity_rule)
-         , Table.PosicaoLabel.top)
-                                        @Table.GerarColuna(
-         @Html.TextBoxFor(m => m.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.Value, htmlAttributes: new { @class = "form-control input-sm", type = "number", min = "0" })
-         , @Html.Label(Resources.Resource.value), Table.PosicaoLabel.top)
-                                        @Table.GerarColunaCheckbox(
-             @Html.EditorFor(model => model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" })
-             , @Html.Label(Resources.Resource.reaudit), Table.PosicaoLabel.top, button: "<button type='button' class='btn btn-primary btn-sm'  onclick='RegraNcL2.adiciona();'><i class='fa fa-plus' aria-hidden='true'></i></button>")
-
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                            <table id="tableRegraNc" class="table table-condensed table-responsive no-margin margin-top" nameModal="Editar Regra de Alerta:">
-                                <thead>
-                                    <tr>
-                                        <th>@Resources.Resource.not_conformity_rule</th>
-                                        <th>@Resources.Resource.value</th>
-                                        <th>@Resources.Resource.reaudit</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-
-                        </div>
-                    </div>
+                <div class="hide">
+                    @Html.Partial("_ReincidenciaXLevel", Model)
                 </div>
-            </div>
-            <div class="hide">
-                @Html.Partial("_ReincidenciaXLevel", Model)
-            </div>
-            @Html.Partial("_CounterXLevel", Model)
+                @Html.Partial("_CounterXLevel", Model)
 
-            <button type="button" id="btnSaveNewLevel2" data-loading-text="@Resources.Resource.saving_the_level2" onclick="indexParamsLevel2.enviarDadosParaApi();" class="btn btn-warning">@Resources.Resource.save_level2</button>
+                <button type="button" id="btnSaveNewLevel2" data-loading-text="@Resources.Resource.saving_the_level2" onclick="indexParamsLevel2.enviarDadosParaApi();" class="btn btn-warning">@Resources.Resource.save_level2</button>
+            </div>
         </div>
-    </div>
     }
 </div>
 
@@ -186,6 +186,7 @@
     var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
 
     var _PermiteEditarVinculoComTarefa = @Html.Raw(Json.Encode(Model.paramsDto.parLevel2Dto._PermiteEditarVinculoComTarefa));
+    var _PermiteEditarNumeroDeAv = @Html.Raw(Json.Encode(Model.paramsDto.parLevel2Dto._PermiteEditarNumeroDeAv));
 
     var urlHeaderLevel2 = '@Html.Raw(@urlHeaderLevel2)';
 
@@ -224,6 +225,7 @@
         listObjSalvo: @Html.Raw(Json.Encode(@Model.paramsDto.parLevel2Dto.listParNotConformityRuleXLevelDto)),
         tdsNames: ['ParNotConformityRule_Name', 'Value', 'IsReauditShowTable', 'btn'],
         adiciona: function() {
+
             /*Valida se pode criar o objeto*/
             if($('#' + RegraNcL2.level + ' #selectNotConformityRule :selected').val() <= 0){
                 alert("@Resources.Resource.select_the_not_conformity_rule");
@@ -248,6 +250,7 @@
 
             /*Conclui*/
             crudNxN.adiciona(object, RegraNcL2.level + ' #tableRegraNc', RegraNcL2.tdsNames);
+
         },
         incluiNoObjetoParaSubmit: function(dados){
 
@@ -440,59 +443,65 @@
         if(!hasperm){
             disableEvry();
 
-            var existeCadastroPorUnidade = $.grep($('#tableAvAm > tbody > tr'), function(a,b) {
-                return $(a).data().companyId == unitId;
-            });
+            var l1 = $('#paramsDto_parLevel1Dto_Id').val();
 
-            if(existeCadastroPorUnidade.length <= 0){
-            
-                $('#level2__AvAmostra_collapse > div > table.table-erp').find('select option').not('[value='+ unitId + ']').remove();
-                $('#level2__AvAmostra_collapse > div > table.table-erp').find('select').attr("disabled", false);
-                $($('#level2__AvAmostra_collapse > div > table.table-erp').find('input')[1]).attr("disabled", false);
-                $($('#level2__AvAmostra_collapse > div > table.table-erp').find('input')[3]).attr("disabled", false);
-                $('#level2__AvAmostra_collapse > div > table.table-erp').find('button').attr("disabled", false);
+            if(_PermiteEditarNumeroDeAv){
 
-                $('#level2__AvAmostra_collapse > div > table.table-erp').find('button').on('click', function() {
-                    
-                    var salvarAvAm = {};
-                    salvarAvAm['evaluationNumber'] = $($('#level2__AvAmostra_collapse > div > table.table-erp').find('input')[1]).val();
-                    salvarAvAm['sampleNumber'] = $($('#level2__AvAmostra_collapse > div > table.table-erp').find('input')[3]).val();
-                    salvarAvAm['level2Id'] = $('#paramsDto_parLevel2Dto_Id').val();
-                    salvarAvAm['companyId'] = unitId;
-                    salvarAvAm['IsActive'] = true;
+                var existeCadastroPorUnidade = $.grep($('#tableAvAm > tbody > tr'), function(a,b) {
+                    return $(a).data().companyId == unitId;
+                });
 
-                    $.post('@Url.Action("SalvarAvaliacaoAmostra", "api/ParamsApi")', salvarAvAm, function(r) {
-                        $('#parLevel2Select2').change();
+                if(existeCadastroPorUnidade.length <= 0){
+
+                    $('#level2__AvAmostra_collapse > div > table.table-erp').find('select option').not('[value='+ unitId + ']').remove();
+                    $('#level2__AvAmostra_collapse > div > table.table-erp').find('select').attr("disabled", false);
+                    $($('#level2__AvAmostra_collapse > div > table.table-erp').find('input')[1]).attr("disabled", false);
+                    $($('#level2__AvAmostra_collapse > div > table.table-erp').find('input')[3]).attr("disabled", false);
+                    $('#level2__AvAmostra_collapse > div > table.table-erp').find('button').attr("disabled", false);
+
+                    $('#level2__AvAmostra_collapse > div > table.table-erp').find('button').on('click', function() {
+
+                        var salvarAvAm = {};
+                        salvarAvAm['evaluationNumber'] = $($('#level2__AvAmostra_collapse > div > table.table-erp').find('input')[1]).val();
+                        salvarAvAm['sampleNumber'] = $($('#level2__AvAmostra_collapse > div > table.table-erp').find('input')[3]).val();
+                        salvarAvAm['level2Id'] = $('#paramsDto_parLevel2Dto_Id').val();
+                        salvarAvAm['companyId'] = unitId;
+                        salvarAvAm['IsActive'] = true;
+
+                        $.post('@Url.Action("SalvarAvaliacaoAmostra", "api/ParamsApi")', salvarAvAm, function(r) {
+                            $('#parLevel2Select2').change();
+                        });
+
                     });
-                
+
+                }
+
+                /*habilita Edicao de Av Am*/
+                $('#tableAvAm > tbody > tr > td:nth-child(4)').each(function(c, o){
+
+                    var company = $(o).parents('tr').data().companyId;
+
+                    if(company == unitId){
+                        $(o).find("button")[1].disabled = false;
+
+                        $(o).find("button").on('click', function(e) {
+                            $('#crudNxNEdit').find('input').attr("disabled", false);
+                            $('#crudNxNEdit').find('button').attr("disabled", false);
+                            var data = $(this).parents('tr').data();
+
+                            $($('#crudNxNEdit').find('button')[2]).on('click', function() {
+                                data.evaluationNumber = $('#crudNxNEdit').find('input')[1].value;
+                                data.sampleNumber = $('#crudNxNEdit').find('input')[3].value;
+                                $.post('@Url.Action("AlteraAvaliacaoAmostra", "api/ParamsApi")', data, function(r) {
+
+                                });
+                            })
+
+                        })
+                    }
                 });
 
             }
-
-            /*habilita Edicao de Av Am*/
-            $('#tableAvAm > tbody > tr > td:nth-child(4)').each(function(c, o){
-
-                var company = $(o).parents('tr').data().companyId;
-
-                if(company == unitId){
-                    $(o).find("button")[1].disabled = false;
-
-                    $(o).find("button").on('click', function(e) {
-                        $('#crudNxNEdit').find('input').attr("disabled", false);
-                        $('#crudNxNEdit').find('button').attr("disabled", false);
-                        var data = $(this).parents('tr').data();
-
-                        $($('#crudNxNEdit').find('button')[2]).on('click', function() {
-                            data.evaluationNumber = $('#crudNxNEdit').find('input')[1].value;
-                            data.sampleNumber = $('#crudNxNEdit').find('input')[3].value;
-                            $.post('@Url.Action("AlteraAvaliacaoAmostra", "api/ParamsApi")', data, function(r) {
-
-                            });
-                        })
-
-                    })
-                }
-            });
 
         }
 

@@ -178,8 +178,7 @@ namespace DTO.DTO.Params
             {
                 _PermiteCadastroEspecificoPorUnidade = parLevel1.IsSpecific;
                 _PermiteEditarCamposCabecalho = parLevel1.IsSpecificHeaderField;
-                //_PermiteEditarNumeroDeAv = parLevel1.IsSpecificHeaderField;
-                //_PermiteEditarNumeroDeAv = parLevel1.IsSpecificHeaderField;
+                _PermiteEditarNumeroDeAv = parLevel1.IsSpecificNumberEvaluetion || parLevel1.IsSpecificNumberSample ? true : false;
                 _PermiteEditarVinculoComTarefa = parLevel1.IsSpecificLevel3;
             }
         }
