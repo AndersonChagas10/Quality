@@ -147,8 +147,8 @@ namespace Data.Repositories
                 db.ParLevel1.Attach(paramLevel1);
                 db.Entry(paramLevel1).State = EntityState.Modified;
                 db.Entry(paramLevel1).Property(e => e.AddDate).IsModified = false;
-                if(paramLevel1.ParScoreType_Id.GetValueOrDefault() <= 0)
-                    db.Entry(paramLevel1).Property(e => e.ParScoreType_Id).IsModified = false;
+                //if(paramLevel1.ParScoreType_Id.GetValueOrDefault() <= 0)
+                //    db.Entry(paramLevel1).Property(e => e.ParScoreType_Id).IsModified = false;
 
             }
             db.SaveChanges(); //Obtem Id do paramLevel1

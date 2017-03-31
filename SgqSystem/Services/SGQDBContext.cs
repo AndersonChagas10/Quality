@@ -422,7 +422,7 @@ namespace SGQDBContext
                          "\n LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
                          "\n ON AL.ParLevel2_Id = PL2.Id     AND AL.IsActive = 1                                                                                             " +
                         "\n WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'              " +
-                         "\n AND PL2.IsActive = 1                                          " +
+                         "\n AND PL2.IsActive = 1  AND P32.IsActive = 1 AND P321.Active = 1                                        " +
 
                          "\n AND " +
                          "\n  (select sum(a) from " +
@@ -977,7 +977,7 @@ namespace SGQDBContext
                              "ON C2.ParLevel1_Id = L1.Id AND L1.IsPartialSave = 1 " +
                              "INNER JOIN Result_Level3 R3 " +
                              "ON R3.CollectionLevel2_Id = C2.Id " +
-                             "WHERE C2.UnitId = '" + ParCompany_Id + "' AND L1.Id='" + ParLevel1.Id + "' AND C2.CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' ";
+                             "WHERE C2.UnitId = '" + ParCompany_Id + "' AND L1.Id='" + ParLevel1.Id + "' AND C2.ParLevel2_Id='" + ParLevel2.Id + "' AND C2.CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' ";
 
                 //string sql = "SELECT R3.ParLevel3_Id AS Id FROM RESULT_LEVEL3 R3 " +
                 //              "INNER JOIN CollectionLevel2 C2 " +
@@ -2065,6 +2065,36 @@ namespace SGQDBContext
 
                 SqlConnection db = new SqlConnection(conexao);
                 var list = db.Query<ResultPhase>(sql).ToList();
+                return list;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
+
+    public partial class ResultEvaluationDefects
+    {
+        public int Defects { get; set; }
+        public int EvaluationNumber { get; set; }
+        public int Period { get; set; }
+        public int Shift { get; set; }
+
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public List<ResultEvaluationDefects> GetByDay(int ParCompany_Id, DateTime Date, int ParLevel1_Id)
+        {
+            try
+            {
+                string sql = "SELECT SUM(Defects) AS Defects, EvaluationNumber, Period, Shift from CollectionLevel2                               "+
+                                "WHERE                                                                                  "+
+                                "ParLevel1_Id = "+ ParLevel1_Id + " AND                                                 "+
+                                "CAST(CollectionDate as date) = CAST('"+ Date.ToString("yyyyMMdd") + "' as DATE)        "+
+                                "GROUP BY EvaluationNumber, Period, Shift; ";                                           
+
+                SqlConnection db = new SqlConnection(conexao);
+                var list = db.Query<ResultEvaluationDefects>(sql).ToList();
                 return list;
             }
             catch (Exception)

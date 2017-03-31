@@ -2446,13 +2446,14 @@ namespace SgqSystem.Services
             string APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
 
             string supports = "<div class=\"Results hide\"></div>" +
-                      "<div class=\"ResultsConsolidation hide\"></div>" +
-                       "<div class=\"ResultsKeys hide\"></div>" +
-                       "<div class=\"ResultsPhase hide\"></div>" +
-                      "<div class=\"Deviations hide\"></div>" +
-                      "<div class=\"Users hide\"></div>" +
-                      "<div class=\"VerificacaoTipificacao hide\"></div>" +
-                      "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
+                              "<div class=\"ResultsConsolidation hide\"></div>" +
+                               "<div class=\"ResultsKeys hide\"></div>" +
+                               "<div class=\"ResultsPhase hide\"></div>" +
+                               "<div class=\"ResultsDefectsEvaluation hide\"></div>" +
+                              "<div class=\"Deviations hide\"></div>" +
+                              "<div class=\"Users hide\"></div>" +
+                              "<div class=\"VerificacaoTipificacao hide\"></div>" +
+                              "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
 
             string resource = GetResource();
 
@@ -5226,6 +5227,33 @@ namespace SgqSystem.Services
                     "shift=\"" + c.Shift + "\" " +
                     "phase=\"" + c.Phase + "\" " +
                     "class=\"PhaseResultlevel2\"></div>";
+            }
+            return PhaseResult;
+        }
+
+        [WebMethod]
+        public string getResultEvaluationDefects(int parCompany_Id, string date, int parLevel1_Id)
+        {
+
+            var ResultPhaseDB = new SGQDBContext.ResultEvaluationDefects();
+            //Instanciamos uma variável que irá 
+
+            DateTime dateAtual = DateCollectConvert(date);
+            
+            var ResultEvaluationDefectsList = ResultPhaseDB.GetByDay(parCompany_Id, dateAtual, parLevel1_Id);
+
+            string PhaseResult = null;
+            //Percorremos as consolidações de ParLevel1
+            foreach (var c in ResultEvaluationDefectsList)
+            {
+                PhaseResult += "<div                                                                            " +
+                    "date=\"" + date + "\"                                                                      " +
+                    "Defects=\"" + c.Defects + "\"                                                              " +
+                    "EvaluationNumber=\"" + c.EvaluationNumber + "\"                                            " +
+                    "Period=\"" + c.Period + "\"                                                                " +
+                    "Shift=\"" + c.Shift + "\"                                                                  " +
+                    "ParLevel1_id=\"" + parLevel1_Id + "\"                                                                  " +
+                    "class=\"EvaluationDefects\"></div>";
             }
             return PhaseResult;
         }
