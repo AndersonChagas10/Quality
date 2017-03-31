@@ -52,7 +52,7 @@
                          , @Html.Label(Resources.Resource.data_type_entry)
                          , Table.PosicaoLabel.top
                          , error: @Html.ValidationMessageFor(m => m.paramsDto.parLevel3Value.ParLevel3InputType_Id, null, new { @class = "text-danger" }), colspan: 3)
-                                       
+
                                     </tr>
 
 
@@ -362,9 +362,9 @@
             var display = $('#' + seletorTato + ' #selectUnidadeParL3Value :selected').text();//
             var exist = $.grep($('#tableLevel3Value  tbody  tr  td:nth-child(1)'), function(o, c){//
                 if(companySelected == -1){
-                    return $(o).parent().data().companyId == 0 || $(o).parent().data().companyId == -1 || $(o).parent().data().companyId == null
+                    return $(o).parent().data().ParCompany_Id == 0 || $(o).parent().data().ParCompany_Id == -1 || $(o).parent().data().ParCompany_Id == null
                 }
-                return $(o).parent().data().companyId == companySelected;
+                return $(o).parent().data().ParCompany_Id == companySelected;
             });
 
             if(!!isEdit){/*Edição*/
@@ -725,54 +725,7 @@
         }
 
         if(!hasperm){
-
             disableEvry();
-
-            if (_PermiteEditarVinculoComTarefa) {
-    
-                var l1 = $('#paramsDto_parLevel1Dto_Id').val();
-                var l2 = $('#paramsDto_parLevel2Dto_Id').val();
-                var l3 = $('#paramsDto_parLevel3Dto_Id').val();
-                if(l1 > 0 && l2 > 0 && l3 > 0){
-                    $('#vinculoLevel1').attr('disabled', false);
-                }
-
-                /*habilita Edicao do Peso*/
-                if( $('#tablePeso > tbody > tr').length){
-
-                    $('#tablePeso > tbody > tr > td:nth-child(4)').each(function(c, o){
-
-                        var company = $(o).parents('tr').data().ParCompany_Id;
-
-                        if(company == unitId){
-                            $(o).find("button")[1].disabled = false;
-
-                            $(o).find("button").on('click', function(e) {
-                                $('#crudNxNEdit').find('input').attr("disabled", false);
-                                $('#crudNxNEdit').find('button').attr("disabled", false);
-                                $('#crudNxNEdit').find('select')[1].disabled = false;
-                                var data = $(this).parents('tr').data();
-
-                                //console.log(data);
-                                $($('#crudNxNEdit').find('button')[2]).on('click', function() {
-
-                                    data.Weight = $('#crudNxNEdit').find('input')[0].value;
-                                    data.Group = $('#crudNxNEdit').find('select')[1].value;
-
-                                    $.post(urlLowPerm, data, function(r) {
-                                        $('#parLevel3Select2').change();
-                                    });
-
-                                });
-
-                            });
-                        }
-                    });
-
-                }
-
-            }
-
         }
 
         var modalPontos = $('#modalPontos').detach();

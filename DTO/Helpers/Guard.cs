@@ -1,9 +1,12 @@
 ﻿using DTO.BaseEntity;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Resources;
 using System.Security.Cryptography;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 
@@ -57,6 +60,8 @@ namespace DTO.Helpers
 
             return userId;
         }
+
+        
 
         //public static int GetUsuarioLogado_Id(HttpContextBase filterContext)
         //{

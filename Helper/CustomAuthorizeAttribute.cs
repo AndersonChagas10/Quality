@@ -81,7 +81,7 @@ namespace Helper
                     {
                         _userSgqRoles = cookie.Values["roles"].ToString();
                         filterContext.Controller.ViewBag.IsAdmin = VerificarRole("Admin");
-                        filterContext.Controller.ViewBag.CompanyId = cookie.Values["CompanyId"].ToString();
+                        
                     }
                     else 
                     {//NAO TEM ROLES
@@ -107,6 +107,8 @@ namespace Helper
                             filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccesDenied", action = "Index" }));
                         }
                     }
+
+                    filterContext.Controller.ViewBag.CompanyId = cookie.Values["CompanyId"].ToString();
 
                     if (!string.IsNullOrEmpty(_userSgqRoles) && !Roles.Contains("somentemanutencao-sgq"))
                         if (_userSgqRoles.Contains("somentemanutencao-sgq") && !HttpContext.Current.Request.RawUrl.Contains("ManPainelGestao/Index"))

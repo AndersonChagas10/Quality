@@ -185,9 +185,6 @@
 
     var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
 
-    var _PermiteEditarVinculoComTarefa = @Html.Raw(Json.Encode(Model.paramsDto.parLevel2Dto._PermiteEditarVinculoComTarefa));
-    var _PermiteEditarNumeroDeAv = @Html.Raw(Json.Encode(Model.paramsDto.parLevel2Dto._PermiteEditarNumeroDeAv));
-
     var urlHeaderLevel2 = '@Html.Raw(@urlHeaderLevel2)';
 
     var HeaderLevel2 = {
@@ -434,6 +431,9 @@
 
     $(document).ready(function () {
 
+        _PermiteEditarVinculoComTarefa = @Html.Raw(Json.Encode(Model.paramsDto.parLevel2Dto._PermiteEditarVinculoComTarefa));
+        _PermiteEditarNumeroDeAv = @Html.Raw(Json.Encode(Model.paramsDto.parLevel2Dto._PermiteEditarNumeroDeAv));
+
         if(config){
             $('#showlevel3').hide();
             $('#level2_header_accordion').hide();
@@ -442,67 +442,6 @@
 
         if(!hasperm){
             disableEvry();
-
-            var l1 = $('#paramsDto_parLevel1Dto_Id').val();
-
-            if(_PermiteEditarNumeroDeAv){
-
-                var existeCadastroPorUnidade = $.grep($('#tableAvAm > tbody > tr'), function(a,b) {
-                    return $(a).data().companyId == unitId;
-                });
-
-                if(existeCadastroPorUnidade.length <= 0){
-
-                    $('#level2__AvAmostra_collapse > div > table.table-erp').find('select option').not('[value='+ unitId + ']').remove();
-                    $('#level2__AvAmostra_collapse > div > table.table-erp').find('select').attr("disabled", false);
-                    $($('#level2__AvAmostra_collapse > div > table.table-erp').find('input')[1]).attr("disabled", false);
-                    $($('#level2__AvAmostra_collapse > div > table.table-erp').find('input')[3]).attr("disabled", false);
-                    $('#level2__AvAmostra_collapse > div > table.table-erp').find('button').attr("disabled", false);
-
-                    $('#level2__AvAmostra_collapse > div > table.table-erp').find('button').on('click', function() {
-
-                        var salvarAvAm = {};
-                        salvarAvAm['evaluationNumber'] = $($('#level2__AvAmostra_collapse > div > table.table-erp').find('input')[1]).val();
-                        salvarAvAm['sampleNumber'] = $($('#level2__AvAmostra_collapse > div > table.table-erp').find('input')[3]).val();
-                        salvarAvAm['level2Id'] = $('#paramsDto_parLevel2Dto_Id').val();
-                        salvarAvAm['companyId'] = unitId;
-                        salvarAvAm['IsActive'] = true;
-
-                        $.post('@Url.Action("SalvarAvaliacaoAmostra", "api/ParamsApi")', salvarAvAm, function(r) {
-                            $('#parLevel2Select2').change();
-                        });
-
-                    });
-
-                }
-
-                /*habilita Edicao de Av Am*/
-                $('#tableAvAm > tbody > tr > td:nth-child(4)').each(function(c, o){
-
-                    var company = $(o).parents('tr').data().companyId;
-
-                    if(company == unitId){
-                        $(o).find("button")[1].disabled = false;
-
-                        $(o).find("button").on('click', function(e) {
-                            $('#crudNxNEdit').find('input').attr("disabled", false);
-                            $('#crudNxNEdit').find('button').attr("disabled", false);
-                            var data = $(this).parents('tr').data();
-
-                            $($('#crudNxNEdit').find('button')[2]).on('click', function() {
-                                data.evaluationNumber = $('#crudNxNEdit').find('input')[1].value;
-                                data.sampleNumber = $('#crudNxNEdit').find('input')[3].value;
-                                $.post('@Url.Action("AlteraAvaliacaoAmostra", "api/ParamsApi")', data, function(r) {
-
-                                });
-                            })
-
-                        })
-                    }
-                });
-
-            }
-
         }
 
         defaults();
