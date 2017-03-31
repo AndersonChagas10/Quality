@@ -7,7 +7,6 @@ using System.Linq;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System;
-using DTO;
 
 namespace Dominio.Services
 {
@@ -168,6 +167,9 @@ namespace Dominio.Services
             /*Validação*/
             //paramsDto.parLevel1Dto.IsValid();
             ParLevel1 saveParamLevel1 = Mapper.Map<ParLevel1>(paramsDto.parLevel1Dto);//ParLevel1
+            if (saveParamLevel1.ParScoreType_Id <= 0)
+                saveParamLevel1.ParScoreType_Id = null;
+
             List<ParGoal> listParGoal = Mapper.Map<List<ParGoal>>(paramsDto.parLevel1Dto.listParGoalLevel1);
             List<ParRelapse> listaReincidencia = Mapper.Map<List<ParRelapse>>(paramsDto.parLevel1Dto.listParRelapseDto);//Reincidencia do Level1
             if (paramsDto.listParHeaderFieldDto != null)
@@ -585,25 +587,34 @@ namespace Dominio.Services
 
         #region Vinculo ParLevel2Level1
 
-        public List<ParLevel3Level2Level1DTO> AddVinculoL1L2(int idLevel1, int idLevel2, int idLevel3)
+        public List<ParLevel3Level2Level1DTO> AddVinculoL1L2(int idLevel1, int idLevel2, int idLevel3, int? userId = 0)
         {
 
             var retorno = new List<ParLevel3Level2Level1DTO>();
             using (var db = new SgqDbDevEntities())
             {
-             
+
                 ParLevel2Level1 existenteL2L1;
                 ParLevel3Level2 existenteL3L2;
                 ParLevel3Level2Level1 existenteL3L2L1;
                 ParLevel3Level2 salvarL3L2;
                 ParLevel2Level1 salvarL2L1;
+                UserSgq user;
+                int? companyId = null;
+
+                if (userId > 0)
+                {
+                    user = db.UserSgq.FirstOrDefault(r => r.Id == userId);
+                    if (user != null && !user.Role.ToLowerInvariant().Contains("Admin".ToLowerInvariant()))
+                        companyId = user.ParCompany_Id;
+                }
 
                 /**/
-                existenteL2L1 = db.ParLevel2Level1.FirstOrDefault(r => r.ParLevel1_Id == idLevel1 && r.ParLevel2_Id == idLevel2);
+                existenteL2L1 = db.ParLevel2Level1.FirstOrDefault(r => r.ParLevel1_Id == idLevel1 && r.ParLevel2_Id == idLevel2 && r.ParCompany_Id == companyId);
 
                 if (existenteL2L1 == null)
                 {
-                    salvarL2L1 = new ParLevel2Level1() { ParLevel1_Id = idLevel1, ParLevel2_Id = idLevel2, AddDate = DateTime.Now, IsActive = true };
+                    salvarL2L1 = new ParLevel2Level1() { ParLevel1_Id = idLevel1, ParLevel2_Id = idLevel2, AddDate = DateTime.Now, IsActive = true, ParCompany_Id = companyId };
                     db.ParLevel2Level1.Add(salvarL2L1);
                     db.SaveChanges();
                 }
@@ -612,11 +623,11 @@ namespace Dominio.Services
                 {
                     /**/
                     var idL3L2 = 0;
-                    existenteL3L2 = db.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == idLevel3 && r.ParLevel2_Id == idLevel2);
+                    existenteL3L2 = db.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == idLevel3 && r.ParLevel2_Id == idLevel2 && r.ParCompany_Id == companyId);
                     if (existenteL3L2 == null)
                     {
                         //throw new Exception("");
-                        salvarL3L2 = new ParLevel3Level2() { ParLevel2_Id = idLevel2, ParLevel3_Id = idLevel3, ParCompany_Id = null , IsActive = true};
+                        salvarL3L2 = new ParLevel3Level2() { ParLevel2_Id = idLevel2, ParLevel3_Id = idLevel3, ParCompany_Id = companyId, IsActive = true};
                         db.ParLevel3Level2.Add(salvarL3L2);
                         db.SaveChanges();
                         idL3L2 = salvarL3L2.Id;
@@ -627,10 +638,10 @@ namespace Dominio.Services
                     }
 
                     /**/
-                    existenteL3L2L1 = db.ParLevel3Level2Level1.FirstOrDefault(r => r.ParLevel1_Id == idLevel1 && r.ParLevel3Level2_Id == idL3L2);
+                    existenteL3L2L1 = db.ParLevel3Level2Level1.FirstOrDefault(r => r.ParLevel1_Id == idLevel1 && r.ParLevel3Level2_Id == idL3L2 && r.ParCompany_Id == companyId);
                     if (existenteL3L2L1 == null)
                     {
-                        var salvarL3L2L1 = new ParLevel3Level2Level1() { ParLevel1_Id = idLevel1, ParLevel3Level2_Id = idL3L2, ParCompany_Id = null, Active = true};
+                        var salvarL3L2L1 = new ParLevel3Level2Level1() { ParLevel1_Id = idLevel1, ParLevel3Level2_Id = idL3L2, ParCompany_Id = companyId, Active = true};
                         db.ParLevel3Level2Level1.Add(salvarL3L2L1);
                         db.SaveChanges();
                     }
@@ -719,9 +730,9 @@ namespace Dominio.Services
                 if (result1?.Count() > 0 || result2?.Count() > 0)
                 {
                     if (result1?.Count() > 0)
-                        sql1 = "UPDATE ParLevel3Level2Level1 SET Active = 0 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel3Level2_Id IN (select id from ParLevel3Level2 where parlevel2_id = " + idLevel2 + ")";
+                        sql1 = "DELETE ParLevel3Level2Level1 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel3Level2_Id IN (select id from ParLevel3Level2 where parlevel2_id = " + idLevel2 + ")";
                     if (result2?.Count() > 0)
-                        sql2 = "UPDATE ParLevel2Level1 SET IsActive = 0 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel2_Id = " + idLevel2;
+                        sql2 = "DELETE ParLevel2Level1 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel2_Id = " + idLevel2;
                 }
                 else
                 {
@@ -907,23 +918,7 @@ namespace Dominio.Services
 
             return parLevel2XHeaderField;
         }
-
-        //public void verificaVinculos(int level1 = 0, int level2 = 0, int level3 = 0)
-        //{
-        //    var hasVinculoLevel32 = "select * from parlevel3level2 where  ParLevel3_Id = 1074";
-        //    var hasVinculoLevel321 = "select * from parlevel3level2level1 where ParLevel1_Id = 29 and ParLevel3Level2_id in (select id from parlevel3level2 where  ParLevel3_Id = 1074)";
-        //    var hasVinculoLevel12 = "select * from parlevel2level1 where ParLevel1_Id = 29";
-
-
-        //}
-
-
+      
     }
 
-    //public class Vinculos
-    //{
-    //    public bool isVinculadoLevel1 {get; set ;}
-    //    public bool isVinculadoLevel2 {get; set ;}
-    //    public bool isVinculadoLevel3 { get; set ;}
-    //}
 }

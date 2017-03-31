@@ -137,6 +137,14 @@ else
                     $(rr).insertAfter($('#MonEmpresa').closest('tr'));
                     $('#level2').attr('disabled', true);
                     $('#level2Number').attr('disabled', true);
+
+                    if ($('#level2Number').val() <= 0) {
+                        $('#level2SelecionadoPorCompany').attr('disabled', true);
+                        $('#send').attr('disabled', true);
+                    } else {
+                        $('#level2SelecionadoPorCompany').attr('disabled', false);
+                        $('#send').attr('disabled', false);
+                    }
                 });
             });
         }

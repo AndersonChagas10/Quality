@@ -18,9 +18,10 @@
     var urlSetRequiredCCAB = Url.Action("SetRequiredCCAB", "api/ParamsApi");
     var urlSetDefaultCCAB = Url.Action("SetDefaultCCAB", "api/ParamsApi");
     var urlSaveMeassurementUnit = Url.Action("AddUnidadeDeMedida", "api/ParamsApi");
-
+    var urlAttCabecalho = Url.Action("atualizaCabecalho", "api/ParamsApi");
     var removeLevel3Group = Url.Action("RemoveParLevel3Group", "api/ParamsApi");
     var AddLevel3Group = Url.Action("AddUpdateParLevel3Group", "api/ParamsApi");
+    var urlEditCabecalho = @Url.Action("EditParHeaderField", "Params");
 
     var urlHome = Url.Action("Index", "Home");
 
@@ -29,7 +30,7 @@
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
-<div class="page-content-wrapper">
+<div class="page-content-wrapper" >
     <!-- BEGIN CONTENT BODY -->
     <div class="page-content" style="min-height: 650px;">
         <!-- BEGIN PAGE HEADER-->
@@ -123,8 +124,8 @@
                                                     </h4>
                                                 </div>
                                                 <div class="col-xs-4">
-                                                    <button id="vinculoLevel1" class="btn btn-warning pull-right " style="height: 42px;" title="Vincular ao Level 1"><span class="glyphicon glyphicon-link"></span></button>
-                                                    <button id="desVinculoLevel1" class="btn btn-warning pull-right " style="height: 42px; display:none" title="Vincular ao Level 1"><i class="fa fa-chain-broken" aria-hidden="true"></i></button>
+                                                    <button id="vinculoLevel1" class="btn btn-warning pull-right " style="height: 42px;" title="Vincular todos os níveis selecionados"><span class="glyphicon glyphicon-link"></span></button>
+                                                    @*<button id="desVinculoLevel1" class="btn btn-warning pull-right " style="height: 42px; display:none" title="Vincular ao Level 1"><i class="fa fa-chain-broken" aria-hidden="true"></i></button>*@
                                                 </div>
                                             </div>
                                         </div>
@@ -160,6 +161,7 @@
                                                 </div>
                                                 <div class="col-xs-4">
                                                     @*<button id="vinculoLevel2" class="btn btn-danger pull-right" style="height: 42px;" title="Vincular ao Level 2" onclick="saveLevel3Level2()"><span class="glyphicon glyphicon-link"></span></button>*@
+                                                    <button id="desviculol3l2" class="btn btn-danger pull-right" style="height: 42px;" title="Desvincular do Level 2" onclick="desvincularL3L2()"><i class="fa fa-chain-broken" aria-hidden="true"></i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -172,8 +174,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>
 
                         </div>
@@ -188,13 +188,40 @@
 <!-- Modal Edição  crudNxN -->
 @Html.Partial("_crudNxNModal")
 
+<!--Modal Edição Cabeçalho-->
+<div class="container">
+    <div class="modal fade" id="modalEdicaoCabecalho" tabindex="-1" role="dialog" aria-labelledby="" data-backdrop="static">
+        <div class="modal-dialog" style="max-width:90%;  min-width:70%" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="times">&times;</span></button>
+                    <button class="close modalMinimize"><span aria-hidden="true" class="minus">&minus;</span></button>
+
+                    <h4 class="modal-title" id="Header">ID: Header</h4>
+                </div>
+                <div class="modal-body" id="body">
+                    ID: Body
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default" id="Fechar" data-dismiss="modal" style="display:none">Fechar</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 
-    function defaults() {
-        $.fn.bootstrapSwitch.defaults.size = 'small';
-        $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
-        $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
-        $(".check-box").bootstrapSwitch();
+    var hasperm = @Html.Raw(Json.Encode(ViewBag.IsAdmin));
+    var unitId = @Html.Raw(Json.Encode(ViewBag.CompanyId));
+
+    function disableEvry() {
+        $('input, select').not("#crudNxNEdit, #parLevel1Select2, #parLevel2Select2, #parLevel3Select2").attr("disabled", true);
+        $('button').attr("disabled", true);
+        $(':checkbox').bootstrapSwitch('disabled',true);
     }
 
     function reloadPopovers(){
@@ -290,6 +317,21 @@
 
         // If it doesn't contain the term, don't return anything
         return null;
+    }
+
+    function desvincularL3L2(){
+        var l1Id = $('#paramsDto_parLevel1Dto_Id').val();
+        var l2Id = $('#paramsDto_parLevel2Dto_Id').val();
+        var l3Id = $('#paramsDto_parLevel3Dto_Id').val();
+        
+        if(l1Id > 0 && l2Id > 0 && l3Id > 0){
+            $.post('@Url.Action("RemVinculoL2L3", "api/ParamsApi")' + '/' + l1Id + '/' + l2Id + '/' + l3Id + '/' + unitId, {}, function(r) {
+                openMessageModal(r, '');
+            });
+        }else{
+            openMessageModal('É necessário selecionar um vinculo completo para realizar esta ação', '');
+        }
+
     }
 
     var t1 = @Html.Raw(Json.Encode(@Resources.Resource.new_level1));
@@ -884,6 +926,7 @@
                     }
                 }
 
+
                 reloadPopovers();
                 defaults();
                 initialFormLevel3 = $($('form')[2]).clone();
@@ -945,7 +988,7 @@
         }
 
 
-        $.get(vinculoL1L2 + '/' + idLevel1 + '/' + idLevel2 + '/' + idLevel3, function (obj, responseText, xhr) {
+        $.get(vinculoL1L2 + '/' + idLevel1 + '/' + idLevel2 + '/' + idLevel3 + '/' + getCookie('webControlCookie')[0].split('=')[1], function (obj, responseText, xhr) {
             if (obj != null) {
                 console.log(obj);
 
@@ -968,6 +1011,7 @@
         });
 
     });
+
 
     var vinculoL2L3 = '@Html.Raw(@vinculoL2L3)';
 
@@ -1032,6 +1076,18 @@
     var initialFormLevel3 = null;
 
     $(document).ready(function () {
+
+        if(config){
+            $('#level1Title').html("Level 1");
+        }
+
+        if(!hasperm){
+            $('#btnNewLevel1').hide();
+            $('#btnNewLevel2').hide();
+            $('#btnNewLevel3').hide();
+            disableEvry();
+        }
+
         reloadPopovers();
 
         $('#desVinculoLevel1').on('click', function() {
@@ -1095,9 +1151,70 @@
 
     var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
 
-    $(document).ready(function() {
-        if(config){
-            $('#level1Title').html("Level 1");
+    var urlAttCabecalho = '@Html.Raw(@urlAttCabecalho)';
+    var idpar = 0;
+    var idfieldType;
+    var idLvl1;
+    var indexCabecalho ={
+        enviarDadosParaApi : function (e) {
+            var dados = $('#ediCab > form').serializeObject();
+            dados['paramsDto.parHeaderFieldDto.ParFieldType_Id'] = idfieldType;
+            dados['paramsDto.parHeaderFieldDto.Id'] = idpar;
+            if (dados['paramsDto.parHeaderFieldDto.ParFieldType_Id'] == 1 || dados['paramsDto.parHeaderFieldDto.ParFieldType_Id'] == 3) {
+                var tam = dados['i.Id'].length;
+                var count = 0;
+                var ar = [];
+                while (count < tam) {
+                    ar.push({ Id: dados['i.Id'][count], Name: dados['i.Name'][count], ParHeaderField_Id : idpar, PunishmentValue: dados['i.PunishmentValue'][count]});
+                    count++;
+                }
+                dados['paramsDto.parHeaderFieldDto.ParMultipleValues'] = ar;
+            }
+            console.log(dados);
+            $.post(urlAttCabecalho, dados, function (objetoReturn, statusmessage) {
+                if (idLvl1 > 0) {
+                    indexParamsLevel1.GetLevel1(idLvl1, true);
+                    openMessageModal("Alerta", statusmessage);
+                    idLvl1 = 0 ;
+                    $('#modalEdicaoCabecalho').modal('hide');
+                }
+
+            }).fail(function (e, h, x) {
+                //closeLoader();
+                try {
+                    closeLoader();
+                    openMessageModal("Alerta", e.responseJSON.Message);
+                } catch (e) {
+                    closeLoader();
+                    openMessageModal("@Resources.Resource.warning", "@Resources.Resource.cannot_finish_action");
+                    console.log(e);
+                }
+            });
         }
-    })
+    }
+    var EditCabecalho = '@Html.Raw(@urlEditCabecalho)';
+    function ModalEdicaoCabecalho(title, idpH,idL1, idFT) {
+        idpar = idpH;
+        idfieldType = idFT;
+        idLvl1 = idL1;
+        $('#modalEdicaoCabecalho').modal();
+        $('#modalEdicaoCabecalho').find('.modal-body').empty();
+        $('#Header').html("Edição de Cabeçalho");
+
+        //if (callback != undefined) {
+        //    callback();
+        //    return false;
+        //}
+
+        $.get(EditCabecalho, { id: idpar, idLevel1: idL1 }, function (r) {
+            $('#modalEdicaoCabecalho').find('.modal-body').empty().append(r);
+            $('#paramsDto_parHeaderFieldDto_ParFieldType_Id').attr('disabled', true);
+        });
+
+        $('#Fechar').show();
+        $('#Salvar').hide();
+        ///*Fim Botões*/
+
+    }
+
 </script>

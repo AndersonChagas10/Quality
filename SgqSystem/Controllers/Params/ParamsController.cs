@@ -1,5 +1,10 @@
-﻿using Dominio.Interfaces.Services;
+﻿using AutoMapper;
+using Dominio;
+using Dominio.Interfaces.Services;
+using Dominio.Services;
 using DTO;
+using DTO.DTO;
+using DTO.DTO.Params;
 using Helper;
 using SgqSystem.Helpers;
 using SgqSystem.ViewModels;
@@ -8,7 +13,7 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Params
 {
-    [CustomAuthorize(Roles = "Admin")]
+    [CustomAuthorize]
     [HandleController()]
     public class ParamsController : BaseController
     {
@@ -17,10 +22,15 @@ namespace SgqSystem.Controllers.Params
 
         private IParamsDomain _paramDomain;
         private ParamsViewModel ViewModel { get; set; }
+        private IBaseDomain<ParHeaderField , ParHeaderFieldDTO> _parHeaderField;
+        private IBaseDomain<ParMultipleValues, ParMultipleValuesDTO> _parMultipleValues;
+        private SgqDbDevEntities db = new SgqDbDevEntities();
 
-        public ParamsController(IParamsDomain paramDomain)
+        public ParamsController(IParamsDomain paramDomain, IBaseDomain<ParHeaderField, ParHeaderFieldDTO> parHeaderField, IBaseDomain<ParMultipleValues, ParMultipleValuesDTO> parmultiplevalues)
         {
             _paramDomain = paramDomain;
+            _parHeaderField = parHeaderField;
+            _parMultipleValues = parmultiplevalues;
             if (ViewModel == null)
                 ViewModel = new ParamsViewModel(_paramDomain.CarregaDropDownsParams());/*Cria view model vazio.*/
         }
@@ -167,5 +177,25 @@ namespace SgqSystem.Controllers.Params
         }
 
         #endregion
+        
+        public ActionResult EditParHeaderField(int id)
+        {
+            ViewModel.paramsDto.parHeaderFieldDto = _parHeaderField.GetById(id);
+            
+            return View("EditParHeaderField" , ViewModel);
+        }
+
+        [HttpPost]
+        public JsonResult AttParHeaderField(ParHeaderField parHF)
+        {
+            ParHeaderField par = parHF;
+            //foreach (var i in h.parHeaderFieldDto.ParMultipleValues) {
+            //    _parMultipleValues.AddOrUpdate(i);
+            //}
+            //_parHeaderField.AddOrUpdate(ViewModel.paramsDto.parHeaderFieldDto);
+            //GetParLevel1ById(ViewModel.paramsDto.parLevel1Dto.Id);
+            return new JsonResult();
+        }
     }
+    
 }

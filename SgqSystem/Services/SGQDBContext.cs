@@ -57,6 +57,16 @@ namespace SGQDBContext
         }
         public IEnumerable<ParLevel1> getParLevel1ParCriticalLevelList(int ParCompany_Id)
         {
+
+            /*
+             * MOCK GABRIEL PARA TESTE DE TRAZER TAREFAS DO OUTRO INDICADOR
+             * 30/03/2017
+             */
+
+            string ParLevel1_IdFilho = "";
+
+            ParLevel1_IdFilho = " AND P1.Id NOT IN (1042) ";
+
             SqlConnection db = new SqlConnection(conexao);
             string sql = "\n SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
                          "\n P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate, P1.IsLimitedEvaluetionNumber, P1.IsPartialSave" +
@@ -69,14 +79,14 @@ namespace SGQDBContext
                          "\n INNER JOIN ParCluster C                                                                                                    " +
                          "\n ON C.Id = P1C.ParCluster_Id                                                                                                " +
                          "\n INNER JOIN ParCompanyCluster CC                                                                                            " +
-                         "\n ON CC.ParCluster_Id = P1C.ParCluster_Id                                                                                    " +
+                         "\n ON CC.ParCluster_Id = P1C.ParCluster_Id  and CC.Active = 1                                                               " +
                          "\n INNER JOIN ParCriticalLevel CL                                                                                             " +
                          "\n ON CL.Id = P1C.ParCriticalLevel_Id                                                                                         " +
                          "\n LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
                          "\n ON AL.ParLevel1_Id = P1.Id   AND AL.IsActive = 1                                                                                               " +
 
                          "\n WHERE CC.ParCompany_Id = '" + ParCompany_Id + "'                                                                           " +
-                         "\n                                                                                                        " +
+                         "\n " + ParLevel1_IdFilho + "                                                                                                       " +
                          "\n AND P1.IsActive = 1 AND C.IsActive = 1 AND P1C.IsActive = 1 AND CC.Active = 1                                                                                                       " +
                          "\n ORDER BY CL.Name, P1.Name                                                                                                           ";
 
@@ -273,6 +283,8 @@ namespace SGQDBContext
 
         public int ParNotConformityRule_id { get; set; }
 
+        public int ParFrequency_Id { get; set; }
+
         public decimal Value { get; set; }
 
         public bool IsReaudit { get; set; }
@@ -370,7 +382,7 @@ namespace SGQDBContext
 
             if (parLevel1Familia == true)
             {
-                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit                      " +
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit, PL2.ParFrequency_id                      " +
                              "FROM ParLevel3Level2 P32                                                                          " +
                              "INNER JOIN ParLevel3Level2Level1 P321                                                             " +
                              "ON P321.ParLevel3Level2_Id = P32.Id                                                               " +
@@ -387,7 +399,7 @@ namespace SGQDBContext
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'                                                  " +
                              "AND PL2.IsActive = 1                                                                              " +
                              "AND (Familia.ParCompany_Id = '" + ParCompany_Id + "'  or Familia.ParCompany_Id IS NULL)           " +
-                             "GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value                                                     ";
+                             "GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id                                                      ";
 
                 var parLevel2List = db.Query<ParLevel2>(sql);
 
@@ -401,16 +413,16 @@ namespace SGQDBContext
 
                 
 
-                string sql = "\n SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit " +
+                string sql = "\n SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit,PL2.ParFrequency_id  " +
                          "\n FROM ParLevel3Level2 P32                                      " +
                          "\n INNER JOIN ParLevel3Level2Level1 P321                         " +
                          "\n ON P321.ParLevel3Level2_Id = P32.Id                           " +
                          "\n INNER JOIN ParLevel2 PL2                                      " +
                          "\n ON PL2.Id = P32.ParLevel2_Id                                  " +
                          "\n LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
-                         "\n ON AL.ParLevel2_Id = PL2.Id                                                                                                 " +
+                         "\n ON AL.ParLevel2_Id = PL2.Id     AND AL.IsActive = 1                                                                                             " +
                         "\n WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'              " +
-                         "\n AND PL2.IsActive = 1                                          " +
+                         "\n AND PL2.IsActive = 1  AND P32.IsActive = 1 AND P321.Active = 1                                        " +
 
                          "\n AND " +
                          "\n  (select sum(a) from " +
@@ -428,7 +440,7 @@ namespace SGQDBContext
                          "\n select number as a  from ParSample where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null " +
                          "\n ) temAm) > 0 " +
 
-                         "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value                " +
+                         "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id                 " +
                          "\n ";
 
                 var parLevel2List = db.Query<ParLevel2>(sql);
@@ -459,7 +471,7 @@ namespace SGQDBContext
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
-                             "(SELECT Avaliacoes FROM VolumeCepDesossa WHERE Data = (SELECT MAX(DATA) FROM VolumeCepDesossa WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + ") AS Evaluate " +
+                             "(SELECT top 1 Avaliacoes FROM VolumeCepDesossa WHERE Data = (SELECT MAX(DATA) FROM VolumeCepDesossa WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Evaluate " +
                              "FROM                                                                        " +
                              "ParLevel3Level2 P32                                                         " +
                              "INNER JOIN ParLevel3Level2Level1 P321                                       " +
@@ -481,7 +493,7 @@ namespace SGQDBContext
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
-                             "(SELECT Avaliacoes FROM VolumeVacuoGRD WHERE Data = (SELECT MAX(DATA) FROM VolumeVacuoGRD WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + ") AS Evaluate " +
+                             "(SELECT TOP 1 Avaliacoes FROM VolumeVacuoGRD WHERE Data = (SELECT MAX(DATA) FROM VolumeVacuoGRD WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Evaluate " +
                              "FROM                                                                        " +
                              "ParLevel3Level2 P32                                                         " +
                              "INNER JOIN ParLevel3Level2Level1 P321                                       " +
@@ -503,7 +515,7 @@ namespace SGQDBContext
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
-                             "(SELECT Avaliacoes FROM VolumeCepRecortes WHERE Data = (SELECT MAX(DATA) FROM VolumeCepRecortes WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + ") AS Evaluate " +
+                             "(SELECT TOP 1 Avaliacoes FROM VolumeCepRecortes WHERE Data = (SELECT MAX(DATA) FROM VolumeCepRecortes WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Evaluate " +
                              "FROM                                                                        " +
                              "ParLevel3Level2 P32                                                         " +
                              "INNER JOIN ParLevel3Level2Level1 P321                                       " +
@@ -525,7 +537,7 @@ namespace SGQDBContext
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
-                             "(SELECT Avaliacoes FROM VolumePcc1b WHERE Data = (SELECT MAX(DATA) FROM VolumePcc1b WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + ") AS Evaluate " +
+                             "(SELECT TOP 1 Avaliacoes FROM VolumePcc1b WHERE Data = (SELECT MAX(DATA) FROM VolumePcc1b WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Evaluate " +
                              "FROM                                                                        " +
                              "ParLevel3Level2 P32                                                         " +
                              "INNER JOIN ParLevel3Level2Level1 P321                                       " +
@@ -751,6 +763,17 @@ namespace SGQDBContext
             return parLevel3List;
 
         }
+
+        public IEnumerable<ParLevel3> getListPerLevel1Id(int ParLevel1_Id)
+        {
+            SqlConnection db = new SqlConnection(conexao);
+            string sql = "SELECT P3.Id, P3.Name FROM ParLevel3Level2Level1 P321 INNER JOIN ParLevel3Level2 P32 ON P32.Id = P321.ParLevel3Level2_Id INNER JOIN ParLevel3 P3 ON P3.Id = P32.ParLevel3_Id WHERE P321.ParLevel1_Id = " + ParLevel1_Id.ToString();
+            var parLevel3List = db.Query<ParLevel3>(sql);
+
+            return parLevel3List;
+
+        }
+
         //
         public IEnumerable<ParLevel3> getLevel3ByLevel2(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id, DateTime DateCollect)
         {
@@ -763,7 +786,7 @@ namespace SGQDBContext
             string dataFim = null;
 
             //Pega a data pela regra da frequencia
-            syncServices.getFrequencyDate(ParLevel1.ParFrequency_Id, DateCollect, ref dataInicio, ref dataFim);
+            syncServices.getFrequencyDate(ParLevel2.ParFrequency_Id, DateCollect, ref dataInicio, ref dataFim);
 
             //string queryResult = null;
             //if(ParLevel1.IsPartialSave == true)
@@ -847,8 +870,76 @@ namespace SGQDBContext
             " , L3V.IntervalMax " +
             " , MU.Name " +
             " , L32.Weight " +
-            " , L32.ParCompany_Id " +
-            "  ORDER BY L3IT.Id ASC, L3G.Name ASC, L3.Name ASC, L32.ParCompany_Id  DESC  ";
+            " , L32.ParCompany_Id ";
+         
+
+            /*
+             * MOCK GABRIEL PARA TESTE DE TRAZER TAREFAS DO OUTRO INDICADOR
+             * 30/03/2017
+             */
+
+            string sqlFilho = "";
+
+            if(ParLevel1.Id == 22)
+            {
+
+                string ParLevel1_IdFilho = " AND L321.ParLevel1_Id IN (1042)";
+
+                sqlFilho = "UNION ALL SELECT L3.Id AS Id, L3.Name AS Name, L3G.Id AS ParLevel3Group_Id, L3G.Name AS ParLevel3Group_Name, L3IT.Id AS ParLevel3InputType_Id, L3IT.Name AS ParLevel3InputType_Name, L3V.ParLevel3BoolFalse_Id AS ParLevel3BoolFalse_Id, L3BF.Name AS ParLevel3BoolFalse_Name, L3V.ParLevel3BoolTrue_Id AS ParLevel3BoolTrue_Id, L3BT.Name AS ParLevel3BoolTrue_Name, " +
+                        "L3V.IntervalMin AS IntervalMin, L3V.IntervalMax AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, L32.Weight AS Weight, L32.ParCompany_Id                                                                                                                                                                                                                                     " +
+                        "FROM ParLevel3 L3                                                                                                                                                                                                                                                                                                                                           " +
+                        "INNER JOIN ParLevel3Value L3V                                                                                                                                                                                                                                                                                                                               " +
+                        "        ON L3V.ParLevel3_Id = L3.Id AND L3V.IsActive = 1                                                                                                                                                                                                                                                                                                                        " +
+                        "INNER JOIN ParLevel3InputType L3IT                                                                                                                                                                                                                                                                                                                          " +
+                        "        ON L3IT.Id = L3V.ParLevel3InputType_Id                                                                                                                                                                                                                                                                                                              " +
+                        "LEFT JOIN ParLevel3BoolFalse L3BF                                                                                                                                                                                                                                                                                                                           " +
+                        "        ON L3BF.Id = L3V.ParLevel3BoolFalse_Id                                                                                                                                                                                                                                                                                                              " +
+                        "LEFT JOIN ParLevel3BoolTrue L3BT                                                                                                                                                                                                                                                                                                                            " +
+                        "        ON L3BT.Id = L3V.ParLevel3BoolTrue_Id                                                                                                                                                                                                                                                                                                               " +
+                        "LEFT JOIN ParMeasurementUnit MU                                                                                                                                                                                                                                                                                                                             " +
+                        "        ON MU.Id = L3V.ParMeasurementUnit_Id                                                                                                                                                                                                                                                                                                                " +
+                        "LEFT JOIN ParLevel3Level2 L32                                                                                                                                                                                                                                                                                                                               " +
+                        "        ON L32.ParLevel3_Id = L3.Id                                                                                                                                                                                                                                                                                                                         " +
+                        "LEFT JOIN ParLevel3Group L3G                                                                                                                                                                                                                                                                                                                                " +
+                        "        ON L3G.Id = L32.ParLevel3Group_Id                                                                                                                                                                                                                                                                                                                   " +
+                        "INNER JOIN ParLevel2 L2                                                                                                                                                                                                                                                                                                                                     " +
+                        "        ON L2.Id = L32.ParLevel2_Id                                                                                                                                                                                                                                                                                                                         " +
+                        "INNER JOIN ParLevel3Level2Level1 AS L321 ON L321.ParLevel3Level2_Id = L32.Id                                                                                                                                                                                                                                                                                 " +
+                        "WHERE  L3.IsActive = 1 AND L32.IsActive = 1                                                                                                                                                                                                                                                                                                                 " +
+
+                        " AND(L32.ParCompany_Id = '" + ParCompany_Id + "' OR L32.ParCompany_Id IS NULL) " +
+                        ParLevel1_IdFilho +
+
+
+                        //queryResult + 
+
+
+                        " GROUP BY " +
+           "   L321.ParLevel1_Id " +
+           " , L2.Id " +
+           " , L3.Id " +
+           " , L3.Name " +
+           " , L3G.Id " +
+           " , L3G.Name " +
+           " , L3IT.Id " +
+           " , L3IT.Name " +
+           " , L3V.ParLevel3BoolFalse_Id " +
+           " , L3BF.Name " +
+           " , L3V.ParLevel3BoolTrue_Id " +
+           " , L3BT.Name " +
+           " , L3V.IntervalMin " +
+           " , L3V.IntervalMax " +
+           " , MU.Name " +
+           " , L32.Weight " +
+           " , L32.ParCompany_Id ";
+            
+
+
+            }
+
+            sql += sqlFilho;
+
+            sql += "  ORDER BY 5 ASC, 4 ASC, 2 ASC, 15  DESC  ";
 
             var parLevel3List = db.Query<ParLevel3>(sql);
 
@@ -873,7 +964,7 @@ namespace SGQDBContext
                 string dataFim = null;
 
                 //Pega a data pela regra da frequencia
-                syncServices.getFrequencyDate(ParLevel1.ParFrequency_Id, DateCollect, ref dataInicio, ref dataFim);
+                syncServices.getFrequencyDate(ParLevel2.ParFrequency_Id, DateCollect, ref dataInicio, ref dataFim);
 
                 SqlConnection db = new SqlConnection(conexao);
 
@@ -886,7 +977,7 @@ namespace SGQDBContext
                              "ON C2.ParLevel1_Id = L1.Id AND L1.IsPartialSave = 1 " +
                              "INNER JOIN Result_Level3 R3 " +
                              "ON R3.CollectionLevel2_Id = C2.Id " +
-                             "WHERE C2.UnitId = '" + ParCompany_Id + "' AND L1.Id='" + ParLevel1.Id + "' AND C2.CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' ";
+                             "WHERE C2.UnitId = '" + ParCompany_Id + "' AND L1.Id='" + ParLevel1.Id + "' AND C2.ParLevel2_Id='" + ParLevel2.Id + "' AND C2.CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' ";
 
                 //string sql = "SELECT R3.ParLevel3_Id AS Id FROM RESULT_LEVEL3 R3 " +
                 //              "INNER JOIN CollectionLevel2 C2 " +
@@ -946,6 +1037,7 @@ namespace SGQDBContext
         public IEnumerable<Level2Result> getList(int ParLevel1_Id, int ParCompany_Id, string dataInicio, string dataFim)
         {
 
+           
             SqlConnection db = new SqlConnection(conexao);
 
             string sql = "SELECT ParLevel1_Id, ParLevel2_Id, UnitId AS Unit_Id, Shift, Period, CollectionDate, MAX(EvaluationNumber) AS EvaluateLast, MAX(Sample) AS SampleLast, MAX(ConsolidationLevel2_Id) AS ConsolidationLevel2_Id " +
@@ -1010,9 +1102,13 @@ namespace SGQDBContext
             {
                 SqlConnection db = new SqlConnection(conexao);
 
+                DateTime data_ini = new DateTime(data.Year, data.Month, 1);
+                DateTime data_fim = new DateTime(data.Year, data.Month, DateTime.DaysInMonth(data.Year, data.Month));
+
+
                 string sql = "SELECT CDL1.Id, CDL1.ParLevel1_Id, PL1.ParFrequency_Id, PL1.IsPartialSave FROM ConsolidationLevel1 CDL1 " +
                              "INNER JOIN ParLevel1 PL1 ON CDL1.ParLevel1_Id = PL1.Id WHERE CDL1.UnitId = '" + ParCompany_Id + "'" +
-                             " AND CDL1.Consolidationdate BETWEEN '" + data.ToString("yyyyMMdd") + " 00:00' and '" + data.ToString("yyyyMMdd") + " 23:59'" +
+                             " AND CDL1.Consolidationdate BETWEEN '" + data_ini.ToString("yyyyMMdd") + " 00:00' and '" + data_fim.ToString("yyyyMMdd") + " 23:59'" +
                              " GROUP BY CDL1.Id, CDL1.ParLevel1_Id, PL1.ParFrequency_Id,  PL1.IsPartialSave";
 
                 var consolidation = db.Query<ParLevel1ConsolidationXParFrequency>(sql);
@@ -1969,6 +2065,36 @@ namespace SGQDBContext
 
                 SqlConnection db = new SqlConnection(conexao);
                 var list = db.Query<ResultPhase>(sql).ToList();
+                return list;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
+
+    public partial class ResultEvaluationDefects
+    {
+        public int Defects { get; set; }
+        public int EvaluationNumber { get; set; }
+        public int Period { get; set; }
+        public int Shift { get; set; }
+
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public List<ResultEvaluationDefects> GetByDay(int ParCompany_Id, DateTime Date, int ParLevel1_Id)
+        {
+            try
+            {
+                string sql = "SELECT SUM(Defects) AS Defects, EvaluationNumber, Period, Shift from CollectionLevel2                               "+
+                                "WHERE                                                                                  "+
+                                "ParLevel1_Id = "+ ParLevel1_Id + " AND                                                 "+
+                                "CAST(CollectionDate as date) = CAST('"+ Date.ToString("yyyyMMdd") + "' as DATE)        "+
+                                "GROUP BY EvaluationNumber, Period, Shift; ";                                           
+
+                SqlConnection db = new SqlConnection(conexao);
+                var list = db.Query<ResultEvaluationDefects>(sql).ToList();
                 return list;
             }
             catch (Exception)
