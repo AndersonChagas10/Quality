@@ -12,7 +12,7 @@ namespace SgqSystem.Controllers.Params
 {
     [FilterUnit]
     [CustomAuthorize]
-    public class EquipamentosController : Controller
+    public class EquipamentosController : BaseController
     {
    
         private SGQ_GlobalEntities db = new SGQ_GlobalEntities();
@@ -27,14 +27,8 @@ namespace SgqSystem.Controllers.Params
             //var company = 
             var user = db2.UserSgq.FirstOrDefault(r => r.Id == userId); //db2.Database.ExecuteSqlCommand("SELECT ParCompany_Id FROM UserSgq where id = 56");
             var company = db2.ParCompany.FirstOrDefault(r => r.Id == user.ParCompany_Id);
-
             var parCompanyXUserSgq = db2.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == user.Id).ToList();
-
             var equipamentos = db.Equipamentos.ToList();
-
-            
-
-            //var equipamentos = db.Equipamentos.Where(r => r.ParCompany_Id == user.ParCompany_Id).ToList();
 
             var companys = db2.ParCompany.ToList();
             var equipRetorno = new List<Equipamentos>();
@@ -53,8 +47,9 @@ namespace SgqSystem.Controllers.Params
             //var company = db2.Database.ExecuteSqlCommand("SELECT ParCompany_Id FROM UserSgq where id = 56");
             //db2.
             //Company filter
-            if (!string.IsNullOrEmpty(Request.QueryString["ParCompany_Id"]))
+            if (!string.IsNullOrEmpty(Request.QueryString["ParCompanyName"]))
             {
+
                 int id = System.Convert.ToInt32(Request.QueryString["ParCompany_Id"]);
                 //equipamentos = equipamentos.Where(eqp => eqp.ParCompany_Id == id);
             }
