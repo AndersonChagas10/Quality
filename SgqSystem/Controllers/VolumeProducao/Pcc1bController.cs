@@ -89,9 +89,14 @@ namespace SgqSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                db.VolumePcc1b.Add(pcc1b);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                //Verifica se já existe uma coleta no mesmo dia
+                if (db.VolumePcc1b.Where(r => r.Data == pcc1b.Data && r.ParCompany_id == pcc1b.ParCompany_id).ToList().Count() == 0)
+                {
+
+                    db.VolumePcc1b.Add(pcc1b);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
 
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", pcc1b.ParCompany_id);
@@ -127,9 +132,32 @@ namespace SgqSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                db.Entry(pcc1b).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (db.VolumePcc1b.Where(r => r.Data == pcc1b.Data && r.ParCompany_id == pcc1b.ParCompany_id).ToList().Count() == 0)
+                {
+                    db.Entry(pcc1b).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    //Se for a edição da mesma data e parCompany
+                    if (db.VolumePcc1b.Where(r => r.Data == pcc1b.Data &&
+                                                       r.ParCompany_id == pcc1b.ParCompany_id &&
+                                                       r.Id == pcc1b.Id).ToList().Count() == 1)
+                    {
+                        using (var db2 = new SgqDbDevEntities())
+                        {
+                            db2.Entry(pcc1b).State = EntityState.Modified;
+                            db2.SaveChanges();
+                            return RedirectToAction("Index");
+                        }
+
+                    }
+                    else
+                    {
+                        Guard.MesangemModelError("Já existe uma coleta para esta unidade neste dia!", true);
+                    }
+                }
             }
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", pcc1b.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name", pcc1b.ParLevel1_id);
