@@ -117,7 +117,7 @@ namespace SgqSystem.Controllers
             if (userSgqDto.Id == 0)
             {
                 userSgqDto.AddDate = DateTime.Now;
-                userSgqDto.Password = "123";
+                userSgqDto.Password = Guard.Criptografar3DES(userSgqDto.Password);
             }
             else
             {
@@ -127,6 +127,10 @@ namespace SgqSystem.Controllers
                 {
                     UserSgq dummy = db.UserSgq.Find(userSgqDto.Id);
                     userSgqDto.Password = dummy.Password;
+                }
+                else
+                {
+                    userSgqDto.Password = Guard.Criptografar3DES(userSgqDto.Password);
                 }
             }
 
