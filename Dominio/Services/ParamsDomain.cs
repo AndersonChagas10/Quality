@@ -167,6 +167,9 @@ namespace Dominio.Services
             /*Validação*/
             //paramsDto.parLevel1Dto.IsValid();
             ParLevel1 saveParamLevel1 = Mapper.Map<ParLevel1>(paramsDto.parLevel1Dto);//ParLevel1
+            if (saveParamLevel1.ParScoreType_Id <= 0)
+                saveParamLevel1.ParScoreType_Id = null;
+
             List<ParGoal> listParGoal = Mapper.Map<List<ParGoal>>(paramsDto.parLevel1Dto.listParGoalLevel1);
             List<ParRelapse> listaReincidencia = Mapper.Map<List<ParRelapse>>(paramsDto.parLevel1Dto.listParRelapseDto);//Reincidencia do Level1
             if (paramsDto.listParHeaderFieldDto != null)
@@ -607,11 +610,11 @@ namespace Dominio.Services
                 }
 
                 /**/
-                existenteL2L1 = db.ParLevel2Level1.FirstOrDefault(r => r.ParLevel1_Id == idLevel1 && r.ParLevel2_Id == idLevel2);
+                existenteL2L1 = db.ParLevel2Level1.FirstOrDefault(r => r.ParLevel1_Id == idLevel1 && r.ParLevel2_Id == idLevel2 && r.ParCompany_Id == companyId);
 
                 if (existenteL2L1 == null)
                 {
-                    salvarL2L1 = new ParLevel2Level1() { ParLevel1_Id = idLevel1, ParLevel2_Id = idLevel2, AddDate = DateTime.Now, IsActive = true };
+                    salvarL2L1 = new ParLevel2Level1() { ParLevel1_Id = idLevel1, ParLevel2_Id = idLevel2, AddDate = DateTime.Now, IsActive = true, ParCompany_Id = companyId };
                     db.ParLevel2Level1.Add(salvarL2L1);
                     db.SaveChanges();
                 }

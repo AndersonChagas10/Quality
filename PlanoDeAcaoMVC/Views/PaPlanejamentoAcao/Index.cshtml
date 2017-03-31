@@ -290,7 +290,7 @@
         }
 
         /*Planejamento*/
-        function ModalOpcoesEstrategico(title, IdParaNovaAcao, callback) {//Pos Modal1
+        function ModalOpcoesEstrategico(title, IdParaNovaAcao,callback) {//Pos Modal1
 
 
             $('#modalLindo').modal();
@@ -321,7 +321,7 @@
                 }
 
                 if (IdParaNovaAcao != undefined || planejamentoCorrentId > 0) { // Mostra Detalhes + BTN nova acao
-                    $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
+                    $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId}, function (r) {
                         $('#modalLindo').find('.modal-body').empty().append(r);
                         $('#NovaAcao').show();
                     });
