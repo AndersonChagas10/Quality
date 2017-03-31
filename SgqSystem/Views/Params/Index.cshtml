@@ -219,8 +219,13 @@
     var unitId = @Html.Raw(Json.Encode(ViewBag.CompanyId));
 
     function disableEvry() {
-        $('input, select').not("#crudNxNEdit, #parLevel1Select2, #parLevel2Select2, #parLevel3Select2").attr("disabled", true);
+        $('input, select').not("#crudNxNEdit, #parLevel1Select2, #parLevel2Select2, #parLevel3Select2, #level3_data_type_accordion").attr("disabled", true);
         $('button').attr("disabled", true);
+
+        $('#level3_data_type_accordion').find('input, select').attr("disabled", false);
+        $('#selectUnidadeParL3Value').find('select option').not('[value='+ unitId + ']').remove();
+        $('#btnSaveNewLevel3').attr("disabled", false);
+
         $(':checkbox').bootstrapSwitch('disabled',true);
     }
 

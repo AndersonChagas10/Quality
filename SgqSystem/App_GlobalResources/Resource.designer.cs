@@ -2689,6 +2689,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mother.
+        /// </summary>
+        internal static string mother {
+            get {
+                return ResourceManager.GetString("mother", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to N/A.
         /// </summary>
         internal static string na {
