@@ -619,8 +619,9 @@ namespace Dominio.Services
                 if (userId > 0)
                 {
                     user = db.UserSgq.FirstOrDefault(r => r.Id == userId);
-                    if (user != null && !user.Role.ToLowerInvariant().Contains("Admin".ToLowerInvariant()))
+                    if(user.Role == null || !user.Role.ToLowerInvariant().Contains("Admin".ToLowerInvariant()))
                         companyId = user.ParCompany_Id;
+                 
                 }
 
                 /**/
