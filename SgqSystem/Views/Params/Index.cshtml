@@ -30,7 +30,7 @@
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
-<div class="page-content-wrapper" >
+<div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
     <div class="page-content" style="min-height: 650px;">
         <!-- BEGIN PAGE HEADER-->
@@ -74,8 +74,8 @@
                                 <div class="row">
                                     <div class="col-xs-3">
                                         @*@if (!GlobalConfig.Eua)
-                                        {*@
-                                            <button class="btn btn-primary btn-block" id="btnNewLevel1">@Resources.Resource.new_level1</button>
+                                            {*@
+                                        <button class="btn btn-primary btn-block" id="btnNewLevel1">@Resources.Resource.new_level1</button>
                                         @*}*@
                                     </div>
                                     <div class="col-xs-9">
@@ -95,8 +95,8 @@
                                                 <div id="ParLevel1">
 
                                                     @*@if (!GlobalConfig.Eua)
-                                                    {*@
-                                                        @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
+                                                        {*@
+                                                    @Html.Partial("~/Views/Params/_ParLevel1.cshtml", Model)
                                                     @*}*@
 
                                                 </div>
@@ -218,16 +218,7 @@
     var hasperm = @Html.Raw(Json.Encode(ViewBag.IsAdmin));
     var unitId = @Html.Raw(Json.Encode(ViewBag.CompanyId));
 
-    function disableEvry() {
-        $('input, select').not("#crudNxNEdit, #parLevel1Select2, #parLevel2Select2, #parLevel3Select2, #level3_data_type_accordion").attr("disabled", true);
-        $('button').attr("disabled", true);
-
-        $('#level3_data_type_accordion').find('input, select').attr("disabled", false);
-        $('#selectUnidadeParL3Value').find('select option').not('[value='+ unitId + ']').remove();
-        $('#btnSaveNewLevel3').attr("disabled", false);
-
-        $(':checkbox').bootstrapSwitch('disabled',true);
-    }
+    
 
     function reloadPopovers(){
         $(".popovers").attr("data-toggle", "popover");
@@ -328,7 +319,7 @@
         var l1Id = $('#paramsDto_parLevel1Dto_Id').val();
         var l2Id = $('#paramsDto_parLevel2Dto_Id').val();
         var l3Id = $('#paramsDto_parLevel3Dto_Id').val();
-        
+
         if(l1Id > 0 && l2Id > 0 && l3Id > 0){
             $.post('@Url.Action("RemVinculoL2L3", "api/ParamsApi")' + '/' + l1Id + '/' + l2Id + '/' + l3Id + '/' + unitId, {}, function(r) {
                 openMessageModal(r, '');
@@ -547,7 +538,7 @@
 
             if (valorSelecionado == "") {/*Reseta Form*/
                 //if(!gcEua)
-                    indexParamsLevel1.resetaForm();
+                indexParamsLevel1.resetaForm();
             } else {
                 indexParamsLevel1.GetLevel1(valorSelecionado);
             }
@@ -1142,8 +1133,69 @@
 
     $( document ).ajaxStop(function() {
         closeLoader();
+        setTimeout(function() {
+            if(!hasperm){
+                disableEvry();
+            }
+        }, 400);
     });
+   
+    function disableEvry() {
+        var _PermiteEditarVinculoComTarefa = @Html.Raw(Json.Encode(Model.paramsDto.parLevel2Dto._PermiteEditarVinculoComTarefa));
+        var _PermiteEditarNumeroDeAv = @Html.Raw(Json.Encode(Model.paramsDto.parLevel2Dto._PermiteEditarNumeroDeAv));
+        $('input, select').not("#crudNxNEdit, #parLevel1Select2, #parLevel2Select2, #parLevel3Select2").attr("readonly", true);
+        $(':checkbox').bootstrapSwitch('readonly',true);
+        $('#desviculol3l2').attr("disabled", true);
+        $('#crudNxNEdit').find('input, select').attr("readonly", false);
+        $('#crudNxNEdit').find('button').attr("readonly", false);
 
+        /*Level2*/
+        if(_PermiteEditarNumeroDeAv){
+
+            /*Libera os campos para AV AM*/
+            $('#level2_AvAmostra_accordion').find('input, select, button').attr("readonly", false);
+            $('#avAmCompany').find('option').not('[value='+ unitId + ']').remove();
+
+            /*habilita Edicao do AV AM*/
+            $('#tableAvAm > tbody > tr').each(function() {
+                if($(this).data().companyId != unitId)
+                    $(this).find('input, select, button').attr("disabled", true);
+            });
+
+        }
+
+        /*Level3*/
+        var l1 = $('#paramsDto_parLevel1Dto_Id').val();
+        var l2 = $('#paramsDto_parLevel2Dto_Id').val();
+        var l3 = $('#paramsDto_parLevel3Dto_Id').val();
+        if(l1 > 0 && l2 > 0 && l3 > 0){
+            $('#vinculoLevel1').attr('disabled', false);
+        }
+
+        if (_PermiteEditarVinculoComTarefa) {
+
+            /*Libera os campos para Tipos de dados de entrada*/
+            $('#level3_accordion').find('input, select, button').attr("readonly", false);
+            $('#level3_accordion').find('input').attr("readonly", true);
+            $('#selectUnidadeParL3Value').find('option').not('[value='+ unitId + ']').remove();
+
+            $('#pesoCompany').find('option').not('[value='+ unitId + ']').remove();
+
+            /*habilita Edicao do Tipos de dados de entrada*/
+            $('#tableLevel3Value > tbody > tr').each(function() {
+                if($(this).data().ParCompany_Id != unitId)
+                    $(this).find('input, select, button').attr("disabled", true);
+            });
+
+            /*habilita Edicao do Peso*/
+            $('#tablePeso > tbody > tr').each(function() {
+                if($(this).data().ParCompany_Id != unitId){
+                    $(this).find('input, select, button').attr("disabled", true);
+                }
+            });
+
+        }
+    }
 
     timeoutAjax = 500000;
     if(window.location.host.indexOf("localhost") != -1){
