@@ -1153,6 +1153,9 @@
             $('#crudNxNEdit').find('input, select').attr("readonly", false);
             $('#crudNxNEdit').find('button').attr("readonly", false);
 
+            $('#paramsDto_parLevel2Dto_ParDepartment_Id option').not(':selected').remove();
+            $('#paramsDto_parLevel2Dto_ParFrequency_Id option').not(':selected').remove();
+            
             /*Level2*/
             if(r._PermiteEditarNumeroDeAv){
                 $('#btnSaveNewLevel2').attr('disabled', false);
