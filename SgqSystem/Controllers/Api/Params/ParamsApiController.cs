@@ -230,7 +230,6 @@ namespace SgqSystem.Controllers.Api.Params
             return _paramdDomain.RemVinculoL1L2(idLevel1, idLevel2);
         }
 
-
         [HttpPost]
         [Route("RemVinculoL2L3/{idLevel1}/{idLevel2}/{idLevel3}/{companyId}")]
         public string RemVinculoL2L3(int idLevel1, int idLevel2, int idLevel3, int? companyId = null)
@@ -273,7 +272,6 @@ namespace SgqSystem.Controllers.Api.Params
 
         #endregion
 
-
         [HttpPost]
         [Route("GetAutorizacoes/{l1}/{l2}/{l3}")]
         public ParLevel2DTO GetAutorizacoes(int? l1 = 0, int? l2 = 0, int? l3 = 0)
@@ -296,7 +294,6 @@ namespace SgqSystem.Controllers.Api.Params
             return level2;
         }
 
-       
         [HttpPost]
         [Route("AddRemoveParHeaderLevel2")]
         public ParLevel2XHeaderField AddRemoveParHeaderLevel2(ParLevel2XHeaderField parLevel2XHeaderField)
@@ -389,7 +386,6 @@ namespace SgqSystem.Controllers.Api.Params
         }
 
         [HttpPost]
-        [HandleApi]
         [Route("atualizaCabecalho")]
         public ParHeaderFieldDTO atualizaCabecalho([FromBody] ParamsViewModel parr)
         {
