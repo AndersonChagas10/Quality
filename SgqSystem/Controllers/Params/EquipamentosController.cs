@@ -7,6 +7,8 @@ using DTO.Helpers;
 using SgqSystem.Secirity;
 using SgqSystem.Helpers;
 using Helper;
+using DTO.DTO;
+using System.Collections.Generic;
 
 namespace SgqSystem.Controllers.Params
 {
@@ -24,17 +26,49 @@ namespace SgqSystem.Controllers.Params
         {
             var userId = Guard.GetUsuarioLogado_Id(HttpContext);
 
-            var equipamentos = db.Equipamentos.Where(eqp => true);
+            //var company = 
+            var user = db2.UserSgq.FirstOrDefault(r => r.Id == userId); //db2.Database.ExecuteSqlCommand("SELECT ParCompany_Id FROM UserSgq where id = 56");
+            var company = db2.ParCompany.FirstOrDefault(r => r.Id == user.ParCompany_Id);
 
-            //Company filter
-            if (!string.IsNullOrEmpty(Request.QueryString["ParCompanyName"]))
+            var parCompanyXUserSgq = db2.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == user.Id);
+
+            var equipamentos = db.Equipamentos.ToList();
+
+            
+
+            //var equipamentos = db.Equipamentos.Where(r => r.ParCompany_Id == user.ParCompany_Id).ToList();
+
+            var companys = db2.ParCompany.ToList();
+            var equipRetorno = new List<Equipamentos>();
+
+            foreach (var i in equipamentos)
             {
-                string parCompanyName = Request.QueryString["ParCompanyName"];
-                equipamentos = equipamentos.Where(eqp => eqp.ParCompanyName == parCompanyName);
+
+                i.ParCompanyName = companys.FirstOrDefault(r => r.Id == i.ParCompany_Id).Name;
+
+
+                if(parCompanyXUserSgq.Any(r => r.ParCompany_Id == i.ParCompany_Id))
+                {
+                    equipRetorno.Add(i);
+                }
+
+
             }
 
-            if (equipamentos.Count() > 0)
-                return View(equipamentos.ToList());
+            //var company = db2.Database.ExecuteSqlCommand("SELECT ParCompany_Id FROM UserSgq where id = 56");
+            //db2.
+            //Company filter
+            if (!string.IsNullOrEmpty(Request.QueryString["ParCompany_Id"]))
+            {
+                int id = System.Convert.ToInt32(Request.QueryString["ParCompany_Id"]);
+                //equipamentos = equipamentos.Where(eqp => eqp.ParCompany_Id == id);
+            }
+            
+            //var result = db.Database.ExecuteSqlCommand("Select * ");
+
+
+            if (equipRetorno.Count() > 0)
+                return View(equipRetorno.ToList());
             else
                 return View(new System.Collections.Generic.List<Equipamentos>());
         }
@@ -68,13 +102,15 @@ namespace SgqSystem.Controllers.Params
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ParCompanyName,Nome,Tipo,Subtipo")] Equipamentos equipamentos)
+        public ActionResult Create([Bind(Include = "ParCompany_Id,Nome,Tipo")] Equipamentos equipamentos)
         {
-            ValidaCepDesossa(equipamentos);
+           
+            ValidaEquipamentos(equipamentos);
             if (ModelState.IsValid)
             {
                 equipamentos.DataInsercao = System.DateTime.Now;
                 equipamentos.UsuarioInsercao = Guard.GetUsuarioLogado_Id(HttpContext);
+                equipamentos.Unidade = 1;
                 db.Equipamentos.Add(equipamentos);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -83,10 +119,10 @@ namespace SgqSystem.Controllers.Params
             return View(equipamentos);
         }
 
-        private void ValidaCepDesossa(Equipamentos equipamentos)
+        private void ValidaEquipamentos(Equipamentos equipamentos)
         {
-            if (equipamentos.ParCompanyName == null)
-                ModelState.AddModelError("ParCompanyName", Guard.MesangemModelError("Unidade", true));
+            if (equipamentos.ParCompany_Id == null)
+                ModelState.AddModelError("ParCompany_Id", Guard.MesangemModelError("Unidade", true));
 
             if (equipamentos.Nome == null)
                 ModelState.AddModelError("Nome", Guard.MesangemModelError("Nome", true));
@@ -94,8 +130,11 @@ namespace SgqSystem.Controllers.Params
             if (equipamentos.Tipo == null)
                 ModelState.AddModelError("Tipo", Guard.MesangemModelError("Tipo", true));
 
-            if (equipamentos.Subtipo == null)
-                ModelState.AddModelError("Subtipo", Guard.MesangemModelError("Subtipo", true));
+            //if (equipamentos.Subtipo == null)
+            //{
+            //    equipamentos.Subtipo = "";
+            //    ModelState.AddModelError("Subtipo", Guard.MesangemModelError("Subtipo", true));
+            //}
         }
 
         // GET: Equipamentos/Edit/5
@@ -119,14 +158,15 @@ namespace SgqSystem.Controllers.Params
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ParCompanyName,Nome,Tipo,Subtipo")] Equipamentos equipamentos)
+        public ActionResult Edit([Bind(Include = "Id,ParCompany_Id,Nome,Tipo")] Equipamentos equipamentos)
         {
-            ValidaCepDesossa(equipamentos);
+            ValidaEquipamentos(equipamentos);
 
             if (ModelState.IsValid)
             {
                 equipamentos.DataInsercao = System.DateTime.Now;
                 equipamentos.UsuarioAlteracao = Guard.GetUsuarioLogado_Id(HttpContext);
+                equipamentos.Unidade = 1;
                 db.Entry(equipamentos).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

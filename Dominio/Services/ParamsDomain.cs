@@ -730,9 +730,9 @@ namespace Dominio.Services
                 if (result1?.Count() > 0 || result2?.Count() > 0)
                 {
                     if (result1?.Count() > 0)
-                        sql1 = "UPDATE ParLevel3Level2Level1 SET Active = 0 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel3Level2_Id IN (select id from ParLevel3Level2 where parlevel2_id = " + idLevel2 + ")";
+                        sql1 = "DELETE ParLevel3Level2Level1 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel3Level2_Id IN (select id from ParLevel3Level2 where parlevel2_id = " + idLevel2 + ")";
                     if (result2?.Count() > 0)
-                        sql2 = "UPDATE ParLevel2Level1 SET IsActive = 0 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel2_Id = " + idLevel2;
+                        sql2 = "DELETE ParLevel2Level1 WHERE ParLevel1_Id = " + idLevel1 + " AND ParLevel2_Id = " + idLevel2;
                 }
                 else
                 {

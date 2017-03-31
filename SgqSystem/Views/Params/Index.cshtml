@@ -124,8 +124,8 @@
                                                     </h4>
                                                 </div>
                                                 <div class="col-xs-4">
-                                                    <button id="vinculoLevel1" class="btn btn-warning pull-right " style="height: 42px;" title="Vincular ao Level 1"><span class="glyphicon glyphicon-link"></span></button>
-                                                    <button id="desVinculoLevel1" class="btn btn-warning pull-right " style="height: 42px; display:none" title="Vincular ao Level 1"><i class="fa fa-chain-broken" aria-hidden="true"></i></button>
+                                                    <button id="vinculoLevel1" class="btn btn-warning pull-right " style="height: 42px;" title="Vincular todos os níveis selecionados"><span class="glyphicon glyphicon-link"></span></button>
+                                                    @*<button id="desVinculoLevel1" class="btn btn-warning pull-right " style="height: 42px; display:none" title="Vincular ao Level 1"><i class="fa fa-chain-broken" aria-hidden="true"></i></button>*@
                                                 </div>
                                             </div>
                                         </div>
@@ -161,6 +161,7 @@
                                                 </div>
                                                 <div class="col-xs-4">
                                                     @*<button id="vinculoLevel2" class="btn btn-danger pull-right" style="height: 42px;" title="Vincular ao Level 2" onclick="saveLevel3Level2()"><span class="glyphicon glyphicon-link"></span></button>*@
+                                                    <button id="desviculol3l2" class="btn btn-danger pull-right" style="height: 42px;" title="Desvincular do Level 2" onclick="desvincularL3L2()"><i class="fa fa-chain-broken" aria-hidden="true"></i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -222,8 +223,6 @@
         $('button').attr("disabled", true);
         $(':checkbox').bootstrapSwitch('disabled',true);
     }
-
-
 
     function reloadPopovers(){
         $(".popovers").attr("data-toggle", "popover");
@@ -318,6 +317,21 @@
 
         // If it doesn't contain the term, don't return anything
         return null;
+    }
+
+    function desvincularL3L2(){
+        var l1Id = $('#paramsDto_parLevel1Dto_Id').val();
+        var l2Id = $('#paramsDto_parLevel2Dto_Id').val();
+        var l3Id = $('#paramsDto_parLevel3Dto_Id').val();
+        
+        if(l1Id > 0 && l2Id > 0 && l3Id > 0){
+            $.post('@Url.Action("RemVinculoL2L3", "api/ParamsApi")' + '/' + l1Id + '/' + l2Id + '/' + l3Id + '/' + unitId, {}, function(r) {
+                openMessageModal(r, '');
+            });
+        }else{
+            openMessageModal('É necessário selecionar um vinculo completo para realizar esta ação', '');
+        }
+
     }
 
     var t1 = @Html.Raw(Json.Encode(@Resources.Resource.new_level1));
