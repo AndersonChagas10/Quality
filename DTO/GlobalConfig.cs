@@ -5,8 +5,8 @@ namespace DTO
     public static class GlobalConfig
     {
 
-        public static bool Brasil { get; set; } = false;
-        public static bool Eua { get; set; } = true;
+        public static bool Brasil { get; set; } = true;
+        public static bool Eua { get; set; } = false;
 
         public static string linkDataCollect
         {

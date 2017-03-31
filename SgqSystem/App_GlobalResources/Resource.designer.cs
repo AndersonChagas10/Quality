@@ -2680,6 +2680,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mother.
+        /// </summary>
+        internal static string mother {
+            get {
+                return ResourceManager.GetString("mother", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to N/A.
         /// </summary>
         internal static string na {
@@ -3517,20 +3526,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registers.
-        /// </summary>
-        internal static string registers {
-            get {
-                return ResourceManager.GetString("registers", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Register per Unit.
         /// </summary>
         internal static string registerPerUnit {
             get {
                 return ResourceManager.GetString("registerPerUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registers.
+        /// </summary>
+        internal static string registers {
+            get {
+                return ResourceManager.GetString("registers", resourceCulture);
             }
         }
         
@@ -4620,6 +4629,15 @@ namespace Resources {
         internal static string tipification_verification {
             get {
                 return ResourceManager.GetString("tipification_verification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type Score.
+        /// </summary>
+        internal static string tipoScore {
+            get {
+                return ResourceManager.GetString("tipoScore", resourceCulture);
             }
         }
         
