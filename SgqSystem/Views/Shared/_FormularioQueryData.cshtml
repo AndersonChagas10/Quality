@@ -324,7 +324,13 @@
                 @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
+        <li>
+            <div id="showOnlyUnit" style="display:none">
+                <span class="redLabel">@Resources.Resource.unit</span>
 
+                @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.select, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+            </div>
+        </li>
         <li data-ng-app="myApp">
             @*    @Html.DropDownList("level1Id", new SelectList(ViewBag.Level1, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2Init", @style = "width:210px" })*@
             <div data-ng-controller="MainCtrl" id="showLevel1" style="display:none; margin-left:0px!important">
@@ -1146,8 +1152,8 @@
             $("#showSubRegionaisManutencao").show();
         },
 
-        showUnidadesManutencao: function (){
-            $('#showUnidadesManutencao').show();
+        showOnlyUnit: function (){
+            $('#showOnlyUnit').show();
         }
 
     }
