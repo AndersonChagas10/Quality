@@ -1178,6 +1178,8 @@
                 $('#level3_accordion').find('input').attr("readonly", true);
                 $('#selectUnidadeParL3Value').find('option').not('[value='+ unitId + ']').remove();
 
+                $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', true);
+                $('#level3_PesoL3_accordion').find('input, select').attr("readonly", false);
                 $('#pesoCompany').find('option').not('[value='+ unitId + ']').remove();
 
                 /*habilita Edicao do Tipos de dados de entrada*/

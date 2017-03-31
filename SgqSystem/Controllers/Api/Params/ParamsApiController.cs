@@ -288,6 +288,7 @@ namespace SgqSystem.Controllers.Api.Params
                     if (l2 > 0)
                     {
                         level2 = Mapper.Map<ParLevel2DTO>(db.ParLevel2.FirstOrDefault(r => r.Id == l2));
+                        level2.RegrasParamsLevel1(Mapper.Map<ParLevel1DTO>(level1));
                     }
                 }
             }
