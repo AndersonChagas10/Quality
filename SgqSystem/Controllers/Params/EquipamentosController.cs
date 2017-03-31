@@ -33,9 +33,9 @@ namespace SgqSystem.Controllers.Params
             var companys = db2.ParCompany.ToList();
             var equipRetorno = new List<Equipamentos>();            
 
-            if (!string.IsNullOrEmpty(Request.QueryString["ParCompanyName"]))
+            if (!string.IsNullOrEmpty(Request.QueryString["ParCompany_Id"]))
             {
-                int companyId = Convert.ToInt32(Request.QueryString["ParCompanyName"]);
+                int companyId = Convert.ToInt32(Request.QueryString["ParCompany_Id"]);
 
                 equipamentos = db.Equipamentos.Where(r => r.ParCompany_Id == companyId).ToList();
 
@@ -93,7 +93,7 @@ namespace SgqSystem.Controllers.Params
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ParCompany_Id,Nome,Tipo")] Equipamentos equipamentos)
+        public ActionResult Create([Bind(Include = "ParCompany_Id,Nome,Tipo,Subtipo")] Equipamentos equipamentos)
         {
 
             ValidaEquipamentos(equipamentos);
@@ -149,7 +149,7 @@ namespace SgqSystem.Controllers.Params
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ParCompany_Id,Nome,Tipo")] Equipamentos equipamentos)
+        public ActionResult Edit([Bind(Include = "Id,ParCompany_Id,Nome,Tipo,Subtipo")] Equipamentos equipamentos)
         {
             ValidaEquipamentos(equipamentos);
 
