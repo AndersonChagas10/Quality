@@ -204,8 +204,7 @@
                 </div>
                 <div class="modal-footer">
 
-                    <button type="button" class="btn btn-default" id="Fechar" onclick="Clicked(false, false, false);" data-dismiss="modal" style="display:none">Fechar</button>
-                    <button type="button" class="btn btn-primary" id="Salvar" onclick="" style="display:none">Salvar</button>
+                    <button type="button" class="btn btn-default" id="Fechar" data-dismiss="modal" style="display:none">Fechar</button>
 
                 </div>
             </div>
@@ -1146,17 +1145,19 @@
         enviarDadosParaApi : function (e) {
             var dados = $('#ediCab > form').serializeObject();
             dados['paramsDto.parHeaderFieldDto.ParFieldType_Id'] = idfieldType;
+            dados['paramsDto.parHeaderFieldDto.Id'] = idpar;
             if (dados['paramsDto.parHeaderFieldDto.ParFieldType_Id'] == 1 || dados['paramsDto.parHeaderFieldDto.ParFieldType_Id'] == 3) {
                 var tam = dados['i.Id'].length;
                 var count = 0;
                 var ar = [];
                 while (count < tam) {
-                    ar.push({ Id: dados['i.Id'][count], Name: dados['i.Name'][count], PunishmentValue: dados['i.PunishmentValue'][count], ParHeaderField_Id : idpar});
-                    dados['paramsDto.parHeaderFieldDto.ParMultipleValues'] = ar;
+                    ar.push({ Id: dados['i.Id'][count], Name: dados['i.Name'][count], ParHeaderField_Id : idpar, PunishmentValue: dados['i.PunishmentValue'][count]});
                     count++;
                 }
+                dados['paramsDto.parHeaderFieldDto.ParMultipleValues'] = ar;
             }
-            $.post(urlAttCabecalho, dados, function (objetoReturn, statusmessage, respostaCompleta) {
+            console.log(dados);
+            $.post(urlAttCabecalho, dados, function (objetoReturn, statusmessage) {
                 if (idLvl1 > 0) {
                     indexParamsLevel1.GetLevel1(idLvl1, true);
                     openMessageModal("Alerta", statusmessage);
@@ -1199,10 +1200,6 @@
         $('#Fechar').show();
         $('#Salvar').hide();
         ///*Fim Botões*/
-
-    }
-    function CabecalhoAtualizado() {
-
 
     }
 
