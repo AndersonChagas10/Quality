@@ -171,7 +171,6 @@ namespace DTO.DTO.Params
 
         }
 
-
         public void RegrasParamsLevel1(ParLevel1DTO parLevel1)
         {
             if (parLevel1.IsSpecific)
