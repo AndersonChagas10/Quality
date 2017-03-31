@@ -297,7 +297,7 @@
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
     <Compile Include="Controllers\Api\LanguageController.cs" />
-    <Compile Include="Controllers\Api\Login\LoginController.cs" />
+    <Compile Include="Controllers\Api\UserAndRoles\LoginController.cs" />
     <Compile Include="Controllers\Api\Manutencao\ManutencaoController.cs" />
     <Compile Include="Controllers\Api\NQAController.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
@@ -335,13 +335,13 @@
     <Compile Include="Controllers\ConsolidacaoTestes\ConsolidacaoTestesController.cs" />
     <Compile Include="Controllers\Error\ErrorController.cs" />
     <Compile Include="Controllers\Exemplo\HtmlTesteController.cs" />
-    <Compile Include="Controllers\Login\AccesDeniedController.cs" />
+    <Compile Include="Controllers\UserAndRoles\AccesDeniedController.cs" />
     <Compile Include="Controllers\Api\File\FileController.cs" />
     <Compile Include="Controllers\Api\Example\ExampleApiController.cs" />
     <Compile Include="Controllers\Api\Reports\RelatorioColetaController.cs" />
     <Compile Include="Controllers\File\FileControlController.cs" />
     <Compile Include="Controllers\Example\ExampleController.cs" />
-    <Compile Include="Controllers\Login\UserAuthenticationController.cs" />
+    <Compile Include="Controllers\UserAndRoles\UserAuthenticationController.cs" />
     <Compile Include="Controllers\Api\UserAndRoles\UserController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
     <Compile Include="Controllers\Charts\ChartsController.cs" />
@@ -495,6 +495,8 @@
     <Content Include="admin-lte\css\skins\_all-skins.min.css" />
     <Content Include="admin-lte\js\app.js" />
     <Content Include="admin-lte\js\app.min.js" />
+    <Content Include="Angular\app.js" />
+    <Content Include="Angular\EditParHeaderFieldController.js" />
     <Content Include="App_GlobalResources\Resource.pt-br.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <SubType>Designer</SubType>
@@ -2125,6 +2127,7 @@
     <Content Include="Views\Role\EditLeftControlRole.cshtml" />
     <Content Include="Views\RelatoriosSgq\CartasCep.cshtml" />
     <Content Include="Views\Manutencao\Index.cshtml" />
+    <Content Include="Views\Params\EditParHeaderField.cshtml" />
     <Content Include="Views\Equipamentos\Create.cshtml" />
     <Content Include="Views\Equipamentos\Delete.cshtml" />
     <Content Include="Views\Equipamentos\Details.cshtml" />

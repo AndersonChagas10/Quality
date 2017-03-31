@@ -1,0 +1,88 @@
+﻿@model SgqSystem.ViewModels.ParamsViewModel
+@{
+    Layout = null;
+}
+<div id="ediCab" class="container">
+    @using (Html.BeginForm())
+    {
+        <div class="row">
+            <div class="col-md-3">
+                @Html.Label(Resources.Resource.field_level)
+                <div class="dropdown">
+                    @Html.DropDownListFor(m => m.paramsDto.parHeaderFieldDto.ParLevelDefinition_Id, Model.paramsDdl.DdlparLevelDefinition, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-md-2">
+                @Html.Label(Resources.Resource.type)<br />
+                <div class="dropdown">
+                    @Html.DropDownListFor(m => m.paramsDto.parHeaderFieldDto.ParFieldType_Id, Model.paramsDdl.DdlParFieldType, new { htmlAttributes = new { @style = "display:block; disabled:true; vertical-align:bottom;", @class = "form-control input-sm" } })
+                </div>
+            </div>
+            <div class="col-md-2">
+                @Html.Label(Resources.Resource.field_name)
+                <div class="input-group">
+                    @Html.TextBoxFor(m => Model.paramsDto.parHeaderFieldDto.Name, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="col-md-3">
+                @Html.Label(Resources.Resource.link_number_evaluation)<br />
+                @Html.EditorFor(m => m.paramsDto.parHeaderFieldDto.LinkNumberEvaluetion, new { @class = "form-control make-switch", @type="checkbox" })
+            </div>
+        </div>
+        if (Model.paramsDto.parHeaderFieldDto.ParFieldType.Id == 1)
+        {
+            foreach (var i in Model.paramsDto.parHeaderFieldDto.ParMultipleValues)
+            {
+                @Html.EditorFor(r => i.Id, new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 0px;visibility:hidden;" } })
+                <div class="row">
+                    <div class="col-md-1">
+                        @Html.Label(Resources.Resource.option)
+                    </div>
+                    <div class="col-md-2">
+                        <div class="input-group">
+                            @Html.EditorFor(r => i.Name, new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 200px;", @class = "form-control checkbox-erp" } })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        @Html.Label(Resources.Resource.punishment_value)
+                    </div>
+                    <div class="col-md-1">
+                        @Html.EditorFor(r => i.PunishmentValue)
+                    </div>
+                </div>
+            }
+        }
+        if (Model.paramsDto.parHeaderFieldDto.ParFieldType.Id == 3)
+        {
+            foreach (var i in Model.paramsDto.parHeaderFieldDto.ParMultipleValues)
+            {
+                @Html.EditorFor(r => i.Id, new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 0px;visibility:hidden;" } })
+                <div class="row">
+                    <div class="col-md-1">
+                        @Html.Label(Resources.Resource.option)
+                    </div>
+                    <div class="col-md-2">
+                        @Html.EditorFor(r => i.Name, new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 200px;", @class = "form-control input-sm" } })
+                    </div>
+                    <div class="col-md-2">
+                        @Html.Label(Resources.Resource.punishment_value)
+                    </div>
+                    <div class="col-md-1">
+                        @Html.EditorFor(r => i.PunishmentValue, new { htmlAttributes = new { @value = 0, @type = "number", @style = "max-width: 200px;", @class = "form-control input-sm" } })
+
+                    </div>
+                </div>
+            }
+        }
+        <div>
+            <button type="button" id="salvar" onclick="indexCabecalho.enviarDadosParaApi()" class="btn btn-primary" style="margin-top:30px;">Salvar</button>
+        </div>
+    }
+</div>
+@section Scripts {
+    <script>
+        $(function () {
+            $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').bootstrapToggle();
+        })
+    </script>
+}

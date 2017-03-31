@@ -17,6 +17,16 @@ namespace SgqSystem.Controllers.Api.Manutencao
             List<PainelIndicadoresUniManutencaoDTO> _mockEvolucao = new List<PainelIndicadoresUniManutencaoDTO>();
             PainelIndicadoresUniManutencaoDTO manColeta;
 
+            int nummesatual = 0;
+            var script_nummesatual = "SELECT MONTH(GETDATE()) AS Num";
+
+            using (var db = new SgqDbDevEntities())
+            {
+                nummesatual = db.Database.SqlQuery<int>(script_nummesatual).FirstOrDefault();
+            }
+
+
+
             List<string> indicador = new List<string>();
             var tipoCalculo = "normal";
 
@@ -104,7 +114,6 @@ namespace SgqSystem.Controllers.Api.Manutencao
                     indicador.Add("Total Vendas R$");
                     indicador.Add("Total Devolvido R$");
                     break;
-
                 //Media
                 case "Taxa de Frequência":
                     indicador.Add("Taxa de Frequência");
@@ -377,6 +386,8 @@ namespace SgqSystem.Controllers.Api.Manutencao
             var orcadoAbat = "";
             var orcadoVar = "";
 
+
+
             if (vetor1.lista != null)
             {
 
@@ -386,6 +397,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
                     try
                     {
+                        //     //     //     //     REALIZADOS     //    //     //    //
                         if (tipoCalculo == "media")
                         {
                             f[i].realizado = vetor1.lista[i].realizado / vetor1.lista[i].qtde * vetor1.lista[i].qtde;
@@ -394,11 +406,11 @@ namespace SgqSystem.Controllers.Api.Manutencao
                         {
                             if (vetor4.lista != null)
                             {
-                                f[i].realizado = 1 - ((vetor3.lista[i].realizado + vetor4.lista[i].realizado) / ((vetor1.lista[i].realizado /** 60*/) + (vetor2.lista[i].realizado /** 60*/))); //Retirado o calculo de conversão horas para minutos
+                                f[i].realizado = 1 - ((vetor3.lista[i].realizado + vetor4.lista[i].realizado) / ((vetor1.lista[i].realizado /* 60 */) + (vetor2.lista[i].realizado /** 60*/))); //Retirado o calculo de conversão horas para minutos
                             }
                             else
                             {
-                                f[i].realizado = 1 - ((vetor2.lista[i].realizado) / ((vetor1.lista[i].realizado /** 60*/))); //Retirado o calculo de conversão horas para minutos
+                                f[i].realizado = 1 - ((vetor2.lista[i].realizado) / ((vetor1.lista[i].realizado /* 60 */))); //Retirado o calculo de conversão horas para minutos
                             }
 
                         }
@@ -425,9 +437,9 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
                     try
                     {
-                        //if (tipoCalculo == "media")
-                        //    f[i].orcado = vetor1.lista[i].orcado / vetor1.lista[i].qtde;
-                        //else 
+
+                        //     //     //     //     ORCADOS     //    //     //    //
+
                         if (tipoCalculo == "Disponibilidade")
                         {
                             //queryAbat = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id = (select id from ParCompany where name like '%" + visaoPainel.unidade + "%')";
@@ -435,20 +447,20 @@ namespace SgqSystem.Controllers.Api.Manutencao
                             {
                                 if (visaoPainel.regional == "Todas")
                                 {
-                                    queryAbat = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id in (select id from ParCompany)";
+                                    queryAbat = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id in (select id from ParCompany) AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) <= MONTH(GETDATE())";
                                 }
                                 else if (visaoPainel.subRegional == "Todas")
                                 {
-                                    queryAbat = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id IN (SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegionalGrupo = '" + visaoPainel.regional + "' and ParCompany_id is not null)";
+                                    queryAbat = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id IN (SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegionalGrupo = '" + visaoPainel.regional + "' and ParCompany_id is not null) AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) <= MONTH(GETDATE())";
                                 }
                                 else
                                 {
-                                    queryAbat = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id IN (SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegional = '" + visaoPainel.subRegional + "' and ParCompany_id is not null)";
+                                    queryAbat = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id IN (SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegional = '" + visaoPainel.subRegional + "' and ParCompany_id is not null) AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) <= MONTH(GETDATE())";
                                 }
                             }
                             else if (visaoPainel.tipoRelatorio == "Por Unidade")
                             {
-                                queryAbat = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id IN (SELECT distinct ParCompany_id from DimManBaseUni where EmpresaSigla = (select top 1 initials from ParCompany where name in ('" + visaoPainel.unidade + "')))";
+                                queryAbat = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id IN (SELECT distinct ParCompany_id from DimManBaseUni where EmpresaSigla = (select top 1 initials from ParCompany where name in ('" + visaoPainel.unidade + "'))) AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) <= MONTH(GETDATE())";
                             }
 
 
@@ -458,16 +470,33 @@ namespace SgqSystem.Controllers.Api.Manutencao
                             }
                             if (vetor4.lista != null)
                             {
-                                f[i].orcado = Convert.ToDecimal(orcadoAbat) / 100; // COLOCAR O INDICADOR DIRETO DA TABELA ManBudgetedIndicators
+
+                                if (i < nummesatual)
+                                {
+                                    f[i].orcado = Convert.ToDecimal(orcadoAbat) / 100; // COLOCAR O INDICADOR DIRETO DA TABELA ManBudgetedIndicators
+
+                                }
+                                else
+                                {
+                                    f[i].orcado = Convert.ToDecimal(0.00);
+                                }
 
                             }
                             else
                             {
-                                f[i].orcado = Convert.ToDecimal(orcadoAbat) / 100;
+                                if (i < nummesatual)
+                                {
+                                    f[i].orcado = Convert.ToDecimal(orcadoAbat) / 100;
+                                }
+                                else
+                                {
+                                    f[i].orcado = Convert.ToDecimal(0.00);
+                                }
 
                             }
-
                         }
+
+
 
                         else if (tipoCalculo == "Soma")
                         {
@@ -483,21 +512,21 @@ namespace SgqSystem.Controllers.Api.Manutencao
                             {
                                 if (visaoPainel.regional == "Todas")
                                 {
-                                    queryVar = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id in (select id from ParCompany)";
+                                    queryVar = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id in (select id from ParCompany) AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) <= MONTH(GETDATE())";
                                 }
                                 else if (visaoPainel.subRegional == "Todas")
                                 {
-                                    queryVar = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id IN (SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegionalGrupo = '" + visaoPainel.regional + "' and ParCompany_id is not null)";
+                                    queryVar = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id IN (SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegionalGrupo = '" + visaoPainel.regional + "' and ParCompany_id is not null) AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) <= MONTH(GETDATE())";
                                 }
                                 else
                                 {
-                                    queryVar = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id IN (SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegional = '" + visaoPainel.subRegional + "' and ParCompany_id is not null)";
+                                    queryVar = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id IN (SELECT distinct ParCompany_id from DimManBaseUni where EmpresaRegional = '" + visaoPainel.subRegional + "' and ParCompany_id is not null) AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) <= MONTH(GETDATE())";
                                 }
 
                             }
                             else if (visaoPainel.tipoRelatorio == "Por Unidade")
                             {
-                                queryVar = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id IN (SELECT distinct ParCompany_id from DimManBaseUni where EmpresaSigla = (select top 1 initials from ParCompany where name in ('" + visaoPainel.unidade + "') ))";
+                                queryVar = "SELECT cast(cast(AVG(ValueBudgetedIndicators)as int) as varchar(500))ValueBudgetedIndicators FROM ManBudgetedIndicators WHERE DimManCMDColetaDados_id IN (SELECT ID FROM DimManCMDColetaDados WHERE DimName LIKE '%" + visaoPainel.indicador + "%') and year(DateRef) LIKE '%" + visaoPainel.ano + "%' AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) LIKE CASE WHEN '" + visaoPainel.mes + "' = 0 THEN '%%' ELSE '" + visaoPainel.mes + "' END and ParCompany_id IN (SELECT distinct ParCompany_id from DimManBaseUni where EmpresaSigla = (select top 1 initials from ParCompany where name in ('" + visaoPainel.unidade + "') )) AND ISNULL(MONTH(DATEREF), MONTH(DATEREF)) <= MONTH(GETDATE())";
                             }
 
                             using (var db = new SgqDbDevEntities())
@@ -506,15 +535,38 @@ namespace SgqSystem.Controllers.Api.Manutencao
                             }
                             if (visaoPainel.indicador == "CARTA METAS" || visaoPainel.indicador == "Scorecard Energia" || visaoPainel.indicador == "Scorecard Vapor")
                             {
-                                f[i].orcado = Convert.ToDecimal(orcadoVar);
+                                if (i < nummesatual)
+                                {
+                                    f[i].orcado = Convert.ToDecimal(orcadoVar);
+                                }
+                                else
+                                {
+                                    f[i].orcado = Convert.ToDecimal(0.00);
+                                }
                             }
                             else
                             {
-                                f[i].orcado = Convert.ToDecimal(orcadoVar) / 100;
+                                if (i < nummesatual)
+                                {
+                                    f[i].orcado = Convert.ToDecimal(orcadoVar) / 100;
+                                }
+                                else
+                                {
+                                    f[i].orcado = Convert.ToDecimal(0.00);
+                                }
                             }
                         }
                         else
-                            f[i].orcado = vetor1.lista[i].orcado / vetor2.lista[i].orcado;
+                        {
+                            if (i < nummesatual)
+                            {
+                                f[i].orcado = vetor1.lista[i].orcado / vetor2.lista[i].orcado;
+                            }
+                            else
+                            {
+                                f[i].orcado = Convert.ToDecimal(0.00);
+                            }
+                        }
                     }
                     catch (DivideByZeroException e)
                     {
