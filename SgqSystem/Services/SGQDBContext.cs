@@ -886,7 +886,7 @@ namespace SGQDBContext
                              "ON C2.ParLevel1_Id = L1.Id AND L1.IsPartialSave = 1 " +
                              "INNER JOIN Result_Level3 R3 " +
                              "ON R3.CollectionLevel2_Id = C2.Id " +
-                             "WHERE C2.UnitId = '" + ParCompany_Id + "' AND L1.Id='" + ParLevel1.Id + "' AND C2.CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' ";
+                             "WHERE C2.UnitId = '" + ParCompany_Id + "' AND L1.Id='" + ParLevel1.Id + "' AND C2.ParLevel2_Id='" + ParLevel2.Id + "' AND C2.CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' ";
 
                 //string sql = "SELECT R3.ParLevel3_Id AS Id FROM RESULT_LEVEL3 R3 " +
                 //              "INNER JOIN CollectionLevel2 C2 " +

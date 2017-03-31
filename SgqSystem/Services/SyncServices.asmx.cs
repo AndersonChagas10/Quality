@@ -5100,6 +5100,7 @@ namespace SgqSystem.Services
                     "EvaluationNumber=\"" + c.EvaluationNumber + "\"                                            " +
                     "Period=\"" + c.Period + "\"                                                                " +
                     "Shift=\"" + c.Shift + "\"                                                                  " +
+                    "ParLevel1_id=\"" + parLevel1_Id + "\"                                                                  " +
                     "class=\"EvaluationDefects\"></div>";
             }
             return PhaseResult;
