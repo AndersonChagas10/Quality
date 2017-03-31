@@ -28,7 +28,7 @@ namespace SgqSystem.Controllers.Params
             var user = db2.UserSgq.FirstOrDefault(r => r.Id == userId); //db2.Database.ExecuteSqlCommand("SELECT ParCompany_Id FROM UserSgq where id = 56");
             var company = db2.ParCompany.FirstOrDefault(r => r.Id == user.ParCompany_Id);
 
-            var parCompanyXUserSgq = db2.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == user.Id);
+            var parCompanyXUserSgq = db2.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == user.Id).ToList();
 
             var equipamentos = db.Equipamentos.ToList();
 
@@ -46,10 +46,7 @@ namespace SgqSystem.Controllers.Params
 
 
                 if(parCompanyXUserSgq.Any(r => r.ParCompany_Id == i.ParCompany_Id))
-                {
                     equipRetorno.Add(i);
-                }
-
 
             }
 
