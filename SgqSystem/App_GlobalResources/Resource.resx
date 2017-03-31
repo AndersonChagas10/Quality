@@ -1800,4 +1800,10 @@
   <data name="equipment_registration" xml:space="preserve">
     <value>Equipment Registration</value>
   </data>
+  <data name="linkeds" xml:space="preserve">
+    <value>Linkeds</value>
+  </data>
+  <data name="not_linkeds" xml:space="preserve">
+    <value>Not linkeds</value>
+  </data>
 </root>
