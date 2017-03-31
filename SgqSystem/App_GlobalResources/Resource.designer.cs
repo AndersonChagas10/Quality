@@ -2428,6 +2428,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Linkeds.
+        /// </summary>
+        internal static string linkeds {
+            get {
+                return ResourceManager.GetString("linkeds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Link with the evaluation number.
         /// </summary>
         internal static string link_number_evaluation {
@@ -2689,15 +2698,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mother.
-        /// </summary>
-        internal static string mother {
-            get {
-                return ResourceManager.GetString("mother", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to N/A.
         /// </summary>
         internal static string na {
@@ -2955,6 +2955,15 @@ namespace Resources {
         internal static string not_finished {
             get {
                 return ResourceManager.GetString("not_finished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not linkeds.
+        /// </summary>
+        internal static string not_linkeds {
+            get {
+                return ResourceManager.GetString("not_linkeds", resourceCulture);
             }
         }
         

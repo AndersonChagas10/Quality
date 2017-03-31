@@ -64,8 +64,6 @@ namespace DTO.DTO.Params
 
             foreach (var i in listLevel3)
             {
-                #region Gambri pra ordenar 1 vez só.
-                #endregion
 
                 var text = i.Name;
                 var prop = i.Id;
@@ -74,15 +72,25 @@ namespace DTO.DTO.Params
                 {
                     groupSelecionado.Name = "Vinculado";//: " + listParLevel3Level2Dto.FirstOrDefault(r => r.ParLevel3_Id == i.Id).ParLevel2.Name;
                     opt.Group = groupSelecionado;
+                    retorno.Insert(counter, opt);
+                    counter++;
                 }
-                else
+                          
+            }
+
+            foreach (var i in listLevel3)
+            {
+
+                var text = i.Name;
+                var prop = i.Id;
+                var opt = new SelectListItem() { Text = i.Id.ToString() + " - " + i.Name, Value = i.Id.ToString() };
+                if (listParLevel3Level2Dto.Where(r => r.ParLevel3_Id == i.Id).Count() == 0)
                 {
                     opt.Group = group;
+                    retorno.Insert(counter, opt);
+                    counter++;
                 }
-
-                retorno.Insert(counter, opt);
-
-                counter++;
+                             
             }
 
             DdlLevel3Vinculados = retorno;
