@@ -614,7 +614,7 @@ namespace SGQDBContext
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
-                             "(SELECT Amostras FROM VolumeCepDesossa WHERE Data = (SELECT MAX(DATA) FROM VolumeCepDesossa WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + ") AS Sample " +
+                             "(SELECT TOP 1 Amostras FROM VolumeCepDesossa WHERE Data = (SELECT MAX(DATA) FROM VolumeCepDesossa WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Sample " +
                              "FROM                                                                        " +
                              "ParLevel3Level2 P32                                                         " +
                              "INNER JOIN ParLevel3Level2Level1 P321                                       " +
@@ -636,7 +636,7 @@ namespace SGQDBContext
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
-                             "(SELECT Amostras FROM VolumeVacuoGRD WHERE Data = (SELECT MAX(DATA) FROM VolumeVacuoGRD WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + ") AS Sample " +
+                             "(SELECT TOP 1  Amostras FROM VolumeVacuoGRD WHERE Data = (SELECT MAX(DATA) FROM VolumeVacuoGRD WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Sample " +
                              "FROM                                                                        " +
                              "ParLevel3Level2 P32                                                         " +
                              "INNER JOIN ParLevel3Level2Level1 P321                                       " +
@@ -658,7 +658,7 @@ namespace SGQDBContext
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
-                             "(SELECT Amostras FROM VolumeCepRecortes WHERE Data = (SELECT MAX(DATA) FROM VolumeCepRecortes WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + ") AS Sample " +
+                             "(SELECT  TOP 1 Amostras FROM VolumeCepRecortes WHERE Data = (SELECT MAX(DATA) FROM VolumeCepRecortes WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Sample " +
                              "FROM                                                                        " +
                              "ParLevel3Level2 P32                                                         " +
                              "INNER JOIN ParLevel3Level2Level1 P321                                       " +
@@ -680,7 +680,7 @@ namespace SGQDBContext
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
-                             "(SELECT Amostras FROM VolumePcc1b WHERE Data = (SELECT MAX(DATA) FROM VolumePcc1b WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + ") AS Sample " +
+                             "(SELECT TOP 1 Amostras FROM VolumePcc1b WHERE Data = (SELECT MAX(DATA) FROM VolumePcc1b WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Sample " +
                              "FROM                                                                        " +
                              "ParLevel3Level2 P32                                                         " +
                              "INNER JOIN ParLevel3Level2Level1 P321                                       " +
@@ -1267,6 +1267,7 @@ namespace SGQDBContext
     public partial class ParFieldType
     {
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        string conexaoBR = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
 
         public int Id { get; set; }
         public string Name { get; set; }
@@ -1288,7 +1289,7 @@ namespace SGQDBContext
 
         public IEnumerable<ParFieldType> getIntegrationValues(int ParHeaderField_Id, string integracao, int ParCompany_Id)
         {
-            SqlConnection db = new SqlConnection(conexao);
+            SqlConnection db = new SqlConnection(conexaoBR);
 
             var sql = "SELECT null Id, null as Name, 0 as PunishmentValue, 0 as IsDefaultOption";
 
