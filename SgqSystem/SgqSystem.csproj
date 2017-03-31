@@ -2127,7 +2127,17 @@
     <Content Include="Views\Role\EditLeftControlRole.cshtml" />
     <Content Include="Views\RelatoriosSgq\CartasCep.cshtml" />
     <Content Include="Views\Manutencao\Index.cshtml" />
+    <Content Include="Views\Equipamentos\Create.cshtml" />
+    <Content Include="Views\Equipamentos\Delete.cshtml" />
+    <Content Include="Views\Equipamentos\Details.cshtml" />
+    <Content Include="Views\Equipamentos\Edit.cshtml" />
+    <Content Include="Views\Equipamentos\Index.cshtml" />
     <Content Include="Views\Params\EditParHeaderField.cshtml" />
+    <Content Include="Views\Equipamentos\Create.cshtml" />
+    <Content Include="Views\Equipamentos\Delete.cshtml" />
+    <Content Include="Views\Equipamentos\Details.cshtml" />
+    <Content Include="Views\Equipamentos\Edit.cshtml" />
+    <Content Include="Views\Equipamentos\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

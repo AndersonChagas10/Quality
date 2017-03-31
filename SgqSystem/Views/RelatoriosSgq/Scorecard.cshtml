@@ -24,7 +24,11 @@
 
                 .dataTables_scroll{
                    
-                    font-size:xx-small;
+                    font-size:x-small;
+                }
+
+                table.dataTable{
+                    margin:0px !important;
                 }
                 
                 table.dataTable thead th, table.dataTable thead td {
@@ -34,6 +38,10 @@
 
                 table.dataTable tbody th, table.dataTable tbody td {
                     padding:2px !important;
+                }
+
+                .dataTables_scrollBody{
+                    border-bottom: 0px !important;
                 }
 
             </style>
@@ -164,6 +172,8 @@
                 },
                 fnDrawCallback: function (data, d, o) {
 
+                    
+
                 }
             });
 
@@ -178,57 +188,60 @@
                          //hide: [0, 1, 2, 7, 8, 11]
                          hide: arrSintHide
                      },
-        {
-            extend: 'colvisGroup',
-            text: '@Resources.Resource.analytical',
-            show: ':hidden'
-        },
-        {
-            extend: 'print',
-            customize: function (win) {
-                $(win.document.body).find('table')
-                    .addClass('compact')
-                    .css('font-size', 'inherit');
-            },
-            exportOptions: {
-                columns: ':visible'
-            }
-        },
-        {
-            extend: 'excelHtml5',
+                    {
+                        extend: 'colvisGroup',
+                        text: '@Resources.Resource.analytical',
+                        show: ':hidden'
+                    },
+                    {
+                        extend: 'print',
+                        customize: function (win) {
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        },
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
 
-            exportOptions: {
-                columns: ':visible'
-            }
-        },
-        'pdf',
-                ]
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    'pdf',
+                            ]
             });
 
-            table.buttons(0, null).container().prependTo(
-                table.table().container()
-            );
+            
 
-            //Filtros por coluna
+                        table.buttons(0, null).container().prependTo(
+                            table.table().container()
+                        );
 
-            $('.dataTable thead th').each(function (i) {
-                var title = $('.dataTable thead th').eq($(this).index()).text();
-                $(this).html(title + '<br><input type="text" style="font-size:xx-small; color: #555; text-align:center; width:50px" placeholder=" ' + title + '" data-index="' + i + '" />');
-            });
+                        //Filtros por coluna
 
-            // DataTable
-            var table = $('.dataTable').DataTable();
+                        $('.dataTable thead th').each(function (i) {
+                            var title = $('.dataTable thead th').eq($(this).index()).text();
+                            $(this).html(title + '<br><input type="text" style="font-size:xx-small; color: #555; text-align:center; width:50px" placeholder=" ' + title + '" data-index="' + i + '" />');
+                        });
 
-            // Filter event handler
-            $(table.table().container()).on('keyup', 'thead input', function () {
-                table
-                    .column($(this).data('index'))
-                    .search(this.value)
-                    .draw();
-            });
+                        // DataTable
+                        var table = $('.dataTable').DataTable();
 
+                        // Filter event handler
+                        $(table.table().container()).on('keyup', 'thead input', function () {
+                            table
+                                .column($(this).data('index'))
+                                .search(this.value)
+                                .draw();
+                        });
 
-        }
+                        $('.dt-button.buttons-colvisGroup')[0].click();
+
+                    }
 
         function ValidaDadosParaEnvio() {
             GuardJs.resetForValidation();
