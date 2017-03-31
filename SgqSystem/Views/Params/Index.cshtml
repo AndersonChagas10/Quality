@@ -1141,30 +1141,7 @@
     });
    
     function disableEvry() {
-        var _PermiteEditarVinculoComTarefa = @Html.Raw(Json.Encode(Model.paramsDto.parLevel2Dto._PermiteEditarVinculoComTarefa));
-        var _PermiteEditarNumeroDeAv = @Html.Raw(Json.Encode(Model.paramsDto.parLevel2Dto._PermiteEditarNumeroDeAv));
-        $('input, select').not("#crudNxNEdit, #parLevel1Select2, #parLevel2Select2, #parLevel3Select2").attr("readonly", true);
-        $(':checkbox').bootstrapSwitch('readonly',true);
-        $('#desviculol3l2').attr("disabled", true);
-        $('#crudNxNEdit').find('input, select').attr("readonly", false);
-        $('#crudNxNEdit').find('button').attr("readonly", false);
-
-        /*Level2*/
-        if(_PermiteEditarNumeroDeAv){
-
-            /*Libera os campos para AV AM*/
-            $('#level2_AvAmostra_accordion').find('input, select, button').attr("readonly", false);
-            $('#avAmCompany').find('option').not('[value='+ unitId + ']').remove();
-
-            /*habilita Edicao do AV AM*/
-            $('#tableAvAm > tbody > tr').each(function() {
-                if($(this).data().companyId != unitId)
-                    $(this).find('input, select, button').attr("disabled", true);
-            });
-
-        }
-
-        /*Level3*/
+     
         var l1 = $('#paramsDto_parLevel1Dto_Id').val();
         var l2 = $('#paramsDto_parLevel2Dto_Id').val();
         var l3 = $('#paramsDto_parLevel3Dto_Id').val();
@@ -1172,29 +1149,56 @@
             $('#vinculoLevel1').attr('disabled', false);
         }
 
-        if (_PermiteEditarVinculoComTarefa) {
+        $.post('@Url.Action("GetAutorizacoes", "api/ParamsApi")' + '/' + l1 + '/' + l2 + '/' + l3, function(r){
 
-            /*Libera os campos para Tipos de dados de entrada*/
-            $('#level3_accordion').find('input, select, button').attr("readonly", false);
-            $('#level3_accordion').find('input').attr("readonly", true);
-            $('#selectUnidadeParL3Value').find('option').not('[value='+ unitId + ']').remove();
+            $('input, select').not("#crudNxNEdit, #parLevel1Select2, #parLevel2Select2, #parLevel3Select2").attr("readonly", true);
+            $(':checkbox').bootstrapSwitch('readonly',true);
+            $('#desviculol3l2').attr("disabled", true);
+            $('#crudNxNEdit').find('input, select').attr("readonly", false);
+            $('#crudNxNEdit').find('button').attr("readonly", false);
 
-            $('#pesoCompany').find('option').not('[value='+ unitId + ']').remove();
+            /*Level2*/
+            if(r._PermiteEditarNumeroDeAv){
 
-            /*habilita Edicao do Tipos de dados de entrada*/
-            $('#tableLevel3Value > tbody > tr').each(function() {
-                if($(this).data().ParCompany_Id != unitId)
-                    $(this).find('input, select, button').attr("disabled", true);
-            });
+                /*Libera os campos para AV AM*/
+                $('#level2_AvAmostra_accordion').find('input, select, button').attr("readonly", false);
+                $('#avAmCompany').find('option').not('[value='+ unitId + ']').remove();
 
-            /*habilita Edicao do Peso*/
-            $('#tablePeso > tbody > tr').each(function() {
-                if($(this).data().ParCompany_Id != unitId){
-                    $(this).find('input, select, button').attr("disabled", true);
-                }
-            });
+                /*habilita Edicao do AV AM*/
+                $('#tableAvAm > tbody > tr').each(function() {
+                    if($(this).data().companyId != unitId)
+                        $(this).find('input, select, button').attr("disabled", true);
+                });
 
-        }
+            }
+
+            /*Level3*/
+            if (r._PermiteEditarVinculoComTarefa) {
+
+                /*Libera os campos para Tipos de dados de entrada*/
+                $('#level3_accordion').find('input, select, button').attr("readonly", false);
+                $('#level3_accordion').find('input').attr("readonly", true);
+                $('#selectUnidadeParL3Value').find('option').not('[value='+ unitId + ']').remove();
+
+                $('#pesoCompany').find('option').not('[value='+ unitId + ']').remove();
+
+                /*habilita Edicao do Tipos de dados de entrada*/
+                $('#tableLevel3Value > tbody > tr').each(function() {
+                    if($(this).data().ParCompany_Id != unitId)
+                        $(this).find('input, select, button').attr("disabled", true);
+                });
+
+                /*habilita Edicao do Peso*/
+                $('#tablePeso > tbody > tr').each(function() {
+                    if($(this).data().ParCompany_Id != unitId){
+                        $(this).find('input, select, button').attr("disabled", true);
+                    }
+                });
+            }
+
+        });
+
+      
     }
 
     timeoutAjax = 500000;

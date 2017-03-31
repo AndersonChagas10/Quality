@@ -274,7 +274,28 @@ namespace SgqSystem.Controllers.Api.Params
         #endregion
 
 
+        [HttpPost]
+        [Route("GetAutorizacoes/{l1}/{l2}/{l3}")]
+        public ParLevel2DTO GetAutorizacoes(int? l1 = 0, int? l2 = 0, int? l3 = 0)
+        {
+            ParLevel1 level1 = new ParLevel1();
+            ParLevel2DTO level2 = new ParLevel2DTO();
+            using (var db = new SgqDbDevEntities())
+            {
+                if (l1 > 0)
+                {
+                    level1 = db.ParLevel1.FirstOrDefault(r => r.Id == l1);
+                    if (l2 > 0)
+                    {
+                        level2 = Mapper.Map<ParLevel2DTO>(db.ParLevel2.FirstOrDefault(r => r.Id == l2));
+                    }
+                }
+            }
 
+            return level2;
+        }
+
+       
         [HttpPost]
         [Route("AddRemoveParHeaderLevel2")]
         public ParLevel2XHeaderField AddRemoveParHeaderLevel2(ParLevel2XHeaderField parLevel2XHeaderField)
