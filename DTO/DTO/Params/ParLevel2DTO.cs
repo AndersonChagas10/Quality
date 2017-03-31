@@ -171,15 +171,13 @@ namespace DTO.DTO.Params
 
         }
 
-
         public void RegrasParamsLevel1(ParLevel1DTO parLevel1)
         {
             if (parLevel1.IsSpecific)
             {
                 _PermiteCadastroEspecificoPorUnidade = parLevel1.IsSpecific;
                 _PermiteEditarCamposCabecalho = parLevel1.IsSpecificHeaderField;
-                //_PermiteEditarNumeroDeAv = parLevel1.IsSpecificHeaderField;
-                //_PermiteEditarNumeroDeAv = parLevel1.IsSpecificHeaderField;
+                _PermiteEditarNumeroDeAv = parLevel1.IsSpecificNumberEvaluetion || parLevel1.IsSpecificNumberSample ? true : false;
                 _PermiteEditarVinculoComTarefa = parLevel1.IsSpecificLevel3;
             }
         }

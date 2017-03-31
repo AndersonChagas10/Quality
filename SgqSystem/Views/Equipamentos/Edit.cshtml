@@ -72,9 +72,9 @@
                                             @Html.LabelFor(model => model.Tipo, "Tipo", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 <select id="Tipo" name="Tipo" class="form-control valid">
-                                                    <option value="Câmera">Câmera</option>
+                                                    <option value="Câmara">Câmara</option>
                                                     <option value="Equipamento">Equipamento</option>
-                                                    <option value="Ponto de Coleta de Água">Ponto de Coleta de Água</option>
+                                                    <option value="Ponto de Coleta">Ponto de Coleta de Água</option>
                                                 </select>
                                                 @*@Html.EditorFor(model => model.AmostraPorDia, new { htmlAttributes = new { @class = "form-control" } })*@
                                                 @Html.ValidationMessageFor(model => model.Tipo, "", new { @class = "text-danger" })
@@ -87,7 +87,7 @@
                                                 <select id="Subtipo" name="Subtipo" class="form-control valid">
                                                     <option value="">Selecione...</option>
                                                     <option value="Esteiras">Esteiras</option>
-                                                    <option value="Tunes de Encolhimento">Tunes de Encolhimento</option>
+                                                    <option value="Tunel de Encolhimento">Tunel de Encolhimento</option>
                                                     <option value="VS">VS</option>
                                                 </select>
                                                 @*@Html.EditorFor(model => model.AmostraPorDia, new { htmlAttributes = new { @class = "form-control" } })*@
