@@ -168,27 +168,25 @@ namespace Dominio.Services
         /// <returns></returns>
         public ParamsDTO AddUpdateLevel1(ParamsDTO paramsDto)
         {
-            /*Validação*/
+            
             //paramsDto.parLevel1Dto.IsValid();
             ParLevel1 saveParamLevel1 = Mapper.Map<ParLevel1>(paramsDto.parLevel1Dto);//ParLevel1
-            if (saveParamLevel1.ParScoreType_Id <= 0)
-                saveParamLevel1.ParScoreType_Id = null;
-
             List<ParGoal> listParGoal = Mapper.Map<List<ParGoal>>(paramsDto.parLevel1Dto.listParGoalLevel1);
             List<ParRelapse> listaReincidencia = Mapper.Map<List<ParRelapse>>(paramsDto.parLevel1Dto.listParRelapseDto);//Reincidencia do Level1
-            if (paramsDto.listParHeaderFieldDto != null)
-                foreach (var i in paramsDto.listParHeaderFieldDto.Where(r => !string.IsNullOrEmpty(r.DefaultOption)))
-                    paramsDto.listParHeaderFieldDto.ForEach(r => r.parMultipleValuesDto.FirstOrDefault(c => c.Name.Equals(i.DefaultOption)).IsDefaultOption = true);
             List<ParHeaderField> listaParHEadField = Mapper.Map<List<ParHeaderField>>(paramsDto.listParHeaderFieldDto);//Cabeçalhos do Level1
-
             List<ParCounterXLocal> ListaParCounterLocal = Mapper.Map<List<ParCounterXLocal>>(paramsDto.parLevel1Dto.listParCounterXLocal);//Contadores do Level1
             List<ParLevel1XCluster> ListaParLevel1XCluster = Mapper.Map<List<ParLevel1XCluster>>(paramsDto.parLevel1Dto.listLevel1XClusterDto);//Clusters do Level1
             List<ParNotConformityRuleXLevel> listNonCoformitRule = Mapper.Map<List<ParNotConformityRuleXLevel>>(paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto);//Regra de NC do Level1
 
+            if (saveParamLevel1.ParScoreType_Id <= 0)
+                saveParamLevel1.ParScoreType_Id = null;
+
+            if (paramsDto.listParHeaderFieldDto != null)
+                foreach (var i in paramsDto.listParHeaderFieldDto.Where(r => !string.IsNullOrEmpty(r.DefaultOption)))
+                    paramsDto.listParHeaderFieldDto.ForEach(r => r.parMultipleValuesDto.FirstOrDefault(c => c.Name.Equals(i.DefaultOption)).IsDefaultOption = true);
+
             /*Inativar*/
             List<int> removerHeadField = paramsDto.parLevel1Dto.removerParHeaderField;
-
-            //List<ParLevel1XHeaderField> listaParLevel1XHeaderField = new List<ParLevel1XHeaderField>();
 
             try
             {
@@ -237,43 +235,55 @@ namespace Dominio.Services
             {
                 db.Configuration.LazyLoadingEnabled = false;
 
-                /*ParLevel1*/
+                #region Query
+                
                 var parlevel1 = _baseRepoParLevel1.GetById(idParLevel1);
+                var counter = parlevel1.ParCounterXLocal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
+                var goal = parlevel1.ParGoal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
+                var cluster = parlevel1.ParLevel1XCluster.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
+                var listL3L2L1 = db.ParLevel3Level2Level1.Include("ParLevel3Level2").AsNoTracking().Where(r => r.Active == true && r.ParLevel1_Id == idParLevel1).ToList();
+                var relapse = parlevel1.ParRelapse.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
+                var notConformityrule = parlevel1.ParNotConformityRuleXLevel.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
+                var cabecalhos = parlevel1.ParLevel1XHeaderField.Where(r => r.IsActive == true).OrderBy(r => r.IsActive).ToList();
+                var level2List = _baseRepoParLevel2NLL.GetAll().Where(r => r.IsActive == true);
+
+                #endregion
+
+                #region DTO
 
                 parlevel1Dto = Mapper.Map<ParLevel1DTO>(parlevel1);
-                parlevel1Dto.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(parlevel1.ParCounterXLocal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList());/*Contadores*/
-                parlevel1Dto.listParGoalLevel1 = Mapper.Map<List<ParGoalDTO>>(parlevel1.ParGoal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList());/*Meta*/
-                parlevel1Dto.listLevel1XClusterDto = Mapper.Map<List<ParLevel1XClusterDTO>>(parlevel1.ParLevel1XCluster.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList());/*Clusters*/
-
-                var listL3L2L1 = db.ParLevel3Level2Level1.Include("ParLevel3Level2").AsNoTracking().Where(r => r.Active == true && r.ParLevel1_Id == parlevel1Dto.Id).ToList();
-
+                parlevel1Dto.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(counter);/*Contadores*/
+                parlevel1Dto.listParGoalLevel1 = Mapper.Map<List<ParGoalDTO>>(goal);/*Meta*/
+                parlevel1Dto.listLevel1XClusterDto = Mapper.Map<List<ParLevel1XClusterDTO>>(cluster);/*Clusters*/
                 parlevel1Dto.listParLevel3Level2Level1Dto = Mapper.Map<List<ParLevel3Level2Level1DTO>>(listL3L2L1);/*Level 2 e 3 vinculados*/
-
-                parlevel1Dto.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(parlevel1.ParRelapse.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList());/*Reincidencia*/
-                parlevel1Dto.listParNotConformityRuleXLevelDto = Mapper.Map<List<ParNotConformityRuleXLevelDTO>>(parlevel1.ParNotConformityRuleXLevel.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList());/*Regra de alerta (Regra de NC)*/
-
-                parlevel1Dto.cabecalhosInclusos = Mapper.Map<List<ParLevel1XHeaderFieldDTO>>(parlevel1.ParLevel1XHeaderField.Where(r => r.IsActive == true).OrderBy(r => r.IsActive).ToList());/*Cabeçalhos*/
-
+                parlevel1Dto.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(relapse);/*Reincidencia*/
+                parlevel1Dto.listParNotConformityRuleXLevelDto = Mapper.Map<List<ParNotConformityRuleXLevelDTO>>(notConformityrule);/*Regra de alerta (Regra de NC)*/
+                parlevel1Dto.cabecalhosInclusos = Mapper.Map<List<ParLevel1XHeaderFieldDTO>>(cabecalhos);/*Cabeçalhos*/
                 parlevel1Dto.parNotConformityRuleXLevelDto = new ParNotConformityRuleXLevelDTO();
-                var listParLevel2 = Mapper.Map<List<ParLevel2DTO>>(_baseRepoParLevel2NLL.GetAll().Where(r => r.IsActive == true));
-                var vinculados = parlevel1Dto.listParLevel3Level2Level1Dto;
-                parlevel1Dto.CreateSelectListParamsViewModelListLevel(listParLevel2, vinculados);
 
-                foreach (var i in parlevel1Dto.listParLevel3Level2Level1Dto)
-                {
-                    i.ParLevel3Level2.ParLevel2 = null;
-                    i.ParLevel3Level2.ParCompany = null;
-                    i.ParLevel3Level2.ParLevel3 = null;
-                    i.ParLevel3Level2.ParLevel3Group = null;
-                    i.ParLevel1 = null;
-                }
+                parlevel1Dto.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel2DTO>>(level2List), parlevel1Dto.listParLevel3Level2Level1Dto); 
+
+                #endregion
+
+                #region Depreciado
+
+                //foreach (var i in parlevel1Dto.listParLevel3Level2Level1Dto)
+                //{
+                //    i.ParLevel3Level2.ParLevel2 = null;
+                //    i.ParLevel3Level2.ParCompany = null;
+                //    i.ParLevel3Level2.ParLevel3 = null;
+                //    i.ParLevel3Level2.ParLevel3Group = null;
+                //    i.ParLevel1 = null;
+                //}
 
                 foreach (var i in parlevel1Dto.listParRelapseDto)
                 {
                     i.parLevel1 = null;
                     i.parLevel2 = null;
                     i.parLevel3 = null;
-                }
+                } 
+
+                #endregion
 
             }
             return parlevel1Dto;
