@@ -343,6 +343,7 @@ namespace Dominio.Services
 
             /*Todos os Vinculos com este level2 / level3.*/
             var vinculosComOLevel2 = parLevel2.ParLevel3Level2.Where(r => r.IsActive == true);/*Vinculo L3 L2*/
+            
             /*Se houver level 1 selecionado na tela filtro somente os que estão vinculados com level2 / Level3, e tem id do level 1 em ParLevel3Level2level1*/
             if (level1Id > 0)
             {
