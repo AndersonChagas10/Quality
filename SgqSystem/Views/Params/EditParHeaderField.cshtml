@@ -34,7 +34,7 @@
             foreach (var i in Model.paramsDto.parHeaderFieldDto.ParMultipleValues)
             {
                 @Html.EditorFor(r => i.Id, new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 0px;visibility:hidden;" } })
-                <div class="row">
+                <div class="row" id="multiplaEscolha">
                     <div class="col-md-1">
                         @Html.Label(Resources.Resource.option)
                     </div>
@@ -57,7 +57,7 @@
             foreach (var i in Model.paramsDto.parHeaderFieldDto.ParMultipleValues)
             {
                 @Html.EditorFor(r => i.Id, new { htmlAttributes = new { @type = "text", @style = "max-width: 0px;visibility:hidden;" } })
-                <div class="row">
+                <div class="row" id="binario">
                     <div class="col-md-1">
                         @Html.Label(Resources.Resource.option)
                     </div>
@@ -76,6 +76,7 @@
         }
         <div>
             <button type="button" id="salvar" onclick="indexCabecalho.enviarDadosParaApi()" class="btn btn-primary" style="margin-top:30px;">Salvar</button>
+            <button type="button" id="adicionar" onclick="addValores()" class="btn btn-primary" style="margin-top:30px;">Adicionar</button>
         </div>
     }
 </div>
@@ -84,5 +85,10 @@
         $(function () {
             $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').bootstrapToggle();
         })
+
+        addValores = function() {
+                $('#multiplaEscolha').append("<p>Teste</p>");
+            
+        }
     </script>
 }

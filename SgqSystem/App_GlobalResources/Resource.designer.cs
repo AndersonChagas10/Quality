@@ -1699,6 +1699,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Forgot Password.
+        /// </summary>
+        internal static string forgotPass {
+            get {
+                return ResourceManager.GetString("forgotPass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Frequency.
         /// </summary>
         internal static string frequency {
@@ -3508,6 +3517,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recovery Password.
+        /// </summary>
+        internal static string recoveryPass {
+            get {
+                return ResourceManager.GetString("recoveryPass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Refresh.
         /// </summary>
         internal static string refresh {
@@ -4188,6 +4206,15 @@ namespace Resources {
         internal static string sending {
             get {
                 return ResourceManager.GetString("sending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send Password to Email.
+        /// </summary>
+        internal static string sendPassEmail {
+            get {
+                return ResourceManager.GetString("sendPassEmail", resourceCulture);
             }
         }
         

@@ -366,6 +366,18 @@ namespace Dominio.Services
                 return new GenericReturn<UserDTO>(e, "CAnnot get user by name.");
             }
         }
+        public GenericReturn<UserSgqDTO> GetByName2(string username)
+        {
+            try
+            {
+                var queryResult =  _userRepo.GetByName(username);
+                return new GenericReturn<UserSgqDTO>(Mapper.Map<UserSgq, UserSgqDTO>(queryResult));
+            }
+            catch (Exception e)
+            {
+                return new GenericReturn<UserSgqDTO>(e, "CAnnot get user by name.");
+            }
+        }
 
         #region Auxiliares REMOVER E PASSAR PARA CLASSE GUARD.
 

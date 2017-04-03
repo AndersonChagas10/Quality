@@ -9,7 +9,7 @@ namespace Dominio.Interfaces.Repositories
         void Salvar(UserSgq user);
 
         UserSgq GetByName(string username);
-
+        
         List<UserSgq> GetAllUser();
 
         bool UserNameIsCadastrado(string Name, int id);

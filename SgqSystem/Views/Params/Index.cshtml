@@ -1201,11 +1201,6 @@
         $('#modalEdicaoCabecalho').find('.modal-body').empty();
         $('#Header').html("Edição de Cabeçalho");
 
-        //if (callback != undefined) {
-        //    callback();
-        //    return false;
-        //}
-
         $.get(EditCabecalho, { id: idpar, idLevel1: idL1 }, function (r) {
             $('#modalEdicaoCabecalho').find('.modal-body').empty().append(r);
             $('#paramsDto_parHeaderFieldDto_ParFieldType_Id').attr('disabled', true);

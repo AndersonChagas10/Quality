@@ -1779,4 +1779,13 @@
   <data name="equipment_registration" xml:space="preserve">
     <value>Cadastro de Equipamentos</value>
   </data>
+  <data name="forgotPass" xml:space="preserve">
+    <value>Esqueceu a Senha</value>
+  </data>
+  <data name="recoveryPassword" xml:space="preserve">
+    <value>Recuperar Senha</value>
+  </data>
+  <data name="sendPassEmail" xml:space="preserve">
+    <value>Enviar Senha para Email</value>
+  </data>
 </root>
