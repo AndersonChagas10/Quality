@@ -97,6 +97,11 @@ namespace SgqSystem.Controllers
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
+                else
+                {
+                    ReturnError();
+                    //return View(pcc1b);
+                }
             }
 
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", pcc1b.ParCompany_id);
@@ -155,7 +160,8 @@ namespace SgqSystem.Controllers
                     }
                     else
                     {
-                        Guard.MesangemModelError("Já existe uma coleta para esta unidade neste dia!", true);
+                        ReturnError();
+                        //return View(pcc1b);
                     }
                 }
             }
@@ -177,6 +183,11 @@ namespace SgqSystem.Controllers
 
             if (pcc1b.VolumeAnimais == null)
                 ModelState.AddModelError("VolumeAnimais", Guard.MesangemModelError("Número de animais", false));
+        }
+
+        private void ReturnError()
+        {
+            ModelState.AddModelError("Data", "Já existe um registro nesta data para esta unidade!");
         }
 
         // GET: Pcc1b/Delete/5

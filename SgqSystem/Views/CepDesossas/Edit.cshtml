@@ -184,7 +184,7 @@
     <!-- END CONTENT BODY -->
 </div>
 <script>
-    
+
     $(document).ready(function() {
         $('#QtdadeFamiliaProduto').val("");
         $('#ParCompany_id').on('change', function () {
@@ -217,7 +217,7 @@
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar7");
 
-    $('#HorasTrabalhadasPorDia').on('input', function () {        
+    $('#HorasTrabalhadasPorDia').on('input', function () {
         $('#Avaliacoes').val($(this).val());
         $('#avaliacaoHidden').val($(this).val());
         applyMath();
@@ -240,6 +240,9 @@
         })
         $('#Avaliacoes').val($('#HorasTrabalhadasPorDia').val());
         $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
+
+        var data = "@Model.Data.Value.Date.ToString("dd/MM/yyyy")";
+        $('#Data').val(data);
 
     });
 
