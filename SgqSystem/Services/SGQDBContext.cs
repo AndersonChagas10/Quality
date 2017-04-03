@@ -382,24 +382,24 @@ namespace SGQDBContext
 
             if (parLevel1Familia == true)
             {
-                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit, PL2.ParFrequency_id                      " +
-                             "FROM ParLevel3Level2 P32                                                                          " +
-                             "INNER JOIN ParLevel3Level2Level1 P321                                                             " +
-                             "ON P321.ParLevel3Level2_Id = P32.Id                                                               " +
-                             "INNER JOIN ParLevel2 PL2                                                                          " +
-                             "ON PL2.Id = P32.ParLevel2_Id                                                                      " +
-                             " LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
-                             " ON AL.ParLevel2_Id = PL2.Id  AND AL.IsActive = 1                                                                                                " +
-                             "INNER JOIN (SELECT * FROM ParLevel2ControlCompany PL INNER JOIN                                   " +
-                             "(SELECT MAX(InitDate) Data, ParCompany_Id AS UNIDADE FROM ParLevel2ControlCompany                 " +
-                             "where ParLevel1_Id = '" + ParLevel1_Id + "'                                                       " +
-                             "group by ParCompany_Id) F1 on f1.data = PL.initDate and (F1.UNIDADE = PL.ParCompany_id            " +
-                             "or F1.UNIDADE is null))  Familia                                                                  " +
-                             "ON Familia.ParLevel2_Id = PL2.Id                                                                  " +
-                             "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'                                                  " +
-                             "AND PL2.IsActive = 1                                                                              " +
-                             "AND (Familia.ParCompany_Id = '" + ParCompany_Id + "'  or Familia.ParCompany_Id IS NULL)           " +
-                             "GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id                                                      ";
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit, PL2.ParFrequency_id " +
+                             "FROM ParLevel3Level2 P32                                                                                                                              " +
+                             "INNER JOIN ParLevel3Level2Level1 P321                                                                                                                 " +
+                             "ON P321.ParLevel3Level2_Id = P32.Id                                                                                                                   " +
+                             "INNER JOIN ParLevel2 PL2                                                                                                                              " +
+                             "ON PL2.Id = P32.ParLevel2_Id                                                                                                                          " +
+                             " LEFT JOIN ParNotConformityRuleXLevel AL                                                                                                              " +
+                             " ON AL.ParLevel2_Id = PL2.Id  AND AL.IsActive = 1                                                                                                     " +
+                             "INNER JOIN (SELECT * FROM ParLevel2ControlCompany PL INNER JOIN                                                                                       " +
+                             "(SELECT MAX(InitDate) Data, ParCompany_Id AS UNIDADE FROM ParLevel2ControlCompany                                                                     " +
+                             "where ParLevel1_Id = '" + ParLevel1_Id + "' AND IsActive = 1                                                                                          " +
+                             "group by ParCompany_Id) F1 on f1.data = PL.initDate and (F1.UNIDADE = PL.ParCompany_id                                                                " +
+                             "or F1.UNIDADE is null))  Familia                                                                                                                      " +
+                             "ON Familia.ParLevel2_Id = PL2.Id                                                                                                                      " +
+                             "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'                                                                                                      " +
+                             "AND PL2.IsActive = 1                                                                                                                                  " +
+                             "AND (Familia.ParCompany_Id = '" + ParCompany_Id + "'  or Familia.ParCompany_Id IS NULL)                                                               " +
+                             "GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id             ";
 
                 var parLevel2List = db.Query<ParLevel2>(sql);
 
