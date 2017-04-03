@@ -2179,10 +2179,6 @@
       <Project>{026efa70-bd6d-46c8-bd94-d7fcd42b9692}</Project>
       <Name>Helper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\YTOARA_DOMINIO\YTOARA_DOMINIO.csproj">
-      <Project>{d175d9c5-ee2b-4b3d-b4a8-ce9abbf5ee14}</Project>
-      <Name>YTOARA_DOMINIO</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

@@ -71,11 +71,11 @@ namespace Dominio.Services
                     throw  e;
                 }
 
-                if (GlobalConfig.Brasil)
-                    LoginBrasil(userDto, userByName);
+                //if (GlobalConfig.Brasil)
+                   // LoginBrasil(userDto, userByName);
 
-                if (GlobalConfig.Eua)
-                    LoginEUA(userDto, userByName);
+                //if (GlobalConfig.Eua)
+                    //LoginEUA(userDto, userByName);
 
                 #region Verifica no DB User Definitivamente
 
