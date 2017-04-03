@@ -181,11 +181,7 @@ else
         $btn.button('loading');
         $.post(urlSend, data, function (r) {
             $btn.button('reset');
-            if (r.length)
-                openMessageModal('Feito!', '');
-            else
-                openMessageModal('Não foi possível salvar os dados.', '');
-
+            openMessageModal('Feito!', '');
         });
     }
 
