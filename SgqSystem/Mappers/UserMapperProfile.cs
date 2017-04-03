@@ -18,7 +18,6 @@ namespace SgqSystem.Mappers
             CreateMap<UserDTO, UserViewModel>();
             CreateMap<UserViewModel, UserDTO>();
             CreateMap<UserDTO, UserSgq>();
-
         }
 
     }

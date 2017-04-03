@@ -1699,6 +1699,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Forgot Password.
+        /// </summary>
+        internal static string forgotPass {
+            get {
+                return ResourceManager.GetString("forgotPass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Frequency.
         /// </summary>
         internal static string frequency {
@@ -2428,15 +2437,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Linkeds.
-        /// </summary>
-        internal static string linkeds {
-            get {
-                return ResourceManager.GetString("linkeds", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Link with the evaluation number.
         /// </summary>
         internal static string link_number_evaluation {
@@ -2955,15 +2955,6 @@ namespace Resources {
         internal static string not_finished {
             get {
                 return ResourceManager.GetString("not_finished", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Not linkeds.
-        /// </summary>
-        internal static string not_linkeds {
-            get {
-                return ResourceManager.GetString("not_linkeds", resourceCulture);
             }
         }
         
@@ -3522,6 +3513,15 @@ namespace Resources {
         internal static string recording_information {
             get {
                 return ResourceManager.GetString("recording_information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recovery Password.
+        /// </summary>
+        internal static string recoveryPass {
+            get {
+                return ResourceManager.GetString("recoveryPass", resourceCulture);
             }
         }
         
@@ -4206,6 +4206,15 @@ namespace Resources {
         internal static string sending {
             get {
                 return ResourceManager.GetString("sending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send Password to Email.
+        /// </summary>
+        internal static string sendPassEmail {
+            get {
+                return ResourceManager.GetString("sendPassEmail", resourceCulture);
             }
         }
         

@@ -2,8 +2,11 @@
 @{
     ViewBag.Title = Resources.Resource.log_in;
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var urlRecPassword = @Url.Action("PasswordRecovery", "UserAuthentication");
+    var urlBuscaEmail = @Url.Action("buscaEmail", "UserAuthentication");
+    var urlEnviaEmail = @Url.Action("enviaEmail", "UserAuthentication");
 }
-
+<script src="~/Angular/RecuperaSenhaController.js"></script>
 @using (Html.BeginForm())
 {
     <div class="login">
@@ -19,16 +22,116 @@
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true, Resources.Resource.username_or_password_are_incorrect)
 
-                <button class="btn btn-lg btn-primary marginTop10 btn-block" type="submit" data-loading-text="Authenticating..." id="btnLogin">@Resources.Resource.sign_in</button>
-                
+                <button class="btn btn-md btn-primary marginTop10" type="submit" data-loading-text="Authenticating..." id="btnLogin">@Resources.Resource.sign_in</button>
+                <button type="button" class="btn btn-sm btn-success marginTop10" style="float:right;" id="RecPassword" onclick="ModalRecuperaSenha('Recuperar Senha');" data-toggle="modal">@Resources.Resource.forgotPass ?</button>
         </div>
         <div class="foot"></div>
     </div>
-
 }
+<!--Modal Recupera Senha-->
+<div class="container" >
+    <div class="modal fade" id="modalRecPassword" tabindex="-1" role="dialog" aria-labelledby="" data-backdrop="static">
+        <div class="modal-dialog" style="max-width:90%;  min-width:70%" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="times">&times;</span></button>
+
+                    <h4 class="modal-title" id="Header">ID: Header</h4>
+                </div>
+                <div class="modal-body" id="body">
+                    ID: Body
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default" id="Fechar" data-dismiss="modal" style="display:none">Fechar</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts {
     <script type="text/javascript">
 
+        var RecPassword = '@Html.Raw(@urlRecPassword)';
+        var BuscaEmail = '@Html.Raw(@urlBuscaEmail)';
+        var EnviaEmail = '@Html.Raw(@urlEnviaEmail)';
+        var userId = 0;
 
+        function ModalRecuperaSenha(title) {
+
+            $('#modalRecPassword').modal();
+            $('#modalRecPassword').find('.modal-body').empty();
+            $('#Header').html("Recuperar Senha");
+
+            $.get(RecPassword, function (r) {
+                $('#modalRecPassword').find('.modal-body').empty().append(r);
+                $('#btnSendEmail').hide();
+            });
+
+            $('#Fechar').show();
+            ///*Fim Botões*/
+        }
+        var recSenha = {
+            enviarDados: function (e) {
+                var dado = $('#userName').val();
+                if (dado != null && dado != "") {
+                    $.get(BuscaEmail, { nome: dado }, function (objetoReturn, statusmessage) {
+                        if (objetoReturn.Email != null) {
+                            userId = objetoReturn.Id;
+                            $('#btnGetDados').hide();
+                            $('#btnSendEmail').show();
+                            $('#userEmail').val(objetoReturn.Email);
+                        } else {
+                            $('#modalRecPassword').modal().hide();
+                            openMessageModal("Usuário sem Email Cadastrado", null);
+                        }
+                    }).fail(function (e, h, x) {
+                        //closeLoader();
+                        try {
+                            closeLoader();
+                            id = 0;
+                            openMessageModal("Alerta", e.responseJSON.Message);
+                        } catch (e) {
+                            closeLoader();
+                            openMessageModal("@Resources.Resource.warning", "@Resources.Resource.cannot_finish_action");
+                            console.log(e);
+                        }
+                    });
+                } else {
+                    //Gambiarra Level 12323123
+                    $('#modalRecPassword').modal().hide();
+                    openMessageModal("Insira um Email Válido", null);
+                    setTimeout(function () {
+                        $('#modalRecPassword').modal().show();
+                    }, 2000);
+
+                }
+            },
+            enviarEmail: function (e) {
+                if (userId > 0) {
+                    $.post(EnviaEmail, { idUser: userId }, function (objetoReturn, statusmessage) {
+                        if (objetoReturn) {
+                            openMessageModal("Senha enviada para o email!");
+                            $('#modalRecPassword').modal().hide();
+                            userId = 0;
+                        }else
+                            openMessageModal("Erro na Requisição de Senha!");
+                        
+                    }).fail(function (e, h, x) {
+                        //closeLoader();
+                        try {
+                            closeLoader();
+                            openMessageModal("Alerta", e.responseJSON.Message);
+                        } catch (e) {
+                            closeLoader();
+                            openMessageModal("@Resources.Resource.warning", "@Resources.Resource.cannot_finish_action");
+                            console.log(e);
+                        }
+                    });
+                }
+            }
+        }
     </script>
 }

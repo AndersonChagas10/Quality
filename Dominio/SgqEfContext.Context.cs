@@ -14,7 +14,8 @@ namespace Dominio
     using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
-    
+    using Helper;
+
     public partial class SgqDbDevEntities : DbContext
     {
         public SgqDbDevEntities()
@@ -131,7 +132,7 @@ namespace Dominio
         public virtual DbSet<LeftControlRole> LeftControlRole { get; set; }
         public virtual DbSet<UserSgq> UserSgq { get; set; }
         public virtual DbSet<ParScoreType> ParScoreType { get; set; }
-    
+        public virtual DbSet<EmailContent> EmailContent { get; set; }
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
             var diagramnameParameter = diagramname != null ?

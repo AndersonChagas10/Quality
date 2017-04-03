@@ -1800,10 +1800,13 @@
   <data name="equipment_registration" xml:space="preserve">
     <value>Equipment Registration</value>
   </data>
-  <data name="linkeds" xml:space="preserve">
-    <value>Linkeds</value>
+  <data name="forgotPass" xml:space="preserve">
+    <value>Forgot Password</value>
   </data>
-  <data name="not_linkeds" xml:space="preserve">
-    <value>Not linkeds</value>
+  <data name="recoveryPass" xml:space="preserve">
+    <value>Recovery Password</value>
+  </data>
+  <data name="sendPassEmail" xml:space="preserve">
+    <value>Send Password to Email</value>
   </data>
 </root>

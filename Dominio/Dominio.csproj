@@ -823,6 +823,10 @@
       <Project>{0ed5466d-2a8f-4e37-8d4a-c2f2760bd687}</Project>
       <Name>DTO</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Project>{026EFA70-BD6D-46C8-BD94-D7FCD42B9692}</Project>
+      <Name>Helper</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
