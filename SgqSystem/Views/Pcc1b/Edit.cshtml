@@ -231,6 +231,9 @@
         });
         $('#Avaliacoes').val(1);
         $('#avalicaohidden').val(1);
+
+        var data = "@Model.Data.Value.Date.ToString("dd/MM/yyyy")";
+        $('#Data').val(data);
     });
 
 </script>
