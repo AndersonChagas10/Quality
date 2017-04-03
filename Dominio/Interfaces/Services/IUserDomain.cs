@@ -8,6 +8,7 @@ namespace Dominio.Interfaces.Services
     {
         GenericReturn<UserDTO> AuthenticationLogin(UserDTO user);
         GenericReturn<UserDTO> GetByName(string username);
+        GenericReturn<UserSgqDTO> GetByName2(string username);
         GenericReturn<List<UserDTO>> GetAllUserValidationAd(UserDTO userDto);
     }
 }

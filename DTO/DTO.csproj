@@ -78,6 +78,7 @@
     <Compile Include="DTO\CorrectiveActionDTO.cs" />
     <Compile Include="DTO\DefectDTO.cs" />
     <Compile Include="DTO\DepartmentDTO.cs" />
+    <Compile Include="DTO\EmailContentDTO.cs" />
     <Compile Include="DTO\GetSyncDTO.cs" />
     <Compile Include="DTO\Level02DTO.cs" />
     <Compile Include="DTO\Level03DTO.cs" />
