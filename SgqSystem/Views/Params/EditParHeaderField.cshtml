@@ -49,13 +49,13 @@
                             @Html.Label(Resources.Resource.punishment_value)
                         </div>
                         <div class="col-md-2">
-                            @Html.TextBoxFor(r => i.PunishmentValue, i.PunishmentValue.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { htmlAttributes = new {@style = "max-width: 200px;", @class = "form-control checkbox-erp" } })
+                            @Html.TextBoxFor(r => i.PunishmentValue, i.PunishmentValue.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture), new { htmlAttributes = new {@style = "max-width: 200px;", @class = "form-control" } })
                         </div>
                         <div class="col-md-1">
                             @Html.Label(Resources.Resource.is_active)<br />
                         </div>
                         <div class="col-md-2">
-                            @Html.CheckBoxFor(r => i.IsActive)
+                            @Html.CheckBoxFor(r => i.IsActive, new {@value = i.IsActive, @class = "make-switch checkbox-erp" })
                         </div>
                     </div>
                     
@@ -79,14 +79,11 @@
                             <div class="col-md-2">
                                 @Html.Label(Resources.Resource.punishment_value)
                             </div>
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 @Html.TextBoxFor(r => i.PunishmentValue, i.PunishmentValue.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture))
                             </div>
-                            <div class="col-md-1">
-                                @Html.Label(Resources.Resource.is_active)<br />
-                            </div>
                             <div class="col-md-2">
-                                @Html.CheckBoxFor(r => i.IsActive)
+                                @Html.CheckBoxFor(r => i.IsActive, new {htmlAttributes = new {@style ="max-width:0px; visibility:hidden;" } })
                             </div>
                         </div>
                     </div>
