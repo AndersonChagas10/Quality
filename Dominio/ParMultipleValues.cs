@@ -22,7 +22,7 @@ namespace Dominio
         public bool Conformity { get; set; }
         public System.DateTime AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
         public Nullable<bool> IsDefaultOption { get; set; }
     
         public virtual ParHeaderField ParHeaderField { get; set; }
