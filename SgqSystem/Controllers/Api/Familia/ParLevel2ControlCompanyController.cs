@@ -40,7 +40,6 @@ namespace SgqSystem.Controllers.Api
                 if(listaCadastrada.Count() > 0)
                     foreach(var cadastro in listaCadastrada)
                     {
-                        cadastro.IsActive = false;
                         _baseParLevel2ControlCompany.ExecuteSql("Update ParLevel2ControlCompany SET IsActive = 0 Where Id = " + cadastro.Id);
                     }
 
@@ -54,11 +53,12 @@ namespace SgqSystem.Controllers.Api
             {
                 //desativa os registros já cadastrados da unidade
                 var listaCadastrada = _baseParLevel2ControlCompany.GetAll().Where(r => r.IsActive == true && r.ParCompany_Id == parLevel1.CompanyControl_Id);
-                foreach (var cadastro in listaCadastrada)
-                {
-                    cadastro.IsActive = false;
-                    _baseParLevel2ControlCompany.AddOrUpdate(cadastro);
-                }
+
+                if (listaCadastrada.Count() > 0)
+                    foreach (var cadastro in listaCadastrada)
+                    {
+                        _baseParLevel2ControlCompany.ExecuteSql("Update ParLevel2ControlCompany SET IsActive = 0 Where Id = " + cadastro.Id);
+                    }
 
                 if (parLevel1.level2PorCompany != null)
                     foreach (var level2Id in parLevel1.level2PorCompany)
