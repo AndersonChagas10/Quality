@@ -80,7 +80,7 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.ParCompany_id, "Unidade", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.DropDownList("ParCompany_id", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
+                                                @Html.DropDownListFor(model => model.ParCompany_id, new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
                                                 @*@Html.DropDownList("ParCompany_id", null, htmlAttributes: new { @class = "form-control" })*@
                                                 @Html.ValidationMessageFor(model => model.ParCompany_id, "", new { @class = "text-danger" })
                                             </div>
@@ -184,7 +184,7 @@
     <!-- END CONTENT BODY -->
 </div>
 <script>
-    
+
     $(document).ready(function() {
         $('#QtdadeFamiliaProduto').val("");
         $('#ParCompany_id').on('change', function () {
@@ -217,7 +217,7 @@
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar7");
 
-    $('#HorasTrabalhadasPorDia').on('input', function () {        
+    $('#HorasTrabalhadasPorDia').on('input', function () {
         $('#Avaliacoes').val($(this).val());
         $('#avaliacaoHidden').val($(this).val());
         applyMath();
@@ -240,6 +240,9 @@
         })
         $('#Avaliacoes').val($('#HorasTrabalhadasPorDia').val());
         $('#Amostras').val(Math.ceil(($('#AmostraPorDia').val() / $('#QtdadeFamiliaProduto').val()) / $('#HorasTrabalhadasPorDia').val()));
+
+        var data = "@Model.Data.Value.Date.ToString("dd/MM/yyyy")";
+        $('#Data').val(data);
 
     });
 

@@ -406,11 +406,11 @@ namespace SgqSystem.Controllers.Api.Manutencao
                         {
                             if (vetor4.lista != null)
                             {
-                                f[i].realizado = 1 - ((vetor3.lista[i].realizado + vetor4.lista[i].realizado) / ((vetor1.lista[i].realizado /* 60 */) + (vetor2.lista[i].realizado /** 60*/))); //Retirado o calculo de conversão horas para minutos
+                                f[i].realizado = (1 - ((vetor3.lista[i].realizado + vetor4.lista[i].realizado) / ((vetor1.lista[i].realizado /* 60 */) + (vetor2.lista[i].realizado /** 60*/)))) * 100; //Retirado o calculo de conversão horas para minutos
                             }
                             else
                             {
-                                f[i].realizado = 1 - ((vetor2.lista[i].realizado) / ((vetor1.lista[i].realizado /* 60 */))); //Retirado o calculo de conversão horas para minutos
+                                f[i].realizado = (1 - ((vetor2.lista[i].realizado) / ((vetor1.lista[i].realizado /* 60 */)))) * 100; //Retirado o calculo de conversão horas para minutos
                             }
 
                         }
@@ -424,7 +424,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                         }
                         else if (tipoCalculo == "Variadas")
                         {
-                            f[i].realizado = vetor1.lista[i].realizado / vetor2.lista[i].realizado;
+                            f[i].realizado = vetor1.lista[i].realizado / vetor2.lista[i].realizado * 100;
                         }
                         else
 
@@ -473,7 +473,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
 
                                 if (i < nummesatual)
                                 {
-                                    f[i].orcado = Convert.ToDecimal(orcadoAbat) / 100; // COLOCAR O INDICADOR DIRETO DA TABELA ManBudgetedIndicators
+                                    f[i].orcado = Convert.ToDecimal(orcadoAbat); // COLOCAR O INDICADOR DIRETO DA TABELA ManBudgetedIndicators
 
                                 }
                                 else
@@ -486,7 +486,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                             {
                                 if (i < nummesatual)
                                 {
-                                    f[i].orcado = Convert.ToDecimal(orcadoAbat) / 100;
+                                    f[i].orcado = Convert.ToDecimal(orcadoAbat);
                                 }
                                 else
                                 {
@@ -548,7 +548,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                             {
                                 if (i < nummesatual)
                                 {
-                                    f[i].orcado = Convert.ToDecimal(orcadoVar) / 100;
+                                    f[i].orcado = Convert.ToDecimal(orcadoVar);
                                 }
                                 else
                                 {

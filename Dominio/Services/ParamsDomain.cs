@@ -619,8 +619,9 @@ namespace Dominio.Services
                 if (userId > 0)
                 {
                     user = db.UserSgq.FirstOrDefault(r => r.Id == userId);
-                    if (user != null && !user.Role.ToLowerInvariant().Contains("Admin".ToLowerInvariant()))
+                    if(user.Role == null || !user.Role.ToLowerInvariant().Contains("Admin".ToLowerInvariant()))
                         companyId = user.ParCompany_Id;
+                 
                 }
 
                 /**/
@@ -641,7 +642,7 @@ namespace Dominio.Services
                     if (existenteL3L2 == null)
                     {
                         //throw new Exception("");
-                        salvarL3L2 = new ParLevel3Level2() { ParLevel2_Id = idLevel2, ParLevel3_Id = idLevel3, ParCompany_Id = companyId, IsActive = true };
+                        salvarL3L2 = new ParLevel3Level2() { ParLevel2_Id = idLevel2, ParLevel3_Id = idLevel3, ParCompany_Id = companyId, IsActive = true , Weight = 1};
                         db.ParLevel3Level2.Add(salvarL3L2);
                         db.SaveChanges();
                         idL3L2 = salvarL3L2.Id;

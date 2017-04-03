@@ -104,9 +104,18 @@ namespace SgqSystem.Controllers
             ValidaCepDesossa(cepDesossa);
             if (ModelState.IsValid)
             {
-                db.VolumeCepDesossa.Add(cepDesossa);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                //Verifica se já existe uma coleta no mesmo dia
+                if(db.VolumeCepDesossa.Where(r => r.Data == cepDesossa.Data && r.ParCompany_id == cepDesossa.ParCompany_id).ToList().Count() == 0)
+                {
+                    db.VolumeCepDesossa.Add(cepDesossa);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ReturnError();
+                    //return View(cepDesossa);
+                }             
             }
 
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepDesossa.ParCompany_id);
@@ -144,6 +153,11 @@ namespace SgqSystem.Controllers
                 ModelState.AddModelError("Amostras", Guard.MesangemModelError("Amostras por Avaliação", false));*/
         }
 
+        private void ReturnError()
+        {
+            ModelState.AddModelError("Data","Já existe um registro nesta data para esta unidade!");
+        }
+
         // GET: CepDesossas/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -175,9 +189,34 @@ namespace SgqSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                db.Entry(cepDesossa).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (db.VolumeCepDesossa.Where(r => r.Data == cepDesossa.Data && r.ParCompany_id == cepDesossa.ParCompany_id).ToList().Count() == 0)
+                {
+                    db.Entry(cepDesossa).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    //Se for a edição da mesma data e parCompany
+                    if(db.VolumeCepDesossa.Where(r => r.Data == cepDesossa.Data && 
+                                                      r.ParCompany_id == cepDesossa.ParCompany_id &&
+                                                      r.Id == cepDesossa.Id).ToList().Count() == 1)
+                    {
+                        using (var db2 = new SgqDbDevEntities())
+                        {
+                            db2.Entry(cepDesossa).State = EntityState.Modified;
+                            db2.SaveChanges();
+                            return RedirectToAction("Index");
+                        }
+                       
+                   }
+                    else
+                    {
+                        ReturnError();
+                        //return View(cepDesossa);
+                    }
+                }                   
+                
             }
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.AsNoTracking().OrderBy(c => c.Name), "Id", "Name", cepDesossa.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name", cepDesossa.ParLevel1_id);

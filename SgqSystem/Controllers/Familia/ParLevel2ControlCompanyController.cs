@@ -52,7 +52,7 @@ namespace SgqSystem.Controllers
         {
             if (id > 0)
             {
-                var allControlCompany = _baseParLevel2ControlCompany.GetAll().Where(r => r.ParLevel1_Id == id);
+                var allControlCompany = _baseParLevel2ControlCompany.GetAll().Where(r => r.ParLevel1_Id == id && r.IsActive == true);
                 var todosLevel321 = _baseParLevel3Level2Level1.GetAllNoLazyLoad().Where(r => r.ParLevel1_Id == id);
 
                 var lastDate = allControlCompany.Where(r => r.ParCompany_Id == null).OrderByDescending(r => r.InitDate).FirstOrDefault()?.InitDate;
@@ -80,7 +80,7 @@ namespace SgqSystem.Controllers
         {
             if (id > 0 && companyId > 0)
             {
-                var allControlCompany = _baseParLevel2ControlCompany.GetAll().Where(r => r.ParLevel1_Id == id);
+                var allControlCompany = _baseParLevel2ControlCompany.GetAll().Where(r => r.ParLevel1_Id == id && r.IsActive == true);
 
                 var lastDate = allControlCompany.Where(r => r.ParCompany_Id == null).OrderByDescending(r => r.InitDate).FirstOrDefault()?.InitDate;
                 var level2Comporativo = allControlCompany.Where(r => r.InitDate == lastDate)?.Select(r => r.ParLevel2);

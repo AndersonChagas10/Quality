@@ -117,10 +117,19 @@ namespace SgqSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                cepRecortes.AddDate = DateTime.Now;
-                db.VolumeCepRecortes.Add(cepRecortes);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (db.VolumeCepRecortes.Where(r => r.Data == cepRecortes.Data && r.ParCompany_id == cepRecortes.ParCompany_id).ToList().Count() == 0)
+                {
+
+                    cepRecortes.AddDate = DateTime.Now;
+                    db.VolumeCepRecortes.Add(cepRecortes);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ReturnError();
+                    //return View(cepRecortes);
+                }
             }
 
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepRecortes.ParCompany_id);
@@ -158,6 +167,11 @@ namespace SgqSystem.Controllers
                 ModelState.AddModelError("TamanhoAmostra", "O campo \"Tamanho de Cada Amostra\" precisa ser preenchido.");
         }
 
+        private void ReturnError()
+        {
+            ModelState.AddModelError("Data", "Já existe um registro nesta data para esta unidade!");
+        }
+
         // GET: CepRecortes/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -182,12 +196,37 @@ namespace SgqSystem.Controllers
         public ActionResult Edit(VolumeCepRecortes cepRecortes)
         {
             ValidaCepRecortes(cepRecortes);
+            cepRecortes.AlterDate = DateTime.Now;
 
             if (ModelState.IsValid)
             {
-                db.Entry(cepRecortes).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (db.VolumeCepRecortes.Where(r => r.Data == cepRecortes.Data && r.ParCompany_id == cepRecortes.ParCompany_id).ToList().Count() == 0)
+                {
+                    db.Entry(cepRecortes).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    //Se for a edição da mesma data e parCompany
+                    if (db.VolumeCepRecortes.Where(r => r.Data == cepRecortes.Data &&
+                                                       r.ParCompany_id == cepRecortes.ParCompany_id &&
+                                                       r.Id == cepRecortes.Id).ToList().Count() == 1)
+                    {
+                        using (var db2 = new SgqDbDevEntities())
+                        {
+                            db2.Entry(cepRecortes).State = EntityState.Modified;
+                            db2.SaveChanges();
+                            return RedirectToAction("Index");
+                        }
+
+                    }
+                    else
+                    {
+                        ReturnError();
+                        //return View(cepRecortes);
+                    }
+                }
             }
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepRecortes.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name", cepRecortes.ParLevel1_id);

@@ -42,7 +42,8 @@ namespace SgqSystem.Controllers
                 System.DateTime endDate = Guard.ParseDateToSqlV2(Request.QueryString["endDate"]);
 
                 vacuoGRD = vacuoGRD.Where(VCD => VCD.Data >= startDate && VCD.Data <= endDate);
-            }else
+            }
+            else
             {
                 System.DateTime startDate = System.DateTime.Now.AddDays(-2);
                 System.DateTime endDate = System.DateTime.Now;
@@ -101,9 +102,19 @@ namespace SgqSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                db.VolumeVacuoGRD.Add(vacuoGRD);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                //Verifica se já existe uma coleta no mesmo dia
+                if (db.VolumeVacuoGRD.Where(r => r.Data == vacuoGRD.Data && r.ParCompany_id == vacuoGRD.ParCompany_id).ToList().Count() == 0)
+                {
+
+                    db.VolumeVacuoGRD.Add(vacuoGRD);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ReturnError();
+                    //return View(vacuoGRD);
+                }
             }
 
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", vacuoGRD.ParCompany_id);
@@ -135,6 +146,11 @@ namespace SgqSystem.Controllers
                 ModelState.AddModelError("Amostras", Guard.MesangemModelError("Amostras por Avaliação", false));*/
         }
 
+        private void ReturnError()
+        {
+            ModelState.AddModelError("Data", "Já existe um registro nesta data para esta unidade!");
+        }
+
         // GET: VacuoGRDs/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -164,9 +180,33 @@ namespace SgqSystem.Controllers
             ValidaVacuoGRD(vacuoGRD);
             if (ModelState.IsValid)
             {
-                db.Entry(vacuoGRD).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (db.VolumeVacuoGRD.Where(r => r.Data == vacuoGRD.Data && r.ParCompany_id == vacuoGRD.ParCompany_id).ToList().Count() == 0)
+                {
+                    db.Entry(vacuoGRD).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    //Se for a edição da mesma data e parCompany
+                    if (db.VolumeVacuoGRD.Where(r => r.Data == vacuoGRD.Data &&
+                                                       r.ParCompany_id == vacuoGRD.ParCompany_id &&
+                                                       r.Id == vacuoGRD.Id).ToList().Count() == 1)
+                    {
+                        using (var db2 = new SgqDbDevEntities())
+                        {
+                            db2.Entry(vacuoGRD).State = EntityState.Modified;
+                            db2.SaveChanges();
+                            return RedirectToAction("Index");
+                        }
+
+                    }
+                    else
+                    {
+                        ReturnError();
+                        //return View(vacuoGRD);
+                    }
+                }
             }
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", vacuoGRD.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name", vacuoGRD.ParLevel1_id);

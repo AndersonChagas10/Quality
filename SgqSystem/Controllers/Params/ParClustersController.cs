@@ -52,6 +52,7 @@ namespace SgqSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                parCluster.IsActive = true;
                 db.ParCluster.Add(parCluster);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -86,6 +87,7 @@ namespace SgqSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                parCluster.IsActive = true;
                 db.Entry(parCluster).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
