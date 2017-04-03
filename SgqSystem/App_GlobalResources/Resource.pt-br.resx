@@ -1779,10 +1779,13 @@
   <data name="equipment_registration" xml:space="preserve">
     <value>Cadastro de Equipamentos</value>
   </data>
-  <data name="linkeds" xml:space="preserve">
-    <value>Vinculados</value>
+  <data name="forgotPass" xml:space="preserve">
+    <value>Esqueceu a Senha</value>
   </data>
-  <data name="not_linkeds" xml:space="preserve">
-    <value>Não vinculados</value>
+  <data name="recoveryPassword" xml:space="preserve">
+    <value>Recuperar Senha</value>
+  </data>
+  <data name="sendPassEmail" xml:space="preserve">
+    <value>Enviar Senha para Email</value>
   </data>
 </root>

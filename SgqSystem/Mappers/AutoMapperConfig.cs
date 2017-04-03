@@ -101,8 +101,8 @@ namespace SgqSystem.Mappers
                 /*Manutencao*/
                 x.AddProfile<DimManutencaoColetaITsMapperProfile>();
 
-
-
+                /*Email Content*/
+                x.AddProfile<EmailContentMapperProfile>();
 
                 ///*PA............*/
                 //x.AddProfile<AcompanhamentoTarefaProfile>();

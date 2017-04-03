@@ -5,7 +5,7 @@
     var ValorNbr = 0;
     if (Model != null)
     {
-        ValorNbr = Model.NBR?? 0;
+        ValorNbr = Model.NBR ?? 0;
         adicaoEdicao = "Edição";
     }
     ViewBag.Title = "CEP Recortes - Volume";
@@ -73,7 +73,7 @@
                                                     @Html.ValidationMessageFor(model => model.Unidade, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>*@
-                                        
+
                                         @{ Html.EnableClientValidation(false); }
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Data, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -287,7 +287,7 @@
 
     $(document).ready(function () {
 
-        $('#HorasTrabalhadasPorDia').inputmask("integer", { rightAlign: false , min:0 , max : 24});
+        $('#HorasTrabalhadasPorDia').inputmask("integer", { rightAlign: false, min: 0, max: 24 });
         $('#QtdadeMediaKgRecProdDia').inputmask("integer", { rightAlign: false });
         $('#QtadeTrabEsteiraRecortes').inputmask("integer", { rightAlign: false });
         $('#TotalAvaliaColaborEsteirHoraProd').inputmask("integer", { rightAlign: false });
@@ -309,6 +309,7 @@
 
         try {
             $('#NBR').val(@Html.Raw(Json.Encode(ValorNbr))).change();
+
         } catch (e) {
 
         }

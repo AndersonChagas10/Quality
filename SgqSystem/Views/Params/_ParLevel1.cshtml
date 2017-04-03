@@ -589,7 +589,7 @@
     });
 
 
-
+    var binary = false;
     var Cabecalhos = {
         SetMultipleDefault: function(elem){
             var idMultiple = $(elem).siblings('select').children('option:selected').val();
@@ -910,91 +910,96 @@
         },
         IncluirBinario: function (e) {
 
-            /*Valida se os campos estão preenchidos*/
-            if (Cabecalhos.ValidaBinario() == false) {
-                setTimeout(Cabecalhos.EscondeMensagemValidacaoCabecalho, 10000);
-                return;
-            }
-            if($('#headerLevel option:selected').val() == -1){
-                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
-                //alert('Selecione o Nivel do Cabecalho')
-                return;
-            }
+            if(binary == false){
 
-            var cod = "?";
-            var nivelDoCampo = $('#headerLevel option:selected').text();
-            var nivelDoCampoVal = $('#headerLevel option:selected').val();
-            var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
-            var vinculado = $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').is(':checked') ? "Sim" : "Não";
-            var tipo = $('#parFieldType option:selected').text();
-            var tipoVal = $('#parFieldType option:selected').val();
+                /*Valida se os campos estão preenchidos*/
+                if (Cabecalhos.ValidaBinario() == false) {
+                    setTimeout(Cabecalhos.EscondeMensagemValidacaoCabecalho, 10000);
+                    return;
+                }
+                if($('#headerLevel option:selected').val() == -1){
+                    openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
+                    //alert('Selecione o Nivel do Cabecalho')
+                    return;
+                }
 
-            var nameObjBinario1 = $('#objBinarioPunishmentName1').val();
-            var nameObjBinario2 = $('#objBinarioPunishmentName2').val();
-            var valorObjBinario1 = $('#objBinarioPunishmentValue1').val();
-            var valorObjBinario2 = $('#objBinarioPunishmentValue2').val();
+                var cod = "?";
+                var nivelDoCampo = $('#headerLevel option:selected').text();
+                var nivelDoCampoVal = $('#headerLevel option:selected').val();
+                var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
+                var vinculado = $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').is(':checked') ? "Sim" : "Não";
+                var tipo = $('#parFieldType option:selected').text();
+                var tipoVal = $('#parFieldType option:selected').val();
 
-            var obj = '<input type="button" class="btn btn-danger btn-xs" name="" value="x" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParBinario.length + ', true);" />';//Btn excluir;
+                var nameObjBinario1 = $('#objBinarioPunishmentName1').val();
+                var nameObjBinario2 = $('#objBinarioPunishmentName2').val();
+                var valorObjBinario1 = $('#objBinarioPunishmentValue1').val();
+                var valorObjBinario2 = $('#objBinarioPunishmentValue2').val();
 
-            /*Obj1*/
-            Cabecalhos.ParBinario.push({
-                'Name': nameObjBinario1,
-                'ParHeaderField_Id': '0',
-                'Description': '',
-                'ParLevelDefinition_Id': nivelDoCampoVal,
-                'ParFieldType_Id': tipoVal,
-                'PunishmentValue': valorObjBinario1,
-                'Conformity': true
-            });
+                var obj = '<input type="button" class="btn btn-danger btn-xs" name="" value="x" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParBinario.length + ', true);" />';//Btn excluir;
 
-            var obj2 = '<input type="button" class="btn btn-danger btn-xs" name="" value="x" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParBinario.length + ', true);" />';//Btn excluir;
+                /*Obj1*/
+                Cabecalhos.ParBinario.push({
+                    'Name': nameObjBinario1,
+                    'ParHeaderField_Id': '0',
+                    'Description': '',
+                    'ParLevelDefinition_Id': nivelDoCampoVal,
+                    'ParFieldType_Id': tipoVal,
+                    'PunishmentValue': valorObjBinario1,
+                    'Conformity': true
+                });
 
-            /*Obj2*/
-            Cabecalhos.ParBinario.push({
-                'Name': nameObjBinario2,
-                'ParHeaderField_Id': '0',
-                'Description': '',
-                'ParLevelDefinition_Id': nivelDoCampoVal,
-                'ParFieldType_Id': tipoVal,
-                'PunishmentValue': valorObjBinario2,
-                'Conformity': false
-            });
+                var obj2 = '<input type="button" class="btn btn-danger btn-xs" name="" value="x" onclick="Cabecalhos.RemoverDaTabela($(this), ' + Cabecalhos.ParBinario.length + ', true);" />';//Btn excluir;
 
-            Cabecalhos.tableMultiplaEscolha.row.add([
-               //cod,
-               nivelDoCampo,
-               nome,
-               vinculado,
-               tipo,
-               nameObjBinario1,
-               valorObjBinario1,
-               obj
-            ]).draw(false);
+                /*Obj2*/
+                Cabecalhos.ParBinario.push({
+                    'Name': nameObjBinario2,
+                    'ParHeaderField_Id': '0',
+                    'Description': '',
+                    'ParLevelDefinition_Id': nivelDoCampoVal,
+                    'ParFieldType_Id': tipoVal,
+                    'PunishmentValue': valorObjBinario2,
+                    'Conformity': false
+                });
 
-            Cabecalhos.tableMultiplaEscolha.row.add([
-               //cod,
-               nivelDoCampo,
-               nome,
-               vinculado,
-               tipo,
-               nameObjBinario2,
-               valorObjBinario2,
-               obj2
-            ]).draw(false);
+                Cabecalhos.tableMultiplaEscolha.row.add([
+                   //cod,
+                   nivelDoCampo,
+                   nome,
+                   vinculado,
+                   tipo,
+                   nameObjBinario1,
+                   valorObjBinario1,
+                   obj
+                ]).draw(false);
 
-            if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
-                $('#salvarCabecalho2').fadeOut();
-            else
-                $('#salvarCabecalho2').fadeIn();
+                Cabecalhos.tableMultiplaEscolha.row.add([
+                   //cod,
+                   nivelDoCampo,
+                   nome,
+                   vinculado,
+                   tipo,
+                   nameObjBinario2,
+                   valorObjBinario2,
+                   obj2
+                ]).draw(false);
 
-            $('#divCamposCabecalhoIncluidos').show();
+                if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
+                    $('#salvarCabecalho2').fadeOut();
+                else
+                    $('#salvarCabecalho2').fadeIn();
 
-            $('#objBinarioPunishmentName1').val('');
-            $('#objBinarioPunishmentName2').val('');
-            $('#objBinarioPunishmentValue1').val('0');
-            $('#objBinarioPunishmentValue2').val('0');
+                $('#divCamposCabecalhoIncluidos').show();
 
-            updateAllTables();
+                $('#objBinarioPunishmentName1').val('');
+                $('#objBinarioPunishmentName2').val('');
+                $('#objBinarioPunishmentValue1').val('0');
+                $('#objBinarioPunishmentValue2').val('0');
+
+                updateAllTables();
+                binary =true;
+            }else
+                openMessageModal("Máximo de dois binários permitidos.");
         },
         ShowBinario: function () {
             $('#objBinario').show();
@@ -1364,13 +1369,16 @@
 
             }
             e.parents('tr').remove();
+            
 
             if(Cabecalhos.tableMultiplaEscolha.rows()[0].length == 0){
                 $('#camposCabecalhoIncluidos').hide();
             }
 
             updateAllTables();
-
+            Cabecalhos.ParBinario = [];
+            Cabecalhos.tableMultiplaEscolha.clear().draw();
+            binary = false;
 
 
         },
