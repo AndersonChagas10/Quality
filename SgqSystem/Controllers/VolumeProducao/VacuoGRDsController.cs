@@ -110,6 +110,11 @@ namespace SgqSystem.Controllers
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
+                else
+                {
+                    ReturnError();
+                    //return View(vacuoGRD);
+                }
             }
 
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", vacuoGRD.ParCompany_id);
@@ -139,6 +144,11 @@ namespace SgqSystem.Controllers
 
             if (vacuoGRD.Amostras == null)
                 ModelState.AddModelError("Amostras", Guard.MesangemModelError("Amostras por Avaliação", false));*/
+        }
+
+        private void ReturnError()
+        {
+            ModelState.AddModelError("Data", "Já existe um registro nesta data para esta unidade!");
         }
 
         // GET: VacuoGRDs/Edit/5
@@ -193,7 +203,8 @@ namespace SgqSystem.Controllers
                     }
                     else
                     {
-                        Guard.MesangemModelError("Já existe uma coleta para esta unidade neste dia!", true);
+                        ReturnError();
+                        //return View(vacuoGRD);
                     }
                 }
             }

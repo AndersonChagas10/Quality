@@ -113,7 +113,8 @@ namespace SgqSystem.Controllers
                 }
                 else
                 {
-                    ;
+                    ReturnError();
+                    //return View(cepDesossa);
                 }             
             }
 
@@ -152,6 +153,10 @@ namespace SgqSystem.Controllers
                 ModelState.AddModelError("Amostras", Guard.MesangemModelError("Amostras por Avaliação", false));*/
         }
 
+        private void ReturnError()
+        {
+            ModelState.AddModelError("Data","Já existe um registro nesta data para esta unidade!");
+        }
 
         // GET: CepDesossas/Edit/5
         public ActionResult Edit(int? id)
@@ -207,7 +212,8 @@ namespace SgqSystem.Controllers
                    }
                     else
                     {
-                        Guard.MesangemModelError("Já existe uma coleta para esta unidade neste dia!", true);
+                        ReturnError();
+                        //return View(cepDesossa);
                     }
                 }                   
                 
