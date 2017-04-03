@@ -3316,7 +3316,7 @@ namespace SgqSystem.Services
                                      classe: "userInfo col-xs-2"
                                      );
 
-                        classXSLevel2 = " col-xs-6";
+                        //classXSLevel2 = " col-xs-6";
                     }
 
                 }
