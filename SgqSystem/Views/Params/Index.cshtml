@@ -196,7 +196,6 @@
                 <div class="modal-header">
 
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" class="times">&times;</span></button>
-                    <button class="close modalMinimize"><span aria-hidden="true" class="minus">&minus;</span></button>
 
                     <h4 class="modal-title" id="Header">ID: Header</h4>
                 </div>
@@ -1234,8 +1233,18 @@
                 var count = 0;
                 var ar = [];
                 while (count < tam) {
-                    ar.push({ Id: dados['i.Id'][count], Name: dados['i.Name'][count], ParHeaderField_Id : idpar, PunishmentValue: dados['i.PunishmentValue'][count]});
+                    ar.push({ Id: dados['i.Id'][count], Name: dados['i.Name'][count], ParHeaderField_Id : idpar, PunishmentValue: dados['i.PunishmentValue'][count], IsActive: dados['i.IsActive'][count]});
                     count++;
+                }
+                if(dados['paramsDto.parHeaderFieldDto.ParFieldType_Id'] == 1){
+                    count = 0;
+                    if(controle > 0 );
+                    while(count < controle){
+                        var name = 'adName'+count;
+                        var punish = 'adValue'+count;
+                        ar.push({Name: $('#'+name).val(), PunishmentValue: $('#'+punish).val(), ParHeaderField_Id : idpar});
+                        count++;
+                    }
                 }
                 dados['paramsDto.parHeaderFieldDto.ParMultipleValues'] = ar;
             }
@@ -1257,7 +1266,7 @@
                     closeLoader();
                     openMessageModal("@Resources.Resource.warning", "@Resources.Resource.cannot_finish_action");
                     console.log(e);
-                }
+                }   
             });
         }
     }
@@ -1269,16 +1278,39 @@
         $('#modalEdicaoCabecalho').modal();
         $('#modalEdicaoCabecalho').find('.modal-body').empty();
         $('#Header').html("Edição de Cabeçalho");
-
+        
         $.get(EditCabecalho, { id: idpar, idLevel1: idL1 }, function (r) {
             $('#modalEdicaoCabecalho').find('.modal-body').empty().append(r);
             $('#paramsDto_parHeaderFieldDto_ParFieldType_Id').attr('disabled', true);
+            if($('#paramsDto_parHeaderFieldDto_ParFieldType_Id').val() == 1)
+                $('#adicionar').show();
+            else
+                $('#adicionar').hide();
         });
 
         $('#Fechar').show();
         $('#Salvar').hide();
         ///*Fim Botões*/
 
+    }
+    var controle = 0;
+    function addValores() {
+        var divAdd = '<div class="row" id="row'+controle+'"><div class="col-md-1"';
+        divAdd += '<label>Option</label><br /></div><div class="col-md-2">';
+        divAdd += '<input class="input-sm form-control" id="adName'+controle+'" />';
+        divAdd += '</div>';
+        divAdd += '<div class="col-md-2">';
+        divAdd += '<label>Value</label><br /></div><div class="col-md-2">';
+        divAdd += '<input class="input-sm form-control" id="adValue'+controle+'">';
+        divAdd += '</div><div class="col-md-2">';
+        divAdd += '<button class="btn btn-danger" id="rem'+controle+'" type="button" onclick="removeCampoNovo('+controle+')">Remover Novo Campo</button></div>'
+        divAdd += '</div>';
+        $('#multiplaEscolha').append(divAdd);
+        controle++;   
+    }
+    function removeCampoNovo(idCampo){
+        $('#row'+idCampo).remove();
+        controle--;
     }
 
 </script>
