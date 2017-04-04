@@ -315,7 +315,7 @@ namespace Dominio.Services
             var parLevel2 = _baseRepoParLevel2.GetById(idParLevel2);
             var level2 = Mapper.Map<ParLevel2DTO>(parLevel2);
             var headerFieldLevel1 = db.ParLevel1XHeaderField.Include("ParHeaderField").ToList();
-            var headerFieldLevel2 = db.ParLevel2XHeaderField.ToList();
+            var headerFieldLevel2 = db.ParLevel2XHeaderField.Where(r => r.IsActive == true).ToList();
             var evaluation = parLevel2.ParEvaluation.Where(r => r.IsActive == true);
             var relapse = parLevel2.ParRelapse.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
             var counter = parLevel2.ParCounterXLocal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);

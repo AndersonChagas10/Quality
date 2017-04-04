@@ -92,7 +92,7 @@
                                                         <td>
                                                             @if (Model.paramsDto.parLevel2Dto.cabecalhosExclusos.Count == 0)
                                                             {
-                                                                <button type="button" class="btn btn-danger btn-sm" onclick="HeaderLevel2.Add(@parLevel1XHeaderField.ParHeaderField_Id, $(this));"><i class="fa fa-times"></i>  @Resources.Resource.no</button>
+                                                                <button type="button" class="btn btn-primary btn-sm" onclick="HeaderLevel2.Add(@parLevel1XHeaderField.ParHeaderField_Id, $(this));"><i class="fa fa-check"></i>  @Resources.Resource.yes</button>
                                                             }
                                                             else
                                                             {
@@ -101,12 +101,12 @@
                                                                     if (parLevel1XHeaderField.ParHeaderField.Id == parLevel2XHeaderField.ParHeaderField_Id)
                                                                     {
                                                                         added = 1;
-                                                                        <button type="button" class="btn btn-primary btn-sm" onclick="HeaderLevel2.Remove(@parLevel2XHeaderField.Id, $(this));"><i class="fa fa-check"></i>  @Resources.Resource.yes</button>
+                                                                        <button type="button" class="btn btn-danger btn-sm" onclick="HeaderLevel2.Remove(@parLevel2XHeaderField.Id, $(this));"><i class="fa fa-times"></i>  @Resources.Resource.no</button>
                                                                     }
                                                                 }
                                                                 if (added == 0)
                                                                 {
-                                                                    <button type="button" class="btn btn-danger btn-sm" onclick="HeaderLevel2.Add(@parLevel1XHeaderField.ParHeaderField_Id, $(this));"><i class="fa fa-times"></i>  @Resources.Resource.no</button>
+                                                                    <button type="button" class="btn btn-primary btn-sm" onclick="HeaderLevel2.Add(@parLevel1XHeaderField.ParHeaderField_Id, $(this));"><i class="fa fa-check"></i>  @Resources.Resource.yes</button>
                                                                 }
                                                             }
                                                         </td>
@@ -195,12 +195,14 @@
             ParHeaderField_Id : 0,
             Active : 1
         },
-        Add: function(idHeader, button){
+         Add: function(idHeader, button){
             HeaderLevel2.object.ParHeaderField_Id = idHeader;
             HeaderLevel2.object.Id = 0;
 
             $.post(urlHeaderLevel2, HeaderLevel2.object, function(r){
-                var btn = "<button type='button' class='btn btn-primary btn-sm' onclick='HeaderLevel2.Remove(\""+r.Id+"\", $(this));'><i class='fa fa-check'></i>  Sim</button>";
+                var btn = "<button type='button' class='btn btn-danger btn-sm' onclick='HeaderLevel2.Remove(\""+r.Id+"\", $(this));'><i class='fa fa-times'></i>  Não</button>";
+                //var btn = "<button type='button' class='btn btn-danger btn-sm' onclick='HeaderLevel2.Remove(\""+r.ParHeaderField_Id+"\", $(this));'><i class='fa fa-times'></i>  Não</button>";
+
 
                 $(button).replaceWith(btn);
             });
@@ -208,7 +210,8 @@
         Remove: function(idHeaderLevel2, button){
             HeaderLevel2.object.Id = idHeaderLevel2;
             $.post(urlHeaderLevel2, HeaderLevel2.object, function(r){
-                var btn = "<button type='button' class='btn btn-danger btn-sm' onclick='HeaderLevel2.Add(\""+r.ParHeaderField_Id+"\", $(this));'><i class='fa fa-times'></i>  Não</button>";
+                var btn = "<button type='button' class='btn btn-primary btn-sm' onclick='HeaderLevel2.Add(\""+r.ParHeaderField_Id+"\", $(this));'><i class='fa fa-check'></i>  Sim</button>";
+                //var btn = "<button type='button' class='btn btn-primary btn-sm' onclick='HeaderLevel2.Add(\""+r.Id+"\", $(this));'><i class='fa fa-check'></i>  Sim</button>";
 
                 $(button).replaceWith(btn);
             });
