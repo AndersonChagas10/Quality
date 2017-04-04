@@ -318,12 +318,12 @@ namespace SgqSystem.Services
                 classe = " " + classe;
             }
 
-            string intervalo = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\">                                                                                                  " +
+            string intervalo = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                                                                                                  " +
                                  "    <span class=\"input-group-btn btn-minus\">                                                                                                                              " +
-                                 "         <button class=\"btn btn-default\" type=\"button\">                                                                                                                 " +
+                                 "         <button class=\"btn btn-default\" type=\"button\" style=\"padding:0px 2px;\">                                                                                                                 " +
                                  "             <i class=\"fa fa-minus\" aria-hidden=\"true\"></i>                                                                                                             " +
                                  "             </button></span><input type=\"text\" class=\"form-control text-center levelValue interval\">     " +
-                                 "             <span class=\"input-group-btn btn-plus\"><button class=\"btn btn-default\" type=\"button\">                                                                    " +
+                                 "             <span class=\"input-group-btn btn-plus\"><button class=\"btn btn-default\" type=\"button\" style=\"padding:0px 2px;\">                                                                    " +
                                  "             <i class=\"fa fa-plus\" aria-hidden=\"true\"></i>                                                                                                              " +
                                  "         </button>                                                                                                                                                          " +
                                  "     </span>                                                                                                                                                                " +
@@ -342,7 +342,7 @@ namespace SgqSystem.Services
                 classe = " " + classe;
             }
 
-            string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\">                            " +
+            string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                            " +
                                  "    <span class=\"input-group-btn btn-minus\"> </span>             " +
                                  "         <input type=\"text\" class=\"form-control text-center levelValue texto naoValidarInput\" style=\"width:100%;\">     " +                                                                                                                               
                                  "</div>                                                    ";
@@ -360,12 +360,12 @@ namespace SgqSystem.Services
                 classe = " " + classe;
             }
 
-            string intervalo = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\">                                                                                                  " +
+            string intervalo = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                                                                                                  " +
                                  "    <span class=\"input-group-btn btn-minus\">                                                                                                                              " +
-                                 "         <button class=\"btn btn-default\" type=\"button\">                                                                                                                 " +
+                                 "         <button class=\"btn btn-default\" type=\"button\" style=\"padding:0px 2px;\">                                                                                                                 " +
                                  "             <i class=\"fa fa-minus\" aria-hidden=\"true\"></i>                                                                                                             " +
                                  "             </button></span><input type=\"text\" class=\"form-control text-center levelValue defects\" value=\"0\">     " +
-                                 "             <span class=\"input-group-btn btn-plus\"><button class=\"btn btn-default\" type=\"button\">                                                                    " +
+                                 "             <span class=\"input-group-btn btn-plus\"><button class=\"btn btn-default\" type=\"button\" style=\"padding:0px 2px;\">                                                                    " +
                                  "             <i class=\"fa fa-plus\" aria-hidden=\"true\"></i>                                                                                                              " +
                                  "         </button>                                                                                                                                                          " +
                                  "     </span>                                                                                                                                                                " +
@@ -384,10 +384,10 @@ namespace SgqSystem.Services
                 classe = " " + classe;
             }
 
-            string calculado = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\">                                                                                                  " +
-                                 "    <input type=\"text\" style=\"width:50px\" value=\"\" class=\"form-control text-center input01 \">     " +
-                                 " <span style=\"padding-left:5px;padding-right:5px;\"><b>x10^</b></span>" +
-                                 "    <input type=\"text\" style=\"width:50px\" value=\"\" class=\"form-control text-center input02 \">     " +
+            string calculado = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                                                                                                  " +
+                                 "    <input type=\"text\" style=\"width:25px; padding: 0px;\" value=\"\" class=\"form-control text-center input01 \">     " +
+                                 " <span style=\"padding-left:2px;padding-right:2px; font-size:10px\"><b>x10^</b></span>" +
+                                 "    <input type=\"text\" style=\"width:25px; padding: 0px;\" value=\"\" class=\"form-control text-center input02 \">     " +
                                  " <br><span style='font-size:x-small;'>      " +
                                  " <span class=\"value \" style=\"text-weight: bold;\"></span> " +
                                  " <span class=\"valueDecimal \" style=\"text-weight: bold;\"></span>" +
