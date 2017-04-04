@@ -2894,10 +2894,10 @@ namespace SgqSystem.Services
 
             //Instanciamos a Classe ParLevel01 Dapper
             var ParLevel1DB = new SGQDBContext.ParLevel1(db);
-            var ParCounterDB = new SGQDBContext.ParCounter();
+            var ParCounterDB = new SGQDBContext.ParCounter(db);
             //Inicaliza ParLevel1VariableProduction
             var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction();
-            var ParRelapseDB = new SGQDBContext.ParRelapse();
+            var ParRelapseDB = new SGQDBContext.ParRelapse(db);
 
             //Buscamos os ParLevel11 para a unidade selecionada
             var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id);
@@ -2937,7 +2937,7 @@ namespace SgqSystem.Services
                         tipoTela = variableList[0].Name;
                     }
                     //Se o ParLevel1 contem um ParCritialLevel_Id
-                    var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas();
+                    var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas(db);
                     var alertas = ParLevel1AlertasDB.getAlertas(parlevel1.Id, ParCompany_Id, dateCollect);
 
                     if (parlevel1.ParCriticalLevel_Id > 0)
@@ -3128,17 +3128,17 @@ namespace SgqSystem.Services
         public string GetLevel02(SGQDBContext.ParLevel1 ParLevel1, int ParCompany_Id, DateTime dateCollect, ref string level3Group)
         {
             //Inicializa ParLevel2
-            var ParLevel2DB = new SGQDBContext.ParLevel2();
-            var ParCounterDB = new SGQDBContext.ParCounter();
+            var ParLevel2DB = new SGQDBContext.ParLevel2(db);
+            var ParCounterDB = new SGQDBContext.ParCounter(db);
             //Pega uma lista de ParLevel2
             //Tem que confirmar a company e colocar na query dentro do método, ainda não foi validado
             var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(ParLevel1.Id, ParCompany_Id);
 
             //Inicializa Cabecalhos
-            var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader();
+            var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader(db);
             //Inicaliza ParFieldType
-            var ParFieldTypeDB = new SGQDBContext.ParFieldType();
-            var ParNCRuleDB = new SGQDBContext.NotConformityRule();
+            var ParFieldTypeDB = new SGQDBContext.ParFieldType(db);
+            var ParNCRuleDB = new SGQDBContext.NotConformityRule(db);
 
             var reauditFlag = "<li class='painel row list-group-item hide reauditFlag'> Reaudit <span class='reauditnumber'></span></li>";
 
@@ -3150,8 +3150,8 @@ namespace SgqSystem.Services
             string headerList = null;
 
             //Inicializa Avaliações e Amostras
-            var ParEvaluateDB = new SGQDBContext.ParLevel2Evaluate();
-            var ParSampleDB = new SGQDBContext.ParLevel2Sample();
+            var ParEvaluateDB = new SGQDBContext.ParLevel2Evaluate(db);
+            var ParSampleDB = new SGQDBContext.ParLevel2Sample(db);
 
             //Verifica avaliações padrão
             var ParEvaluatePadrao = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
@@ -3652,16 +3652,16 @@ namespace SgqSystem.Services
             var reauditFlag = "<li class='painel row list-group-item hide reauditFlag'> Reaudit <span class='reauditnumber'></span></li>";
 
             //Inicializa ParLevel3
-            var ParLevel3DB = new SGQDBContext.ParLevel3();
+            var ParLevel3DB = new SGQDBContext.ParLevel3(db);
 
-            var ParCounterDB = new SGQDBContext.ParCounter();
+            var ParCounterDB = new SGQDBContext.ParCounter(db);
 
             //Inicializa Cabecalhos
-            var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader();
+            var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader(db);
             //Inicaliza ParFieldType
-            var ParFieldTypeDB = new SGQDBContext.ParFieldType();
+            var ParFieldTypeDB = new SGQDBContext.ParFieldType(db);
             //Inicaliza ParLevel1VariableProduction
-            var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction();
+            var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction(db);
 
             //Pega uma lista de parleve3
             //pode colocar par level3 por unidades, como nos eua
@@ -3782,9 +3782,9 @@ namespace SgqSystem.Services
             else if (tipoTela.Equals("VF"))
             {
                 //Inicaliza CaracteristicaTipificacao
-                var CaracteristicaTipificacaoDB = new SGQDBContext.CaracteristicaTipificacao();
+                var CaracteristicaTipificacaoDB = new SGQDBContext.CaracteristicaTipificacao(db);
                 //Inicaliza VerificacaoTipificacaoTarefaIntegracao
-                var VerificacaoTipificacaoTarefaIntegracaoDB = new SGQDBContext.VerificacaoTipificacaoTarefaIntegracao();
+                var VerificacaoTipificacaoTarefaIntegracaoDB = new SGQDBContext.VerificacaoTipificacaoTarefaIntegracao(db);
 
                 //Instancia uma veriavel para gerar o agrupamento
                 string parLevel3Group = null;
