@@ -1502,6 +1502,10 @@ namespace SGQDBContext
         public string Role { get; set; }
         private SqlConnection db { get; set; }
 
+        public UserSGQ()
+        {
+        }
+
         public UserSGQ(SqlConnection _db)
         {
             db = _db;

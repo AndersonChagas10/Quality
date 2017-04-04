@@ -13,6 +13,7 @@ namespace SgqSystem.Controllers
     [FilterUnit(filtraUnidadeDoUsuario = true)]
     public class ParLevel2ControlCompanyController : BaseController
     {
+        private SgqDbDevEntities db;
         private IBaseDomain<ParLevel3Level2Level1, ParLevel3Level2Level1DTO> _baseParLevel3Level2Level1;
         private IBaseDomain<ParLevel3Level2, ParLevel3Level2DTO> _baseParLevel3Level2;
         private IBaseDomain<ParLevel1, ParLevel1DTO> _baseLevel1;
@@ -41,6 +42,9 @@ namespace SgqSystem.Controllers
             ViewBag.level2DisponivelParaEmpresa = new List<ParLevel2DTO>();
 
             ViewBag.company = _baseParCompany.GetAll();
+
+            db = new SgqDbDevEntities();
+            db.Configuration.LazyLoadingEnabled = false;
         }
 
         public ActionResult Index()
@@ -53,16 +57,16 @@ namespace SgqSystem.Controllers
             if (id > 0)
             {
                 var allControlCompany = _baseParLevel2ControlCompany.GetAll().Where(r => r.ParLevel1_Id == id && r.IsActive == true);
-                var todosLevel321 = _baseParLevel3Level2Level1.GetAllNoLazyLoad().Where(r => r.ParLevel1_Id == id);
+                var todosLevel321 = db.ParLevel3Level2Level1.Include("ParLevel3Level2").Include("ParLevel2").Where(r => r.ParLevel1_Id == id);
 
                 var lastDate = allControlCompany.Where(r => r.ParCompany_Id == null).OrderByDescending(r => r.InitDate).FirstOrDefault()?.InitDate;
                 var level2Comporativo = allControlCompany.Where(r => r.InitDate == lastDate).Select(r => r.ParLevel2);
 
-                foreach (var i in todosLevel321)
-                {
-                    i.ParLevel3Level2 = _baseParLevel3Level2.GetByIdNoLazyLoad(i.ParLevel3Level2_Id);
-                    i.ParLevel3Level2.ParLevel2 = _baseLevel2.GetById(i.ParLevel3Level2.ParLevel2_Id);
-                }
+                //foreach (var i in todosLevel321)
+                //{
+                //    i.ParLevel3Level2 = _baseParLevel3Level2.GetByIdNoLazyLoad(i.ParLevel3Level2_Id);
+                //    i.ParLevel3Level2.ParLevel2 = _baseLevel2.GetById(i.ParLevel3Level2.ParLevel2_Id);
+                //}
 
                 ViewBag.ParLevel2Todos = todosLevel321.Select(r => r.ParLevel3Level2.ParLevel2).GroupBy(r => r.Id).Select(group => group.First()).ToList();
                 ViewBag.ParLevel2Ids = level2Comporativo?.Select(r => r.Id);

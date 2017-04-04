@@ -39,11 +39,12 @@ namespace SgqSystem.Services
         //private SqlConnection connection;
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
-        private SqlConnection db;
+        public SqlConnection db;
 
         public SyncServices()
         {
-            SqlConnection db = new SqlConnection(conexao);
+            db = new SqlConnection(conexao);
+            db.Open();
         }
 
         #region Funções
