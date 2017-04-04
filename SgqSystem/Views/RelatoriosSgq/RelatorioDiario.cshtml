@@ -62,9 +62,12 @@
             });
 
             formControl.showSimpleDate();
-            formControl.showOnlyUnit(); //showOnlyUnit showUnit
-
+            //formControl.showOnlyUnit(); //showOnlyUnit showUnit
+            formControl.showUnit();
             closeLeftSidebar();
+
+            //Remove o 'Todos' da unidade
+            $("#unitId option[value='']").remove();
         });
 
         function Send(toggle) {

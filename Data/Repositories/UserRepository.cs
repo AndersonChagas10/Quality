@@ -35,17 +35,17 @@ namespace Data.Repositories
         {
 
             var result = db.Set<UserSgq>().FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()) && x.Password.Equals(user.Password));
-            //if (result == null)/*Verifica no caso de a senha estar descriptografada no DB e atualiza a mesma ,agora criptografada, no db.*/
-            //{
-            //    var userByName = db.Set<UserSgq>().FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()));
-            //    if (Guard.Criptografar3DES(userByName.Password).Equals(user.Password))
-            //    {
-            //        result = userByName;
-            //        result.Password = Guard.Criptografar3DES(result.Password);
-            //        Salvar(result);
-            //    }
+            if (result == null)/*Verifica no caso de a senha estar descriptografada no DB e atualiza a mesma ,agora criptografada, no db.*/
+            {
+                var userByName = db.Set<UserSgq>().FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()));
+                if (Guard.Criptografar3DES(userByName.Password).Equals(user.Password))
+                {
+                    result = userByName;
+                    result.Password = Guard.Criptografar3DES(result.Password);
+                    Salvar(result);
+                }
 
-            //}
+            }
 
             return result;
         }
