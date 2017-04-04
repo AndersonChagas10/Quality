@@ -233,11 +233,14 @@
 
         $(document).ready(function () {
             formControl.showFullCallendar();
-            formControl.showOnlyUnit();
+            formControl.showUnit();
             //formControl.showLevel2();
             formControl.showLevel1();
 
             closeLeftSidebar();
+
+            //Remove o "Todos" da Unidade
+            $("#unitId option[value='']").remove();
         });
 
     </script>

@@ -1228,24 +1228,40 @@
                 var tam = dados['i.Id'].length;
                 var count = 0;
                 var ar = [];
-                var contAct =0;
-                while (count < tam) {
-                    var act = dados['i.IsActive'][contAct];
-                    if(act == "True")
-                        contAct = contAct + 2;
-                    else
-                        contAct++;
-                    ar.push({ Id: dados['i.Id'][count], Name: dados['i.Name'][count], ParHeaderField_Id : idpar, PunishmentValue: dados['i.PunishmentValue'][count], IsActive: act});
-                    count++;
-                }
-                if(dados['paramsDto.parHeaderFieldDto.ParFieldType_Id'] == 1){
-                    count = 0;
-                    if(controle > 0 );
-                    while(count < controle){
-                        var name = 'adName'+count;
-                        var punish = 'adValue'+count;
-                        ar.push({Name: $('#'+name).val(), PunishmentValue: $('#'+punish).val(), ParHeaderField_Id : idpar});
+
+                if($.isArray(dados['i.Id'])){
+                
+                    // -- Gambiarra para conseguir trabalhar com checkbox do razor
+                    // -- Condicional para verificar e tratar a String de retorno do razor
+                    var contAct =0;
+                    while (count < tam) {
+                        var act = dados['i.IsActive'][contAct];
+                        if(act == "True" || act == "False" || act == "true"){
+                            act = "True";
+                            contAct = contAct + 2;
+                        }else
+                            contAct++;
+                        // -- --
+                        ar.push({ Id: dados['i.Id'][count], Name: dados['i.Name'][count], ParHeaderField_Id : idpar, PunishmentValue: dados['i.PunishmentValue'][count], IsActive: act});
                         count++;
+                    }
+                }else{
+                    if($.isArray(dados['i.IsActive']))
+                        act = "True";
+                    else
+                        act = "false";
+                    ar.push({ Id: dados['i.Id'], Name: dados['i.Name'], ParHeaderField_Id : idpar, PunishmentValue: dados['i.PunishmentValue'], IsActive: act});
+                }
+                if(controle > 0 ){
+                    if(dados['paramsDto.parHeaderFieldDto.ParFieldType_Id'] == 1){
+                        count = 0;
+                        while(count < controle){
+                            var name = 'adName'+count;
+                            var punish = 'adValue'+count;
+                            ar.push({Name: $('#'+name).val(), PunishmentValue: $('#'+punish).val(), ParHeaderField_Id : idpar, IsActive: "True"});
+                            count++;
+                        }
+                        controle =0;
                     }
                 }
                 dados['paramsDto.parHeaderFieldDto.ParMultipleValues'] = ar;
@@ -1312,6 +1328,13 @@
     }
     function removeCampoNovo(idCampo){
         $('#row'+idCampo).remove();
+        while(idCampo < controle){
+            var idNovo = idCampo;
+            idCampo++;
+            $('#adName'+idCampo).attr({'id':'adName'+idNovo});
+            $('#adValue'+idCampo).attr({'id':'adValue'+idNovo});
+            idCampo++;
+        }
         controle--;
     }
 
