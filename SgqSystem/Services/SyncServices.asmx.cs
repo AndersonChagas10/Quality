@@ -2893,7 +2893,7 @@ namespace SgqSystem.Services
             var html = new Html();
 
             //Instanciamos a Classe ParLevel01 Dapper
-            var ParLevel1DB = new SGQDBContext.ParLevel1();
+            var ParLevel1DB = new SGQDBContext.ParLevel1(db);
             var ParCounterDB = new SGQDBContext.ParCounter(db);
             //Inicaliza ParLevel1VariableProduction
             var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction(db);
@@ -3128,7 +3128,7 @@ namespace SgqSystem.Services
         public string GetLevel02(SGQDBContext.ParLevel1 ParLevel1, int ParCompany_Id, DateTime dateCollect, ref string level3Group)
         {
             //Inicializa ParLevel2
-            var ParLevel2DB = new SGQDBContext.ParLevel2();
+            var ParLevel2DB = new SGQDBContext.ParLevel2(db);
             var ParCounterDB = new SGQDBContext.ParCounter(db);
             //Pega uma lista de ParLevel2
             //Tem que confirmar a company e colocar na query dentro do método, ainda não foi validado
