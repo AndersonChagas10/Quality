@@ -30,6 +30,7 @@ namespace DTO.DTO.Params
             ParLevel1_Id = level1Id;
             ParCompany_Id = parcompanyId;
             InitDate = initdate;
+            IsActive = true;
 
 
             if (parcompanyId != null)

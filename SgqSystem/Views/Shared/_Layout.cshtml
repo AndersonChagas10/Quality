@@ -1,10 +1,11 @@
 ﻿@using DTO
 
 @{
-//var urlSend = Url.Action("Save", "api/ParLevel2ControlCompany"); //URL relativa
-//var urlChangeLevel2 = Url.Action("ChangeLevel2", "ParLevel2ControlCompany"); //URL relativa
-//var urlChangeLevel2UserCompany = Url.Action("ChangeLevel2UserCompany", "ParLevel2ControlCompany"); //URL relativa
-//var userRolesCompany =
+    //var urlSend = Url.Action("Save", "api/ParLevel2ControlCompany"); //URL relativa
+    //var urlChangeLevel2 = Url.Action("ChangeLevel2", "ParLevel2ControlCompany"); //URL relativa
+    //var urlChangeLevel2UserCompany = Url.Action("ChangeLevel2UserCompany", "ParLevel2ControlCompany"); //URL relativa
+    //var userRolesCompany =
+    var urlLogOutCookie = @Url.Action("LogOutCookie", "UserAuthentication");
 }
 @using SgqSystem.Helpers
 
@@ -57,6 +58,7 @@
     <script src="~/Scripts/Timeout/timeout-dialog.js"></script>
     <script src="~/Scripts/angular.js"></script>
     <script src="~/Angular/app.js"></script>
+
     <div class="modal fade modalLoader" id="modalLoader" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
         <div class="modal-dialog">
 
@@ -509,6 +511,45 @@
                 });
             });
         });*@
+
+        var LogOutCookie = '@Html.Raw(@urlLogOutCookie)';
+        var flag_beforeunload = false;
+
+        var pressedCtrl = false;
+        document.onkeydown=function(e){
+            var winObj = checkEventObj(e);
+            var intCtrlKey = winObj.ctrlKey;
+            var intKeyCode = winObj.keyCode;
+            if(intCtrlKey){
+                if(intKeyCode == 89){
+                    $.post(LogOutCookie, function (objetoReturn) {
+                        
+                            //window.onbeforeunload = function myFunction(e){
+                            //    return "Deseja mesmo sair?";
+                            //};
+                    }).fail(function (e, h, x) {
+                        //closeLoader();
+                        try {
+                            closeLoader();
+                            openMessageModal("Alerta", e.responseJSON.Message);
+                        } catch (e) {
+                            closeLoader();
+                            openMessageModal("@Resources.Resource.warning", "@Resources.Resource.cannot_finish_action");
+                            console.log(e);
+                        }
+                    });
+                    return "Write something clever here...";
+                }
+            }
+        }
+        function checkEventObj ( _event_ ){
+            // --- IE explorer
+            if ( window.event )
+                return window.event;
+                // --- Netscape and other explorers
+            else
+                return _event_;
+        }
 
     </script>
 

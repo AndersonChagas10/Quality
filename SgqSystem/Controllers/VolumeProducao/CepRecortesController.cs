@@ -125,6 +125,11 @@ namespace SgqSystem.Controllers
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
+                else
+                {
+                    ReturnError();
+                    //return View(cepRecortes);
+                }
             }
 
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepRecortes.ParCompany_id);
@@ -162,6 +167,11 @@ namespace SgqSystem.Controllers
                 ModelState.AddModelError("TamanhoAmostra", "O campo \"Tamanho de Cada Amostra\" precisa ser preenchido.");
         }
 
+        private void ReturnError()
+        {
+            ModelState.AddModelError("Data", "Já existe um registro nesta data para esta unidade!");
+        }
+
         // GET: CepRecortes/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -176,7 +186,7 @@ namespace SgqSystem.Controllers
             }
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepRecortes.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1.Where(c => c.Id == 23), "Id", "Name", cepRecortes.ParLevel1_id);
-            return View("Create", cepRecortes);
+            return View(cepRecortes);
         }
 
         // POST: CepRecortes/Edit/5
@@ -213,13 +223,14 @@ namespace SgqSystem.Controllers
                     }
                     else
                     {
-                        Guard.MesangemModelError("Já existe uma coleta para esta unidade neste dia!", true);
+                        ReturnError();
+                        //return View(cepRecortes);
                     }
                 }
             }
             ViewBag.ParCompany_id = new SelectList(db.ParCompany.OrderBy(c => c.Name), "Id", "Name", cepRecortes.ParCompany_id);
             ViewBag.ParLevel1_id = new SelectList(db.ParLevel1, "Id", "Name", cepRecortes.ParLevel1_id);
-            return View("Create", cepRecortes);
+            return View(cepRecortes);
         }
 
         // GET: CepRecortes/Delete/5

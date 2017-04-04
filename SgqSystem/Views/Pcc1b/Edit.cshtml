@@ -78,12 +78,12 @@
                                                 @Html.ValidationMessageFor(model => model.Data, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
-                                        @{ Html.EnableClientValidation(true); }
 
+                                        @{ Html.EnableClientValidation(true); }
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.ParCompany_id, "Unidade", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.DropDownListFor(model => model.ParCompany_id, new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control" })
+                                                @Html.DropDownListFor(model => model.ParCompany_id, new SelectList(ViewBag.UnidadeUsuario, "Id", "Name")@*, Resources.Resource.select + "..."*@, new { @class = "form-control" })
                                                 @*@Html.DropDownList("ParCompany_id", null, htmlAttributes: new { @class = "form-control" })*@
                                                 @Html.ValidationMessageFor(model => model.ParCompany_id, "", new { @class = "text-danger" })
                                             </div>
@@ -162,8 +162,6 @@
                                             </div>
                                         </div>*@
 
-                                        
-
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Avaliacoes, "Avaliações", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
@@ -189,7 +187,6 @@
                                         </div>
                                     </div>
                                 }
-
                                 <div>
                                     @Html.ActionLink("Voltar para Volume de PCC1b", "Index")
                                 </div>
@@ -234,6 +231,9 @@
         });
         $('#Avaliacoes').val(1);
         $('#avalicaohidden').val(1);
+
+        var data = "@Model.Data.Value.Date.ToString("dd/MM/yyyy")";
+        $('#Data').val(data);
     });
 
 </script>

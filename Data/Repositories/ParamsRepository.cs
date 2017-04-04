@@ -799,10 +799,25 @@ namespace Data.Repositories
             }
             else
             {
-                Guard.verifyDate(paramParLevel3Level2, "AlterDate");
-                db.ParLevel3Level2.Attach(paramParLevel3Level2);
-                db.Entry(paramParLevel3Level2).State = EntityState.Modified;
-                db.Entry(paramParLevel3Level2).Property(e => e.AddDate).IsModified = false;
+                if (!paramParLevel3Level2.IsActive)
+                {
+                    var vinculoL3L2L1 = db.ParLevel3Level2Level1.FirstOrDefault(r => r.ParLevel3Level2_Id == paramParLevel3Level2.Id);
+                    
+                    db.ParLevel3Level2Level1.Attach(vinculoL3L2L1);
+                    db.ParLevel3Level2Level1.Remove(vinculoL3L2L1);
+
+                    db.ParLevel3Level2.Attach(paramParLevel3Level2);
+                    db.ParLevel3Level2.Remove(paramParLevel3Level2);
+
+                    db.SaveChanges();
+                }
+                else
+                {
+                    Guard.verifyDate(paramParLevel3Level2, "AlterDate");
+                    db.ParLevel3Level2.Attach(paramParLevel3Level2);
+                    db.Entry(paramParLevel3Level2).State = EntityState.Modified;
+                    db.Entry(paramParLevel3Level2).Property(e => e.AddDate).IsModified = false;
+                }
             }
         }
 

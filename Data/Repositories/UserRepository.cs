@@ -17,14 +17,14 @@ namespace Data.Repositories
         public UserSgq GetByName(string Name)
         {
             //  return GetAll().FirstOrDefault(r => r.Name.ToLower().Equals(Name.ToLower()));
-            return GetAll().Where(r => r.Name.ToLower().Trim().Equals(Name.ToLower().Trim())).FirstOrDefault();
+            return GetAll().Where(r => r.Name.Equals(Name)).FirstOrDefault();
         }
 
         public bool UserNameIsCadastrado(string Name, int id)
         {
             return GetAll().Any(x => x.Id != id && x.Name == Name);
         }
-
+        
         public void Salvar(UserSgq user)
         {
             AddOrUpdate(user);
