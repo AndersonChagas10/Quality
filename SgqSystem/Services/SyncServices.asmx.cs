@@ -2893,7 +2893,7 @@ namespace SgqSystem.Services
             var html = new Html();
 
             //Instanciamos a Classe ParLevel01 Dapper
-            var ParLevel1DB = new SGQDBContext.ParLevel1();
+            var ParLevel1DB = new SGQDBContext.ParLevel1(db);
             var ParCounterDB = new SGQDBContext.ParCounter();
             //Inicaliza ParLevel1VariableProduction
             var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction();
