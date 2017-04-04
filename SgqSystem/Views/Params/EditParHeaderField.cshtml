@@ -2,7 +2,7 @@
 @{
     Layout = null;
 }
-<div id="ediCab" class="container">
+<div id="ediCab" class="container" >
     @using (Html.BeginForm())
     {
         <div class="row">
@@ -83,7 +83,7 @@
                                 @Html.TextBoxFor(r => i.PunishmentValue, i.PunishmentValue.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture))
                             </div>
                             <div class="col-md-2">
-                                @Html.CheckBoxFor(r => i.IsActive, new {htmlAttributes = new {@style ="max-width:0px; visibility:hidden;" } })
+                                @Html.EditorFor(r => i.IsActive, new {htmlAttributes = new {@style ="max-width:0px; visibility:hidden;" } })
                             </div>
                         </div>
                     </div>
