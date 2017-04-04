@@ -71,11 +71,11 @@
                 $('#' + idTable).fadeOut();
             }
         },
-        btnRemove: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Remover" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcRemove($(this));"><i class="fa fa-times" aria-hidden="true"></i></button>',
+        btnRemove: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="@Resources.Resource.remove" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcRemove($(this));"><i class="fa fa-times" aria-hidden="true"></i></button>',
         funcRemove: function (e) {
             $(e).parents('tr').remove();
         },
-        btnInactive: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Inativar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcInactive($(this));"><i class="fa fa-times" aria-hidden="true"></i></button>',
+        btnInactive: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="@Resources.Resource.inactivate" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcInactive($(this));"><i class="fa fa-times" aria-hidden="true"></i></button>',
         funcInactive: function (e) {
             var obj = $(e).parents('tr').data();
             obj["IsActive"] = false;
@@ -86,7 +86,7 @@
             element.find('td:last').append(crudNxN.btnReActive, crudNxN.btnEdit);
             reloadPopovers();
         },
-        btnReActive: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Reativar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcReActive($(this));"><i class="fa fa-undo" aria-hidden="true"></i></button>',
+        btnReActive: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="@Resources.Resource.reactivate" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcReActive($(this));"><i class="fa fa-undo" aria-hidden="true"></i></button>',
         funcReActive: function (e) {
             var obj = $(e).parents('tr').data();
             obj["IsActive"] = true;
@@ -109,7 +109,7 @@
         //    reloadPopovers();
         //},
 
-        btnEdit: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>',
+        btnEdit: '<button type="button" class="btn btn-danger btn-xs popovers" data-content="@Resources.Resource.alter" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>',
         funcEdit: function (e) {
 
             $('#crudNxNEdit > div > div > div.modal-body').empty();
@@ -269,7 +269,7 @@
                 divDeEdicao = $('.ParIntervalos').clone();
                 $(divDeEdicao).show();
                 $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
-                
+
                 $('#crudNxNEdit #selectUnidadeDeMedidas').val(obj.ParMeasurementUnit_Id).change();
                 $('#crudNxNEdit #parLevel3Value_IntervalMin').val(obj.IntervalMin);
                 $('#crudNxNEdit #parLevel3Value_IntervalMax').val(obj.IntervalMax);
@@ -286,7 +286,7 @@
                 });
                 $('#crudNxNEdit #parLevel3Value_IntervalMin').trigger('input');
                 $('#crudNxNEdit #parIntervalosType').val(obj.AcceptableValueBetween ? 1 : 0).change();
-               
+
             } else if (obj.ParLevel3InputType_Id == 1) {
 
                 divDeEdicao = $('.ParBinarios').clone();
@@ -334,7 +334,7 @@
             $('#crudNxNEdit #avaliacao').val(obj.evaluationNumber);
             $('#crudNxNEdit #amostra').val(obj.sampleNumber);
             $('#crudNxNEdit #avAmCompany').attr("disabled", true);
-            if (obj.companyId > 0) 
+            if (obj.companyId > 0)
                 $('#crudNxNEdit #avAmCompany').val(obj.companyId).change();
 
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
@@ -362,7 +362,7 @@
             $('#crudNxNEdit #percentVal').val(obj.PercentValue);
             GuardJs.mascaraPorcentegem('#crudNxNEdit #percentVal');
             $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
-            
+
         },
         retornaObjetoAlteradoMetaL1: function (obj) {
             /*Valida se pode criar o objeto*/
