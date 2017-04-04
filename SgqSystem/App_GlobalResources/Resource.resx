@@ -1809,4 +1809,16 @@
   <data name="sendPassEmail" xml:space="preserve">
     <value>Send Password to Email</value>
   </data>
+  <data name="alter" xml:space="preserve">
+    <value>Alter</value>
+  </data>
+  <data name="inactivate" xml:space="preserve">
+    <value>Inactivate</value>
+  </data>
+  <data name="reactivate" xml:space="preserve">
+    <value>Reactivate</value>
+  </data>
+  <data name="remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
 </root>
