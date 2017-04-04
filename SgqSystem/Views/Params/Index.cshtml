@@ -1232,8 +1232,14 @@
                 var tam = dados['i.Id'].length;
                 var count = 0;
                 var ar = [];
+                var contAct =0;
                 while (count < tam) {
-                    ar.push({ Id: dados['i.Id'][count], Name: dados['i.Name'][count], ParHeaderField_Id : idpar, PunishmentValue: dados['i.PunishmentValue'][count], IsActive: dados['i.IsActive'][count]});
+                    var act = dados['i.IsActive'][contAct];
+                    if(act == "True")
+                        contAct = contAct + 2;
+                    else
+                        contAct++;
+                    ar.push({ Id: dados['i.Id'][count], Name: dados['i.Name'][count], ParHeaderField_Id : idpar, PunishmentValue: dados['i.PunishmentValue'][count], IsActive: act});
                     count++;
                 }
                 if(dados['paramsDto.parHeaderFieldDto.ParFieldType_Id'] == 1){

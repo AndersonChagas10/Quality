@@ -8,6 +8,7 @@ using DTO.DTO.Params;
 using Helper;
 using SgqSystem.Helpers;
 using SgqSystem.ViewModels;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 
@@ -181,7 +182,6 @@ namespace SgqSystem.Controllers.Params
         public ActionResult EditParHeaderField(int id)
         {
             ViewModel.paramsDto.parHeaderFieldDto = _parHeaderField.GetById(id);
-            
             return View("EditParHeaderField" , ViewModel);
         }
 
