@@ -107,37 +107,37 @@ namespace SgqSystem.Controllers.Api.Params
             return paramsViewModel;
         }
 
-        [HttpPost]
-        [Route("AlteraAvaliacaoAmostra")]
-        public void AlteraAvaliacaoAmostra(ParLevel2SampleEvaluationDTO alterObj)
-        {
-            using (var db = new SgqDbDevEntities())
-            {
-                /*Busco do DB*/
-                var sample = db.ParSample.FirstOrDefault(r => r.Id == alterObj.sampleId);
-                var evaluation = db.ParEvaluation.FirstOrDefault(r => r.Id == alterObj.evaluationId);
+        //[HttpPost]
+        //[Route("AlteraAvaliacaoAmostra")]
+        //public void AlteraAvaliacaoAmostra(ParLevel2SampleEvaluationDTO alterObj)
+        //{
+        //    using (var db = new SgqDbDevEntities())
+        //    {
+        //        /*Busco do DB*/
+        //        var sample = db.ParSample.FirstOrDefault(r => r.Id == alterObj.sampleId);
+        //        var evaluation = db.ParEvaluation.FirstOrDefault(r => r.Id == alterObj.evaluationId);
 
-                /*Altero*/
-                sample.Number = alterObj.sampleNumber;
-                evaluation.Number = alterObj.evaluationNumber;
-                sample.AlterDate = DateTime.Now;
-                evaluation.AlterDate = DateTime.Now;
+        //        /*Altero*/
+        //        sample.Number = alterObj.sampleNumber;
+        //        evaluation.Number = alterObj.evaluationNumber;
+        //        sample.AlterDate = DateTime.Now;
+        //        evaluation.AlterDate = DateTime.Now;
 
-                /*Explico para o EF que alterei*/
-                db.ParSample.Attach(sample);
-                var entrySample = db.Entry(sample);
-                entrySample.Property(e => e.Number).IsModified = true;
-                entrySample.Property(e => e.AlterDate).IsModified = true;
+        //        /*Explico para o EF que alterei*/
+        //        db.ParSample.Attach(sample);
+        //        var entrySample = db.Entry(sample);
+        //        entrySample.Property(e => e.Number).IsModified = true;
+        //        entrySample.Property(e => e.AlterDate).IsModified = true;
 
-                db.ParEvaluation.Attach(evaluation);
-                var entryEvaluation = db.Entry(evaluation);
-                entryEvaluation.Property(e => e.Number).IsModified = true;
-                entryEvaluation.Property(e => e.AlterDate).IsModified = true;
+        //        db.ParEvaluation.Attach(evaluation);
+        //        var entryEvaluation = db.Entry(evaluation);
+        //        entryEvaluation.Property(e => e.Number).IsModified = true;
+        //        entryEvaluation.Property(e => e.AlterDate).IsModified = true;
 
-                /*Salvo*/
-                db.SaveChanges();
-            }
-        }
+        //        /*Salvo*/
+        //        db.SaveChanges();
+        //    }
+        //}
 
         //[HttpPost]
         //[Route("SalvarAvaliacaoAmostra")]
