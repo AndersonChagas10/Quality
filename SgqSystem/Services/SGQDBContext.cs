@@ -75,7 +75,7 @@ namespace SGQDBContext
 
             ParLevel1_IdFilho = " AND P1.Id NOT IN (1042) ";
 
-            SqlConnection db = new SqlConnection(conexao);
+            //SqlConnection db = new SqlConnection(conexao);
             string sql = "\n SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
                          "\n P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate, P1.IsLimitedEvaluetionNumber, P1.IsPartialSave" +
                          "\n ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, AL.IsReaudit AS IsReaudit, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2                                                                                                                                     " +
@@ -297,10 +297,17 @@ namespace SGQDBContext
 
         public bool IsReaudit { get; set; }
 
+        private SqlConnection db { get; set; }
+
+        public ParLevel2(SqlConnection _db)
+        {
+            db = _db;
+        }
+
         public int getExisteAvaliacao(int ParCompany_Id, int ParLevel2_Id)
         {
 
-            SqlConnection db = new SqlConnection(conexao);
+            //SqlConnection db = new SqlConnection(conexao);
 
             string sql = "" +
                 "\n  select count(1) from " +
@@ -318,7 +325,7 @@ namespace SGQDBContext
         public int getExisteAmostra(int ParCompany_Id, int ParLevel2_Id)
         {
 
-            SqlConnection db = new SqlConnection(conexao);
+            //SqlConnection db = new SqlConnection(conexao);
 
             string sql = "" +
                 "\n  select count(1) from " +
@@ -344,7 +351,7 @@ namespace SGQDBContext
         {
             try
             {
-                SqlConnection db = new SqlConnection(conexao);
+                //SqlConnection db = new SqlConnection(conexao);
                 string sql = "SELECT * FROM ParLevel2 WHERE Id='" + Id + "'";
                 var parLevel1List = db.Query<ParLevel2>(sql).FirstOrDefault();
                 return parLevel1List;
@@ -356,7 +363,7 @@ namespace SGQDBContext
         }
         public IEnumerable<ParLevel2> getLevel2ByIdLevel1(int ParLevel1_Id, int ParCompany_Id)
         {
-            SqlConnection db = new SqlConnection(conexao);            
+            //SqlConnection db = new SqlConnection(conexao);            
 
             bool parLevel1Familia = false;
 
@@ -466,10 +473,17 @@ namespace SGQDBContext
         public int Evaluate { get; set; }
         //public int? ParCompany_Id { get; set; }
 
+        private SqlConnection db { get; set; }
+
+        public ParLevel2Evaluate(SqlConnection _db)
+        {
+            db = _db;
+        }
+
         public IEnumerable<ParLevel2Evaluate> getEvaluate(ParLevel1 ParLevel1, int? ParCompany_Id)
         {
 
-            SqlConnection db = new SqlConnection(conexao);
+            //SqlConnection db = new SqlConnection(conexao);
             string queryCompany = null;
 
 
@@ -762,9 +776,16 @@ namespace SGQDBContext
         public decimal WeiEvaluation { get; set; }
         public int ParCompany_Id { get; set; }
 
+        private SqlConnection db { get; set; }
+
+        public ParLevel3(SqlConnection _db)
+        {
+            db = _db;
+        }
+
         public IEnumerable<ParLevel3> getList()
         {
-            SqlConnection db = new SqlConnection(conexao);
+            //SqlConnection db = new SqlConnection(conexao);
             string sql = "SELECT Id, Name FROM ParLevel3";
             var parLevel3List = db.Query<ParLevel3>(sql);
 
@@ -774,7 +795,7 @@ namespace SGQDBContext
 
         public IEnumerable<ParLevel3> getListPerLevel1Id(int ParLevel1_Id)
         {
-            SqlConnection db = new SqlConnection(conexao);
+            //SqlConnection db = new SqlConnection(conexao);
             string sql = "SELECT P3.Id, P3.Name FROM ParLevel3Level2Level1 P321 INNER JOIN ParLevel3Level2 P32 ON P32.Id = P321.ParLevel3Level2_Id INNER JOIN ParLevel3 P3 ON P3.Id = P32.ParLevel3_Id WHERE P321.ParLevel1_Id = " + ParLevel1_Id.ToString();
             var parLevel3List = db.Query<ParLevel3>(sql);
 
@@ -785,7 +806,7 @@ namespace SGQDBContext
         //
         public IEnumerable<ParLevel3> getLevel3ByLevel2(SGQDBContext.ParLevel1 ParLevel1, SGQDBContext.ParLevel2 ParLevel2, int ParCompany_Id, DateTime DateCollect)
         {
-            SqlConnection db = new SqlConnection(conexao);
+            //SqlConnection db = new SqlConnection(conexao);
 
             var syncServices = new SgqSystem.Services.SyncServices();
 
@@ -978,7 +999,7 @@ namespace SGQDBContext
                 //Pega a data pela regra da frequencia
                 syncServices.getFrequencyDate(ParLevel2.ParFrequency_Id, DateCollect, ref dataInicio, ref dataFim);
 
-                SqlConnection db = new SqlConnection(conexao);
+                //SqlConnection db = new SqlConnection(conexao);
 
 
 
@@ -1046,11 +1067,18 @@ namespace SGQDBContext
         //public int Sequential { get; set; }
         //public int Side { get; set; }
 
+        private SqlConnection db { get; set; }
+
+        public Level2Result(SqlConnection _db)
+        {
+            db = _db;
+        }
+
         public IEnumerable<Level2Result> getList(int ParLevel1_Id, int ParCompany_Id, string dataInicio, string dataFim)
         {
 
            
-            SqlConnection db = new SqlConnection(conexao);
+            //SqlConnection db = new SqlConnection(conexao);
 
             string sql = "SELECT ParLevel1_Id, ParLevel2_Id, UnitId AS Unit_Id, Shift, Period, CollectionDate, MAX(EvaluationNumber) AS EvaluateLast, MAX(Sample) AS SampleLast, MAX(ConsolidationLevel2_Id) AS ConsolidationLevel2_Id " +
                          "FROM(SELECT CL2.ParLevel1_Id, CL2.ParLevel2_Id, CL2.UnitId, Shift, Period, CONVERT(date, CollectionDate) AS CollectionDate, EvaluationNumber, MAX(Sample) AS Sample, MAX(ConsolidationLevel2_Id) AS ConsolidationLevel2_Id " +
@@ -1072,7 +1100,7 @@ namespace SGQDBContext
             try
             {
 
-                SqlConnection db = new SqlConnection(conexao);
+                //SqlConnection db = new SqlConnection(conexao);
 
                 string sql = "SELECT MAX(Sample) FROM CollectionLevel2 WHERE ConsolidationLevel2_Id = " + ConsolidationLevel2_Id + " AND EvaluationNumber = " + EvaluationNumber;
                 var LastSample = db.Query<int>(sql).FirstOrDefault();
@@ -1087,7 +1115,7 @@ namespace SGQDBContext
         public IEnumerable<Level2Result> getKeys(int ParLevel1_Id, int ParCompany_Id, string dataInicio, string dataFim)
         {
 
-            SqlConnection db = new SqlConnection(conexao);
+            //SqlConnection db = new SqlConnection(conexao);
 
             string sql = "SELECT CL2.Id, CL2.ParLevel1_Id, CL2.ParLevel2_Id, CL2.UnitId, CL2.Shift, CL2.Period, CL2.EvaluationNumber, CL2.Sample, CL2.ConsolidationLevel2_Id, CL2.[Key] " +
                          "FROM CollectionLevel2 CL2 " +
@@ -1287,9 +1315,16 @@ namespace SGQDBContext
         public decimal PunishmentValue { get; set; }
         public int IsDefaultOption { get; set; }
 
+        private SqlConnection db { get; set; }
+
+        public ParFieldType(SqlConnection _db)
+        {
+            db = _db;
+        }
+
         public IEnumerable<ParFieldType> getMultipleValues(int ParHeaderField_Id)
         {
-            SqlConnection db = new SqlConnection(conexao);
+            //SqlConnection db = new SqlConnection(conexao);
 
 
             string sql = "SELECT Id, Name, PunishmentValue, IsDefaultOption FROM ParMultipleValues       " +
@@ -1303,7 +1338,7 @@ namespace SGQDBContext
         public IEnumerable<ParFieldType> getIntegrationValues(int ParHeaderField_Id, string integracao, int ParCompany_Id)
         {
             string conexaoBR = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
-            SqlConnection db = new SqlConnection(conexaoBR);
+            //SqlConnection db = new SqlConnection(conexaoBR);
 
             var sql = "SELECT null Id, null as Name, 0 as PunishmentValue, 0 as IsDefaultOption";
 
@@ -1351,9 +1386,16 @@ namespace SGQDBContext
         public int NcNumber { get; set; }
         public int EffectiveLength { get; set; }
 
+        private SqlConnection db { get; set; }
+
+        public ParRelapse(SqlConnection _db)
+        {
+            db = _db;
+        }
+
         public IEnumerable<ParRelapse> getRelapses(int ParLevel1_Id)
         {
-            SqlConnection db = new SqlConnection(conexao);
+            //SqlConnection db = new SqlConnection(conexao);
 
 
             string sql = "SELECT Id, ParFrequency_Id, NcNumber, EffectiveLength FROM ParRelapse                 " +
@@ -1462,11 +1504,18 @@ namespace SGQDBContext
         /// </summary>
         /// <param name="ParCompany_Id"></param>
         /// <returns></returns>
+        /// 
+        private SqlConnection db { get; set; }
+
+        public ParCompanyXUserSgq(SqlConnection _db)
+        {
+            db = _db;
+        }
         public IEnumerable<ParCompanyXUserSgq> getCompanyUsers(int ParCompany_Id)
         {
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
-            SqlConnection db = new SqlConnection(conexao);
+            //SqlConnection db = new SqlConnection(conexao);
 
             string sql = "select U.Id AS UserSGQ_Id, U.Name AS UserSGQ_Login, U.FullName AS UserSGQ_Name, U.Password AS UserSGQ_Pass, U.Role, PxC.Role AS Role, C.Id ParCompany_Id, C.Name ParCompany_Name from ParCompanyXUserSgq PxC " +
                          "INNER JOIN ParCompany C ON PxC.ParCompany_Id = c.Id                                                                                                                                                          " +
@@ -1485,9 +1534,9 @@ namespace SGQDBContext
         /// <returns></returns>
         public IEnumerable<ParCompanyXUserSgq> getUserCompany(int UserSgq_Id)
         {
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
-            SqlConnection db = new SqlConnection(conexao);
+            //SqlConnection db = new SqlConnection(conexao);
 
             string sql = "select U.Id AS UserSGQ_Id, U.Name AS UserSGQ_Login, U.FullName AS UserSGQ_Name, U.Password AS UserSGQ_Pass, U.Role, PxC.Role AS Role, C.Id ParCompany_Id, C.Name ParCompany_Name from ParCompanyXUserSgq PxC " +
                          "INNER JOIN ParCompany C ON PxC.ParCompany_Id = c.Id                                                                                                                                                          " +
@@ -1565,9 +1614,16 @@ namespace SGQDBContext
         public String cSgCaracteristica { get; set; }
         public String cIdentificador { get; set; }
 
+        private SqlConnection db { get; set; }
+
+        public CaracteristicaTipificacao(SqlConnection _db)
+        {
+            db = _db;
+        }
+
         public IEnumerable<CaracteristicaTipificacao> getCaracteristicasTipificacao(int id)
         {
-            SqlConnection db = new SqlConnection(conexao);
+            //SqlConnection db = new SqlConnection(conexao);
 
             string sql = "select CP.nCdCaracteristica, CP.cNmCaracteristica, CP.cNrCaracteristica, CP.cSgCaracteristica, CP.cIdentificador" +
                          " from CaracteristicaTipificacao CP where LEN(CP.cNrCaracteristica) >= 5 and SUBSTRING(CP.cNrCaracteristica, 1, 3) = '" + id + "';";
@@ -1579,7 +1635,7 @@ namespace SGQDBContext
 
         public IEnumerable<CaracteristicaTipificacao> getAreasParticipantes()
         {
-            SqlConnection db = new SqlConnection(conexao);
+            //SqlConnection db = new SqlConnection(conexao);
 
             string sql = "select CP.nCdCaracteristica, CP.cNmCaracteristica, CP.cNrCaracteristica, CP.cSgCaracteristica, CP.cIdentificador" +
                          " from AreasParticipantes CP where LEN(cNrCaracteristica) >= 5;";
@@ -1591,7 +1647,7 @@ namespace SGQDBContext
 
         public IEnumerable<CaracteristicaTipificacao> getCaracteristicasTipificacaoUnico(int ncdcaracteristica)
         {
-            SqlConnection db = new SqlConnection(conexao);
+            //SqlConnection db = new SqlConnection(conexao);
 
             string sql = "select CP.nCdCaracteristica, CP.cNmCaracteristica, CP.cNrCaracteristica, CP.cSgCaracteristica, CP.cIdentificador" +
                          " from CaracteristicaTipificacao CP where cNrCaracteristica = " + ncdcaracteristica;
@@ -1603,7 +1659,7 @@ namespace SGQDBContext
 
         public IEnumerable<CaracteristicaTipificacao> getAreasParticipantesUnico()
         {
-            SqlConnection db = new SqlConnection(conexao);
+            //SqlConnection db = new SqlConnection(conexao);
 
             string sql = "select CP.nCdCaracteristica, CP.cNmCaracteristica, CP.cNrCaracteristica, CP.cSgCaracteristica, CP.cIdentificador" +
                          " from AreasParticipantes CP where cNrCaracteristica = 0209;";
@@ -1780,15 +1836,21 @@ namespace SGQDBContext
         public int EvaluatedResult { get; set; }
         public int DefectsResult { get; set; }
 
-        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
+        private SqlConnection db { get; set; }
+
+        public ConsolidationLevel2(SqlConnection _db)
+        {
+            db = _db;
+        }
         public ConsolidationLevel2 getConsolidation(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate)
         {
             try
             {
                 string sql = "SELECT * FROM ConsolidationLevel2 WHERE UnitId = '" + ParCompany_Id + "' AND ParLevel1_Id= '" + ParLevel1_Id + "' AND CONVERT(date, ConsolidationDate) = '" + collectionDate.ToString("yyyy-MM-dd") + "'";
 
-                SqlConnection db = new SqlConnection(conexao);
+                //SqlConnection db = new SqlConnection(conexao);
                 var obj = db.Query<ConsolidationLevel2>(sql).FirstOrDefault();
                 return obj;
             }
@@ -1803,7 +1865,7 @@ namespace SGQDBContext
             try
             {
                 string sql = "SELECT Id, ConsolidationLevel1_Id, UnitId, ParLevel2_Id, ConsolidationDate, WeiEvaluation, EvaluateTotal, DefectsTotal, WeiDefects, TotalLevel3Evaluation, TotalLevel3WithDefects, EvaluatedResult FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = '" + ConsolidationLevel1_Id + "' AND ParLevel2_Id= '" + ParLevel2_Id + "' AND UnitId='" + ParCompany_Id + "'";
-                SqlConnection db = new SqlConnection(conexao);
+                //SqlConnection db = new SqlConnection(conexao);
                 var obj = db.Query<ConsolidationLevel2>(sql).FirstOrDefault();
                 return obj;
 
