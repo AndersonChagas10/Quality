@@ -36,8 +36,15 @@ namespace SgqSystem.Services
     [System.Web.Script.Services.ScriptService]
     public class SyncServices : System.Web.Services.WebService
     {
-        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
         //private SqlConnection connection;
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        private SqlConnection db;
+
+        public SyncServices()
+        {
+            SqlConnection db = new SqlConnection(conexao);
+        }
 
         #region Funções
 
@@ -1954,8 +1961,8 @@ namespace SgqSystem.Services
                         string partialResults = null;
                         if (c.IsPartialSave == true)
                         {
-
-                            var ParLevel1DB = new SGQDBContext.ParLevel1();
+                            
+                            var ParLevel1DB = new SGQDBContext.ParLevel1(db);
                             var parLevel1 = ParLevel1DB.getById(Level2Result.ParLevel1_Id);
 
                             var ParLevel2DB = new SGQDBContext.ParLevel2();

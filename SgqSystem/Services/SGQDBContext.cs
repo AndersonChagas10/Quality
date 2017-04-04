@@ -40,11 +40,19 @@ namespace SGQDBContext
         {
 
         }
+
+        private SqlConnection db { get; set; }
+
+        public ParLevel1(SqlConnection _db)
+        {
+            db = _db;
+        }
+
         public ParLevel1 getById(int Id)
         {
             try
             {
-                SqlConnection db = new SqlConnection(conexao);
+                //SqlConnection db = new SqlConnection(conexao);
                 string sql = "SELECT * FROM ParLevel1 WHERE Id='" + Id + "'";
                 var parLevel1List = db.Query<ParLevel1>(sql).FirstOrDefault();
 
