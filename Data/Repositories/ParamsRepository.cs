@@ -512,8 +512,7 @@ namespace Data.Repositories
 
                 if (parLevel3Level2pontos != null)
                     if (parLevel3Level2pontos.Count() > 0)
-                        foreach (var pontos in parLevel3Level2pontos)
-                            AddUpdateParLevel3Level2(pontos);
+                            AddUpdateParLevel3Level2(parLevel3Level2pontos);
 
                 db.SaveChanges();
                 ts.Commit();
@@ -790,42 +789,55 @@ namespace Data.Repositories
         
         #region ParLevel3Level2
 
-        public void AddUpdateParLevel3Level2(ParLevel3Level2 paramParLevel3Level2)
+        public void AddUpdateParLevel3Level2(List<ParLevel3Level2> paramParLevel3Level2)
         {
 
-            if (paramParLevel3Level2.Id == 0)
+            if (paramParLevel3Level2.Any(r => r.Id == 0))
             {
-                db.ParLevel3Level2.Add(paramParLevel3Level2);
+                db.ParLevel3Level2.AddRange(paramParLevel3Level2.Where(r => r.Id == 0));
             }
             else
             {
-                if (!paramParLevel3Level2.IsActive)
+                if (!paramParLevel3Level2.Any(r => r.IsActive))
                 {
-                    var vinculoL3L2L1 = db.ParLevel3Level2Level1.FirstOrDefault(r => r.ParLevel3Level2_Id == paramParLevel3Level2.Id);
+
+                    var listal3l2l1 = new List<ParLevel3Level2Level1>();
+                    foreach (var i in paramParLevel3Level2)
+                    {
+                        db.ParLevel3Level2.Attach(i);
+                        var result = db.ParLevel3Level2Level1.FirstOrDefault(r => r.ParLevel3Level2_Id == i.Id);
+                        listal3l2l1.Add(result);
                     
-                    db.ParLevel3Level2Level1.Attach(vinculoL3L2L1);
-                    db.ParLevel3Level2Level1.Remove(vinculoL3L2L1);
+                        db.ParLevel3Level2Level1.Attach(result);
+                    }
 
-                    db.ParLevel3Level2.Attach(paramParLevel3Level2);
-                    db.ParLevel3Level2.Remove(paramParLevel3Level2);
+                    db.ParLevel3Level2Level1.RemoveRange(listal3l2l1);
+                    db.ParLevel3Level2.RemoveRange(paramParLevel3Level2);
 
-                    db.SaveChanges();
                 }
                 else
                 {
-                    Guard.verifyDate(paramParLevel3Level2, "AlterDate");
-                    db.ParLevel3Level2.Attach(paramParLevel3Level2);
-                    db.Entry(paramParLevel3Level2).State = EntityState.Modified;
-                    db.Entry(paramParLevel3Level2).Property(e => e.AddDate).IsModified = false;
+                    foreach (var i in paramParLevel3Level2)
+                    {
+                        Guard.verifyDate(i, "AlterDate");
+                        db.ParLevel3Level2.Attach(i);
+                        db.Entry(i).State = EntityState.Modified;
+                        db.Entry(i).Property(e => e.AddDate).IsModified = false;
+                    }
                 }
             }
+
+            db.SaveChanges();
+
         }
 
         public void SaveParLevel3Level2(ParLevel3Level2 paramLevel3Level2)
         {
             using (var ts = db.Database.BeginTransaction())
             {
-                AddUpdateParLevel3Level2(paramLevel3Level2); /*Salva paramLevel1*/
+                var save = new List<ParLevel3Level2>();
+                save.Add(paramLevel3Level2);
+                AddUpdateParLevel3Level2(save); /*Salva paramLevel1*/
                 db.SaveChanges(); //Obtem Id do paramLevel1
                 ts.Commit();
             }
