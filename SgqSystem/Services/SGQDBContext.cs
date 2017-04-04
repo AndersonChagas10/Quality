@@ -1254,11 +1254,13 @@ namespace SGQDBContext
         {
             SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT * FROM ParLevel2XHeaderField                                                   \n" +
-                         "WHERE ParLevel1_Id = " + ParLevel1_Id + "                                              \n" +
-                         "AND ParLevel2_Id = " + ParLevel2_Id + "                                               \n" +
-                         "AND ParHeaderField_Id = " + HeaderField_Id + "                                         \n" +
-                         "AND IsActive = 1;                                                                    \n";
+            string sql = "SELECT * FROM ParLevel2XHeaderField PHF                                                   \n" +
+                         "\n INNER JOIN ParHeaderField HF " +
+                         "\n ON HF.Id = PHF.ParHeaderField_Id AND HF.IsActive = 1 " +
+                         "\n WHERE PHF.ParLevel1_Id = " + ParLevel1_Id + "                                              \n" +
+                         "\n AND PHF.ParLevel2_Id = " + ParLevel2_Id + "                                               \n" +
+                         "\n AND PHF.ParHeaderField_Id = " + HeaderField_Id + "                                         \n" +
+                         "\n AND PHF.IsActive = 1;                                                                    \n";
 
             var parLevel3List = db.Query<ParLevelHeader>(sql);
 

@@ -441,6 +441,7 @@
     <Compile Include="Services\Html.cs" />
     <Compile Include="Services\Level02Result.cs" />
     <Compile Include="Services\SGQDBContext.cs" />
+    <Compile Include="Services\SGQDBContext_YTOARA.cs" />
     <Compile Include="Services\SyncServices.asmx.cs">
       <DependentUpon>SyncServices.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -2185,6 +2186,10 @@
     <ProjectReference Include="..\PlanoAcaoCore\PlanoAcaoCore.csproj">
       <Project>{9F15CCA3-EC01-46B6-91EC-3F408E7417BC}</Project>
       <Name>PlanoAcaoCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\YTOARA_DOMINIO\YTOARA_DOMINIO.csproj">
+      <Project>{02cfb056-37ce-40f2-8790-0d47bc6d2b59}</Project>
+      <Name>YTOARA_DOMINIO</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
