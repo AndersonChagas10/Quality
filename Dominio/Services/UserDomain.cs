@@ -71,11 +71,11 @@ namespace Dominio.Services
                     throw  e;
                 }
 
-                if (GlobalConfig.Brasil)
-                    LoginBrasil(userDto, userByName);
+                //if (GlobalConfig.Brasil)
+                   // LoginBrasil(userDto, userByName);
 
-                if (GlobalConfig.Eua)
-                    LoginEUA(userDto, userByName);
+                //if (GlobalConfig.Eua)
+                    //LoginEUA(userDto, userByName);
 
                 #region Verifica no DB User Definitivamente
 
@@ -364,6 +364,18 @@ namespace Dominio.Services
             catch (Exception e)
             {
                 return new GenericReturn<UserDTO>(e, "CAnnot get user by name.");
+            }
+        }
+        public GenericReturn<UserSgqDTO> GetByName2(string username)
+        {
+            try
+            {
+                var queryResult =  _userRepo.GetByName(username);
+                return new GenericReturn<UserSgqDTO>(Mapper.Map<UserSgq, UserSgqDTO>(queryResult));
+            }
+            catch (Exception e)
+            {
+                return new GenericReturn<UserSgqDTO>(e, "CAnnot get user by name.");
             }
         }
 

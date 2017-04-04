@@ -26,7 +26,6 @@ namespace DTO.DTO
         public bool isSlaugther { get; set; }
         public string[] Roles { get; set; }
         public string FullName { get; set; }
-
         public List<UnitUserDTO> UnitUser { get; set; }
 
         public string Role { get; set; }

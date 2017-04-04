@@ -15,6 +15,7 @@ namespace Dominio.Services
     /// </summary>
     public class ParamsDomain : IParamsDomain
     {
+        private SgqDbDevEntities db = new SgqDbDevEntities();
 
         #region Constructor
 
@@ -33,7 +34,7 @@ namespace Dominio.Services
         private IBaseRepository<ParLevelDefiniton> _baseParLevelDefiniton;
         private IBaseRepository<ParFieldType> _baseParFieldType;
         private IBaseRepository<ParDepartment> _baseParDepartment;
-        private IBaseRepository<ParLevel3Group> _baseParLevel3Group;
+        private IBaseRepository<ParLevel3Group> _baseParLevel3Group; //
         private IBaseRepository<ParLocal> _baseParLocal;
         private IBaseRepository<ParCounter> _baseParCounter;
         private IBaseRepository<ParCounterXLocal> _baseParCounterXLocal;
@@ -42,8 +43,8 @@ namespace Dominio.Services
         private IBaseRepository<ParNotConformityRuleXLevel> _baseParNotConformityRuleXLevel;
         private IBaseRepository<ParCompany> _baseParCompany;
         private IBaseRepository<ParHeaderField> _baseRepoParHeaderField;
-        private IBaseRepository<ParLevel1XHeaderField> _baseRepoParLevel1XHeaderField;
-        private IBaseRepository<ParLevel2XHeaderField> _baseRepoParLevel2XHeaderField;
+        private IBaseRepository<ParLevel1XHeaderField> _baseRepoParLevel1XHeaderField; //
+        private IBaseRepository<ParLevel2XHeaderField> _baseRepoParLevel2XHeaderField; //
         private IBaseRepository<ParMultipleValues> _baseRepoParMultipleValues;
         private IBaseRepository<ParEvaluation> _baseParEvaluation;
         private IBaseRepository<ParSample> _baseParSample;
@@ -155,6 +156,8 @@ namespace Dominio.Services
             _baseRepoParLevel3Level2 = baseRepoParLevel3Level2;
             _baseRepoParLevel3Level2Level1 = baseRepoParLevel3Level2Level1;
             _repoParLevel3 = repoParLevel3;
+
+            db.Configuration.LazyLoadingEnabled = false;
         }
 
         #endregion
@@ -212,8 +215,7 @@ namespace Dominio.Services
         {
             ParLevel1DTO parlevel1Dto;
 
-            using (var db = new SgqDbDevEntities())
-            {
+          
                 db.Configuration.LazyLoadingEnabled = false;
 
                 #region Query
@@ -266,7 +268,7 @@ namespace Dominio.Services
 
                 #endregion
 
-            }
+            
             return parlevel1Dto;
         }
 
@@ -312,8 +314,8 @@ namespace Dominio.Services
             var paramsDto = new ParamsDTO();
             var parLevel2 = _baseRepoParLevel2.GetById(idParLevel2);
             var level2 = Mapper.Map<ParLevel2DTO>(parLevel2);
-            var headerFieldLevel1 = _baseRepoParLevel1XHeaderField.GetAll();
-            var headerFieldLevel2 = _baseRepoParLevel2XHeaderField.GetAll();
+            var headerFieldLevel1 = db.ParLevel1XHeaderField.Include("ParHeaderField").ToList();
+            var headerFieldLevel2 = db.ParLevel2XHeaderField.ToList();
             var evaluation = parLevel2.ParEvaluation.Where(r => r.IsActive == true);
             var relapse = parLevel2.ParRelapse.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
             var counter = parLevel2.ParCounterXLocal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
@@ -341,10 +343,16 @@ namespace Dominio.Services
 
             /*Todos os Vinculos com este level2 / level3.*/
             var vinculosComOLevel2 = parLevel2.ParLevel3Level2.Where(r => r.IsActive == true);/*Vinculo L3 L2*/
-
+            
             /*Se houver level 1 selecionado na tela filtro somente os que estão vinculados com level2 / Level3, e tem id do level 1 em ParLevel3Level2level1*/
             if (level1Id > 0)
-                vinculosComOLevel2 = vinculosComOLevel2.Where(r => r.ParLevel3Level2Level1.Any(c => c.ParLevel1_Id == level1Id));
+            {
+                //var teste = db.ParLevel3Level2Level1.Where(r => r.ParLevel1_Id == level1Id);
+                vinculosComOLevel2 = db.ParLevel3Level2.Where(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3Level2Level1.Any(c => c.ParLevel1_Id == level1Id)).ToList();
+            }
+
+            /*Depreciado*/
+                //vinculosComOLevel2 = vinculosComOLevel2.Where(r => r.ParLevel3Level2Level1.Any(c => c.ParLevel1_Id == level1Id));
             //else if(level1Id > 0 && level3Id <= 0)
             //    vinculosComOLevel2 = _baseRepoParLevel2Level1.GetAll().Where(r=>r.ParLevel1_Id == level1Id && r.ParLevel2_Id == level2.Id ).Select(r=>r.)
 
@@ -366,7 +374,7 @@ namespace Dominio.Services
             paramsDto.parLevel2Dto.listParLevel3Level2Dto = null; 
 
             if (level1Id > 0)/*Caso exista Level1 Selecionado, é necessario verificar regras especificas para este ao mostrar os fields do level2*/
-                paramsDto.parLevel2Dto.RegrasParamsLevel1(Mapper.Map<ParLevel1DTO>(_baseRepoParLevel1.GetById(level1Id)));//Configura regras especificas do level2 de acordo com level1.
+                paramsDto.parLevel2Dto.RegrasParamsLevel1(Mapper.Map<ParLevel1DTO>(db.ParLevel1.FirstOrDefault( r=>r.Id == level1Id)));//Configura regras especificas do level2 de acordo com level1.
 
             #endregion
 
@@ -478,10 +486,10 @@ namespace Dominio.Services
 
             ParamsDTO retorno = new ParamsDTO();
             var parlevel3 = _baseRepoParLevel3.GetById(idParLevel3);/*ParLevel3*/
-            var relapse = parlevel3.ParRelapse.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
-            var group = _baseParLevel3Group.GetAll().Where(r => r.ParLevel2_Id == idParLevel2 && r.IsActive == true).ToList();
-            var level3Level2 = parlevel3.ParLevel3Level2.Where(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == idParLevel3 && r.IsActive == true).OrderByDescending(r => r.IsActive);
             var level3 = Mapper.Map<ParLevel3DTO>(parlevel3);//Level3
+            var relapse = parlevel3.ParRelapse.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
+            var group = db.ParLevel3Group.Where(r => r.ParLevel2_Id == idParLevel2 && r.IsActive == true).ToList();
+            var level3Level2 = parlevel3.ParLevel3Level2.Where(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == idParLevel3 && r.IsActive == true).OrderByDescending(r => r.IsActive);
             var level3Value = parlevel3.ParLevel3Value.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
 
             #endregion
