@@ -62,9 +62,12 @@
             });
 
             formControl.showSimpleDate();
-            formControl.showOnlyUnit(); //showOnlyUnit showUnit
-
+            //formControl.showOnlyUnit(); //showOnlyUnit showUnit
+            formControl.showUnit();
             closeLeftSidebar();
+
+            //Remove o 'Todos' da unidade
+            $("#unitId option[value='']").remove();
         });
 
         function Send(toggle) {
@@ -764,7 +767,7 @@
             GuardJs.resetForValidation();
             GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
             /*Especifico*/
-            if (!($('#onlyunitId :selected').val() > 0)) {
+            if (!($('#unitId :selected').val() > 0)) {
                 GuardJs.exibirMensagemAlerta('@Resources.Resource.select_the_unit_first');//"Por favor selecione uma unidade.");
                 return false;
             }
