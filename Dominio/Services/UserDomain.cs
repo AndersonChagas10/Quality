@@ -91,8 +91,14 @@ namespace Dominio.Services
       
         private UserSgq CheckUserAndPassDataBase(UserDTO userDto)
         {
+            /*Descriptografa a criptografia do TABLET*/
+            userDto.Password = DecryptStringAES(userDto.Password);
+            /*Criptografa para compara com senha criptografad no DB*/
+            userDto.Password = Guard.Criptografar3DES(userDto.Password);
+
             var user = Mapper.Map<UserDTO, UserSgq>(userDto);
-            user.Password = Guard.Criptografar3DES(user.Password);
+            
+
             var isUser = _userRepo.AuthenticationLogin(user);
             if (isUser.IsNull())
                 throw new ExceptionHelper("User not found, please verify Username and Password.");
@@ -119,6 +125,7 @@ namespace Dominio.Services
             if (!CheckUserInAD(dominio, userDto.Name, userDto.Password))
             {
                 /*Se passou no AD , verifica no DB:*/
+                userDto.Password = Guard.Criptografar3DES(userDto.Password);
                 UserSgq isUser = CheckUserAndPassDataBase(userDto);
 
                 if (isUser.IsNull())

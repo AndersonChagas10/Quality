@@ -2441,8 +2441,6 @@ namespace SgqSystem.Services
         public string getAPPLevels(int UserSgq_Id, int ParCompany_Id, DateTime Date)
         {
             //colocar autenticação
-
-
             string APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
 
             string supports = "<div class=\"Results hide\"></div>" +
