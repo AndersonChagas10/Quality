@@ -349,6 +349,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alter.
+        /// </summary>
+        internal static string alter {
+            get {
+                return ResourceManager.GetString("alter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alter collection date.
         /// </summary>
         internal static string alter_collection_date {
@@ -1969,6 +1978,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inactivate.
+        /// </summary>
+        internal static string inactivate {
+            get {
+                return ResourceManager.GetString("inactivate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inactive.
         /// </summary>
         internal static string inactive {
@@ -3463,6 +3481,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reactivate.
+        /// </summary>
+        internal static string reactivate {
+            get {
+                return ResourceManager.GetString("reactivate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ready.
         /// </summary>
         internal static string ready {
@@ -3594,6 +3621,15 @@ namespace Resources {
         internal static string remain_logged_in {
             get {
                 return ResourceManager.GetString("remain_logged_in", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        internal static string remove {
+            get {
+                return ResourceManager.GetString("remove", resourceCulture);
             }
         }
         

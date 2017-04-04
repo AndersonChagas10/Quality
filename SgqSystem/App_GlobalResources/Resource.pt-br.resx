@@ -1788,4 +1788,16 @@
   <data name="sendPassEmail" xml:space="preserve">
     <value>Enviar Senha para Email</value>
   </data>
+  <data name="alter" xml:space="preserve">
+    <value>Alterar</value>
+  </data>
+  <data name="remove" xml:space="preserve">
+    <value>Remover</value>
+  </data>
+  <data name="inactivate" xml:space="preserve">
+    <value>Inativar</value>
+  </data>
+  <data name="reactivate" xml:space="preserve">
+    <value>Reativar</value>
+  </data>
 </root>
