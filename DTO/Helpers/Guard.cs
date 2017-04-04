@@ -61,7 +61,7 @@ namespace DTO.Helpers
             return userId;
         }
 
-        
+
 
         //public static int GetUsuarioLogado_Id(HttpContextBase filterContext)
         //{
@@ -123,14 +123,14 @@ namespace DTO.Helpers
 
             var _dtvalue = DateTime.Now;
             //if (GlobalConfig.Brasil)
-                DateTime.TryParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
+            DateTime.TryParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
             //else if (GlobalConfig.Eua)
-            if(_dtvalue == DateTime.MinValue)
+            if (_dtvalue == DateTime.MinValue)
                 DateTime.TryParseExact(date, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
 
             return _dtvalue;
         }
-      
+
         public static string ConverteValorCalculado(decimal valorDecimal)
         {
 
@@ -376,15 +376,25 @@ namespace DTO.Helpers
             {
                 if (obj.GetType().GetProperty(property) != null)
                 {
-                    var date = (DateTime)obj.GetType().GetProperty(property).GetValue(obj, null);
-                    if (date.IsNull())
+                    var result = obj.GetType().GetProperty(property).GetValue(obj, null);
+
+                    if (result == null)
                     {
                         obj.GetType().GetProperty(property).SetValue(obj, DateTime.Now);
                     }
                     else
                     {
-                        if (date == DateTime.MinValue)
+                        var date = (DateTime)result;
+
+                        if (date.IsNull())
+                        {
                             obj.GetType().GetProperty(property).SetValue(obj, DateTime.Now);
+                        }
+                        else
+                        {
+                            if (date == DateTime.MinValue)
+                                obj.GetType().GetProperty(property).SetValue(obj, DateTime.Now);
+                        }
                     }
                 }
             }

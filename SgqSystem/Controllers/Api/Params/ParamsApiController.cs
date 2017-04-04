@@ -139,77 +139,77 @@ namespace SgqSystem.Controllers.Api.Params
             }
         }
 
-        [HttpPost]
-        [Route("SalvarAvaliacaoAmostra")]
-        public void SalvarAvaliacaoAmostra(ParLevel2SampleEvaluationDTO alterObj)
-        {
-            using (var db = new SgqDbDevEntities())
-            {
-                /*Crio obj*/
-                var sample = new ParSample()
-                {
-                    AddDate = DateTime.Now,
-                    Number = alterObj.sampleNumber,
-                    IsActive = true,
-                    ParCompany_Id = alterObj.companyId,
-                    ParLevel2_Id = alterObj.level2Id
-                };
-                var evaluation = new ParEvaluation()
-                {
-                    AddDate = DateTime.Now,
-                    Number = alterObj.evaluationNumber,
-                    IsActive = true,
-                    ParCompany_Id = alterObj.companyId,
-                    ParLevel2_Id = alterObj.level2Id
-                };
+        //[HttpPost]
+        //[Route("SalvarAvaliacaoAmostra")]
+        //public void SalvarAvaliacaoAmostra(ParLevel2SampleEvaluationDTO alterObj)
+        //{
+        //    using (var db = new SgqDbDevEntities())
+        //    {
+        //        /*Crio obj*/
+        //        var sample = new ParSample()
+        //        {
+        //            AddDate = DateTime.Now,
+        //            Number = alterObj.sampleNumber,
+        //            IsActive = true,
+        //            ParCompany_Id = alterObj.companyId,
+        //            ParLevel2_Id = alterObj.level2Id
+        //        };
+        //        var evaluation = new ParEvaluation()
+        //        {
+        //            AddDate = DateTime.Now,
+        //            Number = alterObj.evaluationNumber,
+        //            IsActive = true,
+        //            ParCompany_Id = alterObj.companyId,
+        //            ParLevel2_Id = alterObj.level2Id
+        //        };
 
-                /*Explico para o EF que Adicionei*/
-                db.ParSample.Add(sample);
-                db.ParEvaluation.Add(evaluation);
+        //        /*Explico para o EF que Adicionei*/
+        //        db.ParSample.Add(sample);
+        //        db.ParEvaluation.Add(evaluation);
 
-                /*Salvo*/
-                db.SaveChanges();
-            }
-        }
+        //        /*Salvo*/
+        //        db.SaveChanges();
+        //    }
+        //}
 
-        [HttpPost]
-        [Route("AlteraVinculoLevel3")]
-        public void AlteraVinculoLevel3(ParLevel3Level2 l3l2)
-        {
-            using (var db = new SgqDbDevEntities())
-            {
-                /*Busco do DB*/
-                var parLevel3Level2 = db.ParLevel3Level2.FirstOrDefault(r => r.Id == l3l2.Id);
+        //[HttpPost]
+        //[Route("AlteraVinculoLevel3")]
+        //public void AlteraVinculoLevel3(ParLevel3Level2 l3l2)
+        //{
+        //    using (var db = new SgqDbDevEntities())
+        //    {
+        //        /*Busco do DB*/
+        //        var parLevel3Level2 = db.ParLevel3Level2.FirstOrDefault(r => r.Id == l3l2.Id);
 
-                /*Altero*/
-                parLevel3Level2.AlterDate = DateTime.Now;
-                parLevel3Level2.Weight = l3l2.Weight;
+        //        /*Altero*/
+        //        parLevel3Level2.AlterDate = DateTime.Now;
+        //        parLevel3Level2.Weight = l3l2.Weight;
 
-                parLevel3Level2.ParLevel3Group_Id = l3l2.ParLevel3Group_Id;
+        //        parLevel3Level2.ParLevel3Group_Id = l3l2.ParLevel3Group_Id;
 
-                /*Explico para o EF que alterei*/
-                db.ParLevel3Level2.Attach(parLevel3Level2);
-                var entrySample = db.Entry(parLevel3Level2);
-                entrySample.Property(e => e.Weight).IsModified = true;
-                entrySample.Property(e => e.AlterDate).IsModified = true;
-                entrySample.Property(e => e.ParLevel3Group_Id).IsModified = true;
+        //        /*Explico para o EF que alterei*/
+        //        db.ParLevel3Level2.Attach(parLevel3Level2);
+        //        var entrySample = db.Entry(parLevel3Level2);
+        //        entrySample.Property(e => e.Weight).IsModified = true;
+        //        entrySample.Property(e => e.AlterDate).IsModified = true;
+        //        entrySample.Property(e => e.ParLevel3Group_Id).IsModified = true;
 
-                /*Salvo*/
-                db.SaveChanges();
-            }
-        }
+        //        /*Salvo*/
+        //        db.SaveChanges();
+        //    }
+        //}
 
 
         #endregion
 
         #region Vinculo Level3 com Level2
 
-        [HttpGet]
-        [Route("AddVinculoL3L2/{idLevel2}/{idLevel3}/{peso}/{groupLevel2}")]
-        public ParLevel3Level2DTO AddVinculoL3L2(int idLevel2, int idLevel3, decimal peso, int? groupLevel2 = 0)
-        {
-            return _paramdDomain.AddVinculoL3L2(idLevel2, idLevel3, peso, groupLevel2);
-        }
+        //[HttpGet]
+        //[Route("AddVinculoL3L2/{idLevel2}/{idLevel3}/{peso}/{groupLevel2}")]
+        //public ParLevel3Level2DTO AddVinculoL3L2(int idLevel2, int idLevel3, decimal peso, int? groupLevel2 = 0)
+        //{
+        //    return _paramdDomain.AddVinculoL3L2(idLevel2, idLevel3, peso, groupLevel2);
+        //}
 
 
         #endregion
@@ -223,12 +223,12 @@ namespace SgqSystem.Controllers.Api.Params
             return _paramdDomain.AddVinculoL1L2(idLevel1, idLevel2, idLevel3, userId);
         }
 
-        [HttpPost]
-        [Route("RemVinculoL1L2/{idLevel1}/{idLevel2}")]
-        public bool RemVinculoL1L2(int idLevel1, int idLevel2)
-        {
-            return _paramdDomain.RemVinculoL1L2(idLevel1, idLevel2);
-        }
+        //[HttpPost]
+        //[Route("RemVinculoL1L2/{idLevel1}/{idLevel2}")]
+        //public bool RemVinculoL1L2(int idLevel1, int idLevel2)
+        //{
+        //    return _paramdDomain.RemVinculoL1L2(idLevel1, idLevel2);
+        //}
 
         [HttpPost]
         [Route("RemVinculoL2L3/{idLevel1}/{idLevel2}/{idLevel3}/{companyId}")]
@@ -240,9 +240,9 @@ namespace SgqSystem.Controllers.Api.Params
                 using (var db = new SgqDbDevEntities())
                 {
                     //throw new Exception("teste");
-                    var parLevel3Level2Level1 = db.ParLevel3Level2Level1.Include("ParLevel3Level2").Where(r => r.ParLevel3Level2.ParLevel2_Id == idLevel2 && r.ParLevel3Level2.ParLevel3_Id == idLevel3);
+                    var parLevel3Level2Level1 = db.ParLevel3Level2Level1.Include("ParLevel3Level2").Where(r => r.ParLevel3Level2.ParLevel2_Id == idLevel2 && r.ParLevel3Level2.ParLevel3_Id == idLevel3 && r.ParCompany_Id == companyId);
 
-                    var existe = db.ParLevel3Level2Level1.Include("ParLevel3Level2").Where(r => r.ParLevel3Level2.ParLevel2_Id == idLevel2 && r.ParLevel3Level2.ParLevel3_Id == idLevel3).ToList();
+                    var existe = db.ParLevel3Level2Level1.Include("ParLevel3Level2").Where(r => r.ParLevel3Level2.ParLevel2_Id == idLevel2 && r.ParLevel3Level2.ParLevel3_Id == idLevel3 && r.ParCompany_Id == companyId).ToList();
 
                     if (existe == null || existe.Count() == 0)
                         return retorno;
@@ -406,26 +406,26 @@ namespace SgqSystem.Controllers.Api.Params
 
         }
 
-        [HttpGet]
-        [Route("GetResource/{language}")]
-        public IEnumerable<DictionaryEntry> GetResource(string language)
-        {
-            if (language.Equals("pt-br") || (language.Equals("default") && GlobalConfig.Brasil)) //se portugues
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
-            }
-            else if (language.Equals("en-us") || (language.Equals("default") && GlobalConfig.Eua))//inglês
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
-            }
+        //[HttpGet]
+        //[Route("GetResource/{language}")]
+        //public IEnumerable<DictionaryEntry> GetResource(string language)
+        //{
+        //    if (language.Equals("pt-br") || (language.Equals("default") && GlobalConfig.Brasil)) //se portugues
+        //    {
+        //        Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+        //        Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+        //    }
+        //    else if (language.Equals("en-us") || (language.Equals("default") && GlobalConfig.Eua))//inglês
+        //    {
+        //        Thread.CurrentThread.CurrentCulture = new CultureInfo("");
+        //        Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
+        //    }
 
-            System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
+        //    System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
 
-            return resourceManager.GetResourceSet(
-                Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
-        }
+        //    return resourceManager.GetResourceSet(
+        //        Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
+        //}
 
     }
 }

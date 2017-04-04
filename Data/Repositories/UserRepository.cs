@@ -44,7 +44,6 @@ namespace Data.Repositories
                     result.Password = Guard.Criptografar3DES(result.Password);
                     Salvar(result);
                 }
-
             }
 
             return result;

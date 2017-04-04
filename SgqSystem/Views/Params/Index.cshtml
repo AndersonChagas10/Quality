@@ -217,8 +217,6 @@
     var hasperm = @Html.Raw(Json.Encode(ViewBag.IsAdmin));
     var unitId = @Html.Raw(Json.Encode(ViewBag.CompanyId));
 
-    
-
     function reloadPopovers(){
         $(".popovers").attr("data-toggle", "popover");
         $("[data-toggle=popover]").popover();
@@ -475,6 +473,10 @@
                 dados["paramsDto.parLevel1Dto.IsRuleConformity"] = $('#paramsDto_parLevel1Dto_IsRuleConformity').bootstrapSwitch('state');
                 dados["paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion"] = $('#paramsDto_parLevel1Dto_IsFixedEvaluetionNumber').bootstrapSwitch('state');
                 //openLoader();
+                 
+                dados["paramsDto.level1Selected"] = $('#parLevel1Select2').val();
+                dados["paramsDto.level2Selected"] = $('#parLevel2Select2').val();
+                dados["paramsDto.level3Selected"] = $('#parLevel3Select2').val();
 
                 $.post(url1, dados, function (objetoReturn, statusmessage, respostaCompleta) {
 
@@ -631,6 +633,11 @@
                 //Cluster.UpdateCounter();
                 //CounterLevel2.UpdateCounters();
                 var dados = $('#newLevel2Modal > form').serializeObject();
+                 
+                dados["paramsDto.level1Selected"] = $('#parLevel1Select2').val();
+                dados["paramsDto.level2Selected"] = $('#parLevel2Select2').val();
+                dados["paramsDto.level3Selected"] = $('#parLevel3Select2').val();
+
                 RegraNcL2.incluiNoObjetoParaSubmit(dados);
                 //HeaderL2.incluiNoObjetoParaSubmit(dados);
                 ContadoresL2.incluiNoObjetoParaSubmit(dados);
@@ -787,27 +794,16 @@
             $("form").each(function () { $.data($(this)[0], 'validator', false); });
             $.validator.unobtrusive.parse("form");
 
-            //if($('#selectTipoInput :selected').val() == 1){//Binario
-            //    if($('#selectConforme :selected').val() <= 0){
-            //        openMessageModal("Um campo obrgatório não foi preenchido:", "Por favor selecione o valor positivo para o campo binario.");
-            //        return;
-            //    }else if($('#selectNaoConforme :selected').val() <= 0){
-            //        openMessageModal("Um campo obrgatório não foi preenchido:", "Por favor selecione o valor negativo para o campo binario.");
-            //        return;
-            //    }
-
-            //}else{
-
-            //}
-
             if ($('#newLevel3Modal > form').valid()) {
-                //Cabecalhos.UpdateCabecalhos();
-                //Cluster.UpdateCounter();
-                //Counter.UpdateCounters();
+           
                 var dados = $('#newLevel3Modal > form').serializeObject();
 
                 ReincidenciaL3.incluiNoObjetoParaSubmit(dados);
                 level3Value.incluiNoObjetoParaSubmit(dados);
+                
+                dados["paramsDto.level1Selected"] = $('#parLevel1Select2').val();
+                dados["paramsDto.level2Selected"] = $('#parLevel2Select2').val();
+                dados["paramsDto.level3Selected"] = $('#parLevel3Select2').val();
 
                 if(dados['paramsDto.parLevel3Value.IntervalMax'] != undefined && dados['paramsDto.parLevel3Value.IntervalMax'] != null)
                     dados['paramsDto.parLevel3Value.IntervalMax'] = dados['paramsDto.parLevel3Value.IntervalMax'].replace(',', '.');

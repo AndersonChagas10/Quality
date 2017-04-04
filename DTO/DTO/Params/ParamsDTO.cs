@@ -6,6 +6,12 @@ namespace DTO.DTO.Params
     public class ParamsDTO : EntityBase
     {
 
+        public int level1Selected { get; set; }
+
+        public int level2Selected { get; set; }
+
+        public int level3Selected { get; set; }
+
         #region Param Level - 1
 
         public int parLevel1Selected { get; set; }
@@ -67,7 +73,6 @@ namespace DTO.DTO.Params
         public List<ParLevel1DTO> collectionObject { get; set; }
 
         #endregion
-
 
     }
 }
