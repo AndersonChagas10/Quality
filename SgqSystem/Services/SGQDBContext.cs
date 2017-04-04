@@ -122,7 +122,7 @@ namespace SGQDBContext
         //public int? ParCompany_Id_Evaluate { get; set; }
         //public int? ParCompany_Id_Sample { get; set; }
         private SqlConnection db { get; set; }
-
+        public ParLevel1Alertas() { }
         public ParLevel1Alertas(SqlConnection _db)
         {
             db = _db;
@@ -476,7 +476,7 @@ namespace SGQDBContext
         //public int? ParCompany_Id { get; set; }
 
         private SqlConnection db { get; set; }
-
+        public ParLevel2Evaluate() { }
         public ParLevel2Evaluate(SqlConnection _db)
         {
             db = _db;
@@ -629,7 +629,7 @@ namespace SGQDBContext
         //public int? ParCompany_Id { get; set; }
 
         private SqlConnection db { get; set; }
-
+        public ParLevel2Sample() { }
         public ParLevel2Sample(SqlConnection _db)
         {
             db = _db;
@@ -786,7 +786,7 @@ namespace SGQDBContext
         public int ParCompany_Id { get; set; }
 
         private SqlConnection db { get; set; }
-
+        public ParLevel3() { }
         public ParLevel3(SqlConnection _db)
         {
             db = _db;
@@ -1077,7 +1077,7 @@ namespace SGQDBContext
         //public int Side { get; set; }
 
         private SqlConnection db { get; set; }
-
+        public Level2Result() { }
         public Level2Result(SqlConnection _db)
         {
             db = _db;
@@ -1146,7 +1146,7 @@ namespace SGQDBContext
         public int Id { get; set; }
 
         private SqlConnection db { get; set; }
-
+        public ParLevel1ConsolidationXParFrequency() { }
         public ParLevel1ConsolidationXParFrequency(SqlConnection _db)
         {
             db = _db;
@@ -1222,7 +1222,7 @@ namespace SGQDBContext
         public DateTime StartPhaseDate { get; set; }
         public int StartPhaseEvaluation { get; set; }
         private SqlConnection db { get; set; }
-
+        public ConsolidationResultL1L2() { }
         public ConsolidationResultL1L2(SqlConnection _db)
         {
             db = _db;
@@ -1270,7 +1270,7 @@ namespace SGQDBContext
         public int IsRequired { get; set; }
 
         private SqlConnection db { get; set; }
-
+        public ParLevelHeader() { }
         public ParLevelHeader(SqlConnection _db)
         {
             db = _db;
@@ -1346,7 +1346,7 @@ namespace SGQDBContext
         public int IsDefaultOption { get; set; }
 
         private SqlConnection db { get; set; }
-
+        public ParFieldType() { }
         public ParFieldType(SqlConnection _db)
         {
             db = _db;
@@ -1417,7 +1417,7 @@ namespace SGQDBContext
         public int EffectiveLength { get; set; }
 
         private SqlConnection db { get; set; }
-
+        public ParRelapse() { }
         public ParRelapse(SqlConnection _db)
         {
             db = _db;
@@ -1445,7 +1445,7 @@ namespace SGQDBContext
         public string Name { get; set; }
 
         private SqlConnection db { get; set; }
-
+        public ParLevel1VariableProduction() { }
         public ParLevel1VariableProduction(SqlConnection _db)
         {
             db = _db;
@@ -1472,7 +1472,7 @@ namespace SGQDBContext
         public bool HaveUnitLogin { get; set; }
         public bool HaveShitLogin { get; set; }
         private SqlConnection db { get; set; }
-
+        public ParConfSGQContext() { }
         public ParConfSGQContext(SqlConnection _db)
         {
             db = _db;
@@ -1559,7 +1559,7 @@ namespace SGQDBContext
         /// <returns></returns>
         /// 
         private SqlConnection db { get; set; }
-
+        public ParCompanyXUserSgq() { }
         public ParCompanyXUserSgq(SqlConnection _db)
         {
             db = _db;
@@ -1611,7 +1611,7 @@ namespace SGQDBContext
         public string RoleSGQ { get; set; }
 
         private SqlConnection db { get; set; }
-
+        public RoleXUserSgq() { }
         public RoleXUserSgq(SqlConnection _db)
         {
             db = _db;
@@ -1654,7 +1654,7 @@ namespace SGQDBContext
         public int Amostras { get; set; }
 
         private SqlConnection db { get; set; }
-
+        public VolumePcc1b() { }
         public VolumePcc1b(SqlConnection _db)
         {
             db = _db;
@@ -1681,7 +1681,7 @@ namespace SGQDBContext
         public String cIdentificador { get; set; }
 
         private SqlConnection db { get; set; }
-
+        public CaracteristicaTipificacao() { }
         public CaracteristicaTipificacao(SqlConnection _db)
         {
             db = _db;
@@ -1746,7 +1746,7 @@ namespace SGQDBContext
         public int CaracteristicaTipificacaoId { get; set; }
 
         private SqlConnection db { get; set; }
-
+        public VerificacaoTipificacaoTarefaIntegracao() { }
         public VerificacaoTipificacaoTarefaIntegracao(SqlConnection _db)
         {
             db = _db;
@@ -1763,8 +1763,7 @@ namespace SGQDBContext
             return list;
         }
     }
-
-
+    
     public partial class CollectionLevel2Consolidation
     {
         public int ConsolidationLevel2_Id { get; set; }
@@ -1785,7 +1784,7 @@ namespace SGQDBContext
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
         private SqlConnection db { get; set; }
-
+        public CollectionLevel2Consolidation() { }
         public CollectionLevel2Consolidation(SqlConnection _db)
         {
             db = _db;
@@ -1831,7 +1830,7 @@ namespace SGQDBContext
         public int DefectsResult { get; set; }
 
         private SqlConnection db { get; set; }
-
+        public ConsolidationLevel1XConsolidationLevel2() { }
         public ConsolidationLevel1XConsolidationLevel2(SqlConnection _db)
         {
             db = _db;
@@ -1884,7 +1883,7 @@ namespace SGQDBContext
 
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
         private SqlConnection db { get; set; }
-
+        public ConsolidationLevel1() { }
         public ConsolidationLevel1(SqlConnection _db)
         {
             db = _db;
@@ -1929,7 +1928,7 @@ namespace SGQDBContext
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
         private SqlConnection db { get; set; }
-
+        public ConsolidationLevel2() { }
         public ConsolidationLevel2(SqlConnection _db)
         {
             db = _db;
@@ -2002,7 +2001,7 @@ namespace SGQDBContext
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
         private SqlConnection db { get; set; }
-
+        public CollectionJson() { }
         public CollectionJson(SqlConnection _db)
         {
             db = _db;
@@ -2030,7 +2029,7 @@ namespace SGQDBContext
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
         private SqlConnection db { get; set; }
-
+        public ParCounter() { }
         public ParCounter(SqlConnection _db)
         {
             db = _db;
@@ -2088,7 +2087,7 @@ namespace SGQDBContext
 
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
         private SqlConnection db { get; set; }
-
+        public NotConformityRule() { }
         public NotConformityRule(SqlConnection _db)
         {
             db = _db;
@@ -2159,7 +2158,7 @@ namespace SGQDBContext
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
         private SqlConnection db { get; set; }
-
+        public CollectionLevel2() { }
         public CollectionLevel2(SqlConnection _db)
         {
             db = _db;
@@ -2190,7 +2189,7 @@ namespace SGQDBContext
 
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
         private SqlConnection db { get; set; }
-
+        public UpdateCollectionLevel2() { }
         public UpdateCollectionLevel2(SqlConnection _db)
         {
             db = _db;
@@ -2231,7 +2230,7 @@ namespace SGQDBContext
 
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
         private SqlConnection db { get; set; }
-
+        public ResultPhase() { }
         public ResultPhase(SqlConnection _db)
         {
             db = _db;
@@ -2284,7 +2283,7 @@ namespace SGQDBContext
 
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
         private SqlConnection db { get; set; }
-
+        public ResultEvaluationDefects() { }
         public ResultEvaluationDefects(SqlConnection _db)
         {
             db = _db;
