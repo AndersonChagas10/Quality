@@ -7,55 +7,43 @@
 
 }
 
-<!-- BEGIN CONTENT BODY -->
-<div class="page-content" style="min-height: 525px; padding: 32px;">
-    <div class="center-main row">
 
-        <div class="col-xs-0 col-md-3 col-ls-3"></div>
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content" style="min-height: 600px;">
 
-        <div class="col-xs-4 col-md-2 col-ls-2"><div class="center-button" style="background-color:transparent;"><a href="@urlDataCollection" target="_blank" style="color:#2b3643;"><img src="~/Imagens/tablet.png" /><br /><br />@Resources.Resource.data_collection</a></div></div>
-        <div class="col-xs-4 col-md-2 col-ls-2"><div class="center-button" style="background-color:transparent;"><a href="@urlManagement" style="color:#2b3643;"><img src="~/Imagens/chart.png" /><br /><br />@Resources.Resource.management</a></div></div>
-        <div class="col-xs-4 col-md-2 col-ls-2"><div class="center-button" style="background-color:transparent;"><a href="@urlCustomization" style="color:#2b3643;"><img src="~/Imagens/stack.png" /><br /><br />@Resources.Resource.customization</a></div></div>
+        <!-- BEGIN CONTENT BODY -->
+        @*<div class="page-content" style="min-height: 525px; padding: 32px;">*@
 
-        <div class="col-xs-4 col-md-3 col-ls-3"></div>
-    </div>
 
-    @section Scripts {
+        <div class="center-main row">
 
-        <script>
+            <div class="col-xs-0 col-md-3 col-ls-3"></div>
 
-            $(document).ready(function () {
-                $(".sidebar-toggler").removeClass("hide");
-                $(".page-sidebar-wrapper").removeClass("hide");
-                closeLeftSidebar();
-            });
+            <div class="col-xs-4 col-md-2 col-ls-2"><div class="center-button" style="background-color:transparent;"><a href="@urlDataCollection" target="_blank" style="color:#2b3643;"><img src="~/Imagens/tablet.png" /><br /><br />@Resources.Resource.data_collection</a></div></div>
+            <div class="col-xs-4 col-md-2 col-ls-2"><div class="center-button" style="background-color:transparent;"><a href="@urlManagement" style="color:#2b3643;"><img src="~/Imagens/chart.png" /><br /><br />@Resources.Resource.management</a></div></div>
+            <div class="col-xs-4 col-md-2 col-ls-2"><div class="center-button" style="background-color:transparent;"><a href="@urlCustomization" style="color:#2b3643;"><img src="~/Imagens/stack.png" /><br /><br />@Resources.Resource.customization</a></div></div>
 
-            var version = '@Html.Raw(ViewBag.Asembly)';
+            <div class="col-xs-4 col-md-3 col-ls-3"></div>
+        </div>
 
-            @*var isConfiguradoLinkGlobal = @Html.Raw(Json.Encode(Dominio.GlobalConfig.linkDataCollectJaConfigurado));
-            var listPossiblesLink = @Html.Raw(Json.Encode(Dominio.GlobalConfig.listLinkDataCollect));
-            var UpdateStatusLinkDataCollect = "";
 
-            function teste2() {
+            @section Scripts {
 
-                if(!isConfiguradoLinkGlobal){
-                    listPossiblesLink.forEach(function(o,c){
-                        var found = false;
-                        if(!found){
-                            $.get(o, function (e, h, r) {
-                                $.get(UpdateStatusLinkDataCollect)
-                                found = true;
-                            }).fail(function (e, h, r) {
-                                console.log("b");
-                            });
-                        }
+                <script>
+
+                    $(document).ready(function () {
+                        $(".sidebar-toggler").removeClass("hide");
+                        $(".page-sidebar-wrapper").removeClass("hide");
+                        closeLeftSidebar();
                     });
-                }
-            }*@
+
+                    var version = '@Html.Raw(ViewBag.Asembly)';
 
 
-        </script>
+                </script>
 
-    }
+            }
 
+        </div>
 </div>
