@@ -112,49 +112,59 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public void Save(UserSgqDTO userSgqDto)
+        public bool Save(UserSgqDTO userSgqDto)
         {
 
-            if (userSgqDto.Id == 0)
-            {
-                userSgqDto.AddDate = DateTime.Now;
-                userSgqDto.Password = Guard.Criptografar3DES(userSgqDto.Password);
-            }
-            else
-            {
-                userSgqDto.AlterDate = DateTime.Now;
+            ValidaUserSgqDto(userSgqDto);
 
-                if (userSgqDto.Password == null)
+            if (ModelState.IsValid)
+            {
+                if (userSgqDto.Id == 0)
                 {
-                    UserSgq dummy = db.UserSgq.Find(userSgqDto.Id);
-                    userSgqDto.Password = dummy.Password;
+                    userSgqDto.AddDate = DateTime.Now;
+                    userSgqDto.Password = Guard.Criptografar3DES(userSgqDto.Password);
                 }
                 else
                 {
-                    userSgqDto.Password = Guard.Criptografar3DES(userSgqDto.Password);
+                    userSgqDto.AlterDate = DateTime.Now;
+
+                    if (userSgqDto.Password == null)
+                    {
+                        UserSgq dummy = db.UserSgq.Find(userSgqDto.Id);
+                        userSgqDto.Password = dummy.Password;
+                    }
+                    else
+                    {
+                        userSgqDto.Password = Guard.Criptografar3DES(userSgqDto.Password);
+                    }
                 }
-            }
 
-            if (userSgqDto.ListRole != null)
+                if (userSgqDto.ListRole != null)
+                {
+                    string roles = string.Join("; ", userSgqDto.ListRole);
+                    userSgqDto.Role = roles;
+                }
+
+                IEnumerable<int> listParCompany = userSgqDto.ListParCompany_Id;
+                userSgqDto.ParCompany_Id = userSgqDto.ListParCompany_Id.FirstOrDefault();
+                userSgqDto = _baseDomainUserSgq.AddOrUpdate(userSgqDto);
+
+                _baseDomainParCompanyXUserSgq.ExecuteSql("DELETE FROM ParCompanyXUserSgq WHERE UserSgq_Id = " + userSgqDto.Id);
+
+                foreach (int ParCompany_id in listParCompany)
+                {
+                    ParCompanyXUserSgqDTO parCompanyXUserSgqDTO = new ParCompanyXUserSgqDTO();
+                    parCompanyXUserSgqDTO.Id = 0;
+                    parCompanyXUserSgqDTO.UserSgq_Id = userSgqDto.Id;
+                    parCompanyXUserSgqDTO.ParCompany_Id = ParCompany_id;
+
+                    _baseDomainParCompanyXUserSgq.AddOrUpdate(parCompanyXUserSgqDTO);
+                }
+
+                return true;
+            }else
             {
-                string roles = string.Join("; ", userSgqDto.ListRole);
-                userSgqDto.Role = roles;
-            }
-
-            IEnumerable<int> listParCompany = userSgqDto.ListParCompany_Id;
-            userSgqDto.ParCompany_Id = userSgqDto.ListParCompany_Id.FirstOrDefault();
-            userSgqDto = _baseDomainUserSgq.AddOrUpdate(userSgqDto);
-
-            _baseDomainParCompanyXUserSgq.ExecuteSql("DELETE FROM ParCompanyXUserSgq WHERE UserSgq_Id = " + userSgqDto.Id);
-
-            foreach (int ParCompany_id in listParCompany)
-            {
-                ParCompanyXUserSgqDTO parCompanyXUserSgqDTO = new ParCompanyXUserSgqDTO();
-                parCompanyXUserSgqDTO.Id = 0;
-                parCompanyXUserSgqDTO.UserSgq_Id = userSgqDto.Id;
-                parCompanyXUserSgqDTO.ParCompany_Id = ParCompany_id;
-
-                _baseDomainParCompanyXUserSgq.AddOrUpdate(parCompanyXUserSgqDTO);
+                return false;
             }
 
         }
@@ -322,6 +332,16 @@ namespace SgqSystem.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void ValidaUserSgqDto(UserSgqDTO userSgqDto)
+        {
+
+            if (db.UserSgq.Where(r => r.Name == userSgqDto.Name).ToList().Count() > 0)
+            {
+                ModelState.AddModelError("Name", "Este nome de usuário já está sendo usado");
+            }               
+
         }
     }
 }
