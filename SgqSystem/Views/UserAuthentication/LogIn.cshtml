@@ -17,7 +17,7 @@
                 <label for="inputUserName" class="sr-only">@Resources.Resource.username</label>
                 <input type="text" id="inputUserName" class="form-control" placeholder="@Resources.Resource.username" required="" autofocus="" name="Name">
                 <label for="inputPassword" class="sr-only">@Resources.Resource.password</label>
-                <input type="password" id="inputPassword" class="form-control" placeholder="@Resources.Resource.password" required="" name="Password">
+                <input type="password" id="inputPassword" class="form-control" placeholder="@Resources.Resource.password" required="" name="Password" maxlength="16">
             
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true, Resources.Resource.username_or_password_are_incorrect)

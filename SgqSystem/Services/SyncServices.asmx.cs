@@ -2452,12 +2452,9 @@ namespace SgqSystem.Services
                               "<div class=\"Users hide\"></div>" +
                               "<div class=\"VerificacaoTipificacao hide\"></div>" +
                               "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
-
-            string resource = GetResource();
-
+            
             return APPMain +
-                   supports +
-                   resource;
+                   supports;
         }
         public string GetResource()
         {
