@@ -424,7 +424,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                         }
                         else if (tipoCalculo == "Variadas")
                         {
-                            f[i].realizado = vetor1.lista[i].realizado / vetor2.lista[i].realizado * 100;
+                            f[i].realizado = (vetor1.lista[i].realizado / vetor2.lista[i].realizado) * 100;
                         }
                         else
 
