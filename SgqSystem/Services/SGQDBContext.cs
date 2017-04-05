@@ -2279,6 +2279,7 @@ namespace SGQDBContext
     {
         public int Defects { get; set; }
         public int EvaluationNumber { get; set; }
+        public int Sample { get; set; }
         public int Period { get; set; }
         public int Shift { get; set; }
 
@@ -2293,11 +2294,11 @@ namespace SGQDBContext
         {
             try
             {
-                string sql = "SELECT SUM(Defects) AS Defects, EvaluationNumber, Period, Shift from CollectionLevel2                               "+
+                string sql = "SELECT SUM(Defects) AS Defects, EvaluationNumber, Sample, Period, Shift from CollectionLevel2                               "+
                                 "WHERE                                                                                  "+
                                 "ParLevel1_Id = "+ ParLevel1_Id + " AND                                                 "+
                                 "CAST(CollectionDate as date) = CAST('"+ Date.ToString("yyyyMMdd") + "' as DATE)        "+
-                                "GROUP BY EvaluationNumber, Period, Shift; ";                                           
+                                "GROUP BY EvaluationNumber, Sample, Period, Shift; ";                                           
 
                 //SqlConnection db = new SqlConnection(conexao);
                 var list = db.Query<ResultEvaluationDefects>(sql).ToList();

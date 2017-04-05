@@ -195,7 +195,7 @@ namespace SgqSystem.Services
 
             classe += " form-control";
 
-            return "<select id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + disabledTag + " style=\""+ style + "\">" + options + "</select>";
+            return "<select id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + disabledTag + " style=\"" + style + "\">" + options + "</select>";
         }
         /// <summary>
         /// Retorna option do select
@@ -263,7 +263,7 @@ namespace SgqSystem.Services
                 accordeonIdTag = " id=\"" + accordeonId + "\"";
             }
 
-            return "  <div class=\"panel-group" + classe + "\"" + accordeonIdTag + " "+ othersTags + ">                                                                                                          " +
+            return "  <div class=\"panel-group" + classe + "\"" + accordeonIdTag + " " + othersTags + ">                                                                                                          " +
                     "    <div class=\"panel panel-" + colorPanel + "\">                                                                                          " +
                     "      <div class=\"panel-heading\" role=\"tab\" id=\"heading" + id + "\">                                                                                                    " +
                     "        <h4 class=\"panel-title\">                                                                                                     " +
@@ -344,7 +344,7 @@ namespace SgqSystem.Services
 
             string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                            " +
                                  "    <span class=\"input-group-btn btn-minus\"> </span>             " +
-                                 "         <input type=\"text\" class=\"form-control text-center levelValue texto naoValidarInput\" style=\"width:100%;\">     " +                                                                                                                               
+                                 "         <input type=\"text\" class=\"form-control text-center levelValue texto naoValidarInput\" style=\"width:100%;\">     " +
                                  "</div>                                                    ";
             return texto;
         }
@@ -414,15 +414,15 @@ namespace SgqSystem.Services
                            id: id,
                            classe: "level2 " + classe,
                            // tags: "defects=\"" + defects + "\" evaluate=\"" + evaluate + "\" sample=\"" + sample + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\"",
-                           tags: "defects=\"" + defects + 
-                           "\" evaluate=\"" + evaluate + 
-                           "\" sample=\"" + sample + 
-                           "\" weievaluation=\"0"+
-                           "\" evaluatetotal=\"0"+
-                           "\" defectstotal=\"0\" weidefects=\"0\""+
-                           " totallevel3evaluation=\"0\""+
-                           " totallevel3withdefects=\"0\""+
-                           " hassampletotal=\"" + HasSampleTotal.ToString().ToLower() + "\""+
+                           tags: "defects=\"" + defects +
+                           "\" evaluate=\"" + evaluate +
+                           "\" sample=\"" + sample +
+                           "\" weievaluation=\"0" +
+                           "\" evaluatetotal=\"0" +
+                           "\" defectstotal=\"0\" weidefects=\"0\"" +
+                           " totallevel3evaluation=\"0\"" +
+                           " totallevel3withdefects=\"0\"" +
+                           " hassampletotal=\"" + HasSampleTotal.ToString().ToLower() + "\"" +
                            " isemptylevel3=\"" + IsEmptyLevel3.ToString().ToLower()
                            + "\" ParNotConformityRule_id=\"" + RuleId.ToString()
                            + "\" ParNotConformityRule_value=\"" + RuleValue
@@ -455,16 +455,39 @@ namespace SgqSystem.Services
                                         );
 
             //gera os labels
-            string labels = div(
+            string labels = "";
+            if (parLevel3.ParLevel3InputType_Id == 5)
+            {
+                labels = div(
+                                    outerhtml: labelsInputs,
+                                    classe: "col-xs-0"
+                                );
+            }
+            else
+            {
+                labels = div(
                                     outerhtml: labelsInputs,
                                     classe: "col-xs-3"
                                 );
+            }
 
             //gera os contadores
-            string counters = div(
-                                        outerhtml: input,
-                                        classe: "col-xs-3 counters"
-                                        );
+            string counters = "";
+            if (parLevel3.ParLevel3InputType_Id == 5)
+            {
+                counters = div(
+                              outerhtml: input,
+                              classe: "col-xs-6 counters"
+                              );
+            }
+            else
+            {
+                counters = div(
+                               outerhtml: input,
+                               classe: "col-xs-3 counters"
+                               );
+            }
+
 
             //gera os botoes
             string buttons = div(
@@ -519,15 +542,15 @@ namespace SgqSystem.Services
             string tags = "parconsolidationtype_id=\"" + ParLevel1.ParConsolidationType_Id + "\" parfrequency_id=\"" + ParLevel1.ParFrequency_Id + "\" hasalert=\"" + ParLevel1.HasAlert.ToString().ToLower() + "\" isspecific=\"" + ParLevel1.IsSpecific.ToString().ToLower() + "\" totalavaliado=\"" + totalAvaliado + "\" totaldefeitos=\"" + totalDefeitos + "\" volumeAlertaIndicador=\"" + volumeAlertaIndicador + "\" metaIndicador=\"" + metaIndicador + "\" numeroAvaliacoes=\"" + numeroAvaliacoes + "\" metaDia=\"" + metaDia + "\" metaTolerancia=\"" + metaTolerancia + "\" metaAvaliacao=\"" + metaAvaliacao + "\" alertanivel1=\"" + alertNivel1 + "\" alertanivel2=\"" + alertNivel2 + "\" alertanivel3=\"" + alertaNivel3 + "\" alertaatual=\"" + alertaAtual + "\" avaliacaoultimoalerta=\"" + avaliacaoultimoalerta + "\" monitoramentoultimoalerta=\"" + monitoramentoultimoalerta + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\" haverealtimeconsolidation=\"" + ParLevel1.haveRealTimeConsolidation.ToString().ToLower() + "\" realtimeconsolitationupdate=\"" + ParLevel1.RealTimeConsolitationUpdate + "\" islimitedevaluetionnumber=\"" + ParLevel1.IsLimitedEvaluetionNumber.ToString().ToLower() + "\" hashkey=\"" + ParLevel1.hashKey + "\" ispartialsave=\"" + ParLevel1.IsPartialSave.ToString().ToLower() + "\" hascompleteevaluation=\"" + ParLevel1.HasCompleteEvaluation.ToString().ToLower() + "\" hasgrouplevel2=\"" + ParLevel1.HasGroupLevel2.ToString().ToLower() + "\" reaudit=\"" + ParLevel1.IsReaudit.ToString().ToLower() + "\"";
 
             string btnReaudit = button("Reaudit", type.submit, "", classe: "btn-primary pull-right btnReaudit hide");
-            
-            if(listParRelapse.Count() > 0)
+
+            if (listParRelapse.Count() > 0)
             {
-                foreach(var parRelapse in listParRelapse)
+                foreach (var parRelapse in listParRelapse)
                 {
-                    tags += " phase" + parRelapse.NcNumber + "='" +parRelapse.ParFrequency_Id +";"+parRelapse.EffectiveLength+"' ";
+                    tags += " phase" + parRelapse.NcNumber + "='" + parRelapse.ParFrequency_Id + ";" + parRelapse.EffectiveLength + "' ";
                 }
             }
-            
+
             string level01 = link(
                                 id: ParLevel1.Id.ToString(),
                                 classe: "level1 col-xs-7 " + tipoTela,
