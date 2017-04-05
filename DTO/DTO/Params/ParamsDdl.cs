@@ -82,7 +82,7 @@ namespace DTO.DTO.Params
                             )
         {
             DdlParCompany = Guard.CreateDropDownList(ddlParCompany.OrderBy(r => r.Name));
-            DdlParConsolidation = Guard.CreateDropDownList(ddlParConsolidation.OrderBy(r => r.Name));
+            DdlParConsolidation = Guard.CreateDropDownList(ddlParConsolidation.Where(r => r.IsActive == true).OrderBy(r => r.Name));
             DdlFrequency = Guard.CreateDropDownList(ddlFrequency.OrderBy(r => r.Name));
             //DdlparLevel1 = Guard.CreateDropDownList(ddlparLevel1);
             //DdlparLevel2 = Guard.CreateDropDownList(ddlparLevel2);
