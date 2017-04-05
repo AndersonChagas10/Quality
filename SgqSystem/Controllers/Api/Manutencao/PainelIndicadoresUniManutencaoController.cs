@@ -88,8 +88,8 @@ namespace SgqSystem.Controllers.Api.Manutencao
                     tipoCalculo = "Soma";
                     break;
                 case "Eficiên.Programção":
-                    indicador.Add("Nº OS Programadas");
                     indicador.Add("Nº OS Executadas");
+                    indicador.Add("Nº OS Programadas");
                     tipoCalculo = "Variadas"; // Para retornar o Orcado diretamente
                     break;
                 case "Apropr Planej...to":
@@ -478,7 +478,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                 }
                                 else
                                 {
-                                    f[i].orcado = Convert.ToDecimal(0.00);
+                                    f[i].orcado = Convert.ToDecimal(orcadoAbat);
                                 }
 
                             }
@@ -490,7 +490,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                 }
                                 else
                                 {
-                                    f[i].orcado = Convert.ToDecimal(0.00);
+                                    f[i].orcado = Convert.ToDecimal(orcadoAbat);
                                 }
 
                             }
@@ -541,7 +541,8 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                 }
                                 else
                                 {
-                                    f[i].orcado = Convert.ToDecimal(0.00);
+                                    f[i].orcado = Convert.ToDecimal(orcadoVar);
+
                                 }
                             }
                             else
@@ -552,7 +553,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                 }
                                 else
                                 {
-                                    f[i].orcado = Convert.ToDecimal(0.00);
+                                    f[i].orcado = Convert.ToDecimal(orcadoVar);
                                 }
                             }
                         }
@@ -564,7 +565,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                             }
                             else
                             {
-                                f[i].orcado = Convert.ToDecimal(0.00);
+                                f[i].orcado = vetor1.lista[i].orcado / vetor2.lista[i].orcado;
                             }
                         }
                     }
