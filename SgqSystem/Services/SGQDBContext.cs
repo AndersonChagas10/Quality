@@ -6,6 +6,7 @@ using System.Linq;
 using Dominio;
 using System.Threading;
 using System.Collections;
+using SgqSystem.Services;
 
 namespace SGQDBContext
 {
@@ -817,14 +818,14 @@ namespace SGQDBContext
         {
             //SqlConnection db = new SqlConnection(conexao);
 
-            var syncServices = new SgqSystem.Services.SyncServices();
+            //var syncServices = new SgqSystem.Services.SyncServices();
 
             //Instanciamos variavel de data
             string dataInicio = null;
             string dataFim = null;
 
             //Pega a data pela regra da frequencia
-            syncServices.getFrequencyDate(ParLevel2.ParFrequency_Id, DateCollect, ref dataInicio, ref dataFim);
+            SyncServices.getFrequencyDate(ParLevel2.ParFrequency_Id, DateCollect, ref dataInicio, ref dataFim);
 
             //string queryResult = null;
             //if(ParLevel1.IsPartialSave == true)
@@ -999,14 +1000,14 @@ namespace SGQDBContext
         {
             try
             {
-                var syncServices = new SgqSystem.Services.SyncServices();
+                //var syncServices = new SgqSystem.Services.SyncServices();
 
                 //Instanciamos variavel de data
                 string dataInicio = null;
                 string dataFim = null;
 
                 //Pega a data pela regra da frequencia
-                syncServices.getFrequencyDate(ParLevel2.ParFrequency_Id, DateCollect, ref dataInicio, ref dataFim);
+                SyncServices.getFrequencyDate(ParLevel2.ParFrequency_Id, DateCollect, ref dataInicio, ref dataFim);
 
                 //SqlConnection db = new SqlConnection(conexao);
 

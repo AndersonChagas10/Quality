@@ -36,15 +36,20 @@ namespace SgqSystem.Services
     [System.Web.Script.Services.ScriptService]
     public class SyncServices : System.Web.Services.WebService
     {
+
         //private SqlConnection connection;
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        string conexaoSGQ_GlobalADO = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
 
         public SqlConnection db;
+        public SqlConnection SGQ_GlobalADO;
 
         public SyncServices()
         {
             db = new SqlConnection(conexao);
+            SGQ_GlobalADO = new SqlConnection(conexaoSGQ_GlobalADO);
             db.Open();
+            
         }
 
         #region Funções
@@ -1785,7 +1790,7 @@ namespace SgqSystem.Services
         //        return "error";
         //    }
         //}
-        public void getFrequencyDate(int ParFrequency_Id, DateTime data, ref string dataInicio, ref string dataFim)
+        public static void getFrequencyDate(int ParFrequency_Id, DateTime data, ref string dataInicio, ref string dataFim)
         {
 
             DateTime periodoInicio = data;
@@ -2445,12 +2450,17 @@ namespace SgqSystem.Services
 
             return login + resource;
         }
+
         [WebMethod]
         public string getAPPLevels(int UserSgq_Id, int ParCompany_Id, DateTime Date)
         {
-            //colocar autenticação
-            string APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
 
+            string APPMain = string.Empty;
+
+            //colocar autenticação
+            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
+
+         
             string supports = "<div class=\"Results hide\"></div>" +
                               "<div class=\"ResultsConsolidation hide\"></div>" +
                                "<div class=\"ResultsKeys hide\"></div>" +
@@ -2461,12 +2471,11 @@ namespace SgqSystem.Services
                               "<div class=\"VerificacaoTipificacao hide\"></div>" +
                               "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
 
-            string resource = GetResource();
+            //string resource = GetResource();
 
-            return APPMain +
-                   supports +
-                   resource;
+            return APPMain + supports;// + resource;
         }
+
         public string GetResource()
         {
             if (GlobalConfig.Brasil)
@@ -2546,6 +2555,8 @@ namespace SgqSystem.Services
 
         public string getAPPMain(int UserSgq_Id, int ParCompany_Id, DateTime Date)
         {
+            #region Antes do loop1
+
             var html = new Html();
             string culture;
 
@@ -2575,13 +2586,11 @@ namespace SgqSystem.Services
 
             selectPeriod = "<li class='painel list-group-item " + hide + " '>" + selectPeriod + " </li>";
 
-            string container = html.div(
+            #endregion
 
-                                         outerhtml: breadCrumb + selectPeriod +
-                                                    GetLevel01(ParCompany_Id: ParCompany_Id,                     /****** PORQUE ESTA MOKADO ESSA UNIDADE 1? *******/
-                                                               dateCollect: Date)
+            var seiLaLevel1 = GetLevel01(ParCompany_Id: ParCompany_Id, dateCollect: Date); /****** PORQUE ESTA MOKADO ESSA UNIDADE 1? *******/
 
-                                        , classe: "container");
+            string container = html.div(outerhtml: breadCrumb + selectPeriod + seiLaLevel1 , classe: "container");
 
             string buttons = " <button id=\"btnSave\" class=\"btn btn-lg btn-warning hide\"><i id=\"saveIcon\" class=\"fa fa-save\"></i><i id=\"loadIcon\" class=\"fa fa-circle-o-notch fa-spin\" style=\"display:none;\"></i></button><!--Save-->" +
                              " <button class=\"btn btn-lg btn-danger btnCA hide\">" + CommonData.getResource("corrective_action").Value.ToString() + "</button><!--Corrective Action-->";
@@ -2890,6 +2899,9 @@ namespace SgqSystem.Services
         /// <returns></returns>
         public string GetLevel01(int ParCompany_Id, DateTime dateCollect)
         {
+
+            #region Parametros do level 1 e "instancias"
+
             ///SE NÃO HOUVER NENHUM LEVEL1, LEVEL2, LEVEL3 INFORMAR QUE NÃO ENCONTROU MONITORAMENTOS
             var html = new Html();
 
@@ -2915,20 +2927,30 @@ namespace SgqSystem.Services
             string listLevel2 = null;
             string listLevel3 = null;
 
-            string excecao = null;
+            string excecao = null; 
+            #endregion
 
             //Percorremos a lista de agrupada
-            foreach (var parLevel1Group in parLevel1GroupByCriticalLevel)
+            foreach (var parLevel1Group in parLevel1GroupByCriticalLevel) //LOOP1
             {
+
+                #region instancia
+
                 //Instanciamos uma variável level01GroupList
-                string level01GroupList = null;
+                string level01GroupList = null; 
                 //Instanciamos uma variável list parLevel1 para adicionar os parLevel1
                 string parLevel1 = null;
                 //Instanciamos uma variável para verificar o nome do ParCriticalLevel
                 string nameParCritialLevel = null;
-                //Percorremos a Lista dos Agrupamento
-                foreach (var parlevel1 in parLevel1Group)
+                //Percorremos a Lista dos Agrupamento 
+
+                #endregion
+                var counter = 0;
+                foreach (var parlevel1 in parLevel1Group) //LOOP2
                 {
+
+                    #region 1 monte de coisa que aparentemente roda rapido....
+
                     string tipoTela = "";
 
                     var variableList = ParLevel1VariableProductionDB.getVariable(parlevel1.Id).ToList();
@@ -3061,11 +3083,14 @@ namespace SgqSystem.Services
                     //Instancia variável para receber todos os level3
                     string level3Group = null;
 
+                    #endregion
+
                     //Busca os Level2 e reforna no level3Group;
                     listLevel2 += GetLevel02(parlevel1, ParCompany_Id, dateCollect, ref level3Group);
 
                     //Incrementa Level3Group
                     listLevel3 += level3Group;
+                    counter++;
                 }
                 //Quando termina o loop dos itens agrupados por ParCritialLevel 
                 //Se contem ParCritialLevel
@@ -3128,6 +3153,9 @@ namespace SgqSystem.Services
         /// <returns></returns>
         public string GetLevel02(SGQDBContext.ParLevel1 ParLevel1, int ParCompany_Id, DateTime dateCollect, ref string level3Group)
         {
+
+            #region Parametros e "Instancias"
+
             //Inicializa ParLevel2
             var ParLevel2DB = new SGQDBContext.ParLevel2(db);
             var ParCounterDB = new SGQDBContext.ParCounter(db);
@@ -3177,12 +3205,10 @@ namespace SgqSystem.Services
             string groupLevel3Level2 = null;
             string painelLevel3 = null;
 
-
-
-
+            #endregion
 
             //Enquando houver lista de level2
-            foreach (var parlevel2 in parlevel02List)
+            foreach (var parlevel2 in parlevel02List) //LOOP3
             {
                 //Verifica se pega avaliações e amostras padrão ou da company
                 int evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
@@ -3523,8 +3549,10 @@ namespace SgqSystem.Services
         {
             string retorno = "";
 
-            foreach (var header in list)
+            foreach (var header in list) //LOOP7
             {
+
+                #region MyRegion
 
                 if (ParLevel1_Id > 0 && ParLevel2_Id > 0 && ParLevelHeaderDB != null)
                 {
@@ -3536,8 +3564,11 @@ namespace SgqSystem.Services
 
                 var label = "<label class=\"font-small\">" + header.ParHeaderField_Name + "</label>";
 
-                var form_control = "";
+                var form_control = ""; 
 
+                #endregion
+
+                #region Switch com Loop
                 //ParFieldType 
                 switch (header.ParFieldType_Id)
                 {
@@ -3546,7 +3577,7 @@ namespace SgqSystem.Services
                         var listMultiple = ParFieldTypeDB.getMultipleValues(header.ParHeaderField_Id);
                         var optionsMultiple = "";
                         bool hasDefault = false;
-                        foreach (var value in listMultiple)
+                        foreach (var value in listMultiple) //LOOP8
                         {
                             if (value.IsDefaultOption == 1)
                             {
@@ -3568,7 +3599,7 @@ namespace SgqSystem.Services
                         var listIntegration = ParFieldTypeDB.getIntegrationValues(header.ParHeaderField_Id, header.ParHeaderField_Description, ParCompany_id);
                         var optionsIntegration = "";
                         bool hasDefaultIntegration = false;
-                        foreach (var value in listIntegration)
+                        foreach (var value in listIntegration) //LOOP8
                         {
                             if (value.IsDefaultOption == 1)
                             {
@@ -3590,7 +3621,7 @@ namespace SgqSystem.Services
                     case 3:
                         var listBinario = ParFieldTypeDB.getMultipleValues(header.ParHeaderField_Id);
                         var optionsBinario = "";
-                        foreach (var value in listBinario)
+                        foreach (var value in listBinario) //LOOP8
                         {
                             if (listBinario.ElementAt(0) == value)
                             {
@@ -3636,7 +3667,9 @@ namespace SgqSystem.Services
                                             );
 
 
-            }
+            #endregion
+
+            } 
 
             return retorno;
         }
@@ -3694,10 +3727,12 @@ namespace SgqSystem.Services
             //Tela de bem estar animal
             if (tipoTela.Equals("BEA"))
             {
+                #region MyRegion
+
                 //Instancia uma veriavel para gerar o agrupamento
                 string parLevel3Group = null;
 
-                foreach (var parLevel3 in parlevel3List)
+                foreach (var parLevel3 in parlevel3List) //LOOP4
                 {
 
                     if (Last_Id != parLevel3.Id)
@@ -3723,7 +3758,7 @@ namespace SgqSystem.Services
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+ CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -3777,20 +3812,23 @@ namespace SgqSystem.Services
                                                           parLevel3Group
                                              );
                 }
-                return parLevel3Group;
+                return parLevel3Group; 
+
+                #endregion
             }
             //Tela da verificação da tipificação
             else if (tipoTela.Equals("VF"))
             {
+                #region MyRegion
                 //Inicaliza CaracteristicaTipificacao
-                var CaracteristicaTipificacaoDB = new SGQDBContext.CaracteristicaTipificacao(db);
+                var CaracteristicaTipificacaoDB = new SGQDBContext.CaracteristicaTipificacao(SGQ_GlobalADO);
                 //Inicaliza VerificacaoTipificacaoTarefaIntegracao
-                var VerificacaoTipificacaoTarefaIntegracaoDB = new SGQDBContext.VerificacaoTipificacaoTarefaIntegracao(db);
+                var VerificacaoTipificacaoTarefaIntegracaoDB = new SGQDBContext.VerificacaoTipificacaoTarefaIntegracao(SGQ_GlobalADO);
 
                 //Instancia uma veriavel para gerar o agrupamento
                 string parLevel3Group = null;
 
-                foreach (var parLevel3 in parlevel3List)
+                foreach (var parLevel3 in parlevel3List) // //LOOP4
                 {
                     if (Last_Id != parLevel3.Id)
                     {
@@ -3802,6 +3840,8 @@ namespace SgqSystem.Services
                                                     outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
                                                     classe: "col-xs-12 col-sm-12 col-md-12"
                                                     );
+
+                        #region Switch parLevel3.Name
 
                         switch (parLevel3.Name)
                         {
@@ -3877,6 +3917,8 @@ namespace SgqSystem.Services
                                 break;
                         }
 
+                        #endregion
+
                         //gera os labels
                         labels = html.div(
                                                 outerhtml: labels,
@@ -3904,7 +3946,7 @@ namespace SgqSystem.Services
                 var listAreasParticipantes = CaracteristicaTipificacaoDB.getAreasParticipantes();
                 var items = "";
 
-                foreach (var area in listAreasParticipantes)
+                foreach (var area in listAreasParticipantes) //LOOP5
                 {
                     items += "<div class='col-xs-3 hide' cNmCaracteristica='" + area.cNmCaracteristica + "' cIdentificador='" + area.cIdentificador + "' " +
                             " cNrCaracteristica='" + area.cNrCaracteristica + "' cSgCaracteristica='" + area.cSgCaracteristica + "'>" +
@@ -3971,7 +4013,7 @@ namespace SgqSystem.Services
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+ CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -4009,15 +4051,17 @@ namespace SgqSystem.Services
                                                               parLevel3Group
                                                  );
                 }
-                return parLevel3Group;
+                return parLevel3Group; 
+                #endregion
             }
             //Tela do PCC1B
             else if (tipoTela.Equals("PCC1B"))
             {
+                #region MyRegion
                 //Instancia uma veriavel para gerar o agrupamento
                 string parLevel3Group = null;
 
-                foreach (var parLevel3 in parlevel3List)
+                foreach (var parLevel3 in parlevel3List) //LOOP4
                 {
                     if (Last_Id != parLevel3.Id)
                     {
@@ -4116,11 +4160,11 @@ namespace SgqSystem.Services
                                     classe: "col-xs-6");
 
                 string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+ CommonData.getResource("evaluation").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "evaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("evaluation").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "evaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+ CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -4153,7 +4197,8 @@ namespace SgqSystem.Services
                                                           parLevel3Group
                                              );
                 }
-                return parLevel3Group;
+                return parLevel3Group; 
+                #endregion
             }
             //Tela Genérica
             else
@@ -4163,13 +4208,13 @@ namespace SgqSystem.Services
 
                 var parlevel3GroupByLevel2 = parlevel3List.GroupBy(p => p.ParLevel3Group_Id);
 
-                foreach (var parLevel3GroupLevel2 in parlevel3GroupByLevel2)
+                foreach (var parLevel3GroupLevel2 in parlevel3GroupByLevel2)//LOOP4
                 {
                     string accordeonName = null;
                     string acoordeonId = null;
                     string level3Group = null;
 
-                    foreach (var parLevel3 in parLevel3GroupLevel2)
+                    foreach (var parLevel3 in parLevel3GroupLevel2)//LOOP5
                     {
 
                         if (Last_Id != parLevel3.Id)

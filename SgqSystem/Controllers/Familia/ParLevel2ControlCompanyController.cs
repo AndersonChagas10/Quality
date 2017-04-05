@@ -1,5 +1,4 @@
 ﻿using Dominio;
-using Dominio.Interfaces.Services;
 using DTO.DTO.Params;
 using Helper;
 using SgqSystem.Secirity;
@@ -9,68 +8,53 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
+    /// <summary>
+    /// Este controller gerencia o numero de Monitoramentos (level2)
+    /// definidos por Coporação e Unidade (ParCompany)
+    /// chamado na JBS Braisl de "Familia de monitoramentos".
+    /// 
+    /// Por ex:
+    /// Na Figura: ..\Referencias\FamiliasExemplo.png
+    /// O Indicador (level1) Cep Desossa está configurado para exibir
+    /// Os "Monitoramentos da Empresa" Selecionados (e salvos) juntamente com 
+    /// os "Monitoramentos Corporativos Ativos" selecionados.
+    /// </summary>
     [CustomAuthorize]
     [FilterUnit(filtraUnidadeDoUsuario = true)]
     public class ParLevel2ControlCompanyController : BaseController
     {
         private SgqDbDevEntities db;
-        private IBaseDomain<ParLevel3Level2Level1, ParLevel3Level2Level1DTO> _baseParLevel3Level2Level1;
-        private IBaseDomain<ParLevel3Level2, ParLevel3Level2DTO> _baseParLevel3Level2;
-        private IBaseDomain<ParLevel1, ParLevel1DTO> _baseLevel1;
-        private IBaseDomain<ParLevel2, ParLevel2DTO> _baseLevel2;
-        private IBaseDomain<ParLevel2ControlCompany, ParLevel2ControlCompanyDTO> _baseParLevel2ControlCompany;
-        private IBaseDomain<ParCompany, ParCompanyDTO> _baseParCompany;
-
-        public ParLevel2ControlCompanyController(IBaseDomain<ParLevel3Level2Level1, ParLevel3Level2Level1DTO> baseParLevel3Level2Level1,
-            IBaseDomain<ParLevel1, ParLevel1DTO> baseLevel1,
-            IBaseDomain<ParLevel2, ParLevel2DTO> baseLevel2,
-            IBaseDomain<ParCompany, ParCompanyDTO> baseParCompany,
-            IBaseDomain<ParLevel3Level2, ParLevel3Level2DTO> baseParLevel3Level2,
-            IBaseDomain<ParLevel2ControlCompany, ParLevel2ControlCompanyDTO> baseParLevel2ControlCompany)
+       
+        public ParLevel2ControlCompanyController()
         {
-            _baseParLevel3Level2 = baseParLevel3Level2;
-            _baseParCompany = baseParCompany;
-            _baseParLevel3Level2Level1 = baseParLevel3Level2Level1;
-            _baseParLevel2ControlCompany = baseParLevel2ControlCompany;
-            _baseLevel1 = baseLevel1;
-            _baseLevel2 = baseLevel2;
-            ViewBag.ParLevel1 = _baseLevel1.GetAll().Where(r => r.IsFixedEvaluetionNumber == true);
-            ViewBag.ParLevel2Todos = new List<ParLevel2DTO>();
-            ViewBag.level2Number = 0;
-
-            ViewBag.level2Comporativo = new List<ParLevel2DTO>();
-            ViewBag.level2DisponivelParaEmpresa = new List<ParLevel2DTO>();
-
-            ViewBag.company = _baseParCompany.GetAll();
-
             db = new SgqDbDevEntities();
             db.Configuration.LazyLoadingEnabled = false;
+
+            ViewBag.ParLevel1 = db.ParLevel1.Where(r => r.IsFixedEvaluetionNumber == true);
+            ViewBag.ParLevel2Todos = new List<ParLevel2DTO>();
+            ViewBag.level2Number = 0;
+            ViewBag.level2Comporativo = new List<ParLevel2DTO>();
+            ViewBag.level2DisponivelParaEmpresa = new List<ParLevel2DTO>();
+            ViewBag.company = db.ParCompany.ToList();
         }
 
         public ActionResult Index()
         {
             return View();
         }
-
+      
         public ActionResult ChangeLevel2(int id)
         {
             if (id > 0)
             {
-                var allControlCompany = _baseParLevel2ControlCompany.GetAll().Where(r => r.ParLevel1_Id == id && r.IsActive == true);
-                var todosLevel321 = db.ParLevel3Level2Level1.Include("ParLevel3Level2").Include("ParLevel2").Where(r => r.ParLevel1_Id == id);
-
-                var lastDate = allControlCompany.Where(r => r.ParCompany_Id == null).OrderByDescending(r => r.InitDate).FirstOrDefault()?.InitDate;
-                var level2Comporativo = allControlCompany.Where(r => r.InitDate == lastDate).Select(r => r.ParLevel2);
-
-                //foreach (var i in todosLevel321)
-                //{
-                //    i.ParLevel3Level2 = _baseParLevel3Level2.GetByIdNoLazyLoad(i.ParLevel3Level2_Id);
-                //    i.ParLevel3Level2.ParLevel2 = _baseLevel2.GetById(i.ParLevel3Level2.ParLevel2_Id);
-                //}
-
-                ViewBag.ParLevel2Todos = todosLevel321.Select(r => r.ParLevel3Level2.ParLevel2).GroupBy(r => r.Id).Select(group => group.First()).ToList();
+                var allControlCompany = db.ParLevel2ControlCompany.Include("ParLevel2").Where(r => r.ParLevel1_Id == id && r.IsActive == true);
+                var lastDateDaControlCompany = allControlCompany.Where(r => r.ParCompany_Id == null).OrderByDescending(r => r.InitDate).FirstOrDefault()?.InitDate;
+                var level2Comporativo = allControlCompany.Where(r => r.InitDate == lastDateDaControlCompany).Select(r => r.ParLevel2);
+                var level2VinculadosAoLevel1Selecionado = db.ParLevel3Level2Level1.Where(r => r.ParLevel1_Id == id).Select(r => r.ParLevel3Level2.ParLevel2).Distinct().ToList();
+               
+                ViewBag.ParLevel2Todos = level2VinculadosAoLevel1Selecionado;
                 ViewBag.ParLevel2Ids = level2Comporativo?.Select(r => r.Id);
-                ViewBag.level2Number = _baseLevel1.GetById(id).level2Number;
+                ViewBag.level2Number = db.ParLevel1.FirstOrDefault(r=>r.Id == id).Level2Number;
             }
             else
             {
@@ -84,29 +68,18 @@ namespace SgqSystem.Controllers
         {
             if (id > 0 && companyId > 0)
             {
-                var allControlCompany = _baseParLevel2ControlCompany.GetAll().Where(r => r.ParLevel1_Id == id && r.IsActive == true);
-
-                var lastDate = allControlCompany.Where(r => r.ParCompany_Id == null).OrderByDescending(r => r.InitDate).FirstOrDefault()?.InitDate;
-                var level2Comporativo = allControlCompany.Where(r => r.InitDate == lastDate)?.Select(r => r.ParLevel2);
-
-                var todosLevel321 = _baseParLevel3Level2Level1.GetAllNoLazyLoad().Where(r => r.ParLevel1_Id == id);
-
-                foreach (var i in todosLevel321)
-                {
-                    i.ParLevel3Level2 = _baseParLevel3Level2.GetByIdNoLazyLoad(i.ParLevel3Level2_Id);
-                    i.ParLevel3Level2.ParLevel2 = _baseLevel2.GetById(i.ParLevel3Level2.ParLevel2_Id);
-                }
-
-                var level2DisponivelParaEmpresa = todosLevel321.Where(r => !level2Comporativo.Any(c => c.Id == r.ParLevel3Level2.ParLevel2.Id)).Select(r => r.ParLevel3Level2.ParLevel2);
+                var allControlCompany = db.ParLevel2ControlCompany.Include("ParLevel2").Where(r => r.ParLevel1_Id == id && r.IsActive == true);
+                var lastDateDaControlCompany = allControlCompany.Where(r => r.ParCompany_Id == null).OrderByDescending(r => r.InitDate).FirstOrDefault()?.InitDate;
+                var level2Comporativo = allControlCompany.Where(r => r.InitDate == lastDateDaControlCompany).Select(r => r.ParLevel2);
 
                 var lastDateCompany = allControlCompany.Where(r => r.ParCompany_Id == companyId).OrderByDescending(r => r.InitDate).FirstOrDefault()?.InitDate;
                 var level2SelecionadosParaEmpresa = allControlCompany.Where(r => r.ParCompany_Id == companyId && r.InitDate == lastDateCompany).Select(r => r.ParLevel2);
+                var level2DisponivelParaEmpresa = db.ParLevel3Level2Level1.Where(r => r.ParLevel1_Id == id && !level2Comporativo.Any(c => c.Id == r.ParLevel3Level2.ParLevel2.Id)).Select(r => r.ParLevel3Level2.ParLevel2).Distinct().ToList();
 
-                ViewBag.level2Number = _baseLevel1.GetById(id).level2Number;
+                ViewBag.level2Number = db.ParLevel1.FirstOrDefault(r => r.Id == id).Level2Number;
                 ViewBag.level2Comporativo = level2Comporativo;
                 ViewBag.level2ComporativoIds = level2Comporativo.Select(r => r.Id);
-                ViewBag.level2DisponivelParaEmpresa = level2DisponivelParaEmpresa.GroupBy(r => r.Id)
-                    .Select(group => group.First()).ToList();
+                ViewBag.level2DisponivelParaEmpresa = level2DisponivelParaEmpresa;
                 ViewBag.level2SelecionadosParaEmpresaIds = level2SelecionadosParaEmpresa?.Select(r => r.Id);
             }
             else
