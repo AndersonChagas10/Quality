@@ -242,7 +242,13 @@
     ///initialize switches
 
     function defaults() {
-      
+        $.fn.bootstrapSwitch.defaults.size = 'small';
+        $.fn.bootstrapSwitch.defaults.onText = '@Resources.Resource.yes';
+        $.fn.bootstrapSwitch.defaults.offText = '@Resources.Resource.no';
+        $(".check-box").bootstrapSwitch();
+
+        $('#paramsDto_parLevel1Dto_IsRuleConformity').bootstrapSwitch('onText', '@Resources.Resource.conform');
+        $('#paramsDto_parLevel1Dto_IsRuleConformity').bootstrapSwitch('offText', '@Resources.Resource.not_conform');
     }
 
     function loadSelect2(){
