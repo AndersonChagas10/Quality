@@ -79,7 +79,7 @@
                                         @*}*@
                                     </div>
                                     <div class="col-xs-9">
-                                        @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2" })
+                                        @Html.DropDownList("paramsDto.parLevel1Selected", Model.paramsDdl.DdlparLevel1, htmlAttributes: new { @class = "form-control select2", @id = "parLevel1Select2", style = "width: 100%" })
                                     </div>
                                     <hr />
                                 </div>
@@ -1303,7 +1303,7 @@
             if($('#paramsDto_parHeaderFieldDto_ParFieldType_Id').val() == 1)
                 $('#adicionar').show();
             else
-                $('#adicionar').hide();
+                $('#adicionar').hide();a
         });
 
         $('#Fechar').show();
@@ -1337,5 +1337,5 @@
         }
         controle--;
     }
-
+    
 </script>

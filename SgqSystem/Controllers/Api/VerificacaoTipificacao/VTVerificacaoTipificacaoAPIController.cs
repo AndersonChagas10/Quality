@@ -16,6 +16,9 @@ namespace SgqSystem.Controllers.Api
     {
         public string mensagemErro { get; set; }
 
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        
+
         [Route("Save")]
         [HttpPost]
         public void SaveVTVerificacaoTipificacao(TipificacaoViewModel model)
@@ -426,8 +429,11 @@ namespace SgqSystem.Controllers.Api
 
                                         var SgqSystem = new SgqSystem.Services.SyncServices();
 
-                                        var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1();
-                                        var ConsolidationLevel2DB = new SGQDBContext.ConsolidationLevel2();
+                                        SqlConnection dbService = new SqlConnection(conexao);
+                                        dbService.Open();
+
+                                        var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1(dbService);
+                                        var ConsolidationLevel2DB = new SGQDBContext.ConsolidationLevel2(dbService);
 
                                         ///****trocar***//
                                       

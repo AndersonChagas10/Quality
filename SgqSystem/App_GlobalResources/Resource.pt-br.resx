@@ -523,7 +523,7 @@
     <value>Local</value>
   </data>
   <data name="number_nc" xml:space="preserve">
-    <value>Derivation #</value>
+    <value>Desvios #</value>
   </data>
   <data name="repetition" xml:space="preserve">
     <value>Reincidência</value>
@@ -1630,7 +1630,7 @@
     <value>Sem dados.</value>
   </data>
   <data name="defines_consolidation_indicator" xml:space="preserve">
-    <value>Define consilidação em tempo real para o indicador</value>
+    <value>Define consolidação em tempo real para o indicador</value>
   </data>
   <data name="group_name2" xml:space="preserve">
     <value>Nome</value>

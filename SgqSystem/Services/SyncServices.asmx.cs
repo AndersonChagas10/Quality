@@ -36,8 +36,21 @@ namespace SgqSystem.Services
     [System.Web.Script.Services.ScriptService]
     public class SyncServices : System.Web.Services.WebService
     {
-        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
         //private SqlConnection connection;
+        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+        string conexaoSGQ_GlobalADO = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
+
+        public SqlConnection db;
+        public SqlConnection SGQ_GlobalADO;
+
+        public SyncServices()
+        {
+            db = new SqlConnection(conexao);
+            SGQ_GlobalADO = new SqlConnection(conexaoSGQ_GlobalADO);
+            db.Open();
+            
+        }
 
         #region Funções
 
@@ -456,9 +469,9 @@ namespace SgqSystem.Services
                 string sql = "SELECT [level01_Id], [Level01CollectionDate], [level02_Id], [Level02CollectionDate], [Unit_Id],[Period], [Shift], [AppVersion], [Ambient], [Device_Id], [Device_Mac] , [Key], [Level03ResultJSon], [Id], [Level02HeaderJson], [Evaluate],[Sample],[AuditorId], [Reaudit], [CorrectiveActionJson],[haveReaudit],[ReauditLevel],[haveCorrectiveAction],[ReauditNumber]  FROM CollectionJson WHERE " + query + " [IsProcessed] = 0";
 
 
-                var CollectionJsonDB = new SGQDBContext.CollectionJson();
-                var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1();
-                var ConsolidationLevel2DB = new SGQDBContext.ConsolidationLevel2();
+                var CollectionJsonDB = new SGQDBContext.CollectionJson(db);
+                var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1(db);
+                var ConsolidationLevel2DB = new SGQDBContext.ConsolidationLevel2(db);
 
                 var collectionJson = CollectionJsonDB.getJson(sql);
 
@@ -714,12 +727,12 @@ namespace SgqSystem.Services
 
                         //}
 
-                        var CollectionLevel2ConsolidationDB = new SGQDBContext.CollectionLevel2Consolidation();
+                        var CollectionLevel2ConsolidationDB = new SGQDBContext.CollectionLevel2Consolidation(db);
                         var collectionLevel2Consolidation = CollectionLevel2ConsolidationDB.getConsolidation(ConsolidationLevel2_Id, c.level02_Id);
 
                         var updateConsolidationLevel2Id = updateConsolidationLevel2(ConsolidationLevel2_Id, AlertLevel, avaliacaoultimoalerta, monitoramentoultimoalerta, collectionLevel2Consolidation);
 
-                        var ConsolidationLevel1XConsolidationLevel2DB = new ConsolidationLevel1XConsolidationLevel2();
+                        var ConsolidationLevel1XConsolidationLevel2DB = new ConsolidationLevel1XConsolidationLevel2(db);
                         var consolidationLevel1XConsolidationLevel2 = ConsolidationLevel1XConsolidationLevel2DB.getConsolidation(ConsolidationLevel1_Id);
 
                         var updateConsolidationLevel1Id = updateConsolidationLevel1(ConsolidationLevel1_Id, AlertLevel, avaliacaoultimoalerta, monitoramentoultimoalerta, consolidationLevel1XConsolidationLevel2);
@@ -936,7 +949,7 @@ namespace SgqSystem.Services
         /// <returns></returns>
         public SGQDBContext.ConsolidationLevel1 InsertConsolidationLevel1(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate, string departmentId = "1")
         {
-            var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1();
+            var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1(db);
 
             //Script de Insert para consolidação
             string sql = "INSERT ConsolidationLevel1 ([UnitId],[DepartmentId],[ParLevel1_Id],[AddDate],[AlterDate],[ConsolidationDate]) " +
@@ -1040,7 +1053,7 @@ namespace SgqSystem.Services
         public SGQDBContext.ConsolidationLevel2 InsertConsolidationLevel2(int ConsolidationLevel1_Id, int ParLevel2_Id, int ParCompany_Id, DateTime collectionDate)
         {
             //Verifica se já existe uma consolidação para o level02
-            var ConsolidationLevel2DB = new SGQDBContext.ConsolidationLevel2();
+            var ConsolidationLevel2DB = new SGQDBContext.ConsolidationLevel2(db);
             //var ConsolidationLevel2 = ConsolidationLevel2DB.getbYConsolidationLevel1(Convert.ToInt32(Level01ConsolidationId), Convert.ToInt32(Level02Id));
 
             //if (ConsolidationLevel2 != null)
@@ -1230,7 +1243,7 @@ namespace SgqSystem.Services
                         //Atualiza a situação de reauditoria
                         if (Reaudit)
                         {
-                            var UpdateCollectionLevel2DB = new SGQDBContext.UpdateCollectionLevel2();
+                            var UpdateCollectionLevel2DB = new SGQDBContext.UpdateCollectionLevel2(db);
                             UpdateCollectionLevel2DB.UpdateIsReauditByKey(keySolid, Reaudit, Int16.Parse(haveReaudit), ReauditNumber);
                         }
 
@@ -1253,7 +1266,7 @@ namespace SgqSystem.Services
                 {
                     if (hashKey == "1")
                     {
-                        var CollectionLevel2DB = new SGQDBContext.CollectionLevel2();
+                        var CollectionLevel2DB = new SGQDBContext.CollectionLevel2(db);
                         var collectionLevel2 = CollectionLevel2DB.GetByKey(key);
 
                         var updateLevel2Id = InsertCollectionLevel2(ConsolidationLevel1, ConsolidationLevel2, AuditorId, Shift, Period, Phase, Reaudit, ReauditNumber, CollectionDate, StartPhase, Evaluation, Sample, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel, haveCorrectiveAction, HavePhase, Completed, collectionLevel2.Id.ToString(), AlertLevel, sequential, side, WeiEvaluation, Defects, WeiDefects, TotalLevel3WithDefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, startphaseevaluation, hashKey);
@@ -1421,7 +1434,7 @@ namespace SgqSystem.Services
                  * 30/03/2017
                  */
 
-                var ParLevel3DB_IndicadorFilho = new SGQDBContext.ParLevel3();
+                var ParLevel3DB_IndicadorFilho = new SGQDBContext.ParLevel3(db);
                 parLevel3List_IndicadorFilho = ParLevel3DB_IndicadorFilho.getListPerLevel1Id(ParLevel1_Id.GetValueOrDefault());
 
             }
@@ -1436,7 +1449,7 @@ namespace SgqSystem.Services
 
             //Lista de Level3
 
-            var ParLevel3DB = new SGQDBContext.ParLevel3();
+            var ParLevel3DB = new SGQDBContext.ParLevel3(db);
             var parLevel3List = ParLevel3DB.getList();
 
             //Percorre o Array para gerar os inserts
@@ -1777,7 +1790,7 @@ namespace SgqSystem.Services
         //        return "error";
         //    }
         //}
-        public void getFrequencyDate(int ParFrequency_Id, DateTime data, ref string dataInicio, ref string dataFim)
+        public static void getFrequencyDate(int ParFrequency_Id, DateTime data, ref string dataInicio, ref string dataFim)
         {
 
             DateTime periodoInicio = data;
@@ -1868,7 +1881,7 @@ namespace SgqSystem.Services
             }
 
             //Verificamos os Indicadores que já foram consolidados para a Unidade selecionada
-            var ParLevel1ConsolidationXParFrequencyDB = new SGQDBContext.ParLevel1ConsolidationXParFrequency();
+            var ParLevel1ConsolidationXParFrequencyDB = new SGQDBContext.ParLevel1ConsolidationXParFrequency(db);
             //Instanciamos uma variável que irá 
             var parLevel1ConsolidationXParFrequency = ParLevel1ConsolidationXParFrequencyDB.getList(Convert.ToInt32(ParCompany_Id), data);
 
@@ -1894,7 +1907,7 @@ namespace SgqSystem.Services
                 getFrequencyDate(c.ParFrequency_Id, data, ref dataInicio, ref dataFim);
 
                 //Instanciamos a tabela Resultados
-                var Level2ResultDB = new SGQDBContext.Level2Result();
+                var Level2ResultDB = new SGQDBContext.Level2Result(db);
                 var Level2ResultList = Level2ResultDB.getList(c.ParLevel1_Id, Convert.ToInt32(ParCompany_Id), dataInicio, dataFim);
 
 
@@ -1942,7 +1955,7 @@ namespace SgqSystem.Services
                     {
 
                         //Verificamos a consolidação
-                        var ConsolidationResultL1L2DB = new SGQDBContext.ConsolidationResultL1L2();
+                        var ConsolidationResultL1L2DB = new SGQDBContext.ConsolidationResultL1L2(db);
                         var consolidationResultL1L2 = ConsolidationResultL1L2DB.getConsolidation(Level2Result.ParLevel2_Id, Level2Result.Unit_Id, c.Id);
 
 
@@ -1954,14 +1967,14 @@ namespace SgqSystem.Services
                         string partialResults = null;
                         if (c.IsPartialSave == true)
                         {
-
-                            var ParLevel1DB = new SGQDBContext.ParLevel1();
+                            
+                            var ParLevel1DB = new SGQDBContext.ParLevel1(db);
                             var parLevel1 = ParLevel1DB.getById(Level2Result.ParLevel1_Id);
 
                             var ParLevel2DB = new SGQDBContext.ParLevel2();
                             var parLevel2 = ParLevel2DB.getById(Level2Result.ParLevel2_Id);
 
-                            var ParLevel3DB = new SGQDBContext.ParLevel3();
+                            var ParLevel3DB = new SGQDBContext.ParLevel3(db);
                             var parLevel3InLevel2List = ParLevel3DB.getLevel3InLevel2(parLevel1, parLevel2, Convert.ToInt32(ParCompany_Id), data);
 
                             foreach (var l3 in parLevel3InLevel2List)
@@ -2437,12 +2450,17 @@ namespace SgqSystem.Services
 
             return login + resource;
         }
+
         [WebMethod]
         public string getAPPLevels(int UserSgq_Id, int ParCompany_Id, DateTime Date)
         {
-            //colocar autenticação
-            string APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
 
+            string APPMain = string.Empty;
+
+            //colocar autenticação
+            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
+
+         
             string supports = "<div class=\"Results hide\"></div>" +
                               "<div class=\"ResultsConsolidation hide\"></div>" +
                                "<div class=\"ResultsKeys hide\"></div>" +
@@ -2452,10 +2470,12 @@ namespace SgqSystem.Services
                               "<div class=\"Users hide\"></div>" +
                               "<div class=\"VerificacaoTipificacao hide\"></div>" +
                               "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
-            
-            return APPMain +
-                   supports;
+
+            //string resource = GetResource();
+
+            return APPMain + supports;// + resource;
         }
+
         public string GetResource()
         {
             if (GlobalConfig.Brasil)
@@ -2535,6 +2555,8 @@ namespace SgqSystem.Services
 
         public string getAPPMain(int UserSgq_Id, int ParCompany_Id, DateTime Date)
         {
+            #region Antes do loop1
+
             var html = new Html();
             string culture;
 
@@ -2564,13 +2586,11 @@ namespace SgqSystem.Services
 
             selectPeriod = "<li class='painel list-group-item " + hide + " '>" + selectPeriod + " </li>";
 
-            string container = html.div(
+            #endregion
 
-                                         outerhtml: breadCrumb + selectPeriod +
-                                                    GetLevel01(ParCompany_Id: ParCompany_Id,                     /****** PORQUE ESTA MOKADO ESSA UNIDADE 1? *******/
-                                                               dateCollect: Date)
+            var seiLaLevel1 = GetLevel01(ParCompany_Id: ParCompany_Id, dateCollect: Date); /****** PORQUE ESTA MOKADO ESSA UNIDADE 1? *******/
 
-                                        , classe: "container");
+            string container = html.div(outerhtml: breadCrumb + selectPeriod + seiLaLevel1 , classe: "container");
 
             string buttons = " <button id=\"btnSave\" class=\"btn btn-lg btn-warning hide\"><i id=\"saveIcon\" class=\"fa fa-save\"></i><i id=\"loadIcon\" class=\"fa fa-circle-o-notch fa-spin\" style=\"display:none;\"></i></button><!--Save-->" +
                              " <button class=\"btn btn-lg btn-danger btnCA hide\">" + CommonData.getResource("corrective_action").Value.ToString() + "</button><!--Corrective Action-->";
@@ -2879,15 +2899,18 @@ namespace SgqSystem.Services
         /// <returns></returns>
         public string GetLevel01(int ParCompany_Id, DateTime dateCollect)
         {
+
+            #region Parametros do level 1 e "instancias"
+
             ///SE NÃO HOUVER NENHUM LEVEL1, LEVEL2, LEVEL3 INFORMAR QUE NÃO ENCONTROU MONITORAMENTOS
             var html = new Html();
 
             //Instanciamos a Classe ParLevel01 Dapper
-            var ParLevel1DB = new SGQDBContext.ParLevel1();
-            var ParCounterDB = new SGQDBContext.ParCounter();
+            var ParLevel1DB = new SGQDBContext.ParLevel1(db);
+            var ParCounterDB = new SGQDBContext.ParCounter(db);
             //Inicaliza ParLevel1VariableProduction
-            var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction();
-            var ParRelapseDB = new SGQDBContext.ParRelapse();
+            var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction(db);
+            var ParRelapseDB = new SGQDBContext.ParRelapse(db);
 
             //Buscamos os ParLevel11 para a unidade selecionada
             var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id);
@@ -2904,20 +2927,30 @@ namespace SgqSystem.Services
             string listLevel2 = null;
             string listLevel3 = null;
 
-            string excecao = null;
+            string excecao = null; 
+            #endregion
 
             //Percorremos a lista de agrupada
-            foreach (var parLevel1Group in parLevel1GroupByCriticalLevel)
+            foreach (var parLevel1Group in parLevel1GroupByCriticalLevel) //LOOP1
             {
+
+                #region instancia
+
                 //Instanciamos uma variável level01GroupList
-                string level01GroupList = null;
+                string level01GroupList = null; 
                 //Instanciamos uma variável list parLevel1 para adicionar os parLevel1
                 string parLevel1 = null;
                 //Instanciamos uma variável para verificar o nome do ParCriticalLevel
                 string nameParCritialLevel = null;
-                //Percorremos a Lista dos Agrupamento
-                foreach (var parlevel1 in parLevel1Group)
+                //Percorremos a Lista dos Agrupamento 
+
+                #endregion
+                var counter = 0;
+                foreach (var parlevel1 in parLevel1Group) //LOOP2
                 {
+
+                    #region 1 monte de coisa que aparentemente roda rapido....
+
                     string tipoTela = "";
 
                     var variableList = ParLevel1VariableProductionDB.getVariable(parlevel1.Id).ToList();
@@ -2927,7 +2960,7 @@ namespace SgqSystem.Services
                         tipoTela = variableList[0].Name;
                     }
                     //Se o ParLevel1 contem um ParCritialLevel_Id
-                    var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas();
+                    var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas(db);
                     var alertas = ParLevel1AlertasDB.getAlertas(parlevel1.Id, ParCompany_Id, dateCollect);
 
                     if (parlevel1.ParCriticalLevel_Id > 0)
@@ -3050,11 +3083,14 @@ namespace SgqSystem.Services
                     //Instancia variável para receber todos os level3
                     string level3Group = null;
 
+                    #endregion
+
                     //Busca os Level2 e reforna no level3Group;
                     listLevel2 += GetLevel02(parlevel1, ParCompany_Id, dateCollect, ref level3Group);
 
                     //Incrementa Level3Group
                     listLevel3 += level3Group;
+                    counter++;
                 }
                 //Quando termina o loop dos itens agrupados por ParCritialLevel 
                 //Se contem ParCritialLevel
@@ -3117,18 +3153,21 @@ namespace SgqSystem.Services
         /// <returns></returns>
         public string GetLevel02(SGQDBContext.ParLevel1 ParLevel1, int ParCompany_Id, DateTime dateCollect, ref string level3Group)
         {
+
+            #region Parametros e "Instancias"
+
             //Inicializa ParLevel2
-            var ParLevel2DB = new SGQDBContext.ParLevel2();
-            var ParCounterDB = new SGQDBContext.ParCounter();
+            var ParLevel2DB = new SGQDBContext.ParLevel2(db);
+            var ParCounterDB = new SGQDBContext.ParCounter(db);
             //Pega uma lista de ParLevel2
             //Tem que confirmar a company e colocar na query dentro do método, ainda não foi validado
             var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(ParLevel1.Id, ParCompany_Id);
 
             //Inicializa Cabecalhos
-            var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader();
+            var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader(db);
             //Inicaliza ParFieldType
-            var ParFieldTypeDB = new SGQDBContext.ParFieldType();
-            var ParNCRuleDB = new SGQDBContext.NotConformityRule();
+            var ParFieldTypeDB = new SGQDBContext.ParFieldType(db);
+            var ParNCRuleDB = new SGQDBContext.NotConformityRule(db);
 
             var reauditFlag = "<li class='painel row list-group-item hide reauditFlag'> Reaudit <span class='reauditnumber'></span></li>";
 
@@ -3140,8 +3179,8 @@ namespace SgqSystem.Services
             string headerList = null;
 
             //Inicializa Avaliações e Amostras
-            var ParEvaluateDB = new SGQDBContext.ParLevel2Evaluate();
-            var ParSampleDB = new SGQDBContext.ParLevel2Sample();
+            var ParEvaluateDB = new SGQDBContext.ParLevel2Evaluate(db);
+            var ParSampleDB = new SGQDBContext.ParLevel2Sample(db);
 
             //Verifica avaliações padrão
             var ParEvaluatePadrao = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
@@ -3166,12 +3205,10 @@ namespace SgqSystem.Services
             string groupLevel3Level2 = null;
             string painelLevel3 = null;
 
-
-
-
+            #endregion
 
             //Enquando houver lista de level2
-            foreach (var parlevel2 in parlevel02List)
+            foreach (var parlevel2 in parlevel02List) //LOOP3
             {
                 //Verifica se pega avaliações e amostras padrão ou da company
                 int evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
@@ -3510,8 +3547,10 @@ namespace SgqSystem.Services
         {
             string retorno = "";
 
-            foreach (var header in list)
+            foreach (var header in list) //LOOP7
             {
+
+                #region MyRegion
 
                 if (ParLevel1_Id > 0 && ParLevel2_Id > 0 && ParLevelHeaderDB != null)
                 {
@@ -3523,8 +3562,11 @@ namespace SgqSystem.Services
 
                 var label = "<label class=\"font-small\">" + header.ParHeaderField_Name + "</label>";
 
-                var form_control = "";
+                var form_control = ""; 
 
+                #endregion
+
+                #region Switch com Loop
                 //ParFieldType 
                 switch (header.ParFieldType_Id)
                 {
@@ -3533,7 +3575,7 @@ namespace SgqSystem.Services
                         var listMultiple = ParFieldTypeDB.getMultipleValues(header.ParHeaderField_Id);
                         var optionsMultiple = "";
                         bool hasDefault = false;
-                        foreach (var value in listMultiple)
+                        foreach (var value in listMultiple) //LOOP8
                         {
                             if (value.IsDefaultOption == 1)
                             {
@@ -3555,7 +3597,7 @@ namespace SgqSystem.Services
                         var listIntegration = ParFieldTypeDB.getIntegrationValues(header.ParHeaderField_Id, header.ParHeaderField_Description, ParCompany_id);
                         var optionsIntegration = "";
                         bool hasDefaultIntegration = false;
-                        foreach (var value in listIntegration)
+                        foreach (var value in listIntegration) //LOOP8
                         {
                             if (value.IsDefaultOption == 1)
                             {
@@ -3577,7 +3619,7 @@ namespace SgqSystem.Services
                     case 3:
                         var listBinario = ParFieldTypeDB.getMultipleValues(header.ParHeaderField_Id);
                         var optionsBinario = "";
-                        foreach (var value in listBinario)
+                        foreach (var value in listBinario) //LOOP8
                         {
                             if (listBinario.ElementAt(0) == value)
                             {
@@ -3623,7 +3665,9 @@ namespace SgqSystem.Services
                                             );
 
 
-            }
+            #endregion
+
+            } 
 
             return retorno;
         }
@@ -3640,16 +3684,16 @@ namespace SgqSystem.Services
             var reauditFlag = "<li class='painel row list-group-item hide reauditFlag'> Reaudit <span class='reauditnumber'></span></li>";
 
             //Inicializa ParLevel3
-            var ParLevel3DB = new SGQDBContext.ParLevel3();
+            var ParLevel3DB = new SGQDBContext.ParLevel3(db);
 
-            var ParCounterDB = new SGQDBContext.ParCounter();
+            var ParCounterDB = new SGQDBContext.ParCounter(db);
 
             //Inicializa Cabecalhos
-            var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader();
+            var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader(db);
             //Inicaliza ParFieldType
-            var ParFieldTypeDB = new SGQDBContext.ParFieldType();
+            var ParFieldTypeDB = new SGQDBContext.ParFieldType(db);
             //Inicaliza ParLevel1VariableProduction
-            var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction();
+            var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction(db);
 
             //Pega uma lista de parleve3
             //pode colocar par level3 por unidades, como nos eua
@@ -3681,10 +3725,12 @@ namespace SgqSystem.Services
             //Tela de bem estar animal
             if (tipoTela.Equals("BEA"))
             {
+                #region MyRegion
+
                 //Instancia uma veriavel para gerar o agrupamento
                 string parLevel3Group = null;
 
-                foreach (var parLevel3 in parlevel3List)
+                foreach (var parLevel3 in parlevel3List) //LOOP4
                 {
 
                     if (Last_Id != parLevel3.Id)
@@ -3710,7 +3756,7 @@ namespace SgqSystem.Services
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+ CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -3764,20 +3810,23 @@ namespace SgqSystem.Services
                                                           parLevel3Group
                                              );
                 }
-                return parLevel3Group;
+                return parLevel3Group; 
+
+                #endregion
             }
             //Tela da verificação da tipificação
             else if (tipoTela.Equals("VF"))
             {
+                #region MyRegion
                 //Inicaliza CaracteristicaTipificacao
-                var CaracteristicaTipificacaoDB = new SGQDBContext.CaracteristicaTipificacao();
+                var CaracteristicaTipificacaoDB = new SGQDBContext.CaracteristicaTipificacao(SGQ_GlobalADO);
                 //Inicaliza VerificacaoTipificacaoTarefaIntegracao
-                var VerificacaoTipificacaoTarefaIntegracaoDB = new SGQDBContext.VerificacaoTipificacaoTarefaIntegracao();
+                var VerificacaoTipificacaoTarefaIntegracaoDB = new SGQDBContext.VerificacaoTipificacaoTarefaIntegracao(SGQ_GlobalADO);
 
                 //Instancia uma veriavel para gerar o agrupamento
                 string parLevel3Group = null;
 
-                foreach (var parLevel3 in parlevel3List)
+                foreach (var parLevel3 in parlevel3List) // //LOOP4
                 {
                     if (Last_Id != parLevel3.Id)
                     {
@@ -3789,6 +3838,8 @@ namespace SgqSystem.Services
                                                     outerhtml: html.span(outerhtml: parLevel3.Name, classe: "levelName"),
                                                     classe: "col-xs-12 col-sm-12 col-md-12"
                                                     );
+
+                        #region Switch parLevel3.Name
 
                         switch (parLevel3.Name)
                         {
@@ -3864,6 +3915,8 @@ namespace SgqSystem.Services
                                 break;
                         }
 
+                        #endregion
+
                         //gera os labels
                         labels = html.div(
                                                 outerhtml: labels,
@@ -3891,7 +3944,7 @@ namespace SgqSystem.Services
                 var listAreasParticipantes = CaracteristicaTipificacaoDB.getAreasParticipantes();
                 var items = "";
 
-                foreach (var area in listAreasParticipantes)
+                foreach (var area in listAreasParticipantes) //LOOP5
                 {
                     items += "<div class='col-xs-3 hide' cNmCaracteristica='" + area.cNmCaracteristica + "' cIdentificador='" + area.cIdentificador + "' " +
                             " cNrCaracteristica='" + area.cNrCaracteristica + "' cSgCaracteristica='" + area.cSgCaracteristica + "'>" +
@@ -3958,7 +4011,7 @@ namespace SgqSystem.Services
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+ CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -3996,15 +4049,17 @@ namespace SgqSystem.Services
                                                               parLevel3Group
                                                  );
                 }
-                return parLevel3Group;
+                return parLevel3Group; 
+                #endregion
             }
             //Tela do PCC1B
             else if (tipoTela.Equals("PCC1B"))
             {
+                #region MyRegion
                 //Instancia uma veriavel para gerar o agrupamento
                 string parLevel3Group = null;
 
-                foreach (var parLevel3 in parlevel3List)
+                foreach (var parLevel3 in parlevel3List) //LOOP4
                 {
                     if (Last_Id != parLevel3.Id)
                     {
@@ -4103,11 +4158,11 @@ namespace SgqSystem.Services
                                     classe: "col-xs-6");
 
                 string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+ CommonData.getResource("evaluation").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "evaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("evaluation").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "evaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+ CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "sampleTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -4140,7 +4195,8 @@ namespace SgqSystem.Services
                                                           parLevel3Group
                                              );
                 }
-                return parLevel3Group;
+                return parLevel3Group; 
+                #endregion
             }
             //Tela Genérica
             else
@@ -4150,13 +4206,13 @@ namespace SgqSystem.Services
 
                 var parlevel3GroupByLevel2 = parlevel3List.GroupBy(p => p.ParLevel3Group_Id);
 
-                foreach (var parLevel3GroupLevel2 in parlevel3GroupByLevel2)
+                foreach (var parLevel3GroupLevel2 in parlevel3GroupByLevel2)//LOOP4
                 {
                     string accordeonName = null;
                     string acoordeonId = null;
                     string level3Group = null;
 
-                    foreach (var parLevel3 in parLevel3GroupLevel2)
+                    foreach (var parLevel3 in parLevel3GroupLevel2)//LOOP5
                     {
 
                         if (Last_Id != parLevel3.Id)
@@ -4497,7 +4553,7 @@ namespace SgqSystem.Services
             string head = html.div(classe: "head");
 
             //Verifica as configurações iniciais da tela
-            var ParConfSGQDB = new SGQDBContext.ParConfSGQContext();
+            var ParConfSGQDB = new SGQDBContext.ParConfSGQContext(db);
             var configuracoes = ParConfSGQDB.get();
 
 
@@ -4601,8 +4657,8 @@ namespace SgqSystem.Services
         [WebMethod]
         public string getCompanyUsers(string ParCompany_Id)
         {
-            var ParCompanyXUserSgqDB = new SGQDBContext.ParCompanyXUserSgq();
-            var RolesXUserSgqDB = new SGQDBContext.RoleXUserSgq();
+            var ParCompanyXUserSgqDB = new SGQDBContext.ParCompanyXUserSgq(db);
+            var RolesXUserSgqDB = new SGQDBContext.RoleXUserSgq(db);
 
             var users = ParCompanyXUserSgqDB.getCompanyUsers(Convert.ToInt32(ParCompany_Id));
             var html = new Html();
@@ -4623,7 +4679,7 @@ namespace SgqSystem.Services
         [WebMethod]
         public string getUserCompanys(string UserSgq_Id)
         {
-            var ParCompanyXUserSgqDB = new SGQDBContext.ParCompanyXUserSgq();
+            var ParCompanyXUserSgqDB = new SGQDBContext.ParCompanyXUserSgq(db);
 
             var users = ParCompanyXUserSgqDB.getUserCompany(Convert.ToInt32(UserSgq_Id));
             var html = new Html();
@@ -4642,7 +4698,7 @@ namespace SgqSystem.Services
         [WebMethod]
         public string UserSGQLogin(string UserName, string Password)
         {
-            var UserSGQDB = new SGQDBContext.UserSGQ();
+            var UserSGQDB = new SGQDBContext.UserSGQ(db);
             var user = UserSGQDB.getUserByLoginOrId(userLogin: UserName.Trim());
 
             // Password = Guard.Descriptografar3DES("h88Xcom5qf0Ok3LCqZUm1A==");
@@ -4675,7 +4731,7 @@ namespace SgqSystem.Services
         [WebMethod]
         public string UserSGQById(int Id)
         {
-            var UserSGQDB = new SGQDBContext.UserSGQ();
+            var UserSGQDB = new SGQDBContext.UserSGQ(db);
             var user = UserSGQDB.getUserByLoginOrId(id: Id);
 
             var html = new Html();
@@ -5033,7 +5089,7 @@ namespace SgqSystem.Services
         /// <returns></returns>
         public string selectUserCompanys(int UserSgq_Id, int ParCompany_Id)
         {
-            var ParCompanyXUserSgqDB = new SGQDBContext.ParCompanyXUserSgq();
+            var ParCompanyXUserSgqDB = new SGQDBContext.ParCompanyXUserSgq(db);
             var parCompanyXUserSgq = ParCompanyXUserSgqDB.getUserCompany(UserSgq_Id);
 
             string options = null;
@@ -5198,7 +5254,7 @@ namespace SgqSystem.Services
         public string getPhaseLevel2(int ParCompany_Id, string date)
         {
 
-            var ResultPhaseDB = new SGQDBContext.ResultPhase();
+            var ResultPhaseDB = new SGQDBContext.ResultPhase(db);
             //Instanciamos uma variável que irá 
 
             DateTime startDate = DateCollectConvert(date);
@@ -5229,7 +5285,7 @@ namespace SgqSystem.Services
         public string getResultEvaluationDefects(int parCompany_Id, string date, int parLevel1_Id)
         {
 
-            var ResultPhaseDB = new SGQDBContext.ResultEvaluationDefects();
+            var ResultPhaseDB = new SGQDBContext.ResultEvaluationDefects(db);
             //Instanciamos uma variável que irá 
 
             DateTime dateAtual = DateCollectConvert(date);
@@ -5258,7 +5314,7 @@ namespace SgqSystem.Services
         {
 
             //Verificamos os Indicadores que já foram consolidados para a Unidade selecionada
-            var ParLevel1ConsolidationXParFrequencyDB = new SGQDBContext.ParLevel1ConsolidationXParFrequency();
+            var ParLevel1ConsolidationXParFrequencyDB = new SGQDBContext.ParLevel1ConsolidationXParFrequency(db);
             //Instanciamos uma variável que irá 
 
             DateTime data = DateCollectConvert(date);
@@ -5283,7 +5339,7 @@ namespace SgqSystem.Services
                 getFrequencyDate(c.ParFrequency_Id, data, ref dataInicio, ref dataFim);
 
                 //Instanciamos a tabela Resultados
-                var Level2ResultDB = new SGQDBContext.Level2Result();
+                var Level2ResultDB = new SGQDBContext.Level2Result(db);
                 var Level2ResultList = Level2ResultDB.getKeys(c.ParLevel1_Id, Convert.ToInt32(ParCompany_Id), dataInicio, dataFim);
                 string listKeys = null;
 
@@ -5322,8 +5378,8 @@ namespace SgqSystem.Services
                         using (SqlDataReader r = command.ExecuteReader())
                         {
 
-                            var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1();
-                            var ConsolidationLevel2DB = new SGQDBContext.ConsolidationLevel2();
+                            var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1(db);
+                            var ConsolidationLevel2DB = new SGQDBContext.ConsolidationLevel2(db);
 
 
                             //Se encontrar, retorna o Id da Consolidação
@@ -5450,12 +5506,12 @@ namespace SgqSystem.Services
                                 int ParLevel2_Id = Convert.ToInt32(r[1]);
                                 int ConsolidationLevel1_Id = Convert.ToInt32(r[2]);
 
-                                var CollectionLevel2ConsolidationDB = new SGQDBContext.CollectionLevel2Consolidation();
+                                var CollectionLevel2ConsolidationDB = new SGQDBContext.CollectionLevel2Consolidation(db);
                                 var collectionLevel2Consolidation = CollectionLevel2ConsolidationDB.getConsolidation(ConsolidationLevel2_Id, ParLevel2_Id);
 
                                 var updateConsolidationLevel2Id = updateConsolidationLevel2(ConsolidationLevel2_Id, "0", "0", "0", collectionLevel2Consolidation);
 
-                                var ConsolidationLevel1XConsolidationLevel2DB = new ConsolidationLevel1XConsolidationLevel2();
+                                var ConsolidationLevel1XConsolidationLevel2DB = new ConsolidationLevel1XConsolidationLevel2(db);
                                 var consolidationLevel1XConsolidationLevel2 = ConsolidationLevel1XConsolidationLevel2DB.getConsolidation(ConsolidationLevel1_Id);
 
                                 var updateConsolidationLevel1Id = updateConsolidationLevel1(ConsolidationLevel1_Id, "0", "0", "0", consolidationLevel1XConsolidationLevel2);
@@ -5509,12 +5565,12 @@ namespace SgqSystem.Services
                                 int ParLevel2_Id = Convert.ToInt32(r[1]);
                                 int ConsolidationLevel1_Id = Convert.ToInt32(r[2]);
 
-                                var CollectionLevel2ConsolidationDB = new SGQDBContext.CollectionLevel2Consolidation();
+                                var CollectionLevel2ConsolidationDB = new SGQDBContext.CollectionLevel2Consolidation(db);
                                 var collectionLevel2Consolidation = CollectionLevel2ConsolidationDB.getConsolidation(ConsolidationLevel2_Id, ParLevel2_Id);
 
                                 var updateConsolidationLevel2Id = updateConsolidationLevel2(ConsolidationLevel2_Id, "0", "0", "0", collectionLevel2Consolidation);
 
-                                var ConsolidationLevel1XConsolidationLevel2DB = new ConsolidationLevel1XConsolidationLevel2();
+                                var ConsolidationLevel1XConsolidationLevel2DB = new ConsolidationLevel1XConsolidationLevel2(db);
                                 var consolidationLevel1XConsolidationLevel2 = ConsolidationLevel1XConsolidationLevel2DB.getConsolidation(ConsolidationLevel1_Id);
 
                                 var updateConsolidationLevel1Id = updateConsolidationLevel1(ConsolidationLevel1_Id, "0", "0", "0", consolidationLevel1XConsolidationLevel2);

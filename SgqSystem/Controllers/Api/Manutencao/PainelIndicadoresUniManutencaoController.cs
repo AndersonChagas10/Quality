@@ -424,7 +424,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                         }
                         else if (tipoCalculo == "Variadas")
                         {
-                            f[i].realizado = vetor1.lista[i].realizado / vetor2.lista[i].realizado * 100;
+                            f[i].realizado = (vetor1.lista[i].realizado / vetor2.lista[i].realizado) * 100;
                         }
                         else
 
@@ -478,7 +478,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                 }
                                 else
                                 {
-                                    f[i].orcado = Convert.ToDecimal(0.00);
+                                    f[i].orcado = Convert.ToDecimal(orcadoAbat);
                                 }
 
                             }
@@ -490,7 +490,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                 }
                                 else
                                 {
-                                    f[i].orcado = Convert.ToDecimal(0.00);
+                                    f[i].orcado = Convert.ToDecimal(orcadoAbat);
                                 }
 
                             }
@@ -541,7 +541,8 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                 }
                                 else
                                 {
-                                    f[i].orcado = Convert.ToDecimal(0.00);
+                                    f[i].orcado = Convert.ToDecimal(orcadoVar);
+
                                 }
                             }
                             else
@@ -552,7 +553,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                                 }
                                 else
                                 {
-                                    f[i].orcado = Convert.ToDecimal(0.00);
+                                    f[i].orcado = Convert.ToDecimal(orcadoVar);
                                 }
                             }
                         }
@@ -564,7 +565,7 @@ namespace SgqSystem.Controllers.Api.Manutencao
                             }
                             else
                             {
-                                f[i].orcado = Convert.ToDecimal(0.00);
+                                f[i].orcado = vetor1.lista[i].orcado / vetor2.lista[i].orcado;
                             }
                         }
                     }

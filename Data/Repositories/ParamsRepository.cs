@@ -635,6 +635,9 @@ namespace Data.Repositories
                         db.ParLevel3Level2Level1.Add(salvarL3L2L1);
                         db.SaveChanges();
                     }
+
+                    ts.Commit();
+
                 }
             }
 

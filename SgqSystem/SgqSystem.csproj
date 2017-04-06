@@ -440,6 +440,7 @@
     <Compile Include="Secirity\SessionPersister.cs" />
     <Compile Include="Services\Html.cs" />
     <Compile Include="Services\Level02Result.cs" />
+    <Compile Include="Services\ServiceLevel2.cs" />
     <Compile Include="Services\SGQDBContext.cs" />
     <Compile Include="Services\SGQDBContext_YTOARA.cs" />
     <Compile Include="Services\SyncServices.asmx.cs">
