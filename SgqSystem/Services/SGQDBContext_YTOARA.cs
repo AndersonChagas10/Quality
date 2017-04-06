@@ -95,5 +95,72 @@ namespace SGQDBContextYTOARA
             return db.Query<EstruturaVinculada>(sql).ToList();
         }
 
+        /// <summary>
+        /// Criar tela com o cabeçalhos Ytoara
+        /// </summary>
+        /// <param name="Itens"></param>
+        /// <returns></returns>
+        public string criarHeader(List<EstruturaVinculada>Itens)
+        {
+            string abredropdowlist = "<select class=\"form-control\">";
+            string fechadropdowlist = "</select>";
+
+            string label = "<label class=\"font-small\">OBRA</label><br>";
+
+            string tela = "<div class=\"row\">"+label;
+
+            for (int i=0; i < Itens.Count; i++)
+            {
+                if(Itens[i].idpai.ToString() == null)
+                {
+                    tela += "<div class=\"col-md-3\"><label>Local<label>"
+                            + abredropdowlist
+                            + "<option selected=\"selected\" value=\"" + Itens[i].idestrurua + "\" IdPaiValue=\"" + Itens[i].idpai + "\">" + Itens[i].elemento + "</option>"
+                            + fechadropdowlist
+                            +"</div>";
+                }
+                else if (Itens[i].idpai == 1)
+                {
+                    tela += "<div class=\"col-md-3\"><label>Item 1<label>"
+                            + abredropdowlist
+                            + "<option selected=\"selected\" value=\"" + Itens[i].idestrurua + "\" IdPaiValue=\"" + Itens[i].idpai + "\">" + Itens[i].elemento + "</option>"
+                            + fechadropdowlist
+                            +"</div>";
+                }
+                else if (Itens[i].idpai == 2)
+                {
+                    tela += "<div class=\"col-md-3\"><label>Item 2<label>"
+                            + abredropdowlist
+                            + "<option selected=\"selected\" value=\"" + Itens[i].idestrurua + "\" IdPaiValue=\"" + Itens[i].idpai + "\">" + Itens[i].elemento + "</option>"
+                            + fechadropdowlist
+                            +"</div>";
+                }
+                else if ((Itens[i].idpai == 4)&& (Itens[i].idpai == 5)&& (Itens[i].idpai == 6))
+                {
+                    tela += "<div class=\"col-md-3\"><label>Item 3<label>"
+                            + abredropdowlist
+                            + "<option selected=\"selected\" value=\"" + Itens[i].idestrurua + "\" IdPaiValue=\"" + Itens[i].idpai + "\">" + Itens[i].elemento + "</option>"
+                            + fechadropdowlist
+                            +"</div>";
+                }
+                else if ((Itens[i].idpai == 8) && (Itens[i].idpai == 9))
+                {
+                    tela += "<div class=\"col-md-3\"><label>Item 4<label>"
+                            + abredropdowlist
+                            + "<option selected=\"selected\" value=\"" + Itens[i].idestrurua + "\" IdPaiValue=\"" + Itens[i].idpai + "\">" + Itens[i].elemento + "</option>"
+                            + fechadropdowlist
+                            +"</div>";
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            tela += "</div>";
+
+            return tela;
+        }
+
     }
 }

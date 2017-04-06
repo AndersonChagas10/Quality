@@ -51,7 +51,9 @@ namespace SgqSystem.Services
         {
 
             conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-            
+
+            ytoaraUtil = new SGQDBContext_YTOARA();
+
             if (GlobalConfig.Brasil)
             {
                 conexaoSGQ_GlobalADO = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
@@ -60,6 +62,7 @@ namespace SgqSystem.Services
             db = new SqlConnection(conexao);
             SGQ_GlobalADO = new SqlConnection(conexaoSGQ_GlobalADO);
             db.Open();
+            
         }
 
         #region Funções
@@ -3683,13 +3686,12 @@ namespace SgqSystem.Services
         
 
         /// <summary>
-        /// Obter tela para Ytoara
+        /// Obter tela da Ytoara com o cabeçalho
         /// </summary>
         /// <returns></returns>
         public string GetHeaderYtoara()
         {
-            //TODO 
-            return null;
+            return ytoaraUtil.criarHeader(ytoaraUtil.getElementoEstruturado());
         }
         
         
