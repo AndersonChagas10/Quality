@@ -558,20 +558,6 @@
     var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
     var semID =  @Html.Raw(Json.Encode(Model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion));
 
-    $(document).ready(function() {
-        //if(config){
-        //    $('#registerTotalEv').hide();
-        //    if($('#level1Title').html().indexOf("New") > -1){
-        //        $('#level1Title').html("Level 1");
-        //    }
-        //}
-        
-            if(!hasperm){
-                disableEvry();
-            }
-       
-    })
-
     $('#paramsDto_parLevel1Dto_IsSpecific').on('switchChange.bootstrapSwitch', function (event, state) {
         if (state) {
             $('.groupCadastroEspecificoUnidade').fadeIn();
@@ -587,7 +573,6 @@
             $('.RealTimeConsolitationUpdate').fadeOut();
         }
     });
-
 
     var binary = false;
     var Cabecalhos = {
@@ -1525,6 +1510,8 @@
         }
     }
 
+    var valorAnteriorDeAvLimitadas = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').bootstrapSwitch('state');
+
     $(document).ready(function () {
 
         if(!hasperm){
@@ -1533,6 +1520,20 @@
 
         defaults();
         loadSelect2();
+
+        /*Agrupamento no Monitoramento encadeia Número de Avaliações Limitados*/
+        $('#paramsDto_parLevel1Dto_HasGroupLevel2').off('switchChange.bootstrapSwitch').on('switchChange.bootstrapSwitch', function() {
+            if($(this).bootstrapSwitch('state')){
+                valorAnteriorDeAvLimitadas = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').bootstrapSwitch('state');
+                if(!valorAnteriorDeAvLimitadas){
+                    $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').bootstrapSwitch('toggleState');
+                }
+                $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').bootstrapSwitch('readonly', true);
+            }else{
+                $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').bootstrapSwitch('state', valorAnteriorDeAvLimitadas);
+                $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').bootstrapSwitch('readonly', false);
+            }
+        });
 
         $('#paramsDto_parLevel1Dto_IsRuleConformity[value="false"]').trigger('click');
         $('#paramsDto_parLevel1Dto_IsFixedEvaluetionNumber[value="true"]').trigger('click');
