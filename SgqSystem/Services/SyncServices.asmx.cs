@@ -3277,7 +3277,7 @@ namespace SgqSystem.Services
                                        "</button>                                                                                                      ";
                     }
                     string btnReaudit = null;
-                    if (parlevel2.IsReaudit)
+                    if (parlevel2.IsReaudit || ParLevel1.IsReaudit)
                     {
                         btnReaudit = "<button class=\"btn btn-primary hide btnReaudit\"> " +
                                       "<span>R</span></button>";
@@ -3298,9 +3298,9 @@ namespace SgqSystem.Services
                 }
                 else
                 {
-                    classXSLevel2 = " col-xs-8";
+                    classXSLevel2 = " col-xs-7";
                     string btnReaudit = null;
-                    if (parlevel2.IsReaudit)
+                    if (parlevel2.IsReaudit || ParLevel1.IsReaudit)
                     {
                         btnReaudit = "<button class=\"btn btn-primary hide btnReaudit\"> " +
                                       "<span>R</span></button>";
@@ -3309,10 +3309,8 @@ namespace SgqSystem.Services
                                      //aqui vai os botoes
                                      outerhtml: btnReaudit,
                                      style: "text-align: right",
-                                     classe: "userInfo col-xs-2"
+                                     classe: "userInfo col-xs-1"
                                      );
-
-                        //classXSLevel2 = " col-xs-6";
                     }
 
                 }

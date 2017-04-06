@@ -1821,4 +1821,7 @@
   <data name="remove" xml:space="preserve">
     <value>Remove</value>
   </data>
+  <data name="evaluations_not_completed" xml:space="preserve">
+    <value>Evaluations need to be completed</value>
+  </data>
 </root>
