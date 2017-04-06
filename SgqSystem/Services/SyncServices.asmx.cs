@@ -4314,7 +4314,16 @@ namespace SgqSystem.Services
 
                 var botoesTodos = "";
 
+                if (GlobalConfig.Brasil)
+                {
+                    botoesTodos =
 
+                        "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
+
+                        "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>";
+
+
+                }
 
                 string panelButton = html.listgroupItem(
                                                         outerhtml: botoesTodos,
