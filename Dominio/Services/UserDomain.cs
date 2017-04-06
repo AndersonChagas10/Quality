@@ -469,17 +469,10 @@ namespace Dominio.Services
 
         public static bool CheckUserInAD(string domain, string username, string password)
         {
-            try
+            using (PrincipalContext pc = new PrincipalContext(ContextType.Domain, domain))
             {
-                using (PrincipalContext pc = new PrincipalContext(ContextType.Domain, domain))
-                {
-                    var userValid = pc.ValidateCredentials(username, password);
-                    return userValid;
-                }
-            }
-            catch (Exception)
-            {
-                return false;
+                var userValid = pc.ValidateCredentials(username, password);
+                return userValid;
             }
         }
 
