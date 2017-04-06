@@ -20,7 +20,7 @@ using System.Globalization;
 using System.Collections;
 using DTO;
 using SgqSystem.Helpers;
-
+using SGQDBContextYTOARA;
 
 namespace SgqSystem.Services
 {
@@ -43,6 +43,9 @@ namespace SgqSystem.Services
 
         public SqlConnection db;
         public SqlConnection SGQ_GlobalADO;
+
+        //Contexto util de dados para Ytoara
+        private SGQDBContext_YTOARA ytoaraUtil;
 
         public SyncServices()
         {
@@ -3616,7 +3619,6 @@ namespace SgqSystem.Services
 
                         form_control = "<select class=\"form-control input-sm\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">" + optionsIntegration + "</select>";
                         break;
-                        break;
                     //Binário
                     case 3:
                         var listBinario = ParFieldTypeDB.getMultipleValues(header.ParHeaderField_Id);
@@ -3673,6 +3675,19 @@ namespace SgqSystem.Services
 
             return retorno;
         }
+        
+
+        /// <summary>
+        /// Obter tela para Ytoara
+        /// </summary>
+        /// <returns></returns>
+        public string GetHeaderYtoara()
+        {
+            //TODO 
+            return null;
+        }
+        
+        
         /// <summary>
         /// Retorna Level3 
         /// </summary>
