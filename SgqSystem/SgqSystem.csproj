@@ -298,6 +298,7 @@
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
     <Compile Include="Controllers\Api\LanguageController.cs" />
+    <Compile Include="Controllers\Api\Reports\CorrectiveActionApiController.cs" />
     <Compile Include="Controllers\Api\UserAndRoles\LoginController.cs" />
     <Compile Include="Controllers\Api\Manutencao\ManutencaoController.cs" />
     <Compile Include="Controllers\Api\NQAController.cs" />
