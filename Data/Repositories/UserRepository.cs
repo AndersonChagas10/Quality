@@ -35,10 +35,10 @@ namespace Data.Repositories
         public UserSgq AuthenticationLogin(UserSgq user)
         {
 
-            var result = db.UserSgq.FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()) && x.Password.Equals(user.Password));
+            var result = db.UserSgq.Include("ParCompanyXUserSgq").Include("UnitUser").FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()) && x.Password.Equals(user.Password));
             if (result == null)/*Verifica no caso de a senha estar descriptografada no DB e atualiza a mesma ,agora criptografada, no db.*/
             {
-                var userByName = db.UserSgq.FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()));
+                var userByName = db.UserSgq.Include("ParCompanyXUserSgq").Include("UnitUser").FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()));
                 if (Guard.Criptografar3DES(userByName.Password).Equals(user.Password))
                 {
                     result = userByName;
