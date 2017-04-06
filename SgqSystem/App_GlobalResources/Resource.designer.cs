@@ -1510,6 +1510,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Evaluations need to be completed.
+        /// </summary>
+        internal static string evaluations_not_completed {
+            get {
+                return ResourceManager.GetString("evaluations_not_completed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Evaluation and sample.
         /// </summary>
         internal static string evaluation_and_sample {

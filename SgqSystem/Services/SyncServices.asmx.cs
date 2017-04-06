@@ -38,9 +38,9 @@ namespace SgqSystem.Services
     {
 
         //private SqlConnection connection;
-        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-        string conexaoSGQ_GlobalADO = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
-
+        string conexao;
+        string conexaoSGQ_GlobalADO;
+        
         public SqlConnection db;
         public SqlConnection SGQ_GlobalADO;
 
@@ -49,10 +49,17 @@ namespace SgqSystem.Services
 
         public SyncServices()
         {
+
+            conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            
+            if (GlobalConfig.Brasil)
+            {
+                conexaoSGQ_GlobalADO = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
+            }
+
             db = new SqlConnection(conexao);
             SGQ_GlobalADO = new SqlConnection(conexaoSGQ_GlobalADO);
             db.Open();
-            
         }
 
         #region Funções
@@ -3317,7 +3324,7 @@ namespace SgqSystem.Services
                                        "</button>                                                                                                      ";
                     }
                     string btnReaudit = null;
-                    if (parlevel2.IsReaudit)
+                    if (parlevel2.IsReaudit || ParLevel1.IsReaudit)
                     {
                         btnReaudit = "<button class=\"btn btn-primary hide btnReaudit\"> " +
                                       "<span>R</span></button>";
@@ -3338,9 +3345,9 @@ namespace SgqSystem.Services
                 }
                 else
                 {
-                    classXSLevel2 = " col-xs-8";
+                    classXSLevel2 = " col-xs-7";
                     string btnReaudit = null;
-                    if (parlevel2.IsReaudit)
+                    if (parlevel2.IsReaudit || ParLevel1.IsReaudit)
                     {
                         btnReaudit = "<button class=\"btn btn-primary hide btnReaudit\"> " +
                                       "<span>R</span></button>";
@@ -3349,10 +3356,8 @@ namespace SgqSystem.Services
                                      //aqui vai os botoes
                                      outerhtml: btnReaudit,
                                      style: "text-align: right",
-                                     classe: "userInfo col-xs-2"
+                                     classe: "userInfo col-xs-1"
                                      );
-
-                        //classXSLevel2 = " col-xs-6";
                     }
 
                 }
@@ -4325,7 +4330,16 @@ namespace SgqSystem.Services
 
                 var botoesTodos = "";
 
+                if (GlobalConfig.Brasil)
+                {
+                    botoesTodos =
 
+                        "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
+
+                        "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>";
+
+
+                }
 
                 string panelButton = html.listgroupItem(
                                                         outerhtml: botoesTodos,

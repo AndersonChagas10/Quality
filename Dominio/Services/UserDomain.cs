@@ -91,7 +91,7 @@ namespace Dominio.Services
       
         private UserSgq CheckUserAndPassDataBase(UserDTO userDto)
         {
-            /*Descriptografa a criptografia do TABLET*/
+            /*Descriptografa a criptografia do TABLET, caso a senha venha do sistema por POSTBACK e não esteja criptografada, não é afetada.*/
             userDto.Password = DecryptStringAES(userDto.Password);
             /*Criptografa para compara com senha criptografad no DB*/
             userDto.Password = Guard.Criptografar3DES(userDto.Password);
@@ -110,6 +110,21 @@ namespace Dominio.Services
         #region LoginEUA
 
         /// <summary>
+        /// Login EUA (somente aciona AutenticaAdEUA, por enquanto).
+        /// </summary>
+        /// <param name="userDto"></param>
+        /// <param name="userByName"></param>
+        /// <returns></returns>
+        private UserSgq LoginEUA(UserDTO userDto, UserSgq userByName)
+        {
+            /*Mock Login Desenvolvimento, descomentar caso HML ou PRODUÇÃO*/
+            UserSgq userDev = CheckUserAndPassDataBase(userDto);
+            return userDev;
+
+            return AutenticaAdEUA(userDto);//Autenticação no AD JBS USA
+        }
+
+        /// <summary>
         /// Verifica se o UsuarioExiste no AD dos EUA, 
         /// 1 - caso exista no AD, verifica no DB se ele ja existe: 1.1 - caso exista no DB (e no AD) retorna o mesmo e procede o login
         ///                                                         1.2 - caso não exista no DB, porem exista no AD, é registrado no DB, retorna o mesmo e procede o login.
@@ -121,13 +136,14 @@ namespace Dominio.Services
             /*Descriptografa para comparar no AD*/
             userDto.Password = Guard.Descriptografar3DES(userDto.Password);
 
-            //Autenticação no AD JBS USA
-            if (!CheckUserInAD(dominio, userDto.Name, userDto.Password))
+            //1 Autenticação no AD JBS USA
+            if (CheckUserInAD(dominio, userDto.Name, userDto.Password))
             {
-                /*Se passou no AD , verifica no DB:*/
+                /*1.1 Se passou no AD , verifica no DB:*/
                 userDto.Password = Guard.Criptografar3DES(userDto.Password);
                 UserSgq isUser = CheckUserAndPassDataBase(userDto);
 
+                /*1.2*/
                 if (isUser.IsNull())
                 {
                     userDto.Password = Guard.Criptografar3DES(userDto.Password);
@@ -137,23 +153,10 @@ namespace Dominio.Services
                 }
 
                 return isUser;
-                //var user = Mapper.Map<UserDTO, UserSgq>(userDto);
-                //user.Password = Guard.Criptografar3DES(user.Password);
-                //var isUser = _userRepo.AuthenticationLogin(user);
+
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Login EUA (somente aciona AutenticaAdEUA, por enquanto).
-        /// </summary>
-        /// <param name="userDto"></param>
-        /// <param name="userByName"></param>
-        /// <returns></returns>
-        private UserSgq LoginEUA(UserDTO userDto, UserSgq userByName)
-        {
-            return AutenticaAdEUA(userDto);//Autenticação no AD JBS USA
         }
 
         /// <summary>
@@ -466,17 +469,10 @@ namespace Dominio.Services
 
         public static bool CheckUserInAD(string domain, string username, string password)
         {
-            try
+            using (PrincipalContext pc = new PrincipalContext(ContextType.Domain, domain))
             {
-                using (PrincipalContext pc = new PrincipalContext(ContextType.Domain, domain))
-                {
-                    var userValid = pc.ValidateCredentials(username, password);
-                    return userValid;
-                }
-            }
-            catch (Exception)
-            {
-                return false;
+                var userValid = pc.ValidateCredentials(username, password);
+                return userValid;
             }
         }
 
