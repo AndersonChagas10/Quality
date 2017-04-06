@@ -1,22 +1,23 @@
-﻿using Dominio.Interfaces.Services;
+﻿using Dominio;
+using Dominio.Interfaces.Services;
 using DTO.DTO;
 using DTO.Helpers;
-using System;
+using SgqSystem.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
-namespace SgqSystem.Controllers.Api.Reports
+namespace SgqSystem.Controllers.Api
 {
     [RoutePrefix("api/CorrectiveAction")]
-    public class CorrectiveActionApiController : ApiController
+    public class CorrectActApiController : ApiController
     {
+        private SgqDbDevEntities db = new SgqDbDevEntities();
+
         //private readonly ICorrectiveActionDomain _correctiveActionAppService;
         //private readonly IUserDomain _userAppService;
 
-        //public CorrectiveActionApiController(ICorrectiveActionDomain correctiveActionAppService, IUserDomain userAppService)
+        //public CorrectActApiController(ICorrectiveActionDomain correctiveActionAppService)//, IUserDomain userAppService)
         //{
         //    _correctiveActionAppService = correctiveActionAppService;
         //    _userAppService = userAppService;
@@ -29,12 +30,35 @@ namespace SgqSystem.Controllers.Api.Reports
         //    return _correctiveActionAppService.SalvarAcaoCorretiva(model);
         //}
 
-        //[Route("GetCorrectiveAction")]
-        //[HttpPost]
-        //public GenericReturn<List<CorrectiveActionDTO>> GetCorrectiveAction([FromBody]FormularioParaRelatorioViewModel model)
-        //{
-        //    return _correctiveActionAppService.GetCorrectiveAction(model);
-        //}
+        [Route("GetCorrectiveAction")]
+        [HttpPost]
+        public List<CorrectiveAction> GetCorrectiveAction([FromBody]FormularioParaRelatorioViewModel model)
+        {
+
+            //      var sql = "SELECT[Id] " +
+            //",[AuditorId] " +
+            //",[CollectionLevel02Id] " +
+            //",[SlaughterId] " +
+            //",[TechinicalId] " +
+            //",[DateTimeSlaughter] " +
+            //",[DateTimeTechinical] " +
+            //",[AddDate] " +
+            //",[AlterDate] " +
+            //",[DateCorrectiveAction] " +
+            //",[AuditStartTime] " +
+            //",[DescriptionFailure] " +
+            //",[ImmediateCorrectiveAction] " +
+            //",[ProductDisposition] " +
+            //",[PreventativeMeasure] " +
+            //   "FROM[dbo].[CorrectiveAction]"; //.Where(r => r.AddDate >= model.startDate && r.AddDate >= model.endDate);
+
+            //      var list = db.Database.SqlQuery<CorrectiveAction>(sql).ToList();
+
+            var list = db.CorrectiveAction.ToList();
+
+            return list;
+            //return _correctiveActionAppService.GetCorrectiveAction(model);
+        }
 
         //[Route("LoginSlaughterTechinical")]
         //[HttpPost]
@@ -58,5 +82,6 @@ namespace SgqSystem.Controllers.Api.Reports
         //{
         //    return _correctiveActionAppService.GetCorrectiveActionById(id);
         //}
+
     }
 }
