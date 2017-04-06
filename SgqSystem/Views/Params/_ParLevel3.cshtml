@@ -185,11 +185,12 @@
 
     function UpdateUnidadeMedidas() {
         var valor = $("#modalInputMeasurementUnit").val();
-        $.post(urlSaveMeassurementUnit + "/" + valor, function(r) {
+        $.get(urlSaveMeassurementUnit,{valor: valor}, function(r) {
             $('#selectUnidadeDeMedidas').append('<option value="' + r.Id + '">' + r.Name + '</option>');
             $('#selectUnidadeDeMedidas').val(r.Id).change();
             $("#modalInputMeasurementUnit").val('');
             $('#fechar').modal('hide');
+            $('#modalUnidadeMedida').hide();
         });
     }
 

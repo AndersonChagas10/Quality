@@ -301,8 +301,8 @@ namespace SgqSystem.Controllers.Api.Params
             return _paramdDomain.AddRemoveParHeaderLevel2(parLevel2XHeaderField);
         }
 
-        [HttpPost]
-        [Route("AddUnidadeDeMedida/{valor}")]
+        [HttpGet]
+        [Route("AddUnidadeDeMedida")]
         public ParMeasurementUnit AddUnidadeDeMedida(string valor)
         {
             var save = new ParMeasurementUnit() { Name = valor, AddDate = DateTime.Now, Description = string.Empty, IsActive = true };
