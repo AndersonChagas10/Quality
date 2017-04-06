@@ -41,9 +41,9 @@ namespace Data.Repositories
                 var userByName = db.UserSgq.Include("ParCompanyXUserSgq").Include("UnitUser").FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()));
                 if (Guard.Criptografar3DES(userByName.Password).Equals(user.Password))
                 {
-                    result = userByName;
-                    result.Password = Guard.Criptografar3DES(result.Password);
-                    Salvar(result);
+                    userByPassDecripted.Password = Guard.Criptografar3DES(descriptePass);
+                    Salvar(userByPassDecripted);
+                    return userByPassDecripted;
                 }
             }
 
