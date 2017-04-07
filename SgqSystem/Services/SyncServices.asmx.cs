@@ -20,7 +20,7 @@ using System.Globalization;
 using System.Collections;
 using DTO;
 using SgqSystem.Helpers;
-
+using SGQDBContextYTOARA;
 
 namespace SgqSystem.Services
 {
@@ -44,11 +44,16 @@ namespace SgqSystem.Services
         public SqlConnection db;
         public SqlConnection SGQ_GlobalADO;
 
+        //Contexto util de dados para Ytoara
+        private SGQDBContext_YTOARA ytoaraUtil;
+
         public SyncServices()
         {
 
             conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-            
+
+            ytoaraUtil = new SGQDBContext_YTOARA();
+
             if (GlobalConfig.Brasil)
             {
                 conexaoSGQ_GlobalADO = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
@@ -57,6 +62,7 @@ namespace SgqSystem.Services
             db = new SqlConnection(conexao);
             SGQ_GlobalADO = new SqlConnection(conexaoSGQ_GlobalADO);
             db.Open();
+            
         }
 
         #region Funções
@@ -3677,6 +3683,18 @@ namespace SgqSystem.Services
 
             return retorno;
         }
+        
+
+        /// <summary>
+        /// Obter tela da Ytoara com o cabeçalho
+        /// </summary>
+        /// <returns></returns>
+        public string GetHeaderYtoara()
+        {
+            return ytoaraUtil.criarHeader(ytoaraUtil.getElementoEstruturado());
+        }
+        
+        
         /// <summary>
         /// Retorna Level3 
         /// </summary>
@@ -4314,7 +4332,16 @@ namespace SgqSystem.Services
 
                 var botoesTodos = "";
 
+                if (GlobalConfig.Brasil)
+                {
+                    botoesTodos =
 
+                        "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
+
+                        "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>";
+
+
+                }
 
                 string panelButton = html.listgroupItem(
                                                         outerhtml: botoesTodos,

@@ -48,7 +48,6 @@ namespace Data.Repositories
                     return db.UserSgq.Include("ParCompanyXUserSgq").Include("UnitUser").FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()) && x.Password.Equals(descriptePass)); ;
                 }
             }
-
             return result;
         }
 
