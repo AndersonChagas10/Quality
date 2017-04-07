@@ -1247,7 +1247,7 @@ namespace SGQDBContext
                          "INNER JOIN " +
                          "ConsolidationLevel1 AS CDL1 ON CDL2.ConsolidationLevel1_Id = CDL1.Id " +
                          "LEFT JOIN " +
-                         "CollectionLevel2 CL2 ON CL2.ConsolidationLevel2_Id=CDL2.Id AND CL2.HaveCorrectiveAction=1 " +
+                         "CollectionLevel2 CL2 ON CL2.ConsolidationLevel2_Id=CDL2.Id AND (CL2.HaveCorrectiveAction=1 OR CL2.HaveReaudit=1) " +
                          "WHERE(CDL2.ParLevel2_Id = " + ParLevel2_Id + ") AND (CDL1.UnitId = " + ParCompany_Id + ") " +
 
                          sql2 +

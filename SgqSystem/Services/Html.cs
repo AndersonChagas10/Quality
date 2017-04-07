@@ -159,7 +159,7 @@ namespace SgqSystem.Services
         /// <param name="dataloading">Mensagem que aparece no botão enquando a requisição é executada</param>
         /// <param name="disabled">Desabilitado</param>
         /// <returns></returns>
-        public string button(string label, type type = type.submit, string id = null, string classe = null, string dataloading = null, bool disabled = false)
+        public string button(string label, type type = type.submit, string id = null, string classe = null, string dataloading = null, bool disabled = false, string style = null)
         {
             if (!string.IsNullOrEmpty(dataloading))
             {
@@ -175,7 +175,7 @@ namespace SgqSystem.Services
                 disabledTag = " disabled";
             }
 
-            return "<button type=\"" + type.ToString() + "\" id=\"" + id + "\" class=\"" + classe.Trim() + "\" " + dataloading + disabledTag + ">" + label + "</button>";
+            return "<button type=\"" + type.ToString() + "\" id=\"" + id + "\" class=\"" + classe.Trim() + "\" " + dataloading + disabledTag + " style=\""+ style + "\">" + label + "</button>";
         }
         /// <summary>
         /// Retorna um select
@@ -541,9 +541,10 @@ namespace SgqSystem.Services
 
             string tags = "parconsolidationtype_id=\"" + ParLevel1.ParConsolidationType_Id + "\" parfrequency_id=\"" + ParLevel1.ParFrequency_Id + "\" hasalert=\"" + ParLevel1.HasAlert.ToString().ToLower() + "\" isspecific=\"" + ParLevel1.IsSpecific.ToString().ToLower() + "\" totalavaliado=\"" + totalAvaliado + "\" totaldefeitos=\"" + totalDefeitos + "\" volumeAlertaIndicador=\"" + volumeAlertaIndicador + "\" metaIndicador=\"" + metaIndicador + "\" numeroAvaliacoes=\"" + numeroAvaliacoes + "\" metaDia=\"" + metaDia + "\" metaTolerancia=\"" + metaTolerancia + "\" metaAvaliacao=\"" + metaAvaliacao + "\" alertanivel1=\"" + alertNivel1 + "\" alertanivel2=\"" + alertNivel2 + "\" alertanivel3=\"" + alertaNivel3 + "\" alertaatual=\"" + alertaAtual + "\" avaliacaoultimoalerta=\"" + avaliacaoultimoalerta + "\" monitoramentoultimoalerta=\"" + monitoramentoultimoalerta + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\" haverealtimeconsolidation=\"" + ParLevel1.haveRealTimeConsolidation.ToString().ToLower() + "\" realtimeconsolitationupdate=\"" + ParLevel1.RealTimeConsolitationUpdate + "\" islimitedevaluetionnumber=\"" + ParLevel1.IsLimitedEvaluetionNumber.ToString().ToLower() + "\" hashkey=\"" + ParLevel1.hashKey + "\" ispartialsave=\"" + ParLevel1.IsPartialSave.ToString().ToLower() + "\" hascompleteevaluation=\"" + ParLevel1.HasCompleteEvaluation.ToString().ToLower() + "\" hasgrouplevel2=\"" + ParLevel1.HasGroupLevel2.ToString().ToLower() + "\" reaudit=\"" + ParLevel1.IsReaudit.ToString().ToLower() + "\"";
 
-            string btnReaudit = button("Reaudit", type.submit, "", classe: "btn-primary pull-right btnReaudit hide");
-
-            if (listParRelapse.Count() > 0)
+            string btnReaudit = button(Resources.Resource.reaudit, type.submit, "", classe: "btn-primary pull-right btnReaudit btn-sm hide", style: "margin-left: 4px;");
+            string btnCA = button(Resources.Resource.corrective_action, type.submit, "", classe: "btn-danger pull-right btnCALevel1 btn-sm hide");
+                        
+            if(listParRelapse.Count() > 0)
             {
                 foreach (var parRelapse in listParRelapse)
                 {
@@ -561,7 +562,7 @@ namespace SgqSystem.Services
             //Adiciona Div Lateral
             level01 += div(
                             //aqui vai os botoes
-                            outerhtml: btnReaudit,
+                            outerhtml: btnReaudit + btnCA,
                             classe: "userInfo col-xs-5");
             return level01;
         }

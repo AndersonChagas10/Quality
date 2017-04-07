@@ -20,7 +20,7 @@ using System.Globalization;
 using System.Collections;
 using DTO;
 using SgqSystem.Helpers;
-
+using SGQDBContextYTOARA;
 
 namespace SgqSystem.Services
 {
@@ -38,14 +38,27 @@ namespace SgqSystem.Services
     {
 
         //private SqlConnection connection;
-        string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-        string conexaoSGQ_GlobalADO = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
-
+        string conexao;
+        string conexaoSGQ_GlobalADO;
+        
         public SqlConnection db;
         public SqlConnection SGQ_GlobalADO;
 
+        //Contexto util de dados para Ytoara
+        private SGQDBContext_YTOARA ytoaraUtil;
+
         public SyncServices()
         {
+
+            conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+            ytoaraUtil = new SGQDBContext_YTOARA();
+
+            if (GlobalConfig.Brasil)
+            {
+                conexaoSGQ_GlobalADO = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
+            }
+
             db = new SqlConnection(conexao);
             SGQ_GlobalADO = new SqlConnection(conexaoSGQ_GlobalADO);
             db.Open();
@@ -3314,7 +3327,7 @@ namespace SgqSystem.Services
                                        "</button>                                                                                                      ";
                     }
                     string btnReaudit = null;
-                    if (parlevel2.IsReaudit)
+                    if (parlevel2.IsReaudit || ParLevel1.IsReaudit)
                     {
                         btnReaudit = "<button class=\"btn btn-primary hide btnReaudit\"> " +
                                       "<span>R</span></button>";
@@ -3335,9 +3348,9 @@ namespace SgqSystem.Services
                 }
                 else
                 {
-                    classXSLevel2 = " col-xs-8";
+                    classXSLevel2 = " col-xs-7";
                     string btnReaudit = null;
-                    if (parlevel2.IsReaudit)
+                    if (parlevel2.IsReaudit || ParLevel1.IsReaudit)
                     {
                         btnReaudit = "<button class=\"btn btn-primary hide btnReaudit\"> " +
                                       "<span>R</span></button>";
@@ -3346,10 +3359,8 @@ namespace SgqSystem.Services
                                      //aqui vai os botoes
                                      outerhtml: btnReaudit,
                                      style: "text-align: right",
-                                     classe: "userInfo col-xs-2"
+                                     classe: "userInfo col-xs-1"
                                      );
-
-                        //classXSLevel2 = " col-xs-6";
                     }
 
                 }
@@ -3616,7 +3627,6 @@ namespace SgqSystem.Services
 
                         form_control = "<select class=\"form-control input-sm\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">" + optionsIntegration + "</select>";
                         break;
-                        break;
                     //Binário
                     case 3:
                         var listBinario = ParFieldTypeDB.getMultipleValues(header.ParHeaderField_Id);
@@ -3673,6 +3683,18 @@ namespace SgqSystem.Services
 
             return retorno;
         }
+        
+
+        /// <summary>
+        /// Obter tela da Ytoara com o cabeçalho
+        /// </summary>
+        /// <returns></returns>
+        public string GetHeaderYtoara()
+        {
+            return ytoaraUtil.criarHeader(ytoaraUtil.getElementoEstruturado());
+        }
+        
+        
         /// <summary>
         /// Retorna Level3 
         /// </summary>
@@ -4310,7 +4332,16 @@ namespace SgqSystem.Services
 
                 var botoesTodos = "";
 
+                if (GlobalConfig.Brasil)
+                {
+                    botoesTodos =
 
+                        "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
+
+                        "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>";
+
+
+                }
 
                 string panelButton = html.listgroupItem(
                                                         outerhtml: botoesTodos,

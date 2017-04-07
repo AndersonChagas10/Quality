@@ -1800,4 +1800,7 @@
   <data name="reactivate" xml:space="preserve">
     <value>Reativar</value>
   </data>
+  <data name="evaluations_not_completed" xml:space="preserve">
+    <value>Avaliações não completadas</value>
+  </data>
 </root>
