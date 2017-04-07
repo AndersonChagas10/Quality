@@ -3244,7 +3244,7 @@ namespace SgqSystem.Services
                                                style: "text-align:center"
                                              ) +
                                       html.div(
-                                               outerhtml: "<b>" + CommonData.getResource("ev").Value.ToString() + " </b>",
+                                               outerhtml: "<b>" + CommonData.getResource("df").Value.ToString() + " </b>",
                                                classe: "col-xs-3",
                                                style: "text-align:center"
                                              ) +
@@ -3289,7 +3289,7 @@ namespace SgqSystem.Services
                                                 style: "text-align:center"
                                               ) +
                                       html.div(
-                                                outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
+                                                outerhtml: html.span(outerhtml: "0", classe: "defectslevel2current") + html.span(outerhtml: " / ", classe: "separator") + html.span(outerhtml: evaluate.ToString(), classe: "defectslevel2current"),
                                                 classe: "col-xs-3",
                                                 style: "text-align:center"
                                               ) +

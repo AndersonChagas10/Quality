@@ -1339,6 +1339,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Def.
+        /// </summary>
+        internal static string df {
+            get {
+                return ResourceManager.GetString("df", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Done.
         /// </summary>
         internal static string done {

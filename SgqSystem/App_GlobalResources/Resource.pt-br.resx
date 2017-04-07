@@ -1803,4 +1803,7 @@
   <data name="evaluations_not_completed" xml:space="preserve">
     <value>Avaliações não completadas</value>
   </data>
+  <data name="df" xml:space="preserve">
+    <value>Def</value>
+  </data>
 </root>
