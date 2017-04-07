@@ -41,6 +41,7 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
+        [CustomAuthorizeAttribute(isLogin: true)]
         public ActionResult LogIn(UserViewModel user)
         {
 
@@ -52,7 +53,7 @@ namespace SgqSystem.Controllers.Api
                 return RedirectToAction("Index", "Home");
             }
             else
-                ModelState.AddModelError("", isAuthorized.Mensagem);
+                ModelState.AddModelError("", isAuthorized.Mensagem + isAuthorized.MensagemExcecao + isAuthorized.StackTrace);
 
             return View(user);
         }

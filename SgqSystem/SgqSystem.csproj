@@ -322,6 +322,7 @@
     <Compile Include="Controllers\Api\VerificacaoTipificacao\VTVerificacaoTipificacaoApiController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Exemplo\ExemploInputController.cs" />
+    <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
     <Compile Include="Controllers\Manutencao\manDataCollectITsController.cs" />
     <Compile Include="Controllers\Manutencao\ManutencaoController.cs" />
@@ -2144,6 +2145,7 @@
     <Content Include="Views\Equipamentos\Index.cshtml" />
     <Content Include="Views\Params\EditParHeaderField.cshtml" />
     <Content Include="Views\UserAuthentication\PasswordRecovery.cshtml" />
+    <Content Include="Views\FirstConfig\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

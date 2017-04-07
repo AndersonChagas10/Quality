@@ -32,15 +32,20 @@ namespace Data.Repositories
             Commit();
         }
 
-        public UserSgq AuthenticationLogin(UserSgq user) {
+        public UserSgq AuthenticationLogin(UserSgq user)
+        {
+
             var result = db.UserSgq.Include("ParCompanyXUserSgq").Include("UnitUser").FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()) && x.Password.Equals(user.Password));
+
             if (result == null)/*Verifica no caso de a senha estar descriptografada no DB e atualiza a mesma ,agora criptografada, no db.*/
             {
                 var descriptePass = Guard.Descriptografar3DES(user.Password);
                 var userByPassDecripted = db.UserSgq.Include("ParCompanyXUserSgq").Include("UnitUser").FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()) && x.Password.Equals(descriptePass));
-                if (userByPassDecripted != null) { userByPassDecripted.Password = Guard.Criptografar3DES(descriptePass);
+                if (userByPassDecripted != null)
+                {
+                    userByPassDecripted.Password = Guard.Criptografar3DES(descriptePass);
                     Salvar(userByPassDecripted);
-                    return db.UserSgq.Include("ParCompanyXUserSgq").Include("UnitUser").FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()) && x.Password.Equals(descriptePass));
+                    return db.UserSgq.Include("ParCompanyXUserSgq").Include("UnitUser").FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()) && x.Password.Equals(descriptePass)); ;
                 }
             }
             return result;

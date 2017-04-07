@@ -121,26 +121,28 @@
                     $('#results tbody').on('click', 'button', function (data, a, b) {
                         var data = table.row($(this).parents('tr')).data();
                         $.post(url2, { "": data.Id }, function (r, x, e) {
-                            if (!!r.Retorno) {
-                                //console.log(r.Retorno);
-                                $('#correctiveActionModal  #estName').html(r.Retorno.Unit.Code); // ?
-                                $('#correctiveActionModal  #datetime').html(r.Retorno.DateCorrectiveActionFormatado); // ?
-                                $('#correctiveActionModal  #auditor').html(r.Retorno.AuditorName);
-                                $('#correctiveActionModal  #auditText').html(r.Retorno.level01Name);
-                                $('#correctiveActionModal  #shift').html(r.Retorno.ShiftName);
-                                $('#correctiveActionModal  #starttime').html(r.Retorno.StartTimeFormatado);
-                                $('#correctiveActionModal  #correctivePeriod').html(r.Retorno.PeriodName);
 
-                                $('#correctiveActionModal  #DescriptionFailure').html(r.Retorno.DescriptionFailure);
-                                $('#correctiveActionModal  #ImmediateCorrectiveAction').html(r.Retorno.ImmediateCorrectiveAction);
-                                $('#correctiveActionModal  #ProductDisposition').html(r.Retorno.ProductDisposition);
-                                $('#correctiveActionModal  #PreventativeMeasure').html(r.Retorno.PreventativeMeasure);
+                            if (!!r) {
 
-                                $('#correctiveActionModal  #Slaugther .name').html(r.Retorno.NameSlaughter);
-                                $('#correctiveActionModal  #Slaugther .date').html(r.Retorno.DateTimeSlaughterFarmatado);
+                                $('#correctiveActionModal  #estName').html(r.Unit.Name); // ok
+                                $('#correctiveActionModal  #estCode').html(r.Unit.Code);
+                                $('#correctiveActionModal  #datetime').html(r.DateCorrectiveActionFormatado); // ok
+                                $('#correctiveActionModal  #auditor').html(r.AuditorName); //ok
+                                $('#correctiveActionModal  #auditText').html(r.level01Name); //ok
+                                $('#correctiveActionModal  #shift').html(r.ShiftName); //ok
+                                $('#correctiveActionModal  #starttime').html(r.StartTimeFormatado); //ok
+                                $('#correctiveActionModal  #correctivePeriod').html(r.PeriodName); //ok
 
-                                $('#correctiveActionModal  #Technical .name').html(r.Retorno.NameTechinical);
-                                $('#correctiveActionModal  #Technical .date').html(r.Retorno.DateTimeTechinicalFarmatado);
+                                $('#correctiveActionModal  #DescriptionFailure').html(r.DescriptionFailure); //ok
+                                $('#correctiveActionModal  #ImmediateCorrectiveAction').html(r.ImmediateCorrectiveAction); //ok
+                                $('#correctiveActionModal  #ProductDisposition').html(r.ProductDisposition); //ok
+                                $('#correctiveActionModal  #PreventativeMeasure').html(r.PreventativeMeasure); //ok
+
+                                $('#correctiveActionModal  #Slaugther .name').html(r.NameSlaughter); //ok
+                                $('#correctiveActionModal  #Slaugther .date').html(r.DateTimeSlaughterFarmatado); //ok
+
+                                $('#correctiveActionModal  #Technical .name').html(r.NameTechinical); //ok
+                                $('#correctiveActionModal  #Technical .date').html(r.DateTimeTechinicalFarmatado); //OK
 
 
                                 var date = new Date();
@@ -153,11 +155,10 @@
                                 var mileseconds = date.getMilliseconds();
                                 var mmddyyyyhhmm = ("0" + month).slice(-2) + "/" + ("0" + day).slice(-2) + "/" + year + " " + ("0" + hour).slice(-2) + ":" + ("0" + minute).slice(-2);
 
-
-
                                 $('.printedDate').html(mmddyyyyhhmm);
                             } else {
-                                GuardJs.exibirMensagemAlerta(r.Mensagem);
+
+                                GuardJs.exibirMensagemAlerta(e);
                             }
 
                             $('#correctiveActionModal').show();
