@@ -3240,14 +3240,23 @@ namespace SgqSystem.Services
                 string headerCounter =
                                      html.div(
                                                outerhtml: "<b>" + CommonData.getResource("ev").Value.ToString() + " </b>",
-                                               classe: "col-xs-6",
+                                               classe: "col-xs-3",
+                                               style: "text-align:center"
+                                             ) +
+                                      html.div(
+                                               outerhtml: "<b>" + CommonData.getResource("ev").Value.ToString() + " </b>",
+                                               classe: "col-xs-3",
                                                style: "text-align:center"
                                              ) +
                                      html.div(
                                                outerhtml: "<b>" + CommonData.getResource("sd").Value.ToString() + " </b>",
-                                               classe: "col-xs-6",
+                                               classe: "col-xs-3",
                                                style: "text-align:center"
                                               );
+                
+                // Incluisão de coluna de defeito.
+
+
                 //+
                 //                    html.div(
                 //                        outerhtml: "<b>Def.</b>",
@@ -3276,14 +3285,21 @@ namespace SgqSystem.Services
                 string counters =
                                       html.div(
                                                 outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
-                                                classe: "col-xs-6",
+                                                classe: "col-xs-3",
+                                                style: "text-align:center"
+                                              ) +
+                                      html.div(
+                                                outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
+                                                classe: "col-xs-3",
                                                 style: "text-align:center"
                                               ) +
                                       html.div(
                                                 outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent hide") + html.span(outerhtml: "0", classe: "sampleCurrentTotal") + html.span(outerhtml: " / ", classe: "separator") + html.span(outerhtml: sample.ToString(), classe: "sampleTotal hide") + html.span(outerhtml: totalSampleXEvaluate.ToString(), classe: "sampleXEvaluateTotal"),
-                                                classe: "col-xs-6",
+                                                classe: "col-xs-3",
                                                 style: "text-align:center"
                                               );
+
+
                 //+
                 //                        html.div(
                 //                                    outerhtml: html.span(outerhtml: "0", classe: "defectsLevel2"),
