@@ -1,82 +1,131 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
 
 namespace DTO
 {
+    public class SgqConfig
+    {
+
+        public int Id { get; set; } = 0;
+        public DateTime AddDate { get; set; } = DateTime.Now;
+        public DateTime? AlterDate { get; set; } = null;
+        public int ActiveIn { get; set; }
+        public bool recoveryPassAvaliable { get; set; }
+        public string urlPreffixAppColleta { get; set; }
+        public string urlAppColleta { get; set; }
+
+    }
+
     public static class GlobalConfig
     {
 
-        public static bool Brasil { get; set; } = false;
-        public static bool Eua { get; set; } = true;
 
-        public static string linkDataCollect
+        /*Sistema real time*/
+        public static bool Brasil { get; set; }
+        public static bool Eua { get; set; }
+        public static bool Canada { get; set; }
+        public static bool JBS { get; set; }
+        public static bool Ytoara { get; set; }
+        public static bool Guarani { get; set; }
+
+        /*DataMenber*/
+        public static int Id { get; set; } = 0;
+        public static DateTime AddDate { get; set; } = DateTime.Now;
+        public static DateTime? AlterDate { get; set; } = null;
+        public static int ActiveIn { get; set; }
+        public static bool recoveryPassAvaliable { get; set; }
+        public static string urlPreffixAppColleta { get; set; }
+        public static string urlAppColleta { get; set; }
+
+        /// <summary>
+        /// Se existe config: true.
+        /// </summary>
+        /// <param name="connectionString"></param>
+        /// <returns></returns>
+        public static bool VerifyConfig(string connectionString)
         {
-            get
-            {
-                var retorno = string.Empty;
-                if (Brasil)
-                    retorno =  "http://mtzsvmqsc/AppColeta/";
-                else if (Eua)
-                    retorno =  "http://10.190.2.34/AppSgqHml/";
+            if (ActiveIn > 0)/*Se ja configurado*/
+                return true;
 
-                return retorno;
+            using (var db = new ADOFactory.Factory(connectionString))/*Caso nao configurado, procura config no DB*/
+            {
+                var cfg = db.SearchQuery<SgqConfig>("SELECT * FROM SgqConfig").LastOrDefault();
+                if (cfg != null)/*Se existe config, pega a ultima existente e configura*/
+                {
+                    ConfigWebSystem(cfg);
+                    if (ActiveIn > 0)
+                        return true;
+                }
             }
-            set { linkDataCollect = value; }
+
+            return false;/*Se não existe config retorna falso*/
         }
 
-        public static bool corrigeLinkDataCollect { get; set; } = false;
-        public static bool linkDataCollectJaConfigurado { get; set; } = false;
-
-        public static List<string> listLinkDataCollect
+        /// <summary>
+        /// Recebe parametros do DB e Configura arquivo de config do web site.
+        /// </summary>
+        /// <param name="dto"></param>
+        public static void ConfigWebSystem(SgqConfig dto)
         {
-            get
-            {
-                var listLinksDataCollect = new List<string>();
-                listLinksDataCollect.Add("http://192.168.25.200/AppColeta/");
-                listLinksDataCollect.Add("http://mtzsvmqsc/AppColeta/");
-                //listLinksDataCollect.Add("http://mtzsvmqsc/AppColeta/");
-                //listLinksDataCollect.Add("http://mtzsvmqsc/AppColeta/");
-                //listLinksDataCollect.Add("http://mtzsvmqsc/AppColeta/");
 
-                return listLinksDataCollect;
-            }
-            set
-            {
-                listLinkDataCollect = value;
-            }
-        }
-
-        public static string AlteraGc(int seletor)
-        {
-            string retorno = "";
-            switch (seletor)
+            SetAllFalse();
+            switch (dto.ActiveIn)
             {
                 case 1:
+                    JBS = true;
                     Brasil = true;
-                    Eua = false;
-                    retorno = "Global config alterada para Brasil";
                     break;
                 case 2:
-                    Brasil = false;
+                    JBS = true;
                     Eua = true;
-                    retorno = "Global config alterada para EUA";
+                    break;
+                case 3:
+                    JBS = true;
+                    Canada = true;
+                    break;
+                case 4:
+                    Ytoara = true;
+                    break;
+                case 5:
+                    Guarani = true;
+                    break;
+                default:
                     break;
             }
 
-            return retorno;
+            Id = dto.Id;
+            AddDate = dto.AddDate;
+            AlterDate = dto.AlterDate;
+            ActiveIn = dto.ActiveIn;
+            recoveryPassAvaliable = dto.recoveryPassAvaliable;
+            urlPreffixAppColleta = dto.urlPreffixAppColleta;
+            urlAppColleta = dto.urlAppColleta;
+
         }
 
-        public static string CheckGC()
+        /// <summary>
+        /// Zera variavel de config GlobalConfig
+        /// </summary>
+        private static void SetAllFalse()
         {
-            var retorno = "";
 
-            if (Brasil)
-                retorno = "Config atual: Brasil";
-            else if (Eua)
-                retorno = "Config atual: Eua";
-            else
-                retorno = "Não definida";
+            Id = 0;
+            AddDate = DateTime.Now;
+            AlterDate = null;
+            Brasil = false;
+            Eua = false;
+            Canada = false;
+            JBS = false;
+            Ytoara = false;
+            Guarani = false;
+            ActiveIn = 0;
+            recoveryPassAvaliable = false;
+            urlPreffixAppColleta = string.Empty;
+            urlAppColleta = string.Empty;
 
-            return retorno;
         }
+
+      
     }
+
 }

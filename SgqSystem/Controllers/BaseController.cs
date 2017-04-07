@@ -14,10 +14,12 @@ namespace SgqSystem.Controllers
     {
         public BaseController()
         {
-            //GlobalConfig.linkDataCollect = "http://192.168.25.200/AppColeta/";
-            ViewBag.UrlDataCollect = GlobalConfig.linkDataCollect;
+           
+            ViewBag.UrlDataCollect = GlobalConfig.urlAppColleta;
             //UrlHelper u = new UrlHelper(this.ControllerContext.RequestContext);
             //ViewBag.UrlScorecard = u.Action("Scorecard", "RelatoriosSgq");
+
+            
         }
 
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
