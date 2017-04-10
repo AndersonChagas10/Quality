@@ -2546,7 +2546,7 @@ namespace SgqSystem.Services
 
             string sql = "" +
                 "\n DECLARE @ParCompany_id int = 16 " +
-                "\n DECLARE @ParLevel1_id int = 1 " +
+                "\n DECLARE @ParLevel1_id int =  " + parlevel1.Id +
 
                 "\n SELECT max(Number) as av FROM ParEvaluation EV " +
                 "\n WHERE ParLevel2_id in ( " +
@@ -2556,12 +2556,12 @@ namespace SgqSystem.Services
 
                     "\n on p32.id = p321.ParLevel3Level2_Id " +
 
-                    "\n where p321.ParLevel1_Id = @ParLevel1_id and(p32.ParCompany_Id = @ParCompany_id or p32.ParCompany_Id is null) and P321.Active = 1 and p32.IsActive = 1 " +
+                    "\n where p321.ParLevel1_Id = @ParLevel1_id and (p32.ParCompany_Id is null) and P321.Active = 1 and p32.IsActive = 1 " +
 
                     "\n group by p32.ParLevel2_Id " +
                 "\n ) " +
                 "\n and ev.IsActive = 1 " +
-                "\n and(ev.ParCompany_Id = @ParCompany_id or ev.ParCompany_Id is null) ";
+                "\n and(ev.ParCompany_Id is null) ";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -2620,23 +2620,23 @@ namespace SgqSystem.Services
 
 
             string sql = "" +
-                "\n DECLARE @ParCompany_id int = 16 " +
-                "\n DECLARE @ParLevel1_id int = 1 " +
+               "\n DECLARE @ParCompany_id int = 16 " +
+               "\n DECLARE @ParLevel1_id int =  " + parlevel1.Id +
 
-                "\n SELECT max(Number) as av FROM ParSample EV " +
-                "\n WHERE ParLevel2_id in ( " +
-                    "\n SELECT p32.ParLevel2_Id FROM ParLevel3Level2Level1 P321 " +
+               "\n SELECT max(Number) as av FROM ParSample EV " +
+               "\n WHERE ParLevel2_id in ( " +
+                   "\n SELECT p32.ParLevel2_Id FROM ParLevel3Level2Level1 P321 " +
 
-                    "\n inner join ParLevel3Level2 P32 " +
+                   "\n inner join ParLevel3Level2 P32 " +
 
-                    "\n on p32.id = p321.ParLevel3Level2_Id " +
+                   "\n on p32.id = p321.ParLevel3Level2_Id " +
 
-                    "\n where p321.ParLevel1_Id = @ParLevel1_id and(p32.ParCompany_Id = @ParCompany_id or p32.ParCompany_Id is null) and P321.Active = 1 and p32.IsActive = 1 " +
+                   "\n where p321.ParLevel1_Id = @ParLevel1_id and (p32.ParCompany_Id is null) and P321.Active = 1 and p32.IsActive = 1 " +
 
-                    "\n group by p32.ParLevel2_Id " +
-                "\n ) " +
-                "\n and ev.IsActive = 1 " +
-                "\n and(ev.ParCompany_Id = @ParCompany_id or ev.ParCompany_Id is null) ";
+                   "\n group by p32.ParLevel2_Id " +
+               "\n ) " +
+               "\n and ev.IsActive = 1 " +
+               "\n and(ev.ParCompany_Id is null) ";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try

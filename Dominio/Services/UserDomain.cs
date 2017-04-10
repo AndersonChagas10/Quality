@@ -121,7 +121,7 @@ namespace Dominio.Services
             UserSgq userDev = CheckUserAndPassDataBase(userDto);
             return userDev;
 
-            return AutenticaAdEUA(userDto);//Autenticação no AD JBS USA
+            //return AutenticaAdEUA(userDto);//Autenticação no AD JBS USA
         }
 
         /// <summary>
