@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Owin;
+﻿using Microsoft.Owin;
 using Owin;
+using Hangfire;
+using System.Web;
 
 [assembly: OwinStartup(typeof(SgqSystem.Startup))]
 
@@ -13,6 +12,11 @@ namespace SgqSystem
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+
+            // Make `Back to site` link working for subfolder applications
+            var options = new DashboardOptions { AppPath = VirtualPathUtility.ToAbsolute("~") };
+
+            app.UseHangfireDashboard();
         }
     }
 }

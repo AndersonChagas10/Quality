@@ -499,10 +499,11 @@ namespace SgqSystem.Services
                      * MOCK INDICADOR FILHO GABRIEL
                      * 30/03/2017
                      */
-                     if(c.level01_Id == 22)
+                    if (c.level01_Id == 22)
                     {
                         ParLevel1_Id = 1042;
-                    }else
+                    }
+                    else
                     {
                         ParLevel1_Id = null;
                     }
@@ -1469,8 +1470,8 @@ namespace SgqSystem.Services
             for (int i = 0; i < arrayResults.Length; i++)
             {
 
-               
-                
+
+
                 //Gera o array com o resultado
                 var result = arrayResults[i].Split(',');
 
@@ -1490,7 +1491,8 @@ namespace SgqSystem.Services
                             skip = false;
                         }
                     }
-                }else
+                }
+                else
                 {
                     foreach (var l3_filho in parLevel3List_IndicadorFilho)
                     {
@@ -1980,7 +1982,7 @@ namespace SgqSystem.Services
                         string partialResults = null;
                         if (c.IsPartialSave == true)
                         {
-                            
+
                             var ParLevel1DB = new SGQDBContext.ParLevel1(db);
                             var parLevel1 = ParLevel1DB.getById(Level2Result.ParLevel1_Id);
 
@@ -2473,7 +2475,7 @@ namespace SgqSystem.Services
             //colocar autenticação
             APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
 
-         
+
             string supports = "<div class=\"Results hide\"></div>" +
                               "<div class=\"ResultsConsolidation hide\"></div>" +
                                "<div class=\"ResultsKeys hide\"></div>" +
@@ -2543,6 +2545,58 @@ namespace SgqSystem.Services
             return evaluate;
         }
 
+        public int getMaxEvaluateLevel1(SGQDBContext.ParLevel1 parlevel1, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany)
+        {
+            int evaluate = 0;
+
+
+            string sql = "" +
+                "\n DECLARE @ParCompany_id int = 16 " +
+                "\n DECLARE @ParLevel1_id int =  " + parlevel1.Id +
+
+                "\n SELECT max(Number) as av FROM ParEvaluation EV " +
+                "\n WHERE ParLevel2_id in ( " +
+                    "\n SELECT p32.ParLevel2_Id FROM ParLevel3Level2Level1 P321 " +
+
+                    "\n inner join ParLevel3Level2 P32 " +
+
+                    "\n on p32.id = p321.ParLevel3Level2_Id " +
+
+                    "\n where p321.ParLevel1_Id = @ParLevel1_id and (p32.ParCompany_Id is null) and P321.Active = 1 and p32.IsActive = 1 " +
+
+                    "\n group by p32.ParLevel2_Id " +
+                "\n ) " +
+                "\n and ev.IsActive = 1 " +
+                "\n and(ev.ParCompany_Id is null) ";
+
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        using (SqlDataReader r = command.ExecuteReader())
+                        {
+                            if (r.Read())
+                            {
+                                evaluate = Convert.ToInt32(r[0]);
+                            }
+                        }
+                    }
+                }
+            }
+
+            catch (Exception)
+            {
+
+                return evaluate;
+            }
+
+            return evaluate;
+        }
+
         public int getSample(SGQDBContext.ParLevel2 parlevel2, IEnumerable<SGQDBContext.ParLevel2Sample> ParSampleCompany, IEnumerable<SGQDBContext.ParLevel2Sample> ParSamplePadrao)
         {
             int sample = 0;
@@ -2564,6 +2618,58 @@ namespace SgqSystem.Services
                 sample = 0;
             }
             return sample;
+        }
+
+        public int getMaxSampleLevel1(SGQDBContext.ParLevel1 parlevel1, IEnumerable<SGQDBContext.ParLevel2Evaluate> ParEvaluateCompany)
+        {
+            int evaluate = 0;
+
+
+            string sql = "" +
+               "\n DECLARE @ParCompany_id int = 16 " +
+               "\n DECLARE @ParLevel1_id int =  " + parlevel1.Id +
+
+               "\n SELECT max(Number) as av FROM ParSample EV " +
+               "\n WHERE ParLevel2_id in ( " +
+                   "\n SELECT p32.ParLevel2_Id FROM ParLevel3Level2Level1 P321 " +
+
+                   "\n inner join ParLevel3Level2 P32 " +
+
+                   "\n on p32.id = p321.ParLevel3Level2_Id " +
+
+                   "\n where p321.ParLevel1_Id = @ParLevel1_id and (p32.ParCompany_Id is null) and P321.Active = 1 and p32.IsActive = 1 " +
+
+                   "\n group by p32.ParLevel2_Id " +
+               "\n ) " +
+               "\n and ev.IsActive = 1 " +
+               "\n and(ev.ParCompany_Id is null) ";
+
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        using (SqlDataReader r = command.ExecuteReader())
+                        {
+                            if (r.Read())
+                            {
+                                evaluate = Convert.ToInt32(r[0]);
+                            }
+                        }
+                    }
+                }
+            }
+
+            catch (Exception)
+            {
+
+                return evaluate;
+            }
+
+            return evaluate;
         }
 
         public string getAPPMain(int UserSgq_Id, int ParCompany_Id, DateTime Date)
@@ -2603,7 +2709,7 @@ namespace SgqSystem.Services
 
             var seiLaLevel1 = GetLevel01(ParCompany_Id: ParCompany_Id, dateCollect: Date); /****** PORQUE ESTA MOKADO ESSA UNIDADE 1? *******/
 
-            string container = html.div(outerhtml: breadCrumb + selectPeriod + seiLaLevel1 , classe: "container");
+            string container = html.div(outerhtml: breadCrumb + selectPeriod + seiLaLevel1, classe: "container");
 
             string buttons = " <button id=\"btnSave\" class=\"btn btn-lg btn-warning hide\"><i id=\"saveIcon\" class=\"fa fa-save\"></i><i id=\"loadIcon\" class=\"fa fa-circle-o-notch fa-spin\" style=\"display:none;\"></i></button><!--Save-->" +
                              " <button class=\"btn btn-lg btn-danger btnCA hide\">" + CommonData.getResource("corrective_action").Value.ToString() + "</button><!--Corrective Action-->";
@@ -2940,7 +3046,7 @@ namespace SgqSystem.Services
             string listLevel2 = null;
             string listLevel3 = null;
 
-            string excecao = null; 
+            string excecao = null;
             #endregion
 
             //Percorremos a lista de agrupada
@@ -2950,7 +3056,7 @@ namespace SgqSystem.Services
                 #region instancia
 
                 //Instanciamos uma variável level01GroupList
-                string level01GroupList = null; 
+                string level01GroupList = null;
                 //Instanciamos uma variável list parLevel1 para adicionar os parLevel1
                 string parLevel1 = null;
                 //Instanciamos uma variável para verificar o nome do ParCriticalLevel
@@ -3220,19 +3326,40 @@ namespace SgqSystem.Services
 
             #endregion
 
+            int evaluate = 0;
+            int sample = 0;
+
+            if (ParLevel1.HasGroupLevel2 == true)
+            {
+
+                evaluate = getMaxEvaluateLevel1(ParLevel1, ParEvaluateCompany);
+                sample = getMaxSampleLevel1(ParLevel1, ParEvaluateCompany);
+                evaluateGroup = evaluate;
+                sampleGroup = sample;
+
+            }
+
+
+
             //Enquando houver lista de level2
             foreach (var parlevel2 in parlevel02List) //LOOP3
             {
                 //Verifica se pega avaliações e amostras padrão ou da company
-                int evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
-                int sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
-
-                //Se agrupar level2 com level3 pego o valor da primeira avaliação e amostra
-                if (ParLevel1.HasGroupLevel2 == true & evaluateGroup == 0)
+                if (ParLevel1.HasGroupLevel2 != true)
                 {
-                    evaluateGroup = evaluate;
-                    sampleGroup = sample;
+
+                    evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
+                    sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
+
                 }
+
+
+                ////Se agrupar level2 com level3 pego o valor da primeira avaliação e amostra
+                //if (ParLevel1.HasGroupLevel2 == true & evaluateGroup == 0)
+                //{
+                //evaluateGroup = evaluate;
+                //sampleGroup = sample;
+                //}
 
                 //Colocar função de gerar cabeçalhos por selectbox
                 //Monta os cabecalhos
@@ -3591,7 +3718,7 @@ namespace SgqSystem.Services
 
                 var label = "<label class=\"font-small\">" + header.ParHeaderField_Name + "</label>";
 
-                var form_control = ""; 
+                var form_control = "";
 
                 #endregion
 
@@ -3693,9 +3820,9 @@ namespace SgqSystem.Services
                                             );
 
 
-            #endregion
+                #endregion
 
-            } 
+            }
 
             return retorno;
         }
@@ -3850,7 +3977,7 @@ namespace SgqSystem.Services
                                                           parLevel3Group
                                              );
                 }
-                return parLevel3Group; 
+                return parLevel3Group;
 
                 #endregion
             }
@@ -4089,7 +4216,7 @@ namespace SgqSystem.Services
                                                               parLevel3Group
                                                  );
                 }
-                return parLevel3Group; 
+                return parLevel3Group;
                 #endregion
             }
             //Tela do PCC1B
@@ -4235,7 +4362,7 @@ namespace SgqSystem.Services
                                                           parLevel3Group
                                              );
                 }
-                return parLevel3Group; 
+                return parLevel3Group;
                 #endregion
             }
             //Tela Genérica
@@ -4304,7 +4431,7 @@ namespace SgqSystem.Services
 
                 //Avaliações e amostas para painel
                 string avaliacoeshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">"+ CommonData.getResource("evaluation").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "evaluateTotal") + "</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("evaluation").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "evaluateCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "evaluateTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string amostrashtml = html.div(
@@ -5338,7 +5465,7 @@ namespace SgqSystem.Services
             //Instanciamos uma variável que irá 
 
             DateTime dateAtual = DateCollectConvert(date);
-            
+
             var ResultEvaluationDefectsList = ResultPhaseDB.GetByDay(parCompany_Id, dateAtual, parLevel1_Id);
 
             string PhaseResult = null;
