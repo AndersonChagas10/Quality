@@ -11,28 +11,27 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
     {
         [HttpPost]
         [Route("Get")]
-        public List<ExpandoObject> GetRelatorio([FromBody] FormularioParaRelatorioViewModel form)
+        public ExpandoObject GetRelatorio([FromBody] FormularioParaRelatorioViewModel form)
         {
 
             var lista = new List<PropriedadesGenericas>();
 
-            dynamic lista2 = new List<ExpandoObject>();
+            var lista2 = new List<PropriedadesGenericasHeader>();
 
-            dynamic retorno = new List<ExpandoObject>();
+            dynamic retorno = new ExpandoObject();
 
             for (int i = 0; i < 2; i++)
             {
-                lista2.add(new PropriedadesGenericasHeader() { title = "Col" + i , mData = "Col" + i});
+                lista2.Add(new PropriedadesGenericasHeader() { title = "Col" + i , mData = "Col" + i} );
             }
 
             for (int i = 0; i < 10; i++)
             {
-
                 lista.Add(new PropriedadesGenericas() { col1 = "teste coluna 1 " + i, col2 = "teste coluna 2 " + i });
             }
 
-            retorno.add(lista);
-            retorno.add(lista2);
+            retorno.body = lista;
+            retorno.header = lista2;
 
             return retorno;
         }
