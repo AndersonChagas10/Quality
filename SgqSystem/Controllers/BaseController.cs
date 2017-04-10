@@ -19,14 +19,11 @@ namespace SgqSystem.Controllers
         {
            
             ViewBag.UrlDataCollect = GlobalConfig.urlAppColleta;
-            /*UrlHelper u = new UrlHelper(this.ControllerContext.RequestContext);
-            //ViewBag.UrlScorecard = u.Action("Scorecard", "RelatoriosSgq");*/
 
-            RecurringJob.AddOrUpdate(
-                () => SimpleAsynchronous.SendMail(),
-                Cron.Minutely);
-
-            //BackgroundJob.Enqueue(() => Console.WriteLine("Hello, world"));
+            /*Comentar este em HML desenvolvimento para evitar spam*/
+            //RecurringJob.AddOrUpdate(
+            //    () => SimpleAsynchronous.SendMail(),
+            //    Cron.Minutely);
 
         }
 
