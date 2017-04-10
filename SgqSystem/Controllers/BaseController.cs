@@ -1,5 +1,8 @@
-﻿using DTO;
+﻿using Dominio;
+using DTO;
 using DTO.DTO;
+using Examples.SmptExamples.Async;
+using Hangfire;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -16,10 +19,12 @@ namespace SgqSystem.Controllers
         {
            
             ViewBag.UrlDataCollect = GlobalConfig.urlAppColleta;
-            //UrlHelper u = new UrlHelper(this.ControllerContext.RequestContext);
-            //ViewBag.UrlScorecard = u.Action("Scorecard", "RelatoriosSgq");
 
-            
+            /*Comentar este em HML desenvolvimento para evitar spam*/
+            //RecurringJob.AddOrUpdate(
+            //    () => SimpleAsynchronous.SendMail(),
+            //    Cron.Minutely);
+
         }
 
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
@@ -95,7 +100,34 @@ namespace SgqSystem.Controllers
             }
         }
 
-      
+        public static void NotifyNewComment(int commentId)
+        {
+
+          
+
+            //// Prepare Postal classes to work outside of ASP.NET request
+            //var viewsPath = Path.GetFullPath(HostingEnvironment.MapPath(@"~/Views/Emails"));
+            //var engines = new ViewEngineCollection();
+            //engines.Add(new FileSystemRazorViewEngine(viewsPath));
+
+            //var emailService = new EmailService(engines);
+
+            // Get comment and send a notification.
+            using (var db = new SgqDbDevEntities())
+            {
+                //var comment = db.Comments.Find(commentId);
+
+                //var email = new NewCommentEmail
+                //{
+                //    To = "yourmail@example.com",
+                //    UserName = comment.UserName,
+                //    Comment = comment.Text
+                //};
+
+                //emailService.Send(email);
+            }
+        }
+
 
     }
 

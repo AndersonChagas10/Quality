@@ -331,40 +331,8 @@
                 @Html.DropDownList("onlyunitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.select, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>*@
-        <li data-ng-app="myApp">
-            @*    @Html.DropDownList("level1Id", new SelectList(ViewBag.Level1, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2Init", @style = "width:210px" })*@
-            <div data-ng-controller="MainCtrl" id="showLevel1" style="display:none; margin-left:0px!important">
-                <div>
-                    <span class="redLabel">@Resources.Resource.level1</span>
-                    <select id="level1Id" data-ng-model="level1Value"
-                            data-ng-options="s.Id as s.Name for s in level1"
-                            data-ng-change="GetListLevel2VinculadoLevel1()" class="form-control" style="width:210px">
-                        <option value="">@Resources.Resource.select</option>
-                    </select>
-                </div>
-
-                <div>
-                    <span class="redLabel">@Resources.Resource.level2</span>
-                    <select id="level2Id" data-ng-model="level2Value"
-                            @*data-ng-disabled="!level2"*@
-                            data-ng-options="s.Id as s.Name for s in level2"
-                            data-ng-change="GetListLevel3VinculadoLevel2()" class="form-control" style="width:210px">
-                        <option value="">@Resources.Resource.select</option>
-                    </select>
-                </div>
-
-                <div>
-                    <span class="redLabel">@Resources.Resource.level3</span>
-                    <select id="level3Id" data-ng-model="level3Value"
-                            @*data-ng-disabled="!level3"*@
-                            data-ng-options="s.Id as s.Name for s in level3"
-                            data-ng-change="" class="form-control" style="width:210px">
-                        <option value="">@Resources.Resource.select</option>
-                    </select>
-                </div>
-
-            </div>
-        </li>
+        
+        @Html.Partial("~/Views/Shared/_Level321Chain.cshtml")
 
         @*<li>
                 <div id="showLevel2" style="display:none">
@@ -742,122 +710,11 @@
     </ul>
 </div>
 
-@*Referencing the Angular library to the page*@
-@Scripts.Render("~/Scripts/angular.js")
-@*<script src="~/Scripts/angular.min.js"></script>*@
-
-<script type="text/javascript">
-
-    var GetListLevel1 = @Html.Raw(Json.Encode(GetListLevel1));
-    var GetListLevel2 = @Html.Raw(Json.Encode(GetListLevel2));
-    var GetListLevel3 = @Html.Raw(Json.Encode(GetListLevel3));
-    var GetListLevel2VinculadoLevel1 = @Html.Raw(Json.Encode(GetListLevel2VinculadoLevel1));
-    var GetListLevel3VinculadoLevel2 = @Html.Raw(Json.Encode(GetListLevel3VinculadoLevel2));
-    var GetListLevel3VinculadoLevel2Level1 = @Html.Raw(Json.Encode(GetListLevel3VinculadoLevel2Level1));
-
-
-    /*
-    START ANGULAR MODULE
-    */
-
-    //Defining a module
-    var myApp = angular.module('myApp', []);
-    //Defining a Controller
-    myApp.controller('MainCtrl', ['$scope', '$http',
-        function ($scope, $http) {
-            //Defining the $http service for getting the Level1 2 and 3 by default
-            $http({
-                method: 'POST',
-                url: GetListLevel1
-            }).
-            then(function (r) {
-                $scope.level1 = r.data;
-            });
-
-            $http({
-                method: 'POST',
-                url: GetListLevel2
-            }).
-            then(function (r) {
-                $scope.level2 = r.data;
-            });
-
-            $http({
-                method: 'POST',
-                url: GetListLevel3
-            }).
-            then(function (r) {
-                $scope.level3 = r.data;
-            });
-
-            //Defining the $http service for getting Level2 By Level1
-            $scope.GetListLevel2VinculadoLevel1 = function () {
-                if ($scope.level1Value) {
-                    $http({
-                        method: 'POST',
-                        url: GetListLevel2VinculadoLevel1 + "/" + $scope.level1Value,
-                        //data: JSON.stringify({ Id: $scope.level1Value })
-                    }).
-                    then(function (r) {
-                        $scope.level2 = r.data;
-                    });
-                }
-                else {
-                    $http({
-                        method: 'POST',
-                        url: GetListLevel2
-                    }).
-                   then(function (r) {
-                       $scope.level2 = r.data;
-                   });
-                }
-            }
-
-            $scope.GetListLevel3VinculadoLevel2 = function () {
-                //Defining the $http service for getting Level3 By Level2
-                if ($scope.level2Value && !$scope.level1Value) {
-                    $http({
-                        method: 'POST',
-                        url: GetListLevel3VinculadoLevel2 + "/" + $scope.level2Value,
-                        //data: JSON.stringify({ Id: $scope.level2Value })
-                    }).
-                    then(function (r) {
-                        $scope.level3 = r.data;
-                    });
-                }
-                    //Defining the $http service for getting Level3 By Level2 and Level1
-                else if  ($scope.level2Value && $scope.level1Value) {
-                    $http({
-                        method: 'POST',
-                        url: GetListLevel3VinculadoLevel2Level1 + "/" + $scope.level1Value + "/" + $scope.level2Value,
-                        //data: JSON.stringify({ Id:  } + { Id:  })
-                    }).
-                    then(function (r) {
-                        $scope.level3 = r.data;
-                    });
-                }
-                else {
-                    $http({
-                        method: 'POST',
-                        url: GetListLevel3
-                    }).
-                   then(function (r) {
-                       $scope.level3 = r.data;
-                   });
-                }
-            }
-        }]);
-
-    /*
-        END ANGULAR MODULE
-    */
-
-</script>
-
 <!-- Menu Toggle Script -->
 
 <script>
 
+   
     var enviar = {};
     var start = moment();
     var end = moment();
@@ -1216,3 +1073,4 @@
     }
 
 </script>
+

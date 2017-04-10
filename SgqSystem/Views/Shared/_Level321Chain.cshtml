@@ -1,0 +1,48 @@
+﻿<li>
+    @*    @Html.DropDownList("level1Id", new SelectList(ViewBag.Level1, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control select2Init", @style = "width:210px" })*@
+    <div data-ng-controller="MainCtrl" id="showLevel1" style="display:none; margin-left:0px!important">
+        <div>
+            <span class="redLabel">@Resources.Resource.level1</span>
+            <select id="level1Id" data-ng-model="level1Value"
+                    data-ng-options="s.Id as s.Name for s in level1"
+                    data-ng-change="GetListLevel2VinculadoLevel1()" class="form-control" style="width:210px">
+                <option value="">@Resources.Resource.select</option>
+            </select>
+        </div>
+
+        <div>
+            <span class="redLabel">@Resources.Resource.level2</span>
+            <select id="level2Id" data-ng-model="level2Value"
+                    @*data-ng-disabled="!level2"*@
+                    data-ng-options="s.Id as s.Name for s in level2"
+                    data-ng-change="GetListLevel3VinculadoLevel2()" class="form-control" style="width:210px">
+                <option value="">@Resources.Resource.select</option>
+            </select>
+        </div>
+
+        <div>
+            <span class="redLabel">@Resources.Resource.level3</span>
+            <select id="level3Id" data-ng-model="level3Value"
+                    @*data-ng-disabled="!level3"*@
+                    data-ng-options="s.Id as s.Name for s in level3"
+                    data-ng-change="" class="form-control" style="width:210px">
+                <option value="">@Resources.Resource.select</option>
+            </select>
+        </div>
+
+    </div>
+</li>
+
+<script>
+
+    var GetListLevel1 = @Html.Raw(Json.Encode(Url.Action("GetListLevel1", "api/ParamsApi")));
+    var GetListLevel2 = @Html.Raw(Json.Encode(Url.Action("GetListLevel2", "api/ParamsApi")));
+    var GetListLevel3 = @Html.Raw(Json.Encode(Url.Action("GetListLevel3", "api/ParamsApi")));
+    var GetListLevel2VinculadoLevel1 = @Html.Raw(Json.Encode(Url.Action("GetListLevel2VinculadoLevel1", "api/ParamsApi")));
+    var GetListLevel3VinculadoLevel2 = @Html.Raw(Json.Encode(Url.Action("GetListLevel3VinculadoLevel2", "api/ParamsApi")));
+    var GetListLevel3VinculadoLevel2Level1 = @Html.Raw(Json.Encode(Url.Action("GetListLevel3VinculadoLevel2Level1", "api/ParamsApi")));
+
+</script>
+
+@*Referencing the Angular library to the page*@
+<script src="~/Angular/Level321Chain.js"></script>
