@@ -299,6 +299,7 @@
     <Compile Include="Controllers\Api\Manutencao\ManColetaDadosController.cs" />
     <Compile Include="Controllers\Api\Manutencao\ManDataCollectITsController.cs" />
     <Compile Include="Controllers\Api\Manutencao\PainelIndicadoresUniManutencaoController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\RelatorioGenericoApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\ApontamentosDiariosApiController.cs" />
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
@@ -2146,6 +2147,7 @@
     <Content Include="Views\Params\EditParHeaderField.cshtml" />
     <Content Include="Views\UserAuthentication\PasswordRecovery.cshtml" />
     <Content Include="Views\FirstConfig\Index.cshtml" />
+    <Content Include="Views\RelatoriosSgq\RelatorioGenerico.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
