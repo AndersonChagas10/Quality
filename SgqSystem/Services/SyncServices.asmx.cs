@@ -20,7 +20,7 @@ using System.Globalization;
 using System.Collections;
 using DTO;
 using SgqSystem.Helpers;
-
+using SGQDBContextYTOARA;
 
 namespace SgqSystem.Services
 {
@@ -44,11 +44,16 @@ namespace SgqSystem.Services
         public SqlConnection db;
         public SqlConnection SGQ_GlobalADO;
 
+        //Contexto util de dados para Ytoara
+        private SGQDBContext_YTOARA ytoaraUtil;
+
         public SyncServices()
         {
 
             conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-            
+
+            ytoaraUtil = new SGQDBContext_YTOARA();
+
             if (GlobalConfig.Brasil)
             {
                 conexaoSGQ_GlobalADO = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
@@ -57,6 +62,7 @@ namespace SgqSystem.Services
             db = new SqlConnection(conexao);
             SGQ_GlobalADO = new SqlConnection(conexaoSGQ_GlobalADO);
             db.Open();
+            
         }
 
         #region Funções
@@ -3361,14 +3367,23 @@ namespace SgqSystem.Services
                 string headerCounter =
                                      html.div(
                                                outerhtml: "<b>" + CommonData.getResource("ev").Value.ToString() + " </b>",
-                                               classe: "col-xs-6",
+                                               classe: "col-xs-3",
+                                               style: "text-align:center"
+                                             ) +
+                                      html.div(
+                                               outerhtml: "<b>" + CommonData.getResource("df").Value.ToString() + " </b>",
+                                               classe: "col-xs-3",
                                                style: "text-align:center"
                                              ) +
                                      html.div(
                                                outerhtml: "<b>" + CommonData.getResource("sd").Value.ToString() + " </b>",
-                                               classe: "col-xs-6",
+                                               classe: "col-xs-3",
                                                style: "text-align:center"
                                               );
+                
+                // Incluisão de coluna de defeito.
+
+
                 //+
                 //                    html.div(
                 //                        outerhtml: "<b>Def.</b>",
@@ -3397,14 +3412,21 @@ namespace SgqSystem.Services
                 string counters =
                                       html.div(
                                                 outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
-                                                classe: "col-xs-6",
+                                                classe: "col-xs-3",
+                                                style: "text-align:center"
+                                              ) +
+                                      html.div(
+                                                outerhtml: html.span(outerhtml: "0", classe: "defectslevel2current") + html.span(outerhtml: " / ", classe: "separator") + html.span(outerhtml: evaluate.ToString(), classe: "defectslevel2current"),
+                                                classe: "col-xs-3",
                                                 style: "text-align:center"
                                               ) +
                                       html.div(
                                                 outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent hide") + html.span(outerhtml: "0", classe: "sampleCurrentTotal") + html.span(outerhtml: " / ", classe: "separator") + html.span(outerhtml: sample.ToString(), classe: "sampleTotal hide") + html.span(outerhtml: totalSampleXEvaluate.ToString(), classe: "sampleXEvaluateTotal"),
-                                                classe: "col-xs-6",
+                                                classe: "col-xs-3",
                                                 style: "text-align:center"
                                               );
+
+
                 //+
                 //                        html.div(
                 //                                    outerhtml: html.span(outerhtml: "0", classe: "defectsLevel2"),
@@ -3804,6 +3826,18 @@ namespace SgqSystem.Services
 
             return retorno;
         }
+        
+
+        /// <summary>
+        /// Obter tela da Ytoara com o cabeçalho
+        /// </summary>
+        /// <returns></returns>
+        public string GetHeaderYtoara()
+        {
+            return ytoaraUtil.criarHeader(ytoaraUtil.getElementoEstruturado());
+        }
+        
+        
         /// <summary>
         /// Retorna Level3 
         /// </summary>
