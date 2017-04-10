@@ -3300,6 +3300,7 @@ namespace SgqSystem.Services
             //Inicializa Avaliações e Amostras
             var ParEvaluateDB = new SGQDBContext.ParLevel2Evaluate(db);
             var ParSampleDB = new SGQDBContext.ParLevel2Sample(db);
+            
 
             //Verifica avaliações padrão
             var ParEvaluatePadrao = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
@@ -3316,6 +3317,9 @@ namespace SgqSystem.Services
             //Verifica amostra pela company informada
             var ParSampleCompany = ParSampleDB.getSample(ParLevel1: ParLevel1,
                                                         ParCompany_Id: ParCompany_Id);
+            
+
+
 
             //Variaveis para avaliação de grupos
             int evaluateGroup = 0;
@@ -3328,18 +3332,18 @@ namespace SgqSystem.Services
 
             int evaluate = 0;
             int sample = 0;
+            int defect = 0;
 
             if (ParLevel1.HasGroupLevel2 == true)
             {
-
                 evaluate = getMaxEvaluateLevel1(ParLevel1, ParEvaluateCompany);
                 sample = getMaxSampleLevel1(ParLevel1, ParEvaluateCompany);
+                //defect = getMaxSampleLevel1(ParLevel1, ParEvaluateCompany);
                 evaluateGroup = evaluate;
                 sampleGroup = sample;
-
             }
 
-
+            
 
             //Enquando houver lista de level2
             foreach (var parlevel2 in parlevel02List) //LOOP3
@@ -3347,10 +3351,10 @@ namespace SgqSystem.Services
                 //Verifica se pega avaliações e amostras padrão ou da company
                 if (ParLevel1.HasGroupLevel2 != true)
                 {
-
                     evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
                     sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
-
+                    defect = evaluate;
+                    //defect = getCollectionLevel2Keys(ParCompany_Id,data, ParLevel1);
                 }
 
 
@@ -3404,7 +3408,7 @@ namespace SgqSystem.Services
                                     classe: "counters col-xs-4"
                                     );
 
-
+                
                 string classXSLevel2 = " col-xs-5";
 
                 int totalSampleXEvaluate = evaluate * sample;
@@ -3421,12 +3425,14 @@ namespace SgqSystem.Services
                                                 style: "text-align:center"
                                               )+
                                        html.div(
-                                                outerhtml: html.span(outerhtml: "0", classe: "defectstotal") + html.span(outerhtml: " / ", classe: "separator") + html.span(outerhtml: evaluate.ToString(), classe: "defectstotal"),
+                                                outerhtml: html.span(outerhtml: "0", classe: "defects") + html.span(outerhtml: " / ", classe: "separator") + html.span(outerhtml: defect.ToString() , classe: "defectstotal"),
                                                 classe: "col-xs-3",
                                                 style: "text-align:center"
                                               );
 
+                
 
+                //
                 //+
                 //                        html.div(
                 //                                    outerhtml: html.span(outerhtml: "0", classe: "defectsLevel2"),
