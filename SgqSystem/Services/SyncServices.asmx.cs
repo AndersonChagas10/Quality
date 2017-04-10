@@ -3370,17 +3370,17 @@ namespace SgqSystem.Services
                                                classe: "col-xs-3",
                                                style: "text-align:center"
                                              ) +
-                                      html.div(
-                                               outerhtml: "<b>" + CommonData.getResource("df").Value.ToString() + " </b>",
-                                               classe: "col-xs-3",
-                                               style: "text-align:center"
-                                             ) +
                                      html.div(
                                                outerhtml: "<b>" + CommonData.getResource("sd").Value.ToString() + " </b>",
                                                classe: "col-xs-3",
                                                style: "text-align:center"
-                                              );
-                
+                                              ) +
+                                      html.div(
+                                               outerhtml: "<b>" + CommonData.getResource("df").Value.ToString() + " </b>",
+                                               classe: "col-xs-3",
+                                               style: "text-align:center"
+                                             );
+
                 // Incluisão de coluna de defeito.
 
 
@@ -3416,12 +3416,12 @@ namespace SgqSystem.Services
                                                 style: "text-align:center"
                                               ) +
                                       html.div(
-                                                outerhtml: html.span(outerhtml: "0", classe: "defectslevel2current") + html.span(outerhtml: " / ", classe: "separator") + html.span(outerhtml: evaluate.ToString(), classe: "defectslevel2current"),
+                                                outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent hide") + html.span(outerhtml: "0", classe: "sampleCurrentTotal") + html.span(outerhtml: " / ", classe: "separator") + html.span(outerhtml: sample.ToString(), classe: "sampleTotal hide") + html.span(outerhtml: totalSampleXEvaluate.ToString(), classe: "sampleXEvaluateTotal"),
                                                 classe: "col-xs-3",
                                                 style: "text-align:center"
-                                              ) +
-                                      html.div(
-                                                outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent hide") + html.span(outerhtml: "0", classe: "sampleCurrentTotal") + html.span(outerhtml: " / ", classe: "separator") + html.span(outerhtml: sample.ToString(), classe: "sampleTotal hide") + html.span(outerhtml: totalSampleXEvaluate.ToString(), classe: "sampleXEvaluateTotal"),
+                                              )+
+                                       html.div(
+                                                outerhtml: html.span(outerhtml: "0", classe: "defectstotal") + html.span(outerhtml: " / ", classe: "separator") + html.span(outerhtml: evaluate.ToString(), classe: "defectstotal"),
                                                 classe: "col-xs-3",
                                                 style: "text-align:center"
                                               );
