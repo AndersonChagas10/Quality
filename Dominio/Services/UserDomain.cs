@@ -18,14 +18,50 @@ namespace Dominio.Services
     {
         #region Parametros e construtores.
 
+        public static class mensagens
+        {
+            public static string naoEncontrado
+            {
+                get
+                {
+                    if (GlobalConfig.Brasil)
+                        return "Usuário e senha não encontrados, por favor verifique os dados utilizados.";
+                    else
+                        return "Username and Password not found, please check Username and Password";
+                }
+            }
+
+            public static string falhaGeral
+            {
+                get
+                {
+                    if (GlobalConfig.Brasil)
+                        return "Não foi possível recuperar os dados do usuário.";
+                    else
+                        return "It was not possible retrieve any data.";
+                }
+            }
+
+            public static string erroUnidade
+            {
+                get
+                {
+                    if (GlobalConfig.Brasil)
+                        return "É necessário ao menos uma unidade cadastrada para o usuario.";
+                    else
+                        return "Cannot log in, user must have at least one Company Active in database to have acess.";
+                }
+            }
+        }
+
         private readonly IUserRepository _userRepo;
         private readonly IBaseRepository<ParCompanyXUserSgq> _baseParCompanyXUserSgq;
         private readonly IBaseRepository<ParCompany> _baseParCompany;
 
         private static string dominio = "global.corp.prod";
 
-        public string erroUnidade = "É necessário ao menos uma unidade cadastrada para o usuario.";
-        public string falhaGeral { get { return "It was not possible retrieve any data."; } }
+        //public string erroUnidade = "É necessário ao menos uma unidade cadastrada para o usuario.";
+        //public string falhaGeral { get { return "It was not possible retrieve any data."; } }
 
         /// <summary>
         /// Construtor para Inversion of Control.
@@ -58,9 +94,9 @@ namespace Dominio.Services
                 UserSgq isUser = null;
                 if (userDto.IsNull())
                     throw new ExceptionHelper("Username and Password are required.");
-                
+
                 /*Valida Properties do objeto para gravar/verificar o mesmo no banco de dados.*/
-                userDto.ValidaObjetoUserDTO(); 
+                userDto.ValidaObjetoUserDTO();
 
                 /*Verifica se o UserName Existe no DB*/
                 userByName = _userRepo.GetByName(userDto.Name);
@@ -73,11 +109,14 @@ namespace Dominio.Services
                 if (GlobalConfig.Eua)
                     isUser = LoginEUA(userDto, userByName);
 
+                if (isUser.IsNull())
+                    throw new ExceptionHelper(mensagens.naoEncontrado);
+
                 /*Caso usuario não possua ao menos uma unidade na tbl UserSgq, estes erros são acionados.*/
                 if (isUser.ParCompany_Id == null)
-                    throw new Exception(erroUnidade);
+                    throw new Exception(mensagens.erroUnidade);
                 if (isUser.ParCompany_Id <= 0)
-                    throw new Exception(erroUnidade);
+                    throw new Exception(mensagens.erroUnidade);
 
                 return new GenericReturn<UserDTO>(Mapper.Map<UserSgq, UserDTO>(isUser));
             }
@@ -88,20 +127,15 @@ namespace Dominio.Services
             }
 
         }
-      
+
         private UserSgq CheckUserAndPassDataBase(UserDTO userDto)
         {
             /*Descriptografa a criptografia do TABLET, caso a senha venha do sistema por POSTBACK e não esteja criptografada, não é afetada.*/
-            userDto.Password = DecryptStringAES(userDto.Password);
+            userDto.Password = Guard.Descriptografar3DES(userDto.Password);
             /*Criptografa para compara com senha criptografad no DB*/
             userDto.Password = Guard.Criptografar3DES(userDto.Password);
-
             var user = Mapper.Map<UserDTO, UserSgq>(userDto);
-            
-
             var isUser = _userRepo.AuthenticationLogin(user);
-            if (isUser.IsNull())
-                throw new ExceptionHelper("User not found, please verify Username and Password.");
             return isUser;
         }
 
@@ -118,45 +152,64 @@ namespace Dominio.Services
         private UserSgq LoginEUA(UserDTO userDto, UserSgq userByName)
         {
             /*Mock Login Desenvolvimento, descomentar caso HML ou PRODUÇÃO*/
-            UserSgq userDev = CheckUserAndPassDataBase(userDto);
-            return userDev;
+            //UserSgq userDev = CheckUserAndPassDataBase(userDto);
+            //return userDev;
 
-            //return AutenticaAdEUA(userDto);//Autenticação no AD JBS USA
+            return AutenticaAdEUA(userDto, userByName);//Autenticação no AD JBS USA
         }
 
         /// <summary>
         /// Verifica se o UsuarioExiste no AD dos EUA, 
         /// 1 - caso exista no AD, verifica no DB se ele ja existe: 1.1 - caso exista no DB (e no AD) retorna o mesmo e procede o login
         ///                                                         1.2 - caso não exista no DB, porem exista no AD, é registrado no DB, retorna o mesmo e procede o login.
+        ///                                                                 (Aguardando Feedback Cliente aprovação)
+        ///                                                         1.3 - Caso o usuario tenha trocado sua senha no AD , ela é atualizada no DB e procede o login.
         /// </summary>
         /// <param name="userDto"></param>
         /// <returns></returns>
-        private UserSgq AutenticaAdEUA(UserDTO userDto)
+        private UserSgq AutenticaAdEUA(UserDTO userDto, UserSgq userByName)
         {
             /*Descriptografa para comparar no AD*/
             userDto.Password = Guard.Descriptografar3DES(userDto.Password);
 
-            //1 Autenticação no AD JBS USA
+            /*1*/
             if (CheckUserInAD(dominio, userDto.Name, userDto.Password))
             {
-                /*1.1 Se passou no AD , verifica no DB:*/
+                /*1.1*/
                 userDto.Password = Guard.Criptografar3DES(userDto.Password);
                 UserSgq isUser = CheckUserAndPassDataBase(userDto);
 
-                /*1.2*/
-                if (isUser.IsNull())
+                /*1.3*/
+                if (userByName.IsNotNull() && isUser.IsNull())
                 {
-                    userDto.Password = Guard.Criptografar3DES(userDto.Password);
-                    var newUser = Mapper.Map<UserSgq>(userDto);
-                    _userRepo.Salvar(newUser);
-                    return newUser;
+                    userByName.Password = userDto.Password;
+                    _userRepo.Salvar(userByName);
+                    /*Verifica novamente com senha atualizada.*/
+                    isUser = CheckUserAndPassDataBase(userDto);
                 }
+
+                /*1.2*/
+                //if (isUser.IsNull())
+                //return CreateUserFromAd(userDto);
+
+
 
                 return isUser;
 
             }
 
             return null;
+        }
+
+        private UserSgq CreateUserFromAd(UserDTO userDto)
+        {
+            userDto.ParCompany_Id = _baseParCompany.First().Id;
+            userDto.FullName = userDto.Name;
+            userDto.PasswordDate = DateTime.Now;
+            userDto.ValidaObjetoUserDTO();
+            var newUser = Mapper.Map<UserSgq>(userDto);
+            _userRepo.Salvar(newUser);
+            return newUser;
         }
 
         /// <summary>
@@ -186,7 +239,7 @@ namespace Dominio.Services
             }
             catch (Exception e)
             {
-                return new GenericReturn<List<UserDTO>>(e, falhaGeral);
+                return new GenericReturn<List<UserDTO>>(e, mensagens.falhaGeral);
             }
         }
 
@@ -424,7 +477,7 @@ namespace Dominio.Services
         {
             try
             {
-                var queryResult =  _userRepo.GetByName(username);
+                var queryResult = _userRepo.GetByName(username);
                 return new GenericReturn<UserSgqDTO>(Mapper.Map<UserSgq, UserSgqDTO>(queryResult));
             }
             catch (Exception e)
