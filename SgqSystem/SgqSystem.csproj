@@ -511,8 +511,7 @@
     <Content Include="admin-lte\js\app.js" />
     <Content Include="admin-lte\js\app.min.js" />
     <Content Include="Angular\app.js" />
-    <Content Include="Angular\EditParHeaderFieldController.js" />
-    <Content Include="Angular\RecuperaSenhaController.js" />
+    <Content Include="Angular\Level321Chain.js" />
     <Content Include="App_GlobalResources\Resource.pt-br.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <SubType>Designer</SubType>
@@ -1028,6 +1027,7 @@
     <None Include="Properties\PublishProfiles\Desenvolvimento.pubxml" />
     <None Include="Properties\PublishProfiles\DevInterno.pubxml" />
     <None Include="Properties\PublishProfiles\jsdvdswjdjk.pubxml" />
+    <None Include="Properties\PublishProfiles\Local.pubxml" />
     <None Include="Properties\PublishProfiles\Master.pubxml" />
     <None Include="Properties\PublishProfiles\master2.pubxml" />
     <None Include="Properties\PublishProfiles\ParamsDevInterno.pubxml" />
@@ -2130,7 +2130,6 @@
     <Content Include="Views\Role\ScreenComponent.cshtml" />
     <Content Include="Views\ManPainelGestao\Index.cshtml" />
     <Content Include="Views\ParCompany\Index2.cshtml" />
-    <Content Include="Scripts\version.json" />
     <Content Include="Views\Role\RoleJBS.cshtml" />
     <Content Include="Views\RelatoriosSgq\ScorecardConfig.cshtml" />
     <Content Include="Views\ParGoalScorecard\Create.cshtml" />
@@ -2151,6 +2150,8 @@
     <Content Include="Views\Params\EditParHeaderField.cshtml" />
     <Content Include="Views\UserAuthentication\PasswordRecovery.cshtml" />
     <Content Include="Views\FirstConfig\Index.cshtml" />
+    <Content Include="Scripts\version.json" />
+    <Content Include="Views\Shared\_Level321Chain.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

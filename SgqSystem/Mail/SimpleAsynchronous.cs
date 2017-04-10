@@ -54,28 +54,36 @@ namespace Examples.SmptExamples.Async
             client.EnableSsl = true; //true Hotmail
             client.Credentials = new NetworkCredential("celsogea@hotmail.com", "Thebost1");
 
+            #region Address
+
             // Specify the e-mail sender.
             // Create a mailing address that includes a UTF8 character
             // in the display name.
-            MailAddress from = new MailAddress("celsogea@hotmail.com",
-               "Jane " + (char)0xD8 + " Clayton",
-            System.Text.Encoding.UTF8);
+            MailAddress from = new MailAddress("celsogea@hotmail.com", "SGQ", System.Text.Encoding.UTF8);
             // Set destinations for the e-mail message.
             MailAddress to = new MailAddress("celsogea@hotmail.com");
 
+            #endregion
+
+            #region MailMessage - Subject + Body
+
             // Specify the message content.
             MailMessage message = new MailMessage(from, to);
-            message.Body = "This is a test e-mail message sent by an application. ";
-            // Include some non-ASCII characters in body and subject.
-            string someArrows = new string(new char[] { '\u2190', '\u2191', '\u2192', '\u2193' });
-            message.Body += Environment.NewLine + someArrows;
-            message.BodyEncoding = System.Text.Encoding.UTF8;
-            message.Subject = "test message 1" + someArrows;
+            message.Subject = "test message 1";
             message.SubjectEncoding = System.Text.Encoding.UTF8;
+            message.Body = "This is a test e-mail message sent by an application. ";
+            message.Body += Environment.NewLine;
+            message.BodyEncoding = System.Text.Encoding.UTF8;
+
+            #endregion
+
+            #region Callback
 
             // Set the method that is called back when the send operation ends.
             client.SendCompleted += new
-            SendCompletedEventHandler(SendCompletedCallback);
+            SendCompletedEventHandler(SendCompletedCallback); 
+
+            #endregion
 
             // The userState can be any object that allows your callback 
             // method to identify this send operation.
@@ -83,19 +91,7 @@ namespace Examples.SmptExamples.Async
             string userState = "test message1";
             client.SendAsync(message, userState);
             
-            //Console.WriteLine("Sending message... press c to cancel mail. Press any other key to exit.");
-            //string answer = Console.ReadLine();
-
-            // If the user canceled the send, and mail hasn't been sent yet,
-            // then cancel the pending operation.
-            //if (mailSent == false)
-            //{
-            //    client.SendAsyncCancel();
-            //}
-
-            // Clean up.
-            //message.Dispose();
-            //Console.WriteLine("Goodbye.");
+          
         }
     }
 }

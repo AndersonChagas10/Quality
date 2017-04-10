@@ -13,6 +13,9 @@ namespace DTO
         public bool recoveryPassAvaliable { get; set; }
         public string urlPreffixAppColleta { get; set; }
         public string urlAppColleta { get; set; }
+        public string emailFrom { get; set; }
+        public string emailPass { get; set; }
+        public string emailSSL { get; set; }
 
     }
 
