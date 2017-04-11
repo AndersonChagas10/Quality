@@ -300,6 +300,12 @@ namespace SgqSystem.Controllers
             return View(form);
         }
 
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult RelatorioGenerico()
+        {
+            return View(form);
+        }
+
     }
 
     public class TabelaDinamicaResultados
