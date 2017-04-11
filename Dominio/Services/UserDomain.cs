@@ -465,9 +465,9 @@ namespace Dominio.Services
 
         #endregion
 
-        public List<UserDTO> GetAllUser()
+        public List<UserDTO> GetAllUser(int unidadeId)
         {
-            return  Mapper.Map<List<UserDTO>>(_userRepo.GetAllUser());
+            return  Mapper.Map<List<UserDTO>>(_userRepo.GetAllUser(unidadeId));
         }
 
         /// <summary>
