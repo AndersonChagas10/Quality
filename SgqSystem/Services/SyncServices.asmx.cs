@@ -4855,6 +4855,7 @@ namespace SgqSystem.Services
                 var roles = RolesXUserSgqDB.getRoles(Convert.ToInt32(user.UserSGQ_Id), Convert.ToInt32(ParCompany_Id));
 
                 usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name, roles);
+                
             }
             return usersList;
         }
@@ -4874,6 +4875,7 @@ namespace SgqSystem.Services
                 Password = UserDomain.EncryptStringAES(Password);
 
                 usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name, null);
+                
             }
             return usersList;
         }
