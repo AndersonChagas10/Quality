@@ -82,5 +82,7 @@ namespace DTO.DTO
             //Password = pass;
         }
 
+        public bool app { get; set; }
+
     }
 }

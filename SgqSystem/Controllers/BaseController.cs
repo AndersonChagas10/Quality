@@ -1,7 +1,6 @@
 ﻿using Dominio;
 using DTO;
 using DTO.DTO;
-using SgqSystem.Mail;
 using Hangfire;
 using System;
 using System.Globalization;
@@ -9,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
+using System.Data;
 
 namespace SgqSystem.Controllers
 {
@@ -25,7 +25,15 @@ namespace SgqSystem.Controllers
             //    () => SimpleAsynchronous.SendMail(),
             //    Cron.Minutely);
 
+            //BackgroundJob.Enqueue(
+            //    () => SimpleAsynchronous.UpdatePassAES());
+
+            BackgroundJob.Enqueue(
+                () => GlobalConfig.VerifyConfig("DbContextSgqEUA"));
+
         }
+
+      
 
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
         {
