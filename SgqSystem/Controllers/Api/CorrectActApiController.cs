@@ -27,6 +27,7 @@ namespace SgqSystem.Controllers.Api
         {
 
             var sql = "select " +
+            " \n CorrectiveAction.id as Id, " +
             " \n CorrectiveAction.id as idcorrectiveaction, " +
             " \n UserSgqAuditor.Name as AuditorName, --join " +
             " \n UserSgqSlaugther.Name as NameSlaughter,--join " +
@@ -44,6 +45,7 @@ namespace SgqSystem.Controllers.Api
             " \n AuditStartTime, " +
             " \n ImmediateCorrectiveAction, " +
             " \n ProductDisposition, " +
+            " \n PreventativeMeasure, " +
             " \n CollectionLevel02Id, " +
             " \n CollectionLevel2_Id " +
 
@@ -77,7 +79,7 @@ namespace SgqSystem.Controllers.Api
 
             if (model.auditorId > 0)
             {
-                sql += " \n and CollectionLevel2.AuditorId = " + model.auditorId + "";
+                sql += " \n and CorrectiveAction.AuditorId = " + model.auditorId + "";
             }
 
             var dados = db.Database.SqlQuery<CorrectiveActionDTO>(sql).ToList();
