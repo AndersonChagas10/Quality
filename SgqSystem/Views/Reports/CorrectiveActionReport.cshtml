@@ -38,9 +38,9 @@
         var url2 = '@Html.Raw(@urlGetCa)';
         var $btn = $('#btnSend');
 
-        var $wrapper = $($('style')[1]);
-        var $placeholder = $('<span style="display: none;" />').insertAfter($wrapper)
-        $wrapper.detach();
+        //var $wrapper = $($('style')[1]);
+        //var $placeholder = $('<span style="display: none;" />').insertAfter($wrapper)
+        //$wrapper.detach();
 
         $(document).ready(function () {
             $("#btnSend").click(function (e) {
@@ -201,23 +201,23 @@
 
         }
 
-        //document.getElementById("btnPrint").onclick = function () {
-        //    $wrapper.insertBefore($placeholder);
-        //    printElement(document.getElementById("printThis"));
-        //    var modThis = document.querySelector("#printSection .modifyMe");
-        //    modThis.appendChild(document.createTextNode(" "));
+        document.getElementById("btnPrint").onclick = function () {
+            $wrapper.insertBefore($placeholder);
+            printElement(document.getElementById("printThis"));
+            var modThis = document.querySelector("#printSection .modifyMe");
+            modThis.appendChild(document.createTextNode(" "));
 
-        //    //var w = window.open();
-        //    //var html = $("#toNewWindow").html();
+            //var w = window.open();
+            //var html = $("#toNewWindow").html();
 
-        //    //$(w.document.body).html(html);
-        //    //w.print();
+            //$(w.document.body).html(html);
+            //w.print();
 
-        //    window.print();
-        //    $wrapper.detach();
-        //    $('#printSection').remove();
+            window.print();
+            $wrapper.detach();
+            $('#printSection').remove();
 
-        //}
+        }
 
         function printElement(elem, append, delimiter) {
             var domClone = elem.cloneNode(true);
