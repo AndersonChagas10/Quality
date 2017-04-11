@@ -3,7 +3,7 @@ using System.Net.Mail;
 using System.ComponentModel;
 using System.Net;
 
-namespace Examples.SmptExamples.Async
+namespace SgqSystem.Mail
 {
     public class SimpleAsynchronous
     {

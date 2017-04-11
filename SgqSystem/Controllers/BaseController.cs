@@ -1,7 +1,7 @@
 ﻿using Dominio;
 using DTO;
 using DTO.DTO;
-using Examples.SmptExamples.Async;
+using SgqSystem.Mail;
 using Hangfire;
 using System;
 using System.Globalization;
@@ -21,9 +21,9 @@ namespace SgqSystem.Controllers
             ViewBag.UrlDataCollect = GlobalConfig.urlAppColleta;
 
             /*Comentar este em HML desenvolvimento para evitar spam*/
-            //RecurringJob.AddOrUpdate(
-            //    () => SimpleAsynchronous.SendMail(),
-            //    Cron.Minutely);
+            RecurringJob.AddOrUpdate(
+                () => SimpleAsynchronous.SendMail(),
+                Cron.Minutely);
 
         }
 
