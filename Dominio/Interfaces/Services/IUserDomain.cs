@@ -10,6 +10,6 @@ namespace Dominio.Interfaces.Services
         GenericReturn<UserDTO> GetByName(string username);
         GenericReturn<UserSgqDTO> GetByName2(string username);
         GenericReturn<List<UserDTO>> GetAllUserValidationAd(UserDTO userDto);
-        List<UserDTO> GetAllUser(int unidadeId);
+        List<UserDTO> GetAllUserByUnit(int unidadeId);
     }
 }

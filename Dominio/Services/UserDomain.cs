@@ -7,10 +7,7 @@ using DTO.Helpers;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
-using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Dominio.Services
 {
@@ -465,9 +462,9 @@ namespace Dominio.Services
 
         #endregion
 
-        public List<UserDTO> GetAllUser(int unidadeId)
+        public List<UserDTO> GetAllUserByUnit(int unidadeId)
         {
-            return  Mapper.Map<List<UserDTO>>(_userRepo.GetAllUser(unidadeId));
+            return  Mapper.Map<List<UserDTO>>(_userRepo.GetAllUserByUnit(unidadeId));
         }
 
         /// <summary>
