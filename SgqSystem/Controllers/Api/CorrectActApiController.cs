@@ -26,29 +26,41 @@ namespace SgqSystem.Controllers.Api
         public List<CorrectiveActionDTO> GetCorrectiveAction([FromBody]FormularioParaRelatorioViewModel model)
         {
 
+            var sql = "Select * from CorrectiveAction";
+
+            var dados = db.Database.SqlQuery<CorrectiveActionDTO>(sql).ToList();
+
             var list = new List<CorrectiveAction>();
 
             if (model.unitId == 0)
             {
                 list = db.CorrectiveAction.Where(r => r.DateCorrectiveAction >= model._dataInicio)
                 .Where(r => r.DateCorrectiveAction <= model._dataFim).ToList();
-            }else
+            }
+            else
             {
-
                 var level2 = db.CollectionLevel2.Where(r => r.UnitId == model.unitId).ToList();
-                
+
                 foreach (var item in level2)
                 {
 
-                 list.Add(db.CorrectiveAction
-                     .Where(r => r.DateCorrectiveAction >= model._dataInicio)
-                     .Where(r => r.DateCorrectiveAction <= model._dataFim)
-                     .Where(r => r.CollectionLevel02Id == item.Id).FirstOrDefault());
-                }               
+                    var corrective = db.CorrectiveAction
+                        .Where(r => r.DateCorrectiveAction >= model._dataInicio)
+                        .Where(r => r.DateCorrectiveAction <= model._dataFim)
+                        .Where(r => r.CollectionLevel02Id == item.Id).FirstOrDefault();
+
+                    if (corrective != null)
+                    {
+                        list.Add(corrective);
+                    }
+                }
             }
 
             List<CorrectiveActionDTO> clienteView2 = new List<CorrectiveActionDTO>();
             CorrectiveActionDTO ca = new CorrectiveActionDTO();
+
+            if (list == null)
+                return clienteView2;
 
             foreach (var item in list)
             {

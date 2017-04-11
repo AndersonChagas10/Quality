@@ -5,7 +5,7 @@ namespace DTO
 {
     public class DataCarrierFormulario
     {
-        private DateTime _dtvalueInicio, _dtvalueFim;
+        //private DateTime _dtvalueInicio, _dtvalueFim;
         public bool hasErros;
 
         public DateTime _dataInicio
@@ -14,8 +14,10 @@ namespace DTO
             {
                 if (startDate != null)
                 {
-                    Guard.ParseDateToSql(startDate, ref _dtvalueInicio);
-                    return _dtvalueInicio;
+                    //Guard.ParseDateToSql(startDate, ref _dtvalueInicio);
+                    //return _dtvalueInicio;
+                    return Guard.ParseDateToSqlV2(startDate);
+                    
                 }
                 return DateTime.Now;
             }
@@ -39,8 +41,9 @@ namespace DTO
             {
                 if (endDate != null)
                 {
-                    Guard.ParseDateToSql(endDate, ref _dtvalueFim);
-                    return _dtvalueFim;
+                    //Guard.ParseDateToSql(endDate, ref _dtvalueFim);
+                    //return _dtvalueFim;
+                    return Guard.ParseDateToSqlV2(endDate);
                 }
                 return DateTime.Now;
             }
