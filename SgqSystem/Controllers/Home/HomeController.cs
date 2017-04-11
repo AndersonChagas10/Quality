@@ -1,5 +1,4 @@
 ﻿using Helper;
-using SgqSystem.Secirity;
 using System;
 using System.Diagnostics;
 using System.Web;

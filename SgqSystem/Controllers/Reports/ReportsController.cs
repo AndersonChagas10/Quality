@@ -66,7 +66,7 @@ namespace SgqSystem.Controllers
         {
             return View(form);
         }
-        [FormularioPesquisa(filtraUnidadeDoUsuario = true)]
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult CorrectiveActionReport()
         {
             return View(form);

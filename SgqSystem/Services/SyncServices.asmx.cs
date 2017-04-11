@@ -3371,17 +3371,17 @@ namespace SgqSystem.Services
                 string headerCounter =
                                      html.div(
                                                outerhtml: "<b>" + CommonData.getResource("ev").Value.ToString() + " </b>",
-                                               classe: "col-xs-3",
+                                               classe: "col-xs-4",
                                                style: "text-align:center"
                                              ) +
                                      html.div(
                                                outerhtml: "<b>" + CommonData.getResource("sd").Value.ToString() + " </b>",
-                                               classe: "col-xs-3",
+                                               classe: "col-xs-4",
                                                style: "text-align:center"
                                               ) +
                                       html.div(
                                                outerhtml: "<b>" + CommonData.getResource("df").Value.ToString() + " </b>",
-                                               classe: "col-xs-3",
+                                               classe: "col-xs-4",
                                                style: "text-align:center"
                                              );
 
@@ -3416,24 +3416,22 @@ namespace SgqSystem.Services
                 string counters =
                                       html.div(
                                                 outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
-                                                classe: "col-xs-3",
+                                                classe: "col-xs-4",
                                                 style: "text-align:center"
                                               ) +
                                       html.div(
                                                 outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent hide") + html.span(outerhtml: "0", classe: "sampleCurrentTotal") + html.span(outerhtml: " / ", classe: "separator") + html.span(outerhtml: sample.ToString(), classe: "sampleTotal hide") + html.span(outerhtml: totalSampleXEvaluate.ToString(), classe: "sampleXEvaluateTotal"),
-                                                classe: "col-xs-3",
+                                                classe: "col-xs-4",
                                                 style: "text-align:center"
                                               )+
                                        html.div(
                                                 outerhtml: html.span(outerhtml: "0", classe: "defects") + html.span(outerhtml: " / ", classe: "separator") + html.span(outerhtml: defect.ToString() , classe: "defectstotal"),
-                                                classe: "col-xs-3",
+                                                classe: "col-xs-4",
                                                 style: "text-align:center"
                                               );
 
                 
 
-                //
-                //+
                 //                        html.div(
                 //                                    outerhtml: html.span(outerhtml: "0", classe: "defectsLevel2"),
                 //                                    classe: "col-xs-3",
@@ -4849,8 +4847,8 @@ namespace SgqSystem.Services
             foreach (var user in users)
             {
                 string Password = user.UserSGQ_Pass;
-                Password = Guard.Descriptografar3DES(Password);
-                Password = UserDomain.EncryptStringAES(Password);
+                //Password = Guard.Descriptografar3DES(Password);
+                //Password = Guard.EncryptStringAES(Password);
 
                 var roles = RolesXUserSgqDB.getRoles(Convert.ToInt32(user.UserSGQ_Id), Convert.ToInt32(ParCompany_Id));
 
@@ -4871,8 +4869,8 @@ namespace SgqSystem.Services
             foreach (var user in users)
             {
                 string Password = user.UserSGQ_Pass;
-                Password = Guard.Descriptografar3DES(Password);
-                Password = UserDomain.EncryptStringAES(Password);
+                //Password = Guard.Descriptografar3DES(Password);
+                //Password = Guard.EncryptStringAES(Password);
 
                 usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name, null);
                 
@@ -4889,14 +4887,14 @@ namespace SgqSystem.Services
 
             var html = new Html();
 
-            Password = UserDomain.DecryptStringAES(Password);
-            Password = Guard.Criptografar3DES(Password);
+            //Password = Guard.DecryptStringAES(Password);
+            //Password = Guard.Criptografar3DES(Password);
 
             if (user != null && user.Password == Password)
             {
 
-                Password = Guard.Descriptografar3DES(Password);
-                Password = UserDomain.EncryptStringAES(Password);
+                //Password = Guard.Descriptografar3DES(Password);
+                //Password = Guard.EncryptStringAES(Password);
 
                 if (user.ParCompany_Id == 0)
                 {
@@ -4921,8 +4919,8 @@ namespace SgqSystem.Services
             var html = new Html();
             if (user != null)
             {
-                string Password = Guard.Criptografar3DES(user.Password);
-                Password = UserDomain.EncryptStringAES(Password);
+                string Password = user.Password;//Guard.Criptografar3DES(user.Password);
+                //Password = Guard.EncryptStringAES(Password);
 
                 return html.user(user.Id, user.Name, user.Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name, null);
             }
