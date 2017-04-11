@@ -45,10 +45,10 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        [Route("GetAllUserByUnit")]
+        [Route("GetAllUserByUnit/{unidadeId}")]
         public List<UserDTO> GetAllUserByUnit(int unidadeId)
         {
-            return _userDomain.GetAllUser(unidadeId);
+            return _userDomain.GetAllUserByUnit(unidadeId);
         }
 
         [HttpPost]
