@@ -5,6 +5,7 @@ using SgqSystem.Handlres;
 using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -28,30 +29,30 @@ namespace SgqSystem.Controllers.Api
             return _userDomain.AuthenticationLogin(userVm);
         }
 
-        [Route("AuthenticationLogin")]
         [HttpPost]
         [HandleApi()]
+        [Route("AuthenticationLogin")]
         public GenericReturn<UserDTO> AuthenticationLogin([FromBody] UserViewModel userVm)
         {
             return _userDomain.AuthenticationLogin(userVm);
         }
 
-        [Route("GetAllUserValidationAd")]
         [HttpPost]
+        [Route("GetAllUserValidationAd")]
         public GenericReturn<List<UserDTO>> GetAllUserValidationAd(UserViewModel user)
         {
             return _userDomain.GetAllUserValidationAd(user);
         }
 
-        [Route("GetAllUser")]
         [HttpPost]
-        public List<UserDTO> GetAllUser()
+        [Route("GetAllUserByUnit")]
+        public List<UserDTO> GetAllUserByUnit(int unidadeId)
         {
-            return _userDomain.GetAllUser();
+            return _userDomain.GetAllUser(unidadeId);
         }
 
-        [Route("VerifyPassiveSiginInLoginScreen")]
         [HttpPost]
+        [Route("VerifyPassiveSiginInLoginScreen")]
         public bool VerifyPassiveSiginInLoginScreen()
         {
             if (!(string.IsNullOrEmpty(SessionPersister.Username)))
