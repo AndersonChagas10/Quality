@@ -34,18 +34,21 @@ namespace Data.Repositories
 
         public UserSgq AuthenticationLogin(UserSgq user)
         {
-
-            var result = db.UserSgq.Include("ParCompanyXUserSgq").Include("UnitUser").FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()) && x.Password.Equals(user.Password));
+            var pass = Guard.EncryptStringAES(user.Password);
+            var result = db.UserSgq.Include("ParCompanyXUserSgq").Include("UnitUser")
+                .FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()) && x.Password.Equals(pass));
 
             if (result == null)/*Verifica no caso de a senha estar descriptografada no DB e atualiza a mesma ,agora criptografada, no db.*/
             {
-                var descriptePass = Guard.Descriptografar3DES(user.Password);
-                var userByPassDecripted = db.UserSgq.Include("ParCompanyXUserSgq").Include("UnitUser").FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()) && x.Password.Equals(descriptePass));
+                var userByPassDecripted = db.UserSgq.Include("ParCompanyXUserSgq").Include("UnitUser")
+                    .FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()) && x.Password.Equals(user.Password));
+
                 if (userByPassDecripted != null)
                 {
-                    userByPassDecripted.Password = Guard.Criptografar3DES(descriptePass);
+                    userByPassDecripted.Password = pass;
                     Salvar(userByPassDecripted);
-                    return db.UserSgq.Include("ParCompanyXUserSgq").Include("UnitUser").FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()) && x.Password.Equals(descriptePass)); ;
+                    return db.UserSgq.Include("ParCompanyXUserSgq").Include("UnitUser")
+                        .FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()) && x.Password.Equals(pass)); ;
                 }
             }
             return result;
