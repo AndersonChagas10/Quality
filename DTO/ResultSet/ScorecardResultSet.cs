@@ -719,6 +719,7 @@ public class ScorecardResultSet
 
         sql = getSQLScorecard(dtInicio, dtFim, unidadeId, tipo); //Se 0, tras pontos , se 1, tras tudo
 
+
         return sql;
 
     }
