@@ -7,15 +7,13 @@ using DTO.Helpers;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
-using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Dominio.Services
 {
     public class UserDomain : IUserDomain
     {
+
         #region Parametros e construtores.
 
         public static class mensagens
@@ -464,6 +462,10 @@ namespace Dominio.Services
 
         #endregion
 
+        public List<UserDTO> GetAllUserByUnit(int unidadeId)
+        {
+            return  Mapper.Map<List<UserDTO>>(_userRepo.GetAllUserByUnit(unidadeId));
+        }
 
         /// <summary>
         /// Busca usuário pelo Nome no DB
@@ -479,7 +481,7 @@ namespace Dominio.Services
             }
             catch (Exception e)
             {
-                return new GenericReturn<UserDTO>(e, "CAnnot get user by name.");
+                return new GenericReturn<UserDTO>(e, "Cannot get user by name.");
             }
         }
 
@@ -546,6 +548,7 @@ namespace Dominio.Services
 
       
         #endregion
+
     }
 
 }
