@@ -43,6 +43,13 @@ namespace SgqSystem.Controllers.Api
             return _userDomain.GetAllUserValidationAd(user);
         }
 
+        [Route("GetAllUser")]
+        [HttpPost]
+        public List<UserDTO> GetAllUser()
+        {
+            return _userDomain.GetAllUser();
+        }
+
         [Route("VerifyPassiveSiginInLoginScreen")]
         [HttpPost]
         public bool VerifyPassiveSiginInLoginScreen()

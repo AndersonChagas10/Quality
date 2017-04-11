@@ -16,6 +16,7 @@ namespace Dominio.Services
 {
     public class UserDomain : IUserDomain
     {
+
         #region Parametros e construtores.
 
         public static class mensagens
@@ -464,6 +465,10 @@ namespace Dominio.Services
 
         #endregion
 
+        public List<UserDTO> GetAllUser()
+        {
+            return  Mapper.Map<List<UserDTO>>(_userRepo.GetAllUser());
+        }
 
         /// <summary>
         /// Busca usuário pelo Nome no DB
@@ -479,7 +484,7 @@ namespace Dominio.Services
             }
             catch (Exception e)
             {
-                return new GenericReturn<UserDTO>(e, "CAnnot get user by name.");
+                return new GenericReturn<UserDTO>(e, "Cannot get user by name.");
             }
         }
 
@@ -546,6 +551,7 @@ namespace Dominio.Services
 
       
         #endregion
+
     }
 
 }
