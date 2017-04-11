@@ -16,22 +16,6 @@ namespace SgqSystem.Controllers.Api
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
-        //private readonly ICorrectiveActionDomain _correctiveActionAppService;
-        //private readonly IUserDomain _userAppService;
-
-        //public CorrectActApiController(ICorrectiveActionDomain correctiveActionAppService)//, IUserDomain userAppService)
-        //{
-        //    _correctiveActionAppService = correctiveActionAppService;
-        //    _userAppService = userAppService;
-        //}
-
-        //[Route("SalvarAcaoCorretiva")]
-        //[HttpPost]
-        //public GenericReturn<CorrectiveActionDTO> SalvarAcaoCorretiva([FromBody]CorrectiveActionViewModel model)
-        //{
-        //    return _correctiveActionAppService.SalvarAcaoCorretiva(model);
-        //}
-
         public CorrectActApiController()
         {
             db.Configuration.ProxyCreationEnabled = false;
@@ -42,32 +26,26 @@ namespace SgqSystem.Controllers.Api
         public List<CorrectiveActionDTO> GetCorrectiveAction([FromBody]FormularioParaRelatorioViewModel model)
         {
 
-            // var sql = "SELECT[Id] " +
-            //",[AuditorId] " +
-            //",[CollectionLevel02Id] " +
-            //",[SlaughterId] " +
-            //",[TechinicalId] " +
-            //",[DateTimeSlaughter] " +
-            //",[DateTimeTechinical] " +
-            //",[AddDate] " +
-            //",[AlterDate] " +
-            //",[DateCorrectiveAction] " +
-            //",[AuditStartTime] " +
-            //",[DescriptionFailure] " +
-            //",[ImmediateCorrectiveAction] " +
-            //",[ProductDisposition] " +
-            //",[PreventativeMeasure] " +
-            //   "FROM[dbo].[CorrectiveAction]"; //.Where(r => r.AddDate >= model.startDate && r.AddDate >= model.endDate);
+            var list = new List<CorrectiveAction>();
 
-            //      var list = db.Database.SqlQuery<CorrectiveAction>(sql).ToList();
+            if (model.unitId == 0)
+            {
+                list = db.CorrectiveAction.Where(r => r.DateCorrectiveAction >= model._dataInicio)
+                .Where(r => r.DateCorrectiveAction <= model._dataFim).ToList();
+            }else
+            {
 
-            //List<CorrectiveAction> list = db.CorrectiveAction.ToList();
-            //List<CorrectiveActionDTO> list2 = new List<CorrectiveActionDTO>();
-            var list = db.CorrectiveAction.ToList();
+                var level2 = db.CollectionLevel2.Where(r => r.UnitId == model.unitId).ToList();
+                
+                foreach (var item in level2)
+                {
 
-            //list = list2;
-
-            
+                 list.Add(db.CorrectiveAction
+                     .Where(r => r.DateCorrectiveAction >= model._dataInicio)
+                     .Where(r => r.DateCorrectiveAction <= model._dataFim)
+                     .Where(r => r.CollectionLevel02Id == item.Id).FirstOrDefault());
+                }               
+            }
 
             List<CorrectiveActionDTO> clienteView2 = new List<CorrectiveActionDTO>();
             CorrectiveActionDTO ca = new CorrectiveActionDTO();
@@ -90,7 +68,7 @@ namespace SgqSystem.Controllers.Api
             }
 
             return clienteView2;
-            //return _correctiveActionAppService.GetCorrectiveAction(model);
+
         }
 
         [Route("GetCorrectiveActionById")]
@@ -115,7 +93,7 @@ namespace SgqSystem.Controllers.Api
             obj2.level02Name = db.ParLevel2.Where(r => r.Id == leve2Id).FirstOrDefault().Name;
 
             var level2 = db.CollectionLevel2.Where(r => r.Id == obj.CollectionLevel02Id).FirstOrDefault();
-            var pc = db.ParCompany.Where(r => r.Id == level2.UnitId).FirstOrDefault();            
+            var pc = db.ParCompany.Where(r => r.Id == level2.UnitId).FirstOrDefault();
             shift = db.Shift.Where(r => r.Id == level2.Shift).FirstOrDefault();
             period = db.Period.Where(r => r.Id == level2.Period).FirstOrDefault();
 
@@ -123,7 +101,8 @@ namespace SgqSystem.Controllers.Api
             {
                 //shift.Id = 0;
                 obj2.ShiftName = "";
-            }else
+            }
+            else
             {
                 //obj2.ShiftId = shift.Id;
                 obj2.ShiftName = shift.Description;
@@ -133,13 +112,14 @@ namespace SgqSystem.Controllers.Api
             {
                 //period.Id = 0;
                 obj2.PeriodName = "";
-            }else
+            }
+            else
             {
                 //obj2.PeriodId = period.Id;
                 obj2.PeriodName = period.Description;
             }
 
-            Unit unit = new Unit();         
+            Unit unit = new Unit();
             unit.Code = pc.CompanyNumber.ToString();
             unit.Name = pc.Name;
             UnitDTO unitDto = Mapper.Map<Unit, UnitDTO>(unit);
@@ -148,29 +128,6 @@ namespace SgqSystem.Controllers.Api
 
             return obj2;
         }
-
-        //[Route("LoginSlaughterTechinical")]
-        //[HttpPost]
-        //public GenericReturn<UserDTO> LoginSlaughterTechinical([FromBody]UserViewModel model)
-        //{
-        //    var result = _userAppService.AuthenticationLogin(model);
-        //    return result;
-        //}
-
-        //[Route("VerificarAcaoCorretivaIncompleta")]
-        //[HttpPost]
-        //public GenericReturn<CorrectiveActionDTO> VerificarAcaoCorretivaIncompleta([FromBody]CorrectiveActionViewModel model)
-        //{
-        //    var result = _correctiveActionAppService.VerificarAcaoCorretivaIncompleta(model);
-        //    return result;
-        //}
-
-        //[Route("GetCorrectiveActionById")]
-        //[HttpPost]
-        //public GenericReturn<CorrectiveActionDTO> GetCorrectiveActionById([FromBody]int id)
-        //{
-        //    return _correctiveActionAppService.GetCorrectiveActionById(id);
-        //}
 
     }
 }

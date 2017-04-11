@@ -314,7 +314,7 @@ namespace SgqSystem.Controllers.Api.Params
             return save;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetListLevel1")]
         public List<ParLevel1DTO> GetListLevel1()
         {
