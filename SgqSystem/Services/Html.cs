@@ -546,9 +546,11 @@ namespace SgqSystem.Services
                         
             if(listParRelapse.Count() > 0)
             {
+                var i = 1;
                 foreach (var parRelapse in listParRelapse)
                 {
-                    tags += " phase" + parRelapse.NcNumber + "='" + parRelapse.ParFrequency_Id + ";" + parRelapse.EffectiveLength + "' ";
+                    tags += " phase" + i + "='" + parRelapse.ParFrequency_Id + ";" + parRelapse.EffectiveLength + ";"+ parRelapse.NcNumber+"' ";
+                    i++;
                 }
             }
 

@@ -54,9 +54,18 @@ namespace Data.Repositories
             return result;
         }
 
+        public List<UserSgq> GetAllUserByUnit(int unidadeId)
+        {
+            if (unidadeId > 0)
+               return db.UserSgq.Include("ParCompanyXUserSgq").Include("UnitUser").Where(r => r.ParCompanyXUserSgq.Any(x => x.ParCompany_Id == unidadeId)).ToList();
+            else
+                return db.UserSgq.Include("ParCompanyXUserSgq").Include("UnitUser").ToList();
+        }
+
         public List<UserSgq> GetAllUser()
         {
             return db.UserSgq.Include("ParCompanyXUserSgq").Include("UnitUser").ToList();
         }
+
     }
 }

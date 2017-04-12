@@ -13,5 +13,7 @@ namespace Dominio.Interfaces.Repositories
         List<UserSgq> GetAllUser();
 
         bool UserNameIsCadastrado(string Name, int id);
+
+        List<UserSgq> GetAllUserByUnit(int unidadeId);
     }
 }
