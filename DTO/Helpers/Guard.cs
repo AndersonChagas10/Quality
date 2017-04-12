@@ -540,7 +540,7 @@ namespace DTO.Helpers
         public static List<SelectListItem> CreateDropDownList<T>(IEnumerable<T> enumerable)
         {
             List<SelectListItem> retorno = new List<SelectListItem>();
-            retorno.Insert(0, new SelectListItem() { Text = "Selecione...", Value = "-1" });
+            retorno.Insert(0, new SelectListItem() { Text = "...", Value = "-1" });
             var counter = 1;
             foreach (var i in enumerable)
             {

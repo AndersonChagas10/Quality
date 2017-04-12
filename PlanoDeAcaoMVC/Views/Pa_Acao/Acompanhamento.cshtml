@@ -226,12 +226,12 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label class="redLabel" for="inputlg">Notificar:</label>
-                    @Html.DropDownList("MailTo", new SelectList(ViewBag.Quem, "Id", "Name"), @*"Selecione...",*@ new { @class = "form-control select2Init", @style = "width:100%;", @multiple = "multiple" })
+                    @Html.DropDownList("MailTo", new SelectList(ViewBag.Quem, "Id", "Name"), @*"@Resources.Resource.select",*@ new { @class = "form-control select2Init", @style = "width:100%;", @multiple = "multiple" })
                 </div>
 
                 <div class="form-group">
                     <label class="redLabel" for="inputlg">Status:</label>
-                    @Html.DropDownList("Status_Id", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
+                    @Html.DropDownList("Status_Id", new SelectList(ViewBag.Status, "Id", "Name"), "@Resources.Resource.select", new { @class = "form-control input-sm" })
                 </div>
             </div>
             <br />
