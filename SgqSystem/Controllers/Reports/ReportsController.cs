@@ -12,6 +12,7 @@ namespace SgqSystem.Controllers
 {
     //techservices
     [CustomAuthorize]
+    [OutputCache(Duration = 20, VaryByParam = "none")]
     public class ReportsController : BaseController
     {
 
