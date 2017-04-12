@@ -3096,7 +3096,7 @@ namespace SgqSystem.Services
 
                         decimal alertaNivel1 = 0;
                         decimal alertaNivel2 = 0;
-                        string alertaNivel3 = "";
+                        string  alertaNivel3 = "";
 
                         decimal volumeAlerta = 0;
                         decimal meta = 0;
@@ -3161,6 +3161,7 @@ namespace SgqSystem.Services
 
                         string painelCounters = "";
 
+                        //Identidicar se possui contador para o indicador
                         if (listCounter != null)
                         {
                             painelCounters = html.painelCounters(listCounter, "margin-top: 40px;font-size: 12px;");
@@ -3318,9 +3319,6 @@ namespace SgqSystem.Services
             var ParSampleCompany = ParSampleDB.getSample(ParLevel1: ParLevel1,
                                                         ParCompany_Id: ParCompany_Id);
             
-
-
-
             //Variaveis para avaliação de grupos
             int evaluateGroup = 0;
             int sampleGroup = 0;
@@ -3338,12 +3336,9 @@ namespace SgqSystem.Services
             {
                 evaluate = getMaxEvaluateLevel1(ParLevel1, ParEvaluateCompany);
                 sample = getMaxSampleLevel1(ParLevel1, ParEvaluateCompany);
-                //defect = getMaxSampleLevel1(ParLevel1, ParEvaluateCompany);
                 evaluateGroup = evaluate;
                 sampleGroup = sample;
             }
-
-            
 
             //Enquando houver lista de level2
             foreach (var parlevel2 in parlevel02List) //LOOP3
@@ -3353,7 +3348,6 @@ namespace SgqSystem.Services
                 {
                     evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
                     sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
-                    defect = evaluate;
                     //defect = getCollectionLevel2Keys(ParCompany_Id,data, ParLevel1);
                 }
 
@@ -3367,6 +3361,7 @@ namespace SgqSystem.Services
 
                 //Colocar função de gerar cabeçalhos por selectbox
                 //Monta os cabecalhos
+                //Incluisão de coluna de defeito.
                 #region Cabecalhos e Contadores
                 string headerCounter =
                                      html.div(
@@ -3384,23 +3379,6 @@ namespace SgqSystem.Services
                                                classe: "col-xs-4",
                                                style: "text-align:center"
                                              );
-
-                // Incluisão de coluna de defeito.
-
-
-                //+
-                //                    html.div(
-                //                        outerhtml: "<b>Def.</b>",
-                //                        classe: "col-xs-3",
-                //                        style: "text-align:center"
-                //                    ) +
-                //                    html.div(
-                //                        outerhtml: "<b></b>",
-                //                        classe: "col-xs-3",
-                //                        style: "text-align:center"
-                //                    );
-
-                //**inserir contadores
 
                 headerCounter = html.div(
                                     //aqui vai os botoes
@@ -3856,7 +3834,6 @@ namespace SgqSystem.Services
 
             //Inicializa ParLevel3
             var ParLevel3DB = new SGQDBContext.ParLevel3(db);
-
             var ParCounterDB = new SGQDBContext.ParCounter(db);
 
             //Inicializa Cabecalhos
@@ -3885,7 +3862,7 @@ namespace SgqSystem.Services
                                     label: html.span(
                                                  classe: "cursorPointer iconsArea",
                                                  outerhtml: "N/A"
-                                             ),
+                                                ),
                                     classe: "btn-warning btnNotAvaliable na font11"
                                 );
 
@@ -4421,6 +4398,11 @@ namespace SgqSystem.Services
                     }
 
                     //*inserir contador
+                    string painelCounters = "";
+                    if (listCounter != null)
+                    {
+                        painelCounters = html.painelCounters(listCounter);
+                    }
 
                     parLevel3Group += level3Group;
 
