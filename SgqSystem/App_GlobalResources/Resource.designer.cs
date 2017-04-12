@@ -457,6 +457,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audit Start Time.
+        /// </summary>
+        internal static string audit_start_time {
+            get {
+                return ResourceManager.GetString("audit_start_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Audit Tendency.
         /// </summary>
         internal static string audit_tendency {
@@ -1321,6 +1330,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Description Failure.
+        /// </summary>
+        internal static string description_failure {
+            get {
+                return ResourceManager.GetString("description_failure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Details.
         /// </summary>
         internal static string details {
@@ -1344,6 +1362,33 @@ namespace Resources {
         internal static string df {
             get {
                 return ResourceManager.GetString("df", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This Document Contains Confidential.
+        /// </summary>
+        internal static string document_confidential_information1 {
+            get {
+                return ResourceManager.GetString("document_confidential_information1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Commercial Information Pursuant to.
+        /// </summary>
+        internal static string document_confidential_information2 {
+            get {
+                return ResourceManager.GetString("document_confidential_information2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 5 U.S.C Sec. 552(b)(4)..
+        /// </summary>
+        internal static string document_confidential_information3 {
+            get {
+                return ResourceManager.GetString("document_confidential_information3", resourceCulture);
             }
         }
         
@@ -1704,6 +1749,15 @@ namespace Resources {
         internal static string fired {
             get {
                 return ResourceManager.GetString("fired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First.
+        /// </summary>
+        internal static string first {
+            get {
+                return ResourceManager.GetString("first", resourceCulture);
             }
         }
         
@@ -2226,6 +2280,15 @@ namespace Resources {
         internal static string language {
             get {
                 return ResourceManager.GetString("language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last.
+        /// </summary>
+        internal static string last {
+            get {
+                return ResourceManager.GetString("last", resourceCulture);
             }
         }
         
@@ -2914,6 +2977,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        internal static string next {
+            get {
+                return ResourceManager.GetString("next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
         internal static string no {
@@ -3153,6 +3225,24 @@ namespace Resources {
         internal static string options {
             get {
                 return ResourceManager.GetString("options", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Origionation Date.
+        /// </summary>
+        internal static string origionation_date {
+            get {
+                return ResourceManager.GetString("origionation_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to January 30, 2014.
+        /// </summary>
+        internal static string origionation_date_value {
+            get {
+                return ResourceManager.GetString("origionation_date_value", resourceCulture);
             }
         }
         
@@ -3400,6 +3490,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Preventative Measure.
+        /// </summary>
+        internal static string preventative_measure {
+            get {
+                return ResourceManager.GetString("preventative_measure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Preventive Action.
         /// </summary>
         internal static string preventive_measure {
@@ -3418,11 +3517,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        internal static string previous {
+            get {
+                return ResourceManager.GetString("previous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Print.
         /// </summary>
         internal static string print {
             get {
                 return ResourceManager.GetString("print", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Printed.
+        /// </summary>
+        internal static string printed {
+            get {
+                return ResourceManager.GetString("printed", resourceCulture);
             }
         }
         
@@ -3778,6 +3895,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Revision Date.
+        /// </summary>
+        internal static string revision_date {
+            get {
+                return ResourceManager.GetString("revision_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Role.
         /// </summary>
         internal static string role {
@@ -3837,6 +3963,15 @@ namespace Resources {
         internal static string rule_for_recidivism {
             get {
                 return ResourceManager.GetString("rule_for_recidivism", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Safe Program Audit Form.
+        /// </summary>
+        internal static string safe_program_audit_form {
+            get {
+                return ResourceManager.GetString("safe_program_audit_form", resourceCulture);
             }
         }
         
@@ -4489,6 +4624,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start Time.
+        /// </summary>
+        internal static string start_time {
+            get {
+                return ResourceManager.GetString("start_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Statistical Report.
         /// </summary>
         internal static string statistical_report {
@@ -4530,6 +4674,15 @@ namespace Resources {
         internal static string success {
             get {
                 return ResourceManager.GetString("success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Supersedes Date.
+        /// </summary>
+        internal static string supersedes_date {
+            get {
+                return ResourceManager.GetString("supersedes_date", resourceCulture);
             }
         }
         
@@ -4638,6 +4791,15 @@ namespace Resources {
         internal static string task {
             get {
                 return ResourceManager.GetString("task", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Technical.
+        /// </summary>
+        internal static string technical {
+            get {
+                return ResourceManager.GetString("technical", resourceCulture);
             }
         }
         
@@ -5070,6 +5232,15 @@ namespace Resources {
         internal static string version {
             get {
                 return ResourceManager.GetString("version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View.
+        /// </summary>
+        internal static string view {
+            get {
+                return ResourceManager.GetString("view", resourceCulture);
             }
         }
         
