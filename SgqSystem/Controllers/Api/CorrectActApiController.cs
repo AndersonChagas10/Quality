@@ -187,7 +187,7 @@ namespace SgqSystem.Controllers.Api
             }
 
             Unit unit = new Unit();
-            unit.Code = pc.CompanyNumber.ToString();
+            unit.Code = pc.SIF;
             unit.Name = pc.Name;
             UnitDTO unitDto = Mapper.Map<Unit, UnitDTO>(unit);
 
