@@ -45,7 +45,7 @@ namespace DTO.DTO.Params
         private List<SelectListItem> CreateSelectListParamsViewModelListLevel<T>(IEnumerable<T> enumerable)
         {
             List<SelectListItem> retorno = new List<SelectListItem>();
-            retorno.Insert(0, new SelectListItem() { Text = "Selecione...", Value = "-1" });
+            retorno.Insert(0, new SelectListItem() { Text = "...", Value = "-1" });
             var counter = 1;
             foreach (var i in enumerable)
             {
@@ -137,11 +137,11 @@ namespace DTO.DTO.Params
         {
 
             List<SelectListItem> retorno = new List<SelectListItem>();
-            retorno.Insert(0, new SelectListItem() { Text = "Selecione...", Value = "-1" });
+            retorno.Insert(0, new SelectListItem() { Text = "...", Value = "-1" });
             var counter = 1;
 
 
-            var group = new SelectListGroup() { Name = "Não vinculados:" };
+            var group = new SelectListGroup() { Name = "Não vinculado:" };
             var groupSelecionado = new SelectListGroup();
             foreach (var i in lista)
             {

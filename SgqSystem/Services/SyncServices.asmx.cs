@@ -3096,7 +3096,7 @@ namespace SgqSystem.Services
 
                         decimal alertaNivel1 = 0;
                         decimal alertaNivel2 = 0;
-                        string alertaNivel3 = "";
+                        string  alertaNivel3 = "";
 
                         decimal volumeAlerta = 0;
                         decimal meta = 0;
@@ -3161,6 +3161,7 @@ namespace SgqSystem.Services
 
                         string painelCounters = "";
 
+                        //Identidicar se possui contador para o indicador
                         if (listCounter != null)
                         {
                             painelCounters = html.painelCounters(listCounter, "margin-top: 40px;font-size: 12px;");
@@ -3318,9 +3319,6 @@ namespace SgqSystem.Services
             var ParSampleCompany = ParSampleDB.getSample(ParLevel1: ParLevel1,
                                                         ParCompany_Id: ParCompany_Id);
             
-
-
-
             //Variaveis para avaliação de grupos
             int evaluateGroup = 0;
             int sampleGroup = 0;
@@ -3338,12 +3336,9 @@ namespace SgqSystem.Services
             {
                 evaluate = getMaxEvaluateLevel1(ParLevel1, ParEvaluateCompany);
                 sample = getMaxSampleLevel1(ParLevel1, ParEvaluateCompany);
-                //defect = getMaxSampleLevel1(ParLevel1, ParEvaluateCompany);
                 evaluateGroup = evaluate;
                 sampleGroup = sample;
             }
-
-            
 
             //Enquando houver lista de level2
             foreach (var parlevel2 in parlevel02List) //LOOP3
@@ -3353,7 +3348,6 @@ namespace SgqSystem.Services
                 {
                     evaluate = getEvaluate(parlevel2, ParEvaluateCompany, ParEvaluatePadrao);
                     sample = getSample(parlevel2, ParSampleCompany, ParSamplePadrao);
-                    defect = evaluate;
                     //defect = getCollectionLevel2Keys(ParCompany_Id,data, ParLevel1);
                 }
 
@@ -3367,6 +3361,7 @@ namespace SgqSystem.Services
 
                 //Colocar função de gerar cabeçalhos por selectbox
                 //Monta os cabecalhos
+                //Incluisão de coluna de defeito.
                 #region Cabecalhos e Contadores
                 string headerCounter =
                                      html.div(
@@ -3385,23 +3380,6 @@ namespace SgqSystem.Services
                                                style: "text-align:center"
                                              );
 
-                // Incluisão de coluna de defeito.
-
-
-                //+
-                //                    html.div(
-                //                        outerhtml: "<b>Def.</b>",
-                //                        classe: "col-xs-3",
-                //                        style: "text-align:center"
-                //                    ) +
-                //                    html.div(
-                //                        outerhtml: "<b></b>",
-                //                        classe: "col-xs-3",
-                //                        style: "text-align:center"
-                //                    );
-
-                //**inserir contadores
-
                 headerCounter = html.div(
                                     //aqui vai os botoes
                                     outerhtml: headerCounter,
@@ -3415,19 +3393,19 @@ namespace SgqSystem.Services
 
                 string counters =
                                       html.div(
-                                                outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
+                                                outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + html.span(outerhtml: "/", classe: "separator") + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
                                                 classe: "col-xs-4",
-                                                style: "text-align:center"
+                                                style: "text-align:center; font-size:10px;"
                                               ) +
                                       html.div(
-                                                outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent hide") + html.span(outerhtml: "0", classe: "sampleCurrentTotal") + html.span(outerhtml: " / ", classe: "separator") + html.span(outerhtml: sample.ToString(), classe: "sampleTotal hide") + html.span(outerhtml: totalSampleXEvaluate.ToString(), classe: "sampleXEvaluateTotal"),
+                                                outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent hide") + html.span(outerhtml: "0", classe: "sampleCurrentTotal") + html.span(outerhtml: "/", classe: "separator") + html.span(outerhtml: sample.ToString(), classe: "sampleTotal hide") + html.span(outerhtml: totalSampleXEvaluate.ToString(), classe: "sampleXEvaluateTotal"),
                                                 classe: "col-xs-4",
-                                                style: "text-align:center"
-                                              )+
+                                                style: "text-align:center; font-size:10px;"
+                                              ) +
                                        html.div(
-                                                outerhtml: html.span(outerhtml: defect.ToString() , classe: "defectstotal"),
+                                                outerhtml: html.span(outerhtml: "0", classe: "defects") + html.span(outerhtml: "/", classe: "separator") + html.span(outerhtml: defect.ToString() , classe: "defectstotal"),
                                                 classe: "col-xs-4",
-                                                style: "text-align:center"
+                                                style: "text-align:center; font-size:10px;"
                                               );
 
                 
@@ -3750,7 +3728,7 @@ namespace SgqSystem.Services
                         if (!hasDefault)
                             optionsMultiple = "<option selected=\"selected\" value=\"0\">" + CommonData.getResource("select").Value.ToString() + "...</option>" + optionsMultiple;
 
-                        form_control = "<select class=\"form-control input-sm\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">" + optionsMultiple + "</select>";
+                        form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\"  ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">" + optionsMultiple + "</select>";
                         break;
                     //Integrações
                     case 2:
@@ -3772,7 +3750,7 @@ namespace SgqSystem.Services
                         if (!hasDefaultIntegration)
                             optionsIntegration = "<option selected=\"selected\" value=\"0\">" + CommonData.getResource("select").Value.ToString() + "...</option>" + optionsIntegration;
 
-                        form_control = "<select class=\"form-control input-sm\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">" + optionsIntegration + "</select>";
+                        form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">" + optionsIntegration + "</select>";
                         break;
                     //Binário
                     case 3:
@@ -3789,24 +3767,24 @@ namespace SgqSystem.Services
                                 optionsBinario += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
                             }
                         }
-                        form_control = "<select class=\"form-control input-sm\" ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'>" + optionsBinario + "</select>";
+                        form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id='" + header.ParHeaderField_Id + "' ParFieldType_Id = '" + header.ParFieldType_Id + "'>" + optionsBinario + "</select>";
                         break;
                     //Texto
                     case 4:
-                        form_control = "<input class=\"form-control input-sm\" type=\"text\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
+                        form_control = "<input class=\"form-control input-sm\" type=\"text\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
                         break;
                     //Numérico
                     case 5:
-                        form_control = "<input class=\"form-control input-sm\" type=\"number\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
+                        form_control = "<input class=\"form-control input-sm\" type=\"number\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
                         break;
                     //Data
                     case 6:
-                        form_control = "<input class=\"form-control input-sm\" type=\"date\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
+                        form_control = "<input class=\"form-control input-sm\" type=\"date\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
                         break;
 
                     //Hora
                     case 7:
-                        form_control = "<input class=\"form-control input-sm\" type=\"time\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
+                        form_control = "<input class=\"form-control input-sm\" type=\"time\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
                         break;
                 }
 
@@ -3856,7 +3834,6 @@ namespace SgqSystem.Services
 
             //Inicializa ParLevel3
             var ParLevel3DB = new SGQDBContext.ParLevel3(db);
-
             var ParCounterDB = new SGQDBContext.ParCounter(db);
 
             //Inicializa Cabecalhos
@@ -3885,7 +3862,7 @@ namespace SgqSystem.Services
                                     label: html.span(
                                                  classe: "cursorPointer iconsArea",
                                                  outerhtml: "N/A"
-                                             ),
+                                                ),
                                     classe: "btn-warning btnNotAvaliable na font11"
                                 );
 
@@ -4421,6 +4398,11 @@ namespace SgqSystem.Services
                     }
 
                     //*inserir contador
+                    string painelCounters = "";
+                    if (listCounter != null)
+                    {
+                        painelCounters = html.painelCounters(listCounter);
+                    }
 
                     parLevel3Group += level3Group;
 
