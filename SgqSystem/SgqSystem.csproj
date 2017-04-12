@@ -18,14 +18,10 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>
-    </IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>
-    </IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>
-    </IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>
-    </IISExpressUseClassicPipelineMode>
+    <IISExpressSSLPort>63128</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -302,6 +298,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\Api\App\AppApiControlle.cs" />
     <Compile Include="Controllers\Api\CorrectActApiController.cs" />
     <Compile Include="Controllers\Api\DefectApiController.cs" />
     <Compile Include="Controllers\Api\Manutencao\ManColetaDadosController.cs" />
@@ -515,8 +512,7 @@
     <Content Include="admin-lte\js\app.js" />
     <Content Include="admin-lte\js\app.min.js" />
     <Content Include="Angular\app.js" />
-    <Content Include="Angular\EditParHeaderFieldController.js" />
-    <Content Include="Angular\RecuperaSenhaController.js" />
+    <Content Include="Angular\Level321Chain.js" />
     <Content Include="App_GlobalResources\Resource.pt-br.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <SubType>Designer</SubType>
@@ -1039,6 +1035,7 @@
     <None Include="Properties\PublishProfiles\PublishEUA.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ DEV.pubxml" />
     <None Include="Properties\PublishProfiles\SgqBrasilGlobal.pubxml" />
+    <None Include="Properties\PublishProfiles\SgqGlobal.pubxml" />
     <None Include="Properties\PublishProfiles\SgqLocal.pubxml" />
     <None Include="Properties\PublishProfiles\SGQMaster.pubxml" />
     <Content Include="Scripts\DataTables\datatablePtBr.json" />
@@ -2155,6 +2152,7 @@
     <Content Include="Views\Params\EditParHeaderField.cshtml" />
     <Content Include="Views\UserAuthentication\PasswordRecovery.cshtml" />
     <Content Include="Views\FirstConfig\Index.cshtml" />
+    <Content Include="Views\Shared\_Level321Chain.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2237,9 +2235,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>59668</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8090/SgqSystem</IISUrl>
+          <IISUrl>http://localhost:59668/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -2,11 +2,55 @@
 using System.Net.Mail;
 using System.ComponentModel;
 using System.Net;
+using Dominio;
+using System.Linq;
+using DTO.Helpers;
+using System.Data;
 
 namespace SgqSystem.Mail
 {
     public class SimpleAsynchronous
     {
+        private static bool executing { get; set; }
+        public static void UpdatePassAES()
+        {
+            if (!executing)
+            {
+                executing = true;
+                using (var db = new SgqDbDevEntities())
+                {
+                    using (var ts = db.Database.BeginTransaction(IsolationLevel.ReadCommitted))
+                    {
+
+                        db.Configuration.AutoDetectChangesEnabled = false;
+                        db.Configuration.LazyLoadingEnabled = false;
+
+                        var users = db.UserSgq.ToList();
+
+                        foreach (var i in users)
+                        {
+
+                            var old = i.Password;
+                            var nova = Guard.Descriptografar3DES(old);
+                            var salvar = Guard.EncryptStringAES(nova);
+                            i.Password = salvar;
+
+                            db.UserSgq.Attach(i);
+                            var entry = db.Entry(i);
+                            entry.State = System.Data.Entity.EntityState.Modified;
+                            entry.Property(e => e.Password).IsModified = true;
+                        }
+
+                        db.SaveChanges();
+                        ts.Commit();
+
+                    }
+                }
+                //executing = false;
+            }
+
+        }
+
         static bool mailSent = false;
         private static void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
         {
@@ -81,7 +125,7 @@ namespace SgqSystem.Mail
 
             // Set the method that is called back when the send operation ends.
             client.SendCompleted += new
-            SendCompletedEventHandler(SendCompletedCallback); 
+            SendCompletedEventHandler(SendCompletedCallback);
 
             #endregion
 
@@ -90,8 +134,8 @@ namespace SgqSystem.Mail
             // For this example, the userToken is a string constant.
             string userState = "test message1";
             client.SendAsync(message, userState);
-            
-          
+
+
         }
     }
 }

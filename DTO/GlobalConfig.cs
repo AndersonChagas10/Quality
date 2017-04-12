@@ -16,12 +16,12 @@ namespace DTO
         public string emailFrom { get; set; }
         public string emailPass { get; set; }
         public string emailSSL { get; set; }
+        public bool mockLoginEUA { get; set; }
 
     }
 
     public static class GlobalConfig
     {
-
 
         /*Sistema real time*/
         public static bool Brasil { get; set; }
@@ -32,6 +32,7 @@ namespace DTO
         public static bool Guarani { get; set; }
 
         /*DataMenber*/
+        public static bool mockLoginEUA { get; set; }
         public static int Id { get; set; } = 0;
         public static DateTime AddDate { get; set; } = DateTime.Now;
         public static DateTime? AlterDate { get; set; } = null;
@@ -103,6 +104,7 @@ namespace DTO
             recoveryPassAvaliable = dto.recoveryPassAvaliable;
             urlPreffixAppColleta = dto.urlPreffixAppColleta;
             urlAppColleta = dto.urlAppColleta;
+            mockLoginEUA = dto.mockLoginEUA;
 
         }
 

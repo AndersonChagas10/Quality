@@ -12,6 +12,7 @@ namespace SgqSystem.Controllers
 {
     //techservices
     [CustomAuthorize]
+    [OutputCache(Duration = 20, VaryByParam = "none")]
     public class ReportsController : BaseController
     {
 
@@ -66,7 +67,7 @@ namespace SgqSystem.Controllers
         {
             return View(form);
         }
-        [FormularioPesquisa(filtraUnidadeDoUsuario = true)]
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult CorrectiveActionReport()
         {
             return View(form);

@@ -7,15 +7,13 @@ using DTO.Helpers;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
-using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Dominio.Services
 {
     public class UserDomain : IUserDomain
     {
+
         #region Parametros e construtores.
 
         public static class mensagens
@@ -131,9 +129,9 @@ namespace Dominio.Services
         private UserSgq CheckUserAndPassDataBase(UserDTO userDto)
         {
             /*Descriptografa a criptografia do TABLET, caso a senha venha do sistema por POSTBACK e não esteja criptografada, não é afetada.*/
-            userDto.Password = Guard.Descriptografar3DES(userDto.Password);
+            userDto.Password = Guard.DecryptStringAES(userDto.Password);
+
             /*Criptografa para compara com senha criptografad no DB*/
-            userDto.Password = Guard.Criptografar3DES(userDto.Password);
             var user = Mapper.Map<UserDTO, UserSgq>(userDto);
             var isUser = _userRepo.AuthenticationLogin(user);
             return isUser;
@@ -152,8 +150,11 @@ namespace Dominio.Services
         private UserSgq LoginEUA(UserDTO userDto, UserSgq userByName)
         {
             /*Mock Login Desenvolvimento, descomentar caso HML ou PRODUÇÃO*/
-            //UserSgq userDev = CheckUserAndPassDataBase(userDto);
-            //return userDev;
+            if (GlobalConfig.mockLoginEUA)
+            {
+                UserSgq userDev = CheckUserAndPassDataBase(userDto);
+                return userDev;
+            }
 
             return AutenticaAdEUA(userDto, userByName);//Autenticação no AD JBS USA
         }
@@ -170,22 +171,20 @@ namespace Dominio.Services
         private UserSgq AutenticaAdEUA(UserDTO userDto, UserSgq userByName)
         {
             /*Descriptografa para comparar no AD*/
-            userDto.Password = Guard.Descriptografar3DES(userDto.Password);
+            userDto.Password = Guard.DecryptStringAES(userDto.Password);
 
             /*1*/
             if (CheckUserInAD(dominio, userDto.Name, userDto.Password))
             {
                 /*1.1*/
-                userDto.Password = Guard.Criptografar3DES(userDto.Password);
                 UserSgq isUser = CheckUserAndPassDataBase(userDto);
 
                 /*1.3*/
                 if (userByName.IsNotNull() && isUser.IsNull())
                 {
-                    userByName.Password = userDto.Password;
-                    _userRepo.Salvar(userByName);
-                    /*Verifica novamente com senha atualizada.*/
-                    isUser = CheckUserAndPassDataBase(userDto);
+                    isUser = AlteraSenhaAlteradaNoAd(userDto, userByName);
+                    if (isUser.IsNull())
+                        throw new Exception("Error updating password from ADUser.");
                 }
 
                 /*1.2*/
@@ -199,6 +198,16 @@ namespace Dominio.Services
             }
 
             return null;
+        }
+
+        private UserSgq AlteraSenhaAlteradaNoAd(UserDTO userDto, UserSgq userByName)
+        {
+            UserSgq isUser;
+            userByName.Password = Guard.EncryptStringAES(userDto.Password);
+            _userRepo.Salvar(userByName);
+            /*Verifica novamente com senha atualizada.*/
+            isUser = CheckUserAndPassDataBase(userDto);
+            return isUser;
         }
 
         private UserSgq CreateUserFromAd(UserDTO userDto)
@@ -230,8 +239,12 @@ namespace Dominio.Services
                 {
                     if (!string.IsNullOrEmpty(i.Password))
                     {
-                        i.Password = Guard.Descriptografar3DES(i.Password);
-                        i.Password = EncryptStringAES(i.Password);
+                        var decript = Guard.DecryptStringAES(i.Password);
+                        if(i.Password.Equals(decript))
+                            Guard.EncryptStringAES(i.Password);
+                        //i.Password = Guard.EncryptStringAES(i.Password);
+
+                    
                     }
                 }
 
@@ -415,7 +428,7 @@ namespace Dominio.Services
                                 Name = existenteNoDbAntigo.cSigla.ToLower(),
                                 FullName = existenteNoDbAntigo.cNmUsuario,
                                 //Email = existenteNoDbAntigo.cEMail,
-                                Password = Guard.Criptografar3DES(userDto.Password),
+                                Password = Guard.EncryptStringAES(userDto.Password),
                             };
                         }
                         catch (Exception e)
@@ -449,6 +462,10 @@ namespace Dominio.Services
 
         #endregion
 
+        public List<UserDTO> GetAllUserByUnit(int unidadeId)
+        {
+            return  Mapper.Map<List<UserDTO>>(_userRepo.GetAllUserByUnit(unidadeId));
+        }
 
         /// <summary>
         /// Busca usuário pelo Nome no DB
@@ -464,7 +481,7 @@ namespace Dominio.Services
             }
             catch (Exception e)
             {
-                return new GenericReturn<UserDTO>(e, "CAnnot get user by name.");
+                return new GenericReturn<UserDTO>(e, "Cannot get user by name.");
             }
         }
 
@@ -529,152 +546,9 @@ namespace Dominio.Services
             }
         }
 
-        public static string EncryptStringAES(string cipherText)
-        {
-            try
-            {
-                var keybytes = Encoding.UTF8.GetBytes("JDS438FDSSJHLWEQ");
-                var iv = Encoding.UTF8.GetBytes("679FDM329IFD23HJ");
-
-                byte[] encryptedbyte = EncryptStringToBytes(cipherText, keybytes, iv);
-                string encrypted = Convert.ToBase64String(encryptedbyte);
-                return encrypted;
-            }
-            catch (Exception)
-            {
-                return cipherText;
-            }
-        }
-
-        public static string DecryptStringAES(string cipherText)
-        {
-            try
-            {
-                var keybytes = Encoding.UTF8.GetBytes("JDS438FDSSJHLWEQ");
-                var iv = Encoding.UTF8.GetBytes("679FDM329IFD23HJ");
-
-                var encrypted = Convert.FromBase64String(cipherText);
-                var decriptedFromJavascript = DecryptStringFromBytes(encrypted, keybytes, iv);
-                return string.Format(decriptedFromJavascript);
-            }
-            catch (Exception)
-            {
-                return cipherText;
-            }
-        }
-
-        private static byte[] EncryptStringToBytes(string plainText, byte[] key, byte[] iv)
-        {
-            // Check arguments.  
-            if (plainText == null || plainText.Length <= 0)
-            {
-                throw new ArgumentNullException("plainText");
-            }
-            if (key == null || key.Length <= 0)
-            {
-                throw new ArgumentNullException("key");
-            }
-            if (iv == null || iv.Length <= 0)
-            {
-                throw new ArgumentNullException("key");
-            }
-            byte[] encrypted;
-            // Create a RijndaelManaged object  
-            // with the specified key and IV.  
-            using (var rijAlg = new RijndaelManaged())
-            {
-                rijAlg.Mode = CipherMode.CBC;
-                rijAlg.Padding = PaddingMode.PKCS7;
-                rijAlg.FeedbackSize = 128;
-
-                rijAlg.Key = key;
-                rijAlg.IV = iv;
-
-                // Create a decrytor to perform the stream transform.  
-                var encryptor = rijAlg.CreateEncryptor(rijAlg.Key, rijAlg.IV);
-
-                // Create the streams used for encryption.  
-                using (var msEncrypt = new MemoryStream())
-                {
-                    using (var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
-                    {
-                        using (var swEncrypt = new StreamWriter(csEncrypt))
-                        {
-                            //Write all data to the stream.  
-                            swEncrypt.Write(plainText);
-                        }
-                        encrypted = msEncrypt.ToArray();
-                    }
-                }
-            }
-            // Return the encrypted bytes from the memory stream.  
-            return encrypted;
-        }
-
-        private static string DecryptStringFromBytes(byte[] cipherText, byte[] key, byte[] iv)
-        {
-            // Check arguments.  
-            if (cipherText == null || cipherText.Length <= 0)
-            {
-                throw new ArgumentNullException("cipherText");
-            }
-            if (key == null || key.Length <= 0)
-            {
-                throw new ArgumentNullException("key");
-            }
-            if (iv == null || iv.Length <= 0)
-            {
-                throw new ArgumentNullException("key");
-            }
-
-            // Declare the string used to hold  
-            // the decrypted text.  
-            string plaintext = null;
-
-            // Create an RijndaelManaged object  
-            // with the specified key and IV.  
-            using (var rijAlg = new RijndaelManaged())
-            {
-                //Settings  
-                rijAlg.Mode = CipherMode.CBC;
-                rijAlg.Padding = PaddingMode.PKCS7;
-                rijAlg.FeedbackSize = 128;
-
-                rijAlg.Key = key;
-                rijAlg.IV = iv;
-
-                // Create a decrytor to perform the stream transform.  
-                var decryptor = rijAlg.CreateDecryptor(rijAlg.Key, rijAlg.IV);
-
-                try
-                {
-                    // Create the streams used for decryption.  
-                    using (var msDecrypt = new MemoryStream(cipherText))
-                    {
-                        using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
-                        {
-
-                            using (var srDecrypt = new StreamReader(csDecrypt))
-                            {
-                                // Read the decrypted bytes from the decrypting stream  
-                                // and place them in a string.  
-                                plaintext = srDecrypt.ReadToEnd();
-
-                            }
-
-                        }
-                    }
-                }
-                catch
-                {
-                    plaintext = "keyError";
-                }
-            }
-
-            return plaintext;
-        }
-
+      
         #endregion
+
     }
 
 }
