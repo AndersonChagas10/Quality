@@ -1744,7 +1744,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to fired.
+        ///   Looks up a localized string similar to Alert Triggered.
         /// </summary>
         internal static string fired {
             get {
@@ -2320,7 +2320,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Group.
+        ///   Looks up a localized string similar to Level.
         /// </summary>
         internal static string level {
             get {
@@ -2824,7 +2824,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NC of.
+        ///   Looks up a localized string similar to Deviation of.
         /// </summary>
         internal static string nc_of {
             get {
@@ -2842,7 +2842,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The NC target was exceed.
+        ///   Looks up a localized string similar to The deviation limit was excceded.
         /// </summary>
         internal static string nc_target_exceed {
             get {
@@ -4696,7 +4696,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The supervisor and the manager will be notified.
+        ///   Looks up a localized string similar to We will notify area&apos;s supervisor.
         /// </summary>
         internal static string supervisor_manager_notification {
             get {
