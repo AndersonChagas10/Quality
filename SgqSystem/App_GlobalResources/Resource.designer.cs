@@ -1789,6 +1789,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string generic_forms {
+            get {
+                return ResourceManager.GetString("generic_forms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Goal.
         /// </summary>
         internal static string goal {
@@ -2541,6 +2550,15 @@ namespace Resources {
         internal static string local {
             get {
                 return ResourceManager.GetString("local", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specific Settings.
+        /// </summary>
+        internal static string local_forms {
+            get {
+                return ResourceManager.GetString("local_forms", resourceCulture);
             }
         }
         
@@ -4620,6 +4638,15 @@ namespace Resources {
         internal static string synthetic {
             get {
                 return ResourceManager.GetString("synthetic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System.
+        /// </summary>
+        internal static string system {
+            get {
+                return ResourceManager.GetString("system", resourceCulture);
             }
         }
         

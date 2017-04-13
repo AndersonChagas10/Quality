@@ -3403,7 +3403,7 @@ namespace SgqSystem.Services
                                                 style: "text-align:center; font-size:10px;"
                                               ) +
                                        html.div(
-                                                outerhtml: html.span(outerhtml: "0", classe: "defects") + html.span(outerhtml: "/", classe: "separator") + html.span(outerhtml: defect.ToString() , classe: "defectstotal"),
+                                                outerhtml: html.span(outerhtml: defect.ToString() , classe: "defectstotal"),
                                                 classe: "col-xs-4",
                                                 style: "text-align:center; font-size:10px;"
                                               );

@@ -1827,4 +1827,13 @@
   <data name="df" xml:space="preserve">
     <value>Def</value>
   </data>
+  <data name="generic_forms" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="local_forms" xml:space="preserve">
+    <value>Specific Settings</value>
+  </data>
+  <data name="system" xml:space="preserve">
+    <value>System</value>
+  </data>
 </root>

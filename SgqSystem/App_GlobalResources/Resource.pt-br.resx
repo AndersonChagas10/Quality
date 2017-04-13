@@ -1806,4 +1806,13 @@
   <data name="df" xml:space="preserve">
     <value>Def.</value>
   </data>
+  <data name="generic_forms" xml:space="preserve">
+    <value>Cadastros Gerais</value>
+  </data>
+  <data name="local_forms" xml:space="preserve">
+    <value>Cadastros Locais</value>
+  </data>
+  <data name="system" xml:space="preserve">
+    <value>Sistema</value>
+  </data>
 </root>
