@@ -2176,6 +2176,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Insert slaughter signature.
+        /// </summary>
+        internal static string insert_slaughter_signature {
+            get {
+                return ResourceManager.GetString("insert_slaughter_signature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert technical signature.
+        /// </summary>
+        internal static string insert_technical_signature {
+            get {
+                return ResourceManager.GetString("insert_technical_signature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid evaluations number.
         /// </summary>
         internal static string invalid_evaluations_number {
