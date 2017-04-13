@@ -1815,4 +1815,67 @@
   <data name="system" xml:space="preserve">
     <value>Sistema</value>
   </data>
+  <data name="audit_start_time" xml:space="preserve">
+    <value>Hora de Início da Auditoria</value>
+  </data>
+  <data name="description_failure" xml:space="preserve">
+    <value>Descrição da Falha</value>
+  </data>
+  <data name="preventative_measure" xml:space="preserve">
+    <value>Medida Preventiva</value>
+  </data>
+  <data name="start_time" xml:space="preserve">
+    <value>Hora de Início</value>
+  </data>
+  <data name="technical" xml:space="preserve">
+    <value>Técnico</value>
+  </data>
+  <data name="view" xml:space="preserve">
+    <value>Ver</value>
+  </data>
+  <data name="print" xml:space="preserve">
+    <value>Imprimir</value>
+  </data>
+  <data name="visible_columns" xml:space="preserve">
+    <value>Colunas Visíveis</value>
+  </data>
+  <data name="document_confidential_information1" xml:space="preserve">
+    <value>Este Documento Contém</value>
+  </data>
+  <data name="document_confidential_information2" xml:space="preserve">
+    <value>Informações Confidenciais</value>
+  </data>
+  <data name="document_confidential_information3" xml:space="preserve">
+    <value />
+  </data>
+  <data name="origionation_date" xml:space="preserve">
+    <value>Data de Origem</value>
+  </data>
+  <data name="printed" xml:space="preserve">
+    <value>Impresso</value>
+  </data>
+  <data name="revision_date" xml:space="preserve">
+    <value>Data de Revisão</value>
+  </data>
+  <data name="safe_program_audit_form" xml:space="preserve">
+    <value>Formulário de Ação Corretiva de Segurança Alimentar</value>
+  </data>
+  <data name="supersedes_date" xml:space="preserve">
+    <value>Data de Substituição</value>
+  </data>
+  <data name="origionation_date_value" xml:space="preserve">
+    <value>30 de Janeiro de 2014</value>
+  </data>
+  <data name="next" xml:space="preserve">
+    <value>Próximo</value>
+  </data>
+  <data name="previous" xml:space="preserve">
+    <value>Anterior</value>
+  </data>
+  <data name="first" xml:space="preserve">
+    <value>Primeiro</value>
+  </data>
+  <data name="last" xml:space="preserve">
+    <value>Último</value>
+  </data>
 </root>

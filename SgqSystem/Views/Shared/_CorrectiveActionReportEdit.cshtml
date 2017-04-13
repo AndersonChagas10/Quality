@@ -5,9 +5,9 @@
         #printSection {
             display: none;
         }
-        .footer-rodape
-        {
-            margin-top:15px;
+
+        .footer-rodape {
+            margin-top: 15px;
         }
     }
 
@@ -26,12 +26,15 @@
             top: 0;
         }
     }
-    @@media print{
 
-        .footer-rodape{
-            position:fixed; bottom:0px;
+    @@media print {
+
+        .footer-rodape {
+            position: fixed;
+            bottom: 0px;
         }
     }
+
     .printable {
         display: none;
     }
@@ -77,79 +80,79 @@
                         @*<h2>Corrective Action</h2>*@
                         <div class="header" style="font-size:14px;font-weight:bold">
                             <div class="unitCode">JBS <span id="estName"></span> Beef, Est. <span id="estCode"></span></div>
-                            <div>Safe Program Audit Form</div>
-                            <div>Corrective Action</div>
+                            <div>@Resources.Resource.safe_program_audit_form</div>
+                            <div>@Resources.Resource.corrective_action</div>
                         </div>
                         <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;">
                             <div class="row">
                                 <div class="col-xs-6" id="CorrectiveActionTaken">
-                                    <b class="font16">Corrective Action Taken:<br /></b>
-                                    <b>Date/Time:</b> <span id="datetime"></span><br />
-                                    <b>Auditor: </b><span id="auditor"></span><br />
-                                    <b>Shift: </b><span id="shift"></span><br />
+                                    <b class="font16">@Resources.Resource.corrective_action_taken:<br /></b>
+                                    <b>@Resources.Resource.date_time:</b> <span id="datetime"></span><br />
+                                    <b>@Resources.Resource.auditor: </b><span id="auditor"></span><br />
+                                    <b>@Resources.Resource.shift: </b><span id="shift"></span><br />
                                 </div>
                                 <div class="col-xs-6" id="AuditInformation">
                                     <b class="font16">Audit Information:<br /></b>
-                                    <b>Audit: </b><span id="auditText"></span><br />
-                                    <b>Start Time: </b><span id="starttime"></span><br />
-                                    <b>Period: </b><span id="correctivePeriod"></span>
+                                    <b>@Resources.Resource.audit Audit: </b><span id="auditText"></span><br />
+                                    <b>@Resources.Resource.start_time: </b><span id="starttime"></span><br />
+                                    <b>@Resources.Resource.period: </b><span id="correctivePeriod"></span>
                                 </div>
                             </div>
-                        </div>                      
+                        </div>
                         <div>
                             <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto;margin-top: 8px;">
-                                <h4 style="margin-top:0">Description of Failure</h4>
+                                <h4 style="margin-top:0">@Resources.Resource.description_failure</h4>
                                 <div id="DescriptionFailure"></div>
                             </div>
                             <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;">
-                                <h4 style="margin-top:0">Immediate Corrective Action</h4>
+                                <h4 style="margin-top:0">@Resources.Resource.immediate_corrective_action</h4>
                                 <div id="ImmediateCorrectiveAction"></div>
                             </div>
                             <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;">
-                                <h4 style="margin-top:0">Product Disposition</h4>
+                                <h4 style="margin-top:0">@Resources.Resource.product_disposition</h4>
                                 <div id="ProductDisposition"></div>
                             </div>
                             <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;">
-                                <h4 style="margin-top:0">Preventative Measure</h4>
+                                <h4 style="margin-top:0">@Resources.Resource.preventative_measure</h4>
                                 <div id="PreventativeMeasure"></div>
                             </div>
                             <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px; height: 90px;margin-bottom:15px;">
                                 <div class="SlaugtherSignature " style="width:50%; float: left;" id="Slaugther" userid="">
-                                    <h5 style="margin-top:0;font-weight:bold">Slaughter Signature</h5>
+                                    <h5 style="margin-top:0;font-weight:bold">@Resources.Resource.slaughter_signature</h5>
                                     <div class="name"></div>
                                     <div class="date"></div>
                                 </div>
                                 <div class="TechnicaSignature" style="width:49%; float: right;" id="Technical" userid="">
-                                    <h5 style="margin-top:0;font-weight:bold">Technical Signature</h5>
+                                    <h5 style="margin-top:0;font-weight:bold">@Resources.Resource.technical_signature</h5>
                                     <div class="name"></div>
                                     <div class="date"></div>
                                 </div>
                             </div>
                         </div>
                         @*Assinaturas*@
-                        
+
                         <div class="footer-rodape row" style="font-size:14px;font-weight:bold; width: 100%; height:auto;">
                             <div class="col-xs-4">
-                                <div>Origination Date: January 30, 2014</div>
-                                <div>Revision Date:</div>
-                                <div>Supercedes Date:</div>
+                                <div>@Resources.Resource.origionation_date: @Resources.Resource.origionation_date_value</div> <!--O que fazer com a Data?-->
+                                <div>@Resources.Resource.revision_date:</div>
+                                <div>@Resources.Resource.supersedes_date:</div>
                             </div>
                             <div class="col-xs-4">
-                                <div>This Document Contains Confidential</div>
-                                <div>Commercial Information Pursuant to</div>
-                                <div>5 U.S.C Sec. 552(b)(4).</div>
+                                <div>@Resources.Resource.document_confidential_information1</div>
+                                <div>@Resources.Resource.document_confidential_information2</div>
+                                <div>@Resources.Resource.document_confidential_information3</div>
                             </div>
                             <div class="col-xs-4">
                                 <div></div>
                                 <div></div>
-                                <div>Printed <span class="printedDate"></span></div>
+                                <div>@Resources.Resource.printed <span class="printedDate"></span></div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="btnPrint" class="btn btn-default non-printable">Print</button>
-                    <button type="button" class="btn btn-default non-printable" data-dismiss="modal">Close</button>
+                    <button type="button" id="btnPrint" class="btn btn-default non-printable">@Resources.Resource.print</button>
+                    <button type="button" class="btn btn-default non-printable" data-dismiss="modal">@Resources.Resource.close</button>
                 </div>
             </div>
         </div>
@@ -164,7 +167,7 @@
 @section Scripts {
 
     <script type="text/javascript">
-   
+
         var objectCa = (@Html.Raw(Json.Encode(Model)));
 
 

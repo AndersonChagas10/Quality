@@ -91,40 +91,40 @@
 
             function GerarTabela(retornoArray) {
 
-                var table = $('#results').empty().DataTable({
-                    data: retornoArray,
-                    columns: [{ title: "View", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">View</button>' },
-                       { title: "Auditor", mData: "AuditorName" },
-                       { title: "Date", mData: "DateCorrectiveActionFormatadoShort" },
-                       { title: "Start Time", mData: "StartTimeFormatado" },
-                       { title: "Slaughter", mData: "NameSlaugtherAndDate" },
-                       //{ title: "Date Slaughter", mData: "DateTimeSlaughterFarmatado" },
-                       { title: "Techinical", mData: "NameTechinicalAndDate" },
-                       //{ title: "Date Techinical", mData: "DateTimeTechinicalFarmatado" },
-                       { title: "level01", mData: "level01Name" },
-                       { title: "level02", mData: "level02Name" },
-                       { title: "Audit Start Time", mData: "StartTimeFormatado" },
-                       { title: "Description Failure", mData: "DescriptionFailure" },
-                       { title: "Immediate Corrective Action", mData: "ImmediateCorrectiveAction" },
-                       { title: "Preventative Measure", mData: "PreventativeMeasure" },
-                       { title: "Product Disposition", mData: "ProductDisposition" },
-                       //{ title: "Auditor", mData: "Id" }
-                    ],
-                    "columnDefs": [
-                       { "className": "dt-center", "targets": "_all" }
-                    ],
-                    scrollX: true,
-                    lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-                    pageLength: 10,
-                    loadingRecords: true,
-                    destroy: true,
-                    info: true,
-                    responsive: true,
-                    initComplete: function () {
-                        $('#loading').hide();
-                        $('#results tbody').on('click', 'button', function (data, a, b) {
-                            var data = table.row($(this).parents('tr')).data();
-                            $.post(url2, { "": data.Id }, function (r, x, e) {
+            var table = $('#results').empty().DataTable({
+                data: retornoArray,
+                columns: [{ title: "@Resources.Resource.view", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">@Resources.Resource.view</button>' },
+                   { title: "@Resources.Resource.auditor", mData: "AuditorName" },
+                   { title: "@Resources.Resource.date", mData: "DateCorrectiveActionFormatadoShort" },
+                   { title: "@Resources.Resource.start_time", mData: "StartTimeFormatado" },
+                   { title: "@Resources.Resource.slaughter", mData: "NameSlaugtherAndDate" },
+                   //{ title: "Date Slaughter", mData: "DateTimeSlaughterFarmatado" },
+                   { title: "@Resources.Resource.technical", mData: "NameTechinicalAndDate" },
+                   //{ title: "Date Techinical", mData: "DateTimeTechinicalFarmatado" },
+                   { title: "@Resources.Resource.level1", mData: "level01Name" },
+                   { title: "@Resources.Resource.level2", mData: "level02Name" },
+                   { title: "@Resources.Resource.audit_start_time", mData: "StartTimeFormatado" },
+                   { title: "@Resources.Resource.description_failure", mData: "DescriptionFailure" },
+                   { title: "@Resources.Resource.immediate_corrective_action", mData: "ImmediateCorrectiveAction" },
+                   { title: "@Resources.Resource.preventative_measure", mData: "PreventativeMeasure" },
+                   { title: "@Resources.Resource.product_disposition", mData: "ProductDisposition" },
+                   //{ title: "Auditor", mData: "Id" }
+                ],
+                "columnDefs": [
+                   { "className": "dt-center", "targets": "_all" }
+                ],
+                scrollX: true,
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                pageLength: 10,
+                loadingRecords: true,
+                destroy: true,
+                info: true,
+                responsive: true,
+                initComplete: function () {
+                    $('#loading').hide();
+                    $('#results tbody').on('click', 'button', function (data, a, b) {
+                        var data = table.row($(this).parents('tr')).data();
+                        $.post(url2, { "": data.Id }, function (r, x, e) {
 
                                 if (!!r) {
 
