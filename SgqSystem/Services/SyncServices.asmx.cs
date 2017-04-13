@@ -1873,7 +1873,7 @@ namespace SgqSystem.Services
                         "\n inner join ParCluster Cl " +
                         "\n on Cl.Id = CC.ParCluster_Id " +
                         "\n where C.Id = " + ParCompany_Id +
-                        "\n and CC.Active = 1";
+                        "\n and Cl.IsActive = 1";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
