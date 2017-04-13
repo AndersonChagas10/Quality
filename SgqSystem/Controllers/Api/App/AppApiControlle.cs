@@ -30,11 +30,55 @@ namespace SgqSystem.Controllers.Api.App
         public List<RetornoLevel1> GetContadoresX()
         {
             db.Configuration.LazyLoadingEnabled = false;
-            var listLevel1Retorno = new List<RetornoLevel1>();
-            var collectionLevel2PorFrequenciaLevel1 = new List<CollectionLevel2>();
+            
             /*Busca Items parametrizados a serem calculados*/
+            var listLevel1Retorno = new List<RetornoLevel1>();
             var level2 = db.ParCounterXLocal.Where(r => r.ParLevel2_Id != null).Select(r => r.ParLevel2).Include("ParFrequency").Distinct();
+            var collectionLevel2PorFrequenciaLevel1 = GetCollectionLevel2PelaFrquencia(level2);
+            var todosLevel1 = collectionLevel2PorFrequenciaLevel1.Select(r => r.ParLevel1_Id).Distinct();
 
+            /*Para cada level 1 calcula av / am independente dos Parlevel2 deste*/
+            foreach (var l1 in todosLevel1)
+            {
+                var retornoLevel1 = new RetornoLevel1() { idLevel1 = l1 };
+                retornoLevel1.avAmPorLevel1 = new List<AvAmPorLevel1>();
+                var level1DaCollectionLevel2 = collectionLevel2PorFrequenciaLevel1.Where(r => r.ParLevel1_Id == l1).ToList();
+                var todosAv = level1DaCollectionLevel2.Select(r => r.EvaluationNumber).Distinct();
+                var todosAm = level1DaCollectionLevel2.Select(r => r.Sample).Distinct();
+
+                foreach (var av in todosAv)
+                    foreach (var am in todosAm)
+                    {
+                        var AvAmPorLevel1Tmp = new AvAmPorLevel1();
+                        /*Soma Av e Am Iguais de um determinado level1*/
+                        AvAmPorLevel1Tmp.SomaWeiDefect = level1DaCollectionLevel2.Where(r => r.EvaluationNumber == av && r.Sample == am)?.Sum(r => r.WeiDefects);
+                        if (AvAmPorLevel1Tmp.SomaWeiDefect > 0)
+                        {
+                            retornoLevel1.avAmPorLevel1.Add(AvAmPorLevel1Tmp);
+                            //Debug.Write("\n AV:" + av + " AM:" + am + " SomaWeiDefect" + AvAmPorLevel1Tmp.SomaWeiDefect);
+                        }
+
+                    }
+                
+                //Debug.Write("\n\n");
+                listLevel1Retorno.Add(retornoLevel1);
+            }
+
+            //foreach (var debug in listLevel1Retorno)
+            //{
+            //    Debug.Write("\n" + debug.idLevel1 + ": ");
+            //    foreach (var debugLevel2 in debug.avAmPorLevel1)
+            //        Debug.Write("\nAvAm:" + debugLevel2.AvAm + " SomaWeiDefect: " + debugLevel2.SomaWeiDefect);
+            //    Debug.Write("\n ----------------------- \n");
+            //}
+
+            return listLevel1Retorno;
+
+        }
+
+        private List<CollectionLevel2> GetCollectionLevel2PelaFrquencia(IQueryable<ParLevel2> level2)
+        {
+            var retorno = new List<CollectionLevel2>();
             foreach (var level2item in level2)
             {
                 string dataInicio = string.Empty;
@@ -57,98 +101,13 @@ namespace SgqSystem.Controllers.Api.App
                                         && r.ParLevel2_Id == level2item.Id
                                         );
 
-                if(level2PelaFrquencia.IsNotNull())
-                    collectionLevel2PorFrequenciaLevel1.AddRange(level2PelaFrquencia);
-
-            }
-            collectionLevel2PorFrequenciaLevel1 = collectionLevel2PorFrequenciaLevel1.OrderBy(r => r.ParLevel1_Id).ThenBy(r => r.EvaluationNumber).ThenBy(r => r.Sample).ToList();
-            var todosLevel1 = collectionLevel2PorFrequenciaLevel1.Select(r => r.ParLevel1_Id).Distinct();
-            /*Seleciono apenas o Level1 com as parametrizaçoes X (desconsiderar mock Frquenci = 1)*/
-
-            foreach (var l1 in todosLevel1)
-            {
-                var retornoLevel1 = new RetornoLevel1() { idLevel1 = l1 };
-                listLevel1Retorno.Add(retornoLevel1);
-                retornoLevel1.avAmPorLevel1 = new List<AvAmPorLevel1>();
-
-                var level1DaCollectionLevel2 = collectionLevel2PorFrequenciaLevel1.Where(r => r.ParLevel1_Id == l1).ToList();
-
-                var todosAv = level1DaCollectionLevel2.Select(r => r.EvaluationNumber).Distinct();
-                var todosAm = level1DaCollectionLevel2.Select(r => r.Sample).Distinct();
-
-                foreach (var av in todosAv)
-                {
-                    foreach (var am in todosAm)
-                    {
-                        var AvAmPorLevel1Tmp = new AvAmPorLevel1();
-                        AvAmPorLevel1Tmp.SomaWeiDefect = level1DaCollectionLevel2.Where(r => r.EvaluationNumber == av && r.Sample == am)?.Sum(r => r.WeiDefects);
-                        if (AvAmPorLevel1Tmp.SomaWeiDefect > 0)
-                        {
-                            Debug.Write("\n AV:" + av + " AM:" + am + " SomaWeiDefect" + AvAmPorLevel1Tmp.SomaWeiDefect); 
-                            retornoLevel1.avAmPorLevel1.Add(AvAmPorLevel1Tmp);
-                        }
-                        
-                    }
-
-                }
-                //foreach (var level2Corrente in todosLevel2id)
-                //{
-
-                //    /*Todas Av e Am Possíveis a se calcular*/
-
-                //    var todasAvDoLevel2 = listaLevel2PeloLevel1.Max(r => r.EvaluationNumber);
-                //    var todasAmDoLevel2 = listaLevel2PeloLevel1.Max(r => r.Sample);
-
-                //    ///* RN e Calculo*/
-                //    //var AvAmResult = new AvAmPorLevel1();
-                //    //foreach (var av in todasAvDoLevel2)
-                //    //{
-
-                //    //    foreach (var am in todasAmDoLevel2)
-                //    //    {
-                //    //        var level2NaAvAmDoloop = listaLevel2PeloLevel1.Where(r => r.EvaluationNumber == av && r.Sample == am);
-                //    //        AvAmResult.AvAm = av.ToString() + "/" + am.ToString();
-                //    //        AvAmResult.SomaWeiDefect = 0;
-
-                //    //        foreach (var avalicoes in level2NaAvAmDoloop)
-                //    //        {
-                //    //            AvAmResult.SomaWeiDefect += avalicoes.WeiDefects;
-
-                //    //            Debug.Write("\n Av/Am: " + AvAmResult.AvAm +
-                //    //                " -- Av: " + avalicoes.EvaluationNumber +
-                //    //                " - AM: " + avalicoes.Sample +
-                //    //                " Level1id: " + avalicoes.ParLevel1_Id +
-                //    //                " Level2Id: " + avalicoes.ParLevel2_Id +
-                //    //                " WeiDefect: " + avalicoes.WeiDefects +
-                //    //                " SomaWeiDefect: " + AvAmResult.SomaWeiDefect);
-
-                //    //        }
-                //    //    }
-
-                //    //}
-
-                //    //if (AvAmResult.SomaWeiDefect > 0)
-                //    //    retornoLevel1.avAmPorLevel1.Add(AvAmResult);
-
-
-                //}
-
-              
-                Debug.Write("\n\n");
+                if (level2PelaFrquencia.IsNotNull())
+                    retorno.AddRange(level2PelaFrquencia);
 
             }
 
-
-            foreach (var debug in listLevel1Retorno)
-            {
-                Debug.Write("\n" + debug.idLevel1 + ": ");
-                foreach (var debugLevel2 in debug.avAmPorLevel1)
-                    Debug.Write("\nAvAm:" + debugLevel2.AvAm + " SomaWeiDefect: " + debugLevel2.SomaWeiDefect);
-
-                Debug.Write("\n ----------------------- \n");
-            }
-            return listLevel1Retorno;
-
+            retorno = retorno.OrderBy(r => r.ParLevel1_Id).ThenBy(r => r.EvaluationNumber).ThenBy(r => r.Sample).ToList();
+            return retorno;
         }
 
     }

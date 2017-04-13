@@ -29,14 +29,16 @@ namespace SgqSystem
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AutoMapperConfig.RegisterMappings();
             DisableApplicationInsightsOnDebug();
-            Hangfire.GlobalConfiguration.Configuration
-           .UseSqlServerStorage("DbContextSgqEUA");
+
+
 
             #if DEBUG
             TelemetryConfiguration.Active.DisableTelemetry = true;
             #endif
 
 
+            Hangfire.GlobalConfiguration.Configuration
+           .UseSqlServerStorage("DbContextSgqEUA");
             _backgroundJobServer = new BackgroundJobServer();
 
         }
