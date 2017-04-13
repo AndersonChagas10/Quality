@@ -55,7 +55,7 @@ namespace SgqSystem.Services
 
             db = new SqlConnection(conexao);
             SGQ_GlobalADO = new SqlConnection(conexaoSGQ_GlobalADO);
-            db.Open();
+            //db.Open();
            
         }
 
@@ -63,7 +63,9 @@ namespace SgqSystem.Services
         {
             if (disposing)
             {
-                db.Close();
+                //SGQ_GlobalADO.Close();
+                SGQ_GlobalADO.Dispose();
+                //db.Close();
                 db.Dispose();
             }
             base.Dispose(disposing);
