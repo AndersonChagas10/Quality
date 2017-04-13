@@ -4,18 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Services;
 using System.Data.SqlClient;
-using System.Web.Helpers;
-using SgqSystem.Handlres;
 using System.Web.Http.Cors;
-using SgqSystem.Services;
 using SGQDBContext;
-using Dominio.Services;
 using DTO.Helpers;
 using System.Net.Mail;
 using System.Net;
-using SgqSystem.ViewModels;
 using System.Threading;
-using System.Transactions;
 using System.Globalization;
 using System.Collections;
 using DTO;
@@ -67,8 +61,11 @@ namespace SgqSystem.Services
 
         protected override void Dispose(bool disposing)
         {
-            if(disposing)
+            if (disposing)
+            {
+                db.Close();
                 db.Dispose();
+            }
             base.Dispose(disposing);
         }
 
