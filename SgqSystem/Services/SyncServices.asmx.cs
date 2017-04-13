@@ -4,18 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Services;
 using System.Data.SqlClient;
-using System.Web.Helpers;
-using SgqSystem.Handlres;
 using System.Web.Http.Cors;
-using SgqSystem.Services;
 using SGQDBContext;
-using Dominio.Services;
 using DTO.Helpers;
 using System.Net.Mail;
 using System.Net;
-using SgqSystem.ViewModels;
 using System.Threading;
-using System.Transactions;
 using System.Globalization;
 using System.Collections;
 using DTO;
@@ -62,7 +56,17 @@ namespace SgqSystem.Services
             db = new SqlConnection(conexao);
             SGQ_GlobalADO = new SqlConnection(conexaoSGQ_GlobalADO);
             db.Open();
-            
+           
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Close();
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
         #region Funções
@@ -3064,6 +3068,7 @@ namespace SgqSystem.Services
                 //Percorremos a Lista dos Agrupamento 
 
                 #endregion
+
                 var counter = 0;
                 foreach (var parlevel1 in parLevel1Group) //LOOP2
                 {
@@ -3078,6 +3083,7 @@ namespace SgqSystem.Services
                     {
                         tipoTela = variableList[0].Name;
                     }
+
                     //Se o ParLevel1 contem um ParCritialLevel_Id
                     var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas(db);
                     var alertas = ParLevel1AlertasDB.getAlertas(parlevel1.Id, ParCompany_Id, dateCollect);
@@ -3403,7 +3409,7 @@ namespace SgqSystem.Services
                                                 style: "text-align:center; font-size:10px;"
                                               ) +
                                        html.div(
-                                                outerhtml: html.span(outerhtml: "0", classe: "defects") + html.span(outerhtml: "/", classe: "separator") + html.span(outerhtml: defect.ToString() , classe: "defectstotal"),
+                                                outerhtml: html.span(outerhtml: defect.ToString() , classe: "defectstotal"),
                                                 classe: "col-xs-4",
                                                 style: "text-align:center; font-size:10px;"
                                               );
@@ -4835,6 +4841,7 @@ namespace SgqSystem.Services
                 var roles = RolesXUserSgqDB.getRoles(Convert.ToInt32(user.UserSGQ_Id), Convert.ToInt32(ParCompany_Id));
 
                 usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name, roles);
+                
             }
             return usersList;
         }
@@ -4854,6 +4861,7 @@ namespace SgqSystem.Services
                 //Password = Guard.EncryptStringAES(Password);
 
                 usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name, null);
+                
             }
             return usersList;
         }

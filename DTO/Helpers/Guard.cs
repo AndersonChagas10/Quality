@@ -136,6 +136,18 @@ namespace DTO.Helpers
             return _dtvalue;
         }
 
+        public static DateTime ParseDateToSqlV2(string date, string format)
+        {
+            if (string.IsNullOrEmpty(date))
+                return DateTime.Now;
+
+            var _dtvalue = DateTime.Now;
+            //if (GlobalConfig.Brasil)
+            DateTime.TryParseExact(date, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
+
+            return _dtvalue;
+        }
+
         public static string ConverteValorCalculado(decimal valorDecimal)
         {
 

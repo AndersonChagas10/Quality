@@ -2,6 +2,7 @@
 using Owin;
 using Hangfire;
 using System.Web;
+using Hangfire.Dashboard;
 
 [assembly: OwinStartup(typeof(SgqSystem.Startup))]
 
@@ -12,11 +13,29 @@ namespace SgqSystem
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+            var dashboardoptions = new DashboardOptions
+            {
+                AppPath = VirtualPathUtility.ToAbsolute("~"),
+                Authorization = new[] { new CustomAuthorizationHangFireFilter() }
+            };
+            var joboptions = new BackgroundJobServerOptions {  };
+            app.UseHangfireServer(joboptions);
+            app.UseHangfireDashboard("/hangfire", dashboardoptions);
+            
+        }
+    }
 
-            // Make `Back to site` link working for subfolder applications
-            var options = new DashboardOptions { AppPath = VirtualPathUtility.ToAbsolute("~") };
+    public class CustomAuthorizationHangFireFilter : IDashboardAuthorizationFilter
+    {
 
-            app.UseHangfireDashboard();
+        public bool Authorize(DashboardContext context)
+        {
+            //if (HttpContext.Current.User.IsInRole("Admin"))
+            //{
+                return true;
+            //}
+
+            //return false;
         }
     }
 }

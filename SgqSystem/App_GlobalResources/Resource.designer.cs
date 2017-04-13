@@ -1744,7 +1744,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to fired.
+        ///   Looks up a localized string similar to Alert Triggered.
         /// </summary>
         internal static string fired {
             get {
@@ -1839,6 +1839,15 @@ namespace Resources {
         internal static string general_view_of_the_area {
             get {
                 return ResourceManager.GetString("general_view_of_the_area", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string generic_forms {
+            get {
+                return ResourceManager.GetString("generic_forms", resourceCulture);
             }
         }
         
@@ -2167,6 +2176,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Insert slaughter signature.
+        /// </summary>
+        internal static string insert_slaughter_signature {
+            get {
+                return ResourceManager.GetString("insert_slaughter_signature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert technical signature.
+        /// </summary>
+        internal static string insert_technical_signature {
+            get {
+                return ResourceManager.GetString("insert_technical_signature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid evaluations number.
         /// </summary>
         internal static string invalid_evaluations_number {
@@ -2320,7 +2347,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Group.
+        ///   Looks up a localized string similar to Level.
         /// </summary>
         internal static string level {
             get {
@@ -2608,6 +2635,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Specific Settings.
+        /// </summary>
+        internal static string local_forms {
+            get {
+                return ResourceManager.GetString("local_forms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Logging In.
         /// </summary>
         internal static string logging_in {
@@ -2824,7 +2860,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NC of.
+        ///   Looks up a localized string similar to Deviation of.
         /// </summary>
         internal static string nc_of {
             get {
@@ -2842,7 +2878,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The NC target was exceed.
+        ///   Looks up a localized string similar to The deviation limit was excceded.
         /// </summary>
         internal static string nc_target_exceed {
             get {
@@ -4696,7 +4732,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The supervisor and the manager will be notified.
+        ///   Looks up a localized string similar to We will notify area&apos;s supervisor.
         /// </summary>
         internal static string supervisor_manager_notification {
             get {
@@ -4773,6 +4809,15 @@ namespace Resources {
         internal static string synthetic {
             get {
                 return ResourceManager.GetString("synthetic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System.
+        /// </summary>
+        internal static string system {
+            get {
+                return ResourceManager.GetString("system", resourceCulture);
             }
         }
         
