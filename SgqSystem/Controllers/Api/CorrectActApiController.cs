@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using Dominio;
-using Dominio.Interfaces.Services;
 using DTO.DTO;
 using DTO.Helpers;
 using SgqSystem.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
