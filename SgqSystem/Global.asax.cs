@@ -11,6 +11,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
 using Hangfire;
+using DTO;
 
 namespace SgqSystem
 {
@@ -30,6 +31,7 @@ namespace SgqSystem
             AutoMapperConfig.RegisterMappings();
             DisableApplicationInsightsOnDebug();
 
+            GlobalConfig.VerifyConfig("DbContextSgqEUA");
 
 
             #if DEBUG
