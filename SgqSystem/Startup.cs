@@ -18,7 +18,7 @@ namespace SgqSystem
                 AppPath = VirtualPathUtility.ToAbsolute("~"),
                 Authorization = new[] { new CustomAuthorizationHangFireFilter() }
             };
-            var joboptions = new BackgroundJobServerOptions { WorkerCount = 5 };
+            var joboptions = new BackgroundJobServerOptions {  };
             app.UseHangfireServer(joboptions);
             app.UseHangfireDashboard("/hangfire", dashboardoptions);
             
