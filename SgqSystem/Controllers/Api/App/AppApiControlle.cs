@@ -24,6 +24,10 @@ namespace SgqSystem.Controllers.Api.App
             db.Configuration.LazyLoadingEnabled = false;
         }
 
+        //$.post('http://192.168.25.200/SgqBr/api/AppParams/GetContadoresX',{ }, function(r)
+        //{
+        //    console.log(r);
+        //});
         [HttpPost]
         [HandleApi()]
         [Route("GetContadoresX")]
