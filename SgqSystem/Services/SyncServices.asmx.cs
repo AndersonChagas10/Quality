@@ -3068,6 +3068,7 @@ namespace SgqSystem.Services
                 //Percorremos a Lista dos Agrupamento 
 
                 #endregion
+
                 var counter = 0;
                 foreach (var parlevel1 in parLevel1Group) //LOOP2
                 {
@@ -3082,6 +3083,7 @@ namespace SgqSystem.Services
                     {
                         tipoTela = variableList[0].Name;
                     }
+
                     //Se o ParLevel1 contem um ParCritialLevel_Id
                     var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas(db);
                     var alertas = ParLevel1AlertasDB.getAlertas(parlevel1.Id, ParCompany_Id, dateCollect);
@@ -4839,6 +4841,7 @@ namespace SgqSystem.Services
                 var roles = RolesXUserSgqDB.getRoles(Convert.ToInt32(user.UserSGQ_Id), Convert.ToInt32(ParCompany_Id));
 
                 usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name, roles);
+                
             }
             return usersList;
         }
@@ -4858,6 +4861,7 @@ namespace SgqSystem.Services
                 //Password = Guard.EncryptStringAES(Password);
 
                 usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name, null);
+                
             }
             return usersList;
         }
