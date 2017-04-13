@@ -62,7 +62,14 @@ namespace SgqSystem.Services
             db = new SqlConnection(conexao);
             SGQ_GlobalADO = new SqlConnection(conexaoSGQ_GlobalADO);
             db.Open();
-            
+           
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if(disposing)
+                db.Dispose();
+            base.Dispose(disposing);
         }
 
         #region Funções
@@ -1867,7 +1874,7 @@ namespace SgqSystem.Services
                         "\n inner join ParCluster Cl " +
                         "\n on Cl.Id = CC.ParCluster_Id " +
                         "\n where C.Id = " + ParCompany_Id +
-                        "\n CC.IsActive = 1";
+                        "\n and CC.Active = 1";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
