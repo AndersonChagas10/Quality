@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Dominio;
-using DTO.DTO.Params;
+﻿using Dominio;
 using DTO.Helpers;
 using SgqSystem.Handlres;
 using SgqSystem.Services;
@@ -9,7 +7,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
-using System.Web;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api.App
@@ -34,7 +31,7 @@ namespace SgqSystem.Controllers.Api.App
         public List<RetornoLevel1> GetContadoresX()
         {
             db.Configuration.LazyLoadingEnabled = false;
-            
+
             /*Busca Items parametrizados a serem calculados*/
             var listLevel1Retorno = new List<RetornoLevel1>();
             var level2 = db.ParCounterXLocal.Where(r => r.ParLevel2_Id != null).Select(r => r.ParLevel2).Include("ParFrequency").Distinct();
@@ -56,28 +53,42 @@ namespace SgqSystem.Controllers.Api.App
                         var AvAmPorLevel1Tmp = new AvAmPorLevel1();
                         /*Soma Av e Am Iguais de um determinado level1*/
                         AvAmPorLevel1Tmp.SomaWeiDefect = level1DaCollectionLevel2.Where(r => r.EvaluationNumber == av && r.Sample == am)?.Sum(r => r.WeiDefects);
+                        AvAmPorLevel1Tmp.AvAm = av + "/" + am;
                         if (AvAmPorLevel1Tmp.SomaWeiDefect > 0)
                         {
                             retornoLevel1.avAmPorLevel1.Add(AvAmPorLevel1Tmp);
-                            //Debug.Write("\n AV:" + av + " AM:" + am + " SomaWeiDefect" + AvAmPorLevel1Tmp.SomaWeiDefect);
+
+#if DEBUG
+                            Debug.Write("\n AV:" + av + " AM:" + am + " SomaWeiDefect" + AvAmPorLevel1Tmp.SomaWeiDefect);
+#endif
+
                         }
 
                     }
-                
-                //Debug.Write("\n\n");
+
+#if DEBUG
+                Debug.Write("\n\n");
+#endif
+
                 listLevel1Retorno.Add(retornoLevel1);
             }
 
-            //foreach (var debug in listLevel1Retorno)
-            //{
-            //    Debug.Write("\n" + debug.idLevel1 + ": ");
-            //    foreach (var debugLevel2 in debug.avAmPorLevel1)
-            //        Debug.Write("\nAvAm:" + debugLevel2.AvAm + " SomaWeiDefect: " + debugLevel2.SomaWeiDefect);
-            //    Debug.Write("\n ----------------------- \n");
-            //}
+            DebugDoResult(listLevel1Retorno);
 
             return listLevel1Retorno;
 
+        }
+
+        [Conditional("DEBUG")]
+        private static void DebugDoResult(List<RetornoLevel1> listLevel1Retorno)
+        {
+            foreach (var debug in listLevel1Retorno)
+            {
+                Debug.Write("\n" + debug.idLevel1 + ": ");
+                foreach (var debugLevel2 in debug.avAmPorLevel1)
+                    Debug.Write("\nAvAm:" + debugLevel2.AvAm + " SomaWeiDefect: " + debugLevel2.SomaWeiDefect);
+                Debug.Write("\n ----------------------- \n");
+            }
         }
 
         private List<CollectionLevel2> GetCollectionLevel2PelaFrquencia(IQueryable<ParLevel2> level2)
