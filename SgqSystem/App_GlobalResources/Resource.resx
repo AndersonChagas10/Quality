@@ -1827,4 +1827,10 @@
   <data name="df" xml:space="preserve">
     <value>Def</value>
   </data>
+  <data name="insert_slaughter_signature" xml:space="preserve">
+    <value>Insert slaughter signature</value>
+  </data>
+  <data name="insert_technical_signature" xml:space="preserve">
+    <value>Insert technical signature</value>
+  </data>
 </root>
