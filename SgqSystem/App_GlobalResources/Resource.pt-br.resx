@@ -1806,6 +1806,15 @@
   <data name="df" xml:space="preserve">
     <value>Def.</value>
   </data>
+  <data name="generic_forms" xml:space="preserve">
+    <value>Cadastros Gerais</value>
+  </data>
+  <data name="local_forms" xml:space="preserve">
+    <value>Cadastros Locais</value>
+  </data>
+  <data name="system" xml:space="preserve">
+    <value>Sistema</value>
+  </data>
   <data name="audit_start_time" xml:space="preserve">
     <value>Hora de Início da Auditoria</value>
   </data>

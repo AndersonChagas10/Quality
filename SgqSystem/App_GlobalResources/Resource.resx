@@ -1093,7 +1093,7 @@
     <value>Fill the Corrective Action first.</value>
   </data>
   <data name="fired" xml:space="preserve">
-    <value>fired</value>
+    <value>Alert Triggered</value>
   </data>
   <data name="first_synchronization_of_the_day" xml:space="preserve">
     <value>First synchronization of the day</value>
@@ -1105,10 +1105,10 @@
     <value>Loading the next sequential</value>
   </data>
   <data name="nc_of" xml:space="preserve">
-    <value>NC of</value>
+    <value>Deviation of</value>
   </data>
   <data name="nc_target_exceed" xml:space="preserve">
-    <value>The NC target was exceed</value>
+    <value>The deviation limit was excceded</value>
   </data>
   <data name="problem_occur" xml:space="preserve">
     <value>Problem occurred</value>
@@ -1123,7 +1123,7 @@
     <value>The area supervisor, manager and director will be notified</value>
   </data>
   <data name="supervisor_manager_notification" xml:space="preserve">
-    <value>The supervisor and the manager will be notified</value>
+    <value>We will notify area's supervisor</value>
   </data>
   <data name="supervisor_notification" xml:space="preserve">
     <value>The area supervisor will be notified</value>
@@ -1207,7 +1207,7 @@
     <value>Invalid value for:</value>
   </data>
   <data name="level" xml:space="preserve">
-    <value>Group</value>
+    <value>Level</value>
   </data>
   <data name="level2_linked_to_level3_successfully" xml:space="preserve">
     <value>Level2 linked to the level 3 successfully!</value>
@@ -1826,6 +1826,15 @@
   </data>
   <data name="df" xml:space="preserve">
     <value>Def</value>
+  </data>
+  <data name="generic_forms" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="local_forms" xml:space="preserve">
+    <value>Specific Settings</value>
+  </data>
+  <data name="system" xml:space="preserve">
+    <value>System</value>
   </data>
   <data name="audit_start_time" xml:space="preserve">
     <value>Audit Start Time</value>

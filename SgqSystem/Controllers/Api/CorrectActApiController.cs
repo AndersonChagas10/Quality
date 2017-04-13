@@ -51,7 +51,7 @@ namespace SgqSystem.Controllers.Api
 
             " \n from CorrectiveAction " +
 
-            " \n INNER JOIN CollectionLevel2 ON CorrectiveAction.CollectionLevel2_Id = CollectionLevel2.Id " +
+            " \n INNER JOIN CollectionLevel2 ON CorrectiveAction.CollectionLevel02Id = CollectionLevel2.Id " +
             " \n INNER JOIN UserSgq UserSgqAuditor on CorrectiveAction.AuditorId = UserSgqAuditor.Id " +
             " \n INNER JOIN UserSgq UserSgqSlaugther on CorrectiveAction.SlaughterId = UserSgqSlaugther.Id " +
             " \n INNER JOIN UserSgq UserSgqTechinical on CorrectiveAction.TechinicalId = UserSgqTechinical.Id " +
@@ -60,7 +60,7 @@ namespace SgqSystem.Controllers.Api
 
             " \n where " +
 
-            " \n DateCorrectiveAction >= '" + model._dataInicioSQL + "' and DateCorrectiveAction <= '" + model._dataFimSQL + "' ";
+            " \n DateCorrectiveAction BETWEEN '" + model._dataInicioSQL + "' and '" + model._dataFimSQL + "' ";
 
             if (model.unitId > 0)
             {

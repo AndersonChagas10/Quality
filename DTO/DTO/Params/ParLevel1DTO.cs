@@ -108,7 +108,7 @@ namespace DTO.DTO.Params
             var counter = 1;
 
 
-            var group = new SelectListGroup() { Name = (GlobalConfig.Eua || GlobalConfig.Canada) ? "Not Join" : "Não vinculado:" };
+            var group = new SelectListGroup() { Name = (GlobalConfig.Eua || GlobalConfig.Canada) ? "Unlinked" : "Não vinculado:" };
             var groupSelecionado = new SelectListGroup();
             //listParLevel3Level2Level1Dto = listParLevel3Level2Level1Dto.OrderBy(r => listLevel2.Any(ll2 => ll2.Id == r.ParLevel3Level2.ParLevel2_Id)).ToList();
             
@@ -122,7 +122,7 @@ namespace DTO.DTO.Params
 
                 if (listParLevel3Level2Level1Dto.Where(r => r.ParLevel3Level2.ParLevel2_Id == i.Id).Count() > 0)
                 {
-                    groupSelecionado.Name = (GlobalConfig.Eua || GlobalConfig.Canada) ? "Join" : "Vinculado:";
+                    groupSelecionado.Name = (GlobalConfig.Eua || GlobalConfig.Canada) ? "Linked" : "Vinculado:";
                     opt.Group = groupSelecionado;
                     retorno.Insert(counter, opt);
                     counter++;
