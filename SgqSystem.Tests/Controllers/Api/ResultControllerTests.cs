@@ -1,6 +1,6 @@
 ﻿using Dominio.Interfaces.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+//using Moq;
 using System;
 
 namespace Dominio.Controllers.Api.Tests

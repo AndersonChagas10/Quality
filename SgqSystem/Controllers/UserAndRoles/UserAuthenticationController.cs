@@ -83,6 +83,8 @@ namespace SgqSystem.Controllers.Api
             if (currentUserCookie != null)
             {
                 Response.Cookies.Remove("webControlCookie");
+                Response.Cookies.Remove("Language");
+
                 currentUserCookie.Expires = DateTime.Now.AddDays(-10);
                 currentUserCookie.Value = null;
                 Response.SetCookie(currentUserCookie);

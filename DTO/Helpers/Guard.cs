@@ -136,6 +136,18 @@ namespace DTO.Helpers
             return _dtvalue;
         }
 
+        public static DateTime ParseDateToSqlV2(string date, string format)
+        {
+            if (string.IsNullOrEmpty(date))
+                return DateTime.Now;
+
+            var _dtvalue = DateTime.Now;
+            //if (GlobalConfig.Brasil)
+            DateTime.TryParseExact(date, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
+
+            return _dtvalue;
+        }
+
         public static string ConverteValorCalculado(decimal valorDecimal)
         {
 
@@ -694,7 +706,7 @@ namespace DTO.Helpers
         public static List<SelectListItem> CreateDropDownList<T>(IEnumerable<T> enumerable)
         {
             List<SelectListItem> retorno = new List<SelectListItem>();
-            retorno.Insert(0, new SelectListItem() { Text = "Selecione...", Value = "-1" });
+            retorno.Insert(0, new SelectListItem() { Text = "...", Value = "-1" });
             var counter = 1;
             foreach (var i in enumerable)
             {

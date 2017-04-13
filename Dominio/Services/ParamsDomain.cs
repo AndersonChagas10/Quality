@@ -435,9 +435,10 @@ namespace Dominio.Services
             try
             {
 
-                _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, listParRelapse, parLevel3Level2peso.Where(r => !r.IsActive).ToList(), paramsDto.level1Selected);
-                foreach (var i in parLevel3Level2peso.Where(r=> r.IsActive))
-                    AddVinculoL1L2(paramsDto.level1Selected, paramsDto.level2Selected, saveParamLevel3.Id, 0, i.ParCompany_Id);
+                _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, listParRelapse, parLevel3Level2peso?.Where(r => r.IsActive).ToList(), paramsDto.level1Selected);
+                if(parLevel3Level2peso != null)
+                    foreach (var i in parLevel3Level2peso?.Where(r=> r.IsActive))
+                        AddVinculoL1L2(paramsDto.level1Selected, paramsDto.level2Selected, saveParamLevel3.Id, 0, i.ParCompany_Id);
 
             }
             catch (DbUpdateException e)
@@ -637,7 +638,6 @@ namespace Dominio.Services
             var retorno = new List<ParLevel3Level2Level1DTO>();
             _paramsRepo.SaveVinculoL3L2L1(idLevel1, idLevel2, idLevel3, userId, companyId);
             return retorno;
-         
 
         }
 

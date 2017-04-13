@@ -7,6 +7,7 @@ using Dominio;
 using System.Threading;
 using System.Collections;
 using SgqSystem.Services;
+using DTO;
 
 namespace SGQDBContext
 {
@@ -604,7 +605,8 @@ namespace SGQDBContext
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                            " +
                              " AND PE.IsActive = 1 " +
                              queryCompany +
-                             "GROUP BY PL2.Id, PL2.Name, PE.Number                                        ";
+                             "GROUP BY PL2.Id, PL2.Name, PE.Number, PE.AlterDate, PE.AddDate, PE.ParCompany_Id              " +
+                             "ORDER BY PE.ParCompany_Id  DESC, PE.AlterDate, PE.AddDate                                           ";
 
                 // sql = "SELECT 67 AS Id, 'NC Desossa - Alcatra', 50 AS Evaluate";
 
@@ -645,7 +647,7 @@ namespace SGQDBContext
             if (ParLevel1.hashKey == 2 && ParCompany_Id != null)
             {
 
-                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
+                string sql = "SELECT top 1 PL2.Id AS Id, PL2.Name AS Name,              " +
                              "(SELECT TOP 1 Amostras FROM VolumeCepDesossa WHERE Data = (SELECT MAX(DATA) FROM VolumeCepDesossa WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Sample " +
                              "FROM                                                                        " +
                              "ParLevel3Level2 P32                                                         " +
@@ -753,7 +755,8 @@ namespace SGQDBContext
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1.Id + "'                 " +
                              " AND PS.IsActive = 1 " +
                              queryCompany +
-                             "GROUP BY PL2.Id, PL2.Name, PS.Number, PS.ParCompany_Id           ";
+                             "GROUP BY PL2.Id, PL2.Name, PS.Number, PS.ParCompany_Id, PS.AlterDate, PS.AddDate, PS.ParCompany_Id           " +
+                             "ORDER BY PS.ParCompany_Id desc, PS.AlterDate DESC, PS.AddDate DESC                                ";
 
                 var parSample = db.Query<ParLevel2Sample>(sql);
 
@@ -1692,10 +1695,14 @@ namespace SGQDBContext
         {
             //SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "select CP.nCdCaracteristica, CP.cNmCaracteristica, CP.cNrCaracteristica, CP.cSgCaracteristica, CP.cIdentificador" +
-                         " from CaracteristicaTipificacao CP where LEN(CP.cNrCaracteristica) >= 5 and SUBSTRING(CP.cNrCaracteristica, 1, 3) = '" + id + "';";
+            string sql = "select null nCdCaracteristica, null cNmCaracteristica, null cNrCaracteristica, null cSgCaracteristica, null cIdentificador ";
+            if (GlobalConfig.Brasil)
+            {
+                sql = "select CP.nCdCaracteristica, CP.cNmCaracteristica, CP.cNrCaracteristica, CP.cSgCaracteristica, CP.cIdentificador" +
+                      " from CaracteristicaTipificacao CP where LEN(CP.cNrCaracteristica) >= 5 and SUBSTRING(CP.cNrCaracteristica, 1, 3) = '" + id + "';";
+            }
 
-            var list = db.Query<CaracteristicaTipificacao>(sql);
+            var list = db.Query<CaracteristicaTipificacao>(sql);                     
 
             return list;
         }
@@ -2045,6 +2052,7 @@ namespace SGQDBContext
                     string sql = "";
                     if (ParLevel1_Id > 0)
                     {
+                        /*
                         sql = "SELECT PC.Name FROM ParCounterXLocal PL                                                      " +
                                  "   LEFT JOIN ParCounter PC ON PL.ParCounter_Id = PC.Id                                    " +
                                  "   LEFT JOIN ParLocal PO ON PO.Id = PL.ParLocal_Id                                        " +
@@ -2052,9 +2060,20 @@ namespace SGQDBContext
                                  "   AND PL.ParLevel2_Id IS NULL                                                            " +
                                  "   AND PO.Name = '" + Local + "'                                                             " +
                                  "   AND PC.Level = " + Level + " AND PL.IsActive = 1;                                      ";
+                        */
+
+                        sql = "SELECT PC.Name FROM ParCounterXLocal PL " +
+                              "LEFT JOIN ParCounter PC ON PL.ParCounter_Id = PC.Id " +
+                              "LEFT JOIN ParLocal PO ON PO.Id = PL.ParLocal_Id " +
+                              "WHERE PL.ParLevel1_Id = " + ParLevel1_Id + " " +
+                              "AND PL.ParLevel2_Id IS NULL " +
+                              "AND PC.Level = " + Level +
+                              "AND PL.IsActive = 1";
+
                     }
                     else if (ParLevel2_Id > 0)
                     {
+                        /*
                         sql = "SELECT PC.Name FROM ParCounterXLocal PL                                                      " +
                                  "   LEFT JOIN ParCounter PC ON PL.ParCounter_Id = PC.Id                                    " +
                                  "   LEFT JOIN ParLocal PO ON PO.Id = PL.ParLocal_Id                                        " +
@@ -2062,6 +2081,17 @@ namespace SGQDBContext
                                  "   AND PL.ParLevel2_Id = " + ParLevel2_Id +
                                  "   AND PO.Name = '" + Local + "'                                                             " +
                                  "   AND PC.Level = " + Level + " AND PL.IsActive = 1;                                      ";
+                        */
+                        
+                        sql = "SELECT PC.Name FROM ParCounterXLocal PL " +
+                              "LEFT JOIN ParCounter PC ON PL.ParCounter_Id = PC.Id " +
+                              "LEFT JOIN ParLocal PO ON PO.Id = PL.ParLocal_Id " +
+                              "WHERE PL.ParLevel1_Id IS NULL " +
+                              "AND PL.ParLevel2_Id= " + ParLevel2_Id + " " +
+                              "AND PC.Level = " + Level +
+                              "AND PL.IsActive = 1";
+
+
                     }
 
                     //SqlConnection db = new SqlConnection(conexao);

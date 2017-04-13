@@ -238,10 +238,10 @@
                    "sInfoFiltered": "",
                    "sSearch": "@Resources.Resource.search",
                    "oPaginate": {
-                       "sFirst": "Primeiro",
-                       "sPrevious": "Anterior",
-                       "sNext": "Próximo",
-                       "sLast": "Último"
+                       "sFirst": "@Resources.Resource.first",
+                       "sPrevious": "@Resources.Resource.previous",
+                       "sNext": "@Resources.Resource.next",
+                       "sLast": "@Resources.Resource.last"
                    }
                }
            });
@@ -523,10 +523,10 @@
             if(intCtrlKey){
                 if(intKeyCode == 89){
                     $.post(LogOutCookie, function (objetoReturn) {
-                        
-                            //window.onbeforeunload = function myFunction(e){
-                            //    return "Deseja mesmo sair?";
-                            //};
+
+                        //window.onbeforeunload = function myFunction(e){
+                        //    return "Deseja mesmo sair?";
+                        //};
                     }).fail(function (e, h, x) {
                         //closeLoader();
                         try {

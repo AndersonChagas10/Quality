@@ -24,7 +24,7 @@
     $(document).ready(function () {
         var max = @Html.Raw(Json.Encode(leve2Number));
 
-        $('#level2SelecionadoPorCompany').select2({ allowClear: true, placeholder: "Selecione..." , maximumSelectionLength: max })
+        $('#level2SelecionadoPorCompany').select2({ allowClear: true, placeholder: "@Resources.Resource.select" , maximumSelectionLength: max })
 
         if(level2SelecionadosParaEmpresaIds  != null)
             $('#level2SelecionadoPorCompany').val(level2SelecionadosParaEmpresaIds).change();

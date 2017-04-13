@@ -28,7 +28,7 @@
 }
 
 @*<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@
 
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
@@ -253,6 +253,7 @@
 
     function loadSelect2(){
         $('.select2').select2({matcher: modelMatcher});
+        TraduzirSelecione();
     }
 
     function modelMatcher (params, data) {
@@ -467,7 +468,7 @@
                 dados["paramsDto.parLevel1Dto.IsRuleConformity"] = $('#paramsDto_parLevel1Dto_IsRuleConformity').bootstrapSwitch('state');
                 dados["paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion"] = $('#paramsDto_parLevel1Dto_IsFixedEvaluetionNumber').bootstrapSwitch('state');
                 //openLoader();
-                 
+
                 dados["paramsDto.level1Selected"] = $('#parLevel1Select2').val();
                 dados["paramsDto.level2Selected"] = $('#parLevel2Select2').val();
                 dados["paramsDto.level3Selected"] = $('#parLevel3Select2').val();
@@ -627,7 +628,7 @@
                 //Cluster.UpdateCounter();
                 //CounterLevel2.UpdateCounters();
                 var dados = $('#newLevel2Modal > form').serializeObject();
-                 
+
                 dados["paramsDto.level1Selected"] = $('#parLevel1Select2').val();
                 dados["paramsDto.level2Selected"] = $('#parLevel2Select2').val();
                 dados["paramsDto.level3Selected"] = $('#parLevel3Select2').val();
@@ -789,12 +790,12 @@
             $.validator.unobtrusive.parse("form");
 
             if ($('#newLevel3Modal > form').valid()) {
-           
+
                 var dados = $('#newLevel3Modal > form').serializeObject();
 
                 ReincidenciaL3.incluiNoObjetoParaSubmit(dados);
                 level3Value.incluiNoObjetoParaSubmit(dados);
-                
+
                 dados["paramsDto.level1Selected"] = $('#parLevel1Select2').val();
                 dados["paramsDto.level2Selected"] = $('#parLevel2Select2').val();
                 dados["paramsDto.level3Selected"] = $('#parLevel3Select2').val();
@@ -1104,12 +1105,68 @@
 
             }
 
+
+
+
         });
 
         initialFormLevel1 = $('form')[0];
         initialFormLevel2 = $('form')[1];
         initialFormLevel3 = $('form')[2];
+
+        TraduzirSelecione();
+
+
     });
+
+    function TraduzirVinculados(){
+
+        $('.select2-results__group').each(
+            function (index){
+                if($('.select2-results__group')[index].innerHTML == "Vinculado:"){
+                    $('.select2-results__group')[index].innerHTML = "@Resources.Resource.yes";
+                }else if($('.select2-results__group')[index].innerHTML == "Não vinculado:"){
+                    $('.select2-results__group')[index].innerHTML = "@Resources.Resource.no";
+                }
+            })
+    }
+
+    function TraduzirSelecione(){
+
+        $('.select2-selection__rendered:visible').each(
+
+                function (index) {
+
+                    try {
+                        if($($('.select2-selection__rendered:visible')[index]).attr('title') == "@Resources.Resource.select" || $($('.select2-selection__rendered:visible')[index]).attr('title') == "...") {
+                            $($('.select2-selection__rendered:visible')[index]).attr('title',"@Resources.Resource.select");
+                        }
+
+                        $('.select2-selection__rendered:visible')[index].innerHTML = $($('.select2-selection__rendered:visible')[index]).attr('title');
+
+                    } catch(err) {
+
+                    }
+
+
+                }
+            )
+
+        $('select').each(
+
+                function (index) {
+
+                    try {
+                        $('select')[index].children[0].innerHTML = "@Resources.Resource.select";
+                    } catch(err) {
+
+                    }
+
+
+                }
+            )
+
+    }
 
     $( document ).ajaxStart(function() {
         openLoader("@Resources.Resource.please_wait"+"...");
@@ -1122,11 +1179,11 @@
 
     $( document ).ajaxStop(function() {
         closeLoader();
-        
+
     });
-   
+
     function disableEvry() {
-     
+
         var l1 = $('#paramsDto_parLevel1Dto_Id').val();
         var l2 = $('#paramsDto_parLevel2Dto_Id').val();
         var l3 = $('#paramsDto_parLevel3Dto_Id').val();
@@ -1144,7 +1201,7 @@
 
             $('#paramsDto_parLevel2Dto_ParDepartment_Id option').not(':selected').remove();
             $('#paramsDto_parLevel2Dto_ParFrequency_Id option').not(':selected').remove();
-            
+
             /*Level2*/
             if(r._PermiteEditarNumeroDeAv){
                 $('#btnSaveNewLevel2').attr('disabled', false);
@@ -1195,7 +1252,7 @@
 
         });
 
-      
+
     }
 
     if(window.location.host.indexOf("localhost") != -1){
@@ -1225,7 +1282,7 @@
                 var ar = [];
 
                 if($.isArray(dados['i.Id'])){
-                
+
                     // -- Gambiarra para conseguir trabalhar com checkbox do razor
                     // -- Condicional para verificar e tratar a String de retorno do razor
                     var contAct =0;
@@ -1279,7 +1336,7 @@
                     closeLoader();
                     openMessageModal("@Resources.Resource.warning", "@Resources.Resource.cannot_finish_action");
                     console.log(e);
-                }   
+                }
             });
         }
     }
@@ -1291,7 +1348,7 @@
         $('#modalEdicaoCabecalho').modal();
         $('#modalEdicaoCabecalho').find('.modal-body').empty();
         $('#Header').html("Edição de Cabeçalho");
-        
+
         $.get(EditCabecalho, { id: idpar, idLevel1: idL1 }, function (r) {
             $('#modalEdicaoCabecalho').find('.modal-body').empty().append(r);
             $('#paramsDto_parHeaderFieldDto_ParFieldType_Id').attr('disabled', true);
@@ -1319,7 +1376,7 @@
         divAdd += '<button class="btn btn-danger" id="rem'+controle+'" type="button" onclick="removeCampoNovo('+controle+')">Remover Novo Campo</button></div>'
         divAdd += '</div>';
         $('#multiplaEscolha').append(divAdd);
-        controle++;   
+        controle++;
     }
     function removeCampoNovo(idCampo){
         $('#row'+idCampo).remove();
@@ -1332,5 +1389,5 @@
         }
         controle--;
     }
-    
+
 </script>

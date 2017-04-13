@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Dominio;
+﻿using Dominio;
 using Dominio.Interfaces.Services;
 using DTO.DTO;
 using SgqSystem.Handlres;

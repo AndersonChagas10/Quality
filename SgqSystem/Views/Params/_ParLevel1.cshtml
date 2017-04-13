@@ -3,6 +3,8 @@
 @using DTO
 <!--MODAL-->
 
+
+
 <div id="newLevel1Modal">
     @using (Html.BeginForm())
     {
@@ -192,7 +194,7 @@
                                         </table>
                                     </div>
 
-                                    @if (!GlobalConfig.Eua)
+                                    @if (GlobalConfig.Brasil)
                                     {
                                         @*Obj Integrações*@
                                         <div id="objIntegracoes" style="display:none;">
@@ -820,7 +822,7 @@
             example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
                        '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' + // Tipo
                           '<td><select class="" id="" name="" class="form-control input-sm " >' + //Preview
-                          '<option value="-1">Selecione...</option> ';
+                          '<option value="-1">"@Resources.Resource.select"</option> ';
             Cabecalhos.ParMultiplaEscolhaOpcoes.forEach(function (o, c) {
                 example += '<option value="1">' + o.Name + '</option>';
             });
@@ -1354,7 +1356,7 @@
 
             }
             e.parents('tr').remove();
-            
+
 
             if(Cabecalhos.tableMultiplaEscolha.rows()[0].length == 0){
                 $('#camposCabecalhoIncluidos').hide();
