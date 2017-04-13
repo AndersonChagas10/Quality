@@ -2062,7 +2062,7 @@ namespace SGQDBContext
                                  "   AND PC.Level = " + Level + " AND PL.IsActive = 1;                                      ";
                         */
 
-                        sql = "SELECT PC.Name FROM ParCounterXLocal PL " +
+                        sql = "SELECT Distinct PC.Name FROM ParCounterXLocal PL " +
                               "LEFT JOIN ParCounter PC ON PL.ParCounter_Id = PC.Id " +
                               "LEFT JOIN ParLocal PO ON PO.Id = PL.ParLocal_Id " +
                               "WHERE PL.ParLevel1_Id = " + ParLevel1_Id + " " +
@@ -2083,7 +2083,7 @@ namespace SGQDBContext
                                  "   AND PC.Level = " + Level + " AND PL.IsActive = 1;                                      ";
                         */
                         
-                        sql = "SELECT PC.Name FROM ParCounterXLocal PL " +
+                        sql = "SELECT Distinct PC.Name FROM ParCounterXLocal PL " +
                               "LEFT JOIN ParCounter PC ON PL.ParCounter_Id = PC.Id " +
                               "LEFT JOIN ParLocal PO ON PO.Id = PL.ParLocal_Id " +
                               "WHERE PL.ParLevel1_Id IS NULL " +

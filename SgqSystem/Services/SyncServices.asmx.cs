@@ -3064,6 +3064,7 @@ namespace SgqSystem.Services
                 //Percorremos a Lista dos Agrupamento 
 
                 #endregion
+
                 var counter = 0;
                 foreach (var parlevel1 in parLevel1Group) //LOOP2
                 {
@@ -3078,6 +3079,7 @@ namespace SgqSystem.Services
                     {
                         tipoTela = variableList[0].Name;
                     }
+
                     //Se o ParLevel1 contem um ParCritialLevel_Id
                     var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas(db);
                     var alertas = ParLevel1AlertasDB.getAlertas(parlevel1.Id, ParCompany_Id, dateCollect);
