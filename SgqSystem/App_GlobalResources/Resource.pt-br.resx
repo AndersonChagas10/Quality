@@ -1878,4 +1878,7 @@
   <data name="last" xml:space="preserve">
     <value>Último</value>
   </data>
+  <data name="total_defects_avaliation" xml:space="preserve">
+    <value>Total defeitos na avaliação</value>
+  </data>
 </root>
