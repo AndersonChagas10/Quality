@@ -304,6 +304,7 @@
     <Compile Include="Controllers\Api\Manutencao\ManColetaDadosController.cs" />
     <Compile Include="Controllers\Api\Manutencao\ManDataCollectITsController.cs" />
     <Compile Include="Controllers\Api\Manutencao\PainelIndicadoresUniManutencaoController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\RelatorioGenericoApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\ApontamentosDiariosApiController.cs" />
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
@@ -2153,6 +2154,8 @@
     <Content Include="Views\UserAuthentication\PasswordRecovery.cshtml" />
     <Content Include="Views\FirstConfig\Index.cshtml" />
     <Content Include="Views\Shared\_Level321Chain.cshtml" />
+    <Content Include="Views\RelatoriosSgq\RelatorioGenerico.cshtml" />
+    <Content Include="Views\RelatorioGenericoApi\DataTable.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2233,7 +2236,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>59668</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
