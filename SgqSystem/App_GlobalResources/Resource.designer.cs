@@ -2176,7 +2176,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Insert slaughter signature.
+        ///   Looks up a localized string similar to Insert Slaughter Signature.
         /// </summary>
         internal static string insert_slaughter_signature {
             get {
@@ -2185,7 +2185,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Insert technical signature.
+        ///   Looks up a localized string similar to Insert Technical Signature.
         /// </summary>
         internal static string insert_technical_signature {
             get {
