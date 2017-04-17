@@ -1893,7 +1893,10 @@
   <data name="last" xml:space="preserve">
     <value>Last</value>
   </data>
-  <data name="total_defects_avaliation" xml:space="preserve">
-    <value>Total evaluation defects</value>
+  <data name="insert_slaughter_signature" xml:space="preserve">
+    <value>Insert Slaughter Signature</value>
+  </data>
+  <data name="insert_technical_signature" xml:space="preserve">
+    <value>Insert Technical Signature</value>
   </data>
 </root>
