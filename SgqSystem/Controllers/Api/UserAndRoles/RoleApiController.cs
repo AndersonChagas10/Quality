@@ -2,10 +2,6 @@
 using Dominio.Interfaces.Services;
 using DTO.DTO;
 using SgqSystem.Handlres;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api

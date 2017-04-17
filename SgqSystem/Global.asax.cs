@@ -11,6 +11,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
 using Hangfire;
+using DTO;
 
 namespace SgqSystem
 {
@@ -29,14 +30,17 @@ namespace SgqSystem
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AutoMapperConfig.RegisterMappings();
             DisableApplicationInsightsOnDebug();
-            Hangfire.GlobalConfiguration.Configuration
-           .UseSqlServerStorage("DbContextSgqEUA");
+
+            GlobalConfig.VerifyConfig("DbContextSgqEUA");
+
 
             #if DEBUG
             TelemetryConfiguration.Active.DisableTelemetry = true;
             #endif
 
 
+            Hangfire.GlobalConfiguration.Configuration
+           .UseSqlServerStorage("DbContextSgqEUA");
             _backgroundJobServer = new BackgroundJobServer();
 
         }

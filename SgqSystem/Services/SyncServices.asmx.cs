@@ -4,18 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Services;
 using System.Data.SqlClient;
-using System.Web.Helpers;
-using SgqSystem.Handlres;
 using System.Web.Http.Cors;
-using SgqSystem.Services;
 using SGQDBContext;
-using Dominio.Services;
 using DTO.Helpers;
 using System.Net.Mail;
 using System.Net;
-using SgqSystem.ViewModels;
 using System.Threading;
-using System.Transactions;
 using System.Globalization;
 using System.Collections;
 using DTO;
@@ -61,8 +55,20 @@ namespace SgqSystem.Services
 
             db = new SqlConnection(conexao);
             SGQ_GlobalADO = new SqlConnection(conexaoSGQ_GlobalADO);
-            db.Open();
-            
+            //db.Open();
+           
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                //SGQ_GlobalADO.Close();
+                SGQ_GlobalADO.Dispose();
+                //db.Close();
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
         #region Funções
@@ -1735,6 +1741,7 @@ namespace SgqSystem.Services
         /// </summary>
         /// <param name="unidadeId"></param>
         /// <returns></returns>
+        /// PORQUE QUE ESSA PORRA DESTA DATA É MESDIAANO?????????????????? (Comentário Gabriel)
         [WebMethod]
         public string reciveData(string unidadeId, string data)
         {
@@ -1867,7 +1874,8 @@ namespace SgqSystem.Services
                         "\n inner join ParCluster Cl " +
                         "\n on Cl.Id = CC.ParCluster_Id " +
                         "\n where C.Id = " + ParCompany_Id +
-                        "\n CC.IsActive = 1";
+                        "\n and Cl.IsActive = 1" +
+                        "\n and CC.Active = 1";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -3064,6 +3072,7 @@ namespace SgqSystem.Services
                 //Percorremos a Lista dos Agrupamento 
 
                 #endregion
+
                 var counter = 0;
                 foreach (var parlevel1 in parLevel1Group) //LOOP2
                 {
@@ -3078,6 +3087,7 @@ namespace SgqSystem.Services
                     {
                         tipoTela = variableList[0].Name;
                     }
+
                     //Se o ParLevel1 contem um ParCritialLevel_Id
                     var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas(db);
                     var alertas = ParLevel1AlertasDB.getAlertas(parlevel1.Id, ParCompany_Id, dateCollect);
@@ -4835,6 +4845,7 @@ namespace SgqSystem.Services
                 var roles = RolesXUserSgqDB.getRoles(Convert.ToInt32(user.UserSGQ_Id), Convert.ToInt32(ParCompany_Id));
 
                 usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name, roles);
+                
             }
             return usersList;
         }
@@ -4854,6 +4865,7 @@ namespace SgqSystem.Services
                 //Password = Guard.EncryptStringAES(Password);
 
                 usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name, null);
+                
             }
             return usersList;
         }

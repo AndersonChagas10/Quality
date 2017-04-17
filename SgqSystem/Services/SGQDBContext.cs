@@ -870,7 +870,7 @@ namespace SGQDBContext
                          "\n L3V.IntervalMin AS IntervalMin, L3V.IntervalMax AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, L32.Weight AS Weight, L3V.ParCompany_Id , L32.ParCompany_Id                                                                                                                                                                                                                                       " +
                          "\n FROM ParLevel3 L3                                                                                                                                                                                                                                                                                                                                           " +
                          "\n INNER JOIN ParLevel3Value L3V                                                                                                                                                                                                                                                                                                                               " +
-                         "\n         ON L3V.ParLevel3_Id = L3.Id AND L3V.IsActive = 1                                                                                                                                                                                                                                                                                                                        " +
+                         "           ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id = " + ParCompany_Id + " or ParCompany_id is null) order by ParCompany_Id desc)                                                                                                                                                                                                                                                                                                                       " +
                          "\n INNER JOIN ParLevel3InputType L3IT                                                                                                                                                                                                                                                                                                                          " +
                          "\n         ON L3IT.Id = L3V.ParLevel3InputType_Id                                                                                                                                                                                                                                                                                                              " +
                          "\n LEFT JOIN ParLevel3BoolFalse L3BF                                                                                                                                                                                                                                                                                                                           " +
@@ -933,7 +933,7 @@ namespace SGQDBContext
                         "L3V.IntervalMin AS IntervalMin, L3V.IntervalMax AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, L32.Weight AS Weight, L3V.ParCompany_Id , L32.ParCompany_Id                                                                                                                                                                                                                                   " +
                         "FROM ParLevel3 L3                                                                                                                                                                                                                                                                                                                                           " +
                         "INNER JOIN ParLevel3Value L3V                                                                                                                                                                                                                                                                                                                               " +
-                        "        ON L3V.ParLevel3_Id = L3.Id AND L3V.IsActive = 1                                                                                                                                                                                                                                                                                                                        " +
+                        "        ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id = " + ParCompany_Id + " or ParCompany_id is null) order by ParCompany_Id desc)                                                                                                                                                                                                                                                                                                                       " +
                         "INNER JOIN ParLevel3InputType L3IT                                                                                                                                                                                                                                                                                                                          " +
                         "        ON L3IT.Id = L3V.ParLevel3InputType_Id                                                                                                                                                                                                                                                                                                              " +
                         "LEFT JOIN ParLevel3BoolFalse L3BF                                                                                                                                                                                                                                                                                                                           " +
@@ -1169,6 +1169,7 @@ namespace SGQDBContext
                 string sql = "SELECT CDL1.Id, CDL1.ParLevel1_Id, PL1.ParFrequency_Id, PL1.IsPartialSave FROM ConsolidationLevel1 CDL1 " +
                              "INNER JOIN ParLevel1 PL1 ON CDL1.ParLevel1_Id = PL1.Id WHERE CDL1.UnitId = '" + ParCompany_Id + "'" +
                              " AND CDL1.Consolidationdate BETWEEN '" + data_ini.ToString("yyyyMMdd") + " 00:00' and '" + data_fim.ToString("yyyyMMdd") + " 23:59'" +
+                             " AND PL1.IsActive = 1" +
                              " GROUP BY CDL1.Id, CDL1.ParLevel1_Id, PL1.ParFrequency_Id,  PL1.IsPartialSave";
 
                 var consolidation = db.Query<ParLevel1ConsolidationXParFrequency>(sql);
@@ -2052,6 +2053,7 @@ namespace SGQDBContext
                     string sql = "";
                     if (ParLevel1_Id > 0)
                     {
+                        /*
                         sql = "SELECT PC.Name FROM ParCounterXLocal PL                                                      " +
                                  "   LEFT JOIN ParCounter PC ON PL.ParCounter_Id = PC.Id                                    " +
                                  "   LEFT JOIN ParLocal PO ON PO.Id = PL.ParLocal_Id                                        " +
@@ -2059,9 +2061,20 @@ namespace SGQDBContext
                                  "   AND PL.ParLevel2_Id IS NULL                                                            " +
                                  "   AND PO.Name = '" + Local + "'                                                             " +
                                  "   AND PC.Level = " + Level + " AND PL.IsActive = 1;                                      ";
+                        */
+
+                        sql = "SELECT Distinct PC.Name FROM ParCounterXLocal PL " +
+                              "LEFT JOIN ParCounter PC ON PL.ParCounter_Id = PC.Id " +
+                              "LEFT JOIN ParLocal PO ON PO.Id = PL.ParLocal_Id " +
+                              "WHERE PL.ParLevel1_Id = " + ParLevel1_Id + " " +
+                              "AND PL.ParLevel2_Id IS NULL " +
+                              "AND PC.Level = " + Level +
+                              "AND PL.IsActive = 1";
+
                     }
                     else if (ParLevel2_Id > 0)
                     {
+                        /*
                         sql = "SELECT PC.Name FROM ParCounterXLocal PL                                                      " +
                                  "   LEFT JOIN ParCounter PC ON PL.ParCounter_Id = PC.Id                                    " +
                                  "   LEFT JOIN ParLocal PO ON PO.Id = PL.ParLocal_Id                                        " +
@@ -2069,6 +2082,17 @@ namespace SGQDBContext
                                  "   AND PL.ParLevel2_Id = " + ParLevel2_Id +
                                  "   AND PO.Name = '" + Local + "'                                                             " +
                                  "   AND PC.Level = " + Level + " AND PL.IsActive = 1;                                      ";
+                        */
+                        
+                        sql = "SELECT Distinct PC.Name FROM ParCounterXLocal PL " +
+                              "LEFT JOIN ParCounter PC ON PL.ParCounter_Id = PC.Id " +
+                              "LEFT JOIN ParLocal PO ON PO.Id = PL.ParLocal_Id " +
+                              "WHERE PL.ParLevel1_Id IS NULL " +
+                              "AND PL.ParLevel2_Id= " + ParLevel2_Id + " " +
+                              "AND PC.Level = " + Level +
+                              "AND PL.IsActive = 1";
+
+
                     }
 
                     //SqlConnection db = new SqlConnection(conexao);
@@ -2255,20 +2279,21 @@ namespace SGQDBContext
                             "Shift, " +
                             "Phase, " +
                             "EvaluationNumber " + 
-                            "FROM CollectionLevel2 c1                                                                                   " +
-                            "WHERE CollectionDate                                                                                       " +
-                            "BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00'  and '" + EndDate.ToString("yyyyMMdd") + " 23:59' and Phase > 0                                                        " +
-                            "AND CONCAT(c1.ParLevel1_id, c1.ParLevel2_Id, CAST(c1.CollectionDate AS VARCHAR(500))) IN                   " +
-                            "  (SELECT CONCAT(c1b.ParLevel1_id, c1b.ParLevel2_Id, CAST(MAX(c1b.CollectionDate) AS VARCHAR(500)))        " +
-                            "                                                                                                           " +
-                            "      FROM CollectionLevel2 c1b                                                                            " +
-                            "                                                                                                           " +
-                            "          WHERE c1b.Phase > 0                                                                              " +
-                            "                                                                                                           " +
+                            "FROM CollectionLevel2 c1                                                                                       " +
+                            "WHERE CollectionDate                                                                                           " +
+                            "BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00'  and '" + EndDate.ToString("yyyyMMdd") + " 23:59' and   "+
+                            "Phase > 0  and UnitId = "+ ParCompany_Id + "                                                                   " +
+                            "AND CONCAT(c1.ParLevel1_id, c1.ParLevel2_Id, CAST(c1.CollectionDate AS VARCHAR(500))) IN                       " +
+                            "  (SELECT CONCAT(c1b.ParLevel1_id, c1b.ParLevel2_Id, CAST(MAX(c1b.CollectionDate) AS VARCHAR(500)))            " +
+                            "                                                                                                               " +
+                            "      FROM CollectionLevel2 c1b                                                                                " +
+                            "                                                                                                               " +
+                            "          WHERE c1b.Phase > 0                                                                                  " +
+                            "                                                                                                               " +
                             "          AND c1b.CollectionDate BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00' and '" + EndDate.ToString("yyyyMMdd") + " 23:59'                                     " +
-                            "                                                                                                           " +
-                            "      GROUP BY c1b.ParLevel1_id, c1b.ParLevel2_Id                                                          " +
-                            "  )                                                                                                     " ;
+                            "          AND c1b.UnitId = " + ParCompany_Id + "                                                                       " +
+                            "      GROUP BY c1b.ParLevel1_id, c1b.ParLevel2_Id                                                              " +
+                            "  )                                                                                                            " ;
                 
 
                 //SqlConnection db = new SqlConnection(conexao);
