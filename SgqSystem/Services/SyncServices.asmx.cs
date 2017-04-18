@@ -5435,6 +5435,9 @@ namespace SgqSystem.Services
         {
 
             var ResultPhaseDB = new SGQDBContext.ResultPhase(db);
+            var ResultPhaseFrequencyDB = new SGQDBContext.ResultPhaseFrequency(db);
+            var ResultLevel2PeriodDB = new SGQDBContext.ResultLevel2Period(db);
+            
             //Instanciamos uma variável que irá 
 
             DateTime startDate = DateCollectConvert(date);
@@ -5448,6 +5451,24 @@ namespace SgqSystem.Services
             //Percorremos as consolidações de ParLevel1
             foreach (var c in ResultPhaseList)
             {
+                var frequency = ResultPhaseFrequencyDB.GetPhaseFrequency(c.ParLevel1_Id, c.Phase);
+
+                c.CountPeriod = 0;
+                c.CountShift = 0;
+
+                if (frequency != null && frequency.ParFrequency_Id == 1)
+                {
+                    var listResultLevel2 = ResultLevel2PeriodDB.GetResultLevel2Period(c.Id, ParCompany_Id, c.ParLevel1_Id, c.ParLevel2_Id, startDate, endDate);
+
+                    var sum = 0;
+                    foreach(var obj in listResultLevel2)
+                    {
+                        sum += obj.Periodos;
+                    }
+
+                    c.CountPeriod = sum;
+                }
+
                 PhaseResult += "<div " +
                     "parlevel1_id=\"" + c.ParLevel1_Id + "\" " +
                     "parlevel2_id=\"" + c.ParLevel2_Id + "\" " +
@@ -5456,6 +5477,8 @@ namespace SgqSystem.Services
                     "period=\"" + c.Period + "\" " +
                     "shift=\"" + c.Shift + "\" " +
                     "phase=\"" + c.Phase + "\" " +
+                    "countperiod=\""+ c.CountPeriod + "\" "+
+                    "countshift=\""+ c.CountShift + "\" " +
                     "class=\"PhaseResultlevel2\"></div>";
             }
             return PhaseResult;
