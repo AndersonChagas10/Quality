@@ -41,6 +41,8 @@ namespace SgqSystem.Services
         //Contexto util de dados para Ytoara
         private SGQDBContext_YTOARA ytoaraUtil;
 
+        Dominio.SgqDbDevEntities dbEf;
+
         public SyncServices()
         {
 
@@ -56,7 +58,9 @@ namespace SgqSystem.Services
             db = new SqlConnection(conexao);
             SGQ_GlobalADO = new SqlConnection(conexaoSGQ_GlobalADO);
             //db.Open();
-           
+
+            dbEf = new Dominio.SgqDbDevEntities();
+
         }
 
         protected override void Dispose(bool disposing)
@@ -1741,6 +1745,7 @@ namespace SgqSystem.Services
         /// </summary>
         /// <param name="unidadeId"></param>
         /// <returns></returns>
+        /// PORQUE QUE ESSA PORRA DESTA DATA É MESDIAANO?????????????????? (Comentário Gabriel)
         [WebMethod]
         public string reciveData(string unidadeId, string data)
         {
@@ -1873,6 +1878,7 @@ namespace SgqSystem.Services
                         "\n inner join ParCluster Cl " +
                         "\n on Cl.Id = CC.ParCluster_Id " +
                         "\n where C.Id = " + ParCompany_Id +
+                        "\n and Cl.IsActive = 1" +
                         "\n and CC.Active = 1";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -4457,27 +4463,27 @@ namespace SgqSystem.Services
                                        "<button class=\"btn btn-default button-collapse\"><i class=\"fa fa-compress\" aria-hidden=\"true\"></i> Fechar Todos</button>";
                 }
 
-                painellevel3 = html.listgroupItem(
-                                                            outerhtml: avaliacoes +
-                                                                       amostras +
-                                                                       painelLevel3HeaderListHtml,
+                // incluir coluna e obter o total de amostras com defeito agrupado.
+                var level2 = dbEf.ParCounterXLocal.FirstOrDefault(r => r.ParLevel2_Id != ParLevel2.Id && r.ParCounter_Id == 21 && r.IsActive);
+                if (level2 != null)
+                {
+                    painelLevel3HeaderListHtml += "<div id='tdef'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>";
+                    painelLevel3HeaderListHtml += "<div id='tdefav'>" + CommonData.getResource("total_defects_avaliation").Value.ToString() + ": <span>0</span></div>";
+                }
 
-                                               classe: "painel painelLevel03 row") +
+                painellevel3 = html.listgroupItem(outerhtml: avaliacoes +
+                                                             amostras +
+                                                             painelLevel3HeaderListHtml,
+                                                  classe: "painel painelLevel03 row") +
                               html.painelCounters(listCounter);
-                //+
-                //                                html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
+       
+                //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 var botoesTodos = "";
-
                 if (GlobalConfig.Brasil)
                 {
-                    botoesTodos =
-
-                        "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
-
-                        "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>";
-
-
+                    botoesTodos =   "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
+                                    "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>";
                 }
 
                 string panelButton = html.listgroupItem(
@@ -4491,7 +4497,6 @@ namespace SgqSystem.Services
                     parLevel3Group = html.div(
                                                classe: "level3Group",
                                                tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
-
                                                outerhtml: reauditFlag +
                                                           painellevel3 + panelButton +
                                                           parLevel3Group
@@ -4502,6 +4507,7 @@ namespace SgqSystem.Services
 
 
         }
+
         /// <summary>
         /// Gera o input para level3
         /// </summary>
@@ -5232,7 +5238,6 @@ namespace SgqSystem.Services
                     {
                         connection.Open();
                         var i = Convert.ToInt32(command.ExecuteNonQuery());
-                        /*TEM Q ENFIA A MAO NO CU ABERTA DE QUEM FEZ ISSO!!*/
                         if (i > 0)
                         {
                             return null;
@@ -5428,6 +5433,9 @@ namespace SgqSystem.Services
         {
 
             var ResultPhaseDB = new SGQDBContext.ResultPhase(db);
+            var ResultPhaseFrequencyDB = new SGQDBContext.ResultPhaseFrequency(db);
+            var ResultLevel2PeriodDB = new SGQDBContext.ResultLevel2Period(db);
+            
             //Instanciamos uma variável que irá 
 
             DateTime startDate = DateCollectConvert(date);
@@ -5441,6 +5449,24 @@ namespace SgqSystem.Services
             //Percorremos as consolidações de ParLevel1
             foreach (var c in ResultPhaseList)
             {
+                var frequency = ResultPhaseFrequencyDB.GetPhaseFrequency(c.ParLevel1_Id, c.Phase);
+
+                c.CountPeriod = 0;
+                c.CountShift = 0;
+
+                if (frequency != null && frequency.ParFrequency_Id == 1)
+                {
+                    var listResultLevel2 = ResultLevel2PeriodDB.GetResultLevel2Period(c.Id, ParCompany_Id, c.ParLevel1_Id, c.ParLevel2_Id, startDate, endDate);
+
+                    var sum = 0;
+                    foreach(var obj in listResultLevel2)
+                    {
+                        sum += obj.Periodos;
+                    }
+
+                    c.CountPeriod = sum;
+                }
+
                 PhaseResult += "<div " +
                     "parlevel1_id=\"" + c.ParLevel1_Id + "\" " +
                     "parlevel2_id=\"" + c.ParLevel2_Id + "\" " +
@@ -5449,6 +5475,8 @@ namespace SgqSystem.Services
                     "period=\"" + c.Period + "\" " +
                     "shift=\"" + c.Shift + "\" " +
                     "phase=\"" + c.Phase + "\" " +
+                    "countperiod=\""+ c.CountPeriod + "\" "+
+                    "countshift=\""+ c.CountShift + "\" " +
                     "class=\"PhaseResultlevel2\"></div>";
             }
             return PhaseResult;

@@ -3,6 +3,7 @@ using Dominio;
 using DTO;
 using DTO.DTO.Params;
 using DTO.Helpers;
+using SgqSystem.Handlres;
 using SgqSystem.Helpers;
 using SgqSystem.Services;
 using SgqSystem.ViewModels;
@@ -23,6 +24,8 @@ namespace SgqSystem.Controllers.Api
     {
         public ApontamentosDiariosApiController()
         {
+            db.Configuration.LazyLoadingEnabled = false;
+
             //if (GlobalConfig.Brasil)
             //{
             //    Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-br");
@@ -75,6 +78,22 @@ namespace SgqSystem.Controllers.Api
             }
 
             return Mapper.Map<Result_Level3DTO>(Result_Level3DTO.GetById(resultLevel3.Id));
+        }
+
+        [HttpPost]
+        [Route("GetRL/{id}")]
+        public List<Result_Level3> GetResultLevel3(int id) {
+
+            //var query = "select * from Result_Level3 where CollectionLevel2_Id = "+id+" and IsConform = 0";
+            
+            try {
+                var result = db.Result_Level3.Where(r => r.CollectionLevel2_Id == id && r.IsConform == false).ToList();
+                return result;
+
+            } catch(System.Exception e) {
+                throw e;
+            }
+            
         }
 
         public void ConsolidacaoEdicao(int id)

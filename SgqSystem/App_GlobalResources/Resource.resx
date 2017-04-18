@@ -1899,4 +1899,7 @@
   <data name="insert_technical_signature" xml:space="preserve">
     <value>Insert Technical Signature</value>
   </data>
+  <data name="defectsTotal" xml:space="preserve">
+    <value>Defects total</value>
+  </data>
 </root>
