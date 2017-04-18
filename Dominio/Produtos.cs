@@ -17,10 +17,8 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Produtos()
         {
-            this.CategoriaProdutos = new HashSet<CategoriaProdutos>();
-            this.DepartamentoProdutos = new HashSet<DepartamentoProdutos>();
-            this.FamiliaProdutos = new HashSet<FamiliaProdutos>();
             this.Tarefas = new HashSet<Tarefas>();
+            this.FamiliaProdutos = new HashSet<FamiliaProdutos>();
         }
     
         public int Id { get; set; }
@@ -31,12 +29,8 @@ namespace Dominio
         public Nullable<System.DateTime> DataAlteracao { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CategoriaProdutos> CategoriaProdutos { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DepartamentoProdutos> DepartamentoProdutos { get; set; }
+        public virtual ICollection<Tarefas> Tarefas { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FamiliaProdutos> FamiliaProdutos { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Tarefas> Tarefas { get; set; }
     }
 }

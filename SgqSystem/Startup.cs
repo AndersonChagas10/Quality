@@ -13,29 +13,29 @@ namespace SgqSystem
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
-            var dashboardoptions = new DashboardOptions
-            {
-                AppPath = VirtualPathUtility.ToAbsolute("~"),
-                Authorization = new[] { new CustomAuthorizationHangFireFilter() }
-            };
-            var joboptions = new BackgroundJobServerOptions {  };
-            app.UseHangfireServer(joboptions);
-            app.UseHangfireDashboard("/hangfire", dashboardoptions);
+            //var dashboardoptions = new DashboardOptions
+            //{
+            //    AppPath = VirtualPathUtility.ToAbsolute("~"),
+            //    Authorization = new[] { new CustomAuthorizationHangFireFilter() }
+            //};
+            //var joboptions = new BackgroundJobServerOptions {  };
+            //app.UseHangfireServer(joboptions);
+            //app.UseHangfireDashboard("/hangfire", dashboardoptions);
             
         }
     }
 
-    public class CustomAuthorizationHangFireFilter : IDashboardAuthorizationFilter
-    {
+    //public class CustomAuthorizationHangFireFilter : IDashboardAuthorizationFilter
+    //{
 
-        public bool Authorize(DashboardContext context)
-        {
-            //if (HttpContext.Current.User.IsInRole("Admin"))
-            //{
-                return true;
-            //}
+    //    public bool Authorize(DashboardContext context)
+    //    {
+    //        //if (HttpContext.Current.User.IsInRole("Admin"))
+    //        //{
+    //            return true;
+    //        //}
 
-            //return false;
-        }
-    }
+    //        //return false;
+    //    }
+    //}
 }

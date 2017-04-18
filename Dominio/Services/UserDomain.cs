@@ -328,6 +328,7 @@ namespace Dominio.Services
             using (var db = new SGQ_GlobalEntities())
             {
                 Usuario usuarioSgqBr;
+                //db.Configuration.LazyLoadingEnabled = false;
                 try
                 {
                     usuarioSgqBr = db.Usuario.AsNoTracking().FirstOrDefault(r => r.cSigla.ToLower() == userDto.Name.ToLower());

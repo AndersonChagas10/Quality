@@ -1,48 +1,20 @@
 ﻿
 @{
     ViewBag.Title = "Relatorio do BI";
-    var urlGet = Url.Action("Get", "api/RelatorioGenerico");
+    //var urlGet = Url.Action("GetRelatorio", "RelatorioGenericoApi");
+    var urlGet = Url.Action("getTabela", "api/RelatorioGenerico");
 }
+
+<script src="~/Scripts/smart-table.min.js"></script>
 
 <div class="page-content" style="min-height: 600px;">
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
-
     <div id="formBodyContent">
-
-        @*<div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
-
-                <button type="button" style="margin-top: 5px;" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
-            </div>*@
 
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
-        @*<div id="load"></div>*@
-        <div id="divTable">
-
-            <style>
-                .dataTables_scroll {
-                    font-size: x-small;
-                }
-
-                table.dataTable {
-                    margin: 0px !important;
-                }
-
-                    table.dataTable thead th, table.dataTable thead td {
-                        padding: 2px 12px !important;
-                    }
-
-
-                    table.dataTable tbody th, table.dataTable tbody td {
-                        padding: 2px !important;
-                    }
-
-                .dataTables_scrollBody {
-                    border-bottom: 0px !important;
-                }
-            </style>
-
-            <table id="results" class="display" cellspacing="0"></table>
+        <div id="divTable" style="display:none">
+            @Html.Partial("~/Views/RelatoriosSgq/_GenericTable.cshtml")
         </div>
     </div>
 </div>
@@ -66,10 +38,17 @@
             $("#btnSend").click(function (e) {
                 Send(true);
             });
+
+
+            //$('#genericTable').DataTable();
+
+
         });
 
         function Send(toggle) {
+
             $btn.button('loading');
+
             //$('#results').empty();
 
             //if (!ValidaDadosParaEnvio()) {
@@ -77,152 +56,59 @@
             //    return;
             //}
 
-            //$('#divTable').hide();
-            EasyAjax(urlGet, enviar, GerarTabela, "load", toggle);//AJAX
+            $('#divTable').hide();
+
+            //EasyAjax(urlGet, enviar, GerarTabela, "load", toggle);//AJAX
+
+            GerarTabela();
         };
 
-        function GerarTabela(retornoArray) {
-            $('#divTable').show();
 
-            var table = $('#results').empty().DataTable({
-                data: retornoArray.body,
-                columns: retornoArray.header,
+        function GerarTabela() {
 
-                @*[{ title: "Cluster", mData: "ClusterName" },
-                    { title: "Regional", mData: "RegionalName" },
-                    { title: "Empresa", mData: "ParCompanyName" },
-                    { title: "@Resources.Resource.scorecard_type", mData: "TipoScore" },
-                    { title: "@Resources.Resource.audit_type", mData: "TipoIndicadorName" },
-                    { title: "@Resources.Resource.audit", mData: "Level1Name" },
-                    { title: "@Resources.Resource.smp", mData: "AV" },
-                    { title: "@Resources.Resource.ncc", mData: "NC" },
-                    { title: "@Resources.Resource.group2", mData: "CriterioName" },
-                    { title: "@Resources.Resource.points2", mData: "Pontos" },
-                    { title: "@Resources.Resource.points_possible", mData: "PontosIndicador" },
-                    { title: "@Resources.Resource.goal %", mData: "Meta" },
-                    { title: "Real %", mData: "Real" },
-                    { title: "@Resources.Resource.points_achieved", mData: "PontosAtingidos" },
-                    { title: "Scorecard", mData: "Scorecard" },
-                ]*@
-
-                destroy: true,
-                /*
-                fixedHeader: {
-                    header: true,
-                    footer: true
-                },
-                */
-                //columnDefs: visibilidadeDefault,
-                //stateSave: true,
-                //stateSaveCallback: function(settings,data) {
-                //    localStorage.setItem( 'DataTables_' + settings.sInstance, JSON.stringify(data) )
-                //},
-                //stateLoadCallback: function(settings) {
-                //    return JSON.parse( localStorage.getItem( 'DataTables_' + settings.sInstance ) )
-                //},
-                scrollX: true,
-                paginate: false,
-                paging: false,
-                bSort: false,
-                loadingRecords: false,
-                destroy: true,
-                info: false,
-                responsive: true,
-                //initComplete: function () {
-                //    $('#loading').hide();
-                //    setTimeout(function (e) {
-                //        var oTable = $('#results').dataTable();
-                //        if (oTable.length > 0) {
-                //            oTable.fnAdjustColumnSizing();
-                //        }
-                //    }, 100);
-                //},
-                //createdRow: function (row, data, index) {
-
-                //    if (data["Scorecard"] > 99 || (data["CriterioName"] == 'Maior' && (data["AV"] == 0 && data["NC"] == 0))) {
-                //        // green
-                //        $('td', row).eq(14).css("background-color", '#33FF33');
-                //    } else if (data["Scorecard"] < parseInt(limitesMid)) {
-                //        // red
-                //        $('td', row).eq(14).css("background-color", '#FF6666');
-                //    }
-                //    else if (data["Scorecard"] < parseInt(limitesHigh)) {
-                //        $('td', row).eq(14).css("background-color", 'yellow');
-                //    }
-
-                //},
-                //fnDrawCallback: function (data, d, o) {
-
-
-
-                //}
-            });
-
-            @*new $.fn.dataTable.Buttons(table, {
-                buttons: [
-                     {
-                         extend: 'colvisGroup',
-                         text: '@Resources.Resource.synthetic',
-
-                         //show: [3, 4, 5, 6, 9, 10, 12],
-                         show: arrSintShow,
-                         //hide: [0, 1, 2, 7, 8, 11]
-                         hide: arrSintHide
-                     },
-                    {
-                        extend: 'colvisGroup',
-                        text: '@Resources.Resource.analytical',
-                        show: ':hidden'
-                    },
-                    {
-                        extend: 'print',
-                        customize: function (win) {
-                            $(win.document.body).find('table')
-                                .addClass('compact')
-                                .css('font-size', 'inherit');
-                        },
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'excelHtml5',
-
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    'pdf',
-                ]
-            });
-
-
-
-            table.buttons(0, null).container().prependTo(
-                table.table().container()
-            );
-
-            //Filtros por coluna
-
-            $('.dataTable thead th').each(function (i) {
-                var title = $('.dataTable thead th').eq($(this).index()).text();
-                $(this).html(title + '<br><input type="text" style="font-size:xx-small; color: #555; text-align:center; width:50px" placeholder=" ' + title + '" data-index="' + i + '" />');
-            });
-
-            // DataTable
-            var table = $('.dataTable').DataTable();
-
-            // Filter event handler
-            $(table.table().container()).on('keyup', 'thead input', function () {
-                table
-                    .column($(this).data('index'))
-                    .search(this.value)
-                    .draw();
-            });
-
-            $('.dt-button.buttons-colvisGroup')[0].click();*@
 
         }
+
+        //Angular
+        var app = angular.module('sgqSystem', []);
+
+        app.controller('MainCtrl', ['$scope', '$http', '$compile', function ($scope, $http, $compile) {
+
+            // remover e reinserir o elemento para funcionar no angular
+            $('#btnSend').replaceWith($('#btnSend'));
+
+            // inserir ng-click no botao
+            $('#btnSend').attr('ng-click', 'getTable()');
+
+            // compilar o elemento
+            $compile($('#btnSend'))($scope);
+
+            $scope.header = [];
+            $scope.bodies = {};
+            $scope.getTable = function () {
+
+                //fazer ajax
+                $http({
+                    method: 'POST',
+                    data: enviar,
+                    url: urlGet
+                }).then(function (retorno) {
+
+                    $scope.header = retorno.data.header;
+                    $scope.bodies = retorno.data.body;
+
+                    $btn.button('reset');
+                    $('#divTable').show();
+
+                }, function (error) {
+                    console.log(error);
+                    $btn.button('reset');
+
+                });
+
+            }
+
+        }]);
 
     </script>
 

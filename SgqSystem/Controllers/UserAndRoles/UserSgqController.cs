@@ -7,6 +7,7 @@ using Helper;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -23,27 +24,25 @@ namespace SgqSystem.Controllers
 
         private IBaseDomain<ParCompany, ParCompanyDTO> _baseDomainParCompany;
         private IBaseDomain<ParCompanyXUserSgq, ParCompanyXUserSgqDTO> _baseDomainParCompanyXUserSgq;
-        private IBaseDomain<UserSgq, UserSgqDTO> _baseDomainUserSgq;
-        private IBaseDomain<RoleSGQ, RoleSGQDTO> _baseDomainRoleSGQ;
+        private IBaseDomain<UserSgq, UserDTO> _baseDomainUserSgq;
+        private IBaseDomain<RoleUserSgq, RoleUserSgqDTO> _baseDomainRoleUserSGQ;
 
         public UserSgqController(IBaseDomain<ParCompany, ParCompanyDTO> baseDomainParCompany,
             IBaseDomain<ParCompanyXUserSgq, ParCompanyXUserSgqDTO> baseDomainParCompanyXUserSgq,
-            IBaseDomain<UserSgq, UserSgqDTO> baseDomainUserSgq,
-            IBaseDomain<RoleSGQ, RoleSGQDTO> baseDomainRoleSGQ
+            IBaseDomain<UserSgq, UserDTO> baseDomainUserSgq,
+            IBaseDomain<RoleUserSgq, RoleUserSgqDTO> baseDomainRoleUserSGQ
             )
         {
             _baseDomainParCompany = baseDomainParCompany;
             _baseDomainUserSgq = baseDomainUserSgq;
             _baseDomainParCompanyXUserSgq = baseDomainParCompanyXUserSgq;
-            _baseDomainRoleSGQ = baseDomainRoleSGQ;
+            _baseDomainRoleUserSGQ = baseDomainRoleUserSGQ;
 
             ViewBag.listaParCompany = _baseDomainParCompany.GetAll();
-            var listaRoleSGQ = _baseDomainRoleSGQ.GetAll();
+            var listaRoleSGQ = _baseDomainRoleUserSGQ.GetAll();
 
             foreach (var roleSgq in listaRoleSGQ)
-            {
-                roleSgq.Role = roleSgq.Role.Trim();
-            }
+                roleSgq.Name = roleSgq.Name.Trim();
 
             ViewBag.listaRoleSGQ = listaRoleSGQ;
         }
@@ -51,7 +50,7 @@ namespace SgqSystem.Controllers
         // GET: UserSgq
         public ActionResult Index()
         {
-            return View(db.UserSgq.ToList());
+            return View(_baseDomainUserSgq.GetAllNoLazyLoad().ToList());
         }
 
         // GET: UserSgq/Details/5
@@ -92,7 +91,7 @@ namespace SgqSystem.Controllers
                 Name = userSgq.Name,
                 FullName = userSgq.FullName,
                 Email = userSgq.Email,
-                Roles = userSgq.Role == null ? new string[0] : userSgq.Role.Split(';'),
+                Roles = userSgq.Role == null ? new string[0] : userSgq.Role.Split(','),
                 Password = userSgq.Password,
                 Phone = userSgq.Phone,
                 Empresa = parCompanyXUserSgq != null ? (from comp in parCompanyXUserSgq select new EmpresaDTO { Role = comp.Role, Nome = comp.ParCompany.Name }).ToList() : new List<EmpresaDTO>()
@@ -112,60 +111,50 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public bool Save(UserSgqDTO userSgqDto)
+        public bool Save(UserDTO userSgqDto)
         {
-
+            
             ValidaUserSgqDto(userSgqDto);
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return false;
+
+            if (userSgqDto.Id == 0)
             {
-                if (userSgqDto.Id == 0)
+                userSgqDto.AddDate = DateTime.Now;
+                userSgqDto.Password = Guard.EncryptStringAES(userSgqDto.Password);
+            }
+            else
+            {
+                userSgqDto.AlterDate = DateTime.Now;
+
+                if (userSgqDto.Password == null)
                 {
-                    userSgqDto.AddDate = DateTime.Now;
-                    userSgqDto.Password = Guard.Criptografar3DES(userSgqDto.Password);
+                    UserSgq dummy = db.UserSgq.Find(userSgqDto.Id);
+                    userSgqDto.Password = dummy.Password;
                 }
                 else
                 {
-                    userSgqDto.AlterDate = DateTime.Now;
-
-                    if (userSgqDto.Password == null)
-                    {
-                        UserSgq dummy = db.UserSgq.Find(userSgqDto.Id);
-                        userSgqDto.Password = dummy.Password;
-                    }
-                    else
-                    {
-                        userSgqDto.Password = Guard.Criptografar3DES(userSgqDto.Password);
-                    }
+                    userSgqDto.Password = Guard.EncryptStringAES(userSgqDto.Password);
                 }
-
-                if (userSgqDto.ListRole != null)
-                {
-                    string roles = string.Join("; ", userSgqDto.ListRole);
-                    userSgqDto.Role = roles;
-                }
-
-                IEnumerable<int> listParCompany = userSgqDto.ListParCompany_Id;
-                userSgqDto.ParCompany_Id = userSgqDto.ListParCompany_Id.FirstOrDefault();
-                userSgqDto = _baseDomainUserSgq.AddOrUpdate(userSgqDto);
-
-                _baseDomainParCompanyXUserSgq.ExecuteSql("DELETE FROM ParCompanyXUserSgq WHERE UserSgq_Id = " + userSgqDto.Id);
-
-                foreach (int ParCompany_id in listParCompany)
-                {
-                    ParCompanyXUserSgqDTO parCompanyXUserSgqDTO = new ParCompanyXUserSgqDTO();
-                    parCompanyXUserSgqDTO.Id = 0;
-                    parCompanyXUserSgqDTO.UserSgq_Id = userSgqDto.Id;
-                    parCompanyXUserSgqDTO.ParCompany_Id = ParCompany_id;
-
-                    _baseDomainParCompanyXUserSgq.AddOrUpdate(parCompanyXUserSgqDTO);
-                }
-
-                return true;
-            }else
-            {
-                return false;
             }
+
+            /*Roles*/
+            if (userSgqDto.ListRole != null)
+            {
+                string roles = string.Join(",", userSgqDto.ListRole);
+                userSgqDto.Role = roles;
+            }
+            var ListParCompany_Id = userSgqDto.ListParCompany_Id;
+            userSgqDto = _baseDomainUserSgq.AddOrUpdate(userSgqDto, true);
+
+            ///*Empresas do usuario*/
+            _baseDomainParCompanyXUserSgq.ExecuteSql("DELETE FROM ParCompanyXUserSgq WHERE UserSgq_Id = " + userSgqDto.Id);
+            if(ListParCompany_Id != null)
+                foreach (int ParCompany_id in ListParCompany_Id)
+                    _baseDomainParCompanyXUserSgq.AddOrUpdate(new ParCompanyXUserSgqDTO() { Id = 0, UserSgq_Id = userSgqDto.Id, ParCompany_Id = ParCompany_id }, true);
+
+            return true;
 
         }
 
@@ -176,7 +165,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserSgq userSgq = db.UserSgq.Find(id);
+            UserDTO userSgq = _baseDomainUserSgq.GetById(id.GetValueOrDefault());
             if (userSgq == null)
             {
                 return HttpNotFound();
@@ -256,11 +245,11 @@ namespace SgqSystem.Controllers
 
                 var senhaAntiga = userSgq.Password;
 
-                if (Guard.Descriptografar3DES(senhaAntiga).Equals(model.SenhaAntiga))
+                if (Guard.DecryptStringAES(senhaAntiga).Equals(model.SenhaAntiga))
                 {
                     userSgq.AlterDate = DateTime.Now;
                     userSgq.PasswordDate = DateTime.Now.AddMonths(2);
-                    userSgq.Password = Guard.Criptografar3DES(model.Password);
+                    userSgq.Password = Guard.EncryptStringAES(model.Password);
 
                     db.Entry(userSgq).State = EntityState.Modified;
 
@@ -334,13 +323,13 @@ namespace SgqSystem.Controllers
             base.Dispose(disposing);
         }
 
-        private void ValidaUserSgqDto(UserSgqDTO userSgqDto)
+        private void ValidaUserSgqDto(UserDTO userSgqDto)
         {
 
             if (db.UserSgq.Where(r => r.Name == userSgqDto.Name).ToList().Count() > 0)
             {
                 ModelState.AddModelError("Name", "Este nome de usuário já está sendo usado");
-            }               
+            }
 
         }
     }

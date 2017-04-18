@@ -17,21 +17,15 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Unidades()
         {
-            this.Alertas = new HashSet<Alertas>();
             this.Equipamentos = new HashSet<Equipamentos>();
-            this.FamiliaProdutos = new HashSet<FamiliaProdutos>();
-            this.GrupoProjeto = new HashSet<GrupoProjeto>();
-            this.Horarios = new HashSet<Horarios>();
-            this.MonitoramentosConcorrentes = new HashSet<MonitoramentosConcorrentes>();
-            this.PadraoMonitoramentos = new HashSet<PadraoMonitoramentos>();
-            this.TarefaAmostras = new HashSet<TarefaAmostras>();
-            this.TarefaAvaliacoes = new HashSet<TarefaAvaliacoes>();
-            this.TarefaMonitoramentos = new HashSet<TarefaMonitoramentos>();
-            this.TipificacaoReal = new HashSet<TipificacaoReal>();
-            this.Usuarios = new HashSet<Usuarios>();
-            this.UsuarioUnidades = new HashSet<UsuarioUnidades>();
             this.VerificacaoTipificacao = new HashSet<VerificacaoTipificacao>();
+            this.TarefaMonitoramentos = new HashSet<TarefaMonitoramentos>();
+            this.UsuarioUnidades = new HashSet<UsuarioUnidades>();
+            this.FamiliaProdutos = new HashSet<FamiliaProdutos>();
+            this.TarefaAmostras = new HashSet<TarefaAmostras>();
             this.VolumeProducao = new HashSet<VolumeProducao>();
+            this.Horarios = new HashSet<Horarios>();
+            this.TarefaAvaliacoes = new HashSet<TarefaAvaliacoes>();
         }
     
         public int Id { get; set; }
@@ -52,34 +46,22 @@ namespace Dominio
         public Nullable<bool> Ativa { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Alertas> Alertas { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Equipamentos> Equipamentos { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FamiliaProdutos> FamiliaProdutos { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<GrupoProjeto> GrupoProjeto { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Horarios> Horarios { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MonitoramentosConcorrentes> MonitoramentosConcorrentes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PadraoMonitoramentos> PadraoMonitoramentos { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TarefaAmostras> TarefaAmostras { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TarefaAvaliacoes> TarefaAvaliacoes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TarefaMonitoramentos> TarefaMonitoramentos { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TipificacaoReal> TipificacaoReal { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Usuarios> Usuarios { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UsuarioUnidades> UsuarioUnidades { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VerificacaoTipificacao> VerificacaoTipificacao { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TarefaMonitoramentos> TarefaMonitoramentos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UsuarioUnidades> UsuarioUnidades { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FamiliaProdutos> FamiliaProdutos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TarefaAmostras> TarefaAmostras { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VolumeProducao> VolumeProducao { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Horarios> Horarios { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TarefaAvaliacoes> TarefaAvaliacoes { get; set; }
     }
 }

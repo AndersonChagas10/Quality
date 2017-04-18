@@ -17,14 +17,8 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Monitoramentos()
         {
-            this.GrupoTipoAvaliacaoMonitoramentos = new HashSet<GrupoTipoAvaliacaoMonitoramentos>();
-            this.MonitoramentoEquipamentos = new HashSet<MonitoramentoEquipamentos>();
-            this.MonitoramentosConcorrentes = new HashSet<MonitoramentosConcorrentes>();
-            this.MonitoramentosConcorrentes1 = new HashSet<MonitoramentosConcorrentes>();
-            this.PadraoMonitoramentos = new HashSet<PadraoMonitoramentos>();
-            this.PadraoTolerancias = new HashSet<PadraoTolerancias>();
-            this.TarefaMonitoramentos = new HashSet<TarefaMonitoramentos>();
             this.VerificacaoTipificacaoTarefaIntegracao = new HashSet<VerificacaoTipificacaoTarefaIntegracao>();
+            this.TarefaMonitoramentos = new HashSet<TarefaMonitoramentos>();
         }
     
         public int Id { get; set; }
@@ -39,20 +33,8 @@ namespace Dominio
         public string SiglaFalhaOperacional { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<GrupoTipoAvaliacaoMonitoramentos> GrupoTipoAvaliacaoMonitoramentos { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MonitoramentoEquipamentos> MonitoramentoEquipamentos { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MonitoramentosConcorrentes> MonitoramentosConcorrentes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MonitoramentosConcorrentes> MonitoramentosConcorrentes1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PadraoMonitoramentos> PadraoMonitoramentos { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PadraoTolerancias> PadraoTolerancias { get; set; }
+        public virtual ICollection<VerificacaoTipificacaoTarefaIntegracao> VerificacaoTipificacaoTarefaIntegracao { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TarefaMonitoramentos> TarefaMonitoramentos { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<VerificacaoTipificacaoTarefaIntegracao> VerificacaoTipificacaoTarefaIntegracao { get; set; }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Dominio;
 using DTO.Helpers;
-using SgqSystem.Handlres;
 using SgqSystem.Helpers;
 using System;
 using System.Collections.Generic;
@@ -9,8 +8,6 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
-using System.Net;
-using System.Web.Http.Results;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Api

@@ -1,7 +1,7 @@
 ﻿using Dominio;
 using DTO;
 using DTO.DTO;
-using Hangfire;
+//using Hangfire;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -28,8 +28,8 @@ namespace SgqSystem.Controllers
             //BackgroundJob.Enqueue(
             //    () => SimpleAsynchronous.UpdatePassAES());
 
-            BackgroundJob.Enqueue(
-                () => GlobalConfig.VerifyConfig("DbContextSgqEUA"));
+            //BackgroundJob.Enqueue(
+            //    () => GlobalConfig.VerifyConfig("DbContextSgqEUA"));
 
         }
 

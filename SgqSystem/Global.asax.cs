@@ -18,7 +18,7 @@ namespace SgqSystem
     public class WebApiApplication : System.Web.HttpApplication
     {
 
-        private BackgroundJobServer _backgroundJobServer;
+        //private BackgroundJobServer _backgroundJobServer;
 
         protected void Application_Start()
         {
@@ -33,21 +33,18 @@ namespace SgqSystem
 
             GlobalConfig.VerifyConfig("DbContextSgqEUA");
 
-
             #if DEBUG
             TelemetryConfiguration.Active.DisableTelemetry = true;
             #endif
-
-
-            Hangfire.GlobalConfiguration.Configuration
-           .UseSqlServerStorage("DbContextSgqEUA");
-            _backgroundJobServer = new BackgroundJobServer();
+            
+            // Hangfire.GlobalConfiguration.Configuration.UseSqlServerStorage("DbContextSgqEUA");
+            //_backgroundJobServer = new BackgroundJobServer();
 
         }
 
         protected void Application_End(object sender, EventArgs e)
         {
-            _backgroundJobServer.Dispose();
+            //_backgroundJobServer.Dispose();
         }
 
         /// <summary>

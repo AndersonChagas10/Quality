@@ -11,11 +11,11 @@ namespace SgqSystem.Controllers.Api
     [RoutePrefix("api/UserSgq")]
     public class UserSgqApiController : ApiController
     {
-        private IBaseDomain<UserSgq, UserSgqDTO> _baseDomainUserSgq;
+        private IBaseDomain<UserSgq, UserDTO> _baseDomainUserSgq;
         private IBaseDomain<ParCompanyXUserSgq, ParCompanyXUserSgqDTO> _baseDomainParCompanyXUserSgq;
 
         public UserSgqApiController(
-            IBaseDomain<UserSgq, UserSgqDTO> baseDomainUserSgq,
+            IBaseDomain<UserSgq, UserDTO> baseDomainUserSgq,
             IBaseDomain<ParCompanyXUserSgq, ParCompanyXUserSgqDTO> baseDomainParCompanyXUserSgq)
         {
             _baseDomainUserSgq = baseDomainUserSgq;
@@ -24,14 +24,13 @@ namespace SgqSystem.Controllers.Api
 
         [Route("Get")]
         [HttpGet]
-        public UserSgqDTO Get(int Id)
+        public UserDTO Get(int Id)
         {
-            UserSgqDTO userSgqDto = _baseDomainUserSgq.GetById(Id);
-
+            UserDTO userSgqDto = _baseDomainUserSgq.GetById(Id);
             userSgqDto.ListParCompany_Id = _baseDomainParCompanyXUserSgq.GetAll().Where(r => r.UserSgq_Id == userSgqDto.Id).Select(p => p.ParCompany_Id);
 
-            if(userSgqDto.Role != null)
-                userSgqDto.ListRole = userSgqDto.Role.Split(';').Select(p => p.Trim());
+            if (userSgqDto.Role != null)
+                userSgqDto.ListRole = userSgqDto.Role.Split(',').Select(p => p.Trim());
 
             return userSgqDto;
         }

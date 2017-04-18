@@ -189,17 +189,19 @@
     <div class="page-wrapper">
 
         @Html.Partial("~/Views/Shared/_Navbar.cshtml")
-        <div class="page-container">
-
+        <div class="page-container" >
             @*@Html.Partial("~/Views/Shared/_RightLayout.cshtml")*@
             @Html.Partial("~/Views/Shared/_LeftLayout.cshtml")
 
-            @RenderBody()
+            <div class="page-content-wrapper">
+                @RenderBody()
+            </div>
 
         </div>
     </div>
 
     <footer class="wrapper">
+
         @*<div>
                 <a href="#" id="timeout-example">Click Here to See Demo</a>
             </div>*@
@@ -208,10 +210,10 @@
             <label class="pull-right">Version: @Html.AssemblyVersion()</label>
             <label class="pull-right" style="margin-right: 30px;">&copy; @DateTime.Now.Year - @Resources.Resource.jbs_and_grt_aplication </label>
         </p>
+
     </footer>
 
     @RenderSection("scripts", required: false)
-
 
     <script>
 
