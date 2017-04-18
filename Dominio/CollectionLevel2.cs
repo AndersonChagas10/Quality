@@ -19,6 +19,7 @@ namespace Dominio
         {
             this.CollectionLevel2XParHeaderField = new HashSet<CollectionLevel2XParHeaderField>();
             this.Result_Level3 = new HashSet<Result_Level3>();
+            this.CorrectiveAction = new HashSet<CorrectiveAction>();
         }
     
         public int Id { get; set; }
@@ -63,6 +64,7 @@ namespace Dominio
         public Nullable<int> LastLevel2Alert { get; set; }
         public Nullable<int> ReauditLevel { get; set; }
         public Nullable<int> StartPhaseEvaluation { get; set; }
+        public Nullable<int> CounterDonePhase { get; set; }
     
         public virtual ConsolidationLevel2 ConsolidationLevel2 { get; set; }
         public virtual ParLevel1 ParLevel1 { get; set; }
@@ -72,5 +74,9 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Result_Level3> Result_Level3 { get; set; }
         public virtual UserSgq UserSgq { get; set; }
+        public virtual CollectionLevel2 CollectionLevel21 { get; set; }
+        public virtual CollectionLevel2 CollectionLevel22 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CorrectiveAction> CorrectiveAction { get; set; }
     }
 }

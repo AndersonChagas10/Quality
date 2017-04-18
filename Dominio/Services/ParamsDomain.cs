@@ -599,8 +599,8 @@ namespace Dominio.Services
                 var DdlParLocal_Level1 = Mapper.Map<List<ParLocalDTO>>(_baseParLocal.GetAllAsNoTracking().Where(p => p.Level == 1));
                 var DdlParLocal_Level2 = Mapper.Map<List<ParLocalDTO>>(_baseParLocal.GetAllAsNoTracking().Where(p => p.Level == 2));
 
-                var DdlParCounter_Level1 = Mapper.Map<List<ParCounterDTO>>(_baseParCounter.GetAllAsNoTracking().Where(p => p.Level == 1));
-                var DdlParCounter_Level2 = Mapper.Map<List<ParCounterDTO>>(_baseParCounter.GetAllAsNoTracking().Where(p => p.Level == 2));
+                var DdlParCounter_Level1 = Mapper.Map<List<ParCounterDTO>>(_baseParCounter.GetAllAsNoTracking().Where(p => p.Level == 1).Where(p=> p.Hashkey != null));
+                var DdlParCounter_Level2 = Mapper.Map<List<ParCounterDTO>>(_baseParCounter.GetAllAsNoTracking().Where(p => p.Level == 2).Where(p => p.Hashkey != null));
 
                 var DdlParLevel3InputType = Mapper.Map<List<ParLevel3InputTypeDTO>>(_baseParLevel3InputType.GetAllAsNoTracking());
                 var DdlParMeasurementUnit = Mapper.Map<List<ParMeasurementUnitDTO>>(_baseParMeasurementUnit.GetAllAsNoTracking());

@@ -2112,6 +2112,7 @@ namespace SGQDBContext
         }
 
     }
+
     public partial class NotConformityRule
     {
         public int Id { get; set; }

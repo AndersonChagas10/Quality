@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="5d52c881ac784cc086c0eb875e74969c" Name="Diagram1" ZoomLevel="60">
+      <Diagram DiagramId="5d52c881ac784cc086c0eb875e74969c" Name="Diagram1" ZoomLevel="102">
         <EntityTypeShape EntityType="SGQ_BrasilModel.DelDados" Width="1.5" PointX="25.75" PointY="4.75" />
         <EntityTypeShape EntityType="SGQ_BrasilModel.Reports_CCA_Audit" Width="1.5" PointX="26.75" PointY="6.75" />
         <EntityTypeShape EntityType="SGQ_BrasilModel.Reports_CFF_Audit" Width="1.5" PointX="26.75" PointY="12.75" />

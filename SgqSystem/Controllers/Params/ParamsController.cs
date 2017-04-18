@@ -68,6 +68,7 @@ namespace SgqSystem.Controllers.Params
             ViewModel.levelControl = 1;
             if (id == -1)/*Retorna View Vazia*/
                 return PartialView("_ParLevel1", ViewModel);
+
             //if (!GlobalConfig.Eua)
             //    return PartialView("_ParLevel1", ViewModel);
             //else
