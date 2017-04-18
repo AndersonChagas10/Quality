@@ -3077,7 +3077,7 @@ namespace SgqSystem.Services
 
                 #endregion
 
-                var counter = 0;
+                //var counter = 0;
                 foreach (var parlevel1 in parLevel1Group) //LOOP2
                 {
 
@@ -3171,7 +3171,7 @@ namespace SgqSystem.Services
                             }
                         }
 
-                        var listCounter = ParCounterDB.GetParLevelXParCounterList(parlevel1.Id, 0, 1, "level1_line");
+                        var listCounter = ParCounterDB.GetParLevelXParCounterList(parlevel1.Id, 0, 1);
 
                         string painelCounters = "";
 
@@ -3224,7 +3224,7 @@ namespace SgqSystem.Services
 
                     //Incrementa Level3Group
                     listLevel3 += level3Group;
-                    counter++;
+                    //counter++;
                 }
                 //Quando termina o loop dos itens agrupados por ParCritialLevel 
                 //Se contem ParCritialLevel
@@ -3533,7 +3533,7 @@ namespace SgqSystem.Services
                                             RuleValue: ruleValue.ToString(),
                                             reaudit: parlevel2.IsReaudit);
 
-                var listLineCounter = ParCounterDB.GetParLevelXParCounterList(0, parlevel2.Id, 2, "level2_line");
+                var listLineCounter = ParCounterDB.GetParLevelXParCounterList(0, parlevel2.Id, 2);
 
                 string lineCounters = "";
 
@@ -3670,7 +3670,7 @@ namespace SgqSystem.Services
                                                                 );
             }
 
-            var listCounter = ParCounterDB.GetParLevelXParCounterList(ParLevel1.Id, 0, 1, "level2_header");
+            var listCounter = ParCounterDB.GetParLevelXParCounterList(ParLevel1.Id, 0, 1);
 
             string painelCounters = "";
 
@@ -3865,8 +3865,8 @@ namespace SgqSystem.Services
 
             var variableList = ParLevel1VariableProductionDB.getVariable(ParLevel1.Id).ToList();
 
-            var listCounter = ParCounterDB.GetParLevelXParCounterList(0, ParLevel2.Id, 2, "level3_header").ToList();
-            listCounter.AddRange(ParCounterDB.GetParLevelXParCounterList(ParLevel1.Id, 0, 1, "level3_header").ToList());
+            var listCounter = ParCounterDB.GetParLevelXParCounterList(0, ParLevel2.Id, 2).ToList();
+            listCounter.AddRange(ParCounterDB.GetParLevelXParCounterList(ParLevel1.Id, 0, 1).ToList());
 
             if (variableList.Count > 0)
             {
