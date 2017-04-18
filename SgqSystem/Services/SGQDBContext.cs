@@ -2044,7 +2044,7 @@ namespace SGQDBContext
             db = _db;
         }
 
-        public IEnumerable<ParCounter> GetParLevelXParCounterList(int ParLevel1_Id, int ParLevel2_Id, int Level, string Local)
+        public IEnumerable<ParCounter> GetParLevelXParCounterList(int ParLevel1_Id, int ParLevel2_Id, int Level)
         {
             try
             {
