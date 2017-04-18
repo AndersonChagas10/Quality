@@ -78,12 +78,15 @@ namespace Helper
 
                     TimeSpan timeSpanTwoMonths = dataSenhaUsuario.AddMonths(2) - dataSenhaUsuario;
 
+                    //Mock Gabriel para parar de dar erro nas datas 2017-04-16
 
-                    if (timeSpan.Days >= timeSpanTwoMonths.Days)
+                    //if (timeSpan.Days >= timeSpanTwoMonths.Days)
+
+                    if (1 >= 2)
                     {
                         UrlHelper urlHelper = new UrlHelper(filterContext.RequestContext);
                         filterContext.Result = new RedirectResult(urlHelper.Action("Perfil", "UserSgq", new { motivo = "passwordExpired" }));
-                        //filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "UserSgq", action = "Perfil" }));
+                        filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "UserSgq", action = "Perfil" }));
                     }
 
                     #endregion

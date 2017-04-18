@@ -800,12 +800,12 @@ namespace SgqSystem.Controllers.Api
 
                     case "M³/BOI":
                         TipoConsumo = "002.M3. Agua";
-                        tipoDeSQL = "ConsumoPorBoiOrcado AS Orcado, ConsumoPorBoiRealizado AS Realizado, NULLIF(ConsumoPorBoiRealizado,0) / NULLIF( ConsumoPorBoiOrcado,0) - 1  AS  AS Desvio ";
+                        tipoDeSQL = "ConsumoPorBoiOrcado AS Orcado, ConsumoPorBoiRealizado AS Realizado, NULLIF(ConsumoPorBoiRealizado,0) / NULLIF( ConsumoPorBoiOrcado,0) - 1  AS Desvio ";
                         break;
 
                     case "KW/BOI":
                         TipoConsumo = "001.KWH. Energia Eletrica - Concessionaria";
-                        tipoDeSQL = "ConsumoPorBoiOrcado AS Orcado, ConsumoPorBoiRealizado AS Realizado, NULLIF(ConsumoPorBoiRealizado,0) / NULLIF( ConsumoPorBoiOrcado,0) - 1  AS  AS Desvio ";
+                        tipoDeSQL = "ConsumoPorBoiOrcado AS Orcado, ConsumoPorBoiRealizado AS Realizado, NULLIF(ConsumoPorBoiRealizado,0) / NULLIF( ConsumoPorBoiOrcado,0) - 1  AS Desvio ";
                         break;
 
                     case "Preço MCAL":
