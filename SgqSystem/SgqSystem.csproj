@@ -18,14 +18,10 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>false</UseIISExpress>
-    <IISExpressSSLPort>
-    </IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>
-    </IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>
-    </IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>
-    </IISExpressUseClassicPipelineMode>
+    <IISExpressSSLPort>63128</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -312,7 +308,7 @@
     <Compile Include="Controllers\Api\Manutencao\ManColetaDadosController.cs" />
     <Compile Include="Controllers\Api\Manutencao\ManDataCollectITsController.cs" />
     <Compile Include="Controllers\Api\Manutencao\PainelIndicadoresUniManutencaoController.cs" />
-    <Compile Include="Controllers\Api\RelatoriosBrasil\RelatorioGenericoApiController.cs" />
+    <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\ApontamentosDiariosApiController.cs" />
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
@@ -2163,7 +2159,7 @@
     <Content Include="Views\FirstConfig\Index.cshtml" />
     <Content Include="Views\Shared\_Level321Chain.cshtml" />
     <Content Include="Views\RelatoriosSgq\RelatorioGenerico.cshtml" />
-    <Content Include="Views\RelatorioGenericoApi\DataTable.cshtml" />
+    <Content Include="Views\RelatoriosSgq\_GenericTable.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2174,7 +2170,6 @@
     <Folder Include="obj\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\EspecificarMonitoramentos\" />
-    <Folder Include="Views\RelatorioController\" />
     <Folder Include="Views\RoleApi\" />
     <Folder Include="Views\ScorecardConfig\" />
     <Folder Include="Views\TipificacaoViewModel\" />

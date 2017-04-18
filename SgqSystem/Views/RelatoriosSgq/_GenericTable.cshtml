@@ -1,0 +1,17 @@
+﻿<table class="table-striped" id="genericTable" ng-app="sgqSystem" ng-controller="MainCtrl" style="width:100%">
+    <thead>
+        <tr>
+            <th ng-repeat="x in header">{{x}}</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th ng-repeat="x in header">{{x}}</th>
+        </tr>
+    </tfoot>
+    <tbody>
+        <tr ng-repeat="body in bodies">
+            <td ng-repeat="x in body">{{x}}</td>
+        </tr>
+    </tbody>
+</table>
