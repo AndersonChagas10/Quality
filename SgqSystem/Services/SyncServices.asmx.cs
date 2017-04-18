@@ -5454,17 +5454,16 @@ namespace SgqSystem.Services
                 c.CountPeriod = 0;
                 c.CountShift = 0;
 
+                var divPeriod = "";
                 if (frequency != null && frequency.ParFrequency_Id == 1)
                 {
-                    var listResultLevel2 = ResultLevel2PeriodDB.GetResultLevel2Period(c.Id, ParCompany_Id, c.ParLevel1_Id, c.ParLevel2_Id, startDate, endDate);
-
-                    var sum = 0;
+                    var listResultLevel2 = ResultLevel2PeriodDB.GetResultLevel2Period(c.Id, ParCompany_Id, c.ParLevel1_Id, c.ParLevel2_Id, startDate, endDate, c.Shift);
+                    
                     foreach(var obj in listResultLevel2)
                     {
-                        sum += obj.Periodos;
+                        divPeriod += "<div class='countPeriod' period='"+ obj.Period+ "' date='"+obj.CollectionDate.ToString("MMddyyyy") + "'></div>";
                     }
-
-                    c.CountPeriod = sum;
+                    
                 }
 
                 PhaseResult += "<div " +
@@ -5475,9 +5474,9 @@ namespace SgqSystem.Services
                     "period=\"" + c.Period + "\" " +
                     "shift=\"" + c.Shift + "\" " +
                     "phase=\"" + c.Phase + "\" " +
-                    "countperiod=\""+ c.CountPeriod + "\" "+
-                    "countshift=\""+ c.CountShift + "\" " +
-                    "class=\"PhaseResultlevel2\"></div>";
+                    "class=\"PhaseResultlevel2\">"+
+                    divPeriod
+                    + "</div>";
             }
             return PhaseResult;
         }

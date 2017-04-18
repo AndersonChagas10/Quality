@@ -2346,8 +2346,8 @@ namespace SGQDBContext
 
     public partial class ResultLevel2Period
     {
-        public string CollectionDate { get; set; }
-        public int Periodos { get; set; }
+        public DateTime CollectionDate { get; set; }
+        public int Period { get; set; }
 
         private SqlConnection db { get; set; }
         public ResultLevel2Period() { }
@@ -2355,14 +2355,14 @@ namespace SGQDBContext
         {
             db = _db;
         }
-        public List<ResultLevel2Period> GetResultLevel2Period(int Id, int ParCompany_Id, int ParLevel1_Id, int ParLevel2_Id, DateTime StartDate, DateTime EndDate)
+        public List<ResultLevel2Period> GetResultLevel2Period(int Id, int ParCompany_Id, int ParLevel1_Id, int ParLevel2_Id, DateTime StartDate, DateTime EndDate, int Shift)
         {
             try
             {
-                string sql = "SELECT CONVERT(VARCHAR(10),CollectionDate,120) CollectionDate, COUNT(DISTINCT Period) Periodos                           "+
-                             "FROM CollectionLevel2 WHERE  Id >= "+ Id + " AND UnitId = " + ParCompany_Id + "  AND                                     " +
-                             "CollectionDate BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00' AND '" + EndDate.ToString("yyyyMMdd") + " 23:59'   "+
-                             "GROUP BY CONVERT(VARCHAR(10), CollectionDate, 120) ORDER BY 1";
+                string sql = "SELECT CAST(CollectionDate as date) as CollectionDate, Period, Shift                                                      " +
+                             "FROM CollectionLevel2 WHERE  Id >= "+ Id + " AND UnitId = " + ParCompany_Id + "  AND  Shift = " + Shift + "  AND          " +
+                             "CollectionDate BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00' AND '" + EndDate.ToString("yyyyMMdd") + " 23:59'    "+
+                             "GROUP BY CAST(CollectionDate as date), Period, Shift ORDER BY 1";
                          
                 var obj = db.Query<ResultLevel2Period>(sql).ToList();
                 return obj;
