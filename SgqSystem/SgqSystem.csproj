@@ -1397,15 +1397,6 @@
     <Folder Include="Arquivos\uploads\" />
     <Folder Include="obj\" />
     <Folder Include="Scripts\i18n\" />
-    <Folder Include="Views\Base\" />
-    <Folder Include="Views\EspecificarMonitoramentos\" />
-    <Folder Include="Views\RelatorioController\" />
-    <Folder Include="Views\RoleApi\" />
-    <Folder Include="Views\ScorecardConfig\" />
-    <Folder Include="Views\TipificacaoViewModel\" />
-    <Folder Include="Views\UserSgqApi\" />
-    <Folder Include="Views\VTVerificacaoTipificacaoAPI\" />
-    <Folder Include="Views\WebService\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

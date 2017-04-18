@@ -91,8 +91,8 @@ namespace Helper
 
                     #endregion
 
-                    else
-                    {
+                    //else
+                    //{
                         if (!string.IsNullOrEmpty(cookie.Values["roles"]))
                         {
                             _userSgqRoles = cookie.Values["roles"].ToString();
@@ -127,10 +127,9 @@ namespace Helper
                         filterContext.Controller.ViewBag.CompanyId = cookie.Values["CompanyId"].ToString();
                         Manutencao(filterContext);
 
+                    //}
 
-                    }
-
-                } 
+                }
             }
 
         }
