@@ -104,6 +104,9 @@ namespace SgqSystem.Mappers
                 /*Email Content*/
                 x.AddProfile<EmailContentMapperProfile>();
 
+                x.AddProfile<RoleUserSgqMapperProfile>();
+
+
                 ///*PA............*/
                 //x.AddProfile<AcompanhamentoTarefaProfile>();
                 //x.AddProfile<CabecalhoProfile>();

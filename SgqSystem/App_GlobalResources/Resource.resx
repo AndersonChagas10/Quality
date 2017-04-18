@@ -1902,4 +1902,7 @@
   <data name="defectsTotal" xml:space="preserve">
     <value>Defects total</value>
   </data>
+  <data name="company_active" xml:space="preserve">
+    <value>Actual Company</value>
+  </data>
 </root>

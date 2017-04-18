@@ -1881,4 +1881,7 @@
   <data name="total_defects_avaliation" xml:space="preserve">
     <value>Total defeitos na avaliação</value>
   </data>
+  <data name="company_active" xml:space="preserve">
+    <value>Empresa Atual</value>
+  </data>
 </root>

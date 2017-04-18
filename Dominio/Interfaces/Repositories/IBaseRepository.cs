@@ -53,5 +53,7 @@ namespace Dominio.Interfaces.Repositories
         int ExecuteSql(string v);
 
         List<T> ExecuteSqlQuery(string v);
+
+        void AddOrUpdate(T obj, bool useTransaction);
     }
 }

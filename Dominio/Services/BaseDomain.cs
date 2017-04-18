@@ -91,6 +91,27 @@ namespace Dominio.Services
             }
         }
 
+        public Y AddOrUpdate(Y obj, bool useTransaction)
+        {
+            try
+            {
+                var saveObj = Mapper.Map<T>(obj);
+                if (saveObj.GetType().GetProperty("Id") != null)
+                {
+                    _repositoryBase.AddOrUpdate(saveObj, useTransaction);
+                    return Mapper.Map<Y>(saveObj);
+                }
+                else
+                {
+                    throw new ExceptionHelper("Object must extend entity base.");
+                }
+            }
+            catch (ExceptionHelper ex)
+            {
+                throw new ExceptionHelper("Erro ao inserir o registro.", ex);
+            }
+        }
+
         public int ExecuteSql(string v)
         {
             return _repositoryBase.ExecuteSql(v);

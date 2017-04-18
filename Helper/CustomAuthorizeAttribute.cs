@@ -56,38 +56,38 @@ namespace Helper
 
                     #region Vrificação Senha Expirada
 
-                    var dataSenhaUsuario = new DateTime();
+                    //var dataSenhaUsuario = new DateTime();
 
-                    if (!string.IsNullOrEmpty(cookie.Values["passwordDate"]))
-                    {
-                        dataSenhaUsuario = DateTime.ParseExact(cookie.Values["passwordDate"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    }
-                    else if (!string.IsNullOrEmpty(cookie.Values["alterDate"]))
-                    {
-                        dataSenhaUsuario = DateTime.ParseExact(cookie.Values["alterDate"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrEmpty(cookie.Values["addDate"]))
-                        {
-                            dataSenhaUsuario = DateTime.ParseExact(cookie.Values["addDate"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                        }
-                    }
+                    //if (!string.IsNullOrEmpty(cookie.Values["passwordDate"]))
+                    //{
+                    //    dataSenhaUsuario = DateTime.ParseExact(cookie.Values["passwordDate"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    //}
+                    //else if (!string.IsNullOrEmpty(cookie.Values["alterDate"]))
+                    //{
+                    //    dataSenhaUsuario = DateTime.ParseExact(cookie.Values["alterDate"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    //}
+                    //else
+                    //{
+                    //    if (!string.IsNullOrEmpty(cookie.Values["addDate"]))
+                    //    {
+                    //        dataSenhaUsuario = DateTime.ParseExact(cookie.Values["addDate"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    //    }
+                    //}
 
-                    TimeSpan timeSpan = DateTime.Today - dataSenhaUsuario;
+                    //TimeSpan timeSpan = DateTime.Today - dataSenhaUsuario;
 
-                    TimeSpan timeSpanTwoMonths = dataSenhaUsuario.AddMonths(2) - dataSenhaUsuario;
+                    //TimeSpan timeSpanTwoMonths = dataSenhaUsuario.AddMonths(2) - dataSenhaUsuario;
 
-                    //Mock Gabriel para parar de dar erro nas datas 2017-04-16
+                    ////Mock Gabriel para parar de dar erro nas datas 2017-04-16
 
-                    //if (timeSpan.Days >= timeSpanTwoMonths.Days)
+                    ////if (timeSpan.Days >= timeSpanTwoMonths.Days)
 
-                    if (1 >= 2)
-                    {
-                        UrlHelper urlHelper = new UrlHelper(filterContext.RequestContext);
-                        filterContext.Result = new RedirectResult(urlHelper.Action("Perfil", "UserSgq", new { motivo = "passwordExpired" }));
-                        filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "UserSgq", action = "Perfil" }));
-                    }
+                    //if (1 >= 2)
+                    //{
+                    //    UrlHelper urlHelper = new UrlHelper(filterContext.RequestContext);
+                    //    filterContext.Result = new RedirectResult(urlHelper.Action("Perfil", "UserSgq", new { motivo = "passwordExpired" }));
+                    //    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "UserSgq", action = "Perfil" }));
+                    //}
 
                     #endregion
 

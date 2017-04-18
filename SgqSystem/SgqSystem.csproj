@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>
     </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>
@@ -444,6 +444,7 @@
     <Compile Include="Mappers\ParCompanyXUserSgqMapperProfile.cs" />
     <Compile Include="Mappers\ResultLevel3MapperProfile.cs" />
     <Compile Include="Mappers\RoleMapperProfile.cs" />
+    <Compile Include="Mappers\RoleUserSgqMapperProfile.cs" />
     <Compile Include="Mappers\ShiftMapperProfile.cs" />
     <Compile Include="Mappers\PeriodMapperProfile.cs" />
     <Compile Include="Mappers\UnitUserMapperProfile.cs" />
@@ -535,6 +536,7 @@
     <Content Include="Content\bootstrap-datepicker3.min.css" />
     <Content Include="Content\bootstrap-datepicker3.standalone.css" />
     <Content Include="Content\bootstrap-datepicker3.standalone.min.css" />
+    <Content Include="Content\bootstrap-select.min.css" />
     <Content Include="Content\bootstrap-switch\css\bootstrap2\bootstrap-switch.css" />
     <Content Include="Content\bootstrap-switch\css\bootstrap2\bootstrap-switch.min.css" />
     <Content Include="Content\bootstrap-switch\css\bootstrap3\bootstrap-switch.css" />
@@ -903,6 +905,7 @@
     <None Include="Properties\PublishProfiles\DeployInternoDebug.pubxml" />
     <None Include="Properties\PublishProfiles\DeploySgqInterno.pubxml" />
     <Content Include="Scripts\bootstrap-datepicker.min.js" />
+    <Content Include="Scripts\bootstrap-select.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\cipher-core.js" />
@@ -1470,7 +1473,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>59668</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/SgqSystem</IISUrl>
+          <IISUrl>http://localhost:59668/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

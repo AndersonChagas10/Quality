@@ -781,6 +781,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Actual Company.
+        /// </summary>
+        internal static string company_active {
+            get {
+                return ResourceManager.GetString("company_active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Company List.
         /// </summary>
         internal static string company_list {

@@ -3,6 +3,7 @@ using Dominio.Interfaces.Repositories;
 using DTO.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
@@ -147,6 +148,22 @@ namespace Data.Repositories
                     Update(obj);
                 else
                     Add(obj);
+            }
+        }
+
+        public void AddOrUpdate(T obj, bool useTransaction)
+        {
+            using (var ts = db.Database.BeginTransaction(IsolationLevel.ReadUncommitted))
+            {
+                if (obj.GetType().GetProperty("Id") != null)
+                {
+                    var id = (int)obj.GetType().GetProperty("Id").GetValue(obj, null);
+                    if (id > 0)
+                        Update(obj);
+                    else
+                        Add(obj);
+                }
+                ts.Commit();
             }
         }
 
