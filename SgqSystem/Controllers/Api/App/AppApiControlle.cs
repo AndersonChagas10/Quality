@@ -30,11 +30,11 @@ namespace SgqSystem.Controllers.Api.App
         [Route("GetContadoresX")]
         public List<RetornoLevel1> GetContadoresX()
         {
-            db.Configuration.LazyLoadingEnabled = false;
+          
 
             /*Busca Items parametrizados a serem calculados*/
             var listLevel1Retorno = new List<RetornoLevel1>();
-            var level2 = db.ParCounterXLocal.Where(r => r.ParLevel2_Id != null).Select(r => r.ParLevel2).Include("ParFrequency").Distinct();
+            var level2 = db.ParCounterXLocal.Where(r => r.ParLevel2_Id != null && r.ParCounter_Id == 1).Select(r => r.ParLevel2).Include("ParFrequency").Distinct();
             var collectionLevel2PorFrequenciaLevel1 = GetCollectionLevel2PelaFrquencia(level2);
             var todosLevel1 = collectionLevel2PorFrequenciaLevel1.Select(r => r.ParLevel1_Id).Distinct();
 
