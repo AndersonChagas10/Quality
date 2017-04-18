@@ -12,18 +12,18 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class Equipamentos
+    public partial class EmailContent
     {
         public int Id { get; set; }
-        public int Unidade { get; set; }
-        public string Nome { get; set; }
-        public int UsuarioInsercao { get; set; }
-        public System.DateTime DataInsercao { get; set; }
-        public Nullable<int> UsuarioAlteracao { get; set; }
-        public Nullable<System.DateTime> DataAlteracao { get; set; }
-        public string Tipo { get; set; }
-        public string Subtipo { get; set; }
-        public Nullable<int> ParCompany_Id { get; set; }
-        public string ParCompanyName { get; set; }
+        public Nullable<System.DateTime> AddDate { get; set; }
+        public Nullable<System.DateTime> AlterDate { get; set; }
+        public string To { get; set; }
+        public string Body { get; set; }
+        public string SendStatus { get; set; }
+        public Nullable<System.DateTime> SendDate { get; set; }
+        public string Project { get; set; }
+        public Nullable<bool> IsBodyHtml { get; set; }
+        public string From { get; set; }
+        public string Subject { get; set; }
     }
 }

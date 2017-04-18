@@ -12,18 +12,15 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class Equipamentos
+    public partial class Email_ConfiguracaoEmailSgq
     {
         public int Id { get; set; }
-        public int Unidade { get; set; }
-        public string Nome { get; set; }
-        public int UsuarioInsercao { get; set; }
-        public System.DateTime DataInsercao { get; set; }
-        public Nullable<int> UsuarioAlteracao { get; set; }
-        public Nullable<System.DateTime> DataAlteracao { get; set; }
-        public string Tipo { get; set; }
-        public string Subtipo { get; set; }
-        public Nullable<int> ParCompany_Id { get; set; }
-        public string ParCompanyName { get; set; }
+        public int Port { get; set; }
+        public bool UseDefaultCredentials { get; set; }
+        public bool EnableSsl { get; set; }
+        public string login { get; set; }
+        public string Host { get; set; }
+        public string pass { get; set; }
+        public bool IsActive { get; set; }
     }
 }

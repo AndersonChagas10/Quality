@@ -12,18 +12,14 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class Equipamentos
+    public partial class Pa_CausaMedidaXAcao
     {
         public int Id { get; set; }
-        public int Unidade { get; set; }
-        public string Nome { get; set; }
-        public int UsuarioInsercao { get; set; }
-        public System.DateTime DataInsercao { get; set; }
-        public Nullable<int> UsuarioAlteracao { get; set; }
-        public Nullable<System.DateTime> DataAlteracao { get; set; }
-        public string Tipo { get; set; }
-        public string Subtipo { get; set; }
-        public Nullable<int> ParCompany_Id { get; set; }
-        public string ParCompanyName { get; set; }
+        public Nullable<int> CausaGenerica_Id { get; set; }
+        public Nullable<int> CausaEspecifica_Id { get; set; }
+        public Nullable<int> ContramedidaGenerica_Id { get; set; }
+        public Nullable<int> ContramedidaEspecifica_Id { get; set; }
+        public Nullable<int> GrupoCausa_Id { get; set; }
+        public int Acao_Id { get; set; }
     }
 }

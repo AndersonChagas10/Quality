@@ -3293,6 +3293,7 @@ namespace SgqSystem.Services
             //Inicializa ParLevel2
             var ParLevel2DB = new SGQDBContext.ParLevel2(db);
             var ParCounterDB = new SGQDBContext.ParCounter(db);
+
             //Pega uma lista de ParLevel2
             //Tem que confirmar a company e colocar na query dentro do método, ainda não foi validado
             var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(ParLevel1.Id, ParCompany_Id);
