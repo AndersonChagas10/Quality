@@ -142,6 +142,7 @@
     <Compile Include="DTO\RoleJBSDTO.cs" />
     <Compile Include="DTO\RoleTypeDTO.cs" />
     <Compile Include="DTO\RoleSGQDTO.cs" />
+    <Compile Include="DTO\RoleUserSgqDTO.cs" />
     <Compile Include="DTO\ScreenComponentDTO.cs" />
     <Compile Include="DTO\EmpresaDTO.cs" />
     <Compile Include="DTO\UserSgqDTO.cs" />

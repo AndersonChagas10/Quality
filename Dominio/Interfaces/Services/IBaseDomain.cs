@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DTO.DTO;
 
 namespace Dominio.Interfaces.Services
 {
@@ -25,5 +26,7 @@ namespace Dominio.Interfaces.Services
         Y AddOrUpdate(Y obj);
 
         int ExecuteSql(string v);
+
+        Y AddOrUpdate(Y userSgqDto, bool v);
     }
 }

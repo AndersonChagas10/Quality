@@ -15,7 +15,7 @@ namespace Dominio
     public partial class Equipamentos
     {
         public int Id { get; set; }
-        public Nullable<int> Unidade { get; set; }
+        public int Unidade { get; set; }
         public string Nome { get; set; }
         public int UsuarioInsercao { get; set; }
         public System.DateTime DataInsercao { get; set; }
@@ -25,7 +25,5 @@ namespace Dominio
         public string Subtipo { get; set; }
         public Nullable<int> ParCompany_Id { get; set; }
         public string ParCompanyName { get; set; }
-    
-        public virtual Unidades Unidades { get; set; }
     }
 }

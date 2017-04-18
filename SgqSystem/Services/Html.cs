@@ -55,13 +55,16 @@ namespace SgqSystem.Services
         /// <param name="style">Styles</param>
         /// <param name="tags">Tags</param>
         /// <returns></returns>
-        public string div(string id = null, string classe = null, string name = null, string outerhtml = null, string style = null, string tags = null)
+        public string div(string id = null, string classe = null, string name = null, string outerhtml = null, string style = null, string tags = null, string outerAngular = null)
         {
 
             if (!string.IsNullOrEmpty(tags))
             {
                 tags = " " + tags;
             }
+            if (!string.IsNullOrEmpty(outerAngular))
+                outerhtml += outerAngular;
+
             return "<div id=\"" + id + "\" class=\"" + classe + "\" name=\"" + name + "\" style=\"" + style + "\"" + tags + ">" + outerhtml + "</div>";
         }
         /// <summary>
@@ -225,7 +228,7 @@ namespace SgqSystem.Services
                     outerhtml +
                     "</ul>";
         }
-        public string listgroupItem(string id = null, string classe = null, string tags = null, string outerhtml = null)
+        public string listgroupItem(string id = null, string classe = null, string tags = null, string outerhtml = null , string totalDefeitos = null)
         {
             classe += " list-group-item";
 
@@ -235,7 +238,7 @@ namespace SgqSystem.Services
                 tags = tags.Trim();
             }
 
-            return "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + ">" + outerhtml + "</li>";
+            return "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + " totalDefeitos='"+ totalDefeitos + "'>" + outerhtml + "</li>";
         }
 
         public string accordeon(string id, string label, string classe = null, string outerhtml = null, bool aberto = false, bootstrapcolor? color = null, int accordeonId = 0, string othersTags = null)

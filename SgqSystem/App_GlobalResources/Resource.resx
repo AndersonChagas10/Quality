@@ -1893,4 +1893,16 @@
   <data name="last" xml:space="preserve">
     <value>Last</value>
   </data>
+  <data name="insert_slaughter_signature" xml:space="preserve">
+    <value>Insert Slaughter Signature</value>
+  </data>
+  <data name="insert_technical_signature" xml:space="preserve">
+    <value>Insert Technical Signature</value>
+  </data>
+  <data name="defectsTotal" xml:space="preserve">
+    <value>Defects total</value>
+  </data>
+  <data name="company_active" xml:space="preserve">
+    <value>Actual Company</value>
+  </data>
 </root>

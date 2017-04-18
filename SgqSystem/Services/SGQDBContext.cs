@@ -2044,7 +2044,7 @@ namespace SGQDBContext
             db = _db;
         }
 
-        public IEnumerable<ParCounter> GetParLevelXParCounterList(int ParLevel1_Id, int ParLevel2_Id, int Level, string Local)
+        public IEnumerable<ParCounter> GetParLevelXParCounterList(int ParLevel1_Id, int ParLevel2_Id, int Level)
         {
             try
             {
@@ -2112,6 +2112,7 @@ namespace SGQDBContext
         }
 
     }
+
     public partial class NotConformityRule
     {
         public int Id { get; set; }
@@ -2252,6 +2253,7 @@ namespace SGQDBContext
 
     public partial class ResultPhase
     {
+        public int Id { get; set; }
         public int ParLevel1_Id { get; set; }
         public int ParLevel2_Id { get; set; }
         public string CollectionDate { get; set; }
@@ -2259,6 +2261,8 @@ namespace SGQDBContext
         public int Shift { get; set; }
         public int EvaluationNumber { get; set; }
         public int Phase { get; set; }
+        public int CountPeriod { get; set; }
+        public int CountShift { get; set; }
 
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
         private SqlConnection db { get; set; }
@@ -2272,6 +2276,7 @@ namespace SGQDBContext
             try
             {
                 string sql = "SELECT   " +
+                            "Id, "+
                             "ParLevel1_Id, " +
                             "ParLevel2_Id, " +
                             "FORMAT(CollectionDate, 'MMddyyyy') as CollectionDate, " +
@@ -2299,6 +2304,69 @@ namespace SGQDBContext
                 //SqlConnection db = new SqlConnection(conexao);
                 var list = db.Query<ResultPhase>(sql).ToList();
                 return list;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
+
+    public partial class ResultPhaseFrequency
+    {
+        public int ParFrequency_Id { get; set; }
+        
+        private SqlConnection db { get; set; }
+        public ResultPhaseFrequency() { }
+        public ResultPhaseFrequency(SqlConnection _db)
+        {
+            db = _db;
+        }
+        public ResultPhaseFrequency GetPhaseFrequency(int ParLevel1_Id, int Phase)
+        {
+            try
+            {
+                string sql = "SELECT * FROM (                                                                               "+
+                             "   SELECT ROW_NUMBER() OVER(ORDER BY Id ASC) AS Phase, p.ParFrequency_Id AS ParFrequency_Id   "+
+                             "   FROM ParRelapse p WHERE ParLevel1_Id = "+ ParLevel1_Id + " AND IsActive = 1                "+
+                             "   ) AS T                                                                                     "+
+                             "   WHERE T.Phase = "+ Phase + "                                                               "+
+                             "                                                                                              ";                                 
+
+
+                //SqlConnection db = new SqlConnection(conexao);
+                var obj = db.Query<ResultPhaseFrequency>(sql).FirstOrDefault();
+                return obj;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
+
+    public partial class ResultLevel2Period
+    {
+        public DateTime CollectionDate { get; set; }
+        public int Period { get; set; }
+
+        private SqlConnection db { get; set; }
+        public ResultLevel2Period() { }
+        public ResultLevel2Period(SqlConnection _db)
+        {
+            db = _db;
+        }
+        public List<ResultLevel2Period> GetResultLevel2Period(int Id, int ParCompany_Id, int ParLevel1_Id, int ParLevel2_Id, DateTime StartDate, DateTime EndDate, int Shift)
+        {
+            try
+            {
+                string sql = "SELECT CAST(CollectionDate as date) as CollectionDate, Period, Shift                                                      " +
+                             "FROM CollectionLevel2 WHERE  Id >= "+ Id + " AND UnitId = " + ParCompany_Id + "  AND  Shift = " + Shift + "  AND          " +
+                             "CollectionDate BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00' AND '" + EndDate.ToString("yyyyMMdd") + " 23:59'    "+
+                             "GROUP BY CAST(CollectionDate as date), Period, Shift ORDER BY 1";
+                         
+                var obj = db.Query<ResultLevel2Period>(sql).ToList();
+                return obj;
             }
             catch (Exception)
             {

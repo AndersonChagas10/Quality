@@ -781,6 +781,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Actual Company.
+        /// </summary>
+        internal static string company_active {
+            get {
+                return ResourceManager.GetString("company_active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Company List.
         /// </summary>
         internal static string company_list {
@@ -1191,6 +1200,15 @@ namespace Resources {
         internal static string defects {
             get {
                 return ResourceManager.GetString("defects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Defects total.
+        /// </summary>
+        internal static string defectsTotal {
+            get {
+                return ResourceManager.GetString("defectsTotal", resourceCulture);
             }
         }
         
@@ -2176,7 +2194,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Insert slaughter signature.
+        ///   Looks up a localized string similar to Insert Slaughter Signature.
         /// </summary>
         internal static string insert_slaughter_signature {
             get {
@@ -2185,7 +2203,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Insert technical signature.
+        ///   Looks up a localized string similar to Insert Technical Signature.
         /// </summary>
         internal static string insert_technical_signature {
             get {

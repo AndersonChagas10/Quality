@@ -14,8 +14,7 @@ namespace Dominio
     using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
-    using Helper;
-
+    
     public partial class SgqDbDevEntities : DbContext
     {
         public SgqDbDevEntities()
@@ -34,7 +33,6 @@ namespace Dominio
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<DelDados> DelDados { get; set; }
         public virtual DbSet<Reports_CCA_Audit> Reports_CCA_Audit { get; set; }
         public virtual DbSet<Reports_CFF_Audit> Reports_CFF_Audit { get; set; }
@@ -48,7 +46,6 @@ namespace Dominio
         public virtual DbSet<CollectionLevel2XParHeaderField> CollectionLevel2XParHeaderField { get; set; }
         public virtual DbSet<ConsolidationLevel01> ConsolidationLevel01 { get; set; }
         public virtual DbSet<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
-        public virtual DbSet<ConsolidationLevel2> ConsolidationLevel2 { get; set; }
         public virtual DbSet<CorrectiveAction> CorrectiveAction { get; set; }
         public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<Departments> Departments { get; set; }
@@ -69,8 +66,6 @@ namespace Dominio
         public virtual DbSet<ParCompanyXUserSgq> ParCompanyXUserSgq { get; set; }
         public virtual DbSet<ParConfSGQ> ParConfSGQ { get; set; }
         public virtual DbSet<ParConsolidationType> ParConsolidationType { get; set; }
-        public virtual DbSet<ParCounter> ParCounter { get; set; }
-        public virtual DbSet<ParCounterXLocal> ParCounterXLocal { get; set; }
         public virtual DbSet<ParCriticalLevel> ParCriticalLevel { get; set; }
         public virtual DbSet<ParDepartment> ParDepartment { get; set; }
         public virtual DbSet<ParEvaluation> ParEvaluation { get; set; }
@@ -93,7 +88,6 @@ namespace Dominio
         public virtual DbSet<ParLevel3Level2Level1> ParLevel3Level2Level1 { get; set; }
         public virtual DbSet<ParLevel3Value> ParLevel3Value { get; set; }
         public virtual DbSet<ParLevelDefiniton> ParLevelDefiniton { get; set; }
-        public virtual DbSet<ParLocal> ParLocal { get; set; }
         public virtual DbSet<ParMeasurementUnit> ParMeasurementUnit { get; set; }
         public virtual DbSet<ParMultipleValues> ParMultipleValues { get; set; }
         public virtual DbSet<ParNotConformityRule> ParNotConformityRule { get; set; }
@@ -132,7 +126,12 @@ namespace Dominio
         public virtual DbSet<LeftControlRole> LeftControlRole { get; set; }
         public virtual DbSet<UserSgq> UserSgq { get; set; }
         public virtual DbSet<ParScoreType> ParScoreType { get; set; }
-        public virtual DbSet<EmailContent> EmailContent { get; set; }
+        public virtual DbSet<RoleUserSgq> RoleUserSgq { get; set; }
+        public virtual DbSet<ConsolidationLevel2> ConsolidationLevel2 { get; set; }
+        public virtual DbSet<ParCounter> ParCounter { get; set; }
+        public virtual DbSet<ParCounterXLocal> ParCounterXLocal { get; set; }
+        public virtual DbSet<ParLocal> ParLocal { get; set; }
+    
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
             var diagramnameParameter = diagramname != null ?

@@ -41,6 +41,8 @@ namespace SgqSystem.Services
         //Contexto util de dados para Ytoara
         private SGQDBContext_YTOARA ytoaraUtil;
 
+        Dominio.SgqDbDevEntities dbEf;
+
         public SyncServices()
         {
 
@@ -56,7 +58,9 @@ namespace SgqSystem.Services
             db = new SqlConnection(conexao);
             SGQ_GlobalADO = new SqlConnection(conexaoSGQ_GlobalADO);
             //db.Open();
-           
+
+            dbEf = new Dominio.SgqDbDevEntities();
+
         }
 
         protected override void Dispose(bool disposing)
@@ -1650,11 +1654,11 @@ namespace SgqSystem.Services
             DateTime TechinicalDateTime = DateCollectConvert(DateTimeTechinical);
             DateTimeTechinical = TechinicalDateTime.ToString("yyyy-MM-dd HH:mm:ss");
 
-            //DateTime CorrectiveActionDate = DateCollectConvert(DateCorrectiveAction);
-            //DateCorrectiveAction = CorrectiveActionDate.ToString("yyyy-MM-dd HH:mm:ss");
+            DateTime CorrectiveActionDate = DateCollectConvert(DateCorrectiveAction);
+            DateCorrectiveAction = CorrectiveActionDate.ToString("yyyy-MM-dd HH:mm:ss");
 
-            //DateTime StartTimeAudit = DateCollectConvert(AuditStartTime);
-            //AuditStartTime = StartTimeAudit.ToString("yyyy-MM-dd HH:mm:ss");
+            DateTime StartTimeAudit = DateCollectConvert(AuditStartTime);
+            AuditStartTime = StartTimeAudit.ToString("yyyy-MM-dd HH:mm:ss");
 
             //Script de Insert
             string sql = "INSERT INTO CorrectiveAction ([AuditorId],[CollectionLevel02Id],[SlaughterId],[TechinicalId],[DateTimeSlaughter],[DateTimeTechinical],[AddDate],[AlterDate],[DateCorrectiveAction],[AuditStartTime],[DescriptionFailure],[ImmediateCorrectiveAction],[ProductDisposition],[PreventativeMeasure]) " +
@@ -3073,7 +3077,7 @@ namespace SgqSystem.Services
 
                 #endregion
 
-                var counter = 0;
+                //var counter = 0;
                 foreach (var parlevel1 in parLevel1Group) //LOOP2
                 {
 
@@ -3167,7 +3171,7 @@ namespace SgqSystem.Services
                             }
                         }
 
-                        var listCounter = ParCounterDB.GetParLevelXParCounterList(parlevel1.Id, 0, 1, "level1_line");
+                        var listCounter = ParCounterDB.GetParLevelXParCounterList(parlevel1.Id, 0, 1);
 
                         string painelCounters = "";
 
@@ -3220,7 +3224,7 @@ namespace SgqSystem.Services
 
                     //Incrementa Level3Group
                     listLevel3 += level3Group;
-                    counter++;
+                    //counter++;
                 }
                 //Quando termina o loop dos itens agrupados por ParCritialLevel 
                 //Se contem ParCritialLevel
@@ -3289,6 +3293,7 @@ namespace SgqSystem.Services
             //Inicializa ParLevel2
             var ParLevel2DB = new SGQDBContext.ParLevel2(db);
             var ParCounterDB = new SGQDBContext.ParCounter(db);
+
             //Pega uma lista de ParLevel2
             //Tem que confirmar a company e colocar na query dentro do método, ainda não foi validado
             var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(ParLevel1.Id, ParCompany_Id);
@@ -3529,7 +3534,7 @@ namespace SgqSystem.Services
                                             RuleValue: ruleValue.ToString(),
                                             reaudit: parlevel2.IsReaudit);
 
-                var listLineCounter = ParCounterDB.GetParLevelXParCounterList(0, parlevel2.Id, 2, "level2_line");
+                var listLineCounter = ParCounterDB.GetParLevelXParCounterList(0, parlevel2.Id, 2);
 
                 string lineCounters = "";
 
@@ -3666,7 +3671,7 @@ namespace SgqSystem.Services
                                                                 );
             }
 
-            var listCounter = ParCounterDB.GetParLevelXParCounterList(ParLevel1.Id, 0, 1, "level2_header");
+            var listCounter = ParCounterDB.GetParLevelXParCounterList(ParLevel1.Id, 0, 1);
 
             string painelCounters = "";
 
@@ -3861,8 +3866,8 @@ namespace SgqSystem.Services
 
             var variableList = ParLevel1VariableProductionDB.getVariable(ParLevel1.Id).ToList();
 
-            var listCounter = ParCounterDB.GetParLevelXParCounterList(0, ParLevel2.Id, 2, "level3_header").ToList();
-            listCounter.AddRange(ParCounterDB.GetParLevelXParCounterList(ParLevel1.Id, 0, 1, "level3_header").ToList());
+            var listCounter = ParCounterDB.GetParLevelXParCounterList(0, ParLevel2.Id, 2).ToList();
+            listCounter.AddRange(ParCounterDB.GetParLevelXParCounterList(ParLevel1.Id, 0, 1).ToList());
 
             if (variableList.Count > 0)
             {
@@ -4459,27 +4464,27 @@ namespace SgqSystem.Services
                                        "<button class=\"btn btn-default button-collapse\"><i class=\"fa fa-compress\" aria-hidden=\"true\"></i> Fechar Todos</button>";
                 }
 
-                painellevel3 = html.listgroupItem(
-                                                            outerhtml: avaliacoes +
-                                                                       amostras +
-                                                                       painelLevel3HeaderListHtml,
+                // incluir coluna e obter o total de amostras com defeito agrupado.
+                var level2 = dbEf.ParCounterXLocal.FirstOrDefault(r => r.ParLevel2_Id != ParLevel2.Id && r.ParCounter_Id == 21 && r.IsActive);
+                if (level2 != null)
+                {
+                    painelLevel3HeaderListHtml += "<div id='tdef'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>";
+                    painelLevel3HeaderListHtml += "<div id='tdefav'>" + CommonData.getResource("total_defects_avaliation").Value.ToString() + ": <span>0</span></div>";
+                }
 
-                                               classe: "painel painelLevel03 row") +
+                painellevel3 = html.listgroupItem(outerhtml: avaliacoes +
+                                                             amostras +
+                                                             painelLevel3HeaderListHtml,
+                                                  classe: "painel painelLevel03 row") +
                               html.painelCounters(listCounter);
-                //+
-                //                                html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
+       
+                //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 var botoesTodos = "";
-
                 if (GlobalConfig.Brasil)
                 {
-                    botoesTodos =
-
-                        "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
-
-                        "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>";
-
-
+                    botoesTodos =   "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
+                                    "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>";
                 }
 
                 string panelButton = html.listgroupItem(
@@ -4493,7 +4498,6 @@ namespace SgqSystem.Services
                     parLevel3Group = html.div(
                                                classe: "level3Group",
                                                tags: "level1id=\"" + ParLevel1.Id + "\" level2id=\"" + ParLevel2.Id + "\"",
-
                                                outerhtml: reauditFlag +
                                                           painellevel3 + panelButton +
                                                           parLevel3Group
@@ -4504,6 +4508,7 @@ namespace SgqSystem.Services
 
 
         }
+
         /// <summary>
         /// Gera o input para level3
         /// </summary>
@@ -5345,7 +5350,9 @@ namespace SgqSystem.Services
                 ProductDisposition = HttpUtility.UrlDecode(ProductDisposition, System.Text.Encoding.Default);
                 PreventativeMeasure = HttpUtility.UrlDecode(PreventativeMeasure, System.Text.Encoding.Default);
 
-                int id = correctiveActionInsert(AuditorId, CollectionLevel2_Id, SlaughterId, TechinicalId, DateTimeSlaughter, DateTimeTechinical, Convert.ToDateTime(DateCorrectiveAction).ToString("yyyy-MM-dd HH:mm:ss"), Convert.ToDateTime(AuditStartTime).ToString("yyyy-MM-dd HH:mm:ss"), DescriptionFailure, ImmediateCorrectiveAction, ProductDisposition, PreventativeMeasure);
+                int id = correctiveActionInsert(AuditorId, CollectionLevel2_Id, SlaughterId, TechinicalId, DateTimeSlaughter, DateTimeTechinical, DateCorrectiveAction, AuditStartTime, DescriptionFailure, 
+                    ImmediateCorrectiveAction, ProductDisposition, PreventativeMeasure);
+                
                 if (id > 0)
                 {
                     //01/20/2017
@@ -5429,6 +5436,9 @@ namespace SgqSystem.Services
         {
 
             var ResultPhaseDB = new SGQDBContext.ResultPhase(db);
+            var ResultPhaseFrequencyDB = new SGQDBContext.ResultPhaseFrequency(db);
+            var ResultLevel2PeriodDB = new SGQDBContext.ResultLevel2Period(db);
+            
             //Instanciamos uma variável que irá 
 
             DateTime startDate = DateCollectConvert(date);
@@ -5442,6 +5452,23 @@ namespace SgqSystem.Services
             //Percorremos as consolidações de ParLevel1
             foreach (var c in ResultPhaseList)
             {
+                var frequency = ResultPhaseFrequencyDB.GetPhaseFrequency(c.ParLevel1_Id, c.Phase);
+
+                c.CountPeriod = 0;
+                c.CountShift = 0;
+
+                var divPeriod = "";
+                if (frequency != null && frequency.ParFrequency_Id == 1)
+                {
+                    var listResultLevel2 = ResultLevel2PeriodDB.GetResultLevel2Period(c.Id, ParCompany_Id, c.ParLevel1_Id, c.ParLevel2_Id, startDate, endDate, c.Shift);
+                    
+                    foreach(var obj in listResultLevel2)
+                    {
+                        divPeriod += "<div class='countPeriod' period='"+ obj.Period+ "' date='"+obj.CollectionDate.ToString("MMddyyyy") + "'></div>";
+                    }
+                    
+                }
+
                 PhaseResult += "<div " +
                     "parlevel1_id=\"" + c.ParLevel1_Id + "\" " +
                     "parlevel2_id=\"" + c.ParLevel2_Id + "\" " +
@@ -5450,7 +5477,9 @@ namespace SgqSystem.Services
                     "period=\"" + c.Period + "\" " +
                     "shift=\"" + c.Shift + "\" " +
                     "phase=\"" + c.Phase + "\" " +
-                    "class=\"PhaseResultlevel2\"></div>";
+                    "class=\"PhaseResultlevel2\">"+
+                    divPeriod
+                    + "</div>";
             }
             return PhaseResult;
         }

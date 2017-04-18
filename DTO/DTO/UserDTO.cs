@@ -84,5 +84,14 @@ namespace DTO.DTO
 
         public bool app { get; set; }
 
+
+        public string ConfirmPassword { get; set; }
+        public Nullable<System.DateTime> AcessDate { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public IEnumerable<int> ListParCompany_Id { get; set; }
+        public IEnumerable<string> ListRole { get; set; }
+
+
     }
 }
