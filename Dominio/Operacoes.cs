@@ -17,20 +17,13 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Operacoes()
         {
-            this.AcoesCorretivas = new HashSet<AcoesCorretivas>();
-            this.Alertas = new HashSet<Alertas>();
+            this.Metas = new HashSet<Metas>();
+            this.Tarefas = new HashSet<Tarefas>();
             this.DepartamentoOperacoes = new HashSet<DepartamentoOperacoes>();
             this.FamiliaProdutos = new HashSet<FamiliaProdutos>();
-            this.Horarios = new HashSet<Horarios>();
-            this.Metas = new HashSet<Metas>();
-            this.MonitoramentosConcorrentes = new HashSet<MonitoramentosConcorrentes>();
-            this.ObservacoesPadroes = new HashSet<ObservacoesPadroes>();
-            this.PacotesOperacoes = new HashSet<PacotesOperacoes>();
-            this.Pontos = new HashSet<Pontos>();
-            this.TarefaAvaliacoes = new HashSet<TarefaAvaliacoes>();
-            this.Tarefas = new HashSet<Tarefas>();
-            this.TipificacaoReal = new HashSet<TipificacaoReal>();
             this.VolumeProducao = new HashSet<VolumeProducao>();
+            this.Horarios = new HashSet<Horarios>();
+            this.TarefaAvaliacoes = new HashSet<TarefaAvaliacoes>();
         }
     
         public int Id { get; set; }
@@ -65,32 +58,18 @@ namespace Dominio
         public Nullable<bool> ExibirTarefasAcumuladas { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AcoesCorretivas> AcoesCorretivas { get; set; }
+        public virtual ICollection<Metas> Metas { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Alertas> Alertas { get; set; }
+        public virtual ICollection<Tarefas> Tarefas { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DepartamentoOperacoes> DepartamentoOperacoes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FamiliaProdutos> FamiliaProdutos { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VolumeProducao> VolumeProducao { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Horarios> Horarios { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Metas> Metas { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MonitoramentosConcorrentes> MonitoramentosConcorrentes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ObservacoesPadroes> ObservacoesPadroes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PacotesOperacoes> PacotesOperacoes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Pontos> Pontos { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TarefaAvaliacoes> TarefaAvaliacoes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Tarefas> Tarefas { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TipificacaoReal> TipificacaoReal { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<VolumeProducao> VolumeProducao { get; set; }
     }
 }

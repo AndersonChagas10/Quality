@@ -14,19 +14,10 @@ namespace Dominio
     
     public partial class CaracteristicaTipificacao
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CaracteristicaTipificacao()
-        {
-            this.CaracteristicaTipificacaoSequencial = new HashSet<CaracteristicaTipificacaoSequencial>();
-        }
-    
         public decimal nCdCaracteristica { get; set; }
         public string cNmCaracteristica { get; set; }
         public string cNrCaracteristica { get; set; }
         public string cSgCaracteristica { get; set; }
         public string cIdentificador { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CaracteristicaTipificacaoSequencial> CaracteristicaTipificacaoSequencial { get; set; }
     }
 }
