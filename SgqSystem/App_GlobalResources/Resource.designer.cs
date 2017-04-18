@@ -1195,6 +1195,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Defects total.
+        /// </summary>
+        internal static string defectsTotal {
+            get {
+                return ResourceManager.GetString("defectsTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Defects Evaluation.
         /// </summary>
         internal static string defects_evaluate {
