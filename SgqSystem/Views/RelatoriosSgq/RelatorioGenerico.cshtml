@@ -4,6 +4,9 @@
     //var urlGet = Url.Action("GetRelatorio", "RelatorioGenericoApi");
     var urlGet = Url.Action("getTabela", "api/RelatorioGenerico");
 }
+
+<script src="~/Scripts/smart-table.min.js"></script>
+
 <div class="page-content" style="min-height: 600px;">
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
     <div id="formBodyContent">
@@ -67,7 +70,9 @@
         }
 
         //Angular
-        angular.module("sgqSystem").controller('MainCtrl', ['$scope', '$http', '$compile', function ($scope, $http, $compile) {
+        var app = angular.module('sgqSystem', []);
+
+        app.controller('MainCtrl', ['$scope', '$http', '$compile', function ($scope, $http, $compile) {
 
             // remover e reinserir o elemento para funcionar no angular
             $('#btnSend').replaceWith($('#btnSend'));
@@ -85,6 +90,7 @@
                 //fazer ajax
                 $http({
                     method: 'POST',
+                    data: enviar,
                     url: urlGet
                 }).then(function (retorno) {
 
