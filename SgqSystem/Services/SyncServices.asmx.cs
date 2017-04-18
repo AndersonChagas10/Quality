@@ -1654,11 +1654,11 @@ namespace SgqSystem.Services
             DateTime TechinicalDateTime = DateCollectConvert(DateTimeTechinical);
             DateTimeTechinical = TechinicalDateTime.ToString("yyyy-MM-dd HH:mm:ss");
 
-            //DateTime CorrectiveActionDate = DateCollectConvert(DateCorrectiveAction);
-            //DateCorrectiveAction = CorrectiveActionDate.ToString("yyyy-MM-dd HH:mm:ss");
+            DateTime CorrectiveActionDate = DateCollectConvert(DateCorrectiveAction);
+            DateCorrectiveAction = CorrectiveActionDate.ToString("yyyy-MM-dd HH:mm:ss");
 
-            //DateTime StartTimeAudit = DateCollectConvert(AuditStartTime);
-            //AuditStartTime = StartTimeAudit.ToString("yyyy-MM-dd HH:mm:ss");
+            DateTime StartTimeAudit = DateCollectConvert(AuditStartTime);
+            AuditStartTime = StartTimeAudit.ToString("yyyy-MM-dd HH:mm:ss");
 
             //Script de Insert
             string sql = "INSERT INTO CorrectiveAction ([AuditorId],[CollectionLevel02Id],[SlaughterId],[TechinicalId],[DateTimeSlaughter],[DateTimeTechinical],[AddDate],[AlterDate],[DateCorrectiveAction],[AuditStartTime],[DescriptionFailure],[ImmediateCorrectiveAction],[ProductDisposition],[PreventativeMeasure]) " +
@@ -5349,7 +5349,9 @@ namespace SgqSystem.Services
                 ProductDisposition = HttpUtility.UrlDecode(ProductDisposition, System.Text.Encoding.Default);
                 PreventativeMeasure = HttpUtility.UrlDecode(PreventativeMeasure, System.Text.Encoding.Default);
 
-                int id = correctiveActionInsert(AuditorId, CollectionLevel2_Id, SlaughterId, TechinicalId, DateTimeSlaughter, DateTimeTechinical, Convert.ToDateTime(DateCorrectiveAction).ToString("yyyy-MM-dd HH:mm:ss"), Convert.ToDateTime(AuditStartTime).ToString("yyyy-MM-dd HH:mm:ss"), DescriptionFailure, ImmediateCorrectiveAction, ProductDisposition, PreventativeMeasure);
+                int id = correctiveActionInsert(AuditorId, CollectionLevel2_Id, SlaughterId, TechinicalId, DateTimeSlaughter, DateTimeTechinical, DateCorrectiveAction, AuditStartTime, DescriptionFailure, 
+                    ImmediateCorrectiveAction, ProductDisposition, PreventativeMeasure);
+                
                 if (id > 0)
                 {
                     //01/20/2017
