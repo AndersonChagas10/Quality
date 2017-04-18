@@ -25,5 +25,7 @@ namespace Dominio
         public string Subtipo { get; set; }
         public Nullable<int> ParCompany_Id { get; set; }
         public string ParCompanyName { get; set; }
+    
+        public virtual Unidades Unidades { get; set; }
     }
 }

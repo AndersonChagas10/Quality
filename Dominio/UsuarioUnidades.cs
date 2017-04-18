@@ -23,6 +23,5 @@ namespace Dominio
         public Nullable<System.DateTime> DataAlteracao { get; set; }
     
         public virtual Unidades Unidades { get; set; }
-        public virtual Usuarios Usuarios { get; set; }
     }
 }

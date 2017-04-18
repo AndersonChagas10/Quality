@@ -245,11 +245,11 @@ namespace SgqSystem.Controllers
 
                 var senhaAntiga = userSgq.Password;
 
-                if (Guard.EncryptStringAES(senhaAntiga).Equals(model.SenhaAntiga))
+                if (Guard.DecryptStringAES(senhaAntiga).Equals(model.SenhaAntiga))
                 {
                     userSgq.AlterDate = DateTime.Now;
                     userSgq.PasswordDate = DateTime.Now.AddMonths(2);
-                    userSgq.Password = Guard.Criptografar3DES(model.Password);
+                    userSgq.Password = Guard.EncryptStringAES(model.Password);
 
                     db.Entry(userSgq).State = EntityState.Modified;
 
