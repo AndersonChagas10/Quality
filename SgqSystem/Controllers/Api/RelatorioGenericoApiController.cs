@@ -24,7 +24,7 @@ namespace SgqSystem.Controllers.Api
             var querybody = "select top 10 STR(Id) as Col1, Name as Col2, [Password] as Col3 from UserSgq";
 
             //retorno.header = db.Database.SqlQuery<string>(queryHeader).ToList();
-            retorno.header = new List<string> {"Id","Nome","Password" };
+            retorno.header = new List<string> {"Id","Nome","Senha" };
             retorno.body = db.Database.SqlQuery<PropriedadesGenericas>(querybody).ToList();
 
             return retorno;
