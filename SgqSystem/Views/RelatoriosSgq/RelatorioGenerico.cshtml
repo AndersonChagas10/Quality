@@ -165,33 +165,6 @@
     }]);
 
 
-    app.filter('myFilter2', function () {
-        return function (body) {
-            var result = [];
-
-            //console.log(body);
-
-            angular.forEach(body, function (value, key) {
-                //var item = [];
-                //angular.forEach(value, function (value2, key2) {
-                //    if (value2 != null) {
-                //        item.push(value2);
-                //    }
-                //})
-                //result.push(item);
-
-                console.log(result);
-
-                if(value != null){
-                    result.push(value)
-                }
-
-                //console.log(result);
-            });
-            return result;
-        }
-    });
-
     //app.controller('sortCtrl', ['$scope', '$filter', function (scope, filter) {
     //    scope.rowCollection = [
     //        {firstName: 'Laurent', lastName: 'Renard', birthDate: new Date('1987-05-21'), balance: 102, email: 'whatever@gmail.com'},
