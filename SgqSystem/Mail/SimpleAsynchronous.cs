@@ -6,11 +6,13 @@ using Dominio;
 using System.Linq;
 using DTO.Helpers;
 using System.Data;
+using Helper;
 
 namespace SgqSystem.Mail
 {
     public class SimpleAsynchronous
     {
+
         private static bool executing { get; set; }
         public static void UpdatePassAES()
         {
@@ -54,25 +56,31 @@ namespace SgqSystem.Mail
         static bool mailSent = false;
         private static void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
         {
-            // Get the unique identifier for this asynchronous operation.
-            String token = (string)e.UserState;
+            using (var db = new SgqDbDevEntities())
+            {
+                // Get the unique identifier for this asynchronous operation.
+                String token = (string)e.UserState;
+                
 
-            if (e.Cancelled)
-            {
-                Console.WriteLine("[{0}] Send canceled.", token);
+
+                if (e.Cancelled)
+                {
+                    Console.WriteLine("[{0}] Send canceled.", token);
+                }
+                if (e.Error != null)
+                {
+                    Console.WriteLine("[{0}] {1}", token, e.Error.ToString());
+                }
+                else
+                {
+                    Console.WriteLine("Message sent.");
+                }
+
+                mailSent = true;
             }
-            if (e.Error != null)
-            {
-                Console.WriteLine("[{0}] {1}", token, e.Error.ToString());
-            }
-            else
-            {
-                Console.WriteLine("Message sent.");
-            }
-            mailSent = true;
         }
 
-        public static void SendMail()
+        public static void SendMail(EmailContent mailEntry)
         {
 
 
@@ -103,9 +111,9 @@ namespace SgqSystem.Mail
             // Specify the e-mail sender.
             // Create a mailing address that includes a UTF8 character
             // in the display name.
-            MailAddress from = new MailAddress("celsogea@hotmail.com", "SGQ", System.Text.Encoding.UTF8);
+            MailAddress from = new MailAddress(mailEntry.From, "SGQ", System.Text.Encoding.UTF8);
             // Set destinations for the e-mail message.
-            MailAddress to = new MailAddress("celsogea@hotmail.com");
+            MailAddress to = new MailAddress(mailEntry.To);
 
             #endregion
 
@@ -113,10 +121,11 @@ namespace SgqSystem.Mail
 
             // Specify the message content.
             MailMessage message = new MailMessage(from, to);
-            message.Subject = "test message 1";
-            message.SubjectEncoding = System.Text.Encoding.UTF8;
-            message.Body = "This is a test e-mail message sent by an application. ";
+            message.Subject = mailEntry.Subject;
+            message.Body = mailEntry.Body;
             message.Body += Environment.NewLine;
+            message.IsBodyHtml = mailEntry.IsBodyHtml;
+            message.SubjectEncoding = System.Text.Encoding.UTF8;
             message.BodyEncoding = System.Text.Encoding.UTF8;
 
             #endregion
@@ -132,7 +141,7 @@ namespace SgqSystem.Mail
             // The userState can be any object that allows your callback 
             // method to identify this send operation.
             // For this example, the userToken is a string constant.
-            string userState = "test message1";
+            string userState = mailEntry.Id.ToString();
             client.SendAsync(message, userState);
 
 

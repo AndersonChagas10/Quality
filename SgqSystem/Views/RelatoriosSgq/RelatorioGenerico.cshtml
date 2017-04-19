@@ -86,23 +86,23 @@
 
     <div ng-controller="MainCtrl">
 
-        <table st-table="displayedCollection" st-safe-src="bodies" class="table table-striped" ng-app="sgqSystem">
+        <table st-table="displayedCollection" st-safe-src="bodies" class="table table-striped" >
             <thead>
                 <tr>
-                    <th st-sort="{{x}}" ng-repeat="x in header">{{x}}</th>
+                    <th st-sort="{{x}}" ng-repeat="x in header | filter:{header:''}">{{x}}</th>
                 </tr>
                 <tr>
                     <th colspan="50"><input st-search="" class="form-control" placeholder="Buscar Tudo ..." type="text" /></th>
                 </tr>
             </thead>
             @*<tfoot>
-                    <tr>
-                        <th ng-repeat="x in header">{{x}}</th>
-                    </tr>
-                </tfoot>*@
+                <tr>
+                    <th ng-repeat="x in header">{{x}}</th>
+                </tr>
+            </tfoot>*@
             <tbody>
-                <tr ng-repeat="body in displayedCollection">
-                    <td ng-repeat="x in body">{{x}}</td>
+                <tr ng-repeat="body in displayedCollection | filter:{displayedCollection:''}">
+                    <td ng-repeat="x in body | filter:{body:''}">{{x}}</td>
                 </tr>
             </tbody>
         </table>
