@@ -5002,6 +5002,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total defects per evaluation.
+        /// </summary>
+        internal static string total_defects_avaliation {
+            get {
+                return ResourceManager.GetString("total_defects_avaliation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total evaluated.
         /// </summary>
         internal static string total_evaluated {

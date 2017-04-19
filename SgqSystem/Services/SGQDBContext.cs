@@ -2233,6 +2233,7 @@ namespace SGQDBContext
 
                 if (IsReaudit == true && HaveReaudit == 1)
                 {
+                    ReauditNumber++;
                     sql = "UPDATE CollectionLevel2 SET ReauditLevel = '" + ReauditLevel + "', HaveReaudit = '" + HaveReaudit + "', ReauditNumber = '" + ReauditNumber + "' WHERE [Key] = '" + Key + "'";
                 }else if (IsReaudit == true && HaveReaudit == 0)
                 {
