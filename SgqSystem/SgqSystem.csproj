@@ -445,6 +445,7 @@
     <Compile Include="Mappers\ParCompanyXUserSgqMapperProfile.cs" />
     <Compile Include="Mappers\ResultLevel3MapperProfile.cs" />
     <Compile Include="Mappers\RoleMapperProfile.cs" />
+    <Compile Include="Mappers\RoleUserSgqMapperProfile.cs" />
     <Compile Include="Mappers\ShiftMapperProfile.cs" />
     <Compile Include="Mappers\PeriodMapperProfile.cs" />
     <Compile Include="Mappers\UnitUserMapperProfile.cs" />

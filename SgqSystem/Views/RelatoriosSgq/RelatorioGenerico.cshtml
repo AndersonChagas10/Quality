@@ -12,93 +12,93 @@
 
     @*<div ng-controller="safeCtrl">
 
-        <button type="button" ng-click="addRandomItem(row)" class="btn btn-sm btn-success">
-            <i class="glyphicon glyphicon-plus">
-            </i> Add random item
-        </button>
+            <button type="button" ng-click="addRandomItem(row)" class="btn btn-sm btn-success">
+                <i class="glyphicon glyphicon-plus">
+                </i> Add random item
+            </button>
 
-        <table st-table="displayedCollection" st-safe-src="rowCollection" class="table table-striped">
-            <thead>
-                <tr>
-                    <th st-sort="firstName">first name</th>
-                    <th st-sort="lastName">last name</th>
-                    <th st-sort="birthDate">birth date</th>
-                    <th st-sort="balance">balance</th>
-                </tr>
-                <tr>
-                    <th colspan="5"><input st-search="" class="form-control" placeholder="global search ..." type="text" /></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="row in displayedCollection">
-                    <td>{{row.firstName}}</td>
-                    <td>{{row.lastName}}</td>
-                    <td>{{row.birthDate}}</td>
-                    <td>{{row.balance}}</td>
-                    <td>
-                        <button type="button" ng-click="removeItem(row)" class="btn btn-sm btn-danger">
-                            <i class="glyphicon glyphicon-remove-circle">
-                            </i>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+            <table st-table="displayedCollection" st-safe-src="rowCollection" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th st-sort="firstName">first name</th>
+                        <th st-sort="lastName">last name</th>
+                        <th st-sort="birthDate">birth date</th>
+                        <th st-sort="balance">balance</th>
+                    </tr>
+                    <tr>
+                        <th colspan="5"><input st-search="" class="form-control" placeholder="global search ..." type="text" /></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in displayedCollection">
+                        <td>{{row.firstName}}</td>
+                        <td>{{row.lastName}}</td>
+                        <td>{{row.birthDate}}</td>
+                        <td>{{row.balance}}</td>
+                        <td>
+                            <button type="button" ng-click="removeItem(row)" class="btn btn-sm btn-danger">
+                                <i class="glyphicon glyphicon-remove-circle">
+                                </i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-    </div>
+        </div>
 
-    <div ng-controller="sortCtrl">
+        <div ng-controller="sortCtrl">
 
-        <table st-table="rowCollection" class="table table-striped">
-            <thead>
-                <tr>
-                    <th st-sort="getters.firstName">first name</th>
-                    <th st-sort="lastName">last name</th>
-                    <th st-sort="birthDate">birth date</th>
-                    <th st-sort="balance" st-skip-natural="true">balance</th>
-                    <th>email</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="row in rowCollection">
-                    <td>{{row.firstName | uppercase}}</td>
-                    <td>{{row.lastName}}</td>
-                    <td>{{row.birthDate | date}}</td>
-                    <td>{{row.balance | currency}}</td>
-                    <td><a ng-href="mailto:{{row.email}}">email</a></td>
-                </tr>
-            </tbody>
-        </table>
+            <table st-table="rowCollection" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th st-sort="getters.firstName">first name</th>
+                        <th st-sort="lastName">last name</th>
+                        <th st-sort="birthDate">birth date</th>
+                        <th st-sort="balance" st-skip-natural="true">balance</th>
+                        <th>email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in rowCollection">
+                        <td>{{row.firstName | uppercase}}</td>
+                        <td>{{row.lastName}}</td>
+                        <td>{{row.birthDate | date}}</td>
+                        <td>{{row.balance | currency}}</td>
+                        <td><a ng-href="mailto:{{row.email}}">email</a></td>
+                    </tr>
+                </tbody>
+            </table>
 
-    </div>*@
+        </div>*@
 
 
 
     <div ng-controller="MainCtrl">
 
-    <table  class="table table-striped" ng-app="sgqSystem" >
-        <thead>
-            <tr>
-                <th ng-repeat="x in header">{{x}}</th>
-            </tr>
-            @*<tr>
-                <th colspan="50"><input st-search="" class="form-control" placeholder="Buscar Tudo ..." type="text" /></th>
-            </tr>*@
-        </thead>
-        @*<tfoot>
-            <tr>
-                <th ng-repeat="x in header">{{x}}</th>
-            </tr>
-        </tfoot>*@
-        <tbody>
-            <tr ng-repeat="body in bodies">
-                <td ng-repeat="x in body">{{x}}</td>
-            </tr>
-        </tbody>
-    </table>
+        <table class="table table-striped" ng-app="sgqSystem">
+            <thead>
+                <tr>
+                    <th ng-repeat="x in header">{{x}}</th>
+                </tr>
+                @*<tr>
+                        <th colspan="50"><input st-search="" class="form-control" placeholder="Buscar Tudo ..." type="text" /></th>
+                    </tr>*@
+            </thead>
+            @*<tfoot>
+                    <tr>
+                        <th ng-repeat="x in header">{{x}}</th>
+                    </tr>
+                </tfoot>*@
+            <tbody>
+                <tr ng-repeat="body in bodies">
+                    <td ng-repeat="x in body">{{x}}</td>
+                </tr>
+            </tbody>
+        </table>
 
-    {{header }}
-    {{bodies }}
+        {{header }}
+        {{bodies }}
 
     </div>
 
