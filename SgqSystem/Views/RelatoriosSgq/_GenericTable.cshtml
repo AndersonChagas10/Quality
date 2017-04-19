@@ -1,7 +1,10 @@
-﻿<table class="table-striped" id="genericTable" ng-app="sgqSystem" ng-controller="MainCtrl" style="width:100%">
+﻿<table st-table="bodies" st-safe-src="bodies" class="table table-striped" ng-app="sgqSystem" ng-controller="MainCtrl">
     <thead>
         <tr>
             <th ng-repeat="x in header">{{x}}</th>
+        </tr>
+        <tr>
+            <th colspan="50"><input st-search="" class="form-control" placeholder="Buscar Tudo ..." type="text" /></th>
         </tr>
     </thead>
     <tfoot>
