@@ -2032,6 +2032,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hide_All.
+        /// </summary>
+        internal static string hide_all {
+            get {
+                return ResourceManager.GetString("hide_all", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
         internal static string home {
@@ -4548,6 +4557,15 @@ namespace Resources {
         internal static string showing {
             get {
                 return ResourceManager.GetString("showing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show All.
+        /// </summary>
+        internal static string show_all {
+            get {
+                return ResourceManager.GetString("show_all", resourceCulture);
             }
         }
         

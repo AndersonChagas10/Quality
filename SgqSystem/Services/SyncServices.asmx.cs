@@ -2882,10 +2882,9 @@ namespace SgqSystem.Services
                             "<div id=\"messageAlert\" class=\"alert alert-info hide\" role=\"alert\">" +
                                 "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>" +
                             "</div>" +
-                            "<div class=\"row formCorrectiveAction\">" +
-                                "<div class=\"panel panel-default\">" +
-                                    "<div class=\"panel-body\">" +
-                                        "<div class=\"row\">" +
+                            "<div class=\"panel panel-default\">" +
+                                    "<div class=\"panel-body\" >" +
+                                        "<div class=\"row\" style=\"padding:8px;\">" +
                                             "<div class=\"col-xs-6\" id=\"CorrectiveActionTaken\">" +
                                                 "<b class=\"font16\">" + CommonData.getResource("corrective_action_taken").Value.ToString() + ":<br/></b>" +
                                                 "<b>" + CommonData.getResource("date_time").Value.ToString() + ":</b> <span id=\"datetime\"></span><br/>" +
@@ -2901,6 +2900,8 @@ namespace SgqSystem.Services
                                         "</div>" +
                                     "</div>" +
                                 "</div>" +
+                            "<div class=\"row formCorrectiveAction\">" +
+                                
                                 "<div class=\"form-group\">" +
                                     "<label>" + CommonData.getResource("failure_description").Value.ToString() + ":</label>" +
                                     "<textarea id=\"DescriptionFailure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
@@ -2939,9 +2940,9 @@ namespace SgqSystem.Services
                                     "</div>" +
                                 "</div>";
             }
+                        
 
-
-            correctiveAction +=
+            correctiveAction += "</div>" +
                                 "<div class=\"modal-footer\">";
 
             if (GlobalConfig.Eua)
@@ -2961,7 +2962,7 @@ namespace SgqSystem.Services
                                     "<button class=\"btn btn-danger modal-close-ca\">" + CommonData.getResource("close").Value.ToString() + "</button>" +
                                     "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">" + CommonData.getResource("send").Value.ToString() + " </button>" +
                                 "</div>" +
-                            "</div>" +
+                            
                         "</div>" +
                         "</div>" +
                     "</div>";
@@ -3601,8 +3602,8 @@ namespace SgqSystem.Services
 
                 string accordeonbuttons = null;
 
-                accordeonbuttons = "<button class=\"btn btn-default button-expand marginRight10\"><i class=\"fa fa-expand\" aria-hidden=\"true\"></i> Mostrar Todos</button>" +
-                                   "<button class=\"btn btn-default button-collapse\"><i class=\"fa fa-compress\" aria-hidden=\"true\"></i> Fechar Todos</button>";
+                accordeonbuttons = "<button class=\"btn btn-default button-expand marginRight10\"><i class=\"fa fa-expand\" aria-hidden=\"true\"></i> " + @Resources.Resource.show_all +"</button>" +
+                                   "<button class=\"btn btn-default button-collapse\"><i class=\"fa fa-compress\" aria-hidden=\"true\"></i> " + @Resources.Resource.hide_all + "</button>";
 
 
                 //painellevel3 = html.listgroupItem(

@@ -1884,4 +1884,10 @@
   <data name="company_active" xml:space="preserve">
     <value>Empresa Atual</value>
   </data>
+  <data name="hide_all" xml:space="preserve">
+    <value>Fechar Todos</value>
+  </data>
+  <data name="show_all" xml:space="preserve">
+    <value>Mostrar Todos</value>
+  </data>
 </root>
