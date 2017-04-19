@@ -20,8 +20,8 @@ namespace SgqSystem.Controllers.Api
         {
             var db = new SgqDbDevEntities();
             dynamic retorno = new ExpandoObject();
-            var queryHeader = "select Column_name from Information_schema.columns where Table_name like 'UserSgq'";
-            var querybody = "select top 10 STR(Id) as Col0, Name as Col1, [Password] as Col2 from UserSgq";
+            //var queryHeader = "select Column_name from Information_schema.columns where Table_name like 'UserSgq'";
+            var querybody = "select top 10 STR(Id) as Col1, Name as Col2, [Password] as Col3 from UserSgq";
 
             //retorno.header = db.Database.SqlQuery<string>(queryHeader).ToList();
             retorno.header = new List<string> {"Id","Nome","Password" };
@@ -34,7 +34,6 @@ namespace SgqSystem.Controllers.Api
 
     public class PropriedadesGenericas
     {
-        public string Col0 { get; set; }
         public string Col1 { get; set; }
         public string Col2 { get; set; }
         public string Col3 { get; set; }

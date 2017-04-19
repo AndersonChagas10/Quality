@@ -308,6 +308,7 @@
     <Compile Include="Controllers\Api\Manutencao\ManColetaDadosController.cs" />
     <Compile Include="Controllers\Api\Manutencao\ManDataCollectITsController.cs" />
     <Compile Include="Controllers\Api\Manutencao\PainelIndicadoresUniManutencaoController.cs" />
+    <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\ApontamentosDiariosApiController.cs" />
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
@@ -1944,6 +1945,8 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
+    <Content Include="Scripts\smart-table.js" />
+    <Content Include="Scripts\smart-table.min.js" />
     <Content Include="Scripts\TableEditor\jquery.tabledit.min.js" />
     <Content Include="Scripts\theme\css\components.min.css" />
     <Content Include="Scripts\theme\css\darkblue.min.css" />
@@ -2157,6 +2160,9 @@
     <Content Include="Views\UserAuthentication\PasswordRecovery.cshtml" />
     <Content Include="Views\FirstConfig\Index.cshtml" />
     <Content Include="Views\Shared\_Level321Chain.cshtml" />
+    <Content Include="Views\RelatoriosSgq\_GenericTable.cshtml" />
+    <Content Include="Views\RelatoriosSgq\RelatorioGenerico.cshtml" />
+    <Content Include="Scripts\smart-table.min.js.map" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2237,7 +2243,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>59668</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
