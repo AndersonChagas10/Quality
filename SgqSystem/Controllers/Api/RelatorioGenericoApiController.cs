@@ -16,7 +16,7 @@ namespace SgqSystem.Controllers.Api
     {
         [HttpPost]
         [Route("getTabela")]
-        public dynamic getTabela(FormularioParaRelatorioViewModel form)
+        public dynamic getTabela()
         {
             var db = new SgqDbDevEntities();
             dynamic retorno = new ExpandoObject();

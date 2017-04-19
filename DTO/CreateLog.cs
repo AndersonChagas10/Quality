@@ -1,5 +1,4 @@
-﻿using DTO.DTO;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using NLog;
 using System;
 using System.Diagnostics;
@@ -17,6 +16,17 @@ namespace DTO
             GlobalDiagnosticsContext.Clear();
             LogException(e);
         }
+
+        /// <summary>
+        /// cria Log de uma exception
+        /// </summary>
+        /// <param name="e"></param>
+        public CreateLog(Exception e, string ControllerAction)
+        {
+            GlobalDiagnosticsContext.Clear();
+            LogException(e, ControllerAction);
+        }
+
 
         #region Colleta
 
@@ -80,10 +90,13 @@ namespace DTO
         private string mensagem = "";
         private string mensagemExcecao = "";
         private string inner = "";
-        private void LogException(Exception _ex)
+        private void LogException(Exception _ex, string ControllerAction = null)
         {
 
             mensagem = _ex.Message;
+            if (!string.IsNullOrEmpty(ControllerAction))
+                mensagem += " " + ControllerAction;
+
             mensagemExcecao = mensagem + " " + _ex.Message;
             inner = innerMessage;
 
