@@ -1267,9 +1267,13 @@ namespace SgqSystem.Services
 
                         //Atualiza a situação de reauditoria
                         if (Reaudit)
-                        {
+                        {                            
                             var UpdateCollectionLevel2DB = new SGQDBContext.UpdateCollectionLevel2(db);
-                            UpdateCollectionLevel2DB.UpdateIsReauditByKey(keySolid, Reaudit, Int16.Parse(haveReaudit), ReauditNumber, reauditLevel);
+
+                            if (reauditLevel == 1)
+                                UpdateCollectionLevel2DB.UpdateIsReauditConsolidationLevel1(Reaudit, Int16.Parse(haveReaudit), ReauditNumber, ConsolidationLevel1.Id);
+                            if (reauditLevel == 2)
+                                UpdateCollectionLevel2DB.UpdateIsReauditByKey(keySolid, Reaudit, Int16.Parse(haveReaudit), ReauditNumber);
                         }
 
                         if (i > 0)
