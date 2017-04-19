@@ -9,10 +9,11 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Data;
+using Helper;
 
 namespace SgqSystem.Controllers
 {
-
+    [HandleController]
     public class BaseController : Controller
     {
         public BaseController()
