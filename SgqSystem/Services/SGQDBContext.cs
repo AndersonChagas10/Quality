@@ -1403,6 +1403,7 @@ namespace SGQDBContext
             {
                 sql = "\n SELECT nCdProduto Id, cast(nCdProduto as varchar) + ' | ' + cNmProduto as Name, 0 as PunishmentValue, 0 as IsDefaultOption  " +
                       "\n FROM Produto ";
+
                             
             }
 

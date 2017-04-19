@@ -1905,4 +1905,10 @@
   <data name="company_active" xml:space="preserve">
     <value>Actual Company</value>
   </data>
+  <data name="hide_all" xml:space="preserve">
+    <value>Hide_All</value>
+  </data>
+  <data name="show_all" xml:space="preserve">
+    <value>Show All</value>
+  </data>
 </root>
