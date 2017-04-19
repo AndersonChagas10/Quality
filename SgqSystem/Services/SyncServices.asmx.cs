@@ -2882,7 +2882,7 @@ namespace SgqSystem.Services
                             "<div id=\"messageAlert\" class=\"alert alert-info hide\" role=\"alert\">" +
                                 "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>" +
                             "</div>" +
-                            "<div class=\"panel panel-default\">" +
+                                "<div class=\"panel panel-default\">" +
                                     "<div class=\"panel-body\" >" +
                                         "<div class=\"row\" style=\"padding:8px;\">" +
                                             "<div class=\"col-xs-6\" id=\"CorrectiveActionTaken\">" +
