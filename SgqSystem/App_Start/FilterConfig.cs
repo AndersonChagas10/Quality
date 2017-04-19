@@ -1,6 +1,4 @@
-﻿using Helper;
-using SgqSystem.Helpers;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace SgqSystem
 {

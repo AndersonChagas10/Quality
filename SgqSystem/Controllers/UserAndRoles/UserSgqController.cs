@@ -17,7 +17,6 @@ using System.Web.Mvc;
 namespace SgqSystem.Controllers
 {
     [CustomAuthorize]
-    [HandleController()]
     public class UserSgqController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();

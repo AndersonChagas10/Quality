@@ -12,7 +12,6 @@ namespace SgqSystem.Controllers
     /// <summary>
     /// Controller para aprendizagem do sistema.
     /// </summary>
-    [HandleController()]
     public class ExampleController : BaseController
     {
 

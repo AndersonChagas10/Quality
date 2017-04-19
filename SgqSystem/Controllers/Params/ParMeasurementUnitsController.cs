@@ -4,11 +4,9 @@ using System.Net;
 using System.Web.Mvc;
 using Dominio;
 using Helper;
-using SgqSystem.Secirity;
 
 namespace SgqSystem.Controllers
 {
-    [HandleController()]
     [CustomAuthorize]
     public class ParMeasurementUnitsController : BaseController
     {

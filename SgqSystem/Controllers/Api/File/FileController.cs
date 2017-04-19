@@ -32,7 +32,6 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        [HandleController()]
         public string Upload(HttpPostedFileBase file)
         {
             if (file != null && file.ContentLength > 0)

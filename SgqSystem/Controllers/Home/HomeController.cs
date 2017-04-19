@@ -6,7 +6,6 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
-    [HandleController()]
     [CustomAuthorize]
     public class HomeController : BaseController
     {

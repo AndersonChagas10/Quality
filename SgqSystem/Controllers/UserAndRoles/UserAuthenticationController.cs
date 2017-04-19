@@ -10,7 +10,6 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Api
 {
-    [HandleController()]
     public class UserAuthenticationController : BaseController
     {
 
