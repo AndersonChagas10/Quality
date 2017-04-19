@@ -76,14 +76,14 @@
 
     <div ng-controller="MainCtrl">
 
-        <table class="table table-striped" ng-app="sgqSystem">
+        <table st-table="displayedCollection" st-safe-src="bodies" class="table table-striped" ng-app="sgqSystem">
             <thead>
                 <tr>
-                    <th ng-repeat="x in header">{{x}}</th>
+                    <th st-sort="{{x}}" ng-repeat="x in header">{{x}}</th>
                 </tr>
-                @*<tr>
+                <tr>
                         <th colspan="50"><input st-search="" class="form-control" placeholder="Buscar Tudo ..." type="text" /></th>
-                    </tr>*@
+                    </tr>
             </thead>
             @*<tfoot>
                     <tr>
@@ -91,7 +91,7 @@
                     </tr>
                 </tfoot>*@
             <tbody>
-                <tr ng-repeat="body in bodies">
+                <tr ng-repeat="body in displayedCollection">
                     <td ng-repeat="x in body">{{x}}</td>
                 </tr>
             </tbody>
