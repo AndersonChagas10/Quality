@@ -2228,7 +2228,7 @@ namespace SGQDBContext
         {
             db = _db;
         }
-        public void UpdateIsReauditByKey(string Key, bool IsReaudit, int HaveReaudit, int ReauditNumber)
+        public void UpdateIsReauditByKey(string Key, bool IsReaudit, int HaveReaudit, int ReauditNumber, int ReauditLevel)
         {
             try
             {
@@ -2236,7 +2236,7 @@ namespace SGQDBContext
 
                 if (IsReaudit == true && HaveReaudit == 1)
                 {
-                    sql = "UPDATE CollectionLevel2 SET HaveReaudit = '" + HaveReaudit + "', ReauditNumber = '" + ReauditNumber + "' WHERE [Key] = '" + Key + "'";
+                    sql = "UPDATE CollectionLevel2 SET ReauditLevel = '" + ReauditLevel + "', HaveReaudit = '" + HaveReaudit + "', ReauditNumber = '" + ReauditNumber + "' WHERE [Key] = '" + Key + "'";
                 }else if (IsReaudit == true && HaveReaudit == 0)
                 {
                     sql = "UPDATE CollectionLevel2 SET HaveReaudit = 0, ReauditNumber = 0 WHERE [Key] = '" + Key + "'";

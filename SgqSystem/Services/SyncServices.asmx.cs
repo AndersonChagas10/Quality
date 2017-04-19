@@ -1268,7 +1268,7 @@ namespace SgqSystem.Services
                         if (Reaudit)
                         {
                             var UpdateCollectionLevel2DB = new SGQDBContext.UpdateCollectionLevel2(db);
-                            UpdateCollectionLevel2DB.UpdateIsReauditByKey(keySolid, Reaudit, Int16.Parse(haveReaudit), ReauditNumber);
+                            UpdateCollectionLevel2DB.UpdateIsReauditByKey(keySolid, Reaudit, Int16.Parse(haveReaudit), ReauditNumber, reauditLevel);
                         }
 
                         if (i > 0)
