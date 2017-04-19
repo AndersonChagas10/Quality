@@ -4,7 +4,17 @@
     //var urlGet = Url.Action("GetRelatorio", "RelatorioGenericoApi");
     var urlGet = Url.Action("getTabela", "api/RelatorioGenerico");
 }
+<style>
 
+    .st-sort-ascent:before{
+    content: '\25B2';
+  }
+
+  .st-sort-descent:before{
+    content: '\25BC';
+  }
+
+</style>
 <script src="~/Scripts/smart-table.min.js"></script>
 
 
@@ -82,8 +92,8 @@
                     <th st-sort="{{x}}" ng-repeat="x in header">{{x}}</th>
                 </tr>
                 <tr>
-                        <th colspan="50"><input st-search="" class="form-control" placeholder="Buscar Tudo ..." type="text" /></th>
-                    </tr>
+                    <th colspan="50"><input st-search="" class="form-control" placeholder="Buscar Tudo ..." type="text" /></th>
+                </tr>
             </thead>
             @*<tfoot>
                     <tr>
