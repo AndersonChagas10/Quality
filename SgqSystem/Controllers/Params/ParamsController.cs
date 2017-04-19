@@ -15,7 +15,6 @@ using System.Web.Mvc;
 namespace SgqSystem.Controllers.Params
 {
     [CustomAuthorize]
-    [HandleController()]
     public class ParamsController : BaseController
     {
 

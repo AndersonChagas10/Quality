@@ -8,7 +8,6 @@ using Helper;
 
 namespace SgqSystem.Controllers
 {
-    [HandleController()]
     [CustomAuthorize]
     public class ParClustersController : BaseController
     {

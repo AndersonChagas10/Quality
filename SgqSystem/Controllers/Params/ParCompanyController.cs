@@ -2,13 +2,11 @@
 using Dominio.Interfaces.Services;
 using DTO.DTO.Params;
 using Helper;
-using SgqSystem.Secirity;
 using System.Linq;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
-    [HandleController()]
     [CustomAuthorize]
     public class ParCompanyController : BaseController
     {
