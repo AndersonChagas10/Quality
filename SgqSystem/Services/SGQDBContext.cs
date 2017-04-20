@@ -1251,7 +1251,7 @@ namespace SGQDBContext
                          "INNER JOIN " +
                          "ConsolidationLevel1 AS CDL1 ON CDL2.ConsolidationLevel1_Id = CDL1.Id " +
                          "LEFT JOIN " +
-                         "CollectionLevel2 CL2 ON CL2.ConsolidationLevel2_Id=CDL2.Id AND (CL2.HaveCorrectiveAction=1 OR CL2.HaveReaudit=1) " +
+                         "CollectionLevel2 CL2 ON CL2.ConsolidationLevel2_Id=CDL2.Id AND (CL2.HaveCorrectiveAction=1 OR CL2.HaveReaudit=1) AND CL2.ReauditIs = 0 " +
                          "WHERE(CDL2.ParLevel2_Id = " + ParLevel2_Id + ") AND (CDL1.UnitId = " + ParCompany_Id + ") " +
 
                          sql2 +
@@ -2222,16 +2222,17 @@ namespace SGQDBContext
         {
             db = _db;
         }
-        public void UpdateIsReauditByKey(string Key, bool IsReaudit, int HaveReaudit, int ReauditNumber)
+        public void UpdateIsReauditByKey(string Key, bool IsReaudit, int HaveReaudit, int ReauditNumber, int ReauditLevel)
         {
             try
             {
                 string sql = "";
 
-                if (HaveReaudit == 1)
+                if (IsReaudit == true && HaveReaudit == 1)
                 {
-                    sql = "UPDATE CollectionLevel2 SET ReauditLevel = 2, HaveReaudit = '" + HaveReaudit + "', ReauditNumber = '" + ReauditNumber + "' WHERE [Key] = '" + Key + "'";
-                }else if (HaveReaudit == 0)
+                    sql = "UPDATE CollectionLevel2 SET ReauditLevel = '" + ReauditLevel + "', HaveReaudit = '" + HaveReaudit + "', ReauditNumber = '" + ReauditNumber + "' WHERE [Key] = '" + Key + "'";
+                }
+                else if (IsReaudit == true && HaveReaudit == 0)
                 {
                     sql = "UPDATE CollectionLevel2 SET HaveReaudit = 0, ReauditNumber = 0 WHERE [Key] = '" + Key + "'";
                 }
