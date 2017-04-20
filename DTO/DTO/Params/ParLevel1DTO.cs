@@ -104,7 +104,7 @@ namespace DTO.DTO.Params
         {
 
             List<SelectListItem> retorno = new List<SelectListItem>();
-            retorno.Insert(0, new SelectListItem() { Text = "...", Value = "-1" });
+            retorno.Insert(0, new SelectListItem() { Text = GlobalConfig.PrimeiraOption, Value = "-1" });
             var counter = 1;
 
 
