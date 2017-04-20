@@ -14,40 +14,50 @@
     }
 </style>
 
-
 <div class="page-content" style="min-height: 600px;">
 
-    <div ng-controller="MainCtrl">
-        <table st-table="displayedCollection" st-safe-src="bodies" class="table table-striped" ng-app="sgqSystem">
-            <thead>
-                <tr>
-                    <th st-sort="{{x}}" ng-repeat="x in header">{{x}}</th>
-                </tr>
-                <tr>
-                    <th colspan="50"><input st-search="" class="form-control" placeholder="Buscar Tudo ..." type="text" /></th>
-                </tr>
-            </thead>
-            <tfoot>
-                <tr>
-                    <th ng-repeat="x in header">{{x}}</th>
-                </tr>
-            </tfoot>
-            <tbody>
-                <tr ng-repeat="body in displayedCollection">
-                    <td ng-repeat="x in body">{{x}}</td>
-                </tr>
-            </tbody>
-        </table>
+    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
-        {{header}}
-        {{bodies}}
+    <div id="formBodyContent">
+
+        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+
+        <div ng-controller="MainCtrl">
+            <table st-table="displayedCollection" st-safe-src="bodies" class="table table-striped" ng-app="sgqSystem">
+                <thead>
+                    <tr>
+                        <th st-sort="{{x}}" ng-repeat="x in header">{{x}}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="50"><input st-search="" class="form-control" placeholder="Buscar Tudo ..." type="text" /></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th ng-repeat="x in header">{{x}}</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <tr ng-repeat="body in displayedCollection">
+                        <td ng-repeat="x in body">{{x}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            {{header}}
+            {{bodies}}
+
+        </div>
 
     </div>
-
 </div>
 
 
 <script type="text/javascript">
+
+    var $btn = $('#btnSend');
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
 
     //Angular
     var i = 0;
@@ -69,24 +79,38 @@
         }
     });
 
-    app.controller('MainCtrl', ['$scope', '$http', '$filter', function ($scope, $http, $filter) {
+    app.controller('MainCtrl', ['$scope', '$http', '$filter' , '$compile', function ($scope, $http, $filter,$compile) {
 
-        //fazer ajax
-        $http({
-            method: 'POST',
-            data: {},
-            url: @Html.Raw(Json.Encode(urlGet)),
-        }).then(function (retorno) {
+        $('#btnSend').replaceWith($('#btnSend'));
+        $('#btnSend').attr('ng-click','getReport()');
+        $compile($('#btnSend'))($scope);
 
-            $scope.header = retorno.data.header;
+        $scope.getReport = function() {
 
-            var myFilter = $filter('myFilter');
-            $scope.bodies = myFilter(retorno.data.body);
+            //fazer ajax
+            $http({
+                method: 'POST',
+                data: enviar,
+                url: @Html.Raw(Json.Encode(urlGet)),
+            }).then(function (retorno) {
 
-        }, function (error) {
-            console.log(error);
-        });
+                $scope.header = retorno.data.header;
+
+                var myFilter = $filter('myFilter');
+                $scope.bodies = myFilter(retorno.data.body);
+
+            }, function (error) {
+                console.log(error);
+            });
+
+        };
 
     }]);
+
+    $(document).ready(function () {
+        formControl.showFullCallendar();
+        closeLeftSidebar();
+
+    });
 
 </script>

@@ -1917,4 +1917,13 @@
   <data name="total_defects_sample" xml:space="preserve">
     <value>Total Defects Sample</value>
   </data>
+  <data name="Amostras_com_defeitos" xml:space="preserve">
+    <value>Evaluations with defects</value>
+  </data>
+  <data name="Avaliacoes" xml:space="preserve">
+    <value>Evaluations</value>
+  </data>
+  <data name="no_families_level" xml:space="preserve">
+    <value>No families in level</value>
+  </data>
 </root>

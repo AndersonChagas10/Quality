@@ -1893,4 +1893,16 @@
   <data name="s" xml:space="preserve">
     <value>Total de Defeitos das Amostra</value>
   </data>
+  <data name="total_defects_sample" xml:space="preserve">
+    <value>Total defeitos por avaliação</value>
+  </data>
+  <data name="Amostras_com_defeitos" xml:space="preserve">
+    <value>Amostras com defeito</value>
+  </data>
+  <data name="Avaliacoes" xml:space="preserve">
+    <value>Avaliações</value>
+  </data>
+  <data name="no_families_level" xml:space="preserve">
+    <value>Sem familias para o indicador</value>
+  </data>
 </root>
