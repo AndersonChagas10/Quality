@@ -15,6 +15,7 @@ using System.Collections;
 using DTO;
 using SgqSystem.Helpers;
 using SGQDBContextYTOARA;
+using SgqSystem.Controllers.Api.App;
 
 namespace SgqSystem.Services
 {
@@ -1266,13 +1267,9 @@ namespace SgqSystem.Services
 
                         //Atualiza a situação de reauditoria
                         if (Reaudit)
-                        {                            
+                        {
                             var UpdateCollectionLevel2DB = new SGQDBContext.UpdateCollectionLevel2(db);
-
-                            if (reauditLevel == 1)
-                                UpdateCollectionLevel2DB.UpdateIsReauditConsolidationLevel1(Reaudit, Int16.Parse(haveReaudit), ReauditNumber, ConsolidationLevel1.Id);
-                            if (reauditLevel == 2)
-                                UpdateCollectionLevel2DB.UpdateIsReauditByKey(keySolid, Reaudit, Int16.Parse(haveReaudit), ReauditNumber);
+                            UpdateCollectionLevel2DB.UpdateIsReauditByKey(keySolid, Reaudit, Int16.Parse(haveReaudit), ReauditNumber, reauditLevel);
                         }
 
                         if (i > 0)
@@ -4469,12 +4466,22 @@ namespace SgqSystem.Services
                                        "<button class=\"btn btn-default button-collapse\"><i class=\"fa fa-compress\" aria-hidden=\"true\"></i> Fechar Todos</button>";
                 }
 
+
                 // incluir coluna e obter o total de amostras com defeito agrupado.
-                var level2 = dbEf.ParCounterXLocal.FirstOrDefault(r => r.ParLevel2_Id != ParLevel2.Id && r.ParCounter_Id == 21 && r.IsActive);
+                var level2 = dbEf.ParCounterXLocal.FirstOrDefault(r => r.ParLevel1_Id == ParLevel1.Id && r.ParCounter_Id == 21 && r.IsActive);
                 if (level2 != null)
                 {
-                    painelLevel3HeaderListHtml += "<div id='tdef'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>";
-                    painelLevel3HeaderListHtml += "<div id='tdefav'>" + CommonData.getResource("total_defects_avaliation").Value.ToString() + ": <span>0</span></div>";
+                    var teste = new ContadoresXX().GetContadoresXX(dbEf, ParLevel1.Id);
+                    if (teste.IsNotNull() && teste.Count > 0)
+                    {
+                        painelLevel3HeaderListHtml += "<div id='tdef'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>";
+                        painelLevel3HeaderListHtml += "<div id='tdefav'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.LastOrDefault().SidesWithDefects.ToString("G29") + "</span></div>";
+                    }
+                    else
+                    {
+                        painelLevel3HeaderListHtml += "<div id='tdef'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>";
+                        painelLevel3HeaderListHtml += "<div id='tdefav'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>0</span></div>";
+                    }
                 }
 
                 painellevel3 = html.listgroupItem(outerhtml: avaliacoes +

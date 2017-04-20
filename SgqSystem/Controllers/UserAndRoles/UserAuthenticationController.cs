@@ -52,7 +52,10 @@ namespace SgqSystem.Controllers.Api
                 return RedirectToAction("Index", "Home");
             }
             else
-                ModelState.AddModelError("", isAuthorized.Mensagem + isAuthorized.MensagemExcecao + isAuthorized.StackTrace);
+            {
+                ModelState.AddModelError("", isAuthorized.Mensagem);
+                user.ErrorList = isAuthorized.MensagemExcecao + isAuthorized.StackTrace;
+            }
 
             return View(user);
         }
