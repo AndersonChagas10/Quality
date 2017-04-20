@@ -5,17 +5,14 @@
     var urlGet = Url.Action("getTabela", "api/RelatorioGenerico");
 }
 <style>
+    .st-sort-ascent:before {
+        content: '\25B2';
+    }
 
-    .st-sort-ascent:before{
-    content: '\25B2';
-  }
-
-  .st-sort-descent:before{
-    content: '\25BC';
-  }
-
+    .st-sort-descent:before {
+        content: '\25BC';
+    }
 </style>
-<script src="~/Scripts/smart-table.min.js"></script>
 @*<script src="~/Scripts/smart-table.min.js"></script>*@
 
 
@@ -86,7 +83,6 @@
 
 
     <div ng-controller="MainCtrl">
-
         <table st-table="displayedCollection" st-safe-src="bodies" class="table table-striped" ng-app="sgqSystem">
             <thead>
                 <tr>
@@ -96,13 +92,13 @@
                     <th colspan="50"><input st-search="" class="form-control" placeholder="Buscar Tudo ..." type="text" /></th>
                 </tr>
             </thead>
-            @*<tfoot>
-                    <tr>
-                        <th ng-repeat="x in header">{{x}}</th>
-                    </tr>
-                </tfoot>*@
+            <tfoot>
+                <tr>
+                    <th ng-repeat="x in header">{{x}}</th>
+                </tr>
+            </tfoot>
             <tbody>
-                <tr ng-repeat="body in displayedCollection | myFilter">
+                <tr ng-repeat="body in displayedCollection">
                     <td ng-repeat="x in body">{{x}}</td>
                 </tr>
             </tbody>
@@ -119,9 +115,25 @@
 <script type="text/javascript">
 
     //Angular
+    var i = 0;
 
+    app.filter('myFilter', function () {
+        return function (body) {
+            var result = [];
+            angular.forEach(body, function (value, key) {
+                var item = [];
+                angular.forEach(value, function (value2, key2) {
+                    if (value2 != null) {
+                        item.push(value2);
+                    }
+                })
+                result.push(item);
+            });
+            return result;
+        }
+    });
 
-    app.controller('MainCtrl', ['$scope', '$http', '$compile', function ($scope, $http, $compile) {
+    app.controller('MainCtrl', ['$scope', '$http', '$filter', function ($scope, $http, $filter) {
         //$scope.header = [];
         //$scope.bodies = {};
 
@@ -140,7 +152,11 @@
             //    Data: ["teste11, teste21, teste31"]
             //}];
             $scope.header = retorno.data.header;
-            $scope.bodies = retorno.data.body;
+            //$scope.bodies = retorno.data.body;
+
+            var myFilter = $filter('myFilter');
+
+            $scope.bodies = myFilter(retorno.data.body);
 
         }, function (error) {
             console.log(error);
@@ -148,21 +164,6 @@
 
     }]);
 
-    app.filter('myFilter', function () {
-        return function (body) {
-            var result = [];
-            angular.forEach(body, function (value, key) {
-                var item = [];
-                angular.forEach(value, function (value2, key2) {
-                    if (value2 != null) {
-                        item.push(value2);
-                    }
-                })
-                result.push(item);
-            });
-            return result;
-        }
-    });
 
     //app.controller('sortCtrl', ['$scope', '$filter', function (scope, filter) {
     //    scope.rowCollection = [
