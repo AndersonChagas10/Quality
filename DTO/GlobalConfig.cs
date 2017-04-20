@@ -41,6 +41,46 @@ namespace DTO
         public static string urlPreffixAppColleta { get; set; }
         public static string urlAppColleta { get; set; }
 
+        public static string PrimeiraOption
+        {
+            get
+            {
+                var primeiraOption = string.Empty;
+                if (Eua)
+                    primeiraOption = "Select...";
+                else if (Brasil)
+                    primeiraOption = "Selecione...";
+                return primeiraOption;
+            }
+        }
+
+        public static string Vinculado
+        {
+            get
+            {
+                var primeiraOption = string.Empty;
+                if (Eua)
+                    primeiraOption = "Linked";
+                else if (Brasil)
+                    primeiraOption = "Vinculado";
+                return primeiraOption;
+            }
+        }
+
+
+        public static string NaoVinculado
+        {
+            get
+            {
+                var primeiraOption = string.Empty;
+                if (Eua)
+                    primeiraOption = "Unlinked";
+                else if (Brasil)
+                    primeiraOption = "Não Vinculados";
+                return primeiraOption;
+            }
+        }
+
         /// <summary>
         /// Se existe config: true.
         /// </summary>

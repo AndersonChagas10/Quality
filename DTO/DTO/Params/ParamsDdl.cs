@@ -9,6 +9,8 @@ namespace DTO.DTO.Params
 {
     public class ParamsDdl
     {
+       
+
         public IEnumerable<SelectListItem> DdlParConsolidation { get; set; }
         public IEnumerable<SelectListItem> DdlFrequency { get; set; }
         public IEnumerable<SelectListItem> DdlparLevel1 { get; set; }
@@ -45,7 +47,8 @@ namespace DTO.DTO.Params
         private List<SelectListItem> CreateSelectListParamsViewModelListLevel<T>(IEnumerable<T> enumerable)
         {
             List<SelectListItem> retorno = new List<SelectListItem>();
-            retorno.Insert(0, new SelectListItem() { Text = "...", Value = "-1" });
+            var defaultOption = GlobalConfig.PrimeiraOption;
+            retorno.Insert(0, new SelectListItem() { Text = defaultOption, Value = "-1" });
             var counter = 1;
             foreach (var i in enumerable)
             {
@@ -81,6 +84,8 @@ namespace DTO.DTO.Params
                              List<ParScoreTypeDTO> ddlScoretype
                             )
         {
+           
+
             DdlParCompany = Guard.CreateDropDownList(ddlParCompany.OrderBy(r => r.Name));
             DdlParConsolidation = Guard.CreateDropDownList(ddlParConsolidation.Where(r => r.IsActive == true).OrderBy(r => r.Name));
             DdlFrequency = Guard.CreateDropDownList(ddlFrequency.OrderBy(r => r.Name));
@@ -118,11 +123,11 @@ namespace DTO.DTO.Params
 
             DdlScoretype = Guard.CreateDropDownList(ddlScoretype.OrderBy(r => r.Name));
 
-
         }
 
         public void SetDdlsNivel123(List<ParLevel1DTO> ddlparLevel1, List<ParLevel2DTO> ddlparLevel2, List<ParLevel3DTO> ddlparLevel3)
         {
+
             DdlparLevel1 = CreateSelectListParamsViewModelListLevel(ddlparLevel1.OrderBy(r => r.Name));
             DdlparLevel2 = CreateSelectListParamsViewModelListLevel(ddlparLevel2.OrderBy(r => r.Name));
             DdlparLevel3 = CreateSelectListParamsViewModelListLevel(ddlparLevel3.OrderBy(r => r.Name));
@@ -137,11 +142,11 @@ namespace DTO.DTO.Params
         {
 
             List<SelectListItem> retorno = new List<SelectListItem>();
-            retorno.Insert(0, new SelectListItem() { Text = "...", Value = "-1" });
+            retorno.Insert(0, new SelectListItem() { Text = GlobalConfig.PrimeiraOption, Value = "-1" });
             var counter = 1;
 
 
-            var group = new SelectListGroup() { Name = "Não vinculado:" };
+            var group = new SelectListGroup() { Name = GlobalConfig.NaoVinculado/*"Não vinculado:"*/ };
             var groupSelecionado = new SelectListGroup();
             foreach (var i in lista)
             {
