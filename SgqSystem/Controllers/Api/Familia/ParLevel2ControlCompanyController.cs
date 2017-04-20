@@ -40,7 +40,7 @@ namespace SgqSystem.Controllers.Api
                 if(listaCadastrada.Count() > 0)
                     foreach(var cadastro in listaCadastrada)
                     {
-                        _baseParLevel2ControlCompany.ExecuteSql("Update ParLevel2ControlCompany SET IsActive = 0 Where Id = " + cadastro.Id);
+                        _baseParLevel2ControlCompany.ExecuteSql("Update ParLevel2ControlCompany SET IsActive = 0, AlterDate = getdate() Where Id = " + cadastro.Id);
                     }
 
                 if (parLevel1.listLevel2Corporativos != null)
@@ -57,7 +57,7 @@ namespace SgqSystem.Controllers.Api
                 if (listaCadastrada.Count() > 0)
                     foreach (var cadastro in listaCadastrada)
                     {
-                        _baseParLevel2ControlCompany.ExecuteSql("Update ParLevel2ControlCompany SET IsActive = 0 Where Id = " + cadastro.Id);
+                        _baseParLevel2ControlCompany.ExecuteSql("Update ParLevel2ControlCompany SET IsActive = 0, AlterDate = getdate() Where Id = " + cadastro.Id);
                     }
 
                 if (parLevel1.level2PorCompany != null)
