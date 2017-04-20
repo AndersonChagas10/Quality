@@ -376,6 +376,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Evaluations with defects.
+        /// </summary>
+        internal static string Amostras_com_defeitos {
+            get {
+                return ResourceManager.GetString("Amostras_com_defeitos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Analytical.
         /// </summary>
         internal static string analytical {
@@ -516,6 +525,15 @@ namespace Resources {
         internal static string auto_send_on {
             get {
                 return ResourceManager.GetString("auto_send_on", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evaluation.
+        /// </summary>
+        internal static string Avaliacoes {
+            get {
+                return ResourceManager.GetString("Avaliacoes", resourceCulture);
             }
         }
         

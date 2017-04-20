@@ -100,6 +100,8 @@ namespace SgqSystem.Controllers.Params
             ViewModel.levelControl = 2;
             ViewModel.paramsDto = _paramDomain.GetLevel2(level2Id, level3Id, level1Id);
 
+            
+
             if (ViewModel.paramsDto.parLevel2Dto.listParCounterXLocal != null)
                 for (int i = 0; i < ViewModel.paramsDto.parLevel2Dto.listParCounterXLocal.Count; i++)
                 {
@@ -109,6 +111,8 @@ namespace SgqSystem.Controllers.Params
                     ViewModel.paramsDto.parLevel2Dto.listParCounterXLocal[i].ParLocal.Name =
                         CommonData.getResource(ViewModel.paramsDto.parLevel2Dto.listParCounterXLocal[i].ParLocal.Name).Value.ToString();
                 }
+
+
 
 
             return PartialView("_ParLevel2", ViewModel);/*Retorna View com Model ParLevel2 encontrado no DB.*/

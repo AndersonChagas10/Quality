@@ -1890,4 +1890,10 @@
   <data name="show_all" xml:space="preserve">
     <value>Mostrar Todos</value>
   </data>
+  <data name="Amostras_com_defeitos" xml:space="preserve">
+    <value>Amostras com defeitos</value>
+  </data>
+  <data name="Avaliacoes" xml:space="preserve">
+    <value>Avaliações</value>
+  </data>
 </root>
