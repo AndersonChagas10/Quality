@@ -1893,4 +1893,7 @@
   <data name="s" xml:space="preserve">
     <value>Total de Defeitos das Amostra</value>
   </data>
+  <data name="total_defects_sample" xml:space="preserve">
+    <value>Total defeitos por avaliação</value>
+  </data>
 </root>
