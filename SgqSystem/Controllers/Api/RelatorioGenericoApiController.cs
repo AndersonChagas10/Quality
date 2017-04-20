@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using SgqSystem.ViewModels;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -11,15 +12,19 @@ namespace SgqSystem.Controllers.Api
     {
         [HttpPost]
         [Route("getTabela")]
-        public dynamic getTabela()
+        public dynamic getTabela(FormularioParaRelatorioViewModel model)
         {
+
+            //var data = "And Data Between" + model._dataInicioSQL + " AND " + model._dataFimSQL;
+
             var db = new SgqDbDevEntities();
             dynamic retorno = new ExpandoObject();
             //var queryHeader = "select Column_name from Information_schema.columns where Table_name like 'UserSgq'";
             var querybody = "select top 10 STR(Id) as Col1, Name as Col2, [Password] as Col3 from UserSgq";
+            //var querybody = "select STR(*) from UserSgq";
 
             //retorno.header = db.Database.SqlQuery<string>(queryHeader).ToList();
-            retorno.header = new List<string> {"Id","Nome","Senha" };
+            retorno.header = new List<string> { "Id", "Nome", "Senha" };
             retorno.body = db.Database.SqlQuery<PropriedadesGenericas>(querybody).ToList();
 
             return retorno;
