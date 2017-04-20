@@ -162,7 +162,7 @@
                                                 </div>
                                                 <div class="col-xs-4">
                                                     @*<button id="vinculoLevel2" class="btn btn-danger pull-right" style="height: 42px;" title="Vincular ao Level 2" onclick="saveLevel3Level2()"><span class="glyphicon glyphicon-link"></span></button>*@
-                                                    <button id="desviculol3l2" class="btn btn-danger pull-right" style="height: 42px;" title="Desvincular do Level 2" onclick="desvincularL3L2()"><i class="fa fa-chain-broken" aria-hidden="true"></i></button>
+                                                    <button id="desviculol3l2" class="btn btn-danger pull-right" style="height: 42px; display:none" title="Desvincular do Level 2" onclick="desvincularL3L2()"><i class="fa fa-chain-broken" aria-hidden="true"></i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -312,9 +312,12 @@
         var l1Id = $('#paramsDto_parLevel1Dto_Id').val();
         var l2Id = $('#paramsDto_parLevel2Dto_Id').val();
         var l3Id = $('#paramsDto_parLevel3Dto_Id').val();
+        var unidade = null;
+        if(!hasperm)
+            unidade = unitId;
 
         if(l1Id > 0 && l2Id > 0 && l3Id > 0){
-            $.post('@Url.Action("RemVinculoL2L3", "api/ParamsApi")' + '/' + l1Id + '/' + l2Id + '/' + l3Id + '/' + unitId, {}, function(r) {
+            $.post('@Url.Action("RemVinculoL2L3", "api/ParamsApi")' + '/' + l1Id + '/' + l2Id + '/' + l3Id + '/' + unidade, {}, function(r) {
                 openMessageModal(r, '');
             });
         }else{
