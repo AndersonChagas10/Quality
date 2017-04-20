@@ -529,7 +529,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Evaluation.
+        ///   Looks up a localized string similar to Evaluations.
         /// </summary>
         internal static string Avaliacoes {
             get {
@@ -3171,6 +3171,15 @@ namespace Resources {
         internal static string no_data_to_show {
             get {
                 return ResourceManager.GetString("no_data_to_show", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No families in level.
+        /// </summary>
+        internal static string no_families_level {
+            get {
+                return ResourceManager.GetString("no_families_level", resourceCulture);
             }
         }
         
