@@ -4,113 +4,113 @@
     //var urlGet = Url.Action("GetRelatorio", "RelatorioGenericoApi");
     var urlGet = Url.Action("getTabela", "api/RelatorioGenerico");
 }
+<style>
+    .st-sort-ascent:before {
+        content: '\25B2';
+    }
 
-<script src="~/Scripts/smart-table.min.js"></script>
+    .st-sort-descent:before {
+        content: '\25BC';
+    }
+</style>
 
 <div class="page-content" style="min-height: 600px;">
+
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
     <div id="formBodyContent">
 
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
-        <div id="divTable" style="display:none">
-            @Html.Partial("~/Views/RelatoriosSgq/_GenericTable.cshtml")
+        <div ng-controller="MainCtrl">
+            <table st-table="displayedCollection" st-safe-src="bodies" class="table table-striped" ng-app="sgqSystem">
+                <thead>
+                    <tr>
+                        <th st-sort="{{x}}" ng-repeat="x in header">{{x}}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="50"><input st-search="" class="form-control" placeholder="Buscar Tudo ..." type="text" /></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th ng-repeat="x in header">{{x}}</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <tr ng-repeat="body in displayedCollection">
+                        <td ng-repeat="x in body">{{x}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            {{header}}
+            {{bodies}}
+
         </div>
+
     </div>
 </div>
 
-@section Scripts {
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
-        $(".sidebar-toggler").removeClass("hide");
-        $(".page-sidebar-wrapper").removeClass("hide");
-        $('#simpleCallendar').hide().attr('disabled', true);
+    var $btn = $('#btnSend');
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
 
-        var urlGet = '@Html.Raw(@urlGet)';
-        var $btn = $('#btnSend');
+    //Angular
+    var i = 0;
 
-        $(document).ready(function () {
-            formControl.showFullCallendar();
-            formControl.showUnit();
-            closeLeftSidebar();
-
-            $("#btnSend").click(function (e) {
-                Send(true);
+    app.filter('myFilter', function () {
+        return function (body) {
+            var result = [];
+            angular.forEach(body, function (value, key) {
+                var item = [];
+                angular.forEach(value, function (value2, key2) {
+                    if (value2 != null) {
+                        item.push(value2);
+                    }
+                })
+                result.push(Object.assign({}, item));
             });
 
+            return result;
+        }
+    });
 
-            //$('#genericTable').DataTable();
+    app.controller('MainCtrl', ['$scope', '$http', '$filter' , '$compile', function ($scope, $http, $filter,$compile) {
 
+        $('#btnSend').replaceWith($('#btnSend'));
+        $('#btnSend').attr('ng-click','getReport()');
+        $compile($('#btnSend'))($scope);
 
-        });
+        $scope.getReport = function() {
 
-        function Send(toggle) {
+            //fazer ajax
+            $http({
+                method: 'POST',
+                data: enviar,
+                url: @Html.Raw(Json.Encode(urlGet)),
+            }).then(function (retorno) {
 
-            $btn.button('loading');
+                $scope.header = retorno.data.header;
 
-            //$('#results').empty();
+                var myFilter = $filter('myFilter');
+                $scope.bodies = myFilter(retorno.data.body);
 
-            //if (!ValidaDadosParaEnvio()) {
-            //    $btn.button('reset');
-            //    return;
-            //}
+            }, function (error) {
+                console.log(error);
+            });
 
-            $('#divTable').hide();
-
-            //EasyAjax(urlGet, enviar, GerarTabela, "load", toggle);//AJAX
-
-            GerarTabela();
         };
 
+    }]);
 
-        function GerarTabela() {
+    $(document).ready(function () {
+        formControl.showFullCallendar();
+        closeLeftSidebar();
 
+    });
 
-        }
-
-        //Angular
-        var app = angular.module('sgqSystem', []);
-
-        app.controller('MainCtrl', ['$scope', '$http', '$compile', function ($scope, $http, $compile) {
-
-            // remover e reinserir o elemento para funcionar no angular
-            $('#btnSend').replaceWith($('#btnSend'));
-
-            // inserir ng-click no botao
-            $('#btnSend').attr('ng-click', 'getTable()');
-
-            // compilar o elemento
-            $compile($('#btnSend'))($scope);
-
-            $scope.header = [];
-            $scope.bodies = {};
-            $scope.getTable = function () {
-
-                //fazer ajax
-                $http({
-                    method: 'POST',
-                    data: enviar,
-                    url: urlGet
-                }).then(function (retorno) {
-
-                    $scope.header = retorno.data.header;
-                    $scope.bodies = retorno.data.body;
-
-                    $btn.button('reset');
-                    $('#divTable').show();
-
-                }, function (error) {
-                    console.log(error);
-                    $btn.button('reset');
-
-                });
-
-            }
-
-        }]);
-
-    </script>
-
-}
-
+</script>

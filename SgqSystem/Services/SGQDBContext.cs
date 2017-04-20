@@ -1251,7 +1251,7 @@ namespace SGQDBContext
                          "INNER JOIN " +
                          "ConsolidationLevel1 AS CDL1 ON CDL2.ConsolidationLevel1_Id = CDL1.Id " +
                          "LEFT JOIN " +
-                         "CollectionLevel2 CL2 ON CL2.ConsolidationLevel2_Id=CDL2.Id AND (CL2.HaveCorrectiveAction=1 OR CL2.HaveReaudit=1) " +
+                         "CollectionLevel2 CL2 ON CL2.ConsolidationLevel2_Id=CDL2.Id AND (CL2.HaveCorrectiveAction=1 OR CL2.HaveReaudit=1) AND CL2.ReauditIs = 0 " +
                          "WHERE(CDL2.ParLevel2_Id = " + ParLevel2_Id + ") AND (CDL1.UnitId = " + ParCompany_Id + ") " +
 
                          sql2 +
@@ -2215,9 +2215,6 @@ namespace SGQDBContext
 
     public partial class UpdateCollectionLevel2
     {
-        public int ConsolidationLevel2_Id { get; set; }
-        public int ReauditLevel { get; set; }
-
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
         private SqlConnection db { get; set; }
         public UpdateCollectionLevel2() { }
@@ -2233,11 +2230,54 @@ namespace SGQDBContext
 
                 if (IsReaudit == true && HaveReaudit == 1)
                 {
-                    ReauditNumber++;
                     sql = "UPDATE CollectionLevel2 SET ReauditLevel = '" + ReauditLevel + "', HaveReaudit = '" + HaveReaudit + "', ReauditNumber = '" + ReauditNumber + "' WHERE [Key] = '" + Key + "'";
-                }else if (IsReaudit == true && HaveReaudit == 0)
+                }
+                else if (IsReaudit == true && HaveReaudit == 0)
                 {
                     sql = "UPDATE CollectionLevel2 SET HaveReaudit = 0, ReauditNumber = 0 WHERE [Key] = '" + Key + "'";
+                }
+
+                //SqlConnection db = new SqlConnection(conexao);
+                db.Execute(sql);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void UpdateIsReauditConsolidationLevel1(bool IsReaudit, int HaveReaudit, int ReauditNumber, int ConsolidationLevel1_Id)
+        {
+            try
+            {
+                string sql = "";
+
+                if (HaveReaudit == 1)
+                {
+                    sql = "UPDATE CollectionLevel2 "+
+                            "SET ReauditLevel = 1, HaveReaudit = '" + HaveReaudit + "', ReauditNumber = '" + ReauditNumber + "' "+
+                            "FROM CollectionLevel2 "+
+                            "WHERE ConsolidationLevel2_Id "+
+                        "IN(SELECT Id FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = " + ConsolidationLevel1_Id + ") AND ReauditIs = 0";
+                }
+                else if (HaveReaudit == 0)
+                {
+                    sql = "UPDATE CollectionLevel2 " +
+                            "SET ReauditLevel = 1, HaveReaudit = 0, ReauditNumber = 0 " +
+                            "FROM CollectionLevel2 " +
+                            "WHERE ConsolidationLevel2_Id " +
+                        "IN(SELECT Id FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = " + ConsolidationLevel1_Id + ")  AND ReauditIs = 0 " +
+                        "AND "+
+                        "(SELECT Count(*) "+
+                            "FROM CollectionLevel2 "+
+                            "WHERE ReauditIs = 1 AND ReauditNumber = '" + ReauditNumber + "' " +
+                            "AND ConsolidationLevel2_Id IN(SELECT Id FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = " + ConsolidationLevel1_Id + "))" +
+                        " = "+
+                        "(SELECT Count(*) "+
+                            "FROM CollectionLevel2 "+
+                            "WHERE ReauditIs = 0 " +
+                        "AND ConsolidationLevel2_Id IN(SELECT Id FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = " + ConsolidationLevel1_Id + "))";
+                    
                 }
 
                 //SqlConnection db = new SqlConnection(conexao);

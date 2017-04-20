@@ -16,12 +16,10 @@ namespace SgqSystem.ViewModels
         [StringLength(20, MinimumLength = 3)]
         [DataType(DataType.Password)]
         public string ConfirmarSenha { get; set; }
-
-        public string Phone { get; set; }
-
-        public string Email { get; set; }
-
+        
         public List<EmpresaDTO> Empresa { get; set; }
+
+        public string ErrorList { get; set; }
 
         #endregion
 

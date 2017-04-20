@@ -1,5 +1,6 @@
 ﻿using DTO;
 using System;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Helper
@@ -14,7 +15,8 @@ namespace Helper
         {
             var ex = filterContext.Exception;
             filterContext.ExceptionHandled = false;
-            LogException(ex);
+            var controllerAction = String.Join(",", filterContext.Controller.ControllerContext.RouteData.Values.ToList());
+            LogException(ex, controllerAction);
             CreateExceptionContextResult(filterContext);
             throw ex;
         }
@@ -28,6 +30,14 @@ namespace Helper
             new CreateLog(ex);
         }
 
+        /// <summary>
+        /// Cria Log.
+        /// </summary>
+        /// <param name="ex"></param>
+        private void LogException(Exception ex, string controllerAction)
+        {
+            new CreateLog(ex, controllerAction);
+        }
 
         /// <summary>
         /// Redireciona para uma tela "amigavel" ao receber uma exception.

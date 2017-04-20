@@ -5,7 +5,7 @@
     START ANGULAR MODULE
     */
 
-    angular.module("sgqSystem").controller('MainCtrl', ['$scope', '$http',
+    app.controller('MainCtrl', ['$scope', '$http',
         function ($scope, $http) {
             //Defining the $http service for getting the Level1 2 and 3 by default
             $http({

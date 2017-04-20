@@ -254,7 +254,7 @@
 
     function loadSelect2(){
         $('.select2').select2({matcher: modelMatcher});
-        TraduzirSelecione();
+        //TraduzirSelecione();
     }
 
     function modelMatcher (params, data) {
@@ -1115,59 +1115,10 @@
         initialFormLevel2 = $('form')[1];
         initialFormLevel3 = $('form')[2];
 
-        TraduzirSelecione();
+        //TraduzirSelecione();
 
 
     });
-
-    function TraduzirVinculados(){
-
-        $('.select2-results__group').each(
-            function (index){
-                if($('.select2-results__group')[index].innerHTML == "Vinculado:"){
-                    $('.select2-results__group')[index].innerHTML = "@Resources.Resource.yes";
-                }else if($('.select2-results__group')[index].innerHTML == "Não vinculado:"){
-                    $('.select2-results__group')[index].innerHTML = "@Resources.Resource.no";
-                }
-            })
-    }
-
-    function TraduzirSelecione(){
-
-        $('.select2-selection__rendered:visible').each(
-
-                function (index) {
-
-                    try {
-                        if($($('.select2-selection__rendered:visible')[index]).attr('title') == "@Resources.Resource.select" || $($('.select2-selection__rendered:visible')[index]).attr('title') == "...") {
-                            $($('.select2-selection__rendered:visible')[index]).attr('title',"@Resources.Resource.select");
-                        }
-
-                        $('.select2-selection__rendered:visible')[index].innerHTML = $($('.select2-selection__rendered:visible')[index]).attr('title');
-
-                    } catch(err) {
-
-                    }
-
-
-                }
-            )
-
-        $('select').each(
-
-                function (index) {
-
-                    try {
-                        $('select')[index].children[0].innerHTML = "@Resources.Resource.select";
-                    } catch(err) {
-
-                    }
-
-
-                }
-            )
-
-    }
 
     $( document ).ajaxStart(function() {
         openLoader("@Resources.Resource.please_wait"+"...");
@@ -1210,7 +1161,7 @@
                 $('#level2_AvAmostra_accordion').find('input, select, button').attr("readonly", false);
                 $('#avAmCompany').find('option').not('[value='+ unitId + ']').remove();
 
-                /*habilita Edicao do AV AM*/
+                /*Habilita Edicao do AV AM*/
                 $('#tableAvAm > tbody > tr').each(function() {
                     if($(this).data().companyId != unitId)
                         $(this).find('input, select, button').attr("disabled", true);
@@ -1219,6 +1170,8 @@
             }else{
                 $('#btnSaveNewLevel2').attr('disabled', true);
             }
+            $('#level2_nc_collapse > div > table.table-erp > tbody > tr > td:nth-child(4) > button').attr('disabled', true);
+            $($('[id=btnSaveCounter]')[1]).attr('disabled', true);
 
             /*Level3*/
             if (r._PermiteEditarVinculoComTarefa) {
