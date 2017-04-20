@@ -706,7 +706,8 @@ namespace DTO.Helpers
         public static List<SelectListItem> CreateDropDownList<T>(IEnumerable<T> enumerable)
         {
             List<SelectListItem> retorno = new List<SelectListItem>();
-            retorno.Insert(0, new SelectListItem() { Text = "...", Value = "-1" });
+            var defaultOption = GlobalConfig.PrimeiraOption;
+            retorno.Insert(0, new SelectListItem() { Text = defaultOption, Value = "-1" });
             var counter = 1;
             foreach (var i in enumerable)
             {

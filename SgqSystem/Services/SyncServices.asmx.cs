@@ -4478,8 +4478,8 @@ namespace SgqSystem.Services
                     var teste = new ContadoresXX().GetContadoresXX(dbEf, ParLevel1.Id);
                     if (teste.IsNotNull() && teste.Count > 0)
                     {
-                        painelLevel3HeaderListHtml += "<div id='tdef'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>" + teste.LastOrDefault().Defects + "</span></div>";
-                        painelLevel3HeaderListHtml += "<div id='tdefav'>" + CommonData.getResource("total_defects_avaliation").Value.ToString() + ": <span>" + teste.LastOrDefault().SidesWithDefects + "</span></div>";
+                        painelLevel3HeaderListHtml += "<div id='tdef'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>";
+                        painelLevel3HeaderListHtml += "<div id='tdefav'>" + CommonData.getResource("total_defects_avaliation").Value.ToString() + ": <span>" + teste.LastOrDefault().SidesWithDefects.ToString("G29") + "</span></div>";
                     }
                     else
                     {
