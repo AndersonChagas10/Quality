@@ -1177,7 +1177,7 @@
             $($('[id=btnSaveCounter]')[1]).attr('disabled', true);
 
             /*Level3*/
-            if (r._PermiteEditarVinculoComTarefa) {
+            if ($($('[name="paramsDto.parLevel1Dto.IsSpecific"]')[0]).bootstrapSwitch('state')) {
                 $('#btnSaveNewLevel3').attr('disabled', false);
                 /*Libera os campos para Tipos de dados de entrada*/
                 $('#level3_data_type_accordion').find('input, select, button').attr("readonly", false);
@@ -1203,6 +1203,9 @@
                         $(this).find('input, select, button').attr("disabled", true);
                     }
                 });
+
+                $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', false)
+
             }else{
                 $('#btnSaveNewLevel3').attr('disabled', true);
             }
