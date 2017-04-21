@@ -24,7 +24,7 @@ namespace SgqSystem.Controllers.Api
             _userBaseDomain = userBaseDomain;
             _userDomain = userDomain;
             _userSgqDomain = userSgqDomain;
-           // _emailContent = emailContent;
+            // _emailContent = emailContent;
         }
 
         [HttpGet]
@@ -53,7 +53,7 @@ namespace SgqSystem.Controllers.Api
             }
             else
             {
-                ModelState.AddModelError("", isAuthorized.Mensagem);
+                ModelState.AddModelError("", ""/*isAuthorized.Mensagem*/);
                 user.ErrorList = isAuthorized.MensagemExcecao + isAuthorized.StackTrace;
             }
 
