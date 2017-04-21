@@ -162,11 +162,13 @@ else
     $(".page-sidebar-wrapper").removeClass("hide");
     var $btn = $('#send');
     navbarSelect("navbar1");
-    
+
     var formOriginal = $('#tblFamilia > tbody').clone();
     var urlSend = '@Html.Raw(@urlSend)';
     var urlChangeLevel2 = '@Html.Raw(@urlChangeLevel2)';
     var urlChangeLevel2UserCompany = '@Html.Raw(@urlChangeLevel2UserCompany)';
+
+    $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
     function send() {
         var data = {};
@@ -186,7 +188,7 @@ else
     }
 
     $(document).ready(function () {
-       
+
         $('#level1').on('change', selectLevel2)
         $('#company').on('change', function () {
             if ($('#level1').val() > 0) {
@@ -218,7 +220,7 @@ else
     $(document).ajaxStop(function () {
         closeLoader();
     });
-    
+
 </script>
 <script>
 

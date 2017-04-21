@@ -49,6 +49,8 @@
         $(".sidebar-toggler").removeClass("hide");
         $(".page-sidebar-wrapper").removeClass("hide");
 
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+
         //var meses = new Array("Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
         var meses = new Array("@Resources.Resource.january", "@Resources.Resource.february", "@Resources.Resource.march", "@Resources.Resource.april", "@Resources.Resource.may", "@Resources.Resource.june", "@Resources.Resource.july", "@Resources.Resource.august", "@Resources.Resource.september", "@Resources.Resource.october", "@Resources.Resource.november", "@Resources.Resource.december");
         var url1 = '@Html.Raw(@urlGrafico1)';

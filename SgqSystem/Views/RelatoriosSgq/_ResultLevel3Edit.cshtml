@@ -3,9 +3,9 @@
         #printSection {
             display: none;
         }
-        .footer-rodape
-        {
-            margin-top:15px;
+
+        .footer-rodape {
+            margin-top: 15px;
         }
     }
 
@@ -24,12 +24,15 @@
             top: 0;
         }
     }
-    @@media print{
 
-        .footer-rodape{
-            position:fixed; bottom:0px;
+    @@media print {
+
+        .footer-rodape {
+            position: fixed;
+            bottom: 0px;
         }
     }
+
     .printable {
         display: none;
     }
@@ -59,8 +62,8 @@
 
             <!-- Modal content-->
             <div class="modal-content" style="width:895px!important">
-              
-                       
+
+
                 <div class="modal-header" style="font-size:14px;font-weight:bold">
                     <div class="unitCode"><span id="estName"></span></div>
                 </div>
@@ -70,14 +73,14 @@
                         <span id="Level3Name" class="levelName" name="" style=""></span>
                         <div id="params">
                             @Html.Hidden("ResultLevel3_Id")
-                            <div id="changeConform" ></div>
+                            <div id="changeConform"></div>
                         </div>
 
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default non-printable" data-dismiss="modal">Close</button>
-                    <button type="button" onclick="SalvarResultLevel3()" class="btn btn-default non-printable" data-dismiss="modal">Salvar</button>
+                    <button type="button" class="btn btn-default non-printable" data-dismiss="modal">@Resources.Resource.close</button>
+                    <button type="button" onclick="SalvarResultLevel3()" class="btn btn-default non-printable" data-dismiss="modal">@Resources.Resource.save</button>
                 </div>
             </div>
         </div>

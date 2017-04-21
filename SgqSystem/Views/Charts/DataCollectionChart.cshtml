@@ -28,6 +28,8 @@
         var $btn = $('#btnSend');
         $('#simpleCallendar').hide().attr('disabled', true);
 
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+
         $(document).ready(function () {
             $("#btnSend").click(function (e) {
                 Send();
@@ -48,7 +50,7 @@
                 } finally {
                     $btn.button('reset');
                     //Hotfix: table não alinha resultados de centro no meio da tr....
-                   
+
                 }
             });
         };

@@ -108,7 +108,9 @@ namespace Dominio.Services
                     isUser = LoginEUA(userDto, userByName);
 
                 if (isUser.IsNull())
-                    throw new ExceptionHelper(mensagens.naoEncontrado);
+                    //throw new ExceptionHelper(mensagens.naoEncontrado);
+                    //Não exibe a msg de erro no login
+                    throw new ExceptionHelper("");
 
                 /*Caso usuario não possua ao menos uma unidade na tbl UserSgq, estes erros são acionados.*/
                 if (isUser.ParCompany_Id == null)
@@ -240,11 +242,11 @@ namespace Dominio.Services
                     if (!string.IsNullOrEmpty(i.Password))
                     {
                         var decript = Guard.DecryptStringAES(i.Password);
-                        if(i.Password.Equals(decript))
+                        if (i.Password.Equals(decript))
                             Guard.EncryptStringAES(i.Password);
                         //i.Password = Guard.EncryptStringAES(i.Password);
 
-                    
+
                     }
                 }
 
@@ -465,7 +467,7 @@ namespace Dominio.Services
 
         public List<UserDTO> GetAllUserByUnit(int unidadeId)
         {
-            return  Mapper.Map<List<UserDTO>>(_userRepo.GetAllUserByUnit(unidadeId));
+            return Mapper.Map<List<UserDTO>>(_userRepo.GetAllUserByUnit(unidadeId));
         }
 
         /// <summary>
@@ -547,7 +549,7 @@ namespace Dominio.Services
             }
         }
 
-      
+
         #endregion
 
     }
