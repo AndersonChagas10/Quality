@@ -4542,8 +4542,8 @@ namespace SgqSystem.Services
                 classInput = " defects";
                 labels = html.div(
                                            outerhtml: "<b>Max: </b>" + parLevel3.IntervalMax.ToString("G29"),
-                                           classe: "font10",
-                                           style: "font-size: 11px; margin-top:7px;"
+                                           classe: "levelName"
+                                           //style: "margin-top:7px;"
                                        );
 
                 input = html.campoNumeroDeDefeitos(id: parLevel3.Id.ToString(),
@@ -4556,8 +4556,8 @@ namespace SgqSystem.Services
                 classInput = " interval";
                 labels = html.div(
                                            outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29") + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29") + " " + parLevel3.ParMeasurementUnit_Name,
-                                           classe: "font10",
-                                           style: "font-size: 11px; margin-top:7px;"
+                                           classe: "levelName"
+                                           //style: "margin-top:7px;"
                                        );
 
                 input = html.campoIntervalo(id: parLevel3.Id.ToString(),
@@ -4574,8 +4574,8 @@ namespace SgqSystem.Services
 
                 labels = html.div(
                                            outerhtml: "<b>Min: </b> " + Guard.ConverteValorCalculado(parLevel3.IntervalMin) + " ~ <b>Max: </b>" + Guard.ConverteValorCalculado(parLevel3.IntervalMax) + " " + parLevel3.ParMeasurementUnit_Name,
-                                           classe: "font10",
-                                           style: "font-size: 11px; margin-top:7px;"
+                                           classe: "levelName"
+                                           //style: "margin-top:7px;"
                                        );
 
                 input = html.campoCalculado(id: parLevel3.Id.ToString(),
@@ -4588,8 +4588,8 @@ namespace SgqSystem.Services
                 classInput = " texto naoValidarInput";
                 labels = html.div(
                                            outerhtml: "",
-                                           classe: "font10",
-                                           style: "font-size: 11px; margin-top:7px;"
+                                           classe: "levelName"
+                                           //style: "margin-top:7px;"
                                        );
 
                 input = html.campoTexto(id: parLevel3.Id.ToString());
@@ -4601,8 +4601,8 @@ namespace SgqSystem.Services
 
                 labels = html.div(
                                     outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29") + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29") + " " + parLevel3.ParMeasurementUnit_Name,
-                                    classe: "font10",
-                                    style: "font-size: 11px; margin-top:7px;"
+                                    classe: "levelName"
+                                    //style: "margin-top:7px;"
                                 );
 
                 input = html.campoIntervalo(id: parLevel3.Id.ToString(),
@@ -4619,7 +4619,7 @@ namespace SgqSystem.Services
             classInput = " defects";
             labels = html.div(
                                        classe: "font10",
-                                       style: "font-size: 11px; margin-top:7px;"
+                                       style: "margin-top:7px;"
                                    );
 
             input = html.campoNumeroDeDefeitos(id: parLevel3.Id.ToString(),
