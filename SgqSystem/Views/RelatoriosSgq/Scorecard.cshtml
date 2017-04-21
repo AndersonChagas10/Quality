@@ -59,6 +59,8 @@
         $(".sidebar-toggler").removeClass("hide");
         $(".page-sidebar-wrapper").removeClass("hide");
 
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+
         var url1 = '@Html.Raw(@urlScorecard)';
         var $btn = $('#btnSend');
         $('#simpleCallendar').hide().attr('disabled', true);
@@ -172,7 +174,7 @@
                 },
                 fnDrawCallback: function (data, d, o) {
 
-                    
+
 
                 }
             });
@@ -215,7 +217,7 @@
                             ]
             });
 
-            
+
 
                         table.buttons(0, null).container().prependTo(
                             table.table().container()

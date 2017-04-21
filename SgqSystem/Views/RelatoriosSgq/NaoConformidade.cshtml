@@ -81,6 +81,8 @@
         $(".sidebar-toggler").removeClass("hide");
         $(".page-sidebar-wrapper").removeClass("hide");
 
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+
         var Grafico1 = '@Resources.Resource.defects_per_unit'; //'NC por unidade';
         var GraficoDepto = 'NC por departamento: ';
         var GraficoIndic = '@Resources.Resource.defects_per_audit:'; //'NC por Indicador: ';

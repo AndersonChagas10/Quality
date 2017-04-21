@@ -33,6 +33,8 @@
         $(".sidebar-toggler").removeClass("hide");
         $(".page-sidebar-wrapper").removeClass("hide");
 
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+
         $(document).ready(function () {
             formControl.showFullCallendar();
             formControl.showUnit();

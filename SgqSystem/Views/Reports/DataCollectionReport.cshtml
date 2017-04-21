@@ -26,152 +26,154 @@
 
     <script type="text/javascript">
 
-    var url1 = '@Html.Raw(@urlTabelaRelatorio)';
-    var $btn = $('#btnSend');
-    $('#simpleCallendar').hide().attr('disabled', true);
+        var url1 = '@Html.Raw(@urlTabelaRelatorio)';
+        var $btn = $('#btnSend');
+        $('#simpleCallendar').hide().attr('disabled', true);
 
-    $(document).ready(function () {
-        $("#btnSend").click(function (e) {
-            Send();
-        });
-    });
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
-    function Send() {
-        $btn.button('loading');
-        $('#results').empty();
-        ValidaDadosParaEnvio();
-        //AJAX
-        $.post(url1, enviar, function (r) {
-            try {
-                var retornoArray = [];
-                var arrayItarator = r.Retorno;
-                GerarTabela(r.Retorno.ConsolidationLevel01);
-            } catch (e) {
-                console.log(e);
-            } finally {
-                $btn.button('reset');
-                //Hotfix: table não alinha resultados de centro no meio da tr....
-            }
-        })
-        //    .error(function (a, b, c) {
-        //    $btn.button('reset');
-        //});
-    };
-    function GerarTabela(retornoArray) {
-
-        var table = $('#results').empty().DataTable({
-            data: retornoArray,
-            columns: [{ title: "Unit", mData: "Unit" },
-                { title: "Department", mData: "Departamento" },
-                { title: "Auditor", mData: "Auditor" },
-                { title: "Level01", mData: "Level01" },
-                { title: "Level02", mData: "Level02name" },
-                { title: "Evaluated", mData: "avaliado" },
-                { title: "Phase", mData: "Phase" },
-                { title: "Shift", mData: "Shift" },
-                { title: "Sample", mData: "Sample" },
-                { title: "Date", mData: "AddDate" },
-                { title: "NotEvaluated", mData: "NotEvaluatedIs" },
-                { title: "Level03", mData: "Level03Name" },
-                { title: "Is Conformed", mData: "ConformedIs" },
-                { title: "Value", mData: "Value" },
-                { title: "ValueText", mData: "ValueText" },
-            ],
-            "columnDefs": [
-                { "className": "dt-center", "targets": "_all" }
-            ],
-            scrollX: true,
-            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-            pageLength: 10,
-            loadingRecords: true,
-            destroy: true,
-            info: true,
-            responsive: true,
-            initComplete: function () {
-                $('#loading').hide();
-                setTimeout(function (e) {
-                    var oTable = $('#results').dataTable();
-                    if (oTable.length > 0) {
-                        oTable.fnAdjustColumnSizing();
-                    }
-                }, 100);
-            },
-            //dom: 'Bfrtip',
-            //buttons: [
-            //   'copy', 'excel', 'pdf'
-            //],
-            //columnDefs: config.columnDefs,
-            //bSort: true,
-            //bAutoWidth: true,
-            //bFilter: true,
-            //processing: true,
-            //paginate: true,
-            //paging: true,
-            //searching: true,
-            //createdRow: config.createdRow,
-            //fnDrawCallback: config.fnDrawCallback,
-            //order: config.order || [[0, 'asc']],
-            //serverSide: !config.serverSide == undefined || config.serverSide,
-            //sPaginationType: 'full_numbers',
+        $(document).ready(function () {
+            $("#btnSend").click(function (e) {
+                Send();
+            });
         });
 
-        new $.fn.dataTable.Buttons(table, {
-            buttons: [
-                {
-                    extend: 'print',
-                    customize: function (win) {
-                        //$(win.document.body)
-                        //    .css( 'font-size', '10pt' )
-                        //    .prepend(
-                        //        '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
-                        //    );
+        function Send() {
+            $btn.button('loading');
+            $('#results').empty();
+            ValidaDadosParaEnvio();
+            //AJAX
+            $.post(url1, enviar, function (r) {
+                try {
+                    var retornoArray = [];
+                    var arrayItarator = r.Retorno;
+                    GerarTabela(r.Retorno.ConsolidationLevel01);
+                } catch (e) {
+                    console.log(e);
+                } finally {
+                    $btn.button('reset');
+                    //Hotfix: table não alinha resultados de centro no meio da tr....
+                }
+            })
+            //    .error(function (a, b, c) {
+            //    $btn.button('reset');
+            //});
+        };
+        function GerarTabela(retornoArray) {
 
-                        $(win.document.body).find('table')
-                            .addClass('compact')
-                            .css('font-size', 'inherit');
+            var table = $('#results').empty().DataTable({
+                data: retornoArray,
+                columns: [{ title: "Unit", mData: "Unit" },
+                    { title: "Department", mData: "Departamento" },
+                    { title: "Auditor", mData: "Auditor" },
+                    { title: "Level01", mData: "Level01" },
+                    { title: "Level02", mData: "Level02name" },
+                    { title: "Evaluated", mData: "avaliado" },
+                    { title: "Phase", mData: "Phase" },
+                    { title: "Shift", mData: "Shift" },
+                    { title: "Sample", mData: "Sample" },
+                    { title: "Date", mData: "AddDate" },
+                    { title: "NotEvaluated", mData: "NotEvaluatedIs" },
+                    { title: "Level03", mData: "Level03Name" },
+                    { title: "Is Conformed", mData: "ConformedIs" },
+                    { title: "Value", mData: "Value" },
+                    { title: "ValueText", mData: "ValueText" },
+                ],
+                "columnDefs": [
+                    { "className": "dt-center", "targets": "_all" }
+                ],
+                scrollX: true,
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                pageLength: 10,
+                loadingRecords: true,
+                destroy: true,
+                info: true,
+                responsive: true,
+                initComplete: function () {
+                    $('#loading').hide();
+                    setTimeout(function (e) {
+                        var oTable = $('#results').dataTable();
+                        if (oTable.length > 0) {
+                            oTable.fnAdjustColumnSizing();
+                        }
+                    }, 100);
+                },
+                //dom: 'Bfrtip',
+                //buttons: [
+                //   'copy', 'excel', 'pdf'
+                //],
+                //columnDefs: config.columnDefs,
+                //bSort: true,
+                //bAutoWidth: true,
+                //bFilter: true,
+                //processing: true,
+                //paginate: true,
+                //paging: true,
+                //searching: true,
+                //createdRow: config.createdRow,
+                //fnDrawCallback: config.fnDrawCallback,
+                //order: config.order || [[0, 'asc']],
+                //serverSide: !config.serverSide == undefined || config.serverSide,
+                //sPaginationType: 'full_numbers',
+            });
+
+            new $.fn.dataTable.Buttons(table, {
+                buttons: [
+                    {
+                        extend: 'print',
+                        customize: function (win) {
+                            //$(win.document.body)
+                            //    .css( 'font-size', '10pt' )
+                            //    .prepend(
+                            //        '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
+                            //    );
+
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        },
+                        exportOptions: {
+                            columns: ':visible'
+                        }
                     },
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'excelHtml5',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                //'excel',
-                'pdf',
-                'colvis',
-                //, 'print'
-                //{
-                //    text: 'Extra 1',
-                //    action: function (e, dt, node, conf) {
-                //        console.log('Button 1 clicked on');
-                //    }
-                //},
-                //{
-                //    text: 'Extra 2',
-                //    action: function (e, dt, node, conf) {
-                //        console.log('Button 2 clicked on');
-                //    }
-                //}
-            ]
-        });
+                    {
+                        extend: 'excelHtml5',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    //'excel',
+                    'pdf',
+                    'colvis',
+                    //, 'print'
+                    //{
+                    //    text: 'Extra 1',
+                    //    action: function (e, dt, node, conf) {
+                    //        console.log('Button 1 clicked on');
+                    //    }
+                    //},
+                    //{
+                    //    text: 'Extra 2',
+                    //    action: function (e, dt, node, conf) {
+                    //        console.log('Button 2 clicked on');
+                    //    }
+                    //}
+                ]
+            });
 
-        table.buttons(0, null).container().prependTo(
-            table.table().container()
-        );
+            table.buttons(0, null).container().prependTo(
+                table.table().container()
+            );
 
-    }
-    function ValidaDadosParaEnvio() {
-        GuardJs.resetForValidation();
-        GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
-        if (!GuardJs.isValid)
-            return;
-        GuardJs.esconderMensagem();
-    }
-    formControl.ShowAllFielsAndFullCallendar();
+        }
+        function ValidaDadosParaEnvio() {
+            GuardJs.resetForValidation();
+            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+            if (!GuardJs.isValid)
+                return;
+            GuardJs.esconderMensagem();
+        }
+        formControl.ShowAllFielsAndFullCallendar();
 
     </script>
 

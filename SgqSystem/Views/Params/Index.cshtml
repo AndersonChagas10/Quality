@@ -218,6 +218,8 @@
     var hasperm = @Html.Raw(Json.Encode(ViewBag.IsAdmin));
     var unitId = @Html.Raw(Json.Encode(ViewBag.CompanyId));
 
+    $('button').button({ loadingText: '@Resources.Resource.loading...' });
+
     function reloadPopovers(){
         $(".popovers").attr("data-toggle", "popover");
         $("[data-toggle=popover]").popover();
@@ -1218,7 +1220,7 @@
     if(window.location.host.indexOf("localhost") != -1){
         timeoutAjax = 500000;
     }
-    
+
     timeoutAjax = 900000;
     $.ajaxSetup({
 

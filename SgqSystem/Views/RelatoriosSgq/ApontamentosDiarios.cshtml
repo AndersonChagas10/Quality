@@ -34,6 +34,8 @@
         $(".sidebar-toggler").removeClass("hide");
         $(".page-sidebar-wrapper").removeClass("hide");
 
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+
         var urlGet = '@Html.Raw(@urlGet)';
         var urlEdit = '@Html.Raw(@urlEdit)';
         var urlSave = '@Html.Raw(@urlSave)';
