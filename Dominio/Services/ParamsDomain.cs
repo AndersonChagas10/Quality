@@ -435,13 +435,13 @@ namespace Dominio.Services
             try
             {
 
-                _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, listParRelapse, parLevel3Level2peso, paramsDto.level1Selected);
+                _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, listParRelapse, parLevel3Level2peso?.ToList(), paramsDto.level1Selected);
                 if(parLevel3Level2peso != null)
                     foreach (var i in parLevel3Level2peso?.Where(r=> r.IsActive))
                         AddVinculoL1L2(paramsDto.level1Selected, paramsDto.level2Selected, saveParamLevel3.Id, 0, i.ParCompany_Id);
 
             }
-                catch (DbUpdateException e)
+            catch (DbUpdateException e)
             {
                 VerifyUniqueName(saveParamLevel3, e);
             } 

@@ -235,8 +235,7 @@ namespace SgqSystem.Controllers.Api.Params
         public string RemVinculoL2L3(int idLevel1, int idLevel2, int idLevel3, int? companyId = null)
         {
             var retorno = "Registro desvinculado.";
-            try
-            {
+      
                 using (var db = new SgqDbDevEntities())
                 {
                     //throw new Exception("teste");
@@ -254,11 +253,7 @@ namespace SgqSystem.Controllers.Api.Params
 
                     db.SaveChanges();
                 }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+       
             //return _paramdDomain.RemVinculoL1L2(idLevel1, idLevel2);
             return retorno;
         }
