@@ -20,8 +20,8 @@ namespace SgqSystem.Controllers.Api.Volume
                 "\n (                                                                                                       " +
                 "\n select                                                                                                  " +
                 "\n top 1 count(1) familias, Max(InitDate) data                                                             " +
-                "\n from ParLevel2ControlCompany                                                                            " +
-                "\n where parcompany_id = " + idUnidade + "                                                                 " +
+                "\n from ParLevel2ControlCompany      p                                                                      " +
+                "\n where parcompany_id = " + idUnidade + "        and p.isactive                                                         " +
                 "\n and ParLevel1_Id = (Select id from parlevel1 where hashkey = 2) and InitDate < getdate()                " +
                 "\n group by InitDate                                                                                       " +
                 "\n order by 2 desc                                                                                         " +
@@ -30,9 +30,9 @@ namespace SgqSystem.Controllers.Api.Volume
                 "\n                                                                                                         " +
                 "\n select                                                                                                  " +
                 "\n top 1 count(1) familias, Max(InitDate) data                                                             " +
-                "\n from ParLevel2ControlCompany                                                                            " +
+                "\n from ParLevel2ControlCompany     p                                                                       " +
                 "\n where parcompany_id is null and ParLevel1_Id = (Select id from parlevel1 where hashkey = 2)             " +
-                "\n and InitDate < getdate()                                                                                " +
+                "\n and InitDate < getdate()      and p.isactive                                                                            " +
                 "\n group by InitDate                                                                                       " +
                 "\n order by 2 desc                                                                                         " +
                 "\n                                                                                                         " +
@@ -50,8 +50,8 @@ namespace SgqSystem.Controllers.Api.Volume
                 "\n (                                                                                                       " +
                 "\n select                                                                                                  " +
                 "\n top 1 count(1) familias, Max(InitDate) data                                                             " +
-                "\n from ParLevel2ControlCompany                                                                            " +
-                "\n where parcompany_id = " + idUnidade + "                                                                 " +
+                "\n from ParLevel2ControlCompany    p                                                                        " +
+                "\n where parcompany_id = " + idUnidade + "       and p.isactive                                                            " +
                 "\n and ParLevel1_Id = (Select id from parlevel1 where hashkey = 3) and InitDate < getdate()                " +
                 "\n group by InitDate                                                                                       " +
                 "\n order by 2 desc                                                                                         " +
@@ -60,9 +60,9 @@ namespace SgqSystem.Controllers.Api.Volume
                 "\n                                                                                                         " +
                 "\n select                                                                                                  " +
                 "\n top 1 count(1) familias, Max(InitDate) data                                                             " +
-                "\n from ParLevel2ControlCompany                                                                            " +
+                "\n from ParLevel2ControlCompany    p                                                                        " +
                 "\n where parcompany_id is null and ParLevel1_Id = (Select id from parlevel1 where hashkey = 3)             " +
-                "\n and InitDate < getdate()                                                                                " +
+                "\n and InitDate < getdate()     and p.isactive                                                                             " +
                 "\n group by InitDate                                                                                       " +
                 "\n order by 2 desc                                                                                         " +
                 "\n                                                                                                         " +

@@ -253,7 +253,6 @@
 
                                     @*Obj Hora*@
                                     <div id="objHora" style="display:none;">
-                                        teste
                                         <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Hora" id="btnIncluirHora" onclick="Cabecalhos.IncluirSalvarTexto(true);" />
                                     </div>
 
@@ -419,6 +418,19 @@
                                                                     <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                     <td>
                                                                         <input type="text" class="dataInput active form-control input-sm">
+                                                                        @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
+                                                                        <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
+                                                                            <span class="glyphicon glyphicon-pencil"></span>
+                                                                        </button>
+                                                                    </td>
+                                                            }
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 7)
+                                                            {
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+                                                                    <td>
+                                                                        <input type="time" class="active form-control input-sm">
                                                                         @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
                                                                         <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
                                                                             <span class="glyphicon glyphicon-pencil"></span>
@@ -1095,15 +1107,17 @@
 
         },
         AtualizaPreviewCampotexto: function (o) {
-
+            var tipo = $('#parFieldType option:selected').val();
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
             example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
                        '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
             //var example = '<div>';
             //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
             example += '<td>';
-            if(o.isDataDefined){
+            if(tipo == 6){
                 example += '<input type="text" class="dataInput form-control input-sm "/>';//Input Date
+            }else if(tipo == 7){
+                example += '<input type="time" class="form-control input-sm "/>'
             }else{
                 example += '<input type="text" class="form-control input-sm " />';//Input
             }
@@ -1589,7 +1603,7 @@
         } catch (e) {
             console.log(e);
         }
-
+        
     });
 
 </script>

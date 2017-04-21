@@ -647,7 +647,7 @@ namespace SGQDBContext
             if (ParLevel1.hashKey == 2 && ParCompany_Id != null)
             {
 
-                string sql = "SELECT top 1 PL2.Id AS Id, PL2.Name AS Name,              " +
+                string sql = "SELECT  PL2.Id AS Id, PL2.Name AS Name,              " +
                              "(SELECT TOP 1 Amostras FROM VolumeCepDesossa WHERE Data = (SELECT MAX(DATA) FROM VolumeCepDesossa WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Sample " +
                              "FROM                                                                        " +
                              "ParLevel3Level2 P32                                                         " +
