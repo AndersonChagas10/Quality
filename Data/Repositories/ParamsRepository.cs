@@ -117,7 +117,7 @@ namespace Data.Repositories
             }
         }
 
-    
+
         private void SalvaCounterLocalDoLevel1(ParLevel1 paramLevel1, ParCounterXLocal counterDoLevel1)
         {
             counterDoLevel1.ParLevel1_Id = paramLevel1.Id;
@@ -252,7 +252,7 @@ namespace Data.Repositories
 
         private void SalvaGoal(ParGoal goal, int paramLevel1Id)
         {
-            if(paramLevel1Id > 0)
+            if (paramLevel1Id > 0)
                 goal.ParLevel1_Id = paramLevel1Id;
 
             if (goal.ParCompany_Id == -1 || goal.ParCompany_Id == 0)
@@ -272,7 +272,7 @@ namespace Data.Repositories
                 db.Entry(goal).State = EntityState.Modified;
                 db.Entry(goal).Property(e => e.AddDate).IsModified = false;
             }
-            db.SaveChanges(); 
+            db.SaveChanges();
         }
 
         private void SaveReincidencia(ParRelapse parRelapse, int parLevel1Id)
@@ -510,7 +510,7 @@ namespace Data.Repositories
 
                 if (parLevel3Level2pontos != null)
                     if (parLevel3Level2pontos.Count() > 0)
-                            AddUpdateParLevel3Level2(parLevel3Level2pontos, level1Id);
+                        AddUpdateParLevel3Level2(parLevel3Level2pontos, level1Id);
 
                 db.SaveChanges();
                 ts.Commit();
@@ -552,9 +552,9 @@ namespace Data.Repositories
 
         public void AddUpdateParLevel3Value(List<ParLevel3Value> paramLevel3Value, int ParLevel3_Id)
         {
-            paramLevel3Value.ForEach(r=>r.ParLevel3_Id = ParLevel3_Id);
+            paramLevel3Value.ForEach(r => r.ParLevel3_Id = ParLevel3_Id);
 
-            if (paramLevel3Value.Any(r=>r.Id == 0))
+            if (paramLevel3Value.Any(r => r.Id == 0))
             {
                 db.ParLevel3Value.AddRange(paramLevel3Value);
             }
@@ -851,50 +851,64 @@ namespace Data.Repositories
             }
         }
 
-        
+
         #region ParLevel3Level2
 
         public void AddUpdateParLevel3Level2(List<ParLevel3Level2> paramParLevel3Level2, int? level1Id = null)
         {
+            db.Configuration.ValidateOnSaveEnabled = false;
+            if (level1Id.IsNull())
+                throw new Exception("é necessário selectionar um level1 antes de criar um novo vinculo de peso para o level3.");
 
             if (paramParLevel3Level2.Any(r => r.Id == 0))
             {
                 db.ParLevel3Level2.AddRange(paramParLevel3Level2.Where(r => r.Id == 0));
+                db.SaveChanges();
+                foreach (var i in paramParLevel3Level2)
+                {
+                    db.ParLevel3Level2Level1.Add(new ParLevel3Level2Level1() { ParCompany_Id = i.ParCompany_Id, ParLevel1_Id = level1Id.GetValueOrDefault(), ParLevel3Level2_Id = i.Id, Active = true, AddDate= DateTime.Now });
+                    db.ParLevel2Level1.Add(new ParLevel2Level1() { ParCompany_Id = i.ParCompany_Id, ParLevel2_Id = i.ParLevel2_Id, ParLevel1_Id = level1Id.GetValueOrDefault() , IsActive = true, AddDate = DateTime.Now });
+                }
+                db.SaveChanges();
             }
             else
             {
-                if (paramParLevel3Level2.Any(r => !r.IsActive))
+                foreach (var i in paramParLevel3Level2)
                 {
+                    Guard.verifyDate(i, "AlterDate");
+                    db.ParLevel3Level2.Attach(i);
+                    db.Entry(i).State = EntityState.Modified;
+                    db.Entry(i).Property(e => e.AddDate).IsModified = false;
 
-                    var listal3l2l1 = new List<ParLevel3Level2Level1>();
-                    foreach (var i in paramParLevel3Level2)
+                    if (i.IsActive == false)
                     {
-                        var resultL321 = db.ParLevel3Level2Level1.FirstOrDefault(r => r.ParLevel3Level2_Id == i.Id && r.ParCompany_Id == i.ParCompany_Id);
-                        var resultL21 = db.ParLevel2Level1.FirstOrDefault(r => r.ParLevel1_Id == level1Id && r.ParLevel2_Id == i.ParLevel2_Id && r.ParCompany_Id == i.ParCompany_Id);
+                        var inativarParLevel3Level2 = db.ParLevel3Level2.Include("ParLevel3Level2Level1").FirstOrDefault(r => r.Id == i.Id).ParLevel3Level2Level1.FirstOrDefault(r=>r.ParCompany_Id == i.ParCompany_Id);
+                        if (inativarParLevel3Level2.IsNotNull())
+                        {
+                            inativarParLevel3Level2.Active = false;
+                            Guard.verifyDate(inativarParLevel3Level2, "AlterDate");
+                            db.ParLevel3Level2Level1.Attach(inativarParLevel3Level2);
+                            db.Entry(inativarParLevel3Level2).State = EntityState.Modified;
+                            db.Entry(inativarParLevel3Level2).Property(e => e.AddDate).IsModified = false;
 
-                        db.ParLevel3Level2.Attach(i);
+                            var inativarParLevel2Level1 = db.ParLevel2Level1.FirstOrDefault(r => r.ParCompany_Id == i.ParCompany_Id && r.ParLevel2_Id == i.ParLevel2_Id && r.ParLevel1_Id == inativarParLevel3Level2.ParLevel1_Id);
+                            if (inativarParLevel2Level1.IsNotNull())
+                            {
+                                inativarParLevel2Level1.IsActive = false;
+                                Guard.verifyDate(inativarParLevel2Level1, "AlterDate");
+                                db.ParLevel2Level1.Attach(inativarParLevel2Level1);
+                                db.Entry(inativarParLevel2Level1).State = EntityState.Modified;
+                                db.Entry(inativarParLevel2Level1).Property(e => e.AddDate).IsModified = false;
+                            }
+                        }
 
-                        db.ParLevel3Level2Level1.Attach(resultL321);
-                        db.ParLevel3Level2Level1.Remove(resultL321);
-
-                        db.ParLevel2Level1.Attach(resultL21);
-                        db.ParLevel2Level1.Remove(resultL21);
+                        db.SaveChanges();
                     }
 
-                    db.ParLevel3Level2.RemoveRange(paramParLevel3Level2);
-
-                }
-                else
-                {
-                    foreach (var i in paramParLevel3Level2)
-                    {
-                        Guard.verifyDate(i, "AlterDate");
-                        db.ParLevel3Level2.Attach(i);
-                        db.Entry(i).State = EntityState.Modified;
-                        db.Entry(i).Property(e => e.AddDate).IsModified = false;
-                    }
+                   
                 }
             }
+            //}
 
             db.SaveChanges();
 
@@ -921,7 +935,7 @@ namespace Data.Repositories
                     parLevel2HeaderField = db.ParLevel2XHeaderField.Add(parLevel2HeaderField);
                 }
                 else
-                { 
+                {
                     parLevel2HeaderField.IsActive = false;
                     Guard.verifyDate(parLevel2HeaderField, "AlterDate");
                     db.ParLevel2XHeaderField.Attach(parLevel2HeaderField);

@@ -162,7 +162,7 @@
                                                 </div>
                                                 <div class="col-xs-4">
                                                     @*<button id="vinculoLevel2" class="btn btn-danger pull-right" style="height: 42px;" title="Vincular ao Level 2" onclick="saveLevel3Level2()"><span class="glyphicon glyphicon-link"></span></button>*@
-                                                    <button id="desviculol3l2" class="btn btn-danger pull-right" style="height: 42px;" title="Desvincular do Level 2" onclick="desvincularL3L2()"><i class="fa fa-chain-broken" aria-hidden="true"></i></button>
+                                                    <button id="desviculol3l2" class="btn btn-danger pull-right" style="height: 42px; display:none" title="Desvincular do Level 2" onclick="desvincularL3L2()"><i class="fa fa-chain-broken" aria-hidden="true"></i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -314,9 +314,12 @@
         var l1Id = $('#paramsDto_parLevel1Dto_Id').val();
         var l2Id = $('#paramsDto_parLevel2Dto_Id').val();
         var l3Id = $('#paramsDto_parLevel3Dto_Id').val();
+        var unidade = null;
+        if(!hasperm)
+            unidade = unitId;
 
         if(l1Id > 0 && l2Id > 0 && l3Id > 0){
-            $.post('@Url.Action("RemVinculoL2L3", "api/ParamsApi")' + '/' + l1Id + '/' + l2Id + '/' + l3Id + '/' + unitId, {}, function(r) {
+            $.post('@Url.Action("RemVinculoL2L3", "api/ParamsApi")' + '/' + l1Id + '/' + l2Id + '/' + l3Id + '/' + unidade, {}, function(r) {
                 openMessageModal(r, '');
             });
         }else{
@@ -1176,7 +1179,7 @@
             $($('[id=btnSaveCounter]')[1]).attr('disabled', true);
 
             /*Level3*/
-            if (r._PermiteEditarVinculoComTarefa) {
+            if ($($('[name="paramsDto.parLevel1Dto.IsSpecific"]')[0]).bootstrapSwitch('state')) {
                 $('#btnSaveNewLevel3').attr('disabled', false);
                 /*Libera os campos para Tipos de dados de entrada*/
                 $('#level3_data_type_accordion').find('input, select, button').attr("readonly", false);
@@ -1202,6 +1205,9 @@
                         $(this).find('input, select, button').attr("disabled", true);
                     }
                 });
+
+                $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', false)
+
             }else{
                 $('#btnSaveNewLevel3').attr('disabled', true);
             }
