@@ -63,7 +63,7 @@
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasGroupLevel2, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.has_group_level2), Table.PosicaoLabel.left, null, Resources.Resource.has_group_level2)
                         </tr>
                         <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecific, new { @class = "form-control checkbox-erp", @Id = "l1IsSpecific" }), @Html.Label(Resources.Resource.allow_specific_register_by_unit), Table.PosicaoLabel.left, null, Resources.Resource.allow_specific_register_by_unit_popover)
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecific, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_specific_register_by_unit), Table.PosicaoLabel.left, null, Resources.Resource.allow_specific_register_by_unit_popover)
                         </tr>
                         <tr class="row groupCadastroEspecificoUnidade padding-left hidden" style="display:none">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificHeaderField, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_field_edition_of_the_header, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
@@ -253,6 +253,7 @@
 
                                     @*Obj Hora*@
                                     <div id="objHora" style="display:none;">
+                                        teste
                                         <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Hora" id="btnIncluirHora" onclick="Cabecalhos.IncluirSalvarTexto(true);" />
                                     </div>
 
@@ -415,19 +416,6 @@
                                                             {
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
                                                                     <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
-                                                                    <td>
-                                                                        <input type="text" class="dataInput active form-control input-sm">
-                                                                        @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                                        <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
-                                                                            <span class="glyphicon glyphicon-pencil"></span>
-                                                                        </button>
-                                                                    </td>
-                                                            }
-                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 7)
-                                                            {
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
                                                                     <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                     <td>
                                                                         <input type="text" class="dataInput active form-control input-sm">
