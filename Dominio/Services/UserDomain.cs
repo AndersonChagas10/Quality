@@ -108,9 +108,7 @@ namespace Dominio.Services
                     isUser = LoginEUA(userDto, userByName);
 
                 if (isUser.IsNull())
-                    //throw new ExceptionHelper(mensagens.naoEncontrado);
-                    //Não exibe a msg de erro no login
-                    throw new ExceptionHelper("");
+                    throw new ExceptionHelper(mensagens.naoEncontrado);
 
                 /*Caso usuario não possua ao menos uma unidade na tbl UserSgq, estes erros são acionados.*/
                 if (isUser.ParCompany_Id == null)
