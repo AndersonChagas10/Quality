@@ -38,6 +38,8 @@
             $(".page-sidebar-wrapper").removeClass("hide");
             $('#simpleCallendar').hide().attr('disabled', true);
 
+            $('button').button({ loadingText: '@Resources.Resource.loading...' });
+
             var url1 = '@Html.Raw(@urlTabelaRelatorio)';
             var url2 = '@Html.Raw(@urlGetCa)';
             var $btn = $('#btnSend');

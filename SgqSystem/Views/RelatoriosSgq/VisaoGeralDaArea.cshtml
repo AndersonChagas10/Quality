@@ -50,6 +50,8 @@
         var $btn = $('#btnSend');
         $('#simpleCallendar').hide().attr('disabled', true);
 
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+
         function Send(toggle) {
 
             $('#grafico1').empty();

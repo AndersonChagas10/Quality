@@ -41,6 +41,8 @@
 
         $('#simpleCallendar').hide().attr('disabled', true);
 
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+
         $(document).ready(function () {
 
             $("#btnSend").click(function (e) {

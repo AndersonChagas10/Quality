@@ -5,6 +5,9 @@
 
 
     var baseAmbiente = "GRT Local"
+
+    $('button').button({ loadingText: '@Resources.Resource.loading...' });
+
     //assim que todos os arquivos foram carregados
     $(document).ready(function () {
         //clearLastSync();
@@ -208,7 +211,7 @@
 
 
 
-    
+
     $(document).on('click', '.level1List .level1', function (e) {
         //Reseta Level1 selecionado
         $('.level1').removeClass('selected');
@@ -221,7 +224,7 @@
     });
 
 
-    
+
     //$(document).on('click', '.level2Group .level2')
     //{
     //    //Reseta o Level2 selecionado
@@ -233,7 +236,7 @@
     //    //Abre o Level3
     //    openLevel3(level2);
     //}
-    
+
 
     function openLevel2(level1) {
         //Oculta Lista de Level1
@@ -250,7 +253,7 @@
             level02Group.removeClass('hide');
             //Mostra a tela do monitoramento
             level2List.removeClass('hide').show();
-        });   
+        });
     }
 
     //function openLevel3(level2) {
@@ -1174,7 +1177,7 @@
         $('.level02').removeClass('selected');
 
         level02.addClass('selected');
-        
+
         $('.level02List').fadeOut("fast", function (e) {
             level02.parents('.level02List').addClass('hide');
             var level03 = $('.level03List');
