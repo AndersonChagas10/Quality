@@ -430,7 +430,7 @@
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
                                                                     <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                     <td>
-                                                                        <input type="text" class="dataInput active form-control input-sm">
+                                                                        <input type="time" class="active form-control input-sm">
                                                                         @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
                                                                         <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
                                                                             <span class="glyphicon glyphicon-pencil"></span>
@@ -1601,7 +1601,7 @@
         } catch (e) {
             console.log(e);
         }
-
+        
     });
 
 </script>
