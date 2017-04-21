@@ -2883,6 +2883,8 @@ namespace SgqSystem.Services
                             "<div id=\"messageAlert\" class=\"alert alert-info hide\" role=\"alert\">" +
                                 "<span id=\"mensagemAlerta\" class=\"icon-info-sign\"></span>" +
                             "</div>" +
+
+                            "<div class=\"row formCorrectiveAction\">" +
                                 "<div class=\"panel panel-default\">" +
                                     "<div class=\"panel-body\" >" +
                                         "<div class=\"row\" style=\"padding:8px;\">" +
@@ -2901,7 +2903,7 @@ namespace SgqSystem.Services
                                         "</div>" +
                                     "</div>" +
                                 "</div>" +
-                            "<div class=\"row formCorrectiveAction\">" +
+                            
                                 
                                 "<div class=\"form-group\">" +
                                     "<label>" + CommonData.getResource("failure_description").Value.ToString() + ":</label>" +
@@ -2919,6 +2921,7 @@ namespace SgqSystem.Services
                                     "<label>" + CommonData.getResource("preventive_measure").Value.ToString() + ":</label>" +
                                     "<textarea id=\"PreventativeMeasure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
                                 "</div>";
+
             if (GlobalConfig.Eua)
             {
                 correctiveAction +=
@@ -2943,7 +2946,7 @@ namespace SgqSystem.Services
             }
                         
 
-            correctiveAction += "</div>" +
+            correctiveAction += 
                                 "<div class=\"modal-footer\">";
 
             if (GlobalConfig.Eua)
@@ -2963,7 +2966,7 @@ namespace SgqSystem.Services
                                     "<button class=\"btn btn-danger modal-close-ca\">" + CommonData.getResource("close").Value.ToString() + "</button>" +
                                     "<button class=\"btn btn-primary\" id=\"btnSendCorrectiveAction\">" + CommonData.getResource("send").Value.ToString() + " </button>" +
                                 "</div>" +
-                            
+                        "</div>" +
                         "</div>" +
                         "</div>" +
                     "</div>";
