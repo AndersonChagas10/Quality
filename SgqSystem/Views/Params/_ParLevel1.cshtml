@@ -253,7 +253,6 @@
 
                                     @*Obj Hora*@
                                     <div id="objHora" style="display:none;">
-                                        teste
                                         <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Hora" id="btnIncluirHora" onclick="Cabecalhos.IncluirSalvarTexto(true);" />
                                     </div>
 
@@ -1108,15 +1107,17 @@
 
         },
         AtualizaPreviewCampotexto: function (o) {
-
+            var tipo = $('#parFieldType option:selected').val();
             var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
             example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
                        '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
             //var example = '<div>';
             //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
             example += '<td>';
-            if(o.isDataDefined){
+            if(tipo == 6){
                 example += '<input type="text" class="dataInput form-control input-sm "/>';//Input Date
+            }else if(tipo == 7){
+                example += '<input type="time" class="form-control input-sm "/>'
             }else{
                 example += '<input type="text" class="form-control input-sm " />';//Input
             }
