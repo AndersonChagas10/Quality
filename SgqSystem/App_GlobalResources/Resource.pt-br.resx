@@ -1905,4 +1905,7 @@
   <data name="no_families_level" xml:space="preserve">
     <value>Sem monitoramentos para o indicador</value>
   </data>
+  <data name="isPartialSave" xml:space="preserve">
+    <value>Permite salvar parcialmente</value>
+  </data>
 </root>
