@@ -22,7 +22,7 @@ namespace SgqSystem.Controllers.Api.App
         [HttpPost]
         [HandleApi()]
         [Route("GetContadoresX")]
-        public List<RetornoLucas> GetContadoresX([FromBody]int level1ID)
+        public List<DefeitosPorAmostra> GetContadoresX([FromBody]int level1ID)
         {
             return new ContadoresXX().GetContadoresXX(db, level1ID);
 
