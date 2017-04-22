@@ -1384,7 +1384,7 @@
     <value>3 or more Defects</value>
   </data>
   <data name="total_defects" xml:space="preserve">
-    <value>Total Defects</value>
+    <value>Sample defects</value>
   </data>
   <data name="level1_line" xml:space="preserve">
     <value>Level 1 Row</value>
@@ -1915,7 +1915,7 @@
     <value>Total defects per evaluation</value>
   </data>
   <data name="total_defects_sample" xml:space="preserve">
-    <value>Total Defects Sample</value>
+    <value>Sample with defects</value>
   </data>
   <data name="Amostras_com_defeitos" xml:space="preserve">
     <value>Evaluations with defects</value>

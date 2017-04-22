@@ -5020,7 +5020,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total Defects.
+        ///   Looks up a localized string similar to Sample defects.
         /// </summary>
         internal static string total_defects {
             get {
@@ -5038,7 +5038,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total Defects Sample.
+        ///   Looks up a localized string similar to Sample with defects.
         /// </summary>
         internal static string total_defects_sample {
             get {
