@@ -1378,7 +1378,7 @@
     <value>3 ou mais Defeitos</value>
   </data>
   <data name="total_defects" xml:space="preserve">
-    <value>Total Defeitos</value>
+    <value>Defeitos na amostra</value>
   </data>
   <data name="level1_line" xml:space="preserve">
     <value>Linha do indicador</value>
@@ -1894,7 +1894,7 @@
     <value>Total de Defeitos das Amostra</value>
   </data>
   <data name="total_defects_sample" xml:space="preserve">
-    <value>Total defeitos por avaliação</value>
+    <value>Amostras com defeitos</value>
   </data>
   <data name="Amostras_com_defeitos" xml:space="preserve">
     <value>Amostras com defeito</value>
@@ -1904,5 +1904,11 @@
   </data>
   <data name="no_families_level" xml:space="preserve">
     <value>Sem monitoramentos para o indicador</value>
+  </data>
+  <data name="isPartialSave" xml:space="preserve">
+    <value>Permite salvar parcialmente</value>
+  </data>
+  <data name="duration_of_validation" xml:space="preserve">
+    <value>Duração da Vigência</value>
   </data>
 </root>
