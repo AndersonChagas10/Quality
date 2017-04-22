@@ -1999,7 +1999,7 @@ namespace SgqSystem.Services
                             var ParLevel1DB = new SGQDBContext.ParLevel1(db);
                             var parLevel1 = ParLevel1DB.getById(Level2Result.ParLevel1_Id);
 
-                            var ParLevel2DB = new SGQDBContext.ParLevel2();
+                            var ParLevel2DB = new SGQDBContext.ParLevel2(db);
                             var parLevel2 = ParLevel2DB.getById(Level2Result.ParLevel2_Id);
 
                             var ParLevel3DB = new SGQDBContext.ParLevel3(db);
