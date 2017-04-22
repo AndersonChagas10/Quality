@@ -289,13 +289,23 @@ namespace SGQDBContext
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
         public bool HasSampleTotal { get; set; }
 
         public bool IsEmptyLevel3 { get; set; }
+        public bool HasShowLevel03 { get; set; }
+        public bool HasGroupLevel3 { get; set; }
+
+        public DateTime AddDate { get; set; }
+        public DateTime AlterDate { get; set; }
+
+        public bool IsActive { get; set; }
+     
 
         public int ParNotConformityRule_id { get; set; }
 
         public int ParFrequency_Id { get; set; }
+        public int ParDepartment_Id { get; set; }
 
         public decimal Value { get; set; }
 

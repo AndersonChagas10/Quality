@@ -1976,10 +1976,16 @@ namespace SgqSystem.Services
 
                     getFrequencyDate(frequenciaDoLevel2, Level2Result.CollectionDate, ref dataInicio_Level2, ref dataFim_Level2);
 
-                    string dataInicioBarra = dataInicio_Level2.Substring(6, 2) + "/" + dataInicio_Level2.Substring(4, 2) + "/" + dataInicio_Level2.Substring(0, 4);
-                    string dataFimBarra = dataFim_Level2.Substring(6, 2) + "/" + dataFim_Level2.Substring(4, 2) + "/" + dataFim_Level2.Substring(0, 4);
+                    //string dataInicioBarra = dataInicio_Level2.Substring(6, 2) + "/" + dataInicio_Level2.Substring(4, 2) + "/" + dataInicio_Level2.Substring(0, 4);
+                    //string dataFimBarra = dataFim_Level2.Substring(6, 2) + "/" + dataFim_Level2.Substring(4, 2) + "/" + dataFim_Level2.Substring(0, 4);
 
-                    if (Guard.ParseDateToSqlV2(data.ToShortDateString()) >= Guard.ParseDateToSqlV2(dataInicioBarra) && data <= Guard.ParseDateToSqlV2(dataFimBarra))
+                    //if (Guard.ParseDateToSqlV2(data.ToShortDateString()) >= Guard.ParseDateToSqlV2(dataInicioBarra) && data <= Guard.ParseDateToSqlV2(dataFimBarra))
+
+                    if (
+                       int.Parse(data.ToString("yyyyMMdd")) >= int.Parse(dataInicio_Level2)
+                       &&
+                       int.Parse(data.ToString("yyyyMMdd")) <= int.Parse(dataFim_Level2)
+                       )
                     {
 
                         //Verificamos a consolidação
@@ -1999,7 +2005,7 @@ namespace SgqSystem.Services
                             var ParLevel1DB = new SGQDBContext.ParLevel1(db);
                             var parLevel1 = ParLevel1DB.getById(Level2Result.ParLevel1_Id);
 
-                            var ParLevel2DB = new SGQDBContext.ParLevel2();
+                            var ParLevel2DB = new SGQDBContext.ParLevel2(db);
                             var parLevel2 = ParLevel2DB.getById(Level2Result.ParLevel2_Id);
 
                             var ParLevel3DB = new SGQDBContext.ParLevel3(db);

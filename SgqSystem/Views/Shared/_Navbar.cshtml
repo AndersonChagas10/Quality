@@ -30,7 +30,7 @@
                 <span></span>
             </div>
         </div>
-        
+
 
         @*@if (Session["username"] != null)*@
         @if (HttpContext.Current.Request.Cookies["webControlCookie"] != null)
@@ -61,16 +61,16 @@
                                             <ul class="mega-menu-submenu">
 
                                                 @*@if (GlobalConfig.Brasil)
-                                                {*@
-                                                    <li>
-                                                        <a href="@urlScorecard">Scorecard</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="@urlRelatorioDiario">Relatorio Diário</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="@urlApontamentosDiarios">Apontamentos Diarios</a>
-                                                    </li>
+                                                    {*@
+                                                <li>
+                                                    <a href="@urlScorecard">Scorecard</a>
+                                                </li>
+                                                <li>
+                                                    <a href="@urlRelatorioDiario">Relatorio Diário</a>
+                                                </li>
+                                                <li>
+                                                    <a href="@urlApontamentosDiarios">Apontamentos Diarios</a>
+                                                </li>
                                                 @*}*@
 
                                                 @if (GlobalConfig.Eua)
@@ -103,7 +103,7 @@
 
             <ul class="nav navbar-nav pull-right">
 
-                <li class="dropdown dropdown-user">
+                <li class="dropdown dropdown-user" style="display:none">
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
                         <i class="fa fa-globe" aria-hidden="true"></i>
                         <span class="username username-hide-on-mobile"> @Resources.Resource.language </span>
@@ -123,34 +123,34 @@
                         </li>
 
                     </ul>
-                </li> 
-
-            @*@if (Session["username"] != null)*@
-            @if (HttpContext.Current.Request.Cookies["webControlCookie"] != null)
-            {
-                <li class="dropdown dropdown-user">
-                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
-                        <i class="fa fa-user"></i>
-                        <span class="username username-hide-on-mobile"> @HttpContext.Current.Request.Cookies["webControlCookie"].Values["userName"].ToString() </span>
-                        <i class="fa fa-angle-down"></i>
-                    </a>
-
-                    <ul class="dropdown-menu dropdown-menu-default">
-                        <li>
-                            <a href="@Url.Action("Perfil", "UserSgq")">
-                                <i class="fa fa-user" aria-hidden="true"></i> @Resources.Resource.perfil_user
-                            </a>
-                        </li>
-                        <li class="divider"> </li>
-                        <li>
-                            <a href="@Url.Action("LogOut", "UserAuthentication")">
-                                <i class="fa fa-sign-out" aria-hidden="true"></i> @Resources.Resource.log_out
-                            </a>
-                        </li>
-                    </ul>
                 </li>
-            }               
-            
+
+                @*@if (Session["username"] != null)*@
+                @if (HttpContext.Current.Request.Cookies["webControlCookie"] != null)
+            {
+                    <li class="dropdown dropdown-user">
+                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
+                            <i class="fa fa-user"></i>
+                            <span class="username username-hide-on-mobile"> @HttpContext.Current.Request.Cookies["webControlCookie"].Values["userName"].ToString() </span>
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-default">
+                            <li>
+                                <a href="@Url.Action("Perfil", "UserSgq")">
+                                    <i class="fa fa-user" aria-hidden="true"></i> @Resources.Resource.perfil_user
+                                </a>
+                            </li>
+                            <li class="divider"> </li>
+                            <li>
+                                <a href="@Url.Action("LogOut", "UserAuthentication")">
+                                    <i class="fa fa-sign-out" aria-hidden="true"></i> @Resources.Resource.log_out
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+
             </ul>
         </div>
 
@@ -158,50 +158,50 @@
 </div>
 
 <script language="javascript" type="text/javascript">
-  
-        $('.dropdown-btn-config').click(function () {
-            if ($('.page-quick-sidebar-wrapper').css('right') == '0px')
-                closeRightSidebar();
-            else
-                openRightSidebar();
-        });
 
-        $('.menu-toggler').click(function () {
-            if ($('.page-sidebar-menu').hasClass('page-sidebar-menu-closed')) {
-                openLeftSidebar();
-            }else {
-                closeLeftSidebar();
-            }
-        });
-
-        $('.dropdown-user').click(function () {
+    $('.dropdown-btn-config').click(function () {
+        if ($('.page-quick-sidebar-wrapper').css('right') == '0px')
             closeRightSidebar();
-        });
+        else
+            openRightSidebar();
+    });
 
-        function openRightSidebar() {
-            $('.page-quick-sidebar-wrapper').css('right', '0px');
+    $('.menu-toggler').click(function () {
+        if ($('.page-sidebar-menu').hasClass('page-sidebar-menu-closed')) {
+            openLeftSidebar();
+        } else {
+            closeLeftSidebar();
         }
+    });
 
-        function closeRightSidebar() {
-            $('.page-quick-sidebar-wrapper').css('right', '-320px');
-        }
+    $('.dropdown-user').click(function () {
+        closeRightSidebar();
+    });
 
-        function openLeftSidebar() {
-            $('.page-sidebar-menu').removeClass('page-sidebar-menu-closed');
-            $('body').removeClass('page-sidebar-closed');
-            $('#sidebar-wrapper').css('margin-left', '-65px');
-            $('.report-wrapper').css('margin-left', '240px');
-            //$('.page-content').css('padding-right', '230px');
+    function openRightSidebar() {
+        $('.page-quick-sidebar-wrapper').css('right', '0px');
+    }
 
-        }
+    function closeRightSidebar() {
+        $('.page-quick-sidebar-wrapper').css('right', '-320px');
+    }
 
-        function closeLeftSidebar() {
-            $('.page-sidebar-menu').addClass('page-sidebar-menu-closed');
-            $('body').addClass('page-sidebar-closed');
-            $('#sidebar-wrapper').css('margin-left', '-255px');
-            $('.report-wrapper').css('margin-left', '50px');
-            $('.page-content').css('padding-right', '30px');
-        }
+    function openLeftSidebar() {
+        $('.page-sidebar-menu').removeClass('page-sidebar-menu-closed');
+        $('body').removeClass('page-sidebar-closed');
+        $('#sidebar-wrapper').css('margin-left', '-65px');
+        $('.report-wrapper').css('margin-left', '240px');
+        //$('.page-content').css('padding-right', '230px');
 
-        
+    }
+
+    function closeLeftSidebar() {
+        $('.page-sidebar-menu').addClass('page-sidebar-menu-closed');
+        $('body').addClass('page-sidebar-closed');
+        $('#sidebar-wrapper').css('margin-left', '-255px');
+        $('.report-wrapper').css('margin-left', '50px');
+        $('.page-content').css('padding-right', '30px');
+    }
+
+
 </script>
