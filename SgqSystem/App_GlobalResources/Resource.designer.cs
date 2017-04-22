@@ -1465,6 +1465,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Duration of Validation.
+        /// </summary>
+        internal static string duration_of_validation {
+            get {
+                return ResourceManager.GetString("duration_of_validation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         internal static string edit {
@@ -2289,6 +2298,15 @@ namespace Resources {
         internal static string ip_server {
             get {
                 return ResourceManager.GetString("ip_server", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is partial save.
+        /// </summary>
+        internal static string isPartialSave {
+            get {
+                return ResourceManager.GetString("isPartialSave", resourceCulture);
             }
         }
         
@@ -5020,7 +5038,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total Defects.
+        ///   Looks up a localized string similar to Sample defects.
         /// </summary>
         internal static string total_defects {
             get {
@@ -5038,7 +5056,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total Defects Sample.
+        ///   Looks up a localized string similar to Sample with defects.
         /// </summary>
         internal static string total_defects_sample {
             get {

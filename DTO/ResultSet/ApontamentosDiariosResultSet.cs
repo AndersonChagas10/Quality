@@ -21,14 +21,16 @@ public class ApontamentosDiariosResultSet
     public string _NA { get { return NA.Value ? "Não Avaliado" : "Avaliado"; } }
 
     public Nullable<decimal> AV_Peso { get; set; }
-    public Nullable<decimal> _AV_Peso { get { return AV_Peso.HasValue ? AV_Peso.Value : 0M ; } }
+    public Nullable<decimal> _AV_Peso { get { return AV_Peso.HasValue ? AV_Peso.Value : 0M; } }
 
     public Nullable<decimal> NC_Peso { get; set; }
     public Nullable<int> Avaliacao { get; set; }
     public int Amostra { get; set; }
     public int ResultLevel3Id { get; set; }
-    
+
     public string Unidade { get; set; }
+    public string Periodo { get; set; }
+    public string Turno { get; set; }
 
 
     public string Select(DataCarrierFormulario form)
@@ -40,7 +42,7 @@ public class ApontamentosDiariosResultSet
         var sqlLevel1 = "";
         var sqlLevel2 = "";
 
-        if(form.unitId > 0)
+        if (form.unitId > 0)
         {
             sqlUnidade = "\n AND UN.Id = " + form.unitId;
         }
@@ -70,6 +72,8 @@ public class ApontamentosDiariosResultSet
                 " \n ,R3.WeiDefects AS 'NC_Peso'            " +
                 " \n ,C2.EvaluationNumber AS 'Avaliacao'    " +
                 " \n ,C2.Sample AS 'Amostra'                " +
+                " \n ,STR(C2.[Shift]) as 'Turno'            " +
+                " \n ,STR(C2.Period) as 'Periodo'           " +
                 " \n ,UN.Name AS 'Unidade'                  " +
                 " \n ,R3.Id AS 'ResultLevel3Id'             " +
                 " \n FROM CollectionLevel2 C2               " +
@@ -89,4 +93,5 @@ public class ApontamentosDiariosResultSet
 
 
     }
+
 }

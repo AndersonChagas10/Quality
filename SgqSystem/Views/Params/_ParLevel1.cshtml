@@ -69,8 +69,8 @@
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificHeaderField, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_field_edition_of_the_header, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
                         </tr>
                         @*<tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none" >
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion, new { @class = "form-control checkbox-erp"  }), @Html.Label(Resources.Resource.allow_the_edition_of_the_evaluation_number, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
-                        </tr>*@
+                                @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion, new { @class = "form-control checkbox-erp"  }), @Html.Label(Resources.Resource.allow_the_edition_of_the_evaluation_number, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
+                            </tr>*@
                         <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberSample, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_evaluation_number, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
                         </tr>
@@ -95,7 +95,11 @@
                             <tr class="row">
                                 @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasCompleteEvaluation, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.hascompleteevaluation), Table.PosicaoLabel.left, null, null)
                             </tr>
-                       
+                        }
+                        <!--Partial Save-->
+                        <tr class="row">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsPartialSave, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.isPartialSave), Table.PosicaoLabel.left, null, null)
+                        </tr>
 
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
@@ -351,8 +355,8 @@
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 2)
                                                             {
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                     <td>
 
                                                                         @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
@@ -367,8 +371,8 @@
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 3)
                                                             {
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                     <td>
                                                                         @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
                                                                         {
@@ -385,8 +389,8 @@
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 4)
                                                             {
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                     <td>
                                                                         @Html.TextBox("a", null, new { @class = "fixed-width form-control input-sm" })
                                                                         @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
@@ -399,8 +403,8 @@
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 5)
                                                             {
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                     <td>
                                                                         <input type="number" class="fixed-width form-control input-sm" />
 
@@ -413,8 +417,8 @@
                                                             @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 6)
                                                             {
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                     <td>
                                                                         <input type="text" class="dataInput active form-control input-sm">
                                                                         @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
@@ -427,14 +431,14 @@
                                                             {
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                                    <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
-                                                                    <td>
-                                                                        <input type="time" class="active form-control input-sm">
-                                                                        @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                                        <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
-                                                                            <span class="glyphicon glyphicon-pencil"></span>
-                                                                        </button>
-                                                                    </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+                                                                <td>
+                                                                    <input type="time" class="active form-control input-sm">
+                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
+                                                                    <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
+                                                                        <span class="glyphicon glyphicon-pencil"></span>
+                                                                    </button>
+                                                                </td>
                                                             }
                                                             <td>
                                                                 <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
@@ -446,18 +450,18 @@
                                                                         if (parLevel1XHeaderField.ParHeaderField.IsRequired.Value)
                                                                         {
                                                                             <option value="0">@Resources.Resource.no</option>
-                                                                                <option value="1" selected>@Resources.Resource.yes</option>
+                                                                            <option value="1" selected>@Resources.Resource.yes</option>
                                                                         }
                                                                         else
                                                                         {
                                                                             <option value="0" selected>@Resources.Resource.no</option>
-                                                                                <option value="1">@Resources.Resource.yes</option>
+                                                                            <option value="1">@Resources.Resource.yes</option>
                                                                         }
                                                                     }
                                                                     else
                                                                     {
                                                                         <option value="0" selected>@Resources.Resource.no</option>
-                                                                            <option value="1">@Resources.Resource.yes</option>
+                                                                        <option value="1">@Resources.Resource.yes</option>
                                                                     }
                                                                 </select>
                                                             </td>
@@ -1525,8 +1529,6 @@
         }
     }
 
-    var valorAnteriorDeAvLimitadas = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').bootstrapSwitch('state');
-
     $(document).ready(function () {
 
         if(!hasperm){
@@ -1535,6 +1537,8 @@
 
         defaults();
         loadSelect2();
+
+        var valorAnteriorDeAvLimitadas = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').bootstrapSwitch('state');
 
         /*Agrupamento no Monitoramento encadeia Número de Avaliações Limitados*/
         $('#paramsDto_parLevel1Dto_HasGroupLevel2').off('switchChange.bootstrapSwitch').on('switchChange.bootstrapSwitch', function() {
@@ -1602,7 +1606,7 @@
         } catch (e) {
             console.log(e);
         }
-        
+
     });
 
 </script>
