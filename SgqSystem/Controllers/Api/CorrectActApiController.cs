@@ -58,7 +58,7 @@ namespace SgqSystem.Controllers.Api
 
             " \n where " +
 
-            " \n DateCorrectiveAction BETWEEN '" + model._dataInicioSQL + "' and '" + model._dataFimSQL + "' ";
+            " \n CAST(DateCorrectiveAction as DATE) BETWEEN '" + model._dataInicioSQL + "' and '" + model._dataFimSQL + "' ";
 
             if (model.unitId > 0)
             {
