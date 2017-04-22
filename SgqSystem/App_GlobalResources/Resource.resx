@@ -1926,4 +1926,7 @@
   <data name="no_families_level" xml:space="preserve">
     <value>No families in level</value>
   </data>
+  <data name="duration_of_validation" xml:space="preserve">
+    <value>Duration of Validation</value>
+  </data>
 </root>

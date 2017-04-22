@@ -1465,6 +1465,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Duration of Validation.
+        /// </summary>
+        internal static string duration_of_validation {
+            get {
+                return ResourceManager.GetString("duration_of_validation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         internal static string edit {

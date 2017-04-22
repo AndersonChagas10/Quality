@@ -25,11 +25,11 @@
                             @Table.GerarColuna(@Html.TextBox("inputNumeroNC", null, htmlAttributes: new { @class = "form-control input-sm", @type = "number" })
                                                 , @Html.Label(Resources.Resource.number_nc)
                                                 , Table.PosicaoLabel.top)
-                            @Table.GerarColuna(@Html.TextBox("inputVigencia", null, htmlAttributes: new { @class = "form-control input-sm", @type = "number"  })
+                            @Table.GerarColuna(@Html.TextBox("inputVigencia", null, htmlAttributes: new { @class = "form-control input-sm", @type = "number" })
                                                 , @Html.Label(Resources.Resource.validation)
                                                 , Table.PosicaoLabel.top)
-                            @Table.GerarColunaButton(@Html.DropDownList("selectFrequenciaReincidencia", Model.paramsDdl.DdlFrequency, htmlAttributes: new {  @class = "form-control input-sm" })
-                                                , @Html.Label(Resources.Resource.frequency)
+                            @Table.GerarColunaButton(@Html.DropDownList("selectFrequenciaReincidencia", Model.paramsDdl.DdlFrequency, htmlAttributes: new { @class = "form-control input-sm" })
+                                                , @Html.Label(Resources.Resource.duration_of_validation)
                                                 , Table.PosicaoLabel.top
                                                 , button: "<button type=\"button\" id=\"\" onclick=\"" + @click + "; \" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></button>")
                         </tr>
