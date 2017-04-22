@@ -4988,15 +4988,7 @@ namespace SgqSystem.Services
                         "VALUES " +
                         "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', GetDate() , GetDate(), 0, " + deviationMessage + ")";
             }
-
-            //string sql = null;
-            //for (int i = 0; i < arrayDeviations.Length; i++)
-            //{
-            //    var deviation = arrayDeviations[i].Split(';');
-
-
-            //}
-
+            
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
