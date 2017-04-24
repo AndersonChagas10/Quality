@@ -16,12 +16,12 @@ namespace SgqSystem.Controllers.Api.Volume
         public int GetVolumeDesossa(int idUnidade)
         {
             var query = "" +
-                "\n select sum(fam.familias) as familias from                                                               " +
+                "\n select isNull(sum(fam.familias),0) as familias from                                                               " +
                 "\n (                                                                                                       " +
                 "\n select                                                                                                  " +
                 "\n top 1 count(1) familias, Max(InitDate) data                                                             " +
                 "\n from ParLevel2ControlCompany      p                                                                      " +
-                "\n where parcompany_id = " + idUnidade + "        and p.isactive                                                         " +
+                "\n where parcompany_id = " + idUnidade + "        and p.isactive = 1                                                        " +
                 "\n and ParLevel1_Id = (Select id from parlevel1 where hashkey = 2) and InitDate < getdate()                " +
                 "\n group by InitDate                                                                                       " +
                 "\n order by 2 desc                                                                                         " +
@@ -32,7 +32,7 @@ namespace SgqSystem.Controllers.Api.Volume
                 "\n top 1 count(1) familias, Max(InitDate) data                                                             " +
                 "\n from ParLevel2ControlCompany     p                                                                       " +
                 "\n where parcompany_id is null and ParLevel1_Id = (Select id from parlevel1 where hashkey = 2)             " +
-                "\n and InitDate < getdate()      and p.isactive                                                                            " +
+                "\n and InitDate < getdate()      and p.isactive   = 1                                                                         " +
                 "\n group by InitDate                                                                                       " +
                 "\n order by 2 desc                                                                                         " +
                 "\n                                                                                                         " +
@@ -46,12 +46,12 @@ namespace SgqSystem.Controllers.Api.Volume
         public int GetVolumeGRD(int idUnidade)
         {
             var query = "" +
-                "\n select sum(fam.familias) as familias from                                                               " +
+                "\n select isNull(sum(fam.familias), 0) as familias from                                                               " +
                 "\n (                                                                                                       " +
                 "\n select                                                                                                  " +
                 "\n top 1 count(1) familias, Max(InitDate) data                                                             " +
                 "\n from ParLevel2ControlCompany    p                                                                        " +
-                "\n where parcompany_id = " + idUnidade + "       and p.isactive                                                            " +
+                "\n where parcompany_id = " + idUnidade + "       and p.isactive       = 1                                                     " +
                 "\n and ParLevel1_Id = (Select id from parlevel1 where hashkey = 3) and InitDate < getdate()                " +
                 "\n group by InitDate                                                                                       " +
                 "\n order by 2 desc                                                                                         " +
@@ -62,7 +62,7 @@ namespace SgqSystem.Controllers.Api.Volume
                 "\n top 1 count(1) familias, Max(InitDate) data                                                             " +
                 "\n from ParLevel2ControlCompany    p                                                                        " +
                 "\n where parcompany_id is null and ParLevel1_Id = (Select id from parlevel1 where hashkey = 3)             " +
-                "\n and InitDate < getdate()     and p.isactive                                                                             " +
+                "\n and InitDate < getdate()     and p.isactive                = 1                                                             " +
                 "\n group by InitDate                                                                                       " +
                 "\n order by 2 desc                                                                                         " +
                 "\n                                                                                                         " +
