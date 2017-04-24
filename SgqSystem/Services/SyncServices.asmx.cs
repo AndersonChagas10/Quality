@@ -88,6 +88,12 @@ namespace SgqSystem.Services
 
         bool naoAvaliado = true; //variavel que verifica se o monitoramento (level2) é não avaliado inteiro
 
+        /**
+         * TODOS QUE CHAMEREM ESTE MÉTODO DEVEM ENVIAR A DATA MM/dd/yyyy
+         * COMENTÁRIO: GABRIEL 2017-04-24
+         * 
+         */ 
+
         private DateTime DateCollectConvert(string collectionDate)
         {
             if (!collectionDate.Contains("/"))
@@ -96,7 +102,6 @@ namespace SgqSystem.Services
             }
             string[] data = collectionDate.Split('/');
 
-            //verificar o tipo de data quando for no brasil
             string ano = data[2].Substring(0, 4);
             string mes = data[0];
             string dia = data[1];
@@ -4479,33 +4484,44 @@ namespace SgqSystem.Services
                 var level2 = dbEf.ParCounterXLocal.FirstOrDefault(r => r.ParLevel1_Id == ParLevel1.Id && r.ParCounter_Id == 21 && r.IsActive);
                 if (level2 != null)
                 {
-                    var teste = new ContadoresXX().GetContadoresXX(dbEf, ParLevel1.Id);
+                    var teste = new ContadoresXX().GetContadoresXX(dbEf, ParLevel1.Id, ParCompany_Id);
+
+                    //MOCK
+                    var listaShift = new List<int>();
+                    listaShift.Add(1);
+                    listaShift.Add(2);
+                    var listaPeriod = new List<int>();
+                    listaPeriod.Add(1);
+                    listaPeriod.Add(2);
+                    listaPeriod.Add(3);
+                    listaPeriod.Add(4);
+
                     if (teste.IsNotNull() && teste.Count > 0)
                     {
-                        //MOCK
-                        var listaShift = new List<int>();
-                        listaShift.Add(1);
-                        listaShift.Add(2);
-                        var listaPeriod = new List<int>();
-                        listaPeriod.Add(1);
-                        listaPeriod.Add(2);
-                        listaPeriod.Add(3);
-                        listaPeriod.Add(4);
 
                         foreach (var s in listaShift)
                         {
                             foreach (var p in listaPeriod)
                             {
                                 painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId"+ ParLevel1.Id + "'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>";
-                                painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.Where(r=>r.Period == p && r.Shift == s).Sum(r=>r.WeiDefects).ToString("G29") + "</span></div>";
+                                //painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.LastOrDefault(r=>r.Period == p && r.Shift == s)?.WeiDefects.ToString("G29") + "</span></div>";
+                                painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.Where(r => r.Period == p && r.Shift == s).Sum(r => r.WeiDefects).ToString("G29") + "</span></div>";
+
                             }
 
                         }
                     }
                     else
                     {
-                        painelLevel3HeaderListHtml += "<div id='tdef'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>";
-                        painelLevel3HeaderListHtml += "<div id='tdefav'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>0</span></div>";
+                        foreach (var s in listaShift)
+                        {
+                            foreach (var p in listaPeriod)
+                            {
+                                painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>";
+                                painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>0</span></div>";
+                            }
+
+                        }
                     }
                 }
 
@@ -5010,15 +5026,7 @@ namespace SgqSystem.Services
                         "VALUES " +
                         "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', GetDate() , GetDate(), 0, " + deviationMessage + ")";
             }
-
-            //string sql = null;
-            //for (int i = 0; i < arrayDeviations.Length; i++)
-            //{
-            //    var deviation = arrayDeviations[i].Split(';');
-
-
-            //}
-
+            
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {

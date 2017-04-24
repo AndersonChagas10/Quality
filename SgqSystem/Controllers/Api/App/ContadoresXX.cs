@@ -13,7 +13,7 @@ namespace SgqSystem.Controllers.Api.App
     public class ContadoresXX
     {
 
-        public List<DefeitosPorAmostra> GetContadoresXX(SgqDbDevEntities db, int level1Id, int period = 0)
+        public List<DefeitosPorAmostra> GetContadoresXX(SgqDbDevEntities db, int level1Id, int ParCompany_Id)
         {
 
             /*Busca Items parametrizados a serem calculados*/
@@ -21,34 +21,32 @@ namespace SgqSystem.Controllers.Api.App
             var level2 = db.ParLevel3Level2Level1.Where(r => r.ParLevel1_Id == level1Id && r.Active && r.ParLevel3Level2.ParLevel2.IsActive).Select(r => r.ParLevel3Level2.ParLevel2).Include("ParFrequency").Distinct();
             //var collectionLevel2PorFrequenciaLevel1 = GetCollectionLevel2PelaFrquencia(level2, db).OrderBy(r=>r.EvaluationNumber).ThenBy(r=>r.Sample);
 
-            
+            var level1 = db.ParLevel1.FirstOrDefault(r => r.Id == level1Id);
             //var todosLevel1 = collectionLevel2PorFrequenciaLevel1.Select(r => r.ParLevel1_Id).Distinct();
             //var SidesWithDefectsTotal = 0;
 
 
             var newReturn = new List<DefeitosPorAmostra>();
 
-            foreach (var l2 in level2)
-            {
-                string dataInicio = string.Empty;
-                string dataFim = string.Empty;
+            string dataInicio = string.Empty;
+            string dataFim = string.Empty;
 
-                SyncServices.getFrequencyDate(l2.ParFrequency_Id, DateTime.Now /*MOCK DEV> OBS:PRECISA PASSaR COMO REFERENCIA PARA RETROATIVO*/, ref dataInicio, ref dataFim);
+            SyncServices.getFrequencyDate(level1.ParFrequency_Id, DateTime.Now /*MOCK DEV> OBS:PRECISA PASSaR COMO REFERENCIA PARA RETROATIVO*/, ref dataInicio, ref dataFim);
 
 
-                var sql = "select" +
-                            " EvaluationNumber, [Sample], " +
-                            //" SUM(WeiDefects) as WeiDefects,"+
-                            " CASE WHEN SUM(WeiDefects) > 0 THEN 1 ELSE 0 END as WeiDefects,"+
-                            " [Period], [Shift]" +
-                            " from CollectionLevel2" +
-                            " where ParLevel1_Id = "+ level1Id + " and CollectionDate <= '"+dataInicio+ " 23:59:00' and CollectionDate >= '" + dataFim + " 00:00:00' and WeiDefects > 0" +
-                            " group by EvaluationNumber, [Sample], [Period], [Shift]";
+            var sql = "select" +
+                        "\n EvaluationNumber, [Sample], " +
+                        //" SUM(WeiDefects) as WeiDefects,"+
+                        "\n CASE WHEN SUM(WeiDefects) > 0 THEN 1 ELSE 0 END as WeiDefects," +
+                        "\n [Period], [Shift]" +
+                        "\n from CollectionLevel2" +
+                        "\n where UnitId = " + ParCompany_Id + " and ParLevel1_Id = "+ level1Id + " and CollectionDate <= '"+dataInicio+ " 23:59:00' and CollectionDate >= '" + dataFim + " 00:00:00' and WeiDefects > 0" +
+                        "\n group by EvaluationNumber, [Sample], [Period], [Shift]";
 
-                var results = db.Database.SqlQuery<DefeitosPorAmostra>(sql);
+            var results = db.Database.SqlQuery<DefeitosPorAmostra>(sql);
 
-                newReturn.AddRange(results);
-            }
+            newReturn.AddRange(results);
+            
 
             return newReturn;
             //foreach (var evaluation in collectionLevel2PorFrequenciaLevel1.Select(r=>r.EvaluationNumber).Distinct())

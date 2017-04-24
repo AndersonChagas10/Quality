@@ -19,14 +19,14 @@ namespace SgqSystem.Controllers.Api.App
         //{
         //    console.log(r);
         //});
-        [HttpPost]
-        [HandleApi()]
-        [Route("GetContadoresX")]
-        public List<DefeitosPorAmostra> GetContadoresX([FromBody]int level1ID)
-        {
-            return new ContadoresXX().GetContadoresXX(db, level1ID);
+        //[HttpPost]
+        //[HandleApi()]
+        //[Route("GetContadoresX")]
+        //public List<DefeitosPorAmostra> GetContadoresX([FromBody]int level1ID)
+        //{
+        //    return new ContadoresXX().GetContadoresXX(db, level1ID);
 
-        }
+        //}
 
     }
 
