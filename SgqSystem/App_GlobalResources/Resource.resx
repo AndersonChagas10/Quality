@@ -1932,4 +1932,7 @@
   <data name="duration_of_validation" xml:space="preserve">
     <value>Duration of Validation</value>
   </data>
+  <data name="ca_evaluations_not_completed" xml:space="preserve">
+    <value>The evaluations are not completed. Do you want to continue?</value>
+  </data>
 </root>

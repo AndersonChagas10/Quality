@@ -2825,6 +2825,21 @@ namespace SgqSystem.Services
 
                            "</div> ";
 
+            string local = "";
+
+            if (GlobalConfig.Brasil)
+            {
+                local = "brasil";
+            }
+            if (GlobalConfig.Eua)
+            {
+                local = "eua";
+            }
+            if (GlobalConfig.Canada)
+            {
+                local = "canada";
+            }
+
 
             return html.div(
                             outerhtml: navBar(UserSgq_Id, ParCompany_Id) +
@@ -2834,7 +2849,7 @@ namespace SgqSystem.Services
                                        buttons +
                                        footer(),
                              classe: "App hide",
-                             tags: "breadmainlevel=\"" + CommonData.getResource("slaughter").Value.ToString() + "\" culture=\"" + culture + "\" turningtime=\"03:00\""
+                             tags: "breadmainlevel=\"" + CommonData.getResource("slaughter").Value.ToString() + "\" culture=\"" + culture + "\" turningtime=\"03:00\"" + "\" local=\"" + local + "\" "
                            ) +
                            correctiveAction() +
                            viewModal +
