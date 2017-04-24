@@ -279,7 +279,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n       , CASE " +
                 "\n         WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN EvaluateTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN EvaluateTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
                 "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM" +
                 "\n         ELSE 0 " +
@@ -393,7 +393,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n       , CASE " +
                 "\n         WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL2.EvaluateTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL2.EvaluateTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id in (3,4) THEN CL2.EvaluatedResult " +
                 "\n         ELSE 0 " +
                 "\n        END AS AvSemPeso " +
@@ -476,13 +476,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                     //     "\n ,UNI.Name AS Unidade " +
                     //     "\n ,UNI.Id AS Unidade_Id " +
                          "\n ,SUM(R3.WeiDefects) AS Nc " +
-                         "\n ,SUM(R3.Defects) AS NcSemPeso " +
+                         "\n ,CASE WHEN IND.ParConsolidationType_Id = 2 THEN SUM(r3.WeiDefects) ELSE SUM(R3.Defects) END AS NcSemPeso  " +
                          "\n ,CASE " +                 
                          "\n WHEN IND.HashKey = 1 THEN(SELECT TOP 1 SUM(Quartos) / 2 FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
                          "\n ELSE SUM(R3.WeiEvaluation) END AS Av " +
                          "\n ,CASE " +
                          "\n WHEN IND.HashKey = 1 THEN(SELECT TOP 1 SUM(Quartos) / 2 FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
-                         "\n ELSE SUM(R3.Evaluation) END AS AvSemPeso " +
+                         "\n WHEN IND.ParConsolidationType_Id = 2 THEN SUM(r3.WeiEvaluation) " +
+                         "\n ELSE SUM(R3.Evaluation) END AS AvSemPeso " + 
                          "\n ,SUM(R3.WeiDefects) / " +
                          "\n CASE " +                 
                          "\n WHEN IND.HashKey = 1 THEN(SELECT TOP 1 SUM(Quartos) / 2 FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
@@ -512,7 +513,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                          "\n ,UNI.Name " +
                          "\n ,UNI.Id " +
                           "\n ,ind.hashKey " +
-                        
+                          "\n ,ind.ParConsolidationType_Id " +
+
                          "\n HAVING SUM(R3.WeiDefects) > 0" +
                          "\n ) TAB ORDER BY 4 DESC";
 

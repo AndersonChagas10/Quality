@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data;
 using Helper;
+using System.Collections;
 
 namespace SgqSystem.Controllers
 {
@@ -57,6 +58,9 @@ namespace SgqSystem.Controllers
                     Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
                 }
             }
+
+           ViewBag.Resourses = Resources.Resource.ResourceManager.GetResourceSet(
+                Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
 
             base.Initialize(requestContext);
         }
