@@ -88,6 +88,12 @@ namespace SgqSystem.Services
 
         bool naoAvaliado = true; //variavel que verifica se o monitoramento (level2) é não avaliado inteiro
 
+        /**
+         * TODOS QUE CHAMEREM ESTE MÉTODO DEVEM ENVIAR A DATA MM/dd/yyyy
+         * COMENTÁRIO: GABRIEL 2017-04-24
+         * 
+         */ 
+
         private DateTime DateCollectConvert(string collectionDate)
         {
             if (!collectionDate.Contains("/"))
@@ -96,7 +102,6 @@ namespace SgqSystem.Services
             }
             string[] data = collectionDate.Split('/');
 
-            //verificar o tipo de data quando for no brasil
             string ano = data[2].Substring(0, 4);
             string mes = data[0];
             string dia = data[1];
