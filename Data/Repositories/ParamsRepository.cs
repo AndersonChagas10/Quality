@@ -556,11 +556,12 @@ namespace Data.Repositories
 
             if (paramLevel3Value.Any(r => r.Id == 0))
             {
-                db.ParLevel3Value.AddRange(paramLevel3Value);
+                db.ParLevel3Value.AddRange(paramLevel3Value.Where(r => r.Id == 0));
             }
-            else
+
+            if (paramLevel3Value.Any(r => r.Id > 0))
             {
-                foreach (var i in paramLevel3Value)
+                foreach (var i in paramLevel3Value.Where(r => r.Id > 0))
                 {
                     Guard.verifyDate(i, "AlterDate");
                     db.ParLevel3Value.Attach(i);
@@ -568,6 +569,7 @@ namespace Data.Repositories
                     db.Entry(i).Property(e => e.AddDate).IsModified = false;
                 }
             }
+
             db.SaveChanges();
         }
 
@@ -866,8 +868,8 @@ namespace Data.Repositories
                 db.SaveChanges();
                 foreach (var i in paramParLevel3Level2)
                 {
-                    db.ParLevel3Level2Level1.Add(new ParLevel3Level2Level1() { ParCompany_Id = i.ParCompany_Id, ParLevel1_Id = level1Id.GetValueOrDefault(), ParLevel3Level2_Id = i.Id, Active = true, AddDate= DateTime.Now });
-                    db.ParLevel2Level1.Add(new ParLevel2Level1() { ParCompany_Id = i.ParCompany_Id, ParLevel2_Id = i.ParLevel2_Id, ParLevel1_Id = level1Id.GetValueOrDefault() , IsActive = true, AddDate = DateTime.Now });
+                    db.ParLevel3Level2Level1.Add(new ParLevel3Level2Level1() { ParCompany_Id = i.ParCompany_Id, ParLevel1_Id = level1Id.GetValueOrDefault(), ParLevel3Level2_Id = i.Id, Active = true, AddDate = DateTime.Now });
+                    db.ParLevel2Level1.Add(new ParLevel2Level1() { ParCompany_Id = i.ParCompany_Id, ParLevel2_Id = i.ParLevel2_Id, ParLevel1_Id = level1Id.GetValueOrDefault(), IsActive = true, AddDate = DateTime.Now });
                 }
                 db.SaveChanges();
             }
@@ -882,7 +884,7 @@ namespace Data.Repositories
 
                     if (i.IsActive == false)
                     {
-                        var inativarParLevel3Level2 = db.ParLevel3Level2.Include("ParLevel3Level2Level1").FirstOrDefault(r => r.Id == i.Id).ParLevel3Level2Level1.FirstOrDefault(r=>r.ParCompany_Id == i.ParCompany_Id);
+                        var inativarParLevel3Level2 = db.ParLevel3Level2.Include("ParLevel3Level2Level1").FirstOrDefault(r => r.Id == i.Id).ParLevel3Level2Level1.FirstOrDefault(r => r.ParCompany_Id == i.ParCompany_Id);
                         if (inativarParLevel3Level2.IsNotNull())
                         {
                             inativarParLevel3Level2.Active = false;
@@ -905,7 +907,7 @@ namespace Data.Repositories
                         db.SaveChanges();
                     }
 
-                   
+
                 }
             }
             //}
