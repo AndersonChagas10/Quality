@@ -170,16 +170,20 @@ namespace Dominio.Services
         /// <returns></returns>
         private UserSgq AutenticaAdEUA(UserDTO userDto, UserSgq userByName)
         {
-            /*Descriptografa para comparar no AD*/
-            userDto.Password = Guard.DecryptStringAES(userDto.Password);
 
+            /*Descriptografa para comparar no AD*/
+            if((userDto.Password != "")||(userDto.Password != null))
+            {
+                userDto.Password = Guard.DecryptStringAES(userDto.Password);
+            }
+           
             /*1*/
             if (CheckUserInAD(dominio, userDto.Name, userDto.Password))
             {
                 /*1.1*/
                 UserSgq isUser = CheckUserAndPassDataBase(userDto);
-
-                /*1.3*/
+               
+                /*1.2*/
                 if (userByName.IsNotNull() && isUser.IsNull())
                 {
                     isUser = AlteraSenhaAlteradaNoAd(userDto, userByName);
@@ -187,12 +191,10 @@ namespace Dominio.Services
                         throw new Exception("Error updating password from ADUser.");
                 }
 
-                /*1.2*/
+                /*1.3*/
                 //if (isUser.IsNull())
                 //return CreateUserFromAd(userDto);
-
-
-
+                
                 return isUser;
 
             }
@@ -243,8 +245,6 @@ namespace Dominio.Services
                         if (i.Password.Equals(decript))
                             Guard.EncryptStringAES(i.Password);
                         //i.Password = Guard.EncryptStringAES(i.Password);
-
-
                     }
                 }
 
