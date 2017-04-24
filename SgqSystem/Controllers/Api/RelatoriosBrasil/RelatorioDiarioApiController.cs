@@ -397,7 +397,7 @@ namespace SgqSystem.Controllers.Api
                 "\n       , CASE " +
                 "\n         WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN EvaluateTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN EvaluateTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
                 "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM" +
 
@@ -705,7 +705,7 @@ namespace SgqSystem.Controllers.Api
                 "\n ( " +
                 "\n 	SELECT " +
                 "\n 	 MON.Id			AS level2_Id " +
-                "\n 	,'Level 2 ' + MON.Name		AS Level2Name " +
+                "\n 	,MON.Name		AS Level2Name " +
                 "\n 	,IND.Id AS level1_Id " +
                 "\n 	,IND.Name AS Level1Name " +
                 "\n 	,UNI.Id			AS Unidade_Id " +
@@ -762,7 +762,7 @@ namespace SgqSystem.Controllers.Api
                 "\n 	AND CL2.UnitId = " + form.unitId +
                 "\n 	--AND CL1.ParLevel1_Id IN (" + indicadores + ") " + //
                 "\n ) S1 " +
-                "\n ORDER BY 8 DESC " +
+                "\n WHERE NC > 0 ORDER BY 8 DESC " +
                 "\n  DROP TABLE #AMOSTRATIPO4 ";
 
             return queryGrafico3;
@@ -806,7 +806,7 @@ namespace SgqSystem.Controllers.Api
              "\n ,R3.ParLevel3_Name " +
              "\n ,UNI.Name " +
              "\n ,UNI.Id " +
-             "\n HAVING SUM(R3.WeiDefects) > 0" +
+             "\n HAVING SUM(R3.WeiDefects) > 0  AND SUM(R3.Defects) > 0 " +
              "\n ORDER BY 9 DESC";
 
             return queryGraficoTarefasAcumuladas;
@@ -853,7 +853,7 @@ namespace SgqSystem.Controllers.Api
                 "\n ,R3.ParLevel3_Name " +
                 "\n ,UNI.Name " +
                 "\n ,UNI.Id " +
-                "\n HAVING SUM(R3.WeiDefects) > 0" +
+                "\n HAVING SUM(R3.WeiDefects) > 0 AND SUM(R3.Defects) > 0 " +
                 "\n ORDER BY 9 DESC";
 
             return queryGrafico4;
