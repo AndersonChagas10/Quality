@@ -1911,4 +1911,7 @@
   <data name="duration_of_validation" xml:space="preserve">
     <value>Duração da Vigência</value>
   </data>
+  <data name="ca_evaluations_not_completed" xml:space="preserve">
+    <value>As avaliações não foram completadas. Deseja continuar?</value>
+  </data>
 </root>

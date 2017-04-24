@@ -112,8 +112,8 @@
                 }
 
                 @*<div id="reincidencia">
-                    @Html.Partial("_ReincidenciaXLevel", Model)
-                </div>*@
+                        @Html.Partial("_ReincidenciaXLevel", Model)
+                    </div>*@
 
                 @if (Model.paramsDto.parLevel3Dto.hasVinculo)
                 {
@@ -431,7 +431,12 @@
                         o["AcceptableValueBetween_Name"] = "";
                         o["IntervalMin"] = "";
                         o["IntervalMax"] = "";
-                    }else if (o.ParLevel3InputType_Id == 3 || o.ParLevel3InputType_Id == 2){
+                    }else if (o.ParLevel3InputType_Id == 2){
+                        o["ParMeasurementUnit_Name"] = "";
+                        o["ParLevel3BoolFalse_Name"] = "";
+                        o["ParLevel3BoolTrue_Name"] = "";
+                        o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "O valor e aceitavel quando esta entre " + o.IntervalMin + " e " + o.IntervalMax : "O valor e aceitavel quando e menor que " + o.IntervalMin + " ou maior que " + o.IntervalMax;
+                    }else if (o.ParLevel3InputType_Id == 3){
                         o["ParMeasurementUnit_Name"] = o.ParMeasurementUnit.Name;
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
@@ -589,7 +594,7 @@
         else if (!$("#crudNxNEdit #parLevel3Value_IntervalMin").val() == "" && !$("#crudNxNEdit #parLevel3Value_IntervalMax").val() == "") {
             var options =
                 "<option value='0'>" +
-                    "@Resources.Resource.value_is_acceptable_between O valor e aceitavel quando esta entre " + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() + " @Resources.Resource.and " + $("#crudNxNEdit #parLevel3Value_IntervalMax").val() +" "+ value+
+                    "@Resources.Resource.value_is_acceptable_between " + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() + " @Resources.Resource.and " + $("#crudNxNEdit #parLevel3Value_IntervalMax").val() +" "+ value+
                 "</option>" +
                 "<option value='1'>" +
                     "@Resources.Resource.value_is_acceptable_less_than " + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() + " @Resources.Resource.and_greater_than " + $("#crudNxNEdit #parLevel3Value_IntervalMax").val() +" "+ value+
@@ -622,14 +627,43 @@
         if ($("#selectTipoInput option:selected").val() == "1") {
             resetaParIntervalos();
             resetaParBinarios();
+            resetaParDefeitos();
             $('.ParIntervalos').hide();
             $('.ParBinarios').fadeIn();
             $('#companyValueL3').fadeIn();
         }
+
+        //Numero de defeitos
+        if ($("#selectTipoInput option:selected").val() == "2") {
+            resetaParIntervalos();
+            resetaParDefeitos();
+            resetaParBinarios();
+            $('#parLevel3Value_IntervalMin').inputmask("numeric",  {
+                allowMinus: true
+            });
+            $('#parLevel3Value_IntervalMax').inputmask("numeric",  {
+                allowMinus: true
+            });
+
+            $('.ParBinarios').hide();
+
+            //Hidden Unit Medida
+            //Colocar value 1 no campo Unit Medida
+            $('#level3_data_type_collapse > div > table.table-erp > tbody > tr.row.ParIntervalos > td:nth-child(1)').hide()
+            $('#selectUnidadeDeMedidas').val(-2);
+            //Hidden Limite inferior
+            //Colocar 0 no Limite Inferior
+            $('#level3_data_type_collapse > div > table.table-erp > tbody > tr.row.ParIntervalos > td:nth-child(2)').hide()
+            $('#parLevel3Value_IntervalMin').val(0);
+
+            $('.ParIntervalos').fadeIn();
+        }
+
         //Intervalos
-        if ($("#selectTipoInput option:selected").val() == "3" || $("#selectTipoInput option:selected").val() == "2") {
+        if ($("#selectTipoInput option:selected").val() == "3") {
             resetaParIntervalos();
             resetaParBinarios();
+            resetaParDefeitos();
             $('#parLevel3Value_IntervalMin').inputmask("numeric",  {
                 //radixPoint: ".",
                 //groupSeparator: ",",
@@ -655,6 +689,7 @@
         if ($("#selectTipoInput option:selected").val() == "4") {
             resetaParIntervalos();
             resetaParBinarios();
+            resetaParDefeitos();
             GuardJs.mascaraCampoCalculado('#parLevel3Value_IntervalMin');
             GuardJs.mascaraCampoCalculado('#parLevel3Value_IntervalMax');
             $('.ParBinarios').hide();
@@ -664,6 +699,7 @@
         if ($("#selectTipoInput option:selected").val() == "5") {
             resetaParIntervalos();
             resetaParBinarios();
+            resetaParDefeitos();
             GuardJs.mascaraCampoCalculado('#parLevel3Value_IntervalMin');
             GuardJs.mascaraCampoCalculado('#parLevel3Value_IntervalMax');
             $('.ParBinarios').hide();
@@ -691,6 +727,15 @@
         $('#selectConforme').val(-1);
         $('#selectNaoConforme').val(-1);
         $('#companyValueL3').fadeIn();
+    }
+
+    function resetaParDefeitos(){
+        $('#selectUnidadeDeMedidas').val(-1);
+        $('#level3_data_type_collapse > div > table.table-erp > tbody > tr.row.ParIntervalos > td:nth-child(1)').show()
+        $('#level3_data_type_collapse > div > table.table-erp > tbody > tr.row.ParIntervalos > td:nth-child(2)').show()
+        $('#parLevel3Value_IntervalMin').val("");
+        $('#parLevel3Value_IntervalMax').val("");
+        $('#parIntervalosType').empty().parents('td').hide();
     }
 
     $('#selectTipoInput').change();

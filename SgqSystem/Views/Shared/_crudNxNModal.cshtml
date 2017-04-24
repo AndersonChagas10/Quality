@@ -129,7 +129,7 @@
                     $('#crudNxNEdit').modal('hide');
                 });
             }
-            /*Contadores*/
+                /*Contadores*/
             else if ($(e).parents('#level1_counter_accordion').length || $(e).parents('#level2_counter_accordion').length || $(e).parents('#level3_counter_accordion').length) {
                 crudNxN.modalAlterarContadores(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
@@ -141,7 +141,7 @@
                     $('#crudNxNEdit').modal('hide');
                 });
             }
-            /*Reincidencia*/
+                /*Reincidencia*/
             else if ($(e).parents('#level1_reincidencia_accordion').length || $(e).parents('#level2_reincidencia_accordion').length || $(e).parents('#level3_reincidencia_accordion').length) {
                 crudNxN.modalAlterarReincidencia(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
@@ -154,7 +154,7 @@
                     $('#crudNxNEdit').modal('hide');
                 });
             }
-            /*Cluster*/
+                /*Cluster*/
             else if ($(e).parents('#level1_cluster_accordion').length) {
                 crudNxN.modalAlterarCluster(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
@@ -167,7 +167,7 @@
                     $('#crudNxNEdit').modal('hide');
                 });
             }
-            /*Grupo L2*/
+                /*Grupo L2*/
             else if ($(e).parents('#level2_GroupLevel_accordion').length) {
                 crudNxN.modalAlterarGroupLevel2(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
@@ -178,7 +178,7 @@
                     $('#crudNxNEdit').modal('hide');
                 });
             }
-            /*Pontos L3*/
+                /*Pontos L3*/
             else if ($(e).parents('#level3_PesoL3_accordion').length) {
                 crudNxN.modalAlterarPesoL3(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
@@ -196,7 +196,7 @@
 
                 });
             }
-            /*AvAm L2*/
+                /*AvAm L2*/
             else if ($(e).parents('#level2_AvAmostra_accordion').length) {
                 crudNxN.modalAlterarAvAmL2(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
@@ -213,7 +213,7 @@
 
                 });
             }
-            /*Meta L1*/
+                /*Meta L1*/
             else if ($(e).parents('#level1_Meta_accordion').length) {
                 crudNxN.modalAlterarMetal1(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
@@ -229,7 +229,7 @@
 
                 });
             }
-            /*Tipos de dados L3*/
+                /*Tipos de dados L3*/
             else if ($(e).parents('#tableLevel3Value').length) {
                 crudNxN.modalAlterarLevel3Value(obj);//
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
@@ -298,6 +298,32 @@
                 if (obj.ParCompany_Id > 0)
                     $('#crudNxNEdit #selectUnidadeParL3Value').val(obj.ParCompany_Id).change();
 
+            } else if (obj.ParLevel3InputType_Id == 2) {
+                divDeEdicao = $('.ParIntervalos').clone();
+                $(divDeEdicao).show();
+                $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
+
+                $('#crudNxNEdit #selectUnidadeDeMedidas').val(obj.ParMeasurementUnit_Id).change();
+                $('#crudNxNEdit #parLevel3Value_IntervalMin').val(obj.IntervalMin);
+
+                $('#crudNxNEdit > div > div > div.modal-body > tr > td:nth-child(1)').hide();
+                $('#crudNxNEdit > div > div > div.modal-body > tr > td:nth-child(2)').hide()
+
+                $('#crudNxNEdit #parLevel3Value_IntervalMax').val(obj.IntervalMax);
+                $('#crudNxNEdit #parIntervalosType').val(obj.AcceptableValueBetween).change().show().append();
+
+                if (obj.ParCompany_Id > 0)
+                    $('#crudNxNEdit #selectUnidadeParL3Value').val(obj.ParCompany_Id).change();
+
+                $(document).on('input', '#crudNxNEdit #parLevel3Value_IntervalMax', function (e) {
+                    changeComboEdit();
+                });
+
+                $(document).on('input', '#crudNxNEdit #parLevel3Value_IntervalMin', function (e) {
+                    changeComboEdit();
+                });
+                $('#crudNxNEdit #parLevel3Value_IntervalMin').trigger('input');
+                $('#crudNxNEdit #parIntervalosType').val(obj.AcceptableValueBetween ? 1 : 0).change();
             }
 
             divDeEdicao = $('#selectTipoInput');

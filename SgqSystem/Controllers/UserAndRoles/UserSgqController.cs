@@ -118,8 +118,13 @@ namespace SgqSystem.Controllers
             if (!ModelState.IsValid)
                 return false;
 
+            //Verificar se a senha for vazia
+            if ((userSgqDto.Password == "") || (userSgqDto.Password == null))
+                userSgqDto.Password = "USERUSA";
+
             if (userSgqDto.Id == 0)
             {
+                userSgqDto.ParCompany_Id = userSgqDto.ListParCompany_Id.FirstOrDefault();
                 userSgqDto.AddDate = DateTime.Now;
                 userSgqDto.Password = Guard.EncryptStringAES(userSgqDto.Password);
             }
@@ -324,8 +329,12 @@ namespace SgqSystem.Controllers
 
         private void ValidaUserSgqDto(UserDTO userSgqDto)
         {
-
-            if (db.UserSgq.Where(r => r.Name == userSgqDto.Name).ToList().Count() > 0)
+            if (userSgqDto.Id > 0)
+            {
+                if (db.UserSgq.Where(r => r.Name == userSgqDto.Name && r.Id != userSgqDto.Id).ToList().Count() > 0)
+                    ModelState.AddModelError("Name", "Este nome de usuário já está sendo usado");
+            }
+            else if (db.UserSgq.Where(r => r.Name == userSgqDto.Name).ToList().Count() > 0)
             {
                 ModelState.AddModelError("Name", "Este nome de usuário já está sendo usado");
             }
