@@ -806,7 +806,7 @@ namespace SgqSystem.Controllers.Api
              "\n ,R3.ParLevel3_Name " +
              "\n ,UNI.Name " +
              "\n ,UNI.Id " +
-             "\n HAVING SUM(R3.WeiDefects) > 0" +
+             "\n HAVING SUM(R3.WeiDefects) > 0  AND SUM(R3.Defects) > 0 " +
              "\n ORDER BY 9 DESC";
 
             return queryGraficoTarefasAcumuladas;
@@ -853,7 +853,7 @@ namespace SgqSystem.Controllers.Api
                 "\n ,R3.ParLevel3_Name " +
                 "\n ,UNI.Name " +
                 "\n ,UNI.Id " +
-                "\n HAVING SUM(R3.WeiDefects) > 0" +
+                "\n HAVING SUM(R3.WeiDefects) > 0 AND SUM(R3.Defects) > 0 " +
                 "\n ORDER BY 9 DESC";
 
             return queryGrafico4;

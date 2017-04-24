@@ -574,6 +574,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The evaluations are not completed. Do you want to continue?.
+        /// </summary>
+        internal static string ca_evaluations_not_completed {
+            get {
+                return ResourceManager.GetString("ca_evaluations_not_completed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You still have Corrective action(s) pending .
         /// </summary>
         internal static string ca_pending {
