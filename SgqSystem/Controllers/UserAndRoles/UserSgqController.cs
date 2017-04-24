@@ -118,6 +118,10 @@ namespace SgqSystem.Controllers
             if (!ModelState.IsValid)
                 return false;
 
+            //Verificar se a senha for vazia
+            if ((userSgqDto.Password == "") || (userSgqDto.Password == null))
+                userSgqDto.Password = "USERUSA";
+
             if (userSgqDto.Id == 0)
             {
                 userSgqDto.ParCompany_Id = userSgqDto.ListParCompany_Id.FirstOrDefault();
