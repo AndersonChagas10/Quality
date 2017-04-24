@@ -95,7 +95,7 @@
                             <tr class="row">
                                 @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasCompleteEvaluation, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.hascompleteevaluation), Table.PosicaoLabel.left, null, null)
                             </tr>
-                        }
+                        
                         <!--Partial Save-->
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsPartialSave, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.isPartialSave), Table.PosicaoLabel.left, null, null)

@@ -13,44 +13,72 @@ namespace SgqSystem.Controllers.Api.App
     public class ContadoresXX
     {
 
-        public List<RetornoLucas> GetContadoresXX(SgqDbDevEntities db, int level1Id, int period = 0)
+        public List<DefeitosPorAmostra> GetContadoresXX(SgqDbDevEntities db, int level1Id, int period = 0)
         {
 
             /*Busca Items parametrizados a serem calculados*/
-            var retorno = new List<RetornoLucas>();
+            //var retorno = new List<RetornoLucas>();
             var level2 = db.ParLevel3Level2Level1.Where(r => r.ParLevel1_Id == level1Id && r.Active && r.ParLevel3Level2.ParLevel2.IsActive).Select(r => r.ParLevel3Level2.ParLevel2).Include("ParFrequency").Distinct();
-            var collectionLevel2PorFrequenciaLevel1 = GetCollectionLevel2PelaFrquencia(level2, db).OrderBy(r=>r.EvaluationNumber).ThenBy(r=>r.Sample);
-            var todosLevel1 = collectionLevel2PorFrequenciaLevel1.Select(r => r.ParLevel1_Id).Distinct();
-            var SidesWithDefectsTotal = 0;
+            //var collectionLevel2PorFrequenciaLevel1 = GetCollectionLevel2PelaFrquencia(level2, db).OrderBy(r=>r.EvaluationNumber).ThenBy(r=>r.Sample);
 
-            foreach (var evaluation in collectionLevel2PorFrequenciaLevel1.Select(r=>r.EvaluationNumber).Distinct())
+            
+            //var todosLevel1 = collectionLevel2PorFrequenciaLevel1.Select(r => r.ParLevel1_Id).Distinct();
+            //var SidesWithDefectsTotal = 0;
+
+
+            var newReturn = new List<DefeitosPorAmostra>();
+
+            foreach (var l2 in level2)
             {
-                foreach (var sample in collectionLevel2PorFrequenciaLevel1.Select(r => r.Sample).Distinct())
-                {
-                    var elementoDalista = new RetornoLucas();
-                    elementoDalista.Defects = collectionLevel2PorFrequenciaLevel1.Where(r => r.EvaluationNumber == evaluation && r.Sample == sample).Sum(r => r.WeiDefects).GetValueOrDefault();
-                    elementoDalista.evaluation = evaluation;
-                    elementoDalista.sample = sample;
-                    elementoDalista.IdLevel1 = level1Id;
-                    SidesWithDefectsTotal += elementoDalista.Defects > 0 ? 1 : 0;
-                    elementoDalista.SidesWithDefects = SidesWithDefectsTotal;
+                string dataInicio = string.Empty;
+                string dataFim = string.Empty;
 
-                    if (elementoDalista.Defects > 0)
-                        retorno.Add(elementoDalista);
-                }
+                SyncServices.getFrequencyDate(l2.ParFrequency_Id, DateTime.Now /*MOCK DEV> OBS:PRECISA PASSaR COMO REFERENCIA PARA RETROATIVO*/, ref dataInicio, ref dataFim);
+
+
+                var sql = "select" +
+                            " EvaluationNumber, [Sample], " +
+                            //" SUM(WeiDefects) as WeiDefects,"+
+                            " CASE WHEN SUM(WeiDefects) > 0 THEN 1 ELSE 0 END as WeiDefects,"+
+                            " [Period], [Shift]" +
+                            " from CollectionLevel2" +
+                            " where ParLevel1_Id = "+ level1Id + " and CollectionDate <= '"+dataInicio+ " 23:59:00' and CollectionDate >= '" + dataFim + " 00:00:00' and WeiDefects > 0" +
+                            " group by EvaluationNumber, [Sample], [Period], [Shift]";
+
+                var results = db.Database.SqlQuery<DefeitosPorAmostra>(sql);
+
+                newReturn.AddRange(results);
             }
 
-            foreach (var i in retorno)
-            {
-                Debug.Write("\n IdLevel1: " + i.IdLevel1); 
-                Debug.Write("\n evaluation: " + i.evaluation); 
-                Debug.Write("\n sample: " + i.sample); 
-                Debug.Write("\n Defects: " + i.Defects); 
-                Debug.Write("\n SidesWithDefects: " + i.SidesWithDefects);
-                Debug.Write("\n\n -------------- \n\n");
-            }
+            return newReturn;
+            //foreach (var evaluation in collectionLevel2PorFrequenciaLevel1.Select(r=>r.EvaluationNumber).Distinct())
+            //{
+            //    foreach (var sample in collectionLevel2PorFrequenciaLevel1.Select(r => r.Sample).Distinct())
+            //    {
+            //        var elementoDalista = new RetornoLucas();
+            //        elementoDalista.Defects = collectionLevel2PorFrequenciaLevel1.Where(r => r.EvaluationNumber == evaluation && r.Sample == sample).Sum(r => r.WeiDefects).GetValueOrDefault();
+            //        elementoDalista.evaluation = evaluation;
+            //        elementoDalista.sample = sample;
+            //        elementoDalista.IdLevel1 = level1Id;
+            //        SidesWithDefectsTotal += elementoDalista.Defects > 0 ? 1 : 0;
+            //        elementoDalista.SidesWithDefects = SidesWithDefectsTotal;
 
-            return retorno;
+            //        if (elementoDalista.Defects > 0)
+            //            retorno.Add(elementoDalista);
+            //    }
+            //}
+
+            //foreach (var i in retorno)
+            //{
+            //    Debug.Write("\n IdLevel1: " + i.IdLevel1); 
+            //    Debug.Write("\n evaluation: " + i.evaluation); 
+            //    Debug.Write("\n sample: " + i.sample); 
+            //    Debug.Write("\n Defects: " + i.Defects); 
+            //    Debug.Write("\n SidesWithDefects: " + i.SidesWithDefects);
+            //    Debug.Write("\n\n -------------- \n\n");
+            //}
+
+            //return retorno;
         }
 
         private List<CollectionLevel2> GetCollectionLevel2PelaFrquencia(IQueryable<ParLevel2> level2, SgqDbDevEntities db)
@@ -99,6 +127,15 @@ namespace SgqSystem.Controllers.Api.App
             }
         }
 
+    }
+
+    public class DefeitosPorAmostra
+    {
+        public int EvaluationNumber { get; set; }
+        public int Sample { get; set; }
+        public int WeiDefects { get; set; }
+        public int Period { get; set; }
+        public int Shift { get; set; }
     }
 
     public class RetornoLucas
