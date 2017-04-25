@@ -218,9 +218,9 @@
 
     <script>
 
-        var ResoursesFile = @Html.Raw(Json.Encode(ViewBag.Resourses));
-        function Resourses(key){
-            return $.grep(ResoursesFile , function(a) { return a.Key == key})[0].Value
+        var ResourcesFile = @Html.Raw(Json.Encode(ViewBag.Resources));
+        function Resources(key){
+            return $.grep(ResourcesFile , function(a) { return a.Key == key})[0].Value
         }
 
         /*Muda select2 para PADRÂO BR*/

@@ -200,7 +200,7 @@
         /*Level2*/
         var idLevel2 = $('#paramsDto_parLevel2Dto_Id').val();
         if (idLevel2 == undefined || idLevel2 <= 0 || idLevel2 == null) {
-            openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_level2");
+            openMessageModal(Resources('warning'), Resources('select_the_level2'));
             //alert("É necessario selecionar o level 2");
             return;
         }
@@ -208,7 +208,7 @@
         /*Level3*/
         var idLevel3 = $('#paramsDto_parLevel3Dto_Id').val();
         if (idLevel3 == undefined || idLevel3 <= 0 || idLevel3 == null) {
-            openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_level3");
+            openMessageModal(Resources('warning'), Resources('select_the_level3'));
             //alert("É necessario selecionar o level 3");
             return;
         }
@@ -218,7 +218,7 @@
 
         $.get(vinculoL2L3 + '/' + idLevel2 + '/' + idLevel3 + '/' + peso + '/' + groupoLevel2 + '/', function (obj, responseText, xhr) {
             if (obj != null) {
-                openMessageModal("@Resources.Resource.done", "@Resources.Resource.level2_linked_to_level3_successfully"+" #" + obj.Id);
+                openMessageModal(Resources('done'), Resources('level2_linked_to_level3_successfully') +" #" + obj.Id);
                 //alert("Vinculado L3 com L2 ID: " + obj.Id);
                 UpdateSelect2Level3(idLevel2, undefined, function(){$('#parLevel3Select2').trigger('change');});
             }
@@ -344,16 +344,16 @@
 
             if($('#' + seletorTato + ' #selectTipoInput :selected').val() == 1){ // Binario
                 if($('#' + seletorTato + ' #selectConforme :selected').val() <= 0){
-                    openMessageModal("@Resources.Resource.required_field_was_not_filled", "@Resources.Resource.select_positive_value_for_binary_field");
+                    openMessageModal(Resources('required_field_was_not_filled'), Resources('select_positive_value_for_binary_field'));
                     return false;
                 }else if($('#' + seletorTato + ' #selectNaoConforme :selected').val() <= 0){
-                    openMessageModal("@Resources.Resource.required_field_was_not_filled", "@Resources.Resource.select_negative_value_for_binary_field");
+                    openMessageModal(Resources('required_field_was_not_filled'), Resources('select_negative_value_for_binary_field'));
                     return false;
                 }
             } // Intervalo ou Calculado.
             else if($('#' + seletorTato + ' #selectTipoInput :selected').val() == 3 || $('#' + seletorTato + ' #selectTipoInput :selected').val() == 4){
                 if($('#' + seletorTato + ' #selectUnidadeDeMedidas :selected').val() <= 0){
-                    openMessageModal("@Resources.Resource.required_field_was_not_filled", "@Resources.Resource.select_the_measurement_unit");
+                    openMessageModal(Resources('required_field_was_not_filled'), Resources('select_the_measurement_unit'));
                     return false;
                 }
             }
@@ -376,7 +376,7 @@
                     if(companySelected == -1)
                         display= "Todas";
 
-                    openMessageModal("@Resources.Resource.data_already_register_on_company"+" " + display + ".", "")
+                    openMessageModal(Resources('data_already_register_on_company')+" " + display + ".", "")
                     return false;
 
                 }
@@ -511,7 +511,7 @@
         parIntervalosTypeCreateEdit();
     }
     function level03ValueIntervalWriter(valueMin, valueMax) {
-        return "@Resources.Resource.acceptable_value_less_than " + valueMin + " @Resources.Resource.and_greater_than " + valueMax;
+        return Resources('acceptable_value_less_than') + " " + valueMin + Resources('and_greater_than') + " " + valueMax;
     }
 
     function parIntervalosTypeCreate() {
@@ -523,7 +523,8 @@
         if ($("#parLevel3Value_IntervalMin").val() == "" && !$("#parLevel3Value_IntervalMax").val() == "") {
             var options =''
             "<option value='0'>" +
-                "@Resources.Resource.acceptable_value_equal_or_greater_than " + $("#parLevel3Value_IntervalMax").val()+" "+ value+
+                Resources('acceptable_value_equal_or_greater_than')
+                + $("#parLevel3Value_IntervalMax").val()+" "+ value+
             "</option>";
 
             $('#parIntervalosType').empty();
@@ -535,7 +536,8 @@
         else if (!$("#parLevel3Value_IntervalMin").val() == "" && $("#parLevel3Value_IntervalMax").val() == "") {
             var options =
                 "<option value='0'>" +
-                    "@Resources.Resource.acceptable_value_equal_or_greater_than " + $("#parLevel3Value_IntervalMin").val()+" "+ value+
+                    Resources('acceptable_value_equal_or_greater_than')
+                    + $("#parLevel3Value_IntervalMin").val()+" "+ value +
                 "</option>";
 
             $('#parIntervalosType').empty();
@@ -546,11 +548,17 @@
 
         else if (!$("#parLevel3Value_IntervalMin").val() == "" && !$("#parLevel3Value_IntervalMax").val() == "") {
             var options =
-                "<option value='0'>" +
-                    "@Resources.Resource.value_is_acceptable_between " + $("#parLevel3Value_IntervalMin").val() + " @Resources.Resource.and " + $("#parLevel3Value_IntervalMax").val() +" "+ value+
+                "<option value='0'>"
+                    + Resources('value_is_acceptable_between')
+                    + " " + $("#parLevel3Value_IntervalMin").val() +
+                    + " " + Resources('and')
+                    + " " + $("#parLevel3Value_IntervalMax").val() + " " + value +
                 "</option>" +
                 "<option value='1'>" +
-                    "@Resources.Resource.value_is_acceptable_less_than " + $("#parLevel3Value_IntervalMin").val() + " @Resources.Resource.or_greater_than " + $("#parLevel3Value_IntervalMax").val() +" "+ value+
+                    + Resources('value_is_acceptable_less_than')
+                    + " " + $("#parLevel3Value_IntervalMin").val()
+                    + " " + Resources('or_greater_than') +
+                    + " " + $("#parLevel3Value_IntervalMax").val() + " " + value+
                 "</option>";
 
             $('#parIntervalosType').empty();
@@ -570,7 +578,8 @@
         if ($("#crudNxNEdit #parLevel3Value_IntervalMin").val() == "" && !$("#crudNxNEdit #parLevel3Value_IntervalMax").val() == "") {
             var options =''
             "<option value='0'>" +
-                "@Resources.Resource.acceptable_value_equal_or_greater_than " + $("#crudNxNEdit #parLevel3Value_IntervalMax").val()+" "+ value+
+                Resources('acceptable_value_equal_or_greater_than')
+                + " " + $("#crudNxNEdit #parLevel3Value_IntervalMax").val()+" "+ value+
             "</option>";
 
             $('#crudNxNEdit #parIntervalosType').empty();
@@ -582,7 +591,8 @@
         else if (!$("#crudNxNEdit #parLevel3Value_IntervalMin").val() == "" && $("#crudNxNEdit #parLevel3Value_IntervalMax").val() == "") {
             var options =
                 "<option value='0'>" +
-                    "@Resources.Resource.acceptable_value_equal_or_greater_than " + $("#crudNxNEdit #parLevel3Value_IntervalMin").val()+" "+ value+
+                    Resources('acceptable_value_equal_or_greater_than')
+                     + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() + " " + value +
                 "</option>";
 
             $('#crudNxNEdit #parIntervalosType').empty();
@@ -594,10 +604,17 @@
         else if (!$("#crudNxNEdit #parLevel3Value_IntervalMin").val() == "" && !$("#crudNxNEdit #parLevel3Value_IntervalMax").val() == "") {
             var options =
                 "<option value='0'>" +
-                    "@Resources.Resource.value_is_acceptable_between " + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() + " @Resources.Resource.and " + $("#crudNxNEdit #parLevel3Value_IntervalMax").val() +" "+ value+
+                    Resources('value_is_acceptable_between')
+                    + " " + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() + 
+                    + " " + Resources('and') 
+                    + " " + $("#crudNxNEdit #parLevel3Value_IntervalMax").val() +" "+ value+
                 "</option>" +
                 "<option value='1'>" +
-                    "@Resources.Resource.value_is_acceptable_less_than " + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() + " @Resources.Resource.and_greater_than " + $("#crudNxNEdit #parLevel3Value_IntervalMax").val() +" "+ value+
+                    Resources('value_is_acceptable_less_than') 
+                    + " " + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() + 
+                    + " " + Resources('and_greater_than') 
+                    + " " + $("#crudNxNEdit #parLevel3Value_IntervalMax").val() 
+                    + " " + value +
                 "</option>";
 
             $('#crudNxNEdit #parIntervalosType').empty();
@@ -750,7 +767,7 @@
         }
 
         if(!valInpNeg.length){
-            alert("@Resources.Resource.invalid_value_for", "@Resources.Resource.positive_value");
+            alert(Resources('invalid_value_for'), Resources('positive_value'));
             return;
         }
 
