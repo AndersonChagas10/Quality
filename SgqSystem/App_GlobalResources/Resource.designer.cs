@@ -3202,7 +3202,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No families in level.
+        ///   Looks up a localized string similar to No monitoring in level.
         /// </summary>
         internal static string no_families_level {
             get {
