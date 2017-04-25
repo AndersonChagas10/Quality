@@ -565,7 +565,7 @@ namespace SgqSystem.Controllers.Api
                 "\n       , CASE " +
                 "\n         WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN EvaluateTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN EvaluateTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
                 "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM" +
                 "\n         ELSE 0 " +
@@ -722,7 +722,7 @@ namespace SgqSystem.Controllers.Api
                 "\n       , CASE " +
                 "\n         WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL2.EvaluateTotal " +
-                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL2.EvaluateTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL2.EvaluatedResult " +
                 "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM " +
                 "\n         ELSE 0 " +
