@@ -60,7 +60,7 @@
     }
 
     #primeiro {
-        min-height: 450px;
+        min-height: 470px;
     }
 
     table.dataTable thead th, table.dataTable thead td {
@@ -369,11 +369,15 @@
                 loadingRecords: true,
                 destroy: true,
                 info: false,
+                dom: 'Bfrtip',
+                buttons: [
+                    { extend: 'copy', text: 'Copiar' }, 'excel', 'pdf'
+                ]
 
             });
 
             porcDesvioTotal = (SomaVetor(realizado, VerificaConta(dados.indicador)) / SomaVetor(orcado, VerificaConta(dados.indicador)) - 1) * 100
-            
+
             if (isNaN(porcDesvioTotal) || !isFinite(porcDesvioTotal))
                 porcDesvioTotal = 0;
 
@@ -1132,9 +1136,9 @@
                     $("#mouthId").val(0);
                     $('#RegionalId').change();
                     $('#SubRegionalId').change();
-                    
+
                 } else {
-                    $("#SubRegionalId").append('<option value="Todas">Todas</option>');                   
+                    $("#SubRegionalId").append('<option value="Todas">Todas</option>');
                     $("#RegionalId").append('<option value="Todas">Todas</option>');
                     $('#RegionalId').change();
                     $('#SubRegionalId').change();
@@ -1249,34 +1253,32 @@
             var conta = "";
 
             if (
-                indicador == "Taxa de Frequência"||
-                indicador == "Pilar Manutenção"||
-                indicador == "CARTA METAS"||
+                indicador == "Taxa de Frequência" ||
+                indicador == "Pilar Manutenção" ||
+                indicador == "CARTA METAS" ||
                 indicador == "Scorecard Energia" ||
-                indicador == "Scorecard Vapor"||
+                indicador == "Scorecard Vapor" ||
                 indicador == "R$/CB Manut" ||
                 indicador == "KWh/Boi Proc" ||
                 indicador == "Mcal/Boi Proc" ||
-                indicador == "Água M³/Boi"||
-                indicador == "Disponibilidade Ab"||
-                indicador == "Disponibilidade Des"||
-                indicador == "Disponibilidade Total"||
-                indicador == "Eficiên.Programção"||
-                indicador == "Apropr Planej...to"||
-                indicador == "Apropriação de O.S"||
+                indicador == "Água M³/Boi" ||
+                indicador == "Disponibilidade Ab" ||
+                indicador == "Disponibilidade Des" ||
+                indicador == "Disponibilidade Total" ||
+                indicador == "Eficiên.Programção" ||
+                indicador == "Apropr Planej...to" ||
+                indicador == "Apropriação de O.S" ||
                 indicador == "Absenteísmo"
-                )
-            {
+                ) {
                 conta = "media"
-            } else
-            {
+            } else {
                 conta = "soma"
             }
 
             return conta;
         }
 
-        function SomaVetor(vetor,conta) {
+        function SomaVetor(vetor, conta) {
 
             var vetorSomado = 0;
             var qte = 0;
@@ -1299,11 +1301,11 @@
                     vetorSomado += vetor[i];
                 }
             }
-            
+
             if (isNaN(vetorSomado)) {
                 vetorSomado = 0;
             }
-                
+
             return vetorSomado;
         }
 
