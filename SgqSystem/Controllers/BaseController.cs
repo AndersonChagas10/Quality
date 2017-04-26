@@ -11,6 +11,8 @@ using System.Web.Mvc;
 using System.Data;
 using Helper;
 using System.Collections;
+using Hangfire;
+using SgqSystem.Mail;
 
 namespace SgqSystem.Controllers
 {
@@ -28,7 +30,7 @@ namespace SgqSystem.Controllers
             //    Cron.Minutely);
 
             //BackgroundJob.Enqueue(
-            //    () => SimpleAsynchronous.UpdatePassAES());
+            //    () => SimpleAsynchronous.SendMailFromDeviationSgqApp());
 
             //BackgroundJob.Enqueue(
             //    () => GlobalConfig.VerifyConfig("DbContextSgqEUA"));

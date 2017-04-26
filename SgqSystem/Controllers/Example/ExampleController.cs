@@ -115,9 +115,15 @@ namespace SgqSystem.Controllers
             return View(model);
         }
 
-       
+        [HttpPost]
+        public ActionResult ResoursesTeste(ContextExampleViewModel model)
+        {
+            return View(model);
+        }
+
+
     }
 
-    
+
 
 }

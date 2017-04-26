@@ -19,7 +19,6 @@ namespace Dominio
         {
             this.ConsolidationLevel1 = new HashSet<ConsolidationLevel1>();
             this.Defect = new HashSet<Defect>();
-            this.ManDataCollectIT = new HashSet<ManDataCollectIT>();
             this.VolumeCepDesossa = new HashSet<VolumeCepDesossa>();
             this.VolumeCepRecortes = new HashSet<VolumeCepRecortes>();
             this.VolumePcc1b = new HashSet<VolumePcc1b>();
@@ -55,8 +54,6 @@ namespace Dominio
         public virtual ICollection<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Defect> Defect { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ManDataCollectIT> ManDataCollectIT { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VolumeCepDesossa> VolumeCepDesossa { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

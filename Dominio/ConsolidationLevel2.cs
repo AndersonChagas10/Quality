@@ -43,5 +43,6 @@ namespace Dominio
         public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }
         public virtual ParCompany ParCompany { get; set; }
         public virtual ParLevel2 ParLevel2 { get; set; }
+        public virtual ConsolidationLevel1 ConsolidationLevel1 { get; set; }
     }
 }
