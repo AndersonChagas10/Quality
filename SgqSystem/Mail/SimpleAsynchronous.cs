@@ -14,28 +14,31 @@ namespace SgqSystem.Mail
     {
 
         public static List<EmailContent> ListaDeMail;
-        private static int antiSpanMock = 0;
+        private static int tamanhoDoPool = 3;
+        private static bool running { get; set; }
+        private static SgqDbDevEntities db = new SgqDbDevEntities();
 
         public static List<EmailContent> CreateMailSgqAppDeviation()
         {
 
             using (var db = new SgqDbDevEntities())
             {
-                //db.Configuration.ValidateOnSaveEnabled = false;
+                db.Configuration.ValidateOnSaveEnabled = false;
                 //db.Configuration.AutoDetectChangesEnabled = false;
                 //ListaDeMail = new List<EmailContent>();
                 db.Configuration.LazyLoadingEnabled = false;
-                var Mails = db.Deviation.Where(r => r.AlertNumber > 0 && !r.sendMail.GetValueOrDefault() && r.DeviationMessage != null).ToList();
+                var Mails = db.Deviation.Where(r => r.AlertNumber > 0 && (r.sendMail == null || r.sendMail == false) && r.DeviationMessage != null).Take(tamanhoDoPool).ToList();
 
 
                 if (Mails != null && Mails.Count() > 0)
                 {
                     foreach (var m in Mails)
                     {
+
                         var newMail = new EmailContent()
                         {
                             AddDate = DateTime.Now,
-                            Body = m.DeviationMessage,
+                            Body = RemoveEspacos(m.DeviationMessage),
                             IsBodyHtml = true,
                             Subject = "teste v2",
                             To = "celso.bernar@grtsolucoes.com.br",
@@ -43,20 +46,11 @@ namespace SgqSystem.Mail
                         };
                         //ListaDeMail.Add(newMail);
 
-                        /*Adiciona 5 email caso seja para testes.*/
-                        if (GlobalConfig.mockEmail)
-                        {
-                            if (antiSpanMock > 5)
-                                continue;
-
-                            antiSpanMock++;
-                        }
-
                         db.EmailContent.Add(newMail);
 
-                        m.sendMail = true;
                         db.Deviation.Attach(m);
                         var entry = db.Entry(m);
+                        m.sendMail = true;
                         entry.State = System.Data.Entity.EntityState.Modified;
                         entry.Property(r => r.sendMail).IsModified = true;
 
@@ -66,65 +60,35 @@ namespace SgqSystem.Mail
 
                 }
 
-                return db.EmailContent.Where(r => r.SendStatus == null && r.Project == "SGQApp").ToList();
+                return db.EmailContent.Where(r => r.SendStatus == null && r.Project == "SGQApp").Take(tamanhoDoPool).ToList();
             }
 
+        }
+
+        private static string RemoveEspacos(string deviationMessage)
+        {
+            var result = string.Empty;
+            foreach (var i in deviationMessage.Split('>'))
+                result += i.TrimStart().TrimEnd() + "> ";
+
+            return result.Substring(0, result.IndexOf("<button"));
         }
 
         public static void SendMailFromDeviationSgqApp()
         {
-            var emails = CreateMailSgqAppDeviation();
-            if (emails != null && emails.Count() > 0)
-                foreach (var i in emails)
-                    SendMail(i);
-        }
-
-        //static bool mailSent = false;
-        private static void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
-        {
             try
             {
-                using (var db = new SgqDbDevEntities())
-                {
-                    //db.Configuration.AutoDetectChangesEnabled = false;
-                    db.Configuration.ValidateOnSaveEnabled = false;
-                    db.Configuration.LazyLoadingEnabled = false;
-
-                    // Get the unique identifier for this asynchronous operation.
-                    String token = (string)e.UserState;
-                    var id = int.Parse(token);
-                    var entryEmailContent =  db.EmailContent.FirstOrDefault(r => r.Id == id);
-                    db.EmailContent.Attach(entryEmailContent);
-                    var entry = db.Entry(entryEmailContent);
-                    entry.State = System.Data.Entity.EntityState.Modified;
-                    entry.Property(r => r.AddDate).IsModified = false;
-                    entryEmailContent.AlterDate = DateTime.Now;
-                    entryEmailContent.SendDate = DateTime.Now;
-
-                    if (e.Cancelled)
-                    {
-                        //Console.WriteLine("[{0}] Send canceled.", token);
-                        entryEmailContent.SendStatus = string.Format("[{0}] Send canceled.", token);
-                    }
-                    if (e.Error != null)
-                    {
-                        //Console.WriteLine("[{0}] {1}", token, e.Error.ToString());
-                        entryEmailContent.SendStatus = string.Format("[{0}] {1}", token, e.Error.ToString());
-                    }
-                    else
-                    {
-                        //Console.WriteLine("Message sent.");
-                        entryEmailContent.SendStatus = string.Format("Message sent.");
-                    }
-
-                    db.SaveChanges();
-                    //mailSent = true;
-                }
+                var emails = CreateMailSgqAppDeviation();
+                if (emails != null && emails.Count() > 0)
+                    foreach (var i in emails)
+                        SendMail(i);
             }
             catch (Exception ex)
             {
-                new CreateLog(new Exception("Erro ao enviar e mail", ex));
+                new CreateLog(new Exception("Erro ao enviar email", ex));
+                throw ex;
             }
+
         }
 
         public static void SendMail(EmailContent mailEntry)
@@ -164,7 +128,8 @@ namespace SgqSystem.Mail
             //Callback
             // Set the method that is called back when the send operation ends.
             client.SendCompleted += new
-            SendCompletedEventHandler(SendCompletedCallback);
+            SendCompletedEventHandler(new FimDoEnvio().SendCompletedCallback);
+
 
             // The userState can be any object that allows your callback 
             // method to identify this send operation.
@@ -176,7 +141,63 @@ namespace SgqSystem.Mail
         }
     }
 
+    public class FimDoEnvio
+    {
+        private SgqDbDevEntities db = new SgqDbDevEntities();
 
+        public void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
+        {
+            try
+            {
+                db.Configuration.AutoDetectChangesEnabled = false;
+                db.Configuration.ValidateOnSaveEnabled = false;
+
+                // Get the unique identifier for this asynchronous operation.
+                String token = (string)e.UserState;
+                var id = int.Parse(token);
+
+                var emailContent = db.EmailContent.FirstOrDefault(r => r.Id == id);
+
+                if (e.Cancelled)
+                {
+                    //Console.WriteLine("[{0}] Send canceled.", token);
+                    emailContent.SendStatus = string.Format("[{0}] Send canceled.", token);
+                }
+                if (e.Error != null)
+                {
+                    //Console.WriteLine("[{0}] {1}", token, e.Error.ToString());
+                    emailContent.SendStatus = string.Format("[{0}] {1}", token, e.Error.ToString());
+                }
+                else
+                {
+                    //Console.WriteLine("Message sent.");
+                    emailContent.SendStatus = string.Format("Message sent.");
+                }
+
+                //db.Database.ExecuteSqlCommand("UPDATE EmailContent SET SendStatus = N'" + emailContent.SendStatus + "', AlterDate = GETDATE(), SendDate = GETDATE() WHERE ID  = " + id + ";");
+                //await db.SaveChangesAsync();
+
+                emailContent.AlterDate = DateTime.Now;
+                emailContent.SendDate = DateTime.Now;
+
+                db.EmailContent.Attach(emailContent);
+                var entry = db.Entry(emailContent);
+                entry.State = System.Data.Entity.EntityState.Modified;
+                entry.Property(r => r.SendStatus).IsModified = true;
+                entry.Property(r => r.AlterDate).IsModified = true;
+                entry.Property(r => r.SendDate).IsModified = true;
+
+                db.SaveChanges();
+                //mailSent = true;
+                db.Dispose();
+            }
+            catch (Exception ex)
+            {
+                new CreateLog(new Exception("Erro ao enviar e mail", ex));
+                //throw ex;
+            }
+        }
+    }
     //MailMessage Message = new MailMessage();
     //Message.IsBodyHtml = true;
     //Message.To.Add(new MailAddress(toEmail, toName));

@@ -288,20 +288,9 @@
           <Property Name="AlterDate" Type="datetime" />
           <Property Name="Name" Type="varchar(max)" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade_.dbo.Deviation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Deviation">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="ParCompany_Id" />
-            <PropertyRef Name="ParLevel1_Id" />
-            <PropertyRef Name="ParLevel2_Id" />
-            <PropertyRef Name="Evaluation" />
-            <PropertyRef Name="Sample" />
-            <PropertyRef Name="AlertNumber" />
-            <PropertyRef Name="Defects" />
-            <PropertyRef Name="DeviationDate" />
-            <PropertyRef Name="AddDate" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParCompany_Id" Type="int" Nullable="false" />
@@ -2823,6 +2812,7 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
           <EntitySet Name="CorrectiveAction" EntityType="Self.CorrectiveAction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Defect" EntityType="Self.Defect" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Deviation" EntityType="Self.Deviation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmailContent" EntityType="Self.EmailContent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Example" EntityType="Self.Example" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LeftControlRole" EntityType="Self.LeftControlRole" Schema="dbo" store:Type="Tables" />
@@ -2889,22 +2879,6 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
           <EntitySet Name="VolumeCepRecortes" EntityType="Self.VolumeCepRecortes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VolumePcc1b" EntityType="Self.VolumePcc1b" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VolumeVacuoGRD" EntityType="Self.VolumeVacuoGRD" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Deviation" EntityType="Self.Deviation" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Deviation].[Id] AS [Id], 
-    [Deviation].[ParCompany_Id] AS [ParCompany_Id], 
-    [Deviation].[ParLevel1_Id] AS [ParLevel1_Id], 
-    [Deviation].[ParLevel2_Id] AS [ParLevel2_Id], 
-    [Deviation].[Evaluation] AS [Evaluation], 
-    [Deviation].[Sample] AS [Sample], 
-    [Deviation].[AlertNumber] AS [AlertNumber], 
-    [Deviation].[Defects] AS [Defects], 
-    [Deviation].[DeviationDate] AS [DeviationDate], 
-    [Deviation].[AddDate] AS [AddDate], 
-    [Deviation].[sendMail] AS [sendMail], 
-    [Deviation].[DeviationMessage] AS [DeviationMessage]
-    FROM [dbo].[Deviation] AS [Deviation]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="DimManutencaoColetaITs" EntityType="Self.DimManutencaoColetaITs" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [DimManutencaoColetaITs].[id] AS [id], 
@@ -7066,15 +7040,6 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
         <EntityType Name="Deviation">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="ParCompany_Id" />
-            <PropertyRef Name="ParLevel1_Id" />
-            <PropertyRef Name="ParLevel2_Id" />
-            <PropertyRef Name="Evaluation" />
-            <PropertyRef Name="Sample" />
-            <PropertyRef Name="AlertNumber" />
-            <PropertyRef Name="Defects" />
-            <PropertyRef Name="DeviationDate" />
-            <PropertyRef Name="AddDate" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ParCompany_Id" Type="Int32" Nullable="false" />
