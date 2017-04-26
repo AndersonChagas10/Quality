@@ -40,9 +40,6 @@
     <Compile Include="BkpCollection.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="budgets.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="CaracteristicaTipificacao.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
@@ -100,16 +97,13 @@
     <Compile Include="Department.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Departments.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="Deviation.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="DimManutencaoColetaITs.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Employees.cs">
+    <Compile Include="EmailContent.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Empresas.cs">
@@ -178,9 +172,6 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ManColetaDados.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ManDataCollectIT.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Metas.cs">

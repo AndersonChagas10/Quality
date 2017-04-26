@@ -14,18 +14,9 @@ namespace Dominio
     
     public partial class DimManutencaoColetaITs
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public DimManutencaoColetaITs()
-        {
-            this.ManDataCollectIT = new HashSet<ManDataCollectIT>();
-        }
-    
         public int id { get; set; }
         public string DataType { get; set; }
         public string TechnicalIndicator { get; set; }
         public Nullable<int> ParFrequency_id { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ManDataCollectIT> ManDataCollectIT { get; set; }
     }
 }

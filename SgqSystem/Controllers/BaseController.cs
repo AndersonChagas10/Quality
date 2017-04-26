@@ -1,7 +1,6 @@
 ﻿using Dominio;
 using DTO;
 using DTO.DTO;
-//using Hangfire;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -12,6 +11,7 @@ using System.Data;
 using Helper;
 using System.Collections;
 
+
 namespace SgqSystem.Controllers
 {
     [HandleController]
@@ -21,17 +21,6 @@ namespace SgqSystem.Controllers
         {
            
             ViewBag.UrlDataCollect = GlobalConfig.urlAppColleta;
-
-            /*Comentar este em HML desenvolvimento para evitar spam*/
-            //RecurringJob.AddOrUpdate(
-            //    () => SimpleAsynchronous.SendMail(),
-            //    Cron.Minutely);
-
-            //BackgroundJob.Enqueue(
-            //    () => SimpleAsynchronous.UpdatePassAES());
-
-            //BackgroundJob.Enqueue(
-            //    () => GlobalConfig.VerifyConfig("DbContextSgqEUA"));
 
         }
 

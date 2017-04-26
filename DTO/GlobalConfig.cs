@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DTO
@@ -13,11 +14,16 @@ namespace DTO
         public bool recoveryPassAvaliable { get; set; }
         public string urlPreffixAppColleta { get; set; }
         public string urlAppColleta { get; set; }
-        public string emailFrom { get; set; }
-        public string emailPass { get; set; }
-        public string emailSSL { get; set; }
         public bool mockLoginEUA { get; set; }
 
+
+        /*Emial*/
+        public string MailFrom { get; set; }
+        public string MailPass { get; set; }
+        public bool MailSSL { get; set; }
+        public int MailPort { get; set; }
+        public string MailSmtp { get; set; }
+        public bool MockEmail { get; set; }
     }
 
     public static class GlobalConfig
@@ -40,6 +46,16 @@ namespace DTO
         public static bool recoveryPassAvaliable { get; set; }
         public static string urlPreffixAppColleta { get; set; }
         public static string urlAppColleta { get; set; }
+
+        /*Mail*/
+        public static string emailPass { get; set; }
+        public static bool emailSSL { get; set; }
+        public static string emailFrom { get; set; }
+        public static int emailPort { get; set; }
+        public static string emailSmtp { get; set; }
+        public static bool mockEmail { get; set; }
+
+        //public static List<EmailContent> EmailList { get; set; }
 
         public static string PrimeiraOption
         {
@@ -145,7 +161,12 @@ namespace DTO
             urlPreffixAppColleta = dto.urlPreffixAppColleta;
             urlAppColleta = dto.urlAppColleta;
             mockLoginEUA = dto.mockLoginEUA;
-
+            emailFrom = dto.MailFrom;
+            emailPass = dto.MailPass;
+            emailSSL = dto.MailSSL;
+            emailSmtp = dto.MailSmtp;
+            emailPort = dto.MailPort;
+            mockEmail = dto.MockEmail;
         }
 
         /// <summary>
