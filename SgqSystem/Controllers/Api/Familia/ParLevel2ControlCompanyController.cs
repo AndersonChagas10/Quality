@@ -35,7 +35,7 @@ namespace SgqSystem.Controllers.Api
             if (parLevel1.CompanyControl_Id == null || parLevel1.CompanyControl_Id <= 0)
             {
                 //desativa os registros já cadastrados do corporativo
-                var listaCadastrada = _baseParLevel2ControlCompany.GetAll().Where(r => r.IsActive == true && r.ParCompany_Id == null);
+                var listaCadastrada = _baseParLevel2ControlCompany.GetAll().Where(r => r.IsActive == true && r.ParCompany_Id == null && r.ParLevel1_Id == parLevel1.Id);
 
                 if(listaCadastrada.Count() > 0)
                     foreach(var cadastro in listaCadastrada)
@@ -52,7 +52,7 @@ namespace SgqSystem.Controllers.Api
             else
             {
                 //desativa os registros já cadastrados da unidade
-                var listaCadastrada = _baseParLevel2ControlCompany.GetAll().Where(r => r.IsActive == true && r.ParCompany_Id == parLevel1.CompanyControl_Id);
+                var listaCadastrada = _baseParLevel2ControlCompany.GetAll().Where(r => r.IsActive == true && r.ParCompany_Id == parLevel1.CompanyControl_Id && r.ParLevel1_Id == parLevel1.Id);
 
                 if (listaCadastrada.Count() > 0)
                     foreach (var cadastro in listaCadastrada)
