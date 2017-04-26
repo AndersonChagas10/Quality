@@ -34,6 +34,8 @@ namespace DTO.DTO
 
         public DateTime? PasswordDate { get; set; }
 
+        public bool ChangePassword { get; set; } = false;
+
         /// <summary>
         /// Construtor Padrão
         /// </summary>

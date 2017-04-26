@@ -1914,4 +1914,10 @@
   <data name="ca_evaluations_not_completed" xml:space="preserve">
     <value>As avaliações não foram completadas. Deseja continuar?</value>
   </data>
+  <data name="repeated_username" xml:space="preserve">
+    <value>Este nome de usuário já está sendo usado</value>
+  </data>
+  <data name="select_one_company" xml:space="preserve">
+    <value>Selecione pelo menos uma empresa.</value>
+  </data>
 </root>

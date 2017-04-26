@@ -176,33 +176,36 @@
             var valid = true;
 
             if ($("#userSgqDto_FullName").val() == "") {
-                openMessageModal('@Resources.Resource.fullname_required', '');
+                openMessageModal(Resources('fullname_required'), '');
                 return;
             }
 
             if ($("#userSgqDto_Name").val() == "") {
-                openMessageModal('@Resources.Resource.username_required', '');
+                openMessageModal(Resources('username_required'), '');
                 return;
             }
 
             if ($("#userSgqDto_Password").val() == "") {
-                openMessageModal('@Resources.Resource.password_required', '');
+                openMessageModal(Resources('password_required'), '');
+                return;
+            }
+
+            if ($("#userSgqDto_ListParCompany_Id").val().length == 0) {
+                openMessageModal(Resources('select_one_company'), '');
                 return;
             }
 
             if ($("#userSgqDto_Password").val() != $("#userSgqDto_ConfirmPassword").val()) {
-                openMessageModal('@Resources.Resource.invalid_password', '');
+                openMessageModal(Resources('invalid_password'), '');
                 return;
             }
 
             $.post("@Url.Action("Save", "UserSgq")", $('form').serializeObject(), function (data) {
 
-                console.log(data);
-
                 if (data == "True") {
-                    openMessageModal('@Resources.Resource.user_save_success', '');
-                }else{
-                    openMessageModal('Já existe um usuário com esse nome', '');
+                    openMessageModal(Resources('user_save_success'), '');
+                } else {
+                    openMessageModal(Resources('repeated_username'), '');
                 }
                 
             })
