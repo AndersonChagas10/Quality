@@ -1935,4 +1935,10 @@
   <data name="ca_evaluations_not_completed" xml:space="preserve">
     <value>The evaluations are not completed. Do you want to continue?</value>
   </data>
+  <data name="repeated_username" xml:space="preserve">
+    <value>This username is already been used</value>
+  </data>
+  <data name="select_one_company" xml:space="preserve">
+    <value>Select at least one company</value>
+  </data>
 </root>
