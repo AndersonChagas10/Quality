@@ -59,19 +59,19 @@ namespace SgqSystem.Controllers.Api
                 {
                     if (j == 5)
                     {
-                        _mock.listResultSetTendencia.Add(new RelDiarioResultSet()
-                        {
-                            level1_Id = i.level1_Id,
-                            Level1Name = i.Level1Name,
-                            Level2Name = "Tendência Level2 " + counter,
-                            ProcentagemNc = 50M + counter,
-                            NC = 4M + counter,
-                            Av = 12M + counter,
-                            Meta = 5M,
-                            Unidade = i.Unidade,
-                            Unidade_Id = i.Unidade_Id,
-                            Data = DateTime.UtcNow.AddMonths(-1).AddDays(4).Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds
-                        });
+                        //_mock.listResultSetTendencia.Add(new RelDiarioResultSet()
+                        //{
+                        //    level1_Id = i.level1_Id,
+                        //    Level1Name = i.Level1Name,
+                        //    Level2Name = "Tendência Level2 " + counter,
+                        //    ProcentagemNc = 50M + counter,
+                        //    NC = 4M + counter,
+                        //    Av = 12M + counter,
+                        //    Meta = 5M,
+                        //    Unidade = i.Unidade,
+                        //    Unidade_Id = i.Unidade_Id,
+                        //    Data = DateTime.UtcNow.AddMonths(-1).AddDays(4).Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds
+                        //});
                     }
                     else if (j == 16)
                     {
@@ -86,7 +86,7 @@ namespace SgqSystem.Controllers.Api
                             Meta = 5M,
                             Unidade = i.Unidade,
                             Unidade_Id = i.Unidade_Id,
-                            Data = DateTime.UtcNow.AddDays(j).Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds
+                            //Data = DateTime.UtcNow.AddDays(j).Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds
                             //;
                         });
                     }
@@ -103,7 +103,7 @@ namespace SgqSystem.Controllers.Api
                             Meta = 5M,
                             Unidade = i.Unidade,
                             Unidade_Id = i.Unidade_Id,
-                            Data = DateTime.UtcNow.AddDays(j).Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds
+                            //Data = DateTime.UtcNow.AddDays(j).Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds
                         });
                     }
                     //else {
@@ -264,6 +264,7 @@ namespace SgqSystem.Controllers.Api
             }
 
             return _todosOsGraficos;
+            //return _mock;
         }
 
     }
@@ -880,7 +881,8 @@ namespace SgqSystem.Controllers.Api
         public decimal NC { get; set; }
         public decimal NC_Peso { get; set; }
 
-        public double Data { get; internal set; }
+        public double Data { get { return _Data.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds; }  }
+        //public double Data { get; set; }
         public DateTime _Data { get; set; }
     }
 

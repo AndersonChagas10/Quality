@@ -323,14 +323,14 @@ warning 6002: The table/view 'dbGQualidade_.dbo.DimManutencaoColetaITs' does not
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="To" Type="nvarchar" MaxLength="450" Nullable="false" />
-          <Property Name="Body" Type="nvarchar(max)" />
-          <Property Name="SendStatus" Type="nvarchar" MaxLength="15" />
+          <Property Name="To" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Body" Type="text" />
+          <Property Name="SendStatus" Type="text" />
           <Property Name="SendDate" Type="datetime2" Precision="7" />
-          <Property Name="Project" Type="nvarchar" MaxLength="15" />
+          <Property Name="Project" Type="nvarchar(max)" />
           <Property Name="IsBodyHtml" Type="bit" />
-          <Property Name="From" Type="nvarchar" MaxLength="35" />
-          <Property Name="Subject" Type="nvarchar" MaxLength="450" />
+          <Property Name="From" Type="nvarchar(max)" />
+          <Property Name="Subject" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Example">
           <Key>
@@ -7061,14 +7061,14 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AddDate" Type="DateTime" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="To" Type="String" Nullable="false" MaxLength="450" FixedLength="false" Unicode="true" />
-          <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SendStatus" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="To" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="SendStatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="SendDate" Type="DateTime" Precision="7" />
-          <Property Name="Project" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Project" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsBodyHtml" Type="Boolean" />
-          <Property Name="From" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
-          <Property Name="Subject" Type="String" MaxLength="450" FixedLength="false" Unicode="true" />
+          <Property Name="From" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>

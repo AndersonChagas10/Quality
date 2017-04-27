@@ -14,21 +14,19 @@ namespace SgqSystem.Mail
     {
 
         public static List<EmailContent> ListaDeMail;
-        private static int tamanhoDoPool = 3;
+        private static int tamanhoDoPool = 4;
         private static bool running { get; set; }
-        private static SgqDbDevEntities db = new SgqDbDevEntities();
 
         public static List<EmailContent> CreateMailSgqAppDeviation()
         {
 
             using (var db = new SgqDbDevEntities())
             {
-                db.Configuration.ValidateOnSaveEnabled = false;
                 //db.Configuration.AutoDetectChangesEnabled = false;
-                //ListaDeMail = new List<EmailContent>();
+                db.Configuration.ValidateOnSaveEnabled = false;
                 db.Configuration.LazyLoadingEnabled = false;
+                /*Cria Novos Emails de acordo com a quantidade do pool na emailContent*/
                 var Mails = db.Deviation.Where(r => r.AlertNumber > 0 && (r.sendMail == null || r.sendMail == false) && r.DeviationMessage != null).Take(tamanhoDoPool).ToList();
-
 
                 if (Mails != null && Mails.Count() > 0)
                 {
@@ -59,28 +57,37 @@ namespace SgqSystem.Mail
                     db.SaveChanges();
 
                 }
-
-                return db.EmailContent.Where(r => r.SendStatus == null && r.Project == "SGQApp").Take(tamanhoDoPool).ToList();
+                
+                return db.EmailContent.Where(r => r.SendStatus == null && r.Project == "SGQApp").ToList();
             }
 
         }
 
         private static string RemoveEspacos(string deviationMessage)
         {
-            var result = string.Empty;
-            foreach (var i in deviationMessage.Split('>'))
-                result += i.TrimStart().TrimEnd() + "> ";
+            try
+            {
 
-            return result.Substring(0, result.IndexOf("<button"));
+                var result = string.Empty;
+                foreach (var i in deviationMessage.Split('>'))
+                    result += i.TrimStart().TrimEnd() + "> ";
+
+                return result.Substring(0, result.IndexOf("<button"));
+            }
+            catch (Exception e)
+            {
+                new CreateLog(e);
+                return deviationMessage;
+            }
         }
 
         public static void SendMailFromDeviationSgqApp()
         {
             try
             {
-                var emails = CreateMailSgqAppDeviation();
-                if (emails != null && emails.Count() > 0)
-                    foreach (var i in emails)
+                ListaDeMail = CreateMailSgqAppDeviation();
+                if (ListaDeMail != null && ListaDeMail.Count() > 0)
+                    foreach (var i in ListaDeMail.ToList())
                         SendMail(i);
             }
             catch (Exception ex)
@@ -128,8 +135,7 @@ namespace SgqSystem.Mail
             //Callback
             // Set the method that is called back when the send operation ends.
             client.SendCompleted += new
-            SendCompletedEventHandler(new FimDoEnvio().SendCompletedCallback);
-
+            SendCompletedEventHandler(SendCompletedCallback);
 
             // The userState can be any object that allows your callback 
             // method to identify this send operation.
@@ -139,57 +145,52 @@ namespace SgqSystem.Mail
             client.SendAsync(message, userState);
 
         }
-    }
 
-    public class FimDoEnvio
-    {
-        private SgqDbDevEntities db = new SgqDbDevEntities();
-
-        public void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
+        public static void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
         {
             try
             {
-                db.Configuration.AutoDetectChangesEnabled = false;
-                db.Configuration.ValidateOnSaveEnabled = false;
-
-                // Get the unique identifier for this asynchronous operation.
-                String token = (string)e.UserState;
-                var id = int.Parse(token);
-
-                var emailContent = db.EmailContent.FirstOrDefault(r => r.Id == id);
-
-                if (e.Cancelled)
+                using (var db = new SgqDbDevEntities())
                 {
-                    //Console.WriteLine("[{0}] Send canceled.", token);
-                    emailContent.SendStatus = string.Format("[{0}] Send canceled.", token);
+
+
+                    // Get the unique identifier for this asynchronous operation.
+                    String token = (string)e.UserState;
+                    var id = int.Parse(token);
+
+                    var emailContent = db.EmailContent.FirstOrDefault(r => r.Id == id);
+
+                    if (e.Cancelled)
+                    {
+                        //Console.WriteLine("[{0}] Send canceled.", token);
+                        emailContent.SendStatus = string.Format("[{0}] Send canceled.", token);
+                    }
+                    if (e.Error != null)
+                    {
+                        //Console.WriteLine("[{0}] {1}", token, e.Error.ToString());
+                        emailContent.SendStatus = string.Format("[{0}] {1}", token, e.Error.ToString());
+                    }
+                    else
+                    {
+                        //Console.WriteLine("Message sent.");
+                        emailContent.SendStatus = string.Format("Message sent.");
+                    }
+
+                    emailContent.AlterDate = DateTime.Now;
+                    emailContent.SendDate = DateTime.Now;
+
+                    /*Atualiza email enviados no emailContent DB*/
+                    db.EmailContent.Attach(emailContent);
+                    //emailContent.Body = "";
+                    var entry = db.Entry(emailContent);
+                    entry.State = System.Data.Entity.EntityState.Modified;
+                    entry.Property(r => r.SendStatus).IsModified = true;
+                    entry.Property(r => r.AlterDate).IsModified = true;
+                    entry.Property(r => r.SendDate).IsModified = true;
+                    //entry.Property(r => r.Body).IsModified = true;
+                    db.SaveChanges();
+
                 }
-                if (e.Error != null)
-                {
-                    //Console.WriteLine("[{0}] {1}", token, e.Error.ToString());
-                    emailContent.SendStatus = string.Format("[{0}] {1}", token, e.Error.ToString());
-                }
-                else
-                {
-                    //Console.WriteLine("Message sent.");
-                    emailContent.SendStatus = string.Format("Message sent.");
-                }
-
-                //db.Database.ExecuteSqlCommand("UPDATE EmailContent SET SendStatus = N'" + emailContent.SendStatus + "', AlterDate = GETDATE(), SendDate = GETDATE() WHERE ID  = " + id + ";");
-                //await db.SaveChangesAsync();
-
-                emailContent.AlterDate = DateTime.Now;
-                emailContent.SendDate = DateTime.Now;
-
-                db.EmailContent.Attach(emailContent);
-                var entry = db.Entry(emailContent);
-                entry.State = System.Data.Entity.EntityState.Modified;
-                entry.Property(r => r.SendStatus).IsModified = true;
-                entry.Property(r => r.AlterDate).IsModified = true;
-                entry.Property(r => r.SendDate).IsModified = true;
-
-                db.SaveChanges();
-                //mailSent = true;
-                db.Dispose();
             }
             catch (Exception ex)
             {
@@ -198,21 +199,80 @@ namespace SgqSystem.Mail
             }
         }
     }
-    //MailMessage Message = new MailMessage();
-    //Message.IsBodyHtml = true;
-    //Message.To.Add(new MailAddress(toEmail, toName));
-    //Message.From = (new MailAddress(this.emailLogin, this.emailLoginName));
-    //Message.Subject = this.subject;
-    //Message.Body = this.messageBody;
-
-    //SmtpClient sc = new SmtpClient();
-    //sc.Port = 587;
-    //sc.Host = "smtp.live.com";
-    //sc.EnableSsl = true; // <-- ATENÇÃO.
-    //sc.UseDefaultCredentials = false;
-    //sc.Credentials = new NetworkCredential(this.emailLogin, this.pass);
-
-
-    //sc.Send(Message);
 }
+
+//public class FimDoEnvio
+//{
+//    private SgqDbDevEntities db = new SgqDbDevEntities();
+
+//    public void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
+//    {
+//        try
+//        {
+//            db.Configuration.AutoDetectChangesEnabled = false;
+//            db.Configuration.ValidateOnSaveEnabled = false;
+
+//            // Get the unique identifier for this asynchronous operation.
+//            String token = (string)e.UserState;
+//            var id = int.Parse(token);
+
+//            var emailContent = db.EmailContent.FirstOrDefault(r => r.Id == id);
+//            //var emailContent = ListaDeMail.FirstOrDefault(r => r.Id == id);
+//            if (e.Cancelled)
+//            {
+//                //Console.WriteLine("[{0}] Send canceled.", token);
+//                emailContent.SendStatus = string.Format("[{0}] Send canceled.", token);
+//            }
+//            if (e.Error != null)
+//            {
+//                //Console.WriteLine("[{0}] {1}", token, e.Error.ToString());
+//                emailContent.SendStatus = string.Format("[{0}] {1}", token, e.Error.ToString());
+//            }
+//            else
+//            {
+//                //Console.WriteLine("Message sent.");
+//                emailContent.SendStatus = string.Format("Message sent.");
+//            }
+
+//            //
+//            //await db.SaveChangesAsync();
+
+//            emailContent.AlterDate = DateTime.Now;
+//            emailContent.SendDate = DateTime.Now;
+
+//            db.EmailContent.Attach(emailContent);
+//            var entry = db.Entry(emailContent);
+//            entry.State = System.Data.Entity.EntityState.Modified;
+//            entry.Property(r => r.SendStatus).IsModified = true;
+//            entry.Property(r => r.AlterDate).IsModified = true;
+//            entry.Property(r => r.SendDate).IsModified = true;
+
+//            db.SaveChanges();
+//            //mailSent = true;
+//            db.Dispose();
+//        }
+//        catch (Exception ex)
+//        {
+//            new CreateLog(new Exception("Erro ao enviar e mail", ex));
+//            //throw ex;
+//        }
+//    }
+//}
+//MailMessage Message = new MailMessage();
+//Message.IsBodyHtml = true;
+//Message.To.Add(new MailAddress(toEmail, toName));
+//Message.From = (new MailAddress(this.emailLogin, this.emailLoginName));
+//Message.Subject = this.subject;
+//Message.Body = this.messageBody;
+
+//SmtpClient sc = new SmtpClient();
+//sc.Port = 587;
+//sc.Host = "smtp.live.com";
+//sc.EnableSsl = true; // <-- ATENÇÃO.
+//sc.UseDefaultCredentials = false;
+//sc.Credentials = new NetworkCredential(this.emailLogin, this.pass);
+
+
+//sc.Send(Message);
+//}
 
