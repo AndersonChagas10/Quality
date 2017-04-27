@@ -113,7 +113,7 @@
                     divClonada.find('.panel-heading').html(o.Level1Name); // Insere Titulo no Panel
 
                     var tendencia = $.grep(r.listResultSetTendencia, function (level2, c) { return level2.level1_Id == o.level1_Id });
-                    GraficoTendencia(tendencia, div, "@Resources.Resource.audit_tendency :" + tendencia[0].Level1Name + " - " + meses[0], tendencia[0].Data, tendencia[tendencia.length - 1].Data);
+                    GraficoTendencia(tendencia, div, @Html.Raw(Json.Encode(Resources.Resource.audit_tendency)) + ":" + tendencia[0].Level1Name + " - " + meses[0], tendencia[0].Data, tendencia[tendencia.length - 1].Data);
 
                     //GraficoTendencia(listResults["Tendencia"], div, o);//Processa e cria grafico
                     var divMonitoramento = DivManager.criaDiv(idDivTendencia, o.level1_Id, "monitoramento");
@@ -369,7 +369,7 @@
                 },
             {
                 type: 'spline',
-                name: '@Resources.Resource.accumulated_tendency',
+                name: '@Html.Raw(Json.Encode(Resources.Resource.accumulated_tendency))',
                 color: Chart.CorTotalPareto(),
                 data: valoresYY.linhaTendencia,
                 yAxis: 0,
@@ -457,7 +457,7 @@
             var valoresX = MapeiaValorParaHC(data, "Level2Name")
             var NC = MapeiaValorParaHC(data, "NC")
             var TotalAvaliado = MapeiaValorParaHC(data, "Av")
-            var titulo = "@Resources.Resource.title : " + MapeiaValorParaHC(data, "Level1Name")[0];
+            var titulo = @Html.Raw(Json.Encode(Resources.Resource.title)) + " : " + MapeiaValorParaHC(data, "Level1Name")[0];
             //Auxiliares.loading(idDiv);
 
             //Organiza dados do grafico
