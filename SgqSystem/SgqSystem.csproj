@@ -18,10 +18,14 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>63128</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -335,7 +339,6 @@
     <Compile Include="Controllers\Exemplo\ExemploInputController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
-    <Compile Include="Controllers\Manutencao\manDataCollectITsController.cs" />
     <Compile Include="Controllers\Manutencao\ManutencaoController.cs" />
     <Compile Include="Controllers\Manutencao\ManPainelGestaoController.cs" />
     <Compile Include="Controllers\Params\EquipamentosController.cs" />
@@ -387,7 +390,6 @@
     <Compile Include="Mappers\DefectMapperProfile.cs" />
     <Compile Include="Mappers\EmailContentMapperProfile.cs" />
     <Compile Include="Mappers\Manutencao\DimManutencaoColetaITsMapperProfile.cs" />
-    <Compile Include="Mappers\Manutencao\ManDataCollectITsMapperProfile.cs" />
     <Compile Include="Mappers\ParamsBrasil\ParLevel2ControlCompanyMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCompanyClusterMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel2XHeaderFieldMapperProfile.cs" />
@@ -1389,6 +1391,7 @@
     <Content Include="Views\RelatoriosSgq\_GenericTable.cshtml" />
     <Content Include="Views\RelatoriosSgq\RelatorioGenerico.cshtml" />
     <Content Include="Scripts\smart-table.min.js.map" />
+    <Content Include="Views\Example\ResoursesTeste.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

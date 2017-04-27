@@ -41,15 +41,12 @@ namespace Dominio
         public virtual DbSet<BkpCollection> BkpCollection { get; set; }
         public virtual DbSet<CollectionHtml> CollectionHtml { get; set; }
         public virtual DbSet<CollectionJson> CollectionJson { get; set; }
-        public virtual DbSet<CollectionLevel02> CollectionLevel02 { get; set; }
         public virtual DbSet<CollectionLevel03> CollectionLevel03 { get; set; }
         public virtual DbSet<CollectionLevel2XParHeaderField> CollectionLevel2XParHeaderField { get; set; }
         public virtual DbSet<ConsolidationLevel01> ConsolidationLevel01 { get; set; }
         public virtual DbSet<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
         public virtual DbSet<CorrectiveAction> CorrectiveAction { get; set; }
         public virtual DbSet<Department> Department { get; set; }
-        public virtual DbSet<Departments> Departments { get; set; }
-        public virtual DbSet<Employees> Employees { get; set; }
         public virtual DbSet<Example> Example { get; set; }
         public virtual DbSet<Level01> Level01 { get; set; }
         public virtual DbSet<Level02> Level02 { get; set; }
@@ -105,13 +102,10 @@ namespace Dominio
         public virtual DbSet<VolumeCepRecortes> VolumeCepRecortes { get; set; }
         public virtual DbSet<VolumePcc1b> VolumePcc1b { get; set; }
         public virtual DbSet<VolumeVacuoGRD> VolumeVacuoGRD { get; set; }
-        public virtual DbSet<budgets> budgets { get; set; }
-        public virtual DbSet<Deviation> Deviation { get; set; }
         public virtual DbSet<ParLevel1VariableProduction> ParLevel1VariableProduction { get; set; }
         public virtual DbSet<ParLevel1VariableProductionXLevel1> ParLevel1VariableProductionXLevel1 { get; set; }
         public virtual DbSet<ResultLevel2HeaderField> ResultLevel2HeaderField { get; set; }
         public virtual DbSet<DimManutencaoColetaITs> DimManutencaoColetaITs { get; set; }
-        public virtual DbSet<ManDataCollectIT> ManDataCollectIT { get; set; }
         public virtual DbSet<ParLevel2XHeaderField> ParLevel2XHeaderField { get; set; }
         public virtual DbSet<Defect> Defect { get; set; }
         public virtual DbSet<ConsolidationLevel02> ConsolidationLevel02 { get; set; }
@@ -131,6 +125,9 @@ namespace Dominio
         public virtual DbSet<ParCounter> ParCounter { get; set; }
         public virtual DbSet<ParCounterXLocal> ParCounterXLocal { get; set; }
         public virtual DbSet<ParLocal> ParLocal { get; set; }
+        public virtual DbSet<CollectionLevel02> CollectionLevel02 { get; set; }
+        public virtual DbSet<Deviation> Deviation { get; set; }
+        public virtual DbSet<EmailContent> EmailContent { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

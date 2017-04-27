@@ -49,14 +49,12 @@ namespace Dominio
         public Nullable<bool> HaveReaudit { get; set; }
         public Nullable<bool> HavePhase { get; set; }
         public Nullable<bool> Completed { get; set; }
-        public Nullable<int> EvaluatedResult { get; set; }
-        public Nullable<int> DefectsResult { get; set; }
     
+        public virtual ConsolidationLevel02 ConsolidationLevel02 { get; set; }
         public virtual Level01 Level01 { get; set; }
         public virtual Level02 Level02 { get; set; }
+        public virtual UserSgq UserSgq { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionLevel03> CollectionLevel03 { get; set; }
-        public virtual ConsolidationLevel02 ConsolidationLevel02 { get; set; }
-        public virtual UserSgq UserSgq { get; set; }
     }
 }
