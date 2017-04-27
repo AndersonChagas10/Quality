@@ -459,6 +459,20 @@ namespace SgqSystem.Controllers.Api
         {
             var queryGraficoTendencia = "" +
 
+                 "\n DECLARE @dataFim_ date = '2016-08-07'  " +
+                 "\n DECLARE @dataInicio_ date = DATEADD(MONTH, -1, @dataFim_) " +
+                 "\n SET @dataInicio_ = datefromparts(year(@dataInicio_), month(@dataInicio_), 01) " +
+                 "\n declare @ListaDatas_ table(data_ date) " +
+                 "\n WHILE @dataInicio_ <= @dataFim_ " +
+                 "\n BEGIN " +
+                 "\n INSERT INTO @ListaDatas_ " +
+                 "\n SELECT @dataInicio_ " +
+
+                 "\n SET @dataInicio_ = DATEADD(DAY, 1, @dataInicio_) " +
+
+                 "\n END " +
+
+
                  "\n DECLARE @DATAINICIAL DATE = '" + form._dataInicioSQL + "' " +
                 "\n DECLARE @DATAFINAL DATE = '" + form._dataFimSQL + "' " +
                 "\n DECLARE @UNIDADE INT = " + form.unitId + " " +
@@ -602,7 +616,8 @@ namespace SgqSystem.Controllers.Api
 
 
 
-                "\n 		,CL1.ConsolidationDate as Data " +
+               "\n 		,CL1.ConsolidationDate as Data " +
+               "\n 		--,DD.Data_ as Data " +
                "\n 		FROM ConsolidationLevel1 CL1 " +
                "\n 		INNER JOIN ParLevel1 IND " +
                "\n 		ON IND.Id = CL1.ParLevel1_Id " +
@@ -611,6 +626,7 @@ namespace SgqSystem.Controllers.Api
                "\n         LEFT JOIN #AMOSTRATIPO4 A4 " +
                "\n         ON A4.UNIDADE = UNI.Id " +
                "\n         AND A4.INDICADOR = IND.ID " +
+               "\n         INNER JOIN @ListaDatas_ DD ON 1=1" +
 
                "\n 		WHERE CL1.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
                "\n    		AND CL1.UnitId = " + form.unitId +
