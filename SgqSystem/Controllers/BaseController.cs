@@ -48,7 +48,7 @@ namespace SgqSystem.Controllers
                 }
             }
 
-           ViewBag.Resourses = Resources.Resource.ResourceManager.GetResourceSet(
+           ViewBag.Resources = Resources.Resource.ResourceManager.GetResourceSet(
                 Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
 
             base.Initialize(requestContext);

@@ -3904,6 +3904,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This username is already been used.
+        /// </summary>
+        internal static string repeated_username {
+            get {
+                return ResourceManager.GetString("repeated_username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Phase.
         /// </summary>
         internal static string repetition {
@@ -4332,6 +4341,15 @@ namespace Resources {
         internal static string select_not_conformity_rule {
             get {
                 return ResourceManager.GetString("select_not_conformity_rule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select at least one company.
+        /// </summary>
+        internal static string select_one_company {
+            get {
+                return ResourceManager.GetString("select_one_company", resourceCulture);
             }
         }
         
