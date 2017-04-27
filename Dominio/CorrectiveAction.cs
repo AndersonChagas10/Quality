@@ -17,7 +17,7 @@ namespace Dominio
         public int Id { get; set; }
         public int AuditorId { get; set; }
         public Nullable<int> CollectionLevel2_Id { get; set; }
-        public Nullable<int> CollectionLevel02Id { get; set; }
+        public int CollectionLevel02Id { get; set; }
         public Nullable<int> SlaughterId { get; set; }
         public Nullable<int> TechinicalId { get; set; }
         public Nullable<System.DateTime> DateTimeSlaughter { get; set; }
@@ -34,5 +34,6 @@ namespace Dominio
         public virtual UserSgq UserSgq { get; set; }
         public virtual UserSgq UserSgq1 { get; set; }
         public virtual UserSgq UserSgq2 { get; set; }
+        public virtual CollectionLevel2 CollectionLevel2 { get; set; }
     }
 }

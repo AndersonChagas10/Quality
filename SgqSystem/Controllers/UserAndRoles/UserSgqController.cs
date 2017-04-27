@@ -118,13 +118,16 @@ namespace SgqSystem.Controllers
             if (!ModelState.IsValid)
                 return false;
 
-            //Verificar se a senha for vazia
-            if ((userSgqDto.Password == "") || (userSgqDto.Password == null))
-                userSgqDto.Password = "USERUSA";
+            //Se for Estados Unidos ou Canada e for um novo usuário
+            if ((DTO.GlobalConfig.Eua == true || DTO.GlobalConfig.Canada == true) && userSgqDto.Id == 0)
+            {
+                if ((userSgqDto.Password == "") || (userSgqDto.Password == null))
+                    userSgqDto.Password = "USERUSA";
+            }
 
+            userSgqDto.ParCompany_Id = userSgqDto.ListParCompany_Id.FirstOrDefault();
             if (userSgqDto.Id == 0)
             {
-                userSgqDto.ParCompany_Id = userSgqDto.ListParCompany_Id.FirstOrDefault();
                 userSgqDto.AddDate = DateTime.Now;
                 userSgqDto.Password = Guard.EncryptStringAES(userSgqDto.Password);
             }
@@ -332,13 +335,12 @@ namespace SgqSystem.Controllers
             if (userSgqDto.Id > 0)
             {
                 if (db.UserSgq.Where(r => r.Name == userSgqDto.Name && r.Id != userSgqDto.Id).ToList().Count() > 0)
-                    ModelState.AddModelError("Name", "Este nome de usuário já está sendo usado");
+                    ModelState.AddModelError("Name", Resources.Resource.repeated_username);
             }
             else if (db.UserSgq.Where(r => r.Name == userSgqDto.Name).ToList().Count() > 0)
             {
-                ModelState.AddModelError("Name", "Este nome de usuário já está sendo usado");
+                ModelState.AddModelError("Name", Resources.Resource.repeated_username);
             }
-
         }
     }
 }
