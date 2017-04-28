@@ -369,7 +369,7 @@
                 },
             {
                 type: 'spline',
-                name: '@Resources.Resource.accumulated_tendency',
+                name: @Html.Raw(Json.Encode(Resources.Resource.accumulated_tendency)),
                 color: Chart.CorTotalPareto(),
                 data: valoresYY.linhaTendencia,
                 yAxis: 0,

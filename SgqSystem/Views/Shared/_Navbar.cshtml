@@ -17,13 +17,13 @@
         <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
             <span></span>
         </a>
-        <div class="page-logo hidden-sm hidden-xs" style="min-width: 235px;">
-            <a href="@Url.Action("Index", "Home")" class="hide">
+        <div class="page-logo">
+            @*<a href="@Url.Action("Index", "Home")" class="hide">
                 <img style="height: 45px; margin: 4px;" src="~/Imagens/Logo.png" />
-            </a>
+            </a>*@
             <div class="pull-left">
-                <a href="@Url.Action("Index", "Home")">
-                    <h1 style="color: #ffffff; margin-top: 5px !important; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif">SGQ</h1>
+                <a href="@Url.Action("Index", "Home")" style="text-decoration:none">
+                    <h1 style="color: #ffffff; margin-top: 5px !important; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;text-decoration:none">SGQ</h1>
                 </a>
             </div>
             <div class="menu-toggler sidebar-toggler hide">
@@ -103,7 +103,7 @@
 
             <ul class="nav navbar-nav pull-right">
 
-                <li class="dropdown dropdown-user" style="display:none">
+                <li class="dropdown dropdown-user" style="display:none" id="lang">
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
                         <i class="fa fa-globe" aria-hidden="true"></i>
                         <span class="username username-hide-on-mobile"> @Resources.Resource.language </span>

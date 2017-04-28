@@ -70,11 +70,14 @@
             }
 
             EasyAjax(urlGrafico1, enviar, CallbackGrafico1, "grafico1", toggle);
-            EasyAjax(urlTabela1, enviar, function (r) { $('#tabela1div').empty().append(r); }, "tabela1div");
+            EasyAjax(urlTabela1, enviar, function (r) { $('#tabela1div').empty().append(r); heatMap('dadosEsquerda', true, false, 1, 3, 'DESC'); }, "tabela1div");
         };
 
         function GetTabela2() {
-            EasyAjax(urlTabela1, enviar, function (r) { $('#tabela2div').empty().append(r); }, "tabela2div");
+            $('#grafico3').empty();
+            $('#grafico4').empty();
+            $('#grafico5').empty();
+            EasyAjax(urlTabela2, enviar, function (r) { $('#tabela2div').empty().append(r); heatMap('dadosEsquerda', true, false, 1, 3, 'DESC'); }, "tabela2div");
         }
 
         function CallbackGrafico1(data) {
@@ -304,6 +307,7 @@
         }
 
         function Grafico3(id) {
+            $('#grafico5').empty();
             EasyAjax(urlGrafico3 + "/" + id, enviar, CallbackGrafico3, "grafico3");
         }
 

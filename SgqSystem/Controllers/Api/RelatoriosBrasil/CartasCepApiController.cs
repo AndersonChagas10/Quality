@@ -248,6 +248,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             _mockcartasCep.lciData = lciData1; //LCL
             _mockcartasCep.lcs = lcs;//lcs.Average(item => item); //4.25M; //LSE 
             _mockcartasCep.lcsData = lcsData1; //UCL
+            if(media.Count > 0) //Para não dar estouro na hora de pegar a media
             _mockcartasCep.media = media[0];//media.Average(item => item); //3.648275862068966M;  //Pbar
             _mockcartasCep.nivel1Max = nivel1Max1;
             _mockcartasCep.nivel1Min = nivel1Min1;
