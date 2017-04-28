@@ -111,7 +111,7 @@
                             //dashStyle: 'dash',
                             zIndex: 4,
                             label: {
-                                text: '@Resources.Resource.average ' + parseFloat(valorAbsoluto.media).toFixed(2),
+                                text: @Html.Raw(Json.Encode(Resources.Resource.average)) + ' ' + parseFloat(valorAbsoluto.media).toFixed(2),
                                 align: 'right',
                                 y: -10,
                                 x: 0
@@ -220,7 +220,7 @@
                     }
                 },
                 {
-                    name: "@Resources.Resource.average: " + parseFloat(valorAbsoluto.media).toFixed(2),
+                    name: @Html.Raw(Json.Encode(Resources.Resource.average))+": " + parseFloat(valorAbsoluto.media).toFixed(2),
                     color: "green",
                     type: 'line',
                     marker: {
