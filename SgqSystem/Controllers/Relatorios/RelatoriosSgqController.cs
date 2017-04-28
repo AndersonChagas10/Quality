@@ -129,6 +129,56 @@ namespace SgqSystem.Controllers
             return PartialView("VisaoGeralDaAreaTbl1", tabela);
         }
 
+
+        /// <summary>
+        /// Cria mock para tabela dinamica Visão Geral da área
+        /// 
+        /// Params(bool): tbl2: caso seja tabela 2, para alterar o onclick da TD de dados.
+        /// 
+        /// ----------------------
+        /// Query Headers (Region > Cabecalhos):
+        /// 
+        /// 1º Devem ser declaradas quantas LINHAS possuem no cabeçalho e seus NOMES:
+        /// Query:
+        ///     Coluna    |   Tipagem
+        ///               |
+        ///     name      |   string
+        ///     coolspan  |   int
+        /// Objeto de retorno: Ths.
+        /// 
+        /// 2º PARA CADA OBJETO DO ITEM 1, DEVE EXISTIR SEU CORRESPONDENTE DESTE ITEM. Query com os valores  > Ths:
+        /// Query:
+        ///     Coluna    |   Tipagem
+        ///               |
+        ///     name      |   string
+        ///     coolspan  |   int
+        ///     
+        /// Objeto de retorno: Ths.
+        /// 
+        /// 
+        /// 
+        ///     Ex:
+        ///     
+        ///     
+        /// 
+        /// ----------------------
+        /// 
+        /// ----------------------
+        /// Query Body (Region > Meio):
+        /// 
+        /// 
+        /// ----------------------
+        /// ----------------------
+        /// Query Footer (Region > Rodapé):
+        /// 
+        /// 
+        /// ----------------------
+        /// 
+        /// 
+        /// Return "TabelaDinamicaResultados" object.
+        /// </summary>
+        /// <param name="tbl2"></param>
+        /// <returns></returns>
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         private static TabelaDinamicaResultados MockTabelaVisaoGeralDaArea(bool tbl2 = false)
         {
@@ -136,15 +186,8 @@ namespace SgqSystem.Controllers
 
             #region Cabecalhos
 
+            /*1º*/
             tabela.trsCabecalho1 = new List<Ths>();
-            tabela.trsCabecalho2 = new List<Ths>();
-            tabela.trsCabecalho3 = new List<Ths>();
-            var thsMeio = new List<Ths>();
-
-            thsMeio.Add(new Ths() { name = "Orçado", coolspan = 1 });
-            thsMeio.Add(new Ths() { name = "Real", coolspan = 1 });
-            thsMeio.Add(new Ths() { name = "Desvio %", coolspan = 1 });
-            thsMeio.Add(new Ths() { name = "Desvio $", coolspan = 1 });
 
             tabela.trsCabecalho1.Add(new Ths()
             {
@@ -155,34 +198,52 @@ namespace SgqSystem.Controllers
             {
                 name = "Pacotes"
             });
+            /*Fim  1º*/
 
+            /*2º CRIANDO CABECALHO DA SEGUNDA TABELA*/
+            tabela.trsCabecalho2 = new List<Ths>();
             tabela.trsCabecalho2.Add(new Ths()
             {
-                name = "reg1",
+                name = "reg1", //TITULO DO AGRUPAMENTO EX: REG1, REG2, ETC...
                 coolspan = 4,
-                tds = thsMeio
+                //tds = thsMeio
             });
 
             tabela.trsCabecalho2.Add(new Ths()
             {
                 name = "reg2",
                 coolspan = 4,
-                tds = thsMeio
+                //tds = thsMeio
             });
 
             tabela.trsCabecalho2.Add(new Ths()
             {
                 name = "reg3",
                 coolspan = 4,
-                tds = thsMeio
+                //tds = thsMeio
             });
 
+
+            var thsMeio = new List<Ths>();
+            thsMeio.Add(new Ths() { name = "Orçado", coolspan = 1 });
+            thsMeio.Add(new Ths() { name = "Real", coolspan = 1 });
+            thsMeio.Add(new Ths() { name = "Desvio %", coolspan = 1 });
+            thsMeio.Add(new Ths() { name = "Desvio $", coolspan = 1 });
+
+            foreach (var i in tabela.trsCabecalho2)
+            {
+                i.tds = thsMeio; //ESTA PROPERTY DEVE CONTER OS ITENS AGRUPADOS (EX: OÇADO, REAL, DESVIO ETC....)
+            }
+
+            tabela.trsCabecalho3 = new List<Ths>();
             tabela.trsCabecalho3.Add(new Ths()
             {
                 name = "Total",
                 coolspan = 4,
-                tds = thsMeio
+                //tds = thsMeio
             });
+
+            /*Fim  2º*/
 
             #endregion
 
@@ -279,6 +340,7 @@ namespace SgqSystem.Controllers
             });
 
             #endregion
+
             return tabela;
         }
 
