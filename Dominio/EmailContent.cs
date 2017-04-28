@@ -12,20 +12,18 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class ManDataCollectIT
+    public partial class EmailContent
     {
         public int Id { get; set; }
-        public System.DateTime AddDate { get; set; }
+        public Nullable<System.DateTime> AddDate { get; set; }
         public Nullable<System.DateTime> AlterDate { get; set; }
-        public Nullable<System.DateTime> ReferenceDatetime { get; set; }
-        public Nullable<int> UserSGQ_Id { get; set; }
-        public int ParCompany_Id { get; set; }
-        public int DimManutencaoColetaITs_id { get; set; }
-        public decimal AmountData { get; set; }
-        public string Comments { get; set; }
-        public bool IsActive { get; set; }
-    
-        public virtual DimManutencaoColetaITs DimManutencaoColetaITs { get; set; }
-        public virtual ParCompany ParCompany { get; set; }
+        public string To { get; set; }
+        public string Body { get; set; }
+        public string SendStatus { get; set; }
+        public Nullable<System.DateTime> SendDate { get; set; }
+        public string Project { get; set; }
+        public Nullable<bool> IsBodyHtml { get; set; }
+        public string From { get; set; }
+        public string Subject { get; set; }
     }
 }

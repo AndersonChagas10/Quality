@@ -24,7 +24,7 @@ namespace Dominio
         public string ValueText { get; set; }
         public Nullable<bool> Duplicated { get; set; }
     
-        public virtual CollectionLevel02 CollectionLevel02 { get; set; }
         public virtual Level03 Level03 { get; set; }
+        public virtual CollectionLevel02 CollectionLevel02 { get; set; }
     }
 }

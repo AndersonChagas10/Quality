@@ -26,7 +26,5 @@ namespace Dominio
         public System.DateTime AddDate { get; set; }
         public Nullable<bool> sendMail { get; set; }
         public string DeviationMessage { get; set; }
-        public string Status { get; set; }
-        public string SendDate { get; set; }
     }
 }

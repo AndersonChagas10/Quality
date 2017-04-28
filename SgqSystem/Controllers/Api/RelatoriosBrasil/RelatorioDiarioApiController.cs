@@ -59,19 +59,19 @@ namespace SgqSystem.Controllers.Api
                 {
                     if (j == 5)
                     {
-                        _mock.listResultSetTendencia.Add(new RelDiarioResultSet()
-                        {
-                            level1_Id = i.level1_Id,
-                            Level1Name = i.Level1Name,
-                            Level2Name = "Tendência Level2 " + counter,
-                            ProcentagemNc = 50M + counter,
-                            NC = 4M + counter,
-                            Av = 12M + counter,
-                            Meta = 5M,
-                            Unidade = i.Unidade,
-                            Unidade_Id = i.Unidade_Id,
-                            Data = DateTime.UtcNow.AddMonths(-1).AddDays(4).Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds
-                        });
+                        //_mock.listResultSetTendencia.Add(new RelDiarioResultSet()
+                        //{
+                        //    level1_Id = i.level1_Id,
+                        //    Level1Name = i.Level1Name,
+                        //    Level2Name = "Tendência Level2 " + counter,
+                        //    ProcentagemNc = 50M + counter,
+                        //    NC = 4M + counter,
+                        //    Av = 12M + counter,
+                        //    Meta = 5M,
+                        //    Unidade = i.Unidade,
+                        //    Unidade_Id = i.Unidade_Id,
+                        //    Data = DateTime.UtcNow.AddMonths(-1).AddDays(4).Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds
+                        //});
                     }
                     else if (j == 16)
                     {
@@ -86,7 +86,7 @@ namespace SgqSystem.Controllers.Api
                             Meta = 5M,
                             Unidade = i.Unidade,
                             Unidade_Id = i.Unidade_Id,
-                            Data = DateTime.UtcNow.AddDays(j).Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds
+                            //Data = DateTime.UtcNow.AddDays(j).Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds
                             //;
                         });
                     }
@@ -103,7 +103,7 @@ namespace SgqSystem.Controllers.Api
                             Meta = 5M,
                             Unidade = i.Unidade,
                             Unidade_Id = i.Unidade_Id,
-                            Data = DateTime.UtcNow.AddDays(j).Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds
+                            //Data = DateTime.UtcNow.AddDays(j).Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds
                         });
                     }
                     //else {
@@ -264,6 +264,7 @@ namespace SgqSystem.Controllers.Api
             }
 
             return _todosOsGraficos;
+            //return _mock;
         }
 
     }
@@ -459,6 +460,20 @@ namespace SgqSystem.Controllers.Api
         {
             var queryGraficoTendencia = "" +
 
+                 "\n DECLARE @dataFim_ date = '2016-08-07'  " +
+                 "\n DECLARE @dataInicio_ date = DATEADD(MONTH, -1, @dataFim_) " +
+                 "\n SET @dataInicio_ = datefromparts(year(@dataInicio_), month(@dataInicio_), 01) " +
+                 "\n declare @ListaDatas_ table(data_ date) " +
+                 "\n WHILE @dataInicio_ <= @dataFim_ " +
+                 "\n BEGIN " +
+                 "\n INSERT INTO @ListaDatas_ " +
+                 "\n SELECT @dataInicio_ " +
+
+                 "\n SET @dataInicio_ = DATEADD(DAY, 1, @dataInicio_) " +
+
+                 "\n END " +
+
+
                  "\n DECLARE @DATAINICIAL DATE = '" + form._dataInicioSQL + "' " +
                 "\n DECLARE @DATAFINAL DATE = '" + form._dataFimSQL + "' " +
                 "\n DECLARE @UNIDADE INT = " + form.unitId + " " +
@@ -602,7 +617,8 @@ namespace SgqSystem.Controllers.Api
 
 
 
-                "\n 		,CL1.ConsolidationDate as Data " +
+               "\n 		,CL1.ConsolidationDate as Data " +
+               "\n 		--,DD.Data_ as Data " +
                "\n 		FROM ConsolidationLevel1 CL1 " +
                "\n 		INNER JOIN ParLevel1 IND " +
                "\n 		ON IND.Id = CL1.ParLevel1_Id " +
@@ -611,6 +627,7 @@ namespace SgqSystem.Controllers.Api
                "\n         LEFT JOIN #AMOSTRATIPO4 A4 " +
                "\n         ON A4.UNIDADE = UNI.Id " +
                "\n         AND A4.INDICADOR = IND.ID " +
+               "\n         INNER JOIN @ListaDatas_ DD ON 1=1" +
 
                "\n 		WHERE CL1.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
                "\n    		AND CL1.UnitId = " + form.unitId +
@@ -880,7 +897,8 @@ namespace SgqSystem.Controllers.Api
         public decimal NC { get; set; }
         public decimal NC_Peso { get; set; }
 
-        public double Data { get; internal set; }
+        public double Data { get { return _Data.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds; }  }
+        //public double Data { get; set; }
         public DateTime _Data { get; set; }
     }
 

@@ -11,8 +11,8 @@
 
         @*<div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
 
-            <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
-        </div>*@
+                <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
+            </div>*@
 
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
         @Html.Partial("~/Views/RelatoriosSgq/_ResultLevel3Edit.cshtml")
@@ -53,6 +53,8 @@
             $btn.button('loading');
 
             $('#results').empty();
+
+            $('#divMensagemAlerta').hide();
 
             //if (!ValidaDadosParaEnvio()) {
             //    $btn.button('reset');
@@ -109,7 +111,7 @@
                             //dashStyle: 'dash',
                             zIndex: 4,
                             label: {
-                                text: '@Resources.Resource.average ' + parseFloat(valorAbsoluto.media).toFixed(2),
+                                text: @Html.Raw(Json.Encode(Resources.Resource.average)) + ' ' + parseFloat(valorAbsoluto.media).toFixed(2),
                                 align: 'right',
                                 y: -10,
                                 x: 0
@@ -177,14 +179,14 @@
                     point: {
                         events: {
                             click: function () {
-                                CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
                             }
                         }
                     }
                 },
-
+                //Limites de Especificação
                 {
-                    name: "@Resources.Resource.ucl: " + valorAbsoluto.lcs,//.toFixed(2),
+                    name: "@Resources.Resource.ucl: " + valorAbsoluto.lcsData[0],//.toFixed(2),
                     data: valorAbsoluto.lcsData,
                     visible: (valorAbsoluto.lcs != 0) ? true : false,
                     color: "red",
@@ -195,13 +197,13 @@
                     point: {
                         events: {
                             click: function () {
-                                CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
                             }
                         }
                     }
                 },
                 {
-                    name: "@Resources.Resource.lcl: " + valorAbsoluto.lci,//.toFixed(2),
+                    name: "@Resources.Resource.lcl: " + valorAbsoluto.lciData[0],//.toFixed(2),
                     data: valorAbsoluto.lciData,
                     visible: (valorAbsoluto.lci != 0) ? true : false,
                     color: "red",
@@ -212,20 +214,57 @@
                     point: {
                         events: {
                             click: function () {
-                                CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
                             }
                         }
                     }
                 },
                 {
-                    name: "@Resources.Resource.average: " + parseFloat(valorAbsoluto.media).toFixed(2),
+                    name: @Html.Raw(Json.Encode(Resources.Resource.average))+": " + parseFloat(valorAbsoluto.media).toFixed(2),
                     color: "green",
                     type: 'line',
                     marker: {
                         enabled: false
                     },
                 },
-                //Nivel 1
+                //Limites de controle
+                {
+                    //Superior
+                    name: "LSE: ",
+                    data: valorAbsoluto.lcs,
+                    visible: (valorAbsoluto.lcs != 0) ? true : false,
+                    color: "black",
+                    type: 'line',
+                    marker: {
+                        enabled: false
+                    },
+                    point: {
+                        events: {
+                            click: function () {
+                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                            }
+                        }
+                    }
+                },
+                {
+                    //Inferior
+                    name: "LIE: ",
+                    data: valorAbsoluto.lci,
+                    visible: (valorAbsoluto.lci != 0) ? true : false,
+                    color: "black",
+                    type: 'line',
+                    marker: {
+                        enabled: false
+                    },
+                    point: {
+                        events: {
+                            click: function () {
+                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                            }
+                        }
+                    }
+                }
+                @*//Nivel 1
                 {
                     name: '@Resources.Resource.levelSpc 1 Min: ' + (valorAbsoluto.nivel1Min[0] + " | Max: " + valorAbsoluto.nivel1Max[0]),
                     data: valorAbsoluto.nivel1Min,
@@ -240,7 +279,7 @@
                     point: {
                         events: {
                             click: function () {
-                                CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
                             }
                         }
                     }
@@ -256,7 +295,7 @@
                     point: {
                         events: {
                             click: function () {
-                                CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
                             }
                         }
                     }
@@ -276,7 +315,7 @@
                     point: {
                         events: {
                             click: function () {
-                                CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
                             }
                         }
                     }
@@ -292,7 +331,7 @@
                     point: {
                         events: {
                             click: function () {
-                                CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
                             }
                         }
                     }
@@ -310,27 +349,27 @@
                      point: {
                          events: {
                              click: function () {
-                                 CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                                 //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
                              }
                          }
                      }
-                 },
-                {
-                    data: valorAbsoluto.nivel3Max,
-                    linkedTo: ':previous',
-                    color: 'black',
-                    type: 'line',
-                    marker: {
-                        enabled: false
-                    },
-                    point: {
-                        events: {
-                            click: function () {
-                                CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
-                            }
-                        }
-                    }
-                },
+                 },*@
+                //{
+                //    data: valorAbsoluto.nivel3Max,
+                //    linkedTo: ':previous',
+                //    color: 'black',
+                //    type: 'line',
+                //    marker: {
+                //        enabled: false
+                //    },
+                //    point: {
+                //        events: {
+                //            click: function () {
+                //                //CartaP.onFormAnomaliaClickedNC(valorAbsoluto.dados[this.x]);
+                //            }
+                //        }
+                //    }
+                //},
 
                 ]
             });
