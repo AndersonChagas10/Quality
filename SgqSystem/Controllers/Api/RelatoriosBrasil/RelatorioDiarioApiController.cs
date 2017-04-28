@@ -460,7 +460,7 @@ namespace SgqSystem.Controllers.Api
         {
             var queryGraficoTendencia = "" +
 
-                 "\n DECLARE @dataFim_ date = '2016-08-07'  " +
+                 "\n DECLARE @dataFim_ date = '" + form._dataFimSQL + "'  " +
                  "\n DECLARE @dataInicio_ date = DATEADD(MONTH, -1, @dataFim_) " +
                  "\n SET @dataInicio_ = datefromparts(year(@dataInicio_), month(@dataInicio_), 01) " +
                  "\n declare @ListaDatas_ table(data_ date) " +
@@ -617,8 +617,8 @@ namespace SgqSystem.Controllers.Api
 
 
 
-               "\n 		,CL1.ConsolidationDate as Data " +
-               "\n 		--,DD.Data_ as Data " +
+               "\n 		--,CL1.ConsolidationDate as Data " +
+               "\n 		,DD.Data_ as Data " +
                "\n 		FROM ConsolidationLevel1 CL1 " +
                "\n 		INNER JOIN ParLevel1 IND " +
                "\n 		ON IND.Id = CL1.ParLevel1_Id " +
