@@ -1641,7 +1641,7 @@ namespace SGQDBContext
 
             //SqlConnection db = new SqlConnection(conexao);
 
-            string sql = "SELECT TC.HashKey as HashKey, RT.Id as Type, TJbs.Role as RoleJBS, Tsgq.Role as RoleSGQ FROM ScreenComponent TC " +
+            string sql = "SELECT DISTINCT TC.HashKey as HashKey, RT.Id as Type, TJbs.Role as RoleJBS, Tsgq.Role as RoleSGQ FROM ScreenComponent TC " +
                          "LEFT JOIN RoleType RT on RT.Id = TC.Type                                                                          " +
                          "LEFT JOIN RoleSGQ TSgq ON Tsgq.ScreenComponent_Id = TC.Id                                                         " +
                          "LEFT JOIN RoleJBS TJbs ON TJbs.ScreenComponent_Id = TC.Id                                                         " +

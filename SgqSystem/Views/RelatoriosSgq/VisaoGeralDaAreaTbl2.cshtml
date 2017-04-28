@@ -180,7 +180,7 @@
                     <tr>
                         @foreach (var ii in i.tdsEsquerda)
                         {
-                            <td>
+                            <td >
                                 @ii.valor
                             </td>
                         }
@@ -225,6 +225,10 @@
 </div>
 
 <script>
+
+  
+
+
     var $body = $(".table-container-body"),
         $header = $(".table-container-header"),
         $footer = $(".table-container-footer");
@@ -272,4 +276,7 @@
     // Listen to Resize Window
     $(window).resize(redraw);
     redraw();
+
+
+
 </script>
