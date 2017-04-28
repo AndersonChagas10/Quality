@@ -148,7 +148,7 @@ namespace SgqSystem.Controllers
 
             tabela.trsCabecalho1.Add(new Ths()
             {
-                name = "&nbsp"
+                name = " "
             });
 
             tabela.trsCabecalho1.Add(new Ths()

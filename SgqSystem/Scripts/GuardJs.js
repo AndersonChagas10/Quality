@@ -134,8 +134,9 @@ Array.prototype.min = function () {
     isInColumn [type=bool] Ex: "Table1",
     startIndex [type=int] Ex: 1, (Representa o índice do 1° elemento da tabela a ser interado, a primeira td é 0).
     delimiterIndex [type=int] Ex: 3, (Representa o índice da ultima TD aonde começa a zona de repetição dos dados).
+    order [type=string] 'ASC' or 'DESC'.
 */
-function heatMap(tableId, isInLine, isInColumn, startIndex, delimiterIndex) {
+function heatMap(tableId, isInLine, isInColumn, startIndex, delimiterIndex, order) {
 
     var startIndexFixed = startIndex;
 
@@ -169,11 +170,48 @@ function heatMap(tableId, isInLine, isInColumn, startIndex, delimiterIndex) {
                 //Encontra valor em 1 percentual dentre os valores escolhidos, maior valor é 100% e menos é 0%
                 var percentual = parseFloat((((oo["valor"] * 100) / valorMaximo) / 100).toFixed(2));
                 //Atribui o Style com a cor de acordo com o valor percentual obtido acima.
-                oo.td[0].style.backgroundColor = buscaCor(percentual);
+
+                var val = parseFloat(oo["valor"]);
+                
+                //if (val > 100) {
+                //    val = 100;
+                //}
+                //else if (val < 0) {
+                //    val = 0;
+                //}
+
+                //var h = Math.floor((100 - val) * 120 / 100);
+                //var s = Math.abs(val - 50) / 50;
+                //var v = 1;
+
+                oo.td[0].style.backgroundColor = percentToRGB(val, order);
             });
         })
     }
 }
+
+function percentToRGB(percent, order) {
+    var val = percent;
+    if (val > 100) {
+        val = 100;
+    }
+    else if (val < 0) {
+        val = 0;
+    }
+    if (order == 'DESC') {
+        var r = Math.floor((255 * (100 - val)) / 100),
+            g = Math.floor((255 * val) / 100),
+            b = 0;
+
+    } else {
+        var r = Math.floor((255 * val) / 100),
+           g = Math.floor((255 * (100 - val)) / 100),
+           b = 0;
+    }
+
+    return "rgb(" + r + "," + g + "," + b + ")";
+}
+
 
 /*DESCONTINUAR ESTES METODOS< E UTILIZAR APENA INSTANCIA POR CLASSE*/
 Inputmask.extendAliases({

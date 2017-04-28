@@ -12,6 +12,8 @@ using System.Web.Routing;
 using System.Web.Security;
 using Hangfire;
 using DTO;
+using System.Globalization;
+using System.Threading;
 
 namespace SgqSystem
 {
@@ -39,6 +41,18 @@ namespace SgqSystem
 
             Hangfire.GlobalConfiguration.Configuration.UseSqlServerStorage("DbContextSgqEUA");
             _backgroundJobServer = new BackgroundJobServer();
+
+
+            if (GlobalConfig.Brasil)
+            {
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+            }
+            else if (GlobalConfig.Eua)
+            {
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
+            }
 
         }
 
