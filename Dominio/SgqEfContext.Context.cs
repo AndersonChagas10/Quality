@@ -128,6 +128,7 @@ namespace Dominio
         public virtual DbSet<CollectionLevel02> CollectionLevel02 { get; set; }
         public virtual DbSet<Deviation> Deviation { get; set; }
         public virtual DbSet<EmailContent> EmailContent { get; set; }
+        public virtual DbSet<ManDataCollectIT> ManDataCollectIT { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
