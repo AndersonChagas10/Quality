@@ -4,6 +4,7 @@ using Hangfire;
 using System.Web;
 using Hangfire.Dashboard;
 using SgqSystem.Mail;
+using DTO;
 
 [assembly: OwinStartup(typeof(SgqSystem.Startup))]
 
@@ -24,8 +25,8 @@ namespace SgqSystem
             app.UseHangfireDashboard("/hangfire", dashboardoptions);
 
 
-           // BackgroundJob.Enqueue(
-           //() => SimpleAsynchronous.SendMailFromDeviationSgqApp());
+            // BackgroundJob.Enqueue(
+            //() => SimpleAsynchronous.SendMailFromDeviationSgqApp());
 
             //"*/1 * * * *" = 1 minutos.
             //RecurringJob.AddOrUpdate(
@@ -35,6 +36,8 @@ namespace SgqSystem
 
             //BackgroundJob.Enqueue(
             //() => Debug.WriteLine(" >>>>>>>>>>>>>>>>>>>>>> TESTE"));
+
+
         }
     }
 

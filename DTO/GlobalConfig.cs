@@ -118,6 +118,7 @@ namespace DTO
                 }
             }
 
+
             return false;/*Se não existe config retorna falso*/
         }
 
