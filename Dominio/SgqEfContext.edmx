@@ -607,6 +607,28 @@ warning 6002: The table/view 'dbGQualidade_.dbo.DimManutencaoColetaITs' does not
           <Property Name="KgFarinha_Real" Type="decimal" Precision="30" Scale="10" />
           <Property Name="KgFarinha_Meta" Type="decimal" Precision="30" Scale="10" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'dbGQualidade_.dbo.ManDataCollectIT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ManDataCollectIT">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="AddDate" />
+            <PropertyRef Name="ParCompany_Id" />
+            <PropertyRef Name="DimManutencaoColetaITs_id" />
+            <PropertyRef Name="AmountData" />
+            <PropertyRef Name="IsActive" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime" />
+          <Property Name="ReferenceDatetime" Type="datetime" />
+          <Property Name="UserSGQ_Id" Type="int" />
+          <Property Name="ParCompany_Id" Type="int" Nullable="false" />
+          <Property Name="DimManutencaoColetaITs_id" Type="int" Nullable="false" />
+          <Property Name="AmountData" Type="decimal" Precision="32" Scale="10" Nullable="false" />
+          <Property Name="Comments" Type="varchar" MaxLength="800" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="NQA">
           <Key>
             <PropertyRef Name="Id" />
@@ -2887,6 +2909,20 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
     [DimManutencaoColetaITs].[ParFrequency_id] AS [ParFrequency_id]
     FROM [dbo].[DimManutencaoColetaITs] AS [DimManutencaoColetaITs]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="ManDataCollectIT" EntityType="Self.ManDataCollectIT" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ManDataCollectIT].[Id] AS [Id], 
+    [ManDataCollectIT].[AddDate] AS [AddDate], 
+    [ManDataCollectIT].[AlterDate] AS [AlterDate], 
+    [ManDataCollectIT].[ReferenceDatetime] AS [ReferenceDatetime], 
+    [ManDataCollectIT].[UserSGQ_Id] AS [UserSGQ_Id], 
+    [ManDataCollectIT].[ParCompany_Id] AS [ParCompany_Id], 
+    [ManDataCollectIT].[DimManutencaoColetaITs_id] AS [DimManutencaoColetaITs_id], 
+    [ManDataCollectIT].[AmountData] AS [AmountData], 
+    [ManDataCollectIT].[Comments] AS [Comments], 
+    [ManDataCollectIT].[IsActive] AS [IsActive]
+    FROM [dbo].[ManDataCollectIT] AS [ManDataCollectIT]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="ParLevel1VariableProduction" EntityType="Self.ParLevel1VariableProduction" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [ParLevel1VariableProduction].[Id] AS [Id], 
@@ -4011,6 +4047,7 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
           </AssociationSet>
           <EntitySet Name="Deviation" EntityType="SgqDbModel.Deviation" />
           <EntitySet Name="EmailContent" EntityType="SgqDbModel.EmailContent" />
+          <EntitySet Name="ManDataCollectIT" EntityType="SgqDbModel.ManDataCollectIT" />
           </EntityContainer>
         <EntityType Name="DelDados">
           <Key>
@@ -7070,6 +7107,26 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
           <Property Name="From" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="ManDataCollectIT">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="AddDate" />
+            <PropertyRef Name="ParCompany_Id" />
+            <PropertyRef Name="DimManutencaoColetaITs_id" />
+            <PropertyRef Name="AmountData" />
+            <PropertyRef Name="IsActive" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AlterDate" Type="DateTime" Precision="3" />
+          <Property Name="ReferenceDatetime" Type="DateTime" Precision="3" />
+          <Property Name="UserSGQ_Id" Type="Int32" />
+          <Property Name="ParCompany_Id" Type="Int32" Nullable="false" />
+          <Property Name="DimManutencaoColetaITs_id" Type="Int32" Nullable="false" />
+          <Property Name="AmountData" Type="Decimal" Nullable="false" Precision="32" Scale="10" />
+          <Property Name="Comments" Type="String" MaxLength="800" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8687,6 +8744,22 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
                 <ScalarProperty Name="SendStatus" ColumnName="SendStatus" />
                 <ScalarProperty Name="Body" ColumnName="Body" />
                 <ScalarProperty Name="To" ColumnName="To" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ManDataCollectIT">
+            <EntityTypeMapping TypeName="SgqDbModel.ManDataCollectIT">
+              <MappingFragment StoreEntitySet="ManDataCollectIT">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="AmountData" ColumnName="AmountData" />
+                <ScalarProperty Name="DimManutencaoColetaITs_id" ColumnName="DimManutencaoColetaITs_id" />
+                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
+                <ScalarProperty Name="UserSGQ_Id" ColumnName="UserSGQ_Id" />
+                <ScalarProperty Name="ReferenceDatetime" ColumnName="ReferenceDatetime" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

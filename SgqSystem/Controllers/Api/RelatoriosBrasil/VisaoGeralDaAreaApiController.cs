@@ -55,6 +55,18 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             return _mock;
         }
 
+        /// <summary>
+        /// A query para o grafico1 da Visão geral da área SGQ deve retornar:
+        ///   
+        ///   Coluna            |   Tipagem
+        ///                     |
+        ///   regId             |   Int
+        ///   regName           |   string
+        ///   scorecardJbs      |   decimal
+        ///   scorecardJbsReg   |   decimal
+        ///   
+        /// Objeto a ser utilizado: VisaoGeralDaAreaResultSet
+        /// </summary>
         private void CriaMockG1()
         {
             _mock = new List<VisaoGeralDaAreaResultSet>();
@@ -76,6 +88,18 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             });
         }
 
+        /// <summary>
+        /// A query para o grafico2 da Visão geral da área SGQ deve retornar:
+        /// 
+        ///    Coluna            |   Tipagem
+        ///                      |
+        ///    companySigla      |   string
+        ///    companyScorecard  |   decimal
+        ///    scorecardJbs      |   decimal
+        ///    scorecardJbsReg   |   decimal
+        /// 
+        /// Objeto a ser utilizado: VisaoGeralDaAreaResultSet
+        /// </summary>
         private void CriaMockG2()
         {
             _mock = new List<VisaoGeralDaAreaResultSet>();
@@ -98,6 +122,18 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
         }
 
+        /// <summary>
+        /// A query para o grafico3 da Visão geral da área SGQ deve retornar:
+        /// 
+        ///      Coluna         |   Tipagem
+        ///                     |
+        ///      nc             |   decimal
+        ///      procentagemNc  |   decimal
+        ///      date           |   datetime
+        ///      
+        /// Objeto a ser utilizado: VisaoGeralDaAreaResultSet
+        /// </summary>
+        /// <param name="form"></param>
         private void CriaMockG3(FormularioParaRelatorioViewModel form)
         {
             var primeiroDiaMesAnterior = Guard.PrimeiroDiaMesAnterior(form._dataInicio);
@@ -160,6 +196,21 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
           
         }
 
+        /// <summary>
+        /// A query para o grafico4 da Visão geral da área SGQ deve retornar:
+        /// 
+        ///      Coluna         |   Tipagem
+        ///                     |
+        ///      nc             |   decimal
+        ///      procentagemNc  |   decimal
+        ///      av             |   decimal
+        ///      level1Name     |   string
+        ///      level2Name     |   string
+        ///      level1Id       |   int
+        ///      level2Id       |   int
+        ///      
+        /// Objeto a ser utilizado: VisaoGeralDaAreaResultSet
+        /// </summary>
         private void CriaMockG4()
         {
             _mock = new List<VisaoGeralDaAreaResultSet>();
@@ -188,6 +239,23 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
         }
 
+        /// <summary>
+        /// A query para o grafico5 da Visão geral da área SGQ deve retornar:
+        /// 
+        ///      Coluna         |   Tipagem
+        ///                     |
+        ///      nc             |   decimal
+        ///      procentagemNc  |   decimal
+        ///      av             |   decimal
+        ///      level1Name     |   string
+        ///      level2Name     |   string
+        ///      level3Name     |   string
+        ///      level1Id       |   int
+        ///      level2Id       |   int
+        ///      level3Id       |   int
+        /// 
+        /// Objeto a ser utilizado: VisaoGeralDaAreaResultSet
+        /// </summary>
         private void CriaMockG5()
         {
             _mock = new List<VisaoGeralDaAreaResultSet>();

@@ -31,21 +31,29 @@ namespace SgqSystem.Controllers
             HttpCookie languageCookie = System.Web.HttpContext.Current.Request.Cookies["Language"];
             if (languageCookie != null)
             {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo(languageCookie.Value);
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo(languageCookie.Value);
-            }
-            else
-            {
-                if (GlobalConfig.Brasil)
-                {
-                    Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
-                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
-                }
-                else if (GlobalConfig.Eua)
+                if (languageCookie.Value == "en")
                 {
                     Thread.CurrentThread.CurrentCulture = new CultureInfo("");
                     Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
                 }
+                else
+                {
+                    Thread.CurrentThread.CurrentCulture = new CultureInfo(languageCookie.Value);
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo(languageCookie.Value);
+                }
+            }
+            else
+            {
+                //if (GlobalConfig.Brasil)
+                //{
+                //    Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+                //    Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+                //}
+                //else if (GlobalConfig.Eua)
+                //{
+                //    Thread.CurrentThread.CurrentCulture = new CultureInfo("");
+                //    Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
+                //}
             }
 
            ViewBag.Resources = Resources.Resource.ResourceManager.GetResourceSet(

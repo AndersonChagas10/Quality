@@ -159,30 +159,36 @@ namespace SgqSystem.Controllers.Api
 
             var level2 = db.CollectionLevel2.Where(r => r.Id == obj.CollectionLevel02Id).FirstOrDefault();
             var pc = db.ParCompany.Where(r => r.Id == level2.UnitId).FirstOrDefault();
-            shift = db.Shift.Where(r => r.Id == level2.Shift).FirstOrDefault();
-            period = db.Period.Where(r => r.Id == level2.Period).FirstOrDefault();
 
-            if (shift.IsNull())
-            {
-                //shift.Id = 0;
-                obj2.ShiftName = "";
-            }
-            else
-            {
-                //obj2.ShiftId = shift.Id;
-                obj2.ShiftName = shift.Description;
-            }
+            obj2.ShiftName = level2.Shift.ToString();
+            obj2.PeriodName = level2.Period.ToString();
 
-            if (period.IsNull())
-            {
-                //period.Id = 0;
-                obj2.PeriodName = "";
-            }
-            else
-            {
-                //obj2.PeriodId = period.Id;
-                obj2.PeriodName = period.Description;
-            }
+            // Shift e Periodo com foreign key (por enquanto está funcionando sem)
+
+            //shift = db.Shift.Where(r => r.Id == level2.Shift).FirstOrDefault();
+            //period = db.Period.Where(r => r.Id == level2.Period).FirstOrDefault();
+
+            //if (shift.IsNull())
+            //{
+            //    //shift.Id = 0;
+            //    obj2.ShiftName = "";
+            //}
+            //else
+            //{
+            //    //obj2.ShiftId = shift.Id;
+            //    obj2.ShiftName = shift.Description;
+            //}
+
+            //if (period.IsNull())
+            //{
+            //    //period.Id = 0;
+            //    obj2.PeriodName = "";
+            //}
+            //else
+            //{
+            //    //obj2.PeriodId = period.Id;
+            //    obj2.PeriodName = period.Description;
+            //}
 
             Unit unit = new Unit();
             unit.Code = pc.SIF;
