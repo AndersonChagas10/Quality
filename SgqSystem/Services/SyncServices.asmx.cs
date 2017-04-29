@@ -1915,14 +1915,31 @@ namespace SgqSystem.Services
 
             //Verificamos os Indicadores que já foram consolidados para a Unidade selecionada
             var ParLevel1ConsolidationXParFrequencyDB = new SGQDBContext.ParLevel1ConsolidationXParFrequency(db);
-            //Instanciamos uma variável que irá 
-            var parLevel1ConsolidationXParFrequency = ParLevel1ConsolidationXParFrequencyDB.getList(Convert.ToInt32(ParCompany_Id), data);
+            var ParLevel1XParFrequencyDB = new SGQDBContext.ParLevel1XParFrequency(db);
 
+            
+            var parLevel1ConsolidationXParFrequency = new List<ParLevel1ConsolidationXParFrequency>();
+            
             string Results = null;
 
             if (ParLevel1_Id > 0)
             {
-                parLevel1ConsolidationXParFrequency = parLevel1ConsolidationXParFrequency.Where(p => p.ParLevel1_Id == ParLevel1_Id);
+                var parLevel1XParFrequency = ParLevel1XParFrequencyDB.get(ParLevel1_Id);
+                string dataInicio = null;
+                string dataFim = null;
+                getFrequencyDate(parLevel1XParFrequency.FirstOrDefault().ParFrequency_Id, data, ref dataInicio, ref dataFim);
+                parLevel1ConsolidationXParFrequency.AddRange(ParLevel1ConsolidationXParFrequencyDB.getList(Convert.ToInt32(ParCompany_Id), dataInicio, dataFim).Where(p => p.ParLevel1_Id == ParLevel1_Id));
+            }
+            else
+            {
+                var parLevel1XParFrequency = ParLevel1XParFrequencyDB.getList();
+                foreach (ParLevel1XParFrequency parFrequency in parLevel1XParFrequency)
+                {
+                    string dataInicio = null;
+                    string dataFim = null;
+                    getFrequencyDate(parFrequency.ParFrequency_Id, data, ref dataInicio, ref dataFim);
+                    parLevel1ConsolidationXParFrequency.AddRange(ParLevel1ConsolidationXParFrequencyDB.getList(Convert.ToInt32(ParCompany_Id), dataInicio, dataFim));
+                }
             }
 
 
@@ -5579,19 +5596,32 @@ namespace SgqSystem.Services
         public string getCollectionLevel2Keys(string ParCompany_Id, string date, int ParLevel1_Id = 0)
         {
 
-            //Verificamos os Indicadores que já foram consolidados para a Unidade selecionada
-            var ParLevel1ConsolidationXParFrequencyDB = new SGQDBContext.ParLevel1ConsolidationXParFrequency(db);
-            //Instanciamos uma variável que irá 
-
             DateTime data = DateCollectConvert(date);
 
-            var parLevel1ConsolidationXParFrequency = ParLevel1ConsolidationXParFrequencyDB.getList(Convert.ToInt32(ParCompany_Id), data);
+            var ParLevel1ConsolidationXParFrequencyDB = new SGQDBContext.ParLevel1ConsolidationXParFrequency(db);
+            var ParLevel1XParFrequencyDB = new SGQDBContext.ParLevel1XParFrequency(db);
 
 
-
+            var parLevel1ConsolidationXParFrequency = new List<ParLevel1ConsolidationXParFrequency>();
+            
             if (ParLevel1_Id > 0)
             {
-                parLevel1ConsolidationXParFrequency = parLevel1ConsolidationXParFrequency.Where(p => p.ParLevel1_Id == ParLevel1_Id);
+                var parLevel1XParFrequency = ParLevel1XParFrequencyDB.get(ParLevel1_Id);
+                string dataInicio = null;
+                string dataFim = null;
+                getFrequencyDate(parLevel1XParFrequency.FirstOrDefault().ParFrequency_Id, data, ref dataInicio, ref dataFim);
+                parLevel1ConsolidationXParFrequency.AddRange(ParLevel1ConsolidationXParFrequencyDB.getList(Convert.ToInt32(ParCompany_Id), dataInicio, dataFim).Where(p => p.ParLevel1_Id == ParLevel1_Id));
+            }
+            else
+            {
+                var parLevel1XParFrequency = ParLevel1XParFrequencyDB.getList();
+                foreach (ParLevel1XParFrequency parFrequency in parLevel1XParFrequency)
+                {
+                    string dataInicio = null;
+                    string dataFim = null;
+                    getFrequencyDate(parFrequency.ParFrequency_Id, data, ref dataInicio, ref dataFim);
+                    parLevel1ConsolidationXParFrequency.AddRange(ParLevel1ConsolidationXParFrequencyDB.getList(Convert.ToInt32(ParCompany_Id), dataInicio, dataFim));
+                }
             }
             string ResultsKeys = null;
             //Percorremos as consolidações de ParLevel1

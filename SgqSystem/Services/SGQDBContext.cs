@@ -1166,19 +1166,15 @@ namespace SGQDBContext
             db = _db;
         }
 
-        public IEnumerable<ParLevel1ConsolidationXParFrequency> getList(int ParCompany_Id, DateTime data)
+        public IEnumerable<ParLevel1ConsolidationXParFrequency> getList(int ParCompany_Id, string data_ini, string data_fim)
         {
             try
             {
-                //SqlConnection db = new SqlConnection(conexao);
-
-                DateTime data_ini = new DateTime(data.Year, data.Month, 1);
-                DateTime data_fim = new DateTime(data.Year, data.Month, DateTime.DaysInMonth(data.Year, data.Month));
-
 
                 string sql = "SELECT CDL1.Id, CDL1.ParLevel1_Id, PL1.ParFrequency_Id, PL1.IsPartialSave FROM ConsolidationLevel1 CDL1 " +
                              "INNER JOIN ParLevel1 PL1 ON CDL1.ParLevel1_Id = PL1.Id WHERE CDL1.UnitId = '" + ParCompany_Id + "'" +
-                             " AND CDL1.Consolidationdate BETWEEN '" + data_ini.ToString("yyyyMMdd") + " 00:00' and '" + data_fim.ToString("yyyyMMdd") + " 23:59'" +
+                             " AND CDL1.Consolidationdate BETWEEN '" + data_ini + " 00:00' "+
+                             " AND '" + data_fim + " 23:59'" +
                              " AND PL1.IsActive = 1" +
                              " GROUP BY CDL1.Id, CDL1.ParLevel1_Id, PL1.ParFrequency_Id,  PL1.IsPartialSave";
 
@@ -1194,6 +1190,62 @@ namespace SGQDBContext
         }
 
     }
+
+    public partial class ParLevel1XParFrequency
+    {
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public int ParFrequency_Id { get; set; }
+
+        private SqlConnection db { get; set; }
+        public ParLevel1XParFrequency() { }
+        public ParLevel1XParFrequency(SqlConnection _db)
+        {
+            db = _db;
+        }
+        
+        public IEnumerable<ParLevel1XParFrequency> getList()
+        {
+            try
+            {
+
+                string sql = "SELECT PL1.ParFrequency_Id AS ParFrequency_Id "+
+                                "FROM ParLevel1 PL1  WHERE PL1.IsActive = 1 "+
+                                "GROUP BY PL1.ParFrequency_Id";
+
+                var frequencies = db.Query<ParLevel1XParFrequency>(sql);
+
+                return frequencies;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public IEnumerable<ParLevel1XParFrequency> get(int ParLevel1_Id)
+        {
+            try
+            {
+
+                string sql = "SELECT PL1.ParFrequency_Id AS ParFrequency_Id "+
+                                "FROM ParLevel1 PL1  WHERE PL1.IsActive = 1 "+
+                                "AND PL1.Id = " + ParLevel1_Id+" "+
+                                "GROUP BY PL1.ParFrequency_Id";
+
+                var frequencies = db.Query<ParLevel1XParFrequency>(sql);
+
+                return frequencies;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+    
+    }
+
     public partial class ConsolidationResultL1L2
     {
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
