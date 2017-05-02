@@ -24,8 +24,6 @@ namespace SgqSystem.Controllers
 
         }
 
-      
-
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
         {
             HttpCookie languageCookie = System.Web.HttpContext.Current.Request.Cookies["Language"];
@@ -119,35 +117,6 @@ namespace SgqSystem.Controllers
                 Response.Cookies.Add(myCookie);
             }
         }
-
-        public static void NotifyNewComment(int commentId)
-        {
-
-          
-
-            //// Prepare Postal classes to work outside of ASP.NET request
-            //var viewsPath = Path.GetFullPath(HostingEnvironment.MapPath(@"~/Views/Emails"));
-            //var engines = new ViewEngineCollection();
-            //engines.Add(new FileSystemRazorViewEngine(viewsPath));
-
-            //var emailService = new EmailService(engines);
-
-            // Get comment and send a notification.
-            using (var db = new SgqDbDevEntities())
-            {
-                //var comment = db.Comments.Find(commentId);
-
-                //var email = new NewCommentEmail
-                //{
-                //    To = "yourmail@example.com",
-                //    UserName = comment.UserName,
-                //    Comment = comment.Text
-                //};
-
-                //emailService.Send(email);
-            }
-        }
-
 
     }
 
