@@ -1869,7 +1869,7 @@ namespace SgqSystem.Services
             dataFim = periodoFim.ToString("yyyyMMdd");
 
         }
-        public string getConsolidation(string ParCompany_Id, DateTime data, int ParLevel1_Id)
+        public string _getConsolidation(string ParCompany_Id, DateTime data, int ParLevel1_Id)
         //public string getConsolidation(string ParCompany_Id, DateTime data, int ParLevel1_Id = 0)
         {
 
@@ -2075,7 +2075,7 @@ namespace SgqSystem.Services
 
         
 
-        public string _getConsolidation(string ParCompany_Id, DateTime data, int ParLevel1_Id)
+        public string getConsolidation(string ParCompany_Id, DateTime data, int ParLevel1_Id)
         {
 
             string dataIni = data.ToString("yyyyMMdd");
@@ -2091,16 +2091,28 @@ namespace SgqSystem.Services
             {
                 string sql = "" +
 
-                    "\n declare @data date = '" + dataIni + "'                                                                                                                                           " +
+                    "\n declare @data date = '" + dataIni + "'                                                                                                                                    " +
                     "\n declare @unidade int = " + ParCompany_Id  +
                     "\n declare @datainicio date                                                                                                                                                  " +
                     "\n declare @datafim date                                                                                                                                                     " +
+                    "\n declare @datadiario date                                                                                                                                                  " +
+                    "\n declare @datasemanal date " +
+                    "\n declare @dataquinzenal date " +
+                    "\n declare @datamensal date " +
+                    "\n  " +
+                    "\n set @datainicio =  @data  " +
+                    "\n set @datafim =  @data " +
+                    "\n " +
+                    "\n set @datadiario = @data     --1,2,3 " +
+                    "\n set @datasemanal = DATEADD(DAY,-(DATEPART(WEEKDAY,@data)),@data)    --4 " +
+                    "\n set @dataquinzenal = CASE WHEN DAY(@data) < 16 THEN dateadd(month,1,DateAdd(mm, DateDiff(mm,0,@data) - 1, 0)) ELSE DATEADD(DAY,15,dateadd(month,1,DateAdd(mm, DateDiff(mm,0,@data) - 1, 0))) END   --5 " +
+                    "\n set @datamensal = dateadd(month,1,DateAdd(mm, DateDiff(mm,0,@data) - 1, 0))      --6 " +
+                    "\n " +
+                    "\n --select @datainicio = dateadd(mm, 0, dateadd(dd, -day(@data) + 1, @data))                                                                                                " +
                     "\n                                                                                                                                                                           " +
-                    "\n select @datainicio = dateadd(mm, 0, dateadd(dd, -day(@data) + 1, @data))                                                                                                  " +
-                    "\n                                                                                                                                                                           " +
-                    "\n select @datafim = dateadd(dd,-day(dateadd(MONTH,1,dateadd(mm,0,dateadd(dd,-day(@data)+1,@data)))),dateadd(MONTH,1,dateadd(mm,0,dateadd(dd,-day(@data)+1,@data))))         " +
-                    "\n                                                                                                                                                                           " +
-                    "\n                                                                                                                                                   " +
+                    "\n --select @datafim = dateadd(dd,-day(dateadd(MONTH,1,dateadd(mm,0,dateadd(dd,-day(@data)+1,@data)))),dateadd(MONTH,1,dateadd(mm,0,dateadd(dd,-day(@data)+1,@data))))       " +
+                    "\n set @datainicio =  @data                                                                                                                                                  " +
+                    "\n set @datafim =  @data                                                                                                                                                     " +
                     "\n                                                                                                                                                                           " +
                     "\n SELECT                                                                                                                                                                    " +
                     "\n --L1.Id parLevel1_Id,                                                                                                                                                     " +
@@ -2117,7 +2129,16 @@ namespace SgqSystem.Services
                     "\n --AND L1.Id =                                                                                                                                                             " +
                     "\n --AND C2.ParLevel2_Id = ''                                                                                                                            " +
                     "\n                                                                                                                                                                           " +
-                    "\n AND cast(C2.CollectionDate as Date) BETWEEN @datainicio and @datafim                                                                                                      " +
+                    "\n AND cast(C2.CollectionDate as Date) BETWEEN                                                                                                     " +
+
+                    "\n       CASE " +
+                    "\n       WHEN(L1.ParFrequency_Id) IN(1, 2, 3) THEN @datadiario " +
+                    "\n       WHEN(L1.ParFrequency_Id) IN(4) THEN @datasemanal " +
+                    "\n       WHEN(L1.ParFrequency_Id) IN(5) THEN @dataquinzenal " +
+                    "\n       WHEN(L1.ParFrequency_Id) IN(6) THEN @datamensal " +
+                    "\n       ELSE @datadiario END and @datafim " +
+
+
                     "\n                                                                                                                                                                           " +
                     "\n DECLARE @HOMENSFORBRUNO INT = (SELECT COUNT(1) FROM #MOTHERFOCKER);                                                                                                       " +
                     "\n                                                                                                                                                                           " +
@@ -2288,7 +2309,15 @@ namespace SgqSystem.Services
                     "\n                                                                                                                                                                           " +
                     "\n         AND CDL1.UnitId = @unidade                                                                                                                                        " +
                     "\n                                                                                                                                                                           " +
-                    "\n         AND cast(CDL1.ConsolidationDate as DATE) BETWEEN @datainicio AND @datafim                                                                                         " +
+                    "\n         AND cast(CDL1.ConsolidationDate as DATE) BETWEEN                                                                                        " +
+
+                    "\n              CASE " +
+                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel1 WHERE ID = CDL1.ParLevel1_Id) IN(1, 2, 3) THEN @datadiario " +
+                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel1 WHERE ID = CDL1.ParLevel1_Id) IN(4) THEN @datasemanal " +
+                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel1 WHERE ID = CDL1.ParLevel1_Id) IN(5) THEN @dataquinzenal " +
+                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel1 WHERE ID = CDL1.ParLevel1_Id) IN(6) THEN @datamensal " +
+                    "\n              ELSE @datadiario END and @datafim " +
+
                     "\n     )                                                                                                                                                                     " +
                     "\n                                                                                                                                                                           " +
                     "\n     GROUP BY                                                                                                                                                              " +
@@ -2308,7 +2337,7 @@ namespace SgqSystem.Services
                     "\n UnitId,                                                                                                                                                                   " +
                     "\n Shift,                                                                                                                                                                    " +
                     "\n Period,                                                                                                                                                                   " +
-                    "\n CollectionDate,                                                                                                                                                           " +
+                    "\n CollectionDate,                                                                                                                                                            " +
                     "\n ConsolidationLevel2_Id                                                                                                                                                    " +
                     "\n                                                                                                                                                                           " +
                     "\n ) Level2Result                                                                                                                                                            " +
@@ -2326,7 +2355,16 @@ namespace SgqSystem.Services
                     "\n  INNER JOIN ParLevel1 PL1                                                                                                                                                 " +
                     "\n  ON CDL1.ParLevel1_Id = PL1.Id                                                                                                                                            " +
                     "\n  WHERE CDL1.UnitId = @unidade                                                                                                                                             " +
-                    "\n  AND cast(CDL1.Consolidationdate as Date) BETWEEN @datainicio and @datafim                                                                                                " +
+                    "\n  AND cast(CDL1.Consolidationdate as Date) BETWEEN                                                                                                 " +
+
+                    "\n     CASE " +
+                    "\n     WHEN(PL1.ParFrequency_Id) IN(1, 2, 3) THEN @datadiario " +
+                    "\n     WHEN(PL1.ParFrequency_Id) IN(4) THEN @datasemanal " +
+                    "\n     WHEN(PL1.ParFrequency_Id) IN(5) THEN @dataquinzenal " +
+                    "\n     WHEN(PL1.ParFrequency_Id) IN(6) THEN @datamensal " +
+                    "\n     ELSE @datadiario END and @datafim " +
+
+
                     "\n  AND PL1.IsActive = 1                                                                                                                                                     " +
                     "\n  GROUP BY CDL1.Id, CDL1.ParLevel1_Id, PL1.ParFrequency_Id, PL1.IsPartialSave                                                                                              " +
                     "\n                                                                                                                                                                           " +
