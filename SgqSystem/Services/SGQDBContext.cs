@@ -1985,6 +1985,22 @@ namespace SGQDBContext
                 throw;
             }
         }
+        public ConsolidationLevel2 getByConsolidationLevel1(int ParCompany_Id, int ConsolidationLevel1_Id, int ParLevel2_Id, int reaudit)
+        {
+            try
+            {
+                string sql = "SELECT Id, ConsolidationLevel1_Id, UnitId, ParLevel2_Id, ConsolidationDate, WeiEvaluation, EvaluateTotal, DefectsTotal, WeiDefects, TotalLevel3Evaluation, TotalLevel3WithDefects, EvaluatedResult, ReauditIs, ReauditNumber FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = '" + 
+                    ConsolidationLevel1_Id + "' AND ParLevel2_Id= '" + ParLevel2_Id + "' AND UnitId='" + ParCompany_Id + "' AND ReauditIs="+reaudit+";";
+                //SqlConnection db = new SqlConnection(conexao);
+                var obj = db.Query<ConsolidationLevel2>(sql).FirstOrDefault();
+                return obj;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
     }
 

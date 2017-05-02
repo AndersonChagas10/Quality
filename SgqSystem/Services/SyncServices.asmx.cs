@@ -632,9 +632,13 @@ namespace SgqSystem.Services
                     }
 
                     var consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(c.Unit_Id, consolidationLevel1.Id, c.level02_Id);
+
+                    if (c.Reaudit)
+                        consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(c.Unit_Id, consolidationLevel1.Id, c.level02_Id,1);
+
                     if (consolidationLevel2 == null)
                     {
-                        consolidationLevel2 = InsertConsolidationLevel2(consolidationLevel1.Id, c.level02_Id, c.Unit_Id, c.Level02CollectionDate);
+                        consolidationLevel2 = InsertConsolidationLevel2(consolidationLevel1.Id, c.level02_Id, c.Unit_Id, c.Level02CollectionDate,c.Reaudit,c.ReauditNumber);
                         if (consolidationLevel2 == null)
                         {
                             throw new Exception();
@@ -1084,7 +1088,7 @@ namespace SgqSystem.Services
         /// <param name="unitId">Id da Unidade</param>
         /// <param name="collectionDate">Data da Consolidação</param>
         /// <returns></returns>
-        public SGQDBContext.ConsolidationLevel2 InsertConsolidationLevel2(int ConsolidationLevel1_Id, int ParLevel2_Id, int ParCompany_Id, DateTime collectionDate)
+        public SGQDBContext.ConsolidationLevel2 InsertConsolidationLevel2(int ConsolidationLevel1_Id, int ParLevel2_Id, int ParCompany_Id, DateTime collectionDate, bool reaudit,int reauditNumber)
         {
             //Verifica se já existe uma consolidação para o level02
             var ConsolidationLevel2DB = new SGQDBContext.ConsolidationLevel2(db);
@@ -1095,11 +1099,15 @@ namespace SgqSystem.Services
             //    return ConsolidationLevel2;
             //}
 
+            int reaud = 0;
+            if (reaudit)
+                reaud = 1;
 
             //Gera o Script de Insert no Banco
-            string sql = "INSERT ConsolidationLevel2 ([ConsolidationLevel1_Id], [ParLevel2_Id], [UnitId], [AddDate], [AlterDate], [ConsolidationDate]) " +
+            string sql = "INSERT ConsolidationLevel2 ([ConsolidationLevel1_Id], [ParLevel2_Id], [UnitId], [AddDate], [AlterDate], [ConsolidationDate],[ReauditIs],[ReauditNumber]) " +
                          "VALUES  " +
-                         "('" + ConsolidationLevel1_Id + "', '" + ParLevel2_Id + "', '" + ParCompany_Id + "', GETDATE(), NULL, CAST(N'" + collectionDate.ToString("yyyy-MM-dd") + "' AS DateTime)) " +
+                         "('" + ConsolidationLevel1_Id + "', '" + ParLevel2_Id + "', '" + ParCompany_Id + "', GETDATE(), NULL, CAST(N'" + collectionDate.ToString("yyyy-MM-dd") + "' AS DateTime)"+
+                         reaud + reauditNumber+") " +
                          "SELECT @@IDENTITY AS 'Identity'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -1114,7 +1122,10 @@ namespace SgqSystem.Services
                         //Se inserir corretamente, retorno o Id da Consolidação
                         if (i > 0)
                         {
-                            return ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, ConsolidationLevel1_Id, ParLevel2_Id);
+                            if(reaudit)
+                                return ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, ConsolidationLevel1_Id, ParLevel2_Id,1);
+                            else
+                                return ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, ConsolidationLevel1_Id, ParLevel2_Id);
                         }
                         else
                         {
@@ -6024,7 +6035,7 @@ namespace SgqSystem.Services
 
                                 if (consolidationLevel2 == null)
                                 {
-                                    consolidationLevel2 = InsertConsolidationLevel2(consolidationLevel1.Id, ParLevel2_Id, ParCompany_Id, CollectionDate);
+                                    consolidationLevel2 = InsertConsolidationLevel2(consolidationLevel1.Id, ParLevel2_Id, ParCompany_Id, CollectionDate,false,0);
                                     if (consolidationLevel2 == null)
                                     {
                                         throw new Exception();
