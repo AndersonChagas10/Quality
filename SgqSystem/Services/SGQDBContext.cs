@@ -2243,82 +2243,82 @@ namespace SGQDBContext
 
     }
 
-    public partial class UpdateCollectionLevel2
-    {
-        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-        private SqlConnection db { get; set; }
-        public UpdateCollectionLevel2() { }
-        public UpdateCollectionLevel2(SqlConnection _db)
-        {
-            db = _db;
-        }
-        public void UpdateIsReauditByKey(string Key, bool IsReaudit, int HaveReaudit, int ReauditNumber, int ReauditLevel)
-        {
-            try
-            {
-                string sql = "";
+    //public partial class UpdateCollectionLevel2
+    //{
+    //    //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+    //    private SqlConnection db { get; set; }
+    //    public UpdateCollectionLevel2() { }
+    //    public UpdateCollectionLevel2(SqlConnection _db)
+    //    {
+    //        db = _db;
+    //    }
+    //    public void UpdateIsReauditByKey(string Key, bool IsReaudit, int HaveReaudit, int ReauditNumber, int ReauditLevel)
+    //    {
+    //        try
+    //        {
+    //            string sql = "";
 
-                if (IsReaudit == true && HaveReaudit == 1)
-                {
-                    sql = "UPDATE CollectionLevel2 SET ReauditLevel = '" + ReauditLevel + "', HaveReaudit = '" + HaveReaudit + "', ReauditNumber = '" + ReauditNumber + "' WHERE [Key] = '" + Key + "'";
-                }
-                else if (IsReaudit == true && HaveReaudit == 0)
-                {
-                    sql = "UPDATE CollectionLevel2 SET HaveReaudit = 0, ReauditNumber = 0 WHERE [Key] = '" + Key + "'";
-                }
+    //            if (IsReaudit == true && HaveReaudit == 1)
+    //            {
+    //                sql = "UPDATE CollectionLevel2 SET ReauditLevel = '" + ReauditLevel + "', HaveReaudit = '" + HaveReaudit + "', ReauditNumber = '" + ReauditNumber + "' WHERE [Key] = '" + Key + "'";
+    //            }
+    //            else if (IsReaudit == true && HaveReaudit == 0)
+    //            {
+    //                sql = "UPDATE CollectionLevel2 SET HaveReaudit = 0, ReauditNumber = 0 WHERE [Key] = '" + Key + "'";
+    //            }
 
-                //SqlConnection db = new SqlConnection(conexao);
-                db.Execute(sql);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+    //            //SqlConnection db = new SqlConnection(conexao);
+    //            db.Execute(sql);
+    //        }
+    //        catch (Exception)
+    //        {
+    //            throw;
+    //        }
+    //    }
 
-        public void UpdateIsReauditConsolidationLevel1(bool IsReaudit, int HaveReaudit, int ReauditNumber, int ConsolidationLevel1_Id)
-        {
-            try
-            {
-                string sql = "";
+    //    public void UpdateIsReauditConsolidationLevel1(bool IsReaudit, int HaveReaudit, int ReauditNumber, int ConsolidationLevel1_Id)
+    //    {
+    //        try
+    //        {
+    //            string sql = "";
 
-                if (HaveReaudit == 1)
-                {
-                    sql = "UPDATE CollectionLevel2 "+
-                            "SET ReauditLevel = 1, HaveReaudit = '" + HaveReaudit + "', ReauditNumber = '" + ReauditNumber + "' "+
-                            "FROM CollectionLevel2 "+
-                            "WHERE ConsolidationLevel2_Id "+
-                        "IN(SELECT Id FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = " + ConsolidationLevel1_Id + ") AND ReauditIs = 0";
-                }
-                else if (HaveReaudit == 0)
-                {
-                    sql = "UPDATE CollectionLevel2 " +
-                            "SET ReauditLevel = 1, HaveReaudit = 0, ReauditNumber = 0 " +
-                            "FROM CollectionLevel2 " +
-                            "WHERE ConsolidationLevel2_Id " +
-                        "IN(SELECT Id FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = " + ConsolidationLevel1_Id + ")  AND ReauditIs = 0 " +
-                        "AND "+
-                        "(SELECT Count(*) "+
-                            "FROM CollectionLevel2 "+
-                            "WHERE ReauditIs = 1 AND ReauditNumber = '" + ReauditNumber + "' " +
-                            "AND ConsolidationLevel2_Id IN(SELECT Id FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = " + ConsolidationLevel1_Id + "))" +
-                        " = "+
-                        "(SELECT Count(*) "+
-                            "FROM CollectionLevel2 "+
-                            "WHERE ReauditIs = 0 " +
-                        "AND ConsolidationLevel2_Id IN(SELECT Id FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = " + ConsolidationLevel1_Id + "))";
+    //            if (HaveReaudit == 1)
+    //            {
+    //                sql = "UPDATE CollectionLevel2 "+
+    //                        "SET ReauditLevel = 1, HaveReaudit = '" + HaveReaudit + "', ReauditNumber = '" + ReauditNumber + "' "+
+    //                        "FROM CollectionLevel2 "+
+    //                        "WHERE ConsolidationLevel2_Id "+
+    //                    "IN(SELECT Id FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = " + ConsolidationLevel1_Id + ") AND ReauditIs = 0";
+    //            }
+    //            else if (HaveReaudit == 0)
+    //            {
+    //                sql = "UPDATE CollectionLevel2 " +
+    //                        "SET ReauditLevel = 1, HaveReaudit = 0, ReauditNumber = 0 " +
+    //                        "FROM CollectionLevel2 " +
+    //                        "WHERE ConsolidationLevel2_Id " +
+    //                    "IN(SELECT Id FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = " + ConsolidationLevel1_Id + ")  AND ReauditIs = 0 " +
+    //                    "AND "+
+    //                    "(SELECT Count(*) "+
+    //                        "FROM CollectionLevel2 "+
+    //                        "WHERE ReauditIs = 1 AND ReauditNumber = '" + ReauditNumber + "' " +
+    //                        "AND ConsolidationLevel2_Id IN(SELECT Id FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = " + ConsolidationLevel1_Id + "))" +
+    //                    " = "+
+    //                    "(SELECT Count(*) "+
+    //                        "FROM CollectionLevel2 "+
+    //                        "WHERE ReauditIs = 0 " +
+    //                    "AND ConsolidationLevel2_Id IN(SELECT Id FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = " + ConsolidationLevel1_Id + "))";
                     
-                }
+    //            }
 
-                //SqlConnection db = new SqlConnection(conexao);
-                db.Execute(sql);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-    }
+    //            //SqlConnection db = new SqlConnection(conexao);
+    //            db.Execute(sql);
+    //        }
+    //        catch (Exception)
+    //        {
+    //            throw;
+    //        }
+    //    }
+    //}
 
     public partial class ResultPhase
     {
