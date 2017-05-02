@@ -1273,14 +1273,7 @@ namespace SgqSystem.Services
 
                         var i = Convert.ToInt32(command.ExecuteScalar());
                         //Se o script for executado corretamente retorna o Id
-
-                        //Atualiza a situação de reauditoria
-                        if (Reaudit)
-                        {
-                            var UpdateCollectionLevel2DB = new SGQDBContext.UpdateCollectionLevel2(db);
-                            UpdateCollectionLevel2DB.UpdateIsReauditByKey(keySolid, Reaudit, Int16.Parse(haveReaudit), ReauditNumber, reauditLevel);
-                        }
-
+                        
                         if (i > 0)
                         {
                             return i;
