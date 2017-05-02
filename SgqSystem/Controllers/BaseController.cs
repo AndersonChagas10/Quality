@@ -44,20 +44,30 @@ namespace SgqSystem.Controllers
             }
             else
             {
-                //if (GlobalConfig.Brasil)
-                //{
-                //    Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
-                //    Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
-                //}
-                //else if (GlobalConfig.Eua)
-                //{
-                //    Thread.CurrentThread.CurrentCulture = new CultureInfo("");
-                //    Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
-                //}
+                if (GlobalConfig.Brasil)
+                {
+                    Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
+                }
+                else if (GlobalConfig.Eua)
+                {
+                    Thread.CurrentThread.CurrentCulture = new CultureInfo("");
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
+                }
             }
 
-           ViewBag.Resources = Resources.Resource.ResourceManager.GetResourceSet(
-                Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
+            try
+            {
+
+                System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
+
+                ViewBag.Resources = resourceManager.GetResourceSet(
+                    Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
+
+            }
+            catch (Exception e)
+            {
+            }
 
             base.Initialize(requestContext);
         }

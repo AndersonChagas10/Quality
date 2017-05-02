@@ -311,6 +311,7 @@ namespace SgqSystem.Services
             return binario;
         }
         public string campoIntervalo(string id, decimal intervalMin, decimal intervalMax, decimal defaultValue = 0, string unitName = null, string classe = null)
+
         {
             //definir min value //min=\"0\" 
             //definir max value
@@ -325,12 +326,18 @@ namespace SgqSystem.Services
                                  "    <span class=\"input-group-btn btn-minus\">                                                                                                                              " +
                                  "         <button class=\"btn btn-default\" type=\"button\" style=\"padding:0px 2px;\">                                                                                                                 " +
                                  "             <i class=\"fa fa-minus\" aria-hidden=\"true\"></i>                                                                                                             " +
-                                 "             </button></span><input type=\"text\" class=\"form-control text-center levelValue interval\">     " +
+                                 "             </button></span><input type=\"text\" class=\"form-control text-center levelValue interval\" value=\"\">     " +
                                  "             <span class=\"input-group-btn btn-plus\"><button class=\"btn btn-default\" type=\"button\" style=\"padding:0px 2px;\">                                                                    " +
                                  "             <i class=\"fa fa-plus\" aria-hidden=\"true\"></i>                                                                                                              " +
                                  "         </button>                                                                                                                                                          " +
                                  "     </span>                                                                                                                                                                " +
-                                 "</div>                                                                                                                                                                      ";
+                                 "</div>   ";
+
+            
+
+            //string intervalo = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                                                                                                  " +
+            //                     "              <input type=\"text\" class=\"form-control text-center levelValue interval\" value=\"\">     " +
+            //                     "</div> ";
             return intervalo;
         }
 
