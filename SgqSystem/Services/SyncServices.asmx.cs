@@ -1107,7 +1107,7 @@ namespace SgqSystem.Services
             string sql = "INSERT ConsolidationLevel2 ([ConsolidationLevel1_Id], [ParLevel2_Id], [UnitId], [AddDate], [AlterDate], [ConsolidationDate],[ReauditIs],[ReauditNumber]) " +
                          "VALUES  " +
                          "('" + ConsolidationLevel1_Id + "', '" + ParLevel2_Id + "', '" + ParCompany_Id + "', GETDATE(), NULL, CAST(N'" + collectionDate.ToString("yyyy-MM-dd") + "' AS DateTime)"+
-                         reaud + reauditNumber+") " +
+                         ", "+reaud +"," +reauditNumber+") " +
                          "SELECT @@IDENTITY AS 'Identity'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;

@@ -219,6 +219,8 @@
           <Property Name="EvaluatedResult" Type="int" />
           <Property Name="DefectsResult" Type="int" />
           <Property Name="LastLevel2Alert" Type="int" />
+          <Property Name="Shift" Type="int" />
+          <Property Name="Period" Type="int" />
         </EntityType>
         <EntityType Name="ConsolidationLevel2">
           <Key>
@@ -242,6 +244,8 @@
           <Property Name="EvaluatedResult" Type="int" />
           <Property Name="DefectsResult" Type="int" />
           <Property Name="LastLevel2Alert" Type="int" />
+          <Property Name="ReauditIs" Type="int" Nullable="false" />
+          <Property Name="ReauditNumber" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CorrectiveAction">
           <Key>
@@ -3543,7 +3547,6 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
           <EntitySet Name="CollectionLevel03" EntityType="SgqDbModel.CollectionLevel03" />
           <EntitySet Name="CollectionLevel2XParHeaderField" EntityType="SgqDbModel.CollectionLevel2XParHeaderField" />
           <EntitySet Name="ConsolidationLevel01" EntityType="SgqDbModel.ConsolidationLevel01" />
-          <EntitySet Name="ConsolidationLevel1" EntityType="SgqDbModel.ConsolidationLevel1" />
           <EntitySet Name="CorrectiveAction" EntityType="SgqDbModel.CorrectiveAction" />
           <EntitySet Name="Department" EntityType="SgqDbModel.Department" />
           <EntitySet Name="Example" EntityType="SgqDbModel.Example" />
@@ -3627,14 +3630,6 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
           <AssociationSet Name="FK_ConsolidationLevel01_Unit" Association="SgqDbModel.FK_ConsolidationLevel01_Unit">
             <End Role="Unit" EntitySet="Unit" />
             <End Role="ConsolidationLevel01" EntitySet="ConsolidationLevel01" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ConsolidationLevel1_Department" Association="SgqDbModel.FK_ConsolidationLevel1_Department">
-            <End Role="Department" EntitySet="Department" />
-            <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ConsolidationLevel1_Level1" Association="SgqDbModel.FK_ConsolidationLevel1_Level1">
-            <End Role="ParLevel1" EntitySet="ParLevel1" />
-            <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
           </AssociationSet>
           <AssociationSet Name="FK_ParCluster_ParClusterGroup" Association="SgqDbModel.FK_ParCluster_ParClusterGroup">
             <End Role="ParClusterGroup" EntitySet="ParClusterGroup" />
@@ -3845,10 +3840,6 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
             <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
           </AssociationSet>
           <EntitySet Name="ParCompany" EntityType="SgqDbModel.ParCompany" />
-          <AssociationSet Name="FK_ConsolidationLevel1_ParCompany" Association="SgqDbModel.FK_ConsolidationLevel1_ParCompany">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
-          </AssociationSet>
           <AssociationSet Name="FK_Defect_ParCompany" Association="SgqDbModel.FK_Defect_ParCompany">
             <End Role="ParCompany" EntitySet="ParCompany" />
             <End Role="Defect" EntitySet="Defect" />
@@ -3976,19 +3967,6 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
             <End Role="ParLevel1" EntitySet="ParLevel1" />
           </AssociationSet>
           <EntitySet Name="RoleUserSgq" EntityType="SgqDbModel.RoleUserSgq" />
-          <EntitySet Name="ConsolidationLevel2" EntityType="SgqDbModel.ConsolidationLevel2" />
-          <AssociationSet Name="FK_CollectionLevel2_ConsolidationLevel2" Association="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2">
-            <End Role="ConsolidationLevel2" EntitySet="ConsolidationLevel2" />
-            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ConsolidationLevel2_ConsolidationLevel1" Association="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel1">
-            <End Role="ParCompany" EntitySet="ParCompany" />
-            <End Role="ConsolidationLevel2" EntitySet="ConsolidationLevel2" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ConsolidationLevel2_ParLevel2" Association="SgqDbModel.FK_ConsolidationLevel2_ParLevel2">
-            <End Role="ParLevel2" EntitySet="ParLevel2" />
-            <End Role="ConsolidationLevel2" EntitySet="ConsolidationLevel2" />
-          </AssociationSet>
           <EntitySet Name="ParCounter" EntityType="SgqDbModel.ParCounter" />
           <EntitySet Name="ParCounterXLocal" EntityType="SgqDbModel.ParCounterXLocal" />
           <EntitySet Name="ParLocal" EntityType="SgqDbModel.ParLocal" />
@@ -4020,10 +3998,6 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
             <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
             <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
           </AssociationSet>
-          <AssociationSet Name="FK_ConsolidationLevel2_ConsolidationLevel11" Association="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel11">
-            <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
-            <End Role="ConsolidationLevel2" EntitySet="ConsolidationLevel2" />
-          </AssociationSet>
           <EntitySet Name="CollectionLevel02" EntityType="SgqDbModel.CollectionLevel02" />
           <AssociationSet Name="FK_CollectionLevel02_ConsolidationLevel02" Association="SgqDbModel.FK_CollectionLevel02_ConsolidationLevel02">
             <End Role="ConsolidationLevel02" EntitySet="ConsolidationLevel02" />
@@ -4048,6 +4022,32 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
           <EntitySet Name="Deviation" EntityType="SgqDbModel.Deviation" />
           <EntitySet Name="EmailContent" EntityType="SgqDbModel.EmailContent" />
           <EntitySet Name="ManDataCollectIT" EntityType="SgqDbModel.ManDataCollectIT" />
+          <EntitySet Name="ConsolidationLevel2" EntityType="SgqDbModel.ConsolidationLevel2" />
+          <AssociationSet Name="FK_CollectionLevel2_ConsolidationLevel2" Association="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2">
+            <End Role="ConsolidationLevel2" EntitySet="ConsolidationLevel2" />
+            <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel2_ParLevel2" Association="SgqDbModel.FK_ConsolidationLevel2_ParLevel2">
+            <End Role="ParLevel2" EntitySet="ParLevel2" />
+            <End Role="ConsolidationLevel2" EntitySet="ConsolidationLevel2" />
+          </AssociationSet>
+          <EntitySet Name="ConsolidationLevel1" EntityType="SgqDbModel.ConsolidationLevel1" />
+          <AssociationSet Name="FK_ConsolidationLevel1_Department" Association="SgqDbModel.FK_ConsolidationLevel1_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel1_Level1" Association="SgqDbModel.FK_ConsolidationLevel1_Level1">
+            <End Role="ParLevel1" EntitySet="ParLevel1" />
+            <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel1_ParCompany" Association="SgqDbModel.FK_ConsolidationLevel1_ParCompany">
+            <End Role="ParCompany" EntitySet="ParCompany" />
+            <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConsolidationLevel2_ConsolidationLevel1" Association="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel1">
+            <End Role="ConsolidationLevel1" EntitySet="ConsolidationLevel1" />
+            <End Role="ConsolidationLevel2" EntitySet="ConsolidationLevel2" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="DelDados">
           <Key>
@@ -4310,34 +4310,6 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
           <NavigationProperty Name="Level01" Relationship="SgqDbModel.FK_ConsolidationLevel01_Level01" FromRole="ConsolidationLevel01" ToRole="Level01" />
           <NavigationProperty Name="Unit" Relationship="SgqDbModel.FK_ConsolidationLevel01_Unit" FromRole="ConsolidationLevel01" ToRole="Unit" />
           <NavigationProperty Name="ConsolidationLevel02" Relationship="SgqDbModel.FK_ConsolidationLevel02_ConsolidationLevel01" FromRole="ConsolidationLevel01" ToRole="ConsolidationLevel02" />
-        </EntityType>
-        <EntityType Name="ConsolidationLevel1">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UnitId" Type="Int32" Nullable="false" />
-          <Property Name="DepartmentId" Type="Int32" Nullable="false" />
-          <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="ConsolidationDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="Evaluation" Type="Decimal" Precision="32" Scale="8" />
-          <Property Name="AtualAlert" Type="Int32" />
-          <Property Name="WeiEvaluation" Type="Decimal" Precision="32" Scale="8" />
-          <Property Name="EvaluateTotal" Type="Decimal" Precision="32" Scale="8" />
-          <Property Name="DefectsTotal" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="WeiDefects" Type="Decimal" Precision="30" Scale="8" />
-          <Property Name="TotalLevel3Evaluation" Type="Int32" />
-          <Property Name="TotalLevel3WithDefects" Type="Int32" />
-          <Property Name="LastEvaluationAlert" Type="Int32" />
-          <Property Name="EvaluatedResult" Type="Int32" />
-          <Property Name="DefectsResult" Type="Int32" />
-          <NavigationProperty Name="Department" Relationship="SgqDbModel.FK_ConsolidationLevel1_Department" FromRole="ConsolidationLevel1" ToRole="Department" />
-          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_Level1" FromRole="ConsolidationLevel1" ToRole="ParLevel1" />
-          <Property Name="LastLevel2Alert" Type="Int32" />
-          <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ConsolidationLevel1_ParCompany" FromRole="ConsolidationLevel1" ToRole="ParCompany" />
-          <NavigationProperty Name="ConsolidationLevel2" Relationship="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel11" FromRole="ConsolidationLevel1" ToRole="ConsolidationLevel2" />
         </EntityType>
         <EntityType Name="CorrectiveAction">
           <Key>
@@ -4704,7 +4676,6 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="Level2Number" Type="Int32" />
           <Property Name="hashKey" Type="Int32" />
-          <NavigationProperty Name="ConsolidationLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_Level1" FromRole="ParLevel1" ToRole="ConsolidationLevel1" />
           <NavigationProperty Name="ParConsolidationType" Relationship="SgqDbModel.FK_ParLevel1_ParConsolidationType" FromRole="ParLevel1" ToRole="ParConsolidationType" />
           <NavigationProperty Name="ParFrequency" Relationship="SgqDbModel.FK_ParLevel1_ParFrequency" FromRole="ParLevel1" ToRole="ParFrequency" />
           <NavigationProperty Name="ParGoal" Relationship="SgqDbModel.FK_ParGoal_ParLevel1" FromRole="ParLevel1" ToRole="ParGoal" />
@@ -4728,6 +4699,7 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
           <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel1" FromRole="ParLevel1" ToRole="CollectionLevel2" />
           <NavigationProperty Name="ParScoreType" Relationship="SgqDbModel.FK_ParLevel1_ParScoreType" FromRole="ParLevel1" ToRole="ParScoreType" />
           <NavigationProperty Name="ParCounterXLocal" Relationship="SgqDbModel.FK_ParCounterLocal_ParLevel1" FromRole="ParLevel1" ToRole="ParCounterXLocal" />
+          <NavigationProperty Name="ConsolidationLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_Level1" FromRole="ParLevel1" ToRole="ConsolidationLevel1" />
         </EntityType>
         <EntityType Name="ParLevel1XCluster">
           <Key>
@@ -4787,8 +4759,8 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
           <NavigationProperty Name="ParSample" Relationship="SgqDbModel.FK_ParSample_ParLevel2" FromRole="ParLevel2" ToRole="ParSample" />
           <Property Name="HasSampleTotal" Type="Boolean" />
           <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel2" FromRole="ParLevel2" ToRole="CollectionLevel2" />
-          <NavigationProperty Name="ConsolidationLevel2" Relationship="SgqDbModel.FK_ConsolidationLevel2_ParLevel2" FromRole="ParLevel2" ToRole="ConsolidationLevel2" />
           <NavigationProperty Name="ParCounterXLocal" Relationship="SgqDbModel.FK_ParCounterLocal_ParLevel2" FromRole="ParLevel2" ToRole="ParCounterXLocal" />
+          <NavigationProperty Name="ConsolidationLevel2" Relationship="SgqDbModel.FK_ConsolidationLevel2_ParLevel2" FromRole="ParLevel2" ToRole="ConsolidationLevel2" />
         </EntityType>
         <EntityType Name="ParLevel2ControlCompany">
           <Key>
@@ -5352,30 +5324,6 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
             </Principal>
             <Dependent Role="ConsolidationLevel01">
               <PropertyRef Name="UnitId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ConsolidationLevel1_Department">
-          <End Type="SgqDbModel.Department" Role="Department" Multiplicity="1" />
-          <End Type="SgqDbModel.ConsolidationLevel1" Role="ConsolidationLevel1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Department">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel1">
-              <PropertyRef Name="DepartmentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ConsolidationLevel1_Level1">
-          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
-          <End Type="SgqDbModel.ConsolidationLevel1" Role="ConsolidationLevel1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel1">
-              <PropertyRef Name="ParLevel1_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6061,7 +6009,6 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
           <Property Name="DBServer" Type="String" MaxLength="155" FixedLength="false" Unicode="true" />
           <Property Name="IntegrationId" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="ParCompany_Id" Type="Int32" />
-          <NavigationProperty Name="ConsolidationLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_ParCompany" FromRole="ParCompany" ToRole="ConsolidationLevel1" />
           <NavigationProperty Name="Defect" Relationship="SgqDbModel.FK_Defect_ParCompany" FromRole="ParCompany" ToRole="Defect" />
           <NavigationProperty Name="VolumeCepDesossa" Relationship="SgqDbModel.FK__CepDesoss__ParCo__17D860BF" FromRole="ParCompany" ToRole="VolumeCepDesossa" />
           <NavigationProperty Name="VolumeCepRecortes" Relationship="SgqDbModel.FK__CepRecort__ParCo__1407CFDB" FromRole="ParCompany" ToRole="VolumeCepRecortes" />
@@ -6077,20 +6024,8 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
           <NavigationProperty Name="ParLevel3Value" Relationship="SgqDbModel.FK_ParLevel3Value_ParCompany" FromRole="ParCompany" ToRole="ParLevel3Value" />
           <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParCompany" FromRole="ParCompany" ToRole="ParNotConformityRuleXLevel" />
           <NavigationProperty Name="ParSample" Relationship="SgqDbModel.FK_ParSample_ParCompany" FromRole="ParCompany" ToRole="ParSample" />
-          <NavigationProperty Name="ConsolidationLevel2" Relationship="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel1" FromRole="ParCompany" ToRole="ConsolidationLevel2" />
+          <NavigationProperty Name="ConsolidationLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_ParCompany" FromRole="ParCompany" ToRole="ConsolidationLevel1" />
         </EntityType>
-        <Association Name="FK_ConsolidationLevel1_ParCompany">
-          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="1" />
-          <End Type="SgqDbModel.ConsolidationLevel1" Role="ConsolidationLevel1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel1">
-              <PropertyRef Name="UnitId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Defect_ParCompany">
           <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="1" />
           <End Type="SgqDbModel.Defect" Role="Defect" Multiplicity="*" />
@@ -6409,10 +6344,10 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
           <Property Name="StartPhaseEvaluation" Type="Int32" />
           <NavigationProperty Name="UserSgq" Relationship="SgqDbModel.FK_CollectionLevel2_UserSgq" FromRole="CollectionLevel2" ToRole="UserSgq" />
           <Property Name="CounterDonePhase" Type="Int32" />
-          <NavigationProperty Name="ConsolidationLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2" FromRole="CollectionLevel2" ToRole="ConsolidationLevel2" />
           <NavigationProperty Name="CollectionLevel21" Relationship="SgqDbModel.FK_CollectionLevel2_CollectionLevel2" FromRole="CollectionLevel2" ToRole="CollectionLevel21" />
           <NavigationProperty Name="CollectionLevel22" Relationship="SgqDbModel.FK_CollectionLevel2_CollectionLevel2" FromRole="CollectionLevel21" ToRole="CollectionLevel2" />
           <NavigationProperty Name="CorrectiveAction" Relationship="SgqDbModel.FK_CorrectiveAction_CollectionLevel2" FromRole="CollectionLevel2" ToRole="CorrectiveAction" />
+          <NavigationProperty Name="ConsolidationLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2" FromRole="CollectionLevel2" ToRole="ConsolidationLevel2" />
         </EntityType>
         <Association Name="FK_CollectionLevel2_ParLevel1">
           <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
@@ -6772,69 +6707,6 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="ConsolidationLevel2">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ConsolidationLevel1_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParLevel2_Id" Type="Int32" Nullable="false" />
-          <Property Name="UnitId" Type="Int32" Nullable="false" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="AlertLevel" Type="Int32" />
-          <Property Name="ConsolidationDate" Type="DateTime" Precision="7" />
-          <Property Name="WeiEvaluation" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="EvaluateTotal" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="DefectsTotal" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="WeiDefects" Type="Decimal" Precision="30" Scale="8" />
-          <Property Name="TotalLevel3Evaluation" Type="Int32" />
-          <Property Name="TotalLevel3WithDefects" Type="Int32" />
-          <Property Name="LastEvaluationAlert" Type="Int32" />
-          <Property Name="EvaluatedResult" Type="Int32" />
-          <Property Name="DefectsResult" Type="Int32" />
-          <Property Name="LastLevel2Alert" Type="Int32" />
-          <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2" FromRole="ConsolidationLevel2" ToRole="CollectionLevel2" />
-          <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel1" FromRole="ConsolidationLevel2" ToRole="ParCompany" />
-          <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ConsolidationLevel2_ParLevel2" FromRole="ConsolidationLevel2" ToRole="ParLevel2" />
-          <NavigationProperty Name="ConsolidationLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel11" FromRole="ConsolidationLevel2" ToRole="ConsolidationLevel1" />
-        </EntityType>
-        <Association Name="FK_CollectionLevel2_ConsolidationLevel2">
-          <End Type="SgqDbModel.ConsolidationLevel2" Role="ConsolidationLevel2" Multiplicity="1" />
-          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ConsolidationLevel2">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CollectionLevel2">
-              <PropertyRef Name="ConsolidationLevel2_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ConsolidationLevel2_ConsolidationLevel1">
-          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="1" />
-          <End Type="SgqDbModel.ConsolidationLevel2" Role="ConsolidationLevel2" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParCompany">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel2">
-              <PropertyRef Name="UnitId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ConsolidationLevel2_ParLevel2">
-          <End Type="SgqDbModel.ParLevel2" Role="ParLevel2" Multiplicity="1" />
-          <End Type="SgqDbModel.ConsolidationLevel2" Role="ConsolidationLevel2" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel2">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel2">
-              <PropertyRef Name="ParLevel2_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="ParCounter">
           <Key>
             <PropertyRef Name="Id" />
@@ -6960,18 +6832,6 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
             </Principal>
             <Dependent Role="CorrectiveAction">
               <PropertyRef Name="CollectionLevel02Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ConsolidationLevel2_ConsolidationLevel11">
-          <End Type="SgqDbModel.ConsolidationLevel1" Role="ConsolidationLevel1" Multiplicity="1" />
-          <End Type="SgqDbModel.ConsolidationLevel2" Role="ConsolidationLevel2" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ConsolidationLevel1">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConsolidationLevel2">
-              <PropertyRef Name="ConsolidationLevel1_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7127,6 +6987,136 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
           <Property Name="Comments" Type="String" MaxLength="800" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="ConsolidationLevel2">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConsolidationLevel1_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParLevel2_Id" Type="Int32" Nullable="false" />
+          <Property Name="UnitId" Type="Int32" Nullable="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="AlertLevel" Type="Int32" />
+          <Property Name="ConsolidationDate" Type="DateTime" Precision="7" />
+          <Property Name="WeiEvaluation" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="EvaluateTotal" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="DefectsTotal" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="WeiDefects" Type="Decimal" Precision="30" Scale="8" />
+          <Property Name="TotalLevel3Evaluation" Type="Int32" />
+          <Property Name="TotalLevel3WithDefects" Type="Int32" />
+          <Property Name="LastEvaluationAlert" Type="Int32" />
+          <Property Name="EvaluatedResult" Type="Int32" />
+          <Property Name="DefectsResult" Type="Int32" />
+          <Property Name="LastLevel2Alert" Type="Int32" />
+          <Property Name="ReauditIs" Type="Int32" Nullable="false" />
+          <Property Name="ReauditNumber" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2" FromRole="ConsolidationLevel2" ToRole="CollectionLevel2" />
+          <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ConsolidationLevel2_ParLevel2" FromRole="ConsolidationLevel2" ToRole="ParLevel2" />
+          <NavigationProperty Name="ConsolidationLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel1" FromRole="ConsolidationLevel2" ToRole="ConsolidationLevel1" />
+        </EntityType>
+        <Association Name="FK_CollectionLevel2_ConsolidationLevel2">
+          <End Type="SgqDbModel.ConsolidationLevel2" Role="ConsolidationLevel2" Multiplicity="1" />
+          <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConsolidationLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CollectionLevel2">
+              <PropertyRef Name="ConsolidationLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel2_ParLevel2">
+          <End Type="SgqDbModel.ParLevel2" Role="ParLevel2" Multiplicity="1" />
+          <End Type="SgqDbModel.ConsolidationLevel2" Role="ConsolidationLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel2">
+              <PropertyRef Name="ParLevel2_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ConsolidationLevel1">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UnitId" Type="Int32" Nullable="false" />
+          <Property Name="DepartmentId" Type="Int32" Nullable="false" />
+          <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="ConsolidationDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Evaluation" Type="Decimal" Precision="32" Scale="8" />
+          <Property Name="AtualAlert" Type="Int32" />
+          <Property Name="WeiEvaluation" Type="Decimal" Precision="32" Scale="8" />
+          <Property Name="EvaluateTotal" Type="Decimal" Precision="32" Scale="8" />
+          <Property Name="DefectsTotal" Type="Decimal" Precision="10" Scale="5" />
+          <Property Name="WeiDefects" Type="Decimal" Precision="30" Scale="8" />
+          <Property Name="TotalLevel3Evaluation" Type="Int32" />
+          <Property Name="TotalLevel3WithDefects" Type="Int32" />
+          <Property Name="LastEvaluationAlert" Type="Int32" />
+          <Property Name="EvaluatedResult" Type="Int32" />
+          <Property Name="DefectsResult" Type="Int32" />
+          <Property Name="LastLevel2Alert" Type="Int32" />
+          <Property Name="Shift" Type="Int32" />
+          <Property Name="Period" Type="Int32" />
+          <NavigationProperty Name="Department" Relationship="SgqDbModel.FK_ConsolidationLevel1_Department" FromRole="ConsolidationLevel1" ToRole="Department" />
+          <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_Level1" FromRole="ConsolidationLevel1" ToRole="ParLevel1" />
+          <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ConsolidationLevel1_ParCompany" FromRole="ConsolidationLevel1" ToRole="ParCompany" />
+          <NavigationProperty Name="ConsolidationLevel2" Relationship="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel1" FromRole="ConsolidationLevel1" ToRole="ConsolidationLevel2" />
+        </EntityType>
+        <Association Name="FK_ConsolidationLevel1_Department">
+          <End Type="SgqDbModel.Department" Role="Department" Multiplicity="1" />
+          <End Type="SgqDbModel.ConsolidationLevel1" Role="ConsolidationLevel1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel1">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel1_Level1">
+          <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
+          <End Type="SgqDbModel.ConsolidationLevel1" Role="ConsolidationLevel1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel1">
+              <PropertyRef Name="ParLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel1_ParCompany">
+          <End Type="SgqDbModel.ParCompany" Role="ParCompany" Multiplicity="1" />
+          <End Type="SgqDbModel.ConsolidationLevel1" Role="ConsolidationLevel1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParCompany">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel1">
+              <PropertyRef Name="UnitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConsolidationLevel2_ConsolidationLevel1">
+          <End Type="SgqDbModel.ConsolidationLevel1" Role="ConsolidationLevel1" Multiplicity="1" />
+          <End Type="SgqDbModel.ConsolidationLevel2" Role="ConsolidationLevel2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConsolidationLevel1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConsolidationLevel2">
+              <PropertyRef Name="ConsolidationLevel1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7337,31 +7327,6 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Level01Id" ColumnName="Level01Id" />
-                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
-                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ConsolidationLevel1">
-            <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel1">
-              <MappingFragment StoreEntitySet="ConsolidationLevel1">
-                <ScalarProperty Name="LastLevel2Alert" ColumnName="LastLevel2Alert" />
-                <ScalarProperty Name="DefectsResult" ColumnName="DefectsResult" />
-                <ScalarProperty Name="EvaluatedResult" ColumnName="EvaluatedResult" />
-                <ScalarProperty Name="LastEvaluationAlert" ColumnName="LastEvaluationAlert" />
-                <ScalarProperty Name="TotalLevel3WithDefects" ColumnName="TotalLevel3WithDefects" />
-                <ScalarProperty Name="TotalLevel3Evaluation" ColumnName="TotalLevel3Evaluation" />
-                <ScalarProperty Name="WeiDefects" ColumnName="WeiDefects" />
-                <ScalarProperty Name="DefectsTotal" ColumnName="DefectsTotal" />
-                <ScalarProperty Name="EvaluateTotal" ColumnName="EvaluateTotal" />
-                <ScalarProperty Name="WeiEvaluation" ColumnName="WeiEvaluation" />
-                <ScalarProperty Name="AtualAlert" ColumnName="AtualAlert" />
-                <ScalarProperty Name="Evaluation" ColumnName="Evaluation" />
-                <ScalarProperty Name="ConsolidationDate" ColumnName="ConsolidationDate" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
                 <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
                 <ScalarProperty Name="UnitId" ColumnName="UnitId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -8616,30 +8581,6 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ConsolidationLevel2">
-            <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel2">
-              <MappingFragment StoreEntitySet="ConsolidationLevel2">
-                <ScalarProperty Name="LastLevel2Alert" ColumnName="LastLevel2Alert" />
-                <ScalarProperty Name="DefectsResult" ColumnName="DefectsResult" />
-                <ScalarProperty Name="EvaluatedResult" ColumnName="EvaluatedResult" />
-                <ScalarProperty Name="LastEvaluationAlert" ColumnName="LastEvaluationAlert" />
-                <ScalarProperty Name="TotalLevel3WithDefects" ColumnName="TotalLevel3WithDefects" />
-                <ScalarProperty Name="TotalLevel3Evaluation" ColumnName="TotalLevel3Evaluation" />
-                <ScalarProperty Name="WeiDefects" ColumnName="WeiDefects" />
-                <ScalarProperty Name="DefectsTotal" ColumnName="DefectsTotal" />
-                <ScalarProperty Name="EvaluateTotal" ColumnName="EvaluateTotal" />
-                <ScalarProperty Name="WeiEvaluation" ColumnName="WeiEvaluation" />
-                <ScalarProperty Name="ConsolidationDate" ColumnName="ConsolidationDate" />
-                <ScalarProperty Name="AlertLevel" ColumnName="AlertLevel" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
-                <ScalarProperty Name="ParLevel2_Id" ColumnName="ParLevel2_Id" />
-                <ScalarProperty Name="ConsolidationLevel1_Id" ColumnName="ConsolidationLevel1_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ParCounter">
             <EntityTypeMapping TypeName="SgqDbModel.ParCounter">
               <MappingFragment StoreEntitySet="ParCounter">
@@ -8762,6 +8703,59 @@ warning 6002: The table/view 'dbGQualidade_.dbo.VWCFFResults' does not have a pr
                 <ScalarProperty Name="ReferenceDatetime" ColumnName="ReferenceDatetime" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConsolidationLevel2">
+            <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel2">
+              <MappingFragment StoreEntitySet="ConsolidationLevel2">
+                <ScalarProperty Name="ReauditNumber" ColumnName="ReauditNumber" />
+                <ScalarProperty Name="ReauditIs" ColumnName="ReauditIs" />
+                <ScalarProperty Name="LastLevel2Alert" ColumnName="LastLevel2Alert" />
+                <ScalarProperty Name="DefectsResult" ColumnName="DefectsResult" />
+                <ScalarProperty Name="EvaluatedResult" ColumnName="EvaluatedResult" />
+                <ScalarProperty Name="LastEvaluationAlert" ColumnName="LastEvaluationAlert" />
+                <ScalarProperty Name="TotalLevel3WithDefects" ColumnName="TotalLevel3WithDefects" />
+                <ScalarProperty Name="TotalLevel3Evaluation" ColumnName="TotalLevel3Evaluation" />
+                <ScalarProperty Name="WeiDefects" ColumnName="WeiDefects" />
+                <ScalarProperty Name="DefectsTotal" ColumnName="DefectsTotal" />
+                <ScalarProperty Name="EvaluateTotal" ColumnName="EvaluateTotal" />
+                <ScalarProperty Name="WeiEvaluation" ColumnName="WeiEvaluation" />
+                <ScalarProperty Name="ConsolidationDate" ColumnName="ConsolidationDate" />
+                <ScalarProperty Name="AlertLevel" ColumnName="AlertLevel" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+                <ScalarProperty Name="ParLevel2_Id" ColumnName="ParLevel2_Id" />
+                <ScalarProperty Name="ConsolidationLevel1_Id" ColumnName="ConsolidationLevel1_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConsolidationLevel1">
+            <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel1">
+              <MappingFragment StoreEntitySet="ConsolidationLevel1">
+                <ScalarProperty Name="Period" ColumnName="Period" />
+                <ScalarProperty Name="Shift" ColumnName="Shift" />
+                <ScalarProperty Name="LastLevel2Alert" ColumnName="LastLevel2Alert" />
+                <ScalarProperty Name="DefectsResult" ColumnName="DefectsResult" />
+                <ScalarProperty Name="EvaluatedResult" ColumnName="EvaluatedResult" />
+                <ScalarProperty Name="LastEvaluationAlert" ColumnName="LastEvaluationAlert" />
+                <ScalarProperty Name="TotalLevel3WithDefects" ColumnName="TotalLevel3WithDefects" />
+                <ScalarProperty Name="TotalLevel3Evaluation" ColumnName="TotalLevel3Evaluation" />
+                <ScalarProperty Name="WeiDefects" ColumnName="WeiDefects" />
+                <ScalarProperty Name="DefectsTotal" ColumnName="DefectsTotal" />
+                <ScalarProperty Name="EvaluateTotal" ColumnName="EvaluateTotal" />
+                <ScalarProperty Name="WeiEvaluation" ColumnName="WeiEvaluation" />
+                <ScalarProperty Name="AtualAlert" ColumnName="AtualAlert" />
+                <ScalarProperty Name="Evaluation" ColumnName="Evaluation" />
+                <ScalarProperty Name="ConsolidationDate" ColumnName="ConsolidationDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
