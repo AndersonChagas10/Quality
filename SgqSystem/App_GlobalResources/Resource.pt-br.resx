@@ -1920,4 +1920,7 @@
   <data name="select_one_company" xml:space="preserve">
     <value>Selecione pelo menos uma empresa.</value>
   </data>
+  <data name="select_the_level1" xml:space="preserve">
+    <value>É necessario selecionar o indicador</value>
+  </data>
 </root>
