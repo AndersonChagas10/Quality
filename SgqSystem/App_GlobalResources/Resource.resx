@@ -1941,4 +1941,7 @@
   <data name="select_one_company" xml:space="preserve">
     <value>Select at least one company</value>
   </data>
+  <data name="select_the_level1" xml:space="preserve">
+    <value>Select the level 1</value>
+  </data>
 </root>
