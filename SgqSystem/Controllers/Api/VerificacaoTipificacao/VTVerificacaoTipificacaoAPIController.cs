@@ -457,7 +457,7 @@ namespace SgqSystem.Controllers.Api
                                         var consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(verificacaoTipificacao.UnidadeId, consolidationLevel1.Id, ParLevel2.Id);
                                         if (consolidationLevel2 == null)
                                         {
-                                            consolidationLevel2 = SgqSystem.InsertConsolidationLevel2(consolidationLevel1.Id, ParLevel2.Id, verificacaoTipificacao.UnidadeId, dataC);
+                                            consolidationLevel2 = SgqSystem.InsertConsolidationLevel2(consolidationLevel1.Id, ParLevel2.Id, verificacaoTipificacao.UnidadeId, dataC,false,0);
                                             if (consolidationLevel2 == null)
                                             {
                                                 throw new Exception();

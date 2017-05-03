@@ -244,7 +244,6 @@ namespace SgqSystem.Controllers
             });
 
             /*Fim  2º*/
-
             #endregion
 
             #region Meio
