@@ -546,7 +546,7 @@ namespace SgqSystem.Services
                     string Reaudit = BoolConverter(c.Reaudit.ToString());
 
                     string StartPhase = arrayHeader[2];
-                    if (string.IsNullOrEmpty(StartPhase) || StartPhase == "null" || StartPhase == "undefined")
+                    if (string.IsNullOrEmpty(StartPhase) || StartPhase.ToLowerInvariant() == "null".ToLowerInvariant() || StartPhase.ToLowerInvariant() == "undefined".ToLowerInvariant())
                     {
                         StartPhase = "'0001-01-01 00:00:00'";
                     }
@@ -1586,7 +1586,7 @@ namespace SgqSystem.Services
                 {
                     sql += "INSERT INTO Result_Level3 ([CollectionLevel2_Id],[ParLevel3_Id],[ParLevel3_Name],[Weight],[IntervalMin],[IntervalMax],[Value],[ValueText],[IsConform],[IsNotEvaluate],[PunishmentValue],[Defects],[Evaluation],[WeiEvaluation],[WeiDefects]) " +
                            "VALUES " +
-                           "('" + CollectionLevel02Id + "','" + Level03Id + "', '" + parLevel3List.Where(p => p.Id == Convert.ToInt32(Level03Id)).FirstOrDefault().Name + "'," + weight + "," + intervalMin + "," + intervalMax + ", " + value + ",'" + valueText + "','" + conform + "','" + isnotEvaluate + "', " + punishimentValue + ", " + defects + ", " + evaluation + ", " + WeiEvaluation + ", " + WeiDefects + ") ";
+                           "('" + CollectionLevel02Id + "','" + Level03Id + "', '" + parLevel3List.FirstOrDefault(p => p.Id == Convert.ToInt32(Level03Id)).Name.Replace("'", "''") + "'," + weight + "," + intervalMin + "," + intervalMax + ", " + value + ",'" + valueText + "','" + conform + "','" + isnotEvaluate + "', " + punishimentValue + ", " + defects + ", " + evaluation + ", " + WeiEvaluation + ", " + WeiDefects + ") ";
 
                     sql += " SELECT @@IDENTITY AS 'Identity'";
 
