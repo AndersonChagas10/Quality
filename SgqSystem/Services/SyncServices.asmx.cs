@@ -546,7 +546,7 @@ namespace SgqSystem.Services
                     string Reaudit = BoolConverter(c.Reaudit.ToString());
 
                     string StartPhase = arrayHeader[2];
-                    if (string.IsNullOrEmpty(StartPhase) || StartPhase.ToLowerInvariant() == "null".ToLowerInvariant() || StartPhase.ToLowerInvariant() == "undefined".ToLowerInvariant())
+                    if (VerificaStringNulaUndefinedNaN(StartPhase))
                     {
                         StartPhase = "'0001-01-01 00:00:00'";
                     }
@@ -634,11 +634,11 @@ namespace SgqSystem.Services
                     var consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(c.Unit_Id, consolidationLevel1.Id, c.level02_Id);
 
                     if (c.Reaudit)
-                        consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(c.Unit_Id, consolidationLevel1.Id, c.level02_Id,1);
+                        consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(c.Unit_Id, consolidationLevel1.Id, c.level02_Id, 1);
 
                     if (consolidationLevel2 == null)
                     {
-                        consolidationLevel2 = InsertConsolidationLevel2(consolidationLevel1.Id, c.level02_Id, c.Unit_Id, c.Level02CollectionDate,c.Reaudit,c.ReauditNumber);
+                        consolidationLevel2 = InsertConsolidationLevel2(consolidationLevel1.Id, c.level02_Id, c.Unit_Id, c.Level02CollectionDate, c.Reaudit, c.ReauditNumber);
                         if (consolidationLevel2 == null)
                         {
                             throw new Exception();
@@ -787,7 +787,10 @@ namespace SgqSystem.Services
             }
         }
 
-
+        private static bool VerificaStringNulaUndefinedNaN(string value)
+        {
+            return (string.IsNullOrEmpty(value) || value.ToLowerInvariant() == "null".ToLowerInvariant() || value.ToLowerInvariant() == "undefined".ToLowerInvariant() || value.ToLowerInvariant() == "nan".ToLowerInvariant());
+        }
 
         public int updateJson(int CollectionJson_Id)
         {
@@ -5396,7 +5399,9 @@ namespace SgqSystem.Services
                 }
 
                 var dt = DateCollectConvert(deviationDate);
-                
+
+                if (VerificaStringNulaUndefinedNaN(defects))
+                    defects = "0";
 
                 sql += "INSERT INTO Deviation ([ParCompany_Id],[ParLevel1_Id],[ParLevel2_Id],[Evaluation],[Sample],[AlertNumber],[Defects],[DeviationDate],[AddDate],[sendMail], [DeviationMessage]) " +
                         "VALUES " +
