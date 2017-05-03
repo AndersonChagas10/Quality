@@ -474,7 +474,7 @@ namespace SgqSystem.Services
         /// <returns></returns>
         /// Para chamar uma consolidação geral digite [web]
         [WebMethod]
-        public string ProcessJson(string device, int id, int? ParLevel1_Id = null)
+        public string ProcessJson(string device, int id)
         {
 
             try
@@ -519,14 +519,14 @@ namespace SgqSystem.Services
                      * MOCK INDICADOR FILHO GABRIEL
                      * 30/03/2017
                      */
-                    if (c.level01_Id == 22)
-                    {
-                        ParLevel1_Id = 1042;
-                    }
-                    else
-                    {
-                        ParLevel1_Id = null;
-                    }
+                    //if (c.level01_Id == 22)
+                    //{
+                    //    ParLevel1_Id = 1042;
+                    //}
+                    //else
+                    //{
+                    //    ParLevel1_Id = null;
+                    //}
 
 
                     int ConsolidationLevel1_Id = 0;
@@ -674,7 +674,7 @@ namespace SgqSystem.Services
                     if (CollectionLevel2Id > 0)
                     {
 
-                        int CollectionLevel3Id = InsertCollectionLevel3(CollectionLevel2Id.ToString(), c.level02_Id, c.Level03ResultJSon, c.AuditorId, Duplicated, ParLevel1_Id.GetValueOrDefault());
+                        int CollectionLevel3Id = InsertCollectionLevel3(CollectionLevel2Id.ToString(), c.level02_Id, c.Level03ResultJSon, c.AuditorId, Duplicated);
 
 
                         headersContadores = headersContadores.Replace("</header><header>", ";").Replace("<header>", "").Replace("</header>", "");
@@ -1458,24 +1458,24 @@ namespace SgqSystem.Services
         /// <param name="auditorId">Id do Auditor</param>
         /// <param name="duplicated">Duplicado</param>
         /// <returns></returns>
-        public int InsertCollectionLevel3(string CollectionLevel02Id, int level02, string level03Results, int auditorId, string duplicated, int? ParLevel1_Id = null, bool? TarefasIndicadorFilho = false)
+        public int InsertCollectionLevel3(string CollectionLevel02Id, int level02, string level03Results, int auditorId, string duplicated)
         {
             ///coloquei uma @ para replace, mas podemos utilizar o padrão de ; ou <> desde que todos os campos venha do script com escape()
             //string obj, string collectionDate, string level01id, string unit, string period, string shift, string device, string version
 
             IEnumerable<ParLevel3> parLevel3List_IndicadorFilho = null;
 
-            if (ParLevel1_Id != null)
-            {
-                /*
-                 * MOCK Gabriel para indicador filho
-                 * 30/03/2017
-                 */
+            //if (ParLevel1_Id != null)
+            //{
+            //    /*
+            //     * MOCK Gabriel para indicador filho
+            //     * 30/03/2017
+            //     */
 
-                var ParLevel3DB_IndicadorFilho = new SGQDBContext.ParLevel3(db);
-                parLevel3List_IndicadorFilho = ParLevel3DB_IndicadorFilho.getListPerLevel1Id(ParLevel1_Id.GetValueOrDefault());
+            //    var ParLevel3DB_IndicadorFilho = new SGQDBContext.ParLevel3(db);
+            //    parLevel3List_IndicadorFilho = ParLevel3DB_IndicadorFilho.getListPerLevel1Id(ParLevel1_Id.GetValueOrDefault());
 
-            }
+            //}
 
             //Prepara a string para ser convertida em Array
             level03Results = level03Results.Replace("</level03><level03>", "@").Replace("<level03>", "").Replace("</level03>", "");
@@ -1504,28 +1504,28 @@ namespace SgqSystem.Services
 
                 bool skip = false;
 
-                if (TarefasIndicadorFilho.GetValueOrDefault())
-                {
-                    skip = true;
+                //if (TarefasIndicadorFilho.GetValueOrDefault())
+                //{
+                //    skip = true;
 
-                    foreach (var l3_filho in parLevel3List_IndicadorFilho)
-                    {
-                        if (l3_filho.Id.ToString() == Level03Id)
-                        {
-                            skip = false;
-                        }
-                    }
-                }
-                else
-                {
-                    foreach (var l3_filho in parLevel3List_IndicadorFilho)
-                    {
-                        if (l3_filho.Id.ToString() == Level03Id)
-                        {
-                            skip = true;
-                        }
-                    }
-                }
+                //    foreach (var l3_filho in parLevel3List_IndicadorFilho)
+                //    {
+                //        if (l3_filho.Id.ToString() == Level03Id)
+                //        {
+                //            skip = false;
+                //        }
+                //    }
+                //}
+                //else
+                //{
+                    //foreach (var l3_filho in parLevel3List_IndicadorFilho)
+                    //{
+                    //    if (l3_filho.Id.ToString() == Level03Id)
+                    //    {
+                    //        skip = true;
+                    //    }
+                    //}
+                //}
 
                 if (skip)
                 {
