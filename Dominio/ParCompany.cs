@@ -17,7 +17,6 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParCompany()
         {
-            this.ConsolidationLevel1 = new HashSet<ConsolidationLevel1>();
             this.Defect = new HashSet<Defect>();
             this.VolumeCepDesossa = new HashSet<VolumeCepDesossa>();
             this.VolumeCepRecortes = new HashSet<VolumeCepRecortes>();
@@ -33,7 +32,7 @@ namespace Dominio
             this.ParLevel3Value = new HashSet<ParLevel3Value>();
             this.ParNotConformityRuleXLevel = new HashSet<ParNotConformityRuleXLevel>();
             this.ParSample = new HashSet<ParSample>();
-            this.ConsolidationLevel2 = new HashSet<ConsolidationLevel2>();
+            this.ConsolidationLevel1 = new HashSet<ConsolidationLevel1>();
         }
     
         public int Id { get; set; }
@@ -50,8 +49,6 @@ namespace Dominio
         public Nullable<decimal> IntegrationId { get; set; }
         public Nullable<int> ParCompany_Id { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Defect> Defect { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -83,6 +80,6 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParSample> ParSample { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ConsolidationLevel2> ConsolidationLevel2 { get; set; }
+        public virtual ICollection<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
     }
 }
