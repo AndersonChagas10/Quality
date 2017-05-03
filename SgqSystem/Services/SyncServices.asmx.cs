@@ -2296,8 +2296,8 @@ namespace SgqSystem.Services
                     "\n     CL2.ParLevel1_Id,                                                                                                                                                     " +
                     "\n     CL2.ParLevel2_Id,                                                                                                                                                     " +
                     "\n     CL2.UnitId,                                                                                                                                                           " +
-                    "\n     Shift,                                                                                                                                                                " +
-                    "\n     Period,                                                                                                                                                               " +
+                    "\n     CL2.Shift,                                                                                                                                                                " +
+                    "\n     CL2.Period,                                                                                                                                                               " +
                     "\n     CONVERT(date, CollectionDate) AS CollectionDate,                                                                                                                      " +
                     "\n     EvaluationNumber,                                                                                                                                                     " +
                     "\n     MAX(Sample) AS Sample,                                                                                                                                                " +
@@ -2336,8 +2336,8 @@ namespace SgqSystem.Services
                     "\n     CL2.ParLevel1_Id,                                                                                                                                                     " +
                     "\n     CL2.ParLevel2_Id,                                                                                                                                                     " +
                     "\n     CL2.UnitId,                                                                                                                                                           " +
-                    "\n     Shift,                                                                                                                                                                " +
-                    "\n     Period,                                                                                                                                                               " +
+                    "\n     CL2.Shift,                                                                                                                                                                " +
+                    "\n     CL2.Period,                                                                                                                                                               " +
                     "\n     CONVERT(date, CollectionDate),                                                                                                                                        " +
                     "\n     EvaluationNumber,                                                                                                                                                     " +
                     "\n     ConsolidationLevel2_Id                                                                                                                                                " +

@@ -6,6 +6,7 @@ using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
@@ -94,6 +95,27 @@ namespace SgqSystem.Controllers
         [FormularioPesquisa(filtraUnidadePorUsuario = true, parLevel1e2 = true)]
         public ActionResult ApontamentosDiarios()
         {
+            //Retorna as Roles do usuário logado para filtrar o botão de edição
+            HttpCookie cookie = HttpContext.Request.Cookies.Get("webControlCookie");
+            var db = new SgqDbDevEntities();
+            List<string> Retorno = new List<string>();
+
+            int _userId = 0;
+            if (!string.IsNullOrEmpty(cookie.Values["roles"]))
+            {
+                _userId = Convert.ToInt32(cookie.Values["userId"].ToString());
+            }
+                      
+            var roles = db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == _userId).ToList();
+            
+            foreach (var role in roles)
+            {
+                Retorno.Add(role.Role);
+            }
+
+            ViewBag.Roles = Retorno;
+            //Fim da Role
+
             return View(form);
         }
 
