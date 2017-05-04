@@ -90,12 +90,20 @@ namespace SgqSystem.Services
 
         /**
          * TODOS QUE CHAMEREM ESTE MÉTODO DEVEM ENVIAR A DATA MM/dd/yyyy
+         * OU YYYY-MM-DD (2017-05-03)
          * COMENTÁRIO: GABRIEL 2017-04-24
          * 
          */ 
 
         private DateTime DateCollectConvert(string collectionDate)
         {
+            //acerto para data yyyy-mm-dd
+            if (collectionDate.Contains("-"))
+            {
+                collectionDate = collectionDate.Substring(5, 2) + "/" + collectionDate.Substring(8, 2) + "/" + collectionDate.Substring(0, 4) + " 00:00:00";
+            }
+            else
+            //fim acerto data yyyy-mm-dd
             if (!collectionDate.Contains("/"))
             {
                 collectionDate = collectionDate.Substring(0, 2) + "/" + collectionDate.Substring(2, 2) + "/" + collectionDate.Substring(4, 4) + " 00:00:00";
