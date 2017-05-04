@@ -2138,7 +2138,7 @@ namespace SgqSystem.Services
                     "\n set @datafim =  @data " +
                     "\n " +
                     "\n set @datadiario = @data     --1,2,3 " +
-                    "\n set @datasemanal = DATEADD(DAY,-(DATEPART(WEEKDAY,@data)),@data)    --4 " +
+                    "\n set @datasemanal = DATEADD(DAY,-(DATEPART(WEEKDAY,@data)-1),@data)    --4 " +
                     "\n set @dataquinzenal = CASE WHEN DAY(@data) < 16 THEN dateadd(month,1,DateAdd(mm, DateDiff(mm,0,@data) - 1, 0)) ELSE DATEADD(DAY,15,dateadd(month,1,DateAdd(mm, DateDiff(mm,0,@data) - 1, 0))) END   --5 " +
                     "\n set @datamensal = dateadd(month,1,DateAdd(mm, DateDiff(mm,0,@data) - 1, 0))      --6 " +
                     "\n " +
@@ -2291,7 +2291,7 @@ namespace SgqSystem.Services
                     "\n CollectionLevel2_ID_CorrectiveAction=\"' + ISNULL(REPLACE(CAST(MIN(CL2.Id) AS VARCHAR),'.',','),'NULL') + '\"" +
                     "\n CollectionLevel2_Period_CorrectiveAction=\"' + ISNULL(REPLACE(CAST(MIN(CL2.Period) AS VARCHAR),'.',','),'NULL') + '\"\">" +
                     "\n ' + @RESPOSTA + ' " +
-                    "\n </ div > \";'  AS retorno                                                                                                                                                            " +
+                    "\n </div>'  AS retorno                                                                                                                                                            " +
                     "\n                                                                                                                                                                           " +
                     "\n FROM ConsolidationLevel2 AS CDL2                                                                                                                                          " +
                     "\n INNER JOIN ConsolidationLevel1 AS CDL1                                                                                                                                    " +
@@ -2375,7 +2375,10 @@ namespace SgqSystem.Services
                     "\n ConsolidationLevel2_Id                                                                                                                                                    " +
                     "\n                                                                                                                                                                           " +
                     "\n ) Level2Result                                                                                                                                                            " +
-                    "\n ON Level2Result.ParLevel2_Id = CDL2.ParLevel2_Id                                                                                                                          " +
+                    //"\n ON Level2Result.ParLevel2_Id = CDL2.ParLevel2_Id                                                                                                                          " +
+
+                    "\n ON Level2Result.ParLevel2_Id = CDL2.ParLevel2_Id AND Level2Result.ConsolidationLevel2_Id = CDL2.Id                                                                        " +
+
                     "\n WHERE 1 = 1                                                                                                                                                               " +
                     "\n --AND(CDL2.ParLevel2_Id = 1268)                                                                                                                                           " +
                     "\n --AND CDL1.ParLevel1_Id = 1043                                                                                                                                            " +
