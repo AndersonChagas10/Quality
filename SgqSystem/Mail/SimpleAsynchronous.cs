@@ -207,12 +207,19 @@ namespace SgqSystem.Mail
         {
             using (var db = new SgqDbDevEntities())
             {
-                var ids = db.CollectionJson.Where(r => !r.IsProcessed && r.TTP == null).Select(r => r.Id).ToList();
+                var ids = db.CollectionJson.Where(r => !r.IsProcessed /*&& r.TTP == null*/).Select(r => r.Id).ToList();
                 foreach (var i in ids)
                 {
                     using (var service = new SyncServices())
                     {
-                        service.ProcessJson("", i);
+                        try
+                        {
+                            service.ProcessJson("", i);
+                        }
+                        catch (Exception e)
+                        {
+                            //new CreateLog(e);
+                        }
                     }
                 }
             }
