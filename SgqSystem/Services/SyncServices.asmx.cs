@@ -679,7 +679,11 @@ namespace SgqSystem.Services
                                                 haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel, sequential, side,
                                                 weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, startphaseevaluation, hashKey);
 
-                    if (CollectionLevel2Id > 0)
+                    if (CollectionLevel2Id == 2627)
+                    {
+                        int jsonUpdate = updateJsonDuplicated(c.Id);
+                    }
+                    else if (CollectionLevel2Id > 0)
                     {
 
                         int CollectionLevel3Id = InsertCollectionLevel3(CollectionLevel2Id.ToString(), c.level02_Id, c.Level03ResultJSon, c.AuditorId, Duplicated);
@@ -834,6 +838,42 @@ namespace SgqSystem.Services
                 throw ex;
             }
         }
+
+        public int updateJsonDuplicated(int CollectionJson_Id)
+        {
+            string sql = "UPDATE CollectionJson SET IsProcessed=1, TTP = '2627' WHERE ID='" + CollectionJson_Id + "'";
+            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        var i = Convert.ToInt32(command.ExecuteNonQuery());
+                        if (i > 0)
+                        {
+                            return i;
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateJson");
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateJson");
+                throw ex;
+            }
+        }
+
         public int updateConsolidationLevel2(int ConsolidationLevel2_Id, string AlertLevel, string LastEvaluationAlert, string LastLevel2Alert, SGQDBContext.CollectionLevel2Consolidation CollectionLevel2Consolidation)
         {
             //verificar se não vai sobreescrever informação com tablet antigo
@@ -1277,6 +1317,8 @@ namespace SgqSystem.Services
                 "('" + key + "', '" + ConsolidationLevel2.Id + "','" + ConsolidationLevel1.ParLevel1_Id + "','" + ConsolidationLevel2.ParLevel2_Id + "','" + ConsolidationLevel1.UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + BoolConverter(Reaudit.ToString()) + "','" + ReauditNumber + "', CAST(N'" + CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") + "' AS DateTime), " + StartPhase + ",'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', " + reauditLevel + ", '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "', '" + sequential + "', '" + side + "','" + WeiEvaluation + "','" + Defects + "','" + WeiDefects + "','" + TotalLevel3WithDefects + "', '" + totalLevel3evaluation + "', '" + avaliacaoultimoalerta + "', '" + monitoramentoultimoalerta + "', '" + evaluatedresult + "', '" + defectsresult + "', '" + isemptylevel3 + "', '" + startphaseevaluation + "') ";
 
                 sql += " SELECT @@IDENTITY AS 'Identity' ";
+
+                sql = sql.Replace("'NULL'", "NULL");
             }
             else
             {
@@ -1344,6 +1386,12 @@ namespace SgqSystem.Services
                     else
                     {
                         int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel2");
+
+                        if(ex.Number == 2627)
+                        {
+                            return ex.Number;
+                        }
+
                         return 0;
                     }
                 }
