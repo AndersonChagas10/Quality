@@ -28,8 +28,13 @@ namespace SgqSystem
             // BackgroundJob.Enqueue(
             //() => SimpleAsynchronous.SendMailFromDeviationSgqApp());
 
-             BackgroundJob.Enqueue(
-            () => SimpleAsynchronous.ResendProcessJson());
+            // BackgroundJob.Enqueue(
+            //() => SimpleAsynchronous.ResendProcessJson());
+
+            //"*/1 * * * *" = 1 minutos.
+            RecurringJob.AddOrUpdate(
+                () => SimpleAsynchronous.ResendProcessJson(),
+                Cron.Minutely);
 
             //"*/1 * * * *" = 1 minutos.
             //RecurringJob.AddOrUpdate(

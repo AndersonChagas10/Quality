@@ -201,14 +201,13 @@ namespace SgqSystem.Mail
         }
 
 
-        #region SEI LA =)
+        #region ResendProcessJson
 
         public static void ResendProcessJson()
         {
-
             using (var db = new SgqDbDevEntities())
             {
-                var ids = db.CollectionJson.Where(r => r.IsProcessed && r.TTP == null).Select(r => r.Id);
+                var ids = db.CollectionJson.Where(r => !r.IsProcessed && r.TTP == null).Select(r => r.Id).ToList();
                 foreach (var i in ids)
                 {
                     using (var service = new SyncServices())
@@ -217,7 +216,6 @@ namespace SgqSystem.Mail
                     }
                 }
             }
-
         }
 
         #endregion
