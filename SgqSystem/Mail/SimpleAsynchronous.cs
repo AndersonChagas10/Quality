@@ -7,6 +7,7 @@ using System.Linq;
 using System.Data;
 using DTO;
 using System.Collections.Generic;
+using SgqSystem.Services;
 
 namespace SgqSystem.Mail
 {
@@ -198,6 +199,29 @@ namespace SgqSystem.Mail
                 //throw ex;
             }
         }
+
+
+        #region SEI LA =)
+
+        public static void ResendProcessJson()
+        {
+
+            using (var db = new SgqDbDevEntities())
+            {
+                var ids = db.CollectionJson.Where(r => r.IsProcessed && r.TTP == null).Select(r => r.Id);
+                foreach (var i in ids)
+                {
+                    using (var service = new SyncServices())
+                    {
+                        service.ProcessJson("", i);
+                    }
+                }
+            }
+
+        }
+
+        #endregion
+
     }
 }
 
