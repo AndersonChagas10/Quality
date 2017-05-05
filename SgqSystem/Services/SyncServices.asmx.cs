@@ -2875,13 +2875,13 @@ namespace SgqSystem.Services
         }
 
         [WebMethod]
-        public string getAPPLevels(int UserSgq_Id, int ParCompany_Id, DateTime Date)
+        public string getAPPLevels(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId)
         {
 
             string APPMain = string.Empty;
 
             //colocar autenticação
-            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
+            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
 
 
             string supports = "<div class=\"Results hide\"></div>" +
@@ -3080,7 +3080,7 @@ namespace SgqSystem.Services
             return evaluate;
         }
 
-        public string getAPPMain(int UserSgq_Id, int ParCompany_Id, DateTime Date)
+        public string getAPPMain(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId)
         {
             #region Antes do loop1
 
@@ -3115,7 +3115,7 @@ namespace SgqSystem.Services
 
             #endregion
 
-            var seiLaLevel1 = GetLevel01(ParCompany_Id: ParCompany_Id, dateCollect: Date); /****** PORQUE ESTA MOKADO ESSA UNIDADE 1? *******/
+            var seiLaLevel1 = GetLevel01(ParCompany_Id: ParCompany_Id, dateCollect: Date, Level1ListId: Level1ListId); /****** PORQUE ESTA MOKADO ESSA UNIDADE 1? *******/
 
             string container = html.div(outerhtml: breadCrumb + selectPeriod + seiLaLevel1, classe: "container");
 
@@ -3443,7 +3443,7 @@ namespace SgqSystem.Services
         /// Recupera Level1 e seus monitoramentos e tarefas relacionados
         /// </summary>
         /// <returns></returns>
-        public string GetLevel01(int ParCompany_Id, DateTime dateCollect)
+        public string GetLevel01(int ParCompany_Id, DateTime dateCollect, string Level1ListId)
         {
 
             #region Parametros do level 1 e "instancias"
@@ -3459,7 +3459,12 @@ namespace SgqSystem.Services
             var ParRelapseDB = new SGQDBContext.ParRelapse(db);
 
             //Buscamos os ParLevel11 para a unidade selecionada
-            var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id);
+            var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id, Level1ListId: ""); 
+            
+            if (Level1ListId != "")
+            {
+                parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id, Level1ListId: Level1ListId);
+            }
 
             //Agrupamos o ParLevel1 por ParCriticalLevel
             var parLevel1GroupByCriticalLevel = parLevel1List.OrderBy(p => p.ParCriticalLevel_Id).GroupBy(p => p.ParCriticalLevel_Id);
@@ -3634,8 +3639,10 @@ namespace SgqSystem.Services
 
                     #endregion
 
-                    //Busca os Level2 e reforna no level3Group;
-                    listLevel2 += GetLevel02(parlevel1, ParCompany_Id, dateCollect, ref level3Group);
+                    //Mock de modularização
+                    if(Level1ListId != "")
+                        //Busca os Level2 e reforna no level3Group;
+                        listLevel2 += GetLevel02(parlevel1, ParCompany_Id, dateCollect, ref level3Group);
 
                     //Incrementa Level3Group
                     listLevel3 += level3Group;
