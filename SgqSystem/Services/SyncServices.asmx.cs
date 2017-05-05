@@ -2923,7 +2923,32 @@ namespace SgqSystem.Services
         }
 
         [WebMethod]
-        public string getAPPLevels(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId)
+        public string getAPPLevels(int UserSgq_Id, int ParCompany_Id, DateTime Date)
+        {
+
+            string APPMain = string.Empty;
+            
+           //colocar autenticação
+           APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, null); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
+
+
+            string supports = "<div class=\"Results hide\"></div>" +
+                              "<div class=\"ResultsConsolidation hide\"></div>" +
+                               "<div class=\"ResultsKeys hide\"></div>" +
+                               "<div class=\"ResultsPhase hide\"></div>" +
+                               "<div class=\"ResultsDefectsEvaluation hide\"></div>" +
+                              "<div class=\"Deviations hide\"></div>" +
+                              "<div class=\"Users hide\"></div>" +
+                              "<div class=\"VerificacaoTipificacao hide\"></div>" +
+                              "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
+
+            //string resource = GetResource();
+
+            return APPMain + supports;// + resource;
+        }
+
+        [WebMethod]
+        public string getAPPLevelsModulado(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId)
         {
 
             string APPMain = string.Empty;
@@ -2946,6 +2971,7 @@ namespace SgqSystem.Services
 
             return APPMain + supports;// + resource;
         }
+
 
         public string GetResource()
         {
@@ -3507,13 +3533,8 @@ namespace SgqSystem.Services
             var ParRelapseDB = new SGQDBContext.ParRelapse(db);
 
             //Buscamos os ParLevel11 para a unidade selecionada
-            var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id, Level1ListId: ""); 
+            var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id, Level1ListId: Level1ListId); 
             
-            if (Level1ListId != "")
-            {
-                parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id, Level1ListId: Level1ListId);
-            }
-
             //Agrupamos o ParLevel1 por ParCriticalLevel
             var parLevel1GroupByCriticalLevel = parLevel1List.OrderBy(p => p.ParCriticalLevel_Id).GroupBy(p => p.ParCriticalLevel_Id);
 
@@ -3688,7 +3709,7 @@ namespace SgqSystem.Services
                     #endregion
 
                     //Mock de modularização
-                    if(Level1ListId != "")
+                    if(Level1ListId != "" || Level1ListId == null)
                         //Busca os Level2 e reforna no level3Group;
                         listLevel2 += GetLevel02(parlevel1, ParCompany_Id, dateCollect, ref level3Group);
 
