@@ -23,7 +23,7 @@
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
         <div ng-controller="MainCtrl">
-            <table st-table="displayedCollection" st-safe-src="bodies" class="table table-striped" ng-app="sgqSystem">
+            <table id="genericTable" st-table="displayedCollection" st-safe-src="bodies" class="table table-striped" ng-app="sgqSystem" style="width:100%">
                 <thead>
                     <tr>
                         <th st-sort="{{x}}" ng-repeat="x in header">{{x}}</th>
@@ -111,6 +111,7 @@
         formControl.showFullCallendar();
         closeLeftSidebar();
 
+        $('#genericTable').dataTable();
     });
 
 </script>

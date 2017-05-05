@@ -4435,6 +4435,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the level 1.
+        /// </summary>
+        internal static string select_the_level1 {
+            get {
+                return ResourceManager.GetString("select_the_level1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the level 2.
         /// </summary>
         internal static string select_the_level2 {

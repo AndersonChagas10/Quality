@@ -49,6 +49,7 @@
             closeLeftSidebar();
 
             $("#btnSend").click(function (e) {
+                $('#unitId').change();
                 Send(true);
             });
         });
@@ -239,6 +240,21 @@
 
             GuardJs.resetForValidation();
             GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+
+            if (!(parseInt( $('#unitId').val().replace(/\D/g, ''), 10) > 0)) {
+                GuardJs.exibirMensagemAlerta("@Resources.Resource.select_the_unit_first");
+                return false;
+            }
+
+            if (!(parseInt( $('#level1Id').val().replace(/\D/g, ''), 10) > 0)) {
+                GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(Resources.Resource.select_the_level1)));
+                return false;
+            }
+
+            if (!(parseInt( $('#level2Id').val().replace(/\D/g, ''), 10) > 0)) {
+                GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(@Resources.Resource.select_the_level2)));
+                return false;
+            }
 
             if (!GuardJs.isValid)
                 return !GuardJs.isValid;
