@@ -65,7 +65,7 @@ namespace SGQDBContext
                 throw ex;
             }
         }
-        public IEnumerable<ParLevel1> getParLevel1ParCriticalLevelList(int ParCompany_Id)
+        public IEnumerable<ParLevel1> getParLevel1ParCriticalLevelList(int ParCompany_Id, string Level1ListId)
         {
 
             /*
@@ -95,14 +95,18 @@ namespace SGQDBContext
                          "\n LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
                          "\n ON AL.ParLevel1_Id = P1.Id   AND AL.IsActive = 1                                                                                               " +
 
-
                          "\n INNER JOIN (SELECT ParLevel1_Id FROM (select * from parGoal where IsActive = 1 and (ParCompany_Id is null or ParCompany_Id = '" + ParCompany_Id + "')) A GROUP BY ParLevel1_Id) G  " +
                          "\n ON P1.Id = G.ParLevel1_Id                                                                                        " +
 
                          "\n WHERE CC.ParCompany_Id = '" + ParCompany_Id + "'                                                                           " +
                          "\n " + ParLevel1_IdFilho + "                                                                                                       " +
-                         "\n AND P1.IsActive = 1 AND C.IsActive = 1 AND P1C.IsActive = 1 AND CC.Active = 1                                                                                                       " +
-                         "\n ORDER BY CL.Name, P1.Name                                                                                                           ";
+                         "\n AND P1.IsActive = 1 AND C.IsActive = 1 AND P1C.IsActive = 1 AND CC.Active = 1                                                                                                       ";
+            if(Level1ListId != "" && Level1ListId != null)
+            {
+                sql += " AND P1.Id IN ("+ Level1ListId.Substring(0, Level1ListId.Length - 1) + ") ";
+            }
+
+            sql += "\n ORDER BY CL.Name, P1.Name                                                                                                           ";
 
             //var parLevel1List = (List<ParLevel1>)db.Query<ParLevel1>(sql);
 
