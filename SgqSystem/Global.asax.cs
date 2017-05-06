@@ -14,6 +14,7 @@ using Hangfire;
 using DTO;
 using System.Globalization;
 using System.Threading;
+using Hangfire.SqlServer;
 
 namespace SgqSystem
 {
@@ -32,6 +33,7 @@ namespace SgqSystem
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AutoMapperConfig.RegisterMappings();
             DisableApplicationInsightsOnDebug();
+           
 
             GlobalConfig.VerifyConfig("DbContextSgqEUA");
 
@@ -39,7 +41,12 @@ namespace SgqSystem
             TelemetryConfiguration.Active.DisableTelemetry = true;
 #endif
 
-            Hangfire.GlobalConfiguration.Configuration.UseSqlServerStorage("DbContextSgqEUA");
+            var options = new SqlServerStorageOptions
+            {
+                PrepareSchemaIfNecessary = false
+            };
+
+            Hangfire.GlobalConfiguration.Configuration.UseSqlServerStorage("DbContextSgqEUA", options);
             _backgroundJobServer = new BackgroundJobServer();
 
 

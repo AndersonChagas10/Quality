@@ -32,9 +32,9 @@ namespace SgqSystem
             //() => SimpleAsynchronous.ResendProcessJson());
 
             //"*/1 * * * *" = 1 minutos.
-            RecurringJob.AddOrUpdate(
-                () => SimpleAsynchronous.ResendProcessJson(),
-                Cron.Minutely);
+            //RecurringJob.AddOrUpdate(
+            //    () => SimpleAsynchronous.ResendProcessJson(),
+            //    Cron.Minutely);
 
             //"*/1 * * * *" = 1 minutos.
             //RecurringJob.AddOrUpdate(
