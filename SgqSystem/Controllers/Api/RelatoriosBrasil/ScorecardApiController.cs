@@ -48,6 +48,7 @@ namespace SgqSystem.Controllers.Api
                 }
 
                 sql = new ScorecardResultSet().SelectScorecardCompleto(_novaDataIni, _novaDataFim, unidadeId, 0);
+
                 using (var db = new SgqDbDevEntities())
                 {
 
@@ -113,11 +114,25 @@ namespace SgqSystem.Controllers.Api
                     }
                 }
 
-                totalScorecard = totalPontosDisputados == 0 ? 0 : Math.Round((totalPontosAtingidos / totalPontosDisputados * 100) , 2);
+                try
+                {
+                    totalScorecard = totalPontosDisputados == 0 ? 0 : Math.Round((totalPontosAtingidos / totalPontosDisputados * 100), 2);
+                }
+                catch (DivideByZeroException)
+                {
+                    totalScorecard = 0;
+                }
 
                 //_list.Add(new ScorecardResultSet() { Level1Name = "Total:", PontosIndicador = totalPontosDisputados, Scorecard = totalScorecard, PontosAtingidosIndicador = totalPontosAtingidos });
 
-                _list.Add(new ScorecardResultSet() { Level1Name = "Total:", PontosIndicador = pontosTotais[0], Scorecard = (pontosTotais[0] == 0 ? 0 : Math.Round((pontosTotais[1] / pontosTotais[0] ) * 100,2)), PontosAtingidos = totalPontosAtingidos });
+                try
+                {
+                    _list.Add(new ScorecardResultSet() { Level1Name = "Total:", PontosIndicador = pontosTotais[0], Scorecard = (pontosTotais[0] == 0 ? 0 : Math.Round((pontosTotais[1] / pontosTotais[0]) * 100, 2)), PontosAtingidos = totalPontosAtingidos });
+                }
+                catch (DivideByZeroException)
+                {
+                    _list.Add(new ScorecardResultSet() { Level1Name = "Total:", PontosIndicador = pontosTotais[0], Scorecard =  Math.Round(0.00M, 2), PontosAtingidos = totalPontosAtingidos });
+                }
 
             }
 

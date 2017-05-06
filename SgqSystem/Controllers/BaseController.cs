@@ -108,7 +108,7 @@ namespace SgqSystem.Controllers
                     if (isAuthorized.ParCompanyXUserSgq.Any(r => r.Role != null))
                         myCookie.Values.Add("rolesCompany", string.Join(",", isAuthorized.ParCompanyXUserSgq.Select(n => n.Role).Distinct().ToArray()));
                     else
-                        myCookie.Values.Add("rolesCompany", "");
+                        myCookie.Values.Add("rolesCompany", string.Join(",", isAuthorized.ParCompanyXUserSgq.Select(n => n.ParCompany_Id).Distinct().ToArray()));
 
                 //set cookie expiry date-time. Made it to last for next 12 hours.
                 myCookie.Expires = DateTime.Now.AddMinutes(60);
