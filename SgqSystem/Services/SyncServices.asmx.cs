@@ -4196,6 +4196,8 @@ namespace SgqSystem.Services
         {
             string retorno = "";
 
+            int id= 0;
+
             foreach (var header in list) //LOOP7
             {
 
@@ -4217,6 +4219,9 @@ namespace SgqSystem.Services
 
                 #region Switch com Loop
                 //ParFieldType 
+
+                
+
                 switch (header.ParFieldType_Id)
                 {
                     //Multipla Escolha
@@ -4224,18 +4229,22 @@ namespace SgqSystem.Services
                         var listMultiple = ParFieldTypeDB.getMultipleValues(header.ParHeaderField_Id);
                         var optionsMultiple = "";
                         bool hasDefault = false;
+
+                        id = id + 1;
+
                         foreach (var value in listMultiple) //LOOP8
                         {
                             if (value.IsDefaultOption == 1)
                             {
-                                optionsMultiple += "<option selected=\"selected\" value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
+                                optionsMultiple += "<option selected=\"selected\" value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\"IdPai=\""+id+ ">" + value.Name + "</option>";
                                 hasDefault = true;
                             }
                             else
                             {
-                                optionsMultiple += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
+                                optionsMultiple += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\"IdPai=\"" + id + "\">" + value.Name + "</option>";
                             }
                         }
+
                         if (!hasDefault)
                             optionsMultiple = "<option selected=\"selected\" value=\"0\">" + CommonData.getResource("select").Value.ToString() + "...</option>" + optionsMultiple;
 
@@ -4246,6 +4255,7 @@ namespace SgqSystem.Services
                         var listIntegration = ParFieldTypeDB.getIntegrationValues(header.ParHeaderField_Id, header.ParHeaderField_Description, ParCompany_id);
                         var optionsIntegration = "";
                         bool hasDefaultIntegration = false;
+
                         foreach (var value in listIntegration) //LOOP8
                         {
                             if (value.IsDefaultOption == 1)
