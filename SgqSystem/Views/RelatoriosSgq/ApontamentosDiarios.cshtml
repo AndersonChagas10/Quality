@@ -138,10 +138,12 @@
                             $('#ResultLevel3_Id').val(r.Id);
 
                             $('#changeConform').empty();
-                            $('#changeConform').append($(r.showIntervalos));
-                            $('#changeConform').append($(r.showConform));
-                            $('#changeConform').append($(r.showCalculado));
-                            $('#changeConform').append($(r.showNumeroDefeitos));
+                            //$('#changeConform').append($(r.showIntervalos));
+                            //$('#changeConform').append($(r.showConform));
+                            //$('#changeConform').append($(r.showCalculado));
+                            //$('#changeConform').append($(r.showNumeroDefeitos));
+                            //$('#changeConform').append($(r.showTexto));
+                            $('#changeConform').append($(r.showGeneric));
 
                             //console.log(r.Id);
                         });
@@ -224,7 +226,8 @@
                 dadosResultLevel3["Value"] = $('#numeroDeDefeitos').val();
             if ($('#intervaloValor').length)
                 dadosResultLevel3["Value"] = $('#intervaloValor').val();
-
+            if ($('#texto').length)
+                dadosResultLevel3["ValueText"] = $('#texto').val();
 
             $.post(urlSave, dadosResultLevel3, function (r, x, e) {
                 openMessageModal('@Resources.Resource.done', '@Resources.Resource.registry_alter_success'); //"Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
