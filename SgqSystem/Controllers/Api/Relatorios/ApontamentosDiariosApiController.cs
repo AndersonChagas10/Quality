@@ -786,11 +786,11 @@ namespace SgqSystem.Controllers.Api
                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
 
                 return "<div>" +
-                            "<label for='Conforme: '> Intervalo Max: </label>" + Convert.ToDecimal(IntervalMax) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
+                            "<label for='Conforme: '> Intervalo Max: </label>" + double.Parse(IntervalMax, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMax) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
                             "<br>" +
-                            "<label for='Conforme: '> Intervalo Min: </label>" + Convert.ToDecimal(IntervalMin) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
+                            "<label for='Conforme: '> Intervalo Min: </label>" + double.Parse(IntervalMin, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMin) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
                             "<br>" +
-                            "<label for='Conforme: '> Valor atual: </label>" + Convert.ToDecimal(Value) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
+                            "<label for='Conforme: '> Valor atual: </label>" + double.Parse(Value, CultureInfo.InvariantCulture) + //Convert.ToDecimal(Value) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
                             "<br>" +
                             "<label for='Conforme: '> Novo Valor: </label> &nbsp" +
                         "<input type='text' id='numeroDeDefeitos' class='decimal' />" +
