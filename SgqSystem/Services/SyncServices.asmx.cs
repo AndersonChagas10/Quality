@@ -4219,9 +4219,7 @@ namespace SgqSystem.Services
 
                 #region Switch com Loop
                 //ParFieldType 
-
                 
-
                 switch (header.ParFieldType_Id)
                 {
                     //Multipla Escolha
@@ -4229,9 +4227,7 @@ namespace SgqSystem.Services
                         var listMultiple = ParFieldTypeDB.getMultipleValues(header.ParHeaderField_Id);
                         var optionsMultiple = "";
                         bool hasDefault = false;
-
-                        id = id + 1;
-
+                        
                         foreach (var value in listMultiple) //LOOP8
                         {
                             if (value.IsDefaultOption == 1)
@@ -4308,6 +4304,9 @@ namespace SgqSystem.Services
                         form_control = "<input class=\"form-control input-sm\" type=\"time\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
                         break;
                 }
+
+                //Incrementar valor para o pai do elemento para Ytoara.
+                id = id + 1;
 
                 var form_group = html.div(
                                             outerhtml: label + form_control,
