@@ -4236,12 +4236,12 @@ namespace SgqSystem.Services
                         {
                             if (value.IsDefaultOption == 1)
                             {
-                                optionsMultiple += "<option selected=\"selected\" value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\"IdPai=\""+id+ ">" + value.Name + "</option>";
+                                optionsMultiple += "<option selected=\"selected\" value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\" IdPai=\""+id+ "\">" + value.Name + "</option>";
                                 hasDefault = true;
                             }
                             else
                             {
-                                optionsMultiple += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\"IdPai=\"" + id + "\">" + value.Name + "</option>";
+                                optionsMultiple += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\" IdPai=\"" + id + "\">" + value.Name + "</option>";
                             }
                         }
 
@@ -6053,7 +6053,7 @@ namespace SgqSystem.Services
         }
 
         [WebMethod]
-        public string getCollectionLevel2Keys(string ParCompany_Id, string date, int ParLevel1_Id = 0)
+        public string _getCollectionLevel2Keys(string ParCompany_Id, string date, int ParLevel1_Id = 0)
         {
 
             //Verificamos os Indicadores que já foram consolidados para a Unidade selecionada
@@ -6100,6 +6100,99 @@ namespace SgqSystem.Services
                                    "</div>";
                 }
             }
+            return ResultsKeys;
+        }
+
+        [WebMethod]
+        public string getCollectionLevel2Keys(string ParCompany_Id, string date, int ParLevel1_Id = 0)
+        {
+
+            string ResultsKeys = "";
+
+            string sql = "" +
+                "\n SELECT                                                                                                                                               " +
+                "\n ROW_NUMBER() OVER(ORDER BY CL2.ParLevel1_Id) AS ROW,                                                                                                 " +
+                "\n CL2.ParLevel1_Id,                                                                                                                                    " +
+                "\n '<div id=\"' + CL2.[Key] + '\" class=\"collectionLevel2Key\"></div>' COLUNA                                                                            " +
+                "\n INTO #MOTHERFOCKER                                                                                                                                   " +
+                "\n FROM CollectionLevel2 CL2                                                                                                                            " +
+                "\n WHERE CL2.UnitId = '6' AND CL2.CollectionDate BETWEEN '20170101 00:00:00' AND '20170530 23:59:59'                                                    " +
+                "\n                                                                                                                                                      " +
+                "\n ----------------------------------------------------------                                                                                           " +
+                "\n -- LISTA DE INDICADORES--                                                                                                                            " +
+                "\n ----------------------------------------------------------                                                                                           " +
+                "\n DECLARE @Indicadores Table(ParLevel1_ID int)                                                                                                         " +
+                "\n                                                                                                                                                      " +
+                "\n insert into @Indicadores                                                                                                                             " +
+                "\n select distinct ParLevel1_ID from #MOTHERFOCKER                                                                                                      " +
+                "\n                                                                                                                                                      " +
+                "\n ----------------------------------------------------------                                                                                           " +
+                "\n -- PRIMEIRO INDICADOR --                                                                                                                             " +
+                "\n ----------------------------------------------------------                                                                                           " +
+                "\n DECLARE @TBL_RESPOSTA TABLE (ROW INT, ParLevel1_id INT, Coluna VARCHAR(MAX))                                                                         " +
+                "\n                                                                                                                                                      " +
+                "\n declare @I int = 1;                                                                                                                                  " +
+                "\n             declare @Indicador int;                                                                                                                  " +
+                "\n             SELECT TOP 1 @Indicador = ParLevel1_ID FROM @Indicadores                                                                                 " +
+                "\n                                                                                                                                                      " +
+                "\n DECLARE @CONCAT VARCHAR(MAX) = ''                                                                                                                    " +
+                "\n                                                                                                                                                      " +
+                "\n WHILE @Indicador IS NOT NULL                                                                                                                         " +
+                "\n BEGIN                                                                                                                                                " +
+                "\n                                                                                                                                                      " +
+                "\n                                                                                                                                                      " +
+                "\n                                                                                                                                                      " +
+                "\n     WHILE @I <= (SELECT Count(*) FROM #MOTHERFOCKER WHERE @Indicador = ParLevel1_ID)                                                                 " +
+	            "\n     BEGIN                                                                                                                                            " +
+                "\n                                                                                                                                                      " +
+                "\n                                                                                                                                                      " +
+                "\n         INSERT INTO @TBL_RESPOSTA                                                                                                                    " +
+                "\n         SELECT ROW,ParLevel1_id,Coluna + '' + @CONCAT FROM(                                                                                          " +
+                "\n                                                                                                                                                      " +
+                "\n                 SELECT ROW_NUMBER() OVER(ORDER BY ParLevel1_Id) AS ROW, ParLevel1_id, Coluna FROM #MOTHERFOCKER  WHERE @Indicador = ParLevel1_ID    " +                            
+                "\n                                                                                                                                                     " +
+		        "\n         ) consulta                                                                                                                                  " +
+                "\n         WHERE ROW = @I                                                                                                                              " +
+                "\n                                                                                                                                                     " +
+                "\n                                                                                                                                                     " +
+                "\n         SET @CONCAT = (SELECT TOP 1 Coluna FROM @TBL_RESPOSTA WHERE ROW = @I AND @Indicador = ParLevel1_ID   )                                      " +
+                "\n                                                                                                                                                     " +
+		        "\n         DELETE FROM @TBL_RESPOSTA WHERE ROW = (@I - 1) AND @Indicador = ParLevel1_ID                                                                " +
+                "\n                                                                                                                                                     " +
+                "\n                                                                                                                                                     " +
+                "\n         SET @I = @I + 1                                                                                                                             " +
+                "\n                                                                                                                                                     " +
+                "\n                                                                                                                                                     " +
+                "\n     END                                                                                                                                             " +
+                "\n                                                                                                                                                     " +
+                "\n SET @I = 1                                                                                                                                          " +
+                "\n SET @CONCAT = ''                                                                                                                                    " +
+                "\n DELETE FROM @Indicadores WHERE ParLevel1_ID = @Indicador                                                                                            " +
+                "\n SET @Indicador = (SELECT TOP 1 ParLevel1_ID FROM @Indicadores)                                                                                      " +
+                "\n                                                                                                                                                     " +
+                "\n END                                                                                                                                                 " +
+                "\n                                                                                                                                                     " +
+                "\n     --ENTREGA DA RESPOSTA                                                                                                                           " +
+                "\n                                                                                                                                                     " +
+                "\n                                                                                                                             " +
+                "\n                                                                                                                                                     " +
+                "\n     SELECT '<div parlevel1_id=\"' + CAST(ParLevel1_Id AS VARCHAR) + '\" class=\"ResultLevel2Key\">' + Coluna + '</div>' as retorno  " +
+                "\n     INTO #TBL_RESPOSTA                                                                                                                              " +
+                "\n     FROM @TBL_RESPOSTA                                                                                                                              " +
+                "\n                                                                                                                                                     " +
+                "\n     SELECT* FROM #TBL_RESPOSTA                                                                                                                      " +
+                "\n                                                                                                                                                     " +
+                "\n DROP TABLE #TBL_RESPOSTA DROP TABLE #MOTHERFOCKER ";
+
+            
+
+            List<ResultadoUmaColuna> Lista1 = dbEf.Database.SqlQuery<ResultadoUmaColuna>(sql).ToList();
+
+            foreach(var i in Lista1)
+            {
+                ResultsKeys += i.retorno;
+            }
+
             return ResultsKeys;
         }
 
