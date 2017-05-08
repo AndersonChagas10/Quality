@@ -153,10 +153,12 @@ namespace DTO
                     break;
                 case 4:
                     Ytoara = true;
+                    Brasil = true;
                     Verifica += "Ambiente:  Ytoara\n";
                     break;
                 case 5:
                     Guarani = true;
+                    Brasil = true;
                     Verifica += "Ambiente:  Guarani\n";
                     break;
                 default:
