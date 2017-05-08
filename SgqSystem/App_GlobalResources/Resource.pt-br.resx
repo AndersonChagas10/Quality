@@ -1924,9 +1924,9 @@
     <value>É necessario selecionar o indicador</value>
   </data>
   <data name="data_not_synced" xml:space="preserve">
-    <value>Existem dados não sincronizados.</value>
+    <value>Dados não sincronizados.</value>
   </data>
   <data name="data_synced" xml:space="preserve">
-    <value>Existem dados sincronizados.</value>
+    <value>Dados sincronizados.</value>
   </data>
 </root>
