@@ -96,8 +96,6 @@ public class ApontamentosDiariosResultSet
                 " \n WHERE C2.CollectionDate BETWEEN '" + dtInit + " 00:00' AND '" + dtF + " 23:59'" +
                 sqlUnidade + sqlLevel1 + sqlLevel2 + sqlLevel3;
 
-
-
     }
 
 }

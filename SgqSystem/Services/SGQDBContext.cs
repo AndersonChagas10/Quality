@@ -101,7 +101,7 @@ namespace SGQDBContext
                          "\n WHERE CC.ParCompany_Id = '" + ParCompany_Id + "'                                                                           " +
                          "\n " + ParLevel1_IdFilho + "                                                                                                       " +
                          "\n AND P1.IsActive = 1 AND C.IsActive = 1 AND P1C.IsActive = 1 AND CC.Active = 1                                                                                                       ";
-            if(Level1ListId != "")
+            if(Level1ListId != "" && Level1ListId != null)
             {
                 sql += " AND P1.Id IN ("+ Level1ListId.Substring(0, Level1ListId.Length - 1) + ") ";
             }

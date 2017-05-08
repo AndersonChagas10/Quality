@@ -1150,7 +1150,7 @@
     <value>The user has no permission to fill the form.</value>
   </data>
   <data name="verifying_parameters" xml:space="preserve">
-    <value>We are verifying the laptop parameters</value>
+    <value>Syncroning the parametrization</value>
   </data>
   <data name="has_group_level2" xml:space="preserve">
     <value>Level 3 Grouped By Level 2</value>
@@ -1943,5 +1943,11 @@
   </data>
   <data name="select_the_level1" xml:space="preserve">
     <value>Select the level 1</value>
+  </data>
+  <data name="data_not_synced" xml:space="preserve">
+    <value>Data not synced.</value>
+  </data>
+  <data name="data_synced" xml:space="preserve">
+    <value>Data synced.</value>
   </data>
 </root>
