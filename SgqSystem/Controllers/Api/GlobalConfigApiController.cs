@@ -27,12 +27,12 @@ namespace SgqSystem.Controllers.Api
         //    return GlobalConfig.CheckGC();
         //}
 
-        //[HttpPost]
-        //[Route("RecSenha")]
-        //public string RecSenha([FromBody]string senha)
-        //{
-        //    return Guard.Descriptografar3DES(senha);
-        //}
+        [HttpPost]
+        [Route("RecSenha")]
+        public string RecSenha([FromBody]string senha)
+        {
+            return Guard.DecryptStringAES(senha);
+        }
 
         //[HttpPost]
         //[Route("ConverteValorCalculadoString")]

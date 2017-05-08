@@ -1147,7 +1147,7 @@
     <value>O usuário não tem permissão para assinar este formulário.</value>
   </data>
   <data name="verifying_parameters" xml:space="preserve">
-    <value>Estamos  verificando os parâmetros do notebook</value>
+    <value>Sincronizando a parametrização</value>
   </data>
   <data name="has_group_level2" xml:space="preserve">
     <value>Agrupamento no Monitoramento</value>
@@ -1919,5 +1919,14 @@
   </data>
   <data name="select_one_company" xml:space="preserve">
     <value>Selecione pelo menos uma empresa.</value>
+  </data>
+  <data name="select_the_level1" xml:space="preserve">
+    <value>É necessario selecionar o indicador</value>
+  </data>
+  <data name="data_not_synced" xml:space="preserve">
+    <value>Existem dados não sincronizados.</value>
+  </data>
+  <data name="data_synced" xml:space="preserve">
+    <value>Existem dados sincronizados.</value>
   </data>
 </root>

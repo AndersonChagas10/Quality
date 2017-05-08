@@ -37,10 +37,10 @@
 
     #sidebar-wrapper {
         z-index: 1000;
-        position: absolute;/*position: fixed;*/
+        position: absolute; /*position: fixed;*/
         left: 300px;
         width: 0;
-        height:96.8%;/*height: 95%;*/
+        height: 96.8%; /*height: 95%;*/
         margin-left: -300px;
         overflow-y: scroll;
         background: #ecebeb;
@@ -324,14 +324,14 @@
                 @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
             </div>
         </li>
-         @*<li>
-            <div id="showOnlyUnit" style="display:none">
-                <span class="redLabel">Unidade</span>
+        @*<li>
+                <div id="showOnlyUnit" style="display:none">
+                    <span class="redLabel">Unidade</span>
 
-                @Html.DropDownList("onlyunitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.select, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
-            </div>
-        </li>*@
-        
+                    @Html.DropDownList("onlyunitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.select, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                </div>
+            </li>*@
+
         @Html.Partial("~/Views/Shared/_Level321Chain.cshtml")
 
         @*<li>
@@ -494,8 +494,8 @@
                         <td title="Acompanhe o Custo Fixo de Manutenção Predial no período neste Local!" colspan="2">        <input type="radio" name="optradio" value="Custo Fixo Manutenção">:: Custo Fixo Manutenção R$</td>
                     </tr>
                     @*<tr>
-                        <td title="Acompanhe o Custo Fixo de Utilidades no período neste Local!" colspan="2">                <input type="radio" name="optradio" value="Custo Fixo Utilidades">:: Custo Fixo Utilidades R$</td>
-                    </tr>*@
+                            <td title="Acompanhe o Custo Fixo de Utilidades no período neste Local!" colspan="2">                <input type="radio" name="optradio" value="Custo Fixo Utilidades">:: Custo Fixo Utilidades R$</td>
+                        </tr>*@
                     @*<tr>
                             <td title="Acompanhe o Custo com Energia Fixa no período neste Local!">             <input type="radio" name="optradio" value="Energia R$ (Fixo)">Energia R$ (Fixo)</td>
                             <td title="Acompanhe o Custo com Energia Variável no período neste Local!">         <input type="radio" name="optradio" value="Energia R$ (Variável)">Energia R$ (Variável)</td>
@@ -638,12 +638,12 @@
                             </b>
                         </td>
                     </tr>
-                     <tr>
+                    <tr>
                         <td title="Acompanhe a Carta de Metas no período neste Local!">                     <input type="radio" name="optradio" value="CARTA METAS">:: CARTA METAS %</td>
                     </tr>
                     @*<tr class="tituloIndicadores">
-                        <td title="Motivação" colspan="2">Motivação</td>
-                    </tr>*@
+                            <td title="Motivação" colspan="2">Motivação</td>
+                        </tr>*@
                     @*<tr>
                             <td title="Head Count">                                                             <input type="radio" name="optradio" value="Head Count">:: Head Count</td>
                             <td title="Rotatividade">                                                           <input type="radio" name="optradio" value="Rotatividade">:: Rotatividade %</td>
@@ -658,7 +658,7 @@
                         @*<td title="Acompanhe a Quantidade de Colaboradores Desligados no período neste Local!">     <input type="radio" name="optradio" value="Nº Colaboradores Desligados">:: Nº Colab. Desligados</td>*@
                     </tr>
                     <tr>
-                         @*<td title="Acompanhe o Número de Horas Disponíveis para Trabalhar no período neste Local!"> <input type="radio" name="optradio" value="Nº Hrs Disponíveis Trabalhar">:: Nº Hrs Disp. Trab.</td>*@
+                        @*<td title="Acompanhe o Número de Horas Disponíveis para Trabalhar no período neste Local!"> <input type="radio" name="optradio" value="Nº Hrs Disponíveis Trabalhar">:: Nº Hrs Disp. Trab.</td>*@
                         @* <td title="Acompanhe a Quantidade de Colaboradores Registrados no período neste Local!">    <input type="radio" name="optradio" value="Nº Colaboradores Registrados">:: Nº Colab. Registrados</td>*@
                     </tr>
                     @*<tr>
@@ -691,8 +691,8 @@
                             <td><input type="radio" name="optradio" value="Devoluções R$">Devoluções R$</td>
                         </tr>*@
                     @*<tr>
-                        <td title="Acompanhe o ScoreCard de Meio Ambiente no período neste Local!">         <input type="radio" name="optradio" value="Scorecard M. Amb">:: Scorecard M. Amb %</td>
-                    </tr>*@
+                            <td title="Acompanhe o ScoreCard de Meio Ambiente no período neste Local!">         <input type="radio" name="optradio" value="Scorecard M. Amb">:: Scorecard M. Amb %</td>
+                        </tr>*@
                     <tr class="tituloIndicadores">
                         <td title="OBRAS" colspan="2">OBRAS</td>
                     </tr>
@@ -717,7 +717,7 @@
 
 <script>
 
-   
+
     var enviar = {};
     var start = moment();
     var end = moment();
@@ -910,8 +910,8 @@
 
             }, 500)
 
-
         });
+       
     });
 
     var formControl = {
