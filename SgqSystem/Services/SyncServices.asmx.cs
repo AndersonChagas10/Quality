@@ -5339,9 +5339,39 @@ namespace SgqSystem.Services
             #endregion
 
             #region foot
+
+            string local = "";
+            string empresa = "";
+
+            if (GlobalConfig.Brasil)
+            {
+                local = "brasil";
+            }
+            if (GlobalConfig.Eua)
+            {
+                local = "eua";
+            }
+            if (GlobalConfig.Canada)
+            {
+                local = "canada";
+            }
+            if (GlobalConfig.Guarani)
+            {
+                empresa = "guarani";
+            }
+            if (GlobalConfig.JBS)
+            {
+                empresa = "jbs";
+            }
+            if (GlobalConfig.Ytoara)
+            {
+                empresa = "ytoara";
+            }
+
             string footOuterHtml = html.br() +
                                    html.br() +
                                    html.br() +
+                                   html.span(classe: "hide", id: "local", attr: " empresa='"+empresa+"' local='"+local+"'") +
                                    html.span(
                                               outerhtml: CommonData.getResource("version").Value.ToString() +
                                                          html.span(classe: "number")
