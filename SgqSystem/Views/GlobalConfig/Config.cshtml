@@ -54,6 +54,15 @@
         <td><button id="alter" onclick="DesconverteValorCalculado();"> Testar Guard.ConverteValorCalculado RETURN STRING</button> </td>
         <td></td>
     </tr>*@
+
+    <tr>
+        <td>Config</td>
+        <td>
+            <div>
+                @GlobalConfig.Verifica;
+            </div>
+        </td>
+    </tr>
 </table>
 
 
@@ -77,7 +86,7 @@
             check();
         });
     }*/*@
-
+    
     function senha() {
 
         $.post('@Html.Raw(urlSenha)', { '': $('#senha').val() }, function (data) {

@@ -480,6 +480,7 @@
     <Content Include="Scripts\Reports\ReportsHC.js" />
     <Content Include="Scripts\i18n\Portuguese-Brasil.json" />
     <None Include="Properties\PublishProfiles\GuearHost.pubxml" />
+    <None Include="Properties\PublishProfiles\PA.pubxml" />
     <None Include="Properties\PublishProfiles\pa_GRT.pubxml" />
     <None Include="Properties\PublishProfiles\Pa_Local.pubxml" />
     <None Include="Properties\PublishProfiles\PLANOACAOLOCAL.pubxml" />
