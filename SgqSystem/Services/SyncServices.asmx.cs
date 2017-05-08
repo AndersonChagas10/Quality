@@ -2210,6 +2210,8 @@ namespace SgqSystem.Services
                     "\n FROM CollectionLevel2 C2                                                                                                                                                  " +
                     "\n INNER JOIN ParLevel1 L1                                                                                                                                                   " +
                     "\n ON C2.ParLevel1_Id = L1.Id AND L1.IsPartialSave = 1                                                                                                                       " +
+                    "\n INNER JOIN ParLevel2 L2                                                                                                                                                   " +
+                    "\n ON C2.ParLevel2_Id = L2.Id                                                                                                                       " +
                     "\n INNER JOIN Result_Level3 R3                                                                                                                                               " +
                     "\n ON R3.CollectionLevel2_Id = C2.Id                                                                                                                                         " +
                     "\n WHERE C2.UnitId = @unidade                                                                                                                                                " +
@@ -2219,10 +2221,10 @@ namespace SgqSystem.Services
                     "\n AND cast(C2.CollectionDate as Date) BETWEEN                                                                                                     " +
 
                     "\n       CASE " +
-                    "\n       WHEN(L1.ParFrequency_Id) IN(1, 2, 3) THEN @datadiario " +
-                    "\n       WHEN(L1.ParFrequency_Id) IN(4) THEN @datasemanal " +
-                    "\n       WHEN(L1.ParFrequency_Id) IN(5) THEN @dataquinzenal " +
-                    "\n       WHEN(L1.ParFrequency_Id) IN(6) THEN @datamensal " +
+                    "\n       WHEN(L2.ParFrequency_Id) IN(1, 2, 3) THEN @datadiario " +
+                    "\n       WHEN(L2.ParFrequency_Id) IN(4) THEN @datasemanal " +
+                    "\n       WHEN(L2.ParFrequency_Id) IN(5) THEN @dataquinzenal " +
+                    "\n       WHEN(L2.ParFrequency_Id) IN(6) THEN @datamensal " +
                     "\n       ELSE @datadiario END and @datafim " +
 
 
@@ -2396,13 +2398,13 @@ namespace SgqSystem.Services
                     "\n                                                                                                                                                                           " +
                     "\n         AND CDL1.UnitId = @unidade                                                                                                                                        " +
                     "\n                                                                                                                                                                           " +
-                    "\n         AND cast(CDL1.ConsolidationDate as DATE) BETWEEN                                                                                        " +
+                    "\n         AND cast(CDL2.ConsolidationDate as DATE) BETWEEN                                                                                        " +
 
                     "\n              CASE " +
-                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel1 WHERE ID = CDL1.ParLevel1_Id) IN(1, 2, 3) THEN @datadiario " +
-                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel1 WHERE ID = CDL1.ParLevel1_Id) IN(4) THEN @datasemanal " +
-                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel1 WHERE ID = CDL1.ParLevel1_Id) IN(5) THEN @dataquinzenal " +
-                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel1 WHERE ID = CDL1.ParLevel1_Id) IN(6) THEN @datamensal " +
+                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(1, 2, 3) THEN @datadiario " +
+                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(4) THEN @datasemanal " +
+                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(5) THEN @dataquinzenal " +
+                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(6) THEN @datamensal " +
                     "\n              ELSE @datadiario END and @datafim " +
 
                     "\n     )                                                                                                                                                                     " +
@@ -2445,14 +2447,7 @@ namespace SgqSystem.Services
                     "\n  INNER JOIN ParLevel1 PL1                                                                                                                                                 " +
                     "\n  ON CDL1.ParLevel1_Id = PL1.Id                                                                                                                                            " +
                     "\n  WHERE CDL1.UnitId = @unidade                                                                                                                                             " +
-                    "\n  AND cast(CDL1.Consolidationdate as Date) BETWEEN                                                                                                 " +
-
-                    "\n     CASE " +
-                    "\n     WHEN(PL1.ParFrequency_Id) IN(1, 2, 3) THEN @datadiario " +
-                    "\n     WHEN(PL1.ParFrequency_Id) IN(4) THEN @datasemanal " +
-                    "\n     WHEN(PL1.ParFrequency_Id) IN(5) THEN @dataquinzenal " +
-                    "\n     WHEN(PL1.ParFrequency_Id) IN(6) THEN @datamensal " +
-                    "\n     ELSE @datadiario END and @datafim " +
+                    "\n  AND cast(CDL1.Consolidationdate as Date) BETWEEN @datamensal and @datafim " +
 
 
                     "\n  AND PL1.IsActive = 1                                                                                                                                                     " +
