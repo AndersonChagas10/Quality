@@ -31,7 +31,7 @@ public class ApontamentosDiariosResultSet
     public string Unidade { get; set; }
     public string Periodo { get; set; }
     public string Turno { get; set; }
-
+    public string Auditor { get; set; }
 
     public string Select(DataCarrierFormulario form)
     {
@@ -82,17 +82,20 @@ public class ApontamentosDiariosResultSet
                 " \n ,STR(C2.Period) as 'Periodo'           " +
                 " \n ,UN.Name AS 'Unidade'                  " +
                 " \n ,R3.Id AS 'ResultLevel3Id'             " +
+                " \n ,US.Name as 'Auditor'                  " +
                 " \n FROM CollectionLevel2 C2               " +
-                " \n INNER JOIN ParCompany UN                " +
+                " \n INNER JOIN ParCompany UN               " +
                 " \n ON UN.Id = c2.UnitId                   " +
-                " \n INNER JOIN Result_Level3 R3             " +
+                " \n INNER JOIN Result_Level3 R3            " +
                 " \n ON R3.CollectionLevel2_Id = C2.Id      " +
-                " \n INNER JOIN ParLevel3 L3                 " +
+                " \n INNER JOIN ParLevel3 L3                " +
                 " \n ON L3.Id = R3.ParLevel3_Id             " +
-                " \n INNER JOIN ParLevel2 L2                 " +
+                " \n INNER JOIN ParLevel2 L2                " +
                 " \n ON L2.Id = C2.ParLevel2_Id             " +
-                " \n INNER JOIN ParLevel1 L1                 " +
+                " \n INNER JOIN ParLevel1 L1                " +
                 " \n ON L1.Id = C2.ParLevel1_Id             " +
+                " \n INNER JOIN UserSgq US                  " +
+                " \n ON C2.AuditorId = US.Id                " +
                 " \n WHERE C2.CollectionDate BETWEEN '" + dtInit + " 00:00' AND '" + dtF + " 23:59'" +
                 sqlUnidade + sqlLevel1 + sqlLevel2 + sqlLevel3;
 

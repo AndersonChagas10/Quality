@@ -4885,6 +4885,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Synced data..
+        /// </summary>
+        internal static string synced {
+            get {
+                return ResourceManager.GetString("synced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Syncronization error.
         /// </summary>
         internal static string synchronization_error {

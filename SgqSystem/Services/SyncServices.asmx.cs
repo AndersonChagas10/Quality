@@ -4222,19 +4222,23 @@ namespace SgqSystem.Services
                         {
                             if (value.IsDefaultOption == 1)
                             {
-                                optionsMultiple += "<option selected=\"selected\" value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\" IdPai=\""+id+ "\">" + value.Name + "</option>";
+                                optionsMultiple += "<option selected=\"selected\" value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue +  "\">" + value.Name + "</option>";
                                 hasDefault = true;
                             }
                             else
                             {
-                                optionsMultiple += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\" IdPai=\"" + id + "\">" + value.Name + "</option>";
+                                optionsMultiple += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue +  "\">" + value.Name + "</option>";
                             }
                         }
 
                         if (!hasDefault)
                             optionsMultiple = "<option selected=\"selected\" value=\"0\">" + CommonData.getResource("select").Value.ToString() + "...</option>" + optionsMultiple;
 
-                        form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\"  ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">" + optionsMultiple + "</select>";
+                        //form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\"  ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\">" + optionsMultiple + "</select>";
+
+                        form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\" name=cb  \"  ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\">" + optionsMultiple + "</select>";
+
+
                         break;
                     //Integrações
                     case 2:
@@ -5334,9 +5338,39 @@ namespace SgqSystem.Services
             #endregion
 
             #region foot
+
+            string local = "";
+            string empresa = "";
+
+            if (GlobalConfig.Brasil)
+            {
+                local = "brasil";
+            }
+            if (GlobalConfig.Eua)
+            {
+                local = "eua";
+            }
+            if (GlobalConfig.Canada)
+            {
+                local = "canada";
+            }
+            if (GlobalConfig.Guarani)
+            {
+                empresa = "guarani";
+            }
+            if (GlobalConfig.Brasil)
+            {
+                empresa = "jbs";
+            }
+            if (GlobalConfig.Ytoara)
+            {
+                empresa = "ytoara";
+            }
+
             string footOuterHtml = html.br() +
                                    html.br() +
                                    html.br() +
+                                   html.span(classe: "hide", id: "local", attr: " empresa='"+empresa+"' local='"+local+"'") +
                                    html.span(
                                               outerhtml: CommonData.getResource("version").Value.ToString() +
                                                          html.span(classe: "number")

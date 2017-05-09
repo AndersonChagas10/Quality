@@ -76,9 +76,9 @@ namespace SgqSystem.Services
         /// <param name="outerhtml">Conteudo</param>
         /// <param name="style">Styles</param>
         /// <returns></returns>
-        public string span(string id = null, string classe = null, string name = null, string outerhtml = null, string style = null)
+        public string span(string id = null, string classe = null, string name = null, string outerhtml = null, string style = null, string attr = null)
         {
-            return "<span id=\"" + id + "\" class=\"" + classe + "\" name=\"" + name + "\" style=\"" + style + "\">" + outerhtml + "</span>";
+            return "<span id=\"" + id + "\" class=\"" + classe + "\" name=\"" + name + "\" style=\"" + style + "\" "+ attr + ">" + outerhtml + "</span>";
         }
         /// <summary>
         /// Retorna uma quebra de linha <br />

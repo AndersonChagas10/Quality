@@ -94,6 +94,25 @@ namespace PlanoDeAcaoMVC.Controllers
             return PartialView("Acompanhamento", obj);
         }
 
+        [HttpGet]
+        public ActionResult FTAMock()
+        {
+            var fta = new FTA();
+            fta._DataInicioFTA = "08/05/2017";
+            fta._DataFimFTA = "08/05/2017";
+
+            fta._Unidade = "Corporativo";
+            fta._Departamento = "Curral";
+            fta._Supervisor = "camilaprata-mtz";
+            fta._Level1 = "(%) NC Expedição";
+            fta.MetaFTA = 5;
+            fta.ReincidenciaDesvioFTA = 15;
+            fta.PercentualNCFTA = 15;
+
+            return View("NewFTA", fta);
+
+        }
+
         //Pa_Acao/NewFTA?MetaFTA=30&PercentualNCFTA=40&ReincidenciaDesvioFTA=60&Level1Id=1&Supervisor_Id=10&Unidade_Id=3&Departamento_Id=4&_DataInicioFTA="22-05-2017"&_DataFimFTA="22-05-2017"
         [HttpGet]
         public ActionResult NewFTA(FTA fta)
@@ -135,11 +154,30 @@ namespace PlanoDeAcaoMVC.Controllers
                 var parDepartment = db.SearchQuery<ParDepartmentDTO>("Select * from ParDepartment WHERE ID = " + fta.Departamento_Id).FirstOrDefault();
 
                 fta._Level1 = level1.Name;
-                fta._Unidade = parcompany.Name;
+
+                if (fta.Unidade_Id > 0)
+                {
+                    fta._Unidade = parcompany.Name;
+                }
+                else
+                {
+                    fta._Unidade = "Corporativo";
+                }
+
                 fta._Departamento = parDepartment.Name;
                 fta._Supervisor = usersgq.Name;
 
             }
+
+            //fta._Unidade = "Corporativo";
+            //fta._Departamento = "Curral";
+            //fta._Supervisor = "camilaprata-mtz";
+            //fta._Level1 = "(%) NC Expedição";
+            //fta.MetaFTA = 5;
+            //fta.ReincidenciaDesvioFTA = 15;
+            //fta.PercentualNCFTA = 15;
+
+
 
             return View(fta);
         }

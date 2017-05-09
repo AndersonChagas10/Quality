@@ -76,8 +76,6 @@ namespace Dominio.Services
 
         #endregion
 
-        #region AuthenticationLogin
-
         /// <summary>
         /// Verifica se existe Usuario e Senha Correspondentes no Banco de dados.
         /// </summary>
@@ -99,6 +97,7 @@ namespace Dominio.Services
                 /*Verifica se o UserName Existe no DB*/
                 userByName = _userRepo.GetByName(userDto.Name);
 
+                //Verificar o local de login
                 /*Se for Brasil executa RN do Sistema Brasil*/
                 if (GlobalConfig.Brasil)
                     isUser = LoginBrasil(userDto, userByName);
@@ -106,6 +105,10 @@ namespace Dominio.Services
                 /*Se for Brasil executa RN do Sistema EUA*/
                 if (GlobalConfig.Eua)
                     isUser = LoginEUA(userDto, userByName);
+
+                /*Login Ytoara*/
+                if (GlobalConfig.Ytoara)
+                    isUser = CheckUserAndPassDataBase(userDto);
 
                 if (isUser.IsNull())
                     throw new ExceptionHelper(mensagens.naoEncontrado);
@@ -126,6 +129,12 @@ namespace Dominio.Services
 
         }
 
+        /// <summary>
+        /// Verifica se o Usuario existe no DB
+        /// Returns : UserSgq, null.
+        /// </summary>
+        /// <param name="user">UserSgq</param>
+        /// <returns></returns>
         private UserSgq CheckUserAndPassDataBase(UserDTO userDto)
         {
             /*Descriptografa a criptografia do TABLET, caso a senha venha do sistema por POSTBACK e não esteja criptografada, não é afetada.*/
@@ -137,7 +146,48 @@ namespace Dominio.Services
             return isUser;
         }
 
-        #endregion
+        public List<UserDTO> GetAllUserByUnit(int unidadeId)
+        {
+            return Mapper.Map<List<UserDTO>>(_userRepo.GetAllUserByUnit(unidadeId));
+        }
+
+        /// <summary>
+        /// Busca usuário pelo Nome no DB
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public GenericReturn<UserDTO> GetByName(string username)
+        {
+            try
+            {
+                var queryResult = _userRepo.GetByName(username);
+                return new GenericReturn<UserDTO>(Mapper.Map<UserSgq, UserDTO>(queryResult));
+            }
+            catch (Exception e)
+            {
+                return new GenericReturn<UserDTO>(e, "Cannot get user by name.");
+            }
+        }
+
+        /// <summary>
+        /// Não sei por que existe ... celsogea 04 04 2017
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public GenericReturn<UserSgqDTO> GetByName2(string username)
+        {
+            try
+            {
+                var queryResult = _userRepo.GetByName(username);
+                return new GenericReturn<UserSgqDTO>(Mapper.Map<UserSgq, UserSgqDTO>(queryResult));
+            }
+            catch (Exception e)
+            {
+                return new GenericReturn<UserSgqDTO>(e, "CAnnot get user by name.");
+            }
+        }
+
+
 
         #region LoginEUA
 
@@ -172,17 +222,17 @@ namespace Dominio.Services
         {
 
             /*Descriptografa para comparar no AD*/
-            if((userDto.Password != "")||(userDto.Password != null))
+            if ((userDto.Password != "") || (userDto.Password != null))
             {
                 userDto.Password = Guard.DecryptStringAES(userDto.Password);
             }
-           
+
             /*1*/
             if (CheckUserInAD(dominio, userDto.Name, userDto.Password))
             {
                 /*1.1*/
                 UserSgq isUser = CheckUserAndPassDataBase(userDto);
-               
+
                 /*1.2*/
                 if (userByName.IsNotNull() && isUser.IsNull())
                 {
@@ -194,7 +244,7 @@ namespace Dominio.Services
                 /*1.3*/
                 //if (isUser.IsNull())
                 //return CreateUserFromAd(userDto);
-                
+
                 return isUser;
 
             }
@@ -253,6 +303,47 @@ namespace Dominio.Services
             catch (Exception e)
             {
                 return new GenericReturn<List<UserDTO>>(e, mensagens.falhaGeral);
+            }
+        }
+
+        public static bool CheckUserInAD(string domain, string username, string password, string userVerific)
+        {
+            try
+            {
+                using (var domainContext = new PrincipalContext(ContextType.Domain, domain, username, password))
+                {
+                    using (var user = new UserPrincipal(domainContext))
+                    {
+                        user.SamAccountName = userVerific;
+
+                        using (var pS = new PrincipalSearcher())
+                        {
+                            pS.QueryFilter = user;
+
+                            using (PrincipalSearchResult<Principal> results = pS.FindAll())
+                            {
+                                if (results != null && results.Count() > 0)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public static bool CheckUserInAD(string domain, string username, string password)
+        {
+            using (PrincipalContext pc = new PrincipalContext(ContextType.Domain, domain))
+            {
+                var userValid = pc.ValidateCredentials(username, password);
+                return userValid;
             }
         }
 
@@ -316,7 +407,6 @@ namespace Dominio.Services
             #endregion
 
             return isUser;
-
         }
 
         /// <summary>
@@ -463,92 +553,6 @@ namespace Dominio.Services
 
         #endregion
 
-        public List<UserDTO> GetAllUserByUnit(int unidadeId)
-        {
-            return Mapper.Map<List<UserDTO>>(_userRepo.GetAllUserByUnit(unidadeId));
-        }
-
-        /// <summary>
-        /// Busca usuário pelo Nome no DB
-        /// </summary>
-        /// <param name="username"></param>
-        /// <returns></returns>
-        public GenericReturn<UserDTO> GetByName(string username)
-        {
-            try
-            {
-                var queryResult = _userRepo.GetByName(username);
-                return new GenericReturn<UserDTO>(Mapper.Map<UserSgq, UserDTO>(queryResult));
-            }
-            catch (Exception e)
-            {
-                return new GenericReturn<UserDTO>(e, "Cannot get user by name.");
-            }
-        }
-
-        /// <summary>
-        /// Não sei por que existe ... celsogea 04 04 2017
-        /// </summary>
-        /// <param name="username"></param>
-        /// <returns></returns>
-        public GenericReturn<UserSgqDTO> GetByName2(string username)
-        {
-            try
-            {
-                var queryResult = _userRepo.GetByName(username);
-                return new GenericReturn<UserSgqDTO>(Mapper.Map<UserSgq, UserSgqDTO>(queryResult));
-            }
-            catch (Exception e)
-            {
-                return new GenericReturn<UserSgqDTO>(e, "CAnnot get user by name.");
-            }
-        }
-
-        #region Auxiliares REMOVER E PASSAR PARA CLASSE GUARD.
-
-        public static bool CheckUserInAD(string domain, string username, string password, string userVerific)
-        {
-            try
-            {
-                using (var domainContext = new PrincipalContext(ContextType.Domain, domain, username, password))
-                {
-                    using (var user = new UserPrincipal(domainContext))
-                    {
-                        user.SamAccountName = userVerific;
-
-                        using (var pS = new PrincipalSearcher())
-                        {
-                            pS.QueryFilter = user;
-
-                            using (PrincipalSearchResult<Principal> results = pS.FindAll())
-                            {
-                                if (results != null && results.Count() > 0)
-                                {
-                                    return true;
-                                }
-                            }
-                        }
-                    }
-                }
-                return false;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        public static bool CheckUserInAD(string domain, string username, string password)
-        {
-            using (PrincipalContext pc = new PrincipalContext(ContextType.Domain, domain))
-            {
-                var userValid = pc.ValidateCredentials(username, password);
-                return userValid;
-            }
-        }
-
-
-        #endregion
 
     }
 

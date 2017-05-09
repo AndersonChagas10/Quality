@@ -1950,4 +1950,7 @@
   <data name="data_synced" xml:space="preserve">
     <value>Data synced.</value>
   </data>
+  <data name="synced" xml:space="preserve">
+    <value>Synced data.</value>
+  </data>
 </root>
