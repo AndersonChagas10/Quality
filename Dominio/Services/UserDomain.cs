@@ -99,14 +99,23 @@ namespace Dominio.Services
                 /*Verifica se o UserName Existe no DB*/
                 userByName = _userRepo.GetByName(userDto.Name);
 
-                /*Se for Brasil executa RN do Sistema Brasil*/
-                if (GlobalConfig.Brasil)
+                //Verificar o local de login
+                if (GlobalConfig.JBS)
+                {
+                    /*Se for Brasil executa RN do Sistema Brasil*/
+                    if (GlobalConfig.Brasil)
+                        isUser = LoginBrasil(userDto, userByName);
+
+                    /*Se for Brasil executa RN do Sistema EUA*/
+                    if (GlobalConfig.Eua)
+                        isUser = LoginEUA(userDto, userByName);
+                }
+                else 
+                {
                     isUser = LoginBrasil(userDto, userByName);
-
-                /*Se for Brasil executa RN do Sistema EUA*/
-                if (GlobalConfig.Eua)
-                    isUser = LoginEUA(userDto, userByName);
-
+                }
+              
+                
                 if (isUser.IsNull())
                     throw new ExceptionHelper(mensagens.naoEncontrado);
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DTO;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
@@ -10,7 +11,7 @@ namespace SgqSystem.Controllers
         //[CustomAuthorize(Roles = "tato")]
         public ActionResult Config()
         {
-           
+            
             return View();
         }
     }

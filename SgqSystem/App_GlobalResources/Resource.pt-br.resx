@@ -1063,7 +1063,7 @@
     <value>Ops! Você não está online', 'Para alterar a unidade você precisa estar online'</value>
   </data>
   <data name="changing_unit_preferences" xml:space="preserve">
-    <value>Alterando unidade", "Estamos alterando as preferências de unidade, aguarde um momento...</value>
+    <value>Alterando unidade. Estamos alterando as preferências de unidade, aguarde um momento...</value>
   </data>
   <data name="collection_dropped" xml:space="preserve">
     <value>Verificamos que a coleta que está fazendo já foi lançada. Esta coleta será descartada</value>
@@ -1132,7 +1132,7 @@
     <value>Foi excedida a meta tolerância</value>
   </data>
   <data name="unit_changed_login_again" xml:space="preserve">
-    <value>Unidade Alterada', 'A unidade foi alterada, efetue o login novamente para atualizar os indicadores'</value>
+    <value>Unidade Alterada. A unidade foi alterada, efetue o login novamente para atualizar os indicadores</value>
   </data>
   <data name="update_parameters_must_be_online" xml:space="preserve">
     <value>Para atualizar os parâmetros, você precisa estar on-line</value>
@@ -1924,9 +1924,9 @@
     <value>É necessario selecionar o indicador</value>
   </data>
   <data name="data_not_synced" xml:space="preserve">
-    <value>Existem dados não sincronizados.</value>
+    <value>Dados não sincronizados.</value>
   </data>
   <data name="data_synced" xml:space="preserve">
-    <value>Existem dados sincronizados.</value>
+    <value>Dados sincronizados.</value>
   </data>
 </root>

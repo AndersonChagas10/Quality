@@ -135,7 +135,16 @@ namespace PlanoDeAcaoMVC.Controllers
                 var parDepartment = db.SearchQuery<ParDepartmentDTO>("Select * from ParDepartment WHERE ID = " + fta.Departamento_Id).FirstOrDefault();
 
                 fta._Level1 = level1.Name;
-                fta._Unidade = parcompany.Name;
+
+                if (fta.Unidade_Id > 0)
+                {
+                    fta._Unidade = parcompany.Name;
+                }
+                else
+                {
+                    fta._Unidade = "Corporativo";
+                }
+
                 fta._Departamento = parDepartment.Name;
                 fta._Supervisor = usersgq.Name;
 

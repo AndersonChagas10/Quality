@@ -2212,6 +2212,8 @@ namespace SgqSystem.Services
                     "\n FROM CollectionLevel2 C2                                                                                                                                                  " +
                     "\n INNER JOIN ParLevel1 L1                                                                                                                                                   " +
                     "\n ON C2.ParLevel1_Id = L1.Id AND L1.IsPartialSave = 1                                                                                                                       " +
+                    "\n INNER JOIN ParLevel2 L2                                                                                                                                                   " +
+                    "\n ON C2.ParLevel2_Id = L2.Id                                                                                                                       " +
                     "\n INNER JOIN Result_Level3 R3                                                                                                                                               " +
                     "\n ON R3.CollectionLevel2_Id = C2.Id                                                                                                                                         " +
                     "\n WHERE C2.UnitId = @unidade                                                                                                                                                " +
@@ -2221,10 +2223,10 @@ namespace SgqSystem.Services
                     "\n AND cast(C2.CollectionDate as Date) BETWEEN                                                                                                     " +
 
                     "\n       CASE " +
-                    "\n       WHEN(L1.ParFrequency_Id) IN(1, 2, 3) THEN @datadiario " +
-                    "\n       WHEN(L1.ParFrequency_Id) IN(4) THEN @datasemanal " +
-                    "\n       WHEN(L1.ParFrequency_Id) IN(5) THEN @dataquinzenal " +
-                    "\n       WHEN(L1.ParFrequency_Id) IN(6) THEN @datamensal " +
+                    "\n       WHEN(L2.ParFrequency_Id) IN(1, 2, 3) THEN @datadiario " +
+                    "\n       WHEN(L2.ParFrequency_Id) IN(4) THEN @datasemanal " +
+                    "\n       WHEN(L2.ParFrequency_Id) IN(5) THEN @dataquinzenal " +
+                    "\n       WHEN(L2.ParFrequency_Id) IN(6) THEN @datamensal " +
                     "\n       ELSE @datadiario END and @datafim " +
 
 
@@ -2398,13 +2400,13 @@ namespace SgqSystem.Services
                     "\n                                                                                                                                                                           " +
                     "\n         AND CDL1.UnitId = @unidade                                                                                                                                        " +
                     "\n                                                                                                                                                                           " +
-                    "\n         AND cast(CDL1.ConsolidationDate as DATE) BETWEEN                                                                                        " +
+                    "\n         AND cast(CDL2.ConsolidationDate as DATE) BETWEEN                                                                                        " +
 
                     "\n              CASE " +
-                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel1 WHERE ID = CDL1.ParLevel1_Id) IN(1, 2, 3) THEN @datadiario " +
-                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel1 WHERE ID = CDL1.ParLevel1_Id) IN(4) THEN @datasemanal " +
-                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel1 WHERE ID = CDL1.ParLevel1_Id) IN(5) THEN @dataquinzenal " +
-                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel1 WHERE ID = CDL1.ParLevel1_Id) IN(6) THEN @datamensal " +
+                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(1, 2, 3) THEN @datadiario " +
+                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(4) THEN @datasemanal " +
+                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(5) THEN @dataquinzenal " +
+                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(6) THEN @datamensal " +
                     "\n              ELSE @datadiario END and @datafim " +
 
                     "\n     )                                                                                                                                                                     " +
@@ -2447,14 +2449,7 @@ namespace SgqSystem.Services
                     "\n  INNER JOIN ParLevel1 PL1                                                                                                                                                 " +
                     "\n  ON CDL1.ParLevel1_Id = PL1.Id                                                                                                                                            " +
                     "\n  WHERE CDL1.UnitId = @unidade                                                                                                                                             " +
-                    "\n  AND cast(CDL1.Consolidationdate as Date) BETWEEN                                                                                                 " +
-
-                    "\n     CASE " +
-                    "\n     WHEN(PL1.ParFrequency_Id) IN(1, 2, 3) THEN @datadiario " +
-                    "\n     WHEN(PL1.ParFrequency_Id) IN(4) THEN @datasemanal " +
-                    "\n     WHEN(PL1.ParFrequency_Id) IN(5) THEN @dataquinzenal " +
-                    "\n     WHEN(PL1.ParFrequency_Id) IN(6) THEN @datamensal " +
-                    "\n     ELSE @datadiario END and @datafim " +
+                    "\n  AND cast(CDL1.Consolidationdate as Date) BETWEEN @datamensal and @datafim " +
 
 
                     "\n  AND PL1.IsActive = 1                                                                                                                                                     " +
@@ -4234,19 +4229,23 @@ namespace SgqSystem.Services
                         {
                             if (value.IsDefaultOption == 1)
                             {
-                                optionsMultiple += "<option selected=\"selected\" value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\"IdPai=\""+id+ ">" + value.Name + "</option>";
+                                optionsMultiple += "<option selected=\"selected\" value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue +  "\">" + value.Name + "</option>";
                                 hasDefault = true;
                             }
                             else
                             {
-                                optionsMultiple += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\"IdPai=\"" + id + "\">" + value.Name + "</option>";
+                                optionsMultiple += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue +  "\">" + value.Name + "</option>";
                             }
                         }
 
                         if (!hasDefault)
                             optionsMultiple = "<option selected=\"selected\" value=\"0\">" + CommonData.getResource("select").Value.ToString() + "...</option>" + optionsMultiple;
 
-                        form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\"  ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">" + optionsMultiple + "</select>";
+                        //form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\"  ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\">" + optionsMultiple + "</select>";
+
+                        form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\" name=cb  \"  ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\">" + optionsMultiple + "</select>";
+
+
                         break;
                     //Integrações
                     case 2:
@@ -5346,9 +5345,39 @@ namespace SgqSystem.Services
             #endregion
 
             #region foot
+
+            string local = "";
+            string empresa = "";
+
+            if (GlobalConfig.Brasil)
+            {
+                local = "brasil";
+            }
+            if (GlobalConfig.Eua)
+            {
+                local = "eua";
+            }
+            if (GlobalConfig.Canada)
+            {
+                local = "canada";
+            }
+            if (GlobalConfig.Guarani)
+            {
+                empresa = "guarani";
+            }
+            if (GlobalConfig.JBS)
+            {
+                empresa = "jbs";
+            }
+            if (GlobalConfig.Ytoara)
+            {
+                empresa = "ytoara";
+            }
+
             string footOuterHtml = html.br() +
                                    html.br() +
                                    html.br() +
+                                   html.span(classe: "hide", id: "local", attr: " empresa='"+empresa+"' local='"+local+"'") +
                                    html.span(
                                               outerhtml: CommonData.getResource("version").Value.ToString() +
                                                          html.span(classe: "number")
@@ -6054,7 +6083,7 @@ namespace SgqSystem.Services
         }
 
         [WebMethod]
-        public string getCollectionLevel2Keys(string ParCompany_Id, string date, int ParLevel1_Id = 0)
+        public string _getCollectionLevel2Keys(string ParCompany_Id, string date, int ParLevel1_Id = 0)
         {
 
             //Verificamos os Indicadores que já foram consolidados para a Unidade selecionada
@@ -6101,6 +6130,99 @@ namespace SgqSystem.Services
                                    "</div>";
                 }
             }
+            return ResultsKeys;
+        }
+
+        [WebMethod]
+        public string getCollectionLevel2Keys(string ParCompany_Id, string date, int ParLevel1_Id = 0)
+        {
+
+            string ResultsKeys = "";
+
+            string sql = "" +
+                "\n SELECT                                                                                                                                               " +
+                "\n ROW_NUMBER() OVER(ORDER BY CL2.ParLevel1_Id) AS ROW,                                                                                                 " +
+                "\n CL2.ParLevel1_Id,                                                                                                                                    " +
+                "\n '<div id=\"' + CL2.[Key] + '\" class=\"collectionLevel2Key\"></div>' COLUNA                                                                            " +
+                "\n INTO #MOTHERFOCKER                                                                                                                                   " +
+                "\n FROM CollectionLevel2 CL2                                                                                                                            " +
+                "\n WHERE CL2.UnitId = '6' AND CL2.CollectionDate BETWEEN '20170101 00:00:00' AND '20170530 23:59:59'                                                    " +
+                "\n                                                                                                                                                      " +
+                "\n ----------------------------------------------------------                                                                                           " +
+                "\n -- LISTA DE INDICADORES--                                                                                                                            " +
+                "\n ----------------------------------------------------------                                                                                           " +
+                "\n DECLARE @Indicadores Table(ParLevel1_ID int)                                                                                                         " +
+                "\n                                                                                                                                                      " +
+                "\n insert into @Indicadores                                                                                                                             " +
+                "\n select distinct ParLevel1_ID from #MOTHERFOCKER                                                                                                      " +
+                "\n                                                                                                                                                      " +
+                "\n ----------------------------------------------------------                                                                                           " +
+                "\n -- PRIMEIRO INDICADOR --                                                                                                                             " +
+                "\n ----------------------------------------------------------                                                                                           " +
+                "\n DECLARE @TBL_RESPOSTA TABLE (ROW INT, ParLevel1_id INT, Coluna VARCHAR(MAX))                                                                         " +
+                "\n                                                                                                                                                      " +
+                "\n declare @I int = 1;                                                                                                                                  " +
+                "\n             declare @Indicador int;                                                                                                                  " +
+                "\n             SELECT TOP 1 @Indicador = ParLevel1_ID FROM @Indicadores                                                                                 " +
+                "\n                                                                                                                                                      " +
+                "\n DECLARE @CONCAT VARCHAR(MAX) = ''                                                                                                                    " +
+                "\n                                                                                                                                                      " +
+                "\n WHILE @Indicador IS NOT NULL                                                                                                                         " +
+                "\n BEGIN                                                                                                                                                " +
+                "\n                                                                                                                                                      " +
+                "\n                                                                                                                                                      " +
+                "\n                                                                                                                                                      " +
+                "\n     WHILE @I <= (SELECT Count(*) FROM #MOTHERFOCKER WHERE @Indicador = ParLevel1_ID)                                                                 " +
+	            "\n     BEGIN                                                                                                                                            " +
+                "\n                                                                                                                                                      " +
+                "\n                                                                                                                                                      " +
+                "\n         INSERT INTO @TBL_RESPOSTA                                                                                                                    " +
+                "\n         SELECT ROW,ParLevel1_id,Coluna + '' + @CONCAT FROM(                                                                                          " +
+                "\n                                                                                                                                                      " +
+                "\n                 SELECT ROW_NUMBER() OVER(ORDER BY ParLevel1_Id) AS ROW, ParLevel1_id, Coluna FROM #MOTHERFOCKER  WHERE @Indicador = ParLevel1_ID    " +                            
+                "\n                                                                                                                                                     " +
+		        "\n         ) consulta                                                                                                                                  " +
+                "\n         WHERE ROW = @I                                                                                                                              " +
+                "\n                                                                                                                                                     " +
+                "\n                                                                                                                                                     " +
+                "\n         SET @CONCAT = (SELECT TOP 1 Coluna FROM @TBL_RESPOSTA WHERE ROW = @I AND @Indicador = ParLevel1_ID   )                                      " +
+                "\n                                                                                                                                                     " +
+		        "\n         DELETE FROM @TBL_RESPOSTA WHERE ROW = (@I - 1) AND @Indicador = ParLevel1_ID                                                                " +
+                "\n                                                                                                                                                     " +
+                "\n                                                                                                                                                     " +
+                "\n         SET @I = @I + 1                                                                                                                             " +
+                "\n                                                                                                                                                     " +
+                "\n                                                                                                                                                     " +
+                "\n     END                                                                                                                                             " +
+                "\n                                                                                                                                                     " +
+                "\n SET @I = 1                                                                                                                                          " +
+                "\n SET @CONCAT = ''                                                                                                                                    " +
+                "\n DELETE FROM @Indicadores WHERE ParLevel1_ID = @Indicador                                                                                            " +
+                "\n SET @Indicador = (SELECT TOP 1 ParLevel1_ID FROM @Indicadores)                                                                                      " +
+                "\n                                                                                                                                                     " +
+                "\n END                                                                                                                                                 " +
+                "\n                                                                                                                                                     " +
+                "\n     --ENTREGA DA RESPOSTA                                                                                                                           " +
+                "\n                                                                                                                                                     " +
+                "\n                                                                                                                             " +
+                "\n                                                                                                                                                     " +
+                "\n     SELECT '<div parlevel1_id=\"' + CAST(ParLevel1_Id AS VARCHAR) + '\" class=\"ResultLevel2Key\">' + Coluna + '</div>' as retorno  " +
+                "\n     INTO #TBL_RESPOSTA                                                                                                                              " +
+                "\n     FROM @TBL_RESPOSTA                                                                                                                              " +
+                "\n                                                                                                                                                     " +
+                "\n     SELECT* FROM #TBL_RESPOSTA                                                                                                                      " +
+                "\n                                                                                                                                                     " +
+                "\n DROP TABLE #TBL_RESPOSTA DROP TABLE #MOTHERFOCKER ";
+
+            
+
+            List<ResultadoUmaColuna> Lista1 = dbEf.Database.SqlQuery<ResultadoUmaColuna>(sql).ToList();
+
+            foreach(var i in Lista1)
+            {
+                ResultsKeys += i.retorno;
+            }
+
             return ResultsKeys;
         }
 
