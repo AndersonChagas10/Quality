@@ -5363,7 +5363,7 @@ namespace SgqSystem.Services
             {
                 empresa = "guarani";
             }
-            if (GlobalConfig.JBS)
+            if (GlobalConfig.Brasil)
             {
                 empresa = "jbs";
             }
