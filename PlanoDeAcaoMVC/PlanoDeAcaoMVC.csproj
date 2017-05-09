@@ -479,6 +479,8 @@
     <Content Include="Scripts\Reports\Reports1.js" />
     <Content Include="Scripts\Reports\ReportsHC.js" />
     <Content Include="Scripts\i18n\Portuguese-Brasil.json" />
+    <None Include="Properties\PublishProfiles\grjqualidadetotal-teste - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\grjqualidadetotal-teste - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\GuearHost.pubxml" />
     <None Include="Properties\PublishProfiles\PA.pubxml" />
     <None Include="Properties\PublishProfiles\pa_GRT.pubxml" />
