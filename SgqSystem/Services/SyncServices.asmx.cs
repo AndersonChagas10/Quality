@@ -2167,12 +2167,7 @@ namespace SgqSystem.Services
 
             string dataIni = data.ToString("yyyyMMdd");
 
-
-
             string retorno = "";
-
-
-
 
             using (var db = new Dominio.SgqDbDevEntities())
             {
@@ -6136,6 +6131,10 @@ namespace SgqSystem.Services
         public string getCollectionLevel2Keys(string ParCompany_Id, string date, int ParLevel1_Id = 0)
         {
 
+            DateTime data = DateCollectConvert(date);
+
+            string dataS = data.ToString("yyyyMMdd");
+
             string ResultsKeys = "";
 
             string sql = "" +
@@ -6145,7 +6144,7 @@ namespace SgqSystem.Services
                 "\n '<div id=\"' + CL2.[Key] + '\" class=\"collectionLevel2Key\"></div>' COLUNA                                                                            " +
                 "\n INTO #MOTHERFOCKER                                                                                                                                   " +
                 "\n FROM CollectionLevel2 CL2                                                                                                                            " +
-                "\n WHERE CL2.UnitId = '6' AND CL2.CollectionDate BETWEEN '20170101 00:00:00' AND '20170530 23:59:59'                                                    " +
+                "\n WHERE CL2.UnitId = '" + ParCompany_Id + "' AND CAST(CL2.CollectionDate AS DATE) BETWEEN '" + dataS + "' AND '" + dataS + "'                                                    " +
                 "\n                                                                                                                                                      " +
                 "\n ----------------------------------------------------------                                                                                           " +
                 "\n -- LISTA DE INDICADORES--                                                                                                                            " +
