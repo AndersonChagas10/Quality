@@ -258,10 +258,10 @@
                 return false;
             }
 
-            if (!(parseInt( $('#level2Id').val().replace(/\D/g, ''), 10) > 0)) {
+            @*if (!(parseInt( $('#level2Id').val().replace(/\D/g, ''), 10) > 0)) {
                 GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(@Resources.Resource.select_the_level2)));
                 return false;
-            }
+            }*@
 
             if (!GuardJs.isValid)
                 return !GuardJs.isValid;

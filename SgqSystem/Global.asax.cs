@@ -50,12 +50,12 @@ namespace SgqSystem
             _backgroundJobServer = new BackgroundJobServer();
 
 
-            if (GlobalConfig.Brasil)
+            if (GlobalConfig.LanguageBrasil)
             {
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
             }
-            else if (GlobalConfig.Eua)
+            else if (GlobalConfig.LanguageEUA)
             {
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("");
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("");

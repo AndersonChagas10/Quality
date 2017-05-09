@@ -32,12 +32,15 @@ namespace DTO
       
 
         /*Sistema real time*/
-        public static bool Brasil { get; set; }
+        public static bool Brasil { get; set; } //UTILIZADO PARA SABER SE é JBS BRASIL
         public static bool Eua { get; set; }
         public static bool Canada { get; set; }
-        public static bool JBS { get; set; }
         public static bool Ytoara { get; set; }
         public static bool Guarani { get; set; }
+
+        /*Resources manager*/
+        public static bool LanguageBrasil { get; set; }
+        public static bool LanguageEUA { get; set; }
 
         /*DataMenber*/
         public static bool mockLoginEUA { get; set; }
@@ -137,26 +140,28 @@ namespace DTO
             switch (dto.ActiveIn)
             {
                 case 1:
-                    JBS = true;
+                    LanguageBrasil = true;
                     Brasil = true;
                     Verifica += "Ambiente:  Brasil\n";
                     break;
                 case 2:
-                    JBS = true;
+                    LanguageEUA = true;
                     Eua = true;
                     Verifica += "Ambiente:  Eua\n";
                     break;
                 case 3:
-                    JBS = true;
+                    LanguageEUA = true;
                     Canada = true;
                     Verifica += "Ambiente:  Canada\n";
                     break;
                 case 4:
                     Ytoara = true;
+                    LanguageBrasil = true;
                     Verifica += "Ambiente:  Ytoara\n";
                     break;
                 case 5:
                     Guarani = true;
+                    LanguageBrasil = true;
                     Verifica += "Ambiente:  Guarani\n";
                     break;
                 default:
@@ -206,13 +211,15 @@ namespace DTO
             Brasil = false;
             Eua = false;
             Canada = false;
-            JBS = false;
             Ytoara = false;
+            LanguageBrasil = false;
+            LanguageEUA = false;
             Guarani = false;
             ActiveIn = 0;
             recoveryPassAvaliable = false;
             urlPreffixAppColleta = string.Empty;
             urlAppColleta = string.Empty;
+            //JBS = false;
 
         }
 

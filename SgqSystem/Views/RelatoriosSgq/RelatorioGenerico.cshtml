@@ -44,8 +44,8 @@
                 </tbody>
             </table>
 
-            {{header}}
-            {{bodies}}
+            @*{{header}}
+                {{bodies}}*@
 
         </div>
 
@@ -79,7 +79,7 @@
         }
     });
 
-    app.controller('MainCtrl', ['$scope', '$http', '$filter' , '$compile', function ($scope, $http, $filter,$compile) {
+    app.controller('MainCtrl', ['$scope', '$http', '$filter' , '$compile', '$q', function ($scope, $http, $filter,$compile, $q) {
 
         $('#btnSend').replaceWith($('#btnSend'));
         $('#btnSend').attr('ng-click','getReport()');
@@ -97,7 +97,32 @@
                 $scope.header = retorno.data.header;
 
                 var myFilter = $filter('myFilter');
+
                 $scope.bodies = myFilter(retorno.data.body);
+
+                //mountTable();
+
+                // promise
+                function asyncGreet() {
+                    var deferred = $q.defer();
+
+                    setTimeout(function() {
+                        if ($scope.bodies != null) {
+                            deferred.resolve(true);
+                        } else {
+                            deferred.reject(false);
+                        }
+                    }, 1000);
+
+                    return deferred.promise;
+                }
+
+                var promise = asyncGreet();
+                promise.then(function() {
+                    mountTable();
+                }, function() {
+                    console.log('Não deu certo');
+                });
 
             }, function (error) {
                 console.log(error);
@@ -107,11 +132,34 @@
 
     }]);
 
+    function mountTable(){
+
+        setTimeout(function(){
+
+            //DataTable
+            $('#genericTable tfoot th').each( function () {
+                var title = $(this).text();
+                $(this).html( '<input type="text" placeholder="Buscar '+ title +'" />' );
+            });
+
+            var table = $('#genericTable').DataTable();
+
+            table.columns().every( function () {
+                var that = this;
+
+                $('input', this.footer() ).on('keyup change', function () {
+                    if (that.search() !== this.value) {
+                        that.search(this.value).draw();
+                    }
+                });
+            });
+        }, 1000);
+    }
+
     $(document).ready(function () {
         formControl.showFullCallendar();
         closeLeftSidebar();
 
-        $('#genericTable').dataTable();
     });
 
 </script>

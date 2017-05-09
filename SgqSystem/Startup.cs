@@ -25,8 +25,8 @@ namespace SgqSystem
             app.UseHangfireDashboard("/hangfire", dashboardoptions);
 
 
-            BackgroundJob.Enqueue(
-           () => SimpleAsynchronous.SendMailFromDeviationSgqApp());
+           // BackgroundJob.Enqueue(
+           //() => SimpleAsynchronous.SendMailFromDeviationSgqApp());
 
             // BackgroundJob.Enqueue(
             //() => SimpleAsynchronous.ResendProcessJson());
