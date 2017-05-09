@@ -32,6 +32,12 @@ namespace Data.Repositories
             Commit();
         }
 
+        /// <summary>
+        /// Verifica se o Usuario existe no DB
+        /// Returns : UserSgq, null.
+        /// </summary>
+        /// <param name="user">UserSgq</param>
+        /// <returns></returns>
         public UserSgq AuthenticationLogin(UserSgq user)
         {
             var pass = Guard.EncryptStringAES(user.Password);

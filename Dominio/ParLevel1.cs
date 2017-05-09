@@ -17,7 +17,6 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParLevel1()
         {
-            this.ConsolidationLevel1 = new HashSet<ConsolidationLevel1>();
             this.ParGoal = new HashSet<ParGoal>();
             this.VolumeCepDesossa = new HashSet<VolumeCepDesossa>();
             this.VolumeCepRecortes = new HashSet<VolumeCepRecortes>();
@@ -33,6 +32,7 @@ namespace Dominio
             this.Defect = new HashSet<Defect>();
             this.CollectionLevel2 = new HashSet<CollectionLevel2>();
             this.ParCounterXLocal = new HashSet<ParCounterXLocal>();
+            this.ConsolidationLevel1 = new HashSet<ConsolidationLevel1>();
         }
     
         public int Id { get; set; }
@@ -64,8 +64,6 @@ namespace Dominio
         public Nullable<bool> HasCompleteEvaluation { get; set; }
         public Nullable<int> ParScoreType_Id { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
         public virtual ParConsolidationType ParConsolidationType { get; set; }
         public virtual ParFrequency ParFrequency { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -99,5 +97,7 @@ namespace Dominio
         public virtual ParScoreType ParScoreType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParCounterXLocal> ParCounterXLocal { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
     }
 }

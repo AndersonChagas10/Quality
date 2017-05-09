@@ -20,11 +20,11 @@
                         <span class="title">@Resources.Resource.home</span>
                     </a>
                 </li>*@
-            <li class="heading">
+            <li class="heading" style="margin-top:20px">
                 <h3 class="uppercase">@Resources.Resource.system</h3>
             </li>
             <li class="nav-item" id="RoleLink2">
-                <a href="@urlDataCollection" class="nav-link nav-toggle">
+                <a href="@urlDataCollection" target="_blank" class="nav-link nav-toggle">
                     <i class="fa fa-tablet"></i>
                     <span class="title">@Resources.Resource.data_collection</span>
                 </a>
@@ -137,11 +137,11 @@
                                 <span class="title">@Resources.Resource.cep_desossa</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("Index", "CepRecortes")" class="nav-link nav-toggle">
-                                <span class="title">@Resources.Resource.cep_recortes</span>
-                            </a>
-                        </li>
+                        @*<li class="nav-item">
+                                <a href="@Url.Action("Index", "CepRecortes")" class="nav-link nav-toggle">
+                                    <span class="title">@Resources.Resource.cep_recortes</span>
+                                </a>
+                            </li>*@
                         <li class="nav-item">
                             <a href="@Url.Action("Index", "VacuoGRDs")" class="nav-link nav-toggle">
                                 <span class="title">@Resources.Resource.vacuo_grd</span>
@@ -239,6 +239,7 @@
                     </li>
                 }
             }
+        </ul>
     </div>
 </div>
 

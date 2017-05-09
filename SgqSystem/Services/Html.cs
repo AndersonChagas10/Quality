@@ -76,9 +76,9 @@ namespace SgqSystem.Services
         /// <param name="outerhtml">Conteudo</param>
         /// <param name="style">Styles</param>
         /// <returns></returns>
-        public string span(string id = null, string classe = null, string name = null, string outerhtml = null, string style = null)
+        public string span(string id = null, string classe = null, string name = null, string outerhtml = null, string style = null, string attr = null)
         {
-            return "<span id=\"" + id + "\" class=\"" + classe + "\" name=\"" + name + "\" style=\"" + style + "\">" + outerhtml + "</span>";
+            return "<span id=\"" + id + "\" class=\"" + classe + "\" name=\"" + name + "\" style=\"" + style + "\" "+ attr + ">" + outerhtml + "</span>";
         }
         /// <summary>
         /// Retorna uma quebra de linha <br />
@@ -311,6 +311,7 @@ namespace SgqSystem.Services
             return binario;
         }
         public string campoIntervalo(string id, decimal intervalMin, decimal intervalMax, decimal defaultValue = 0, string unitName = null, string classe = null)
+
         {
             //definir min value //min=\"0\" 
             //definir max value
@@ -325,12 +326,18 @@ namespace SgqSystem.Services
                                  "    <span class=\"input-group-btn btn-minus\">                                                                                                                              " +
                                  "         <button class=\"btn btn-default\" type=\"button\" style=\"padding:0px 2px;\">                                                                                                                 " +
                                  "             <i class=\"fa fa-minus\" aria-hidden=\"true\"></i>                                                                                                             " +
-                                 "             </button></span><input type=\"text\" class=\"form-control text-center levelValue interval\">     " +
+                                 "             </button></span><input type=\"text\" value=\"\" class=\"form-control text-center levelValue interval\">     " +
                                  "             <span class=\"input-group-btn btn-plus\"><button class=\"btn btn-default\" type=\"button\" style=\"padding:0px 2px;\">                                                                    " +
                                  "             <i class=\"fa fa-plus\" aria-hidden=\"true\"></i>                                                                                                              " +
                                  "         </button>                                                                                                                                                          " +
                                  "     </span>                                                                                                                                                                " +
-                                 "</div>                                                                                                                                                                      ";
+                                 "</div>   ";
+
+
+
+            //string intervalo = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                                                                                                  " +
+            //                     "              <input type=\"text\" class=\"form-control text-center levelValue interval\" value=\"\">     " +
+            //                     "</div> ";
             return intervalo;
         }
 

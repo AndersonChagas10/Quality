@@ -1178,6 +1178,10 @@
             $('#level2_nc_collapse > div > table.table-erp > tbody > tr > td:nth-child(4) > button').attr('disabled', true);
             $($('[id=btnSaveCounter]')[1]).attr('disabled', true);
 
+            if ($($('[name="paramsDto.parLevel1Dto.IsSpecific"]')[0]).bootstrapSwitch('state')) {
+
+            }
+
             /*Level3*/
             if ($($('[name="paramsDto.parLevel1Dto.IsSpecific"]')[0]).bootstrapSwitch('state')) {
                 $('#btnSaveNewLevel3').attr('disabled', false);
@@ -1199,14 +1203,27 @@
                         $(this).find('input, select, button').attr("disabled", true);
                 });
 
-                /*habilita Edicao do Peso*/
-                $('#tablePeso > tbody > tr').each(function() {
-                    if($(this).data().ParCompany_Id != unitId){
-                        $(this).find('input, select, button').attr("disabled", true);
-                    }
-                });
+                if($($('[name="paramsDto.parLevel1Dto.IsSpecificLevel3"]')[0]).bootstrapSwitch('state')){
+                    console.log('não permite editar vinculo unidade Parlevel3')
+                    /*habilita Edicao do Peso*/
+                    $('#tablePeso > tbody > tr').each(function() {
+                        if($(this).data().ParCompany_Id != unitId){
+                            $(this).find('input, select, button').attr("disabled", true);
+                        }
+                    });
+                    $('#vinculoLevel1').attr("disabled", false);
+                    $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', false)
+                }
+                else
+                {
+                    $('#vinculoLevel1').attr("disabled", true);
+                    console.log('permite editar vinculo unidade Parlevel3')
+                    $('#tablePeso > tbody > tr').each(function() {
+                         $(this).find('input, select, button').attr("disabled", true);
+                    });
+                    $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', true)
+                }
 
-                $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', false)
 
             }else{
                 $('#btnSaveNewLevel3').attr('disabled', true);

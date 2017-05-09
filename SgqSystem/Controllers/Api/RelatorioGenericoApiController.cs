@@ -20,7 +20,7 @@ namespace SgqSystem.Controllers.Api
             var db = new SgqDbDevEntities();
             dynamic retorno = new ExpandoObject();
             //var queryHeader = "select Column_name from Information_schema.columns where Table_name like 'UserSgq'";
-            var querybody = "select top 10 STR(Id) as Col1, Name as Col2, [Password] as Col3 from UserSgq";
+            var querybody = "select STR(Id) as Col1, Name as Col2, [Password] as Col3 from UserSgq";
             //var querybody = "select STR(*) from UserSgq";
 
             //retorno.header = db.Database.SqlQuery<string>(queryHeader).ToList();

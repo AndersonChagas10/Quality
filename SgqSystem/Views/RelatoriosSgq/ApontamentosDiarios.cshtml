@@ -40,6 +40,7 @@
         var urlEdit = '@Html.Raw(@urlEdit)';
         var urlSave = '@Html.Raw(@urlSave)';
         var $btn = $('#btnSend');
+        var RoleUser = @Html.Raw(Json.Encode(ViewBag.Roles));
 
         $('#simpleCallendar').hide().attr('disabled', true);
 
@@ -48,6 +49,7 @@
             closeLeftSidebar();
 
             $("#btnSend").click(function (e) {
+                $('#unitId').change();
                 Send(true);
             });
         });
@@ -66,11 +68,22 @@
         };
 
         function GerarTabela(retornoArray) {
+
+            //Regra para habilitar o botão de edição somente para quem contiver as roles 366 e 346
+            var regraEdit = false;
+
+            if (RoleUser.indexOf("366") >= 0 || RoleUser.indexOf("346") >= 0) {
+                regraEdit = true ;
+            }else{
+                regraEdit = false;
+            }
+            //Fim Regra
+
             $('#divTable').show();
             var table = $('#results').empty().DataTable({
                 data: retornoArray,
                 columns: [
-                    { title: "@Resources.Resource.edit", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>' },
+                    { title: "@Resources.Resource.edit", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>', "visible" : regraEdit },
                     { title: "@Resources.Resource.unit", mData: "Unidade" }, //{ title: "Unidade", mData: "Unidade" },
                     { title: "@Resources.Resource.shift", mData: "Turno" },
                     { title: "@Resources.Resource.period", mData: "Periodo" },
@@ -125,10 +138,12 @@
                             $('#ResultLevel3_Id').val(r.Id);
 
                             $('#changeConform').empty();
-                            $('#changeConform').append($(r.showIntervalos));
-                            $('#changeConform').append($(r.showConform));
-                            $('#changeConform').append($(r.showCalculado));
-                            $('#changeConform').append($(r.showNumeroDefeitos));
+                            //$('#changeConform').append($(r.showIntervalos));
+                            //$('#changeConform').append($(r.showConform));
+                            //$('#changeConform').append($(r.showCalculado));
+                            //$('#changeConform').append($(r.showNumeroDefeitos));
+                            //$('#changeConform').append($(r.showTexto));
+                            $('#changeConform').append($(r.showGeneric));
 
                             //console.log(r.Id);
                         });
@@ -211,10 +226,15 @@
                 dadosResultLevel3["Value"] = $('#numeroDeDefeitos').val();
             if ($('#intervaloValor').length)
                 dadosResultLevel3["Value"] = $('#intervaloValor').val();
-
+            if ($('#texto').length){
+                dadosResultLevel3["ValueText"] = $('#texto').val();
+                if(dadosResultLevel3.ValueText == ""){
+                    dadosResultLevel3.IsNotEvaluate = true;
+                }
+            }
 
             $.post(urlSave, dadosResultLevel3, function (r, x, e) {
-                openMessageModal('@Resources.Resource.done','@Resources.Resource.registry_alter_success'); //"Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
+                openMessageModal('@Resources.Resource.done', '@Resources.Resource.registry_alter_success'); //"Feito", "Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).");
             }).fail(function (r, x, e) {
                 console.log(r);
                 console.log(x);
@@ -227,6 +247,21 @@
 
             GuardJs.resetForValidation();
             GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+
+            if (!(parseInt( $('#unitId').val().replace(/\D/g, ''), 10) > 0)) {
+                GuardJs.exibirMensagemAlerta("@Resources.Resource.select_the_unit_first");
+                return false;
+            }
+
+            if (!(parseInt( $('#level1Id').val().replace(/\D/g, ''), 10) > 0)) {
+                GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(Resources.Resource.select_the_level1)));
+                return false;
+            }
+
+            @*if (!(parseInt( $('#level2Id').val().replace(/\D/g, ''), 10) > 0)) {
+                GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(@Resources.Resource.select_the_level2)));
+                return false;
+            }*@
 
             if (!GuardJs.isValid)
                 return !GuardJs.isValid;

@@ -1168,6 +1168,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data not synced..
+        /// </summary>
+        internal static string data_not_synced {
+            get {
+                return ResourceManager.GetString("data_not_synced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data synced..
+        /// </summary>
+        internal static string data_synced {
+            get {
+                return ResourceManager.GetString("data_synced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data type .
         /// </summary>
         internal static string data_type_entry {
@@ -4435,6 +4453,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the level 1.
+        /// </summary>
+        internal static string select_the_level1 {
+            get {
+                return ResourceManager.GetString("select_the_level1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the level 2.
         /// </summary>
         internal static string select_the_level2 {
@@ -4854,6 +4881,15 @@ namespace Resources {
         internal static string supervisor_notification {
             get {
                 return ResourceManager.GetString("supervisor_notification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synced data..
+        /// </summary>
+        internal static string synced {
+            get {
+                return ResourceManager.GetString("synced", resourceCulture);
             }
         }
         
@@ -5371,7 +5407,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to We are verifying the laptop parameters.
+        ///   Looks up a localized string similar to Syncroning the parametrization.
         /// </summary>
         internal static string verifying_parameters {
             get {

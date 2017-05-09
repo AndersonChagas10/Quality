@@ -44,7 +44,6 @@ namespace Dominio
         public virtual DbSet<CollectionLevel03> CollectionLevel03 { get; set; }
         public virtual DbSet<CollectionLevel2XParHeaderField> CollectionLevel2XParHeaderField { get; set; }
         public virtual DbSet<ConsolidationLevel01> ConsolidationLevel01 { get; set; }
-        public virtual DbSet<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
         public virtual DbSet<CorrectiveAction> CorrectiveAction { get; set; }
         public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<Example> Example { get; set; }
@@ -121,7 +120,6 @@ namespace Dominio
         public virtual DbSet<UserSgq> UserSgq { get; set; }
         public virtual DbSet<ParScoreType> ParScoreType { get; set; }
         public virtual DbSet<RoleUserSgq> RoleUserSgq { get; set; }
-        public virtual DbSet<ConsolidationLevel2> ConsolidationLevel2 { get; set; }
         public virtual DbSet<ParCounter> ParCounter { get; set; }
         public virtual DbSet<ParCounterXLocal> ParCounterXLocal { get; set; }
         public virtual DbSet<ParLocal> ParLocal { get; set; }
@@ -129,6 +127,8 @@ namespace Dominio
         public virtual DbSet<Deviation> Deviation { get; set; }
         public virtual DbSet<EmailContent> EmailContent { get; set; }
         public virtual DbSet<ManDataCollectIT> ManDataCollectIT { get; set; }
+        public virtual DbSet<ConsolidationLevel2> ConsolidationLevel2 { get; set; }
+        public virtual DbSet<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

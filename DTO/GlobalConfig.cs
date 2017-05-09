@@ -26,16 +26,21 @@ namespace DTO
         public bool MockEmail { get; set; }
     }
 
+  
     public static class GlobalConfig
     {
+      
 
         /*Sistema real time*/
-        public static bool Brasil { get; set; }
+        public static bool Brasil { get; set; } //UTILIZADO PARA SABER SE é JBS BRASIL
         public static bool Eua { get; set; }
         public static bool Canada { get; set; }
-        public static bool JBS { get; set; }
         public static bool Ytoara { get; set; }
         public static bool Guarani { get; set; }
+
+        /*Resources manager*/
+        public static bool LanguageBrasil { get; set; }
+        public static bool LanguageEUA { get; set; }
 
         /*DataMenber*/
         public static bool mockLoginEUA { get; set; }
@@ -122,6 +127,7 @@ namespace DTO
             return false;/*Se não existe config retorna falso*/
         }
 
+        public static string Verifica { get;  set; }
         /// <summary>
         /// Recebe parametros do DB e Configura arquivo de config do web site.
         /// </summary>
@@ -129,26 +135,34 @@ namespace DTO
         public static void ConfigWebSystem(SgqConfig dto)
         {
 
+            Verifica = string.Empty;
             SetAllFalse();
             switch (dto.ActiveIn)
             {
                 case 1:
-                    JBS = true;
+                    LanguageBrasil = true;
                     Brasil = true;
+                    Verifica += "Ambiente:  Brasil\n";
                     break;
                 case 2:
-                    JBS = true;
+                    LanguageEUA = true;
                     Eua = true;
+                    Verifica += "Ambiente:  Eua\n";
                     break;
                 case 3:
-                    JBS = true;
+                    LanguageEUA = true;
                     Canada = true;
+                    Verifica += "Ambiente:  Canada\n";
                     break;
                 case 4:
                     Ytoara = true;
+                    LanguageBrasil = true;
+                    Verifica += "Ambiente:  Ytoara\n";
                     break;
                 case 5:
                     Guarani = true;
+                    LanguageBrasil = true;
+                    Verifica += "Ambiente:  Guarani\n";
                     break;
                 default:
                     break;
@@ -168,6 +182,21 @@ namespace DTO
             emailSmtp = dto.MailSmtp;
             emailPort = dto.MailPort;
             mockEmail = dto.MockEmail;
+
+            Verifica += "recoveryPassAvaliable:  " + recoveryPassAvaliable.ToString() + "\n";
+            Verifica += "urlPreffixAppColleta:  " + urlPreffixAppColleta + "\n";
+            Verifica += "urlAppColleta:  " + urlAppColleta + "\n";
+            Verifica += "mockLoginEUA:  " + mockLoginEUA + "\n";
+            Verifica += "emailFrom:  " + emailFrom + "\n";
+            Verifica += "emailPass:  " + emailPass + "\n";
+            Verifica += "emailSSL:  " + emailSSL.ToString() + "\n";
+            Verifica += "emailSmtp:  " + emailSmtp + "\n";
+            Verifica += "emailPort:  " + emailPort.ToString() + "\n";
+            Verifica += "mockEmail:  " + mockEmail.ToString() + "\n";
+
+            Verifica += "AddDate:  " + AddDate.ToString() + "\n";
+            Verifica += "AlterDate:  " + AlterDate.ToString() + "\n";
+            Verifica += "Id:  " + Id.ToString() + "\n";
         }
 
         /// <summary>
@@ -182,13 +211,15 @@ namespace DTO
             Brasil = false;
             Eua = false;
             Canada = false;
-            JBS = false;
             Ytoara = false;
+            LanguageBrasil = false;
+            LanguageEUA = false;
             Guarani = false;
             ActiveIn = 0;
             recoveryPassAvaliable = false;
             urlPreffixAppColleta = string.Empty;
             urlAppColleta = string.Empty;
+            //JBS = false;
 
         }
 

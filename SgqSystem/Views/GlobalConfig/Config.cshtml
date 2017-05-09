@@ -2,24 +2,24 @@
 @{
     ViewBag.Title = "Config";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var urlCheck = Url.Action("CheckGC", "GlobalConfigApi");
-    var urlAlter = Url.Action("AlterGC", "GlobalConfigApi");
+    //var urlCheck = Url.Action("CheckGC", "GlobalConfigApi");
+    //var urlAlter = Url.Action("AlterGC", "GlobalConfigApi");
     var urlSenha = Url.Action("RecSenha", "GlobalConfigApi");
-    var urlConverteValorCalculado = Url.Action("ConverteValorCalculadoString", "GlobalConfigApi");
-    var urlConverteValorCalculadoDecimal = Url.Action("DesconverteValorCalculadoDecimal", "GlobalConfigApi");
-    var linkAtual = GlobalConfig.linkDataCollect;
+    //var urlConverteValorCalculado = Url.Action("ConverteValorCalculadoString", "GlobalConfigApi");
+    //var urlConverteValorCalculadoDecimal = Url.Action("DesconverteValorCalculadoDecimal", "GlobalConfigApi");
+    //var linkAtual = GlobalConfig.linkDataCollect;
 }
 
 <h2>Config</h2>
 
 
 <table style="background-color:white">
-    <tr>
+    @*<tr>
         <td>Link Data Collect Atual:</td>
         <td>@linkAtual</td>
         <td>Selecione para alterar: @Html.DropDownList("linkDataCollect", new SelectList(ViewBag.linksDataCollect), Resources.Resource.select + "...")</td>
-    </tr>
-    <tr>
+    </tr>*@
+    @*<tr>
         <td>
             <label>Checar versão global</label>
         </td>
@@ -29,8 +29,8 @@
         <td id="resultsCheck">
 
         </td>
-    </tr>
-    <tr>
+    </tr>*@
+    @*<tr>
         <td>
             <label>Mudar Versão global</label>
         </td>
@@ -43,16 +43,25 @@
         <td>
             <button id="alter" onclick="alter();"> Alterar Versão Global</button>
         </td>
-    </tr>
+    </tr>*@
     <tr id="secret">
         <td>recuperar senha</td>
         <td><input id="senha" /></td>
         <td> <button id="alter" onclick="senha();"> Recuperar</button> </td>
     </tr>
-    <tr>
+    @*<tr>
         <td><button id="alter" onclick="ConverteValorCalculado();"> Testar Guard.ConverteValorCalculado RETURN DECIMAL</button> </td>
         <td><button id="alter" onclick="DesconverteValorCalculado();"> Testar Guard.ConverteValorCalculado RETURN STRING</button> </td>
         <td></td>
+    </tr>*@
+
+    <tr>
+        <td>Config</td>
+        <td>
+            <div>
+                @GlobalConfig.Verifica;
+            </div>
+        </td>
     </tr>
 </table>
 
@@ -60,7 +69,7 @@
 
 <script>
 
-    function ConverteValorCalculado() {
+    @*/*function ConverteValorCalculado() {
         $.post('@Html.Raw(urlConverteValorCalculado)', function (r) { console.log(r); alert(r); });
     }
 
@@ -76,11 +85,11 @@
         $.post('@Html.Raw(urlAlter)' + '/' + $('#seletor :selected').val(), function (data) {
             check();
         });
-    }
-
+    }*/*@
+    
     function senha() {
 
-        $.post('@Html.Raw(urlSenha)', {'': $('#senha').val()}, function (data) {
+        $.post('@Html.Raw(urlSenha)', { '': $('#senha').val() }, function (data) {
             $("#senha").val(data);
         });
 

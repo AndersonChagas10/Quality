@@ -41,6 +41,7 @@ public class ApontamentosDiariosResultSet
         var sqlUnidade = "";
         var sqlLevel1 = "";
         var sqlLevel2 = "";
+        var sqlLevel3 = "";
 
         if (form.unitId > 0)
         {
@@ -55,6 +56,11 @@ public class ApontamentosDiariosResultSet
         if (form.level2Id > 0)
         {
             sqlLevel2 = "\n AND C2.ParLevel2_Id = " + form.level2Id;
+        }
+
+        if (form.level3Id > 0)
+        {
+            sqlLevel3 = "\n AND L3.Id = " + form.level3Id;
         }
 
         return " SELECT                                    " +
@@ -88,9 +94,7 @@ public class ApontamentosDiariosResultSet
                 " \n INNER JOIN ParLevel1 L1                 " +
                 " \n ON L1.Id = C2.ParLevel1_Id             " +
                 " \n WHERE C2.CollectionDate BETWEEN '" + dtInit + " 00:00' AND '" + dtF + " 23:59'" +
-                sqlUnidade + sqlLevel1 + sqlLevel2;
-
-
+                sqlUnidade + sqlLevel1 + sqlLevel2 + sqlLevel3;
 
     }
 

@@ -65,7 +65,7 @@ namespace SGQDBContext
                 throw ex;
             }
         }
-        public IEnumerable<ParLevel1> getParLevel1ParCriticalLevelList(int ParCompany_Id)
+        public IEnumerable<ParLevel1> getParLevel1ParCriticalLevelList(int ParCompany_Id, string Level1ListId)
         {
 
             /*
@@ -75,7 +75,7 @@ namespace SGQDBContext
 
             string ParLevel1_IdFilho = "";
 
-            ParLevel1_IdFilho = " AND P1.Id NOT IN (1042) ";
+            //ParLevel1_IdFilho = " AND P1.Id NOT IN (1042) ";
 
             //SqlConnection db = new SqlConnection(conexao);
             string sql = "\n SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
@@ -95,10 +95,18 @@ namespace SGQDBContext
                          "\n LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
                          "\n ON AL.ParLevel1_Id = P1.Id   AND AL.IsActive = 1                                                                                               " +
 
+                         "\n INNER JOIN (SELECT ParLevel1_Id FROM (select * from parGoal where IsActive = 1 and (ParCompany_Id is null or ParCompany_Id = '" + ParCompany_Id + "')) A GROUP BY ParLevel1_Id) G  " +
+                         "\n ON P1.Id = G.ParLevel1_Id                                                                                        " +
+
                          "\n WHERE CC.ParCompany_Id = '" + ParCompany_Id + "'                                                                           " +
                          "\n " + ParLevel1_IdFilho + "                                                                                                       " +
-                         "\n AND P1.IsActive = 1 AND C.IsActive = 1 AND P1C.IsActive = 1 AND CC.Active = 1                                                                                                       " +
-                         "\n ORDER BY CL.Name, P1.Name                                                                                                           ";
+                         "\n AND P1.IsActive = 1 AND C.IsActive = 1 AND P1C.IsActive = 1 AND CC.Active = 1                                                                                                       ";
+            if(Level1ListId != "" && Level1ListId != null)
+            {
+                sql += " AND P1.Id IN ("+ Level1ListId.Substring(0, Level1ListId.Length - 1) + ") ";
+            }
+
+            sql += "\n ORDER BY CL.Name, P1.Name                                                                                                           ";
 
             //var parLevel1List = (List<ParLevel1>)db.Query<ParLevel1>(sql);
 
@@ -113,7 +121,7 @@ namespace SGQDBContext
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
         public decimal Nivel1 { get; set; }
         public decimal Nivel2 { get; set; }
-        public string Nivel3 { get; set; }
+        public string  Nivel3 { get; set; }
         public decimal VolumeAlerta { get; set; }
         public decimal Meta { get; set; }
 
@@ -1981,6 +1989,22 @@ namespace SGQDBContext
                 throw;
             }
         }
+        public ConsolidationLevel2 getByConsolidationLevel1(int ParCompany_Id, int ConsolidationLevel1_Id, int ParLevel2_Id, int reaudit)
+        {
+            try
+            {
+                string sql = "SELECT Id, ConsolidationLevel1_Id, UnitId, ParLevel2_Id, ConsolidationDate, WeiEvaluation, EvaluateTotal, DefectsTotal, WeiDefects, TotalLevel3Evaluation, TotalLevel3WithDefects, EvaluatedResult, ReauditIs, ReauditNumber FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = '" + 
+                    ConsolidationLevel1_Id + "' AND ParLevel2_Id= '" + ParLevel2_Id + "' AND UnitId='" + ParCompany_Id + "' AND ReauditIs="+reaudit+";";
+                //SqlConnection db = new SqlConnection(conexao);
+                var obj = db.Query<ConsolidationLevel2>(sql).FirstOrDefault();
+                return obj;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
     }
 
@@ -2264,10 +2288,10 @@ namespace SGQDBContext
 
                 if (HaveReaudit == 1)
                 {
-                    sql = "UPDATE CollectionLevel2 "+
-                            "SET ReauditLevel = 1, HaveReaudit = '" + HaveReaudit + "', ReauditNumber = '" + ReauditNumber + "' "+
-                            "FROM CollectionLevel2 "+
-                            "WHERE ConsolidationLevel2_Id "+
+                    sql = "UPDATE CollectionLevel2 " +
+                            "SET ReauditLevel = 1, HaveReaudit = '" + HaveReaudit + "', ReauditNumber = '" + ReauditNumber + "' " +
+                            "FROM CollectionLevel2 " +
+                            "WHERE ConsolidationLevel2_Id " +
                         "IN(SELECT Id FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = " + ConsolidationLevel1_Id + ") AND ReauditIs = 0";
                 }
                 else if (HaveReaudit == 0)
@@ -2277,17 +2301,17 @@ namespace SGQDBContext
                             "FROM CollectionLevel2 " +
                             "WHERE ConsolidationLevel2_Id " +
                         "IN(SELECT Id FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = " + ConsolidationLevel1_Id + ")  AND ReauditIs = 0 " +
-                        "AND "+
-                        "(SELECT Count(*) "+
-                            "FROM CollectionLevel2 "+
+                        "AND " +
+                        "(SELECT Count(*) " +
+                            "FROM CollectionLevel2 " +
                             "WHERE ReauditIs = 1 AND ReauditNumber = '" + ReauditNumber + "' " +
                             "AND ConsolidationLevel2_Id IN(SELECT Id FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = " + ConsolidationLevel1_Id + "))" +
-                        " = "+
-                        "(SELECT Count(*) "+
-                            "FROM CollectionLevel2 "+
+                        " = " +
+                        "(SELECT Count(*) " +
+                            "FROM CollectionLevel2 " +
                             "WHERE ReauditIs = 0 " +
                         "AND ConsolidationLevel2_Id IN(SELECT Id FROM ConsolidationLevel2 WHERE ConsolidationLevel1_Id = " + ConsolidationLevel1_Id + "))";
-                    
+
                 }
 
                 //SqlConnection db = new SqlConnection(conexao);
@@ -2458,6 +2482,20 @@ namespace SGQDBContext
                 throw;
             }
         }
+    }
+
+    /*
+         * novo metodo getConsolidation
+         * Autor: Gabriel Nunes
+         * Data: 2017 04 28
+         */
+    public partial class ResultadoUmaColuna
+    {
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public string retorno { get; set; }
+
+
     }
 
 }

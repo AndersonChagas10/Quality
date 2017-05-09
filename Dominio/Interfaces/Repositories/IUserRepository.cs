@@ -4,6 +4,12 @@ namespace Dominio.Interfaces.Repositories
 {
     public interface IUserRepository
     {
+        /// <summary>
+        /// Verifica se o Usuario existe no DB
+        /// Returns : UserSgq, null.
+        /// </summary>
+        /// <param name="user">UserSgq</param>
+        /// <returns></returns>s
         UserSgq AuthenticationLogin(UserSgq user);
 
         void Salvar(UserSgq user);
