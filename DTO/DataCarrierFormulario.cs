@@ -83,5 +83,9 @@ namespace DTO
         public int period { get; set; }
 
 
+        public int MetaFTA { get; set; }
+        public int PercentualNCFTA { get; set; }
+        public int ReincidenciaDesvioFTA { get; set; }
+        
     }
 }
