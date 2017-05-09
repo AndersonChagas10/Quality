@@ -1929,4 +1929,7 @@
   <data name="data_synced" xml:space="preserve">
     <value>Dados sincronizados.</value>
   </data>
+  <data name="synced" xml:space="preserve">
+    <value>Sincronizado.</value>
+  </data>
 </root>

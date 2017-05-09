@@ -44,8 +44,8 @@
                 </tbody>
             </table>
 
-            {{header}}
-            {{bodies}}
+            @*{{header}}
+                {{bodies}}*@
 
         </div>
 
@@ -79,7 +79,7 @@
         }
     });
 
-    app.controller('MainCtrl', ['$scope', '$http', '$filter' , '$compile', function ($scope, $http, $filter,$compile) {
+    app.controller('MainCtrl', ['$scope', '$http', '$filter' , '$compile', '$q', function ($scope, $http, $filter,$compile, $q) {
 
         $('#btnSend').replaceWith($('#btnSend'));
         $('#btnSend').attr('ng-click','getReport()');
@@ -99,6 +99,8 @@
                 var myFilter = $filter('myFilter');
                 $scope.bodies = myFilter(retorno.data.body);
 
+                //mountTable();
+
             }, function (error) {
                 console.log(error);
             });
@@ -107,11 +109,31 @@
 
     }]);
 
+    function mountTable(){
+
+        //DataTable
+        $('#genericTable tfoot th').each( function () {
+            var title = $(this).text();
+            $(this).html( '<input type="text" placeholder="Buscar '+ title +'" />' );
+        });
+
+        var table = $('#genericTable').DataTable();
+
+        table.columns().every( function () {
+            var that = this;
+
+            $('input', this.footer() ).on('keyup change', function () {
+                if (that.search() !== this.value) {
+                    that.search(this.value).draw();
+                }
+            });
+        });
+    }
+
     $(document).ready(function () {
         formControl.showFullCallendar();
         closeLeftSidebar();
 
-        $('#genericTable').dataTable();
     });
 
 </script>
