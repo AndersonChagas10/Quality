@@ -1390,6 +1390,7 @@
     <Content Include="Views\RelatoriosSgq\RelatorioGenerico.cshtml" />
     <Content Include="Scripts\smart-table.min.js.map" />
     <Content Include="Views\Example\ResoursesTeste.cshtml" />
+    <Content Include="Views\RelatoriosSgq\_Fta.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

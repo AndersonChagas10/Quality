@@ -75,6 +75,8 @@
 
 </div>
 
+@Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
+
 @section Scripts {
 
     <script type="text/javascript">
@@ -407,12 +409,6 @@
             enviar['level3Name'] = tarefa;
             enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
             EasyAjax(urlGetFta, enviar, RedirecionaParaFTA);
-        }
-
-        function RedirecionaParaFTA(r) {
-
-            console.log(r);
-
         }
 
 
