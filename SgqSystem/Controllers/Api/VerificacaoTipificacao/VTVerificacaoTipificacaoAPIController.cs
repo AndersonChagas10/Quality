@@ -13,6 +13,7 @@ namespace SgqSystem.Controllers.Api
     [HandleApi()]
     [RoutePrefix("api/VTVerificacaoTipificacao")]
     public class VTVerificacaoTipificacaoApiController : ApiController
+
     {
         public string mensagemErro { get; set; }
 
@@ -576,6 +577,7 @@ namespace SgqSystem.Controllers.Api
                                 }
                                 catch (Exception ex)
                                 {
+                                    throw new Exception("Deu merda no número 1 ", ex);
                                     //mernsagem de erro
                                     //string t = ex.ToString();
                                     //var inner = ex.InnerException.IsNotNull() ? ex.InnerException.Message : "Não consta.";
@@ -587,7 +589,7 @@ namespace SgqSystem.Controllers.Api
                     }
                     catch (Exception ex)
                     {
-                        //menasgem de erro
+                        throw new Exception("Deu merda no número 2 ", ex);
                     }
                 }
 
