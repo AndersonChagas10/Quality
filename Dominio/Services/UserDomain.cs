@@ -84,6 +84,8 @@ namespace Dominio.Services
         /// <returns> Retorna o Usuário caso exista, caso não exista retorna exceção com uma mensagem</returns>
         public GenericReturn<UserDTO> AuthenticationLogin(UserDTO userDto)
         {
+           
+            //throw new Exception("teste");
             try
             {
                 UserSgq userByName;
@@ -96,7 +98,7 @@ namespace Dominio.Services
 
                 /*Verifica se o UserName Existe no DB*/
                 userByName = _userRepo.GetByName(userDto.Name);
-
+                
                 //Verificar o local de login
                 /*Se for Brasil executa RN do Sistema Brasil*/
                 if (GlobalConfig.Brasil)
@@ -137,9 +139,6 @@ namespace Dominio.Services
         /// <returns></returns>
         private UserSgq CheckUserAndPassDataBase(UserDTO userDto)
         {
-            /*Descriptografa a criptografia do TABLET, caso a senha venha do sistema por POSTBACK e não esteja criptografada, não é afetada.*/
-            userDto.Password = Guard.DecryptStringAES(userDto.Password);
-
             /*Criptografa para compara com senha criptografad no DB*/
             var user = Mapper.Map<UserDTO, UserSgq>(userDto);
             var isUser = _userRepo.AuthenticationLogin(user);
@@ -191,24 +190,7 @@ namespace Dominio.Services
 
         #region LoginEUA
 
-        /// <summary>
-        /// Login EUA (somente aciona AutenticaAdEUA, por enquanto).
-        /// </summary>
-        /// <param name="userDto"></param>
-        /// <param name="userByName"></param>
-        /// <returns></returns>
-        private UserSgq LoginEUA(UserDTO userDto, UserSgq userByName)
-        {
-            /*Mock Login Desenvolvimento, descomentar caso HML ou PRODUÇÃO*/
-            if (GlobalConfig.mockLoginEUA)
-            {
-                UserSgq userDev = CheckUserAndPassDataBase(userDto);
-                return userDev;
-            }
-
-            return AutenticaAdEUA(userDto, userByName);//Autenticação no AD JBS USA
-        }
-
+     
         /// <summary>
         /// Verifica se o UsuarioExiste no AD dos EUA, 
         /// 1 - caso exista no AD, verifica no DB se ele ja existe: 1.1 - caso exista no DB (e no AD) retorna o mesmo e procede o login
@@ -218,13 +200,23 @@ namespace Dominio.Services
         /// </summary>
         /// <param name="userDto"></param>
         /// <returns></returns>
-        private UserSgq AutenticaAdEUA(UserDTO userDto, UserSgq userByName)
+        private UserSgq LoginEUA(UserDTO userDto, UserSgq userByName)
         {
-
             /*Descriptografa para comparar no AD*/
-            if ((userDto.Password != "") || (userDto.Password != null))
+            if (userByName != null)
             {
-                userDto.Password = Guard.DecryptStringAES(userDto.Password);
+                var decripted = Guard.DecryptStringAES(userByName.Password);
+                if (userDto.Password != decripted)/*Senha esta criptografada*/
+                {
+                    userDto.Password = Guard.DecryptStringAES(userDto.Password);
+                }
+            }
+
+            /*Mock Login Desenvolvimento, descomentar caso HML ou PRODUÇÃO*/
+            if (GlobalConfig.mockLoginEUA)
+            {
+                UserSgq userDev = CheckUserAndPassDataBase(userDto);
+                return userDev;
             }
 
             /*1*/
@@ -381,6 +373,17 @@ namespace Dominio.Services
             }
 
             #endregion
+
+            /*Descriptografa para comparar no AD*/
+            if (userByName != null)
+            {
+                var decripted = Guard.DecryptStringAES(userByName.Password);
+                if (userDto.Password != decripted)/*Senha esta criptografada*/
+                {
+                    userDto.Password = Guard.DecryptStringAES(userDto.Password);
+                }
+            }
+
 
             UserSgq isUser = CheckUserAndPassDataBase(userDto);
 
