@@ -5,13 +5,13 @@
     var urlGet = Url.Action("getTabela", "api/RelatorioGenerico");
 }
 <style>
-    .st-sort-ascent:before {
+    /*.st-sort-ascent:before {
         content: '\25B2';
     }
 
     .st-sort-descent:before {
         content: '\25BC';
-    }
+    }*/
 </style>
 
 <div class="page-content" style="min-height: 600px;">
@@ -23,14 +23,14 @@
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
         <div ng-controller="MainCtrl">
-            <table id="genericTable" st-table="displayedCollection" st-safe-src="bodies" class="table table-striped" ng-app="sgqSystem" style="width:100%">
+            <table id="genericTable" st-table="displayedCollection" st-safe-src="bodies" class="table table-striped" ng-app="sgqSystem" style="width:100%;display:none">
                 <thead>
                     <tr>
-                        <th st-sort="{{x}}" ng-repeat="x in header">{{x}}</th>
+                        <th @*st-sort="{{x}}"*@ ng-repeat="x in header">{{x}}</th>
                     </tr>
-                    <tr>
-                        <th colspan="50"><input st-search="" class="form-control" placeholder="Buscar Tudo ..." type="text" /></th>
-                    </tr>
+                    @*<tr>
+                            <th colspan="50"><input st-search="" class="form-control" placeholder="Buscar Tudo ..." type="text" /></th>
+                        </tr>*@
                 </thead>
                 <tfoot>
                     <tr>
@@ -48,7 +48,6 @@
                 {{bodies}}*@
 
         </div>
-
     </div>
 </div>
 
@@ -60,8 +59,6 @@
     $(".page-sidebar-wrapper").removeClass("hide");
 
     //Angular
-    var i = 0;
-
     app.filter('myFilter', function () {
         return function (body) {
             var result = [];
@@ -74,12 +71,11 @@
                 })
                 result.push(Object.assign({}, item));
             });
-
             return result;
         }
     });
 
-    app.controller('MainCtrl', ['$scope', '$http', '$filter' , '$compile', '$q', function ($scope, $http, $filter,$compile, $q) {
+    app.controller('MainCtrl', ['$scope', '$http', '$filter' , '$compile', function ($scope, $http, $filter,$compile) {
 
         $('#btnSend').replaceWith($('#btnSend'));
         $('#btnSend').attr('ng-click','getReport()');
@@ -99,12 +95,13 @@
                 var myFilter = $filter('myFilter');
                 $scope.bodies = myFilter(retorno.data.body);
 
-                //mountTable();
+                angular.element(document).ready(function () {
+                    mountTable();
+                });
 
             }, function (error) {
                 console.log(error);
             });
-
         };
 
     }]);
@@ -112,28 +109,28 @@
     function mountTable(){
 
         //DataTable
-        $('#genericTable tfoot th').each( function () {
-            var title = $(this).text();
-            $(this).html( '<input type="text" placeholder="Buscar '+ title +'" />' );
+        $('#genericTable thead th').each( function () {
+            var title = $('#genericTable thead th').eq($(this).index()).text();
+            $(this).html(title + '<br><input type="text" placeholder="Buscar '+ title +'" />' );
         });
 
         var table = $('#genericTable').DataTable();
 
-        table.columns().every( function () {
+        table.columns().every(function () {
             var that = this;
-
-            $('input', this.footer() ).on('keyup change', function () {
+            $('input', this.footer()).on('keyup change', function () {
                 if (that.search() !== this.value) {
                     that.search(this.value).draw();
                 }
             });
         });
+
+        $('#genericTable').show();
     }
 
     $(document).ready(function () {
         formControl.showFullCallendar();
         closeLeftSidebar();
-
     });
 
 </script>
