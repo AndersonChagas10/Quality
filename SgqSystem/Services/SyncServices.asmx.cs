@@ -3792,7 +3792,7 @@ namespace SgqSystem.Services
             var ParFieldTypeDB = new SGQDBContext.ParFieldType(db);
             var ParNCRuleDB = new SGQDBContext.NotConformityRule(db);
 
-            var reauditFlag = "<li class='painel row list-group-item hide reauditFlag'> Reaudit <span class='reauditnumber'></span></li>";
+            var reauditFlag = "<li class='painel row list-group-item hide active reauditFlag'> Reaudit <span class='reauditnumber'></span></li>";
 
             var html = new Html();
 
@@ -4347,7 +4347,7 @@ namespace SgqSystem.Services
         {
             var html = new Html();
 
-            var reauditFlag = "<li class='painel row list-group-item hide reauditFlag'> Reaudit <span class='reauditnumber'></span></li>";
+            var reauditFlag = "<li class='painel row list-group-item active hide reauditFlag'> Reaudit <span class='reauditnumber'></span></li>";
 
             //Inicializa ParLevel3
             var ParLevel3DB = new SGQDBContext.ParLevel3(db);
