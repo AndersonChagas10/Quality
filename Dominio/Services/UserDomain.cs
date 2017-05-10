@@ -84,6 +84,8 @@ namespace Dominio.Services
         /// <returns> Retorna o Usuário caso exista, caso não exista retorna exceção com uma mensagem</returns>
         public GenericReturn<UserDTO> AuthenticationLogin(UserDTO userDto)
         {
+           
+            //throw new Exception("teste");
             try
             {
                 UserSgq userByName;
@@ -96,7 +98,7 @@ namespace Dominio.Services
 
                 /*Verifica se o UserName Existe no DB*/
                 userByName = _userRepo.GetByName(userDto.Name);
-
+                
                 //Verificar o local de login
                 /*Se for Brasil executa RN do Sistema Brasil*/
                 if (GlobalConfig.Brasil)
@@ -137,9 +139,6 @@ namespace Dominio.Services
         /// <returns></returns>
         private UserSgq CheckUserAndPassDataBase(UserDTO userDto)
         {
-            /*Descriptografa a criptografia do TABLET, caso a senha venha do sistema por POSTBACK e não esteja criptografada, não é afetada.*/
-            userDto.Password = Guard.DecryptStringAES(userDto.Password);
-
             /*Criptografa para compara com senha criptografad no DB*/
             var user = Mapper.Map<UserDTO, UserSgq>(userDto);
             var isUser = _userRepo.AuthenticationLogin(user);
@@ -220,11 +219,14 @@ namespace Dominio.Services
         /// <returns></returns>
         private UserSgq AutenticaAdEUA(UserDTO userDto, UserSgq userByName)
         {
-
             /*Descriptografa para comparar no AD*/
-            if ((userDto.Password != "") || (userDto.Password != null))
+            if (userByName != null)
             {
-                userDto.Password = Guard.DecryptStringAES(userDto.Password);
+                var decripted = Guard.DecryptStringAES(userByName.Password);
+                if (userDto.Password != decripted)/*Senha esta criptografada*/
+                {
+                    userDto.Password = Guard.DecryptStringAES(userDto.Password);
+                }
             }
 
             /*1*/
@@ -381,6 +383,17 @@ namespace Dominio.Services
             }
 
             #endregion
+
+            /*Descriptografa para comparar no AD*/
+            if (userByName != null)
+            {
+                var decripted = Guard.DecryptStringAES(userByName.Password);
+                if (userDto.Password != decripted)/*Senha esta criptografada*/
+                {
+                    userDto.Password = Guard.DecryptStringAES(userDto.Password);
+                }
+            }
+
 
             UserSgq isUser = CheckUserAndPassDataBase(userDto);
 
