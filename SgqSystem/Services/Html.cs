@@ -412,7 +412,7 @@ namespace SgqSystem.Services
                              string classe = null, decimal defects = 0, int evaluate = 1, int sample = 1,
                              bool reaudit = false, bool correctiveaction = false, bool phase = false,
                              bool HasSampleTotal = false, bool IsEmptyLevel3 = false, int level1Group_Id = 0,
-                             int RuleId = 0, string RuleValue = null, decimal AlertValue = 0)
+                             int RuleId = 0, string RuleValue = null, decimal AlertValue = 0, int ParFrequency_Id = 0)
         {
 
             string tagLevel1Group = null;
@@ -432,6 +432,7 @@ namespace SgqSystem.Services
                            "\" defectstotal=\"0\" weidefects=\"0\"" +
                            " totallevel3evaluation=\"0\"" +
                            " totallevel3withdefects=\"0\"" +
+                           " parfrequency_id=\"" + ParFrequency_Id + "\"" +
                            " hassampletotal=\"" + HasSampleTotal.ToString().ToLower() + "\"" +
                            " isemptylevel3=\"" + IsEmptyLevel3.ToString().ToLower()
                            + "\" ParNotConformityRule_id=\"" + RuleId.ToString()

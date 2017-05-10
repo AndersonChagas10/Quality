@@ -630,6 +630,8 @@ namespace SgqSystem.Services
 
                     var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(c.Unit_Id, c.level01_Id, c.Level01CollectionDate);
 
+                    if (c.Reaudit)
+                        consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(c.Unit_Id, c.level01_Id, c.Level01CollectionDate);
                     if (consolidationLevel1 == null)
                     {
                         consolidationLevel1 = InsertConsolidationLevel1(c.Unit_Id, c.level01_Id, c.Level01CollectionDate);
@@ -1161,9 +1163,9 @@ namespace SgqSystem.Services
             //             reaud + reauditNumber+") " +
             //             "SELECT @@IDENTITY AS 'Identity'";
 
-            string sql = "INSERT ConsolidationLevel2 ([ConsolidationLevel1_Id], [ParLevel2_Id], [UnitId], [AddDate], [AlterDate], [ConsolidationDate]) " +
+            string sql = "INSERT ConsolidationLevel2 ([ConsolidationLevel1_Id], [ParLevel2_Id], [UnitId], [AddDate], [AlterDate], [ConsolidationDate], [ReauditIs]) " +
                          "VALUES  " +
-                         "('" + ConsolidationLevel1_Id + "', '" + ParLevel2_Id + "', '" + ParCompany_Id + "', GETDATE(), NULL, CAST(N'" + collectionDate.ToString("yyyy-MM-dd") + "' AS DateTime)" + ") " +
+                         "('" + ConsolidationLevel1_Id + "', '" + ParLevel2_Id + "', '" + ParCompany_Id + "', GETDATE(), NULL, CAST(N'" + collectionDate.ToString("yyyy-MM-dd") + "' AS DateTime)"+","+reaud + ") " +
                          "SELECT @@IDENTITY AS 'Identity'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -2167,12 +2169,7 @@ namespace SgqSystem.Services
 
             string dataIni = data.ToString("yyyyMMdd");
 
-
-
             string retorno = "";
-
-
-
 
             using (var db = new Dominio.SgqDbDevEntities())
             {
@@ -4020,6 +4017,7 @@ namespace SgqSystem.Services
                                             evaluate: evaluate,
                                             sample: sample,
                                             HasSampleTotal: parlevel2.HasSampleTotal,
+                                            ParFrequency_Id: parlevel2.ParFrequency_Id,
                                             IsEmptyLevel3: parlevel2.IsEmptyLevel3,
                                             RuleId: parlevel2.ParNotConformityRule_id,
                                             RuleValue: ruleValue.ToString(),
@@ -6135,6 +6133,10 @@ namespace SgqSystem.Services
         public string getCollectionLevel2Keys(string ParCompany_Id, string date, int ParLevel1_Id = 0)
         {
 
+            DateTime data = DateCollectConvert(date);
+
+            string dataS = data.ToString("yyyyMMdd");
+
             string ResultsKeys = "";
 
             string sql = "" +
@@ -6144,7 +6146,7 @@ namespace SgqSystem.Services
                 "\n '<div id=\"' + CL2.[Key] + '\" class=\"collectionLevel2Key\"></div>' COLUNA                                                                            " +
                 "\n INTO #MOTHERFOCKER                                                                                                                                   " +
                 "\n FROM CollectionLevel2 CL2                                                                                                                            " +
-                "\n WHERE CL2.UnitId = '6' AND CL2.CollectionDate BETWEEN '20170101 00:00:00' AND '20170530 23:59:59'                                                    " +
+                "\n WHERE CL2.UnitId = '" + ParCompany_Id + "' AND CAST(CL2.CollectionDate AS DATE) BETWEEN '" + dataS + "' AND '" + dataS + "'                                                    " +
                 "\n                                                                                                                                                      " +
                 "\n ----------------------------------------------------------                                                                                           " +
                 "\n -- LISTA DE INDICADORES--                                                                                                                            " +
