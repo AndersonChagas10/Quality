@@ -40,7 +40,7 @@ namespace Data.Repositories
         /// <returns></returns>
         public UserSgq AuthenticationLogin(UserSgq user)
         {
-            var pass = user.Password;
+            var pass = Guard.EncryptStringAES(user.Password);
             var result = db.UserSgq.Include("ParCompanyXUserSgq").Include("UnitUser")
                 .FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()) && x.Password.Equals(pass));
 
