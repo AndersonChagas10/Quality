@@ -2334,11 +2334,11 @@ namespace SgqSystem.Services
                     "\n Phase=\"' + ISNULL(REPLACE(CAST(CL2.Phase AS VARCHAR),'.',','),'NULL') + '\"" +
                     "\n StartPhaseDate=\"' + ISNULL(REPLACE(CAST(CL2.StartPhaseDate AS VARCHAR),'.',','),'NULL') +'\"" +
                     "\n StartPhaseEvaluation=\"' + ISNULL(REPLACE(CAST(CL2.StartPhaseEvaluation AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n havecorrectiveaction=\"' + ISNULL(REPLACE(CAST(CL2.haveCorrectiveAction AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n havereaudit=\"' + ISNULL(REPLACE(CAST(CL2.haveReaudit AS VARCHAR),'.',','),'NULL') + '\"" +
+                    "\n havecorrectiveaction=\"' + ISNULL(REPLACE(CAST(CL2.haveCorrectiveAction AS VARCHAR),'1','true'),'NULL') + '\"" +
+                    "\n havereaudit=\"' + ISNULL(REPLACE(CAST(CL2.haveReaudit AS VARCHAR),'1','true'),'NULL') + '\"" +
                     "\n reauditlevel=\"' + ISNULL(REPLACE(CAST(CL2.ReauditLevel AS VARCHAR),'.',','),'NULL') + '\"" +
                     "\n reauditnumber=\"' + ISNULL(REPLACE(CAST(CL2.ReauditNumber AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n isreaudit=\"' + ISNULL(REPLACE(CAST(CL2.ReauditIs AS VARCHAR),'.',','),'NULL') + '\"" +
+                    "\n isreaudit=\"' + ISNULL(REPLACE(CAST(CL2.ReauditIs AS VARCHAR),'1','true'),'NULL') + '\"" +
                     "\n more3defectsEvaluate=\"' + '33' + '" +
                     "\n CollectionLevel2_ID_CorrectiveAction=\"' + ISNULL(REPLACE(CAST(MIN(CL2.Id) AS VARCHAR),'.',','),'NULL') + '\"" +
                     "\n CollectionLevel2_Period_CorrectiveAction=\"' + ISNULL(REPLACE(CAST(MIN(CL2.Period) AS VARCHAR),'.',','),'NULL') + '\"\">" +
