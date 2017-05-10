@@ -630,6 +630,8 @@ namespace SgqSystem.Services
 
                     var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(c.Unit_Id, c.level01_Id, c.Level01CollectionDate);
 
+                    if (c.Reaudit)
+                        consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(c.Unit_Id, c.level01_Id, c.Level01CollectionDate);
                     if (consolidationLevel1 == null)
                     {
                         consolidationLevel1 = InsertConsolidationLevel1(c.Unit_Id, c.level01_Id, c.Level01CollectionDate);
@@ -1161,9 +1163,9 @@ namespace SgqSystem.Services
             //             reaud + reauditNumber+") " +
             //             "SELECT @@IDENTITY AS 'Identity'";
 
-            string sql = "INSERT ConsolidationLevel2 ([ConsolidationLevel1_Id], [ParLevel2_Id], [UnitId], [AddDate], [AlterDate], [ConsolidationDate]) " +
+            string sql = "INSERT ConsolidationLevel2 ([ConsolidationLevel1_Id], [ParLevel2_Id], [UnitId], [AddDate], [AlterDate], [ConsolidationDate], [ReauditIs]) " +
                          "VALUES  " +
-                         "('" + ConsolidationLevel1_Id + "', '" + ParLevel2_Id + "', '" + ParCompany_Id + "', GETDATE(), NULL, CAST(N'" + collectionDate.ToString("yyyy-MM-dd") + "' AS DateTime)" + ") " +
+                         "('" + ConsolidationLevel1_Id + "', '" + ParLevel2_Id + "', '" + ParCompany_Id + "', GETDATE(), NULL, CAST(N'" + collectionDate.ToString("yyyy-MM-dd") + "' AS DateTime)"+","+reaud + ") " +
                          "SELECT @@IDENTITY AS 'Identity'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -2332,11 +2334,11 @@ namespace SgqSystem.Services
                     "\n Phase=\"' + ISNULL(REPLACE(CAST(CL2.Phase AS VARCHAR),'.',','),'NULL') + '\"" +
                     "\n StartPhaseDate=\"' + ISNULL(REPLACE(CAST(CL2.StartPhaseDate AS VARCHAR),'.',','),'NULL') +'\"" +
                     "\n StartPhaseEvaluation=\"' + ISNULL(REPLACE(CAST(CL2.StartPhaseEvaluation AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n havecorrectiveaction=\"' + ISNULL(REPLACE(CAST(CL2.haveCorrectiveAction AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n havereaudit=\"' + ISNULL(REPLACE(CAST(CL2.haveReaudit AS VARCHAR),'.',','),'NULL') + '\"" +
+                    "\n havecorrectiveaction=\"' + ISNULL(REPLACE(CAST(CL2.haveCorrectiveAction AS VARCHAR),'1','true'),'NULL') + '\"" +
+                    "\n havereaudit=\"' + ISNULL(REPLACE(CAST(CL2.haveReaudit AS VARCHAR),'1','true'),'NULL') + '\"" +
                     "\n reauditlevel=\"' + ISNULL(REPLACE(CAST(CL2.ReauditLevel AS VARCHAR),'.',','),'NULL') + '\"" +
                     "\n reauditnumber=\"' + ISNULL(REPLACE(CAST(CL2.ReauditNumber AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n isreaudit=\"' + ISNULL(REPLACE(CAST(CL2.ReauditIs AS VARCHAR),'.',','),'NULL') + '\"" +
+                    "\n isreaudit=\"' + ISNULL(REPLACE(CAST(CL2.ReauditIs AS VARCHAR),'1','true'),'NULL') + '\"" +
                     "\n more3defectsEvaluate=\"' + '33' + '" +
                     "\n CollectionLevel2_ID_CorrectiveAction=\"' + ISNULL(REPLACE(CAST(MIN(CL2.Id) AS VARCHAR),'.',','),'NULL') + '\"" +
                     "\n CollectionLevel2_Period_CorrectiveAction=\"' + ISNULL(REPLACE(CAST(MIN(CL2.Period) AS VARCHAR),'.',','),'NULL') + '\"\">" +
@@ -4015,6 +4017,7 @@ namespace SgqSystem.Services
                                             evaluate: evaluate,
                                             sample: sample,
                                             HasSampleTotal: parlevel2.HasSampleTotal,
+                                            ParFrequency_Id: parlevel2.ParFrequency_Id,
                                             IsEmptyLevel3: parlevel2.IsEmptyLevel3,
                                             RuleId: parlevel2.ParNotConformityRule_id,
                                             RuleValue: ruleValue.ToString(),
