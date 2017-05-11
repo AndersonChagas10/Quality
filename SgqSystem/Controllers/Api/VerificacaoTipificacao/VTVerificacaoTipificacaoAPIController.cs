@@ -1,4 +1,5 @@
-﻿using Dominio;
+﻿using Dapper;
+using Dominio;
 using SgqSystem.Handlres;
 using SgqSystem.ViewModels;
 using System;
@@ -431,10 +432,10 @@ namespace SgqSystem.Controllers.Api
                                         var SgqSystem = new SgqSystem.Services.SyncServices();
 
                                         SqlConnection dbService = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString);
-                                        dbService.Open();
+                                        //dbService.Open();
 
-                                        var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1(dbService);
-                                        var ConsolidationLevel2DB = new SGQDBContext.ConsolidationLevel2(dbService);
+                                        
+                                        
 
                                         ///****trocar***//
                                       
@@ -442,7 +443,14 @@ namespace SgqSystem.Controllers.Api
                                         DateTime dataC = verificacaoTipificacao.DataHora;
 
 
-                                        var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(verificacaoTipificacao.UnidadeId, ParLevel1.Id, dataC);
+                                        //var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(verificacaoTipificacao.UnidadeId, ParLevel1.Id, dataC);
+
+                                        string sql = "SELECT * FROM ConsolidationLevel1 WHERE UnitId = '" + verificacaoTipificacao.UnidadeId + "' AND ParLevel1_Id= '" + ParLevel1.Id + "' AND CONVERT(date, ConsolidationDate) = '" + dataC.ToString("yyyy-MM-dd") + "'";
+
+                                        var consolidationLevel1 = dbService.Query<SGQDBContext.ConsolidationLevel1>(sql).FirstOrDefault();
+
+                                        var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1(dbService);
+                                        var ConsolidationLevel2DB = new SGQDBContext.ConsolidationLevel2(dbService);
 
                                         if (consolidationLevel1 == null)
                                         {
