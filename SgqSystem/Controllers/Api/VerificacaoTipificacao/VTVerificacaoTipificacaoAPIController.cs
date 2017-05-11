@@ -262,8 +262,8 @@ namespace SgqSystem.Controllers.Api
 
                 connectionString(verificacaoTipificacao.UnidadeId, ref conexao, ref company);
 
+                conexao = @"data source=servergrt\MSSQLSERVER2014;initial catalog=dbGQualidade_JBS;persist security info=True;user id=sa;password=1qazmko0;";
 
-           
                 // Query String para verificação das Caracteristicas da tipificação
                 string queryString = "exec FBED_GRTTipificacaoCaracteristica " + company.CompanyNumber + ", '" + verificacaoTipificacao.DataHora.ToString("yyyyMMdd") + "', " + verificacaoTipificacao.Sequencial;
 
@@ -272,7 +272,9 @@ namespace SgqSystem.Controllers.Api
                 int iBanda = 0;
                 DateTime dataHoraMonitor = DateTime.Now;
 
-                using (SqlConnection connection = new SqlConnection(conexao))
+
+
+                using (SqlConnection connection = new SqlConnection(@"data source = servergrt\MSSQLSERVER2014; initial catalog = dbGQualidade_JBS; persist security info = True; user id = sa; password = 1qazmko0;"))
                 {
                     try
                     {
@@ -532,6 +534,7 @@ namespace SgqSystem.Controllers.Api
 
                                             string comparacaoToString = ArrayComparacao[i];
 
+
                                             var resultIdTarefa = (from x in db.VerificacaoTipificacaoTarefaIntegracao
                                                                   join y in db.CaracteristicaTipificacao
                                                                   on x.CaracteristicaTipificacaoId equals y.nCdCaracteristica
@@ -541,6 +544,9 @@ namespace SgqSystem.Controllers.Api
                                             var ParLevel3 = (from p in ParLevel3List
                                                              where p.Id == resultIdTarefa
                                                              select p).FirstOrDefault();
+
+                                            new DTO.CreateLog(new Exception("O ParLevel3 está nulo"));
+
 
                                             bool conforme = true;
 
