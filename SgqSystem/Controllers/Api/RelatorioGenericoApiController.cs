@@ -1,11 +1,9 @@
 ﻿using Dominio;
-using Newtonsoft.Json;
 using SgqSystem.ViewModels;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Web.Http;
-using System.Web.Script.Serialization;
 
 namespace SgqSystem.Controllers.Api
 {
