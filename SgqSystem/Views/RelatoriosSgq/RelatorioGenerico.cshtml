@@ -3,6 +3,7 @@
     ViewBag.Title = "Relatorio do BI";
     //var urlGet = Url.Action("GetRelatorio", "RelatorioGenericoApi");
     var urlGet = Url.Action("getTabela", "api/RelatorioGenerico");
+    var urlGet2 = Url.Action("getTabela2", "api/RelatorioGenerico");
 }
 <style>
     /*.st-sort-ascent:before {
@@ -23,14 +24,14 @@
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
         <div ng-controller="MainCtrl">
-            <table id="genericTable" st-table="displayedCollection" st-safe-src="bodies" class="table table-striped" ng-app="sgqSystem" style="width:100%;display:none">
+            <table id="genericTable" st-table="displayedCollection" st-safe-src="bodies" class="table table-striped" ng-app="sgqSystem" style="width:100%">
                 <thead>
                     <tr>
-                        <th @*st-sort="{{x}}"*@ ng-repeat="x in header">{{x}}</th>
+                        <th st-sort="{{x}}" ng-repeat="x in header">{{x}}</th>
                     </tr>
-                    @*<tr>
-                            <th colspan="50"><input st-search="" class="form-control" placeholder="Buscar Tudo ..." type="text" /></th>
-                        </tr>*@
+                    <tr>
+                        <th colspan="50"><input st-search="" class="form-control" placeholder="Buscar Tudo ..." type="text" /></th>
+                    </tr>
                 </thead>
                 <tfoot>
                     <tr>
@@ -48,6 +49,9 @@
                 {{bodies}}*@
 
         </div>
+
+        <table id="tableTeste" class="table table-striped" width="100%"></table>
+
     </div>
 </div>
 
@@ -58,7 +62,7 @@
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
 
-    //Angular
+    //Tabela Angular
     app.filter('myFilter', function () {
         return function (body) {
             var result = [];
@@ -95,9 +99,9 @@
                 var myFilter = $filter('myFilter');
                 $scope.bodies = myFilter(retorno.data.body);
 
-                angular.element(document).ready(function () {
-                    mountTable();
-                });
+                //angular.element(document).ready(function () {
+                //    mountTable();
+                //});
 
             }, function (error) {
                 console.log(error);
@@ -106,15 +110,55 @@
 
     }]);
 
-    function mountTable(){
+    //function mountTable(){
 
-        //DataTable
-        $('#genericTable thead th').each( function () {
-            var title = $('#genericTable thead th').eq($(this).index()).text();
-            $(this).html(title + '<br><input type="text" placeholder="Buscar '+ title +'" />' );
+    //    //DataTable
+    //    $('#genericTable thead th').each( function () {
+    //        var title = $('#genericTable thead th').eq($(this).index()).text();
+    //        $(this).html(title + '<br><input type="text" placeholder="Buscar '+ title +'" />' );
+    //    });
+
+    //    var table = $('#genericTable').DataTable();
+
+    //    table.columns().every(function () {
+    //        var that = this;
+    //        $('input', this.footer()).on('keyup change', function () {
+    //            if (that.search() !== this.value) {
+    //                that.search(this.value).draw();
+    //            }
+    //        });
+    //    });
+
+    //}
+
+    $(document).ready(function () {
+        formControl.showFullCallendar();
+        closeLeftSidebar();
+
+    });
+
+    //Tabela DataTable Javascript
+    function MontarTabela(retorno) {
+
+        var array = $.map(retorno.body, function(valor,index){
+            return [[
+                valor.Col1,  valor.Col2,  valor.Col3,  valor.Col4,  valor.Col5,  valor.Col6,  valor.Col7,  valor.Col8,  valor.Col9,  valor.Col10,
+                valor.Col11, valor.Col12, valor.Col13 ,valor.Col14 ,valor.Col15 ,valor.Col16 ,valor.Col17 ,valor.Col18 ,valor.Col19 ,valor.Col20,
+                valor.Col21, valor.Col22, valor.Col23 ,valor.Col24 ,valor.Col25 ,valor.Col26 ,valor.Col27 ,valor.Col28 ,valor.Col29 ,valor.Col30,
+                valor.Col31, valor.Col32, valor.Col33 ,valor.Col34 ,valor.Col35 ,valor.Col36 ,valor.Col37 ,valor.Col38 ,valor.Col39 ,valor.Col40,
+                valor.Col41, valor.Col42, valor.Col43 ,valor.Col44 ,valor.Col45 ,valor.Col46 ,valor.Col47 ,valor.Col48 ,valor.Col49 ,valor.Col50
+            ]];
         });
 
-        var table = $('#genericTable').DataTable();
+        var table = $('#tableTeste').DataTable({
+            data: array,
+            columns: retorno.header
+        });
+
+        $('#tableTeste thead th').each( function () {
+            var title = $('#tableTeste thead th').eq($(this).index()).text();
+            $(this).html(title + '<br><input type="text" placeholder="Buscar '+ title +'" />' );
+        });
 
         table.columns().every(function () {
             var that = this;
@@ -125,12 +169,10 @@
             });
         });
 
-        $('#genericTable').show();
     }
 
-    $(document).ready(function () {
-        formControl.showFullCallendar();
-        closeLeftSidebar();
+    $('#btnSend').click(function(){
+        EasyAjax(@Html.Raw(Json.Encode(urlGet2)), enviar, MontarTabela, "");
     });
 
 </script>

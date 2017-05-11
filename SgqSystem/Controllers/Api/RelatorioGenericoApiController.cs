@@ -1,15 +1,18 @@
 ﻿using Dominio;
+using Newtonsoft.Json;
 using SgqSystem.ViewModels;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Script.Serialization;
 
 namespace SgqSystem.Controllers.Api
 {
     [RoutePrefix("api/RelatorioGenerico")]
     public class RelatorioGenericoApiController : ApiController
     {
+        //Tabela Angular
         [HttpPost]
         [Route("getTabela")]
         public dynamic getTabela(FormularioParaRelatorioViewModel model)
@@ -20,11 +23,44 @@ namespace SgqSystem.Controllers.Api
             var db = new SgqDbDevEntities();
             dynamic retorno = new ExpandoObject();
             //var queryHeader = "select Column_name from Information_schema.columns where Table_name like 'UserSgq'";
-            var querybody = "select STR(Id) as Col1, Name as Col2, [Password] as Col3 from UserSgq";
+            var querybody = "SELECT TOP 10 STR(Id) as Col1, Name as Col2, [Password] as Col3 from UserSgq";
             //var querybody = "select STR(*) from UserSgq";
 
             //retorno.header = db.Database.SqlQuery<string>(queryHeader).ToList();
             retorno.header = new List<string> { "Id", "Nome", "Senha" };
+            retorno.body = db.Database.SqlQuery<PropriedadesGenericas>(querybody).ToList();
+
+            return retorno;
+        }
+
+        //Tabela Javascript
+        [HttpPost]
+        [Route("getTabela2")]
+        public dynamic getTabela2(FormularioParaRelatorioViewModel model)
+        {
+
+            //var data = "And Data Between" + model._dataInicioSQL + " AND " + model._dataFimSQL;
+
+            var db = new SgqDbDevEntities();
+            dynamic retorno = new ExpandoObject();
+
+            //var queryHeader = "select Column_name from Information_schema.columns where Table_name like 'UserSgq'";
+            var querybody = "SELECT TOP 10 STR(Id) as Col1, Name as Col2, [Password] as Col3 from UserSgq";
+            //var querybody = "select STR(*) from UserSgq";
+
+            //retorno.header = db.Database.SqlQuery<string>(queryHeader).ToList();
+            //retorno.header = new List<string> { "Id", "Nome", "Senha" };
+
+            var header = new List<string> { "Id", "Nome", "Senha" };
+            var header2 = new List<Header>();
+
+
+            foreach (var item in header)
+            {
+                header2.Add(new Header() { title = item });
+            }
+
+            retorno.header = header2;
             retorno.body = db.Database.SqlQuery<PropriedadesGenericas>(querybody).ToList();
 
             return retorno;
@@ -84,5 +120,10 @@ namespace SgqSystem.Controllers.Api
         public string Col48 { get; set; }
         public string Col49 { get; set; }
         public string Col50 { get; set; }
+    }
+
+    public class Header
+    {
+        public string title { get; set; }
     }
 }
