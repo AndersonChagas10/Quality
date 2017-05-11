@@ -1046,6 +1046,7 @@
     <None Include="Properties\PublishProfiles\SgqLocal.pubxml" />
     <None Include="Properties\PublishProfiles\SGQMaster.pubxml" />
     <Content Include="Scripts\DataTables\datatablePtBr.json" />
+    <None Include="Properties\PublishProfiles\SgqUSA.pubxml" />
     <None Include="Properties\PublishProfiles\SgqUSAV1.pubxml" />
     <None Include="Properties\PublishProfiles\sqgOnline.pubxml" />
     <Content Include="Scripts\errors.json" />
@@ -1477,7 +1478,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52655</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8090/SgqSystem</IISUrl>
+          <IISUrl>http://localhost/SgqSystem</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
