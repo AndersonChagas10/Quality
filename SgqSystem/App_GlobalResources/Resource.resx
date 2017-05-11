@@ -1953,4 +1953,13 @@
   <data name="synced" xml:space="preserve">
     <value>Synced data.</value>
   </data>
+  <data name="change_module" xml:space="preserve">
+    <value>Change module</value>
+  </data>
+  <data name="enter_online" xml:space="preserve">
+    <value>Login online</value>
+  </data>
+  <data name="enter_offline" xml:space="preserve">
+    <value>Login offline</value>
+  </data>
 </root>
