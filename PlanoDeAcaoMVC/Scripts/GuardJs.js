@@ -70,8 +70,7 @@ function EasyAjax(url, dados, callback, loader, toggle) {
     });
 }
 
-/*Mascaras e instancias de Select 2 por classe*/
-$(document).ready(function () {
+function InitiMasksDefaults() {
 
     /*Input Mask*/
     $('.integer').each(function (index) {
@@ -85,7 +84,7 @@ $(document).ready(function () {
         $(this).inputmask("integer", { rightAlign: true });
     });
     $('.decimal-direita').each(function (index) {
-        $(this).val($(this).val().replace(',', '.')); 
+        $(this).val($(this).val().replace(',', '.'));
         $(this).inputmask("decimal", { rightAlign: true });
     });
 
@@ -112,7 +111,16 @@ $(document).ready(function () {
             "format": "DD/MM/YYYY",
         }
     });
+
+}
+
+/*Mascaras e instancias de Select 2 por classe*/
+$(document).ready(function () {
+
+    InitiMasksDefaults();
+
 })
+
 
 function getCookie(name) {
     var value = "; " + document.cookie;
