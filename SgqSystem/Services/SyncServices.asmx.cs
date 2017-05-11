@@ -431,14 +431,14 @@ namespace SgqSystem.Services
                                "VALUES " +
                                "('" + unidadeId + "','" + shift + "','" + period + "','" + level01Id + "',CAST(N'" + level01DataCollect + "' AS DateTime),'" + level02Id + "','" + evaluate + "','" + sample + "', '" + auditorId + "',CAST(N'" + level02DataCollect + "' AS DateTime),'" + level02HeaderJSon + "','" + level03ResultJson + "', '" + correctiveActionJson + "', '" + reaudit + "', '" + reauditNumber + "', '" + haveReaudit + "', '" + reauditlevel + "','" + haveCorrectiveAction + "' ,'" + deviceId + "','" + versaoApp + "','" + ambiente + "',0,'" + deviceMac + "',GETDATE(),NULL,'" + key + "',NULL) ";
 
-                        if (autoSend == true)
-                        {
+                        //if (autoSend == true)
+                        //{
                             sql += "SELECT @@IDENTITY AS 'Identity'";
-                        }
-                        else
-                        {
-                            sql += "SELECT '1' AS 'Identity'";
-                        }
+                        //}
+                        //else
+                        //{
+                        //    sql += "SELECT '1' AS 'Identity'";
+                        //}
 
                         command = new SqlCommand(sql, connection);
 
@@ -446,10 +446,10 @@ namespace SgqSystem.Services
                         var iSql = Convert.ToInt32(command.ExecuteScalar());
                         if (iSql > 0)
                         {
-                            if (autoSend == true)
-                            {
+                            //if (autoSend == true)
+                            //{
                                 ProcessJson(null, iSql);
-                            }
+                            //}
                         }
 
                         else
