@@ -430,7 +430,7 @@ namespace SgqSystem.Controllers.Api
 
                                         var SgqSystem = new SgqSystem.Services.SyncServices();
 
-                                        SqlConnection dbService = new SqlConnection(conexao);
+                                        SqlConnection dbService = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString);
                                         dbService.Open();
 
                                         var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1(dbService);

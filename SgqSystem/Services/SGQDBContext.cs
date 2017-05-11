@@ -1923,9 +1923,9 @@ namespace SGQDBContext
                 var obj = db.Query<ConsolidationLevel1>(sql).FirstOrDefault();
                 return obj;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("Deu merda 3 ", ex);
             }
         }
     }
