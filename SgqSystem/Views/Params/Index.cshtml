@@ -1227,6 +1227,12 @@
 
             }else{
                 $('#btnSaveNewLevel3').attr('disabled', true);
+                $('#vinculoLevel1').attr("disabled", true);
+                console.log('permite editar vinculo unidade Parlevel3')
+                $('#tablePeso > tbody > tr').each(function() {
+                    $(this).find('input, select, button').attr("disabled", true);
+                });
+                $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', true)
             }
 
         });

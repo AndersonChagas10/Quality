@@ -69,6 +69,7 @@ namespace SgqSystem.Controllers.Api
             try
             {
                 db.Database.ExecuteSqlCommand(query);
+                var level3Result = db.Result_Level3.FirstOrDefault(r => r.Id == resultLevel3.Id);
                 ConsolidacaoEdicao(resultLevel3.Id);
                 //db.Database.ExecuteSqlCommand(queryLevel2);
             }
