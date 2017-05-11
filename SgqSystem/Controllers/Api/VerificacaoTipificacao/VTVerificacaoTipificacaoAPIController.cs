@@ -19,12 +19,18 @@ namespace SgqSystem.Controllers.Api
         public string mensagemErro { get; set; }
 
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-        
 
+        private bool running = false;
         [Route("Save")]
         [HttpPost]
         public void SaveVTVerificacaoTipificacao(TipificacaoViewModel model)
         {
+
+            if (running)
+                return;
+
+            running = true;
+
             var _verificacao = model.VerificacaoTipificacao;
 
             using (var db = new SGQ_GlobalEntities())
@@ -152,6 +158,10 @@ namespace SgqSystem.Controllers.Api
                 //Consolidar resultados e tratamento de erro
                 //_verificacao.Chave = "1245120170215";
                 GetDadosGet(_verificacao.Chave);
+
+                running = false;
+
+
 
             }
         }
@@ -604,6 +614,9 @@ namespace SgqSystem.Controllers.Api
             }
             //mensagem de erro
             //return Json(mensagem("Não foi possível executar a verificação de tipificação. Aguarde alguns instantes e tente novamente. Se o problema persistir entre em contato com o suporte!", alertaTipo.warning, reenviarRequisicao: true), JsonRequestBehavior.AllowGet);
+
+
+
             return null;
         }
 

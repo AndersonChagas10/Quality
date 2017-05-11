@@ -619,6 +619,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change module.
+        /// </summary>
+        internal static string change_module {
+            get {
+                return ResourceManager.GetString("change_module", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change the password.
         /// </summary>
         internal static string change_password {
@@ -1560,6 +1569,24 @@ namespace Resources {
         internal static string entering {
             get {
                 return ResourceManager.GetString("entering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login offline.
+        /// </summary>
+        internal static string enter_offline {
+            get {
+                return ResourceManager.GetString("enter_offline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login online.
+        /// </summary>
+        internal static string enter_online {
+            get {
+                return ResourceManager.GetString("enter_online", resourceCulture);
             }
         }
         
