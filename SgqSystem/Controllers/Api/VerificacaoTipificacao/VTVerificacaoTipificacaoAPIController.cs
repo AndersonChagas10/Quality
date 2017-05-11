@@ -13,16 +13,23 @@ namespace SgqSystem.Controllers.Api
     [HandleApi()]
     [RoutePrefix("api/VTVerificacaoTipificacao")]
     public class VTVerificacaoTipificacaoApiController : ApiController
+
     {
         public string mensagemErro { get; set; }
 
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-        
 
+        private bool running = false;
         [Route("Save")]
         [HttpPost]
         public void SaveVTVerificacaoTipificacao(TipificacaoViewModel model)
         {
+
+            if (running)
+                return;
+
+            running = true;
+
             var _verificacao = model.VerificacaoTipificacao;
 
             using (var db = new SGQ_GlobalEntities())
@@ -150,6 +157,10 @@ namespace SgqSystem.Controllers.Api
                 //Consolidar resultados e tratamento de erro
                 //_verificacao.Chave = "1245120170215";
                 GetDadosGet(_verificacao.Chave);
+
+                running = false;
+
+
 
             }
         }
@@ -429,7 +440,7 @@ namespace SgqSystem.Controllers.Api
 
                                         var SgqSystem = new SgqSystem.Services.SyncServices();
 
-                                        SqlConnection dbService = new SqlConnection(conexao);
+                                        SqlConnection dbService = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString);
                                         dbService.Open();
 
                                         var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1(dbService);
@@ -576,6 +587,7 @@ namespace SgqSystem.Controllers.Api
                                 }
                                 catch (Exception ex)
                                 {
+                                    throw new Exception("Deu merda no número 1 ", ex);
                                     //mernsagem de erro
                                     //string t = ex.ToString();
                                     //var inner = ex.InnerException.IsNotNull() ? ex.InnerException.Message : "Não consta.";
@@ -587,13 +599,16 @@ namespace SgqSystem.Controllers.Api
                     }
                     catch (Exception ex)
                     {
-                        //menasgem de erro
+                        throw new Exception("Deu merda no número 2 ", ex);
                     }
                 }
 
             }
             //mensagem de erro
             //return Json(mensagem("Não foi possível executar a verificação de tipificação. Aguarde alguns instantes e tente novamente. Se o problema persistir entre em contato com o suporte!", alertaTipo.warning, reenviarRequisicao: true), JsonRequestBehavior.AllowGet);
+
+
+
             return null;
         }
 
