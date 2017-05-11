@@ -1932,4 +1932,13 @@
   <data name="synced" xml:space="preserve">
     <value>Sincronizado.</value>
   </data>
+  <data name="change_module" xml:space="preserve">
+    <value>Trocar módulo</value>
+  </data>
+  <data name="enter_online" xml:space="preserve">
+    <value>Entrar online</value>
+  </data>
+  <data name="enter_offline" xml:space="preserve">
+    <value>Entrar offline</value>
+  </data>
 </root>

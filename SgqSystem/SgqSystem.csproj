@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -1046,6 +1046,7 @@
     <None Include="Properties\PublishProfiles\SgqLocal.pubxml" />
     <None Include="Properties\PublishProfiles\SGQMaster.pubxml" />
     <Content Include="Scripts\DataTables\datatablePtBr.json" />
+    <None Include="Properties\PublishProfiles\SgqUSA.pubxml" />
     <None Include="Properties\PublishProfiles\SgqUSAV1.pubxml" />
     <None Include="Properties\PublishProfiles\sqgOnline.pubxml" />
     <Content Include="Scripts\errors.json" />
@@ -1473,11 +1474,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>false</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52655</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:52655/</IISUrl>
+          <IISUrl>http://localhost:8090/SgqSystem</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

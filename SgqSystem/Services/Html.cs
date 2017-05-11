@@ -456,7 +456,7 @@ namespace SgqSystem.Services
                                    );
 
 
-            string tags = " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin.ToString().Replace(",", ".") + "\" intervalmax=\"" + parLevel3.IntervalMax + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id + "\"";
+            string tags = " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin.ToString().Replace(",", ".") + "\" intervalmax=\"" + parLevel3.IntervalMax.ToString().Replace(",", ".") + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id + "\"";
 
 
             //Gera o level3
