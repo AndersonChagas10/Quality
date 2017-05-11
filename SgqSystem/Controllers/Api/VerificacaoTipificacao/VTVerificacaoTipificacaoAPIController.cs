@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Dominio;
+using DTO;
 using SgqSystem.Handlres;
 using SgqSystem.ViewModels;
 using System;
@@ -157,7 +158,7 @@ namespace SgqSystem.Controllers.Api
 
                 //Consolidar resultados e tratamento de erro
                 //_verificacao.Chave = "1245120170215";
-                GetDadosGet(_verificacao.Chave);
+                GetDadosGet(_verificacao.Chave, model);
 
                 running = false;
 
@@ -206,7 +207,7 @@ namespace SgqSystem.Controllers.Api
 
         [Route("Consolidation")]
         [HttpPost]
-        public System.Web.Mvc.JsonResult GetDadosGet(string verificacaoTipificacaoChave)//codigo só pra teste
+        public System.Web.Mvc.JsonResult GetDadosGet(string verificacaoTipificacaoChave, TipificacaoViewModel model)//codigo só pra teste
         {
 
             //problemas que podem ocorrer
@@ -262,19 +263,23 @@ namespace SgqSystem.Controllers.Api
 
                 connectionString(verificacaoTipificacao.UnidadeId, ref conexao, ref company);
 
-                conexao = @"data source=servergrt\MSSQLSERVER2014;initial catalog=dbGQualidade_JBS;persist security info=True;user id=sa;password=1qazmko0;";
-
                 // Query String para verificação das Caracteristicas da tipificação
                 string queryString = "exec FBED_GRTTipificacaoCaracteristica " + company.CompanyNumber + ", '" + verificacaoTipificacao.DataHora.ToString("yyyyMMdd") + "', " + verificacaoTipificacao.Sequencial;
+
+                if (GlobalConfig.MockOn)
+                {
+                    /*ATENÇÃO MOCK DE TESTES*/
+                    queryString = "select * from verificacaoteste where   nCdEmpresa = 202  and iSequencial = 2";
+                    conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+                }
+
 
                 //queryString = "SELECT 1";
                 int iSequencial = 0;
                 int iBanda = 0;
                 DateTime dataHoraMonitor = DateTime.Now;
 
-
-
-                using (SqlConnection connection = new SqlConnection(@"data source = servergrt\MSSQLSERVER2014; initial catalog = dbGQualidade_JBS; persist security info = True; user id = sa; password = 1qazmko0;"))
+                using (SqlConnection connection = new SqlConnection(conexao))
                 {
                     try
                     {
