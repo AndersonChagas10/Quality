@@ -5326,13 +5326,13 @@ namespace SgqSystem.Services
             {
                 formOuterHtml +=
                     html.button(label: CommonData.getResource("enter_offline").Value.ToString(), id: "btnLoginOffline", classe: "btn-lg btn-primary btn-block marginTop10", dataloading: "<i class='fa fa-spinner fa-spin'></i> <span class='wMessage' style='font-size:14px;'>" + CommonData.getResource("authenticating").Value.ToString() + "</span>") +
-                    html.button(label: CommonData.getResource("enter_online").Value.ToString(), id: "btnLoginOnline", classe: "btn-lg btn-primary btn-block marginTop10", dataloading: "<i class='fa fa-spinner fa-spin'></i> <span class='wMessage' style='font-size:14px;'>" + CommonData.getResource("authenticating").Value.ToString() + "</span>");
+                    html.button(label: CommonData.getResource("enter_online").Value.ToString(), id: "btnLoginOnline", classe: "btn-lg btn-default btn-sm btn-block marginTop10", dataloading: "<i class='fa fa-spinner fa-spin'></i> <span class='wMessage' style='font-size:14px;'>" + CommonData.getResource("authenticating").Value.ToString() + "</span>");
             }
             else
             {
                 formOuterHtml +=
-                    html.button(label: CommonData.getResource("enter_offline").Value.ToString(), id: "btnLoginOffline", classe: "btn-lg btn-primary btn-block hide marginTop10", dataloading: "<i class='fa fa-spinner fa-spin'></i> <span class='wMessage' style='font-size:14px;'>" + CommonData.getResource("authenticating").Value.ToString() + "</span>") +
-                    html.button(label: CommonData.getResource("enter").Value.ToString(), id: "btnLoginOnline", classe: "btn-lg btn-primary btn-block marginTop10", dataloading: "<i class='fa fa-spinner fa-spin'></i> <span class='wMessage' style='font-size:14px;'>" + CommonData.getResource("authenticating").Value.ToString() + "</span>");
+                    html.button(label: CommonData.getResource("enter").Value.ToString(), id: "btnLoginOnline", classe: "btn-lg btn-primary btn-block marginTop10", dataloading: "<i class='fa fa-spinner fa-spin'></i> <span class='wMessage' style='font-size:14px;'>" + CommonData.getResource("authenticating").Value.ToString() + "</span>")+
+                    html.button(label: CommonData.getResource("enter_offline").Value.ToString(), id: "btnLoginOffline", classe: "btn-lg btn-primary btn-block hide marginTop10", dataloading: "<i class='fa fa-spinner fa-spin'></i> <span class='wMessage' style='font-size:14px;'>" + CommonData.getResource("authenticating").Value.ToString() + "</span>");
             }
             formOuterHtml +=
                                   html.div(id: "messageError", classe: "alert alert-danger hide", tags: "role=\"alert\"",
