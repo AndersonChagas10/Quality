@@ -1478,7 +1478,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52655</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8090/SgqSystem</IISUrl>
+          <IISUrl>http://localhost/SgqSystem</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
           <IISAppRootUrl>http://localhost:52655/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
