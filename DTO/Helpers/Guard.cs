@@ -96,6 +96,7 @@ namespace DTO.Helpers
         {
             decimal number;
             decimal retorno;
+            valorString = valorString.ToUpper().Replace('.', ',');
             if (Decimal.TryParse(valorString, out number))
             {
                 retorno = number;

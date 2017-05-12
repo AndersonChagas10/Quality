@@ -1,4 +1,6 @@
-﻿using Dominio;
+﻿using Dapper;
+using Dominio;
+using DTO;
 using SgqSystem.Handlres;
 using SgqSystem.ViewModels;
 using System;
@@ -156,7 +158,7 @@ namespace SgqSystem.Controllers.Api
 
                 //Consolidar resultados e tratamento de erro
                 //_verificacao.Chave = "1245120170215";
-                GetDadosGet(_verificacao.Chave);
+                GetDadosGet(_verificacao.Chave, model);
 
                 running = false;
 
@@ -205,7 +207,7 @@ namespace SgqSystem.Controllers.Api
 
         [Route("Consolidation")]
         [HttpPost]
-        public System.Web.Mvc.JsonResult GetDadosGet(string verificacaoTipificacaoChave)//codigo só pra teste
+        public System.Web.Mvc.JsonResult GetDadosGet(string verificacaoTipificacaoChave, TipificacaoViewModel model)//codigo só pra teste
         {
 
             //problemas que podem ocorrer
@@ -261,10 +263,16 @@ namespace SgqSystem.Controllers.Api
 
                 connectionString(verificacaoTipificacao.UnidadeId, ref conexao, ref company);
 
-
-           
                 // Query String para verificação das Caracteristicas da tipificação
                 string queryString = "exec FBED_GRTTipificacaoCaracteristica " + company.CompanyNumber + ", '" + verificacaoTipificacao.DataHora.ToString("yyyyMMdd") + "', " + verificacaoTipificacao.Sequencial;
+
+                if (GlobalConfig.MockOn)
+                {
+                    /*ATENÇÃO MOCK DE TESTES*/
+                    queryString = "select * from verificacaoteste where   nCdEmpresa = 202  and iSequencial = 2";
+                    conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+                }
+
 
                 //queryString = "SELECT 1";
                 int iSequencial = 0;
@@ -441,10 +449,10 @@ namespace SgqSystem.Controllers.Api
                                         var SgqSystem = new SgqSystem.Services.SyncServices();
 
                                         SqlConnection dbService = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString);
-                                        dbService.Open();
+                                        //dbService.Open();
 
-                                        var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1(dbService);
-                                        var ConsolidationLevel2DB = new SGQDBContext.ConsolidationLevel2(dbService);
+                                        
+                                        
 
                                         ///****trocar***//
                                       
@@ -452,7 +460,14 @@ namespace SgqSystem.Controllers.Api
                                         DateTime dataC = verificacaoTipificacao.DataHora;
 
 
-                                        var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(verificacaoTipificacao.UnidadeId, ParLevel1.Id, dataC);
+                                        //var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(verificacaoTipificacao.UnidadeId, ParLevel1.Id, dataC);
+
+                                        string sql = "SELECT * FROM ConsolidationLevel1 WHERE UnitId = '" + verificacaoTipificacao.UnidadeId + "' AND ParLevel1_Id= '" + ParLevel1.Id + "' AND CONVERT(date, ConsolidationDate) = '" + dataC.ToString("yyyy-MM-dd") + "'";
+
+                                        var consolidationLevel1 = dbService.Query<SGQDBContext.ConsolidationLevel1>(sql).FirstOrDefault();
+
+                                        var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1(dbService);
+                                        var ConsolidationLevel2DB = new SGQDBContext.ConsolidationLevel2(dbService);
 
                                         if (consolidationLevel1 == null)
                                         {
@@ -524,6 +539,7 @@ namespace SgqSystem.Controllers.Api
 
                                             string comparacaoToString = ArrayComparacao[i];
 
+
                                             var resultIdTarefa = (from x in db.VerificacaoTipificacaoTarefaIntegracao
                                                                   join y in db.CaracteristicaTipificacao
                                                                   on x.CaracteristicaTipificacaoId equals y.nCdCaracteristica
@@ -533,6 +549,9 @@ namespace SgqSystem.Controllers.Api
                                             var ParLevel3 = (from p in ParLevel3List
                                                              where p.Id == resultIdTarefa
                                                              select p).FirstOrDefault();
+
+                                            new DTO.CreateLog(new Exception("O ParLevel3 está nulo"));
+
 
                                             bool conforme = true;
 

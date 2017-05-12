@@ -30,6 +30,7 @@ namespace DTO
     public static class GlobalConfig
     {
       
+        public static bool MockOn { get; set; }
 
         /*Sistema real time*/
         public static bool Brasil { get; set; } //UTILIZADO PARA SABER SE é JBS BRASIL
@@ -197,6 +198,8 @@ namespace DTO
             Verifica += "AddDate:  " + AddDate.ToString() + "\n";
             Verifica += "AlterDate:  " + AlterDate.ToString() + "\n";
             Verifica += "Id:  " + Id.ToString() + "\n";
+
+            MockOn = true;
         }
 
         /// <summary>
