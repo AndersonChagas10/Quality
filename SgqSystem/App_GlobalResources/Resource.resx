@@ -1962,4 +1962,7 @@
   <data name="enter_offline" xml:space="preserve">
     <value>Login offline</value>
   </data>
+  <data name="slow_network" xml:space="preserve">
+    <value>Your network is slow right. Try again later.</value>
+  </data>
 </root>
