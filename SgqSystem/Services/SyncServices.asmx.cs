@@ -3928,7 +3928,7 @@ namespace SgqSystem.Services
                 headerCounter = html.div(
                                     //aqui vai os botoes
                                     outerhtml: headerCounter,
-                                    classe: "counters col-xs-4"
+                                    classe: "counters col-xs-4 headerCounter"
                                     );
 
 
@@ -4134,17 +4134,7 @@ namespace SgqSystem.Services
 
                 accordeonbuttons = "<button class=\"btn btn-default button-expand marginRight10\"><i class=\"fa fa-expand\" aria-hidden=\"true\"></i> " + @Resources.Resource.show_all + "</button>" +
                                    "<button class=\"btn btn-default button-collapse\"><i class=\"fa fa-compress\" aria-hidden=\"true\"></i> " + @Resources.Resource.hide_all + "</button>";
-
-
-                //painellevel3 = html.listgroupItem(
-                //                                            outerhtml: avaliacoes +
-                //                                                       amostras +
-                //                                                       painelLevel3HeaderListHtml,
-
-                //                               classe: "painel painelLevel03 row");
-
-
-
+                
                 string panelAccordeon = html.listgroupItem(
                                                            outerhtml: accordeonbuttons,
                                                            classe: "painel painelLevel02 row"
@@ -4157,7 +4147,9 @@ namespace SgqSystem.Services
                                                classe: "level3Group",
                                                tags: "level1idgroup=\"" + ParLevel1.Id + "\"",
 
-                                               outerhtml: painelLevel3 + panelAccordeon +
+                                               outerhtml: reauditFlag+
+                                                          painelLevel3 + 
+                                                          panelAccordeon + 
                                                           groupLevel3Level2
                                              );
 
