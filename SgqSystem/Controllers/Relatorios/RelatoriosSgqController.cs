@@ -202,7 +202,7 @@ namespace SgqSystem.Controllers
         /// <param name="tbl2"></param>
         /// <returns></returns>
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
-        private static TabelaDinamicaResultados MockTabelaVisaoGeralDaArea(bool tbl2 = false)
+        public static TabelaDinamicaResultados MockTabelaVisaoGeralDaArea(bool tbl2 = false)
         {
             var tabela = new TabelaDinamicaResultados();
 
@@ -262,7 +262,7 @@ namespace SgqSystem.Controllers
             {
                 name = "Total",
                 coolspan = 4,
-                //tds = thsMeio
+                tds = thsMeio
             });
 
             /*Fim  2º*/

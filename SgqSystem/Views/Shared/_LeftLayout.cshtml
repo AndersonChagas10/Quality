@@ -100,6 +100,22 @@
                 </a>
             </li>
 
+            @*<li class="nav-item" id="RoleLink14">
+                <a href="#" onclick="atualziarTablets();" class="nav-link nav-toggle">
+                    <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                    <span class="title">Atualizar Tablets</span>
+                </a>
+            </li>*@
+
+
+            <li class="nav-item" id="RoleLink4">
+                <a href="#" onclick="atualziarTablets();" class="nav-link nav-toggle">
+                    <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                    <span class="title">Atualizar Tablets</span>
+                    <span class="selected"></span>
+                </a>
+            </li>
+
             @*<li class="nav-item" id="RoleLink5">
                     <a href="@Url.Action("LeftControlRole", "Role")" class="nav-link nav-toggle">
                         <i class="fa fa-address-card-o" aria-hidden="true"></i>
@@ -220,12 +236,12 @@
                             </li>
 
                             @*<li class="nav-item" id="RoleLink13">
-                                    <a href="@Url.Action("Index", "Role")" class="nav-link nav-toggle">
-                                        <i class="fa fa-address-card-o" aria-hidden="true"></i>
-                                        <span class="title">@Resources.Resource.profiles_and_roles</span>
+                            <a href="@Url.Action("Index", "Role")" class="nav-link nav-toggle">
+                                <i class="fa fa-address-card-o" aria-hidden="true"></i>
+                                <span class="title">@Resources.Resource.profiles_and_roles</span>
 
-                                    </a>
-                                </li>*@
+                            </a>
+                        </li>*@
                             <li class="nav-item" id="RoleLink14">
                                 <a href="@Url.Action("Index", "UserSgq")" class="nav-link nav-toggle">
                                     <i class="fa fa-users" aria-hidden="true"></i>
@@ -234,8 +250,8 @@
                                 </a>
                             </li>
 
+                           
                         </ul>
-
                     </li>
                 }
             }
@@ -288,4 +304,13 @@
         }
     });
 
+    function atualziarTablets() {
+        bootbox.confirm("Esta ação pode demorar algum tempo, deseja atualzar a parametrizao dos tablets? O Loader sumira automaticamente ao finalizar a ação.", function (result) {
+            $.LoadingOverlay('show');
+            var unidade = GetUnidadeUsuario();
+            $.get('@Url.Action("UpdateTelaDoTablet", "api/AppParams")' + '/' + unidade, { UnitId: unidade }, function (r) {
+                $.LoadingOverlay('hide')
+            });
+        });
+    }
 </script>
