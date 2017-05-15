@@ -22,7 +22,7 @@ namespace Dominio
         public bool Active { get; set; }
         public Nullable<int> ParCompany_Id { get; set; }
     
-        public virtual ParLevel1 ParLevel1 { get; set; }
         public virtual ParLevel3Level2 ParLevel3Level2 { get; set; }
+        public virtual ParLevel1 ParLevel1 { get; set; }
     }
 }

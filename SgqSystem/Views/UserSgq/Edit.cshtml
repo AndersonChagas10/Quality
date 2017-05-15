@@ -25,9 +25,9 @@
             <div class="page-toolbar">
                 <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
                 @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                    <i class="fa fa-calendar"></i>&nbsp;
-                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                </div>*@
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                    </div>*@
             </div>
         </div>
         <!-- END PAGE BAR -->
@@ -98,6 +98,13 @@
                                         </div>
 
                                         <div class="form-group">
+                                            @Html.Label(Resources.Resource.default_company, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.DropDownList("userSgqDto.ParCompany_Id", new SelectList(ViewBag.listaParCompany, "Id", "Name"), new { @class = "form-control" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
                                             @Html.Label(Resources.Resource.company, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("userSgqDto.ListParCompany_Id", new SelectList(ViewBag.listaParCompany, "Id", "Name"), new { @class = "form-control" })
@@ -122,32 +129,33 @@
 
                                         @if (@DTO.GlobalConfig.Brasil == true)
                                         {
-                                        <div class="password">
+                                            <div class="password">
 
-                                            <div class="form-group">
-                                                @Html.Label(Resources.Resource.password, htmlAttributes: new { @class = "control-label col-md-2" })
-                                                <div class="col-md-10">
-                                                    @Html.Editor("userSgqDto.Password", new { htmlAttributes = new { @class = "form-control", @type = "password", @maxlength = "7" } })
+                                                <div class="form-group">
+                                                    @Html.Label(Resources.Resource.password, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                    <div class="col-md-10">
+                                                        @Html.Editor("userSgqDto.Password", new { htmlAttributes = new { @class = "form-control", @type = "password", @maxlength = "8" } })
+                                                        <span id="errMsg"></span>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="form-group">
-                                                @Html.Label(Resources.Resource.confirm_password, htmlAttributes: new { @class = "control-label col-md-2" })
-                                                <div class="col-md-10">
-                                                    @Html.Editor("userSgqDto.ConfirmPassword", new { htmlAttributes = new { @class = "form-control", @type = "password", @maxlength = "7" } })
+                                                <div class="form-group">
+                                                    @Html.Label(Resources.Resource.confirm_password, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                    <div class="col-md-10">
+                                                        @Html.Editor("userSgqDto.ConfirmPassword", new { htmlAttributes = new { @class = "form-control", @type = "password", @maxlength = "7" } })
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                        </div>
+                                            </div>
                                         }
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                 @if (@DTO.GlobalConfig.Brasil == true)
-                                                 {
+                                                @if (@DTO.GlobalConfig.Brasil == true)
+                                                {
                                                     <button type="button" id="btnChangePassword" class="btn btn-warning">@Resources.Resource.change_password</button>
-                                                 }
-                                                 <button type="button" id="btnSave" class="btn btn-default">@Resources.Resource.save</button>
+                                                }
+                                                <button type="button" id="btnSave" class="btn btn-default">@Resources.Resource.save</button>
                                             </div>
                                         </div>
 
@@ -208,7 +216,7 @@
             openMessageModal(Resources('select_one_company'), '');
             return;
         }
-        
+
 
         if (!$(".password").hasClass("hide")) {
 
@@ -251,6 +259,23 @@
 
         $("#userSgqDto_ListRole").attr("multiple", "multiple");
         $("#userSgqDto_ListRole").select2();
+
+        //Função que limita o máximo de caracteres no password
+        var maxLen = 7;
+        $('#userSgqDto_Password').keyup(function (event) {
+            var Length = $("#userSgqDto_Password").val().length;
+            var AmountLeft = maxLen - Length;
+            $('#txt-length-left').html(AmountLeft);
+            if (Length > maxLen) {
+                if (event.which != 8) {
+                    $('#userSgqDto_Password').val($('#userSgqDto_Password').val().slice(0, -1));
+                    $('#errMsg').text('A senha deve conter no máximo 7 caracteres');
+                    return false;
+                }
+            } else {
+                $('#errMsg').text('')
+            }
+        });
 
     })
 

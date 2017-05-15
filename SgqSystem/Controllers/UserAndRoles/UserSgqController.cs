@@ -125,7 +125,7 @@ namespace SgqSystem.Controllers
                     userSgqDto.Password = "USERUSA";
             }
 
-            userSgqDto.ParCompany_Id = userSgqDto.ListParCompany_Id.FirstOrDefault();
+            //userSgqDto.ParCompany_Id = userSgqDto.ListParCompany_Id.FirstOrDefault();
             if (userSgqDto.Id == 0)
             {
                 userSgqDto.AddDate = DateTime.Now;

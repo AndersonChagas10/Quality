@@ -931,7 +931,7 @@
     <value>O primeiro login precisa ser conectado à unidade.</value>
   </data>
   <data name="indicators_error_try_again" xml:space="preserve">
-    <value>Não foi possível carregar os indicadores, tente novamente</value>
+    <value>Não foi possível sincronizar os indicadores</value>
   </data>
   <data name="inform_retroactive_date" xml:space="preserve">
     <value>Informa a data retroativa</value>
@@ -940,7 +940,7 @@
     <value>Não foi possível carregar as chaves, tente novamente</value>
   </data>
   <data name="login_error_try_again" xml:space="preserve">
-    <value>Não foi possível efetuar o login, tente novamente.</value>
+    <value>Não foi possível logar e sincronizar, tente novamente.</value>
   </data>
   <data name="not_connected_to_network" xml:space="preserve">
     <value>Você parece não estar conectado a rede da JBS. Peça ajuda ao pessoal de TI</value>
@@ -1054,7 +1054,7 @@
     <value>Tentando novamente</value>
   </data>
   <data name="you_need_to_be_connected" xml:space="preserve">
-    <value>Você precisa estar on-line para efetuar o login</value>
+    <value>Você precisa entrar e sincronizar para efetuar o login.</value>
   </data>
   <data name="allowed" xml:space="preserve">
     <value>permitidas/permitidos</value>
@@ -1936,9 +1936,24 @@
     <value>Trocar módulo</value>
   </data>
   <data name="enter_online" xml:space="preserve">
-    <value>Entrar online</value>
+    <value>Entrar e sincronizar</value>
   </data>
   <data name="enter_offline" xml:space="preserve">
-    <value>Entrar offline</value>
+    <value>Entrar</value>
+  </data>
+  <data name="slow_network" xml:space="preserve">
+    <value>Sua rede está apresentando muita lentidão. Tente mais tarde.</value>
+  </data>
+  <data name="fill_the_header_name_field" xml:space="preserve">
+    <value>O campo Nome deve ser preenchido para Nível do Campo</value>
+  </data>
+  <data name="select_the_field_type" xml:space="preserve">
+    <value>O campo Tipo deve ser selecionado para Nível do Campo</value>
+  </data>
+  <data name="select_the_field_where" xml:space="preserve">
+    <value>O Nível do Campo deve ser selecionado</value>
+  </data>
+  <data name="default_company" xml:space="preserve">
+    <value>Empresa Padrão</value>
   </data>
 </root>

@@ -1,4 +1,9 @@
-﻿
+﻿function GetUnidadeUsuario() {
+    return $.grep(getCookie('webControlCookie'), function (a, b) {
+        return a.indexOf('CompanyId') != -1;
+    })[0].split('=')[1];
+}
+
 /*API de SUM para DataTable
 
 Exemplo: 
@@ -79,7 +84,7 @@ function InitiMasksDefaults() {
     });
     $('.decimal').each(function (index) {
         $(this).val($(this).val().replace(',', '.'));
-        $(this).inputmask("decimal", { rightAlign: false , radixPoint: '.' });
+        $(this).inputmask("decimal", { rightAlign: false, radixPoint: '.' });
     });
 
     $('.integer-direita').each(function (index) {
@@ -87,7 +92,7 @@ function InitiMasksDefaults() {
     });
     $('.decimal-direita').each(function (index) {
         $(this).val($(this).val().replace(',', '.'));
-        $(this).inputmask("decimal", { rightAlign: true , radixPoint: '.'});
+        $(this).inputmask("decimal", { rightAlign: true, radixPoint: '.' });
     });
 
     $('.integer-esquerda').each(function (index) {
@@ -163,12 +168,12 @@ function heatMap(tableId, isInLine, isInColumn, startIndex, delimiterIndex, orde
             while (!!$(o).find('td:eq(' + startIndex + ')')[0]) {
                 elems.push({
                     //obj javascript > td
-                    td: $(o).find('td:eq(' + startIndex + ')') 
+                    td: $(o).find('td:eq(' + startIndex + ')')
                     // Extrai valor numerico da TD.
-                    , valor: $(o).find('td:eq(' + startIndex + ')')[0].textContent.match(/\d+(\.\d{1,2})?/g)[0] 
+                    , valor: $(o).find('td:eq(' + startIndex + ')')[0].textContent.match(/\d+(\.\d{1,2})?/g)[0]
                 });
                 //Proximo index de TD a se inserir.
-                startIndex += delimiterIndex + 1; 
+                startIndex += delimiterIndex + 1;
             }
 
             //Valor minimo e maximo encontrados na TR.
@@ -181,7 +186,7 @@ function heatMap(tableId, isInLine, isInColumn, startIndex, delimiterIndex, orde
                 //Atribui o Style com a cor de acordo com o valor percentual obtido acima.
 
                 var val = parseFloat(oo["valor"]);
-                
+
                 //if (val > 100) {
                 //    val = 100;
                 //}
@@ -357,8 +362,8 @@ GuardJs = {
         $(e).inputmask("numeric");
     },
 
-    mascaraInteger: function(e) {
-        $(e).inputmask("integer", { rightAlign: false });  
+    mascaraInteger: function (e) {
+        $(e).inputmask("integer", { rightAlign: false });
     },
     /*FIM DESCONTINUAR ESTES METODOS< E UTILIZAR APENA INSTANCIA POR CLASSE*/
 
