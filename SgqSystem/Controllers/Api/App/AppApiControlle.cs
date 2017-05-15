@@ -1,5 +1,6 @@
 ﻿using Dominio;
 using DTO;
+using DTO.Helpers;
 using SgqSystem.Services;
 using System;
 using System.Collections.Generic;
@@ -11,17 +12,18 @@ namespace SgqSystem.Controllers.Api.App
     [RoutePrefix("api/AppParams")]
     public class AppParamsApiController : ApiController
     {
-        private SgqDbDevEntities db;
+
         [HttpGet]
         [Route("UpdateTelaDoTablet")]
         public RetornoParaTablet UpdateTelaDoTablet()
         {
+
             GlobalConfig.ParamsDisponiveis = string.Empty;
             GlobalConfig.PaginaDoTablet = new Dictionary<int, string>();
 
             using (var db = new SgqDbDevEntities())
             {
-                var units = db.ParCompany.ToList();
+                var units = db.ParCompany.Where(r => r.IsActive).ToList();
                 using (var service = new SyncServices())
                 {
                     foreach (var i in units)
@@ -43,21 +45,77 @@ namespace SgqSystem.Controllers.Api.App
             }
 
             return new RetornoParaTablet() { ready = true };
+
         }
 
+        [HttpGet]
+        [Route("UpdateTelaDoTablet/{UnitId}")]
+        public RetornoParaTablet UpdateTelaDoTablet(int UnitId)
+        {
+
+            if (GlobalConfig.PaginaDoTablet == null)
+                GlobalConfig.PaginaDoTablet = new Dictionary<int, string>();
+
+            using (var service = new SyncServices())
+            {
+                var atualizado = service.getAPPLevels(1, UnitId, DateTime.Now);/*Cria tela atualizada*/
+                try
+                {
+                    if (GlobalConfig.PaginaDoTablet.ContainsKey(UnitId))/*Se ja existir atualiza*/
+                    {
+                        GlobalConfig.PaginaDoTablet[UnitId] = atualizado;
+                    }
+                    else/*Se nao existir cria*/
+                    {
+                        GlobalConfig.PaginaDoTablet.Add(UnitId, atualizado);
+                        GlobalConfig.ParamsDisponiveis += UnitId.ToString();
+                    }
+                }
+                catch (Exception e)
+                {
+                    new CreateLog(e, UnitId);
+                }
+            }
+
+            return GetTela(UnitId);
+
+        }
+
+        //[HttpGet]
+        //[Route("UpdateTelaDoTabletByUser/{UserId}")]
+        //public RetornoParaTablet UpdateTelaDoTabletByUser(int UserId)
+        //{
+        //    using (var db = new SgqDbDevEntities())
+        //    {
+        //        var UnitId = db.UserSgq.FirstOrDefault(r => r.Id == UserId).ParCompany_Id.GetValueOrDefault();
+        //        return UpdateTelaDoTablet(UnitId);
+        //    }
+        //}
+
+        //$.get('http://mtzsvmqsc/Teste/api/AppParams/ParamsDisponiveis', { UnitId: 1 }, function(r) { console.log(r)});
         [HttpGet]
         [Route("ParamsDisponiveis")]
         public Dictionary<int, string> ParamsDisponiveis(int UnitId)
         {
             return GlobalConfig.PaginaDoTablet;
         }
-
+        
 
         [HttpGet]
         [Route("GetTela/{UnitId}")]
         public RetornoParaTablet GetTela(int UnitId)
         {
             var retorno = new RetornoParaTablet();
+            if (GlobalConfig.PaginaDoTablet != null)
+            {
+                if (GlobalConfig.PaginaDoTablet.ContainsKey(UnitId))
+                {
+                    retorno.ParteDaTela = GlobalConfig.PaginaDoTablet.FirstOrDefault(r => r.Key == UnitId).Value;
+                    return retorno;
+                }
+            }
+
+            UpdateTelaDoTablet(UnitId);
             retorno.ParteDaTela = GlobalConfig.PaginaDoTablet.FirstOrDefault(r => r.Key == UnitId).Value;
             return retorno;
         }
