@@ -1948,7 +1948,7 @@
     <value>O campo Nome deve ser preenchido para Nível do Campo</value>
   </data>
   <data name="select_the_field_type" xml:space="preserve">
-    <value />
+    <value>O campo Tipo deve ser selecionado para Nível do Campo</value>
   </data>
   <data name="select_the_field_where" xml:space="preserve">
     <value>O Nível do Campo deve ser selecionado</value>
