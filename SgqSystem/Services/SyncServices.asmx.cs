@@ -1317,6 +1317,11 @@ namespace SgqSystem.Services
 
             //NotEvaluateIs = (naoAvaliado) ? "1" : "0";
 
+            var CollectionLevel2DB = new SGQDBContext.CollectionLevel2(db);
+            var colLevel2 = CollectionLevel2DB.GetByKey(key);
+            if (colLevel2 != null)
+                id = Convert.ToString(colLevel2.Id);
+
             if (id == "0")
             {
                 /*PQP ESSE StartPhase startphaseevaluation*/
@@ -1381,7 +1386,6 @@ namespace SgqSystem.Services
                 {
                     if (hashKey == "1")
                     {
-                        var CollectionLevel2DB = new SGQDBContext.CollectionLevel2(db);
                         var collectionLevel2 = CollectionLevel2DB.GetByKey(key);
 
                         var updateLevel2Id = InsertCollectionLevel2(ConsolidationLevel1, ConsolidationLevel2, AuditorId, Shift, Period, Phase, Reaudit, ReauditNumber, CollectionDate, StartPhase, Evaluation, Sample, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel, haveCorrectiveAction, HavePhase, Completed, collectionLevel2.Id.ToString(), AlertLevel, sequential, side, WeiEvaluation, Defects, WeiDefects, TotalLevel3WithDefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, startphaseevaluation, hashKey);
