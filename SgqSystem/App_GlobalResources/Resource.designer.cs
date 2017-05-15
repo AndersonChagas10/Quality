@@ -1249,6 +1249,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default Company.
+        /// </summary>
+        internal static string default_company {
+            get {
+                return ResourceManager.GetString("default_company", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Defects.
         /// </summary>
         internal static string defects {

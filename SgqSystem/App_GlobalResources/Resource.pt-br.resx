@@ -1953,4 +1953,7 @@
   <data name="select_the_field_where" xml:space="preserve">
     <value>O Nível do Campo deve ser selecionado</value>
   </data>
+  <data name="default_company" xml:space="preserve">
+    <value>Empresa Padrão</value>
+  </data>
 </root>
