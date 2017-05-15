@@ -25,9 +25,9 @@ namespace Dominio
             this.ParNotConformityRuleXLevel = new HashSet<ParNotConformityRuleXLevel>();
             this.ParRelapse = new HashSet<ParRelapse>();
             this.ParSample = new HashSet<ParSample>();
-            this.CollectionLevel2 = new HashSet<CollectionLevel2>();
             this.ParCounterXLocal = new HashSet<ParCounterXLocal>();
             this.ConsolidationLevel2 = new HashSet<ConsolidationLevel2>();
+            this.CollectionLevel2 = new HashSet<CollectionLevel2>();
         }
     
         public int Id { get; set; }
@@ -62,10 +62,10 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParSample> ParSample { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParCounterXLocal> ParCounterXLocal { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ConsolidationLevel2> ConsolidationLevel2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }
     }
 }

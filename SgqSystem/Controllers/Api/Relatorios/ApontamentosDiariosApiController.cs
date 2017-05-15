@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Dominio;
 using DTO;
+using DTO.DTO;
 using DTO.DTO.Params;
 using DTO.Helpers;
 using Newtonsoft.Json;
@@ -11,6 +12,7 @@ using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -109,10 +111,8 @@ namespace SgqSystem.Controllers.Api
                     list.Add(res);
                 }
             }
-
-            //var lista = Newtonsoft.Json.JsonConvert.SerializeObject(list);
-
             return list;
+            
         }
 
         public void ConsolidacaoEdicao(int id)
