@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Dominio;
 using DTO;
+using DTO.DTO;
 using DTO.DTO.Params;
 using DTO.Helpers;
 using Newtonsoft.Json;
@@ -11,6 +12,7 @@ using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -86,26 +88,19 @@ namespace SgqSystem.Controllers.Api
         [Route("GetRL/{level1}/{shift}/{period}/{date}")]
         public List<Result_Level3> GetResultLevel3(int level1, int shift, int period, DateTime date)
         {
-
-            //var query = "select * from Result_Level3 where CollectionLevel2_Id = "+id+" and IsConform = 0";
-            var list = new List<Result_Level3>();
-            List<CollectionLevel2> collectionL2 = db.CollectionLevel2.Where(r => r.ParLevel1_Id == level1 && r.Shift == shift && r.Period == period && 
-              DbFunctions.TruncateTime(r.CollectionDate)== date).ToList();
-
-            foreach (var col in collectionL2)
-            {
-                var result = db.Result_Level3.Where(r => r.CollectionLevel2_Id == col.Id && r.IsConform == false).ToList();
-                //var item = Mapper.Map<List<Result_Level3>>(result);
-                foreach (var res in result) {
-                    var obj = JsonConvert.SerializeObject(res, Formatting.Indented,new JsonSerializerSettings {
-                        ReferenceLoopHandling = ReferenceLoopHandling.Serialize});
-                    list.Add(res);
+            db.Configuration.LazyLoadingEnabled = false;
+            db.Configuration.ProxyCreationEnabled = false;
+            List<Result_Level3> list = null;
+            var col2 = db.CollectionLevel2.Where(r => r.ParLevel1_Id == level1 && r.Shift == shift && r.Period == period && DbFunctions.TruncateTime(r.CollectionDate) == date).ToList();
+            
+            foreach (var c in col2) {
+                var l3s = db.Result_Level3.Where(r => r.CollectionLevel2_Id == c.Id && r.IsConform == false).ToList();
+                foreach (var l3 in l3s) {
+                    list.Add(l3);
                 }
             }
-
-            //var lista = Newtonsoft.Json.JsonConvert.SerializeObject(list);
-
             return list;
+            
         }
 
         public void ConsolidacaoEdicao(int id)

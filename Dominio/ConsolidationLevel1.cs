@@ -41,6 +41,9 @@ namespace Dominio
         public Nullable<int> LastLevel2Alert { get; set; }
         public Nullable<int> Shift { get; set; }
         public Nullable<int> Period { get; set; }
+        public Nullable<int> ReauditIs { get; set; }
+        public Nullable<int> ReauditNumber { get; set; }
+        public Nullable<int> ReauditLevel { get; set; }
     
         public virtual Department Department { get; set; }
         public virtual ParLevel1 ParLevel1 { get; set; }
