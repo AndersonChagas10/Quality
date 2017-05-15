@@ -1816,6 +1816,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please, fill the header name field.
+        /// </summary>
+        internal static string fill_the_header_name_field {
+            get {
+                return ResourceManager.GetString("fill_the_header_name_field", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fill the field integration.
         /// </summary>
         internal static string fill_the_integration_field_name {
@@ -4449,6 +4458,24 @@ namespace Resources {
         internal static string select_the_critical_level {
             get {
                 return ResourceManager.GetString("select_the_critical_level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please, select the fild Type.
+        /// </summary>
+        internal static string select_the_field_type {
+            get {
+                return ResourceManager.GetString("select_the_field_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please, select the fild Where.
+        /// </summary>
+        internal static string select_the_field_where {
+            get {
+                return ResourceManager.GetString("select_the_field_where", resourceCulture);
             }
         }
         

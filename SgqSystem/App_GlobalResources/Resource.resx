@@ -1965,4 +1965,13 @@
   <data name="slow_network" xml:space="preserve">
     <value>Your network is slow right. Try again later.</value>
   </data>
+  <data name="fill_the_header_name_field" xml:space="preserve">
+    <value>Please, fill the header name field</value>
+  </data>
+  <data name="select_the_field_type" xml:space="preserve">
+    <value>Please, select the fild Type</value>
+  </data>
+  <data name="select_the_field_where" xml:space="preserve">
+    <value>Please, select the fild Where</value>
+  </data>
 </root>

@@ -1944,4 +1944,13 @@
   <data name="slow_network" xml:space="preserve">
     <value>Sua rede está apresentando muita lentidão. Tente mais tarde.</value>
   </data>
+  <data name="fill_the_header_name_field" xml:space="preserve">
+    <value>O campo Nome deve ser preenchido para Nível do Campo</value>
+  </data>
+  <data name="select_the_field_type" xml:space="preserve">
+    <value />
+  </data>
+  <data name="select_the_field_where" xml:space="preserve">
+    <value>O Nível do Campo deve ser selecionado</value>
+  </data>
 </root>
