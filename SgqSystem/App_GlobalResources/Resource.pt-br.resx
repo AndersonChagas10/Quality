@@ -952,7 +952,7 @@
     <value>Não há volume de coleta nesse indicador!</value>
   </data>
   <data name="online_to_login" xml:space="preserve">
-    <value>Você precisa estar on-line para efetuar o login.</value>
+    <value>Você precisa estar entrar e sincronizar para efetuar o login.</value>
   </data>
   <data name="preparing_the_data_to_send" xml:space="preserve">
     <value>Preparando os dados para o envio</value>
