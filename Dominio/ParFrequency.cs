@@ -17,9 +17,9 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParFrequency()
         {
-            this.ParLevel1 = new HashSet<ParLevel1>();
             this.ParLevel2 = new HashSet<ParLevel2>();
             this.ParRelapse = new HashSet<ParRelapse>();
+            this.ParLevel1 = new HashSet<ParLevel1>();
         }
     
         public int Id { get; set; }
@@ -30,10 +30,10 @@ namespace Dominio
         public bool IsActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParLevel1> ParLevel1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel2> ParLevel2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParRelapse> ParRelapse { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParLevel1> ParLevel1 { get; set; }
     }
 }
