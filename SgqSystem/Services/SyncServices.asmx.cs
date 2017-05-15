@@ -3371,8 +3371,8 @@ namespace SgqSystem.Services
                            "         <a href=\"#\" id=\"btnSyncParam\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">" + CommonData.getResource("sync_parameretrization").Value.ToString() + "</a>                                                  ";
             if (GlobalConfig.Brasil == true)
             {
-                menu += "         <a href=\"#\" id=\"btnSyncVolume\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">Sincronizar Volume</a> " +
-                        "         <a href=\"#\" id=\"btnChangeModule\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">" + CommonData.getResource("change_module").Value.ToString() + "</a>                                                  ";
+                menu += "         <a href=\"#\" id=\"btnSyncVolume\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">Sincronizar Volume</a> ";
+                        //"         <a href=\"#\" id=\"btnChangeModule\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">" + CommonData.getResource("change_module").Value.ToString() + "</a>                                                  ";
             }
             menu += "         <a href=\"#\" id=\"btnLogout\" class=\"list-group-item\">" + CommonData.getResource("logout").Value.ToString() + "</a>                                                     " +
                            "         <a href=\"#\" id=\"btnLog\" class=\"list-group-item\">" + CommonData.getResource("view_log").Value.ToString() + "</a>                                                      " +
