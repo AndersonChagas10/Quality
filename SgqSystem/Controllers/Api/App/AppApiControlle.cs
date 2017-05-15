@@ -81,18 +81,6 @@ namespace SgqSystem.Controllers.Api.App
 
         }
 
-        //[HttpGet]
-        //[Route("UpdateTelaDoTabletByUser/{UserId}")]
-        //public RetornoParaTablet UpdateTelaDoTabletByUser(int UserId)
-        //{
-        //    using (var db = new SgqDbDevEntities())
-        //    {
-        //        var UnitId = db.UserSgq.FirstOrDefault(r => r.Id == UserId).ParCompany_Id.GetValueOrDefault();
-        //        return UpdateTelaDoTablet(UnitId);
-        //    }
-        //}
-
-        //$.get('http://mtzsvmqsc/Teste/api/AppParams/ParamsDisponiveis', { UnitId: 1 }, function(r) { console.log(r)});
         [HttpGet]
         [Route("ParamsDisponiveis")]
         public Dictionary<int, string> ParamsDisponiveis(int UnitId)
@@ -100,7 +88,6 @@ namespace SgqSystem.Controllers.Api.App
             return GlobalConfig.PaginaDoTablet;
         }
         
-
         [HttpGet]
         [Route("GetTela/{UnitId}")]
         public RetornoParaTablet GetTela(int UnitId)
@@ -119,6 +106,20 @@ namespace SgqSystem.Controllers.Api.App
             retorno.ParteDaTela = GlobalConfig.PaginaDoTablet.FirstOrDefault(r => r.Key == UnitId).Value;
             return retorno;
         }
+
+        //[HttpGet]
+        //[Route("UpdateTelaDoTabletByUser/{UserId}")]
+        //public RetornoParaTablet UpdateTelaDoTabletByUser(int UserId)
+        //{
+        //    using (var db = new SgqDbDevEntities())
+        //    {
+        //        var UnitId = db.UserSgq.FirstOrDefault(r => r.Id == UserId).ParCompany_Id.GetValueOrDefault();
+        //        return UpdateTelaDoTablet(UnitId);
+        //    }
+        //}
+
+        //$.get('http://mtzsvmqsc/Teste/api/AppParams/ParamsDisponiveis', { UnitId: 1 }, function(r) { console.log(r)});
+
     }
 
     public class RetornoParaTablet
