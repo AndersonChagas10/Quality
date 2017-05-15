@@ -5352,7 +5352,7 @@ namespace SgqSystem.Services
                                   html.input(id: "inputUserName", placeholder: CommonData.getResource("username").Value.ToString(), required: true, disabled: inputsDesabilitados) +
                                   html.label(labelfor: "inputPassword", classe: "sr-only", outerhtml: CommonData.getResource("password").Value.ToString()) +
                                   html.input(type: Html.type.password, id: "inputPassword", placeholder: CommonData.getResource("password").Value.ToString(), required: true, disabled: inputsDesabilitados);
-            if (GlobalConfig.Brasil == true)
+            if (GlobalConfig.Brasil == true && GlobalConfig.Ytoara == false && GlobalConfig.Guarani == false)
             {
                 formOuterHtml +=
                     html.button(label: CommonData.getResource("enter_offline").Value.ToString(), id: "btnLoginOffline", classe: "btn-lg btn-primary btn-block marginTop10", dataloading: "<i class='fa fa-spinner fa-spin'></i> <span class='wMessage' style='font-size:14px;'>" + CommonData.getResource("authenticating").Value.ToString() + "</span>") +
