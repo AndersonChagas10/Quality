@@ -70,15 +70,16 @@ function EasyAjax(url, dados, callback, loader, toggle) {
     });
 }
 
-/*Mascaras e instancias de Select 2 por classe*/
-$(document).ready(function () {
+
+function InitiMasksDefaults() {
 
     /*Input Mask*/
     $('.integer').each(function (index) {
         $(this).inputmask("integer", { rightAlign: false });
     });
     $('.decimal').each(function (index) {
-        $(this).inputmask("decimal", { rightAlign: false });
+        $(this).val($(this).val().replace(',', '.'));
+        $(this).inputmask("decimal", { rightAlign: false , radixPoint: '.' });
     });
 
     $('.integer-direita').each(function (index) {
@@ -86,7 +87,7 @@ $(document).ready(function () {
     });
     $('.decimal-direita').each(function (index) {
         $(this).val($(this).val().replace(',', '.'));
-        $(this).inputmask("decimal", { rightAlign: true });
+        $(this).inputmask("decimal", { rightAlign: true , radixPoint: '.'});
     });
 
     $('.integer-esquerda').each(function (index) {
@@ -94,7 +95,7 @@ $(document).ready(function () {
     });
     $('.decimal-esquerda').each(function (index) {
         $(this).val($(this).val().replace(',', '.'));
-        $(this).inputmask("decimal", { rightAlign: false });
+        $(this).inputmask("decimal", { rightAlign: false, radixPoint: '.' });
     });
     /*FIM Input Mask*/
 
@@ -102,6 +103,7 @@ $(document).ready(function () {
     $('.select2ddl').each(function (index) {
         $(this).select2();
     });
+
     /*FIM Select 2*/
 
     $('.DataPiker').daterangepicker({
@@ -111,6 +113,13 @@ $(document).ready(function () {
             "format": "DD/MM/YYYY",
         }
     });
+
+}
+
+/*Mascaras e instancias de Select 2 por classe*/
+$(document).ready(function () {
+
+    InitiMasksDefaults();
 
 })
 

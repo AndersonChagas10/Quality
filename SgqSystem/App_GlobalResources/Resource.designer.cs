@@ -4786,6 +4786,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your network is slow right. Try again later..
+        /// </summary>
+        internal static string slow_network {
+            get {
+                return ResourceManager.GetString("slow_network", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SMP.
         /// </summary>
         internal static string smp {

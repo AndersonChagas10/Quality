@@ -73,6 +73,7 @@ namespace SgqSystem.Controllers.Api
             try
             {
                 db.Database.ExecuteSqlCommand(query);
+                var level3Result = db.Result_Level3.FirstOrDefault(r => r.Id == resultLevel3.Id);
                 ConsolidacaoEdicao(resultLevel3.Id);
                 //db.Database.ExecuteSqlCommand(queryLevel2);
             }
@@ -90,13 +91,24 @@ namespace SgqSystem.Controllers.Api
         {
             db.Configuration.LazyLoadingEnabled = false;
             db.Configuration.ProxyCreationEnabled = false;
-            List<Result_Level3> list = null;
-            var col2 = db.CollectionLevel2.Where(r => r.ParLevel1_Id == level1 && r.Shift == shift && r.Period == period && DbFunctions.TruncateTime(r.CollectionDate) == date).ToList();
-            
-            foreach (var c in col2) {
-                var l3s = db.Result_Level3.Where(r => r.CollectionLevel2_Id == c.Id && r.IsConform == false).ToList();
-                foreach (var l3 in l3s) {
-                    list.Add(l3);
+
+            db.CollectionLevel2.Where(r => r.ParLevel1_Id == level1).Include("Result_Level3").Include("Result_Level3.ParlLevel3");
+
+
+
+            //var query = "select * from Result_Level3 where CollectionLevel2_Id = "+id+" and IsConform = 0";
+            var list = new List<Result_Level3>();
+            List<CollectionLevel2> collectionL2 = db.CollectionLevel2.Where(r => r.ParLevel1_Id == level1 && r.Shift == shift && r.Period == period && 
+              DbFunctions.TruncateTime(r.CollectionDate)== date).ToList();
+
+            foreach (var col in collectionL2)
+            {
+                var result = db.Result_Level3.Where(r => r.CollectionLevel2_Id == col.Id && r.IsConform == false).ToList();
+                //var item = Mapper.Map<List<Result_Level3>>(result);
+                foreach (var res in result) {
+                    var obj = JsonConvert.SerializeObject(res, Formatting.Indented,new JsonSerializerSettings {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Serialize});
+                    list.Add(res);
                 }
             }
             return list;
@@ -265,7 +277,7 @@ namespace SgqSystem.Controllers.Api
                         try
                         {
                             if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 3) != null)//INTERVALOS
-                                return Guard.ConverteValorCalculado(Value).ToString("G29"); //010.0000 = 10
+                                return Guard.ConverteValorCalculado(Value).ToString("G29").Replace(",", "."); //010.0000 = 10
                         }
                         catch (Exception e)
                         {
@@ -275,7 +287,7 @@ namespace SgqSystem.Controllers.Api
                         try
                         {
                             if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 4) != null)//CALCULADO
-                                return Guard.ConverteValorCalculado(Value).ToString("G29"); //10x104 = 10.0000
+                                return Guard.ConverteValorCalculado(Value).ToString("G29").Replace(",", "."); //10x104 = 10.0000
                         }
                         catch (Exception e)
                         {
@@ -318,7 +330,7 @@ namespace SgqSystem.Controllers.Api
                         try
                         {
                             if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 3) != null)//INTERVALOS
-                                return Guard.ConverteValorCalculado(Value).ToString("G29"); //010.0000 = 10
+                                return Guard.ConverteValorCalculado(Value).ToString("G29").Replace(",", "."); //010.0000 = 10
                         }
                         catch (Exception e)
                         {
@@ -328,7 +340,7 @@ namespace SgqSystem.Controllers.Api
                         try
                         {
                             if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 4) != null)//CALCULADO
-                                return Guard.ConverteValorCalculado(Value).ToString("G29"); //10x104 = 10.0000
+                                return Guard.ConverteValorCalculado(Value).ToString("G29").Replace(",", "."); //10x104 = 10.0000
                         }
                         catch (Exception e)
                         {
