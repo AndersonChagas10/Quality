@@ -137,7 +137,7 @@ namespace SgqSystem.Services
         /// <param name="required">Requerido</param>
         /// <param name="disabled">Desabilitado</param>
         /// <returns></returns>
-        public string input(type type = type.text, string id = null, string classe = null, string placeholder = null, bool required = false, bool disabled = false)
+        public string input(type type = type.text, string id = null, string classe = null, string placeholder = null, bool required = false, bool disabled = false, string maxlength = null)
         {
             string requiredTag = null;
             if (required == true)
@@ -149,8 +149,9 @@ namespace SgqSystem.Services
             {
                 disabledTag = " disabled";
             }
+
             classe += " form-control";
-            return "<input type=\"" + type.ToString() + "\" id=\"" + id + "\" class=\"" + classe + "\" placeholder=\"" + placeholder + "\"" + requiredTag + disabledTag + ">";
+            return "<input type=\"" + type.ToString() + "\" id=\"" + id + "\" class=\"" + classe + "\" placeholder=\"" + placeholder + "\" maxlength=\"" + maxlength + "\"" + requiredTag + disabledTag + ">";
         }
         /// <summary>
         /// Retorna um button

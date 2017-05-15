@@ -539,6 +539,7 @@ namespace SgqSystem.Controllers.Api
 
                                             string comparacaoToString = ArrayComparacao[i];
 
+
                                             var resultIdTarefa = (from x in db.VerificacaoTipificacaoTarefaIntegracao
                                                                   join y in db.CaracteristicaTipificacao
                                                                   on x.CaracteristicaTipificacaoId equals y.nCdCaracteristica
@@ -548,6 +549,9 @@ namespace SgqSystem.Controllers.Api
                                             var ParLevel3 = (from p in ParLevel3List
                                                              where p.Id == resultIdTarefa
                                                              select p).FirstOrDefault();
+
+                                            new DTO.CreateLog(new Exception("O ParLevel3 está nulo"));
+
 
                                             bool conforme = true;
 
