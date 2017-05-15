@@ -1974,4 +1974,7 @@
   <data name="select_the_field_where" xml:space="preserve">
     <value>Please, select the fild Where</value>
   </data>
+  <data name="default_company" xml:space="preserve">
+    <value>Default Company</value>
+  </data>
 </root>
