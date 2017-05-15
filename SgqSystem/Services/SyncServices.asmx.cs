@@ -431,19 +431,24 @@ namespace SgqSystem.Services
                                "VALUES " +
                                "('" + unidadeId + "','" + shift + "','" + period + "','" + level01Id + "',CAST(N'" + level01DataCollect + "' AS DateTime),'" + level02Id + "','" + evaluate + "','" + sample + "', '" + auditorId + "',CAST(N'" + level02DataCollect + "' AS DateTime),'" + level02HeaderJSon + "','" + level03ResultJson + "', '" + correctiveActionJson + "', '" + reaudit + "', '" + reauditNumber + "', '" + haveReaudit + "', '" + reauditlevel + "','" + haveCorrectiveAction + "' ,'" + deviceId + "','" + versaoApp + "','" + ambiente + "',0,'" + deviceMac + "',GETDATE(),NULL,'" + key + "',NULL) ";
 
-                        //if (autoSend == true)
-                        //{
                         sql += "SELECT @@IDENTITY AS 'Identity'";
-                        //}
-                        //else
-                        //{
-                        //    sql += "SELECT '1' AS 'Identity'";
-                        //}
 
-                        command = new SqlCommand(sql, connection);
+                        string sqlBusca = "SELECT [ID] FROM CollectionJson where Unit_Id =" + unidadeId + " and Shift =" + shift + " and Period = " + period + " and level01_id =" + level01Id +
+                            " and level01CollectionDate = '" + level01DataCollect + "' and level02_id =" + level02Id + "and evaluate =" + evaluate + "and sample=" + sample + "and auditorId =" + 
+                            auditorId + "and level02CollectionDate ='" + level02DataCollect + "' and reaudit ="+reaudit+" and reauditnumber="+reauditNumber;
 
-                        // var i = command.ExecuteNonQuery();
+                        command = new SqlCommand(sqlBusca, connection);
+
                         var iSql = Convert.ToInt32(command.ExecuteScalar());
+
+                        if (iSql > 0)
+                        {}
+                        else { 
+                            command = new SqlCommand(sql, connection);
+                            // var i = command.ExecuteNonQuery();
+                            iSql = Convert.ToInt32(command.ExecuteScalar());
+                        }
+
                         if (iSql > 0)
                         {
                             //if (autoSend == true)
@@ -1168,9 +1173,10 @@ namespace SgqSystem.Services
             //             "('" + ConsolidationLevel1_Id + "', '" + ParLevel2_Id + "', '" + ParCompany_Id + "', GETDATE(), NULL, CAST(N'" + collectionDate.ToString("yyyy-MM-dd") + "' AS DateTime)"+","+reaud + ") " +
             //             "SELECT @@IDENTITY AS 'Identity'";
 
-            string sql = "INSERT ConsolidationLevel2 ([ConsolidationLevel1_Id], [ParLevel2_Id], [UnitId], [AddDate], [AlterDate], [ConsolidationDate]) " +
+            string sql = "INSERT ConsolidationLevel2 ([ConsolidationLevel1_Id], [ParLevel2_Id], [UnitId], [AddDate], [AlterDate], [ConsolidationDate], [ReauditIs],[ReauditNumber]) " +
                         "VALUES  " +
-                        "('" + ConsolidationLevel1_Id + "', '" + ParLevel2_Id + "', '" + ParCompany_Id + "', GETDATE(), NULL, CAST(N'" + collectionDate.ToString("yyyy-MM-dd") + "' AS DateTime) ) " +
+                        "('" + ConsolidationLevel1_Id + "', '" + ParLevel2_Id + "', '" + ParCompany_Id + "', GETDATE(), NULL, CAST(N'" + collectionDate.ToString("yyyy-MM-dd") + "' AS DateTime),"+
+                        reaud+","+reauditNumber+" ) " +
                         "SELECT @@IDENTITY AS 'Identity'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -4273,7 +4279,7 @@ namespace SgqSystem.Services
 
                         //form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\"  ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\">" + optionsMultiple + "</select>";
 
-                        form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\" name=cb  \"  ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\">" + optionsMultiple + "</select>";
+                        form_control = "<select class=\"form-control input-sm ddl\" Id=\"cb" + header.ParHeaderField_Id + "\" name=cb   ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\">" + optionsMultiple + "</select>";
 
 
                         break;
