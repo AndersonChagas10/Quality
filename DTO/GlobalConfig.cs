@@ -160,6 +160,7 @@ namespace DTO
                     break;
                 case 4:
                     Ytoara = true;
+                    Brasil = true;
                     LanguageBrasil = true;
                     Verifica += "Ambiente:  Ytoara\n";
                     break;

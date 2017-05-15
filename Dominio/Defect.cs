@@ -25,7 +25,7 @@ namespace Dominio
         public Nullable<int> Evaluations { get; set; }
         public Nullable<int> CurrentEvaluation { get; set; }
     
-        public virtual ParLevel1 ParLevel1 { get; set; }
         public virtual ParCompany ParCompany { get; set; }
+        public virtual ParLevel1 ParLevel1 { get; set; }
     }
 }
