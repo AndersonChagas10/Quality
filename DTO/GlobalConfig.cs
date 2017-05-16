@@ -26,10 +26,14 @@ namespace DTO
         public bool MockEmail { get; set; }
     }
 
-  
+
     public static class GlobalConfig
     {
-      
+
+        public static string UrlUpdateTelaTablet { get; set; }
+        public static string ParamsDisponiveis { get; set; }
+       
+        public static Dictionary<int, string> PaginaDoTablet { get; set; }
         public static bool MockOn { get; set; }
 
         /*Sistema real time*/
@@ -128,7 +132,7 @@ namespace DTO
             return false;/*Se não existe config retorna falso*/
         }
 
-        public static string Verifica { get;  set; }
+        public static string Verifica { get; set; }
         /// <summary>
         /// Recebe parametros do DB e Configura arquivo de config do web site.
         /// </summary>
@@ -159,6 +163,7 @@ namespace DTO
                     Ytoara = true;
                     Brasil = true;
                     LanguageBrasil = true;
+                    Brasil = true;
                     Verifica += "Ambiente:  Ytoara\n";
                     break;
                 case 5:
@@ -227,7 +232,7 @@ namespace DTO
 
         }
 
-      
+
     }
 
 }

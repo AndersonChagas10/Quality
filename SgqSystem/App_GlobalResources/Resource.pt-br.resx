@@ -1054,7 +1054,7 @@
     <value>Tentando novamente</value>
   </data>
   <data name="you_need_to_be_connected" xml:space="preserve">
-    <value>Você precisa estar on-line para efetuar o login</value>
+    <value>Você precisa entrar e sincronizar para efetuar o login.</value>
   </data>
   <data name="allowed" xml:space="preserve">
     <value>permitidas/permitidos</value>
@@ -1955,5 +1955,8 @@
   </data>
   <data name="default_company" xml:space="preserve">
     <value>Empresa Padrão</value>
+  </data>
+  <data name="alter_defaut_company_success" xml:space="preserve">
+    <value>Empresa padrão alterada com sucesso</value>
   </data>
 </root>

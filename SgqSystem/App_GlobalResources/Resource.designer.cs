@@ -376,6 +376,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default company changed successfully.
+        /// </summary>
+        internal static string alter_defaut_company_success {
+            get {
+                return ResourceManager.GetString("alter_defaut_company_success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Evaluations with defects.
         /// </summary>
         internal static string Amostras_com_defeitos {

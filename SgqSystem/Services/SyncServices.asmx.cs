@@ -431,19 +431,12 @@ namespace SgqSystem.Services
                                "VALUES " +
                                "('" + unidadeId + "','" + shift + "','" + period + "','" + level01Id + "',CAST(N'" + level01DataCollect + "' AS DateTime),'" + level02Id + "','" + evaluate + "','" + sample + "', '" + auditorId + "',CAST(N'" + level02DataCollect + "' AS DateTime),'" + level02HeaderJSon + "','" + level03ResultJson + "', '" + correctiveActionJson + "', '" + reaudit + "', '" + reauditNumber + "', '" + haveReaudit + "', '" + reauditlevel + "','" + haveCorrectiveAction + "' ,'" + deviceId + "','" + versaoApp + "','" + ambiente + "',0,'" + deviceMac + "',GETDATE(),NULL,'" + key + "',NULL) ";
 
-                        //if (autoSend == true)
-                        //{
                         sql += "SELECT @@IDENTITY AS 'Identity'";
-                        //}
-                        //else
-                        //{
-                        //    sql += "SELECT '1' AS 'Identity'";
-                        //}
+
 
                         command = new SqlCommand(sql, connection);
-
-                        // var i = command.ExecuteNonQuery();
                         var iSql = Convert.ToInt32(command.ExecuteScalar());
+
                         if (iSql > 0)
                         {
                             //if (autoSend == true)
@@ -1168,9 +1161,10 @@ namespace SgqSystem.Services
             //             "('" + ConsolidationLevel1_Id + "', '" + ParLevel2_Id + "', '" + ParCompany_Id + "', GETDATE(), NULL, CAST(N'" + collectionDate.ToString("yyyy-MM-dd") + "' AS DateTime)"+","+reaud + ") " +
             //             "SELECT @@IDENTITY AS 'Identity'";
 
-            string sql = "INSERT ConsolidationLevel2 ([ConsolidationLevel1_Id], [ParLevel2_Id], [UnitId], [AddDate], [AlterDate], [ConsolidationDate]) " +
+            string sql = "INSERT ConsolidationLevel2 ([ConsolidationLevel1_Id], [ParLevel2_Id], [UnitId], [AddDate], [AlterDate], [ConsolidationDate], [ReauditIs],[ReauditNumber]) " +
                         "VALUES  " +
-                        "('" + ConsolidationLevel1_Id + "', '" + ParLevel2_Id + "', '" + ParCompany_Id + "', GETDATE(), NULL, CAST(N'" + collectionDate.ToString("yyyy-MM-dd") + "' AS DateTime) ) " +
+                        "('" + ConsolidationLevel1_Id + "', '" + ParLevel2_Id + "', '" + ParCompany_Id + "', GETDATE(), NULL, CAST(N'" + collectionDate.ToString("yyyy-MM-dd") + "' AS DateTime)," +
+                        reaud + "," + reauditNumber + " ) " +
                         "SELECT @@IDENTITY AS 'Identity'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -3373,11 +3367,11 @@ namespace SgqSystem.Services
                            "     <div class=\"list-group list-group-inverse rightMenuList\">                                                           " +
                            "         <a href=\"#\" id=\"btnSync\" class=\"list-group-item\" style=\"background-color: black; font-weight: bold;\">" + CommonData.getResource("sync_results").Value.ToString() + "</a>                                                  " +
                            "         <a href=\"#\" id=\"btnSyncParam\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">" + CommonData.getResource("sync_parameretrization").Value.ToString() + "</a>                                                  ";
-            if (GlobalConfig.Brasil == true)
-            {
-                menu += "         <a href=\"#\" id=\"btnSyncVolume\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">Sincronizar Volume</a> ";
-                        //"         <a href=\"#\" id=\"btnChangeModule\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">" + CommonData.getResource("change_module").Value.ToString() + "</a>                                                  ";
-            }
+            //if (GlobalConfig.Brasil == true)
+            //{
+            //    menu += "         <a href=\"#\" id=\"btnSyncVolume\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">Sincronizar Volume</a> ";
+            //            //"         <a href=\"#\" id=\"btnChangeModule\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">" + CommonData.getResource("change_module").Value.ToString() + "</a>                                                  ";
+            //}
             menu += "         <a href=\"#\" id=\"btnLogout\" class=\"list-group-item\">" + CommonData.getResource("logout").Value.ToString() + "</a>                                                     " +
                            "         <a href=\"#\" id=\"btnLog\" class=\"list-group-item\">" + CommonData.getResource("view_log").Value.ToString() + "</a>                                                      " +
                            "         <a href=\"#\" id=\"btnCollectDB\" class=\"list-group-item\">" + CommonData.getResource("view_db").Value.ToString() + "</a>                                                 " +
@@ -3928,7 +3922,7 @@ namespace SgqSystem.Services
                 headerCounter = html.div(
                                     //aqui vai os botoes
                                     outerhtml: headerCounter,
-                                    classe: "counters col-xs-4"
+                                    classe: "counters col-xs-4 headerCounter"
                                     );
 
 
@@ -4135,16 +4129,6 @@ namespace SgqSystem.Services
                 accordeonbuttons = "<button class=\"btn btn-default button-expand marginRight10\"><i class=\"fa fa-expand\" aria-hidden=\"true\"></i> " + @Resources.Resource.show_all + "</button>" +
                                    "<button class=\"btn btn-default button-collapse\"><i class=\"fa fa-compress\" aria-hidden=\"true\"></i> " + @Resources.Resource.hide_all + "</button>";
 
-
-                //painellevel3 = html.listgroupItem(
-                //                                            outerhtml: avaliacoes +
-                //                                                       amostras +
-                //                                                       painelLevel3HeaderListHtml,
-
-                //                               classe: "painel painelLevel03 row");
-
-
-
                 string panelAccordeon = html.listgroupItem(
                                                            outerhtml: accordeonbuttons,
                                                            classe: "painel painelLevel02 row"
@@ -4157,7 +4141,9 @@ namespace SgqSystem.Services
                                                classe: "level3Group",
                                                tags: "level1idgroup=\"" + ParLevel1.Id + "\"",
 
-                                               outerhtml: painelLevel3 + panelAccordeon +
+                                               outerhtml: reauditFlag +
+                                                          painelLevel3 +
+                                                          panelAccordeon +
                                                           groupLevel3Level2
                                              );
 
@@ -4281,7 +4267,7 @@ namespace SgqSystem.Services
 
                         //form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\"  ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\">" + optionsMultiple + "</select>";
 
-                        form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\" name=cb  \"  ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\">" + optionsMultiple + "</select>";
+                        form_control = "<select class=\"form-control input-sm ddl\" Id=\"cb" + header.ParHeaderField_Id + "\" name=cb   ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\">" + optionsMultiple + "</select>";
 
 
                         break;

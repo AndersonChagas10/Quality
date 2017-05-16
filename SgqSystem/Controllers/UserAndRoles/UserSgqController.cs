@@ -13,6 +13,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using SgqSystem.Secirity;
 
 namespace SgqSystem.Controllers
 {
@@ -72,6 +73,7 @@ namespace SgqSystem.Controllers
         /// </summary>
         /// <param name="motivo">Quando obtiver um motivo, é por cause da expiração da senha</param>
         /// <returns></returns>
+        [FilterUnit(filtraUnidadeDoUsuario = false)]
         public ActionResult Perfil(string motivo = "")
         {
             ViewBag.Title = "Perfil";
@@ -93,6 +95,7 @@ namespace SgqSystem.Controllers
                 Roles = userSgq.Role == null ? new string[0] : userSgq.Role.Split(','),
                 Password = userSgq.Password,
                 Phone = userSgq.Phone,
+                ParCompany_Id = userSgq.ParCompany_Id,
                 Empresa = parCompanyXUserSgq != null ? (from comp in parCompanyXUserSgq select new EmpresaDTO { Role = comp.Role, Nome = comp.ParCompany.Name }).ToList() : new List<EmpresaDTO>()
             };
 
@@ -112,7 +115,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public bool Save(UserDTO userSgqDto)
         {
-            
+
             ValidaUserSgqDto(userSgqDto);
 
             if (!ModelState.IsValid)
@@ -125,7 +128,7 @@ namespace SgqSystem.Controllers
                     userSgqDto.Password = "USERUSA";
             }
 
-            //userSgqDto.ParCompany_Id = userSgqDto.ListParCompany_Id.FirstOrDefault();
+            userSgqDto.ParCompany_Id = userSgqDto.ListParCompany_Id.FirstOrDefault();
             if (userSgqDto.Id == 0)
             {
                 userSgqDto.AddDate = DateTime.Now;
@@ -152,14 +155,37 @@ namespace SgqSystem.Controllers
                 string roles = string.Join(",", userSgqDto.ListRole);
                 userSgqDto.Role = roles;
             }
+
             var ListParCompany_Id = userSgqDto.ListParCompany_Id;
             userSgqDto = _baseDomainUserSgq.AddOrUpdate(userSgqDto, true);
 
-            ///*Empresas do usuario*/
-            _baseDomainParCompanyXUserSgq.ExecuteSql("DELETE FROM ParCompanyXUserSgq WHERE UserSgq_Id = " + userSgqDto.Id);
-            if(ListParCompany_Id != null)
-                foreach (int ParCompany_id in ListParCompany_Id)
-                    _baseDomainParCompanyXUserSgq.AddOrUpdate(new ParCompanyXUserSgqDTO() { Id = 0, UserSgq_Id = userSgqDto.Id, ParCompany_Id = ParCompany_id }, true);
+            /*Adiciona*/
+            foreach (var i in ListParCompany_Id)
+            {
+                var lista = db.ParCompanyXUserSgq.Where(r => r.ParCompany_Id == i && r.UserSgq_Id == userSgqDto.Id).ToList();
+                if (lista.Count == 0)
+                {
+                    _baseDomainParCompanyXUserSgq.AddOrUpdate(new ParCompanyXUserSgqDTO() { Id = 0, UserSgq_Id = userSgqDto.Id, ParCompany_Id = i }, true);
+                }
+            }
+
+            /*Remove*/
+            foreach (var i in db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == userSgqDto.Id))
+            {
+                var lista = ListParCompany_Id.Where(r => r == i.ParCompany_Id).ToList();
+                if (lista.Count == 0)
+                {
+                    //_baseDomainParCompanyXUserSgq.ExecuteSql("DELETE FROM ParCompanyXUserSgq WHERE UserSgq_Id = " + userSgqDto.Id);
+                    _baseDomainParCompanyXUserSgq.ExecuteSql("DELETE FROM ParCompanyXUserSgq WHERE UserSgq_Id = " + userSgqDto.Id + " AND ParCompany_Id = " + i.ParCompany_Id);
+                }
+
+            }
+
+            /////*Empresas do usuario*/
+            //_baseDomainParCompanyXUserSgq.ExecuteSql("DELETE FROM ParCompanyXUserSgq WHERE UserSgq_Id = " + userSgqDto.Id);
+            //if (ListParCompany_Id != null)
+            //    foreach (int ParCompany_id in ListParCompany_Id)
+            //        _baseDomainParCompanyXUserSgq.AddOrUpdate(new ParCompanyXUserSgqDTO() { Id = 0, UserSgq_Id = userSgqDto.Id, ParCompany_Id = ParCompany_id }, true);
 
             return true;
 
@@ -241,7 +267,6 @@ namespace SgqSystem.Controllers
             }
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public string AlterarSenha(UserViewModel model)
@@ -319,7 +344,27 @@ namespace SgqSystem.Controllers
             return "";
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public string AlterarCompany(UserViewModel model)
+        {
+            try
+            {
+                var userSgq = db.UserSgq.Where(x => x.Id == model.Id).FirstOrDefault();
 
+                userSgq.AlterDate = DateTime.Now;
+                userSgq.ParCompany_Id = model.ParCompany_Id;
+
+                db.Entry(userSgq).State = EntityState.Modified;
+                db.SaveChanges();
+
+            }
+            catch (Exception)
+            {
+                return Resources.Resource.try_again_contact_support;
+            }
+            return "";
+        }
 
         protected override void Dispose(bool disposing)
         {

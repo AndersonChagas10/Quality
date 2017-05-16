@@ -21,16 +21,11 @@ namespace SgqSystem.Controllers.Api
 
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
-        private bool running = false;
         [Route("Save")]
         [HttpPost]
         public void SaveVTVerificacaoTipificacao(TipificacaoViewModel model)
         {
 
-            if (running)
-                return;
-
-            running = true;
 
             var _verificacao = model.VerificacaoTipificacao;
 
@@ -158,11 +153,14 @@ namespace SgqSystem.Controllers.Api
 
                 //Consolidar resultados e tratamento de erro
                 //_verificacao.Chave = "1245120170215";
-                GetDadosGet(_verificacao.Chave, model);
+                try
+                {
+                    GetDadosGet(_verificacao.Chave, model);
+                }
+                catch (Exception e)
+                {
 
-                running = false;
-
-
+                }
 
             }
         }
@@ -407,13 +405,18 @@ namespace SgqSystem.Controllers.Api
                                                          where p.hashKey == 5
                                                          select p).FirstOrDefault();
 
-
-                                        var ParLevel2_old = db2.ParLevel1
+                                        var ParLevel2_old =
+                                                   (from p1 in db2.ParLevel1
+                                                   join p321 in db2.ParLevel3Level2Level1 on p1.Id equals p321.ParLevel1_Id
+                                                   join p32 in db2.ParLevel3Level2 on p321.ParLevel3Level2_Id equals p32.Id
+                                                   join p2 in db2.ParLevel2 on p32.ParLevel2_Id equals p2.Id
+                                                    where p1.Id == ParLevel1.Id
+                                                    select new { p2 }).FirstOrDefault();
+                                        /*var ParLevel2_old = db2.ParLevel1
                                             .Join(db2.ParLevel3Level2Level1, p1 => p1.Id, p321 => p321.ParLevel1_Id, (p1, p321) => new { p1, p321 })
                                             .Join(db2.ParLevel3Level2, p321xp1 => p321xp1.p321.ParLevel3Level2_Id, p32 => p32.Id, (p321, p32) => new { p321, p32 })
-                                            .Join(db2.ParLevel2, p32xp1 => p32xp1.p321.p321.ParLevel3Level2_Id, p2 => p2.Id, (p32, p2) => new { p32, p2})
-                                            .Select(x => new { x.p2 }).FirstOrDefault();
-
+                                            .Join(db2.ParLevel2, p32xp1 => p32xp1.p32.ParLevel2_Id, p2 => p2.Id, (p32, p2) => new { p32, p2 }).Select(x => new { x.p2 }).FirstOrDefault();
+                                            */
                                         var ParLevel2 = ParLevel2_old.p2;
 
        

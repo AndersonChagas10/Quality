@@ -97,12 +97,12 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
+                                        @*<div class="form-group">
                                             @Html.Label(Resources.Resource.default_company, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.DropDownList("userSgqDto.ParCompany_Id", new SelectList(ViewBag.listaParCompany, "Id", "Name"), new { @class = "form-control" })
                                             </div>
-                                        </div>
+                                        </div>*@
 
                                         <div class="form-group">
                                             @Html.Label(Resources.Resource.company, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -134,8 +134,8 @@
                                                 <div class="form-group">
                                                     @Html.Label(Resources.Resource.password, htmlAttributes: new { @class = "control-label col-md-2" })
                                                     <div class="col-md-10">
-                                                        @Html.Editor("userSgqDto.Password", new { htmlAttributes = new { @class = "form-control", @type = "password", @maxlength = "8" } })
-                                                        <span id="errMsg"></span>
+                                                        @Html.Editor("userSgqDto.Password", new { htmlAttributes = new { @class = "form-control", @type = "password", @maxlength = "7" } })
+                                                        @*<span id="errMsg"></span>*@
                                                     </div>
                                                 </div>
 
@@ -260,22 +260,22 @@
         $("#userSgqDto_ListRole").attr("multiple", "multiple");
         $("#userSgqDto_ListRole").select2();
 
-        //Função que limita o máximo de caracteres no password
-        var maxLen = 7;
-        $('#userSgqDto_Password').keyup(function (event) {
-            var Length = $("#userSgqDto_Password").val().length;
-            var AmountLeft = maxLen - Length;
-            $('#txt-length-left').html(AmountLeft);
-            if (Length > maxLen) {
-                if (event.which != 8) {
-                    $('#userSgqDto_Password').val($('#userSgqDto_Password').val().slice(0, -1));
-                    $('#errMsg').text('A senha deve conter no máximo 7 caracteres');
-                    return false;
-                }
-            } else {
-                $('#errMsg').text('')
-            }
-        });
+        ////Função que limita o máximo de caracteres no password
+        //var maxLen = 7;
+        //$('#userSgqDto_Password').keyup(function (event) {
+        //    var Length = $("#userSgqDto_Password").val().length;
+        //    var AmountLeft = maxLen - Length;
+        //    $('#txt-length-left').html(AmountLeft);
+        //    if (Length > maxLen) {
+        //        if (event.which != 8) {
+        //            $('#userSgqDto_Password').val($('#userSgqDto_Password').val().slice(0, -1));
+        //            $('#errMsg').text('A senha deve conter no máximo 7 caracteres');
+        //            return false;
+        //        }
+        //    } else {
+        //        $('#errMsg').text('')
+        //    }
+        //});
 
     })
 

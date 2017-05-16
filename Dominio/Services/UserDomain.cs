@@ -186,8 +186,6 @@ namespace Dominio.Services
             }
         }
 
-
-
         #region LoginEUA
 
      
@@ -555,7 +553,6 @@ namespace Dominio.Services
         }
 
         #endregion
-
 
     }
 
