@@ -940,7 +940,7 @@
     <value>Não foi possível carregar as chaves, tente novamente</value>
   </data>
   <data name="login_error_try_again" xml:space="preserve">
-    <value>Não foi possível efetuar o login, tente novamente.</value>
+    <value>Não foi possível logar e sincronizar, tente novamente.</value>
   </data>
   <data name="not_connected_to_network" xml:space="preserve">
     <value>Você parece não estar conectado a rede da JBS. Peça ajuda ao pessoal de TI</value>
@@ -1054,7 +1054,7 @@
     <value>Tentando novamente</value>
   </data>
   <data name="you_need_to_be_connected" xml:space="preserve">
-    <value>Você precisa estar on-line para efetuar o login</value>
+    <value>Você precisa entrar e sincronizar para efetuar o login.</value>
   </data>
   <data name="allowed" xml:space="preserve">
     <value>permitidas/permitidos</value>

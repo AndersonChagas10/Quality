@@ -70,7 +70,10 @@
             }
 
             EasyAjax(urlGrafico1, enviar, CallbackGrafico1, "grafico1", toggle);
-            EasyAjax(urlTabela1, enviar, function (r) { $('#tabela1div').empty().append(r); heatMap('dadosEsquerda', true, false, 1, 3, 'DESC'); }, "tabela1div");
+            EasyAjax(urlTabela1, enviar, function (r) {
+                $('#tabela1div').empty().append(r);
+                heatMap('dadosEsquerda', true, false, 1, 3, 'DESC');
+            }, "tabela1div");
         };
 
         function GetTabela2() {
@@ -145,7 +148,7 @@
                     {
                         name: 'Scorecard',
                         data: scorecardRegional,
-                        linkedTo: 'id1',
+                        linkedTo: 'id1',    
                         point: {
                             events: {
                                 click: function () {

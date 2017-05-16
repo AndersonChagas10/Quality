@@ -1,4 +1,5 @@
-﻿@model SgqSystem.ViewModels.UserViewModel
+﻿
+@model SgqSystem.ViewModels.UserViewModel
 @{
     ViewBag.Title = Resources.Resource.log_in;
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -134,23 +135,23 @@
             }
         }
 
-        $(document).ready(function () {
-            ////Função que limita o máximo de caracteres no password           
-            //var maxLen = 7; 
-            //$('#inputPassword').keyup(function (event) {
-            //    var Length = $("#inputPassword").val().length;
-            //    var AmountLeft = maxLen - Length;
-            //    $('#txt-length-left').html(AmountLeft);
-            //    if (Length > maxLen) {
-            //        if (event.which != 8) {
-            //            $('#inputPassword').val($('#inputPassword').val().slice(0, -1));
-            //            $('#errMsg').text('A senha contém no máximo 7 caracteres');
-            //            return false;
-            //        }
-            //    } else {
-            //        $('#errMsg').text('')
-            //    }
-            //});
-        });
+        //$(document).ready(function () {
+        //    //Função que limita o máximo de caracteres no password           
+        //    var maxLen = 7; 
+        //    $('#inputPassword').keyup(function (event) {
+        //        var Length = $("#inputPassword").val().length;
+        //        var AmountLeft = maxLen - Length;
+        //        $('#txt-length-left').html(AmountLeft);
+        //        if (Length > maxLen) {
+        //            if (event.which != 8) {
+        //                $('#inputPassword').val($('#inputPassword').val().slice(0, -1));
+        //                $('#errMsg').text('A senha contém no máximo 7 caracteres');
+        //                return false;
+        //            }
+        //        } else {
+        //            $('#errMsg').text('')
+        //        }
+        //    });
+        //});
     </script>
 }
