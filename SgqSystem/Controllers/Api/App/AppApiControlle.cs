@@ -11,6 +11,10 @@ namespace SgqSystem.Controllers.Api.App
 {
     /// <summary>
     /// 
+    /// Gerencia em memória a tela da parametrização dos tablets para unidades.
+    /// 
+    /// Serviços disponíveis:
+    /// 
     /// var root = @Html.Raw(Json.Encode(GlobalConfig.urlPreffixAppColleta));
     /// $.get(root +'/api/AppParams/UpdateTelaDoTablet', { }, function(r) { console.log(r)});
     /// $.get(root +'/api/AppParams/UpdateTelaDoTablet/21', {UnitId: 21 }, function(r) { console.log(r)});
@@ -21,7 +25,10 @@ namespace SgqSystem.Controllers.Api.App
     [RoutePrefix("api/AppParams")]
     public class AppParamsApiController : ApiController
     {
-        
+        /// <summary>
+        /// Sobrescreve a tela do tablet para todas as unidades.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("UpdateTelaDoTablet")]
         public RetornoParaTablet UpdateTelaDoTablet()
@@ -57,6 +64,11 @@ namespace SgqSystem.Controllers.Api.App
 
         }
 
+        /// <summary>
+        /// Atualiza, se existir, a tela do tablet para determinada unidade.
+        /// </summary>
+        /// <param name="UnitId"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("UpdateTelaDoTablet/{UnitId}")]
         public RetornoParaTablet UpdateTelaDoTablet(int UnitId)
@@ -90,6 +102,10 @@ namespace SgqSystem.Controllers.Api.App
 
         }
 
+        /// <summary>
+        /// Faz download de todas as telas prontas / atualizadas
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("ParamsDisponiveis")]
         public Dictionary<int, string> ParamsDisponiveis()
@@ -97,6 +113,11 @@ namespace SgqSystem.Controllers.Api.App
             return GlobalConfig.PaginaDoTablet;
         }
 
+        /// <summary>
+        /// Responde a tela de uma unidade para o tablet
+        /// </summary>
+        /// <param name="UnitId"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetTela/{UnitId}")]
         public RetornoParaTablet GetTela(int UnitId)
@@ -118,6 +139,9 @@ namespace SgqSystem.Controllers.Api.App
 
     }
 
+    /// <summary>
+    /// Objeto de auxilio para retorno.
+    /// </summary>
     public class RetornoParaTablet
     {
         public bool ready { get; set; }
