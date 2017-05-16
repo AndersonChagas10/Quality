@@ -433,21 +433,9 @@ namespace SgqSystem.Services
 
                         sql += "SELECT @@IDENTITY AS 'Identity'";
 
-                        string sqlBusca = "SELECT [ID] FROM CollectionJson where Unit_Id =" + unidadeId + " and Shift =" + shift + " and Period = " + period + " and level01_id =" + level01Id +
-                            " and level01CollectionDate = '" + level01DataCollect + "' and level02_id =" + level02Id + "and evaluate =" + evaluate + "and sample=" + sample + "and auditorId =" + 
-                            auditorId + "and level02CollectionDate ='" + level02DataCollect + "' and reaudit ="+reaudit+" and reauditnumber="+reauditNumber;
 
-                        command = new SqlCommand(sqlBusca, connection);
-
+                        command = new SqlCommand(sql, connection);
                         var iSql = Convert.ToInt32(command.ExecuteScalar());
-
-                        if (iSql > 0)
-                        {}
-                        else { 
-                            command = new SqlCommand(sql, connection);
-                            // var i = command.ExecuteNonQuery();
-                            iSql = Convert.ToInt32(command.ExecuteScalar());
-                        }
 
                         if (iSql > 0)
                         {
@@ -1175,8 +1163,8 @@ namespace SgqSystem.Services
 
             string sql = "INSERT ConsolidationLevel2 ([ConsolidationLevel1_Id], [ParLevel2_Id], [UnitId], [AddDate], [AlterDate], [ConsolidationDate], [ReauditIs],[ReauditNumber]) " +
                         "VALUES  " +
-                        "('" + ConsolidationLevel1_Id + "', '" + ParLevel2_Id + "', '" + ParCompany_Id + "', GETDATE(), NULL, CAST(N'" + collectionDate.ToString("yyyy-MM-dd") + "' AS DateTime),"+
-                        reaud+","+reauditNumber+" ) " +
+                        "('" + ConsolidationLevel1_Id + "', '" + ParLevel2_Id + "', '" + ParCompany_Id + "', GETDATE(), NULL, CAST(N'" + collectionDate.ToString("yyyy-MM-dd") + "' AS DateTime)," +
+                        reaud + "," + reauditNumber + " ) " +
                         "SELECT @@IDENTITY AS 'Identity'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -4140,7 +4128,7 @@ namespace SgqSystem.Services
 
                 accordeonbuttons = "<button class=\"btn btn-default button-expand marginRight10\"><i class=\"fa fa-expand\" aria-hidden=\"true\"></i> " + @Resources.Resource.show_all + "</button>" +
                                    "<button class=\"btn btn-default button-collapse\"><i class=\"fa fa-compress\" aria-hidden=\"true\"></i> " + @Resources.Resource.hide_all + "</button>";
-                
+
                 string panelAccordeon = html.listgroupItem(
                                                            outerhtml: accordeonbuttons,
                                                            classe: "painel painelLevel02 row"
@@ -4153,9 +4141,9 @@ namespace SgqSystem.Services
                                                classe: "level3Group",
                                                tags: "level1idgroup=\"" + ParLevel1.Id + "\"",
 
-                                               outerhtml: reauditFlag+
-                                                          painelLevel3 + 
-                                                          panelAccordeon + 
+                                               outerhtml: reauditFlag +
+                                                          painelLevel3 +
+                                                          panelAccordeon +
                                                           groupLevel3Level2
                                              );
 
