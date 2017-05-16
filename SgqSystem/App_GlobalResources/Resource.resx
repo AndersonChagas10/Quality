@@ -1977,4 +1977,7 @@
   <data name="default_company" xml:space="preserve">
     <value>Default Company</value>
   </data>
+  <data name="alter_defaut_company_success" xml:space="preserve">
+    <value>Default company changed successfully</value>
+  </data>
 </root>

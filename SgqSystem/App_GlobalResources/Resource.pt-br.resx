@@ -1956,4 +1956,7 @@
   <data name="default_company" xml:space="preserve">
     <value>Empresa Padrão</value>
   </data>
+  <data name="alter_defaut_company_success" xml:space="preserve">
+    <value>Empresa padrão alterada com sucesso</value>
+  </data>
 </root>

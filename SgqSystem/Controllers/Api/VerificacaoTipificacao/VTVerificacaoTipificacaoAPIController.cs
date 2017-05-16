@@ -21,16 +21,11 @@ namespace SgqSystem.Controllers.Api
 
         string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
-        private bool running = false;
         [Route("Save")]
         [HttpPost]
         public void SaveVTVerificacaoTipificacao(TipificacaoViewModel model)
         {
 
-            if (running)
-                return;
-
-            running = true;
 
             var _verificacao = model.VerificacaoTipificacao;
 
@@ -158,11 +153,14 @@ namespace SgqSystem.Controllers.Api
 
                 //Consolidar resultados e tratamento de erro
                 //_verificacao.Chave = "1245120170215";
-                GetDadosGet(_verificacao.Chave, model);
+                try
+                {
+                    GetDadosGet(_verificacao.Chave, model);
+                }
+                catch (Exception e)
+                {
 
-                running = false;
-
-
+                }
 
             }
         }
