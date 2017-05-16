@@ -304,13 +304,16 @@
         }
     });
 
+    var root = @Html.Raw(Json.Encode(GlobalConfig.urlPreffixAppColleta));
+
     function atualziarTablets() {
         bootbox.confirm("Esta ação pode demorar algum tempo, deseja atualzar a parametrizao dos tablets? O Loader sumira automaticamente ao finalizar a ação.", function (result) {
             $.LoadingOverlay('show');
             var unidade = GetUnidadeUsuario();
-            $.get('http://mtzsvmqsc/sgq_service/api/AppParams' + '/' + unidade, { UnitId: unidade }, function (r) {
+            $.get(root + '/api/AppParams/UpdateTelaDoTablet/' + unidade, { UnitId: unidade }, function (r) {
                 $.LoadingOverlay('hide')
             });
         });
     }
+
 </script>
