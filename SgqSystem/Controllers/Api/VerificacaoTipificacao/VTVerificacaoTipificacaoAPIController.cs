@@ -26,144 +26,145 @@ namespace SgqSystem.Controllers.Api
         public void SaveVTVerificacaoTipificacao(TipificacaoViewModel model)
         {
 
-
-            var _verificacao = model.VerificacaoTipificacao;
-
-            using (var db = new SGQ_GlobalEntities())
+            try
             {
-                var verificacaoTipificacao = db.VTVerificacaoTipificacao.FirstOrDefault(r => r.Chave == _verificacao.Chave);
+                var _verificacao = model.VerificacaoTipificacao;
 
-                //Variavel para atribuir data correta na verificãção da tipificação
-                DateTime dataHoraTipificacao = _verificacao.DataHora;
-
-                //Caso exista uma verificação da tipidicação a mesma será removida, mantando somente a data para atribuir na nova verificação que será criada
-                if (verificacaoTipificacao != null)
+                using (var db = new SGQ_GlobalEntities())
                 {
-                    //Atribui a data da verificação que for encontrada
-                    dataHoraTipificacao = verificacaoTipificacao.DataHora;
+                    var verificacaoTipificacao = db.VTVerificacaoTipificacao.FirstOrDefault(r => r.Chave == _verificacao.Chave);
 
-                    string queryValidacaoVDelete = "DELETE FROM VTVerificacaoTipificacaoResultados WHERE chave='" + verificacaoTipificacao.Chave + "'";
-                    int noOfRowDeleted = db.Database.ExecuteSqlCommand(queryValidacaoVDelete);
+                    //Variavel para atribuir data correta na verificãção da tipificação
+                    DateTime dataHoraTipificacao = _verificacao.DataHora;
 
-
-                    string queryValidacaoVDelete1 = "DELETE FROM VTVerificacaoTipificacao WHERE id='" + verificacaoTipificacao.Id + "'";
-                    int noOfRowDeleted1 = db.Database.ExecuteSqlCommand(queryValidacaoVDelete1);
-
-                    ////Busca todos os resultados referente a verificação localizada
-                    //var resultados = db.VTVerificacaoTipificacaoResultados.Where(p => p.Chave == verificacaoTipificacao.Chave).ToList();
-                    ////Deleta os resultados da verificaçao
-                    //foreach (var r in resultados)
-                    //{
-                    //    db.VTVerificacaoTipificacaoResultados.Remove(r);
-                    //}
-                    //db.SaveChanges();
-
-                    //Deleta a Verificação
-                    //db.VTVerificacaoTipificacao.Remove(verificacaoTipificacao);
-                    //db.SaveChanges();
-
-                }
-
-
-                //instanciamos um novo objeto na verificacao da tipificacao
-                verificacaoTipificacao = new VTVerificacaoTipificacao();
-
-                verificacaoTipificacao.Sequencial = _verificacao.Sequencial;
-                verificacaoTipificacao.Banda = _verificacao.Banda;
-                verificacaoTipificacao.DataHora = dataHoraTipificacao;
-                verificacaoTipificacao.UnidadeId = _verificacao.UnidadeId;
-                verificacaoTipificacao.Chave = _verificacao.Chave;
-                verificacaoTipificacao.Status = false;
-                verificacaoTipificacao.EvaluationNumber = _verificacao.EvaluationNumber;
-                verificacaoTipificacao.Sample = _verificacao.Sample;
-
-                //gravamos o objeto no banco
-                db.VTVerificacaoTipificacao.Add(verificacaoTipificacao);
-
-                for (var i = 0; i < model.VerificacaoTipificacaoResultados.Count; i++)
-                {
-                    if (model.VerificacaoTipificacaoResultados[i].CaracteristicaTipificacaoId == "null")
+                    //Caso exista uma verificação da tipidicação a mesma será removida, mantando somente a data para atribuir na nova verificação que será criada
+                    if (verificacaoTipificacao != null)
                     {
-                        //PEGA ID DA AREA PARTICIPANTES
-                        // var aa = model.VerificacaoTipificacaoResultados[i].AreasParticipantesId.GetValueOrDefault().ToString();
+                        //Atribui a data da verificação que for encontrada
+                        dataHoraTipificacao = verificacaoTipificacao.DataHora;
 
-                        string aId = model.VerificacaoTipificacaoResultados[i].AreasParticipantesId;
-
-                        var AreaParticObj = (from x in db.AreasParticipantes.AsNoTracking()
-                                             where x.cNrCaracteristica == aId
-                                             select x).FirstOrDefault();
+                        string queryValidacaoVDelete = "DELETE FROM VTVerificacaoTipificacaoResultados WHERE chave='" + verificacaoTipificacao.Chave + "'";
+                        int noOfRowDeleted = db.Database.ExecuteSqlCommand(queryValidacaoVDelete);
 
 
-                        var numeroCaracteristica = AreaParticObj.cNrCaracteristica;
+                        string queryValidacaoVDelete1 = "DELETE FROM VTVerificacaoTipificacao WHERE id='" + verificacaoTipificacao.Id + "'";
+                        int noOfRowDeleted1 = db.Database.ExecuteSqlCommand(queryValidacaoVDelete1);
 
-                        numeroCaracteristica = numeroCaracteristica.Substring(0, 4);
+                        ////Busca todos os resultados referente a verificação localizada
+                        //var resultados = db.VTVerificacaoTipificacaoResultados.Where(p => p.Chave == verificacaoTipificacao.Chave).ToList();
+                        ////Deleta os resultados da verificaçao
+                        //foreach (var r in resultados)
+                        //{
+                        //    db.VTVerificacaoTipificacaoResultados.Remove(r);
+                        //}
+                        //db.SaveChanges();
 
-                        var codigoCaracteristica = (from x in db.AreasParticipantes.AsNoTracking()
-                                                    where x.cNrCaracteristica == numeroCaracteristica
-                                                    select x.nCdCaracteristica).FirstOrDefault();
-
-                        var codigoTarefa = (from x in db.VerificacaoTipificacaoTarefaIntegracao.AsNoTracking()
-                                            where x.CaracteristicaTipificacaoId == codigoCaracteristica
-                                            select x.TarefaId).FirstOrDefault();
-
-                        VTVerificacaoTipificacaoResultados verificacaoTipificacaoResultados = new VTVerificacaoTipificacaoResultados();
-                        verificacaoTipificacaoResultados.AreasParticipantesId = Convert.ToInt32(model.VerificacaoTipificacaoResultados[i].AreasParticipantesId);
-                        verificacaoTipificacaoResultados.TarefaId = codigoTarefa;
-                        verificacaoTipificacaoResultados.Chave = _verificacao.Chave;
-
-
-                        db.VTVerificacaoTipificacaoResultados.Add(verificacaoTipificacaoResultados);
+                        //Deleta a Verificação
+                        //db.VTVerificacaoTipificacao.Remove(verificacaoTipificacao);
+                        //db.SaveChanges();
 
                     }
-                    else
+
+
+                    //instanciamos um novo objeto na verificacao da tipificacao
+                    verificacaoTipificacao = new VTVerificacaoTipificacao();
+
+                    verificacaoTipificacao.Sequencial = _verificacao.Sequencial;
+                    verificacaoTipificacao.Banda = _verificacao.Banda;
+                    verificacaoTipificacao.DataHora = dataHoraTipificacao;
+                    verificacaoTipificacao.UnidadeId = _verificacao.UnidadeId;
+                    verificacaoTipificacao.Chave = _verificacao.Chave;
+                    verificacaoTipificacao.Status = false;
+                    verificacaoTipificacao.EvaluationNumber = _verificacao.EvaluationNumber;
+                    verificacaoTipificacao.Sample = _verificacao.Sample;
+
+                    //gravamos o objeto no banco
+                    db.VTVerificacaoTipificacao.Add(verificacaoTipificacao);
+
+                    for (var i = 0; i < model.VerificacaoTipificacaoResultados.Count; i++)
                     {
-                        //CARACTERISTICA TIPIFICACAO
+                        if (model.VerificacaoTipificacaoResultados[i].CaracteristicaTipificacaoId == "null")
+                        {
+                            //PEGA ID DA AREA PARTICIPANTES
+                            // var aa = model.VerificacaoTipificacaoResultados[i].AreasParticipantesId.GetValueOrDefault().ToString();
 
-                        var idCaracteristicaTipificacaoTemp = model.VerificacaoTipificacaoResultados[i].CaracteristicaTipificacaoId;
+                            string aId = model.VerificacaoTipificacaoResultados[i].AreasParticipantesId;
 
-                        var obj = (from x in db.CaracteristicaTipificacao.AsNoTracking()
-                                   where x.cNrCaracteristica == idCaracteristicaTipificacaoTemp
-                                   select x).FirstOrDefault();
-
-                        var numeroCaracteristica = obj.cNrCaracteristica;
-                        numeroCaracteristica = numeroCaracteristica.Substring(0, 3);
-
-                        var codigoCaracteristica = (from x in db.CaracteristicaTipificacao.AsNoTracking()
-                                                    where x.cNrCaracteristica == numeroCaracteristica
-                                                    select x.nCdCaracteristica).FirstOrDefault();
-
-                        var codigoTarefa = (from x in db.VerificacaoTipificacaoTarefaIntegracao.AsNoTracking()
-                                            where x.CaracteristicaTipificacaoId == codigoCaracteristica
-                                            select x.TarefaId).FirstOrDefault();
-
-                        VTVerificacaoTipificacaoResultados verificacaoTipificacaoResultados = new VTVerificacaoTipificacaoResultados();
-                        verificacaoTipificacaoResultados.CaracteristicaTipificacaoId = Convert.ToInt32(model.VerificacaoTipificacaoResultados[i].CaracteristicaTipificacaoId);
-                        verificacaoTipificacaoResultados.TarefaId = codigoTarefa;
-                        verificacaoTipificacaoResultados.Chave = _verificacao.Chave;
+                            var AreaParticObj = (from x in db.AreasParticipantes.AsNoTracking()
+                                                 where x.cNrCaracteristica == aId
+                                                 select x).FirstOrDefault();
 
 
+                            var numeroCaracteristica = AreaParticObj.cNrCaracteristica;
 
-                        db.VTVerificacaoTipificacaoResultados.Add(verificacaoTipificacaoResultados);
+                            numeroCaracteristica = numeroCaracteristica.Substring(0, 4);
+
+                            var codigoCaracteristica = (from x in db.AreasParticipantes.AsNoTracking()
+                                                        where x.cNrCaracteristica == numeroCaracteristica
+                                                        select x.nCdCaracteristica).FirstOrDefault();
+
+                            var codigoTarefa = (from x in db.VerificacaoTipificacaoTarefaIntegracao.AsNoTracking()
+                                                where x.CaracteristicaTipificacaoId == codigoCaracteristica
+                                                select x.TarefaId).FirstOrDefault();
+
+                            VTVerificacaoTipificacaoResultados verificacaoTipificacaoResultados = new VTVerificacaoTipificacaoResultados();
+                            verificacaoTipificacaoResultados.AreasParticipantesId = Convert.ToInt32(model.VerificacaoTipificacaoResultados[i].AreasParticipantesId);
+                            verificacaoTipificacaoResultados.TarefaId = codigoTarefa;
+                            verificacaoTipificacaoResultados.Chave = _verificacao.Chave;
+
+
+                            db.VTVerificacaoTipificacaoResultados.Add(verificacaoTipificacaoResultados);
+
+                        }
+                        else
+                        {
+                            //CARACTERISTICA TIPIFICACAO
+
+                            var idCaracteristicaTipificacaoTemp = model.VerificacaoTipificacaoResultados[i].CaracteristicaTipificacaoId;
+
+                            var obj = (from x in db.CaracteristicaTipificacao.AsNoTracking()
+                                       where x.cNrCaracteristica == idCaracteristicaTipificacaoTemp
+                                       select x).FirstOrDefault();
+
+                            var numeroCaracteristica = obj.cNrCaracteristica;
+                            numeroCaracteristica = numeroCaracteristica.Substring(0, 3);
+
+                            var codigoCaracteristica = (from x in db.CaracteristicaTipificacao.AsNoTracking()
+                                                        where x.cNrCaracteristica == numeroCaracteristica
+                                                        select x.nCdCaracteristica).FirstOrDefault();
+
+                            var codigoTarefa = (from x in db.VerificacaoTipificacaoTarefaIntegracao.AsNoTracking()
+                                                where x.CaracteristicaTipificacaoId == codigoCaracteristica
+                                                select x.TarefaId).FirstOrDefault();
+
+                            VTVerificacaoTipificacaoResultados verificacaoTipificacaoResultados = new VTVerificacaoTipificacaoResultados();
+                            verificacaoTipificacaoResultados.CaracteristicaTipificacaoId = Convert.ToInt32(model.VerificacaoTipificacaoResultados[i].CaracteristicaTipificacaoId);
+                            verificacaoTipificacaoResultados.TarefaId = codigoTarefa;
+                            verificacaoTipificacaoResultados.Chave = _verificacao.Chave;
+
+
+
+                            db.VTVerificacaoTipificacaoResultados.Add(verificacaoTipificacaoResultados);
+                        }
+
                     }
 
-                }
+                    //
+                    db.SaveChanges();
 
-                //
-                db.SaveChanges();
+                    //Consolidar resultados e tratamento de erro
+                    //_verificacao.Chave = "1245120170215";
 
-                //Consolidar resultados e tratamento de erro
-                //_verificacao.Chave = "1245120170215";
-                try
-                {
                     GetDadosGet(_verificacao.Chave, model);
-                }
-                catch (Exception e)
-                {
 
                 }
-
+            }
+            catch (Exception e)
+            {
+                return;
             }
         }
+
         public void connectionString(int parCompany_Id, ref string conexao, ref ParCompany company)
         {
             try
@@ -187,15 +188,15 @@ namespace SgqSystem.Controllers.Api
                     }
 
 
-                   
-                    if(parCompany != null)
+
+                    if (parCompany != null)
                     {
                         string porta = null;
 
-                         conexao = "data source=" + parCompany.IPServer + porta + ";initial catalog=" + parCompany.DBServer + ";persist security info=True;user id=" + _user + ";password=" + _password + ";";
+                        conexao = "data source=" + parCompany.IPServer + porta + ";initial catalog=" + parCompany.DBServer + ";persist security info=True;user id=" + _user + ";password=" + _password + ";";
                         company = parCompany;
                     }
-                }                   
+                }
             }
             catch (Exception ex)
             {
@@ -223,7 +224,7 @@ namespace SgqSystem.Controllers.Api
 
                 //se teste for sim, vai testar no ambiente de teste
 
-               
+
 
 
 
@@ -237,7 +238,7 @@ namespace SgqSystem.Controllers.Api
                                               select p).FirstOrDefault();
 
 
-                
+
 
                 if (verificacaoTipificacao == null)
                 {
@@ -409,12 +410,12 @@ namespace SgqSystem.Controllers.Api
                                         var ParLevel2_old = db2.ParLevel1
                                             .Join(db2.ParLevel3Level2Level1, p1 => p1.Id, p321 => p321.ParLevel1_Id, (p1, p321) => new { p1, p321 })
                                             .Join(db2.ParLevel3Level2, p321xp1 => p321xp1.p321.ParLevel3Level2_Id, p32 => p32.Id, (p321, p32) => new { p321, p32 })
-                                            .Join(db2.ParLevel2, p32xp1 => p32xp1.p321.p321.ParLevel3Level2_Id, p2 => p2.Id, (p32, p2) => new { p32, p2})
+                                            .Join(db2.ParLevel2, p32xp1 => p32xp1.p321.p321.ParLevel3Level2_Id, p2 => p2.Id, (p32, p2) => new { p32, p2 })
                                             .Select(x => new { x.p2 }).FirstOrDefault();
 
                                         var ParLevel2 = ParLevel2_old.p2;
 
-       
+
 
                                         //var ParLevel2 = (from p1 in db2.ParLevel1
                                         //                 join p321 in db2.ParLevel3Level2Level1 on p1.Id  equals p321.ParLevel1_Id
@@ -449,12 +450,12 @@ namespace SgqSystem.Controllers.Api
                                         SqlConnection dbService = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString);
                                         //dbService.Open();
 
-                                        
-                                        
+
+
 
                                         ///****trocar***//
-                                      
-                                        
+
+
                                         DateTime dataC = verificacaoTipificacao.DataHora;
 
 
@@ -481,7 +482,7 @@ namespace SgqSystem.Controllers.Api
                                         var consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(verificacaoTipificacao.UnidadeId, consolidationLevel1.Id, ParLevel2.Id);
                                         if (consolidationLevel2 == null)
                                         {
-                                            consolidationLevel2 = SgqSystem.InsertConsolidationLevel2(consolidationLevel1.Id, ParLevel2.Id, verificacaoTipificacao.UnidadeId, dataC,false,0);
+                                            consolidationLevel2 = SgqSystem.InsertConsolidationLevel2(consolidationLevel1.Id, ParLevel2.Id, verificacaoTipificacao.UnidadeId, dataC, false, 0);
                                             if (consolidationLevel2 == null)
                                             {
                                                 throw new Exception();
@@ -553,12 +554,12 @@ namespace SgqSystem.Controllers.Api
 
                                             bool conforme = true;
 
-                                            verificacaoTipificaoComparacao(company.CompanyNumber.ToString(), verificacaoTipificacao.DataHora.ToString("yyyyMMdd"), 
+                                            verificacaoTipificaoComparacao(company.CompanyNumber.ToString(), verificacaoTipificacao.DataHora.ToString("yyyyMMdd"),
                                                                            verificacaoTipificacao.Sequencial.ToString(), iBanda.ToString(), null,
                                                                            verificacaoTipificacao.UnidadeId.ToString(), "1", "1", conexao,
                                                                            varComparacao, ref conforme);
                                             int defectsL3 = 0;
-                                            if(conforme == false)
+                                            if (conforme == false)
                                             {
                                                 defectsL3++;
                                                 defectsL2++;
@@ -583,7 +584,7 @@ namespace SgqSystem.Controllers.Api
                                             result.WeiDefects = 0;
 
                                             db2.Result_Level3.Add(result);
-                                        
+
                                         }
                                         collectionLevel2.Defects = defectsL2;
                                         verificacaoTipificacao.Status = true;
