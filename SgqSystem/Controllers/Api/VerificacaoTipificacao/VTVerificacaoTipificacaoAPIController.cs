@@ -208,7 +208,7 @@ namespace SgqSystem.Controllers.Api
 
                 if (GlobalConfig.MockOn)
                 {
-                    queryString = "select * from verificacaoteste where nCdEmpresa=179 and iSequencial=2";
+                    queryString = "select * from verificacaoteste where nCdEmpresa="+ verificacaoTipificacao.UnidadeId + " and iSequencial="+ verificacaoTipificacao.Sequencial;
                     conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
                 }
 
