@@ -193,7 +193,7 @@ namespace Dominio.Services
 
             return parStructureGroupDTO;
         }
-
+        
         #endregion
     }
 }
