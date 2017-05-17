@@ -72,11 +72,20 @@
             //Regra para habilitar o botão de edição somente para quem contiver as roles 366 e 346
             var regraEdit = false;
 
-            if (RoleUser.indexOf("366") >= 0 || RoleUser.indexOf("346") >= 0) {
+            var roles = $.grep(getCookie('webControlCookie'), function (a, b) {
+                return a.indexOf('roles') != -1;
+            })[0].split('=')[1].split(',');
+
+            var role = roles.find(function(e) {
+                    return e === 'Admin';
+            });
+
+            if (RoleUser.indexOf("366") >= 0 || RoleUser.indexOf("346") >= 0 || role == 'Admin') {
                 regraEdit = true ;
             }else{
                 regraEdit = false;
             }
+
             //Fim Regra
 
             $('#divTable').show();
