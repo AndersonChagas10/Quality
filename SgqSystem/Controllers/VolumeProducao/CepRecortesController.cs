@@ -16,7 +16,6 @@ namespace SgqSystem.Controllers
     public class CepRecortesController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
-        private IObjectContextAdapter ctx;
 
         public int getNQA(string nivel, string tamanhoLote)
         {
