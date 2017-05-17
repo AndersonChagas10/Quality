@@ -30,6 +30,7 @@ namespace DTO
     public static class GlobalConfig
     {
 
+        public static string UrlUpdateTelaTablet { get; set; }
         public static string ParamsDisponiveis { get; set; }
        
         public static Dictionary<int, string> PaginaDoTablet { get; set; }
