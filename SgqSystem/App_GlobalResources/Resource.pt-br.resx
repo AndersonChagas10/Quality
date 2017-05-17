@@ -1959,4 +1959,7 @@
   <data name="alter_defaut_company_success" xml:space="preserve">
     <value>Empresa padrão alterada com sucesso</value>
   </data>
+  <data name="logout_confirm" xml:space="preserve">
+    <value>Você tem dados não sincronizados, deseja mesmo deslogar?</value>
+  </data>
 </root>

@@ -1980,4 +1980,7 @@
   <data name="alter_defaut_company_success" xml:space="preserve">
     <value>Default company changed successfully</value>
   </data>
+  <data name="logout_confirm" xml:space="preserve">
+    <value>Do you have unsynchronized data, do you really want to move?</value>
+  </data>
 </root>
