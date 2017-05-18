@@ -110,7 +110,7 @@ namespace Dominio.Services
 
                 /*Login Ytoara*/
                 if (GlobalConfig.Ytoara)
-                    isUser = CheckUserAndPassDataBase(userDto);
+                    isUser = LoginSgq(userDto, userByName);
 
                 if (isUser.IsNull())
                     throw new ExceptionHelper(mensagens.naoEncontrado);
@@ -128,6 +128,23 @@ namespace Dominio.Services
                 new CreateLog(e);
                 return new GenericReturn<UserDTO>(e, e.Message);
             }
+
+        }
+
+        public UserSgq LoginSgq(UserDTO userDto, UserSgq userByName)
+        {  
+
+            /*Descriptografa para comparar no AD*/
+            if (userByName != null)
+            {
+                var decripted = Guard.DecryptStringAES(userByName.Password);
+                if (userDto.Password != decripted)/*Senha esta criptografada*/
+                {
+                    userDto.Password = Guard.DecryptStringAES(userDto.Password);
+                }
+            }
+
+            return CheckUserAndPassDataBase(userDto);
 
         }
 

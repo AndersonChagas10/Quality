@@ -1,5 +1,6 @@
 ﻿using Dominio;
 using Dominio.Interfaces.Services;
+using DTO.ResultSet;
 using Helper;
 using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
@@ -150,7 +151,6 @@ namespace SgqSystem.Controllers
             TabelaDinamicaResultados tabela = MockTabelaVisaoGeralDaArea(true);
             return PartialView("VisaoGeralDaAreaTbl1", tabela);
         }
-
 
         /// <summary>
         /// Cria mock para tabela dinamica Visão Geral da área
@@ -378,44 +378,5 @@ namespace SgqSystem.Controllers
         }
 
     }
-
-    public class TabelaDinamicaResultados
-    {
-        public List<Trs> trsMeio { get; set; }
-
-        public List<Ths> trsCabecalho1 { get; set; }
-        public List<Ths> trsCabecalho2 { get; set; }
-        public List<Ths> trsCabecalho3 { get; set; }
-
-        public List<Trs> footer { get; set; }
-    }
-
-    public class Trs
-    {
-        public string name { get; set; }
-        public int coolspan { get; set; }
-
-        public List<Tds> tdsEsquerda { get; set; }
-        public List<Tds> tdsDireita { get; set; }
-    }
-
-    public class Tds
-    {
-        public string valor { get; set; }
-        public string click { get; set; }
-        public int coolspan { get; set; }
-    }
-
-    public class Ths
-    {
-        public string name { get; set; }
-        public int coolspan { get; set; }
-        public List<Ths> tds { get; set; }
-    }
-
-    //public class Footers
-    //{
-    //    public decimal valor { get; set; }
-    //}
 
 }

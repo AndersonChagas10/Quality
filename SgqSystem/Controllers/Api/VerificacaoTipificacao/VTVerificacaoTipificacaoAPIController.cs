@@ -33,10 +33,8 @@ namespace SgqSystem.Controllers.Api
             {
                 var verificacaoTipificacao = db.VTVerificacaoTipificacao.FirstOrDefault(r => r.Chave == _verificacao.Chave);
 
-                //Variavel para atribuir data correta na verificãção da tipificação
                 DateTime dataHoraTipificacao = _verificacao.DataHora;
 
-                //Caso exista uma verificação da tipidicação a mesma será removida, mantando somente a data para atribuir na nova verificação que será criada
                 if (verificacaoTipificacao != null)
                 {
                     //Atribui a data da verificação que for encontrada
@@ -48,24 +46,9 @@ namespace SgqSystem.Controllers.Api
 
                     string queryValidacaoVDelete1 = "DELETE FROM VTVerificacaoTipificacao WHERE id='" + verificacaoTipificacao.Id + "'";
                     int noOfRowDeleted1 = db.Database.ExecuteSqlCommand(queryValidacaoVDelete1);
-
-                    ////Busca todos os resultados referente a verificação localizada
-                    //var resultados = db.VTVerificacaoTipificacaoResultados.Where(p => p.Chave == verificacaoTipificacao.Chave).ToList();
-                    ////Deleta os resultados da verificaçao
-                    //foreach (var r in resultados)
-                    //{
-                    //    db.VTVerificacaoTipificacaoResultados.Remove(r);
-                    //}
-                    //db.SaveChanges();
-
-                    //Deleta a Verificação
-                    //db.VTVerificacaoTipificacao.Remove(verificacaoTipificacao);
-                    //db.SaveChanges();
+                    
 
                 }
-
-
-                //instanciamos um novo objeto na verificacao da tipificacao
                 verificacaoTipificacao = new VTVerificacaoTipificacao();
 
                 verificacaoTipificacao.Sequencial = _verificacao.Sequencial;
@@ -76,17 +59,13 @@ namespace SgqSystem.Controllers.Api
                 verificacaoTipificacao.Status = false;
                 verificacaoTipificacao.EvaluationNumber = _verificacao.EvaluationNumber;
                 verificacaoTipificacao.Sample = _verificacao.Sample;
-
-                //gravamos o objeto no banco
+                
                 db.VTVerificacaoTipificacao.Add(verificacaoTipificacao);
 
                 for (var i = 0; i < model.VerificacaoTipificacaoResultados.Count; i++)
                 {
                     if (model.VerificacaoTipificacaoResultados[i].CaracteristicaTipificacaoId == "null")
                     {
-                        //PEGA ID DA AREA PARTICIPANTES
-                        // var aa = model.VerificacaoTipificacaoResultados[i].AreasParticipantesId.GetValueOrDefault().ToString();
-
                         string aId = model.VerificacaoTipificacaoResultados[i].AreasParticipantesId;
 
                         var AreaParticObj = (from x in db.AreasParticipantes.AsNoTracking()
@@ -117,8 +96,6 @@ namespace SgqSystem.Controllers.Api
                     }
                     else
                     {
-                        //CARACTERISTICA TIPIFICACAO
-
                         var idCaracteristicaTipificacaoTemp = model.VerificacaoTipificacaoResultados[i].CaracteristicaTipificacaoId;
 
                         var obj = (from x in db.CaracteristicaTipificacao.AsNoTracking()
@@ -147,12 +124,9 @@ namespace SgqSystem.Controllers.Api
                     }
 
                 }
-
-                //
+                
                 db.SaveChanges();
-
-                //Consolidar resultados e tratamento de erro
-                //_verificacao.Chave = "1245120170215";
+                
                 try
                 {
                     GetDadosGet(_verificacao.Chave, model);
@@ -208,52 +182,21 @@ namespace SgqSystem.Controllers.Api
         public System.Web.Mvc.JsonResult GetDadosGet(string verificacaoTipificacaoChave, TipificacaoViewModel model)//codigo só pra teste
         {
 
-            //problemas que podem ocorrer
-
-            //se a tabela resultados já tiver resultados, vai duplicar na hora de trazer a comparacao
-            //o idel é migrar os valores antigos da tabela de verficacaotipificacaocomparacao NumCaracteristica
-            //verificar se o registro foi sincronizado e nao deu time out
-
-
-
-
-            using (var db = new SGQ_GlobalEntities())
+            var db = new SGQ_GlobalEntities();
+            using (db)
             {
-                //teste do token é a validação para entrar na verificação de tipificação
-
-                //se teste for sim, vai testar no ambiente de teste
-
-               
-
-
-
-
-
-                //Verifica se existe na VerificacaoTipificacao uma verificação com a chave informada no parametro do WebService.
-
-                //confirmar se a funcionalidade do statuus da Verificacao é para informar se tem ou nao verificacao.
                 var verificacaoTipificacao = (from p in db.VTVerificacaoTipificacao
                                               where p.Chave == verificacaoTipificacaoChave
                                               select p).FirstOrDefault();
-
-
                 
-
                 if (verificacaoTipificacao == null)
                 {
-
-
-                    //mensagem de erro que ñão existe
                     return null;
                 }
-
-                // var VerificacaoTipificacao = db.VerificacaoTipificacao.Where(v => v.Chave == verificacaoTipificacaoChave).FirstOrDefault();
                 verificacaoTipificacao.Status = false;
 
-                //Instanciamos a variável existeComparacao para verificar se existe comparação no no sistema.
                 bool existeComparacao = false;
 
-                //Instanciamos a variável excluirVerificacaoAntiga para verificar se existe alguma verificação na tabela VerificacaoTipificacaoValidacao.
                 bool excluirVerificacaoAntiga = false;
 
                 string conexao = null;
@@ -261,13 +204,11 @@ namespace SgqSystem.Controllers.Api
 
                 connectionString(verificacaoTipificacao.UnidadeId, ref conexao, ref company);
 
-                // Query String para verificação das Caracteristicas da tipificação
                 string queryString = "exec FBED_GRTTipificacaoCaracteristica " + company.CompanyNumber + ", '" + verificacaoTipificacao.DataHora.ToString("yyyyMMdd") + "', " + verificacaoTipificacao.Sequencial;
 
                 if (GlobalConfig.MockOn)
                 {
-                    /*ATENÇÃO MOCK DE TESTES*/
-                    queryString = "select * from verificacaoteste where   nCdEmpresa = 202  and iSequencial = 2";
+                    queryString = "select * from verificacaoteste where nCdEmpresa="+ verificacaoTipificacao.UnidadeId + " and iSequencial="+ verificacaoTipificacao.Sequencial;
                     conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
                 }
 
@@ -291,20 +232,9 @@ namespace SgqSystem.Controllers.Api
 
                             queryZeroToNull = "UPDATE VTVerificacaoTipificacaoResultados SET CaracteristicaTipificacaoId = NULL WHERE CaracteristicaTipificacaoId='0'";
                             noOfRowDeleted0 = db.Database.ExecuteSqlCommand(queryZeroToNull);
-
-
-
-                            //A comparação pode vir a partir do banco de dados (Identificadores).
-                            //São os dados que serão comparadors para incluir na tabela de tipificação.
-
-                            //string[] comparacao = { "<IDADE>", "<SEXO>", "<GORDURA>", "<CONTUSAO>", "<FALHAOP>" };
-
+                            
                             string[] comparacao = { "<IDADE>", "<SEXO>", "<GORDURA>", "<CONTUSAO>", "<FALHAOP>" };
-
-                            //Intanciamos iSequencial e iBanda fora do do while pois utilizamos a informação em outros métodos.
-
-
-
+                            
                             while (reader.Read())
                             {
 
@@ -319,51 +249,22 @@ namespace SgqSystem.Controllers.Api
                                     string cIdentificadorTipificacao = reader[5].ToString();
                                     int nCdCaracteristicaTipificacao = Convert.ToInt32(reader[6].ToString());
 
-                                    //Entramos apenas uma vez no bloco de código abaixo para verificação de exclusão.
                                     if (excluirVerificacaoAntiga == false)
                                     {
-                                        //Exclui qualquer Verificação Tipificação registrado para a empresa informada na data informado e com o sequencial informado.
-                                        //por padrão o sequencial deve ser um campo unico para a empresa na data informada.
-                                        //Chamamos o método ExcluiVerificacaoTipificacaoValidacao dentro do while, pois o valor iSequencial é recuperado somente no DataReader
-                                        ///podemos informar o iSequencial no parametro e não seria necessário entrar na estrutuda de decisão para excluir a verificação
-                                        ///a mesma poderia ser excluida no inicio do WebService
-                                        ///
-
-
-
-                                        //var VerificacaoTipificacaoValidacaoExiste = (from p in db.VerificacaoTipificacaoValidacao
-                                        //                                             where p.nCdEmpresa == nCdEmpresa && p.dMovimento == dMovimento.Date && p.iSequencial == iSequencial
-                                        //                                             select p);
-
-                                        //if (VerificacaoTipificacaoValidacaoExiste != null)
-                                        //{
-                                        //    db.VerificacaoTipificacaoValidacao.Remove(VerificacaoTipificacaoValidacaoExiste);
-                                        //    db.SaveChanges();
-                                        //}
-                                        //podemos excluir resultados e tbm
-                                        //deleta validacao
                                         string queryValidacaoVDelete = "DELETE FROM VTVerificacaoTipificacaoValidacao WHERE nCdEmpresa='" + nCdEmpresa + "' AND CAST(dMovimento AS DATE) ='" + dMovimento.ToString("yyyy-MM-dd 00:00:00") + "' AND iSequencial='" + iSequencial + "' AND iBanda='" + iBanda + "'";
                                         int noOfRowDeleted = db.Database.ExecuteSqlCommand(queryValidacaoVDelete);
-
-
-                                        //deleta validacao de comparacao
+                                        
                                         string queryValidacaoCDelete = "DELETE FROM VTVerificacaoTipificacaoComparacao WHERE nCdEmpresa='" + nCdEmpresa + "' AND CAST(DataHora AS DATE) = '" + dMovimento.ToString("yyyy-MM-dd 00:00:00") + "' AND Sequencial='" + iSequencial + "' AND Banda='" + iBanda + "'";
                                         noOfRowDeleted = db.Database.ExecuteSqlCommand(queryValidacaoCDelete);
-                                        //if (ExcluiVerificacaoTipificacaoValidacao(nCdEmpresa, dMovimento, iSequencial) == false)
-                                        //{
-                                        //    return Json("{mensagem:'Existe uma verificação para este sequencial!'}", JsonRequestBehavior.AllowGet);
-                                        //}
+                                        
                                         excluirVerificacaoAntiga = true;
-                                        //Após a primeira verificação definimos o valor da variável excluirVerificacaoAntiga para true, pois sua utilização é necessária apenas uma vez.
-
+                                        
                                     }
 
-                                    //Se existir o valor da comparacao na matriz de comparação então iremos adicionar um registro na tabela VerificacaoTipificacaoValidacao
                                     if (MatrizStrinComparacao(comparacao, cIdentificadorTipificacao) == true)
                                     {
-                                        //se existir comparação incluiremos na tabela VerificacaoTipificacaoValidacao os valores que serão comparados a partir da tabela do cliente
                                         existeComparacao = true;
-                                        //Informamos na tabela verificação que o status da verificação é verdadeiro
+
                                         verificacaoTipificacao.Status = true;
                                         //Instanciamos um novo objeto da tabela VerificacaoTipificacaoValidacao
                                         var VerificacaoTipificacaoValidacao = new VTVerificacaoTipificacaoValidacao();
@@ -389,10 +290,6 @@ namespace SgqSystem.Controllers.Api
                             }
                             else
                             {
-                                //db.SaveChanges();
-                                //tratamento de erro, como fica?
-                                //Verifica se a comparação entre a tabela Verificação Comparação Resultados está conforme a tabela Verificação Tipificação Validacao
-                                //
                                 try
                                 {
 
@@ -412,22 +309,9 @@ namespace SgqSystem.Controllers.Api
                                                    join p2 in db2.ParLevel2 on p32.ParLevel2_Id equals p2.Id
                                                     where p1.Id == ParLevel1.Id
                                                     select new { p2 }).FirstOrDefault();
-                                        /*var ParLevel2_old = db2.ParLevel1
-                                            .Join(db2.ParLevel3Level2Level1, p1 => p1.Id, p321 => p321.ParLevel1_Id, (p1, p321) => new { p1, p321 })
-                                            .Join(db2.ParLevel3Level2, p321xp1 => p321xp1.p321.ParLevel3Level2_Id, p32 => p32.Id, (p321, p32) => new { p321, p32 })
-                                            .Join(db2.ParLevel2, p32xp1 => p32xp1.p32.ParLevel2_Id, p2 => p2.Id, (p32, p2) => new { p32, p2 }).Select(x => new { x.p2 }).FirstOrDefault();
-                                            */
+                                       
                                         var ParLevel2 = ParLevel2_old.p2;
-
-       
-
-                                        //var ParLevel2 = (from p1 in db2.ParLevel1
-                                        //                 join p321 in db2.ParLevel3Level2Level1 on p1.Id  equals p321.ParLevel1_Id
-                                        //                 join p32  in db2.ParLevel3Level2       on p32.Id equals p321.ParLevel3Level2_Id
-                                        //                 join p2   in db2.ParLevel2             on p2.Id  equals p32.ParLevel2_Id
-                                        //                 where p1.Id == ParLevel1.Id
-                                        //                 select p2).FirstOrDefault();
-
+                                        
                                         var collectionLevel2 = (from p in db2.CollectionLevel2
                                                                 where p.Key == verificacaoTipificacaoChave
                                                                 select p).FirstOrDefault();
@@ -452,19 +336,9 @@ namespace SgqSystem.Controllers.Api
                                         var SgqSystem = new SgqSystem.Services.SyncServices();
 
                                         SqlConnection dbService = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString);
-                                        //dbService.Open();
-
-                                        
-                                        
-
-                                        ///****trocar***//
-                                      
                                         
                                         DateTime dataC = verificacaoTipificacao.DataHora;
-
-
-                                        //var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(verificacaoTipificacao.UnidadeId, ParLevel1.Id, dataC);
-
+                                        
                                         string sql = "SELECT * FROM ConsolidationLevel1 WHERE UnitId = '" + verificacaoTipificacao.UnidadeId + "' AND ParLevel1_Id= '" + ParLevel1.Id + "' AND CONVERT(date, ConsolidationDate) = '" + dataC.ToString("yyyy-MM-dd") + "'";
 
                                         var consolidationLevel1 = dbService.Query<SGQDBContext.ConsolidationLevel1>(sql).FirstOrDefault();
@@ -480,9 +354,7 @@ namespace SgqSystem.Controllers.Api
                                                 throw new Exception();
                                             }
                                         }
-
-                                        //******Trocar
-
+                                        
                                         var consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(verificacaoTipificacao.UnidadeId, consolidationLevel1.Id, ParLevel2.Id);
                                         if (consolidationLevel2 == null)
                                         {
@@ -496,9 +368,7 @@ namespace SgqSystem.Controllers.Api
                                         collectionLevel2 = new CollectionLevel2();
 
                                         collectionLevel2.Key = verificacaoTipificacaoChave;
-
-
-                                        ///////************TROCAR**************/////////////
+                                        
                                         collectionLevel2.ConsolidationLevel2_Id = consolidationLevel2.Id;
                                         collectionLevel2.ParLevel1_Id = ParLevel1.Id;
                                         collectionLevel2.ParLevel2_Id = ParLevel2.Id;
@@ -525,6 +395,7 @@ namespace SgqSystem.Controllers.Api
                                         collectionLevel2.Sequential = iSequencial;
                                         collectionLevel2.Side = iBanda;
 
+
                                         db2.CollectionLevel2.Add(collectionLevel2);
                                         db2.SaveChanges();
 
@@ -535,18 +406,14 @@ namespace SgqSystem.Controllers.Api
 
                                         for (var i = 0; i < ArrayComparacao.Length; i++)
                                         {
+                                            
 
-                                            string[] varComparacao = new string[1];
-
-                                            varComparacao[0] = ArrayComparacao[i];
-
-                                            string comparacaoToString = ArrayComparacao[i];
-
+                                            string caracteristica = ArrayComparacao[i];
 
                                             var resultIdTarefa = (from x in db.VerificacaoTipificacaoTarefaIntegracao
                                                                   join y in db.CaracteristicaTipificacao
                                                                   on x.CaracteristicaTipificacaoId equals y.nCdCaracteristica
-                                                                  where y.cIdentificador.Equals(comparacaoToString)
+                                                                  where y.cIdentificador.Equals(caracteristica)
                                                                   select x).FirstOrDefault().TarefaId;
 
                                             var ParLevel3 = (from p in ParLevel3List
@@ -561,7 +428,7 @@ namespace SgqSystem.Controllers.Api
                                             verificacaoTipificaoComparacao(company.CompanyNumber.ToString(), verificacaoTipificacao.DataHora.ToString("yyyyMMdd"), 
                                                                            verificacaoTipificacao.Sequencial.ToString(), iBanda.ToString(), null,
                                                                            verificacaoTipificacao.UnidadeId.ToString(), "1", "1", conexao,
-                                                                           varComparacao, ref conforme);
+                                                                           caracteristica, ref conforme);
                                             int defectsL3 = 0;
                                             if(conforme == false)
                                             {
@@ -583,28 +450,66 @@ namespace SgqSystem.Controllers.Api
                                             result.IsNotEvaluate = false;
                                             result.Defects = defectsL3;
                                             result.PunishmentValue = 0;
-                                            result.WeiEvaluation = 0;
+                                            result.WeiEvaluation = ParLevel2.ParLevel3Level2.Where(x => x.ParLevel3_Id == ParLevel3.Id).FirstOrDefault().Weight;
                                             result.Evaluation = 1;
-                                            result.WeiDefects = 0;
+                                            result.WeiDefects = ParLevel2.ParLevel3Level2.Where(x => x.ParLevel3_Id == ParLevel3.Id).FirstOrDefault().Weight * defectsL3;
 
                                             db2.Result_Level3.Add(result);
-                                        
+                                            db2.SaveChanges();
+
                                         }
+
                                         collectionLevel2.Defects = defectsL2;
+
+                                        //campos faltando
+                                        collectionLevel2.ParFrequency_Id = ParLevel1.ParFrequency_Id;                                   
+                                        collectionLevel2.TotalLevel3Evaluation = 1;
+                                        collectionLevel2.LastEvaluationAlert = 0;
+                                        collectionLevel2.EvaluatedResult = 1;
+
+                                        collectionLevel2.TotalLevel3WithDefects = 0;
+                                        collectionLevel2.DefectsResult = 0;
+
+                                        collectionLevel2.WeiEvaluation = (from p in db2.Result_Level3
+                                                                          where p.CollectionLevel2_Id == collectionLevel2.Id
+                                                                          select p).Sum(p => p.WeiEvaluation); //peso  
+
+                                        if(collectionLevel2.WeiEvaluation == null)
+                                        {
+                                            collectionLevel2.WeiEvaluation = 0;
+                                        }
+
+                                        collectionLevel2.WeiDefects = (from p in db2.Result_Level3
+                                                                          where p.CollectionLevel2_Id == collectionLevel2.Id
+                                                                          select p).Sum(p => p.WeiDefects); //se tiver defeitos = peso , senao 0 
+
+                                        if (collectionLevel2.WeiDefects == null)
+                                        {
+                                            collectionLevel2.WeiDefects = 0;
+                                        }
+
+                                        if ((from p in db2.Result_Level3
+                                         where p.CollectionLevel2_Id == collectionLevel2.Id
+                                         && p.Defects > 0
+                                            select p).ToList().Count() > 0)
+                                        {
+                                            collectionLevel2.DefectsResult = 1;//se tiver defeitos = 1 , senao 0
+                                            collectionLevel2.TotalLevel3WithDefects = 1; //se tiver defeitos = 1 , senao 0
+                                        }
+
+                                        collectionLevel2.IsEmptyLevel3 = false;
+                                        collectionLevel2.LastLevel2Alert = 0;
+                                        collectionLevel2.ReauditLevel = 0;
+                                        collectionLevel2.StartPhaseEvaluation = 0;
+                                        collectionLevel2.CounterDonePhase = 0;
+
                                         verificacaoTipificacao.Status = true;
                                         db2.SaveChanges();
                                         db.SaveChanges();
-
-
-
-
+                                        
                                     }
-
-
-
-
+                                    
                                     return null;
-                                    //mensagem de confirmacao
 
                                 }
                                 catch (Exception ex)
@@ -661,48 +566,27 @@ namespace SgqSystem.Controllers.Api
             }
             return false;
         }
-        public bool verificacaoTipificaoComparacao(string unidadeCodigo, string data, string sequencial, string banda, Unidades unidades,
+        public void verificacaoTipificaoComparacao(string unidadeCodigo, string data, string sequencial, string banda, Unidades unidades,
                                                    string empresaId, string departamentoId, string tarefaIdm, string conexao,
-                                                   string[] varComparacao, ref bool comparacaoResultado)
+                                                   string caracteristica, ref bool conforme)
         {
+            string first = "";
+            string second = "";
+            string queryVFResultado = "SELECT C.nCdCaracteristica FROM VTVerificacaoTipificacaoResultados R                                 " +
+                            "INNER JOIN VTVerificacaoTipificacao V ON V.Chave = R.Chave                                                     " +
+                            "LEFT JOIN CaracteristicaTipificacao C on C.cNrCaracteristica = R.CaracteristicaTipificacaoId                   " +
+                            "WHERE                                                                                                          " +
+                            "V.UnidadeId = "+ empresaId + " AND CAST(V.datahora AS DATE) = CAST('"+ data + "' AS DATE)                                        " +
+                            "AND Sequencial = '"+ sequencial + "' AND Banda = '" + banda + "' AND cIdentificador = '" + caracteristica + "' order by C.nCdCaracteristica;  ";
 
-            //melhorar tabela de comparacao
-            //criar valorSGQ, valorJBS, nCdEmpresa
+            string queryVFValidacao = "SELECT V.nCdCaracteristicaTipificacao FROM VTVerificacaoTipificacaoValidacao V WHERE                 " +
+                            "V.nCdEmpresa = "+ unidadeCodigo + " AND CAST(V.dMovimento AS DATE) = CAST('"+ data + "' AS DATE)                                   " +
+                            "AND iSequencial = '" + sequencial + "' AND iBanda = '"+ banda + "' AND cIdentificadorTipificacao = '" + caracteristica + "'                " +
+                            "ORDER BY V.nCdCaracteristicaTipificacao;";
 
-            //Instanciamos uma variável conforme partindo do principicio que a verificação está conforme
-            bool conforme = true;
-
-            //Criamos uma variável de comparação unica para comparar os parametros unicos da tabela
-            string[] comparacaoUnica = { "<IDADE>", "<SEXO>", "<GORDURA>" };
-
-            //string[] comparacaoRESULTADO = { "<IDADE>", "<SEXO>", "<GORDURA>", "<CONTUSAO>" };
-
-            string[] comparacaoRESULTADO = varComparacao;
-
-
-            string queryString = "(SELECT 'VTR', U.CODIGO nCdEmpresa, VT.DATAHORA dMovimento, VT.SEQUENCIAL iSequencial, VT.BANDA iBanda, CT.nCdCaracteristica cNrCaracteristica, CT.cIdentificador, VTV.nCdCaracteristicaTipificacao " +
-                                "FROM VTVERIFICACAOTIPIFICACAO VT " +
-                                "INNER JOIN UNIDADES U ON U.ID = VT.UNIDADEID " +
-                                "INNER JOIN VTVERIFICACAOTIPIFICACAOresultados VTR ON VTR.CHAVE = VT.CHAVE " +
-                                //Trocamos nCdCaracteristica para cNrCaracteristica
-                                "INNER JOIN CaracteristicaTipificacao CT ON VTR.CARACTERISTICATIPIFICACAOID=CT.cNrCaracteristica " +
-                                //"INNER JOIN CaracteristicaTipificacao CT ON VTR.CARACTERISTICATIPIFICACAOID=CT.cNrCaracteristica " +
-                                //"LEFT JOIN VTVerificacaoTipificacaoValidacao VTV ON VTV.nCdEmpresa=U.CODIGO AND CAST(VTV.dMovimento AS DATE) = CAST(VT.datahora AS DATE) AND VTV.iSequencial=VT.SEQUENCIAL AND VTV.IBANDA=VT.BANDA AND VTV.nCdCaracteristicaTipificacao=VTR.CARACTERISTICATIPIFICACAOID " +
-                                "LEFT JOIN VTVerificacaoTipificacaoValidacao VTV ON VTV.nCdEmpresa=U.CODIGO AND CAST(VTV.dMovimento AS DATE) = CAST(VT.datahora AS DATE) AND VTV.iSequencial=VT.SEQUENCIAL AND VTV.IBANDA=VT.BANDA AND VTV.nCdCaracteristicaTipificacao=CT.nCdCaracteristica " +
-                                "WHERE U.CODIGO='" + unidadeCodigo + "' AND CAST(VT.datahora AS DATE) = CAST('" + data + "' AS DATE) AND VT.sequencial='" + sequencial + "' AND VT.Banda='" + banda + "')" +
-                                "UNION ALL " +
-                                "(SELECT 'VTV', VTV.nCdEmpresa, VTV.dMovimento, VTV.iSequencial, VTV.iBanda, CT.nCdCaracteristica, VTV.cIdentificadorTipificacao, VTV.nCdCaracteristicaTipificacao " +
-                                "FROM VTVerificacaoTipificacaoValidacao VTV " +
-                                "INNER JOIN UNIDADES U ON U.CODIGO = VTV.nCdEmpresa " +
-                                "INNER JOIN VTVERIFICACAOTIPIFICACAO VT ON VT.UnidadeId=U.ID AND VT.Sequencial=VTV.iSequencial AND VT.Banda=VTV.iBanda AND CAST(VT.DataHora AS DATE) = CAST(VTV.dMovimento AS DATE)  LEFT JOIN " +
-                                "CaracteristicaTipificacao CT ON VTV.nCdCaracteristicaTipificacao = CT.nCdCaracteristica LEFT OUTER JOIN " +
-                                "VTVerificacaoTipificacaoResultados AS VTR ON VTR.Chave = VT.Chave AND VTR.CaracteristicaTipificacaoId = CT.cNrCaracteristica " +
-                                "WHERE VTV.nCdEmpresa='" + unidadeCodigo + "' AND CAST(VTV.dMovimento AS DATE) = CAST('" + data + "' AS DATE) AND VTV.iSequencial='" + sequencial + "' AND VTV.iBanda='" + banda + "') ";
-
-            //utiliza transacao para excluir e incluir os itens
             using (SqlConnection connection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString))
             {
-                SqlCommand command = new SqlCommand(queryString, connection);
+                SqlCommand command = new SqlCommand(queryVFResultado, connection);
 
                 try
                 {
@@ -710,101 +594,176 @@ namespace SgqSystem.Controllers.Api
 
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        //Instanciamos uma classe do Objeto de Comparacao
-                        List<ResultadoComparacaoValidacao> comparacao = new List<ResultadoComparacaoValidacao>();
-
                         while (reader.Read())
                         {
                             //Comparamos a caracteristica das duas tabelasd
-                            string idCaracteristicaTipificacaoVTResultados = reader[5].ToString();
-                            string labelCaracteristica = reader[6].ToString();
-                            string idCaracteristicaTipificacaoVTValidacao = reader[7].ToString();
-
-                            //Se as caracteristicas forem diferentes o resultado da verificação é não conforme
-                            if (idCaracteristicaTipificacaoVTResultados != idCaracteristicaTipificacaoVTValidacao && MatrizStrinComparacao(comparacaoRESULTADO, labelCaracteristica))
-                            {
-                                conforme = false;
-                                //Incluimos o resultado na tabela de comparação
-                                comparacao.Add(
-                                          new ResultadoComparacaoValidacao()
-                                          {
-
-                                              localTabela = reader[0].ToString(),
-                                              nCadEmpresa = reader[1].ToString(),
-                                              dataMovimento = Convert.ToDateTime(reader[2].ToString()),
-                                              iSequencial = Convert.ToInt32(reader[3].ToString()),
-                                              iBanda = Convert.ToInt32(reader[4].ToString()),
-                                              idCaracteristicaVTR = reader[5].ToString(),
-                                              identificadorLabel = reader[6].ToString(),
-                                              idCaracteristicaVTV = reader[7].ToString()
-
-                                          });
-                            }
+                            first += reader[0].ToString() + ",";
 
                         }
-                        //Se existe resultados não conformes
-                        if (conforme == false)
-                        {
-                            //Separamos os resultados que estão na tabela VERIFICACAOTIPIFICACAOresultados
-                            var valoresVTR = (from p in comparacao
-                                              where p.localTabela == "VTR"
-                                              select p).ToList();
-
-                            //separamos os resultados que estão na tabela VerificacaoTipificacaoValidacao
-                            var valoresVTV = (from p in comparacao
-                                              where p.localTabela == "VTV"
-                                              select p).ToList();
-
-                            //Varremos a tabela de resultados para comparar os valores da Matriz comparacaoUnica com a tabela de validação
-                            foreach (var p in valoresVTR)
-                            {
-                                //Se o resultado da for uma comparação Única
-                                if (MatrizStrinComparacao(comparacaoUnica, p.identificadorLabel) == true)
-                                {
-                                    //Verificamos se existe a caracteristica na tabela de validação
-                                    var valorComparacaoVTV = (from pV in valoresVTV
-                                                              where pV.identificadorLabel == p.identificadorLabel
-                                                              select pV).FirstOrDefault();
-
-                                    //Se a caracteristica existir
-                                    if (valorComparacaoVTV != null)
-                                    {
-                                        //Atualizamos o valor do valor da verificação validação na tabela resultados com o valor da verificação na tabela caracteristica
-                                        p.idCaracteristicaVTV = valorComparacaoVTV.idCaracteristicaVTV;
-                                        //reovemos o valor da tabela de validação
-                                        valoresVTV.Remove(valorComparacaoVTV);
-
-                                        //teste de desempenho para verificamos se podemos deixar as informações na tabela de comparação ao inves de dividir em 2 objetos
-                                        //comparacao.Remove(valorComparacaoVTV);
-                                    }
-                                }
-                                //Incluimos o Valor dos resultados na tabela VerificacaoTipificacaoComparacao
-                                VerificacaoTipificacaoComparacaoAdicionar(unidadeCodigo, sequencial, banda, p.identificadorLabel, p.dataMovimento.ToString(), p.idCaracteristicaVTR, p.idCaracteristicaVTV);
-                            }
-
-                            //Verificamos se ainda existem valores da tabela VerificacaoTipificacaoValidacao que não foram comparados
-                            foreach (var p in valoresVTV)
-                            {
-                                //Incluimos os Valores da Tipificação na tabela VerificacaoTipificacaoComparacao 
-                                VerificacaoTipificacaoComparacaoAdicionar(unidadeCodigo, sequencial, banda, p.identificadorLabel, p.dataMovimento.ToString(), p.idCaracteristicaVTR, p.idCaracteristicaVTV);
-                            }
-                        }
-
-                        comparacaoResultado = conforme;
-                        //retornamos o valor para tabela de resultados
-                        return conforme;
                     }
+                    connection.Close();
                 }
                 catch (Exception ex)
                 {
-                    //string t = ex.ToString();
-                    //mensagemErro = ex.Message;
-                    //return false;
-                    //RETORNAR O ERRO
-                    //mensagemErro = Json(t, JsonRequestBehavior.AllowGet);
+                    connection.Close();
+                    throw ex;
+                }
+
+                command = new SqlCommand(queryVFValidacao, connection);
+
+                try
+                {
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            //Comparamos a caracteristica das duas tabelasd
+                            second += reader[0].ToString() + ",";
+
+                        }
+                    }
+                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    connection.Close();
                     throw ex;
                 }
             }
+
+            if (first != second)
+                conforme = false;
+            
+            //string queryString = "(SELECT 'VTR', U.CODIGO nCdEmpresa, VT.DATAHORA dMovimento, VT.SEQUENCIAL iSequencial, VT.BANDA iBanda, CT.nCdCaracteristica cNrCaracteristica, CT.cIdentificador, VTV.nCdCaracteristicaTipificacao " +
+            //                    "FROM VTVERIFICACAOTIPIFICACAO VT " +
+            //                    "INNER JOIN UNIDADES U ON U.ID = VT.UNIDADEID " +
+            //                    "INNER JOIN VTVERIFICACAOTIPIFICACAOresultados VTR ON VTR.CHAVE = VT.CHAVE " +
+            //                    //Trocamos nCdCaracteristica para cNrCaracteristica
+            //                    "INNER JOIN CaracteristicaTipificacao CT ON VTR.CARACTERISTICATIPIFICACAOID=CT.cNrCaracteristica " +
+            //                    //"INNER JOIN CaracteristicaTipificacao CT ON VTR.CARACTERISTICATIPIFICACAOID=CT.cNrCaracteristica " +
+            //                    //"LEFT JOIN VTVerificacaoTipificacaoValidacao VTV ON VTV.nCdEmpresa=U.CODIGO AND CAST(VTV.dMovimento AS DATE) = CAST(VT.datahora AS DATE) AND VTV.iSequencial=VT.SEQUENCIAL AND VTV.IBANDA=VT.BANDA AND VTV.nCdCaracteristicaTipificacao=VTR.CARACTERISTICATIPIFICACAOID " +
+            //                    "LEFT JOIN VTVerificacaoTipificacaoValidacao VTV ON VTV.nCdEmpresa=U.CODIGO AND CAST(VTV.dMovimento AS DATE) = CAST(VT.datahora AS DATE) AND VTV.iSequencial=VT.SEQUENCIAL AND VTV.IBANDA=VT.BANDA AND VTV.nCdCaracteristicaTipificacao=CT.nCdCaracteristica " +
+            //                    "WHERE U.CODIGO='" + unidadeCodigo + "' AND CAST(VT.datahora AS DATE) = CAST('" + data + "' AS DATE) AND VT.sequencial='" + sequencial + "' AND VT.Banda='" + banda + "')" +
+            //                    "UNION ALL " +
+            //                    "(SELECT 'VTV', VTV.nCdEmpresa, VTV.dMovimento, VTV.iSequencial, VTV.iBanda, CT.nCdCaracteristica, VTV.cIdentificadorTipificacao, VTV.nCdCaracteristicaTipificacao " +
+            //                    "FROM VTVerificacaoTipificacaoValidacao VTV " +
+            //                    "INNER JOIN UNIDADES U ON U.CODIGO = VTV.nCdEmpresa " +
+            //                    "INNER JOIN VTVERIFICACAOTIPIFICACAO VT ON VT.UnidadeId=U.ID AND VT.Sequencial=VTV.iSequencial AND VT.Banda=VTV.iBanda AND CAST(VT.DataHora AS DATE) = CAST(VTV.dMovimento AS DATE)  LEFT JOIN " +
+            //                    "CaracteristicaTipificacao CT ON VTV.nCdCaracteristicaTipificacao = CT.nCdCaracteristica LEFT OUTER JOIN " +
+            //                    "VTVerificacaoTipificacaoResultados AS VTR ON VTR.Chave = VT.Chave AND VTR.CaracteristicaTipificacaoId = CT.cNrCaracteristica " +
+            //                    "WHERE VTV.nCdEmpresa='" + unidadeCodigo + "' AND CAST(VTV.dMovimento AS DATE) = CAST('" + data + "' AS DATE) AND VTV.iSequencial='" + sequencial + "' AND VTV.iBanda='" + banda + "') ";
+
+            //utiliza transacao para excluir e incluir os itens
+            //using (SqlConnection connection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString))
+            //{
+            //    SqlCommand command = new SqlCommand(queryString, connection);
+
+            //    try
+            //    {
+            //        connection.Open();
+
+            //        using (SqlDataReader reader = command.ExecuteReader())
+            //        {
+            //            //Instanciamos uma classe do Objeto de Comparacao
+            //            List<ResultadoComparacaoValidacao> comparacao = new List<ResultadoComparacaoValidacao>();
+
+            //            while (reader.Read())
+            //            {
+            //                //Comparamos a caracteristica das duas tabelasd
+            //                string idCaracteristicaTipificacaoVTResultados = reader[5].ToString();
+            //                string labelCaracteristica = reader[6].ToString();
+            //                string idCaracteristicaTipificacaoVTValidacao = reader[7].ToString();
+
+            //                //Se as caracteristicas forem diferentes o resultado da verificação é não conforme
+            //                if (idCaracteristicaTipificacaoVTResultados != idCaracteristicaTipificacaoVTValidacao && MatrizStrinComparacao(comparacaoRESULTADO, labelCaracteristica))
+            //                {
+            //                    conforme = false;
+            //                    //Incluimos o resultado na tabela de comparação
+            //                    comparacao.Add(
+            //                              new ResultadoComparacaoValidacao()
+            //                              {
+
+            //                                  localTabela = reader[0].ToString(),
+            //                                  nCadEmpresa = reader[1].ToString(),
+            //                                  dataMovimento = Convert.ToDateTime(reader[2].ToString()),
+            //                                  iSequencial = Convert.ToInt32(reader[3].ToString()),
+            //                                  iBanda = Convert.ToInt32(reader[4].ToString()),
+            //                                  idCaracteristicaVTR = reader[5].ToString(),
+            //                                  identificadorLabel = reader[6].ToString(),
+            //                                  idCaracteristicaVTV = reader[7].ToString()
+
+            //                              });
+            //                }
+
+            //            }
+            //            //Se existe resultados não conformes
+            //            if (conforme == false)
+            //            {
+            //                //Separamos os resultados que estão na tabela VERIFICACAOTIPIFICACAOresultados
+            //                var valoresVTR = (from p in comparacao
+            //                                  where p.localTabela == "VTR"
+            //                                  select p).ToList();
+
+            //                //separamos os resultados que estão na tabela VerificacaoTipificacaoValidacao
+            //                var valoresVTV = (from p in comparacao
+            //                                  where p.localTabela == "VTV"
+            //                                  select p).ToList();
+
+            //                //Varremos a tabela de resultados para comparar os valores da Matriz comparacaoUnica com a tabela de validação
+            //                foreach (var p in valoresVTR)
+            //                {
+            //                    //Se o resultado da for uma comparação Única
+            //                    if (MatrizStrinComparacao(comparacaoUnica, p.identificadorLabel) == true)
+            //                    {
+            //                        //Verificamos se existe a caracteristica na tabela de validação
+            //                        var valorComparacaoVTV = (from pV in valoresVTV
+            //                                                  where pV.identificadorLabel == p.identificadorLabel
+            //                                                  select pV).FirstOrDefault();
+
+            //                        //Se a caracteristica existir
+            //                        if (valorComparacaoVTV != null)
+            //                        {
+            //                            //Atualizamos o valor do valor da verificação validação na tabela resultados com o valor da verificação na tabela caracteristica
+            //                            p.idCaracteristicaVTV = valorComparacaoVTV.idCaracteristicaVTV;
+            //                            //reovemos o valor da tabela de validação
+            //                            valoresVTV.Remove(valorComparacaoVTV);
+
+            //                            //teste de desempenho para verificamos se podemos deixar as informações na tabela de comparação ao inves de dividir em 2 objetos
+            //                            //comparacao.Remove(valorComparacaoVTV);
+            //                        }
+            //                    }
+            //                    //Incluimos o Valor dos resultados na tabela VerificacaoTipificacaoComparacao
+            //                    VerificacaoTipificacaoComparacaoAdicionar(unidadeCodigo, sequencial, banda, p.identificadorLabel, p.dataMovimento.ToString(), p.idCaracteristicaVTR, p.idCaracteristicaVTV);
+            //                }
+
+            //                //Verificamos se ainda existem valores da tabela VerificacaoTipificacaoValidacao que não foram comparados
+            //                foreach (var p in valoresVTV)
+            //                {
+            //                    //Incluimos os Valores da Tipificação na tabela VerificacaoTipificacaoComparacao 
+            //                    VerificacaoTipificacaoComparacaoAdicionar(unidadeCodigo, sequencial, banda, p.identificadorLabel, p.dataMovimento.ToString(), p.idCaracteristicaVTR, p.idCaracteristicaVTV);
+            //                }
+            //            }
+
+            //            comparacaoResultado = conforme;
+            //            connection.Close();
+            //            //retornamos o valor para tabela de resultados
+            //            return conforme;
+            //        }
+
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        //string t = ex.ToString();
+            //        //mensagemErro = ex.Message;
+            //        //return false;
+            //        //RETORNAR O ERRO
+            //        //mensagemErro = Json(t, JsonRequestBehavior.AllowGet);
+            //        connection.Close();
+            //        throw ex;
+            //    }
+            //}
 
 
         }

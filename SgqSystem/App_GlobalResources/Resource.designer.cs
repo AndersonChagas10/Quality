@@ -2833,6 +2833,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you have unsynchronized data, do you really want to move?.
+        /// </summary>
+        internal static string logout_confirm {
+            get {
+                return ResourceManager.GetString("logout_confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Log In.
         /// </summary>
         internal static string log_in {

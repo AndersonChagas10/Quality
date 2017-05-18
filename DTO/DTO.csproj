@@ -147,6 +147,8 @@
     <Compile Include="GlobalConfig.cs" />
     <Compile Include="ResultSet\ApontamentosDiariosResultSet.cs" />
     <Compile Include="ResultSet\ScorecardResultSet.cs" />
+    <Compile Include="ResultSet\TabelaDinamicaResultados.cs" />
+    <Compile Include="ResultSet\VisaoGeralDaAreaResultSet.cs" />
     <Compile Include="TableResults\TableResultsForDataTable.cs" />
     <Compile Include="DTO\ShiftDTO.cs" />
     <Compile Include="DTO\SyncDTO.cs" />
