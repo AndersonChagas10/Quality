@@ -110,7 +110,7 @@ namespace Dominio.Services
 
                 /*Login Ytoara*/
                 if (GlobalConfig.Ytoara)
-                    isUser = CheckUserAndPassDataBase(userDto);
+                    isUser = LoginSgq(userDto, userByName);
 
                 if (isUser.IsNull())
                     throw new ExceptionHelper(mensagens.naoEncontrado);
@@ -186,9 +186,30 @@ namespace Dominio.Services
             }
         }
 
+        #region LoginSgq
+
+        public UserSgq LoginSgq(UserDTO userDto, UserSgq userByName)
+        {
+
+            /*Descriptografa para comparar no AD*/
+            if (userByName != null)
+            {
+                var decripted = Guard.DecryptStringAES(userByName.Password);
+                if (userDto.Password != decripted)/*Senha esta criptografada*/
+                {
+                    userDto.Password = Guard.DecryptStringAES(userDto.Password);
+                }
+            }
+
+            return CheckUserAndPassDataBase(userDto);
+
+        } 
+
+        #endregion
+
         #region LoginEUA
 
-     
+
         /// <summary>
         /// Verifica se o UsuarioExiste no AD dos EUA, 
         /// 1 - caso exista no AD, verifica no DB se ele ja existe: 1.1 - caso exista no DB (e no AD) retorna o mesmo e procede o login

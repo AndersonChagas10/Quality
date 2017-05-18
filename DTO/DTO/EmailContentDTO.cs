@@ -5,9 +5,6 @@ namespace DTO.DTO
 {
     public class EmailContentDTO : EntityBase
     {
-        public int Id { get; set; }
-        public DateTime AddDate { get; set; }
-        public DateTime AlterDate { get; set; }
         public string To { get; set; }
         public string Body { get; set; }
         public string SendStatus { get; set; }

@@ -86,6 +86,12 @@ namespace DTO
         public int MetaFTA { get; set; }
         public int PercentualNCFTA { get; set; }
         public int ReincidenciaDesvioFTA { get; set; }
-        
+
+        public string CallBackTableBody { get; set; }
+        public string CallBackTableEsquerda { get; set; }
+        public string CallBackTableTituloColunas { get; set; }
+        public string Query { get; set; }
+        public string Title { get; set; }
+
     }
 }
