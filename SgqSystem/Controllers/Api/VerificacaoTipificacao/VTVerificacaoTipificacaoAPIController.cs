@@ -208,7 +208,7 @@ namespace SgqSystem.Controllers.Api
 
                 if (GlobalConfig.MockOn)
                 {
-                    queryString = "select * from verificacaoteste where nCdEmpresa="+ verificacaoTipificacao.UnidadeId + " and iSequencial="+ verificacaoTipificacao.Sequencial;
+                    //queryString = "select * from verificacaoteste where nCdEmpresa=" + company.CompanyNumber + " and iSequencial=" + verificacaoTipificacao.Sequencial;
                     conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
                 }
 
@@ -455,7 +455,8 @@ namespace SgqSystem.Controllers.Api
                                             result.WeiDefects = ParLevel2.ParLevel3Level2.Where(x => x.ParLevel3_Id == ParLevel3.Id).FirstOrDefault().Weight * defectsL3;
 
                                             db2.Result_Level3.Add(result);
-                                        
+                                            db2.SaveChanges();
+
                                         }
 
                                         collectionLevel2.Defects = defectsL2;
@@ -473,9 +474,19 @@ namespace SgqSystem.Controllers.Api
                                                                           where p.CollectionLevel2_Id == collectionLevel2.Id
                                                                           select p).Sum(p => p.WeiEvaluation); //peso  
 
+                                        if(collectionLevel2.WeiEvaluation == null)
+                                        {
+                                            collectionLevel2.WeiEvaluation = 0;
+                                        }
+
                                         collectionLevel2.WeiDefects = (from p in db2.Result_Level3
                                                                           where p.CollectionLevel2_Id == collectionLevel2.Id
                                                                           select p).Sum(p => p.WeiDefects); //se tiver defeitos = peso , senao 0 
+
+                                        if (collectionLevel2.WeiDefects == null)
+                                        {
+                                            collectionLevel2.WeiDefects = 0;
+                                        }
 
                                         if ((from p in db2.Result_Level3
                                          where p.CollectionLevel2_Id == collectionLevel2.Id

@@ -405,12 +405,12 @@ namespace SgqSystem.Controllers.Api.Params
         [Route("GetResource/{language}")]
         public IEnumerable<DictionaryEntry> GetResource(string language)
         {
-            if (language.Equals("pt-br") || (language.Equals("default") && GlobalConfig.Brasil)) //se portugues
+            if (language.Equals("pt-br") || (language.Equals("default") && GlobalConfig.LanguageBrasil)) //se portugues
             {
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
             }
-            else if (language.Equals("en-us") || (language.Equals("default") && GlobalConfig.Eua))//inglês
+            else if (language.Equals("en-us") || (language.Equals("default") && GlobalConfig.LanguageEUA))//inglês
             {
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("");
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
