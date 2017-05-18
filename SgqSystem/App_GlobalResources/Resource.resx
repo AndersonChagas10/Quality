@@ -1983,4 +1983,37 @@
   <data name="logout_confirm" xml:space="preserve">
     <value>Do you have unsynchronized data, do you really want to move?</value>
   </data>
+  <data name="description_has_between_3_and_10" xml:space="preserve">
+    <value>Description has to be between 3 and 10 characters</value>
+  </data>
+  <data name="maximum_description_300_characteres" xml:space="preserve">
+    <value>The maximum Description length is 300 characters</value>
+  </data>
+  <data name="maximum_name_300_characteres" xml:space="preserve">
+    <value>The maximum Name length is 300 characters</value>
+  </data>
+  <data name="minimum_description_1_characteres" xml:space="preserve">
+    <value>The minimum Description length is 1 characters</value>
+  </data>
+  <data name="minimum_name_3_characteres" xml:space="preserve">
+    <value>The minimum Name length is 3 characters</value>
+  </data>
+  <data name="name_has_between_3_and_10" xml:space="preserve">
+    <value>Name has to be between 3 and 10 characters</value>
+  </data>
+  <data name="select_the_department" xml:space="preserve">
+    <value>Please select department</value>
+  </data>
+  <data name="select_the_name" xml:space="preserve">
+    <value>Please select Name</value>
+  </data>
+  <data name="select_the_colosolidation_type" xml:space="preserve">
+    <value>Please select consolidation type</value>
+  </data>
+  <data name="must_select_complete_link_to_perform" xml:space="preserve">
+    <value>You must select a complete link to perform this action</value>
+  </data>
+  <data name="unable_to_complete_data_request" xml:space="preserve">
+    <value>Unable to complete data request</value>
+  </data>
 </root>

@@ -323,7 +323,7 @@
                 openMessageModal(r, '');
             });
         }else{
-            openMessageModal('É necessário selecionar um vinculo completo para realizar esta ação', '');
+            openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.must_select_complete_link_to_perform)), '');
         }
 
     }
@@ -485,7 +485,7 @@
                     $btn.button('reset');
                     if (objetoReturn.paramsDto.parLevel1Dto.Id > 0) {
                         indexParamsLevel1.GetLevel1(objetoReturn.paramsDto.parLevel1Dto.Id, true);
-                        openMessageModal("Alerta", statusmessage);
+                        openMessageModal("@Resources.Resource.alert", statusmessage);
                     }
 
                 }).fail(function (e, h, x) {
@@ -493,7 +493,7 @@
                     try {
                         closeLoader();
                         $btn.button('reset');
-                        openMessageModal("Alerta", e.responseJSON.Message);
+                        openMessageModal("@Resources.Resource.alert", e.responseJSON.Message);
                     } catch (e) {
                         closeLoader();
                         $btn.button('reset');
@@ -653,17 +653,17 @@
 
                     if (objetoReturn.paramsDto.parLevel2Dto.Id > 0) {
                         indexParamsLevel2.GetLevel2(objetoReturn.paramsDto.parLevel2Dto.Id, $('#paramsDto_parLevel3Dto_Id').val(), true)
-                        openMessageModal("Alerta", statusmessage);
+                        openMessageModal("@Resources.Resource.alert", statusmessage);
                     }
                 }).fail(function (e, h, x) {
                     try {
                         closeLoader();
                         $btn.button('reset');
-                        openMessageModal("Alerta", e.responseJSON.Message);
+                        openMessageModal("@Resources.Resource.alert", e.responseJSON.Message);
                     } catch (e) {
                         $btn.button('reset');
                         closeLoader();
-                        openMessageModal("Alerta", "Não foi possivel concluir a ação.");
+                        openMessageModal("@Resources.Resource.alert", "Não foi possivel concluir a ação.");
                         console.log(e);
                     }
                 });
@@ -827,7 +827,7 @@
 
                     if (objetoReturn.paramsDto.parLevel3Dto.Id > 0) {
                         indexParamsLevel3.GetLevel3(objetoReturn.paramsDto.parLevel3Dto.Id, $('#paramsDto_parLevel2Dto_Id').val(), true);
-                        openMessageModal("Alerta", statusmessage);
+                        openMessageModal("@Resources.Resource.alert", statusmessage);
                     }
 
                     initialFormLevel3 = $($('form')[2]).clone();
@@ -835,12 +835,12 @@
                 }).fail(function (e, h, x) {
                     try {
                         $btn.button('reset');
-                        openMessageModal("Alerta", e.responseJSON.Message);
+                        openMessageModal("@Resources.Resource.alert", e.responseJSON.Message);
                         closeLoader();
                     } catch (e) {
                         $btn.button('reset');
                         closeLoader();
-                        openMessageModal("Alerta", "Não foi possivel concluir a ação.");
+                        openMessageModal("@Resources.Resource.alert", "Não foi possivel concluir a ação.");
                         console.log(e);
                     }
                 });
@@ -998,7 +998,7 @@
             initialFormLevel3 = $($('form')[2]).clone();
         }).fail(function (e, h, x) {
             $('#desVinculoLevel1').hide();
-            openMessageModal("Alerta", e.responseJSON.Message);
+            openMessageModal("@Resources.Resource.alert", e.responseJSON.Message);
             //alert(e.responseJSON.Message); // or whatever
         });
 
@@ -1098,7 +1098,7 @@
                     closeLoader();
                     $('#desVinculoLevel1').show();
                     try {
-                        openMessageModal("Alerta", e.responseJSON.Message);
+                        openMessageModal("@Resources.Resource.alert", e.responseJSON.Message);
                     } catch (e) {
                         openMessageModal("Não foi possível remover o vínculo entre: " + $('#paramsDto_parLevel2Dto_Name').val() + " e: " + $('#paramsDto_parLevel1Dto_Name').val() + ".")
                         console.log(e);
@@ -1131,7 +1131,7 @@
 
     $(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
         closeLoader();
-        openMessageModal('Não foi possivel completar a requisição de dados.', '');
+        openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.unable_to_complete_data_request)), '');
     });
 
     $( document ).ajaxStop(function() {
@@ -1307,7 +1307,7 @@
             $.post(urlAttCabecalho, dados, function (objetoReturn, statusmessage) {
                 if (idLvl1 > 0) {
                     indexParamsLevel1.GetLevel1(idLvl1, true);
-                    openMessageModal("Alerta", statusmessage);
+                    openMessageModal("@Resources.Resource.alert", statusmessage);
                     idLvl1 = 0 ;
                     $('#modalEdicaoCabecalho').modal('hide');
                 }
@@ -1316,7 +1316,7 @@
                 //closeLoader();
                 try {
                     closeLoader();
-                    openMessageModal("Alerta", e.responseJSON.Message);
+                    openMessageModal("@Resources.Resource.alert", e.responseJSON.Message);
                 } catch (e) {
                     closeLoader();
                     openMessageModal("@Resources.Resource.warning", "@Resources.Resource.cannot_finish_action");

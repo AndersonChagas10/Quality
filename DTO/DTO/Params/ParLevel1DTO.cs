@@ -1,4 +1,5 @@
 ﻿using DTO.BaseEntity;
+using Resources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,23 +13,30 @@ namespace DTO.DTO.Params
         public List<ParLevel2DTO> listParLevel2Colleta;
 
         //[Display(Name = "select_the_consolidation_type", ResourceType = typeof(Resource))]
-        [Range(0, 9999999999, ErrorMessage = "É obrigatório selecionar o tipo de consolidação.")]
+        //[Range(0, 9999999999, ErrorMessage = "É obrigatório selecionar o tipo de consolidação.")]
+        [Range(0, 9999999999, ErrorMessageResourceName = "select_the_colosolidation_type", ErrorMessageResourceType = typeof(Resource))]
         public int ParConsolidationType_Id { get; set; }
 
         //[Display(Name = "select_the_frequency", ResourceType = typeof(Resource))]
-        [Range(0, 9999999999, ErrorMessage = "É obrigatório selecionar a frequencia.")]
+        //[Range(0, 9999999999, ErrorMessage = "É obrigatório selecionar a frequencia.")]
+        [Range(0, 9999999999, ErrorMessageResourceName = "select_the_frequency", ErrorMessageResourceType = typeof(Resource))]
         public int ParFrequency_Id { get; set; }
 
         //[Display(Name = "level1_name", ResourceType = typeof(Resource))]
         //[Required(ErrorMessage = "O Nome deverá ter no mínimo 3 e máximo 10 caracteres.")]
-        [MinLength(3, ErrorMessage = "O tamanho mínimo do Nome são 3 caracteres.")]
-        [MaxLength(300, ErrorMessage = "O tamanho máximo do Nome são 300 caracteres.")]
+        //[MinLength(3, ErrorMessage = "O tamanho mínimo do Nome são 3 caracteres.")]
+        //[MaxLength(300, ErrorMessage = "O tamanho máximo do Nome são 300 caracteres.")]
+        [MinLength(3, ErrorMessageResourceName = "minimum_name_3_characteres", ErrorMessageResourceType = typeof(Resource))]
+        [MaxLength(300, ErrorMessageResourceName = "maximum_name_300_characteres", ErrorMessageResourceType = typeof(Resource))]
         public string Name { get; set; }
 
         //[Display(Name = "level1_description", ResourceType = typeof(Resource))]
-        [Required(ErrorMessage = "A Descrição deverá ter no mínimo 0 e máximo 10 caracteres.")]
-        [MinLength(1, ErrorMessage = "O tamanho mínimo da Descrição deve ser 1 caracter.")]
-        [MaxLength(300, ErrorMessage = "O tamanho máximo da Descrição são 300 caracteres.")]
+        //[Required(ErrorMessage = "A Descrição deverá ter no mínimo 0 e máximo 10 caracteres.")]
+        //[MinLength(1, ErrorMessage = "O tamanho mínimo da Descrição deve ser 1 caracter.")]
+        //[MaxLength(300, ErrorMessage = "O tamanho máximo da Descrição são 300 caracteres.")]
+        [Required(ErrorMessageResourceName = "description_has_between_3_and_10", ErrorMessageResourceType = typeof(Resource))]
+        [MinLength(1, ErrorMessageResourceName = "minimum_description_1_characteres", ErrorMessageResourceType = typeof(Resource))]
+        [MaxLength(300, ErrorMessageResourceName = "maximum_description_300_characteres", ErrorMessageResourceType = typeof(Resource))]
         public string Description { get; set; }
 
         //[Display(Name = "save_button_on_level2", ResourceType = typeof(Resource))]

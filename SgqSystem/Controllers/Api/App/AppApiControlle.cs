@@ -45,7 +45,7 @@ namespace SgqSystem.Controllers.Api.App
                     foreach (var i in units)
                     {
 
-                        var atualizado = service.getAPPLevels(1, i.Id, DateTime.Now);
+                        var atualizado = service.getAPPLevels(56, i.Id, DateTime.Now);
                         try
                         {
                             GlobalConfig.PaginaDoTablet.Add(i.Id, atualizado);

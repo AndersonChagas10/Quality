@@ -214,7 +214,7 @@ else
         } catch (e) {
 
         }
-        openMessageModal('Não foi possivel completar a requisição de dados.', '');
+        openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.unable_to_complete_data_request)), '');
     });
 
     $(document).ajaxStop(function () {

@@ -15,7 +15,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
-                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="@id2" href="@id3" aria-expanded="false">Peso</a>
+                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="@id2" href="@id3" aria-expanded="false">@Resources.Resource.weight</a>
             </h4>
         </div>
         <div id="@id4" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
@@ -169,7 +169,7 @@
                     if(exist.length){
                         var display = $('#' + seletorTato + ' #pesoCompany :selected').text();
                         if(companySelected == -1)
-                            display= "Todas";
+                            display= "@Resources.Resource.all";
 
                         openMessageModal("@Resources.Resource.data_already_register_on_company " + display + ".", "")
                         return false;
@@ -208,7 +208,7 @@
                         if(o.ParCompany != null){
                             o['companyName'] = o.ParCompany.Name;
                         }else{
-                            o['companyName'] = "Todas";
+                            o['companyName'] = "@Resources.Resource.all";
                         }
 
                         if(o.ParLevel3Group != null){
