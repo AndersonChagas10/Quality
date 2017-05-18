@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Dominio;
 using DTO;
+using DTO.Helpers;
 using SgqSystem.Handlres;
 using SgqSystem.ViewModels;
 using System;
@@ -117,10 +118,10 @@ namespace SgqSystem.Controllers.Api
                         verificacaoTipificacaoResultados.CaracteristicaTipificacaoId = Convert.ToInt32(model.VerificacaoTipificacaoResultados[i].CaracteristicaTipificacaoId);
                         verificacaoTipificacaoResultados.TarefaId = codigoTarefa;
                         verificacaoTipificacaoResultados.Chave = _verificacao.Chave;
-
-
-
+                        
                         db.VTVerificacaoTipificacaoResultados.Add(verificacaoTipificacaoResultados);
+
+                        
                     }
 
                 }
@@ -129,14 +130,25 @@ namespace SgqSystem.Controllers.Api
                 
                 try
                 {
-                    GetDadosGet(_verificacao.Chave, model);
+                    GetDadosGet(_verificacao.Chave);
                 }
                 catch (Exception e)
                 {
 
                 }
 
+                var inicioSemana = verificacaoTipificacao.DataHora.AddDays(-(int)verificacaoTipificacao.DataHora.DayOfWeek);
+
+                var listVT = db.VTVerificacaoTipificacao.Where(x => x.Status == false && x.DataHora >= inicioSemana).ToList();
+
+                foreach (VTVerificacaoTipificacao vt in listVT)
+                {
+                    GetDadosGet(vt.Chave);
+                }
+
             }
+
+            
         }
         public void connectionString(int parCompany_Id, ref string conexao, ref ParCompany company)
         {
@@ -179,9 +191,9 @@ namespace SgqSystem.Controllers.Api
 
         [Route("Consolidation")]
         [HttpPost]
-        public System.Web.Mvc.JsonResult GetDadosGet(string verificacaoTipificacaoChave, TipificacaoViewModel model)//codigo só pra teste
+        public System.Web.Mvc.JsonResult GetDadosGet(string verificacaoTipificacaoChave)//codigo só pra teste
         {
-
+            var SgqSystem = new SgqSystem.Services.SyncServices();
             var db = new SGQ_GlobalEntities();
             using (db)
             {
@@ -294,6 +306,7 @@ namespace SgqSystem.Controllers.Api
                                 {
 
                                     string[] ArrayComparacao = { "<GORDURA>", "<CONTUSAO>" };
+                                    int ParLevel1_Id = 0;
 
                                     using (var db2 = new SgqDbDevEntities())
                                     {
@@ -301,6 +314,8 @@ namespace SgqSystem.Controllers.Api
                                         var ParLevel1 = (from p in db2.ParLevel1
                                                          where p.hashKey == 5
                                                          select p).FirstOrDefault();
+
+                                        ParLevel1_Id = ParLevel1.Id;
 
                                         var ParLevel2_old =
                                                    (from p1 in db2.ParLevel1
@@ -332,8 +347,6 @@ namespace SgqSystem.Controllers.Api
                                             db.SaveChanges();
 
                                         }
-
-                                        var SgqSystem = new SgqSystem.Services.SyncServices();
 
                                         SqlConnection dbService = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString);
                                         
@@ -508,7 +521,9 @@ namespace SgqSystem.Controllers.Api
                                         db.SaveChanges();
                                         
                                     }
-                                    
+
+                                    SgqSystem._ReConsolidationByLevel1(verificacaoTipificacao.UnidadeId, ParLevel1_Id, verificacaoTipificacao.DataHora);
+
                                     return null;
 
                                 }
@@ -523,6 +538,7 @@ namespace SgqSystem.Controllers.Api
                                 }
                             }
                         }
+
                     }
                     catch (Exception ex)
                     {
