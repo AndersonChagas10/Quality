@@ -134,7 +134,7 @@ namespace SgqSystem.Controllers.Api
                 }
                 catch (Exception e)
                 {
-
+                    throw new Exception("Exception GetDadosGet primeira chamada", e);
                 }
 
                 var inicioSemana = verificacaoTipificacao.DataHora.AddDays(-(int)verificacaoTipificacao.DataHora.DayOfWeek);
@@ -143,7 +143,18 @@ namespace SgqSystem.Controllers.Api
 
                 foreach (VTVerificacaoTipificacao vt in listVT)
                 {
-                    GetDadosGet(vt.Chave);
+                    try
+                    {
+                        GetDadosGet(vt.Chave);
+                    }
+                    catch (SqlException ex)
+                    {
+                        throw new Exception("SqlException GetDadosGet reconsolidação", ex);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Exception GetDadosGet reconsolidação", ex);
+                    }
                 }
 
             }

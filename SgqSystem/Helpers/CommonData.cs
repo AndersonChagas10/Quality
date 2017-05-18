@@ -1723,7 +1723,7 @@ namespace SgqSystem.Helpers
         {
             System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
 
-            if (GlobalConfig.Brasil)
+            if (GlobalConfig.LanguageBrasil)
             {
                 Thread.CurrentThread.CurrentCulture = new CultureInfo(Guard.LANGUAGE_PT_BR);
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(Guard.LANGUAGE_PT_BR);
