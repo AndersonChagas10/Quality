@@ -100,7 +100,7 @@
                     var compId = $('#' + isEdit + ' #avAmCompany :selected').val();
                     var compName = $('#' + isEdit + ' #avAmCompany :selected').text();
                     if(compId == "-1"){
-                        compName = "Todas"
+                        compName = "@Resources.Resource.all"
                     }
                     obj.companyId = compId;
                     obj.companyName = compName;
@@ -111,7 +111,7 @@
                     var compId = $('#' + this.level + ' #avAmCompany :selected').val();
                     var compName = $('#' + this.level + ' #avAmCompany :selected').text();
                     if(compId == "-1"){
-                        compName = "Todas"
+                        compName = "@Resources.Resource.all"
                     }
 
                     return {/*Objeto*/
@@ -152,7 +152,7 @@
                     if(exist.length){
 
                         if(companySelected == -1)
-                            display= "Todas";
+                            display= "@Resources.Resource.all";
 
                         openMessageModal("@Resources.Resource.data_already_register_on_company"+" " + display + ".", "")
                         return false;
@@ -200,7 +200,7 @@
                                 o['companyName'] = $('#avAmCompany option[value=' + o.companyId + ']').text();
                             }
                         }else{
-                            o['companyName'] = "Todas";
+                            o['companyName'] = "@Resources.Resource.all";
                         }
                         crudNxN.adiciona(o,  id, tdNamess);
                     });
