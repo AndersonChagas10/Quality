@@ -20,176 +20,190 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             List<Cep> _ceps = new List<Cep>();
 
-            //var query1 = "DECLARE @N INT = 1 --CASO X, ENTÃO 1 " +
-            //"\n DECLARE @LSE DECIMAL(30, 5) = 0.8 " +
-            //"\n DECLARE @LIE DECIMAL(30, 5) = 0.2 " +
-            //"\n DECLARE @MEDIA DECIMAL(30, 5) " +
-            //"\n DECLARE @MEDIAAM DECIMAL(30, 5) " +
-            //"\n DECLARE @UCL DECIMAL(30, 5) " +
-            //"\n DECLARE @LCL DECIMAL(30, 5) " +
-            //"\n DECLARE @LSC DECIMAL(30, 5) " +
-            //"\n DECLARE @LIC DECIMAL(30, 5) " +
+            bool x = false;
+            var query1 = "";
 
-            //"\n /* vetor CEP */  " +
-            //"\n SELECT " +
-            //"\n TB1.Defeitos, " +
-            //"\n CASE WHEN TB2.defeitos IS NULL THEN 0 " +
-            //      "\n WHEN TB1.defeitos IS NULL THEN TB2.defeitos " +
-            //      "\n ELSE abs(TB2.defeitos - TB1.defeitos) end AM " +
-            //"\n FROM " +
-            //"\n ( " +
-            //"\n select " +
-            //"\n  ROW_NUMBER() OVER(ORDER BY CONVERT(DATE, AddDate) ASC) AS Row# " +
-            //"\n , CONVERT(DATE, AddDate) DATA " +
-            //"\n , ISNULL(sum(Defects), 0) DEFEITOS " +
-            //"\n , ISNULL(SUM(DEFECTS) / @N, 0) AS VALOR " +
-            //"\n from CollectionLevel2 " +
-            //"\n group by CONVERT(DATE, AddDate) " +
-            //"\n ) TB1 " +
-            //"\n FULL JOIN " +
-            //"\n ( " +
-            //"\n select " +
-            //"\n  ROW_NUMBER() OVER(ORDER BY CONVERT(DATE, AddDate) ASC) AS Row# " +
-            //"\n , CONVERT(DATE, AddDate) DATA " +
-            //"\n , ISNULL(sum(Defects), 0) DEFEITOS " +
-            //"\n , ISNULL(SUM(DEFECTS) / @N, 0) AS VALOR " +
-            //"\n from CollectionLevel2 " +
-            //"\n group by CONVERT(DATE, AddDate) " +
-            //"\n ) TB2 " +
-            //"\n ON TB1.Row# = (TB2.Row# + 1) " +
+            if (x)
+            {
+                    //Carta X
+                    query1 = "DECLARE @N INT = 1 --CASO X, ENTÃO 1  " +
+                    "\n DECLARE @LSE DECIMAL(30, 5) = 0.8--Limite Superior de Especificação " +
+                    "\n DECLARE @LIE DECIMAL(30, 5) = 0.2--Limite Inferior de Especificação " +
+                    "\n DECLARE @MEDIA DECIMAL(30, 5)--Media " +
+                    "\n DECLARE @MEDIAAM DECIMAL(30, 5) --Media Amostral " +
+                    "\n DECLARE @UCL DECIMAL(30, 5) --Limite Superior de Controle " +
+                    "\n DECLARE @LCL DECIMAL(30, 5) --Limite Inferior de Controle " +
+                    "\n DECLARE @LSC DECIMAL(30, 5) " +
+                    "\n DECLARE @LIC DECIMAL(30, 5) " +
+                    
+                    /* vetor CEP */
+                    "\n --SELECT TB1.defeitos,  " +
+                    "\n --CASE " +
+                    "\n --         WHEN TB2.defeitos IS NULL THEN 0 " +
+                    "\n --         WHEN TB1.defeitos IS NULL THEN TB2.defeitos " +
+                    "\n --         ELSE Abs(TB2.defeitos - TB1.defeitos) " +
+                    "\n --       END AM " +
+                    "\n --FROM(SELECT Row_number() " +
+                    "\n --                 OVER( " +
+                    "\n --ORDER BY CONVERT(DATE, adddate) ASC) AS Row#,  " +
+                    "\n --               CONVERT(DATE, adddate)                   DATA, " +
+                    "\n --Isnull(Sum(defects), 0)                  DEFEITOS, " +
+                    "\n --Isnull(Sum(defects) / @N, 0)             AS VALOR " +
+                    "\n --        FROM   collectionlevel2 " +
+                    "\n --        GROUP  BY CONVERT(DATE, adddate)) TB1 " +
+                    "\n --       FULL JOIN(SELECT Row_number() " +
+                    "\n --                           OVER( " +
+                    "\n --ORDER BY CONVERT(DATE, adddate) ASC) AS Row#,  " +
+                    "\n --                         CONVERT(DATE, adddate)                   DATA, " +
+                    "\n --Isnull(Sum(defects), 0)                  DEFEITOS, " +
+                    "\n --Isnull(Sum(defects) / @N, 0)             AS VALOR " +
+                    "\n --                  FROM   collectionlevel2 " +
+                    "\n --                  GROUP  BY CONVERT(DATE, adddate)) TB2 " +
+                    "\n --              ON TB1.row# = ( TB2.row# + 1 )  " +
+                    
+                    "\n --/* Média */ " +
+                    "\n --select @MEDIA = AVG(media.VALOR)  from " +
+                    "\n SELECT @MEDIA = Avg(media.defeitos), " +
+                    "\n        @MEDIAAM = Avg(media.am) " +
+                    "\n FROM( " +
+                    "\n /* vetor CEP */ " +
+                    "\n        SELECT TB1.*, " +
+                    "\n               CASE " +
+                    "\n                 WHEN TB2.defeitos IS NULL THEN NULL " +
+                    "\n                 WHEN TB1.defeitos IS NULL THEN TB2.defeitos " +
+                    "\n                 ELSE Abs(TB2.defeitos - TB1.defeitos) " +
+                    "\n               END AM " +
+                    "\n         FROM(SELECT Row_number() " +
+                    "\n                          OVER( " +
+                    "\n                            ORDER BY CONVERT(DATE, adddate) ASC) AS Row#,  " +
+                    "\n                        CONVERT(DATE, adddate)                   DATA, " +
+                    "\n                        Isnull(Sum(defects), 0)                  DEFEITOS " +
+                    "\n                 FROM   collectionlevel2 " +
+                    "\n                 GROUP  BY CONVERT(DATE, adddate)) TB1 " +
+                    "\n                FULL JOIN(SELECT Row_number() " +
+                    "\n                                    OVER( " +
+                    "\n                                      ORDER BY CONVERT(DATE, adddate) ASC) AS " +
+                    "\n                                  Row#,  " +
+                    "\n                                  CONVERT(DATE, adddate)                   DATA, " +
+                    "\n                                  Isnull(Sum(defects), 0) " +
+                    "\n                                  DEFEITOS " +
+                    "\n                           FROM   collectionlevel2 " +
+                    "\n                           GROUP  BY CONVERT(DATE, adddate)) TB2 " +
+                    "\n                       ON TB1.row# = ( TB2.row# + 1 )) media  " +
+                    
+                    "\n SET @UCL = @MEDIA + (3 * (@MEDIAAM / 1.128)) " +
+                    "\n SET @LCL = @MEDIA - (3 * (@MEDIAAM / 1.128)) " +
+                    "\n SET @LSC = 3.267 * @MEDIAAM " +
+                    "\n SET @LIC = 0 " +
+                    
+                    "\n --SELECT @MEDIA   AS 'X LM', " +
+                    "\n --@MEDIAAM AS 'AM LM', " +
+                    "\n --@UCL     AS UCL, " +
+                    "\n --@LCL     AS LCL, " +
+                    "\n --@LSE     AS LSE, " +
+                    "\n --@LIE     AS LIE, " +
+                    "\n --@LSC     AS LSC, " +
+                    "\n --@LIC     AS LIC " +
+                    
+                    "\n --/* vetor CEP */  " +
+                    "\n SELECT ISNULL(TB1.defeitos, 0 ) as VALOR, " +
+                    "\n        --CASE " +
+                    "\n        --  WHEN TB2.defeitos IS NULL THEN 0 " +
+                    "\n        --  WHEN TB1.defeitos IS NULL THEN TB2.defeitos " +
+                    "\n        --  ELSE Abs(TB2.defeitos - TB1.defeitos) " +
+                    "\n        --END AM, " +
+                    "\n        @MEDIA  AS pbar, --AS 'X LM', " +
+                    "\n        --@MEDIAAM AS 'AM LM', " +
+                    "\n        @UCL     AS UCL, " +
+                    "\n        @LCL     AS LCL, " +
+                    "\n        @LSE     AS LSE, " +
+                    "\n        @LIE     AS LIE  " +
+                    "\n        --@LSC     AS LSC, " +
+                    "\n        --@LIC     AS LIC " +
+                    "\n FROM(SELECT Row_number() " +
+                    "\n                  OVER( " +
+                    "\n                    ORDER BY CONVERT(DATE, adddate) ASC) AS Row#,  " +
+                    "\n                CONVERT(DATE, adddate)                   DATA, " +
+                    "\n                Isnull(Sum(defects), 0)                  DEFEITOS, " +
+                    "\n                Isnull(Sum(defects) / @N, 0)             AS VALOR " +
+                    "\n         FROM   collectionlevel2 " +
+                    "\n         GROUP  BY CONVERT(DATE, adddate)) TB1 " +
+                    "\n        FULL JOIN(SELECT Row_number() " +
+                    "\n                            OVER( " +
+                    "\n                              ORDER BY CONVERT(DATE, adddate) ASC) AS Row#,  " +
+                    "\n                          CONVERT(DATE, adddate)                   DATA, " +
+                    "\n                          Isnull(Sum(defects), 0)                  DEFEITOS, " +
+                    "\n                          Isnull(Sum(defects) / @N, 0)             AS VALOR " +
+                    "\n                   FROM   collectionlevel2 " +
+                    "\n                   GROUP  BY CONVERT(DATE, adddate)) TB2 " +
+                    "\n               ON TB1.row# = ( TB2.row# + 1 ) ";
 
-            //"\n /* Média */ " +
-            //"\n --select @MEDIA = AVG(media.VALOR)  from " +
-            //"\n select @MEDIA = AVG(media.DEFEITOS), @MEDIAAM = AVG(media.AM)  from " +
-            //"\n ( " +
-            //"\n /* vetor CEP */ " +
-            //"\n SELECT " +
-            //"\n TB1.*, " +
-            //"\n CASE WHEN TB2.defeitos IS NULL THEN NULL " +
-            //      "\n WHEN TB1.defeitos IS NULL THEN TB2.defeitos " +
+            }
+            else
+            {
 
-            //      "\n ELSE abs(TB2.defeitos - TB1.defeitos) end AM " +
-            //"\n FROM " +
-            //"\n ( " +
-            //"\n select " +
-            //"\n  ROW_NUMBER() OVER(ORDER BY CONVERT(DATE, AddDate) ASC) AS Row# " +
-            //"\n , CONVERT(DATE, AddDate) DATA " +
-            //"\n , ISNULL(sum(Defects), 0) DEFEITOS " +
-            //"\n from CollectionLevel2 " +
-            //"\n group by CONVERT(DATE, AddDate) " +
-            //"\n ) TB1 " +
-            //"\n FULL JOIN " +
-            //"\n ( " +
-            //"\n select " +
-            //"\n  ROW_NUMBER() OVER(ORDER BY CONVERT(DATE, AddDate) ASC) AS Row# " +
-            //"\n , CONVERT(DATE, AddDate) DATA " +
-            //"\n , ISNULL(sum(Defects), 0) DEFEITOS " +
-            //"\n from CollectionLevel2 " +
-            //"\n group by CONVERT(DATE, AddDate) " +
-            //"\n ) TB2 " +
-            //"\n ON TB1.Row# = (TB2.Row# + 1) " +
-            //"\n ) media " +
+                //Carta P
+                var FiltroUnidade = "";
+                var FiltroLevel1 = "";
+                var FiltroLevel2 = "";
+                var FiltroLevel3 = "";
 
-
-            //"\n SET @UCL = @MEDIA + (3 * (@MEDIAAM / 1.128)) " +
-
-            //"\n SET @LCL = @MEDIA - (3 * (@MEDIAAM / 1.128)) " +
-
-            //"\n SET @LSC = 3.267 * @MEDIAAM " +
-
-            //"\n SET @LIC = 0 " +
-
-            //"\n SELECT @MEDIA AS 'X LM', @MEDIAAM as 'AM LM', @UCL as UCL, @LCL as LCL, @LSE as LSE, @LIE as LIE, @LSC as LSC " +
-
-            //"\n /* vetor CEP */ " +
-            //"\n SELECT " +
-            //"\n TB1.Defeitos, " +
-            //"\n CASE WHEN TB2.defeitos IS NULL THEN 0 " +
-            //      "\n WHEN TB1.defeitos IS NULL THEN TB2.defeitos " +
-            //      "\n ELSE abs(TB2.defeitos - TB1.defeitos) end AM " +
-            //"\n FROM " +
-            //"\n ( " +
-            //"\n select " +
-            //"\n  ROW_NUMBER() OVER(ORDER BY CONVERT(DATE, AddDate) ASC) AS Row# " +
-            //"\n , CONVERT(DATE, AddDate) DATA " +
-            //"\n , ISNULL(sum(Defects), 0) DEFEITOS " +
-            //"\n , ISNULL(SUM(DEFECTS) / @N, 0) AS VALOR " +
-            //"\n from CollectionLevel2 " +
-            //"\n group by CONVERT(DATE, AddDate) " +
-            //"\n ) TB1 " +
-            //"\n FULL JOIN " +
-            //"\n ( " +
-            //"\n select " +
-            //"\n  ROW_NUMBER() OVER(ORDER BY CONVERT(DATE, AddDate) ASC) AS Row# " +
-            //"\n , CONVERT(DATE, AddDate) DATA " +
-            //"\n , ISNULL(sum(Defects), 0) DEFEITOS " +
-            //"\n , ISNULL(SUM(DEFECTS) / @N, 0) AS VALOR " +
-            //"\n from CollectionLevel2 " +
-            //"\n group by CONVERT(DATE, AddDate) " +
-            //"\n ) TB2 " +
-            //"\n ON TB1.Row# = (TB2.Row# + 1) ";
-
-            var FiltroUnidade = "";
-            var FiltroLevel1 = "";
-            var FiltroLevel2 = "";
-            var FiltroLevel3 = "";
-
-            if (form.unitId > 0)
-                FiltroUnidade = "\n and UnitId = " + form.unitId + "";
-
-
-            if (form.level1Id > 0)
-                FiltroLevel1 = "\n and ParLevel1_Id = " + form.level1Id + "";
-
-            if (form.level2Id > 0)
-                FiltroLevel2 = "\n and ParLevel2_Id = " + form.level2Id + "";
-
-            if (form.level3Id > 0)
-                FiltroLevel3 = "\n and Result_Level3.CollectionLevel2_Id = CollectionLevel2.Id and Result_Level3.ParLevel3_Id = " + form.level3Id + "";
-
-
-            var query1 = "\n DECLARE @N INT = 120 --CASO X, ENTÃO 1 " +
-            "\n DECLARE @LimiteSuperiorEspecificacao DECIMAL(30, 5) = 0.8 " +
-            "\n DECLARE @LimiteInferiorEspecificacao DECIMAL(30, 5) = 0.2 " +
-            "\n DECLARE @MEDIA DECIMAL(30, 5) " +
-            "\n DECLARE @LimiteSuperiorControle DECIMAL(30, 5) " +
-            "\n DECLARE @LimiteInferiorControle DECIMAL(30, 5) " +
-            "\n DECLARE @ParCompany VARCHAR(MAX) " +
-            "\n DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + "'                                                                                                                                                                                                                    " +
-            "\n DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + "' " +
-            "\n DECLARE @INDICADOR   VARCHAR(MAX) = " + form.level1Id +
-            "\n DECLARE @MONITORAMENTO VARCHAR(MAX) = " + form.level2Id +
-            "\n DECLARE @TAREFA VARCHAR(MAX) = " + form.level3Id +
-
-            "\n /* Média */ " +
-            "\n select @MEDIA = AVG(media.VALOR)  from " +
-            "\n --select @MEDIA = AVG(media.DEFEITOS)  from " +
-            "\n ( " +
-            "\n select cast(AddDate as date) as Data, sum(Defects) DEFEITOS, SUM(DEFECTS) / @N AS VALOR from CollectionLevel2 group by cast(AddDate as date) " +
-            "\n ) media " +
-
-            "\n --SELECT @MEDIA " +
-
-            "\n SET @LimiteSuperiorControle = @MEDIA + 3 * SQRT(abs(@MEDIA * (1 - @MEDIA) / @N)) " +
-
-            "\n SET @LimiteInferiorControle = @MEDIA - 3 * SQRT(abs(@MEDIA * (1 - @MEDIA) / @N)) " +
-
-            "\n --SELECT @MEDIA AS[p - bar], @UCL as UCL, @LCL as LCL, @LSE as LSE, @LIE as LIE " +
-
-            "\n /* vetor CEP */ " +
-            "\n select @MEDIA AS[pbar], @LimiteSuperiorControle as UCL, @LimiteInferiorControle as LCL, @LimiteSuperiorEspecificacao as LSE, @LimiteInferiorEspecificacao as LIE, ISNULL(SUM(CollectionLevel2.DEFECTS) / @N, 0) AS VALOR, CONVERT(DATE, AddDate) as Data from CollectionLevel2, Result_Level3 " +
-
-            "\n where CollectionDate between '" + form._dataInicioSQL + "' and '" + form._dataFimSQL + "' " +
-
-            FiltroUnidade +
-            FiltroLevel1 +
-            FiltroLevel2 +
-            FiltroLevel3 +
-
-            "\n group by CONVERT(DATE, AddDate) " +
-            "\n order by CONVERT(DATE, AddDate) ";
+                if (form.unitId > 0)
+                    FiltroUnidade = "\n and UnitId = " + form.unitId + "";
 
 
+                if (form.level1Id > 0)
+                    FiltroLevel1 = "\n and ParLevel1_Id = " + form.level1Id + "";
+
+                if (form.level2Id > 0)
+                    FiltroLevel2 = "\n and ParLevel2_Id = " + form.level2Id + "";
+
+                if (form.level3Id > 0)
+                    FiltroLevel3 = "\n and Result_Level3.CollectionLevel2_Id = CollectionLevel2.Id and Result_Level3.ParLevel3_Id = " + form.level3Id + "";
+
+
+                query1 = "\n DECLARE @N INT = 120 --CASO X, ENTÃO 1 " +
+                "\n DECLARE @LimiteSuperiorEspecificacao DECIMAL(30, 5) = 0.8 " +
+                "\n DECLARE @LimiteInferiorEspecificacao DECIMAL(30, 5) = 0.2 " +
+                "\n DECLARE @MEDIA DECIMAL(30, 5) " +
+                "\n DECLARE @LimiteSuperiorControle DECIMAL(30, 5) " +
+                "\n DECLARE @LimiteInferiorControle DECIMAL(30, 5) " +
+                "\n DECLARE @ParCompany VARCHAR(MAX) " +
+                "\n DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + "'                                                                                                                                                                                                                    " +
+                "\n DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + "' " +
+                "\n DECLARE @INDICADOR   VARCHAR(MAX) = " + form.level1Id +
+                "\n DECLARE @MONITORAMENTO VARCHAR(MAX) = " + form.level2Id +
+                "\n DECLARE @TAREFA VARCHAR(MAX) = " + form.level3Id +
+
+                "\n /* Média */ " +
+                "\n select @MEDIA = AVG(media.VALOR)  from " +
+                "\n --select @MEDIA = AVG(media.DEFEITOS)  from " +
+                "\n ( " +
+                "\n select cast(AddDate as date) as Data, sum(Defects) DEFEITOS, SUM(DEFECTS) / @N AS VALOR from CollectionLevel2 where Cast(CollectionDate as Date) between @DATAINICIAL and @DATAFINAL group by cast(AddDate as date) " +
+                "\n ) media " +
+
+                "\n --SELECT @MEDIA " +
+
+                "\n SET @LimiteSuperiorControle = @MEDIA + 3 * SQRT(abs(@MEDIA * (1 - @MEDIA) / @N)) " +
+
+                "\n SET @LimiteInferiorControle = @MEDIA - 3 * SQRT(abs(@MEDIA * (1 - @MEDIA) / @N)) " +
+
+                "\n --SELECT @MEDIA AS[p - bar], @UCL as UCL, @LCL as LCL, @LSE as LSE, @LIE as LIE " +
+
+                "\n /* vetor CEP */ " +
+                "\n select @MEDIA AS[pbar], @LimiteSuperiorControle as UCL, @LimiteInferiorControle as LCL, @LimiteSuperiorEspecificacao as LSE, @LimiteInferiorEspecificacao as LIE, ISNULL(SUM(CollectionLevel2.DEFECTS) / @N, 0) * 100 AS VALOR, CONVERT(DATE, AddDate) as Data from CollectionLevel2 " +
+
+                "\n where Cast(CollectionDate as Date) between @DATAINICIAL and @DATAFINAL " +
+
+                FiltroUnidade +
+                FiltroLevel1 +
+                FiltroLevel2 +
+                FiltroLevel3 +
+
+                "\n group by CONVERT(DATE, AddDate) " +
+                "\n order by CONVERT(DATE, AddDate) ";
+
+            }
             using (var db = new SgqDbDevEntities())
             {
                 _ceps = db.Database.SqlQuery<Cep>(query1).ToList();
@@ -248,8 +262,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             _mockcartasCep.lciData = lciData1; //LCL
             _mockcartasCep.lcs = lcs;//lcs.Average(item => item); //4.25M; //LSE 
             _mockcartasCep.lcsData = lcsData1; //UCL
-            if(media.Count > 0) //Para não dar estouro na hora de pegar a media
-            _mockcartasCep.media = media[0];//media.Average(item => item); //3.648275862068966M;  //Pbar
+            if (media.Count > 0) //Para não dar estouro na hora de pegar a media
+                _mockcartasCep.media = media[0];//media.Average(item => item); //3.648275862068966M;  //Pbar
             _mockcartasCep.nivel1Max = nivel1Max1;
             _mockcartasCep.nivel1Min = nivel1Min1;
             _mockcartasCep.nivel2Max = nivel2Max1;
