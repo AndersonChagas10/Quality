@@ -3031,15 +3031,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You must select a complete link to perform this action.
-        /// </summary>
-        internal static string must_select_complete_link_to_perform {
-            get {
-                return ResourceManager.GetString("must_select_complete_link_to_perform", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to N/A.
         /// </summary>
         internal static string na {

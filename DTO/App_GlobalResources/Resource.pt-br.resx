@@ -1989,10 +1989,7 @@
   <data name="select_the_colosolidation_type" xml:space="preserve">
     <value>É obrigatório selecionar o tipo de consolidação.</value>
   </data>
-  <data name="must_select_complete_link_to_perform" xml:space="preserve">
-    <value>É necessário selecionar um vinculo completo para realizar esta ação</value>
-  </data>
   <data name="unable_to_complete_data_request" xml:space="preserve">
-    <value>Não foi possivel completar a requisição de dados</value>
+    <value>Não foi possivel completar a requisição de dados.</value>
   </data>
 </root>
