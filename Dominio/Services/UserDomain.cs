@@ -427,7 +427,7 @@ namespace Dominio.Services
             }
 
             #endregion
-
+            isUser.ParCompanyXUserSgq = _baseParCompanyXUserSgq.GetAll().Where(r => r.UserSgq_Id == isUser.Id).ToList();
             return isUser;
         }
 
