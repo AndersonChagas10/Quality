@@ -30,6 +30,9 @@ namespace SgqSystem.Controllers.Api
 
             var _verificacao = model.VerificacaoTipificacao;
 
+            if (model.VerificacaoTipificacaoResultados.Count == 0)
+                return;
+
             using (var db = new SGQ_GlobalEntities())
             {
                 var verificacaoTipificacao = db.VTVerificacaoTipificacao.FirstOrDefault(r => r.Chave == _verificacao.Chave);
@@ -449,7 +452,8 @@ namespace SgqSystem.Controllers.Api
                                                              where p.Id == resultIdTarefa
                                                              select p).FirstOrDefault();
 
-                                            new DTO.CreateLog(new Exception("O ParLevel3 está nulo"));
+                                            if(ParLevel3 == null)
+                                                new DTO.CreateLog(new Exception("O ParLevel3 está nulo"));
 
 
                                             bool conforme = true;
@@ -540,7 +544,7 @@ namespace SgqSystem.Controllers.Api
 
                                     SgqSystem._ReConsolidationByLevel1(verificacaoTipificacao.UnidadeId, ParLevel1_Id, verificacaoTipificacao.DataHora);
 
-                                    return null;
+                                    //return null;
 
                                 }
                                 catch (Exception ex)
