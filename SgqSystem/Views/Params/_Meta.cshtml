@@ -130,7 +130,7 @@
                     if(exist.length){
                         var display = $('#' + seletorTato + ' #metaCompany :selected').text();
                         if(companySelected == -1)
-                            display= "Todas";
+                            display= "@Resources.Resource.all";
 
                         openMessageModal("@Resources.Resource.data_already_register_on_company"+" " + display + ".", "")
                         return false;
@@ -165,7 +165,7 @@
                         if(o.ParCompany != null){
                             o['companyName'] = o.ParCompany.Name;
                         }else{
-                            o['companyName'] = "Todas";
+                            o['companyName'] = "@Resources.Resource.all";
                         }
                         o['PercentValue'] = o.PercentValue;
                         crudNxN.adiciona(o,  id, tdNamess);

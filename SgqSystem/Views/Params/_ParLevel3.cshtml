@@ -265,7 +265,7 @@
 
             if(companyValue == -1){
                 companyValue = null;
-                companyName = "Todas";
+                companyName = "@Resources.Resource.all";
             }
 
             if(selectTipoInput == 2 || selectTipoInput == 3 || selectTipoInput == 4 || selectTipoInput == 5){
@@ -374,7 +374,7 @@
                 if(exist.length){
 
                     if(companySelected == -1)
-                        display= "Todas";
+                        display= "@Resources.Resource.all";
 
                     openMessageModal(Resources('data_already_register_on_company')+" " + display + ".", "")
                     return false;
@@ -421,7 +421,7 @@
                     if(o.ParCompany_Id > 0)
                         o["ParCompany_Name"] = o.ParCompany.Name;
                     else
-                        o["ParCompany_Name"] = "Todas";
+                        o["ParCompany_Name"] = "@Resources.Resource.all";
 
 
                     if(o.ParLevel3InputType_Id == 1){
