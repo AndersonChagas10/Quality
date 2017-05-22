@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Dominio.ParLevel3BoolFalse>
+
+<div>
+    <div class="portlet light bordered">
+        <div class="portlet-title tabbable-line">
+            <div class="caption">
+                <i class="icon-share font-dark"></i>
+                <span class="caption-subject font-dark bold uppercase">@Resources.Resource.negative_input_type</span>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="tab-content">
+                <div class="tab-pane active" id="setup_tab">
+
+                    <p>
+                        @Html.ActionLink(Resources.Resource._new, "CreateFalse")
+                    </p>
+                    <table class="table">
+                        <tr>
+                            <th>
+                                @Resources.Resource.name
+                            </th>
+                            <th>
+                                @Resources.Resource.is_active
+                            </th>
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IsActive)
+                                </td>
+                                <td>
+                                    @Html.ActionLink(Resources.Resource.edit, "EditFalse", new { id = item.Id }) |
+                                    @*@Html.ActionLink(Resources.Resource.details, "Details", new { id = item.Id }) |*@
+                                    @Html.ActionLink(Resources.Resource.delete, "DeleteFalse", new { id = item.Id })
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

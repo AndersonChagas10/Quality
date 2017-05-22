@@ -1,0 +1,39 @@
+﻿
+
+<div class="page-content-wrapper">
+    <div class="page-content" style="min-height: 600px;">
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>@Resources.Resource.binary_input_type</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    @Html.Action("_DataTypeTrue", "ParBinaryDataType")
+                </div>
+                <div class="col-md-6">
+                    @Html.Action("_DataTypeFalse", "ParBinaryDataType")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+    navbarSelect("navbar5");
+
+</script>
+
+
