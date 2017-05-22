@@ -3185,7 +3185,7 @@ namespace SgqSystem.Services
             var html = new Html();
             string culture;
 
-            if (GlobalConfig.Brasil)
+            if (GlobalConfig.LanguageBrasil)
             {
                 culture = "pt-br";
             }
@@ -3202,7 +3202,7 @@ namespace SgqSystem.Services
                               html.option("4", CommonData.getResource("period").Value.ToString() + " 4");
 
             string hide = string.Empty;
-            if (GlobalConfig.Brasil)
+            if (GlobalConfig.Brasil || GlobalConfig.Ytoara)
             {
                 hide = "hide";
             }
@@ -3559,6 +3559,7 @@ namespace SgqSystem.Services
             //Inicaliza ParLevel1VariableProduction
             var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction(db);
             var ParRelapseDB = new SGQDBContext.ParRelapse(db);
+            var ParNC = new SGQDBContext.NotConformityRule(db);
 
             //Buscamos os ParLevel11 para a unidade selecionada
             var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id, Level1ListId: Level1ListId);
@@ -3710,6 +3711,8 @@ namespace SgqSystem.Services
 
                         var listParRelapse = ParRelapseDB.getRelapses(parlevel1.Id);
 
+                        var hasAlert = ParNC.hasRule(parlevel1.Id);
+
                         string level01 = html.level1(parlevel1,
                                                      tipoTela: tipoTela,
                                                      totalAvaliado: 0,
@@ -3727,7 +3730,8 @@ namespace SgqSystem.Services
                                                      volumeAlertaIndicador: volumeAlerta,
                                                      metaIndicador: meta,
                                                      IsLimitedEvaluetionNumber: parlevel1.IsLimitedEvaluetionNumber,
-                                                     listParRelapse: listParRelapse);
+                                                     listParRelapse: listParRelapse,
+                                                     hasAlert: hasAlert);
                         //Incrementa level1
                         parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row " + excecao, outerhtml: level01 + painelCounters);
                     }
