@@ -30,6 +30,9 @@ namespace SgqSystem.Controllers.Api
 
             var _verificacao = model.VerificacaoTipificacao;
 
+            if (model.VerificacaoTipificacaoResultados.Count == 0)
+                return;
+
             using (var db = new SGQ_GlobalEntities())
             {
                 var verificacaoTipificacao = db.VTVerificacaoTipificacao.FirstOrDefault(r => r.Chave == _verificacao.Chave);
@@ -134,7 +137,8 @@ namespace SgqSystem.Controllers.Api
                 }
                 catch (Exception e)
                 {
-
+                    //throw new Exception("Exception GetDadosGet primeira chamada", e);
+                    new DTO.CreateLog(new Exception("Exception GetDadosGet primeira chamada"));
                 }
 
                 var inicioSemana = verificacaoTipificacao.DataHora.AddDays(-(int)verificacaoTipificacao.DataHora.DayOfWeek);
@@ -143,7 +147,20 @@ namespace SgqSystem.Controllers.Api
 
                 foreach (VTVerificacaoTipificacao vt in listVT)
                 {
-                    GetDadosGet(vt.Chave);
+                    try
+                    {
+                        GetDadosGet(vt.Chave);
+                    }
+                    catch (SqlException ex)
+                    {
+                        //throw new Exception("SqlException GetDadosGet reconsolidação", ex);
+                        new DTO.CreateLog(new Exception("SqlException GetDadosGet reconsolidação"));
+                    }
+                    catch (Exception ex)
+                    {
+                        //throw new Exception("Exception GetDadosGet reconsolidação", ex);
+                        new DTO.CreateLog(new Exception("Exception GetDadosGet reconsolidação"));
+                    }
                 }
 
             }
@@ -364,7 +381,8 @@ namespace SgqSystem.Controllers.Api
                                             consolidationLevel1 = SgqSystem.InsertConsolidationLevel1(verificacaoTipificacao.UnidadeId, ParLevel1.Id, dataC);
                                             if (consolidationLevel1 == null)
                                             {
-                                                throw new Exception();
+                                                //throw new Exception();
+                                                return null;
                                             }
                                         }
                                         
@@ -374,7 +392,8 @@ namespace SgqSystem.Controllers.Api
                                             consolidationLevel2 = SgqSystem.InsertConsolidationLevel2(consolidationLevel1.Id, ParLevel2.Id, verificacaoTipificacao.UnidadeId, dataC,false,0);
                                             if (consolidationLevel2 == null)
                                             {
-                                                throw new Exception();
+                                                //throw new Exception();
+                                                return null;
                                             }
                                         }
 
@@ -433,7 +452,8 @@ namespace SgqSystem.Controllers.Api
                                                              where p.Id == resultIdTarefa
                                                              select p).FirstOrDefault();
 
-                                            new DTO.CreateLog(new Exception("O ParLevel3 está nulo"));
+                                            if(ParLevel3 == null)
+                                                new DTO.CreateLog(new Exception("O ParLevel3 está nulo"));
 
 
                                             bool conforme = true;
@@ -524,17 +544,13 @@ namespace SgqSystem.Controllers.Api
 
                                     SgqSystem._ReConsolidationByLevel1(verificacaoTipificacao.UnidadeId, ParLevel1_Id, verificacaoTipificacao.DataHora);
 
-                                    return null;
+                                    //return null;
 
                                 }
                                 catch (Exception ex)
                                 {
-                                    throw new Exception("Deu merda no número 1 ", ex);
-                                    //mernsagem de erro
-                                    //string t = ex.ToString();
-                                    //var inner = ex.InnerException.IsNotNull() ? ex.InnerException.Message : "Não consta.";
-                                    //return Json(mensagem("Não foi possível registrar os dados de comparação. Tente novamente! EXCEPTION" + t + ", INNER: " + inner + ". CONNECTION: " + conexao + ".", alertaTipo.warning, reenviarRequisicao: true));
-
+                                    //throw new Exception("Deu merda no número 1 ", ex);
+                                    new DTO.CreateLog(new Exception("Deu merda no número 1"));
                                 }
                             }
                         }
@@ -542,7 +558,8 @@ namespace SgqSystem.Controllers.Api
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception("Deu merda no número 2 ", ex);
+                        //throw new Exception("Deu merda no número 2 ", ex);
+                        new DTO.CreateLog(new Exception("Deu merda no número 2"));
                     }
                 }
 
@@ -622,7 +639,8 @@ namespace SgqSystem.Controllers.Api
                 catch (Exception ex)
                 {
                     connection.Close();
-                    throw ex;
+                    //throw ex;
+                    new DTO.CreateLog(new Exception("Exception queryVFResultado"));
                 }
 
                 command = new SqlCommand(queryVFValidacao, connection);
@@ -645,7 +663,8 @@ namespace SgqSystem.Controllers.Api
                 catch (Exception ex)
                 {
                     connection.Close();
-                    throw ex;
+                    //throw ex;
+                    new DTO.CreateLog(new Exception("Exception queryVFValidacao"));
                 }
             }
 

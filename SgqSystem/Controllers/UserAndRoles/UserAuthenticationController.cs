@@ -36,7 +36,7 @@ namespace SgqSystem.Controllers.Api
                 return RedirectToAction("Index", "Home");
 
             ExpireCookie();
-            return View();
+            return View(new UserViewModel() { IsWeb = true});
         }
 
         [HttpPost]
