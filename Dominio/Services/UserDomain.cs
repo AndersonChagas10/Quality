@@ -85,7 +85,6 @@ namespace Dominio.Services
         public GenericReturn<UserDTO> AuthenticationLogin(UserDTO userDto)
         {
            
-            //throw new Exception("teste");
             try
             {
                 UserSgq userByName;
@@ -98,7 +97,10 @@ namespace Dominio.Services
 
                 /*Verifica se o UserName Existe no DB*/
                 userByName = _userRepo.GetByName(userDto.Name);
-                
+
+                if(!userDto.IsWeb)
+                    DescriptografaSenha(userDto);
+
                 //Verificar o local de login
                 /*Se for Brasil executa RN do Sistema Brasil*/
                 if (GlobalConfig.Brasil)
@@ -129,6 +131,15 @@ namespace Dominio.Services
                 return new GenericReturn<UserDTO>(e, e.Message);
             }
 
+        }
+
+        /// <summary>
+        /// A senha vem criptografada do tablet, caso seja tablet precisamos descriptografar para comparar no AD e DB.
+        /// </summary>
+        /// <param name="userDto"></param>
+        private void DescriptografaSenha(UserDTO userDto)
+        {
+             userDto.Password = Guard.DecryptStringAES(userDto.Password);
         }
 
         /// <summary>
@@ -191,15 +202,15 @@ namespace Dominio.Services
         public UserSgq LoginSgq(UserDTO userDto, UserSgq userByName)
         {
 
-            /*Descriptografa para comparar no AD*/
-            if (userByName != null)
-            {
-                var decripted = Guard.DecryptStringAES(userByName.Password);
-                if (userDto.Password != decripted)/*Senha esta criptografada*/
-                {
-                    userDto.Password = Guard.DecryptStringAES(userDto.Password);
-                }
-            }
+            ///*Descriptografa para comparar no AD*/
+            //if (userByName != null)
+            //{
+            //    var decripted = Guard.DecryptStringAES(userByName.Password);
+            //    if (userDto.Password != decripted)/*Senha esta criptografada*/
+            //    {
+            //        userDto.Password = Guard.DecryptStringAES(userDto.Password);
+            //    }
+            //}
 
             return CheckUserAndPassDataBase(userDto);
 
@@ -221,15 +232,15 @@ namespace Dominio.Services
         /// <returns></returns>
         private UserSgq LoginEUA(UserDTO userDto, UserSgq userByName)
         {
-            /*Descriptografa para comparar no AD*/
-            if (userByName != null)
-            {
-                var decripted = Guard.DecryptStringAES(userByName.Password);
-                if (userDto.Password != decripted)/*Senha esta criptografada*/
-                {
-                    userDto.Password = Guard.DecryptStringAES(userDto.Password);
-                }
-            }
+            ///*Descriptografa para comparar no AD*/
+            //if (userByName != null)
+            //{
+            //    var decripted = Guard.DecryptStringAES(userByName.Password);
+            //    if (userDto.Password != decripted)/*Senha esta criptografada*/
+            //    {
+            //        userDto.Password = Guard.DecryptStringAES(userDto.Password);
+            //    }
+            //}
 
             /*Mock Login Desenvolvimento, descomentar caso HML ou PRODUÇÃO*/
             if (GlobalConfig.mockLoginEUA)
@@ -393,15 +404,7 @@ namespace Dominio.Services
 
             #endregion
 
-            /*Descriptografa para comparar no AD*/
-            if (userByName != null)
-            {
-                var decripted = Guard.DecryptStringAES(userByName.Password);
-                if (userDto.Password != decripted)/*Senha esta criptografada*/
-                {
-                    userDto.Password = Guard.DecryptStringAES(userDto.Password);
-                }
-            }
+          
 
 
             UserSgq isUser = CheckUserAndPassDataBase(userDto);
@@ -427,7 +430,7 @@ namespace Dominio.Services
             }
 
             #endregion
-
+            isUser.ParCompanyXUserSgq = _baseParCompanyXUserSgq.GetAll().Where(r => r.UserSgq_Id == isUser.Id).ToList();
             return isUser;
         }
 

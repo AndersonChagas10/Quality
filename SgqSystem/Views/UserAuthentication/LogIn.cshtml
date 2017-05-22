@@ -6,6 +6,7 @@
     var urlRecPassword = @Url.Action("PasswordRecovery", "UserAuthentication");
     var urlBuscaEmail = @Url.Action("buscaEmail", "UserAuthentication");
     var urlEnviaEmail = @Url.Action("enviaEmail", "UserAuthentication");
+    //Model.IsWeb = true;
 }
 @using (Html.BeginForm())
 {
@@ -18,6 +19,7 @@
             <input type="text" id="inputUserName" class="form-control" placeholder="@Resources.Resource.username" required="" autofocus="" name="Name">
             <label for="inputPassword" class="sr-only">@Resources.Resource.password</label>
             <input type="password" id="inputPassword" class="form-control" placeholder="@Resources.Resource.password" required="" name="Password">
+            @Html.HiddenFor(r=>r.IsWeb)
             @*<span id="errMsg"></span>*@
 
             @Html.AntiForgeryToken()

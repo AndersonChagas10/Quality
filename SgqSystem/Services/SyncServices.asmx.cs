@@ -5874,8 +5874,8 @@ namespace SgqSystem.Services
         public string selectUserCompanys(int UserSgq_Id, int ParCompany_Id)
         {
             var ParCompanyXUserSgqDB = new SGQDBContext.ParCompanyXUserSgq(db);
-            var parCompanyXUserSgq = ParCompanyXUserSgqDB.getUserCompany(UserSgq_Id);
-
+            var parCompanyXUserSgq = dbEf.ParCompany.Where(r=>r.IsActive).ToList(); //ParCompanyXUserSgqDB.getUserCompany(UserSgq_Id);
+            
             string options = null;
 
             foreach (var p in parCompanyXUserSgq)
@@ -5886,7 +5886,7 @@ namespace SgqSystem.Services
                     selected = " selected";
                 }
 
-                options += "<option" + selected + " value=\"" + p.ParCompany_Id + "\">" + p.ParCompany_Name + "</option>";
+                options += "<option" + selected + " value=\"" + p.Id + "\">" + p.Name/*p.ParCompany_Name*/ + "</option>";
             }
 
             if (!string.IsNullOrEmpty(options))
