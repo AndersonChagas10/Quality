@@ -45,7 +45,7 @@ namespace SgqSystem.Controllers.Api.App
                     foreach (var i in units)
                     {
 
-                        var atualizado = service.getAPPLevels(56, i.Id, DateTime.Now);
+                        var atualizado = service.getAPPLevels(1, i.Id, DateTime.Now);
                         try
                         {
                             GlobalConfig.PaginaDoTablet.Add(i.Id, atualizado);
@@ -79,7 +79,7 @@ namespace SgqSystem.Controllers.Api.App
 
             using (var service = new SyncServices())
             {
-                var atualizado = service.getAPPLevels(56, UnitId, DateTime.Now);/*Cria tela atualizada*/
+                var atualizado = service.getAPPLevels(1, UnitId, DateTime.Now);/*Cria tela atualizada*/
                 try
                 {
                     if (GlobalConfig.PaginaDoTablet.ContainsKey(UnitId))/*Se ja existir atualiza*/

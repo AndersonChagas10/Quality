@@ -4648,7 +4648,9 @@ namespace SgqSystem.Services
                             area.cNmCaracteristica + "</div>";
                 }
 
-                var CtIdAP = CaracteristicaTipificacaoDB.getAreasParticipantesUnico().First().nCdCaracteristica;
+                var CtIdAP = "";
+                if (CaracteristicaTipificacaoDB.getAreasParticipantesUnico().First().nCdCaracteristica != null)
+                    CtIdAP = CaracteristicaTipificacaoDB.getAreasParticipantesUnico().First().nCdCaracteristica;
                 var TIdAP = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(Convert.ToInt32(CtIdAP)).First().TarefaId;
                 var areasParticipantes = html.listgroupItem(
                                                 id: "400",
