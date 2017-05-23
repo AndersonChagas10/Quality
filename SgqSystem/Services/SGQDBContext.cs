@@ -2175,6 +2175,7 @@ namespace SGQDBContext
                 throw;
             }
         }
+        
     }
     public partial class CollectionLevel2
     {

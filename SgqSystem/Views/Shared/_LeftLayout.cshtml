@@ -124,7 +124,7 @@
                     </a>
                 </li>*@
 
-            @if (!GlobalConfig.Eua)
+            @if (!GlobalConfig.Eua && !GlobalConfig.Ytoara)
             {
                 <li class="heading">
                     <h3 class="uppercase">@Resources.Resource.local_forms</h3>
@@ -242,6 +242,13 @@
 
                             </a>
                         </li>*@
+                            <li class="nav-item" id="RoleLink15">
+                                <a href="@Url.Action("Index", "ParBinaryDataType")" class="nav-link nav-toggle">
+                                    <i class="fa fa-cog" aria-hidden="true"></i>
+                                    <span class="title">@Resources.Resource.binary_input_type</span>
+
+                                </a>
+                            </li>
                             <li class="nav-item" id="RoleLink14">
                                 <a href="@Url.Action("Index", "UserSgq")" class="nav-link nav-toggle">
                                     <i class="fa fa-users" aria-hidden="true"></i>
