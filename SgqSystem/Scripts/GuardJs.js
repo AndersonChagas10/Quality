@@ -142,6 +142,42 @@ Array.prototype.min = function () {
     return Math.min.apply(null, this);
 };
 
+
+function heatMapSingleCol(container, tableId, index, order, isBenchemark) {
+
+    var elems = [];
+    $('#' + container).find('#' + tableId).find('td:nth-child(' + index + ')').each(function (c, o) {
+
+        elems.push({
+            //obj javascript > td
+            td: $(o)
+            // Extrai valor numerico da TD.
+            , valor: o.textContent.trim().replace(',', '.')
+        });
+    });
+
+    var valorMaximo = Math.max.apply(Math, elems.map(function (o) { return o.valor; }))
+    var valorMinimo = Math.min.apply(Math, elems.map(function (o) { return o.valor; }))
+
+    if (isBenchemark) {
+        elems.forEach(function (oo, cc) {
+            var range = valorMaximo - valorMinimo;
+            var diferencaPeloRange = oo["valor"] - valorMinimo;
+            var percentual = (diferencaPeloRange / range) * 100;
+            oo.td[0].style.backgroundColor = percentToRGB(percentual, order);
+        });
+    } else {
+        elems.forEach(function (oo, cc) {
+            //Encontra valor em 1 percentual dentre os valores escolhidos, maior valor é 100% e menos é 0%
+            var percentual = parseFloat((((oo["valor"] * 100) / valorMaximo) / 100).toFixed(2));
+            //Atribui o Style com a cor de acordo com o valor percentual obtido acima.
+            var val = parseFloat(oo["valor"]);
+            oo.td[0].style.backgroundColor = percentToRGB(val, order);
+        });
+    }
+
+}
+
 /*
     tableId [type=string] Ex: "Table1",
     isInLine [type=bool] Ex: true,
@@ -150,58 +186,52 @@ Array.prototype.min = function () {
     delimiterIndex [type=int] Ex: 3, (Representa o índice da ultima TD aonde começa a zona de repetição dos dados).
     order [type=string] 'ASC' or 'DESC'.
 */
-function heatMap(tableId, isInLine, isInColumn, startIndex, delimiterIndex, order) {
+function heatMap(container, tableId, startIndex, delimiterIndex, order) {
 
     var startIndexFixed = startIndex;
 
-    //Se for por TR.
-    if (isInLine) {
+    //Se for In Line > para cada TR procura indice e calcula o percentual.
+    $('#' + container).find('#' + tableId).find('tr').each(function (c, o) {
 
-        //Se for In Line > para cada TR procura indice e calcula o percentual.
-        $('#fixBody1 > table tr').each(function (c, o) {
+        //Para manejar contadores por TR
+        startIndex = startIndexFixed;
+        var elems = [];
 
-            //Para manejar contadores por TR
-            startIndex = startIndexFixed;
-            var elems = [];
-
-            //Insere no array todos os elementos indicados em startIndex, insere o elemento Jquery "td" e o valor da "td".
-            while (!!$(o).find('td:eq(' + startIndex + ')')[0]) {
+        //Insere no array todos os elementos indicados em startIndex, insere o elemento Jquery "td" e o valor da "td".
+        while (!!$(o).find('td:eq(' + startIndex + ')')[0]) {
+            if ($(o).find('td:eq(' + (startIndex - delimiterIndex) + ')')[0].textContent.match(/\d+(\.\d{1,2})?/g)[0] > 0) {
                 elems.push({
                     //obj javascript > td
                     td: $(o).find('td:eq(' + startIndex + ')')
                     // Extrai valor numerico da TD.
-                    , valor: $(o).find('td:eq(' + startIndex + ')')[0].textContent.match(/\d+(\.\d{1,2})?/g)[0]
+                    , valor: $(o).find('td:eq(' + startIndex + ')')[0].textContent.trim().replace(',', '.')
                 });
                 //Proximo index de TD a se inserir.
-                startIndex += delimiterIndex + 1;
             }
+            startIndex += delimiterIndex + 1;
+        }
 
-            //Valor minimo e maximo encontrados na TR.
-            var valorMaximo = Math.max.apply(Math, elems.map(function (o) { return o.valor; }))
-            var valorMinimo = Math.min.apply(Math, elems.map(function (o) { return o.valor; }))
+        //Valor minimo e maximo encontrados na TR.
+        var valorMaximo = Math.max.apply(Math, elems.map(function (o) { return o.valor; }))
+        var valorMinimo = Math.min.apply(Math, elems.map(function (o) { return o.valor; }))
 
+        if (elems.length == 1) {
             elems.forEach(function (oo, cc) {
                 //Encontra valor em 1 percentual dentre os valores escolhidos, maior valor é 100% e menos é 0%
                 var percentual = parseFloat((((oo["valor"] * 100) / valorMaximo) / 100).toFixed(2));
                 //Atribui o Style com a cor de acordo com o valor percentual obtido acima.
-
                 var val = parseFloat(oo["valor"]);
-
-                //if (val > 100) {
-                //    val = 100;
-                //}
-                //else if (val < 0) {
-                //    val = 0;
-                //}
-
-                //var h = Math.floor((100 - val) * 120 / 100);
-                //var s = Math.abs(val - 50) / 50;
-                //var v = 1;
-
                 oo.td[0].style.backgroundColor = percentToRGB(val, order);
             });
-        })
-    }
+        } else {
+            elems.forEach(function (oo, cc) {
+                var range = valorMaximo - valorMinimo;
+                var diferencaPeloRange = oo["valor"] - valorMinimo;
+                var percentual = (diferencaPeloRange / range) * 100;
+                oo.td[0].style.backgroundColor = percentToRGB(percentual, order);
+            });
+        }
+    })
 }
 
 function percentToRGB(percent, order) {

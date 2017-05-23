@@ -1354,9 +1354,7 @@
     <Content Include="Views\ExemploInput\Index.cshtml" />
     <Content Include="Views\Example\TiposDeInputSgq.cshtml" />
     <Content Include="Views\RelatoriosSgq\VisaoGeralDaArea.cshtml" />
-    <Content Include="Views\RelatoriosSgq\VisaoGeralDaAreaTbl1.cshtml" />
-    <Content Include="Views\RelatoriosSgq\VisaoGeralDaAreaTbl2.cshtml" />
-    <Content Include="Views\RelatoriosSgq\VisaoGeralDaArea - Copy.cshtml" />
+    <Content Include="Views\RelatoriosSgq\GetTable.cshtml" />
     <Content Include="Views\manDataCollectITs\Create2.cshtml" />
     <Content Include="Views\RelatoriosSgq\_ResultLevel3Edit.cshtml" />
     <Content Include="Views\UserSgq\Create.cshtml" />
