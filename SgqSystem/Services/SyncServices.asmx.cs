@@ -3559,7 +3559,6 @@ namespace SgqSystem.Services
             //Inicaliza ParLevel1VariableProduction
             var ParLevel1VariableProductionDB = new SGQDBContext.ParLevel1VariableProduction(db);
             var ParRelapseDB = new SGQDBContext.ParRelapse(db);
-            var ParNC = new SGQDBContext.NotConformityRule(db);
 
             //Buscamos os ParLevel11 para a unidade selecionada
             var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id, Level1ListId: Level1ListId);
@@ -3710,9 +3709,7 @@ namespace SgqSystem.Services
                         }
 
                         var listParRelapse = ParRelapseDB.getRelapses(parlevel1.Id);
-
-                        var hasAlert = ParNC.hasRule(parlevel1.Id);
-
+                        
                         string level01 = html.level1(parlevel1,
                                                      tipoTela: tipoTela,
                                                      totalAvaliado: 0,
@@ -3730,8 +3727,7 @@ namespace SgqSystem.Services
                                                      volumeAlertaIndicador: volumeAlerta,
                                                      metaIndicador: meta,
                                                      IsLimitedEvaluetionNumber: parlevel1.IsLimitedEvaluetionNumber,
-                                                     listParRelapse: listParRelapse,
-                                                     hasAlert: hasAlert);
+                                                     listParRelapse: listParRelapse);
                         //Incrementa level1
                         parLevel1 += html.listgroupItem(parlevel1.Id.ToString(), classe: "row " + excecao, outerhtml: level01 + painelCounters);
                     }
@@ -5027,6 +5023,9 @@ namespace SgqSystem.Services
                                 //painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.LastOrDefault(r=>r.Period == p && r.Shift == s)?.WeiDefects.ToString("G29") + "</span></div>";
                                 painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.Where(r => r.Period == p && r.Shift == s).Sum(r => r.WeiDefects).ToString("G29") + "</span></div>";
 
+                                if((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
+                                    painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("three_more_defects").Value.ToString() + ": <span>0</span></div>";                                
+
                             }
 
                         }
@@ -5039,6 +5038,9 @@ namespace SgqSystem.Services
                             {
                                 painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>";
                                 painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>0</span></div>";
+
+                                if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
+                                    painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("three_more_defects").Value.ToString() + ": <span>0</span></div>";
                             }
 
                         }

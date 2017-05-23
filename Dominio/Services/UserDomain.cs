@@ -123,6 +123,19 @@ namespace Dominio.Services
                 if (isUser.ParCompany_Id <= 0)
                     throw new Exception(mensagens.erroUnidade);
 
+                /*Verificação se o ParCompany_Id da tabela UserSgq tem que ser atualizada*/
+                var defaultCompany = _baseParCompanyXUserSgq.GetAll().FirstOrDefault(
+                    r => r.UserSgq_Id == isUser.Id && r.ParCompany_Id == isUser.ParCompany_Id);
+
+                if (defaultCompany == null)
+                {
+                    defaultCompany = _baseParCompanyXUserSgq.GetAll().FirstOrDefault(
+                    r => r.UserSgq_Id == isUser.Id);
+                    isUser.ParCompany_Id = defaultCompany.ParCompany_Id;
+                    _userRepo.Salvar(isUser);
+
+                }
+
                 return new GenericReturn<UserDTO>(Mapper.Map<UserSgq, UserDTO>(isUser));
             }
             catch (Exception e)
