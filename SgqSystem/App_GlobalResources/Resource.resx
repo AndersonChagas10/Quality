@@ -2025,4 +2025,10 @@
   <data name="positive_input_type" xml:space="preserve">
     <value>Positive input</value>
   </data>
+  <data name="sequential" xml:space="preserve">
+    <value>Sequential</value>
+  </data>
+  <data name="side_banda" xml:space="preserve">
+    <value>Side</value>
+  </data>
 </root>

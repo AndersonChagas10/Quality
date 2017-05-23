@@ -4777,6 +4777,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sequential.
+        /// </summary>
+        internal static string sequential {
+            get {
+                return ResourceManager.GetString("sequential", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The sequential must be filled.
         /// </summary>
         internal static string sequential_must_be_filled {
@@ -4899,6 +4908,15 @@ namespace Resources {
         internal static string show_on_this_level {
             get {
                 return ResourceManager.GetString("show_on_this_level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Side.
+        /// </summary>
+        internal static string side_banda {
+            get {
+                return ResourceManager.GetString("side_banda", resourceCulture);
             }
         }
         
