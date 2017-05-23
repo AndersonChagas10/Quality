@@ -4992,8 +4992,8 @@ namespace SgqSystem.Services
                 string accordeonbuttons = null;
                 if (haveAccordeon == true)
                 {
-                    accordeonbuttons = "<button class=\"btn btn-default button-expand marginRight10\"><i class=\"fa fa-expand\" aria-hidden=\"true\"></i> Mostrar Todos</button>" +
-                                       "<button class=\"btn btn-default button-collapse\"><i class=\"fa fa-compress\" aria-hidden=\"true\"></i> Fechar Todos</button>";
+                    accordeonbuttons = "<button class=\"btn btn-default button-expand marginRight10\"><i class=\"fa fa-expand\" aria-hidden=\"true\"></i> "+Resources.Resource.show_all+" </button>" +
+                                       "<button class=\"btn btn-default button-collapse\"><i class=\"fa fa-compress\" aria-hidden=\"true\"></i> " + Resources.Resource.hide_all + " </button>";
                 }
 
                 // incluir coluna e obter o total de amostras com defeito agrupado.
@@ -5063,7 +5063,7 @@ namespace SgqSystem.Services
                 }
 
                 string panelButton = html.listgroupItem(
-                                                        outerhtml: botoesTodos,
+                                                        outerhtml: botoesTodos + accordeonbuttons,
                                                         classe: "painel row"
                                                     );
 

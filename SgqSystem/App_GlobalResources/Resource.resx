@@ -2025,4 +2025,7 @@
   <data name="positive_input_type" xml:space="preserve">
     <value>Positive input</value>
   </data>
+  <data name="close_all" xml:space="preserve">
+    <value>Fechar Todos</value>
+  </data>
 </root>

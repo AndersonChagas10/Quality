@@ -2004,4 +2004,7 @@
   <data name="positive_input_type" xml:space="preserve">
     <value>Tipo de entrada positiva</value>
   </data>
+  <data name="close_all" xml:space="preserve">
+    <value>Fechar todos</value>
+  </data>
 </root>

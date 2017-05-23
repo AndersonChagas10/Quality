@@ -727,6 +727,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fechar Todos.
+        /// </summary>
+        internal static string close_all {
+            get {
+                return ResourceManager.GetString("close_all", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cluster.
         /// </summary>
         internal static string cluster {
