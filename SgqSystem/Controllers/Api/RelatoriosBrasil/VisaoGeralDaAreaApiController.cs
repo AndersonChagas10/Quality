@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using DTO;
 using DTO.Helpers;
 using DTO.ResultSet;
 using SgqSystem.ViewModels;
@@ -20,7 +21,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
         [HttpPost]
         [Route("Grafico1")]
-        public List<VisaoGeralDaAreaResultSet> Grafico1([FromBody] FormularioParaRelatorioViewModel form)
+        public List<VisaoGeralDaAreaResultSet> Grafico1([FromBody] DataCarrierFormulario form)
         {
             CriaMockG1();
             //return _mock;
@@ -28,35 +29,35 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         }
 
         [HttpPost]
-        [Route("Grafico2/{regId}")]
-        public List<VisaoGeralDaAreaResultSet> Grafico2([FromBody] FormularioParaRelatorioViewModel form, int regId)
+        [Route("Grafico2")]
+        public List<VisaoGeralDaAreaResultSet> Grafico2([FromBody] DataCarrierFormulario form)
         {
-            CriaMockG2();
+            CriaMockG2(form);
             //return _mock;
             return _list;
         }
 
         [HttpPost]
-        [Route("Grafico3/{regId}")]
-        public List<VisaoGeralDaAreaResultSet> Grafico3([FromBody] FormularioParaRelatorioViewModel form, int regId)
+        [Route("Grafico3")]
+        public List<VisaoGeralDaAreaResultSet> Grafico3([FromBody] DataCarrierFormulario form)
         {
             CriaMockG3(form);
             return _mock;
         }
 
         [HttpPost]
-        [Route("Grafico4/{regId}")]
-        public List<VisaoGeralDaAreaResultSet> Grafico4([FromBody] FormularioParaRelatorioViewModel form, int regId)
+        [Route("Grafico4")]
+        public List<VisaoGeralDaAreaResultSet> Grafico4([FromBody] DataCarrierFormulario form)
         {
-            CriaMockG4();
+            CriaMockG4(form);
             return _mock;
         }
 
         [HttpPost]
-        [Route("Grafico5/{regId}")]
-        public List<VisaoGeralDaAreaResultSet> Grafico5([FromBody] FormularioParaRelatorioViewModel form, int regId)
+        [Route("Grafico5")]
+        public List<VisaoGeralDaAreaResultSet> Grafico5([FromBody] DataCarrierFormulario form)
         {
-            CriaMockG5();
+            CriaMockG5(form);
             return _mock;
         }
 
@@ -702,7 +703,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         /// 
         /// Objeto a ser utilizado: VisaoGeralDaAreaResultSet
         /// </summary>
-        private void CriaMockG2()
+        private void CriaMockG2(DataCarrierFormulario form)
         {
             //_mock = new List<VisaoGeralDaAreaResultSet>();
 
@@ -759,7 +760,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         /// Objeto a ser utilizado: VisaoGeralDaAreaResultSet
         /// </summary>
         /// <param name="form"></param>
-        private void CriaMockG3(FormularioParaRelatorioViewModel form)
+        private void CriaMockG3(DataCarrierFormulario form)
         {
             var primeiroDiaMesAnterior = Guard.PrimeiroDiaMesAnterior(form._dataInicio);
             var proximoDomingo = Guard.GetNextWeekday(form._dataFim, DayOfWeek.Sunday);
@@ -836,7 +837,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         ///      
         /// Objeto a ser utilizado: VisaoGeralDaAreaResultSet
         /// </summary>
-        private void CriaMockG4()
+        private void CriaMockG4(DataCarrierFormulario form)
         {
             _mock = new List<VisaoGeralDaAreaResultSet>();
 
@@ -881,7 +882,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         /// 
         /// Objeto a ser utilizado: VisaoGeralDaAreaResultSet
         /// </summary>
-        private void CriaMockG5()
+        private void CriaMockG5(DataCarrierFormulario form)
         {
             _mock = new List<VisaoGeralDaAreaResultSet>();
 
