@@ -3709,7 +3709,7 @@ namespace SgqSystem.Services
                         }
 
                         var listParRelapse = ParRelapseDB.getRelapses(parlevel1.Id);
-                        
+
                         string level01 = html.level1(parlevel1,
                                                      tipoTela: tipoTela,
                                                      totalAvaliado: 0,
@@ -5023,8 +5023,8 @@ namespace SgqSystem.Services
                                 //painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.LastOrDefault(r=>r.Period == p && r.Shift == s)?.WeiDefects.ToString("G29") + "</span></div>";
                                 painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.Where(r => r.Period == p && r.Shift == s).Sum(r => r.WeiDefects).ToString("G29") + "</span></div>";
 
-                                if((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
-                                    painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("three_more_defects").Value.ToString() + ": <span>0</span></div>";                                
+                                if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
+                                    painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("three_more_defects").Value.ToString() + ": <span>0</span></div>";
 
                             }
 
@@ -5104,10 +5104,11 @@ namespace SgqSystem.Services
             {
                 classInput = " defects";
                 labels = html.div(
-                                           outerhtml: "<b>Max: </b>" + parLevel3.IntervalMax.ToString("G29"),
-                                           classe: "levelName"
-                                       //style: "margin-top:7px;"
-                                       );
+                           outerhtml: "<b>Max: </b>" + parLevel3.IntervalMax.ToString("G29"),
+                           classe: "levelName",
+                           //style: "margin-top:7px;"
+                           style: "visibility: hidden;"
+                         );
 
                 input = html.campoNumeroDeDefeitos(id: parLevel3.Id.ToString(),
                                                 intervalMin: parLevel3.IntervalMin,
@@ -5882,8 +5883,8 @@ namespace SgqSystem.Services
         public string selectUserCompanys(int UserSgq_Id, int ParCompany_Id)
         {
             var ParCompanyXUserSgqDB = new SGQDBContext.ParCompanyXUserSgq(db);
-            var parCompanyXUserSgq = dbEf.ParCompany.Where(r=>r.IsActive).ToList(); //ParCompanyXUserSgqDB.getUserCompany(UserSgq_Id);
-            
+            var parCompanyXUserSgq = dbEf.ParCompany.Where(r => r.IsActive).ToList(); //ParCompanyXUserSgqDB.getUserCompany(UserSgq_Id);
+
             string options = null;
 
             foreach (var p in parCompanyXUserSgq)
