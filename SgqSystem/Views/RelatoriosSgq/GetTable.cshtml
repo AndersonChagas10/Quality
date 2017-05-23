@@ -7,125 +7,19 @@
     var counter3 = 0;
 }
 
-<style>
-    #fixarcoluna table {
-        border: none;
-        background-color: none;
+
+
+
+<br />
+
+@if (Model.Title != null)
+{
+    if (Model.Title.Length > 0)
+    {
+        <div>@Model.Title</div>
     }
-
-    #fixarColuna tr {
-        border-bottom: 1px #eee solid;
-    }
-
-    #fixarColuna .content table {
-        width: 100%;
-    }
-
-    #fixarColuna .content tr {
-        background-color: none;
-    }
-
-        #fixarColuna .content tr:hover {
-            background-color: none;
-        }
-
-    #fixarColuna .content td {
-        border-bottom: solid 1px #999;
-        padding: 0px;
-    }
-
-    #fixarColuna .contentHead td {
-        border-bottom: solid 2px #CCC;
-        padding: 0px;
-    }
-
-    #fixarColuna .contentHead tr {
-        background-color: none;
-    }
-
-    #fixarColuna .content1 {
-        display: block;
-        width: 100%;
-        padding: 0;
-        margin: 0;
-        overflow-y: hidden;
-        height: 90px;
-    }
-
-    fixarColuna .contentHead {
-        display: block;
-        width: 98.5%;
-        padding: 0;
-        margin: 0;
-        overflow: hidden;
-        height: 35px;
-    }
-
-    #fixarColuna .content div {
-        display: inline;
-        float: left;
-        position: relative;
-        border: none;
-        width: 100%;
-    }
-
-    #fixarColuna .contentHead div {
-        display: inline;
-        float: left;
-        position: relative;
-        border: none;
-        width: 100%;
-    }
-
-    #fixarColuna .content .contentHead .larguraP19 {
-        width: 100%;
-        overflow-x: hidden;
-    }
-
-    #fixBody1::-webkit-scrollbar-track {
-        background-color: #FFFFFF;
-    }
-
-    #fixBody1::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-        background: #FFFFFF;
-    }
-
-    #fixBody1::-webkit-scrollbar-thumb {
-        background: #bf0d0e;
-    }
-
-    #colUie1::-webkit-scrollbar-track {
-        background-color: #FFFFFF;
-    }
-
-    #colUie1::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-        background: #FFFFFF;
-    }
-
-    #colUie1::-webkit-scrollbar-thumb {
-        background: #bf0d0e;
-    }
-
-    #colUieFim1::-webkit-scrollbar-track {
-        background-color: #FFFFFF;
-    }
-
-    #colUieFim1::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-        background: #FFFFFF;
-    }
-
-    #colUieFim1::-webkit-scrollbar-thumb {
-        background: #bf0d0e;
-    }
-</style>
-
-<div id="TabelaDespesaTodasRegionais" style="cursor: pointer; position: relative; overflow: auto; width: 100%; margin-left: auto; margin-right: auto; opacity: 1;">
+}
+<div id="TabelaDespesaTodasRegionais" style="cursor: pointer; position: relative; overflow: auto; width: 100%; margin-left: auto; margin-right: auto; opacity: 1;" class="divTabela">
     <div id="fixarColuna" style="font-size:11px; width:100%;">
         <div style="width:20%; height:90px; float:left;">
             <div class="larguraP19" style="width:100%; overflow-x: hidden; float:left;">
@@ -143,7 +37,7 @@
                 </table>
 
             </div>
-            <div class="larguraP19" style="width:100%;overflow-y:hidden;overflow-x:scroll; float:left; height:90px;" id="colUie1">
+            <div class="larguraP19 colUie1" style="width:100%;overflow-y:hidden;overflow-x:scroll; float:left; max-height:200px;" id="colUie1">
 
                 <table cellspacing="0" cellpadding="0" width="100%" id="dadosEsquerdaName">
                     @* Nome dos pacotes *@
@@ -175,7 +69,7 @@
             </div>
         </div>
         <div style="width:50%; height:90px; float:left;">
-            <div id="colHead1" style="width:100%; overflow-x: hidden; float: right;">
+            <div id="colHead1" style="width:100%; overflow-x: hidden; float: right;" class="colHead1">
 
                 <table cellspacing="0" cellpadding="0" border="0" id="Header2">
                     @* Reg1 por ex *@
@@ -204,7 +98,7 @@
                 </table>
 
             </div>
-            <div id="fixBody1" style="width:100%;overflow: scroll;height:90px;z-index:2; float: right;">
+            <div id="fixBody1" style="width:100%;overflow: scroll;max-height:200px;z-index:2; float: right;" class="fixBody1">
                 @{
                     counter = 0;
                 }
@@ -222,7 +116,7 @@
                                         counter2 = 0;
                                         counter3++;
                                     }
-                                    <td dado1="@i.name" dado2="@Model.trsCabecalho2[counter].tds[counter2].name" dado3="@Model.trsCabecalho2[counter3].name" onclick="@ii.click" align="center" style="min-width:70px; padding:0px; height: 40px;">
+                                    <td onclick="@Model.CallBackTableBody" dado1="@i.name" @*dado2="@Model.trsCabecalho2[counter].tds[counter2].name"*@ dado3="@Model.trsCabecalho2[counter3].name" align="center" style="min-width:70px; padding:0px; height: 40px;">
                                         @ii.valor
                                     </td>
                                     counter2++;
@@ -240,7 +134,7 @@
                 }
 
             </div>
-            <div id="footerBody1" style="width:100%; overflow-x: hidden; float: right;">
+            <div id="footerBody1" style="width:100%; overflow-x: hidden; float: right;" class="footerBody1">
 
                 <table cellspacing="0" cellpadding="0" border="0" id="footer2">
                     <thead>
@@ -286,7 +180,7 @@
                 </table>
 
             </div>
-            <div class="larguraP19" style="width:100%;overflow-y:hidden; float:left;overflow-x:scroll;height:90px;" id="colUieFim1">
+            <div class="larguraP19 colUieFim1" style="width:100%;overflow-y:hidden; float:left;overflow-x:scroll;max-height:200px;" id="colUieFim1">
 
                 <table cellspacing="0" cellpadding="0" id="dadosDireita">
                     <tbody>
@@ -328,38 +222,47 @@
     </div>
 </div>
 
+<br />
+
 <script>
 
-    $('#fixBody1').scroll(function () {
-        $("#colHead1").scrollLeft($(this).scrollLeft());
-        $("#colFoot1").scrollLeft($(this).scrollLeft());
-        $("#footerBody1").scrollLeft($(this).scrollLeft());
-    });
 
-    $('#colUieFim1').scroll(function () {
-        $("#headTotal1").scrollLeft($(this).scrollLeft());
-        $("#footerTotal1").scrollLeft($(this).scrollLeft());
-    });
+    function scroolTable (container){
 
-    $('#fixBody1').scroll(function () {
-        $("#colUie1").scrollTop($(this).scrollTop());
-        $("#colUieFim1").scrollTop($(this).scrollTop());
-    });
-    $('#colUieFim1').scroll(function () {
-        $("#colUie1").scrollTop($(this).scrollTop());
-        $("#fixBody1").scrollTop($(this).scrollTop());
-    });
-    $('#colUie1').scroll(function () {
-        $("#fixBody1").scrollTop($(this).scrollTop());
-        $("#colUieFim1").scrollTop($(this).scrollTop());
-    });
+        $('#' + container).find('.fixBody1').scroll(function () {
+            $('#' + container).find(".colHead1").scrollLeft($(this).scrollLeft());
+            $('#' + container).find(".colFoot1").scrollLeft($(this).scrollLeft());
+            $('#' + container).find(".footerBody1").scrollLeft($(this).scrollLeft());
+        });
+
+        $('#' + container).find('.colUieFim1').scroll(function () {
+            $('#' + container).find(".headTotal1").scrollLeft($(this).scrollLeft());
+            $('#' + container).find(".footerTotal1").scrollLeft($(this).scrollLeft());
+        });
+
+        $('#' + container).find('.fixBody1').scroll(function () {
+            $('#' + container).find(".colUie1").scrollTop($(this).scrollTop());
+            $('#' + container).find(".colUieFim1").scrollTop($(this).scrollTop());
+        });
+
+        $('#' + container).find('.colUieFim1').scroll(function () {
+            $('#' + container).find(".colUie1").scrollTop($(this).scrollTop());
+            $('#' + container).find(".fixBody1").scrollTop($(this).scrollTop());
+        });
+
+        $('#' + container).find('.colUie1').scroll(function () {
+            $('#' + container).find(".fixBody1").scrollTop($(this).scrollTop());
+            $('#' + container).find(".colUieFim1").scrollTop($(this).scrollTop());
+        });
+
+    }
 
     var _dados1;
     var _dados2;
     var _dados3;
 
     $(document).ready(function () {
-
+        //scroolTable();
         $('#dadosEsquerda  td').on('click', function(){
             _dados1 = $(this).attr("dado1");
             _dados2 = $(this).attr("dado2");

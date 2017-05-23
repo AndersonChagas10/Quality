@@ -2,8 +2,8 @@
 @{
     ViewBag.Title = "Visão Geral da Área";
     var url = Url.Action("Index", "Home");
-    var urlTabela1 = Url.Action("VisaoGeralDaAreaTbl1", "RelatoriosSgq");
-    var urlTabela2 = Url.Action("VisaoGeralDaAreaTbl2", "RelatoriosSgq");
+    var urlTabela1 = Url.Action("GetTable", "RelatoriosSgq");
+    var urlTabela2 = Url.Action("GetTable", "RelatoriosSgq");
     var urlGrafico1 = Url.Action("Grafico1", "api/VisaoGeralDaArea");
     var urlGrafico2 = Url.Action("Grafico2", "api/VisaoGeralDaArea");
     var urlGrafico3 = Url.Action("Grafico3", "api/VisaoGeralDaArea");
@@ -11,11 +11,130 @@
     var urlGrafico5 = Url.Action("Grafico5", "api/VisaoGeralDaArea");
 }
 
+<style>
+    #fixarcoluna table {
+        border: none;
+        background-color: none;
+    }
+
+    #fixarColuna tr {
+        border-bottom: 1px #eee solid;
+    }
+
+    #fixarColuna .content table {
+        width: 100%;
+    }
+
+    #fixarColuna .content tr {
+        background-color: none;
+    }
+
+        #fixarColuna .content tr:hover {
+            background-color: none;
+        }
+
+    #fixarColuna .content td {
+        border-bottom: solid 1px #999;
+        padding: 0px;
+    }
+
+    #fixarColuna .contentHead td {
+        border-bottom: solid 2px #CCC;
+        padding: 0px;
+    }
+
+    #fixarColuna .contentHead tr {
+        background-color: none;
+    }
+
+    #fixarColuna .content1 {
+        display: block;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        overflow-y: hidden;
+        height: 90px;
+    }
+
+    fixarColuna .contentHead {
+        display: block;
+        width: 98.5%;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        height: 35px;
+    }
+
+    #fixarColuna .content div {
+        display: inline;
+        float: left;
+        position: relative;
+        border: none;
+        width: 100%;
+    }
+
+    #fixarColuna .contentHead div {
+        display: inline;
+        float: left;
+        position: relative;
+        border: none;
+        width: 100%;
+    }
+
+    #fixarColuna .content .contentHead .larguraP19 {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    #fixBody1::-webkit-scrollbar-track {
+        background-color: #FFFFFF;
+    }
+
+    #fixBody1::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        background: #FFFFFF;
+    }
+
+    #fixBody1::-webkit-scrollbar-thumb {
+        background: #bf0d0e;
+    }
+
+    #colUie1::-webkit-scrollbar-track {
+        background-color: #FFFFFF;
+    }
+
+    #colUie1::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        background: #FFFFFF;
+    }
+
+    #colUie1::-webkit-scrollbar-thumb {
+        background: #bf0d0e;
+    }
+
+    #colUieFim1::-webkit-scrollbar-track {
+        background-color: #FFFFFF;
+    }
+
+    #colUieFim1::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        background: #FFFFFF;
+    }
+
+    #colUieFim1::-webkit-scrollbar-thumb {
+        background: #bf0d0e;
+    }
+</style>
+
 <div class="page-content" style="min-height: 600px;">
 
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
-
     <div id="formBodyContent">
+
+        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
         <div id="grafico1"></div>
 
@@ -69,18 +188,50 @@
                 return;
             }
 
+
+
             EasyAjax(urlGrafico1, enviar, CallbackGrafico1, "grafico1", toggle);
+
+            enviar["CallBackTableTituloColunas"] = function () { };
+            enviar["CallBackTableBody"] = "GetTabela2($(this).attr('dado3'), $(this).attr('dado1'));";
+            enviar["CallBackTableEsquerda"] = function () { };
+            enviar["Query"] = "GetTbl1";
+            enviar["Title"] = "Titulo";
+
             EasyAjax(urlTabela1, enviar, function (r) {
                 $('#tabela1div').empty().append(r);
-                heatMap('dadosEsquerda', true, false, 1, 3, 'DESC');
+                var container = 'tabela1div';
+                heatMap(container, 'dadosEsquerda', 1, 3, 'ASC');
+                heatMap(container, 'footer2', 1, 3, 'ASC');
+                heatMapSingleCol(container, 'dadosDireita', 2, 'ASC', true);
+                scroolTable(container);
             }, "tabela1div");
         };
 
-        function GetTabela2() {
+        function GetTabela2(paramCol, paramRow) {
             $('#grafico3').empty();
             $('#grafico4').empty();
             $('#grafico5').empty();
-            EasyAjax(urlTabela2, enviar, function (r) { $('#tabela2div').empty().append(r); heatMap('dadosEsquerda', true, false, 1, 3, 'DESC'); }, "tabela2div");
+
+            enviar["CallBackTableTituloColunas"] = function () { };
+            enviar["CallBackTableBody"] = "Grafico3($(this).attr('dado3'), $(this).attr('dado1'));Grafico4($(this).attr('dado3'), $(this).attr('dado1'));";
+            enviar["CallBackTableEsquerda"] = function () { };
+            enviar["Query"] = "GetTbl2";
+            enviar["Title"] = "";
+
+            enviar["ParametroTableRow"] = [];
+            enviar["ParametroTableCol"] = [];
+            enviar["ParametroTableRow"].push(paramRow);
+            enviar["ParametroTableCol"].push(paramCol);
+
+            EasyAjax(urlTabela2, enviar, function (r) {
+                $('#tabela2div').empty().append(r);
+                var container = 'tabela2div';
+                heatMap(container, 'dadosEsquerda', 1, 3, 'ASC');
+                heatMap(container, 'footer2', 1, 3, 'ASC');
+                heatMapSingleCol(container, 'dadosDireita', 2, 'ASC', true);
+                scroolTable(container)
+            }, "tabela2div");
         }
 
         function CallbackGrafico1(data) {
@@ -148,7 +299,7 @@
                     {
                         name: 'Scorecard',
                         data: scorecardRegional,
-                        linkedTo: 'id1',    
+                        linkedTo: 'id1',
                         point: {
                             events: {
                                 click: function () {
@@ -196,8 +347,9 @@
 
         }
 
-        function Grafico2(idRegional) {
-            EasyAjax(urlGrafico2 + "/" + idRegional, enviar, CallbackGrafico2, "grafico2");
+        function Grafico2(id) {
+            enviar["Query"] = id;
+            EasyAjax(urlGrafico2, enviar, CallbackGrafico2, "grafico2");
         }
 
         function CallbackGrafico2(data) {
@@ -309,9 +461,20 @@
 
         }
 
-        function Grafico3(id) {
+        function Grafico3(paramCol, paramRow) {
             $('#grafico5').empty();
-            EasyAjax(urlGrafico3 + "/" + id, enviar, CallbackGrafico3, "grafico3");
+
+            if (enviar["ParametroTableRow"][1] != undefined) {
+                enviar["ParametroTableRow"][1] = paramRow;
+                enviar["ParametroTableCol"][1] = paramCol;
+            } else {
+                enviar["ParametroTableRow"].push(paramRow);
+                enviar["ParametroTableCol"].push(paramCol);
+            }
+
+           
+
+            EasyAjax(urlGrafico3, enviar, CallbackGrafico3, "grafico3");
         }
 
         function CallbackGrafico3(data) {
@@ -456,8 +619,18 @@
             });
         }
 
-        function Grafico4(id) {
-            EasyAjax(urlGrafico4 + "/" + id, enviar, CallbackGrafico4, "grafico4");
+        function Grafico4(paramCol, paramRow) {
+
+            if (enviar["ParametroTableRow"][1] != undefined) {
+                enviar["ParametroTableRow"][1] = paramRow;
+                enviar["ParametroTableCol"][1] = paramCol;
+            } else {
+                enviar["ParametroTableRow"].push(paramRow);
+                enviar["ParametroTableCol"].push(paramCol);
+            }
+
+
+            EasyAjax(urlGrafico4, enviar, CallbackGrafico4, "grafico4");
         }
 
         function CallbackGrafico4(data) {
@@ -610,154 +783,161 @@
         }
 
         function Grafico5(id) {
-            EasyAjax(urlGrafico5 + "/" + id, {}, CallbackGrafico5, "grafico5")
+
+            if (enviar["ParametroTableRow"][2] != undefined) {
+                enviar["ParametroTableRow"][2] = id;
+            } else {
+                enviar["ParametroTableRow"].push(id);
+            }
+
+            EasyAjax(urlGrafico5, enviar, CallbackGrafico5, "grafico5")
         }
 
         function CallbackGrafico5(data) {
 
-                var level1Name = MapeiaValorParaHC(data, "level1Name")[0];
-                var level2Name = MapeiaValorParaHC(data, "level2Name")[0];
-                var nome = MapeiaValorParaHC(data, "level3Name");
-                var nc = MapeiaValorParaHC(data, "nc");
-                var porc = MapeiaValorParaHC(data, "procentagemNc");
-                var qtdAv = MapeiaValorParaHC(data, "av");
+            var level1Name = MapeiaValorParaHC(data, "level1Name")[0];
+            var level2Name = MapeiaValorParaHC(data, "level2Name")[0];
+            var nome = MapeiaValorParaHC(data, "level3Name");
+            var nc = MapeiaValorParaHC(data, "nc");
+            var porc = MapeiaValorParaHC(data, "procentagemNc");
+            var qtdAv = MapeiaValorParaHC(data, "av");
 
-                //$('#grafico5').removeClass('loader');
+            //$('#grafico5').removeClass('loader');
 
-                $('#grafico5').empty().highcharts({
-                    credits: {
-                        enabled: false
-                    },
-                    chart: {
-                        type: 'column'
-                    },
+            $('#grafico5').empty().highcharts({
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: ('Total NC Por Monitoramento - ' + level2Name)
+                },
+                xAxis: {
+                    categories: nome,
                     title: {
-                        text: ('Total NC Por Monitoramento - ' + level2Name)
+                        text: 'Monitoramentos',
                     },
-                    xAxis: {
-                        categories: nome,
+                },
+                yAxis: [
+                    {
+                        min: 0,
                         title: {
-                            text: 'Monitoramentos',
+                            text: 'Quantidade'
                         },
+                        labels: {
+                            format: '{value}',
+                            style: {
+                                color: Highcharts.getOptions().colors[1]
+                            }
+                        },
+                    }, {
+                        labels: {
+                            format: '{value} %',
+                            style: {
+                                color: Highcharts.getOptions().colors[1]
+                            }
+                        },
+                        title: {
+                            text: '% NC',
+                        },
+                        opposite: true
+                    }],
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        grouping: false,
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    name: 'NC',
+                    color: 'rgba(77,143,189,1)',
+                    data: nc,
+                    yAxis: 0,
+                    pointPadding: 0.3,
+                    pointPlacement: -0.2,
+                    point: {
+                        events: {
+                            click: function () {
+                                //_MonitoramentoId = id[this.x];
+                                //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
+                            }
+                        }
                     },
-                    yAxis: [
-                        {
-                            min: 0,
-                            title: {
-                                text: 'Quantidade'
-                            },
-                            labels: {
-                                format: '{value}',
-                                style: {
-                                    color: Highcharts.getOptions().colors[1]
-                                }
-                            },
-                        }, {
-                            labels: {
-                                format: '{value} %',
-                                style: {
-                                    color: Highcharts.getOptions().colors[1]
-                                }
-                            },
-                            title: {
-                                text: '% NC',
-                            },
-                            opposite: true
-                        }],
-                    legend: {
-                        shadow: false
+                    dataLabels: {
+                        enabled: true,
+                        color: 'black',
+                        align: 'center',
+                        style: {
+                            fontSize: '10px',
+                        }
                     },
                     tooltip: {
-                        shared: true
-                    },
-                    plotOptions: {
-                        column: {
-                            grouping: false,
-                            shadow: false,
-                            borderWidth: 0
+                        valueSuffix: ' qtd'
+                    }
+                }, {
+                    name: '% NC',
+                    color: 'rgba(240,124,0,1)',
+                    data: porc,
+                    yAxis: 1,
+                    pointPadding: 0.4,
+                    pointPlacement: -0.2,
+                    point: {
+                        events: {
+                            click: function () {
+                                //_MonitoramentoId = id[this.x];
+                                //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
+                            }
                         }
                     },
-                    series: [{
-                        name: 'NC',
-                        color: 'rgba(77,143,189,1)',
-                        data: nc,
-                        yAxis: 0,
-                        pointPadding: 0.3,
-                        pointPlacement: -0.2,
-                        point: {
-                            events: {
-                                click: function () {
-                                    //_MonitoramentoId = id[this.x];
-                                    //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
-                                }
-                            }
-                        },
-                        dataLabels: {
-                            enabled: true,
-                            color: 'black',
-                            align: 'center',
-                            style: {
-                                fontSize: '10px',
-                            }
-                        },
-                        tooltip: {
-                            valueSuffix: ' qtd'
+                    dataLabels: {
+                        enabled: true,
+                        color: 'black',
+                        align: 'center',
+                        style: {
+                            fontSize: '10px',
                         }
-                    }, {
-                        name: '% NC',
-                        color: 'rgba(240,124,0,1)',
-                        data: porc,
-                        yAxis: 1,
-                        pointPadding: 0.4,
-                        pointPlacement: -0.2,
-                        point: {
-                            events: {
-                                click: function () {
-                                    //_MonitoramentoId = id[this.x];
-                                    //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
-                                }
+                    },
+                    tooltip: {
+                        valueSuffix: ' %'
+                    }
+                }, {
+                    visible: false,
+                    name: 'Avaliações',
+                    data: qtdAv,
+                    color: 'rgba(81,207,64,1)',
+                    pointPadding: 0.3,
+                    pointPlacement: 0.2,
+                    yAxis: 0,
+                    point: {
+                        events: {
+                            click: function () {
+                                //_MonitoramentoId = id[this.x];
+                                //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
                             }
-                        },
-                        dataLabels: {
-                            enabled: true,
-                            color: 'black',
-                            align: 'center',
-                            style: {
-                                fontSize: '10px',
-                            }
-                        },
-                        tooltip: {
-                            valueSuffix: ' %'
                         }
-                    }, {
-                        visible: false,
-                        name: 'Avaliações',
-                        data: qtdAv,
-                        color: 'rgba(81,207,64,1)',
-                        pointPadding: 0.3,
-                        pointPlacement: 0.2,
-                        yAxis: 0,
-                        point: {
-                            events: {
-                                click: function () {
-                                    //_MonitoramentoId = id[this.x];
-                                    //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
-                                }
-                            }
-                        },
-                        dataLabels: {
-                            enabled: true,
-                            color: 'black',
-                            align: 'center',
-                            style: {
-                                fontSize: '10px',
-                            }
-                        },
-                        tooltip: {
-                            valueSuffix: ' qtd'
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        color: 'black',
+                        align: 'center',
+                        style: {
+                            fontSize: '10px',
                         }
-                    }]
-                });
+                    },
+                    tooltip: {
+                        valueSuffix: ' qtd'
+                    }
+                }]
+            });
 
         }
 

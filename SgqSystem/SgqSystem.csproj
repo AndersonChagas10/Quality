@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -1354,9 +1354,7 @@
     <Content Include="Views\ExemploInput\Index.cshtml" />
     <Content Include="Views\Example\TiposDeInputSgq.cshtml" />
     <Content Include="Views\RelatoriosSgq\VisaoGeralDaArea.cshtml" />
-    <Content Include="Views\RelatoriosSgq\VisaoGeralDaAreaTbl1.cshtml" />
-    <Content Include="Views\RelatoriosSgq\VisaoGeralDaAreaTbl2.cshtml" />
-    <Content Include="Views\RelatoriosSgq\VisaoGeralDaArea - Copy.cshtml" />
+    <Content Include="Views\RelatoriosSgq\GetTable.cshtml" />
     <Content Include="Views\manDataCollectITs\Create2.cshtml" />
     <Content Include="Views\RelatoriosSgq\_ResultLevel3Edit.cshtml" />
     <Content Include="Views\UserSgq\Create.cshtml" />
@@ -1492,7 +1490,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:57506/</IISUrl>
+          <IISUrl>http://localhost:8090/SgqSystem</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
