@@ -139,17 +139,10 @@ namespace SgqSystem.Controllers
         }
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
-        public ActionResult VisaoGeralDaAreaTbl1()
+        public ActionResult GetTable()
         {
             TabelaDinamicaResultados tabela = MockTabelaVisaoGeralDaArea();
             return View(tabela);
-        }
-
-        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
-        public ActionResult VisaoGeralDaAreaTbl2()
-        {
-            TabelaDinamicaResultados tabela = MockTabelaVisaoGeralDaArea(true);
-            return PartialView("VisaoGeralDaAreaTbl1", tabela);
         }
 
         /// <summary>

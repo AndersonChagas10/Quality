@@ -1,5 +1,6 @@
 ﻿using DTO.Helpers;
 using System;
+using System.Collections.Generic;
 
 namespace DTO
 {
@@ -92,8 +93,8 @@ namespace DTO
         public string CallBackTableTituloColunas { get; set; }
         public string Query { get; set; }
         public string Title { get; set; }
-        public string ParametroTableRow { get; set; }
-        public string ParametroTableCol { get; set; }
+        public List<string> ParametroTableRow { get; set; }
+        public List<string> ParametroTableCol { get; set; }
 
     }
 }

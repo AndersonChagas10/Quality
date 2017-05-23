@@ -80,6 +80,13 @@
             $('#grafico3').empty();
             $('#grafico4').empty();
             $('#grafico5').empty();
+
+            enviar["CallBackTableTituloColunas"] = function () { };
+            enviar["CallBackTableBody"] = "";
+            enviar["CallBackTableEsquerda"] = function () { };
+            enviar["Query"] = "";
+            enviar["Title"] = "";
+
             EasyAjax(urlTabela2, enviar, function (r) { $('#tabela2div').empty().append(r); heatMap('dadosEsquerda', true, false, 1, 3, 'DESC'); }, "tabela2div");
         }
 
