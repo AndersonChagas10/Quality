@@ -3185,7 +3185,7 @@ namespace SgqSystem.Services
             var html = new Html();
             string culture;
 
-            if (GlobalConfig.Brasil)
+            if (GlobalConfig.LanguageBrasil)
             {
                 culture = "pt-br";
             }
@@ -3202,7 +3202,7 @@ namespace SgqSystem.Services
                               html.option("4", CommonData.getResource("period").Value.ToString() + " 4");
 
             string hide = string.Empty;
-            if (GlobalConfig.Brasil)
+            if (GlobalConfig.Brasil || GlobalConfig.Ytoara)
             {
                 hide = "hide";
             }
@@ -3709,7 +3709,7 @@ namespace SgqSystem.Services
                         }
 
                         var listParRelapse = ParRelapseDB.getRelapses(parlevel1.Id);
-
+                        
                         string level01 = html.level1(parlevel1,
                                                      tipoTela: tipoTela,
                                                      totalAvaliado: 0,
@@ -4644,7 +4644,9 @@ namespace SgqSystem.Services
                             area.cNmCaracteristica + "</div>";
                 }
 
-                var CtIdAP = CaracteristicaTipificacaoDB.getAreasParticipantesUnico().First().nCdCaracteristica;
+                var CtIdAP = "";
+                if (CaracteristicaTipificacaoDB.getAreasParticipantesUnico().First().nCdCaracteristica != null)
+                    CtIdAP = CaracteristicaTipificacaoDB.getAreasParticipantesUnico().First().nCdCaracteristica;
                 var TIdAP = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(Convert.ToInt32(CtIdAP)).First().TarefaId;
                 var areasParticipantes = html.listgroupItem(
                                                 id: "400",
@@ -4995,7 +4997,7 @@ namespace SgqSystem.Services
                 }
 
                 // incluir coluna e obter o total de amostras com defeito agrupado.
-                var level2 = dbEf.ParCounterXLocal.FirstOrDefault(r => r.ParLevel1_Id == ParLevel1.Id && r.ParCounter_Id == 21 && r.IsActive);
+                var level2 = dbEf.ParCounterXLocal.FirstOrDefault(r => r.ParLevel1_Id == ParLevel1.Id && r.ParCounter.Name == "defects" && r.IsActive);
                 if (level2 != null)
                 {
                     var teste = new ContadoresXX().GetContadoresXX(dbEf, ParLevel1.Id, ParCompany_Id);
@@ -5021,6 +5023,9 @@ namespace SgqSystem.Services
                                 //painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.LastOrDefault(r=>r.Period == p && r.Shift == s)?.WeiDefects.ToString("G29") + "</span></div>";
                                 painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.Where(r => r.Period == p && r.Shift == s).Sum(r => r.WeiDefects).ToString("G29") + "</span></div>";
 
+                                if((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
+                                    painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("three_more_defects").Value.ToString() + ": <span>0</span></div>";                                
+
                             }
 
                         }
@@ -5033,6 +5038,9 @@ namespace SgqSystem.Services
                             {
                                 painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>";
                                 painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>0</span></div>";
+
+                                if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
+                                    painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("three_more_defects").Value.ToString() + ": <span>0</span></div>";
                             }
 
                         }

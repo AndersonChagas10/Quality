@@ -127,7 +127,7 @@
                                             </div>
                                         </div>
 
-                                        @if (@DTO.GlobalConfig.Brasil == true)
+                                        @if (@DTO.GlobalConfig.Eua == false)
                                         {
                                             <div class="password">
 
@@ -151,7 +151,7 @@
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                @if (@DTO.GlobalConfig.Brasil == true)
+                                                @if (@DTO.GlobalConfig.Eua == false)
                                                 {
                                                     <button type="button" id="btnChangePassword" class="btn btn-warning">@Resources.Resource.change_password</button>
                                                 }
