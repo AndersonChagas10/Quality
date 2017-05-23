@@ -5001,7 +5001,7 @@ namespace SgqSystem.Services
                 }
 
                 // incluir coluna e obter o total de amostras com defeito agrupado.
-                var level2 = dbEf.ParCounterXLocal.FirstOrDefault(r => r.ParLevel1_Id == ParLevel1.Id && r.ParCounter_Id == 21 && r.IsActive);
+                var level2 = dbEf.ParCounterXLocal.FirstOrDefault(r => r.ParLevel1_Id == ParLevel1.Id && r.ParCounter.Name == "defects" && r.IsActive);
                 if (level2 != null)
                 {
                     var teste = new ContadoresXX().GetContadoresXX(dbEf, ParLevel1.Id, ParCompany_Id);
