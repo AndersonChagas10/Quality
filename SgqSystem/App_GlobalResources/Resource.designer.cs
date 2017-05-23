@@ -574,6 +574,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Binary Input Type.
+        /// </summary>
+        internal static string binary_input_type {
+            get {
+                return ResourceManager.GetString("binary_input_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot finish action..
         /// </summary>
         internal static string cannot_finish_action {
@@ -3112,6 +3121,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Negative input.
+        /// </summary>
+        internal static string negative_input_type {
+            get {
+                return ResourceManager.GetString("negative_input_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Negative value.
         /// </summary>
         internal static string negative_value {
@@ -3711,6 +3729,15 @@ namespace Resources {
         internal static string positive {
             get {
                 return ResourceManager.GetString("positive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Positive input.
+        /// </summary>
+        internal static string positive_input_type {
+            get {
+                return ResourceManager.GetString("positive_input_type", resourceCulture);
             }
         }
         

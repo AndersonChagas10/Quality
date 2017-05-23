@@ -1995,4 +1995,13 @@
   <data name="unable_to_complete_data_request" xml:space="preserve">
     <value>Não foi possivel completar a requisição de dados</value>
   </data>
+  <data name="binary_input_type" xml:space="preserve">
+    <value>Tipo de Entrada Binária</value>
+  </data>
+  <data name="negative_input_type" xml:space="preserve">
+    <value>Tipo de entrada negativa</value>
+  </data>
+  <data name="positive_input_type" xml:space="preserve">
+    <value>Tipo de entrada positiva</value>
+  </data>
 </root>

@@ -2175,32 +2175,7 @@ namespace SGQDBContext
                 throw;
             }
         }
-
-        public bool hasRule(int ParLevel1_Id)
-        {
-            try
-            {
-                string sql = "SELECT PR.Id FROM ParNotConformityRuleXLevel PR                           " +
-                             "   WHERE ParLevel1_Id = "+ ParLevel1_Id + " OR ParLevel2_Id IN            " +
-                             "  (SELECT DISTINCT P32.ParLevel2_Id FROM ParLevel3Level2Level1 P321       " +
-                             "  LEFT JOIN                                                               " +
-                             "  ParLevel3Level2 P32                                                     " +
-                             "  ON                                                                      " +
-                             "  P32.Id = P321.ParLevel3Level2_Id                                        " +
-                             "  WHERE                                                                   " +
-                             "  P321.ParLevel1_Id = "+ ParLevel1_Id + "                                 " +
-                             "  AND P321.Active = 1                                                     " +
-                             "  AND P32.IsActive = 1)                                                   ";
-                
-                //SqlConnection db = new SqlConnection(conexao);
-                var obj = db.Query<NotConformityRule>(sql).ToList();
-                return obj.Count() > 0;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+        
     }
     public partial class CollectionLevel2
     {
