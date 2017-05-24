@@ -2025,6 +2025,15 @@
   <data name="positive_input_type" xml:space="preserve">
     <value>Positive input</value>
   </data>
+  <data name="sequential" xml:space="preserve">
+    <value>Sequential</value>
+  </data>
+  <data name="side_banda" xml:space="preserve">
+    <value>Side</value>
+  </data>
+  <data name="no_appointments_in_this_period" xml:space="preserve">
+    <value>There are no appointments in this period.</value>
+  </data>
   <data name="close_all" xml:space="preserve">
     <value>Fechar Todos</value>
   </data>

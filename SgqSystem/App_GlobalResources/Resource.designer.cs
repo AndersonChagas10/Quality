@@ -3355,6 +3355,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are no appointments in this period..
+        /// </summary>
+        internal static string no_appointments_in_this_period {
+            get {
+                return ResourceManager.GetString("no_appointments_in_this_period", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No data to send.
         /// </summary>
         internal static string no_data_to_send {
@@ -4786,6 +4795,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sequential.
+        /// </summary>
+        internal static string sequential {
+            get {
+                return ResourceManager.GetString("sequential", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The sequential must be filled.
         /// </summary>
         internal static string sequential_must_be_filled {
@@ -4908,6 +4926,15 @@ namespace Resources {
         internal static string show_on_this_level {
             get {
                 return ResourceManager.GetString("show_on_this_level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Side.
+        /// </summary>
+        internal static string side_banda {
+            get {
+                return ResourceManager.GetString("side_banda", resourceCulture);
             }
         }
         
