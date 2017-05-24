@@ -396,7 +396,7 @@ namespace SgqSystem.Controllers.Api.Params
                 }
             }
 
-
+            parr.paramsDto.parHeaderFieldDto.IsActive = true;
             return _baseParHeaderField.AddOrUpdate(parr.paramsDto.parHeaderFieldDto);
 
         }
