@@ -70,11 +70,12 @@
         function GerarTabela(retornoArray) {
 
             if(retornoArray.length == 0){
-                GuardJs.exibirMensagemAlerta("Não foi encontrado nenhum apontamento para esse período.");
+                GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(Resources.Resource.no_appointments_in_this_period)))
             }
 
             else{
                 //Regra para habilitar o botão de edição somente para quem contiver as roles 366 e 346 e Admin
+
                 var regraEdit = false;
 
                 var roles = $.grep(getCookie('webControlCookie'), function (a, b) {
@@ -91,19 +92,6 @@
                     regraEdit = false;
                 }
                 //Fim Regra
-
-                //Caso for (%) Verificação da Tipificação ou (%) NC PCC 1B, exibe "Sequencial" e "Banda" no lugar de "Avaliacao" e "Amostra"
-                @*var tipoIndicador = $('#level1Id option:selected').text();
-            var Tipo1 = {};
-            var Tipo2 = {};
-            if(tipoIndicador == "(%) Verificação da Tipificação" || tipoIndicador == "(%) NC PCC 1B"){
-
-                Tipo1 = { title: "@Resources.Resource.sequential", mData: "Sequencial" };
-                Tipo2 = { title: "@Resources.Resource.side_banda", mData: "Banda" };
-            }else{
-                Tipo1 = { title: "@Resources.Resource.evaluation", mData: "Avaliacao" };
-                Tipo2 = { title: "@Resources.Resource.sample", mData: "Amostra" };
-            }*@
 
                 var Tipo1 = {};
                 var Tipo2 = {};

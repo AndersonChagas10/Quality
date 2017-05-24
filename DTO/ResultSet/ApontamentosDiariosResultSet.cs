@@ -46,6 +46,7 @@ public class ApontamentosDiariosResultSet
         var sqlLevel1 = "";
         var sqlLevel2 = "";
         var sqlLevel3 = "";
+        var formatDate = "";
 
         if (form.unitId > 0)
         {
@@ -65,6 +66,15 @@ public class ApontamentosDiariosResultSet
         if (form.level3Id > 0)
         {
             sqlLevel3 = "\n AND L3.Id = " + form.level3Id;
+        }
+
+        if (GlobalConfig.Eua)
+        {
+            formatDate = "CONVERT(varchar, CAST(CL2HF2.Value AS datetime), 101)";
+        }
+        else
+        {
+            formatDate = "CONVERT(varchar, CAST(CL2HF2.Value AS datetime), 103)";
         }
 
         return " SELECT                                    " +
@@ -108,11 +118,14 @@ public class ApontamentosDiariosResultSet
                 " \n (SELECT                                " +
                 " \n     CL2HF.CollectionLevel2_Id,         " +
                 " \n     STUFF(                             " +
-                " \n            (SELECT DISTINCT ', ' + CONCAT(HF.name, ': ', CL2HF2.Value) " +
+                " \n            (SELECT DISTINCT ', ' + CONCAT(HF.name, ': ', case when CL2HF2.ParFieldType_Id = 1 or CL2HF2.ParFieldType_Id = 2 or CL2HF2.ParFieldType_Id = 3 then PMV.Name " +
+                " \n            when CL2HF2.ParFieldType_Id = 6 then " + formatDate + " " +
+                " \n            else CL2HF2.Value end) " +
                 " \n            FROM CollectionLevel2XParHeaderField CL2HF2 " +
                 " \n            left join collectionlevel2 CL2 on CL2.id = CL2HF2.CollectionLevel2_Id " +
                 " \n            left join ParHeaderField HF on CL2HF2.ParHeaderField_Id = HF.Id " +
                 " \n            left join ParLevel2 L2 on L2.Id = CL2.Parlevel2_id " +
+                " \n            left join ParMultipleValues PMV on CL2HF2.Value = cast(PMV.Id as varchar(500)) "+
                 " \n            WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id " +
                 " \n            FOR XML PATH('') " +
                 " \n            ), 1, 1, '')  AS HeaderFieldList " +

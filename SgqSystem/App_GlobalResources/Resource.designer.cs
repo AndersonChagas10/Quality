@@ -3346,6 +3346,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are no appointments in this period..
+        /// </summary>
+        internal static string no_appointments_in_this_period {
+            get {
+                return ResourceManager.GetString("no_appointments_in_this_period", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No data to send.
         /// </summary>
         internal static string no_data_to_send {
