@@ -2013,4 +2013,7 @@
   <data name="no_appointments_in_this_period" xml:space="preserve">
     <value>Não existem apontamentos neste período!</value>
   </data>
+  <data name="close_all" xml:space="preserve">
+    <value>Fechar todos</value>
+  </data>
 </root>
