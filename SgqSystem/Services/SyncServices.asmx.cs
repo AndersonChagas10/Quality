@@ -432,8 +432,7 @@ namespace SgqSystem.Services
                                "('" + unidadeId + "','" + shift + "','" + period + "','" + level01Id + "',CAST(N'" + level01DataCollect + "' AS DateTime),'" + level02Id + "','" + evaluate + "','" + sample + "', '" + auditorId + "',CAST(N'" + level02DataCollect + "' AS DateTime),'" + level02HeaderJSon + "','" + level03ResultJson + "', '" + correctiveActionJson + "', '" + reaudit + "', '" + reauditNumber + "', '" + haveReaudit + "', '" + reauditlevel + "','" + haveCorrectiveAction + "' ,'" + deviceId + "','" + versaoApp + "','" + ambiente + "',0,'" + deviceMac + "',GETDATE(),NULL,'" + key + "',NULL) ";
 
                         sql += "SELECT @@IDENTITY AS 'Identity'";
-
-
+                        
                         command = new SqlCommand(sql, connection);
                         var iSql = Convert.ToInt32(command.ExecuteScalar());
 
@@ -5032,17 +5031,20 @@ namespace SgqSystem.Services
                     }
                     else
                     {
-                        foreach (var s in listaShift)
+                        if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
                         {
-                            foreach (var p in listaPeriod)
+                            foreach (var s in listaShift)
                             {
-                                painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>";
-                                painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>0</span></div>";
+                                foreach (var p in listaPeriod)
+                                {
+                                    painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>";
+                                    painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>0</span></div>";
 
-                                if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
-                                    painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("three_more_defects").Value.ToString() + ": <span>0</span></div>";
+                                    if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
+                                        painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("three_more_defects").Value.ToString() + ": <span>0</span></div>";
+                                }
+
                             }
-
                         }
                     }
                 }
