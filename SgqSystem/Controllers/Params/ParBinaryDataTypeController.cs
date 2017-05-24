@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Dominio;
 using Helper;
 using System;
+using System.Dynamic;
 
 namespace SgqSystem.Controllers.Params
 {
@@ -205,26 +206,7 @@ namespace SgqSystem.Controllers.Params
 
             return View(parLevel3Bool);
         }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(ParLevel3BoolTrue parLevel3Bool)
-        {
-
-            if (ModelState.IsValid)
-            {
-                parLevel3Bool.AddDate = DateTime.Now;
-
-                //Converter DTO para false
-                db.ParLevel3BoolTrue.Add(parLevel3Bool);
-                //db.ParLevel3BoolFalse.Add(parLevel3Bool);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(parLevel3Bool);
-        }
-    }
+        
+    }   
 
 }

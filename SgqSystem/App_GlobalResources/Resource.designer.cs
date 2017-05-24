@@ -5488,6 +5488,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update Tablets.
+        /// </summary>
+        internal static string update_tablet {
+            get {
+                return ResourceManager.GetString("update_tablet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This may take some time, do you want to update the tablet settings? The Loader will automatically disappear when the action is finished..
+        /// </summary>
+        internal static string update_tablet_message {
+            get {
+                return ResourceManager.GetString("update_tablet_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Updating parameters.
         /// </summary>
         internal static string updating_parameters {

@@ -2037,4 +2037,10 @@
   <data name="close_all" xml:space="preserve">
     <value>Fechar Todos</value>
   </data>
+  <data name="update_tablet" xml:space="preserve">
+    <value>Update Tablets</value>
+  </data>
+  <data name="update_tablet_message" xml:space="preserve">
+    <value>This may take some time, do you want to update the tablet settings? The Loader will automatically disappear when the action is finished.</value>
+  </data>
 </root>

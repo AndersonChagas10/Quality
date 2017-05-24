@@ -10,6 +10,7 @@ using SgqSystem.ViewModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -235,25 +236,25 @@ namespace SgqSystem.Controllers.Api.Params
         public string RemVinculoL2L3(int idLevel1, int idLevel2, int idLevel3, int? companyId = null)
         {
             var retorno = "Registro desvinculado.";
-      
-                using (var db = new SgqDbDevEntities())
-                {
-                    //throw new Exception("teste");
-                    var parLevel3Level2Level1 = db.ParLevel3Level2Level1.Include("ParLevel3Level2").Where(r => r.ParLevel3Level2.ParLevel2_Id == idLevel2 && r.ParLevel3Level2.ParLevel3_Id == idLevel3 && r.ParCompany_Id == companyId);
 
-                    var existe = db.ParLevel3Level2Level1.Include("ParLevel3Level2").Where(r => r.ParLevel3Level2.ParLevel2_Id == idLevel2 && r.ParLevel3Level2.ParLevel3_Id == idLevel3 && r.ParCompany_Id == companyId).ToList();
+            using (var db = new SgqDbDevEntities())
+            {
+                //throw new Exception("teste");
+                var parLevel3Level2Level1 = db.ParLevel3Level2Level1.Include("ParLevel3Level2").Where(r => r.ParLevel3Level2.ParLevel2_Id == idLevel2 && r.ParLevel3Level2.ParLevel3_Id == idLevel3 && r.ParCompany_Id == companyId);
 
-                    if (existe == null || existe.Count() == 0)
-                        return retorno;
+                var existe = db.ParLevel3Level2Level1.Include("ParLevel3Level2").Where(r => r.ParLevel3Level2.ParLevel2_Id == idLevel2 && r.ParLevel3Level2.ParLevel3_Id == idLevel3 && r.ParCompany_Id == companyId).ToList();
 
-                    foreach (var i in parLevel3Level2Level1)
-                        db.ParLevel3Level2.Remove(i.ParLevel3Level2);
+                if (existe == null || existe.Count() == 0)
+                    return retorno;
 
-                    db.ParLevel3Level2Level1.RemoveRange(parLevel3Level2Level1);
+                foreach (var i in parLevel3Level2Level1)
+                    db.ParLevel3Level2.Remove(i.ParLevel3Level2);
 
-                    db.SaveChanges();
-                }
-       
+                db.ParLevel3Level2Level1.RemoveRange(parLevel3Level2Level1);
+
+                db.SaveChanges();
+            }
+
             //return _paramdDomain.RemVinculoL1L2(idLevel1, idLevel2);
             return retorno;
         }
@@ -307,6 +308,30 @@ namespace SgqSystem.Controllers.Api.Params
                 db.SaveChanges();
             }
             return save;
+        }
+
+        [HttpPost]
+        [Route("AddEntradaBinaria")]
+        public ExpandoObject AddEntradaBinaria(ParLevel3Bool parLevel3)
+        {
+
+            ParLevel3BoolFalse boolFalse = new ParLevel3BoolFalse() { Name = parLevel3.nameFalse, AddDate = DateTime.Now, IsActive = true };
+            ParLevel3BoolTrue boolTrue = new ParLevel3BoolTrue() { Name = parLevel3.nameTrue, AddDate = DateTime.Now, IsActive = true };
+
+            using (var db = new SgqDbDevEntities())
+            {
+                db.ParLevel3BoolTrue.Add(boolTrue);
+                db.ParLevel3BoolFalse.Add(boolFalse);
+                db.SaveChanges();
+            }
+
+            dynamic Retorno = new ExpandoObject();
+
+            Retorno.True = boolTrue;
+            Retorno.False = boolFalse;
+
+            return Retorno;
+
         }
 
         [HttpPost]
@@ -420,7 +445,13 @@ namespace SgqSystem.Controllers.Api.Params
 
             return resourceManager.GetResourceSet(
                 Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
-        }
+        }       
 
+    }
+
+    public class ParLevel3Bool
+    {
+        public string nameTrue { get; set; }
+        public string nameFalse { get; set; }
     }
 }
