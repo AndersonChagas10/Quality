@@ -26,12 +26,16 @@ public class ApontamentosDiariosResultSet
     public Nullable<decimal> NC_Peso { get; set; }
     public Nullable<int> Avaliacao { get; set; }
     public int Amostra { get; set; }
+    public Nullable<int> Sequencial { get; set; }
+    public Nullable<int> Banda { get; set; }
     public int ResultLevel3Id { get; set; }
+    public Nullable<int> HashKey { get; set; }
 
     public string Unidade { get; set; }
     public string Periodo { get; set; }
     public string Turno { get; set; }
     public string Auditor { get; set; }
+    public string HeaderFieldList { get; set; }
 
     public string Select(DataCarrierFormulario form)
     {
@@ -42,6 +46,7 @@ public class ApontamentosDiariosResultSet
         var sqlLevel1 = "";
         var sqlLevel2 = "";
         var sqlLevel3 = "";
+        var formatDate = "";
 
         if (form.unitId > 0)
         {
@@ -63,6 +68,15 @@ public class ApontamentosDiariosResultSet
             sqlLevel3 = "\n AND L3.Id = " + form.level3Id;
         }
 
+        if (GlobalConfig.Eua)
+        {
+            formatDate = "CONVERT(varchar, CAST(CL2HF2.Value AS datetime), 101)";
+        }
+        else
+        {
+            formatDate = "CONVERT(varchar, CAST(CL2HF2.Value AS datetime), 103)";
+        }
+
         return " SELECT                                    " +
                 " \n  C2.CollectionDate AS Data             " +
                 " \n ,L1.Name AS Indicador                  " +
@@ -78,11 +92,15 @@ public class ApontamentosDiariosResultSet
                 " \n ,R3.WeiDefects AS 'NC_Peso'            " +
                 " \n ,C2.EvaluationNumber AS 'Avaliacao'    " +
                 " \n ,C2.Sample AS 'Amostra'                " +
+                " \n ,C2.Sequential AS 'Sequencial'         " +
+                " \n ,C2.Side as 'Banda'                    " +
                 " \n ,STR(C2.[Shift]) as 'Turno'            " +
                 " \n ,STR(C2.Period) as 'Periodo'           " +
                 " \n ,UN.Name AS 'Unidade'                  " +
                 " \n ,R3.Id AS 'ResultLevel3Id'             " +
                 " \n ,US.Name as 'Auditor'                  " +
+                " \n ,ISNULL(L1.hashKey, '') as 'HashKey'   " +
+                " \n ,ISNULL(HF.HeaderFieldList, '') as 'HeaderFieldList'  " +
                 " \n FROM CollectionLevel2 C2               " +
                 " \n INNER JOIN ParCompany UN               " +
                 " \n ON UN.Id = c2.UnitId                   " +
@@ -96,9 +114,30 @@ public class ApontamentosDiariosResultSet
                 " \n ON L1.Id = C2.ParLevel1_Id             " +
                 " \n INNER JOIN UserSgq US                  " +
                 " \n ON C2.AuditorId = US.Id                " +
+                " \n LEFT JOIN                              " +
+                " \n (SELECT                                " +
+                " \n     CL2HF.CollectionLevel2_Id,         " +
+                " \n     STUFF(                             " +
+                " \n            (SELECT DISTINCT ', ' + CONCAT(HF.name, ': ', case when CL2HF2.ParFieldType_Id = 1 or CL2HF2.ParFieldType_Id = 2 or CL2HF2.ParFieldType_Id = 3 then PMV.Name " +
+                " \n            when CL2HF2.ParFieldType_Id = 6 then " + formatDate + " " +
+                " \n            else CL2HF2.Value end) " +
+                " \n            FROM CollectionLevel2XParHeaderField CL2HF2 " +
+                " \n            left join collectionlevel2 CL2 on CL2.id = CL2HF2.CollectionLevel2_Id " +
+                " \n            left join ParHeaderField HF on CL2HF2.ParHeaderField_Id = HF.Id " +
+                " \n            left join ParLevel2 L2 on L2.Id = CL2.Parlevel2_id " +
+                " \n            left join ParMultipleValues PMV on CL2HF2.Value = cast(PMV.Id as varchar(500)) "+
+                " \n            WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id " +
+                " \n            FOR XML PATH('') " +
+                " \n            ), 1, 1, '')  AS HeaderFieldList " +
+                " \n    FROM CollectionLevel2XParHeaderField CL2HF " +
+                " \n    left join collectionlevel2 CL2 on CL2.id = CL2HF.CollectionLevel2_Id " +
+                " \n    left join ParHeaderField HF on CL2HF.ParHeaderField_Id = HF.Id " +
+                " \n    left join ParLevel2 L2 on L2.Id = CL2.Parlevel2_id " +
+                " \n    GROUP BY CL2HF.CollectionLevel2_Id " +
+                " \n 	) HF " +
+                " \n on c2.Id = HF.CollectionLevel2_Id " +
                 " \n WHERE C2.CollectionDate BETWEEN '" + dtInit + " 00:00' AND '" + dtF + " 23:59'" +
                 sqlUnidade + sqlLevel1 + sqlLevel2 + sqlLevel3;
-
     }
 
 }

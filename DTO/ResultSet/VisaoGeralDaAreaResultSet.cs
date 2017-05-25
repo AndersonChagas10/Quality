@@ -25,5 +25,6 @@ namespace DTO.ResultSet
         public decimal procentagemNc { get; set; }
         public decimal nc { get; set; }
         public decimal av { get; set; }
+        public string ChartTitle { get; set; }
     }
 }

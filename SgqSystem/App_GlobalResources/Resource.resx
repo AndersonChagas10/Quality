@@ -2025,7 +2025,22 @@
   <data name="positive_input_type" xml:space="preserve">
     <value>Positive input</value>
   </data>
+  <data name="sequential" xml:space="preserve">
+    <value>Sequential</value>
+  </data>
+  <data name="side_banda" xml:space="preserve">
+    <value>Side</value>
+  </data>
+  <data name="no_appointments_in_this_period" xml:space="preserve">
+    <value>There are no appointments in this period.</value>
+  </data>
   <data name="close_all" xml:space="preserve">
     <value>Fechar Todos</value>
+  </data>
+  <data name="update_tablet" xml:space="preserve">
+    <value>Update Tablets</value>
+  </data>
+  <data name="update_tablet_message" xml:space="preserve">
+    <value>This may take some time, do you want to update the tablet settings? The Loader will automatically disappear when the action is finished.</value>
   </data>
 </root>
