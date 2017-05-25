@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Dominio;
 using Helper;
 using System;
+using System.Dynamic;
 
 namespace SgqSystem.Controllers.Params
 {
@@ -205,7 +206,7 @@ namespace SgqSystem.Controllers.Params
 
             return View(parLevel3Bool);
         }
-
-    }
+        
+    }   
 
 }

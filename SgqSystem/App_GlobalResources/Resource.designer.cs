@@ -727,6 +727,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fechar Todos.
+        /// </summary>
+        internal static string close_all {
+            get {
+                return ResourceManager.GetString("close_all", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cluster.
         /// </summary>
         internal static string cluster {
@@ -3346,6 +3355,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are no appointments in this period..
+        /// </summary>
+        internal static string no_appointments_in_this_period {
+            get {
+                return ResourceManager.GetString("no_appointments_in_this_period", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No data to send.
         /// </summary>
         internal static string no_data_to_send {
@@ -4777,6 +4795,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sequential.
+        /// </summary>
+        internal static string sequential {
+            get {
+                return ResourceManager.GetString("sequential", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The sequential must be filled.
         /// </summary>
         internal static string sequential_must_be_filled {
@@ -4899,6 +4926,15 @@ namespace Resources {
         internal static string show_on_this_level {
             get {
                 return ResourceManager.GetString("show_on_this_level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Side.
+        /// </summary>
+        internal static string side_banda {
+            get {
+                return ResourceManager.GetString("side_banda", resourceCulture);
             }
         }
         
@@ -5448,6 +5484,24 @@ namespace Resources {
         internal static string update_parameters_must_be_online {
             get {
                 return ResourceManager.GetString("update_parameters_must_be_online", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Tablets.
+        /// </summary>
+        internal static string update_tablet {
+            get {
+                return ResourceManager.GetString("update_tablet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This may take some time, do you want to update the tablet settings? The Loader will automatically disappear when the action is finished..
+        /// </summary>
+        internal static string update_tablet_message {
+            get {
+                return ResourceManager.GetString("update_tablet_message", resourceCulture);
             }
         }
         

@@ -23,6 +23,7 @@
     var removeLevel3Group = Url.Action("RemoveParLevel3Group", "api/ParamsApi");
     var AddLevel3Group = Url.Action("AddUpdateParLevel3Group", "api/ParamsApi");
     var urlEditCabecalho = @Url.Action("EditParHeaderField", "Params");
+    var urlSaveBinaryImputType = @Url.Action("AddEntradaBinaria", "api/ParamsApi");
 
     var urlHome = Url.Action("Index", "Home");
 
@@ -438,6 +439,7 @@
     var parLevel2Empty = $('#ParLevel2 > form').clone();
     var parLevel3Empty = $('#ParLevel3 > form').clone();
 
+    var urlSaveBinaryImputType = '@Html.Raw(@urlSaveBinaryImputType)';
     var urlSaveMeassurementUnit = '@Html.Raw(@urlSaveMeassurementUnit)';
     var urlGetLevel1 = '@Html.Raw(@urlGetLevel1)';
     var urlGetLevel2 = '@Html.Raw(@urlGetLevel2)';
@@ -1219,7 +1221,7 @@
                     $('#vinculoLevel1').attr("disabled", true);
                     console.log('permite editar vinculo unidade Parlevel3')
                     $('#tablePeso > tbody > tr').each(function() {
-                         $(this).find('input, select, button').attr("disabled", true);
+                        $(this).find('input, select, button').attr("disabled", true);
                     });
                     $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', true)
                 }
