@@ -2330,7 +2330,7 @@ namespace SgqSystem.Services
                     "\n UnitId=\"' + ISNULL(REPLACE(CAST(Level2Result.Unit_Id AS VARCHAR),'.',','),'NULL') + '\"" +
                     "\n Shift=\"' + ISNULL(REPLACE(CAST(Level2Result.Shift AS VARCHAR),'.',','),'NULL') + '\"" +
                     "\n Period=\"' + ISNULL(REPLACE(CAST(Level2Result.Period AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n CollectionDate=\"' + ISNULL(REPLACE(CAST(Level2Result.CollectionDate AS VARCHAR),'.',','),'NULL') +'\"" +
+                    "\n CollectionDate=\"' + ISNULL(FORMAT(Level2Result.CollectionDate, 'MMddyyyy'),'NULL') +'\"" +
                     "\n Evaluation=\"' + ISNULL(REPLACE(CAST(Level2Result.EvaluateLast AS VARCHAR),'.',','),'NULL') + '\"" +
                     "\n Sample=\"' + ISNULL(REPLACE(CAST(Level2Result.SampleLast AS VARCHAR),'.',','),'NULL') + '\"" +
                     "\n Phase=\"' + ISNULL(REPLACE(CAST(CL2.Phase AS VARCHAR),'.',','),'NULL') + '\"" +
@@ -2339,11 +2339,11 @@ namespace SgqSystem.Services
                     "\n havecorrectiveaction=\"' + ISNULL(REPLACE(CAST(CL2.haveCorrectiveAction AS VARCHAR),'1','true'),'NULL') + '\"" +
                     "\n havereaudit=\"' + ISNULL(REPLACE(CAST(CL2.haveReaudit AS VARCHAR),'1','true'),'NULL') + '\"" +
                     "\n reauditlevel=\"' + ISNULL(REPLACE(CAST(CL2.ReauditLevel AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n reauditnumber=\"' + ISNULL(REPLACE(CAST(CL2.ReauditNumber AS VARCHAR),'.',','),'NULL') + '\"" +
+                    "\n reauditnumber=\"' + ISNULL(REPLACE(CAST(CDL2.ReauditNumber AS VARCHAR),'.',','),'NULL') + '\"" +
                     "\n isreaudit=\"' + ISNULL(REPLACE(CAST(CL2.ReauditIs AS VARCHAR),'1','true'),'NULL') + '\"" +
-                    "\n more3defectsEvaluate=\"' + '33' + '" +
+                    "\n more3defectsEvaluate=\"0\"" +
                     "\n CollectionLevel2_ID_CorrectiveAction=\"' + ISNULL(REPLACE(CAST(MIN(CL2.Id) AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n CollectionLevel2_Period_CorrectiveAction=\"' + ISNULL(REPLACE(CAST(MIN(CL2.Period) AS VARCHAR),'.',','),'NULL') + '\"\">" +
+                    "\n CollectionLevel2_Period_CorrectiveAction=\"' + ISNULL(REPLACE(CAST(MIN(CL2.Period) AS VARCHAR),'.',','),'NULL') + '\">" +
                     "\n ' + @RESPOSTA + ' " +
                     "\n </div>'  AS retorno                                                                                                                                                            " +
                     "\n                                                                                                                                                                           " +
@@ -2353,147 +2353,243 @@ namespace SgqSystem.Services
                     "\n LEFT JOIN CollectionLevel2 CL2                                                                                                                                            " +
                     "\n ON CL2.ConsolidationLevel2_Id = CDL2.Id                                                                                                                                   " +
                     "\n AND(CL2.HaveCorrectiveAction = 1 OR CL2.HaveReaudit = 1)                                                                                                                  " +
-                    "\n INNER JOIN                                                                                                                                                                " +
-                    "\n (                                                                                                                                                                         " +
+                    "\n   INNER JOIN                                                                                                                                                              " +
+                    "\n   (                                                                                                                                                                       " +
                     "\n                                                                                                                                                                           " +
-                    "\n SELECT                                                                                                                                                                    " +
-                    "\n  ParLevel1_Id,                                                                                                                                                            " +
-                    "\n  ParLevel2_Id,                                                                                                                                                            " +
-                    "\n  UnitId AS Unit_Id,                                                                                                                                                       " +
-                    "\n  Shift,                                                                                                                                                                   " +
-                    "\n  Period,                                                                                                                                                                  " +
-                    "\n  CollectionDate,                                                                                                                                                          " +
-                    "\n  MAX(EvaluationNumber)AS EvaluateLast,                                                                                                                                    " +
-                    "\n  MAX(Sample) AS SampleLast,                                                                                                                                               " +
-                    "\n  MAX(ConsolidationLevel2_Id) AS ConsolidationLevel2_Id                                                                                                                    " +
-                    "\n  FROM                                                                                                                                                                     " +
+                    "\n   SELECT                                                                                                                                                                  " +
+                    "\n    ParLevel1_Id,                                                                                                                                                          " +
+                    "\n    ParLevel2_Id,                                                                                                                                                          " +
+                    "\n    UnitId AS Unit_Id,                                                                                                                                                     " +
+                    "\n    Shift,                                                                                                                                                                 " +
+                    "\n    Period,                                                                                                                                                                " +
+                    "\n    CollectionDate,                                                                                                                                                        " +
+                    "\n    MAX(EvaluationNumber)AS EvaluateLast,                                                                                                                                  " +
+                    "\n    MAX(Sample) AS SampleLast,                                                                                                                                             " +
+                    "\n    ConsolidationLevel2_Id                                                                                                                                                 " +
+                    "\n    FROM                                                                                                                                                                   " +
+                    "\n    (                                                                                                                                                                      " +
+                    "\n                                                                                                                                                                           " +
+                    "\n  SELECT                                                                                                                                                                   " +
+                    "\n   SampleTBL.[ParLevel1_Id]                                                                                                                                                " +
+                    "\n  , SampleTBL.[ParLevel2_Id]                                                                                                                                               " +
+                    "\n  , SampleTBL.[UnitId]                                                                                                                                                     " +
+                    "\n  , SampleTBL.[Shift]                                                                                                                                                      " +
+                    "\n  , SampleTBL.[Period]                                                                                                                                                     " +
+                    "\n  , SampleTBL.[CollectionDate]                                                                                                                                             " +
+                    "\n  , EvaluationNumberTBL.[EvaluationNumber]                                                                                                                                 " +
+                    "\n  , SampleTBL.[Sample]                                                                                                                                                     " +
+                    "\n  , SampleTBL.[ConsolidationLevel2_Id]                                                                                                                                     " +
+                    "\n   FROM(                                                                                                                                                                   " +
+                    "\n      SELECT                                                                                                                                                               " +
+                    "\n                                                                                                                                                                           " +
+                    "\n           CL2.ParLevel1_Id,                                                                                                                                               " +
+                    "\n           CL2.ParLevel2_Id,                                                                                                                                               " +
+                    "\n           CL2.UnitId,                                                                                                                                                     " +
+                    "\n           CL2.Shift,                                                                                                                                                      " +
+                    "\n           CL2.Period,                                                                                                                                                     " +
+                    "\n           CONVERT(date, CollectionDate) AS CollectionDate,                                                                                                                " +
+                    "\n           CL2.EvaluationNumber,                                                                                                                                           " +
+                    "\n           Max(Sample)Sample,                                                                                                                                              " +
+                    "\n           MAX(ConsolidationLevel2_Id) AS ConsolidationLevel2_Id                                                                                                           " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                                                                                                                                                                           " +
+                    "\n           FROM CollectionLevel2 CL2                                                                                                                                       " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                                                                                                                                                                           " +
+                    "\n           INNER JOIN ConsolidationLevel2 CDL2                                                                                                                             " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                                                                                                                                                                           " +
+                    "\n           ON CL2.ConsolidationLevel2_Id = CDL2.ID                                                                                                                         " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                                                                                                                                                                           " +
+                    "\n           INNER JOIN ConsolidationLevel1 CDL1                                                                                                                             " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                                                                                                                                                                           " +
+                    "\n           ON CDL2.ConsolidationLevel1_Id = CDL1.Id                                                                                                                        " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                                                                                                                                                                           " +
+                    "\n           WHERE                                                                                                                                                           " +
+                    "\n           (                                                                                                                                                               " +
+                    "\n               1 = 1                                                                                                                                                       " +
+                    "\n               --CDL1.ParLevel1_Id = '1043'                                                                                                                                " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                                                                                                                                                                           " +
+                    "\n               AND CDL1.UnitId = @unidade                                                                                                                                  " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                                                                                                                                                                           " +
+                    "\n               AND cast(CDL2.ConsolidationDate as DATE) BETWEEN                                                                                                            " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                    CASE                                                                                                                                                   " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(1, 2, 3) THEN @datadiario                                            " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(4) THEN @datasemanal                                                 " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(5) THEN @dataquinzenal                                               " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(6) THEN @datamensal                                                  " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                    ELSE @datadiario END and @datafim                                                                                                                      " +
+                    "\n           )                                                                                                                                                               " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                                                                                                                                                                           " +
+                    "\n           GROUP BY                                                                                                                                                        " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                                                                                                                                                                           " +
+                    "\n           CL2.ParLevel1_Id,                                                                                                                                               " +
+                    "\n           CL2.ParLevel2_Id,                                                                                                                                               " +
+                    "\n           CL2.UnitId,                                                                                                                                                     " +
+                    "\n           CL2.Shift,                                                                                                                                                      " +
+                    "\n           CL2.Period,                                                                                                                                                     " +
+                    "\n           CONVERT(date, CollectionDate),                                                                                                                                  " +
+                    "\n           CL2.EvaluationNumber,                                                                                                                                           " +
+                    "\n           ConsolidationLevel2_Id                                                                                                                                          " +
+                    "\n  )  SampleTBL                                                                                                                                                             " +
+                    "\n  INNER JOIN                                                                                                                                                               " +
                     "\n  (                                                                                                                                                                        " +
-                    "\n     SELECT                                                                                                                                                                " +
+                    "\n      SELECT                                                                                                                                                               " +
                     "\n                                                                                                                                                                           " +
-                    "\n     CL2.ParLevel1_Id,                                                                                                                                                     " +
-                    "\n     CL2.ParLevel2_Id,                                                                                                                                                     " +
-                    "\n     CL2.UnitId,                                                                                                                                                           " +
-                    "\n     CL2.Shift,                                                                                                                                                                " +
-                    "\n     CL2.Period,                                                                                                                                                               " +
-                    "\n     CONVERT(date, CollectionDate) AS CollectionDate,                                                                                                                      " +
-                    "\n     EvaluationNumber,                                                                                                                                                     " +
-                    "\n     MAX(Sample) AS Sample,                                                                                                                                                " +
-                    "\n     MAX(ConsolidationLevel2_Id) AS ConsolidationLevel2_Id                                                                                                                 " +
                     "\n                                                                                                                                                                           " +
-                    "\n     FROM CollectionLevel2 CL2                                                                                                                                             " +
+                    "\n           CL2.ParLevel1_Id,                                                                                                                                               " +
+                    "\n           CL2.ParLevel2_Id,                                                                                                                                               " +
+                    "\n           CL2.UnitId,                                                                                                                                                     " +
+                    "\n           CL2.Shift,                                                                                                                                                      " +
+                    "\n           CL2.Period,                                                                                                                                                     " +
+                    "\n           CONVERT(date, CollectionDate) AS CollectionDate,                                                                                                                " +
+                    "\n           MAX(EvaluationNumber)      EvaluationNumber,                                                                                                                    " +
+                    "\n           MAX(Sample)[Sample],                                                                                                                                            " +
+                    "\n           MAX(ConsolidationLevel2_Id)      ConsolidationLevel2_Id                                                                                                         " +
                     "\n                                                                                                                                                                           " +
-                    "\n     INNER JOIN ConsolidationLevel2 CDL2                                                                                                                                   " +
                     "\n                                                                                                                                                                           " +
-                    "\n     ON CL2.ConsolidationLevel2_Id = CDL2.ID                                                                                                                               " +
+                    "\n           FROM CollectionLevel2 CL2                                                                                                                                       " +
                     "\n                                                                                                                                                                           " +
-                    "\n     INNER JOIN ConsolidationLevel1 CDL1                                                                                                                                   " +
                     "\n                                                                                                                                                                           " +
-                    "\n     ON CDL2.ConsolidationLevel1_Id = CDL1.Id                                                                                                                              " +
+                    "\n           INNER JOIN ConsolidationLevel2 CDL2                                                                                                                             " +
                     "\n                                                                                                                                                                           " +
-                    "\n     WHERE                                                                                                                                                                 " +
-                    "\n     (                                                                                                                                                                     " +
-                    "\n         1 = 1                                                                                                                                                             " +
-                    "\n         --CDL1.ParLevel1_Id = '1043'                                                                                                                                      " +
                     "\n                                                                                                                                                                           " +
-                    "\n         AND CDL1.UnitId = @unidade                                                                                                                                        " +
+                    "\n           ON CL2.ConsolidationLevel2_Id = CDL2.ID                                                                                                                         " +
                     "\n                                                                                                                                                                           " +
-                    "\n         AND cast(CDL2.ConsolidationDate as DATE) BETWEEN                                                                                        " +
-
-                    "\n              CASE " +
-                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(1, 2, 3) THEN @datadiario " +
-                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(4) THEN @datasemanal " +
-                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(5) THEN @dataquinzenal " +
-                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(6) THEN @datamensal " +
-                    "\n              ELSE @datadiario END and @datafim " +
-
-                    "\n     )                                                                                                                                                                     " +
                     "\n                                                                                                                                                                           " +
-                    "\n     GROUP BY                                                                                                                                                              " +
+                    "\n           INNER JOIN ConsolidationLevel1 CDL1                                                                                                                             " +
                     "\n                                                                                                                                                                           " +
-                    "\n     CL2.ParLevel1_Id,                                                                                                                                                     " +
-                    "\n     CL2.ParLevel2_Id,                                                                                                                                                     " +
-                    "\n     CL2.UnitId,                                                                                                                                                           " +
-                    "\n     CL2.Shift,                                                                                                                                                                " +
-                    "\n     CL2.Period,                                                                                                                                                               " +
-                    "\n     CONVERT(date, CollectionDate),                                                                                                                                        " +
-                    "\n     EvaluationNumber,                                                                                                                                                     " +
-                    "\n     ConsolidationLevel2_Id                                                                                                                                                " +
-                    "\n ) AS ultimas_amostras                                                                                                                                                     " +
-                    "\n GROUP BY                                                                                                                                                                  " +
-                    "\n ParLevel1_Id,                                                                                                                                                             " +
-                    "\n ParLevel2_Id,                                                                                                                                                             " +
-                    "\n UnitId,                                                                                                                                                                   " +
-                    "\n Shift,                                                                                                                                                                    " +
-                    "\n Period,                                                                                                                                                                   " +
-                    "\n CollectionDate,                                                                                                                                                            " +
-                    "\n ConsolidationLevel2_Id                                                                                                                                                    " +
                     "\n                                                                                                                                                                           " +
-                    "\n ) Level2Result                                                                                                                                                            " +
-                    //"\n ON Level2Result.ParLevel2_Id = CDL2.ParLevel2_Id                                                                                                                          " +
-
-                    "\n ON Level2Result.ParLevel2_Id = CDL2.ParLevel2_Id AND Level2Result.ConsolidationLevel2_Id = CDL2.Id                                                                        " +
-
-                    "\n WHERE 1 = 1                                                                                                                                                               " +
-                    "\n --AND(CDL2.ParLevel2_Id = 1268)                                                                                                                                           " +
-                    "\n --AND CDL1.ParLevel1_Id = 1043                                                                                                                                            " +
-                    "\n AND(CDL1.UnitId = @unidade)                                                                                                                                               " +
-                    "\n AND CDL1.Id IN                                                                                                                                                            " +
-                    "\n (                                                                                                                                                                         " +
+                    "\n           ON CDL2.ConsolidationLevel1_Id = CDL1.Id                                                                                                                        " +
                     "\n                                                                                                                                                                           " +
-                    "\n SELECT                                                                                                                                                                    " +
-                    "\n  CDL1.Id                                                                                                                                                                  " +
-                    "\n  FROM ConsolidationLevel1 CDL1                                                                                                                                            " +
-                    "\n  INNER JOIN ParLevel1 PL1                                                                                                                                                 " +
-                    "\n  ON CDL1.ParLevel1_Id = PL1.Id                                                                                                                                            " +
-                    "\n  WHERE CDL1.UnitId = @unidade                                                                                                                                             " +
-                    "\n  AND cast(CDL1.Consolidationdate as Date) BETWEEN @datamensal and @datafim " +
-
-
-                    "\n  AND PL1.IsActive = 1                                                                                                                                                     " +
-                    "\n  GROUP BY CDL1.Id, CDL1.ParLevel1_Id, PL1.ParFrequency_Id, PL1.IsPartialSave                                                                                              " +
                     "\n                                                                                                                                                                           " +
-                    "\n )                                                                                                                                                                         " +
-                    "\n GROUP BY                                                                                                                                                                  " +
-                    "\n CDL2.ParLevel2_Id,                                                                                                                                                        " +
-                    "\n CDL1.AtualAlert,                                                                                                                                                          " +
-                    "\n CDL1.WeiEvaluation,                                                                                                                                                       " +
-                    "\n CDL1.EvaluateTotal,                                                                                                                                                       " +
-                    "\n CDL1.DefectsTotal,                                                                                                                                                        " +
-                    "\n CDL1.WeiDefects,                                                                                                                                                          " +
-                    "\n CDL1.TotalLevel3Evaluation,                                                                                                                                               " +
-                    "\n CDL1.TotalLevel3WithDefects,                                                                                                                                              " +
-                    "\n CDL1.LastEvaluationAlert,                                                                                                                                                 " +
-                    "\n CDL1.LastLevel2Alert,                                                                                                                                                     " +
-                    "\n CDL1.EvaluatedResult,                                                                                                                                                     " +
-                    "\n CDL1.DefectsResult,                                                                                                                                                       " +
-                    "\n CDL2.AlertLevel,                                                                                                                                                          " +
-                    "\n CDL2.WeiEvaluation,                                                                                                                                                       " +
-                    "\n CDL2.DefectsTotal,                                                                                                                                                        " +
-                    "\n CDL2.WeiDefects,                                                                                                                                                          " +
-                    "\n CDL2.TotalLevel3WithDefects,                                                                                                                                              " +
-                    "\n CDL2.TotalLevel3Evaluation,                                                                                                                                               " +
-                    "\n CDL2.EvaluateTotal,                                                                                                                                                       " +
-                    "\n CDL2.EvaluatedResult,                                                                                                                                                     " +
-                    "\n CDL2.DefectsResult,                                                                                                                                                       " +
-                    "\n CL2.HaveCorrectiveAction,                                                                                                                                                 " +
-                    "\n CL2.HaveReaudit,                                                                                                                                                          " +
-                    "\n CL2.ReauditLevel,                                                                                                                                                         " +
-                    "\n CL2.ReauditNumber,                                                                                                                                                        " +
-                    "\n CL2.ReauditIs,                                                                                                                                                            " +
-                    "\n CL2.Phase,                                                                                                                                                                " +
-                    "\n CL2.StartPhaseDate,                                                                                                                                                       " +
-                    "\n CL2.StartPhaseEvaluation,                                                                                                                                                 " +
+                    "\n           WHERE                                                                                                                                                           " +
+                    "\n           (                                                                                                                                                               " +
+                    "\n               1 = 1                                                                                                                                                       " +
+                    "\n               --CDL1.ParLevel1_Id = '1043'                                                                                                                                " +
                     "\n                                                                                                                                                                           " +
-                    "\n Level2Result.ParLevel1_Id,                                                                                                                                                " +
-                    "\n Level2Result.ParLevel2_Id,                                                                                                                                                " +
-                    "\n Level2Result.Unit_Id,                                                                                                                                                     " +
-                    "\n Level2Result.Shift,                                                                                                                                                       " +
-                    "\n Level2Result.Period,                                                                                                                                                      " +
-                    "\n Level2Result.CollectionDate,                                                                                                                                              " +
-                    "\n Level2Result.EvaluateLast,                                                                                                                                                " +
-                    "\n Level2Result.SampleLast,                                                                                                                                                  " +
-                    "\n Level2Result.ConsolidationLevel2_Id                                                                                                                                       " +
-                    "\n DROP TABLE #MOTHERFOCKER " +
+                    "\n                                                                                                                                                                           " +
+                    "\n               AND CDL1.UnitId = @unidade                                                                                                                                  " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                                                                                                                                                                           " +
+                    "\n               AND cast(CDL2.ConsolidationDate as DATE) BETWEEN                                                                                                            " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                    CASE                                                                                                                                                   " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(1, 2, 3) THEN @datadiario                                            " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(4) THEN @datasemanal                                                 " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(5) THEN @dataquinzenal                                               " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(6) THEN @datamensal                                                  " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                    ELSE @datadiario END and @datafim                                                                                                                      " +
+                    "\n           )                                                                                                                                                               " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                                                                                                                                                                           " +
+                    "\n           GROUP BY                                                                                                                                                        " +
+                    "\n                                                                                                                                                                           " +
+                    "\n                                                                                                                                                                           " +
+                    "\n           CL2.ParLevel1_Id,                                                                                                                                               " +
+                    "\n           CL2.ParLevel2_Id,                                                                                                                                               " +
+                    "\n           CL2.UnitId,                                                                                                                                                     " +
+                    "\n           CL2.Shift,                                                                                                                                                      " +
+                    "\n           CL2.Period,                                                                                                                                                     " +
+                    "\n           CONVERT(date, CollectionDate),                                                                                                                                  " +
+                    "\n           ConsolidationLevel2_Id                                                                                                                                          " +
+                    "\n      ) EvaluationNumberTBL                                                                                                                                                " +
+                    "\n                                                                                                                                                                           " +
+                    "\n      on SampleTBL.ConsolidationLevel2_Id = EvaluationNumberTBL.ConsolidationLevel2_Id                                                                                     " +
+                    "\n                                                                                                                                                                           " +
+                    "\n      AND SampleTBL.EvaluationNumber = EvaluationNumberTBL.EvaluationNumber                                                                                                " +
+                    "\n   ) AS ultimas_amostras                                                                                                                                                   " +
+                    "\n   GROUP BY                                                                                                                                                                " +
+                    "\n   ParLevel1_Id,                                                                                                                                                           " +
+                    "\n   ParLevel2_Id,                                                                                                                                                           " +
+                    "\n   UnitId,                                                                                                                                                                 " +
+                    "\n   Shift,                                                                                                                                                                  " +
+                    "\n   Period,                                                                                                                                                                 " +
+                    "\n   CollectionDate,                                                                                                                                                         " +
+                    "\n   ConsolidationLevel2_Id                                                                                                                                                  " +
+                    "\n                                                                                                                                                                           " +
+                    "\n   ) Level2Result                                                                                                                                                          " +
+                    "\n                                                                                                                                                                           " +
+                    "\n   ON Level2Result.ParLevel2_Id = CDL2.ParLevel2_Id AND Level2Result.ConsolidationLevel2_Id = CDL2.Id                                                                      " +
+                    "\n   WHERE 1 = 1                                                                                                                                                             " +
+                    "\n   --AND(CDL2.ParLevel2_Id = 1268)                                                                                                                                         " +
+                    "\n   --AND CDL1.ParLevel1_Id = 1043                                                                                                                                          " +
+                    "\n   AND(CDL1.UnitId = @unidade)                                                                                                                                             " +
+                    "\n   AND CDL1.Id IN                                                                                                                                                          " +
+                    "\n   (                                                                                                                                                                       " +
+                    "\n                                                                                                                                                                           " +
+                    "\n   SELECT                                                                                                                                                                  " +
+                    "\n    CDL1.Id                                                                                                                                                                " +
+                    "\n    FROM ConsolidationLevel1 CDL1                                                                                                                                          " +
+                    "\n    INNER JOIN ParLevel1 PL1                                                                                                                                               " +
+                    "\n    ON CDL1.ParLevel1_Id = PL1.Id                                                                                                                                          " +
+                    "\n    WHERE CDL1.UnitId = @unidade                                                                                                                                           " +
+                    "\n    AND cast(CDL1.Consolidationdate as Date) BETWEEN @datamensal and @datafim                                                                                              " +
+                    "\n    AND PL1.IsActive = 1                                                                                                                                                   " +
+                    "\n    GROUP BY CDL1.Id, CDL1.ParLevel1_Id, PL1.ParFrequency_Id, PL1.IsPartialSave                                                                                            " +
+                    "\n                                                                                                                                                                           " +
+                    "\n   )                                                                                                                                                                       " +
+                    "\n   GROUP BY                                                                                                                                                                " +
+                    "\n   CDL2.ParLevel2_Id,                                                                                                                                                      " +
+                    "\n   CDL1.AtualAlert,                                                                                                                                                        " +
+                    "\n   CDL1.WeiEvaluation,                                                                                                                                                     " +
+                    "\n   CDL1.EvaluateTotal,                                                                                                                                                     " +
+                    "\n   CDL1.DefectsTotal,                                                                                                                                                      " +
+                    "\n   CDL1.WeiDefects,                                                                                                                                                        " +
+                    "\n   CDL1.TotalLevel3Evaluation,                                                                                                                                             " +
+                    "\n   CDL1.TotalLevel3WithDefects,                                                                                                                                            "+
+                    "\n   CDL1.LastEvaluationAlert,                                                                                                                                               "+
+                    "\n   CDL1.LastLevel2Alert,                                                                                                                                                   "+
+                    "\n   CDL1.EvaluatedResult,                                                                                                                                                   "+
+                    "\n   CDL1.DefectsResult,                                                                                                                                                     "+
+                    "\n   CDL2.AlertLevel,                                                                                                                                                        "+
+                    "\n   CDL2.WeiEvaluation,                                                                                                                                                     "+
+                    "\n   CDL2.DefectsTotal,                                                                                                                                                      "+
+                    "\n   CDL2.WeiDefects,                                                                                                                                                        "+
+                    "\n   CDL2.TotalLevel3WithDefects,                                                                                                                                            "+
+                    "\n   CDL2.TotalLevel3Evaluation,                                                                                                                                             "+
+                    "\n   CDL2.EvaluateTotal,                                                                                                                                                     "+
+                    "\n   CDL2.EvaluatedResult,                                                                                                                                                   "+
+                    "\n   CDL2.DefectsResult,                                                                                                                                                     "+
+                    "\n   CL2.HaveCorrectiveAction,                                                                                                                                               "+
+                    "\n   CL2.HaveReaudit,                                                                                                                                                        "+
+                    "\n   CL2.ReauditLevel,                                                                                                                                                       "+
+                    "\n   CDL2.ReauditNumber,                                                                                                                                                     "+ 
+                    "\n   CL2.ReauditIs,                                                                                                                                                          "+
+                    "\n   CL2.Phase,                                                                                                                                                              "+
+                    "\n   CL2.StartPhaseDate,                                                                                                                                                     "+
+                    "\n   CL2.StartPhaseEvaluation,                                                                                                                                               "+
+                    "\n                                                                                                                                                                           "+
+                    "\n   Level2Result.ParLevel1_Id,                                                                                                                                              "+
+                    "\n   Level2Result.ParLevel2_Id,                                                                                                                                              "+
+                    "\n   Level2Result.Unit_Id,                                                                                                                                                   "+
+                    "\n   Level2Result.Shift,                                                                                                                                                     "+
+                    "\n   Level2Result.Period,                                                                                                                                                    "+
+                    "\n   Level2Result.CollectionDate,                                                                                                                                            "+
+                    "\n   Level2Result.EvaluateLast,                                                                                                                                              "+
+                    "\n   Level2Result.SampleLast,                                                                                                                                                "+
+                    "\n   Level2Result.ConsolidationLevel2_Id                                                                                                                                     "+
+                    "\n   DROP TABLE #MOTHERFOCKER " +
                     "";
                 var list = db.Database.SqlQuery<ResultadoUmaColuna>(sql).ToList();
 
