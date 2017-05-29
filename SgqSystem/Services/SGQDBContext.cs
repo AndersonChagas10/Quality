@@ -73,7 +73,8 @@ namespace SGQDBContext
              * 30/03/2017
              */
 
-            string ParLevel1_IdFilho = "";
+            string whereIsChildren = "  ";
+            //string whereIsChildren = " AND IsChildren = 0 ";
 
             //ParLevel1_IdFilho = " AND P1.Id NOT IN (1042) ";
 
@@ -99,7 +100,7 @@ namespace SGQDBContext
                          "\n ON P1.Id = G.ParLevel1_Id                                                                                        " +
 
                          "\n WHERE CC.ParCompany_Id = '" + ParCompany_Id + "'                                                                           " +
-                         "\n " + ParLevel1_IdFilho + "                                                                                                       " +
+                         "\n " + whereIsChildren + "                                                                                                       " +
                          "\n AND P1.IsActive = 1 AND C.IsActive = 1 AND P1C.IsActive = 1 AND CC.Active = 1                                                                                                       ";
             if(Level1ListId != "" && Level1ListId != null)
             {
@@ -940,12 +941,27 @@ namespace SGQDBContext
              * 30/03/2017
              */
 
+            string possuiIndicadorFilho = "SELECT cast(id as varchar(max)) as retorno FROM ParLevel1 WHERE ParLevel1Origin_Id = " + ParLevel1.Id.ToString();
+            string ParLevel1Origin_Id = "";
+
+            //using (var db = new Dominio.SgqDbDevEntities())
+            //{
+            //    var list = db.Database.SqlQuery<ResultadoUmaColuna>(possuiIndicadorFilho).ToList();
+
+            //    for (var i = 0; i < list.Count(); i++)
+            //    {
+            //        ParLevel1Origin_Id += list[i].retorno.ToString() + ", ";
+            //    }
+            //}
+
+            ParLevel1Origin_Id += "null";
+
             string sqlFilho = "";
 
-            if(ParLevel1.Id == 22)
+            if (ParLevel1Origin_Id != "null")
             {
 
-                string ParLevel1_IdFilho = " AND L321.ParLevel1_Id IN (1042)";
+                string ParLevel1_IdFilho = " AND L321.ParLevel1_Id IN (" + ParLevel1Origin_Id + ")";
 
                 sqlFilho = "UNION ALL SELECT L3.Id AS Id, L3.Name AS Name, L3G.Id AS ParLevel3Group_Id, L3G.Name AS ParLevel3Group_Name, L3IT.Id AS ParLevel3InputType_Id, L3IT.Name AS ParLevel3InputType_Name, L3V.ParLevel3BoolFalse_Id AS ParLevel3BoolFalse_Id, L3BF.Name AS ParLevel3BoolFalse_Name, L3V.ParLevel3BoolTrue_Id AS ParLevel3BoolTrue_Id, L3BT.Name AS ParLevel3BoolTrue_Name, " +
                         "L3V.IntervalMin AS IntervalMin, L3V.IntervalMax AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, L32.Weight AS Weight, L3V.ParCompany_Id , L32.ParCompany_Id                                                                                                                                                                                                                                   " +
