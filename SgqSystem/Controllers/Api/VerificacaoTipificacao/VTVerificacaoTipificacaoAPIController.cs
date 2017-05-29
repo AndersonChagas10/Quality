@@ -246,7 +246,7 @@ namespace SgqSystem.Controllers.Api
                 //queryString = "SELECT 1";
                 int iSequencial = 0;
                 int iBanda = 0;
-                DateTime dataHoraMonitor = DateTime.Now;
+                DateTime dataHoraMonitor = verificacaoTipificacao.DataHora;
 
                 using (SqlConnection connection = new SqlConnection(conexao))
                 {
