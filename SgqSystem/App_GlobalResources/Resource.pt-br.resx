@@ -2017,7 +2017,7 @@
     <value>Fechar todos</value>
   </data>
   <data name="update_tablet" xml:space="preserve">
-    <value>Atualizar Tablets</value>
+    <value>Atualizar Cadastros</value>
   </data>
   <data name="update_tablet_message" xml:space="preserve">
     <value>Esta ação pode demorar algum tempo, deseja atualizar a parametrização dos tablets? O Loader sumira automaticamente ao finalizar a ação.</value>

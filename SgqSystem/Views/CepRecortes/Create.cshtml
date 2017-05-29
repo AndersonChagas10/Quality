@@ -140,8 +140,7 @@
                                                 <select id="NBR" name="NBR" class="form-control valid">
                                                     <option value="-1">@Resources.Resource.select</option>
                                                     <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
+                                                    
                                                 </select>
 
                                                 @*@Html.EditorFor(model => model.NBR, new { htmlAttributes = new { @class = "form-control" } })*@
@@ -269,8 +268,8 @@
     $('#TotalAvaliaColaborEsteirHoraProd, #TamanhoAmostra').on('input', function () {
         $('#TotalAmostraAvaliaColabEsteiraHoraProd').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
         $('#TotalAmostraAvaliaColabEsteiraHoraProdHidden').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
-        $('#Amostras').val(Math.ceil(($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()) / $('#HorasTrabalhadasPorDia').val()));
-        $('#amostraHidden').val(Math.ceil(($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()) / $('#HorasTrabalhadasPorDia').val()));
+        $('#Amostras').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
+        $('#amostraHidden').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
     });
 
     $('#btnTeste').click(function (e) {
