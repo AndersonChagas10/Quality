@@ -2043,4 +2043,7 @@
   <data name="update_tablet_message" xml:space="preserve">
     <value>This may take some time, do you want to update the tablet settings? The Loader will automatically disappear when the action is finished.</value>
   </data>
+  <data name="time" xml:space="preserve">
+    <value>Time</value>
+  </data>
 </root>
