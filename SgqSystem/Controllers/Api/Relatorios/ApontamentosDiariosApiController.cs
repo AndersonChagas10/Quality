@@ -198,6 +198,7 @@ namespace SgqSystem.Controllers.Api
                 query += "\n [Value] = " + _Value + ",";
                 query += "\n [IsNotEvaluate] = " + _IsNotEvaluate + ",";
                 query += "\n [ValueText] = '" + texto + "',";
+                query += "\n [WeiEvaluation] = " + Decimal.ToInt32(_WeiEvaluation) + ",";
                 query = query.Remove(query.Length - 1);//Remove a ultima virgula antes do where.
                 query += "\n WHERE Id = " + Id;
 
@@ -214,11 +215,11 @@ namespace SgqSystem.Controllers.Api
                 "\n                                                                                                                           " +
                 "\n select                                                                                                                    " +
                 "\n                                                                                                                           " +
-                "\n @Defects = sum(r3.Defects),                                                                                               " +
+                "\n @Defects = isnull(sum(r3.Defects),0),                                                                                     " +
                 "\n @DefectsResult = case when sum(r3.Defects) > 0 then 1 else 0 end,                                                         " +
                 "\n @EvatuationResult = case when sum(r3.Evaluation) > 0 then 1 else 0 end,                                                   " +
-                "\n @WeiEvaluation = sum(r3.WeiEvaluation),                                                                                   " +
-                "\n @WeiDefects = sum(r3.WeiDefects),                                                                                         " +
+                "\n @WeiEvaluation = isnull(sum(r3.WeiEvaluation),0),                                                                         " +
+                "\n @WeiDefects = isnull(sum(r3.WeiDefects),0),                                                                               " +
                 "\n @TotalLevel3Evaluation = count(1),                                                                                        " +
                 "\n @TotalLevel3WithDefects = (select count(1) from result_level3 where collectionLevel2_Id = @ID and Defects > 0  and IsNotEvaluate = 0)         " +
                 "\n from result_level3 r3                                                                                                     " +
@@ -234,6 +235,7 @@ namespace SgqSystem.Controllers.Api
                 "\n , WeiDefects = @WeiDefects                                                                                                " +
                 "\n , TotalLevel3Evaluation = @TotalLevel3Evaluation                                                                          " +
                 "\n , TotalLevel3WithDefects = @TotalLevel3WithDefects                                                                        " +
+                "\n , AlterDate = GETDATE()                                                                                                   " +
                 "\n WHERE Id = @ID                                                                                                            ";
 
                 return query;
@@ -567,6 +569,20 @@ namespace SgqSystem.Controllers.Api
 
             public Nullable<decimal> PunishmentValue { get; set; }
             public Nullable<decimal> WeiEvaluation { get; set; }
+            public decimal _WeiEvaluation
+            {
+                get
+                {
+
+                    if (IsNotEvaluate == true)
+                    {
+                        return 0;
+                    }
+
+                    //Fazer a soma ponderada
+                    return Weight.GetValueOrDefault();
+                }
+            }
             public Nullable<decimal> Evaluation { get; set; }
 
             public Nullable<decimal> WeiDefects { get; set; }
