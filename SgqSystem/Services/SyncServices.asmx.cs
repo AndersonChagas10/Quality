@@ -871,13 +871,35 @@ namespace SgqSystem.Services
         public int updateConsolidationLevel2(int ConsolidationLevel2_Id, string AlertLevel, string LastEvaluationAlert, string LastLevel2Alert, SGQDBContext.CollectionLevel2Consolidation CollectionLevel2Consolidation)
         {
             //verificar se não vai sobreescrever informação com tablet antigo
-            int LastEvaluationAlertCheck = Convert.ToInt32(LastEvaluationAlert);
+
+            if (LastEvaluationAlert == "NULL")
+            {
+                LastEvaluationAlert = "0";
+            }
+
+            if (LastLevel2Alert == "NULL")
+            {
+                LastLevel2Alert = "null";
+            }
+
+            int LastEvaluationAlertCheck = 0;
+
+            if (LastEvaluationAlert == "NULL")
+            {
+                LastEvaluationAlertCheck = Convert.ToInt32(0);
+            }
+            else
+            {
+                LastEvaluationAlertCheck = Convert.ToInt32(LastEvaluationAlert);
+            }
+
+            
             if (CollectionLevel2Consolidation.LastEvaluationAlert > LastEvaluationAlertCheck)
             {
                 LastEvaluationAlert = CollectionLevel2Consolidation.LastEvaluationAlert.ToString();
             }
 
-            string sql = "UPDATE ConsolidationLevel2 SET AlertLevel=" + AlertLevel.ToString().Replace(",", ".") + ", WeiEvaluation=" + CollectionLevel2Consolidation.WeiEvaluationTotal.ToString().Replace(",", ".") + ", EvaluateTotal=" + CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", DefectsTotal=" + CollectionLevel2Consolidation.DefectsTotal.ToString().Replace(",", ".") + ", WeiDefects=" + CollectionLevel2Consolidation.WeiDefectsTotal.ToString().Replace(",", ".") + ", TotalLevel3Evaluation=" + CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", TotalLevel3WithDefects=" + CollectionLevel2Consolidation.TotalLevel3WithDefects.ToString().Replace(",", ".") + ", LastEvaluationAlert='" + LastEvaluationAlert.ToString().Replace(",", ".") + "', LastLevel2Alert='" + LastLevel2Alert.ToString().Replace(",", ".") + "', EvaluatedResult='" + CollectionLevel2Consolidation.EvaluatedResult + "', DefectsResult='" + CollectionLevel2Consolidation.DefectsResult + "' WHERE ID='" + ConsolidationLevel2_Id.ToString().Replace(",", ".") + "'";
+            string sql = "UPDATE ConsolidationLevel2 SET AlertLevel=" + AlertLevel.ToString().Replace(",", ".") + ", WeiEvaluation=" + CollectionLevel2Consolidation.WeiEvaluationTotal.ToString().Replace(",", ".") + ", EvaluateTotal=" + CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", DefectsTotal=" + CollectionLevel2Consolidation.DefectsTotal.ToString().Replace(",", ".") + ", WeiDefects=" + CollectionLevel2Consolidation.WeiDefectsTotal.ToString().Replace(",", ".") + ", TotalLevel3Evaluation=" + CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", TotalLevel3WithDefects=" + CollectionLevel2Consolidation.TotalLevel3WithDefects.ToString().Replace(",", ".") + ", LastEvaluationAlert='" + LastEvaluationAlert.ToString().Replace(",", ".") + "', LastLevel2Alert=" + LastLevel2Alert.ToString().Replace(",", ".") + ", EvaluatedResult='" + CollectionLevel2Consolidation.EvaluatedResult + "', DefectsResult='" + CollectionLevel2Consolidation.DefectsResult + "' WHERE ID='" + ConsolidationLevel2_Id.ToString().Replace(",", ".") + "'";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
@@ -912,13 +934,24 @@ namespace SgqSystem.Services
 
         public int updateConsolidationLevel1(int ConsolidationLevel1_Id, string AlertLevel, string LastEvaluationAlert, string LastLevel2Alert, SGQDBContext.ConsolidationLevel1XConsolidationLevel2 CL1XCL2)
         {
+
+            if (LastEvaluationAlert == "NULL")
+            {
+                LastEvaluationAlert = "0";
+            }
+
+            if (LastLevel2Alert == "NULL")
+            {
+                LastLevel2Alert = "null";
+            }
+
             int LastEvaluationAlertCheck = Convert.ToInt32(LastEvaluationAlert);
             if (CL1XCL2.LastEvaluationAlert > LastEvaluationAlertCheck)
             {
                 LastEvaluationAlert = CL1XCL2.LastEvaluationAlert.ToString();
             }
 
-            string sql = "UPDATE ConsolidationLevel1 SET AtualAlert=" + AlertLevel.ToString().Replace(",", ".") + ", Evaluation=" + CL1XCL2.EvaluateTotal.ToString().Replace(",", ".") + ", WeiEvaluation=" + CL1XCL2.WeiEvaluation.ToString().Replace(",", ".") + ", EvaluateTotal=" + CL1XCL2.EvaluateTotal.ToString().Replace(",", ".") + ", DefectsTotal=" + CL1XCL2.DefectsTotal.ToString().Replace(",", ".") + ", WeiDefects=" + CL1XCL2.WeiDefects.ToString().Replace(",", ".") + ", TotalLevel3Evaluation=" + CL1XCL2.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", TotalLevel3WithDefects=" + CL1XCL2.TotalLevel3WithDefects.ToString().Replace(",", ".") + ", LastEvaluationAlert='" + LastEvaluationAlert.ToString().Replace(",", ".") + "', LastLevel2Alert='" + LastLevel2Alert.ToString().Replace(",", ".") + "', EvaluatedResult='" + CL1XCL2.EvaluatedResult.ToString().Replace(",", ",") + "', DefectsResult='" + CL1XCL2.DefectsResult.ToString().Replace(",", ".") + "' WHERE ID='" + ConsolidationLevel1_Id.ToString().Replace(",", ".") + "'";
+            string sql = "UPDATE ConsolidationLevel1 SET AtualAlert=" + AlertLevel.ToString().Replace(",", ".") + ", Evaluation=" + CL1XCL2.EvaluateTotal.ToString().Replace(",", ".") + ", WeiEvaluation=" + CL1XCL2.WeiEvaluation.ToString().Replace(",", ".") + ", EvaluateTotal=" + CL1XCL2.EvaluateTotal.ToString().Replace(",", ".") + ", DefectsTotal=" + CL1XCL2.DefectsTotal.ToString().Replace(",", ".") + ", WeiDefects=" + CL1XCL2.WeiDefects.ToString().Replace(",", ".") + ", TotalLevel3Evaluation=" + CL1XCL2.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", TotalLevel3WithDefects=" + CL1XCL2.TotalLevel3WithDefects.ToString().Replace(",", ".") + ", LastEvaluationAlert='" + LastEvaluationAlert.ToString().Replace(",", ".") + "', LastLevel2Alert=" + LastLevel2Alert.ToString().Replace(",", ".") + ", EvaluatedResult='" + CL1XCL2.EvaluatedResult.ToString().Replace(",", ",") + "', DefectsResult='" + CL1XCL2.DefectsResult.ToString().Replace(",", ".") + "' WHERE ID='" + ConsolidationLevel1_Id.ToString().Replace(",", ".") + "'";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
@@ -1468,8 +1501,12 @@ namespace SgqSystem.Services
                 string ParHeaderField_Id = header[0];
                 string ParFieldType_Id = header[1];
                 string Value = header[2];
+                
+                //Tratamento de erros Gabriel 2017-05-27
+                if(ParHeaderField_Id != "undefined" && ParFieldType_Id != "undefined")
+                {
 
-                sql += "INSERT INTO[dbo].[CollectionLevel2XParHeaderField]               " +
+                    sql += "INSERT INTO[dbo].[CollectionLevel2XParHeaderField]               " +
                          "      ([CollectionLevel2_Id]                                     " +
                          "      ,[ParHeaderField_Id]                                       " +
                          "      ,[ParHeaderField_Name]                                     " +
@@ -1481,49 +1518,57 @@ namespace SgqSystem.Services
                          "      ,(SELECT Name FROM ParHeaderField WHERE Id='" + ParHeaderField_Id + "')   " +
                          "      ,'" + ParFieldType_Id + "'                                  " +
                          "      ,'" + Value + "')                                           ";
+
+                }
+    
             }
 
-
-
-
-
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-            try
+            //Tratamento de erros Gabriel 2017-05-27
+            if (sql != null)
             {
-                using (SqlConnection connection = new SqlConnection(conexao))
-                {
-                    using (SqlCommand command = new SqlCommand(sql, connection))
-                    {
-                        connection.Open();
-                        var i = Convert.ToInt32(command.ExecuteNonQuery());
-                        //Se o script for executado corretamente retorna o Id
-                        if (i > 0)
-                        {
-                            return i;
-                        }
-                        else
-                        {
-                            //Se o script não for executado corretamente, retorna zero
-                            return 0;
-                        }
 
+                string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(conexao))
+                    {
+                        using (SqlCommand command = new SqlCommand(sql, connection))
+                        {
+                            connection.Open();
+                            var i = Convert.ToInt32(command.ExecuteNonQuery());
+                            //Se o script for executado corretamente retorna o Id
+                            if (i > 0)
+                            {
+                                return i;
+                            }
+                            else
+                            {
+                                //Se o script não for executado corretamente, retorna zero
+                                return 0;
+                            }
+
+                        }
                     }
                 }
-            }
-            //Caso ocorra alguma exception, grava no log e retorna zero
-            catch (SqlException ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel2HeaderField");
-                if (ex.Number == 2627) // <-- but this will
+                //Caso ocorra alguma exception, grava no log e retorna zero
+                catch (SqlException ex)
                 {
-                    return 0;
+                    int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel2HeaderField");
+                    if (ex.Number == 2627) // <-- but this will
+                    {
+                        return 0;
+                    }
+                    throw ex;
                 }
-                throw ex;
+                catch (Exception ex)
+                {
+                    int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel2HeaderField");
+                    throw ex;
+                }
             }
-            catch (Exception ex)
+            else //Tratamento de erros Gabriel 2017-05-27
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel2HeaderField");
-                throw ex;
+                return 1;
             }
         }
 

@@ -24,9 +24,10 @@ namespace SgqSystem.Controllers.Api
 
         [Route("Save")]
         [HttpPost]
-        public void SaveVTVerificacaoTipificacao(TipificacaoViewModel model)
+        public void SaveVTVerificacaoTipificacao(TipificacaoViewModel model) // se não enviar, aceita a Camila
         {
 
+            int userId = model.AuditorId;
 
             var _verificacao = model.VerificacaoTipificacao;
 
@@ -133,7 +134,7 @@ namespace SgqSystem.Controllers.Api
                 
                 try
                 {
-                    GetDadosGet(_verificacao.Chave);
+                    GetDadosGet(_verificacao.Chave, userId);
                 }
                 catch (Exception e)
                 {
@@ -149,7 +150,7 @@ namespace SgqSystem.Controllers.Api
                 {
                     try
                     {
-                        GetDadosGet(vt.Chave);
+                        GetDadosGet(vt.Chave, userId);
                     }
                     catch (SqlException ex)
                     {
@@ -208,7 +209,7 @@ namespace SgqSystem.Controllers.Api
 
         [Route("Consolidation")]
         [HttpPost]
-        public System.Web.Mvc.JsonResult GetDadosGet(string verificacaoTipificacaoChave)//codigo só pra teste
+        public System.Web.Mvc.JsonResult GetDadosGet(string verificacaoTipificacaoChave, int userId = 1)//codigo só pra teste? Se user nao for enviado, recebe a Camila
         {
             var SgqSystem = new SgqSystem.Services.SyncServices();
             var db = new SGQ_GlobalEntities();
@@ -405,7 +406,7 @@ namespace SgqSystem.Controllers.Api
                                         collectionLevel2.ParLevel1_Id = ParLevel1.Id;
                                         collectionLevel2.ParLevel2_Id = ParLevel2.Id;
                                         collectionLevel2.UnitId = verificacaoTipificacao.UnidadeId;
-                                        collectionLevel2.AuditorId = 1;
+                                        collectionLevel2.AuditorId = userId;
                                         collectionLevel2.Shift = 1;
                                         collectionLevel2.Period = 1;
                                         collectionLevel2.Phase = 1;
