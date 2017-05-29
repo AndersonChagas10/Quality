@@ -3518,8 +3518,8 @@ namespace SgqSystem.Services
                            "         <a href=\"#\" id=\"btnClearDatabase\" class=\"list-group-item\">" + CommonData.getResource("clean_db").Value.ToString() + "</a>                                            " +
                            "         <a href=\"#\" id=\"btnMostrarContadores\" class=\"list-group-item\">" + CommonData.getResource("show_counters").Value.ToString() + "</a>                                   " +
                            "         <a href=\"#\" id=\"btnAutoSend\" class=\"list-group-item\">" + CommonData.getResource("auto_send_on").Value.ToString() + "</a>                                   " +
-                           "         <span id=\"version\" class=\"list-group-item\">" + CommonData.getResource("version").Value.ToString() + ": <span class=\"number\"></span></span>                           " +
-                           "         <span id=\"ambiente\" class=\"list-group-item\"><span class=\"base\"></span></span>                                                                                        " +
+                           "         <span id=\"version\" style=\"font-size: 11px\" class=\"list-group-item\">" + CommonData.getResource("version").Value.ToString() + ": <span class=\"number\"></span></span>                           " +
+                           "         <span id=\"ambiente\" style=\"font-size: 11px\" class=\"list-group-item\"><span class=\"base\"></span></span>                                                                                        " +
                            "     </div>                                                                                                                                                                         " +
                            " </div>                                                                                                                                                                             ";
 
@@ -3672,7 +3672,7 @@ namespace SgqSystem.Services
 
         public string footer()
         {
-            string foot = "<footer class=\"footer\">                                                                                                                                       " +
+            string foot = "<footer class=\"footer\" style=\"font-size: 11px;\">                                                                                                                                       " +
                           "   <p style=\"color:white; margin-left:16px; margin-right:16px; margin-top: 12px;\">                                                                      " +
                           "       <span class=\"user\">Admin</span> - <span class=\"unit\">Colorado</span> | <span class=\"urlPrefix\"></span>                                          " +
                           "        <span class=\"status pull-right\"></span> <span class=\"database pull-right\"></span>                                                                                                         " +
@@ -5325,8 +5325,8 @@ namespace SgqSystem.Services
             string input = null;
             classInput = " defects";
             labels = html.div(
-                                       classe: "font10",
-                                       style: "margin-top:7px;"
+                                       //classe: "font10"
+                                       //style: "margin-top:7px;"
                                    );
 
             input = html.campoNumeroDeDefeitos(id: parLevel3.Id.ToString(),
