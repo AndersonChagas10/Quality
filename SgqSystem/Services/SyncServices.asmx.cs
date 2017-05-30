@@ -3518,8 +3518,8 @@ namespace SgqSystem.Services
                            "         <a href=\"#\" id=\"btnClearDatabase\" class=\"list-group-item\">" + CommonData.getResource("clean_db").Value.ToString() + "</a>                                            " +
                            "         <a href=\"#\" id=\"btnMostrarContadores\" class=\"list-group-item\">" + CommonData.getResource("show_counters").Value.ToString() + "</a>                                   " +
                            "         <a href=\"#\" id=\"btnAutoSend\" class=\"list-group-item\">" + CommonData.getResource("auto_send_on").Value.ToString() + "</a>                                   " +
-                           "         <span id=\"version\" class=\"list-group-item\">" + CommonData.getResource("version").Value.ToString() + ": <span class=\"number\"></span></span>                           " +
-                           "         <span id=\"ambiente\" class=\"list-group-item\"><span class=\"base\"></span></span>                                                                                        " +
+                           "         <span id=\"version\" style=\"font-size: 11px\" class=\"list-group-item\">" + CommonData.getResource("version").Value.ToString() + ": <span class=\"number\"></span></span>                           " +
+                           "         <span id=\"ambiente\" style=\"font-size: 11px\" class=\"list-group-item\"><span class=\"base\"></span></span>                                                                                        " +
                            "     </div>                                                                                                                                                                         " +
                            " </div>                                                                                                                                                                             ";
 
@@ -3672,7 +3672,7 @@ namespace SgqSystem.Services
 
         public string footer()
         {
-            string foot = "<footer class=\"footer\">                                                                                                                                       " +
+            string foot = "<footer class=\"footer\" style=\"font-size: 11px;\">                                                                                                                                       " +
                           "   <p style=\"color:white; margin-left:16px; margin-right:16px; margin-top: 12px;\">                                                                      " +
                           "       <span class=\"user\">Admin</span> - <span class=\"unit\">Colorado</span> | <span class=\"urlPrefix\"></span>                                          " +
                           "        <span class=\"status pull-right\"></span> <span class=\"database pull-right\"></span>                                                                                                         " +
@@ -4821,7 +4821,9 @@ namespace SgqSystem.Services
                 //var formControlBanda = "<select class='form-control input-sm banda' style='font-size:30px; height: 50px; text-align:center;'><option value = '1'>1</option><option value='2'>2</option></select>";
 
 
-                var formControlBanda = "<input class='form-control input-sm banda' min='1' max='2' style='font-size:30px; height: 50px; text-align:center;' type='number'>";
+                //var formControlBanda = "<input class='form-control input-sm banda' min='1' max='2' style='font-size:30px; height: 50px; text-align:center;' type='number'>";
+                var formControlBanda = "<select class='form-control input-sm banda' style='font-size:30px; height: 50px; text-align:center;'><option value='1' selected>1</option><option value='2'>2</option></select>";
+
                 var formGroupBanda = html.div(
                                         outerhtml: labelBanda + formControlBanda,
                                         classe: "form-group",
@@ -4933,13 +4935,13 @@ namespace SgqSystem.Services
 
                 painelLevel3HeaderListHtml += html.div(
                                                 outerhtml: formGroupSequencial,
-                                                classe: "col-xs-8 col-sm-6 col-md-6 col-lg-6",
+                                                classe: "col-xs-6 col-sm-6 col-md-6 col-lg-6",
                                                 style: "padding-right: 4px !important; padding-left: 4px !important;"
                                                 );
 
                 painelLevel3HeaderListHtml += html.div(
                                                 outerhtml: formGroupBanda,
-                                                classe: "col-xs-2 col-sm-2 col-md-2 col-lg-2",
+                                                classe: "col-xs-4 col-sm-2 col-md-2 col-lg-2",
                                                 style: "padding-right: 4px !important; padding-left: 4px !important;"
                                                 );
 
@@ -5325,8 +5327,8 @@ namespace SgqSystem.Services
             string input = null;
             classInput = " defects";
             labels = html.div(
-                                       classe: "font10",
-                                       style: "margin-top:7px;"
+                                       //classe: "font10"
+                                       //style: "margin-top:7px;"
                                    );
 
             input = html.campoNumeroDeDefeitos(id: parLevel3.Id.ToString(),
