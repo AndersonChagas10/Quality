@@ -837,6 +837,35 @@ namespace SgqSystem.Controllers.Api
                 }
             }
         }
+        [Route("Reconsolidation/{date}")]
+        [HttpPost]
+        public void Reconsolidation(DateTime date)
+        {
+            using (var db = new SGQ_GlobalEntities())
+            {
+                var seguinte = date;
+                seguinte = seguinte.AddDays(1);
 
+                var listVT = db.VTVerificacaoTipificacao.Where(x => x.DataHora >= date && x.DataHora < seguinte).ToList();
+
+                foreach (VTVerificacaoTipificacao vt in listVT)
+                {
+                    try
+                    {
+                        GetDadosGet(vt.Chave, 1);
+                    }
+                    catch (SqlException ex)
+                    {
+                        //throw new Exception("SqlException GetDadosGet reconsolidação", ex);
+                        new DTO.CreateLog(new Exception("SqlException GetDadosGet reconsolidação"));
+                    }
+                    catch (Exception ex)
+                    {
+                        //throw new Exception("Exception GetDadosGet reconsolidação", ex);
+                        new DTO.CreateLog(new Exception("Exception GetDadosGet reconsolidação"));
+                    }
+                }
+            }
+        }
     }
 }
