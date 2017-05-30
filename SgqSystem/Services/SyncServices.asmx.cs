@@ -636,7 +636,7 @@ namespace SgqSystem.Services
                     var consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(c.Unit_Id, consolidationLevel1.Id, c.level02_Id);
 
                     if (c.Reaudit)
-                        consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(c.Unit_Id, consolidationLevel1.Id, c.level02_Id, 1);
+                        consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(c.Unit_Id, consolidationLevel1.Id, c.level02_Id, 1,reauditNumber);
 
                     if (consolidationLevel2 == null)
                     {
@@ -1212,7 +1212,7 @@ namespace SgqSystem.Services
                         if (i > 0)
                         {
                             if (reaudit)
-                                return ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, ConsolidationLevel1_Id, ParLevel2_Id, 1);
+                                return ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, ConsolidationLevel1_Id, ParLevel2_Id, 1,reauditNumber.ToString());
                             else
                                 return ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, ConsolidationLevel1_Id, ParLevel2_Id);
                         }
@@ -2248,7 +2248,7 @@ namespace SgqSystem.Services
                     "\n SELECT                                                                                                                                                                    " +
                     "\n --L1.Id parLevel1_Id,                                                                                                                                                     " +
                     "\n --C2.ParLevel2_Id parLevel2_Id,                                                                                                                                           " +
-                    "\n ROW_NUMBER() OVER(ORDER BY R3.ParLevel3_Id) AS ROW,                                                                                                                       " +
+                    "\n ROW_NUMBER() OVER(ORDER BY R3.ParLevel3_Id ) AS ROW,                                                                                                                       " +
                     "\n '<div id=' + cast(R3.ParLevel3_Id as varchar) + 'class=\"r3l2\"></div>' COLUNA                                                                                            " +
                     "\n INTO #MOTHERFOCKER                                                                                                                                                        " +
                     "\n FROM CollectionLevel2 C2                                                                                                                                                  " +
@@ -2634,6 +2634,10 @@ namespace SgqSystem.Services
                     "\n   Level2Result.EvaluateLast,                                                                                                                                              "+
                     "\n   Level2Result.SampleLast,                                                                                                                                                "+
                     "\n   Level2Result.ConsolidationLevel2_Id                                                                                                                                     "+
+
+                    "\n ORDER BY Level2Result.CollectionDate asc,Level2Result.ParLevel1_Id asc, CDL2.ReauditNumber asc" +
+
+
                     "\n   DROP TABLE #MOTHERFOCKER " +
                     "";
                 var list = db.Database.SqlQuery<ResultadoUmaColuna>(sql).ToList();
