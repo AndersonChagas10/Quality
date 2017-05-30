@@ -8,8 +8,17 @@ using System.Web.Mvc;
 
 namespace PlanoDeAcaoMVC
 {
+    /// <summary>
+    /// Disponibiliza as DDL's
+    /// Level1, Level2, Level3, Undiade e Quem do SGQ.
+    /// </summary>
     public class IntegraSgq : AuthorizeAttribute
     {
+        /// <summary>
+        /// Disponibiliza as DDL's
+        /// Level1, Level2, Level3, Undiade e Quem do SGQ.
+        /// </summary>
+        /// <param name="filterContext"></param>
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
 
@@ -24,16 +33,9 @@ namespace PlanoDeAcaoMVC
                 usersgq = db.SearchQuery<UserDTO>("Select * from usersgq");
                 parcompany = db.SearchQuery<ParCompanyDTO>("Select * from parcompany").Where(r => r.IsActive).ToList();
 
-
-
                 filterContext.Controller.ViewBag.Level1 = level1;
                 filterContext.Controller.ViewBag.Level2 = level2;
                 filterContext.Controller.ViewBag.Level3 = level3;
-                //filterContext.Controller.ViewBag.UserSgq = usersgq;
-                //filterContext.Controller.ViewBag.ParCompany = parcompany;
-
-                //filterContext.Controller.ViewBag.Unidade = parcompany;
-                //filterContext.Controller.ViewBag.Quem = usersgq;
             }
 
             var pa_unidades = PlanoAcaoCore.Pa_Unidade.Listar();

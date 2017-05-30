@@ -116,6 +116,13 @@ namespace PlanoDeAcaoMVC.Controllers
             return PartialView("Index", model);
         }
 
+        #region PArtial de DDL's
+
+        /// <summary>
+        /// Partial de DDL de objetivos
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult GETObjetivo(int id)
         {
             if (id > 0)
@@ -133,6 +140,7 @@ namespace PlanoDeAcaoMVC.Controllers
 
             return PartialView("_DdlGenerica");
         }
+
 
         public ActionResult GETIndicadoresDiretriz(int id)
         {
@@ -183,6 +191,7 @@ namespace PlanoDeAcaoMVC.Controllers
             ViewBag.Ddl = new SelectList(results, "Id", "Name");
 
             return PartialView("_DdlGenerica");
-        }
+        } 
+        #endregion
     }
 }
