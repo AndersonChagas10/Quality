@@ -850,6 +850,13 @@ namespace SgqSystem.Controllers.Api
 
                 foreach (VTVerificacaoTipificacao vt in listVT)
                 {
+                    using (var db2 = new SgqDbDevEntities())
+                    {
+                        var collection = db2.CollectionLevel2.Where(x => x.Key == vt.Chave).FirstOrDefault();
+
+                        if (collection != null)
+                            continue;
+                    }
                     try
                     {
                         GetDadosGet(vt.Chave, 1);
