@@ -4821,7 +4821,9 @@ namespace SgqSystem.Services
                 //var formControlBanda = "<select class='form-control input-sm banda' style='font-size:30px; height: 50px; text-align:center;'><option value = '1'>1</option><option value='2'>2</option></select>";
 
 
-                var formControlBanda = "<input class='form-control input-sm banda' min='1' max='2' style='font-size:30px; height: 50px; text-align:center;' type='number'>";
+                //var formControlBanda = "<input class='form-control input-sm banda' min='1' max='2' style='font-size:30px; height: 50px; text-align:center;' type='number'>";
+                var formControlBanda = "<select class='form-control input-sm banda' style='font-size:30px; height: 50px; text-align:center;'><option value='1' selected>1</option><option value='2'>2</option></select>";
+
                 var formGroupBanda = html.div(
                                         outerhtml: labelBanda + formControlBanda,
                                         classe: "form-group",
@@ -4933,13 +4935,13 @@ namespace SgqSystem.Services
 
                 painelLevel3HeaderListHtml += html.div(
                                                 outerhtml: formGroupSequencial,
-                                                classe: "col-xs-8 col-sm-6 col-md-6 col-lg-6",
+                                                classe: "col-xs-6 col-sm-6 col-md-6 col-lg-6",
                                                 style: "padding-right: 4px !important; padding-left: 4px !important;"
                                                 );
 
                 painelLevel3HeaderListHtml += html.div(
                                                 outerhtml: formGroupBanda,
-                                                classe: "col-xs-2 col-sm-2 col-md-2 col-lg-2",
+                                                classe: "col-xs-4 col-sm-2 col-md-2 col-lg-2",
                                                 style: "padding-right: 4px !important; padding-left: 4px !important;"
                                                 );
 

@@ -4,7 +4,8 @@ using System;
 public class ApontamentosDiariosResultSet
 {
     public System.DateTime Data { get; set; }
-    public string _Data { get { return Data.ToShortDateString() + " " + Data.ToShortTimeString(); } }
+    public string _Data { get { return Data.ToShortDateString(); /*+ " " + Data.ToShortTimeString();*/ } }
+    public string _Hora { get { return Data.ToShortTimeString(); } }
 
     public string Indicador { get; set; }
     public string Monitoramento { get; set; }
@@ -125,7 +126,7 @@ public class ApontamentosDiariosResultSet
                 " \n            left join collectionlevel2 CL2 on CL2.id = CL2HF2.CollectionLevel2_Id " +
                 " \n            left join ParHeaderField HF on CL2HF2.ParHeaderField_Id = HF.Id " +
                 " \n            left join ParLevel2 L2 on L2.Id = CL2.Parlevel2_id " +
-                " \n            left join ParMultipleValues PMV on CL2HF2.Value = cast(PMV.Id as varchar(500)) "+
+                " \n            left join ParMultipleValues PMV on CL2HF2.Value = cast(PMV.Id as varchar(500)) " +
                 " \n            WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id " +
                 " \n            FOR XML PATH('') " +
                 " \n            ), 1, 1, '')  AS HeaderFieldList " +
