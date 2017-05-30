@@ -636,7 +636,7 @@ namespace SgqSystem.Services
                     var consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(c.Unit_Id, consolidationLevel1.Id, c.level02_Id);
 
                     if (c.Reaudit)
-                        consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(c.Unit_Id, consolidationLevel1.Id, c.level02_Id, 1);
+                        consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(c.Unit_Id, consolidationLevel1.Id, c.level02_Id, 1,reauditNumber);
 
                     if (consolidationLevel2 == null)
                     {
@@ -1212,7 +1212,7 @@ namespace SgqSystem.Services
                         if (i > 0)
                         {
                             if (reaudit)
-                                return ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, ConsolidationLevel1_Id, ParLevel2_Id, 1);
+                                return ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, ConsolidationLevel1_Id, ParLevel2_Id, 1,reauditNumber.ToString());
                             else
                                 return ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, ConsolidationLevel1_Id, ParLevel2_Id);
                         }
@@ -1334,12 +1334,12 @@ namespace SgqSystem.Services
             }
             key += "-" + CollectionDate.ToString("yyyyMMdd");
 
-            var keySolid = key;
-
             if (Reaudit)
             {
                 key += "-r" + ReauditNumber;
             }
+
+            var keySolid = key;
 
             //NotEvaluateIs = (naoAvaliado) ? "1" : "0";
 
@@ -2248,7 +2248,7 @@ namespace SgqSystem.Services
                     "\n SELECT                                                                                                                                                                    " +
                     "\n --L1.Id parLevel1_Id,                                                                                                                                                     " +
                     "\n --C2.ParLevel2_Id parLevel2_Id,                                                                                                                                           " +
-                    "\n ROW_NUMBER() OVER(ORDER BY R3.ParLevel3_Id) AS ROW,                                                                                                                       " +
+                    "\n ROW_NUMBER() OVER(ORDER BY R3.ParLevel3_Id ) AS ROW,                                                                                                                       " +
                     "\n '<div id=' + cast(R3.ParLevel3_Id as varchar) + 'class=\"r3l2\"></div>' COLUNA                                                                                            " +
                     "\n INTO #MOTHERFOCKER                                                                                                                                                        " +
                     "\n FROM CollectionLevel2 C2                                                                                                                                                  " +
@@ -2634,6 +2634,10 @@ namespace SgqSystem.Services
                     "\n   Level2Result.EvaluateLast,                                                                                                                                              "+
                     "\n   Level2Result.SampleLast,                                                                                                                                                "+
                     "\n   Level2Result.ConsolidationLevel2_Id                                                                                                                                     "+
+
+                    "\n ORDER BY Level2Result.CollectionDate asc,Level2Result.ParLevel1_Id asc, CDL2.ReauditNumber asc" +
+
+
                     "\n   DROP TABLE #MOTHERFOCKER " +
                     "";
                 var list = db.Database.SqlQuery<ResultadoUmaColuna>(sql).ToList();
@@ -5156,20 +5160,23 @@ namespace SgqSystem.Services
 
                     if (teste.IsNotNull() && teste.Count > 0)
                     {
-
-                        foreach (var s in listaShift)
+                        if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
                         {
-                            foreach (var p in listaPeriod)
-                            {
-                                painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>";
-                                //painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.LastOrDefault(r=>r.Period == p && r.Shift == s)?.WeiDefects.ToString("G29") + "</span></div>";
-                                painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.Where(r => r.Period == p && r.Shift == s).Sum(r => r.WeiDefects).ToString("G29") + "</span></div>";
 
-                                if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
-                                    painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("three_more_defects").Value.ToString() + ": <span>0</span></div>";
+                            foreach (var s in listaShift)
+                            {
+                                foreach (var p in listaPeriod)
+                                {
+                                    painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>";
+                                    //painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.LastOrDefault(r=>r.Period == p && r.Shift == s)?.WeiDefects.ToString("G29") + "</span></div>";
+                                    painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.Where(r => r.Period == p && r.Shift == s).Sum(r => r.WeiDefects).ToString("G29") + "</span></div>";
+
+                                    if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
+                                        painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("three_more_defects").Value.ToString() + ": <span>0</span></div>";
+
+                                }
 
                             }
-
                         }
                     }
                     else
