@@ -427,7 +427,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                "\n 	INNER JOIN ParCompany UNI " +
                "\n 	ON UNI.Id = CL1.UnitId " +
                "\n 	WHERE CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL" +
-               "\n 	AND UNI.Name = '" + form.unitName + "'" +
+               "\n 	AND (UNI.Name = '" + form.unitName + "' OR UNI.Initials = '" + form.unitName + "')" +
                "\n 	AND IND.Name = '" + form.level1Name + "' " + //
                
                "\n ) S1 " +
@@ -503,7 +503,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                          "\n ON MON.Id = C2.ParLevel2_Id " +
                          "\n WHERE IND.Name = '" + form.level1Name + "' " +
                          "\n    and MON.Name = '" + form.level2Name + "' " +
-                         "\n 	AND UNI.Name = '" + form.unitName + "'" +
+                         "\n 	AND (UNI.Name = '" + form.unitName + "' OR UNI.Initials = '" + form.unitName + "')" +
                          "\n 	AND CL2.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
                          "\n GROUP BY " +
                          "\n  IND.Id " +
