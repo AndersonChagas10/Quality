@@ -219,8 +219,8 @@ namespace SgqSystem.Controllers
 "\n  BEGIN  																																																																					                                           " +
 "\n     																																																																						                                           " +
 "\n      																																																																					                                               " +
-"\n   DECLARE @DATAINICIAL DATETIME = '20160501 00:00'                                                                                                                                                                                                                    					                                               " +
-"\n   DECLARE @DATAFINAL   DATETIME = '20170522 23:59'                                                                                                                                                                                                                    					                                               " +
+"\n   DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + " 00:00'                                                                                                                                                                                                                    					                                               " +
+"\n   DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + " 23:59'                                                                                                                                                                                                                    					                                               " +
 "\n   CREATE TABLE #AMOSTRATIPO4 ( 																																																															                                               " +
 "\n   UNIDADE INT NULL, 																																																																		                                           " +
 "\n   INDICADOR INT NULL, 																																																																	                                               " +
@@ -462,7 +462,7 @@ namespace SgqSystem.Controllers
 "\n                                                                                                                                                                                                                                                                       					                                               " +
 "\n           END                                                                                                                                                                                                                                                         					                                               " +
 "\n       /*FIM SCORECARD---------------------------------------------------*/                                                                                                                                                                                            					                                               " +
-"\n       < 0.7                                                                                                                                                                                                                                                           					                                               " +
+"\n       < 0 --< 0.7                                                                                                                                                                                                                                                           					                                               " +
 "\n                                                                                                                                                                                                                                                                       					                                               " +
 "\n       THEN 0                                                                                                                                                                                                                                                          					                                               " +
 "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -777,53 +777,165 @@ namespace SgqSystem.Controllers
             //}
 
             //Nomes das colunas do corpo da tabela de dados central
-            var query0 = "SELECT  distinct(RegionalName) name, 4 coolspan  FROM #SCORE";
+            var query0 = "SELECT  distinct(Reg.Name) name, 4 coolspan" +
+                "\n FROM ParStructure Reg " +
+                    "\n  LEFT JOIN ParCompanyXStructure CS " +
+                    "\n  ON CS.ParStructure_Id = Reg.Id " +
+                    "\n  left join ParCompany C " +
+                    "\n  on C.Id = CS.ParCompany_Id " +
+                    "\n  left join ParLevel1 P1 " +
+                    "\n  on 1=1 " +
+
+                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                    "\n  ON PP.ParLevel1_Id = P1.Id " +
+                    "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                    "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+
+                    "\n LEFT JOIN #SCORE S " +
+                    "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
+
+                    "\n  WHERE 1 = 1 " +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null";
+                
 
             //Dados das colunas do corpo da tabela de dados central
-            var query1 = "SELECT Level1Name as CLASSIFIC_NEGOCIO, RegionalName as MACROPROCESSO, " +
-                  "\n CAST (sum(1) AS DECIMAL(5,2)) as REAL," +
-                  "\n sum(2)  as ORCADO, " +
-                  "\n CAST (sum(3)   AS DECIMAL(5,2)) as DESVIO, " +
-                  "\n CAST ( sum(4)  AS DECIMAL(5,2)) *100 as \"DESVIOPERCENTUAL\" " +
-                  "\n FROM #SCORE " +
-                  "\n GROUP BY Level1Name, RegionalName " +
+            var query1 = "SELECT PP1.Name as CLASSIFIC_NEGOCIO, Reg.Name as MACROPROCESSO, " +
+                  "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
+                  "\n 100  as ORCADO, " +
+                  "\n 100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) as DESVIO, " +
+                  "\n (100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / 100 as \"DESVIOPERCENTUAL\" " +
+                   "\n FROM ParStructure Reg " +
+                    "\n  LEFT JOIN ParCompanyXStructure CS " +
+                    "\n  ON CS.ParStructure_Id = Reg.Id " +
+                    "\n  left join ParCompany C " +
+                    "\n  on C.Id = CS.ParCompany_Id " +
+                    "\n  left join ParLevel1 P1 " +
+                    "\n  on 1=1 " +
+
+                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                    "\n  ON PP.ParLevel1_Id = P1.Id " +
+                    "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                    "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+
+                    "\n LEFT JOIN #SCORE S " +
+                    "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
+
+                    "\n  WHERE 1 = 1 " +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
+
+                  "\n GROUP BY Reg.Name, PP1.Name" +
                   "\n ORDER BY 1, 2";
 
             // Total Direita
             var query2 =
-           "SELECT Level1Name as CLASSIFIC_NEGOCIO," +
-                  "\n CAST (sum(1) AS DECIMAL(5,2)) as REAL," +
-                  "\n sum(2)  as ORCADO, " +
-                  "\n CAST (sum(3)   AS DECIMAL(5,2)) as DESVIO, " +
-                  "\n CAST ( sum(4)  AS DECIMAL(5,2)) *100 as \"DESVIOPERCENTUAL\" " +
-                  "\n FROM #SCORE " +
-                  "\n GROUP BY Level1Name " +
+           "SELECT PP1.Name as CLASSIFIC_NEGOCIO," +
+                  "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
+                  "\n 100  as ORCADO, " +
+                  "\n 100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) as DESVIO, " +
+                  "\n (100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / 100 as \"DESVIOPERCENTUAL\" " +
+
+                  "\n FROM ParStructure Reg " +
+                    "\n  LEFT JOIN ParCompanyXStructure CS " +
+                    "\n  ON CS.ParStructure_Id = Reg.Id " +
+                    "\n  left join ParCompany C " +
+                    "\n  on C.Id = CS.ParCompany_Id " +
+                    "\n  left join ParLevel1 P1 " +
+                    "\n  on 1=1 " +
+
+                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                    "\n  ON PP.ParLevel1_Id = P1.Id " +
+                    "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                    "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+
+                    "\n LEFT JOIN #SCORE S " +
+                    "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
+
+                    "\n  WHERE 1 = 1 " +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2 and PP1.Name is not null" +
+
+                  "\n GROUP BY PP1.Name " +
                   "\n ORDER BY 1";
 
             // Total Inferior Esquerda
             var query3 =
-           "SELECT RegionalName as MACROPROCESSO, " +
-                  "\n CAST (sum(1) AS DECIMAL(5,2)) as REAL," +
-                  "\n sum(2)  as ORCADO, " +
-                  "\n CAST (sum(3)   AS DECIMAL(5,2)) as DESVIO, " +
-                  "\n CAST ( sum(4)  AS DECIMAL(5,2)) *100 as \"DESVIOPERCENTUAL\" " +
-                  "\n FROM #SCORE " +
-                  "\n GROUP BY RegionalName " +
+           "SELECT Reg.Name as MACROPROCESSO, " +
+                  "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
+                  "\n 100  as ORCADO, " +
+                  "\n 100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) as DESVIO, " +
+                  "\n (100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / 100 as \"DESVIOPERCENTUAL\" " +
+
+                  "\n FROM ParStructure Reg " +
+                    "\n  LEFT JOIN ParCompanyXStructure CS " +
+                    "\n  ON CS.ParStructure_Id = Reg.Id " +
+                    "\n  left join ParCompany C " +
+                    "\n  on C.Id = CS.ParCompany_Id " +
+                    "\n  left join ParLevel1 P1 " +
+                    "\n  on 1=1 " +
+
+                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                    "\n  ON PP.ParLevel1_Id = P1.Id " +
+                    "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                    "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+
+                    "\n LEFT JOIN #SCORE S " +
+                    "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
+
+                    "\n  WHERE 1 = 1 " +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
+
+                  "\n GROUP BY Reg.Name " +
                   "\n ORDER BY 1";
 
             // Total Inferior Direita
             var query4 =
                 "SELECT " +
+                  "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
+                  "\n 100  as ORCADO, " +
+                  "\n 100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) as DESVIO, " +
+                  "\n (100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / 100 as \"DESVIOPERCENTUAL\" " +
 
-                  "\n sum(2)  as ORCADO, " +
-                  "\n CAST (sum(3)   AS DECIMAL(5,2)) as DESVIO, " +
-                  "\n CAST ( sum(4)  AS DECIMAL(5,2)) *100 as \"DESVIOPERCENTUAL\" " +
-                  "\n FROM #SCORE " +
+                  "\n FROM ParStructure Reg " +
+                    "\n  LEFT JOIN ParCompanyXStructure CS " +
+                    "\n  ON CS.ParStructure_Id = Reg.Id " +
+                    "\n  left join ParCompany C " +
+                    "\n  on C.Id = CS.ParCompany_Id " +
+                    "\n  left join ParLevel1 P1 " +
+                    "\n  on 1=1 " +
+
+                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                    "\n  ON PP.ParLevel1_Id = P1.Id " +
+                    "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                    "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+
+                    "\n LEFT JOIN #SCORE S " +
+                    "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
+
+                    "\n  WHERE 1 = 1 " +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
+
                   "\n";
-                  
+
 
             //Nome das linhas da tabela esquerda por ex, indicador X, indicador Y (de uma unidade X, y...)
-            var query6 = "SELECT DISTINCT Level1Name FROM #SCORE";
+            var query6 = "SELECT DISTINCT PP1.Name " +
+                "\n FROM ParStructure Reg " +
+                    "\n  LEFT JOIN ParCompanyXStructure CS " +
+                    "\n  ON CS.ParStructure_Id = Reg.Id " +
+                    "\n  left join ParCompany C " +
+                    "\n  on C.Id = CS.ParCompany_Id " +
+                    "\n  left join ParLevel1 P1 " +
+                    "\n  on 1=1 " +
+
+                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                    "\n  ON PP.ParLevel1_Id = P1.Id " +
+                    "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                    "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+
+                    "\n LEFT JOIN #SCORE S " +
+                    "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
+
+                    "\n  WHERE 1 = 1 " +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2 and PP1.Name is not null ";
 
             var db = new SgqDbDevEntities();
             //db.Database.ExecuteSqlCommand(query);
@@ -840,7 +952,7 @@ namespace SgqSystem.Controllers
             /*1º*/
             tabela.trsCabecalho1 = new List<Ths>();
             tabela.trsCabecalho1.Add(new Ths() { name = "" });
-            tabela.trsCabecalho1.Add(new Ths() { name = "Pacotes" });
+            tabela.trsCabecalho1.Add(new Ths() { name = "" });
             /*Fim  1º*/
 
             #region DESCRIÇÃO
@@ -858,10 +970,10 @@ namespace SgqSystem.Controllers
             tabela.trsCabecalho2 = db.Database.SqlQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
 
             var thsMeio = new List<Ths>();
-            thsMeio.Add(new Ths() { name = "Real", coolspan = 1 });
-            thsMeio.Add(new Ths() { name = "Orçado", coolspan = 1 });
-            thsMeio.Add(new Ths() { name = "Desvio $", coolspan = 1 });
-            thsMeio.Add(new Ths() { name = "Desvio %", coolspan = 1 });
+            thsMeio.Add(new Ths() { name = "R", coolspan = 1 });
+            thsMeio.Add(new Ths() { name = "M", coolspan = 1 });
+            thsMeio.Add(new Ths() { name = "D", coolspan = 1 });
+            thsMeio.Add(new Ths() { name = "%", coolspan = 1 });
 
             foreach (var i in tabela.trsCabecalho2)
                 i.tds = thsMeio; //ESTA PROPERTY DEVE CONTER OS ITENS AGRUPADOS (EX: OÇADO, REAL, DESVIO ETC....)
@@ -947,9 +1059,9 @@ namespace SgqSystem.Controllers
                 #region Result1 
 
                 /*Caso não exista MACROPROCESSO*/
-                foreach (var x in tabela.trsCabecalho2)
-                    if (!filtro.Any(r => r.MACROPROCESSO.Equals(x.name)))
-                        filtro.Add(new ResultQuery1() { MACROPROCESSO = x.name, CLASSIFIC_NEGOCIO = filtro.FirstOrDefault().CLASSIFIC_NEGOCIO });
+                //foreach (var x in tabela.trsCabecalho2)
+                //    if (!filtro.Any(r => r.MACROPROCESSO.Equals(x.name)))
+                //        filtro.Add(new ResultQuery1() { MACROPROCESSO = x.name, CLASSIFIC_NEGOCIO = filtro.FirstOrDefault().CLASSIFIC_NEGOCIO });
                 filtro = filtro.OrderBy(r => r.MACROPROCESSO).ToList();
                 foreach (var ii in filtro)
                 {
@@ -1070,8 +1182,8 @@ namespace SgqSystem.Controllers
 "\n  BEGIN  																																																																					                                           " +
 "\n     																																																																						                                           " +
 "\n      																																																																					                                               " +
-"\n   DECLARE @DATAINICIAL DATETIME = '20160501 00:00'                                                                                                                                                                                                                    					                                               " +
-"\n   DECLARE @DATAFINAL   DATETIME = '20170522 23:59'                                                                                                                                                                                                                    					                                               " +
+"\n   DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + " 00:00'                                                                                                                                                                                                                    					                                               " +
+"\n   DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + " 23:59'                                                                                                                                                                                                                    					                                               " +
 "\n   CREATE TABLE #AMOSTRATIPO4 ( 																																																															                                               " +
 "\n   UNIDADE INT NULL, 																																																																		                                           " +
 "\n   INDICADOR INT NULL, 																																																																	                                               " +
@@ -1313,7 +1425,7 @@ namespace SgqSystem.Controllers
 "\n                                                                                                                                                                                                                                                                       					                                               " +
 "\n           END                                                                                                                                                                                                                                                         					                                               " +
 "\n       /*FIM SCORECARD---------------------------------------------------*/                                                                                                                                                                                            					                                               " +
-"\n       < 0.7                                                                                                                                                                                                                                                           					                                               " +
+"\n       < 0 --< 0.7                                                                                                                                                                                                                                                           					                                               " +
 "\n                                                                                                                                                                                                                                                                       					                                               " +
 "\n       THEN 0                                                                                                                                                                                                                                                          					                                               " +
 "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -1628,53 +1740,180 @@ namespace SgqSystem.Controllers
             //}
 
             //Nomes das colunas do corpo da tabela de dados central
-            var query0 = "SELECT  distinct(RegionalName) name, 4 coolspan  FROM #SCORE";
+            var query0 = "SELECT  distinct(C.Initials) name, 4 coolspan  " +
+
+                    "\n FROM ParStructure Reg " +
+                    "\n  LEFT JOIN ParCompanyXStructure CS " +
+                    "\n  ON CS.ParStructure_Id = Reg.Id " +
+                    "\n  left join ParCompany C " +
+                    "\n  on C.Id = CS.ParCompany_Id " +
+                    "\n  left join ParLevel1 P1 " +
+                    "\n  on 1=1 " +
+
+                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                    "\n  ON PP.ParLevel1_Id = P1.Id " +
+                    "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                    "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+
+                    "\n LEFT JOIN #SCORE S " +
+                    "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
+
+                    "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                    "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
+
+                    "\n ORDER BY 1";
 
             //Dados das colunas do corpo da tabela de dados central
-            var query1 = "SELECT Level1Name as CLASSIFIC_NEGOCIO, RegionalName as MACROPROCESSO, " +
-                  "\n CAST (sum(1) AS DECIMAL(5,2)) as REAL," +
-                  "\n sum(2)  as ORCADO, " +
-                  "\n CAST (sum(3)   AS DECIMAL(5,2)) as DESVIO, " +
-                  "\n CAST ( sum(4)  AS DECIMAL(5,2)) *100 as \"DESVIOPERCENTUAL\" " +
-                  "\n FROM #SCORE " +
-                  "\n GROUP BY Level1Name, RegionalName " +
+            var query1 = "SELECT P1.Name as CLASSIFIC_NEGOCIO, C.Initials as MACROPROCESSO, " +
+                  "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
+                  "\n 100  as ORCADO, " +
+                  "\n 100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) as DESVIO, " +
+                  "\n (100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / 100 as \"DESVIOPERCENTUAL\" " +
+
+                   "\n FROM ParStructure Reg " +
+                    "\n  LEFT JOIN ParCompanyXStructure CS " +
+                    "\n  ON CS.ParStructure_Id = Reg.Id " +
+                    "\n  left join ParCompany C " +
+                    "\n  on C.Id = CS.ParCompany_Id " +
+                    "\n  left join ParLevel1 P1 " +
+                    "\n  on 1=1 " +
+
+                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                    "\n  ON PP.ParLevel1_Id = P1.Id " +
+                    "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                    "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+
+                    "\n LEFT JOIN #SCORE S " +
+                    "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
+
+                    "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                    "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
+
+                  "\n GROUP BY P1.Name, C.Initials " +
                   "\n ORDER BY 1, 2";
 
             // Total Direita
             var query2 =
-           "SELECT Level1Name as CLASSIFIC_NEGOCIO," +
-                  "\n CAST (sum(1) AS DECIMAL(5,2)) as REAL," +
-                  "\n sum(2)  as ORCADO, " +
-                  "\n CAST (sum(3)   AS DECIMAL(5,2)) as DESVIO, " +
-                  "\n CAST ( sum(4)  AS DECIMAL(5,2)) *100 as \"DESVIOPERCENTUAL\" " +
-                  "\n FROM #SCORE " +
-                  "\n GROUP BY Level1Name " +
+           "SELECT P1.Name as CLASSIFIC_NEGOCIO," +
+                  "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
+                  "\n 100  as ORCADO, " +
+                  "\n 100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) as DESVIO, " +
+                  "\n (100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / 100 as \"DESVIOPERCENTUAL\" " +
+
+                   "\n FROM ParStructure Reg " +
+                    "\n  LEFT JOIN ParCompanyXStructure CS " +
+                    "\n  ON CS.ParStructure_Id = Reg.Id " +
+                    "\n  left join ParCompany C " +
+                    "\n  on C.Id = CS.ParCompany_Id " +
+                    "\n  left join ParLevel1 P1 " +
+                    "\n  on 1=1 " +
+
+                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                    "\n  ON PP.ParLevel1_Id = P1.Id " +
+                    "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                    "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+
+                    "\n LEFT JOIN #SCORE S " +
+                    "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
+
+                    "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                    "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
+
+                  "\n GROUP BY P1.Name " +
                   "\n ORDER BY 1";
 
             // Total Inferior Esquerda
             var query3 =
-           "SELECT RegionalName as MACROPROCESSO, " +
-                  "\n CAST (sum(1) AS DECIMAL(5,2)) as REAL," +
-                  "\n sum(2)  as ORCADO, " +
-                  "\n CAST (sum(3)   AS DECIMAL(5,2)) as DESVIO, " +
-                  "\n CAST ( sum(4)  AS DECIMAL(5,2)) *100 as \"DESVIOPERCENTUAL\" " +
-                  "\n FROM #SCORE " +
-                  "\n GROUP BY RegionalName " +
+           "SELECT C.Initials as MACROPROCESSO, " +
+                  "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
+                  "\n 100  as ORCADO, " +
+                  "\n 100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) as DESVIO, " +
+                  "\n (100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / 100 as \"DESVIOPERCENTUAL\" " +
+
+                   "\n FROM ParStructure Reg " +
+                    "\n  LEFT JOIN ParCompanyXStructure CS " +
+                    "\n  ON CS.ParStructure_Id = Reg.Id " +
+                    "\n  left join ParCompany C " +
+                    "\n  on C.Id = CS.ParCompany_Id " +
+                    "\n  left join ParLevel1 P1 " +
+                    "\n  on 1=1 " +
+
+                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                    "\n  ON PP.ParLevel1_Id = P1.Id " +
+                    "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                    "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+
+                    "\n LEFT JOIN #SCORE S " +
+                    "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
+
+                    "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                    "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
+
+                  "\n GROUP BY C.Initials " +
                   "\n ORDER BY 1";
 
             // Total Inferior Direita
             var query4 =
                 "SELECT " +
+                  "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
+                  "\n 100  as ORCADO, " +
+                  "\n 100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) as DESVIO, " +
+                  "\n (100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / 100 as \"DESVIOPERCENTUAL\" " +
 
-                  "\n sum(2)  as ORCADO, " +
-                  "\n CAST (sum(3)   AS DECIMAL(5,2)) as DESVIO, " +
-                  "\n CAST ( sum(4)  AS DECIMAL(5,2)) *100 as \"DESVIOPERCENTUAL\" " +
-                  "\n FROM #SCORE " +
+                    "\n FROM ParStructure Reg " +
+                    "\n  LEFT JOIN ParCompanyXStructure CS " +
+                    "\n  ON CS.ParStructure_Id = Reg.Id " +
+                    "\n  left join ParCompany C " +
+                    "\n  on C.Id = CS.ParCompany_Id " +
+                    "\n  left join ParLevel1 P1 " +
+                    "\n  on 1=1 " +
+
+                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                    "\n  ON PP.ParLevel1_Id = P1.Id " +
+                    "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                    "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+
+                    "\n LEFT JOIN #SCORE S " +
+                    "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
+
+                    "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                    "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
+
                   "\n";
 
 
             //Nome das linhas da tabela esquerda por ex, indicador X, indicador Y (de uma unidade X, y...)
-            var query6 = "SELECT DISTINCT Level1Name FROM #SCORE";
+            var query6 = "SELECT DISTINCT P1.Name " +
+             "\n FROM ParStructure Reg " +
+                    "\n  LEFT JOIN ParCompanyXStructure CS " +
+                    "\n  ON CS.ParStructure_Id = Reg.Id " +
+                    "\n  left join ParCompany C " +
+                    "\n  on C.Id = CS.ParCompany_Id " +
+                    "\n  left join ParLevel1 P1 " +
+                    "\n  on 1=1 " +
+
+                    "\n  LEFT JOIN ParGroupParLevel1XParLevel1 PP " +
+                    "\n  ON PP.ParLevel1_Id = P1.Id " +
+                    "\n  LEFT JOIN ParGroupParLevel1 PP1 " +
+                    "\n  ON PP.ParGroupParLevel1_Id = PP1.Id " +
+
+                    "\n LEFT JOIN #SCORE S " +
+                    "\n  on C.Id = S.ParCompany_Id and S.Level1Id = P1.Id " +
+
+                    "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
+                    "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
+
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null";
 
             var db = new SgqDbDevEntities();
             //db.Database.ExecuteSqlCommand(query);
@@ -1690,29 +1929,29 @@ namespace SgqSystem.Controllers
 
             /*1º*/
             tabela.trsCabecalho1 = new List<Ths>();
-            tabela.trsCabecalho1.Add(new Ths() { name = "" });
-            tabela.trsCabecalho1.Add(new Ths() { name = "Pacotes" });
+            tabela.trsCabecalho1.Add(new Ths() { name = "Pacote: " + form.ParametroTableRow[0]  });
+            tabela.trsCabecalho1.Add(new Ths() { name = "Regional: " + form.ParametroTableCol[0] });
             /*Fim  1º*/
 
-            #region DESCRIÇÃO
-            /*2º CRIANDO CABECALHO DA SEGUNDA TABELA
+                #region DESCRIÇÃO
+                /*2º CRIANDO CABECALHO DA SEGUNDA TABELA
 
-                  name   | coolspan
-                  ------------------
-                   Reg1   | 4 
-                   Reg2   | 4
-                   RegN   | 4
+                      name   | coolspan
+                      ------------------
+                       Reg1   | 4 
+                       Reg2   | 4
+                       RegN   | 4
 
-                  coolspan depende do que vai mostrar em Orçado, real, Desvio, etc...
-               */
-            #endregion
-            tabela.trsCabecalho2 = db.Database.SqlQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+                      coolspan depende do que vai mostrar em Orçado, real, Desvio, etc...
+                   */
+                #endregion
+                tabela.trsCabecalho2 = db.Database.SqlQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
 
             var thsMeio = new List<Ths>();
-            thsMeio.Add(new Ths() { name = "Real", coolspan = 1 });
-            thsMeio.Add(new Ths() { name = "Orçado", coolspan = 1 });
-            thsMeio.Add(new Ths() { name = "Desvio $", coolspan = 1 });
-            thsMeio.Add(new Ths() { name = "Desvio %", coolspan = 1 });
+            thsMeio.Add(new Ths() { name = "R", coolspan = 1 });
+            thsMeio.Add(new Ths() { name = "M", coolspan = 1 });
+            thsMeio.Add(new Ths() { name = "D", coolspan = 1 });
+            thsMeio.Add(new Ths() { name = "%", coolspan = 1 });
 
             foreach (var i in tabela.trsCabecalho2)
                 i.tds = thsMeio; //ESTA PROPERTY DEVE CONTER OS ITENS AGRUPADOS (EX: OÇADO, REAL, DESVIO ETC....)
@@ -1798,9 +2037,9 @@ namespace SgqSystem.Controllers
                 #region Result1 
 
                 /*Caso não exista MACROPROCESSO*/
-                foreach (var x in tabela.trsCabecalho2)
-                    if (!filtro.Any(r => r.MACROPROCESSO.Equals(x.name)))
-                        filtro.Add(new ResultQuery1() { MACROPROCESSO = x.name, CLASSIFIC_NEGOCIO = filtro.FirstOrDefault().CLASSIFIC_NEGOCIO });
+                //foreach (var x in tabela.trsCabecalho2)
+                //    if (!filtro.Any(r => r.MACROPROCESSO.Equals(x.name)))
+                //        filtro.Add(new ResultQuery1() { MACROPROCESSO = x.name, CLASSIFIC_NEGOCIO = filtro.FirstOrDefault().CLASSIFIC_NEGOCIO });
                 filtro = filtro.OrderBy(r => r.MACROPROCESSO).ToList();
                 foreach (var ii in filtro)
                 {
