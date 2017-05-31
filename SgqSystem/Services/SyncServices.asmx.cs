@@ -1387,11 +1387,11 @@ namespace SgqSystem.Services
                         //Se o script for executado corretamente retorna o Id
 
                         //Atualiza a situação de reauditoria
-                        if (Reaudit)
-                        {
-                            var UpdateCollectionLevel2DB = new SGQDBContext.UpdateCollectionLevel2(db);
-                            UpdateCollectionLevel2DB.UpdateIsReauditByKey(keySolid, Reaudit, Int16.Parse(haveReaudit), ReauditNumber, reauditLevel);
-                        }
+                        //if (Reaudit)
+                        //{
+                        //    var UpdateCollectionLevel2DB = new SGQDBContext.UpdateCollectionLevel2(db);
+                        //    UpdateCollectionLevel2DB.UpdateIsReauditByKey(keySolid, Reaudit, Int16.Parse(haveReaudit), ReauditNumber, reauditLevel);
+                        //}
 
                         if (i > 0)
                         {
@@ -6607,8 +6607,8 @@ namespace SgqSystem.Services
         public string _ReConsolidationByLevel1(int ParCompany_Id, int ParLevel1_Id, DateTime ConsolidationDate)
         {
 
-            string sql = "SELECT CL2.Id, CL2.ParLevel2_Id, CL2.ConsolidationLevel1_Id FROM ConsolidationLevel2 CL2 " +
-                         "\n INNER JOIN ConsolidationLevel1 CL1 ON CL2.ConsolidationLevel1_Id=CL1.ID " +
+            string sql = "SELECT CL2.Id, CL2.ParLevel2_Id, CL2.ConsolidationLevel1_Id FROM ConsolidationLevel2 CL2 WITH (NOLOCK) " +
+                         "\n INNER JOIN ConsolidationLevel1 CL1 WITH (NOLOCK)  ON CL2.ConsolidationLevel1_Id=CL1.ID " +
                "WHERE CL2.UnitId='" + ParCompany_Id + "' AND CL1.ParLevel1_Id='" + ParLevel1_Id + "' AND CAST(CL1.ConsolidationDate AS DATE) = '" + ConsolidationDate.ToString("yyyyMMdd") + "'";
 
 
