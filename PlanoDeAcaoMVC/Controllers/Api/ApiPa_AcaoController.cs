@@ -66,7 +66,27 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             return obj;
         }
 
-        public static void SalvarAcompanhamentoXQuem(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_AcompanhamentoXQuem quem)
+        [HttpPost]
+        [Route("SaveFTA")]
+        public FTA SaveFTA(FTA obj)
+        {
+            obj.ValidaFTA();
+            obj.IsValid();
+
+            var acao = Mapper.Map<PlanoAcaoEF.Pa_Acao>(obj);
+            var fta = Mapper.Map<PlanoAcaoEF.Pa_FTA>(obj);
+            acao.TipoIndicador = 2; //Para Indicador SGQ
+
+            SalvaFTA(fta);
+            acao.Fta_Id = fta.Id;
+            SalvarAcao(acao);
+
+            return obj;
+        }
+
+        #region Auxiliares
+
+        private void SalvarAcompanhamentoXQuem(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_AcompanhamentoXQuem quem)
         {
             if (quem.Id > 0)
             {
@@ -82,7 +102,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
         }
 
-        public static void SalvarAcompanhamento(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_Acompanhamento acom)
+        private void SalvarAcompanhamento(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_Acompanhamento acom)
         {
             if (acom.Id > 0)
             {
@@ -100,23 +120,6 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 db.SaveChanges();
                 db.Database.ExecuteSqlCommand("Update Pa_Acao set Status = " + acom.Status_Id + " where Id = " + acom.Acao_Id);
             }
-        }
-
-        [HttpPost]
-        [Route("SaveFTA")]
-        public FTA SaveFTA(FTA obj)
-        {
-            obj.ValidaFTA();
-            obj.IsValid();
-
-            var acao = Mapper.Map<PlanoAcaoEF.Pa_Acao>(obj);
-            var fta = Mapper.Map<PlanoAcaoEF.Pa_FTA>(obj);
-
-            SalvaFTA(fta);
-            acao.Fta_Id = fta.Id;
-            SalvarAcao(acao);
-
-            return obj;
         }
 
         private void SalvarAcao(PlanoAcaoEF.Pa_Acao acao)
@@ -166,6 +169,8 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 }
             }
 
-        }
+        } 
+
+        #endregion
     }
 }

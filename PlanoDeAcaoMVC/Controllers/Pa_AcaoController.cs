@@ -13,6 +13,12 @@ namespace PlanoDeAcaoMVC.Controllers
     [IntegraSgq]
     public class Pa_AcaoController : Controller
     {
+
+        #region Ações
+
+        /// <summary>
+        /// Construtor Com drop down lists para views e partial de Ações
+        /// </summary>
         public Pa_AcaoController()
         {
 
@@ -31,15 +37,22 @@ namespace PlanoDeAcaoMVC.Controllers
             ViewBag.Pa_IndicadorSgqAcao = Pa_IndicadorSgqAcao.Listar();
             ViewBag.Pa_Problema_Desvio = Pa_Problema_Desvio.Listar();
         }
-        
-        // GET: Pa_Acao
+
+        /// <summary>
+        /// Index
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             //ViewBag.Panejamento = Pa_Planejamento
             return PartialView();
         }
 
-        // GET: Pa_Acao
+        /// <summary>
+        /// Get Ação
+        /// </summary>
+        /// <param name="id">Id Ação</param>
+        /// <returns></returns>
         public ActionResult Edit(int id)
         {
             var obj = Pa_Acao.Get(id);
@@ -47,6 +60,23 @@ namespace PlanoDeAcaoMVC.Controllers
             return PartialView("Edit", obj);
         }
 
+        /// <summary>
+        /// DEtalhes da Ação.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult Details(int id)
+        {
+            var obj = Pa_Acao.Get(id);
+            return PartialView("Details", obj);
+        }
+
+        /// <summary>
+        /// DDL Dinamica Grupo Causa
+        /// </summary>
+        /// <param name="id">Id Causa Genérica</param>
+        /// <returns></returns>
         public ActionResult GETGrupoCausa(int id)
         {
             if (id > 0)
@@ -67,6 +97,11 @@ namespace PlanoDeAcaoMVC.Controllers
             return PartialView("_DdlGenerica");
         }
 
+        /// <summary>
+        /// DDL Dinamica Contramedida Genérica
+        /// </summary>
+        /// <param name="id">Id Causa Genérica</param>
+        /// <returns></returns>
         public ActionResult GETContramedidaGenerica(int id)
         {
             if (id > 0)
@@ -84,36 +119,44 @@ namespace PlanoDeAcaoMVC.Controllers
                 ViewBag.Ddl = new SelectList(results, "Id", "ContramedidaGenerica", results.FirstOrDefault().Id);
             else
                 ViewBag.Ddl = new SelectList(results, "Id", "ContramedidaGenerica");
-          
+
             return PartialView("_DdlGenerica");
         }
 
+        /// <summary>
+        /// Busca Ação e retorna View de Acompanhamento da Ação.
+        /// </summary>
+        /// <param name="id">ID da Ação</param>
+        /// <returns></returns>
         public ActionResult Acompanhamento(int id)
         {
             var obj = Pa_Acao.Get(id);
             return PartialView("Acompanhamento", obj);
         }
 
-        [HttpGet]
-        public ActionResult FTAMock()
-        {
-            var fta = new FTA();
-            fta._DataInicioFTA = "08/05/2017";
-            fta._DataFimFTA = "08/05/2017";
+        #endregion
 
-            fta._Unidade = "Corporativo";
-            fta._Departamento = "Curral";
-            fta._Supervisor = "camilaprata-mtz";
-            fta._Level1 = "(%) NC Expedição";
-            fta.MetaFTA = 5;
-            fta.ReincidenciaDesvioFTA = 15;
-            fta.PercentualNCFTA = 15;
+        #region FTA
 
-            return View("NewFTA", fta);
-
-        }
-
-        //Pa_Acao/NewFTA?MetaFTA=30&PercentualNCFTA=40&ReincidenciaDesvioFTA=60&Level1Id=1&Supervisor_Id=10&Unidade_Id=3&Departamento_Id=4&_DataInicioFTA="22-05-2017"&_DataFimFTA="22-05-2017"
+        /// <summary>
+        /// FTA Original
+        /// </summary>
+        /// <param name="fta">
+        /// Formulario de tratamento de anomalia propriedades:
+        /// 
+        /// MetaFTA
+        /// PercentualNCFTA
+        /// ReincidenciaDesvioFTA
+        /// Level1Id
+        /// Supervisor_Id
+        /// Unidade_Id (Se 0 considera-se corporativo)
+        /// Departamento_Id
+        /// _DataInicioFTA
+        /// _DataFimFTA
+        /// 
+        /// GET: Pa_Acao/NewFTA?MetaFTA=30&PercentualNCFTA=40&ReincidenciaDesvioFTA=60&Level1Id=1&Supervisor_Id=10&Unidade_Id=3&Departamento_Id=4&_DataInicioFTA="22-05-2017"&_DataFimFTA="22-05-2017"
+        /// </param>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult NewFTA(FTA fta)
         {
@@ -130,7 +173,7 @@ namespace PlanoDeAcaoMVC.Controllers
             //fta.Supervisor_Id = 8;
             //fta.Unidade_Id = 1;
             //fta.Departamento_Id = 1;
-            
+
             /*Preenche na tela*/
             //fta.ContramedidaGenerica_Id = 1;
             //fta.ContramedidaEspecifica = "ContramedidaEspecifica TESTE";
@@ -142,8 +185,6 @@ namespace PlanoDeAcaoMVC.Controllers
             #endregion
 
             fta.ValidaFTA();
-
-
 
             using (var db = new ADOFactory.Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
             {
@@ -177,17 +218,33 @@ namespace PlanoDeAcaoMVC.Controllers
             //fta.ReincidenciaDesvioFTA = 15;
             //fta.PercentualNCFTA = 15;
 
-
-
             return View(fta);
+        } 
+
+        /// <summary>
+        /// Mock para apresentação do plano de ação.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult FTAMock()
+        {
+            var fta = new FTA();
+            fta._DataInicioFTA = "08/05/2017";
+            fta._DataFimFTA = "08/05/2017";
+
+            fta._Unidade = "Corporativo";
+            fta._Departamento = "Curral";
+            fta._Supervisor = "camilaprata-mtz";
+            fta._Level1 = "(%) NC Expedição";
+            fta.MetaFTA = 5;
+            fta.ReincidenciaDesvioFTA = 15;
+            fta.PercentualNCFTA = 15;
+
+            return View("NewFTA", fta);
+
         }
 
-        [HttpGet]
-        public ActionResult Details(int id)
-        {           
-            var obj = Pa_Acao.Get(id);
-            return PartialView("Details", obj);       
-        }
+        #endregion
 
     }
 }

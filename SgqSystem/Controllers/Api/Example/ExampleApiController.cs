@@ -1,5 +1,7 @@
-﻿using Dominio.Interfaces.Services;
+﻿using Dominio;
+using Dominio.Interfaces.Services;
 using DTO.DTO;
+using Newtonsoft.Json.Linq;
 using SgqSystem.Handlres;
 using SgqSystem.ViewModels;
 using System.Collections;
@@ -33,7 +35,7 @@ namespace SgqSystem.Controllers.Api.Example
         [Route("AddExample")]
         public ContextExampleDTO AddExample([FromBody] ContextExampleViewModel paramsViewModel)
         {
-           return _exampleDomain.AddUpdateExample(paramsViewModel);
+            return _exampleDomain.AddUpdateExample(paramsViewModel);
         }
 
         #endregion
@@ -61,7 +63,7 @@ namespace SgqSystem.Controllers.Api.Example
             //returna paramsViewModel;
         }
 
-         [HttpGet]
+        [HttpGet]
         [Route("ExemploGet3/{idLevel1}/{idLevel2}/{idLevel3}")]
         public string ExemploGet3(string idLevel1, string idLevel2, string idLevel3)
         {
@@ -90,6 +92,48 @@ namespace SgqSystem.Controllers.Api.Example
             var resourceSet = Resources.Resource.ResourceManager.GetResourceSet(Thread.CurrentThread.CurrentUICulture, true, false);
 
             return resourceSet.Cast<DictionaryEntry>();
+        }
+
+        [HttpPost]
+        [Route("PostAlbum")]
+        public string PostAlbum(JObject jsonData)
+        {
+            dynamic json = jsonData;
+            JObject jalbum = json.Album;
+            JObject juser = json.User;
+            string token = json.UserToken;
+
+            return string.Empty;
+        }
+
+        [HttpPost]
+        [Route("PostAlbumJObject")]
+        public JObject PostAlbumJObject(JObject jAlbum)
+        {
+            // dynamic input from inbound JSON
+            dynamic album = jAlbum;
+
+            // create a new JSON object to write out
+            dynamic newAlbum = new JObject();
+
+            // Create properties on the new instance
+            // with values from the first
+            newAlbum.AlbumName = " New";
+            newAlbum.NewProperty = "something new";
+            newAlbum.Songs = new JArray();
+
+            using (var db = new SgqDbDevEntities())
+            {
+                dynamic teste = new JObject();
+                teste = db.Database.SqlQuery<JObject>("Select * from SgqConfig").FirstOrDefault();
+            }
+            //foreach (dynamic song in album.Songs)
+            //{
+            //    song.SongName = song.SongName + " New";
+            //    newAlbum.Songs.Add(song);
+            //}
+
+            return newAlbum;
         }
 
     }
