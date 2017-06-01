@@ -105,6 +105,7 @@
           <Property Name="UnidadeDeMedida_Id" Type="int" />
           <Property Name="IsTatico" Type="bit" Nullable="false" />
           <Property Name="Tatico_Id" Type="int" />
+          <Property Name="IsFta" Type="bit" />
         </EntityType>
         <EntityContainer Name="PlanoDeAcaoModelStoreContainer">
           <EntitySet Name="Pa_Acao" EntityType="Self.Pa_Acao" Schema="dbo" store:Type="Tables" />
@@ -224,6 +225,7 @@
           <Property Name="UnidadeDeMedida_Id" Type="Int32" />
           <Property Name="IsTatico" Type="Boolean" Nullable="false" />
           <Property Name="Tatico_Id" Type="Int32" />
+          <Property Name="IsFta" Type="Boolean" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -305,6 +307,7 @@
           <EntitySetMapping Name="Pa_Planejamento">
             <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Planejamento">
               <MappingFragment StoreEntitySet="Pa_Planejamento">
+                <ScalarProperty Name="IsFta" ColumnName="IsFta" />
                 <ScalarProperty Name="Tatico_Id" ColumnName="Tatico_Id" />
                 <ScalarProperty Name="IsTatico" ColumnName="IsTatico" />
                 <ScalarProperty Name="UnidadeDeMedida_Id" ColumnName="UnidadeDeMedida_Id" />

@@ -4826,7 +4826,7 @@ namespace SgqSystem.Services
 
 
                 //var formControlBanda = "<input class='form-control input-sm banda' min='1' max='2' style='font-size:30px; height: 50px; text-align:center;' type='number'>";
-                var formControlBanda = "<select class='form-control input-sm banda' style='font-size:30px; height: 50px; text-align:center;'><option value='1' selected>1</option><option value='2'>2</option></select>";
+                var formControlBanda = "<select class='form-control input-sm banda' style='font-size:30px; height: 50px; text-align:center;'><option value='1'>1</option><option value='2'>2</option></select>";
 
                 var formGroupBanda = html.div(
                                         outerhtml: labelBanda + formControlBanda,

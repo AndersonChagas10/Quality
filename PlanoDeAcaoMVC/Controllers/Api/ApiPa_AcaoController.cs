@@ -75,7 +75,6 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             var acao = Mapper.Map<PlanoAcaoEF.Pa_Acao>(obj);
             var fta = Mapper.Map<PlanoAcaoEF.Pa_FTA>(obj);
-            acao.TipoIndicador = 2; //Para Indicador SGQ
 
             SalvaFTA(fta);
             acao.Fta_Id = fta.Id;

@@ -14,14 +14,14 @@ namespace PlanoDeAcaoMVC.Controllers
     public class Pa_AcaoController : Controller
     {
 
-        #region Ações
+        PlanoAcaoEF.PlanoDeAcaoEntities db;
 
         /// <summary>
         /// Construtor Com drop down lists para views e partial de Ações
         /// </summary>
         public Pa_AcaoController()
         {
-
+            db = new PlanoAcaoEF.PlanoDeAcaoEntities();
             if (ViewBag.Unidade == null)
                 ViewBag.Unidade = Pa_Unidade.Listar();
 
@@ -37,6 +37,9 @@ namespace PlanoDeAcaoMVC.Controllers
             ViewBag.Pa_IndicadorSgqAcao = Pa_IndicadorSgqAcao.Listar();
             ViewBag.Pa_Problema_Desvio = Pa_Problema_Desvio.Listar();
         }
+
+        #region Ações
+
 
         /// <summary>
         /// Index
@@ -184,15 +187,32 @@ namespace PlanoDeAcaoMVC.Controllers
 
             #endregion
 
+            ViewBag.PlanejamentosComFTA = db.Pa_Planejamento.FirstOrDefault(r=>r.IsFta == true).Id;
+
             fta.ValidaFTA();
 
-            using (var db = new ADOFactory.Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
+            NovoFtaModelParaSgq(fta);
+
+            //fta._Unidade = "Corporativo";
+            //fta._Departamento = "Curral";
+            //fta._Supervisor = "camilaprata-mtz";
+            //fta._Level1 = "(%) NC Expedição";
+            //fta.MetaFTA = 5;
+            //fta.ReincidenciaDesvioFTA = 15;
+            //fta.PercentualNCFTA = 15;
+
+            return View(fta);
+        }
+
+        private static void NovoFtaModelParaSgq(FTA fta)
+        {
+            using (var dbFActory = new ADOFactory.Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
             {
 
-                var level1 = db.SearchQuery<ParLevel1DTO>("Select * from parlevel1 WHERE ID = " + fta.Level1Id).FirstOrDefault(r => r.IsActive);
-                var usersgq = db.SearchQuery<UserDTO>("Select * from usersgq WHERE ID = " + fta.Supervisor_Id).FirstOrDefault();
-                var parcompany = db.SearchQuery<ParCompanyDTO>("Select * from parcompany WHERE ID = " + fta.Unidade_Id).FirstOrDefault(r => r.IsActive);
-                var parDepartment = db.SearchQuery<ParDepartmentDTO>("Select * from ParDepartment WHERE ID = " + fta.Departamento_Id).FirstOrDefault();
+                var level1 = dbFActory.SearchQuery<ParLevel1DTO>("Select * from parlevel1 WHERE ID = " + fta.Level1Id).FirstOrDefault(r => r.IsActive);
+                var usersgq = dbFActory.SearchQuery<UserDTO>("Select * from usersgq WHERE ID = " + fta.Supervisor_Id).FirstOrDefault();
+                var parcompany = dbFActory.SearchQuery<ParCompanyDTO>("Select * from parcompany WHERE ID = " + fta.Unidade_Id).FirstOrDefault(r => r.IsActive);
+                var parDepartment = dbFActory.SearchQuery<ParDepartmentDTO>("Select * from ParDepartment WHERE ID = " + fta.Departamento_Id).FirstOrDefault();
 
                 fta._Level1 = level1.Name;
 
@@ -209,17 +229,7 @@ namespace PlanoDeAcaoMVC.Controllers
                 fta._Supervisor = usersgq.Name;
 
             }
-
-            //fta._Unidade = "Corporativo";
-            //fta._Departamento = "Curral";
-            //fta._Supervisor = "camilaprata-mtz";
-            //fta._Level1 = "(%) NC Expedição";
-            //fta.MetaFTA = 5;
-            //fta.ReincidenciaDesvioFTA = 15;
-            //fta.PercentualNCFTA = 15;
-
-            return View(fta);
-        } 
+        }
 
         /// <summary>
         /// Mock para apresentação do plano de ação.
