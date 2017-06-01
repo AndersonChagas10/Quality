@@ -1387,11 +1387,11 @@ namespace SgqSystem.Services
                         //Se o script for executado corretamente retorna o Id
 
                         //Atualiza a situação de reauditoria
-                        //if (Reaudit)
-                        //{
-                        //    var UpdateCollectionLevel2DB = new SGQDBContext.UpdateCollectionLevel2(db);
-                        //    UpdateCollectionLevel2DB.UpdateIsReauditByKey(keySolid, Reaudit, Int16.Parse(haveReaudit), ReauditNumber, reauditLevel);
-                        //}
+                        if (Reaudit)
+                        {
+                            var UpdateCollectionLevel2DB = new SGQDBContext.UpdateCollectionLevel2(db);
+                            UpdateCollectionLevel2DB.UpdateIsReauditByKey(keySolid, Reaudit, Int16.Parse(haveReaudit), ReauditNumber, reauditLevel);
+                        }
 
                         if (i > 0)
                         {
@@ -2378,14 +2378,14 @@ namespace SgqSystem.Services
                     "\n CollectionDate=\"' + ISNULL(FORMAT(Level2Result.CollectionDate, 'MMddyyyy'),'NULL') +'\"" +
                     "\n Evaluation=\"' + ISNULL(REPLACE(CAST(Level2Result.EvaluateLast AS VARCHAR),'.',','),'NULL') + '\"" +
                     "\n Sample=\"' + ISNULL(REPLACE(CAST(Level2Result.SampleLast AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n Phase=\"' + ISNULL(REPLACE(CAST(CL2.Phase AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n StartPhaseDate=\"' + ISNULL(REPLACE(CAST(CL2.StartPhaseDate AS VARCHAR),'.',','),'NULL') +'\"" +
-                    "\n StartPhaseEvaluation=\"' + ISNULL(REPLACE(CAST(CL2.StartPhaseEvaluation AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n havecorrectiveaction=\"' + ISNULL(REPLACE(CAST(CL2.haveCorrectiveAction AS VARCHAR),'1','true'),'NULL') + '\"" +
-                    "\n havereaudit=\"' + ISNULL(REPLACE(CAST(CL2.haveReaudit AS VARCHAR),'1','true'),'NULL') + '\"" +
-                    "\n reauditlevel=\"' + ISNULL(REPLACE(CAST(CL2.ReauditLevel AS VARCHAR),'.',','),'NULL') + '\"" +
+                    "\n Phase=\"' + ISNULL(REPLACE(CAST(MAX(CL2.Phase) AS VARCHAR),'.',','),'NULL') + '\"" +
+                    "\n StartPhaseDate=\"' + ISNULL(REPLACE(CAST(Max(CL2.StartPhaseEvaluation) AS VARCHAR),'.',','),'NULL') +'\"" +
+                    "\n StartPhaseEvaluation=\"' + ISNULL(REPLACE(CAST(Max(CL2.StartPhaseEvaluation) AS VARCHAR),'.',','),'NULL') + '\"" +
+                    "\n havecorrectiveaction=\"' + ISNULL(REPLACE(CAST(Max(CAST(CL2.haveCorrectiveAction as Int)) AS VARCHAR),'1','true'),'NULL') + '\"" +
+                    "\n havereaudit=\"' + ISNULL(REPLACE(CAST(Max(cast(CL2.haveReaudit as int)) AS VARCHAR),'1','true'),'NULL') + '\"" +
+                    "\n reauditlevel=\"' + ISNULL(REPLACE(CAST(Max(CL2.ReauditLevel) AS VARCHAR),'.',','),'NULL') + '\"" +
                     "\n reauditnumber=\"' + ISNULL(REPLACE(CAST(CDL2.ReauditNumber AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n isreaudit=\"' + ISNULL(REPLACE(CAST(CL2.ReauditIs AS VARCHAR),'1','true'),'NULL') + '\"" +
+                    "\n isreaudit=\"' + ISNULL(REPLACE(CAST(CDL2.ReauditIs AS VARCHAR),'1','true'),'NULL') + '\"" +
                     "\n more3defectsEvaluate=\"0\"" +
                     "\n CollectionLevel2_ID_CorrectiveAction=\"' + ISNULL(REPLACE(CAST(MIN(CL2.Id) AS VARCHAR),'.',','),'NULL') + '\"" +
                     "\n CollectionLevel2_Period_CorrectiveAction=\"' + ISNULL(REPLACE(CAST(MIN(CL2.Period) AS VARCHAR),'.',','),'NULL') + '\">" +
@@ -2397,7 +2397,7 @@ namespace SgqSystem.Services
                     "\n ON CDL2.ConsolidationLevel1_Id = CDL1.Id                                                                                                                                  " +
                     "\n LEFT JOIN CollectionLevel2 CL2     (nolock)                                                                                                                                         " +
                     "\n ON CL2.ConsolidationLevel2_Id = CDL2.Id                                                                                                                                   " +
-                    "\n AND(CL2.HaveCorrectiveAction = 1 OR CL2.HaveReaudit = 1)                                                                                                                  " +
+                    "\n --AND(CL2.HaveCorrectiveAction = 1 OR CL2.HaveReaudit = 1)                                                                                                                  " +
                     "\n   INNER JOIN                                                                                                                                                              " +
                     "\n   (                                                                                                                                                                       " +
                     "\n                                                                                                                                                                           " +
@@ -2616,14 +2616,14 @@ namespace SgqSystem.Services
                     "\n   CDL2.EvaluateTotal,                                                                                                                                                     "+
                     "\n   CDL2.EvaluatedResult,                                                                                                                                                   "+
                     "\n   CDL2.DefectsResult,                                                                                                                                                     "+
-                    "\n   CL2.HaveCorrectiveAction,                                                                                                                                               "+
-                    "\n   CL2.HaveReaudit,                                                                                                                                                        "+
-                    "\n   CL2.ReauditLevel,                                                                                                                                                       "+
+                    "\n   --CL2.HaveCorrectiveAction,                                                                                                                                               "+
+                    "\n   --CL2.HaveReaudit,                                                                                                                                                        "+
+                    "\n   --CL2.ReauditLevel,                                                                                                                                                       "+
                     "\n   CDL2.ReauditNumber,                                                                                                                                                     "+ 
-                    "\n   CL2.ReauditIs,                                                                                                                                                          "+
-                    "\n   CL2.Phase,                                                                                                                                                              "+
-                    "\n   CL2.StartPhaseDate,                                                                                                                                                     "+
-                    "\n   CL2.StartPhaseEvaluation,                                                                                                                                               "+
+                    "\n   CDL2.ReauditIs,                                                                                                                                                          "+
+                    "\n   --CL2.Phase,                                                                                                                                                              "+
+                    "\n   --CL2.StartPhaseDate,                                                                                                                                                     "+
+                    "\n  --CL2.StartPhaseEvaluation,                                                                                                                                               "+
                     "\n                                                                                                                                                                           "+
                     "\n   Level2Result.ParLevel1_Id,                                                                                                                                              "+
                     "\n   Level2Result.ParLevel2_Id,                                                                                                                                              "+
@@ -4826,7 +4826,7 @@ namespace SgqSystem.Services
 
 
                 //var formControlBanda = "<input class='form-control input-sm banda' min='1' max='2' style='font-size:30px; height: 50px; text-align:center;' type='number'>";
-                var formControlBanda = "<select class='form-control input-sm banda' style='font-size:30px; height: 50px; text-align:center;'><option value='1' selected>1</option><option value='2'>2</option></select>";
+                var formControlBanda = "<select class='form-control input-sm banda' style='font-size:30px; height: 50px; text-align:center;'><option value='1'>1</option><option value='2'>2</option></select>";
 
                 var formGroupBanda = html.div(
                                         outerhtml: labelBanda + formControlBanda,
@@ -6090,7 +6090,7 @@ namespace SgqSystem.Services
             }
         }
         [WebMethod]
-        public string InsertCorrectiveAction(string CollectionLevel2_Id, string ParLevel1_Id, string ParLevel2_Id, string Shift, string Period, string ParCompany_Id, string EvaluationNumber, string ParFrequency_Id, string data, string AuditorId, string SlaughterId, string TechinicalId, string DateTimeSlaughter, string DateTimeTechinical, string DateCorrectiveAction, string AuditStartTime, string DescriptionFailure, string ImmediateCorrectiveAction, string ProductDisposition, string PreventativeMeasure)
+        public string InsertCorrectiveAction(string CollectionLevel2_Id, string ParLevel1_Id, string ParLevel2_Id, string Shift, string Period, string ParCompany_Id, string EvaluationNumber, string ParFrequency_Id, string data, string AuditorId, string SlaughterId, string TechinicalId, string DateTimeSlaughter, string DateTimeTechinical, string DateCorrectiveAction, string AuditStartTime, string DescriptionFailure, string ImmediateCorrectiveAction, string ProductDisposition, string PreventativeMeasure, string reauditnumber)
         {
             try
             {
@@ -6104,7 +6104,7 @@ namespace SgqSystem.Services
 
                 if (string.IsNullOrEmpty(CollectionLevel2_Id) || CollectionLevel2_Id == "0")
                 {
-                    CollectionLevel2_Id = getCollectionLevel2WithCorrectiveAction(ParLevel1_Id, ParLevel2_Id, Shift, Period, ParCompany_Id, EvaluationNumber).ToString();
+                    CollectionLevel2_Id = getCollectionLevel2WithCorrectiveAction(ParLevel1_Id, ParLevel2_Id, Shift, Period, ParCompany_Id, EvaluationNumber,reauditnumber,data).ToString();
                     if (CollectionLevel2_Id == "0")
                     {
                         return "error";
@@ -6157,11 +6157,24 @@ namespace SgqSystem.Services
                 throw ex;
             }
         }
-        public int getCollectionLevel2WithCorrectiveAction(string ParLevel1_Id, string ParLevel2_Id, string Shift, string Period, string ParCompany_Id, string EvaluationNumber)
+        public int getCollectionLevel2WithCorrectiveAction(string ParLevel1_Id, string ParLevel2_Id, string Shift, string Period, string ParCompany_Id, string EvaluationNumber,string reauditnumber,string data)
         {
             //Converte a data no padrão de busca do Banco de Dados
 
-            string sql = "SELECT Id FROM CollectionLevel2 (nolock)  WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND ParLevel2_Id='" + ParLevel2_Id + "' AND UnitId='" + ParCompany_Id + "' AND Shift='" + Shift + "' AND Period='" + Period + "' AND EvaluationNumber='" + EvaluationNumber + "' AND HaveCorrectiveAction=1";
+            if (!data.Contains("-"))
+            {
+                string dia = data.Substring(2, 2);
+                string mes = data.Substring(0, 2);
+                string ano = data.Substring(4, 4);
+
+                data = ano + "-" + mes + "-" + dia;
+            }
+
+            string sql = "SELECT Id FROM CollectionLevel2 WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND ParLevel2_Id='" + ParLevel2_Id + "' AND UnitId='" + ParCompany_Id + "' AND Shift='" + Shift +
+                    "' AND Period='" + Period + "' AND EvaluationNumber='" + EvaluationNumber + "' and CAST(CollectionDate as date)=CAST('" +data + "' as date) and reauditNumber=" + reauditnumber; //"' AND HaveCorrectiveAction=1";
+            
+            //string sql = "SELECT Id FROM CollectionLevel2 WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND UnitId='" + ParCompany_Id + "' AND Shift='" + Shift + "' AND Period='" + Period + "' AND EvaluationNumber='" + EvaluationNumber + "'AND ReauditNumber='" + reauditnumber +
+            //"' AND HaveCorrectiveAction=1";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
