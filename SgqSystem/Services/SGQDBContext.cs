@@ -2285,7 +2285,7 @@ namespace SGQDBContext
                 }
                 else if (IsReaudit == true && HaveReaudit == 0)
                 {
-                    sql = "UPDATE CollectionLevel2 SET HaveReaudit = 0, ReauditNumber = 0 WHERE [Key] = '" + Key + "'";
+                    sql = "UPDATE CollectionLevel2 SET HaveReaudit = 0, ReauditNumber = "+ ReauditNumber +" WHERE [Key] = '" + Key + "'";
                 }
 
                 //SqlConnection db = new SqlConnection(conexao);

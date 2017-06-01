@@ -68,7 +68,7 @@
 
             </div>
         </div>
-        <div style="width:50%; height:90px; float:left;">
+        <div style="width:64%; height:90px; float:left;">
             <div id="colHead1" style="width:100%; overflow-x: hidden; float: right;" class="colHead1">
 
                 <table cellspacing="0" cellpadding="0" border="0" id="Header2">
@@ -77,7 +77,7 @@
                         <tr>
                             @foreach (var i in Model.trsCabecalho2)
                             {
-                                <td align="center" style="height:30px; min-width:70px; background-color: #DDDDDD;" colspan="4">
+                                <td align="center" style="height:30px; min-width:40px; background-color: #DDDDDD;" colspan="4">
                                     <b>@i.name</b>
                                 </td>
                             }
@@ -88,7 +88,7 @@
                             {
                                 foreach (var ii in i.tds)
                                 {
-                                    <td align="center" style="height:30px;min-width:70px; background-color: #DCDCDC;" colspan="1">
+                                    <td align="center" style="height:30px;min-width:40px; background-color: #DCDCDC;" colspan="1">
                                         <b>@ii.name</b>
                                     </td>
                                 }
@@ -116,7 +116,7 @@
                                         counter2 = 0;
                                         counter3++;
                                     }
-                                    <td onclick="@Model.CallBackTableBody" dado1="@i.name" @*dado2="@Model.trsCabecalho2[counter].tds[counter2].name"*@ dado3="@Model.trsCabecalho2[counter3].name" align="center" style="min-width:70px; padding:0px; height: 40px;">
+                                    <td onclick="@Model.CallBackTableBody" dado1="@i.name" @*dado2="@Model.trsCabecalho2[counter].tds[counter2].name"*@ dado3="@Model.trsCabecalho2[counter3].name" align="center" style="min-width:40px; padding:0px; height: 40px;">
                                         @ii.valor
                                     </td>
                                     counter2++;
@@ -143,7 +143,7 @@
                             {
                                 foreach (var ii in i.tdsEsquerda)
                                 {
-                                    <td align="center" style="background-color: #DCDCDC; min-width:70px; padding:0px; height: 40px;">
+                                    <td align="center" style="background-color: #DCDCDC; min-width:40px; padding:0px; height: 40px;">
                                         @ii.valor
                                     </td>
                                 }
@@ -154,7 +154,7 @@
 
             </div>
         </div>
-        <div style="width:30%; 90px; float:left;">
+        <div style="width:16%; 90px; float:left;">
             <div id="headTotal1" class="larguraP19" style="width:100%; overflow-x: hidden; float:left;">
 
                 <table cellspacing="0" cellpadding="0" id="Header3">
@@ -171,7 +171,7 @@
                         {
                             foreach (var ii in i.tds)
                             {
-                                <td align="center" style="height:30px; min-width:70px; background-color: #DCDCDC;" colspan="1">
+                                <td align="center" style="height:30px; min-width:40px; background-color: #DCDCDC;" colspan="1">
                                     @ii.name
                                 </td>
                             }
@@ -189,7 +189,7 @@
                             <tr>
                                 @foreach (var ii in i.tdsDireita)
                                 {
-                                    <td align="center" style="min-width:70px; padding:0px; height: 40px;">
+                                    <td align="center" style="min-width:40px; padding:0px; height: 40px;">
                                         @ii.valor
                                     </td>
                                 }
@@ -208,7 +208,7 @@
                             {
                                 foreach (var ii in i.tdsDireita)
                                 {
-                                    <td height="40px" align="center" style="min-width:70px; background-color: #DCDCDC" colspan="1">
+                                    <td height="40px" align="center" style="min-width:40px; background-color: #DCDCDC" colspan="1">
                                         @ii.valor
                                     </td>
                                 }

@@ -127,13 +127,13 @@ namespace SgqSystem.Controllers.Api.Example
                 dynamic teste = new JObject();
                 teste = db.Database.SqlQuery<JObject>("Select * from SgqConfig").FirstOrDefault();
             }
-                //foreach (dynamic song in album.Songs)
-                //{
-                //    song.SongName = song.SongName + " New";
-                //    newAlbum.Songs.Add(song);
-                //}
+            //foreach (dynamic song in album.Songs)
+            //{
+            //    song.SongName = song.SongName + " New";
+            //    newAlbum.Songs.Add(song);
+            //}
 
-                return newAlbum;
+            return newAlbum;
         }
 
     }

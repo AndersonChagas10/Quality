@@ -9,6 +9,14 @@
     var urlGrafico3 = Url.Action("Grafico3", "api/VisaoGeralDaArea");
     var urlGrafico4 = Url.Action("Grafico4", "api/VisaoGeralDaArea");
     var urlGrafico5 = Url.Action("Grafico5", "api/VisaoGeralDaArea");
+
+    var urlGraficoMonitoramento = Url.Action("GraficoMonitoramento", "api/NaoConformidade");
+    var urlGraficoTarefa = Url.Action("GraficoTarefa", "api/NaoConformidade");
+    var urlGraficoTarefasAcumuladas = Url.Action("GraficoTarefasAcumuladas", "api/NaoConformidade");
+
+    var urlFtaGet = Url.Action("GetUrl", "api/Fta");
+
+
 }
 
 <style>
@@ -132,13 +140,13 @@
 <div class="page-content" style="min-height: 600px;">
 
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
-    <div id="formBodyContent">
+    <div id="formBodyContent"  style="width:1000px; margin-left:auto; margin-right:auto; border">
 
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
-        <div id="grafico1"></div>
+        <div id="grafico1" style="max-height:200px;"></div>
 
-        <div id="grafico2"></div>
+        <div id="grafico2" style="max-height:200px;"></div>
 
         <div id="tabela1div"></div>
 
@@ -158,6 +166,298 @@
 
     <script type="text/javascript">
 
+        var Chart = {
+
+            /*
+                Arry: dadposNC
+                Object: dados
+                Int: axis
+            */
+            criaTitulo:  function(prefix, sufix){
+                return prefix + sufix;
+            },
+            curvaPareto: function (dados, dadosNC, axis, inverse) {
+
+                var totalNC = dadosNC.reduce(function (a, b) { return a + b; }, 0);
+                var porcentagemAcumuladaNC  = 0;
+                var data = []
+                dadosNC.forEach(function (a) {
+                    porcentagemAcumuladaNC += a / totalNC * 100;
+                    data.push(Math.round(porcentagemAcumuladaNC, 2));
+                });
+
+                return {
+                    type: 'line',
+                    yAxis: 1,
+                    name: Resources('pareto_chart'),
+                    color: "Red",
+                    data: data,
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' %'
+                    },
+                    zones: [{
+                        value: 80,
+                        color: inverse == undefined ? 'Red' : 'Black'
+                    }, {
+                        color: inverse == undefined ? 'Black' : 'Red'
+                    }],
+                }
+            },
+            serie: function (tipo, nomeDaSerie, corDaSerie, dados, suffix, axis, paddin1, padding2, pointFunc,nome, id) {
+
+                var serieType = tipo == undefined ? 'line' : tipo;
+                var sufix = suffix == undefined ? '' : suffix
+                var padding1 =  0.3;
+                var padding2 = -0.2;
+
+
+                return  {
+                    type: serieType,
+                    yAxis: 1,
+                    name: nomeDaSerie,
+                    color: corDaSerie,
+                    data: dados,
+                    pointPadding: paddin1,
+                    pointPlacement: padding2,
+                    dataLabels: {
+                        enabled: true,
+                        color: 'black',
+                        align: 'center',
+                        style: {
+                            fontSize: '10px',
+                        }
+                    },
+                    point: {
+                        events: {
+                            click: function () {
+                                if(typeof (pointFunc) == 'function'){
+                                    pointFunc(nome[this.x], id[this.x]);
+                                }
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: sufix
+                    }
+                }
+
+
+            },
+            CorTotalNc: function () { return '#F7BCB0' },
+            CorTotalAv: function () { return '#ccc' },
+            CorTotalPareto: function () { return '#900000' },
+            CorMeta: function () { return '#67D184' },
+            CorTotalProcNc: function () { return '#FF6347' },
+            Legend: function () {
+                return {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom',
+                    borderWidth: 0
+                };
+            },
+            ToolTip: function (isShared, isCrosshairs) {
+                return {
+                    valueDecimals: 2,
+                    shared: isShared,
+                    crosshairs: isCrosshairs
+                }
+            },
+            Titulo: function (data, sufix) {
+
+                if(!!sufix)
+                    data = data + sufix;
+
+                return {
+
+                    text: data,
+                    x: -20 //center
+                };
+
+            },
+            Credits: function () {
+                return {
+                    enabled: false
+                }
+            },
+            Zones: function () {
+                return {
+                    enabled: false
+                }
+            },
+            Chart: function (tipo, zoon) {
+                return {
+                    type: tipo,
+                    zoomType: (!!zoon) ? zoon : ''
+                }
+            },
+            yAxisPadraoRelNc: function () {
+
+                return [{
+                    allowDecimals: false,
+                    min: 0,
+                    title: {
+                        text: Resources('number_samplers')
+                    },
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                }, {
+                    allowDecimals: false,
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: '% ' +  Resources('nonconformity'),
+                    },
+                    opposite: true
+                }];
+
+            },
+            Xaxis: function (dados) {
+                return [{
+                    categories: dados
+                }];
+            },
+            NC: function (data, func, nome, id, funcParaAcumuladas) {
+                return {
+                    name: '@Resources.Resource.nonconformity',
+                    color: Chart.CorTotalNc(),//'rgba(77,143,189,1)',
+                    data: data,
+                    yAxis: 0,
+                    //pointPadding: 0.3,
+                    //pointPlacement: -0.2,
+                    dataLabels: Chart.DataLabelPadrao(),
+                    point: {
+                        events: {
+                            click: function () {
+                                if(!!func)
+                                    func(this.category);
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' qtd'
+                    }
+                }
+
+            },
+            ProcNc: function(data, func, funcParaAcumuladas){
+                $.each(data, function(a, b){
+                    data[a] = parseFloat(b) > 100 ? 100 : b;
+                });
+                return {
+                    name: '% @Resources.Resource.nonconformity',
+                    color: Chart.CorTotalProcNc(),//'rgba(240,124,0,1)',
+                    data: data,
+                    yAxis: 1,
+                    tooltip: {
+                        valueSuffix: ' %'
+                    },
+                    //pointPadding: 0.4,
+                    //pointPlacement: -0.2,
+                    dataLabels: Chart.DataLabelPadrao('%'),
+                    point: {
+                        events: {
+                            click: function () {
+                                if(!!func)
+                                    func(this.category);
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' % (@Resources.Resource.nonconformity * @Resources.Resource.weight)'
+                    }
+                };
+
+            },
+            Meta: function(data, func, nome, id, funcParaAcumuladas){
+
+                return {
+                    visible: false,
+                    name: '% @Resources.Resource.goal',
+                    data: data,
+                    color: Chart.CorMeta(),//'rgba(81,207,64,1)',
+                    //pointPadding: 0.4,
+                    //pointPlacement: 0.4,
+                    yAxis: 1,
+                    dataLabels: Chart.DataLabelPadrao('%'),
+                    point: {
+                        events: {
+                            click: function () {
+                                if(!!func)
+                                    func(this.category);
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' %'
+                    }
+                };
+
+            },
+            Av: function(data, func, nome, id, funcParaAcumuladas){
+
+                return {
+                    visible: false,
+                    name: @Html.Raw(Json.Encode(Resources.Resource.evaluation)),
+                    data: data,
+                    color: Chart.CorTotalAv(),//'rgba(81,207,64,1)',
+                    //pointPadding: 0.4,
+                    //pointPlacement: 0.2,
+                    yAxis: 0,
+                    dataLabels: Chart.DataLabelPadrao(),
+                    point: {
+                        events: {
+
+                            click: function () {
+                                if(!!func)
+                                    func(this.category);
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' qtd'
+                    }
+
+                };
+
+            },
+            DataLabelPadrao: function (affix) {
+
+                return  {
+                    format: !!affix ? '{y:.2f} '+ affix : '{y:.2f}',
+                    enabled: true,
+                    color: 'black',
+                    align: 'center',
+                    rotation: 270,
+                    x: 2,
+                    y: -25,
+                    style: {
+                        fontSize: '12px',
+                        fontWeight: 'Arial'
+                    }
+                };
+            },
+
+        }
+
+        var GraficoMon = '@Resources.Resource.defects_per_monitoring:'; //'NC por Monitoramento: ';
+        var GraficoTarefa = '@Resources.Resource.defects_per_tasks:'; //'NC por Tarefa: ';
+        var GraficoTarefasAcumuladas = 'NC por Tarefas acumuladas: ';
+        var GraficoMoncomTarefa = 'NC por Monitoramento na Tarefa: ';
+
         var urlTabela1 = '@Html.Raw(@urlTabela1)';
         var urlTabela2 = '@Html.Raw(@urlTabela2)';
         var urlGrafico1 = '@Html.Raw(@urlGrafico1)';
@@ -165,6 +465,12 @@
         var urlGrafico3 = '@Html.Raw(@urlGrafico3)';
         var urlGrafico4 = '@Html.Raw(@urlGrafico4)';
         var urlGrafico5 = '@Html.Raw(@urlGrafico5)';
+
+        var urlGraficoMonitoramento = @Html.Raw(Json.Encode(urlGraficoMonitoramento));
+        var urlGraficoTarefa = @Html.Raw(Json.Encode(urlGraficoTarefa));
+        var urlGraficoTarefasAcumuladas = @Html.Raw(Json.Encode(urlGraficoTarefasAcumuladas));
+
+        var urlGetFta = @Html.Raw(Json.Encode(urlFtaGet));
 
         var $btn = $('#btnSend');
         $('#simpleCallendar').hide().attr('disabled', true);
@@ -196,7 +502,7 @@
             enviar["CallBackTableBody"] = "GetTabela2($(this).attr('dado3'), $(this).attr('dado1'));";
             enviar["CallBackTableEsquerda"] = function () { };
             enviar["Query"] = "GetTbl1";
-            enviar["Title"] = "Titulo";
+            enviar["Title"] = "Pacotes por Regional";
 
             EasyAjax(urlTabela1, enviar, function (r) {
                 $('#tabela1div').empty().append(r);
@@ -217,7 +523,7 @@
             enviar["CallBackTableBody"] = "Grafico3($(this).attr('dado3'), $(this).attr('dado1'));Grafico4($(this).attr('dado3'), $(this).attr('dado1'));";
             enviar["CallBackTableEsquerda"] = function () { };
             enviar["Query"] = "GetTbl2";
-            enviar["Title"] = "";
+            enviar["Title"] = "Indicadores por unidade";
 
             enviar["ParametroTableRow"] = [];
             enviar["ParametroTableCol"] = [];
@@ -472,8 +778,6 @@
                 enviar["ParametroTableCol"].push(paramCol);
             }
 
-           
-
             EasyAjax(urlGrafico3, enviar, CallbackGrafico3, "grafico3");
         }
 
@@ -621,18 +925,21 @@
 
         function Grafico4(paramCol, paramRow) {
 
-            if (enviar["ParametroTableRow"][1] != undefined) {
-                enviar["ParametroTableRow"][1] = paramRow;
-                enviar["ParametroTableCol"][1] = paramCol;
-            } else {
-                enviar["ParametroTableRow"].push(paramRow);
-                enviar["ParametroTableCol"].push(paramCol);
-            }
+            //if (enviar["ParametroTableRow"][1] != undefined) {
+            //    enviar["ParametroTableRow"][1] = paramRow;
+            //    enviar["ParametroTableCol"][1] = paramCol;
+            //} else {
+            //    enviar["ParametroTableRow"].push(paramRow);
+            //    enviar["ParametroTableCol"].push(paramCol);
+            //}
 
+            enviar["level1Name"] = paramRow;
+            enviar["unitName"] = paramCol;
 
-            EasyAjax(urlGrafico4, enviar, CallbackGrafico4, "grafico4");
+            EasyAjax(urlGraficoMonitoramento, enviar, GraficoMonitoramento, "grafico4");
         }
 
+        //depreciado
         function CallbackGrafico4(data) {
 
             //var nome = ['Astrogildo', 'Ederasonildo', 'Morietanila'] //MapeiaValorParaHC(data, "");
@@ -781,6 +1088,57 @@
             });//Fim HC
 
         }
+
+        function GraficoMonitoramento(data, tarefa) {
+
+            $('#grafico4').show();
+
+            var nc = MapeiaValorParaHC(data, "Nc")
+            var nome = MapeiaValorParaHC(data, "MonitoramentoName")
+            var qtdAv = MapeiaValorParaHC(data, "Av")
+            var porc = MapeiaValorParaHC(data, "Proc")
+            var selector = "grafico4";
+
+            /*?*/
+            var sentido = 'desc';
+            var inverse = sentido == 'desc' ? undefined : 1;
+
+            $('#' + selector).empty().highcharts({
+                credits: Chart.Credits(),
+                chart: Chart.Chart('column', 'xy'),
+                title: Chart.Titulo(GraficoMon, enviar["level1Name"]),
+                xAxis: Chart.Xaxis(nome),
+                yAxis: Chart.yAxisPadraoRelNc(),
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        //grouping: false,
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                    Chart.ProcNc(porc, GetTarefa),
+                    Chart.NC(nc, GetTarefa),
+                    Chart.Av(qtdAv, GetTarefa),
+                    Chart.curvaPareto(data, nc, 1, inverse)
+                ]
+            });
+
+
+        }
+
+        function GetTarefa(monitoramento){
+            enviar["level2Name"] = monitoramento;
+            EasyAjax(urlGraficoTarefa, enviar, GraficoTarefas, "grafico5");
+        };
+
+
 
         function Grafico5(id) {
 
@@ -941,6 +1299,56 @@
 
         }
 
+        function GraficoTarefas(data, monitoramento) {
+
+            $('#grafico5').show();
+
+            var nc = MapeiaValorParaHC(data, "Nc")
+            var nome = MapeiaValorParaHC(data, "TarefaName")
+            var qtdAv = MapeiaValorParaHC(data, "Av")
+            var porc = MapeiaValorParaHC(data, "Proc")
+            var selector = "grafico5";
+
+            /*?*/
+            var sentido = 'desc';
+            var inverse = sentido == 'desc' ? undefined : 1;
+
+            $('#' + selector).empty().highcharts({
+                credits: Chart.Credits(),
+                chart: Chart.Chart('column', 'xy'),
+                title: Chart.Titulo(GraficoTarefa, enviar["level2Name"]),
+                xAxis: Chart.Xaxis(nome),
+                yAxis: Chart.yAxisPadraoRelNc(),
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        //grouping: false,
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                    Chart.ProcNc(porc, requisitaDadosSGQparaGerarFta),
+                    Chart.NC(nc, requisitaDadosSGQparaGerarFta),
+                    Chart.Av(qtdAv, requisitaDadosSGQparaGerarFta),
+                    Chart.curvaPareto(data, nc, 1, inverse)
+                ]
+            });
+
+        }
+
+        function requisitaDadosSGQparaGerarFta(tarefa) {
+            enviar['level3Name'] = tarefa;
+            enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
+            EasyAjax(urlGetFta, enviar, RedirecionaParaFTA);
+        }
+
+
         function ValidaDadosParaEnvio() {
             GuardJs.resetForValidation();
             GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
@@ -984,6 +1392,10 @@
                 $(".loader").removeClass("loader");
             }
         });
+
+
+
+
 
     </script>
 
