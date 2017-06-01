@@ -499,7 +499,7 @@ namespace SgqSystem.Services
                     query = "[Id] = '" + id + "' AND";
                 }
 
-                string sql = "SELECT [level01_Id], [Level01CollectionDate], [level02_Id], [Level02CollectionDate], [Unit_Id],[Period], [Shift], [AppVersion], [Ambient], [Device_Id], [Device_Mac] , [Key], [Level03ResultJSon], [Id], [Level02HeaderJson], [Evaluate],[Sample],[AuditorId], [Reaudit], [CorrectiveActionJson],[haveReaudit],[ReauditLevel],[haveCorrectiveAction],[ReauditNumber]  FROM CollectionJson WHERE " + query + " [IsProcessed] = 0";
+                string sql = "SELECT [level01_Id], [Level01CollectionDate], [level02_Id], [Level02CollectionDate], [Unit_Id],[Period], [Shift], [AppVersion], [Ambient], [Device_Id], [Device_Mac] , [Key], [Level03ResultJSon], [Id], [Level02HeaderJson], [Evaluate],[Sample],[AuditorId], [Reaudit], [CorrectiveActionJson],[haveReaudit],[ReauditLevel],[haveCorrectiveAction],[ReauditNumber]  FROM CollectionJson (nolock)  WHERE " + query + " [IsProcessed] = 0";
 
 
                 var CollectionJsonDB = new SGQDBContext.CollectionJson(db);
@@ -1120,7 +1120,7 @@ namespace SgqSystem.Services
             //Converte a data no padrão de busca do Banco de Dados
             collectionDate = Convert.ToDateTime(collectionDate).ToString("yyyy-MM-dd");
 
-            string sql = "SELECT Id FROM ConsolidationLevel1 WHERE UnitId = '" + unitId + "' AND ParLevel1_Id= '" + level01Id + "' AND CONVERT(date, ConsolidationDate) = '" + collectionDate + "'";
+            string sql = "SELECT Id FROM ConsolidationLevel1 (nolock)  WHERE UnitId = '" + unitId + "' AND ParLevel1_Id= '" + level01Id + "' AND CONVERT(date, ConsolidationDate) = '" + collectionDate + "'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -1458,7 +1458,7 @@ namespace SgqSystem.Services
         public int ResultLevel3Delete(int CollectionLevel2_Id)
         {
 
-            string sql = "DELETE FROM Result_Level3 WHERE CollectionLevel2_Id=" + CollectionLevel2_Id;
+            string sql = "DELETE FROM Result_Level3 (nolock)  WHERE CollectionLevel2_Id=" + CollectionLevel2_Id;
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
@@ -1515,7 +1515,7 @@ namespace SgqSystem.Services
                          "VALUES                                                           " +
                          "      ('" + CollectionLevel2Id + "'                              " +
                          "      ," + ParHeaderField_Id + "                                     " +
-                         "      ,(SELECT Name FROM ParHeaderField WHERE Id='" + ParHeaderField_Id + "')   " +
+                         "      ,(SELECT Name FROM ParHeaderField (nolock)  WHERE Id='" + ParHeaderField_Id + "')   " +
                          "      ,'" + ParFieldType_Id + "'                                  " +
                          "      ,'" + Value + "')                                           ";
 
@@ -1845,7 +1845,7 @@ namespace SgqSystem.Services
         /// <returns></returns>
         public string GetMaxDateCollection(DateTime date)
         {
-            string sql = "SELECT TOP 1 ConsolidationDate FROM ConsolidationLevel01 WHERE ConsolidationDate < '" + date.ToString("yyyyMMdd") + "' ORDER BY ConsolidationDate DESC";
+            string sql = "SELECT TOP 1 ConsolidationDate FROM ConsolidationLevel01 (nolock)  WHERE ConsolidationDate < '" + date.ToString("yyyyMMdd") + "' ORDER BY ConsolidationDate DESC";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -2011,10 +2011,10 @@ namespace SgqSystem.Services
 
             string clusterDaUnidade = "1";
 
-            string sql = "select Cl.Id from parCompany C " +
-                        "\n inner join ParCompanyCluster CC " +
+            string sql = "select Cl.Id from parCompany C (nolock)  " +
+                        "\n inner join ParCompanyCluster CC (nolock)  " +
                         "\n on CC.ParCompany_Id = C.Id " +
-                        "\n inner join ParCluster Cl " +
+                        "\n inner join ParCluster Cl (nolock)  " +
                         "\n on Cl.Id = CC.ParCluster_Id " +
                         "\n where C.Id = " + ParCompany_Id +
                         "\n and Cl.IsActive = 1" +
@@ -2251,12 +2251,12 @@ namespace SgqSystem.Services
                     "\n ROW_NUMBER() OVER(ORDER BY R3.ParLevel3_Id ) AS ROW,                                                                                                                       " +
                     "\n '<div id=' + cast(R3.ParLevel3_Id as varchar) + 'class=\"r3l2\"></div>' COLUNA                                                                                            " +
                     "\n INTO #MOTHERFOCKER                                                                                                                                                        " +
-                    "\n FROM CollectionLevel2 C2                                                                                                                                                  " +
-                    "\n INNER JOIN ParLevel1 L1                                                                                                                                                   " +
+                    "\n FROM CollectionLevel2 C2  (nolock)                                                                                                                                                  " +
+                    "\n INNER JOIN ParLevel1 L1   (nolock)                                                                                                                                                  " +
                     "\n ON C2.ParLevel1_Id = L1.Id AND L1.IsPartialSave = 1                                                                                                                       " +
-                    "\n INNER JOIN ParLevel2 L2                                                                                                                                                   " +
+                    "\n INNER JOIN ParLevel2 L2  (nolock)                                                                                                                                                   " +
                     "\n ON C2.ParLevel2_Id = L2.Id                                                                                                                       " +
-                    "\n INNER JOIN Result_Level3 R3                                                                                                                                               " +
+                    "\n INNER JOIN Result_Level3 R3  (nolock)                                                                                                                                               " +
                     "\n ON R3.CollectionLevel2_Id = C2.Id                                                                                                                                         " +
                     "\n WHERE C2.UnitId = @unidade                                                                                                                                                " +
                     "\n --AND L1.Id =                                                                                                                                                             " +
@@ -2392,10 +2392,10 @@ namespace SgqSystem.Services
                     "\n ' + @RESPOSTA + ' " +
                     "\n </div>'  AS retorno                                                                                                                                                            " +
                     "\n                                                                                                                                                                           " +
-                    "\n FROM ConsolidationLevel2 AS CDL2                                                                                                                                          " +
-                    "\n INNER JOIN ConsolidationLevel1 AS CDL1                                                                                                                                    " +
+                    "\n FROM ConsolidationLevel2 AS CDL2  (nolock)                                                                                                                                          " +
+                    "\n INNER JOIN ConsolidationLevel1 AS CDL1   (nolock)                                                                                                                                   " +
                     "\n ON CDL2.ConsolidationLevel1_Id = CDL1.Id                                                                                                                                  " +
-                    "\n LEFT JOIN CollectionLevel2 CL2                                                                                                                                            " +
+                    "\n LEFT JOIN CollectionLevel2 CL2     (nolock)                                                                                                                                         " +
                     "\n ON CL2.ConsolidationLevel2_Id = CDL2.Id                                                                                                                                   " +
                     "\n AND(CL2.HaveCorrectiveAction = 1 OR CL2.HaveReaudit = 1)                                                                                                                  " +
                     "\n   INNER JOIN                                                                                                                                                              " +
@@ -2438,16 +2438,16 @@ namespace SgqSystem.Services
                     "\n           MAX(ConsolidationLevel2_Id) AS ConsolidationLevel2_Id                                                                                                           " +
                     "\n                                                                                                                                                                           " +
                     "\n                                                                                                                                                                           " +
-                    "\n           FROM CollectionLevel2 CL2                                                                                                                                       " +
+                    "\n           FROM CollectionLevel2 CL2    (nolock)                                                                                                                                     " +
                     "\n                                                                                                                                                                           " +
                     "\n                                                                                                                                                                           " +
-                    "\n           INNER JOIN ConsolidationLevel2 CDL2                                                                                                                             " +
+                    "\n           INNER JOIN ConsolidationLevel2 CDL2      (nolock)                                                                                                                         " +
                     "\n                                                                                                                                                                           " +
                     "\n                                                                                                                                                                           " +
                     "\n           ON CL2.ConsolidationLevel2_Id = CDL2.ID                                                                                                                         " +
                     "\n                                                                                                                                                                           " +
                     "\n                                                                                                                                                                           " +
-                    "\n           INNER JOIN ConsolidationLevel1 CDL1                                                                                                                             " +
+                    "\n           INNER JOIN ConsolidationLevel1 CDL1    (nolock)                                                                                                                           " +
                     "\n                                                                                                                                                                           " +
                     "\n                                                                                                                                                                           " +
                     "\n           ON CDL2.ConsolidationLevel1_Id = CDL1.Id                                                                                                                        " +
@@ -2466,13 +2466,13 @@ namespace SgqSystem.Services
                     "\n                                                                                                                                                                           " +
                     "\n                    CASE                                                                                                                                                   " +
                     "\n                                                                                                                                                                           " +
-                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(1, 2, 3) THEN @datadiario                                            " +
+                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2  (nolock) WHERE ID = CDL2.ParLevel2_Id) IN(1, 2, 3) THEN @datadiario                                            " +
                     "\n                                                                                                                                                                           " +
-                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(4) THEN @datasemanal                                                 " +
+                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 (nolock)  WHERE ID = CDL2.ParLevel2_Id) IN(4) THEN @datasemanal                                                 " +
                     "\n                                                                                                                                                                           " +
-                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(5) THEN @dataquinzenal                                               " +
+                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 (nolock)  WHERE ID = CDL2.ParLevel2_Id) IN(5) THEN @dataquinzenal                                               " +
                     "\n                                                                                                                                                                           " +
-                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(6) THEN @datamensal                                                  " +
+                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 (nolock)  WHERE ID = CDL2.ParLevel2_Id) IN(6) THEN @datamensal                                                  " +
                     "\n                                                                                                                                                                           " +
                     "\n                    ELSE @datadiario END and @datafim                                                                                                                      " +
                     "\n           )                                                                                                                                                               " +
@@ -2507,16 +2507,16 @@ namespace SgqSystem.Services
                     "\n           MAX(ConsolidationLevel2_Id)      ConsolidationLevel2_Id                                                                                                         " +
                     "\n                                                                                                                                                                           " +
                     "\n                                                                                                                                                                           " +
-                    "\n           FROM CollectionLevel2 CL2                                                                                                                                       " +
+                    "\n           FROM CollectionLevel2 CL2    (nolock)                                                                                                                                     " +
                     "\n                                                                                                                                                                           " +
                     "\n                                                                                                                                                                           " +
-                    "\n           INNER JOIN ConsolidationLevel2 CDL2                                                                                                                             " +
+                    "\n           INNER JOIN ConsolidationLevel2 CDL2    (nolock)                                                                                                                           " +
                     "\n                                                                                                                                                                           " +
                     "\n                                                                                                                                                                           " +
                     "\n           ON CL2.ConsolidationLevel2_Id = CDL2.ID                                                                                                                         " +
                     "\n                                                                                                                                                                           " +
                     "\n                                                                                                                                                                           " +
-                    "\n           INNER JOIN ConsolidationLevel1 CDL1                                                                                                                             " +
+                    "\n           INNER JOIN ConsolidationLevel1 CDL1    (nolock)                                                                                                                           " +
                     "\n                                                                                                                                                                           " +
                     "\n                                                                                                                                                                           " +
                     "\n           ON CDL2.ConsolidationLevel1_Id = CDL1.Id                                                                                                                        " +
@@ -2535,13 +2535,13 @@ namespace SgqSystem.Services
                     "\n                                                                                                                                                                           " +
                     "\n                    CASE                                                                                                                                                   " +
                     "\n                                                                                                                                                                           " +
-                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(1, 2, 3) THEN @datadiario                                            " +
+                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 (nolock)  WHERE ID = CDL2.ParLevel2_Id) IN(1, 2, 3) THEN @datadiario                                            " +
                     "\n                                                                                                                                                                           " +
-                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(4) THEN @datasemanal                                                 " +
+                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 (nolock)  WHERE ID = CDL2.ParLevel2_Id) IN(4) THEN @datasemanal                                                 " +
                     "\n                                                                                                                                                                           " +
-                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(5) THEN @dataquinzenal                                               " +
+                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 (nolock)  WHERE ID = CDL2.ParLevel2_Id) IN(5) THEN @dataquinzenal                                               " +
                     "\n                                                                                                                                                                           " +
-                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(6) THEN @datamensal                                                  " +
+                    "\n                    WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2  (nolock) WHERE ID = CDL2.ParLevel2_Id) IN(6) THEN @datamensal                                                  " +
                     "\n                                                                                                                                                                           " +
                     "\n                    ELSE @datadiario END and @datafim                                                                                                                      " +
                     "\n           )                                                                                                                                                               " +
@@ -2585,8 +2585,8 @@ namespace SgqSystem.Services
                     "\n                                                                                                                                                                           " +
                     "\n   SELECT                                                                                                                                                                  " +
                     "\n    CDL1.Id                                                                                                                                                                " +
-                    "\n    FROM ConsolidationLevel1 CDL1                                                                                                                                          " +
-                    "\n    INNER JOIN ParLevel1 PL1                                                                                                                                               " +
+                    "\n    FROM ConsolidationLevel1 CDL1   (nolock)                                                                                                                                         " +
+                    "\n    INNER JOIN ParLevel1 PL1      (nolock)                                                                                                                                           " +
                     "\n    ON CDL1.ParLevel1_Id = PL1.Id                                                                                                                                          " +
                     "\n    WHERE CDL1.UnitId = @unidade                                                                                                                                           " +
                     "\n    AND cast(CDL1.Consolidationdate as Date) BETWEEN @datamensal and @datafim                                                                                              " +
@@ -2815,7 +2815,7 @@ namespace SgqSystem.Services
 
         public string getMaxEvaluate(string CollectionLevel02Ids, string Level02Ids)
         {
-            string sql = "SELECT MAX([EvaluationNumber]) FROM CollectionLevel02 WHERE ConsolidationLevel02id IN (" + CollectionLevel02Ids + ") AND Level02id IN (" + Level02Ids + ")";
+            string sql = "SELECT MAX([EvaluationNumber]) FROM CollectionLevel02 (nolock)  WHERE ConsolidationLevel02id IN (" + CollectionLevel02Ids + ") AND Level02id IN (" + Level02Ids + ")";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -2995,7 +2995,7 @@ namespace SgqSystem.Services
         //}
         public string GetCollectionLevel03(string CollectionLevel02Id, string date, string auditorId, ref int defects)
         {
-            string sql = "SELECT [Id], [Level03Id], [ConformedIs], [Value], [ValueText] FROM CollectionLevel03 WHERE CollectionLevel02Id = '" + CollectionLevel02Id + "'";
+            string sql = "SELECT [Id], [Level03Id], [ConformedIs], [Value], [ValueText] FROM CollectionLevel03 (nolock)  WHERE CollectionLevel02Id = '" + CollectionLevel02Id + "'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -3204,11 +3204,11 @@ namespace SgqSystem.Services
                 "\n DECLARE @ParCompany_id int = 16 " +
                 "\n DECLARE @ParLevel1_id int =  " + parlevel1.Id +
 
-                "\n SELECT max(Number) as av FROM ParEvaluation EV " +
+                "\n SELECT max(Number) as av FROM ParEvaluation EV (nolock)  " +
                 "\n WHERE ParLevel2_id in ( " +
-                    "\n SELECT p32.ParLevel2_Id FROM ParLevel3Level2Level1 P321 " +
+                    "\n SELECT p32.ParLevel2_Id FROM ParLevel3Level2Level1 P321 (nolock)  " +
 
-                    "\n inner join ParLevel3Level2 P32 " +
+                    "\n inner join ParLevel3Level2 P32 (nolock)  " +
 
                     "\n on p32.id = p321.ParLevel3Level2_Id " +
 
@@ -3279,11 +3279,11 @@ namespace SgqSystem.Services
                "\n DECLARE @ParCompany_id int = 16 " +
                "\n DECLARE @ParLevel1_id int =  " + parlevel1.Id +
 
-               "\n SELECT max(Number) as av FROM ParSample EV " +
+               "\n SELECT max(Number) as av FROM ParSample EV (nolock)  " +
                "\n WHERE ParLevel2_id in ( " +
-                   "\n SELECT p32.ParLevel2_Id FROM ParLevel3Level2Level1 P321 " +
+                   "\n SELECT p32.ParLevel2_Id FROM ParLevel3Level2Level1 P321 (nolock)  " +
 
-                   "\n inner join ParLevel3Level2 P32 " +
+                   "\n inner join ParLevel3Level2 P32  (nolock) " +
 
                    "\n on p32.id = p321.ParLevel3Level2_Id " +
 
@@ -5898,7 +5898,7 @@ namespace SgqSystem.Services
         {
             //Converte a data no padrão de busca do Banco de Dados
 
-            string sql = "SELECT FullName, Name, email FROM UserSgq where role='somentemanutencao-sgq' and id > 432";
+            string sql = "SELECT FullName, Name, email FROM UserSgq (nolock)  where role='somentemanutencao-sgq' and id > 432";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -6161,7 +6161,7 @@ namespace SgqSystem.Services
         {
             //Converte a data no padrão de busca do Banco de Dados
 
-            string sql = "SELECT Id FROM CollectionLevel2 WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND ParLevel2_Id='" + ParLevel2_Id + "' AND UnitId='" + ParCompany_Id + "' AND Shift='" + Shift + "' AND Period='" + Period + "' AND EvaluationNumber='" + EvaluationNumber + "' AND HaveCorrectiveAction=1";
+            string sql = "SELECT Id FROM CollectionLevel2 (nolock)  WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND ParLevel2_Id='" + ParLevel2_Id + "' AND UnitId='" + ParCompany_Id + "' AND Shift='" + Shift + "' AND Period='" + Period + "' AND EvaluationNumber='" + EvaluationNumber + "' AND HaveCorrectiveAction=1";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -6345,7 +6345,7 @@ namespace SgqSystem.Services
                 "\n CL2.ParLevel1_Id,                                                                                                                                    " +
                 "\n '<div id=\"' + CL2.[Key] + '\" class=\"collectionLevel2Key\"></div>' COLUNA                                                                            " +
                 "\n INTO #MOTHERFOCKER                                                                                                                                   " +
-                "\n FROM CollectionLevel2 CL2                                                                                                                            " +
+                "\n FROM CollectionLevel2 CL2   (nolock)                                                                                                                           " +
                 "\n WHERE CL2.UnitId = '" + ParCompany_Id + "' AND CAST(CL2.CollectionDate AS DATE) BETWEEN '" + dataS + "' AND '" + dataS + "'                                                    " +
                 "\n                                                                                                                                                      " +
                 "\n ----------------------------------------------------------                                                                                           " +
@@ -6431,7 +6431,7 @@ namespace SgqSystem.Services
         {
             //Converte a data no padrão de busca do Banco de Dados
 
-            string sql = "select ParLevel1_Id, ParLevel2_Id, UnitId,  CAST(CollectionDate AS DATE) from CollectionLevel2 GROUP BY ParLevel1_Id, ParLevel2_Id, UnitId,  CAST(CollectionDate AS DATE)";
+            string sql = "select ParLevel1_Id, ParLevel2_Id, UnitId,  CAST(CollectionDate AS DATE) from CollectionLevel2 (nolock)  GROUP BY ParLevel1_Id, ParLevel2_Id, UnitId,  CAST(CollectionDate AS DATE)";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -6501,8 +6501,8 @@ namespace SgqSystem.Services
         public string _CollectionLevel02_ConsolidationLevel2Update(string dataInicio, string dataFim)
         {
             string sql = "SELECT CL2.Id, CL1.ParLevel1_Id, CL2.ParLevel2_Id, CL2.UnitId, CAST(CL2.ConsolidationDate AS DATE) " +
-                         "FROM ConsolidationLevel2 CL2 INNER JOIN " +
-                         "ConsolidationLevel1 CL1 ON CL2.ConsolidationLevel1_Id = CL1.Id   " +
+                         "FROM ConsolidationLevel2 CL2 (nolock)  INNER JOIN " +
+                         "ConsolidationLevel1 CL1 (nolock)  ON CL2.ConsolidationLevel1_Id = CL1.Id   " +
                          "WHERE CAST(CL2.ConsolidationDate AS DATE) BETWEEN '" + dataInicio + "' AND '" + dataFim + "' ";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -6551,7 +6551,7 @@ namespace SgqSystem.Services
         public string _ReConsolidation(int ParCompany_Id)
         {
 
-            string sql = "SELECT Id, ParLevel2_Id, ConsolidationLevel1_Id FROM ConsolidationLevel2 WHERE UnitId='" + ParCompany_Id + "'";
+            string sql = "SELECT Id, ParLevel2_Id, ConsolidationLevel1_Id FROM ConsolidationLevel2 (nolock)  WHERE UnitId='" + ParCompany_Id + "'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try

@@ -543,7 +543,7 @@ namespace SgqSystem.Controllers.Api
                                         
                                     }
 
-                                    //SgqSystem._ReConsolidationByLevel1(verificacaoTipificacao.UnidadeId, ParLevel1_Id, verificacaoTipificacao.DataHora);
+                                    SgqSystem._ReConsolidationByLevel1(verificacaoTipificacao.UnidadeId, ParLevel1_Id, verificacaoTipificacao.DataHora);
 
                                     //return null;
 
