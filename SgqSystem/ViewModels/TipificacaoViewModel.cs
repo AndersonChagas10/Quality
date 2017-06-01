@@ -14,7 +14,7 @@ namespace SgqSystem.ViewModels
         public int UnidadeId { get; set; }
         public int OperacaoId { get; set; }
         public int AuditorId { get; set; }
-        public VTVerificacaoTipificacaoDTO VerificacaoTipificacao { get; set; }
+        public List<VTVerificacaoTipificacaoDTO> VerificacaoTipificacao { get; set; }
         public List<VTVerificacaoTipificacaoResultadosDTO> VerificacaoTipificacaoResultados { get; set; }
     }
 
@@ -34,7 +34,7 @@ namespace SgqSystem.ViewModels
     {
         public int TarefaId { get; set; }
         public string CaracteristicaTipificacaoId { get; set; }
-        public int Chave { get; set; }
+        public string Chave { get; set; }
         public string AreasParticipantesId { get; set; }
         public VTVerificacaoTipificacaoDTO VerificacaoTipificacao { get; set; }
         public MonitoramentoDTO Monitoramento { get; set; }

@@ -1,7 +1,11 @@
 ﻿using DTO.Helpers;
+using Newtonsoft.Json.Linq;
 using PlanoAcaoCore;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Http.Formatting;
 using System.Web.Http;
 
 namespace PlanoDeAcaoMVC.Controllers.Api
@@ -9,7 +13,14 @@ namespace PlanoDeAcaoMVC.Controllers.Api
     [RoutePrefix("api/Relatorios")]
     public class ApiRelatoriosController : ApiController
     {
-        //api/Relatorios/GetGrafico1
+        PlanoAcaoEF.PlanoDeAcaoEntities db;
+        public ApiRelatoriosController()
+        {
+            db = new PlanoAcaoEF.PlanoDeAcaoEntities();
+            db.Configuration.LazyLoadingEnabled = false;
+            db.Configuration.AutoDetectChangesEnabled = false;
+        }
+
         //Retorna Categorias Series e Dados
         [HttpPost]
         [Route("GetGrafico")]
@@ -30,7 +41,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             var orderby1 = " order by 1";
 
             var indicadores = Pa_Qualquer_Name.Listar(categoria);
-            
+
             var status = Pa_Qualquer_Name.Listar(series);
 
             var sql1 = "select distinct(" + categoria + ") as valor from pa_acao a left join Pa_acaoXQuem xq on xq.Acao_Id = a.Id left join Pa_Quem q on q.id = xq.Quem_Id";
@@ -86,12 +97,43 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             var retorno = new List<GraficoPieSet>();
             foreach (var i in listStatus)
             {
-                var queryCount = "select count(id) as valor from pa_acao where [status] = " + i.Id + "and QuandoInicio <= '" + dataFim + "' and QuandoFim <= '" + dataFim + "' ";;
+                var queryCount = "select count(id) as valor from pa_acao where [status] = " + i.Id + "and QuandoInicio <= '" + dataFim + "' and QuandoFim <= '" + dataFim + "' "; ;
                 var count = Pa_BaseObject.ListarGenerico<RetornoInt>(queryCount).FirstOrDefault().valor;
                 retorno.Add(new GraficoPieSet() { name = i.Name, y = count });
             }
 
             return retorno;
+        }
+
+        [HttpPost]
+        [Route("NumeroDeAcoesEstabelecidas")]
+        public List<JObject> NumeroDeAcoesEstabelecidas(JObject form)
+        {
+            dynamic teste = form;
+
+             var query = "SELECT DATEPART(mm,QuandoInicio) as Corno, Count(id) as Quantidade FROM [PlanoDeAcao].[dbo].[Pa_Acao] group by  DATEPART(mm,QuandoInicio)";
+            List<JObject> items = QueryNinja(query);
+
+            return items;
+        }
+
+        private List<JObject> QueryNinja(string query)
+        {
+            db.Database.Connection.Open();
+            var cmd = db.Database.Connection.CreateCommand();
+            cmd.CommandText = query;
+            var reader = cmd.ExecuteReader();
+            List<JObject> items = new List<JObject>();
+            while (reader.Read())
+            {
+                JObject row = new JObject();
+                for (int i = 0; i < reader.FieldCount; i++)
+                    row[reader.GetName(i)] = reader[i].ToString();
+
+                items.Add(row);
+            }
+
+            return items;
         }
     }
 
