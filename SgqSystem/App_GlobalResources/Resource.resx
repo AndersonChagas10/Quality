@@ -2046,4 +2046,7 @@
   <data name="time" xml:space="preserve">
     <value>Time</value>
   </data>
+  <data name="has_edit_level2" xml:space="preserve">
+    <value>Level2 edition</value>
+  </data>
 </root>
