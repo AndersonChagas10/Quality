@@ -1,15 +1,26 @@
 ﻿using DTO.Helpers;
+using Newtonsoft.Json.Linq;
 using PlanoAcaoCore;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Http.Formatting;
 using System.Web.Http;
 
 namespace PlanoDeAcaoMVC.Controllers.Api
 {
     [RoutePrefix("api/Relatorios")]
-    public class ApiRelatoriosController : ApiController
+    public class ApiRelatoriosController : BaseApiController
     {
-        //api/Relatorios/GetGrafico1
+        PlanoAcaoEF.PlanoDeAcaoEntities db;
+        public ApiRelatoriosController()
+        {
+            db = new PlanoAcaoEF.PlanoDeAcaoEntities();
+            db.Configuration.LazyLoadingEnabled = false;
+            db.Configuration.AutoDetectChangesEnabled = false;
+        }
+
         //Retorna Categorias Series e Dados
         [HttpPost]
         [Route("GetGrafico")]
@@ -30,7 +41,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             var orderby1 = " order by 1";
 
             var indicadores = Pa_Qualquer_Name.Listar(categoria);
-            
+
             var status = Pa_Qualquer_Name.Listar(series);
 
             var sql1 = "select distinct(" + categoria + ") as valor from pa_acao a left join Pa_acaoXQuem xq on xq.Acao_Id = a.Id left join Pa_Quem q on q.id = xq.Quem_Id";
@@ -86,13 +97,62 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             var retorno = new List<GraficoPieSet>();
             foreach (var i in listStatus)
             {
-                var queryCount = "select count(id) as valor from pa_acao where [status] = " + i.Id + "and QuandoInicio <= '" + dataFim + "' and QuandoFim <= '" + dataFim + "' ";;
+                var queryCount = "select count(id) as valor from pa_acao where [status] = " + i.Id + "and QuandoInicio <= '" + dataFim + "' and QuandoFim <= '" + dataFim + "' "; ;
                 var count = Pa_BaseObject.ListarGenerico<RetornoInt>(queryCount).FirstOrDefault().valor;
                 retorno.Add(new GraficoPieSet() { name = i.Name, y = count });
             }
 
             return retorno;
         }
+
+        [HttpPost]
+        [Route("NumeroDeAcoesEstabelecidas")]
+        public List<JObject> NumeroDeAcoesEstabelecidas(JObject form)
+        {
+            dynamic teste = form;
+
+            var query = "SELECT DATEPART(mm,QuandoInicio) as Mes, Count(id) as Quantidade FROM [PlanoDeAcao].[dbo].[Pa_Acao] "+ 
+                //"\n where [Status] not in (4,3) "+
+                "\n group by  DATEPART(mm,QuandoInicio)";
+
+            var items = QueryNinja(db, query);
+
+            return items;
+        }
+
+        [HttpPost]
+        [Route("NumeroDeAcoesConcluidas")]
+        public List<JObject> NumeroDeAcoesConcluidas(JObject form)
+        {
+            dynamic teste = form;
+
+            var query = "SELECT DATEPART(mm,QuandoInicio) as Mes," +
+                "\n Count(id) as Quantidade " +
+                "\n FROM [PlanoDeAcao].[dbo].[Pa_Acao] " +
+                "\n where [Status] in (4,3) " +
+                "\n group by  DATEPART(mm,QuandoInicio)";
+
+            var items = QueryNinja(db, query);
+
+            return items;
+        }
+
+        [HttpPost]
+        [Route("NumeroDeAcoes")]
+        public List<JObject> NumeroDeAcoes(JObject form)
+        {
+            dynamic teste = form;
+
+            var query = "SELECT A.*, B.MesConcluidas, IsNull(B.QuantidadeConcluidas, 0) as QuantidadeConcluidas, (A.QuantidadeIniciadas - IsNull(B.QuantidadeConcluidas, 0)) as Acc" +
+                        "\n FROM" +
+                        "\n (SELECT DATEPART(mm, QuandoInicio) as MesIniciadas, Count(id) as QuantidadeIniciadas FROM[PlanoDeAcao].[dbo].[Pa_Acao]  group by  DATEPART(mm, QuandoInicio)) A" +
+                        "\n LEFT JOIN(SELECT DATEPART(mm, QuandoInicio) as MesConcluidas, Count(id) as QuantidadeConcluidas FROM[PlanoDeAcao].[dbo].[Pa_Acao] where[Status] in (4, 3)  group by  DATEPART(mm, QuandoInicio)) B on A.MesIniciadas = B.MesConcluidas";
+
+            var items = QueryNinja(db, query);
+
+            return items;
+        }
+
     }
 
     public class GraficoPieSet
