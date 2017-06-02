@@ -422,7 +422,7 @@ namespace SgqSystem.Controllers.Api
 
                                     if (consolidationLevel1 == null)
                                     {
-                                        consolidationLevel1 = SgqSystem.InsertConsolidationLevel1(verificacaoTipificacao.UnidadeId, ParLevel1.Id, dataC);
+                                        consolidationLevel1 = SgqSystem.InsertConsolidationLevel1(verificacaoTipificacao.UnidadeId, ParLevel1.Id, dataC,1,1);
                                         if (consolidationLevel1 == null)
                                         {
                                             //throw new Exception();
