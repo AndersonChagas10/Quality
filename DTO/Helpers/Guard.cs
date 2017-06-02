@@ -39,6 +39,12 @@ namespace DTO.Helpers
             return new DateTime(data.Year, data.AddMonths(-1).Month, 1);
         }
 
+        public static void CheckStringFullSimple(string name, string proName)
+        {
+            var nameValidado = "";
+            Guard.CheckStringFull(out nameValidado, proName, name, "Property " + proName + " is invalid", true);
+        }
+
         public static string CheckStringFullSimple(string name)
         {
             var nameValidado = "";
