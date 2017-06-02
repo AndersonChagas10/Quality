@@ -42,7 +42,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         public List<VisaoGeralDaAreaResultSet> Grafico3([FromBody] DataCarrierFormulario form)
         {
             CriaMockG3(form);
-            return _mock;
+            return _list;
         }
 
         [HttpPost]
@@ -776,8 +776,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         /// <param name="form"></param>
         private void CriaMockG3(DataCarrierFormulario form)
         {
-            //var primeiroDiaMesAnterior = Guard.PrimeiroDiaMesAnterior(form._dataInicio);
-            //var proximoDomingo = Guard.GetNextWeekday(form._dataFim, DayOfWeek.Sunday);
+            var primeiroDiaMesAnterior = Guard.PrimeiroDiaMesAnterior(form._dataInicio);
+            var proximoDomingo = Guard.GetNextWeekday(form._dataFim, DayOfWeek.Sunday);
 
             //_mock = new List<VisaoGeralDaAreaResultSet>();
 
@@ -835,7 +835,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             //_mock = _mock.OrderBy(r => r.date).ToList();
             _list = new List<VisaoGeralDaAreaResultSet>();
 
-            string query = VisaoGeralDaAreaApiController.sqlBase(form) +
+            string query = "" +
 
                  " \n DECLARE @dataFim_ date = '" + form._dataFimSQL + "' " +
                  " \n DECLARE @dataInicio_ date = DATEADD(MONTH, -1, @dataFim_) " +
@@ -849,9 +849,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                  " \n END " +
 
 
-                 " \n SET @DATAFINAL = @dataFim_ " +
-                 " \n SET @DATAINICIAL = DateAdd(mm, DateDiff(mm, 0, @DATAFINAL) - 1, 0) " +
-                 " \n DECLARE @UNIDADE INT = " + form.unitId + " " +
+                 " \n DECLARE @DATAFINAL DATE = @dataFim_ " +
+                 " \n DECLARE @DATAINICIAL DATE = DateAdd(mm, DateDiff(mm, 0, @DATAFINAL) - 1, 0) " +
+                 " \n DECLARE @UNIDADE INT = (SELECT Id FROM ParCompany where Initials = '" + form.ParametroTableCol[1] + "') " +
 
 
 
@@ -913,11 +913,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                  " \n , Level2Name AS Level2Name " +
                   " \n , Unidade_Id " +
                   " \n , Unidade " +
-                  " \n , ProcentagemNc " +
+                  " \n , procentagemNc " +
                   " \n ,(case when IsRuleConformity = 1 THEN(100 - META) WHEN IsRuleConformity IS NULL THEN 0 ELSE Meta END) AS Meta " +
-                 " \n , NcSemPeso as NC " +
-                 " \n ,AvSemPeso as Av " +
-                 " \n ,Data AS _Data " +
+                 " \n , NcSemPeso as nc " +
+                 " \n ,AvSemPeso as av " +
+                 " \n ,Data AS date " +
                  " \n FROM " +
                  " \n ( " +
                     " \n  SELECT " +
@@ -1044,7 +1044,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                     " \n ) S1 " +
                  " \n ) S2 " +
-                 " \n WHERE RELATORIO_DIARIO = 1 OR(RELATORIO_DIARIO = 0 AND AV = 0) " +
+                 " \n WHERE (RELATORIO_DIARIO = 1 OR(RELATORIO_DIARIO = 0 AND AV = 0)) AND Level1Name = '" + form.ParametroTableRow[1] + "' " + 
                   " \n DROP TABLE #AMOSTRATIPO4a  ";
 
             using (var db = new SgqDbDevEntities())
