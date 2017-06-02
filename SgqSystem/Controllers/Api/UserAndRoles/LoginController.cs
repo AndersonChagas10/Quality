@@ -10,6 +10,7 @@ namespace SgqSystem.Controllers.Api.Login
     public class LoginController : ApiController
     {
         [HttpGet]
+        //[HttpPost]
         [Route("Logado")]
         public string Logado()
         {
