@@ -776,63 +776,282 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         /// <param name="form"></param>
         private void CriaMockG3(DataCarrierFormulario form)
         {
-            var primeiroDiaMesAnterior = Guard.PrimeiroDiaMesAnterior(form._dataInicio);
-            var proximoDomingo = Guard.GetNextWeekday(form._dataFim, DayOfWeek.Sunday);
+            //var primeiroDiaMesAnterior = Guard.PrimeiroDiaMesAnterior(form._dataInicio);
+            //var proximoDomingo = Guard.GetNextWeekday(form._dataFim, DayOfWeek.Sunday);
 
-            _mock = new List<VisaoGeralDaAreaResultSet>();
+            //_mock = new List<VisaoGeralDaAreaResultSet>();
 
-            _mock.Add(new VisaoGeralDaAreaResultSet()
-            {
-                nc = 10M,
-                procentagemNc = 90M,
-                date = proximoDomingo.AddDays(-8)
-            });
-            _mock.Add(new VisaoGeralDaAreaResultSet()
-            {
-                nc = 50M,
-                av = 50M,
-                procentagemNc = 40M,
-                date = proximoDomingo.AddDays(-9)
-            });
-            _mock.Add(new VisaoGeralDaAreaResultSet()
-            {
-                nc = 20M,
-                av = 150M,
-                procentagemNc = 50M,
-                date = proximoDomingo.AddDays(-18)
-            });
-            _mock.Add(new VisaoGeralDaAreaResultSet()
-            {
-                nc = 90M,
-                av = 200M,
-                procentagemNc = 90M,
-                date = proximoDomingo.AddDays(-15)
-            });
-            _mock.Add(new VisaoGeralDaAreaResultSet()
-            {
-                nc = 120M,
-                av = 75M,
-                procentagemNc = 20M,
-                date = proximoDomingo.AddDays(-22)
-            });
+            //_mock.Add(new VisaoGeralDaAreaResultSet()
+            //{
+            //    nc = 10M,
+            //    procentagemNc = 90M,
+            //    date = proximoDomingo.AddDays(-8)
+            //});
+            //_mock.Add(new VisaoGeralDaAreaResultSet()
+            //{
+            //    nc = 50M,
+            //    av = 50M,
+            //    procentagemNc = 40M,
+            //    date = proximoDomingo.AddDays(-9)
+            //});
+            //_mock.Add(new VisaoGeralDaAreaResultSet()
+            //{
+            //    nc = 20M,
+            //    av = 150M,
+            //    procentagemNc = 50M,
+            //    date = proximoDomingo.AddDays(-18)
+            //});
+            //_mock.Add(new VisaoGeralDaAreaResultSet()
+            //{
+            //    nc = 90M,
+            //    av = 200M,
+            //    procentagemNc = 90M,
+            //    date = proximoDomingo.AddDays(-15)
+            //});
+            //_mock.Add(new VisaoGeralDaAreaResultSet()
+            //{
+            //    nc = 120M,
+            //    av = 75M,
+            //    procentagemNc = 20M,
+            //    date = proximoDomingo.AddDays(-22)
+            //});
 
-            for (DateTime i = primeiroDiaMesAnterior; i < proximoDomingo; i = i.AddDays(1))
+            //for (DateTime i = primeiroDiaMesAnterior; i < proximoDomingo; i = i.AddDays(1))
+            //{
+            //    if (_mock.FirstOrDefault(r => r.date == i) == null)
+            //    {
+            //        _mock.Add(new VisaoGeralDaAreaResultSet()
+            //        {
+            //            nc = 0M,
+            //            av = 0M,
+            //            procentagemNc = 0M,
+            //            date = i
+            //        });
+
+            //        //_mock.Add(new VisaoGeralDaAreaResultSet());
+
+            //    }
+            //}
+            //_mock = _mock.OrderBy(r => r.date).ToList();
+            _list = new List<VisaoGeralDaAreaResultSet>();
+
+            string query = VisaoGeralDaAreaApiController.sqlBase(form) +
+
+                 " \n DECLARE @dataFim_ date = '" + form._dataFimSQL + "' " +
+                 " \n DECLARE @dataInicio_ date = DATEADD(MONTH, -1, @dataFim_) " +
+                 " \n SET @dataInicio_ = datefromparts(year(@dataInicio_), month(@dataInicio_), 01) " +
+                 " \n declare @ListaDatas_ table(data_ date) " +
+                 " \n WHILE @dataInicio_ <= @dataFim_ " +
+                 " \n BEGIN " +
+                 " \n INSERT INTO @ListaDatas_ " +
+                 " \n SELECT @dataInicio_ " +
+                 " \n SET @dataInicio_ = DATEADD(DAY, 1, @dataInicio_) " +
+                 " \n END " +
+
+
+                 " \n SET @DATAFINAL = @dataFim_ " +
+                 " \n SET @DATAINICIAL = DateAdd(mm, DateDiff(mm, 0, @DATAFINAL) - 1, 0) " +
+                 " \n DECLARE @UNIDADE INT = " + form.unitId + " " +
+
+
+
+                 " \n CREATE TABLE #AMOSTRATIPO4a (  " +
+                 " \n UNIDADE INT NULL,  " +
+                 " \n INDICADOR INT NULL,  " +
+                 " \n AM INT NULL,  " +
+                 " \n DEF_AM INT NULL " +
+                 " \n )  " +
+                 " \n INSERT INTO #AMOSTRATIPO4a  " +
+                 " \n SELECT " +
+                  " \n UNIDADE, INDICADOR, " +
+                 " \n COUNT(1) AM " +
+                 " \n ,SUM(DEF_AM) DEF_AM " +
+                 " \n FROM " +
+                 " \n ( " +
+                     " \n SELECT " +
+                     " \n cast(C2.CollectionDate as DATE) AS DATA " +
+                     " \n , C.Id AS UNIDADE " +
+                     " \n , C2.ParLevel1_Id AS INDICADOR " +
+                     " \n , C2.EvaluationNumber AS AV " +
+                     " \n , C2.Sample AS AM " +
+                     " \n , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
+                     " \n FROM CollectionLevel2 C2 (nolock) " +
+                     " \n INNER JOIN ParLevel1 L1 (nolock) " +
+                     " \n ON L1.Id = C2.ParLevel1_Id " +
+                     " \n INNER JOIN ParCompany C (nolock) " +
+                     " \n ON C.Id = C2.UnitId " +
+                     " \n where cast(C2.CollectionDate as DATE) BETWEEN @DATAINICIAL AND @DATAFINAL " +
+                     " \n and C2.NotEvaluatedIs = 0 " +
+                     " \n and C2.Duplicated = 0 " +
+                     " \n and L1.ParConsolidationType_Id = 4 " +
+                     " \n group by C.Id, ParLevel1_Id, EvaluationNumber, Sample, cast(CollectionDate as DATE) " +
+                 " \n ) TAB " +
+                 " \n GROUP BY UNIDADE, INDICADOR " +
+
+                 " \n DECLARE @RESS INT " +
+                 " \n SELECT " +
+                       " \n @RESS = " +
+                         " \n COUNT(1) " +
+                         " \n FROM " +
+                         " \n ( " +
+                         " \n SELECT " +
+                         " \n COUNT(1) AS NA " +
+                         " \n FROM CollectionLevel2 C2 (nolock) " +
+                         " \n LEFT JOIN Result_Level3 C3 (nolock) " +
+                         " \n ON C3.CollectionLevel2_Id = C2.Id " +
+                         " \n WHERE convert(date, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL " +
+                         " \n AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 (nolock) where Hashkey = 1) " +
+                         " \n AND C2.UnitId = @UNIDADE " +
+                         " \n AND IsNotEvaluate = 1 " +
+                         " \n GROUP BY C2.ID " +
+                         " \n ) NA " +
+                         " \n WHERE NA = 2 " +
+
+                 " \n SELECT " +
+                  " \n level1_Id " +
+                 " \n , Level1Name " +
+                 " \n , Level2Name AS Level2Name " +
+                  " \n , Unidade_Id " +
+                  " \n , Unidade " +
+                  " \n , ProcentagemNc " +
+                  " \n ,(case when IsRuleConformity = 1 THEN(100 - META) WHEN IsRuleConformity IS NULL THEN 0 ELSE Meta END) AS Meta " +
+                 " \n , NcSemPeso as NC " +
+                 " \n ,AvSemPeso as Av " +
+                 " \n ,Data AS _Data " +
+                 " \n FROM " +
+                 " \n ( " +
+                    " \n  SELECT " +
+                     " \n * " +
+
+                     " \n , CASE WHEN AV IS NULL OR AV = 0 THEN 0 ELSE NC / AV * 100 END AS ProcentagemNc " +
+                     " \n , CASE WHEN CASE WHEN AV IS NULL OR AV = 0 THEN 0 ELSE NC / AV * 100 END >= (case when IsRuleConformity = 1 THEN(100 - META) ELSE Meta END) THEN 1 ELSE 0 END RELATORIO_DIARIO " +
+
+                     " \n FROM " +
+                     " \n ( " +
+                         " \n SELECT " +
+
+                          " \n NOMES.A1 AS level1_Id--IND.Id         AS level1_Id " +
+                         " \n , NOMES.A2 AS Level1Name--IND.Name     AS Level1Name " +
+                        " \n , 'Tendência do Indicador ' + NOMES.A2 AS Level2Name " +
+                        " \n , IND.IsRuleConformity " +
+                         " \n , NOMES.A4 AS Unidade_Id--UNI.Id            AS Unidade_Id " +
+                         " \n , NOMES.A5 AS Unidade--UNI.Name     AS Unidade " +
+                         " \n , CASE " +
+                         " \n WHEN IND.HashKey = 1 THEN(SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b (nolock) WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
+                         " \n WHEN IND.ParConsolidationType_Id = 1 THEN WeiEvaluation " +
+                         " \n WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation " +
+                         " \n WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
+                         " \n WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM " +
+                         " \n ELSE 0 " +
+                        " \n END  AS Av " +
+                       " \n , CASE " +
+                         " \n WHEN IND.HashKey = 1 THEN(SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b (nolock) WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
+                         " \n WHEN IND.ParConsolidationType_Id = 1 THEN EvaluateTotal " +
+                         " \n WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation " +
+                         " \n WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
+                         " \n WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM " +
+                         " \n ELSE 0 " +
+                        " \n END AS AvSemPeso " +
+                         " \n , CASE " +
+                         " \n WHEN IND.ParConsolidationType_Id = 1 THEN WeiDefects " +
+                         " \n WHEN IND.ParConsolidationType_Id = 2 THEN WeiDefects " +
+                         " \n WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult " +
+                         " \n WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM " +
+                         " \n ELSE 0 " +
+                         " \n END AS NC " +
+                         " \n , CASE " +
+                         " \n WHEN IND.ParConsolidationType_Id = 1 THEN DefectsTotal " +
+                         " \n WHEN IND.ParConsolidationType_Id = 2 THEN DefectsTotal " +
+                         " \n WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult " +
+                         " \n WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM " +
+                         " \n ELSE 0 " +
+                         " \n END AS NCSemPeso " +
+                  " \n , " +
+                  " \n CASE " +
+
+
+                     " \n WHEN(SELECT COUNT(1) FROM ParGoal G (nolock) WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL) > 0 THEN " +
+                         " \n (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock) WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) AND G.AddDate <= @DATAFINAL ORDER BY G.ParCompany_Id DESC, AddDate DESC) " +
+
+
+                     " \n ELSE " +
+                         " \n (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock) WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC) " +
+                  " \n END " +
+                  " \n AS Meta " +
+                         " \n --, CL1.ConsolidationDate as Data " +
+                         " \n , DD.Data_ as Data " +
+
+                        " \n FROM @ListaDatas_ DD " +
+
+                         " \n LEFT JOIN(SELECT * FROM ConsolidationLevel1 (nolock) WHERE ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL AND UnitId <> 12341614) CL1 " +
+
+                         " \n ON DD.Data_ = CL1.ConsolidationDate " +
+
+                         " \n LEFT JOIN ParLevel1 IND (nolock) " +
+
+                         " \n ON IND.Id = CL1.ParLevel1_Id--AND IND.ID = 1 " +
+
+                         " \n LEFT JOIN ParCompany UNI (nolock) " +
+
+                         " \n ON UNI.Id = CL1.UnitId " +
+                         " \n LEFT JOIN #AMOSTRATIPO4a A4 (nolock)  " +
+                         " \n ON A4.UNIDADE = UNI.Id " +
+                         " \n AND A4.INDICADOR = IND.ID " +
+
+
+                         " \n LEFT JOIN " +
+                         " \n ( " +
+                             " \n SELECT " +
+
+                             " \n IND.ID A1, " +
+                             " \n IND.NAME A2, " +
+                             " \n 'Tendência do Indicador ' + IND.NAME AS A3, " +
+                             " \n CL1.UnitId A4, " +
+                             " \n UNI.NAME A5, " +
+                             " \n 0 AS A6 " +
+
+
+                             " \n FROM(SELECT * FROM ConsolidationLevel1 (nolock) WHERE ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL AND UnitId <> 11514) CL1 " +
+
+
+                              " \n LEFT JOIN ParLevel1 IND (nolock) " +
+
+                              " \n ON IND.Id = CL1.ParLevel1_Id--AND IND.ID = 1 " +
+
+                             " \n LEFT JOIN ParCompany UNI (nolock) " +
+
+                              " \n ON UNI.Id = CL1.UnitId " +
+
+                             " \n LEFT JOIN #AMOSTRATIPO4a A4 (nolock)  " +
+
+                             " \n ON A4.UNIDADE = UNI.Id " +
+
+                             " \n AND A4.INDICADOR = IND.ID " +
+
+
+                             " \n GROUP BY " +
+
+                             " \n IND.ID, " +
+                             " \n IND.NAME, " +
+                             " \n CL1.UnitId, " +
+                             " \n UNI.NAME " +
+
+                         " \n ) NOMES " +
+
+                         " \n ON 1 = 1 AND(NOMES.A1 = CL1.ParLevel1_Id AND NOMES.A4 = UNI.ID) OR(IND.ID IS NULL) " +
+
+
+
+                    " \n ) S1 " +
+                 " \n ) S2 " +
+                 " \n WHERE RELATORIO_DIARIO = 1 OR(RELATORIO_DIARIO = 0 AND AV = 0) " +
+                  " \n DROP TABLE #AMOSTRATIPO4a  ";
+
+            using (var db = new SgqDbDevEntities())
             {
-                if (_mock.FirstOrDefault(r => r.date == i) == null)
-                {
-                    _mock.Add(new VisaoGeralDaAreaResultSet()
-                    {
-                        nc = 0M,
-                        av = 0M,
-                        procentagemNc = 0M,
-                        date = i
-                    });
-
-                    //_mock.Add(new VisaoGeralDaAreaResultSet());
-
-                }
+                _list = db.Database.SqlQuery<VisaoGeralDaAreaResultSet>(query).ToList();
             }
-            _mock = _mock.OrderBy(r => r.date).ToList();
+
 
         }
 
