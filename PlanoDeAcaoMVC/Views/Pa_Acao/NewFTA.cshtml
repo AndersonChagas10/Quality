@@ -74,6 +74,8 @@
                     <td colspan="4">
                         @Model._Level1
                         @Html.HiddenFor(r => r.Level1Id)
+                        @Html.HiddenFor(r => r.Level2Id)
+                        @Html.HiddenFor(r => r.Level3Id)
                     </td>
                     <td colspan="2">
                         @Model._Supervisor
@@ -96,11 +98,11 @@
 
                 <tr>
                     <td colspan="5">
-                        <k>@Model.MetaFTA</k> %
+                        <k>@Model.MetaFTA</k>
                         @Html.HiddenFor(r => r.MetaFTA)
                     </td>
                     <td colspan="5">
-                        <k>@Model.PercentualNCFTA</k> %
+                        <k>@Model.PercentualNCFTA</k>
                         @Html.HiddenFor(r => r.PercentualNCFTA)
                     </td>
                 </tr>
@@ -111,7 +113,7 @@
 
                 <tr>
                     <td colspan="10">
-                        <k>@Model.ReincidenciaDesvioFTA</k> %
+                        <k>@Model.ReincidenciaDesvioFTA</k>
                         @Html.HiddenFor(r => r.ReincidenciaDesvioFTA)
                     </td>
                 </tr>

@@ -37,7 +37,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             //var dataInicio = DateTime.ParseExact(filtro.dataInicio, "yyyyMMdd", CultureInfo.InvariantCulture); 
             //var dataFim = DateTime.ParseExact(filtro.dataFim, "yyyyMMdd", CultureInfo.InvariantCulture).ToString();
 
-            var where = " where QuandoInicio <= '" + dataFim + "' and QuandoFim <= '" + dataFim + "' ";
+            var where = " where QuandoInicio >= '" + dataInicio + " 00:00' and QuandoFim <= '" + dataFim + " 23:59' ";
+            //O Where nao esta funcionando.;.;...
+            where = string.Empty;
             var orderby1 = " order by 1";
 
             var indicadores = Pa_Qualquer_Name.Listar(categoria);
@@ -111,7 +113,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         {
             dynamic teste = form;
 
-            var query = "SELECT DATEPART(mm,QuandoInicio) as Mes, Count(id) as Quantidade FROM [PlanoDeAcao].[dbo].[Pa_Acao] "+ 
+            var query = "SELECT DATEPART(mm,QuandoInicio) as Mes, Count(id) as Quantidade FROM [Pa_Acao] "+ 
                 //"\n where [Status] not in (4,3) "+
                 "\n group by  DATEPART(mm,QuandoInicio)";
 
@@ -128,7 +130,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             var query = "SELECT DATEPART(mm,QuandoInicio) as Mes," +
                 "\n Count(id) as Quantidade " +
-                "\n FROM [PlanoDeAcao].[dbo].[Pa_Acao] " +
+                "\n FROM  [Pa_Acao] " +
                 "\n where [Status] in (4,3) " +
                 "\n group by  DATEPART(mm,QuandoInicio)";
 
@@ -145,8 +147,24 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             var query = "SELECT A.*, B.MesConcluidas, IsNull(B.QuantidadeConcluidas, 0) as QuantidadeConcluidas, (A.QuantidadeIniciadas - IsNull(B.QuantidadeConcluidas, 0)) as Acc" +
                         "\n FROM" +
-                        "\n (SELECT DATEPART(mm, QuandoInicio) as MesIniciadas, Count(id) as QuantidadeIniciadas FROM[PlanoDeAcao].[dbo].[Pa_Acao]  group by  DATEPART(mm, QuandoInicio)) A" +
-                        "\n LEFT JOIN(SELECT DATEPART(mm, QuandoInicio) as MesConcluidas, Count(id) as QuantidadeConcluidas FROM[PlanoDeAcao].[dbo].[Pa_Acao] where[Status] in (4, 3)  group by  DATEPART(mm, QuandoInicio)) B on A.MesIniciadas = B.MesConcluidas";
+                        "\n (SELECT DATEPART(mm, QuandoInicio) as MesIniciadas, Count(id) as QuantidadeIniciadas FROM [Pa_Acao]  group by  DATEPART(mm, QuandoInicio)) A" +
+                        "\n LEFT JOIN(SELECT DATEPART(mm, QuandoInicio) as MesConcluidas, Count(id) as QuantidadeConcluidas FROM [Pa_Acao] where[Status] in (4, 3)  group by  DATEPART(mm, QuandoInicio)) B on A.MesIniciadas = B.MesConcluidas";
+
+            var items = QueryNinja(db, query);
+
+            return items;
+        }
+
+        [HttpPost]
+        [Route("EvolucaoDoResultado")]
+        public List<JObject> EvolucaoDoResultado(JObject form)
+        {
+            dynamic teste = form;
+
+            var query = "SELECT A.*, B.MesConcluidas, IsNull(B.QuantidadeConcluidas, 0) as QuantidadeConcluidas, (A.QuantidadeIniciadas - IsNull(B.QuantidadeConcluidas, 0)) as Acc, 20 as Meta" +
+                        "\n FROM" +
+                        "\n (SELECT DATEPART(mm, QuandoInicio) as MesIniciadas, Count(id) as QuantidadeIniciadas FROM [Pa_Acao]  group by  DATEPART(mm, QuandoInicio)) A" +
+                        "\n LEFT JOIN(SELECT DATEPART(mm, QuandoInicio) as MesConcluidas, Count(id) as QuantidadeConcluidas FROM [Pa_Acao] where[Status] in (4, 3)  group by  DATEPART(mm, QuandoInicio)) B on A.MesIniciadas = B.MesConcluidas";
 
             var items = QueryNinja(db, query);
 
