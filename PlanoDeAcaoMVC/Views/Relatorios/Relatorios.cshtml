@@ -1,5 +1,6 @@
 ﻿
 <div class="row">
+    asdsadsadsadasddsddsada
     <div class="col-xs-12 col-sm-6 col-lg-4" style="min-height:500px;">
 
         <div class="panel panel-primary">
@@ -195,8 +196,12 @@
             });
         }
 
-        function MapeiaValorParaHC(array, prop) {
+        function MapeiaValorParaHC(array, prop, isInteger) {
             var arrayRetorno = $.map(array, function (o, c) {
+                if (isInteger) {
+                    return parseInt(o[prop]);
+                }
+
                 return o[prop];
             });
             return arrayRetorno;
@@ -452,6 +457,108 @@
                     data: dadosPie
                 }]
             });
+        } 
+
+        var urlGraficoNumeroDeAcoesEstabelecidas = '@Url.Action("NumeroDeAcoesEstabelecidas", "api/Relatorios")';
+        function GraficoEstoque1(data) {
+
+            $.post(urlGraficoNumeroDeAcoesEstabelecidas, {}, function (dados) {
+                var meses = [];
+                var valores = MapeiaValorParaHC(dados, "Quantidade", true);
+                dados.forEach(function (o) {
+                    meses.push(moment.monthsShort()[o.Mes]);
+                });
+
+                Highcharts.chart('divEstoque1', {
+                    credits: {
+                        enabled: false
+                    },
+                    exporting: {
+                        enabled: false
+                    },
+                    legend: {
+
+                        enabled: false,
+
+                    },
+
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Número de ações estabelecidas',
+                        style: {
+                            color: Highcharts.getOptions().colors[0],
+                            fontSize: '12px',
+                            fontWeight: 'bold'
+                        }
+
+                    },
+                    subtitle: {
+                        text: false
+                    },
+                    xAxis: {
+                        categories: meses,
+                        labels: {
+                            style: {
+                                fontSize: '10px',
+                                fontWeight: 'normal'
+                            }
+                        },
+                        crosshair: true,
+                        title: {
+                            text: 'Mes de Início',
+                            style: {
+                                color: Highcharts.getOptions().colors[1],
+                                fontSize: '10px',
+                                fontWeight: 'normal'
+                            }
+
+                        },
+                    },
+                    yAxis: {
+                        labels: {
+                            format: '{value}',
+                            style: {
+                                color: Highcharts.getOptions().colors[1],
+                                fontSize: '8px',
+                                fontWeight: 'normal'
+                            }
+                        },
+                        min: 0,
+
+                        title: {
+                            text: 'Número de ações',
+                            style: {
+                                color: Highcharts.getOptions().colors[1],
+                                fontSize: '10px',
+                                fontWeight: 'normal'
+
+                            }
+                        },
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0
+                        }
+                    },
+                    series: [{
+                        name: 'Ações',
+                        data: acoesIniciadas
+
+                    }]
+                });
+            });
+
         }
 
         $(document).ready(function () {
@@ -523,95 +630,6 @@
 
         acoesIniciadas = [1, 4, 8, 1, 1];
         acoesEncerradas = [0, 0, 1, 1, 2];
-
-        Highcharts.chart('divEstoque1', {
-            credits: {
-                enabled: false
-            },
-            exporting: {
-                enabled: false
-            },
-            legend: {
-
-                enabled: false,
-
-            },
-
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Número de ações estabelecidas',
-                style: {
-                    color: Highcharts.getOptions().colors[0],
-                    fontSize: '12px',
-                    fontWeight: 'bold'
-                }
-
-            },
-            subtitle: {
-                text: false
-            },
-            xAxis: {
-                categories: meses,
-                labels: {
-                    style: {
-                        fontSize: '10px',
-                        fontWeight: 'normal'
-                    }
-                },
-                crosshair: true,
-                title: {
-                    text: 'Mes de Início',
-                    style: {
-                        color: Highcharts.getOptions().colors[1],
-                        fontSize: '10px',
-                        fontWeight: 'normal'
-                    }
-
-                },
-            },
-            yAxis: {
-                labels: {
-                    format: '{value}',
-                    style: {
-                        color: Highcharts.getOptions().colors[1],
-                        fontSize: '8px',
-                        fontWeight: 'normal'
-                    }
-                },
-                min: 0,
-
-                title: {
-                    text: 'Número de ações',
-                    style: {
-                        color: Highcharts.getOptions().colors[1],
-                        fontSize: '10px',
-                        fontWeight: 'normal'
-
-                    }
-                },
-            },
-            tooltip: {
-                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                footerFormat: '</table>',
-                shared: true,
-                useHTML: true
-            },
-            plotOptions: {
-                column: {
-                    pointPadding: 0.2,
-                    borderWidth: 0
-                }
-            },
-            series: [{
-                name: 'Tokyo',
-                data: acoesIniciadas
-
-            }]
-        });
 
         Highcharts.chart('divEstoque2', {
             credits: {
