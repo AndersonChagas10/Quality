@@ -30,10 +30,11 @@
         public static string user { get { return "UserGQualidade"; } }
         public static string pass { get { return "grJsoluco3s"; } }
         //Remoto
-        public static string catalog2 { get { return "dbGQualidadeTeste"; } }
-        public static string dataSource2 { get { return @"10.255.0.41"; } }
+        public static string catalog2 { get { return "dbGQualidade"; } }
+        public static string dataSource2 { get { return @"10.255.0.16"; } }
         public static string user2 { get { return "UserGQualidade"; } }
         public static string pass2 { get { return "grJsoluco3s"; } }
 
+    
     }
 }
