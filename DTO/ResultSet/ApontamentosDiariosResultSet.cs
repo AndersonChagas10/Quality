@@ -102,18 +102,18 @@ public class ApontamentosDiariosResultSet
                 " \n ,US.Name as 'Auditor'                  " +
                 " \n ,ISNULL(L1.hashKey, '') as 'HashKey'   " +
                 " \n ,ISNULL(HF.HeaderFieldList, '') as 'HeaderFieldList'  " +
-                " \n FROM CollectionLevel2 C2               " +
-                " \n INNER JOIN ParCompany UN               " +
+                " \n FROM CollectionLevel2 C2 (nolock)               " +
+                " \n INNER JOIN ParCompany UN (nolock)               " +
                 " \n ON UN.Id = c2.UnitId                   " +
-                " \n INNER JOIN Result_Level3 R3            " +
+                " \n INNER JOIN Result_Level3 R3  (nolock)           " +
                 " \n ON R3.CollectionLevel2_Id = C2.Id      " +
-                " \n INNER JOIN ParLevel3 L3                " +
+                " \n INNER JOIN ParLevel3 L3 (nolock)                " +
                 " \n ON L3.Id = R3.ParLevel3_Id             " +
-                " \n INNER JOIN ParLevel2 L2                " +
+                " \n INNER JOIN ParLevel2 L2 (nolock)                " +
                 " \n ON L2.Id = C2.ParLevel2_Id             " +
-                " \n INNER JOIN ParLevel1 L1                " +
+                " \n INNER JOIN ParLevel1 L1 (nolock)                " +
                 " \n ON L1.Id = C2.ParLevel1_Id             " +
-                " \n INNER JOIN UserSgq US                  " +
+                " \n INNER JOIN UserSgq US (nolock)                  " +
                 " \n ON C2.AuditorId = US.Id                " +
                 " \n LEFT JOIN                              " +
                 " \n (SELECT                                " +
@@ -122,18 +122,18 @@ public class ApontamentosDiariosResultSet
                 " \n            (SELECT DISTINCT ', ' + CONCAT(HF.name, ': ', case when CL2HF2.ParFieldType_Id = 1 or CL2HF2.ParFieldType_Id = 2 or CL2HF2.ParFieldType_Id = 3 then PMV.Name " +
                 " \n            when CL2HF2.ParFieldType_Id = 6 then " + formatDate + " " +
                 " \n            else CL2HF2.Value end) " +
-                " \n            FROM CollectionLevel2XParHeaderField CL2HF2 " +
-                " \n            left join collectionlevel2 CL2 on CL2.id = CL2HF2.CollectionLevel2_Id " +
-                " \n            left join ParHeaderField HF on CL2HF2.ParHeaderField_Id = HF.Id " +
-                " \n            left join ParLevel2 L2 on L2.Id = CL2.Parlevel2_id " +
-                " \n            left join ParMultipleValues PMV on CL2HF2.Value = cast(PMV.Id as varchar(500)) " +
+                " \n            FROM CollectionLevel2XParHeaderField CL2HF2 (nolock) " +
+                " \n            left join collectionlevel2 CL2 (nolock) on CL2.id = CL2HF2.CollectionLevel2_Id " +
+                " \n            left join ParHeaderField HF (nolock) on CL2HF2.ParHeaderField_Id = HF.Id " +
+                " \n            left join ParLevel2 L2 (nolock) on L2.Id = CL2.Parlevel2_id " +
+                " \n            left join ParMultipleValues PMV (nolock) on CL2HF2.Value = cast(PMV.Id as varchar(500)) " +
                 " \n            WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id " +
                 " \n            FOR XML PATH('') " +
                 " \n            ), 1, 1, '')  AS HeaderFieldList " +
-                " \n    FROM CollectionLevel2XParHeaderField CL2HF " +
-                " \n    left join collectionlevel2 CL2 on CL2.id = CL2HF.CollectionLevel2_Id " +
-                " \n    left join ParHeaderField HF on CL2HF.ParHeaderField_Id = HF.Id " +
-                " \n    left join ParLevel2 L2 on L2.Id = CL2.Parlevel2_id " +
+                " \n    FROM CollectionLevel2XParHeaderField CL2HF (nolock) " +
+                " \n    left join collectionlevel2 CL2 (nolock) on CL2.id = CL2HF.CollectionLevel2_Id " +
+                " \n    left join ParHeaderField HF (nolock) on CL2HF.ParHeaderField_Id = HF.Id " +
+                " \n    left join ParLevel2 L2 (nolock) on L2.Id = CL2.Parlevel2_id " +
                 " \n    GROUP BY CL2HF.CollectionLevel2_Id " +
                 " \n 	) HF " +
                 " \n on c2.Id = HF.CollectionLevel2_Id " +

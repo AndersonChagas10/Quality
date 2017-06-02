@@ -207,15 +207,21 @@ namespace PlanoDeAcaoMVC.Controllers
 
         private static void NovoFtaModelParaSgq(FTA fta)
         {
+            Guard.CheckStringFullSimple(fta._Level1, "_Level1");
+            Guard.CheckStringFullSimple(fta._Level2, "_Level2");
+            Guard.CheckStringFullSimple(fta._Level3, "_Level3");
+            Guard.ForValidId(fta.Supervisor_Id, "NovoFtaModelParaSgq");
+
             using (var dbFActory = new ADOFactory.Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
             {
 
-                var level1 = dbFActory.SearchQuery<ParLevel1DTO>("Select * from parlevel1 WHERE ID = " + fta.Level1Id).FirstOrDefault(r => r.IsActive);
+                var level1 = dbFActory.SearchQuery<ParLevel1DTO>("Select * from parlevel1 WHERE Name = '" + fta._Level1 + "'").FirstOrDefault(r => r.IsActive);
+                var level2 = dbFActory.SearchQuery<ParLevel2DTO>("Select * from parlevel2 WHERE Name = '" + fta._Level2 + "'").FirstOrDefault(r => r.IsActive);
+                var level3 = dbFActory.SearchQuery<ParLevel3DTO>("Select * from parlevel3 WHERE Name = '" + fta._Level3 + "'").FirstOrDefault(r => r.IsActive);
                 var usersgq = dbFActory.SearchQuery<UserDTO>("Select * from usersgq WHERE ID = " + fta.Supervisor_Id).FirstOrDefault();
                 var parcompany = dbFActory.SearchQuery<ParCompanyDTO>("Select * from parcompany WHERE ID = " + fta.Unidade_Id).FirstOrDefault(r => r.IsActive);
-                var parDepartment = dbFActory.SearchQuery<ParDepartmentDTO>("Select * from ParDepartment WHERE ID = " + fta.Departamento_Id).FirstOrDefault();
+                var parDepartment = dbFActory.SearchQuery<ParDepartmentDTO>("Select * from ParDepartment WHERE ID = " + level2.ParDepartment_Id).FirstOrDefault();
 
-                fta._Level1 = level1.Name;
 
                 if (fta.Unidade_Id > 0)
                 {
@@ -226,11 +232,21 @@ namespace PlanoDeAcaoMVC.Controllers
                     fta._Unidade = "Corporativo";
                 }
 
+                fta._Level1 = level1.Name;
                 fta._Departamento = parDepartment.Name;
+                fta.Departamento_Id = parDepartment.Id;
+                fta.Level1Id = level1.Id;
+                fta.Level2Id = level2.Id;
+                fta.Level3Id = level3.Id;
+                fta.MetaFTA += " %";
+                fta.PercentualNCFTA = level2.Name + " > " + level3.Name + ": " + fta.PercentualNCFTA + " %";
+                fta.ReincidenciaDesvioFTA = level2.Name + " > " + level3.Name + ": " + fta.ReincidenciaDesvioFTA;
                 fta._Supervisor = usersgq.Name;
 
             }
         }
+
+       
 
         /// <summary>
         /// Mock para apresentação do plano de ação.
@@ -247,9 +263,9 @@ namespace PlanoDeAcaoMVC.Controllers
             fta._Departamento = "Curral";
             fta._Supervisor = "camilaprata-mtz";
             fta._Level1 = "(%) NC Expedição";
-            fta.MetaFTA = 5;
-            fta.ReincidenciaDesvioFTA = 15;
-            fta.PercentualNCFTA = 15;
+            fta.MetaFTA = "Teste > Teste :5";
+            fta.ReincidenciaDesvioFTA = "Teste > Teste :15";
+            fta.PercentualNCFTA = "Teste > Teste :15";
 
             return View("NewFTA", fta);
 
