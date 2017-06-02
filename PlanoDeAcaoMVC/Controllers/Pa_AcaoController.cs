@@ -231,7 +231,7 @@ namespace PlanoDeAcaoMVC.Controllers
                 {
                     fta._Unidade = "Corporativo";
                 }
-
+                fta.TipoIndicador = 2;
                 fta._Level1 = level1.Name;
                 fta._Departamento = parDepartment.Name;
                 fta.Departamento_Id = parDepartment.Id;
