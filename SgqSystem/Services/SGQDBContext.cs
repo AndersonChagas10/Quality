@@ -1921,6 +1921,8 @@ namespace SGQDBContext
         public int LastLevel2Alert { get; set; }
         public int EvaluatedResult { get; set; }
         public int DefectsResult { get; set; }
+        public int Shift { get; set; }
+        public int Period { get; set; }
 
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
         private SqlConnection db { get; set; }
@@ -1929,11 +1931,12 @@ namespace SGQDBContext
         {
             db = _db;
         }
-        public ConsolidationLevel1 getConsolidation(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate)
+        public ConsolidationLevel1 getConsolidation(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate, int Shift, int Period)
         {
             try
             {
-                string sql = "SELECT * FROM ConsolidationLevel1 WHERE UnitId = '" + ParCompany_Id + "' AND ParLevel1_Id= '" + ParLevel1_Id + "' AND CONVERT(date, ConsolidationDate) = '" + collectionDate.ToString("yyyy-MM-dd") + "'";
+                string sql = "SELECT * FROM ConsolidationLevel1 WHERE UnitId = '" + ParCompany_Id + "' AND ParLevel1_Id= '" + ParLevel1_Id + "' AND SHIFT = " + Shift +" and period = "
+                +Period+" AND CONVERT(date, ConsolidationDate) = '" + collectionDate.ToString("yyyy-MM-dd") + "'";
 
                 //SqlConnection db = new SqlConnection(conexao);
                 var obj = db.Query<ConsolidationLevel1>(sql).FirstOrDefault();
