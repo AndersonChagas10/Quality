@@ -294,7 +294,14 @@ namespace SgqSystem.Services
             {
                 tags = " " + tags;
             }
-            return "<a id=\"" + id + "\" href=\"" + href + "\" class=\"" + classe + "\"" + tags + ">" + outerhtml + "</a>";
+            if(href != null && href != "#")
+            {
+                href = " href=\"" + href + "\"";
+            }else
+            {
+                href = "";
+            }
+            return "<a id=\"" + id + "\" " + href + " class=\"" + classe + "\"" + tags + " style=\"cursor: pointer\">" + outerhtml + "</a>";
         }
 
         public string campoBinario(string id, string booltrueName, string boolfalseName, string classe = null)

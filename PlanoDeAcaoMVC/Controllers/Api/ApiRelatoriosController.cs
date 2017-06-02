@@ -11,7 +11,7 @@ using System.Web.Http;
 namespace PlanoDeAcaoMVC.Controllers.Api
 {
     [RoutePrefix("api/Relatorios")]
-    public class ApiRelatoriosController : ApiController
+    public class ApiRelatoriosController : BaseApiController
     {
         PlanoAcaoEF.PlanoDeAcaoEntities db;
         public ApiRelatoriosController()
@@ -111,30 +111,48 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         {
             dynamic teste = form;
 
-             var query = "SELECT DATEPART(mm,QuandoInicio) as Corno, Count(id) as Quantidade FROM [PlanoDeAcao].[dbo].[Pa_Acao] group by  DATEPART(mm,QuandoInicio)";
-            List<JObject> items = QueryNinja(query);
+            var query = "SELECT DATEPART(mm,QuandoInicio) as Mes, Count(id) as Quantidade FROM [PlanoDeAcao].[dbo].[Pa_Acao] "+ 
+                //"\n where [Status] not in (4,3) "+
+                "\n group by  DATEPART(mm,QuandoInicio)";
+
+            var items = QueryNinja(db, query);
 
             return items;
         }
 
-        private List<JObject> QueryNinja(string query)
+        [HttpPost]
+        [Route("NumeroDeAcoesConcluidas")]
+        public List<JObject> NumeroDeAcoesConcluidas(JObject form)
         {
-            db.Database.Connection.Open();
-            var cmd = db.Database.Connection.CreateCommand();
-            cmd.CommandText = query;
-            var reader = cmd.ExecuteReader();
-            List<JObject> items = new List<JObject>();
-            while (reader.Read())
-            {
-                JObject row = new JObject();
-                for (int i = 0; i < reader.FieldCount; i++)
-                    row[reader.GetName(i)] = reader[i].ToString();
+            dynamic teste = form;
 
-                items.Add(row);
-            }
+            var query = "SELECT DATEPART(mm,QuandoInicio) as Mes," +
+                "\n Count(id) as Quantidade " +
+                "\n FROM [PlanoDeAcao].[dbo].[Pa_Acao] " +
+                "\n where [Status] in (4,3) " +
+                "\n group by  DATEPART(mm,QuandoInicio)";
+
+            var items = QueryNinja(db, query);
 
             return items;
         }
+
+        [HttpPost]
+        [Route("NumeroDeAcoes")]
+        public List<JObject> NumeroDeAcoes(JObject form)
+        {
+            dynamic teste = form;
+
+            var query = "SELECT A.*, B.MesConcluidas, IsNull(B.QuantidadeConcluidas, 0) as QuantidadeConcluidas, (A.QuantidadeIniciadas - IsNull(B.QuantidadeConcluidas, 0)) as Acc" +
+                        "\n FROM" +
+                        "\n (SELECT DATEPART(mm, QuandoInicio) as MesIniciadas, Count(id) as QuantidadeIniciadas FROM[PlanoDeAcao].[dbo].[Pa_Acao]  group by  DATEPART(mm, QuandoInicio)) A" +
+                        "\n LEFT JOIN(SELECT DATEPART(mm, QuandoInicio) as MesConcluidas, Count(id) as QuantidadeConcluidas FROM[PlanoDeAcao].[dbo].[Pa_Acao] where[Status] in (4, 3)  group by  DATEPART(mm, QuandoInicio)) B on A.MesIniciadas = B.MesConcluidas";
+
+            var items = QueryNinja(db, query);
+
+            return items;
+        }
+
     }
 
     public class GraficoPieSet

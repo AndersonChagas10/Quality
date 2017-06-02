@@ -1,4 +1,5 @@
-﻿using DTO.DTO;
+﻿using AutoMapper;
+using DTO.DTO;
 using DTO.DTO.Params;
 using DTO.Helpers;
 using PlanoAcaoCore;
@@ -133,8 +134,8 @@ namespace PlanoDeAcaoMVC.Controllers
         /// <returns></returns>
         public ActionResult Acompanhamento(int id)
         {
-            var obj = Pa_Acao.Get(id);
-            return PartialView("Acompanhamento", obj);
+            var obj = db.Pa_Acao.FirstOrDefault(r => r.Id == id);
+            return PartialView("Acompanhamento", Mapper.Map<Pa_Acao>(obj));
         }
 
         #endregion

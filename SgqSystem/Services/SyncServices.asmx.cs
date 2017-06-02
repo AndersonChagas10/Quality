@@ -3286,8 +3286,11 @@ namespace SgqSystem.Services
 
             string container = html.div(outerhtml: breadCrumb + selectPeriod + seiLaLevel1, classe: "container");
 
-            string buttons = " <button id=\"btnSave\" class=\"btn btn-lg btn-warning hide\"><i id=\"saveIcon\" class=\"fa fa-save\"></i><i id=\"loadIcon\" class=\"fa fa-circle-o-notch fa-spin\" style=\"display:none;\"></i></button><!--Save-->" +
-                             " <button class=\"btn btn-lg btn-danger btnCA hide\">" + CommonData.getResource("corrective_action").Value.ToString() + "</button><!--Corrective Action-->";
+            string buttons = " <button id=\"btnSave\" class=\"btn btn-lg btn-warning hide\"><i id=\"saveIcon\" class=\"fa fa-save\"></i><i id=\"loadIcon\" class=\"fa fa-circle-o-notch fa-spin\" style=\"display:none;\"></i></button>";
+
+            buttons += " <button id=\"btnSaveTemp\" class=\"btn btn-lg btn-warning hide\"><i id=\"saveIcon\" class=\"fa fa-chevron-right\"></i><i id=\"loadIcon\" class=\"fa fa-circle-o-notch fa-spin\" style=\"display:none;\"></i></button>";
+
+            buttons += " <button id=\"btnSaveAllTemp\" class=\"btn btn-lg btn-warning hide\"><i id=\"saveIcon\" class=\"fa fa-save\"></i><i id=\"loadIcon\" class=\"fa fa-circle-o-notch fa-spin\" style=\"display:none;\"></i></button>";
 
             string message = "<div class=\"message padding20\" style=\"display:none\">                                                                                      " +
                              "   <h1 class=\"head\">Titulo</h1>                                                                                                           " +
