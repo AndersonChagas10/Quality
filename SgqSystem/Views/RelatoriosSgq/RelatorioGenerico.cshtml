@@ -4,6 +4,7 @@
     //var urlGet = Url.Action("GetRelatorio", "RelatorioGenericoApi");
     var urlGet = Url.Action("getTabela", "api/RelatorioGenerico");
     var urlGet2 = Url.Action("getTabela2", "api/RelatorioGenerico");
+    var urlGet3 = Url.Action("getTabela3", "api/RelatorioGenerico");
 }
 <style>
     /*.st-sort-ascent:before {
@@ -51,6 +52,9 @@
         </div>
 
         <table id="tableTeste" class="table table-striped" width="100%"></table>
+
+
+        <table id="tabela3" class="table table-striped" width="100%"></table>
 
     </div>
 </div>
@@ -171,8 +175,34 @@
 
     }
 
+    function MontarTabela2(retorno2) {
+
+        var table = $('#tabela3').DataTable({
+            data : retorno2.datas,
+            columns : retorno2.columns
+            //data: [{"id" : "1" , "name" : "renan", "pass": "123"},{"id" : "2" , "name" : "celso", "pass": "123"}],
+            //columns:  [{"data" : "Id", "title" : "Id" },{"data" : "Nome" ,"title" : "Nome" },{"data" : "Pass", "title" : "Password" }]
+        });
+
+        $('#tabela3 thead th').each( function () {
+            var title = $('#tableTeste thead th').eq($(this).index()).text();
+            $(this).html(title + '<br><input type="text" placeholder="Buscar '+ title +'" />' );
+        });
+
+        table.columns().every(function () {
+            var that = this;
+            $('input', this.footer()).on('keyup change', function () {
+                if (that.search() !== this.value) {
+                    that.search(this.value).draw();
+                }
+            });
+        });
+
+    }
+
     $('#btnSend').click(function(){
         EasyAjax(@Html.Raw(Json.Encode(urlGet2)), enviar, MontarTabela, "");
+        EasyAjax(@Html.Raw(Json.Encode(urlGet3)), enviar, MontarTabela2, "");
     });
 
 </script>

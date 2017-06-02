@@ -601,7 +601,7 @@
                 title: {
                     text: 'Número de ações estabelecidas',
                     style: {
-                        color: Highcharts.getOptions().colors[0],
+                        //color: Highcharts.getOptions().colors[0],
                         fontSize: '12px',
                         fontWeight: 'bold'
                     }
@@ -701,7 +701,7 @@
                 title: {
                     text: 'Número de ações concluídas',
                     style: {
-                        color: Highcharts.getOptions().colors[0],
+                        //color: Highcharts.getOptions().colors[0],
                         fontSize: '12px',
                         fontWeight: 'bold'
                     }
@@ -781,7 +781,7 @@
             var valoresInciadas = MapeiaValorParaHC(dados, "QuantidadeIniciadas", true);
             var valoresConcluidas = MapeiaValorParaHC(dados, "QuantidadeConcluidas", true);
             var acc = MapeiaValorParaHC(dados, "Acc", true);
-            
+
             var acumlador = 0;
             acc.forEach(function (o) {
                 acumlador += o;
@@ -807,7 +807,7 @@
                 title: {
                     text: 'Estoque de Ações',
                     style: {
-                        color: Highcharts.getOptions().colors[0],
+                        //color: Highcharts.getOptions().colors[0],
                         fontSize: '12px',
                         fontWeight: 'bold'
                     }
@@ -899,6 +899,106 @@
 
         }
 
+        var urlGraficoEvolucaoDoResultado = '@Url.Action("EvolucaoDoResultado", "api/Relatorios")';
+        function GraficoEvolucaoDoResultado(dados) {
+
+            var meses = [];
+            var valoresConcluidas = MapeiaValorParaHC(dados, "QuantidadeConcluidas", true);
+            var meta = MapeiaValorParaHC(dados, "Meta", true);
+            //var meta = MapeiaValorParaHC(dados, "QuantidadeConcluidas", true);
+            //var realizado = MapeiaValorParaHC(dados, "Acc", true);
+
+            dados.forEach(function (o) {
+                meses.push(moment.monthsShort()[o.MesConcluidas]);
+            });
+
+            Highcharts.chart('divIndicador', {
+                credits: {
+                    enabled: false
+                },
+                exporting: {
+                    enabled: false
+                },
+                chart: {
+                    zoomType: 'xy'
+                },
+                title: {
+                    text: 'Evolução do Resultado vs Ações executadas'
+                },
+                subtitle: {
+                    text: false
+                },
+                xAxis: [{
+                    categories: meses,
+                    crosshair: true
+                }],
+                yAxis: [{// Primary yAxis
+                    plotLines: [{
+                        value: meta[0],
+                        width: 2,
+                        color: 'black',
+                        dashStyle: 'dash',
+                        zIndex: 4,
+                        label: {
+                            text: 'Meta 80%',
+                            align: 'right',
+                            y: -10,
+                            x: 0
+                        }
+                    }],
+                    labels: {
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: 'Resultado',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    }
+                }, { // Secondary yAxis
+                    title: {
+                        text: 'Número de Ações',
+                        style: {
+                            color: Highcharts.getOptions().colors[0]
+                        }
+                    },
+                    labels: {
+                        style: {
+                            color: Highcharts.getOptions().colors[0]
+                        }
+                    },
+                    opposite: true
+                }],
+                tooltip: {
+                    shared: true
+                },
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom',
+                    floating: false,
+                    backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+                },
+                series: [{
+                    name: 'Número de Ações Concluídas',
+                    type: 'spline',
+                    yAxis: 1,
+                    data: valoresConcluidas,
+                }, /*{
+                    name: 'Meta',
+                    type: 'spline',
+                    data: meta,
+                },*/ {
+                    name: 'Realizado',
+                    type: 'spline',
+                    data: [],
+                }]
+            });
+
+        }
+
         $(document).ready(function () {
 
             $("#btnFiltro").click(function () {
@@ -978,6 +1078,7 @@
             atualizar(GraficoAcoesEstabelecidas, urlGraficoNumeroDeAcoesEstabelecidas, {});
             atualizar(GraficoAcoesConcluidas, urlGraficoNumeroDeAcoesConcluidas, {});
             atualizar(GraficoEstoqueDeAcoes, urlGraficoNumeroDeAcoes, {});
+            atualizar(GraficoEvolucaoDoResultado, urlGraficoEvolucaoDoResultado, {});
 
             $('#exampleTD1').DataTable();
 
@@ -985,90 +1086,6 @@
                 .removeClass('display')
                 .addClass('table table-striped table-bordered');
         })
-
-
-
-      
-
-        //Highcharts.chart('divIndicador', {
-        //    credits: {
-        //        enabled: false
-        //    },
-        //    exporting: {
-        //        enabled: false
-        //    },
-        //    chart: {
-        //        zoomType: 'xy'
-        //    },
-        //    title: {
-        //        text: 'Evolução do Resultado vs Ações executadas'
-        //    },
-        //    subtitle: {
-        //        text: false
-        //    },
-        //    xAxis: [{
-        //        categories: meses,
-        //        crosshair: true
-        //    }],
-        //    yAxis: [{ // Primary yAxis
-        //        labels: {
-
-        //            style: {
-        //                color: Highcharts.getOptions().colors[1]
-        //            }
-        //        },
-        //        title: {
-        //            text: 'Resultado',
-        //            style: {
-        //                color: Highcharts.getOptions().colors[1]
-        //            }
-        //        }
-        //    }, { // Secondary yAxis
-        //        title: {
-        //            text: 'Número de Ações',
-        //            style: {
-        //                color: Highcharts.getOptions().colors[0]
-        //            }
-        //        },
-        //        labels: {
-
-        //            style: {
-        //                color: Highcharts.getOptions().colors[0]
-        //            }
-        //        },
-        //        opposite: true
-        //    }],
-        //    tooltip: {
-        //        shared: true
-        //    },
-        //    legend: {
-        //        layout: 'horizontal',
-        //        align: 'center',
-
-        //        verticalAlign: 'bottom',
-
-        //        floating: false,
-        //        backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
-        //    },
-        //    series: [{
-        //        name: 'Número de Ações Concluídas',
-        //        type: 'spline',
-        //        yAxis: 1,
-        //        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
-
-
-        //    }, {
-        //        name: 'Meta',
-        //        type: 'spline',
-        //        data: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
-
-        //    }, {
-        //        name: 'Realizado',
-        //        type: 'spline',
-        //        data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
-
-        //    }]
-        //});
 
         $('body .dropdown-toggle').dropdown();
 

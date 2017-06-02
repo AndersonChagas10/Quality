@@ -23,9 +23,28 @@
 <script>
 
     function RedirecionaParaFTA(r) {
-        console.log(r);
+        var url = "";
+        //url += "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao//NewFTA?";
+        url += "http://192.168.25.200/PlanoAcao/Pa_Acao//NewFTA?";
+        url += "MetaFTA=" + r.MetaFTA;
+        url += "&PercentualNCFTA=" + r.PercentualNCFTA;
+        url += "&ReincidenciaDesvioFTA=" + r.ReincidenciaDesvioFTA;
+        url += "&_Level1=" + encodeURIComponent(r.level1Name);
+        url += "&_Level2=" + encodeURIComponent(r.level2Name);
+        url += "&_Level3=" + encodeURIComponent(r.level3Name);
+        url += "&Supervisor_Id=" + r.auditorId;
+        
+        if (r.unitId > 0) {
+            url += "&Unidade_Id=" + r.unitId;
+        } else {
+            url += "&Unidade_Id=0"
+        }
+
+        url += "&_DataInicioFTA=" + encodeURIComponent(r.startDate);
+        url += "&_DataFimFTA=" + encodeURIComponent(r.endDate);
+
         $('#ftaModal').modal();
-        $('#ftaModalSim').attr('href', r);
+        $('#ftaModalSim').attr('href', url);
     }
 
 </script>
