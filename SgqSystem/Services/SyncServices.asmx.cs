@@ -2244,7 +2244,7 @@ namespace SgqSystem.Services
                     "\n 																																																		  " +
                     "\n  CREATE TABLE #COLETASLEVEL3 (																																											  " +
                     "\n  ROW INT NULL,																																															  " +
-                    "\n  COLUNA VARCHAR(153) NULL																																												  " +
+                    "\n  COLUNA VARCHAR(MAX) NULL																																												  " +
                     "\n  )																																																		  " +
                     "\n 																																																		  " +
                     "\n  INSERT INTO #COLETASLEVEL3 																																												  " +
@@ -2282,7 +2282,7 @@ namespace SgqSystem.Services
                     "\n                                                                                                                                                                            								  " +
                     "\n                                                                                                                                                                            								  " +
                     "\n  DECLARE @I INT = 1;                                                                                                                                                       								  " +
-                    "\n                  DECLARE @RESPOSTA VARCHAR(153) = '';                                                                                                                      								  " +
+                    "\n                  DECLARE @RESPOSTA VARCHAR(MAX) = '';                                                                                                                      								  " +
                     "\n                                                                                                                                                                            								  " +
                     "\n                  WHILE @I < @HOMENSFORBRUNO                                                                                                                                								  " +
                     "\n                                                                                                                                                                            								  " +
@@ -6300,13 +6300,13 @@ namespace SgqSystem.Services
                 "\n ----------------------------------------------------------                                                                                           " +
                 "\n -- PRIMEIRO INDICADOR --                                                                                                                             " +
                 "\n ----------------------------------------------------------                                                                                           " +
-                "\n DECLARE @TBL_RESPOSTA TABLE (ROW INT, ParLevel1_id INT, Coluna VARCHAR(153))                                                                         " +
+                "\n DECLARE @TBL_RESPOSTA TABLE (ROW INT, ParLevel1_id INT, Coluna VARCHAR(MAX))                                                                         " +
                 "\n                                                                                                                                                      " +
                 "\n declare @I int = 1;                                                                                                                                  " +
                 "\n             declare @Indicador int;                                                                                                                  " +
                 "\n             SELECT TOP 1 @Indicador = ParLevel1_ID FROM @Indicadores                                                                                 " +
                 "\n                                                                                                                                                      " +
-                "\n DECLARE @CONCAT VARCHAR(153) = ''                                                                                                                    " +
+                "\n DECLARE @CONCAT VARCHAR(MAX) = ''                                                                                                                    " +
                 "\n                                                                                                                                                      " +
                 "\n WHILE @Indicador IS NOT NULL                                                                                                                         " +
                 "\n BEGIN                                                                                                                                                " +

@@ -168,12 +168,12 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n DECLARE @MEDIA DECIMAL(30, 5) " +
                 "\n DECLARE @LimiteSuperiorControle DECIMAL(30, 5) " +
                 "\n DECLARE @LimiteInferiorControle DECIMAL(30, 5) " +
-                "\n DECLARE @ParCompany VARCHAR(153) " +
+                "\n DECLARE @ParCompany VARCHAR(MAX) " +
                 "\n DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + "'                                                                                                                                                                                                                    " +
                 "\n DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + "' " +
-                "\n DECLARE @INDICADOR   VARCHAR(153) = " + form.level1Id +
-                "\n DECLARE @MONITORAMENTO VARCHAR(153) = " + form.level2Id +
-                "\n DECLARE @TAREFA VARCHAR(153) = " + form.level3Id +
+                "\n DECLARE @INDICADOR   VARCHAR(MAX) = " + form.level1Id +
+                "\n DECLARE @MONITORAMENTO VARCHAR(MAX) = " + form.level2Id +
+                "\n DECLARE @TAREFA VARCHAR(MAX) = " + form.level3Id +
 
                 "\n /* Média */ " +
                 "\n select @MEDIA = AVG(media.VALOR)  from " +
