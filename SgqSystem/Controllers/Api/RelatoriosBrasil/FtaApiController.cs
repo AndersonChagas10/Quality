@@ -16,7 +16,26 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
     public class FtaApiController : ApiController
     {
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="form">{}.unitName</param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("GetUnitId")]
+        public JObject GetUnitId(JObject form)
+        {
+            dynamic obj = form;
+            string  unitName = obj.unitName;
 
+            using (var db = new SgqDbDevEntities())
+            {
+                var id = db.ParCompany.FirstOrDefault(r => r.Initials.Equals(unitName)).Id;
+                obj["unitId"] = id.ToString();
+                return obj;
+            }
+
+        }
 
         /// <summary>
         /// Pa_Acao/NewFTA?
@@ -30,7 +49,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         /// &_DataInicioFTA=27%2F03%2F2017
         /// &_DataFimFTA=29%2F03%2F2017
         /// </summary>
-
         [HttpPost]
         [Route("GetUrl")]
         public JObject GetUrl([FromBody] DataCarrierFormulario form)
