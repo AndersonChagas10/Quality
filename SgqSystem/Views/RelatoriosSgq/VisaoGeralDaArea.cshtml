@@ -157,7 +157,7 @@
         <div id="grafico4"></div>
 
         <div id="grafico5"></div>
-
+        @Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
     </div>
 
 </div>
@@ -507,10 +507,10 @@
             EasyAjax(urlTabela1, enviar, function (r) {
                 $('#tabela1div').empty().append(r);
                 var container = 'tabela1div';
-                heatMap(container, 'dadosEsquerda', 1, 3, 'ASC');
-                heatMap(container, 'footer2', 1, 3, 'ASC');
-                heatMapSingleCol(container, 'dadosDireita', 2, 'ASC', true);
-                scroolTable(container);
+                heatMap(container, 'dadosEsquerda', 3, 3, 'DESC');
+                heatMap(container, 'footer2', 3, 3, 'DESC');
+                heatMapSingleCol(container, 'dadosDireita', 4, 'DESC', true);
+                scroolTable(container)
             }, "tabela1div");
         };
 
@@ -533,9 +533,9 @@
             EasyAjax(urlTabela2, enviar, function (r) {
                 $('#tabela2div').empty().append(r);
                 var container = 'tabela2div';
-                heatMap(container, 'dadosEsquerda', 1, 3, 'ASC');
-                heatMap(container, 'footer2', 1, 3, 'ASC');
-                heatMapSingleCol(container, 'dadosDireita', 2, 'ASC', true);
+                heatMap(container, 'dadosEsquerda', 3, 3, 'DESC');
+                heatMap(container, 'footer2', 3, 3, 'DESC');
+                heatMapSingleCol(container, 'dadosDireita', 4, 'DESC', true);
                 scroolTable(container)
             }, "tabela2div");
         }
@@ -786,7 +786,7 @@
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
-
+            //Para envio do PA
             $('#grafico3').removeClass('loader');
 
             $('#grafico3').empty().highcharts({
@@ -1345,7 +1345,14 @@
         function requisitaDadosSGQparaGerarFta(tarefa) {
             enviar['level3Name'] = tarefa;
             enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
-            EasyAjax(urlGetFta, enviar, RedirecionaParaFTA);
+            $.post('@Url.Action("GetUnitId","api/Fta")', enviar, function(c){
+                enviar["unitId"] = c.unitId;
+                enviar["PercentualNCFTA"] = 0;
+                enviar["ReincidenciaDesvioFTA"] = 0;
+                RedirecionaParaFTA(enviar);
+            });
+            //EasyAjax(urlGetFta, enviar, RedirecionaParaFTA);
+           
         }
 
 
