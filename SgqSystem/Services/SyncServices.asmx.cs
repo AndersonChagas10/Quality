@@ -620,13 +620,13 @@ namespace SgqSystem.Services
 
                     string reauditNumber = DefaultValueReturn(c.ReauditNumber.ToString(), "0");
 
-                    var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(c.Unit_Id, c.level01_Id, c.Level01CollectionDate);
+                    var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(c.Unit_Id, c.level01_Id, c.Level01CollectionDate,c.Shift,c.Period);
 
                     if (c.Reaudit)
-                        consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(c.Unit_Id, c.level01_Id, c.Level01CollectionDate);
+                        consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(c.Unit_Id, c.level01_Id, c.Level01CollectionDate,c.Shift, c.Period);
                     if (consolidationLevel1 == null)
                     {
-                        consolidationLevel1 = InsertConsolidationLevel1(c.Unit_Id, c.level01_Id, c.Level01CollectionDate);
+                        consolidationLevel1 = InsertConsolidationLevel1(c.Unit_Id, c.level01_Id, c.Level01CollectionDate,c.Shift, c.Period);
                         if (consolidationLevel1 == null)
                         {
                             throw new Exception();
@@ -1062,15 +1062,18 @@ namespace SgqSystem.Services
         /// <param name="level01Id">Id do Level01</param>
         /// <param name="collectionDate">Data da Coleta que verifica a consolidação</param>
         /// <param name="departmentId">Id do Departamento</param>
+        /// <param name="Shift">Turno</param>
+        /// <param name="Period">Periodo</param>
         /// <returns></returns>
-        public SGQDBContext.ConsolidationLevel1 InsertConsolidationLevel1(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate, string departmentId = "1")
+        public SGQDBContext.ConsolidationLevel1 InsertConsolidationLevel1(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate, int Shift, int Period, string departmentId = "1")
         {
             var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1(db);
 
             //Script de Insert para consolidação
-            string sql = "INSERT ConsolidationLevel1 ([UnitId],[DepartmentId],[ParLevel1_Id],[AddDate],[AlterDate],[ConsolidationDate]) " +
+            string sql = "INSERT ConsolidationLevel1 ([UnitId],[DepartmentId],[ParLevel1_Id],[AddDate],[AlterDate],[ConsolidationDate],[shift],[period]) " +
                          "VALUES " +
-                         "('" + ParCompany_Id + "','" + departmentId + "','" + ParLevel1_Id + "', GetDate(),null, CONVERT(DATE, '" + collectionDate.ToString("yyyy-MM-dd") + "')) " +
+                         "('" + ParCompany_Id + "','" + departmentId + "','" + ParLevel1_Id + "', GetDate(),null, CONVERT(DATE, '" + collectionDate.ToString("yyyy-MM-dd") + "'),"+
+                         Shift+","+Period+")"+
                          "SELECT @@IDENTITY AS 'Identity'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -1085,7 +1088,7 @@ namespace SgqSystem.Services
                         //Se o registro for inserido retorno o Id da Consolidação
                         if (i > 0)
                         {
-                            return ConsolidationLevel1DB.getConsolidation(ParCompany_Id, ParLevel1_Id, collectionDate);
+                            return ConsolidationLevel1DB.getConsolidation(ParCompany_Id, ParLevel1_Id, collectionDate,Shift,Period);
                         }
                         else
                         {
@@ -6372,7 +6375,7 @@ namespace SgqSystem.Services
         {
             //Converte a data no padrão de busca do Banco de Dados
 
-            string sql = "select ParLevel1_Id, ParLevel2_Id, UnitId,  CAST(CollectionDate AS DATE) from CollectionLevel2 (nolock)  GROUP BY ParLevel1_Id, ParLevel2_Id, UnitId,  CAST(CollectionDate AS DATE)";
+            string sql = "select ParLevel1_Id, ParLevel2_Id, UnitId,  CAST(CollectionDate AS DATE),shift,period from CollectionLevel2  (nolock) GROUP BY ParLevel1_Id, ParLevel2_Id, UnitId,  CAST(CollectionDate AS DATE)";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -6396,11 +6399,13 @@ namespace SgqSystem.Services
                                 int ParLevel2_Id = Convert.ToInt32(r[1]);
                                 int ParCompany_Id = Convert.ToInt32(r[2]);
                                 DateTime CollectionDate = Convert.ToDateTime(r[3]);
+                                int shift = Convert.ToInt32(r[4]);
+                                int period = Convert.ToInt32(r[5]);
 
-                                var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(ParCompany_Id, ParLevel1_Id, CollectionDate);
+                                var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(ParCompany_Id, ParLevel1_Id, CollectionDate,shift,period);
                                 if (consolidationLevel1 == null)
                                 {
-                                    consolidationLevel1 = InsertConsolidationLevel1(ParCompany_Id, ParLevel1_Id, CollectionDate);
+                                    consolidationLevel1 = InsertConsolidationLevel1(ParCompany_Id, ParLevel1_Id, CollectionDate, shift, period);
                                     if (consolidationLevel1 == null)
                                     {
                                         throw new Exception();
