@@ -17,9 +17,9 @@
           <Property Name="QuandoInicio" Type="datetime2" Precision="7" />
           <Property Name="DuracaoDias" Type="int" />
           <Property Name="QuandoFim" Type="datetime2" Precision="7" />
-          <Property Name="ComoPontosimportantes" Type="nvarchar(max)" />
+          <Property Name="ComoPontosimportantes" Type="nVARCHAR(153)" />
           <Property Name="Predecessora_Id" Type="int" />
-          <Property Name="PraQue" Type="nvarchar(max)" />
+          <Property Name="PraQue" Type="nVARCHAR(153)" />
           <Property Name="QuantoCusta" Type="decimal" Precision="35" Scale="10" />
           <Property Name="Status" Type="int" />
           <Property Name="Panejamento_Id" Type="int" />
@@ -32,8 +32,8 @@
           <Property Name="CausaGenerica_Id" Type="int" />
           <Property Name="ContramedidaGenerica_Id" Type="int" />
           <Property Name="GrupoCausa_Id" Type="int" />
-          <Property Name="CausaEspecifica" Type="nvarchar(max)" />
-          <Property Name="ContramedidaEspecifica" Type="nvarchar(max)" />
+          <Property Name="CausaEspecifica" Type="nVARCHAR(153)" />
+          <Property Name="ContramedidaEspecifica" Type="nVARCHAR(153)" />
           <Property Name="TipoIndicador" Type="int" />
           <Property Name="Fta_Id" Type="int" />
         </EntityType>
@@ -44,8 +44,8 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Name" Type="nVARCHAR(153)" Nullable="false" />
+          <Property Name="Description" Type="nVARCHAR(153)" />
           <Property Name="Acao_Id" Type="int" Nullable="false" />
           <Property Name="Order" Type="int" />
           <Property Name="Status_Id" Type="int" Nullable="false" />
@@ -66,9 +66,9 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="MetaFTA" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="PercentualNCFTA" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="ReincidenciaDesvioFTA" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="MetaFTA" Type="nVARCHAR(153)" Nullable="false" />
+          <Property Name="PercentualNCFTA" Type="nVARCHAR(153)" Nullable="false" />
+          <Property Name="ReincidenciaDesvioFTA" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="Supervisor_Id" Type="int" />
           <Property Name="Order" Type="int" />
         </EntityType>
@@ -88,8 +88,8 @@
           <Property Name="Indicadores_Id" Type="int" />
           <Property Name="Iniciativa_Id" Type="int" />
           <Property Name="ObjetivoGerencial_Id" Type="int" />
-          <Property Name="Dimensao" Type="nvarchar(max)" />
-          <Property Name="Objetivo" Type="nvarchar(max)" />
+          <Property Name="Dimensao" Type="nVARCHAR(153)" />
+          <Property Name="Objetivo" Type="nVARCHAR(153)" />
           <Property Name="ValorDe" Type="decimal" Precision="32" Scale="10" />
           <Property Name="ValorPara" Type="decimal" Precision="32" Scale="10" />
           <Property Name="DataInicio" Type="datetime2" Precision="7" />

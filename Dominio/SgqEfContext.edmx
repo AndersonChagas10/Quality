@@ -15,9 +15,9 @@
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="Shift" Type="int" Nullable="false" />
           <Property Name="Period" Type="int" Nullable="false" />
-          <Property Name="Html" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Error" Type="nvarchar(max)" />
-          <Property Name="Json" Type="nvarchar(max)" />
+          <Property Name="Html" Type="nVARCHAR(153)" Nullable="false" />
+          <Property Name="Error" Type="nVARCHAR(153)" />
+          <Property Name="Json" Type="nVARCHAR(153)" />
         </EntityType>
         <EntityType Name="CollectionHtml">
           <Key>
@@ -26,7 +26,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Html" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Html" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="Period" Type="int" Nullable="false" />
           <Property Name="Shift" Type="int" Nullable="false" />
           <Property Name="CollectionDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -54,15 +54,15 @@
           <Property Name="ReauditNumber" Type="int" />
           <Property Name="haveReaudit" Type="bit" />
           <Property Name="haveCorrectiveAction" Type="bit" />
-          <Property Name="Device_Id" Type="nvarchar(max)" />
-          <Property Name="AppVersion" Type="nvarchar(max)" />
+          <Property Name="Device_Id" Type="nVARCHAR(153)" />
+          <Property Name="AppVersion" Type="nVARCHAR(153)" />
           <Property Name="Ambient" Type="nvarchar" MaxLength="50" />
           <Property Name="IsProcessed" Type="bit" Nullable="false" />
-          <Property Name="Device_Mac" Type="nvarchar(max)" />
+          <Property Name="Device_Mac" Type="nVARCHAR(153)" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Key" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="TTP" Type="nvarchar(max)" />
+          <Property Name="Key" Type="nVARCHAR(153)" Nullable="false" />
+          <Property Name="TTP" Type="nVARCHAR(153)" />
           <Property Name="ReauditLevel" Type="int" />
         </EntityType>
         <EntityType Name="CollectionLevel02">
@@ -112,7 +112,7 @@
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="ConformedIs" Type="bit" Nullable="false" />
           <Property Name="Value" Type="decimal" Precision="10" Scale="5" Nullable="false" />
-          <Property Name="ValueText" Type="varchar(max)" Nullable="false" />
+          <Property Name="ValueText" Type="VARCHAR(153)" Nullable="false" />
           <Property Name="Duplicated" Type="bit" />
         </EntityType>
         <EntityType Name="CollectionLevel2">
@@ -170,9 +170,9 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CollectionLevel2_Id" Type="int" Nullable="false" />
           <Property Name="ParHeaderField_Id" Type="int" Nullable="false" />
-          <Property Name="ParHeaderField_Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ParHeaderField_Name" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="ParFieldType_Id" Type="int" Nullable="false" />
-          <Property Name="Value" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Value" Type="nVARCHAR(153)" Nullable="false" />
         </EntityType>
         <EntityType Name="ConsolidationLevel01">
           <Key>
@@ -268,10 +268,10 @@
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="DateCorrectiveAction" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AuditStartTime" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="DescriptionFailure" Type="nvarchar(max)" />
-          <Property Name="ImmediateCorrectiveAction" Type="nvarchar(max)" />
-          <Property Name="ProductDisposition" Type="nvarchar(max)" />
-          <Property Name="PreventativeMeasure" Type="nvarchar(max)" />
+          <Property Name="DescriptionFailure" Type="nVARCHAR(153)" />
+          <Property Name="ImmediateCorrectiveAction" Type="nVARCHAR(153)" />
+          <Property Name="ProductDisposition" Type="nVARCHAR(153)" />
+          <Property Name="PreventativeMeasure" Type="nVARCHAR(153)" />
         </EntityType>
         <EntityType Name="Defect">
           <Key>
@@ -295,7 +295,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AddDate" Type="datetime" Nullable="false" />
           <Property Name="AlterDate" Type="datetime" />
-          <Property Name="Name" Type="varchar(max)" Nullable="false" />
+          <Property Name="Name" Type="VARCHAR(153)" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'SgqUSAV2.dbo.Deviation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -325,9 +325,9 @@ warning 6002: The table/view 'SgqUSAV2.dbo.Deviation' does not have a primary ke
           <Property Name="DeviationDate" Type="datetime" Nullable="false" />
           <Property Name="AddDate" Type="datetime" Nullable="false" />
           <Property Name="sendMail" Type="bit" />
-          <Property Name="DeviationMessage" Type="nvarchar(max)" />
-          <Property Name="Status" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="SendDate" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DeviationMessage" Type="nVARCHAR(153)" />
+          <Property Name="Status" Type="nVARCHAR(153)" Nullable="false" />
+          <Property Name="SendDate" Type="nVARCHAR(153)" Nullable="false" />
         </EntityType>
         <EntityType Name="DimManutencaoColetaITs">
           <Key>
@@ -346,7 +346,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.Deviation' does not have a primary ke
           <Property Name="AddDate" Type="datetime2" Precision="7" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="To" Type="nvarchar" MaxLength="450" Nullable="false" />
-          <Property Name="Body" Type="nvarchar(max)" />
+          <Property Name="Body" Type="nVARCHAR(153)" />
           <Property Name="SendStatus" Type="nvarchar" MaxLength="15" />
           <Property Name="SendDate" Type="datetime2" Precision="7" />
           <Property Name="Project" Type="nvarchar" MaxLength="15" />
@@ -361,8 +361,8 @@ warning 6002: The table/view 'SgqUSAV2.dbo.Deviation' does not have a primary ke
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Name" Type="nVARCHAR(153)" Nullable="false" />
+          <Property Name="Description" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="SelectedElement" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="LeftControlRole">
@@ -379,7 +379,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.Deviation' does not have a primary ke
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar(max)" Nullable="false" />
+          <Property Name="Name" Type="VARCHAR(153)" Nullable="false" />
           <Property Name="Alias" Type="varchar" MaxLength="25" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
@@ -390,7 +390,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.Deviation' does not have a primary ke
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar(max)" Nullable="false" />
+          <Property Name="Name" Type="VARCHAR(153)" Nullable="false" />
           <Property Name="Alias" Type="varchar" MaxLength="25" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
@@ -401,7 +401,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.Deviation' does not have a primary ke
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar(max)" Nullable="false" />
+          <Property Name="Name" Type="VARCHAR(153)" Nullable="false" />
           <Property Name="Alias" Type="varchar" MaxLength="25" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
@@ -415,7 +415,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.Deviation' does not have a primary ke
           <Property Name="Tabela" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Registro" Type="int" Nullable="false" />
           <Property Name="Campo" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Valor" Type="nvarchar(max)" />
+          <Property Name="Valor" Type="nVARCHAR(153)" />
           <Property Name="UsuarioAlteracao" Type="int" Nullable="false" />
           <Property Name="DataAlteracao" Type="datetime" Nullable="false" />
         </EntityType>
@@ -427,8 +427,8 @@ warning 6002: The table/view 'SgqUSAV2.dbo.Deviation' does not have a primary ke
           <Property Name="result" Type="text" Nullable="false" />
           <Property Name="log" Type="text" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="Device_Id" Type="nvarchar(max)" />
-          <Property Name="AppVersion" Type="nvarchar(max)" />
+          <Property Name="Device_Id" Type="nVARCHAR(153)" />
+          <Property Name="AppVersion" Type="nVARCHAR(153)" />
           <Property Name="callback" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="LogSgq">
@@ -437,14 +437,14 @@ warning 6002: The table/view 'SgqUSAV2.dbo.Deviation' does not have a primary ke
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="addDate" Type="datetime" Nullable="false" />
-          <Property Name="Level" Type="varchar(max)" />
-          <Property Name="Call_Site" Type="varchar(max)" />
-          <Property Name="Exception_Type" Type="varchar(max)" />
-          <Property Name="Exception_Message" Type="varchar(max)" />
-          <Property Name="Stack_Trace" Type="varchar(max)" />
-          <Property Name="Additional_Info" Type="varchar(max)" />
-          <Property Name="Email" Type="varchar(max)" />
-          <Property Name="Second_Log_Path" Type="varchar(max)" />
+          <Property Name="Level" Type="VARCHAR(153)" />
+          <Property Name="Call_Site" Type="VARCHAR(153)" />
+          <Property Name="Exception_Type" Type="VARCHAR(153)" />
+          <Property Name="Exception_Message" Type="VARCHAR(153)" />
+          <Property Name="Stack_Trace" Type="VARCHAR(153)" />
+          <Property Name="Additional_Info" Type="VARCHAR(153)" />
+          <Property Name="Email" Type="VARCHAR(153)" />
+          <Property Name="Second_Log_Path" Type="VARCHAR(153)" />
         </EntityType>
         <EntityType Name="LogSgqGlobal">
           <Key>
@@ -452,15 +452,15 @@ warning 6002: The table/view 'SgqUSAV2.dbo.Deviation' does not have a primary ke
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="addDate" Type="datetime" />
-          <Property Name="Level" Type="varchar(max)" />
-          <Property Name="Call_Site" Type="varchar(max)" />
-          <Property Name="Exception_Type" Type="varchar(max)" />
-          <Property Name="Exception_Message" Type="varchar(max)" />
-          <Property Name="Stack_Trace" Type="varchar(max)" />
-          <Property Name="Additional_Info" Type="varchar(max)" />
-          <Property Name="Object" Type="varchar(max)" />
-          <Property Name="email" Type="varchar(max)" />
-          <Property Name="Second_Log_Path" Type="varchar(max)" />
+          <Property Name="Level" Type="VARCHAR(153)" />
+          <Property Name="Call_Site" Type="VARCHAR(153)" />
+          <Property Name="Exception_Type" Type="VARCHAR(153)" />
+          <Property Name="Exception_Message" Type="VARCHAR(153)" />
+          <Property Name="Stack_Trace" Type="VARCHAR(153)" />
+          <Property Name="Additional_Info" Type="VARCHAR(153)" />
+          <Property Name="Object" Type="VARCHAR(153)" />
+          <Property Name="email" Type="VARCHAR(153)" />
+          <Property Name="Second_Log_Path" Type="VARCHAR(153)" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'SgqUSAV2.dbo.ManColetaDados' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -667,7 +667,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ManColetaDados' does not have a prima
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParClusterGroup_Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="ParClusterParent_Id" Type="int" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
@@ -679,7 +679,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ManColetaDados' does not have a prima
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="ParClusterGroupParent_Id" Type="int" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
@@ -691,7 +691,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ManColetaDados' does not have a prima
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
@@ -732,7 +732,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ManColetaDados' does not have a prima
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserSgq_Id" Type="int" Nullable="false" />
           <Property Name="ParCompany_Id" Type="int" Nullable="false" />
-          <Property Name="Role" Type="nvarchar(max)" />
+          <Property Name="Role" Type="nVARCHAR(153)" />
         </EntityType>
         <EntityType Name="ParConfSGQ">
           <Key>
@@ -748,7 +748,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ManColetaDados' does not have a prima
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
@@ -795,7 +795,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ManColetaDados' does not have a prima
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="Active" Type="bit" Nullable="false" />
@@ -818,7 +818,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ManColetaDados' does not have a prima
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
@@ -829,7 +829,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ManColetaDados' does not have a prima
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
@@ -865,7 +865,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ManColetaDados' does not have a prima
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParFieldType_Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="ParLevelDefinition_Id" Type="int" Nullable="false" />
           <Property Name="LinkNumberEvaluetion" Type="bit" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -881,7 +881,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ManColetaDados' does not have a prima
           <Property Name="ParConsolidationType_Id" Type="int" Nullable="false" />
           <Property Name="ParFrequency_Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="HasSaveLevel2" Type="bit" Nullable="false" />
           <Property Name="HasNoApplicableLevel2" Type="bit" Nullable="false" />
           <Property Name="HasGroupLevel2" Type="bit" Nullable="false" />
@@ -915,8 +915,8 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ParLevel1VariableProduction' does not
             <PropertyRef Name="AddDate" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Name" Type="nVARCHAR(153)" Nullable="false" />
+          <Property Name="Description" Type="nVARCHAR(153)" />
           <Property Name="AddDate" Type="datetime" Nullable="false" />
           <Property Name="AlterDate" Type="datetime" />
         </EntityType>
@@ -969,7 +969,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ParLevel1VariableProductionXLevel1' d
           <Property Name="ParFrequency_Id" Type="int" Nullable="false" />
           <Property Name="ParDepartment_Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="IsEmptyLevel3" Type="bit" Nullable="false" />
           <Property Name="HasShowLevel03" Type="bit" Nullable="false" />
           <Property Name="HasGroupLevel3" Type="bit" Nullable="false" />
@@ -1021,7 +1021,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ParLevel1VariableProductionXLevel1' d
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
@@ -1053,7 +1053,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ParLevel1VariableProductionXLevel1' d
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParLevel2_Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Description" Type="nVARCHAR(153)" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
@@ -1064,7 +1064,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ParLevel1VariableProductionXLevel1' d
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
@@ -1142,7 +1142,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ParLevel1VariableProductionXLevel1' d
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
@@ -1154,7 +1154,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ParLevel1VariableProductionXLevel1' d
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParHeaderField_Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="PunishmentValue" Type="decimal" Precision="10" Scale="4" Nullable="false" />
           <Property Name="Conformity" Type="bit" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -1222,8 +1222,8 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ParLevel1VariableProductionXLevel1' d
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Name" Type="nVARCHAR(153)" Nullable="false" />
+          <Property Name="Description" Type="nVARCHAR(153)" />
           <Property Name="AddDate" Type="datetime2" Precision="7" />
           <Property Name="AlterDate" Type="datetime" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
@@ -1235,7 +1235,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ParLevel1VariableProductionXLevel1' d
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParStructureGroup_Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="ParStructureParent_Id" Type="int" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
@@ -1247,7 +1247,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ParLevel1VariableProductionXLevel1' d
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="ParStructureGroupParent_Id" Type="int" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
@@ -1269,12 +1269,12 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ParLevel1VariableProductionXLevel1' d
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CollectionLevel2_Id" Type="int" Nullable="false" />
           <Property Name="ParLevel3_Id" Type="int" Nullable="false" />
-          <Property Name="ParLevel3_Name" Type="nvarchar(max)" />
+          <Property Name="ParLevel3_Name" Type="nVARCHAR(153)" />
           <Property Name="Weight" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="IntervalMin" Type="nvarchar(max)" />
-          <Property Name="IntervalMax" Type="nvarchar(max)" />
-          <Property Name="Value" Type="nvarchar(max)" />
-          <Property Name="ValueText" Type="nvarchar(max)" />
+          <Property Name="IntervalMin" Type="nVARCHAR(153)" />
+          <Property Name="IntervalMax" Type="nVARCHAR(153)" />
+          <Property Name="Value" Type="nVARCHAR(153)" />
+          <Property Name="ValueText" Type="nVARCHAR(153)" />
           <Property Name="IsConform" Type="bit" />
           <Property Name="IsNotEvaluate" Type="bit" />
           <Property Name="Defects" Type="decimal" Precision="10" Scale="5" />
@@ -1298,8 +1298,8 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ResultLevel2HeaderField' does not hav
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CollectionLevel2_Id" Type="int" Nullable="false" />
           <Property Name="ParHeaderField_Id" Type="int" Nullable="false" />
-          <Property Name="name" Type="nvarchar(max)" />
-          <Property Name="value" Type="nvarchar(max)" />
+          <Property Name="name" Type="nVARCHAR(153)" />
+          <Property Name="value" Type="nVARCHAR(153)" />
           <Property Name="PunishmentValue" Type="decimal" Precision="10" Scale="5" />
           <Property Name="AddDate" Type="datetime" Nullable="false" />
           <Property Name="AlterDate" Type="datetime" />
@@ -1311,7 +1311,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ResultLevel2HeaderField' does not hav
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ScreenComponent_Id" Type="int" Nullable="false" />
-          <Property Name="Role" Type="varchar(max)" />
+          <Property Name="Role" Type="VARCHAR(153)" />
         </EntityType>
         <EntityType Name="RoleSGQ">
           <Key>
@@ -1319,14 +1319,14 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ResultLevel2HeaderField' does not hav
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ScreenComponent_Id" Type="int" Nullable="false" />
-          <Property Name="Role" Type="varchar(max)" />
+          <Property Name="Role" Type="VARCHAR(153)" />
         </EntityType>
         <EntityType Name="RoleType">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Type" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Type" Type="nVARCHAR(153)" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'SgqUSAV2.dbo.RoleUserSgq' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1339,7 +1339,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.RoleUserSgq' does not have a primary 
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Description" Type="nVARCHAR(153)" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
@@ -1349,8 +1349,8 @@ warning 6002: The table/view 'SgqUSAV2.dbo.RoleUserSgq' does not have a primary 
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="HashKey" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Component" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="HashKey" Type="nVARCHAR(153)" Nullable="false" />
+          <Property Name="Component" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="Type" Type="int" />
         </EntityType>
         <EntityType Name="Shift">
@@ -1367,12 +1367,12 @@ warning 6002: The table/view 'SgqUSAV2.dbo.RoleUserSgq' does not have a primary 
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Name" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="AddDate" Type="datetime" Nullable="false" />
           <Property Name="AlterDate" Type="datetime" />
           <Property Name="Number" Type="int" />
-          <Property Name="Code" Type="nvarchar(max)" />
-          <Property Name="Ip" Type="nvarchar(max)" />
+          <Property Name="Code" Type="nVARCHAR(153)" />
+          <Property Name="Ip" Type="nVARCHAR(153)" />
         </EntityType>
         <EntityType Name="UnitUser">
           <Key>
@@ -1381,22 +1381,22 @@ warning 6002: The table/view 'SgqUSAV2.dbo.RoleUserSgq' does not have a primary 
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserSgqId" Type="int" Nullable="false" />
           <Property Name="UnitId" Type="int" Nullable="false" />
-          <Property Name="Role" Type="nvarchar(max)" />
+          <Property Name="Role" Type="nVARCHAR(153)" />
         </EntityType>
         <EntityType Name="UserSgq">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Name" Type="nVARCHAR(153)" Nullable="false" />
+          <Property Name="Password" Type="nVARCHAR(153)" Nullable="false" />
           <Property Name="AcessDate" Type="datetime" />
           <Property Name="AddDate" Type="datetime" Nullable="false" />
           <Property Name="AlterDate" Type="datetime" />
-          <Property Name="Role" Type="nvarchar(max)" />
-          <Property Name="FullName" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Email" Type="nvarchar(max)" />
-          <Property Name="Phone" Type="nvarchar(max)" />
+          <Property Name="Role" Type="nVARCHAR(153)" />
+          <Property Name="FullName" Type="nVARCHAR(153)" Nullable="false" />
+          <Property Name="Email" Type="nVARCHAR(153)" />
+          <Property Name="Phone" Type="nVARCHAR(153)" />
           <Property Name="ParCompany_Id" Type="int" />
           <Property Name="PasswordDate" Type="datetime" />
         </EntityType>
@@ -1508,7 +1508,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.Reports_CCA_Audit' does not have a pr
             <PropertyRef Name="Mud Score" />
           </Key>
           <Property Name="Plant Number" Type="int" />
-          <Property Name="Audit Area" Type="varchar(max)" />
+          <Property Name="Audit Area" Type="VARCHAR(153)" />
           <Property Name="Set Start Date" Type="date" />
           <Property Name="Set Start Time" Type="varchar" MaxLength="5" />
           <Property Name="Audit Period" Type="int" Nullable="false" />
@@ -1525,7 +1525,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.Reports_CCA_Audit' does not have a pr
           <Property Name="Chain Speed" Type="decimal" Precision="20" Scale="5" Nullable="false" />
           <Property Name="Lot #" Type="decimal" Precision="20" Scale="5" Nullable="false" />
           <Property Name="Mud Score" Type="decimal" Precision="20" Scale="5" Nullable="false" />
-          <Property Name="Auditor Name Global" Type="nvarchar(max)" />
+          <Property Name="Auditor Name Global" Type="nVARCHAR(153)" />
           <Property Name="Set End Date" Type="date" />
           <Property Name="Set End Time" Type="varchar" MaxLength="5" />
         </EntityType>
@@ -1545,12 +1545,12 @@ warning 6002: The table/view 'SgqUSAV2.dbo.Reports_CFF_Audit' does not have a pr
           <Property Name="Set" Type="int" />
           <Property Name="Start Date" Type="datetime2" Precision="7" />
           <Property Name="Side" Type="int" Nullable="false" />
-          <Property Name="Audit Area" Type="varchar(max)" />
+          <Property Name="Audit Area" Type="VARCHAR(153)" />
           <Property Name="Set Start Date" Type="date" />
           <Property Name="Set Start Time" Type="varchar" MaxLength="5" />
           <Property Name="Set End Date" Type="date" />
           <Property Name="Set End Time" Type="varchar" MaxLength="5" />
-          <Property Name="Auditor" Type="nvarchar(max)" />
+          <Property Name="Auditor" Type="nVARCHAR(153)" />
           <Property Name="Reaudit" Type="varchar" MaxLength="8" Nullable="false" />
           <Property Name="Defects" Type="decimal" Precision="38" Scale="5" />
           <Property Name="Cut" Type="decimal" Precision="38" Scale="5" />
@@ -1574,8 +1574,8 @@ warning 6002: The table/view 'SgqUSAV2.dbo.Reports_HTP_Audit' does not have a pr
           <Property Name="Shift" Type="int" Nullable="false" />
           <Property Name="Start Date" Type="datetime2" Precision="7" />
           <Property Name="Start Time" Type="varchar" MaxLength="10" />
-          <Property Name="Job Id" Type="varchar(max)" />
-          <Property Name="Auditor" Type="nvarchar(max)" />
+          <Property Name="Job Id" Type="VARCHAR(153)" />
+          <Property Name="Auditor" Type="nVARCHAR(153)" />
           <Property Name="Audit/ReAudit" Type="varchar" MaxLength="8" Nullable="false" />
           <Property Name="Period" Type="int" Nullable="false" />
           <Property Name="Baised/Unbiased" Type="varchar" MaxLength="8" Nullable="false" />
@@ -1606,12 +1606,12 @@ warning 6002: The table/view 'SgqUSAV2.dbo.VWCFFResults' does not have a primary
           <Property Name="Set" Type="int" />
           <Property Name="Start Date" Type="datetime2" Precision="7" />
           <Property Name="Side" Type="int" Nullable="false" />
-          <Property Name="Audit Area" Type="varchar(max)" />
+          <Property Name="Audit Area" Type="VARCHAR(153)" />
           <Property Name="Set Start Date" Type="date" />
           <Property Name="Set Start Time" Type="varchar" MaxLength="5" />
           <Property Name="Set End Date" Type="date" />
           <Property Name="Set End Time" Type="varchar" MaxLength="5" />
-          <Property Name="Auditor" Type="nvarchar(max)" />
+          <Property Name="Auditor" Type="nVARCHAR(153)" />
           <Property Name="Reaudit" Type="varchar" MaxLength="8" Nullable="false" />
           <Property Name="Defects" Type="decimal" Precision="38" Scale="5" />
           <Property Name="Cut" Type="decimal" Precision="38" Scale="5" />

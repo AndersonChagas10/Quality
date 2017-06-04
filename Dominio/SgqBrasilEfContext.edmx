@@ -94,7 +94,7 @@
           <Property Name="Tipo" Type="nvarchar" MaxLength="100" />
           <Property Name="Subtipo" Type="nvarchar" MaxLength="100" />
           <Property Name="ParCompany_Id" Type="int" />
-          <Property Name="ParCompanyName" Type="nvarchar(max)" />
+          <Property Name="ParCompanyName" Type="nVARCHAR(153)" />
         </EntityType>
         <EntityType Name="FamiliaProdutos">
           <Key>
@@ -223,14 +223,14 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Nome" Type="varchar(max)" />
+          <Property Name="Nome" Type="VARCHAR(153)" />
         </EntityType>
         <EntityType Name="Resultados">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Chave" Type="nvarchar(max)" />
+          <Property Name="Chave" Type="nVARCHAR(153)" />
           <Property Name="EmpresaId" Type="int" Nullable="false" />
           <Property Name="Empresa" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="UnidadeId" Type="int" Nullable="false" />
@@ -412,7 +412,7 @@
           <Property Name="Banda" Type="tinyint" Nullable="false" />
           <Property Name="DataHora" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UnidadeId" Type="int" Nullable="false" />
-          <Property Name="Chave" Type="varchar(max)" />
+          <Property Name="Chave" Type="VARCHAR(153)" />
           <Property Name="Status" Type="bit" />
         </EntityType>
         <EntityType Name="VerificacaoTipificacaoComparacao">
@@ -438,7 +438,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TarefaId" Type="int" Nullable="false" />
           <Property Name="CaracteristicaTipificacaoId" Type="int" />
-          <Property Name="Chave" Type="varchar(max)" />
+          <Property Name="Chave" Type="VARCHAR(153)" />
           <Property Name="AreasParticipantesId" Type="int" />
         </EntityType>
         <EntityType Name="VerificacaoTipificacaoTarefaIntegracao">
@@ -503,7 +503,7 @@
           <Property Name="Banda" Type="tinyint" Nullable="false" />
           <Property Name="DataHora" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UnidadeId" Type="int" Nullable="false" />
-          <Property Name="Chave" Type="nvarchar(max)" />
+          <Property Name="Chave" Type="nVARCHAR(153)" />
           <Property Name="Status" Type="bit" />
           <Property Name="EvaluationNumber" Type="int" />
           <Property Name="Sample" Type="int" />
@@ -515,7 +515,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TarefaId" Type="int" Nullable="false" />
           <Property Name="CaracteristicaTipificacaoId" Type="int" />
-          <Property Name="Chave" Type="nvarchar(max)" />
+          <Property Name="Chave" Type="nVARCHAR(153)" />
           <Property Name="AreasParticipantesId" Type="int" />
         </EntityType>
         <EntityType Name="VTVerificacaoTipificacaoValidacao">

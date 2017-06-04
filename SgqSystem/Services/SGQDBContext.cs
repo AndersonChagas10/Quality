@@ -941,7 +941,7 @@ namespace SGQDBContext
              * 30/03/2017
              */
 
-            string possuiIndicadorFilho = "SELECT cast(id as varchar(max)) as retorno FROM ParLevel1  (nolock) WHERE ParLevel1Origin_Id = " + ParLevel1.Id.ToString();
+            string possuiIndicadorFilho = "SELECT cast(id as VARCHAR(153)) as retorno FROM ParLevel1  (nolock) WHERE ParLevel1Origin_Id = " + ParLevel1.Id.ToString();
             string ParLevel1Origin_Id = "";
 
             //using (var db = new Dominio.SgqDbDevEntities())

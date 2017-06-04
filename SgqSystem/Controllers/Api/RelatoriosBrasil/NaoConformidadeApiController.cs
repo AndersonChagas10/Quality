@@ -67,7 +67,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n SELECT " +
 
                 "\n Unidade as UnidadeName" +
-                "\n ,CONVERT(varchar(max), Unidade_Id) as Unidade_Id" +
+                "\n ,CONVERT(VARCHAR(153), Unidade_Id) as Unidade_Id" +
                 "\n ,ProcentagemNc as [proc] " +
 
                 "\n ,nc" +
@@ -234,10 +234,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                 "\n SELECT " +
 
-                "\n  CONVERT(varchar(max), Unidade) as UnidadeName" +
-                "\n ,CONVERT(varchar(max), Unidade_Id) as Unidade_Id" +
-                "\n ,CONVERT(varchar(max), level1_Id) as Indicador_Id" +
-                "\n ,CONVERT(varchar(max), Level1Name) as IndicadorName" +
+                "\n  CONVERT(VARCHAR(153), Unidade) as UnidadeName" +
+                "\n ,CONVERT(VARCHAR(153), Unidade_Id) as Unidade_Id" +
+                "\n ,CONVERT(VARCHAR(153), level1_Id) as Indicador_Id" +
+                "\n ,CONVERT(VARCHAR(153), Level1Name) as IndicadorName" +
 
                 
                 "\n ,ProcentagemNc as [proc] " +
