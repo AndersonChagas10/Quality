@@ -157,7 +157,7 @@
         <div id="grafico4"></div>
 
         <div id="grafico5"></div>
-
+        @Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
     </div>
 
 </div>
@@ -507,10 +507,10 @@
             EasyAjax(urlTabela1, enviar, function (r) {
                 $('#tabela1div').empty().append(r);
                 var container = 'tabela1div';
-                heatMap(container, 'dadosEsquerda', 1, 3, 'ASC');
-                heatMap(container, 'footer2', 1, 3, 'ASC');
-                heatMapSingleCol(container, 'dadosDireita', 2, 'ASC', true);
-                scroolTable(container);
+                heatMap(container, 'dadosEsquerda', 3, 3, 'DESC');
+                heatMap(container, 'footer2', 3, 3, 'DESC');
+                heatMapSingleCol(container, 'dadosDireita', 4, 'DESC', true);
+                scroolTable(container)
             }, "tabela1div");
         };
 
@@ -522,7 +522,7 @@
             enviar["CallBackTableTituloColunas"] = function () { };
             enviar["CallBackTableBody"] = "Grafico3($(this).attr('dado3'), $(this).attr('dado1'));Grafico4($(this).attr('dado3'), $(this).attr('dado1'));";
             enviar["CallBackTableEsquerda"] = function () { };
-            enviar["Query"] = "GetTbl2";
+            enviar["Query"] = "GetTbl2"; 
             enviar["Title"] = "Indicadores por unidade";
 
             enviar["ParametroTableRow"] = [];
@@ -533,9 +533,9 @@
             EasyAjax(urlTabela2, enviar, function (r) {
                 $('#tabela2div').empty().append(r);
                 var container = 'tabela2div';
-                heatMap(container, 'dadosEsquerda', 1, 3, 'ASC');
-                heatMap(container, 'footer2', 1, 3, 'ASC');
-                heatMapSingleCol(container, 'dadosDireita', 2, 'ASC', true);
+                heatMap(container, 'dadosEsquerda', 3, 3, 'DESC');
+                heatMap(container, 'footer2', 3, 3, 'DESC');
+                heatMapSingleCol(container, 'dadosDireita', 4, 'DESC', true);
                 scroolTable(container)
             }, "tabela2div");
         }
@@ -786,7 +786,7 @@
             var nc = MapeiaValorParaHC(data, "nc");
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
-
+            //Para envio do PA
             $('#grafico3').removeClass('loader');
 
             $('#grafico3').empty().highcharts({
@@ -1225,8 +1225,8 @@
                     point: {
                         events: {
                             click: function () {
-                                //_MonitoramentoId = id[this.x];
-                                //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
+                                _MonitoramentoId = id[this.x];
+                                Index.onTarefaClickedNC(nome[this.x], id[this.x]);
                             }
                         }
                     },
@@ -1333,19 +1333,34 @@
                     }
                 },
                 series: [
-                    Chart.ProcNc(porc, requisitaDadosSGQparaGerarFta),
-                    Chart.NC(nc, requisitaDadosSGQparaGerarFta),
-                    Chart.Av(qtdAv, requisitaDadosSGQparaGerarFta),
+                    Chart.ProcNc(porc, function(category) {
+
+                        requisitaDadosSGQparaGerarFta(nome[nome.indexOf(category)], porc[nome.indexOf(category)], nc[nome.indexOf(category)])
+                    }),
+                    Chart.NC(nc, function(category) {
+                        requisitaDadosSGQparaGerarFta(nome[nome.indexOf(category)], porc[nome.indexOf(category)], nc[nome.indexOf(category)])
+                    }),
+                    Chart.Av(qtdAv, function(category) {
+                        requisitaDadosSGQparaGerarFta(nome[nome.indexOf(category)], porc[nome.indexOf(category)], nc[nome.indexOf(category)])
+                    }),
                     Chart.curvaPareto(data, nc, 1, inverse)
                 ]
             });
 
         }
-
-        function requisitaDadosSGQparaGerarFta(tarefa) {
+       
+        function requisitaDadosSGQparaGerarFta(tarefa, percentualNc, nc) {
             enviar['level3Name'] = tarefa;
+            enviar['PercentualNCFTA'] = percentualNc;   
+            enviar['ReincidenciaDesvioFTA'] = nc;   
             enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
-            EasyAjax(urlGetFta, enviar, RedirecionaParaFTA);
+            $.post('@Url.Action("GetUnitId","api/Fta")', enviar, function(c){
+                enviar["unitId"] = c.unitId;
+                enviar["MetaFTA"] = "0";
+                RedirecionaParaFTA(enviar);
+            });
+            //EasyAjax(urlGetFta, enviar, RedirecionaParaFTA);
+           
         }
 
 
