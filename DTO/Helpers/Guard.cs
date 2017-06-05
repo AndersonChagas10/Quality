@@ -122,9 +122,9 @@ namespace DTO.Helpers
 
         public static void ParseDateToSql(string date, ref DateTime _dtvalue)
         {
-            if (GlobalConfig.Brasil)
+            if (GlobalConfig.LanguageBrasil)
                 DateTime.TryParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
-            else if (GlobalConfig.Eua)
+            else if (GlobalConfig.LanguageEUA)
                 DateTime.TryParseExact(date, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
         }
 
@@ -134,10 +134,10 @@ namespace DTO.Helpers
                 return DateTime.Now;
 
             var _dtvalue = DateTime.Now;
-            //if (GlobalConfig.Brasil)
-            DateTime.TryParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
-            //else if (GlobalConfig.Eua)
-            if (_dtvalue == DateTime.MinValue)
+            if (GlobalConfig.LanguageBrasil)
+                DateTime.TryParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
+
+            if (GlobalConfig.LanguageEUA)
                 DateTime.TryParseExact(date, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
 
             return _dtvalue;
