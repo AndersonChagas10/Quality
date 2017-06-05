@@ -84,6 +84,7 @@ namespace DTO.DTO.Params
 
         public bool haveRealTimeConsolidation { get; set; }
         public bool HasCompleteEvaluation { get; set; }
+        public bool EditLevel2 { get; set; }
         public Nullable<int> RealTimeConsolitationUpdate { get; set; }
 
         public List<ParLevel2ControlCompanyDTO> listLevel2CorporativosObj { get; set; }

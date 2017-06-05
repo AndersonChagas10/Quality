@@ -2104,6 +2104,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level2 edition.
+        /// </summary>
+        internal static string has_edit_level2 {
+            get {
+                return ResourceManager.GetString("has_edit_level2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level 3 Grouped By Level 2.
         /// </summary>
         internal static string has_group_level2 {

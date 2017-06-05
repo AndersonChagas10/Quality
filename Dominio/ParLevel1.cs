@@ -63,6 +63,7 @@ namespace Dominio
         public Nullable<bool> IsPartialSave { get; set; }
         public Nullable<bool> HasCompleteEvaluation { get; set; }
         public Nullable<int> ParScoreType_Id { get; set; }
+        public bool EditLevel2 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }

@@ -34,6 +34,7 @@ namespace SGQDBContext
         public decimal valorAlerta { get; set; }
         public bool HasCompleteEvaluation { get; set; }
         public bool IsReaudit { get; set; }
+        public bool EditLevel2 { get; set; }
 
 
         public bool HasGroupLevel2 { get; set; }
@@ -81,9 +82,9 @@ namespace SGQDBContext
             //SqlConnection db = new SqlConnection(conexao);
             string sql = "\n SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
                          "\n P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate, P1.IsLimitedEvaluetionNumber, P1.IsPartialSave" +
-                         "\n ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, AL.IsReaudit AS IsReaudit, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2                                                                                                                                     " +
-                         "\n FROM ParLevel1 P1   (nolock)                                                                                                         " +
-                         "\n INNER JOIN (SELECT ParLevel1_Id FROM ParLevel3Level2Level1 (nolock)  GROUP BY ParLevel1_Id) P321                                     " +
+                         "\n ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, AL.IsReaudit AS IsReaudit, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2, P1.EditLevel2 AS EditLevel2                                                                                                                                     " +
+                         "\n FROM ParLevel1 P1  (nolock)                                                                                                         " +
+                         "\n INNER JOIN (SELECT ParLevel1_Id FROM ParLevel3Level2Level1 GROUP BY ParLevel1_Id) P321                                     " +
                          "\n ON P321.ParLevel1_Id = P1.Id                                                                                               " +
                          "\n INNER JOIN ParLevel1XCluster P1C  (nolock)                                                                                           " +
                          "\n ON P1C.ParLevel1_Id = P1.Id                                                                                                " +
@@ -1929,12 +1930,12 @@ namespace SGQDBContext
         {
             db = _db;
         }
-        public ConsolidationLevel1 getConsolidation(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate,int shift, int period)
+        public ConsolidationLevel1 getConsolidation(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate, int Shift, int Period)
         {
             try
             {
-                string sql = "SELECT * FROM ConsolidationLevel1 (nolock) WHERE UnitId = '" + ParCompany_Id + "' AND ParLevel1_Id= '" + ParLevel1_Id + "' AND SHIFT = " + shift + " and period = "
-                + period + " AND CONVERT(date, ConsolidationDate) = '" + collectionDate.ToString("yyyy-MM-dd") + "'";
+                string sql = "SELECT * FROM ConsolidationLevel1 (nolock) WHERE UnitId = '" + ParCompany_Id + "' AND ParLevel1_Id= '" + ParLevel1_Id + "' AND SHIFT = " + Shift + " and period = "
+                + Period + " AND CONVERT(date, ConsolidationDate) = '" + collectionDate.ToString("yyyy-MM-dd") + "'";
 
                 //SqlConnection db = new SqlConnection(conexao);
                 var obj = db.Query<ConsolidationLevel1>(sql).FirstOrDefault();
