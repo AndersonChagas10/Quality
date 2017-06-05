@@ -1225,8 +1225,8 @@
                     point: {
                         events: {
                             click: function () {
-                                //_MonitoramentoId = id[this.x];
-                                //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
+                                _MonitoramentoId = id[this.x];
+                                Index.onTarefaClickedNC(nome[this.x], id[this.x]);
                             }
                         }
                     },
@@ -1333,22 +1333,30 @@
                     }
                 },
                 series: [
-                    Chart.ProcNc(porc, requisitaDadosSGQparaGerarFta),
-                    Chart.NC(nc, requisitaDadosSGQparaGerarFta),
-                    Chart.Av(qtdAv, requisitaDadosSGQparaGerarFta),
+                    Chart.ProcNc(porc, function(category) {
+
+                        requisitaDadosSGQparaGerarFta(nome[nome.indexOf(category)], porc[nome.indexOf(category)], nc[nome.indexOf(category)])
+                    }),
+                    Chart.NC(nc, function(category) {
+                        requisitaDadosSGQparaGerarFta(nome[nome.indexOf(category)], porc[nome.indexOf(category)], nc[nome.indexOf(category)])
+                    }),
+                    Chart.Av(qtdAv, function(category) {
+                        requisitaDadosSGQparaGerarFta(nome[nome.indexOf(category)], porc[nome.indexOf(category)], nc[nome.indexOf(category)])
+                    }),
                     Chart.curvaPareto(data, nc, 1, inverse)
                 ]
             });
 
         }
-
-        function requisitaDadosSGQparaGerarFta(tarefa) {
+       
+        function requisitaDadosSGQparaGerarFta(tarefa, percentualNc, nc) {
             enviar['level3Name'] = tarefa;
+            enviar['PercentualNCFTA'] = percentualNc;   
+            enviar['ReincidenciaDesvioFTA'] = nc;   
             enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
             $.post('@Url.Action("GetUnitId","api/Fta")', enviar, function(c){
                 enviar["unitId"] = c.unitId;
-                enviar["PercentualNCFTA"] = 0;
-                enviar["ReincidenciaDesvioFTA"] = 0;
+                enviar["MetaFTA"] = "0";
                 RedirecionaParaFTA(enviar);
             });
             //EasyAjax(urlGetFta, enviar, RedirecionaParaFTA);
