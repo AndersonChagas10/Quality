@@ -1929,11 +1929,12 @@ namespace SGQDBContext
         {
             db = _db;
         }
-        public ConsolidationLevel1 getConsolidation(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate)
+        public ConsolidationLevel1 getConsolidation(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate,int shift, int period)
         {
             try
             {
-                string sql = "SELECT * FROM ConsolidationLevel1 (nolock)  WHERE UnitId = '" + ParCompany_Id + "' AND ParLevel1_Id= '" + ParLevel1_Id + "' AND CONVERT(date, ConsolidationDate) = '" + collectionDate.ToString("yyyy-MM-dd") + "'";
+                string sql = "SELECT * FROM ConsolidationLevel1 (nolock) WHERE UnitId = '" + ParCompany_Id + "' AND ParLevel1_Id= '" + ParLevel1_Id + "' AND SHIFT = " + shift + " and period = "
+                + period + " AND CONVERT(date, ConsolidationDate) = '" + collectionDate.ToString("yyyy-MM-dd") + "'";
 
                 //SqlConnection db = new SqlConnection(conexao);
                 var obj = db.Query<ConsolidationLevel1>(sql).FirstOrDefault();
