@@ -183,6 +183,47 @@ function heatMap(tableId, isInLine, isInColumn, startIndex, delimiterIndex) {
     }
 }
 
+function percentToRGB(percent, order) {
+
+    listaCorPura = [];
+    listaCorPura.push('#00FF00');
+    listaCorPura.push('#11FF00');
+    listaCorPura.push('#22FF00');
+    listaCorPura.push('#77FF00');
+    listaCorPura.push('#88FF00');
+    listaCorPura.push('#99FF00');
+    listaCorPura.push('#AAFF00');
+    listaCorPura.push('#BBFF00');
+    listaCorPura.push('#CCFF00');
+    listaCorPura.push('#DDFF00');
+    listaCorPura.push('#EEFF00');
+    listaCorPura.push('#FFFF00');
+    listaCorPura.push('#FFEE00');
+    listaCorPura.push('#FFDD00');
+    listaCorPura.push('#FFCC00');
+    listaCorPura.push('#FFBB00');//60%
+    listaCorPura.push('#FFBB00');//64
+    listaCorPura.push('#FFBB00');//68
+    listaCorPura.push('#FFBB00');//72
+    listaCorPura.push('#FFBB00');//76
+    listaCorPura.push('#ff6901');//80
+    listaCorPura.push('#ff6901');//84
+    listaCorPura.push('#ff6901');//88
+    listaCorPura.push('#ed3b1c');//92
+    listaCorPura.push('#ed3b1c');
+    listaCorPura.push('#ed3b1c');
+
+    var listaCor = [];
+    listaCorPura.forEach(function (o, c) {
+        for (var i = 0; i < 4; i++) {
+            listaCor.push(o);
+        }
+    });
+
+    return listaCor[parseInt(percent)];
+
+}
+
 /*DESCONTINUAR ESTES METODOS< E UTILIZAR APENA INSTANCIA POR CLASSE*/
 Inputmask.extendAliases({
     'numeric': {
