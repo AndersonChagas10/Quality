@@ -600,57 +600,18 @@ namespace SgqSystem.Services
 
                 foreach (SGQDBContext.ParCounter parCounter in parCounterList)
                 {
-                    string counterLine = getResource(parCounter.Name).Value + ":<span class=\"" + parCounter.Name + "\">0</span>";
-
-                    if (!string.IsNullOrEmpty(countersArray))
-                    {
-                        countersArray += ";" + counterLine;
-                    }
-                    else
-                    {
-                        countersArray += counterLine;
-                    }
+                    countersArray += counter(parCounter.Counter, parCounter.Level, parCounter.indicador, parCounter.Local);
                 }
-
-                //string countersArray = "Total Defeitos:<span class=\"DefectsTotal\">0</span>;Defeitos Level2:<span class=\"DefectsL2\">0</span>;Lados com Defeitos: <span class=\"DefectsEvaluate\">0</span>;3 Defeitos ou mais:<span class=\"More3DefectsEvaluate\">0</span>;Set Current:<span class=\"evaluateCurrentC\">0</span>;Side Current:<span class=\"sampleCurrentC\">0</span>;Defeitos Amostra:<span class=\"DefectsL2Sample\">0</span>";
-
-                string[] arrayCounter = countersArray.Split(';');
-
-
-                string countersLine = null;
-
-                int qtdeColunas = 12 / arrayCounter.Length;
-                if (qtdeColunas < 2)
-                {
-                    qtdeColunas = 2;
-                }
-                int contagem = 0;
-                string painel = null;
-                for (int i = 0; i < arrayCounter.Length; i++)
-                {
-                    contagem++;
-                    string[] counters = arrayCounter[i].Split(':');
-                    countersLine += counter(counters[0], counters[1], "col-xs-" + qtdeColunas);
-                    if (contagem == 6)
-                    {
-                        //painel += div(outerhtml: countersLine, classe: "counters row ", style: "background-color: #f1f1f1; padding-top: 5px;padding-bottom:5px;" + css);
-                        countersLine = null;
-                        contagem = 0;
-                    }
-                }
-
-                if (!string.IsNullOrEmpty(countersLine))
-                {
-                    //painel += div(outerhtml: countersLine, classe: "counters row ", style: "background-color: #f1f1f1; padding-top: 5px;padding-bottom:5px;" + css);
-                }
-                return painel;
+                return countersArray;
             }
 
             //div(outerhtml: countersLine, classe: "counters row " + classe, style: "background-color: #f1f1f1; padding-top: 5px;padding-bottom:5px;");
         }
-        public string counter(string label, string value, string classe)
+        public string counter(string label, string level, string indicador, string headerLevel)
         {
-            return "<span class=\"counter " + classe + "\"><b><span class=\"labelCounter\">" + label.Trim() + "</span></b>: <span class=\"value\">" + value.Trim() + "</span></span>";
+            //return "<span class=\"counter " + classe + "\"><b><span class=\"labelCounter\">" + label.Trim() + "</span></b>: <span class=\"value\">" + value.Trim() + "</span></span>";
+            return "<span class=\"counter hide col-xs-4\" counter=\""+label+"\" level=\"" + level + "\" indicador=\"" + indicador + "\" headerLevel=\"" + headerLevel + "\"><b><span class=\"labelCounter\">" +
+                label+"</span></b>: <span class=\"value\">0</span></span>";
         }
 
         public DictionaryEntry getResource(string value)

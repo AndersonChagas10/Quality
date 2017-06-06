@@ -3789,7 +3789,7 @@ namespace SgqSystem.Services
                         //Identidicar se possui contador para o indicador
                         if (listCounter != null)
                         {
-                            painelCounters = html.painelCounters(listCounter, "margin-top: 40px;font-size: 12px;");
+                            painelCounters = html.painelCounters(listCounter.Where(r=> r.Local == "level1_line"), "margin-top: 40px;font-size: 12px;");
                         }
 
                         if (GlobalConfig.Eua && parlevel1.Name.Contains("CFF"))
@@ -4154,7 +4154,7 @@ namespace SgqSystem.Services
 
                 if (listLineCounter != null)
                 {
-                    lineCounters = html.painelCounters(listLineCounter, "margin-top: 45px;font-size: 12px;");
+                    lineCounters = html.painelCounters(listLineCounter.Where(r=> r.Local == "level2_line"), "margin-top: 45px;font-size: 12px;");
                 }
 
                 //Gera linha do Level2
@@ -4269,13 +4269,13 @@ namespace SgqSystem.Services
             var painelLevel2HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1(ParLevel1.Id), ParFieldTypeDB, html);
 
 
-            if (!string.IsNullOrEmpty(painelLevel2HeaderListHtml))
-            {
-                painelLevel2HeaderListHtml = html.listgroupItem(
-                                                                outerhtml: painelLevel2HeaderListHtml,
-                                                                classe: "row painelLevel02"
-                                                                );
-            }
+            //if (!string.IsNullOrEmpty(painelLevel2HeaderListHtml))
+            //{
+            //    painelLevel2HeaderListHtml = html.listgroupItem(
+            //                                                    outerhtml: painelLevel2HeaderListHtml,
+            //                                                    classe: "row painelLevel02"
+            //                                                    );
+            //}
 
             var listCounter = ParCounterDB.GetParLevelXParCounterList(ParLevel1.Id, 0, 1);
 
@@ -4283,7 +4283,26 @@ namespace SgqSystem.Services
 
             if (listCounter != null)
             {
-                painelCounters = html.painelCounters(listCounter);
+                //var listAux = listCounter.Where(r => r.Local == "level2_header" && Convert.ToInt32(r.indicador) == ParLevel1.Id);
+                painelCounters = html.painelCounters(listCounter.Where(r => r.Local == "level2_header"), "margin-top: 45px;font-size: 12px;");
+                var form_dentro = html.div(
+                                            outerhtml: painelCounters,
+                                            classe: "form-group header",
+                                            style: "margin-bottom: 4px;"
+                                           );
+                painelCounters += html.div(
+                                            outerhtml: form_dentro,
+                                            classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
+                                            style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                           );
+            }
+
+            if (!string.IsNullOrEmpty(painelLevel2HeaderListHtml))
+            {
+                painelLevel2HeaderListHtml = html.listgroupItem(
+                                                                outerhtml: painelLevel2HeaderListHtml+painelCounters,
+                                                                classe: "row painelLevel02"
+                                                                );
             }
 
             //Se contem  monitoramentos
@@ -4293,7 +4312,7 @@ namespace SgqSystem.Services
                 ParLevel2List = html.listgroup(
                                                 outerhtml: reauditFlag +
                                                            painelLevel2HeaderListHtml +
-                                                           painelCounters +
+                                                           null +
                                                            ParLevel2List,
                                                 tags: "level01Id=\"" + ParLevel1.Id + "\""
                                                , classe: "level2Group hide");
@@ -5039,7 +5058,7 @@ namespace SgqSystem.Services
                     string painelCounters = "";
                     if (listCounter != null)
                     {
-                        painelCounters = html.painelCounters(listCounter);
+                        painelCounters = html.painelCounters(listCounter.Where(r=> r.Local == "level3_header"));
                     }
 
                     parLevel3Group += level3Group;
@@ -5062,6 +5081,11 @@ namespace SgqSystem.Services
                                     outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
+                string defeitoshtml = html.div(
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("defects").Value.ToString() + 
+                                    "</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(outerhtml: "0",classe: "defects") +"</label>",
+                                    style: "margin-bottom: 4px;",
+                                    classe: "form-group");
 
                 string avaliacoes = html.div(
                                     outerhtml: avaliacoeshtml,
@@ -5069,6 +5093,10 @@ namespace SgqSystem.Services
                                     classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
                 string amostras = html.div(
                                     outerhtml: amostrashtml,
+                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
+                string defeitos = html.div(
+                                    outerhtml: defeitoshtml,
                                     style: "padding-right: 4px !important; padding-left: 4px !important;",
                                     classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
 
@@ -5146,6 +5174,7 @@ namespace SgqSystem.Services
 
                 painellevel3 = html.listgroupItem(outerhtml: avaliacoes +
                                                              amostras +
+                                                             defeitos + 
                                                              painelLevel3HeaderListHtml,
                                                   classe: "painel painelLevel03 row") +
                               html.painelCounters(listCounter);
