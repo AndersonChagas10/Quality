@@ -34,6 +34,7 @@ namespace SGQDBContext
         public decimal valorAlerta { get; set; }
         public bool HasCompleteEvaluation { get; set; }
         public bool IsReaudit { get; set; }
+        public bool EditLevel2 { get; set; }
 
 
         public bool HasGroupLevel2 { get; set; }
@@ -79,9 +80,9 @@ namespace SGQDBContext
             //SqlConnection db = new SqlConnection(conexao);
             string sql = "\n SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
                          "\n P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate, P1.IsLimitedEvaluetionNumber, P1.IsPartialSave" +
-                         "\n ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, AL.IsReaudit AS IsReaudit, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2                                                                                                                                     " +
-                         "\n FROM ParLevel1 P1   (nolock)                                                                                                         " +
-                         "\n INNER JOIN (SELECT ParLevel1_Id FROM ParLevel3Level2Level1 (nolock)  GROUP BY ParLevel1_Id) P321                                     " +
+                         "\n ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, AL.IsReaudit AS IsReaudit, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2, P1.EditLevel2 AS EditLevel2                                                                                                                                     " +
+                         "\n FROM ParLevel1 P1  (nolock)                                                                                                         " +
+                         "\n INNER JOIN (SELECT ParLevel1_Id FROM ParLevel3Level2Level1 GROUP BY ParLevel1_Id) P321                                     " +
                          "\n ON P321.ParLevel1_Id = P1.Id                                                                                               " +
                          "\n INNER JOIN ParLevel1XCluster P1C  (nolock)                                                                                           " +
                          "\n ON P1C.ParLevel1_Id = P1.Id                                                                                                " +
@@ -1952,7 +1953,8 @@ namespace SGQDBContext
         {
             try
             {
-                string sql = "SELECT * FROM ConsolidationLevel1 (nolock)  WHERE UnitId = '" + ParCompany_Id + "' AND ParLevel1_Id= '" + ParLevel1_Id + "' AND CONVERT(date, ConsolidationDate) = '" + collectionDate.ToString("yyyy-MM-dd") + "'";
+                string sql = "SELECT * FROM ConsolidationLevel1 (nolock) WHERE UnitId = '" + ParCompany_Id + "' AND ParLevel1_Id= '" + ParLevel1_Id + "' AND SHIFT = " + Shift + " and period = "
+                + Period + " AND CONVERT(date, ConsolidationDate) = '" + collectionDate.ToString("yyyy-MM-dd") + "'";
 
                 //SqlConnection db = new SqlConnection(conexao);
                 var obj = db.Query<ConsolidationLevel1>(sql).FirstOrDefault();
@@ -2100,7 +2102,10 @@ namespace SGQDBContext
 
     public partial class ParCounter
     {
-        public string Name { get; set; }
+        public string Counter { get; set; }
+        public string Local { get; set; }
+        public string Level { get; set; }
+        public string indicador { get; set; }
 
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
@@ -2130,7 +2135,7 @@ namespace SGQDBContext
                                  "   AND PC.Level = " + Level + " AND PL.IsActive = 1;                                      ";
                         */
 
-                        sql = "SELECT Distinct PC.Name FROM ParCounterXLocal PL (nolock)  " +
+                        sql = "SELECT Distinct PO.level, PC.Name as Counter, PO.Name as Local, PL.ParLevel1_Id AS indicador FROM ParCounterXLocal PL (nolock)  " +
                               "LEFT JOIN ParCounter PC (nolock)  ON PL.ParCounter_Id = PC.Id " +
                               "LEFT JOIN ParLocal PO  (nolock) ON PO.Id = PL.ParLocal_Id " +
                               "WHERE PL.ParLevel1_Id = " + ParLevel1_Id + " " +
@@ -2151,7 +2156,7 @@ namespace SGQDBContext
                                  "   AND PC.Level = " + Level + " AND PL.IsActive = 1;                                      ";
                         */
                         
-                        sql = "SELECT Distinct PC.Name FROM ParCounterXLocal PL (nolock)  " +
+                        sql = "SELECT Distinct PO.level, PC.Name as Counter, PO.Name as Local, PL.ParLevel2_Id AS indicador FROM ParCounterXLocal PL (nolock)  " +
                               "LEFT JOIN ParCounter PC (nolock)  ON PL.ParCounter_Id = PC.Id " +
                               "LEFT JOIN ParLocal PO (nolock)  ON PO.Id = PL.ParLocal_Id " +
                               "WHERE PL.ParLevel1_Id IS NULL " +

@@ -1,13 +1,7 @@
 ﻿using Dominio;
 using DTO;
-using DTO.Helpers;
 using Newtonsoft.Json.Linq;
-using SgqSystem.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api.RelatoriosBrasil
@@ -15,8 +9,22 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
     [RoutePrefix("api/Fta")]
     public class FtaApiController : ApiController
     {
+        private SgqDbDevEntities db;
 
+        public FtaApiController()
+        {
+            db = new SgqDbDevEntities();
+        }
 
+        [HttpPost]
+        [Route("GetUnitId")]
+        public JObject GetUnitId(JObject json)
+        {
+            dynamic form = json;
+            string name =  form.unitName;
+            form.unitId = db.ParCompany.FirstOrDefault(r => r.Initials.Equals(name)).Id;
+            return form;
+        }
 
         /// <summary>
         /// Pa_Acao/NewFTA?
@@ -42,40 +50,35 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             //retorno.url = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao//NewFTA?";
             retorno.url = "http://192.168.25.200/PlanoAcao/Pa_Acao//NewFTA?";
 
-            using (var db = new SgqDbDevEntities())
+            retorno.MetaFTA += "MetaFTA=" + form.MetaFTA.ToString();
+            retorno.PercentualNCFTA += "&PercentualNCFTA=" + form.PercentualNCFTA.ToString();
+            retorno.ReincidenciaDesvioFTA += "&ReincidenciaDesvioFTA=" + form.ReincidenciaDesvioFTA.ToString();
+            retorno.Level1Id += "&Level1Id=" + db.ParLevel1.FirstOrDefault(r => r.Name.Equals(form.level1Name)).Id.ToString();
+            retorno.Level2Id += "&Level2Id=" + db.ParLevel2.FirstOrDefault(r => r.Name.Equals(form.level2Name)).Id.ToString();
+            retorno.Level3Id += "&Level3Id=" + db.ParLevel3.FirstOrDefault(r => r.Name.Equals(form.level3Name)).Id.ToString();
+            #region Mock de reparo para correção emergencial.
+            //retorno.Supervisor_Id += "&Supervisor_Id=3";
+            //retorno.Unidade_Id += "&Unidade_Id=1";
+            #endregion
+
+            if (form.unitId > 0)
             {
-
-                retorno.MetaFTA += "MetaFTA=" + form.MetaFTA.ToString();
-                retorno.PercentualNCFTA += "&PercentualNCFTA=" + form.PercentualNCFTA.ToString();
-                retorno.ReincidenciaDesvioFTA += "&ReincidenciaDesvioFTA=" + form.ReincidenciaDesvioFTA.ToString();
-                retorno.Level1Id += "&Level1Id=" + db.ParLevel1.FirstOrDefault(r => r.Name.Equals(form.level1Name)).Id.ToString();
-                retorno.Level2Id += "&Level2Id=" + db.ParLevel2.FirstOrDefault(r => r.Name.Equals(form.level2Name)).Id.ToString();
-                retorno.Level3Id += "&Level3Id=" + db.ParLevel3.FirstOrDefault(r => r.Name.Equals(form.level3Name)).Id.ToString();
-                #region Mock de reparo para correção emergencial.
-                //retorno.Supervisor_Id += "&Supervisor_Id=3";
-                //retorno.Unidade_Id += "&Unidade_Id=1";
-                #endregion
-
-                if (form.unitId > 0)
-                {
-                    retorno.Unidade_Id += "&Unidade_Id=" + db.ParCompany.FirstOrDefault(r => r.Name.Equals(form.unitId)).Id.ToString();
-                }
-                else
-                {
-                    retorno.Unidade_Id += "&Unidade_Id=0";
-                }
-
-                retorno.Supervisor_Id += "&Supervisor_Id=" + form.auditorId.ToString();
-                retorno.Departamento_Id += "&Departamento_Id=" + 1.ToString();
-
-                retorno._DataInicioFTA += "&_DataInicioFTA" + form._dataInicio.ToString("dd/MM/yyyy").Replace("/", "%2F");
-                retorno._DataFimFTA += "&_DataFimFTA" + form._dataFim.ToString("dd/MM/yyyy").Replace("/", "%2F");
-
+                retorno.Unidade_Id += "&Unidade_Id=" + db.ParCompany.FirstOrDefault(r => r.Name.Equals(form.unitId)).Id.ToString();
             }
+            else
+            {
+                retorno.Unidade_Id += "&Unidade_Id=0";
+            }
+
+            retorno.Supervisor_Id += "&Supervisor_Id=" + form.auditorId.ToString();
+            retorno.Departamento_Id += "&Departamento_Id=" + 1.ToString();
+
+            retorno._DataInicioFTA += "&_DataInicioFTA" + form._dataInicio.ToString("dd/MM/yyyy").Replace("/", "%2F");
+            retorno._DataFimFTA += "&_DataFimFTA" + form._dataFim.ToString("dd/MM/yyyy").Replace("/", "%2F");
 
             return retorno;
         }
 
-       
+
     }
 }

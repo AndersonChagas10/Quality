@@ -132,6 +132,8 @@ namespace DTO
         }
 
         public static string Verifica { get; set; }
+        public static Dictionary<int, string> UsuariosUnidades { get; set; }
+
         /// <summary>
         /// Recebe parametros do DB e Configura arquivo de config do web site.
         /// </summary>

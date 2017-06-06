@@ -1,5 +1,5 @@
-﻿using DTO;
-using System.Collections.Generic;
+﻿using Dominio;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
@@ -11,8 +11,16 @@ namespace SgqSystem.Controllers
         //[CustomAuthorize(Roles = "tato")]
         public ActionResult Config()
         {
-            
-            return View();
+            using (var db = new SgqDbDevEntities())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+                ViewBag.unidades = db.ParCompany.ToList();
+            }
+
+
+                return View();
         }
+
+
     }
 }

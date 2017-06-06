@@ -8,6 +8,8 @@ using System.Data;
 using DTO;
 using System.Collections.Generic;
 using SgqSystem.Services;
+using System.Data.Entity.Validation;
+using SgqSystem.Controllers.Api;
 
 namespace SgqSystem.Mail
 {
@@ -58,7 +60,7 @@ namespace SgqSystem.Mail
                     db.SaveChanges();
 
                 }
-                
+
                 return db.EmailContent.Where(r => r.SendStatus == null && r.Project == "SGQApp").ToList();
             }
 
@@ -89,7 +91,7 @@ namespace SgqSystem.Mail
                 ListaDeMail = CreateMailSgqAppDeviation();
                 if (ListaDeMail != null && ListaDeMail.Count() > 0)
                     foreach (var i in ListaDeMail.ToList())
-                        SendMail(i);
+                        SendMail(i, true);
             }
             catch (Exception ex)
             {
@@ -99,7 +101,46 @@ namespace SgqSystem.Mail
 
         }
 
-        public static void SendMail(EmailContent mailEntry)
+        public static void SendMailFromDeviationSgqAppTeste(bool callback, string mailTo)
+        {
+
+            var teste = new EmailContent()
+            {
+                AddDate = DateTime.Now,
+                Body = "Teste Global Config",
+                IsBodyHtml = true,
+                Subject = "teste v2",
+                To = mailTo,
+                Project = "SGQApp"
+            };
+
+            try
+            {
+                using (var db = new SgqDbDevEntities())
+                {
+                    using (var controller = new CorrectActApiController())
+                    {
+                        var id = db.CorrectiveAction.OrderByDescending(r=>r.Id).FirstOrDefault().Id;
+                        var model = controller.GetCorrectiveActionById(id);
+                        teste.Body = model.SendMeByMail;
+                    }
+
+                    db.EmailContent.Add(teste);
+                    db.SaveChanges();
+                    SendMail(teste, callback);
+                }
+            }
+            catch (Exception ex)
+            {
+                new CreateLog(ex, teste);
+                throw ex;
+            }
+
+          
+
+        }
+
+        public static void SendMail(EmailContent mailEntry, bool runCallBack)
         {
             // Command line argument must the the SMTP host.
             if (GlobalConfig.mockEmail)
@@ -133,10 +174,13 @@ namespace SgqSystem.Mail
             message.SubjectEncoding = System.Text.Encoding.UTF8;
             message.BodyEncoding = System.Text.Encoding.UTF8;
 
-            //Callback
-            // Set the method that is called back when the send operation ends.
-            client.SendCompleted += new
-            SendCompletedEventHandler(SendCompletedCallback);
+            if (runCallBack)
+            {
+                //Callback
+                // Set the method that is called back when the send operation ends.
+                client.SendCompleted += new
+                SendCompletedEventHandler(SendCompletedCallback);
+            }
 
             // The userState can be any object that allows your callback 
             // method to identify this send operation.
@@ -154,6 +198,8 @@ namespace SgqSystem.Mail
                 using (var db = new SgqDbDevEntities())
                 {
 
+                    db.Configuration.ValidateOnSaveEnabled = false;
+                    db.Configuration.LazyLoadingEnabled = false;
 
                     // Get the unique identifier for this asynchronous operation.
                     String token = (string)e.UserState;
@@ -164,12 +210,12 @@ namespace SgqSystem.Mail
                     if (e.Cancelled)
                     {
                         //Console.WriteLine("[{0}] Send canceled.", token);
-                        emailContent.SendStatus = string.Format("[{0}] Send canceled.", token);
+                        emailContent.SendStatus = string.Format("Send canceled: [{0}].", token);
                     }
                     if (e.Error != null)
                     {
                         //Console.WriteLine("[{0}] {1}", token, e.Error.ToString());
-                        emailContent.SendStatus = string.Format("[{0}] {1}", token, e.Error.ToString());
+                        emailContent.SendStatus = string.Format("Error sending: [{0}] {1}", token, e.Error.ToString());
                     }
                     else
                     {
@@ -180,8 +226,12 @@ namespace SgqSystem.Mail
                     emailContent.AlterDate = DateTime.Now;
                     emailContent.SendDate = DateTime.Now;
 
+                    if (emailContent.SendStatus.Length > 889)
+                        emailContent.SendStatus = emailContent.SendStatus.Substring(0, 889);
+
                     /*Atualiza email enviados no emailContent DB*/
                     db.EmailContent.Attach(emailContent);
+
                     //emailContent.Body = "";
                     var entry = db.Entry(emailContent);
                     entry.State = System.Data.Entity.EntityState.Modified;
@@ -193,13 +243,28 @@ namespace SgqSystem.Mail
 
                 }
             }
+            catch (DbEntityValidationException ex1)
+            {
+                var aMerdaQueDeu = string.Empty;
+                //transaction.Rollback();
+                foreach (var i in ex1.EntityValidationErrors)
+                {
+                    aMerdaQueDeu += string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:", i.Entry.Entity.GetType().Name, i.Entry.State);
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:", i.Entry.Entity.GetType().Name, i.Entry.State);
+                    foreach (var ve in i.ValidationErrors)
+                    {
+                        aMerdaQueDeu += string.Format("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage);
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+                new CreateLog(new Exception(aMerdaQueDeu, ex1));
+                throw;
+            }
             catch (Exception ex)
             {
                 new CreateLog(new Exception("Erro ao enviar e mail", ex));
-                //throw ex;
             }
         }
-
 
         #region ResendProcessJson
 
