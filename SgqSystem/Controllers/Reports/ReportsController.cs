@@ -12,12 +12,12 @@ namespace SgqSystem.Controllers
 {
     //techservices
     [CustomAuthorize]
-    [OutputCache(Duration = 20, VaryByParam = "none")]
+    //[OutputCache(Duration = 20, VaryByParam = "none")]
     public class ReportsController : BaseController
     {
 
         #region Constructor
-
+      
         private FormularioParaRelatorioViewModel form;
         private readonly IRelatorioColetaDomain _relatorioColetaDomain;
         private readonly IUserDomain _userDomain;
@@ -67,11 +67,22 @@ namespace SgqSystem.Controllers
         {
             return View(form);
         }
+
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult CorrectiveActionReport()
         {
             return View(form);
         }
+
+        //public ActionResult CorrectiveActionReportDetails()
+        //{
+        //    using (var teste = new CorrectActApiController())
+        //    {
+        //        var model = teste.GetCorrectiveActionById(706);
+        //        return View(model);
+        //    }
+        //}
+
 
     }
 }

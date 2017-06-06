@@ -38,13 +38,13 @@ namespace Dominio
         public Nullable<int> EvaluatedResult { get; set; }
         public Nullable<int> DefectsResult { get; set; }
         public Nullable<int> LastLevel2Alert { get; set; }
-        public int ReauditIs { get; set; }
-        public int ReauditNumber { get; set; }
+        public Nullable<int> ReauditIs { get; set; }
+        public Nullable<int> ReauditNumber { get; set; }
     
         public virtual ParLevel2 ParLevel2 { get; set; }
-        public virtual ConsolidationLevel1 ConsolidationLevel1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }
         public virtual ParCompany ParCompany { get; set; }
+        public virtual ConsolidationLevel1 ConsolidationLevel1 { get; set; }
     }
 }

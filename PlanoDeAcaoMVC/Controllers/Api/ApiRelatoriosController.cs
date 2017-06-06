@@ -1,11 +1,8 @@
 ﻿using DTO.Helpers;
 using Newtonsoft.Json.Linq;
 using PlanoAcaoCore;
-using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Net.Http.Formatting;
 using System.Web.Http;
 
 namespace PlanoDeAcaoMVC.Controllers.Api

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Runtime.Serialization;
 
 namespace DTO.DTO
 {
@@ -49,7 +48,7 @@ namespace DTO.DTO
 
         public List<CorrectiveActionLevelsDTO> CorrectiveActionLevels { get; set; }
 
-        
+
         //public string DateExecuteFarmatado
         //{
         //    get { return DateExecute.ToString("MM/dd/yyyy hh:mm:ss"); }
@@ -187,6 +186,88 @@ namespace DTO.DTO
             #region NameSlaughter
             #endregion
 
+        }
+
+
+        public string SendMeByMail
+        {
+            get
+            {
+
+                if (Id <= 0)
+                    return string.Empty;
+
+                var body = "<div class='header' style='font-size:14px;font-weight:bold'>" +
+                "    <div class='unitCode'>JBS <span id='estName'>" + Unit.Name + "</span> Beef, Est. <span id='estCode'>" + Unit.Code + "</span></div>" +
+                "    <div>Safe Program Audit Form</div>" +
+                "    <div>Corrective Action</div>" +
+                "</div>" +
+                "<div style='border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;'>" +
+                "    <div class='row'>" +
+                "        <div class='col-xs-6' id='CorrectiveActionTaken'>" +
+                "            <b class='font16'>Corrective Action Taken:<br></b>" +
+                "            <b>Date/Time:</b> <span id='datetime'>" + DateCorrectiveActionFormatado + "</span><br>" +
+                "            <b>Auditor: </b><span id='auditor'>" + AuditorName + "</span><br>" +
+                "            <b>Shift: </b><span id='shift'>" + ShiftName + "</span><br>" +
+                "        </div>" +
+                "        <div class='col-xs-6' id='AuditInformation'>" +
+                "            <b class='font16'>Audit Information:<br></b>" +
+                "            <b>Audit Audit: </b><span id='auditText'>" + level01Name + "</span><br>" +
+                "            <b>Start Time: </b><span id='starttime'>" + StartTimeFormatado + "</span><br>" +
+                "            <b>Period: </b><span id='correctivePeriod'>" + PeriodName + "</span>" +
+                "        </div>" +
+                "    </div>" +
+                "</div>" +
+                "<div>" +
+                "    <div style='border: 1px solid #ddd; padding: 8px; width:100%;height:auto;margin-top: 8px;'>" +
+                "        <h4 style='margin-top:0'>Description Failure</h4>" +
+                "        <div id='DescriptionFailure'>" +
+                "         " + DescriptionFailure +
+                "        </div>" +
+                "    </div>" +
+                "    <div style='border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;'>" +
+                "        <h4 style='margin-top:0'>Immediate Corrective Action</h4>" +
+                "        <div id='ImmediateCorrectiveAction'>" + ImmediateCorrectiveAction + "</div>" +
+                "    </div>" +
+                "    <div style='border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;'>" +
+                "        <h4 style='margin-top:0'>Product Disposition</h4>" +
+                "        <div id='ProductDisposition'>" + ProductDisposition + "</div>" +
+                "    </div>" +
+                "    <div style='border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;'>" +
+                "        <h4 style='margin-top:0'>Preventative Measure</h4>" +
+                "        <div id='PreventativeMeasure'>" + PreventativeMeasure + "</div>" +
+                "    </div>" +
+                "    <div style='border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px; height: 90px;margin-bottom:15px;'>" +
+                "        <div class='SlaugtherSignature ' style='width:50%; float: left;' id='Slaugther' userid=''>" +
+                "            <h5 style='margin-top:0;font-weight:bold'>Slaughter signature</h5>" +
+                "            <div class='name'>" + NameSlaughter + "</div>" +
+                "            <div class='date'>" + DateTimeSlaughterFarmatado + "</div>" +
+                "        </div>" +
+                "        <div class='TechnicaSignature' style='width:49%; float: right;' id='Technical' userid=''>" +
+                "            <h5 style='margin-top:0;font-weight:bold'>Technical signature</h5>" +
+                "            <div class='name'>" + NameTechinical + "</div>" +
+                "            <div class='date'>" + DateTimeTechinicalFarmatado + "</div>" +
+                "        </div>" +
+                "    </div>" +
+                "</div>"; /*+
+                "    <div class='col-xs-4'>" +
+                "        <div>Origination Date: January 30, 2014</div> <!--O que fazer com a Data?-->" +
+                "<br>" +
+                "        <div>Revision Date:</div>" +
+                "<br>" +
+                "        <div>Supersedes Date:</div>" +
+                "    </div>" +
+                "    <div class='col-xs-4'>" +
+                "<br>" +
+                "        <div>This Document Contains Confidential</div>" +
+                "<br>" +
+                "        <div>Commercial Information Pursuant to</div>" +
+                "<br>" +
+                "        <div>5 U.S.C Sec. 552(b)(4).</div>" +
+                "    </div>";*/
+
+                return body;
+            }
         }
 
     }
