@@ -905,6 +905,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.ManColetaDados' does not have a prima
           <Property Name="IsPartialSave" Type="bit" />
           <Property Name="HasCompleteEvaluation" Type="bit" />
           <Property Name="ParScoreType_Id" Type="int" />
+          <Property Name="EditLevel2" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'SgqUSAV2.dbo.ParLevel1VariableProduction' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -7104,6 +7105,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.VWCFFResults' does not have a primary
           <NavigationProperty Name="ParLevel3Level2Level1" Relationship="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel1" FromRole="ParLevel1" ToRole="ParLevel3Level2Level1" />
           <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel1" FromRole="ParLevel1" ToRole="ParNotConformityRuleXLevel" />
           <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel1" FromRole="ParLevel1" ToRole="ParRelapse" />
+          <Property Name="EditLevel2" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_CollectionLevel2_ParLevel1">
           <End Type="SgqDbModel.ParLevel1" Role="ParLevel1" Multiplicity="1" />
@@ -8952,6 +8954,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.VWCFFResults' does not have a primary
           <EntitySetMapping Name="ParLevel1">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel1">
               <MappingFragment StoreEntitySet="ParLevel1">
+                <ScalarProperty Name="EditLevel2" ColumnName="EditLevel2" />
                 <ScalarProperty Name="ParScoreType_Id" ColumnName="ParScoreType_Id" />
                 <ScalarProperty Name="HasCompleteEvaluation" ColumnName="HasCompleteEvaluation" />
                 <ScalarProperty Name="IsPartialSave" ColumnName="IsPartialSave" />
