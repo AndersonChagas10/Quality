@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using SgqSystem.Mappers.Manutencao;
 using SgqSystem.Mappers.ParamsBrasil;
 
 namespace SgqSystem.Mappers
@@ -99,7 +98,7 @@ namespace SgqSystem.Mappers
 
 
                 /*Manutencao*/
-                x.AddProfile<DimManutencaoColetaITsMapperProfile>();
+                //x.AddProfile<DimManutencaoColetaITsMapperProfile>();
 
                 /*Email Content*/
                 x.AddProfile<EmailContentMapperProfile>();

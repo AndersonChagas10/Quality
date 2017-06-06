@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -306,9 +306,6 @@
     <Compile Include="Controllers\Api\App\ContadoresXX.cs" />
     <Compile Include="Controllers\Api\CorrectActApiController.cs" />
     <Compile Include="Controllers\Api\DefectApiController.cs" />
-    <Compile Include="Controllers\Api\Manutencao\ManColetaDadosController.cs" />
-    <Compile Include="Controllers\Api\Manutencao\ManDataCollectITsController.cs" />
-    <Compile Include="Controllers\Api\Manutencao\PainelIndicadoresUniManutencaoController.cs" />
     <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\FtaApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\ApontamentosDiariosApiController.cs" />
@@ -316,7 +313,6 @@
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
     <Compile Include="Controllers\Api\LanguageController.cs" />
     <Compile Include="Controllers\Api\UserAndRoles\LoginController.cs" />
-    <Compile Include="Controllers\Api\Manutencao\ManutencaoController.cs" />
     <Compile Include="Controllers\Api\NQAController.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
     <Compile Include="Controllers\Api\Familia\ParLevel2ControlCompanyController.cs" />
@@ -336,9 +332,6 @@
     <Compile Include="Controllers\Exemplo\ExemploInputController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
-    <Compile Include="Controllers\Manutencao\manDataCollectITsController.cs" />
-    <Compile Include="Controllers\Manutencao\ManutencaoController.cs" />
-    <Compile Include="Controllers\Manutencao\ManPainelGestaoController.cs" />
     <Compile Include="Controllers\Params\EquipamentosController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\Familia\ParLevel2ControlCompanyController.cs" />
@@ -388,7 +381,6 @@
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
     <Compile Include="Mappers\DefectMapperProfile.cs" />
     <Compile Include="Mappers\EmailContentMapperProfile.cs" />
-    <Compile Include="Mappers\Manutencao\DimManutencaoColetaITsMapperProfile.cs" />
     <Compile Include="Mappers\ParamsBrasil\ParLevel2ControlCompanyMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParCompanyClusterMapperProfile.cs" />
     <Compile Include="Mappers\Params\ParLevel2XHeaderFieldMapperProfile.cs" />
@@ -1346,28 +1338,19 @@
     <Content Include="Views\RelatoriosSgq\ApontamentosDiarios.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoConformidade.cshtml" />
     <Content Include="Views\RelatoriosSgq\ExemploRelatorio.cshtml" />
-    <Content Include="Views\manDataCollectITs\Create.cshtml" />
-    <Content Include="Views\manDataCollectITs\Delete.cshtml" />
-    <Content Include="Views\manDataCollectITs\Details.cshtml" />
-    <Content Include="Views\manDataCollectITs\Edit.cshtml" />
-    <Content Include="Views\manDataCollectITs\Index.cshtml" />
     <Content Include="Views\ExemploInput\Index.cshtml" />
     <Content Include="Views\Example\TiposDeInputSgq.cshtml" />
     <Content Include="Views\RelatoriosSgq\VisaoGeralDaArea.cshtml" />
     <Content Include="Views\RelatoriosSgq\GetTable.cshtml" />
-    <Content Include="Views\manDataCollectITs\Create2.cshtml" />
     <Content Include="Views\RelatoriosSgq\_ResultLevel3Edit.cshtml" />
     <Content Include="Views\UserSgq\Create.cshtml" />
     <Content Include="Views\UserSgq\Delete.cshtml" />
     <Content Include="Views\UserSgq\Details.cshtml" />
     <Content Include="Views\UserSgq\Edit.cshtml" />
     <Content Include="Views\UserSgq\Index.cshtml" />
-    <Content Include="Views\ManPainelGestao\PainelGestaoManutencao.cshtml" />
-    <Content Include="Views\ManPainelGestao\PainelIndicadoresUniManutencao.cshtml" />
     <Content Include="Views\Role\Index.cshtml" />
     <Content Include="Views\Role\RoleSGQ.cshtml" />
     <Content Include="Views\Role\ScreenComponent.cshtml" />
-    <Content Include="Views\ManPainelGestao\Index.cshtml" />
     <Content Include="Views\ParCompany\Index2.cshtml" />
     <Content Include="Scripts\version.json" />
     <Content Include="Views\Role\RoleJBS.cshtml" />
@@ -1381,7 +1364,6 @@
     <Content Include="Views\Role\LeftControlRole.cshtml" />
     <Content Include="Views\Role\EditLeftControlRole.cshtml" />
     <Content Include="Views\RelatoriosSgq\CartasCep.cshtml" />
-    <Content Include="Views\Manutencao\Index.cshtml" />
     <Content Include="Views\Equipamentos\Create.cshtml" />
     <Content Include="Views\Equipamentos\Delete.cshtml" />
     <Content Include="Views\Equipamentos\Details.cshtml" />
@@ -1487,7 +1469,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
