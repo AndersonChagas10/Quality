@@ -1,0 +1,72 @@
+﻿@model DTO.DTO.CorrectiveActionDTO
+@{
+    Layout = null;
+}
+
+<div class="header" style="font-size:14px;font-weight:bold">
+    <div class="unitCode">JBS <span id="estName">@Model.Unit.Name</span> Beef, Est. <span id="estCode">@Model.Unit.Code</span></div>
+    <div>Safe Program Audit Form</div>
+    <div>Corrective Action</div>
+</div>
+
+<div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;">
+    <div class="row">
+        <div class="col-xs-6" id="CorrectiveActionTaken">
+            <b class="font16">Corrective Action Taken:<br></b>
+            <b>Date/Time:</b> <span id="datetime">@Model.DateCorrectiveActionFormatado</span><br>
+            <b>Auditor: </b><span id="auditor">@Model.AuditorName</span><br>
+            <b>Shift: </b><span id="shift">@Model.ShiftName</span><br>
+        </div>
+        <div class="col-xs-6" id="AuditInformation">
+            <b class="font16">Audit Information:<br></b>
+            <b>Audit Audit: </b><span id="auditText">@Model.level01Name</span><br>
+            <b>Start Time: </b><span id="starttime">@Model.StartTimeFormatado</span><br>
+            <b>Period: </b><span id="correctivePeriod">@Model.PeriodName</span>
+        </div>
+    </div>
+</div>
+
+<div>
+    <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto;margin-top: 8px;">
+        <h4 style="margin-top:0">Description Failure</h4>
+        <div id="DescriptionFailure">
+         @Model.DescriptionFailure
+        </div>
+    </div>
+    <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;">
+        <h4 style="margin-top:0">Immediate Corrective Action</h4>
+        <div id="ImmediateCorrectiveAction">@Model.ImmediateCorrectiveAction</div>
+    </div>
+    <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;">
+        <h4 style="margin-top:0">Product Disposition</h4>
+        <div id="ProductDisposition">@Model.ProductDisposition</div>
+    </div>
+    <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px;">
+        <h4 style="margin-top:0">Preventative Measure</h4>
+        <div id="PreventativeMeasure">@Model.PreventativeMeasure</div>
+    </div>
+    <div style="border: 1px solid #ddd; padding: 8px; width:100%;height:auto; margin-top: 8px; height: 90px;margin-bottom:15px;">
+        <div class="SlaugtherSignature " style="width:50%; float: left;" id="Slaugther" userid="">
+            <h5 style="margin-top:0;font-weight:bold">Slaughter signature</h5>
+            <div class="name">@Model.NameSlaughter</div>
+            <div class="date">@Model.DateTimeSlaughterFarmatado</div>
+        </div>
+        <div class="TechnicaSignature" style="width:49%; float: right;" id="Technical" userid="">
+            <h5 style="margin-top:0;font-weight:bold">Technical signature</h5>
+            <div class="name">@Model.NameTechinical</div>
+            <div class="date">@Model.DateTimeTechinicalFarmatado</div>
+        </div>
+    </div>
+</div>
+
+@*<div class="footer-rodape row" style="font-size:14px;font-weight:bold; width: 100%; height:auto;">*@
+    <div class="col-xs-4">
+        <div>Origionation Date: January 30, 2014</div> <!--O que fazer com a Data?-->
+        <div>Revision Date:</div>
+        <div>Supersedes Date:</div>
+    </div>
+    <div class="col-xs-4">
+        <div>This Document Contains Confidential</div>
+        <div>Commercial Information Pursuant to</div>
+        <div>5 U.S.C Sec. 552(b)(4).</div>
+    </div>

@@ -161,7 +161,6 @@
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel02_UserSgq" />
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel03_CollectionLevel02" />
         <EntityTypeShape EntityType="SgqDbModel.Deviation" Width="1.5" PointX="7.375" PointY="15.75" />
-        <EntityTypeShape EntityType="SgqDbModel.EmailContent" Width="1.5" PointX="15.375" PointY="0.75" />
         <EntityTypeShape EntityType="SgqDbModel.ConsolidationLevel2" Width="2" PointX="22.5" PointY="51.875" />
         <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel2_ParLevel2" />
         <EntityTypeShape EntityType="SgqDbModel.ConsolidationLevel1" Width="1.5" PointX="8.25" PointY="36" />
@@ -201,6 +200,7 @@
         <AssociationConnector Association="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel1" />
         <AssociationConnector Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel1" />
         <AssociationConnector Association="SgqDbModel.FK_ParRelapse_ParLevel1" />
+        <EntityTypeShape EntityType="SgqDbModel.EmailContent" Width="1.5" PointX="15.375" PointY="0.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

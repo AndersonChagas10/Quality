@@ -8,6 +8,14 @@
     //var urlConverteValorCalculado = Url.Action("ConverteValorCalculadoString", "GlobalConfigApi");
     //var urlConverteValorCalculadoDecimal = Url.Action("DesconverteValorCalculadoDecimal", "GlobalConfigApi");
     //var linkAtual = GlobalConfig.linkDataCollect;
+
+    var emailFrom = GlobalConfig.emailFrom;
+    var emailSSL = GlobalConfig.emailSSL;
+    var emailPort = GlobalConfig.emailPort;
+    var emailSmtp = GlobalConfig.emailSmtp;
+    var mockEmail = GlobalConfig.mockEmail;
+    var paramsDisponiveis = GlobalConfig.PaginaDoTablet; 
+
 }
 
 <h2>Config</h2>
@@ -54,7 +62,11 @@
         <td><button id="alter" onclick="DesconverteValorCalculado();"> Testar Guard.ConverteValorCalculado RETURN STRING</button> </td>
         <td></td>
     </tr>*@
-
+    <tr>
+        <td>@emailFrom, @emailSSL, @emailPort, @emailSmtp, @mockEmail</td>
+        <td></td>
+        <td></td>
+    </tr>
     <tr>
         <td>Config</td>
         <td>
@@ -63,20 +75,46 @@
             </div>
         </td>
     </tr>
-    <tr>
-        <td>Params Disponíveis</td>
-        <td>
-            <div>
-                @GlobalConfig.ParamsDisponiveis;
-            </div>
-        </td>
+   
+    <tr id="email">
+        <td>Testar Email: </td>
+        <td> <input type="email" id="mailTo"/></td>
+        <td> <button id="email" onclick="testeEmail(true);"> Testar</button> </td>
     </tr>
+</table>
+
+<table>
+
+            @foreach (var i in ViewBag.unidades)
+            {
+                if (paramsDisponiveis != null && paramsDisponiveis.ContainsKey(i.Id))
+                {
+                    <tr>
+                        <td>@i.Id </td>
+                        <td>Gerado em: </td>
+                    </tr>
+
+                }
+                else
+                {
+
+                    <tr>
+                        <td>@i.Id </td>
+                        <td><button>Criar</button></td>
+                    </tr>
+
+                }
+            }
 
 </table>
 
-
-
 <script>
+
+    function testeEmail(executeCallback){
+        $.post('@Url.Action("TestaEmail", "GlobalConfigApi")', { "executeCallback": executeCallback, email: $('#mailTo').val() }, function (r) {
+
+        });
+    }
 
     @*/*function ConverteValorCalculado() {
         $.post('@Html.Raw(urlConverteValorCalculado)', function (r) { console.log(r); alert(r); });

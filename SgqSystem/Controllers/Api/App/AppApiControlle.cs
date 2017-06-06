@@ -1,4 +1,5 @@
-﻿using Dominio;
+﻿using ADOFactory;
+using Dominio;
 using DTO;
 using DTO.Helpers;
 using SgqSystem.Services;
@@ -25,6 +26,13 @@ namespace SgqSystem.Controllers.Api.App
     [RoutePrefix("api/AppParams")]
     public class AppParamsApiController : ApiController
     {
+        SgqDbDevEntities db;
+
+        public AppParamsApiController()
+        {
+            db = new SgqDbDevEntities();
+        }
+
         /// <summary>
         /// Sobrescreve a tela do tablet para todas as unidades.
         /// </summary>
@@ -37,26 +45,23 @@ namespace SgqSystem.Controllers.Api.App
             GlobalConfig.ParamsDisponiveis = string.Empty;
             GlobalConfig.PaginaDoTablet = new Dictionary<int, string>();
 
-            using (var db = new SgqDbDevEntities())
+            var units = db.ParCompany.Where(r => r.IsActive).ToList();
+            using (var service = new SyncServices())
             {
-                var units = db.ParCompany.Where(r => r.IsActive).ToList();
-                using (var service = new SyncServices())
+                foreach (var i in units)
                 {
-                    foreach (var i in units)
+
+                    var atualizado = service.getAPPLevels(56, i.Id, DateTime.Now);
+                    try
                     {
-
-                        var atualizado = service.getAPPLevels(56, i.Id, DateTime.Now);
-                        try
-                        {
-                            GlobalConfig.PaginaDoTablet.Add(i.Id, atualizado);
-                            GlobalConfig.ParamsDisponiveis += i.Id.ToString();
-                        }
-                        catch (Exception e)
-                        {
-                            new CreateLog(e, i);
-                        }
-
+                        GlobalConfig.PaginaDoTablet.Add(i.Id, atualizado);
+                        GlobalConfig.ParamsDisponiveis += i.Id.ToString();
                     }
+                    catch (Exception e)
+                    {
+                        new CreateLog(e, i);
+                    }
+
                 }
             }
 
@@ -136,6 +141,34 @@ namespace SgqSystem.Controllers.Api.App
             retorno.ParteDaTela = GlobalConfig.PaginaDoTablet.FirstOrDefault(r => r.Key == UnitId).Value;
             return retorno;
         }
+
+        [HttpGet]
+        [Route("UpdateDbRemoto/{UnitId}")]
+        public void UpdateDbRemoto(int UnitId)
+        {
+            var user = "sa";
+            var pass = "1qazmko0";
+            var unidade = db.ParCompany.FirstOrDefault(r => r.Id == UnitId);
+            using (var dbADO = new Factory(unidade.IPServer, unidade.DBServer, pass, user))
+            {
+                //var listaDeUsuarios = UpdateListaDeUsuarios(UnitId);
+                var tela = GetTela(UnitId);
+                dbADO.InsertUpdateData(tela);
+                
+            }
+        }
+
+
+        //[HttpGet]
+        //[Route("UpdateListaDeUsuarios/{UnitId}")]
+        //public Dictionary<int, string> UpdateListaDeUsuarios(int UnitId)
+        //{
+        //    using (var service = new SyncServices())
+        //    {
+        //        service.getCompanyUsers(UnitId.ToString()));
+        //    }
+        //    return retorno;
+        //}
 
     }
 

@@ -1405,6 +1405,7 @@
     <Content Include="Views\ParBinaryDataType\EditFalse.cshtml" />
     <Content Include="Views\ParBinaryDataType\DeleteTrue.cshtml" />
     <Content Include="Views\ParBinaryDataType\DeleteFalse.cshtml" />
+    <Content Include="Views\Reports\CorrectiveActionReportDetails.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

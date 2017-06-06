@@ -345,14 +345,14 @@ warning 6002: The table/view 'SgqUSAV2.dbo.Deviation' does not have a primary ke
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="To" Type="nvarchar" MaxLength="450" Nullable="false" />
+          <Property Name="To" Type="nvarchar" MaxLength="900" Nullable="false" />
           <Property Name="Body" Type="nvarchar(max)" />
-          <Property Name="SendStatus" Type="nvarchar" MaxLength="15" />
+          <Property Name="SendStatus" Type="nvarchar" MaxLength="900" />
           <Property Name="SendDate" Type="datetime2" Precision="7" />
           <Property Name="Project" Type="nvarchar" MaxLength="15" />
           <Property Name="IsBodyHtml" Type="bit" />
-          <Property Name="From" Type="nvarchar" MaxLength="35" />
-          <Property Name="Subject" Type="nvarchar" MaxLength="450" />
+          <Property Name="From" Type="nvarchar" MaxLength="350" />
+          <Property Name="Subject" Type="nvarchar" MaxLength="2900" />
         </EntityType>
         <EntityType Name="Example">
           <Key>
@@ -4111,7 +4111,6 @@ warning 6002: The table/view 'SgqUSAV2.dbo.VWCFFResults' does not have a primary
             <End Role="CollectionLevel03" EntitySet="CollectionLevel03" />
           </AssociationSet>
           <EntitySet Name="Deviation" EntityType="SgqDbModel.Deviation" />
-          <EntitySet Name="EmailContent" EntityType="SgqDbModel.EmailContent" />
           <EntitySet Name="ConsolidationLevel2" EntityType="SgqDbModel.ConsolidationLevel2" />
           <AssociationSet Name="FK_ConsolidationLevel2_ParLevel2" Association="SgqDbModel.FK_ConsolidationLevel2_ParLevel2">
             <End Role="ParLevel2" EntitySet="ParLevel2" />
@@ -4247,6 +4246,7 @@ warning 6002: The table/view 'SgqUSAV2.dbo.VWCFFResults' does not have a primary
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="ParRelapse" EntitySet="ParRelapse" />
           </AssociationSet>
+          <EntitySet Name="EmailContent" EntityType="SgqDbModel.EmailContent" />
           </EntityContainer>
         <EntityType Name="DelDados">
           <Key>
@@ -6557,22 +6557,6 @@ warning 6002: The table/view 'SgqUSAV2.dbo.VWCFFResults' does not have a primary
           <Property Name="Status" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="SendDate" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="EmailContent">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AddDate" Type="DateTime" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="To" Type="String" Nullable="false" MaxLength="450" FixedLength="false" Unicode="true" />
-          <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SendStatus" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="SendDate" Type="DateTime" Precision="7" />
-          <Property Name="Project" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="IsBodyHtml" Type="Boolean" />
-          <Property Name="From" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
-          <Property Name="Subject" Type="String" MaxLength="450" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="ConsolidationLevel2">
           <Key>
             <PropertyRef Name="Id" />
@@ -7335,6 +7319,22 @@ warning 6002: The table/view 'SgqUSAV2.dbo.VWCFFResults' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="EmailContent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="To" Type="String" Nullable="false" MaxLength="900" FixedLength="false" Unicode="true" />
+          <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SendStatus" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
+          <Property Name="SendDate" Type="DateTime" Precision="7" />
+          <Property Name="Project" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="IsBodyHtml" Type="Boolean" />
+          <Property Name="From" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="Subject" Type="String" MaxLength="2900" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8621,23 +8621,6 @@ warning 6002: The table/view 'SgqUSAV2.dbo.VWCFFResults' does not have a primary
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="EmailContent">
-            <EntityTypeMapping TypeName="SgqDbModel.EmailContent">
-              <MappingFragment StoreEntitySet="EmailContent">
-                <ScalarProperty Name="Subject" ColumnName="Subject" />
-                <ScalarProperty Name="From" ColumnName="From" />
-                <ScalarProperty Name="IsBodyHtml" ColumnName="IsBodyHtml" />
-                <ScalarProperty Name="Project" ColumnName="Project" />
-                <ScalarProperty Name="SendDate" ColumnName="SendDate" />
-                <ScalarProperty Name="SendStatus" ColumnName="SendStatus" />
-                <ScalarProperty Name="Body" ColumnName="Body" />
-                <ScalarProperty Name="To" ColumnName="To" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ConsolidationLevel2">
             <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel2">
               <MappingFragment StoreEntitySet="ConsolidationLevel2">
@@ -8982,6 +8965,23 @@ warning 6002: The table/view 'SgqUSAV2.dbo.VWCFFResults' does not have a primary
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ParFrequency_Id" ColumnName="ParFrequency_Id" />
                 <ScalarProperty Name="ParConsolidationType_Id" ColumnName="ParConsolidationType_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmailContent">
+            <EntityTypeMapping TypeName="SgqDbModel.EmailContent">
+              <MappingFragment StoreEntitySet="EmailContent">
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="From" ColumnName="From" />
+                <ScalarProperty Name="IsBodyHtml" ColumnName="IsBodyHtml" />
+                <ScalarProperty Name="Project" ColumnName="Project" />
+                <ScalarProperty Name="SendDate" ColumnName="SendDate" />
+                <ScalarProperty Name="SendStatus" ColumnName="SendStatus" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="To" ColumnName="To" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
