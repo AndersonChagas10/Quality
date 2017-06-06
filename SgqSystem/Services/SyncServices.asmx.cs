@@ -2323,6 +2323,8 @@ namespace SgqSystem.Services
                     "\n 	haveCorrectiveAction int null,																																										  " +
                     "\n 	haveReaudit int null,																																												  " +
                     "\n 	ReauditLevel int null,																																												  " +
+                    "\n 	Sequential int null,																																												  " +
+                    "\n 	Side int null,				        																																								  " +
                     "\n 	Id int null																																															  " +
                     "\n )																																																		  " +
                     "\n /*coletas diárias */																																													  " +
@@ -2345,6 +2347,8 @@ namespace SgqSystem.Services
                     "\n 	MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  " +
                     "\n 	MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  " +
                     "\n 	MAX(ReauditLevel) ReauditLevel,																																										  " +
+                    "\n 	MAX(Sequential) Sequential,				     																																						  " +
+                    "\n 	MAX(Side) Side,				                 																																						  " +
                     "\n 	MIN(CL2.Id) AS ID																																													  " +
                     "\n 																																																		  " +
                     "\n from CollectionLevel2 CL2																																												  " +
@@ -2384,6 +2388,8 @@ namespace SgqSystem.Services
                     "\n 	MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  " +
                     "\n 	MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  " +
                     "\n 	MAX(ReauditLevel) ReauditLevel,																																										  " +
+                    "\n 	MAX(Sequential) Sequential,																																										      " +
+                    "\n 	MAX(Side) Side,              																																										  " +
                     "\n 	MIN(CL2.Id) AS ID																																													  " +
                     "\n 																																																		  " +
                     "\n from CollectionLevel2 CL2																																												  " +
@@ -2423,6 +2429,8 @@ namespace SgqSystem.Services
                     "\n 	MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  " +
                     "\n 	MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  " +
                     "\n 	MAX(ReauditLevel) ReauditLevel,																																										  " +
+                    "\n 	MAX(Sequential) Sequential,		                																																					  " +
+                    "\n 	MAX(Side) Side,																																										                 " +
                     "\n 	MIN(CL2.Id) AS ID																																													  " +
                     "\n 																																																		  " +
                     "\n from CollectionLevel2 CL2																																												  " +
@@ -2462,6 +2470,8 @@ namespace SgqSystem.Services
                     "\n 	MAX(CAST(haveCorrectiveAction AS INT)) haveCorrectiveAction,																																		  " +
                     "\n 	MAX(CAST(haveReaudit AS INT)) haveReaudit,																																							  " +
                     "\n 	MAX(ReauditLevel) ReauditLevel,																																										  " +
+                    "\n 	MAX(Sequential) Sequential,																																							  " +
+                    "\n 	MAX(Side) Side,																																										  " +
                     "\n 	MIN(CL2.Id) AS ID																																													  " +
                     "\n 																																																		  " +
                     "\n from CollectionLevel2 CL2																																												  " +
@@ -2517,6 +2527,8 @@ namespace SgqSystem.Services
                     "\n  StartPhaseDate=\"' + ISNULL(REPLACE(CAST(Max(Level2Result.StartPhaseEvaluation) AS VARCHAR),'.',','),'NULL') +'\"																						  " +
                     "\n  StartPhaseEvaluation=\"' + ISNULL(REPLACE(CAST(Max(Level2Result.StartPhaseEvaluation) AS VARCHAR),'.',','),'NULL') + '\"																					  " +
                     "\n  havecorrectiveaction=\"' + ISNULL(REPLACE(CAST(Max(CAST(Level2Result.haveCorrectiveAction as Int)) AS VARCHAR),'1','true'),'NULL') + '\"																	  " +
+                    "\n  Sequential=\"' + ISNULL(REPLACE(CAST(MAX(Level2Result.Sequential) AS VARCHAR),'.',','),'NULL') + '\"																	  " +
+                    "\n  Side=\"' + ISNULL(REPLACE(CAST(MAX(Level2Result.Side) AS VARCHAR),'.',','),'NULL') + '\"																	  " +
                     "\n  havereaudit=\"' + ISNULL(REPLACE(CAST(Max(cast(Level2Result.haveReaudit as int)) AS VARCHAR),'1','true'),'NULL') + '\"																					  " +
                     "\n  reauditlevel=\"' + ISNULL(REPLACE(CAST(Max(Level2Result.ReauditLevel) AS VARCHAR),'.',','),'NULL') + '\"																									  " +
                     "\n  reauditnumber=\"' + ISNULL(REPLACE(CAST(CDL2.ReauditNumber AS VARCHAR),'.',','),'NULL') + '\"																											  " +
@@ -2562,6 +2574,8 @@ namespace SgqSystem.Services
                     "\n Level2Result.CollectionDate,																																											  " +
                     "\n Level2Result.EvaluateLast,																																												  " +
                     "\n Level2Result.SampleLast,																																												  " +
+                    "\n Level2Result.Sequential,																																												  " +
+                    "\n Level2Result.Side,					         																																							  " +
                     "\n CDL2.ReauditNumber,																																														  " +
                     "\n CDL2.ReauditIs																																															  " +
                     "\n 																																																		  " +
