@@ -55,7 +55,8 @@ namespace DTO
         public static bool recoveryPassAvaliable { get; set; }
         public static string urlPreffixAppColleta { get; set; }
         public static string urlAppColleta { get; set; }
-
+        public static string pathFTA { get; set; }
+        
         /*Mail*/
         public static string emailPass { get; set; }
         public static bool emailSSL { get; set; }
@@ -190,6 +191,7 @@ namespace DTO
             emailSmtp = dto.MailSmtp;
             emailPort = dto.MailPort;
             mockEmail = dto.MockEmail;
+            pathFTA = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao/NewFTA?";
 
             Verifica += "recoveryPassAvaliable:  " + recoveryPassAvaliable.ToString() + "\n";
             Verifica += "urlPreffixAppColleta:  " + urlPreffixAppColleta + "\n";
