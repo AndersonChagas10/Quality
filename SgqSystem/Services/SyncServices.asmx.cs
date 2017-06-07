@@ -232,6 +232,7 @@ namespace SgqSystem.Services
         [WebMethod]
         public string InsertJson(string ObjResultJSon, string deviceId, string deviceMac, bool autoSend)
         {
+            
             if (string.IsNullOrEmpty(ObjResultJSon))
             {
                 return null;
@@ -296,6 +297,8 @@ namespace SgqSystem.Services
 
                         //Pega o Auditor
                         string auditorId = result[7];
+                        //string auditorId = "1";
+
                         //Verifica se é reauditoria
                         string reaudit = result[9];
                         //Converte para o padrão Sql
@@ -677,7 +680,7 @@ namespace SgqSystem.Services
                     {
                         int jsonUpdate = updateJsonDuplicated(c.Id);
                     }
-                    else if (CollectionLevel2Id > 0)
+                    else if (CollectionLevel2Id > 0 && !string.IsNullOrEmpty(c.Level03ResultJSon))
                     {
 
                         int CollectionLevel3Id = InsertCollectionLevel3(CollectionLevel2Id.ToString(), c.level02_Id, c.Level03ResultJSon, c.AuditorId, Duplicated);
@@ -1350,6 +1353,11 @@ namespace SgqSystem.Services
             var colLevel2 = CollectionLevel2DB.GetByKey(key);
             if (colLevel2 != null)
                 id = Convert.ToString(colLevel2.Id);
+
+            if (evaluatedresult == null || evaluatedresult == "undefined")
+                evaluatedresult = "0";
+            if (defectsresult == null || defectsresult == "undefined")
+                defectsresult = "0";
 
             if (id == "0")
             {
