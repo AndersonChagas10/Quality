@@ -108,6 +108,22 @@
                         </tr>
 
                         <tr class="row">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsChildren, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.level1_children), Table.PosicaoLabel.left, null, Resources.Resource.level1_children)
+                            <td>
+                                @*<p style="color:red; font-weight:bold;">ERRO!</p>*@
+                            </td>
+                        </tr>
+                        <tr class="row groupChildren padding-left" style="display:none">
+                            @Table.GerarColunaCheckbox(@Html.DropDownListFor(model => model.paramsDto.parLevel1Dto.ParLevel1Origin_Id, Model.paramsDdl.DdlparLevel1Active, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_origin, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
+                        </tr>
+                        <tr class="row groupChildren padding-left" style="display:none">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.PointsDestiny, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.points_destiny, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.points_destiny)
+                        </tr>
+                        <tr class="row groupChildren padding-left" style="display:none">
+                            @Table.GerarColunaCheckbox(@Html.DropDownListFor(model => model.paramsDto.parLevel1Dto.ParLevel1Destiny_Id, Model.paramsDdl.DdlparLevel1Active, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_destiny, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
+                        </tr>
+
+                        <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
                         </tr>
 
@@ -586,6 +602,17 @@
             $('.groupCadastroEspecificoUnidade').fadeIn();
         } else {
             $('.groupCadastroEspecificoUnidade').fadeOut();
+        }
+    });
+
+    $('#paramsDto_parLevel1Dto_IsChildren').on('switchChange.bootstrapSwitch', function (event, state) {
+        if (state) {
+            $('.groupChildren').fadeIn();
+        } else {
+            //$('#paramsDto_parLevel1Dto_ParLevel1Origin_Id').prop('selectedIndex',0);
+            //$('#paramsDto_parLevel1Dto_PointsDestiny').bootstrapSwitch('state', false);
+            //$('#paramsDto.parLevel1Dto.ParLevel1Destiny_Id').prop('selectedIndex',0);
+            $('.groupChildren').fadeOut();
         }
     });
 
@@ -1567,6 +1594,9 @@
 
         if($('#paramsDto_parLevel1Dto_IsSpecific').is(':checked'))
             $('.groupCadastroEspecificoUnidade').fadeIn();
+
+        if($('#paramsDto_parLevel1Dto_IsChildren').is(':checked'))
+            $('.groupChildren').fadeIn();
 
         if($('#paramsDto_parLevel1Dto_haveRealTimeConsolidation').is(':checked'))
             $('.RealTimeConsolitationUpdate').fadeIn();

@@ -87,6 +87,55 @@ namespace DTO.DTO.Params
         public bool EditLevel2 { get; set; }
         public Nullable<int> RealTimeConsolitationUpdate { get; set; }
 
+        public bool IsChildren { get; set; }
+
+        private Nullable<int> parLevel1Origin_Id;
+        public Nullable<int> ParLevel1Origin_Id
+        {
+            get
+            {
+                if (IsChildren)
+                    return parLevel1Origin_Id;
+                else
+                    return null;
+            }
+            set
+            {
+                parLevel1Origin_Id = value;
+            }
+        }
+        private bool pointsDestiny;
+        public bool PointsDestiny
+        {
+            get
+            {
+                if (IsChildren)
+                    return pointsDestiny;
+                else
+                    return false;
+            }
+            set
+            {
+                pointsDestiny = value;
+            }
+        }
+
+        private Nullable<int> parLevel1Destiny_Id;
+        public Nullable<int> ParLevel1Destiny_Id
+        {
+            get
+            {
+                if (IsChildren)
+                    return parLevel1Destiny_Id;
+                else
+                    return null;
+            }
+            set
+            {
+                parLevel1Destiny_Id = value;
+            }
+        }
+
         public List<ParLevel2ControlCompanyDTO> listLevel2CorporativosObj { get; set; }
 
         public ParFrequencyDTO parFrequencyDto { get; set; }
@@ -98,7 +147,7 @@ namespace DTO.DTO.Params
         #region Props utilizadas para alteração
 
         public List<ParLevel1XHeaderFieldDTO> cabecalhosInclusos { get; set; }
-        
+
         public List<ParCounterXLocalDTO> contadoresIncluidos { get; set; }
         public List<ParRelapseDTO> listParRelapseDto { get; set; }
 
@@ -109,7 +158,7 @@ namespace DTO.DTO.Params
         public List<ParGoalDTO> listParGoalLevel1 { get; set; }
 
         public IEnumerable<SelectListItem> DdlLevel2Vinculados { get; set; }
-        
+
         public void CreateSelectListParamsViewModelListLevel(List<ParLevel2DTO> listLevel2, List<ParLevel3Level2Level1DTO> listParLevel3Level2Level1Dto)
         {
 
@@ -121,8 +170,8 @@ namespace DTO.DTO.Params
             var group = new SelectListGroup() { Name = (GlobalConfig.Eua || GlobalConfig.Canada) ? "Unlinked" : "Não vinculado:" };
             var groupSelecionado = new SelectListGroup();
             //listParLevel3Level2Level1Dto = listParLevel3Level2Level1Dto.OrderBy(r => listLevel2.Any(ll2 => ll2.Id == r.ParLevel3Level2.ParLevel2_Id)).ToList();
-            
-            
+
+
             foreach (var i in listLevel2)
             {
 
