@@ -144,7 +144,7 @@
             enviar['startDate'] = start.format();
             enviar['endDate'] = end.format();
         }
-        var configQueryData = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+        var configQueryData = @Html.Raw(Json.Encode(GlobalConfig.LanguageBrasil));
         var configCallendar = {};
         if(configQueryData){
             $('#reportrange').daterangepicker({

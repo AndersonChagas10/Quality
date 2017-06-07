@@ -1,4 +1,6 @@
-﻿<!-- Modal -->
+﻿@using DTO
+
+<!-- Modal -->
 <div class="modal fade" id="ftaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -22,10 +24,12 @@
 
 <script>
 
+    var preffix = @Html.Raw(Json.Encode(GlobalConfig.pathFTA))
+
     function RedirecionaParaFTA(r) {
         var url = "";
-        //url += "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao//NewFTA?";
-        url += "http://192.168.25.200/PlanoAcao/Pa_Acao//NewFTA?";
+        url += preffix;
+        //url += "http://192.168.25.200/PlanoAcao/Pa_Acao//NewFTA?";
         url += "MetaFTA=" + r.MetaFTA;
         url += "&PercentualNCFTA=" + r.PercentualNCFTA;
         url += "&ReincidenciaDesvioFTA=" + r.ReincidenciaDesvioFTA;

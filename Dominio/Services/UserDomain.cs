@@ -22,7 +22,7 @@ namespace Dominio.Services
             {
                 get
                 {
-                    if (GlobalConfig.Brasil)
+                    if (GlobalConfig.LanguageBrasil)
                         return "Usuário e senha não encontrados, por favor verifique os dados utilizados.";
                     else
                         return "Username and Password not found, please check Username and Password";
@@ -33,7 +33,7 @@ namespace Dominio.Services
             {
                 get
                 {
-                    if (GlobalConfig.Brasil)
+                    if (GlobalConfig.LanguageBrasil)
                         return "Não foi possível recuperar os dados do usuário.";
                     else
                         return "It was not possible retrieve any data.";
@@ -44,7 +44,7 @@ namespace Dominio.Services
             {
                 get
                 {
-                    if (GlobalConfig.Brasil)
+                    if (GlobalConfig.LanguageBrasil)
                         return "É necessário ao menos uma unidade cadastrada para o usuario.";
                     else
                         return "Cannot log in, user must have at least one Company Active in database to have acess.";
@@ -131,8 +131,17 @@ namespace Dominio.Services
                 {
                     defaultCompany = _baseParCompanyXUserSgq.GetAll().FirstOrDefault(
                     r => r.UserSgq_Id == isUser.Id);
-                    isUser.ParCompany_Id = defaultCompany.ParCompany_Id;
-                    _userRepo.Salvar(isUser);
+                    //var atualizarCompanyUser = _userRepo.GetByName(isUser.Name);
+                    //atualizarCompanyUser.ParCompany_Id = defaultCompany.ParCompany_Id;
+                    using (var db = new SgqDbDevEntities())
+                    {
+                        var atualizarUsuario = db.UserSgq.FirstOrDefault(r=> r.Id == isUser.Id);
+                        atualizarUsuario.ParCompany_Id = defaultCompany.ParCompany_Id;
+                        db.UserSgq.Attach(atualizarUsuario);
+                        db.Entry(atualizarUsuario).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                        //_userRepo.Salvar(isUser);
 
                 }
 
@@ -557,7 +566,7 @@ namespace Dominio.Services
                                 Name = existenteNoDbAntigo.cSigla.ToLower(),
                                 FullName = existenteNoDbAntigo.cNmUsuario,
                                 //Email = existenteNoDbAntigo.cEMail,
-                                Password = Guard.EncryptStringAES(userDto.Password),
+                                Password = Guard.EncryptStringAES(userDto.Password)
                             };
                         }
                         catch (Exception e)
