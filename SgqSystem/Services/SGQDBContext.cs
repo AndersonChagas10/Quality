@@ -74,10 +74,8 @@ namespace SGQDBContext
              * 30/03/2017
              */
 
-            string whereIsChildren = "  ";
-            //string whereIsChildren = " AND IsChildren = 0 ";
-
-            //ParLevel1_IdFilho = " AND P1.Id NOT IN (1042) ";
+            //string whereIsChildren = "  ";
+            string whereIsChildren = " AND IsChildren = 0 ";
 
             //SqlConnection db = new SqlConnection(conexao);
             string sql = "\n SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
@@ -942,30 +940,51 @@ namespace SGQDBContext
              * 30/03/2017
              */
 
-            string possuiIndicadorFilho = "SELECT cast(id as varchar(max)) as retorno FROM ParLevel1  (nolock) WHERE ParLevel1Origin_Id = " + ParLevel1.Id.ToString();
+            string possuiIndicadorFilho = "SELECT cast(id as varchar(153)) as retorno FROM ParLevel1  (nolock) WHERE ParLevel1Origin_Id = " + ParLevel1.Id.ToString();
             string ParLevel1Origin_Id = "";
 
-            //using (var db = new Dominio.SgqDbDevEntities())
-            //{
-            //    var list = db.Database.SqlQuery<ResultadoUmaColuna>(possuiIndicadorFilho).ToList();
+            using (var db = new Dominio.SgqDbDevEntities())
+            {
+                var list = db.Database.SqlQuery<ResultadoUmaColuna>(possuiIndicadorFilho).ToList();
 
-            //    for (var i = 0; i < list.Count(); i++)
-            //    {
-            //        ParLevel1Origin_Id += list[i].retorno.ToString() + ", ";
-            //    }
-            //}
+                for (var i = 0; i < list.Count(); i++)
+                {
+                    ParLevel1Origin_Id += list[i].retorno.ToString() + ", ";
+                }
+            }
+
+           
 
             ParLevel1Origin_Id += "null";
 
             string sqlFilho = "";
 
+            string sqlPeso = "L32.Weight";
+
+
             if (ParLevel1Origin_Id != "null")
             {
+                string IndicadorFilhoPeso = "SELECT cast(PointsDestiny as varchar(3)) as retorno FROM ParLevel1  (nolock) WHERE ParLevel1Origin_Id = " + ParLevel1.Id.ToString();
+
+                using (var db = new Dominio.SgqDbDevEntities())
+                {
+                    var list = db.Database.SqlQuery<ResultadoUmaColuna>(IndicadorFilhoPeso).ToList();
+
+                    for (var i = 0; i < list.Count(); i++)
+                    {
+                        IndicadorFilhoPeso = list[i].retorno.ToString();
+                    }
+                }
+
+                if(IndicadorFilhoPeso == "0")
+                {
+                    sqlPeso = "0";
+                }
 
                 string ParLevel1_IdFilho = " AND L321.ParLevel1_Id IN (" + ParLevel1Origin_Id + ")";
 
                 sqlFilho = "UNION ALL SELECT L3.Id AS Id, L3.Name AS Name, L3G.Id AS ParLevel3Group_Id, L3G.Name AS ParLevel3Group_Name, L3IT.Id AS ParLevel3InputType_Id, L3IT.Name AS ParLevel3InputType_Name, L3V.ParLevel3BoolFalse_Id AS ParLevel3BoolFalse_Id, L3BF.Name AS ParLevel3BoolFalse_Name, L3V.ParLevel3BoolTrue_Id AS ParLevel3BoolTrue_Id, L3BT.Name AS ParLevel3BoolTrue_Name, " +
-                        "L3V.IntervalMin AS IntervalMin, L3V.IntervalMax AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, L32.Weight AS Weight, L3V.ParCompany_Id , L32.ParCompany_Id                                                                                                                                                                                                                                   " +
+                        "L3V.IntervalMin AS IntervalMin, L3V.IntervalMax AS IntervalMax, MU.Name AS ParMeasurementUnit_Name, " + sqlPeso + " AS Weight, L3V.ParCompany_Id , L32.ParCompany_Id                                                                                                                                                                                                                                   " +
                         "FROM ParLevel3 L3     (nolock)                                                                                                                                                                                                                                                                                                                                        " +
                         "INNER JOIN ParLevel3Value L3V     (nolock)                                                                                                                                                                                                                                                                                                                            " +
                         "        ON L3V.Id = (SELECT top 1 id FROM ParLevel3Value  (nolock) where isactive = 1 and ParLevel3_id = L3.Id and (ParCompany_id = " + ParCompany_Id + " or ParCompany_id is null) order by ParCompany_Id desc)                                                                                                                                                                                                                                                                                                                       " +

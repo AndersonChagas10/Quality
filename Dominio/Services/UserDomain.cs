@@ -131,8 +131,17 @@ namespace Dominio.Services
                 {
                     defaultCompany = _baseParCompanyXUserSgq.GetAll().FirstOrDefault(
                     r => r.UserSgq_Id == isUser.Id);
-                    isUser.ParCompany_Id = defaultCompany.ParCompany_Id;
-                    _userRepo.Salvar(isUser);
+                    //var atualizarCompanyUser = _userRepo.GetByName(isUser.Name);
+                    //atualizarCompanyUser.ParCompany_Id = defaultCompany.ParCompany_Id;
+                    using (var db = new SgqDbDevEntities())
+                    {
+                        var atualizarUsuario = db.UserSgq.FirstOrDefault(r=> r.Id == isUser.Id);
+                        atualizarUsuario.ParCompany_Id = defaultCompany.ParCompany_Id;
+                        db.UserSgq.Attach(atualizarUsuario);
+                        db.Entry(atualizarUsuario).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                        //_userRepo.Salvar(isUser);
 
                 }
 
@@ -557,7 +566,7 @@ namespace Dominio.Services
                                 Name = existenteNoDbAntigo.cSigla.ToLower(),
                                 FullName = existenteNoDbAntigo.cNmUsuario,
                                 //Email = existenteNoDbAntigo.cEMail,
-                                Password = Guard.EncryptStringAES(userDto.Password),
+                                Password = Guard.EncryptStringAES(userDto.Password)
                             };
                         }
                         catch (Exception e)
