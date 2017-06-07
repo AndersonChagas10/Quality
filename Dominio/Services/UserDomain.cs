@@ -22,7 +22,7 @@ namespace Dominio.Services
             {
                 get
                 {
-                    if (GlobalConfig.Brasil)
+                    if (GlobalConfig.LanguageBrasil)
                         return "Usuário e senha não encontrados, por favor verifique os dados utilizados.";
                     else
                         return "Username and Password not found, please check Username and Password";
@@ -33,7 +33,7 @@ namespace Dominio.Services
             {
                 get
                 {
-                    if (GlobalConfig.Brasil)
+                    if (GlobalConfig.LanguageBrasil)
                         return "Não foi possível recuperar os dados do usuário.";
                     else
                         return "It was not possible retrieve any data.";
@@ -44,7 +44,7 @@ namespace Dominio.Services
             {
                 get
                 {
-                    if (GlobalConfig.Brasil)
+                    if (GlobalConfig.LanguageBrasil)
                         return "É necessário ao menos uma unidade cadastrada para o usuario.";
                     else
                         return "Cannot log in, user must have at least one Company Active in database to have acess.";
