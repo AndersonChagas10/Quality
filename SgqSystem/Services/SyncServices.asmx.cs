@@ -1779,6 +1779,7 @@ namespace SgqSystem.Services
             //Lista de Level3
 
             var ParLevel3DB = new SGQDBContext.ParLevel3(db);
+            var Result_Level3DB = new SGQDBContext.Result_Level3(db);
             var parLevel3List = ParLevel3DB.getList();
 
             //Percorre o Array para gerar os inserts
@@ -1871,6 +1872,15 @@ namespace SgqSystem.Services
 
                 id = DefaultValueReturn(id, "0");
 
+                if(Int64.Parse(id) == 0)
+                {
+                    var r = Result_Level3DB.get(Int32.Parse(CollectionLevel02Id), Int32.Parse(Level03Id));
+                    if (r != null)
+                    {
+                        id = r.Id.ToString();
+                    }
+                }
+
                 naoAvaliado = true;
 
                 if (id == "0")
@@ -1884,7 +1894,16 @@ namespace SgqSystem.Services
                 }
                 else
                 {
-                    sql += "UPDATE Result_Level3 SET IsConform='" + conform + "', IsNotEvaluate='" + isnotEvaluate + "', Value='" + value + "', ValueText='" + valueText + "' WHERE Id='" + id + "' ";
+                    sql += "UPDATE Result_Level3 SET                                        "+
+                            "IsConform='" + conform + "',                                   "+
+                            "IsNotEvaluate='" + isnotEvaluate + "',                         "+
+                            "Value='" + value + "',                                         "+
+                            "Weight='" + weight + "',                                       "+
+                            "Defects='" + defects + "',                                     " +
+                            "WeiEvaluation='" + WeiEvaluation + "',                         " +
+                            "WeiDefects='" + WeiDefects + "',                               " +
+                            "ValueText='" + valueText + "'                                  " +
+                            "WHERE Id='" + id + "'                                          ";
                     sql += " SELECT '" + id + "' AS 'Identity'";
 
                 }
