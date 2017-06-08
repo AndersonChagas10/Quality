@@ -5,6 +5,8 @@
     var urlRelatorioDiario = Url.Action("RelatorioDiario", "RelatoriosSgq");
     var urlApontamentosDiarios = Url.Action("ApontamentosDiarios", "RelatoriosSgq");
     var urlNaoConformidade = Url.Action("NaoConformidade", "RelatoriosSgq");
+
+    var urlVisaoGeralDaArea = Url.Action("VisaoGeralDaArea", "RelatoriosSgq");
 }
 
 <style>
@@ -278,7 +280,7 @@
 
                     <ul id="nav">
 
-                        <li><a href="#">@Resources.Resource.general_view_of_the_area</a>
+                        <li><a href="@urlVisaoGeralDaArea">@Resources.Resource.general_view_of_the_area</a>
 
                         <li><a href="#">@Resources.Resource.action_plan</a></li>
                     </ul>
