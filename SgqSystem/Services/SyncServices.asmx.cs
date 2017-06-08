@@ -2740,7 +2740,8 @@ namespace SgqSystem.Services
                     "\n Level2Result.Sequential,																																												  " +
                     "\n Level2Result.Side,					         																																							  " +
                     "\n CDL2.ReauditNumber,																																														  " +
-                    "\n CDL2.ReauditIs																																															  " +
+                    "\n CDL2.ReauditIs		                                                                                                "+
+                    "\n order by Level2Result.CollectionDate asc,Level2Result.ParLevel1_Id asc, CDL2.ReauditNumber asc                                          "+
                     "\n 																																																		  " +
                     "\n DROP TABLE #COLETASLEVEL3 																																												  " +
                     "\n DROP TABLE #COLETA																																														  " +
