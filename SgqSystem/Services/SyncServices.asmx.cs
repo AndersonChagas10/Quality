@@ -3244,24 +3244,10 @@ namespace SgqSystem.Services
         public string getAPPLevelsVolume(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId)
         {
             string APPMain = string.Empty;
-
-            //colocar autenticação
-            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId, true); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
-
-
-            string supports = "<div class=\"Results hide\"></div>" +
-                              "<div class=\"ResultsConsolidation hide\"></div>" +
-                               "<div class=\"ResultsKeys hide\"></div>" +
-                               "<div class=\"ResultsPhase hide\"></div>" +
-                               "<div class=\"ResultsDefectsEvaluation hide\"></div>" +
-                              "<div class=\"Deviations hide\"></div>" +
-                              "<div class=\"Users hide\"></div>" +
-                              "<div class=\"VerificacaoTipificacao hide\"></div>" +
-                              "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
-
-            //string resource = GetResource();
-
-            return APPMain + supports;// + resource;
+            
+            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId, true); 
+            
+            return APPMain;// + resource;
         }
 
 
@@ -3836,7 +3822,11 @@ namespace SgqSystem.Services
 
             if (isVolume)
             {
-                parLevel1List = parLevel1List.Where(r => r.Name.Equals("(%) NC CEP Vácuo GRD") || r.Name.Equals("(%) NC PCC 1B") || r.Name.Equals("(%) NC CEP Desossa"));
+                parLevel1List = parLevel1List.Where(r => 
+                                            r.Name.Equals("(%) NC CEP Vácuo GRD") || 
+                                            r.Name.Equals("(%) NC PCC 1B") || 
+                                            r.Name.Equals("(%) NC CEP Desossa") || 
+                                            r.Name.Equals("(%) NC CEP Recortes"));
             }
 
             //Agrupamos o ParLevel1 por ParCriticalLevel
@@ -4011,11 +4001,9 @@ namespace SgqSystem.Services
                     string level3Group = null;
 
                     #endregion
-
-                    //Mock de modularização
-                    if (Level1ListId != "" || Level1ListId == null)
-                        //Busca os Level2 e reforna no level3Group;
-                        listLevel2 += GetLevel02(parlevel1, ParCompany_Id, dateCollect, ref level3Group);
+                    
+                    //Busca os Level2 e reforna no level3Group;
+                    listLevel2 += GetLevel02(parlevel1, ParCompany_Id, dateCollect, ref level3Group);
 
                     //Incrementa Level3Group
                     listLevel3 += level3Group;
