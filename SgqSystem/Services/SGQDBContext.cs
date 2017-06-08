@@ -1493,6 +1493,32 @@ namespace SGQDBContext
             return parRelapses;
         }
     }
+    public partial class Result_Level3
+    {
+        //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+        public int Id { get; set; }
+        private SqlConnection db { get; set; }
+        public Result_Level3() { }
+        public Result_Level3(SqlConnection _db)
+        {
+            db = _db;
+        }
+
+        public Result_Level3 get(int CollectionLevel2_Id, int ParLevel3_Id)
+        {
+            //SqlConnection db = new SqlConnection(conexao);
+
+
+            string sql = "SELECT Id FROM Result_Level3  (nolock)          " +
+                         "WHERE ParLevel3_Id = '" + ParLevel3_Id + "' and " +
+                         "CollectionLevel2_Id = "+ CollectionLevel2_Id + ";";
+
+            var parResultLevel3 = db.Query<Result_Level3>(sql).FirstOrDefault();
+
+            return parResultLevel3;
+        }
+    }
 
     public partial class ParLevel1VariableProduction
     {

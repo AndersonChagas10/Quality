@@ -2545,6 +2545,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level1 Children.
+        /// </summary>
+        internal static string level1_children {
+            get {
+                return ResourceManager.GetString("level1_children", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cluster.
         /// </summary>
         internal static string level1_clusters {
@@ -2572,6 +2581,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level1 Destiny.
+        /// </summary>
+        internal static string level1_destiny {
+            get {
+                return ResourceManager.GetString("level1_destiny", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level 1 Row.
         /// </summary>
         internal static string level1_line {
@@ -2586,6 +2604,15 @@ namespace Resources {
         internal static string level1_name {
             get {
                 return ResourceManager.GetString("level1_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level1 Origin.
+        /// </summary>
+        internal static string level1_origin {
+            get {
+                return ResourceManager.GetString("level1_origin", resourceCulture);
             }
         }
         
@@ -3738,6 +3765,15 @@ namespace Resources {
         internal static string points_achieved {
             get {
                 return ResourceManager.GetString("points_achieved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Points Destiny.
+        /// </summary>
+        internal static string points_destiny {
+            get {
+                return ResourceManager.GetString("points_destiny", resourceCulture);
             }
         }
         

@@ -2028,4 +2028,16 @@
   <data name="has_edit_level2" xml:space="preserve">
     <value>Têm edição de monitoramento</value>
   </data>
+  <data name="level1_children" xml:space="preserve">
+    <value>Indicador Filho</value>
+  </data>
+  <data name="level1_destiny" xml:space="preserve">
+    <value>Indicador Destino</value>
+  </data>
+  <data name="level1_origin" xml:space="preserve">
+    <value>Indicador de Origem</value>
+  </data>
+  <data name="points_destiny" xml:space="preserve">
+    <value>Pontua para o Indicador de Origem</value>
+  </data>
 </root>

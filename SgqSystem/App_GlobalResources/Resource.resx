@@ -2049,4 +2049,16 @@
   <data name="has_edit_level2" xml:space="preserve">
     <value>Level2 edition</value>
   </data>
+  <data name="level1_children" xml:space="preserve">
+    <value>Level1 Children</value>
+  </data>
+  <data name="level1_destiny" xml:space="preserve">
+    <value>Level1 Destiny</value>
+  </data>
+  <data name="level1_origin" xml:space="preserve">
+    <value>Level1 Origin</value>
+  </data>
+  <data name="points_destiny" xml:space="preserve">
+    <value>Points Destiny</value>
+  </data>
 </root>
