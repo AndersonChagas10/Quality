@@ -2040,6 +2040,12 @@
   <data name="points_destiny" xml:space="preserve">
     <value>Pontua para o Indicador de Origem</value>
   </data>
+  <data name="update_tablet_all" xml:space="preserve">
+    <value>Atualizar todos os Tablets de todas as Unidades</value>
+  </data>
+  <data name="update_all_tablet_message" xml:space="preserve">
+    <value>Esta ação pode demorar algum tempo (5 a 25 minutos), deseja atualizar a parametrização dos tablets? O Loader sumira automaticamente ao finalizar a ação.</value>
+  </data>
   <data name="deviation" xml:space="preserve">
     <value>Conforme</value>
   </data>
