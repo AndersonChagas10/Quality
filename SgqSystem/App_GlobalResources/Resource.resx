@@ -2067,4 +2067,7 @@
   <data name="update_all_tablet_message" xml:space="preserve">
     <value>This may take some time (5-20 minutes), do you want to update the tablet settings? The Loader will automatically disappear when the action is finished.</value>
   </data>
+  <data name="deviation" xml:space="preserve">
+    <value>Deviation</value>
+  </data>
 </root>
