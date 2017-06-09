@@ -1227,11 +1227,10 @@ namespace SgqSystem.Services
             //             Shift+","+Period+")"+
             //             "SELECT @@IDENTITY AS 'Identity'";
 
-            string sql = "INSERT ConsolidationLevel1 ([UnitId],[DepartmentId],[ParLevel1_Id],[AddDate],[AlterDate],[ConsolidationDate]) " +
+            string sql = "INSERT ConsolidationLevel1 ([UnitId],[DepartmentId],[ParLevel1_Id],[AddDate],[AlterDate],[ConsolidationDate],[shift],[period]) " +
                          "VALUES " +
                          "('" + ParCompany_Id + "','" + departmentId + "','" + ParLevel1_Id + "', GetDate(),null, CONVERT(DATE, '" + collectionDate.ToString("yyyy-MM-dd") + "')" +
-                         //", " + Shift + "," + Period + 
-                         ")" +
+                         ", " + Shift + "," + Period + ")" +
                          "SELECT @@IDENTITY AS 'Identity'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -2759,7 +2758,8 @@ namespace SgqSystem.Services
                     "\n Level2Result.Sequential,																																												  " +
                     "\n Level2Result.Side,					         																																							  " +
                     "\n CDL2.ReauditNumber,																																														  " +
-                    "\n CDL2.ReauditIs																																															  " +
+                    "\n CDL2.ReauditIs		                                                                                                "+
+                    "\n order by Level2Result.CollectionDate asc,Level2Result.ParLevel1_Id asc, CDL2.ReauditNumber asc                                          "+
                     "\n 																																																		  " +
                     "\n DROP TABLE #COLETASLEVEL3 																																												  " +
                     "\n DROP TABLE #COLETA																																														  " +
