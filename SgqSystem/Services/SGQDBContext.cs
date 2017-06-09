@@ -502,20 +502,20 @@ namespace SGQDBContext
             db = _db;
         }
 
-        public IEnumerable<ParLevel2Evaluate> getEvaluate(ParLevel1 ParLevel1, int? ParCompany_Id)
+        public IEnumerable<ParLevel2Evaluate> getEvaluate(ParLevel1 ParLevel1, int? ParCompany_Id, DateTime DateCollection)
         {
 
             //SqlConnection db = new SqlConnection(conexao);
             string queryCompany = null;
 
-
+            var date = DateCollection.ToString("yyyy-MM-dd");
 
 
             if (ParLevel1.hashKey == 2 && ParCompany_Id != null)
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
-                             "(SELECT top 1 Avaliacoes FROM VolumeCepDesossa (nolock)  WHERE Data = (SELECT MAX(DATA) FROM VolumeCepDesossa (nolock)  WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Evaluate " +
+                             "(SELECT top 1 Avaliacoes FROM VolumeCepDesossa (nolock)  WHERE Data = (SELECT MAX(DATA) FROM VolumeCepDesossa (nolock)  WHERE ParCompany_id = " + ParCompany_Id + " AND CAST(DATA AS DATE) <= '" + date + "') and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Evaluate " +
                              "FROM                                                                        " +
                              "ParLevel3Level2 P32  (nolock)                                                         " +
                              "INNER JOIN ParLevel3Level2Level1 P321  (nolock)                                       " +
@@ -537,7 +537,7 @@ namespace SGQDBContext
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
-                             "(SELECT TOP 1 Avaliacoes FROM VolumeVacuoGRD (nolock)  WHERE Data = (SELECT MAX(DATA) FROM VolumeVacuoGRD (nolock)  WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Evaluate " +
+                             "(SELECT TOP 1 Avaliacoes FROM VolumeVacuoGRD (nolock)  WHERE Data = (SELECT MAX(DATA) FROM VolumeVacuoGRD (nolock)  WHERE ParCompany_id = " + ParCompany_Id + " AND CAST(DATA AS DATE) <= '" + date + "') and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Evaluate " +
                              "FROM                                                                        " +
                              "ParLevel3Level2 P32  (nolock)                                                         " +
                              "INNER JOIN ParLevel3Level2Level1 P321  (nolock)                                       " +
@@ -559,7 +559,7 @@ namespace SGQDBContext
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
-                             "(SELECT TOP 1 Avaliacoes FROM VolumeCepRecortes (nolock)  WHERE Data = (SELECT MAX(DATA) FROM VolumeCepRecortes (nolock)  WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Evaluate " +
+                             "(SELECT TOP 1 Avaliacoes FROM VolumeCepRecortes (nolock)  WHERE Data = (SELECT MAX(DATA) FROM VolumeCepRecortes (nolock)  WHERE ParCompany_id = " + ParCompany_Id + " AND CAST(DATA AS DATE) <= '" + date + "') and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Evaluate " +
                              "FROM                                                                        " +
                              "ParLevel3Level2 P32   (nolock)                                                        " +
                              "INNER JOIN ParLevel3Level2Level1 P321    (nolock)                                     " +
@@ -581,7 +581,7 @@ namespace SGQDBContext
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
-                             "(SELECT TOP 1 Avaliacoes FROM VolumePcc1b (nolock)  WHERE Data = (SELECT MAX(DATA) FROM VolumePcc1b (nolock)  WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Evaluate " +
+                             "(SELECT TOP 1 Avaliacoes FROM VolumePcc1b (nolock)  WHERE Data = (SELECT MAX(DATA) FROM VolumePcc1b (nolock)  WHERE ParCompany_id = " + ParCompany_Id + " AND CAST(DATA AS DATE) <= '" + date + "') and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Evaluate " +
                              "FROM                                                                        " +
                              "ParLevel3Level2 P32    (nolock)                                                       " +
                              "INNER JOIN ParLevel3Level2Level1 P321   (nolock)                                      " +
@@ -656,8 +656,10 @@ namespace SGQDBContext
             db = _db;
         }
 
-        public IEnumerable<ParLevel2Sample> getSample(ParLevel1 ParLevel1, int? ParCompany_Id)
+        public IEnumerable<ParLevel2Sample> getSample(ParLevel1 ParLevel1, int? ParCompany_Id, DateTime DateCollection)
         {
+
+            var date = DateCollection.ToString("yyyy-MM-dd");
 
             //SqlConnection db = new SqlConnection(conexao);
             string queryCompany = null;
@@ -666,7 +668,7 @@ namespace SGQDBContext
             {
 
                 string sql = "SELECT  PL2.Id AS Id, PL2.Name AS Name,              " +
-                             "(SELECT TOP 1 Amostras FROM VolumeCepDesossa (nolock)  WHERE Data = (SELECT MAX(DATA) FROM VolumeCepDesossa (nolock)  WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Sample " +
+                             "(SELECT TOP 1 Amostras FROM VolumeCepDesossa (nolock)  WHERE Data = (SELECT MAX(DATA) FROM VolumeCepDesossa (nolock)  WHERE ParCompany_id = " + ParCompany_Id + " AND CAST(DATA AS DATE) <= '" + date + "') and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Sample " +
                              "FROM                                                                        " +
                              "ParLevel3Level2 P32      (nolock)                                                     " +
                              "INNER JOIN ParLevel3Level2Level1 P321   (nolock)                                      " +
@@ -688,7 +690,7 @@ namespace SGQDBContext
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
-                             "(SELECT TOP 1  Amostras FROM VolumeVacuoGRD  (nolock) WHERE Data = (SELECT MAX(DATA) FROM VolumeVacuoGRD (nolock)  WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Sample " +
+                             "(SELECT TOP 1  Amostras FROM VolumeVacuoGRD  (nolock) WHERE Data = (SELECT MAX(DATA) FROM VolumeVacuoGRD (nolock)  WHERE ParCompany_id = " + ParCompany_Id + " AND CAST(DATA AS DATE) <= '" + date + "') and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Sample " +
                              "FROM                                                                        " +
                              "ParLevel3Level2 P32   (nolock)                                                        " +
                              "INNER JOIN ParLevel3Level2Level1 P321       (nolock)                                  " +
@@ -710,7 +712,7 @@ namespace SGQDBContext
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
-                             "(SELECT  TOP 1 Amostras FROM VolumeCepRecortes  (nolock) WHERE Data = (SELECT MAX(DATA) FROM VolumeCepRecortes (nolock)  WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Sample " +
+                             "(SELECT  TOP 1 Amostras FROM VolumeCepRecortes  (nolock) WHERE Data = (SELECT MAX(DATA) FROM VolumeCepRecortes (nolock)  WHERE ParCompany_id = " + ParCompany_Id + " AND CAST(DATA AS DATE) <= '" + date + "') and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Sample " +
                              "FROM                                                                        " +
                              "ParLevel3Level2 P32    (nolock)                                                       " +
                              "INNER JOIN ParLevel3Level2Level1 P321  (nolock)                                       " +
@@ -732,7 +734,7 @@ namespace SGQDBContext
             {
 
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name,              " +
-                             "(SELECT TOP 1 Amostras FROM VolumePcc1b (nolock)  WHERE Data = (SELECT MAX(DATA) FROM VolumePcc1b (nolock)  WHERE ParCompany_id = " + ParCompany_Id + ") and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Sample " +
+                             "(SELECT TOP 1 Amostras FROM VolumePcc1b (nolock)  WHERE Data = (SELECT MAX(DATA) FROM VolumePcc1b (nolock)  WHERE ParCompany_id = " + ParCompany_Id + " AND CAST(DATA AS DATE) <= '" + date + "') and ParCompany_id = " + ParCompany_Id + " ORDER BY ID DESC) AS Sample " +
                              "FROM                                                                        " +
                              "ParLevel3Level2 P32  (nolock)                                                         " +
                              "INNER JOIN ParLevel3Level2Level1 P321     (nolock)                                    " +

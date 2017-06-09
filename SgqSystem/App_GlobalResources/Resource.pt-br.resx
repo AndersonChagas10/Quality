@@ -2040,4 +2040,7 @@
   <data name="points_destiny" xml:space="preserve">
     <value>Pontua para o Indicador de Origem</value>
   </data>
+  <data name="deviation" xml:space="preserve">
+    <value>Conforme</value>
+  </data>
 </root>

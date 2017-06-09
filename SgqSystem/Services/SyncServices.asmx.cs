@@ -1243,11 +1243,10 @@ namespace SgqSystem.Services
             //             Shift+","+Period+")"+
             //             "SELECT @@IDENTITY AS 'Identity'";
 
-            string sql = "INSERT ConsolidationLevel1 ([UnitId],[DepartmentId],[ParLevel1_Id],[AddDate],[AlterDate],[ConsolidationDate]) " +
+            string sql = "INSERT ConsolidationLevel1 ([UnitId],[DepartmentId],[ParLevel1_Id],[AddDate],[AlterDate],[ConsolidationDate],[shift],[period]) " +
                          "VALUES " +
                          "('" + ParCompany_Id + "','" + departmentId + "','" + ParLevel1_Id + "', GetDate(),null, CONVERT(DATE, '" + collectionDate.ToString("yyyy-MM-dd") + "')" +
-                         //", " + Shift + "," + Period + 
-                         ")" +
+                         ", " + Shift + "," + Period + ")" +
                          "SELECT @@IDENTITY AS 'Identity'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -3261,24 +3260,10 @@ namespace SgqSystem.Services
         public string getAPPLevelsVolume(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId)
         {
             string APPMain = string.Empty;
-
-            //colocar autenticação
-            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId, true); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
-
-
-            string supports = "<div class=\"Results hide\"></div>" +
-                              "<div class=\"ResultsConsolidation hide\"></div>" +
-                               "<div class=\"ResultsKeys hide\"></div>" +
-                               "<div class=\"ResultsPhase hide\"></div>" +
-                               "<div class=\"ResultsDefectsEvaluation hide\"></div>" +
-                              "<div class=\"Deviations hide\"></div>" +
-                              "<div class=\"Users hide\"></div>" +
-                              "<div class=\"VerificacaoTipificacao hide\"></div>" +
-                              "<div class=\"VerificacaoTipificacaoResultados hide\"></div>";
-
-            //string resource = GetResource();
-
-            return APPMain + supports;// + resource;
+            
+            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId, true); 
+            
+            return APPMain;// + resource;
         }
 
 
@@ -3655,11 +3640,11 @@ namespace SgqSystem.Services
                            "     <div class=\"list-group list-group-inverse rightMenuList\">                                                           " +
                            "         <a href=\"#\" id=\"btnSync\" class=\"list-group-item\" style=\"background-color: black; font-weight: bold;\">" + CommonData.getResource("sync_results").Value.ToString() + "</a>                                                  " +
                            "         <a href=\"#\" id=\"btnSyncParam\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">" + CommonData.getResource("sync_parameretrization").Value.ToString() + "</a>                                                  ";
-            //if (GlobalConfig.Brasil == true)
-            //{
-            //    menu += "         <a href=\"#\" id=\"btnSyncVolume\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">Sincronizar Volume</a> ";
-            //            //"         <a href=\"#\" id=\"btnChangeModule\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">" + CommonData.getResource("change_module").Value.ToString() + "</a>                                                  ";
-            //}
+            if (GlobalConfig.Brasil == true)
+            {
+                menu += "         <a href=\"#\" id=\"btnSyncVolume\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">Sincronizar Volume</a> ";
+                //"         <a href=\"#\" id=\"btnChangeModule\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">" + CommonData.getResource("change_module").Value.ToString() + "</a>                                                  ";
+            }
             menu += "         <a href=\"#\" id=\"btnLogout\" class=\"list-group-item\">" + CommonData.getResource("logout").Value.ToString() + "</a>                                                     " +
                            "         <a href=\"#\" id=\"btnLog\" class=\"list-group-item\">" + CommonData.getResource("view_log").Value.ToString() + "</a>                                                      " +
                            "         <a href=\"#\" id=\"btnCollectDB\" class=\"list-group-item\">" + CommonData.getResource("view_db").Value.ToString() + "</a>                                                 " +
@@ -3853,7 +3838,11 @@ namespace SgqSystem.Services
 
             if (isVolume)
             {
-                parLevel1List = parLevel1List.Where(r => r.Name.Equals("(%) NC CEP Vácuo GRD") || r.Name.Equals("(%) NC PCC 1B") || r.Name.Equals("(%) NC CEP Desossa"));
+                parLevel1List = parLevel1List.Where(r => 
+                                            r.Name.Equals("(%) NC CEP Vácuo GRD") || 
+                                            r.Name.Equals("(%) NC PCC 1B") || 
+                                            r.Name.Equals("(%) NC CEP Desossa") || 
+                                            r.Name.Equals("(%) NC CEP Recortes"));
             }
 
             //Agrupamos o ParLevel1 por ParCriticalLevel
@@ -4028,11 +4017,9 @@ namespace SgqSystem.Services
                     string level3Group = null;
 
                     #endregion
-
-                    //Mock de modularização
-                    if (Level1ListId != "" || Level1ListId == null)
-                        //Busca os Level2 e reforna no level3Group;
-                        listLevel2 += GetLevel02(parlevel1, ParCompany_Id, dateCollect, ref level3Group);
+                    
+                    //Busca os Level2 e reforna no level3Group;
+                    listLevel2 += GetLevel02(parlevel1, ParCompany_Id, dateCollect, ref level3Group);
 
                     //Incrementa Level3Group
                     listLevel3 += level3Group;
@@ -4132,19 +4119,19 @@ namespace SgqSystem.Services
 
             //Verifica avaliações padrão
             var ParEvaluatePadrao = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
-                                                              ParCompany_Id: null);
+                                                              ParCompany_Id: null, DateCollection: dateCollect);
 
             //Verifica avaliações pela company informada
             var ParEvaluateCompany = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
-                                                               ParCompany_Id: ParCompany_Id);
+                                                               ParCompany_Id: ParCompany_Id, DateCollection: dateCollect);
 
             //Verifia amostra padrão
             var ParSamplePadrao = ParSampleDB.getSample(ParLevel1: ParLevel1,
-                                                        ParCompany_Id: null);
+                                                        ParCompany_Id: null, DateCollection: dateCollect);
 
             //Verifica amostra pela company informada
             var ParSampleCompany = ParSampleDB.getSample(ParLevel1: ParLevel1,
-                                                        ParCompany_Id: ParCompany_Id);
+                                                        ParCompany_Id: ParCompany_Id, DateCollection: dateCollect);
 
             //Variaveis para avaliação de grupos
             int evaluateGroup = 0;
