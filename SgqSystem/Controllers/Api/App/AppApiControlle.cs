@@ -158,19 +158,25 @@ namespace SgqSystem.Controllers.Api.App
             }
         }
 
+        [HttpGet]
+        [Route("GetUnits")]
+        public List<int> GetUnits()
+        {
+            return db.ParCompany.AsNoTracking().Select(r => r.Id).ToList();
+        }
 
-        //[HttpGet]
-        //[Route("UpdateListaDeUsuarios/{UnitId}")]
-        //public Dictionary<int, string> UpdateListaDeUsuarios(int UnitId)
-        //{
-        //    using (var service = new SyncServices())
-        //    {
-        //        service.getCompanyUsers(UnitId.ToString()));
-        //    }
-        //    return retorno;
-        //}
+            //[HttpGet]
+            //[Route("UpdateListaDeUsuarios/{UnitId}")]
+            //public Dictionary<int, string> UpdateListaDeUsuarios(int UnitId)
+            //{
+            //    using (var service = new SyncServices())
+            //    {
+            //        service.getCompanyUsers(UnitId.ToString()));
+            //    }
+            //    return retorno;
+            //}
 
-    }
+        }
 
     /// <summary>
     /// Objeto de auxilio para retorno.
