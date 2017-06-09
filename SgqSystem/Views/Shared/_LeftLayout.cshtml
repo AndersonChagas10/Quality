@@ -105,13 +105,18 @@
                 </a>
             </li>
 
-            @*<li class="nav-item" id="RoleLink14">
-                <a href="#" onclick="atualziarTablets();" class="nav-link nav-toggle">
-                    <i class="fa fa-cloud-download" aria-hidden="true"></i>
-                    <span class="title">Atualizar Tablets</span>
-                </a>
-            </li>*@
-
+            @if (ViewBag.IsAdmin != null)
+            {
+                if (ViewBag.IsAdmin == true)
+                {
+                    <li class="nav-item" id="updateAllTablet" >
+                        <a href="#" onclick="atualziarAllTablets();" class="nav-link nav-toggle">
+                            <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                            <span class="title">@Resources.Resource.update_tablet_all</span>
+                        </a>
+                    </li>
+                }
+            }
 
             <li class="nav-item" id="RoleLink4">
                 <a href="#" onclick="atualziarTablets();" class="nav-link nav-toggle">
@@ -159,10 +164,10 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                                <a href="@Url.Action("Index", "CepRecortes")" class="nav-link nav-toggle">
-                                    <span class="title">@Resources.Resource.cep_recortes</span>
-                                </a>
-                            </li>
+                            <a href="@Url.Action("Index", "CepRecortes")" class="nav-link nav-toggle">
+                                <span class="title">@Resources.Resource.cep_recortes</span>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="@Url.Action("Index", "VacuoGRDs")" class="nav-link nav-toggle">
                                 <span class="title">@Resources.Resource.vacuo_grd</span>
@@ -241,12 +246,12 @@
                             </li>
 
                             @*<li class="nav-item" id="RoleLink13">
-                            <a href="@Url.Action("Index", "Role")" class="nav-link nav-toggle">
-                                <i class="fa fa-address-card-o" aria-hidden="true"></i>
-                                <span class="title">@Resources.Resource.profiles_and_roles</span>
+                                    <a href="@Url.Action("Index", "Role")" class="nav-link nav-toggle">
+                                        <i class="fa fa-address-card-o" aria-hidden="true"></i>
+                                        <span class="title">@Resources.Resource.profiles_and_roles</span>
 
-                            </a>
-                        </li>*@
+                                    </a>
+                                </li>*@
                             <li class="nav-item" id="RoleLink15">
                                 <a href="@Url.Action("Index", "ParBinaryDataType")" class="nav-link nav-toggle">
                                     <i class="fa fa-cog" aria-hidden="true"></i>
@@ -262,7 +267,7 @@
                                 </a>
                             </li>
 
-                           
+
                         </ul>
                     </li>
                 }
@@ -323,6 +328,16 @@
             $.LoadingOverlay('show');
             var unidade = GetUnidadeUsuario();
             $.get(root + '/api/AppParams/UpdateTelaDoTablet/' + unidade, { UnitId: unidade }, function (r) {
+                $.LoadingOverlay('hide')
+            });
+        });
+    }
+
+    function atualziarAllTablets() {
+        bootbox.confirm(@Html.Raw(Json.Encode(Resources.Resource.update_all_tablet_message)), function (result) {
+            $.LoadingOverlay('show');
+            var unidade = GetUnidadeUsuario();
+            $.get(root + '/api/AppParams/UpdateTelaDoTablet/', {}, function (r) {
                 $.LoadingOverlay('hide')
             });
         });
