@@ -280,7 +280,7 @@ namespace SgqSystem.Services
                                               "\n  on p321.ParLevel1_Id = p1.id " +
                                               "\n  inner join ParLevel3Level2 p32 " +
                                               "\n  on p32.id = p321.ParLevel3Level2_Id " +
-                                              "\n  WHERE ParLevel1Origin_Id = 22 " +
+                                              "\n  WHERE ParLevel1Origin_Id = " + result[0] +
                                               "\n  and p1.isActive = 1 " +
                                               "\n  and p321.Active = 1 " +
                                               "\n  and p32.IsActive = 1";
@@ -553,7 +553,7 @@ namespace SgqSystem.Services
                                                       "\n  on p321.ParLevel1_Id = p1.id " +
                                                       "\n  inner join ParLevel3Level2 p32 " +
                                                       "\n  on p32.id = p321.ParLevel3Level2_Id " +
-                                                      "\n  WHERE ParLevel1Origin_Id = 22 " +
+                                                      "\n  WHERE ParLevel1Origin_Id = " + result[0] +
                                                       "\n  and p1.isActive = 1 " +
                                                       "\n  and p321.Active = 1 " +
                                                       "\n  and p32.IsActive = 1";
