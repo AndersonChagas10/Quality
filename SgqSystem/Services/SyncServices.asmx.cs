@@ -1227,11 +1227,10 @@ namespace SgqSystem.Services
             //             Shift+","+Period+")"+
             //             "SELECT @@IDENTITY AS 'Identity'";
 
-            string sql = "INSERT ConsolidationLevel1 ([UnitId],[DepartmentId],[ParLevel1_Id],[AddDate],[AlterDate],[ConsolidationDate]) " +
+            string sql = "INSERT ConsolidationLevel1 ([UnitId],[DepartmentId],[ParLevel1_Id],[AddDate],[AlterDate],[ConsolidationDate],[shift],[period]) " +
                          "VALUES " +
                          "('" + ParCompany_Id + "','" + departmentId + "','" + ParLevel1_Id + "', GetDate(),null, CONVERT(DATE, '" + collectionDate.ToString("yyyy-MM-dd") + "')" +
-                         //", " + Shift + "," + Period + 
-                         ")" +
+                         ", " + Shift + "," + Period + ")" +
                          "SELECT @@IDENTITY AS 'Identity'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
