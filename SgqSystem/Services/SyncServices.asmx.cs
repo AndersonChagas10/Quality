@@ -232,24 +232,32 @@ namespace SgqSystem.Services
         [WebMethod]
         public string InsertJson(string ObjResultJSon, string deviceId, string deviceMac, bool autoSend)
         {
-            
-            if (string.IsNullOrEmpty(ObjResultJSon))
-            {
-                return null;
-            }
-            //A key não está sendo utilizada
-            string key = "111111";
-            //Converto o Objeto Json e prepara para extrair os dados do Level02
-            ObjResultJSon = ObjResultJSon.Replace("</level02><level02>", "@").Replace("<level02>", "").Replace("</level02>", "");
-            //Gera um array
-            string[] arrayObj = ObjResultJSon.Split('@');
-            //Instanciamos a linha que gera a query
-            //Percorre o Objeto
+            var objObjResultJSonPuro = ObjResultJSon;
             string versaoApp = null;
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
+
+                if (string.IsNullOrEmpty(ObjResultJSon))
+                {
+                    return null;
+                }
+                //A key não está sendo utilizada
+                string key = "111111";
+                //Converto o Objeto Json e prepara para extrair os dados do Level02
+                ObjResultJSon = ObjResultJSon.Replace("</level02><level02>", "@").Replace("<level02>", "").Replace("</level02>", "");
+
+               // ObjResultJSon = "" +
+
+               //     "17;06/08/2017 01:16:010:474;41;06/08/2017 01:15:016:191;22;1;2;1501;0;false;NULL;2;1;<header>32,1,9</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>178,06/08/2017 01:15:016:193,2.4,true,1501,null,undefined,undefined,2.00000,,0.0000000000,7.0000000000,false,0,0,2,0</level03><level03>176,06/08/2017 01:15:016:194,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>3,06/08/2017 01:15:016:194,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>5,06/08/2017 01:15:016:195,,true,1501,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0,0,2,0</level03><level03>177,06/08/2017 01:15:016:195,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;13;0;0;0;5;0;1;0;0;0;0;undefined;undefined@17;06/08/2017 01:16:010:474;41;06/08/2017 01:15:020:361;22;1;2;1501;0;false;NULL;2;2;<header>32,1,9</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>178,06/08/2017 01:15:020:361,3,true,1501,null,undefined,undefined,2.00000,,0.0000000000,7.0000000000,false,0,0,2,0</level03><level03>176,06/08/2017 01:15:020:362,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>3,06/08/2017 01:15:020:363,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>5,06/08/2017 01:15:020:363,,true,1501,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0,0,2,0</level03><level03>177,06/08/2017 01:15:020:364,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;13;0;0;0;5;0;1;0;0;0;0;undefined;undefined@17;06/08/2017 01:16:010:474;41;06/08/2017 01:15:023:755;22;1;2;1501;0;false;NULL;2;3;<header>32,1,9</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>178,06/08/2017 01:15:023:758,4.1,true,1501,null,undefined,undefined,2.00000,,0.0000000000,7.0000000000,false,0,0,2,0</level03><level03>176,06/08/2017 01:15:023:762,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>3,06/08/2017 01:15:023:763,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>5,06/08/2017 01:15:023:764,,true,1501,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0,0,2,0</level03><level03>177,06/08/2017 01:15:023:765,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;13;0;0;0;5;0;1;0;0;0;0;undefined;undefined@17;06/08/2017 01:16:010:474;41;06/08/2017 01:15:027:635;22;1;2;1501;0;false;NULL;2;4;<header>32,1,9</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>178,06/08/2017 01:15:027:639,2.7,true,1501,null,undefined,undefined,2.00000,,0.0000000000,7.0000000000,false,0,0,2,0</level03><level03>176,06/08/2017 01:15:027:642,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>3,06/08/2017 01:15:027:643,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>5,06/08/2017 01:15:027:643,,true,1501,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0,0,2,0</level03><level03>177,06/08/2017 01:15:027:644,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;13;0;0;0;5;0;1;0;0;0;0;undefined;undefined@17;06/08/2017 01:16:010:474;41;06/08/2017 01:15:031:075;22;1;2;1501;0;false;NULL;2;5;<header>32,1,9</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>178,06/08/2017 01:15:031:079,3.6,true,1501,null,undefined,undefined,2.00000,,0.0000000000,7.0000000000,false,0,0,2,0</level03><level03>176,06/08/2017 01:15:031:084,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>3,06/08/2017 01:15:031:084,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>5,06/08/2017 01:15:031:085,,true,1501,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0,0,2,0</level03><level03>177,06/08/2017 01:15:031:086,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;13;0;0;0;5;0;1;0;0;0;0;undefined;undefined@17;06/08/2017 01:16:010:474;41;06/08/2017 01:15:041:203;22;1;2;1501;0;false;NULL;2;6;<header>32,1,8</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>178,06/08/2017 01:15:041:206,2,true,1501,null,undefined,undefined,2.00000,,0.0000000000,7.0000000000,false,0,0,2,0</level03><level03>176,06/08/2017 01:15:041:210,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>3,06/08/2017 01:15:041:211,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>5,06/08/2017 01:15:041:212,,true,1501,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0,0,2,0</level03><level03>177,06/08/2017 01:15:041:212,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;13;0;0;0;5;0;1;0;0;0;0;undefined;undefined@17;06/08/2017 01:16:010:474;41;06/08/2017 01:15:044:957;22;1;2;1501;0;false;NULL;2;7;<header>32,1,8</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>178,06/08/2017 01:15:044:960,1.8,true,1501,null,undefined,undefined,2.00000,,0.0000000000,7.0000000000,false,0,0,2,0</level03><level03>176,06/08/2017 01:15:044:964,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>3,06/08/2017 01:15:044:965,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>5,06/08/2017 01:15:044:965,,true,1501,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0,0,2,0</level03><level03>177,06/08/2017 01:15:044:966,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;13;0;0;0;5;0;1;0;0;0;0;undefined;undefined@17;06/08/2017 01:16:010:474;41;06/08/2017 01:15:052:018;22;1;2;1501;0;false;NULL;2;8;<header>32,1,8</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>178,06/08/2017 01:15:052:021,3.5,true,1501,null,undefined,undefined,2.00000,,0.0000000000,7.0000000000,false,0,0,2,0</level03><level03>176,06/08/2017 01:15:052:025,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>3,06/08/2017 01:15:052:026,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>5,06/08/2017 01:15:052:027,,true,1501,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0,0,2,0</level03><level03>177,06/08/2017 01:15:052:027,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;13;0;0;0;5;0;1;0;0;0;0;undefined;undefined@17;06/08/2017 01:16:010:474;41;06/08/2017 01:15:059:665;22;1;2;1501;0;false;NULL;2;9;<header>32,1,8</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>178,06/08/2017 01:15:059:668,2.4,true,1501,null,undefined,undefined,2.00000,,0.0000000000,7.0000000000,false,0,0,2,0</level03><level03>176,06/08/2017 01:15:059:671,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>3,06/08/2017 01:15:059:671,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>5,06/08/2017 01:15:059:672,,true,1501,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0,0,2,0</level03><level03>177,06/08/2017 01:15:059:673,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;13;0;0;0;5;0;1;0;0;0;0;undefined;undefined@17;06/08/2017 01:16:010:474;41;06/08/2017 01:16:010:531;22;1;2;1501;0;false;NULL;2;10;<header>32,1,8</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>178,06/08/2017 01:16:010:534,2.2,true,1501,null,undefined,undefined,2.00000,,0.0000000000,7.0000000000,false,0,0,2,0</level03><level03>176,06/08/2017 01:16:010:537,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>3,06/08/2017 01:16:010:538,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>5,06/08/2017 01:16:010:538,,true,1501,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0,0,2,0</level03><level03>177,06/08/2017 01:16:010:539,,true,1501,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;13;0;0;0;5;0;1;0;0;0;0;undefined;undefined";
+
+
+                //Gera um array
+                string[] arrayObj = ObjResultJSon.Split('@');
+                //Instanciamos a linha que gera a query
+                //Percorre o Objeto
+
+                string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
                 using (SqlConnection connection = new SqlConnection(conexao))
                 {
                     connection.Open();
@@ -367,7 +375,9 @@ namespace SgqSystem.Services
 
                         //Pega o Auditor
                         string auditorId = result[7];
-                        //string auditorId = "1";
+
+
+                        //auditorId = "1";
 
                         //Verifica se é reauditoria
                         string reaudit = result[9];
@@ -528,7 +538,7 @@ namespace SgqSystem.Services
                         if (retornoFilho != "")
                         {
 
-                           
+
                             List<ResultadoUmaColuna> list2;
 
                             var indicadorFilho_id = "";
@@ -550,7 +560,7 @@ namespace SgqSystem.Services
 
                                 list2 = db.Database.SqlQuery<ResultadoUmaColuna>(indicadorFilho).ToList();
 
-                                
+
 
                                 for (var l = 0; l < list2.Count(); l++)
                                 {
@@ -607,13 +617,13 @@ namespace SgqSystem.Services
             }
             catch (SqlException ex)
             {
-                int insertLog = insertLogJson(ObjResultJSon, ex.Message, deviceId, versaoApp, "InsertJson");
+                int insertLog = insertLogJson(objObjResultJSonPuro, ex.Message, deviceId, versaoApp, "InsertJson");
                 return "error";
                 //return "error sql insert";
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson(ObjResultJSon, ex.Message, deviceId, versaoApp, "InsertJson");
+                int insertLog = insertLogJson(objObjResultJSonPuro, ex.Message, deviceId, versaoApp, "InsertJson");
                 return "error";
             }
         }
@@ -933,6 +943,11 @@ namespace SgqSystem.Services
                         var updateConsolidationLevel1Id = updateConsolidationLevel1(ConsolidationLevel1_Id, AlertLevel, avaliacaoultimoalerta, monitoramentoultimoalerta, consolidationLevel1XConsolidationLevel2);
 
                     }
+                    else if (string.IsNullOrEmpty(c.Level03ResultJSon))
+                    {
+                        var ids = "Level2ID:" + CollectionLevel2Id + " CollectionJsonID: " + c.Id;
+                        int insertLog = insertLogJson("", "Level 3 VAZIO " + ids, "N/A", "N/A", "Erro no [ProcessJson].");
+                    }
 
                 }
 
@@ -940,6 +955,7 @@ namespace SgqSystem.Services
             }
             catch (Exception ex)
             {
+                int insertLog = insertLogJson("", ex.Message, "N/A", "N/A", "Erro no [ProcessJson]");
                 throw ex;
             }
         }
@@ -1872,7 +1888,7 @@ namespace SgqSystem.Services
 
                 id = DefaultValueReturn(id, "0");
 
-                if(Int64.Parse(id) == 0)
+                if (Int64.Parse(id) == 0)
                 {
                     var r = Result_Level3DB.get(Int32.Parse(CollectionLevel02Id), Int32.Parse(Level03Id));
                     if (r != null)
@@ -1894,11 +1910,11 @@ namespace SgqSystem.Services
                 }
                 else
                 {
-                    sql += "UPDATE Result_Level3 SET                                        "+
-                            "IsConform='" + conform + "',                                   "+
-                            "IsNotEvaluate='" + isnotEvaluate + "',                         "+
-                            "Value='" + value + "',                                         "+
-                            "Weight='" + weight + "',                                       "+
+                    sql += "UPDATE Result_Level3 SET                                        " +
+                            "IsConform='" + conform + "',                                   " +
+                            "IsNotEvaluate='" + isnotEvaluate + "',                         " +
+                            "Value='" + value + "',                                         " +
+                            "Weight='" + weight + "',                                       " +
                             "Defects='" + defects + "',                                     " +
                             "WeiEvaluation='" + WeiEvaluation + "',                         " +
                             "WeiDefects='" + WeiDefects + "',                               " +
@@ -2759,8 +2775,8 @@ namespace SgqSystem.Services
                     "\n Level2Result.Sequential,																																												  " +
                     "\n Level2Result.Side,					         																																							  " +
                     "\n CDL2.ReauditNumber,																																														  " +
-                    "\n CDL2.ReauditIs		                                                                                                "+
-                    "\n order by Level2Result.CollectionDate asc,Level2Result.ParLevel1_Id asc, CDL2.ReauditNumber asc                                          "+
+                    "\n CDL2.ReauditIs		                                                                                                " +
+                    "\n order by Level2Result.CollectionDate asc,Level2Result.ParLevel1_Id asc, CDL2.ReauditNumber asc                                          " +
                     "\n 																																																		  " +
                     "\n DROP TABLE #COLETASLEVEL3 																																												  " +
                     "\n DROP TABLE #COLETA																																														  " +
@@ -3972,7 +3988,7 @@ namespace SgqSystem.Services
                         //Identidicar se possui contador para o indicador
                         if (listCounter != null)
                         {
-                            painelCounters = html.painelCounters(listCounter.Where(r=> r.Local == "level1_line"), "margin-top: 40px;font-size: 12px;");
+                            painelCounters = html.painelCounters(listCounter.Where(r => r.Local == "level1_line"), "margin-top: 40px;font-size: 12px;");
                         }
 
                         if (GlobalConfig.Eua && parlevel1.Name.Contains("CFF"))
@@ -4337,7 +4353,7 @@ namespace SgqSystem.Services
 
                 if (listLineCounter != null)
                 {
-                    lineCounters = html.painelCounters(listLineCounter.Where(r=> r.Local == "level2_line"), "margin-top: 45px;font-size: 12px;");
+                    lineCounters = html.painelCounters(listLineCounter.Where(r => r.Local == "level2_line"), "margin-top: 45px;font-size: 12px;");
                 }
 
                 //Gera linha do Level2
@@ -4483,7 +4499,7 @@ namespace SgqSystem.Services
             if (!string.IsNullOrEmpty(painelLevel2HeaderListHtml))
             {
                 painelLevel2HeaderListHtml = html.listgroupItem(
-                                                                outerhtml: painelLevel2HeaderListHtml+painelCounters,
+                                                                outerhtml: painelLevel2HeaderListHtml + painelCounters,
                                                                 classe: "row painelLevel02"
                                                                 );
             }
@@ -5241,7 +5257,7 @@ namespace SgqSystem.Services
                     string painelCounters = "";
                     if (listCounter != null)
                     {
-                        painelCounters = html.painelCounters(listCounter.Where(r=> r.Local == "level3_header"));
+                        painelCounters = html.painelCounters(listCounter.Where(r => r.Local == "level3_header"));
                     }
 
                     parLevel3Group += level3Group;
@@ -5265,8 +5281,8 @@ namespace SgqSystem.Services
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
                 string defeitoshtml = html.div(
-                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("defects").Value.ToString() + 
-                                    "</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(outerhtml: "0",classe: "defects") +"</label>",
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("defects").Value.ToString() +
+                                    "</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(outerhtml: "0", classe: "defects") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
 
@@ -5357,7 +5373,7 @@ namespace SgqSystem.Services
 
                 painellevel3 = html.listgroupItem(outerhtml: avaliacoes +
                                                              amostras +
-                                                             defeitos + 
+                                                             defeitos +
                                                              painelLevel3HeaderListHtml,
                                                   classe: "painel painelLevel03 row") +
                               html.painelCounters(listCounter);
