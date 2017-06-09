@@ -2061,4 +2061,7 @@
   <data name="points_destiny" xml:space="preserve">
     <value>Points Destiny</value>
   </data>
+  <data name="deviation" xml:space="preserve">
+    <value>Deviation</value>
+  </data>
 </root>

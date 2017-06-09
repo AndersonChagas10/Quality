@@ -1465,6 +1465,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deviation.
+        /// </summary>
+        internal static string deviation {
+            get {
+                return ResourceManager.GetString("deviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deviations per Monitoring.
         /// </summary>
         internal static string deviations_per_monitoring {
