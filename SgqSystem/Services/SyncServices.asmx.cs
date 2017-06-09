@@ -4103,19 +4103,19 @@ namespace SgqSystem.Services
 
             //Verifica avaliações padrão
             var ParEvaluatePadrao = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
-                                                              ParCompany_Id: null);
+                                                              ParCompany_Id: null, DateCollection: dateCollect);
 
             //Verifica avaliações pela company informada
             var ParEvaluateCompany = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
-                                                               ParCompany_Id: ParCompany_Id);
+                                                               ParCompany_Id: ParCompany_Id, DateCollection: dateCollect);
 
             //Verifia amostra padrão
             var ParSamplePadrao = ParSampleDB.getSample(ParLevel1: ParLevel1,
-                                                        ParCompany_Id: null);
+                                                        ParCompany_Id: null, DateCollection: dateCollect);
 
             //Verifica amostra pela company informada
             var ParSampleCompany = ParSampleDB.getSample(ParLevel1: ParLevel1,
-                                                        ParCompany_Id: ParCompany_Id);
+                                                        ParCompany_Id: ParCompany_Id, DateCollection: dateCollect);
 
             //Variaveis para avaliação de grupos
             int evaluateGroup = 0;
