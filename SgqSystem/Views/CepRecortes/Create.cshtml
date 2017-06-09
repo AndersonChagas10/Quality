@@ -268,7 +268,7 @@
     $('#TotalAvaliaColaborEsteirHoraProd, #TamanhoAmostra').on('input', function () {
         $('#TotalAmostraAvaliaColabEsteiraHoraProd').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
         $('#TotalAmostraAvaliaColabEsteiraHoraProdHidden').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
-        $('#Amostras').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
+        $('#Amostras').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val() * $('#TotalAvaliaColaborEsteirHoraProd').val()));
         $('#amostraHidden').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
     });
 
