@@ -24,13 +24,12 @@ namespace SgqSystem.Controllers.Api
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
         SGQ_GlobalEntities dbGlobal;
         SgqDbDevEntities dbSgq;
-        string conexaoUndiade;
         public VTVerificacaoTipificacaoApiController()
         {
 
-            dbGlobal = new SGQ_GlobalEntities();
-            dbGlobal.Configuration.LazyLoadingEnabled = false;
-            dbGlobal.Configuration.ValidateOnSaveEnabled = false;
+            //dbGlobal = new SGQ_GlobalEntities();
+            //dbGlobal.Configuration.LazyLoadingEnabled = false;
+            //dbGlobal.Configuration.ValidateOnSaveEnabled = false;
 
             dbSgq = new SgqDbDevEntities();
             dbSgq.Configuration.LazyLoadingEnabled = false;
