@@ -126,6 +126,7 @@ namespace Dominio
         public virtual DbSet<ParLevel1> ParLevel1 { get; set; }
         public virtual DbSet<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
         public virtual DbSet<CollectionLevel02> CollectionLevel02 { get; set; }
+        public virtual DbSet<VerificacaoTipificacaoV2> VerificacaoTipificacaoV2 { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
