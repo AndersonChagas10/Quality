@@ -610,8 +610,8 @@ namespace SgqSystem.Services
         public string counter(string label, string level, string indicador, string headerLevel)
         {
             //return "<span class=\"counter " + classe + "\"><b><span class=\"labelCounter\">" + label.Trim() + "</span></b>: <span class=\"value\">" + value.Trim() + "</span></span>";
-            return "<span class=\"counter hide col-xs-4\" counter=\""+label+"\" level=\"" + level + "\" indicador=\"" + indicador + "\" headerLevel=\"" + headerLevel + "\"><b><span class=\"labelCounter\">" +
-                label+"</span></b>: <b><span class=\"value\">0</span></span></b>";
+            return "<span class=\"counter hide col-xs-4\" counter=\""+label+"\" level=\"" + level + "\" indicador=\"" + indicador + "\" headerLevel=\"" + headerLevel + 
+                "\"><b><span class=\"labelCounter\">" + label+"</span></b>: <b><span class=\"value\">0</span></span></b>";
         }
 
         public DictionaryEntry getResource(string value)
