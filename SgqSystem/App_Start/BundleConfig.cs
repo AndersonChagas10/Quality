@@ -21,7 +21,8 @@ namespace SgqSystem
 
             bundles.Add(new ScriptBundle("~/bundles/Guard")
              .Include("~/Scripts/GuardJs.js",
-                "~/Scripts/loadingoverlay.min.js")
+                "~/Scripts/loadingoverlay.min.js",
+                "~/Scripts/loadingoverlay_progress.min.js")
             );
 
             bundles.Add(new ScriptBundle("~/bundles/mask")

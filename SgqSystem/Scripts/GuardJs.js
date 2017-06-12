@@ -134,6 +134,10 @@ function getCookie(name) {
     if (parts.length == 2) return parts.pop().split(";").shift().split('&');
 }
 
+function getRole(role){
+    return $.grep(getCookie("webControlCookie"), function (n) { return n.indexOf(role) != -1 })
+}
+
 Array.prototype.max = function () {
     return Math.max.apply(null, this);
 };
