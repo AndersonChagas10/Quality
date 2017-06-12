@@ -1,10 +1,14 @@
 ﻿@model PlanoAcaoCore.Acao.FTA
+@{
 
+
+
+}
 <style>
 
     /*td span {
         padding: 2px 0;
-        text-align:center; 
+        text-align:center;
         vertical-align:middle;
     }*/
 
@@ -44,90 +48,110 @@
 
 </style>
 
+
+
+
 @using (Html.BeginForm())
 {
-    <div class="table-responsive">
+
+    <div class="table-responsive" ng-controller="FTA">
 
         <table class="table table-condensed" id="tabela" border="1" cellspacing="0">
-            <tbody>
-                <tr rowspan="2">
-                    <td colspan="6">
-                        <span class="tdLabel; centerThis" style="font-size: 20px;">RELATÓRIO DE ANÁLISE DE DESVIO</span>
-                    </td>
-                    <td colspan="4">
-                        <span class="tdLabels; centerThis">
-                            Data Inicial do período selecionado - @Model._DataInicioFTA
-                        </span>
-                        <hr />
-                        <span class="tdLabels; centerThis">Data Final do período selecionado - @Model._DataFimFTA</span>
-                    </td>
-                </tr>
+
+            <tr rowspan="2">
+                <td colspan="6">
+                    <span class="tdLabel; centerThis" style="font-size: 20px;">RELATÓRIO DE ANÁLISE DE DESVIO</span>
+                </td>
+                <td colspan="4">
+                    <span class="tdLabels; centerThis">
+                        Data Inicial do período selecionado - @Model._DataInicioFTA
+                    </span>
+                    <hr />
+                    <span class="tdLabels; centerThis">Data Final do período selecionado - @Model._DataFimFTA</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="4"><span class="tdLabels">INDICADORES COM DESVIOS</span></td>
+                <td colspan="2"><span class="tdLabels">Supervisor</span></td>
+                <td colspan="2"><span class="tdLabels">Unidade</span></td>
+                <td colspan="2"><span class="tdLabels">Departamento</span></td>
+            </tr>
+
+            <tr>
+                <td colspan="4">
+                    @Model._Level1
+                    @Html.HiddenFor(r => r.Level1Id)
+                    @Html.HiddenFor(r => r.Level2Id)
+                    @Html.HiddenFor(r => r.Level3Id)
+                </td>
+                <td colspan="2">
+                    @Model._Supervisor
+                    @Html.HiddenFor(r => r.Supervisor_Id)
+                </td>
+                <td colspan="2">
+                    @Model._Unidade
+                    @Html.HiddenFor(r => r.Unidade_Id)
+                </td>
+                <td colspan="2">
+                    @Model._Departamento
+                    @Html.HiddenFor(r => r.Departamento_Id)
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="5"><span class="tdLabels">META DO INDICADOR</span></td>
+                <td colspan="5"><span class="tdLabels">PERCENTUAL DE NÃO CONFORMIDADE DAS TAREFAS</span></td>
+            </tr>
+
+            <tr>
+                <td colspan="5">
+                    <k>@Model.MetaFTA</k>
+                    @Html.HiddenFor(r => r.MetaFTA)
+                </td>
+                <td colspan="5">
+                    <k>@Model.PercentualNCFTA</k>
+                    @Html.HiddenFor(r => r.PercentualNCFTA)
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="10"><span class="tdLabels">REINCIDÊNCIA DE DESVIOS NO PERÍODO</span></td>
+            </tr>
+
+            <tr>
+                <td colspan="10">
+                    <k>@Model.ReincidenciaDesvioFTA</k>
+                    @Html.HiddenFor(r => r.ReincidenciaDesvioFTA)
+                </td>
+            </tr>
+
+
+
+            <tbody ng-repeat="item in items" my-repeat-directive id="FTA{{item}}" >
 
                 <tr>
-                    <td colspan="4"><span class="tdLabels">INDICADORES COM DESVIOS</span></td>
-                    <td colspan="2"><span class="tdLabels">Supervisor</span></td>
-                    <td colspan="2"><span class="tdLabels">Unidade</span></td>
-                    <td colspan="2"><span class="tdLabels">Departamento</span></td>
-                </tr>
-
-                <tr>
-                    <td colspan="4">
-                        @Model._Level1
-                        @Html.HiddenFor(r => r.Level1Id)
-                        @Html.HiddenFor(r => r.Level2Id)
-                        @Html.HiddenFor(r => r.Level3Id)
-                    </td>
-                    <td colspan="2">
-                        @Model._Supervisor
-                        @Html.HiddenFor(r => r.Supervisor_Id)
-                    </td>
-                    <td colspan="2">
-                        @Model._Unidade
-                        @Html.HiddenFor(r => r.Unidade_Id)
-                    </td>
-                    <td colspan="2">
-                        @Model._Departamento
-                        @Html.HiddenFor(r => r.Departamento_Id)
+                    <td colspan="10" style="background-color: rgba(169, 169, 169, 0.35); border-bottom: 2px solid black;" >
+                        <i ng-show="items.length > 1" ng-click="RemoverFTA(item)" class="fa fa-trash-o" aria-hidden="true">Remover </i> 
+                        &nbsp; 
+                        <i ng-click="myFunc()" class="fa fa-calendar-plus-o" aria-hidden="true">Adicionar </i>
                     </td>
                 </tr>
-
-                <tr>
-                    <td colspan="5"><span class="tdLabels">META DO INDICADOR</span></td>
-                    <td colspan="5"><span class="tdLabels">PERCENTUAL DE NÃO CONFORMIDADE DAS TAREFAS</span></td>
-                </tr>
-
-                <tr>
-                    <td colspan="5">
-                        <k>@Model.MetaFTA</k>
-                        @Html.HiddenFor(r => r.MetaFTA)
-                    </td>
-                    <td colspan="5">
-                        <k>@Model.PercentualNCFTA</k>
-                        @Html.HiddenFor(r => r.PercentualNCFTA)
-                    </td>
-                </tr>
-
-                <tr>
-                    <td colspan="10"><span class="tdLabels">REINCIDÊNCIA DE DESVIOS NO PERÍODO</span></td>
-                </tr>
-
-                <tr>
-                    <td colspan="10">
-                        <k>@Model.ReincidenciaDesvioFTA</k>
-                        @Html.HiddenFor(r => r.ReincidenciaDesvioFTA)
-                    </td>
-                </tr>
-
 
                 <tr>
                     <td colspan="4"><span class="tdLabels">CAUSA GENÉRICA</span></td>
                     <td colspan="2"><span class="tdLabels">GRUPO CAUSA</span></td>
-                    <td colspan="4"><span class="tdLabels">CONTRAMEDIDA GENÉRICA</span></td>
+                    <td colspan="4"><span class="tdLabels">CONTRAMEDIDA GENÉRICA</span> </td>
                 </tr>
 
                 <tr>
                     <td colspan="4">
                         @Html.DropDownListFor(r => r.CausaGenerica_Id, new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione", new { @class = "form-control input-sm" })
+                        @*<select data-ng-model="FTABody.CausaGenerica_Id"
+                                    data-ng-options="s.Id as s.Name for s in CausaGenericas | orderBy:'Name'"
+                                    data-ng-change="ChangeCausaGenericas()" class="form-control" style="width:210px">
+                                <option value="">Selecione...</option>
+                            </select>*@
                     </td>
                     <td colspan="2">
                         @Html.DropDownListFor(r => r.GrupoCausa_Id, new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione", new { @class = "form-control input-sm" })
@@ -180,40 +204,86 @@
                     </td>
                 </tr>
 
-                <tr>
-                    <td colspan="10" style="border-bottom:0;"><span class="tdLabels">Vistos</span></td>
-                </tr>
+            </tbody>
 
+            <tr>
+                <td colspan="10" style="border-bottom:0;"><span class="tdLabels">Vistos</span></td>
+            </tr>
 
-                <tr>
-                    <td colspan="5" style="border-top:0;border-right:0;"><span class="tdLabels; centerThis">Assinatura1</span></td>
-                    <td colspan="5" style="border-top:0;border-left:0;"><span class="tdLabels; centerThis">Assinatura2</span></td>
-                </tr>
+            <tr>
+                <td colspan="5" style="border-top:0;border-right:0;"><span class="tdLabels; centerThis">Assinatura1</span></td>
+                <td colspan="5" style="border-top:0;border-left:0;"><span class="tdLabels; centerThis">Assinatura2</span></td>
+            </tr>
 
-                <tr>
-                    <td colspan="5">
-                        @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                    </td>
-                    <td colspan="5">
-                        @Html.DropDownListFor(r => r.Assinatura2, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                    </td>
-                </tr>
-
-                <tr style="display:none">
-                    <td width="10%"></td>
-                    <td width="10%"></td>
-                    <td width="10%"></td>
-                    <td width="10%"></td>
-                    <td width="10%"></td>
-                    <td width="10%"></td>
-                    <td width="10%"></td>
-                    <td width="10%"></td>
-                    <td width="10%"></td>
-                    <td width="10%"></td>
-                </tr>
+            <tr>
+                <td colspan="5">
+                    @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                </td>
+                <td colspan="5">
+                    @Html.DropDownListFor(r => r.Assinatura2, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                </td>
+            </tr>
+            <tr style="display:none">
+                <td width="10%"></td>
+                <td width="10%"></td>
+                <td width="10%"></td>
+                <td width="10%"></td>
+                <td width="10%"></td>
+                <td width="10%"></td>
+                <td width="10%"></td>
+                <td width="10%"></td>
+                <td width="10%"></td>
+                <td width="10%"></td>
+            </tr>
         </table>
         <button type="button" class="btn btn-primary" id="Salvar" onclick="save();" style="">Salvar</button>
     </div>
+
+    <script>
+        var app = angular.module("App", []);
+        app.controller('FTA', ['$scope', function($scope) {
+            $scope.count = 0;
+            $scope.items = [0];
+
+            $scope.myFunc = function() {
+                $scope.count++;
+                $scope.items.push($scope.count);
+            };
+
+            $scope.RemoverFTA = function(item) {
+                var index = $scope.items.indexOf(item);
+                    $scope.items.splice(index, 1);     
+            };
+        }]);
+
+        app.directive('myRepeatDirective', function() {
+            return function(scope, element, attrs) {
+
+                //console.log('scope');
+                //console.log('element');
+                //console.log('attrs');
+                element.find('#CausaGenerica_Id').off('change').on('change', function () {
+                    console.log('teste');
+                    var valor = $(this).val();
+                    if (valor) {
+                        $.get(GETGrupoCausa, { id: valor }, function (r) {
+                            element.find('#GrupoCausa_Id').empty().html(r);
+                        });
+                        $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
+                            element.find('#ContramedidaGenerica_Id').empty().html(rr);
+                        });
+                    }
+                    else {
+                        element.find('#GrupoCausa_Id').empty().attr('disabled', true);
+                        element.find('#ContramedidaGenerica_Id').empty().attr('disabled', true);
+                    }
+                });
+
+                InitDatePiker();
+            };
+        });
+
+    </script>
 
 }
 
@@ -229,14 +299,15 @@
                 <form id="passCheck">
                     <div class="form-group">
                         <div>
-                            <input type="password" class="form-control" id="newItem">
+                            <input type="password" class="form-control" id="" name="pass">
+                            <input type="hidden" class="form-control" id="name" name="name">
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" onclick="ValidaSenha();">Ok</button>
+                <button type="button" class="btn btn-primary"  id="btnOk">Ok</button>
             </div>
         </div>
     </div>
@@ -246,11 +317,16 @@
 
     <script>
 
-        function ValidaSenha() {
+        var user0 = {Status: false};
+        var user1 = {Status: false};
+        function ValidaSenha(user) {
             /*Encriptar aqui!!!!*/
             var check = $('#passCheck').serializeObject();
             $.post('@Url.Action("CheckPass", "api/Pa_User")', check, function (r) {
-                openMessageModal(r, '');
+                if(user == 0){ user0.Status = !r.isInvalid; }
+                if(user == 1){ user1.Status = !r.isInvalid; }
+                openMessageModal(r.response, '');
+                if(user0.Status && user1.Status){ $('#Salvar').attr('disabled', false); } else { $('#Salvar').attr('disabled', true);}
                 $('#modalPass').modal("hide");
             }).fail(function (e, h, x) {
 
@@ -263,33 +339,24 @@
         }
 
         $('[id=Assinatura1]').off('change').on('change', function () {
+            user0.Status = false;
+            $('#passCheck').find('#name').val($('[id=Assinatura1] :selected').text());
+            $('#btnOk').off('click').on('click', function() { ValidaSenha(0); });
             $('#modalPass').modal();
+            if(user0.Status && user1.Status){ $('#Salvar').attr('disabled', false); } else { $('#Salvar').attr('disabled', true);}
         });
 
         $('[id=Assinatura2]').off('change').on('change', function () {
+            user1.Status = false;
+            $('#passCheck').find('#name').val($('[id=Assinatura2] :selected').text());
+            $('#btnOk').off('click').on('click', function() { ValidaSenha(1); });
             $('#modalPass').modal();
+            if(user0.Status && user1.Status){ $('#Salvar').attr('disabled', false); } else { $('#Salvar').attr('disabled', true);}
         });
 
         var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
         var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")';
-
-        $('[id=CausaGenerica_Id]').off('change').on('change', function () {
-            var valor = $(this).val();
-            var form = $(this).parents('form');
-            if (valor) {
-                $.get(GETGrupoCausa, { id: valor }, function (r) {
-                    form.find('#GrupoCausa_Id').empty().html(r);
-                });
-                $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
-                    form.find('#ContramedidaGenerica_Id').empty().html(rr);
-                });
-            }
-            else {
-                form.find('#GrupoCausa_Id').empty().attr('disabled', true);
-                form.find('#ContramedidaGenerica_Id').empty().attr('disabled', true);
-            }
-        });
-
+       
         $(document).ajaxStart(function () {
             $.LoadingOverlay("show");
         });
@@ -299,8 +366,6 @@
         });
 
         $(document).ajaxError(function (e, h, x) {
-
-
             console.log(e);
             console.log(h);
             console.log(x);
@@ -308,7 +373,6 @@
         });
 
         function formatErrorMessage(jqXHR, exception) {
-
             if (jqXHR.status === 0) {
                 return ('Not connected.\nPlease verify your network connection.');
             } else if (jqXHR.status == 404) {
@@ -331,17 +395,31 @@
             var form = $('form').serializeObject();
             form["Panejamento_Id"] = @Html.Raw(Json.Encode(ViewBag.PlanejamentosComFTA)); //Para Salvar no Planejamento de FTA
             form["TipoIndicador"] = 2; //Para Indicador SGQ
-            $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', form, function (r) {
-                openMessageModal('Registro salvo com sucesso!', '');
-            }).fail(function(xhr, err) { 
-                var responseTitle= $(xhr.responseText).filter('title').get(0);
-                openMessageModal($(responseTitle).text(), formatErrorMessage(xhr, err)); 
-            });
+            var index = 0;
+            form.CausaGenerica_Id.forEach(function(o,c) { 
+                var singleForm = form;
+                singleForm.CausaEspecifica = form.CausaEspecifica[index];
+                singleForm.CausaGenerica_Id = form.CausaGenerica_Id[index];
+                singleForm.ComoPontosimportantes = form.ComoPontosimportantes[index];
+                singleForm.ContramedidaEspecifica = form.ContramedidaEspecifica[index];
+                singleForm.ContramedidaGenerica_Id = form.ContramedidaGenerica_Id[index];
+                singleForm.GrupoCausa_Id = form.GrupoCausa_Id[index];
+                singleForm.Quem_Id = form.Quem_Id[index];
+                singleForm._QuandoFim = form._QuandoFim[index];
 
+                $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', singleForm, function (r) {
+                    openMessageModal('Registro salvo com sucesso!', '');
+                }).fail(function(xhr, err) {
+                    var responseTitle= $(xhr.responseText).filter('title').get(0);
+                    openMessageModal($(responseTitle).text(), formatErrorMessage(xhr, err));
+                });
+
+            })
         }
 
         $().ready(function () {
             InitDatePiker();
+            if(user0.Status && user1.Status){ $('#Salvar').attr('disabled', false); } else { $('#Salvar').attr('disabled', true);}
         });
 
     </script>

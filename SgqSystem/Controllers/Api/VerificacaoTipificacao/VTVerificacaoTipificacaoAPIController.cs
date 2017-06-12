@@ -3,6 +3,7 @@ using Dapper;
 using Dominio;
 using DTO;
 using DTO.Helpers;
+using Newtonsoft.Json;
 using SgqSystem.Handlres;
 using SgqSystem.ViewModels;
 using System;
@@ -22,7 +23,7 @@ namespace SgqSystem.Controllers.Api
         public string mensagemErro { get; set; }
 
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-        SGQ_GlobalEntities dbGlobal;
+        //SGQ_GlobalEntities dbGlobal;
         SgqDbDevEntities dbSgq;
         public VTVerificacaoTipificacaoApiController()
         {
@@ -41,124 +42,138 @@ namespace SgqSystem.Controllers.Api
         [HttpPost]
         public void SaveVTVerificacaoTipificacao(TipificacaoViewModel model)
         {
-            var verificacaoListJBS = new List<VerificacaoTipificacaoV2>();
-            var verificacaoListGRT = new List<VerificacaoTipificacaoV2>();
-            var verificacaoSalvar = new List<VerificacaoTipificacaoV2>();
-            //GlobalConfig.MockOn = true;
 
-            //if (GlobalConfig.MockOn)
-            //    conexaoUndiade = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+            var bkp = JsonConvert.SerializeObject(model);
 
-            SqlConnectionStringBuilder connectionString = new SqlConnectionStringBuilder();
-            connectionString.Password = "1qazmko0";
-            connectionString.UserID = "sa";
-            connectionString.InitialCatalog = "dbGQualidade_JBS";
-            connectionString.DataSource = @"SERVERGRT\MSSQLSERVER2014";
-
-            using (var dbUnit = new Factory(connectionString))
+            try
             {
+                //throw new Exception("teste");
+                var verificacaoListJBS = new List<VerificacaoTipificacaoV2>();
+                var verificacaoListGRT = new List<VerificacaoTipificacaoV2>();
+                var verificacaoSalvar = new List<VerificacaoTipificacaoV2>();
+                //GlobalConfig.MockOn = true;
 
-                dynamic resultFbed = dbUnit.QueryNinjaADO("SELECT * FROM verificacaoteste where nCdEmpresa = 202 and iSequencial = 1 and iBanda = 2");
+                //if (GlobalConfig.MockOn)
+                //    conexaoUndiade = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
-                //Adiciona todas que vem da JBS
-                foreach (var fbed in resultFbed)
+                SqlConnectionStringBuilder connectionString = new SqlConnectionStringBuilder();
+                connectionString.Password = "1qazmko0";
+                connectionString.UserID = "sa";
+                connectionString.InitialCatalog = "dbGQualidade_JBS";
+                connectionString.DataSource = @"SERVERGRT\MSSQLSERVER2014";
+
+                using (var dbUnit = new Factory(connectionString))
                 {
-                    var verificacaoJBS = new VerificacaoTipificacaoV2();
-                    fbed.existeComparacao = true;
-                    verificacaoJBS.JBS_nCdCaracteristicaTipificacao = fbed.nCdCaracteristicaTipificacao;//JBS_nCdCaracteristicaTipificacao EX: 83
-                    verificacaoJBS.cIdentificadorTipificacao = fbed.cIdentificadorTipificacao; //JBS_nCdCaracteristicaTipificacao EX: <CONTUSAO>
-                    verificacaoListJBS.Add(verificacaoJBS);
-                }
 
-                //Adiciona as que vieram do tablet
-                foreach (var ii in model.VerificacaoTipificacaoResultados)
-                {
-                    var verificacaoGRT = new VerificacaoTipificacaoV2();
-                    if (ii.AreasParticipantesId == "null")
+                    dynamic resultFbed = dbUnit.QueryNinjaADO("SELECT * FROM verificacaoteste where nCdEmpresa = 202 and iSequencial = 1 and iBanda = 2");
+
+                    //Adiciona todas que vem da JBS
+                    foreach (var fbed in resultFbed)
                     {
-                        dynamic caracteristicaTipificacao = QueryNinja(dbSgq, "SELECT * FROM CaracteristicaTipificacao WHERE cNrCaracteristica = " + ii.CaracteristicaTipificacaoId).FirstOrDefault();
-
-                        if (caracteristicaTipificacao == null)
-                            continue;
-
-                        verificacaoGRT.GRT_nCdCaracteristicaTipificacao = caracteristicaTipificacao.nCdCaracteristica; //GRT_nCdCaracteristicaTipificacao EX: 83
-                        verificacaoGRT.cIdentificadorTipificacao = caracteristicaTipificacao.cIdentificador;// cIdentificadorTipificacao EX: <CONTUSAO>
-                        verificacaoGRT.cNmCaracteristica = caracteristicaTipificacao.cNmCaracteristica;//cNmCaracteristica EX: CONTUSÃO - 2 CONTRA FILÉ
-
-                        verificacaoListGRT.Add(verificacaoGRT);
-                    }
-                    else
-                    {
-                        dynamic aresParticipante = QueryNinja(dbSgq, "SELECT * FROM AreasParticipantes WHERE cNrCaracteristica = " + ii.AreasParticipantesId);
-
-                        //aresParticipante.nCdCaracteristica
-                        //aresParticipante.cNmCaracteristica;
-                        //aresParticipante.cNrCaracteristica;
-                        //aresParticipante.cSgCaracteristica;
-                        //aresParticipante.cIdentificador;
-
-
+                        var verificacaoJBS = new VerificacaoTipificacaoV2();
+                        fbed.existeComparacao = true;
+                        verificacaoJBS.JBS_nCdCaracteristicaTipificacao = fbed.nCdCaracteristicaTipificacao;//JBS_nCdCaracteristicaTipificacao EX: 83
+                        verificacaoJBS.cIdentificadorTipificacao = fbed.cIdentificadorTipificacao; //JBS_nCdCaracteristicaTipificacao EX: <CONTUSAO>
+                        verificacaoListJBS.Add(verificacaoJBS);
                     }
 
-                }
-
-                var listRemoverGRT = new List<int>();
-                var listRemoverJBS = new List<int>();
-                foreach (var grt in verificacaoListGRT)
-                {
-                    var verificacaoSalvarObj = new VerificacaoTipificacaoV2();
-                    var comparacaoExistenteJBS = verificacaoListJBS.FirstOrDefault(r => r.cIdentificadorTipificacao == grt.cIdentificadorTipificacao);
-                    if (comparacaoExistenteJBS != null)
+                    //Adiciona as que vieram do tablet
+                    foreach (var ii in model.VerificacaoTipificacaoResultados)
                     {
-
-                        verificacaoSalvarObj = new VerificacaoTipificacaoV2()
+                        var verificacaoGRT = new VerificacaoTipificacaoV2();
+                        if (ii.AreasParticipantesId == "null")
                         {
-                            GRT_nCdCaracteristicaTipificacao = grt.GRT_nCdCaracteristicaTipificacao,
-                            JBS_nCdCaracteristicaTipificacao = comparacaoExistenteJBS.JBS_nCdCaracteristicaTipificacao,
-                            cNmCaracteristica = grt.cNmCaracteristica,
-                            cIdentificadorTipificacao = grt.cIdentificadorTipificacao,
-                            // ResultadoComparacaoGRT_JBS = resultado
-                        };
+                            dynamic caracteristicaTipificacao = QueryNinja(dbSgq, "SELECT * FROM CaracteristicaTipificacao WHERE cNrCaracteristica = " + ii.CaracteristicaTipificacaoId).FirstOrDefault();
 
-                        verificacaoSalvar.Add(verificacaoSalvarObj);
-                        listRemoverGRT.Add(verificacaoListGRT.IndexOf(grt));
-                        listRemoverJBS.Add(verificacaoListJBS.IndexOf(comparacaoExistenteJBS));
+                            if (caracteristicaTipificacao == null)
+                                continue;
+
+                            verificacaoGRT.GRT_nCdCaracteristicaTipificacao = caracteristicaTipificacao.nCdCaracteristica; //GRT_nCdCaracteristicaTipificacao EX: 83
+                            verificacaoGRT.cIdentificadorTipificacao = caracteristicaTipificacao.cIdentificador;// cIdentificadorTipificacao EX: <CONTUSAO>
+                            verificacaoGRT.cNmCaracteristica = caracteristicaTipificacao.cNmCaracteristica;//cNmCaracteristica EX: CONTUSÃO - 2 CONTRA FILÉ
+                            verificacaoGRT.cSgCaracteristica = caracteristicaTipificacao.cSgCaracteristica;//cNmCaracteristica EX: CONTUSÃO - 2 CONTRA FILÉ
+
+                            verificacaoListGRT.Add(verificacaoGRT);
+                        }
+                        else
+                        {
+                            dynamic aresParticipante = QueryNinja(dbSgq, "SELECT * FROM AreasParticipantes WHERE cNrCaracteristica = " + ii.AreasParticipantesId).FirstOrDefault();
+
+                            verificacaoGRT.GRT_nCdCaracteristicaTipificacao = aresParticipante.nCdCaracteristica;
+                            verificacaoGRT.cIdentificadorTipificacao = aresParticipante.cIdentificador;
+                            verificacaoGRT.cNmCaracteristica = aresParticipante.cNmCaracteristica;
+                            verificacaoGRT.cSgCaracteristica = aresParticipante.cSgCaracteristica;
+
+                            verificacaoListGRT.Add(verificacaoGRT);
+
+                        }
+
                     }
+
+                    var listRemoverGRT = new List<int>();
+                    var listRemoverJBS = new List<int>();
+                    foreach (var grt in verificacaoListGRT)
+                    {
+                        var verificacaoSalvarObj = new VerificacaoTipificacaoV2();
+                        var comparacaoExistenteJBS = verificacaoListJBS.FirstOrDefault(r => r.cIdentificadorTipificacao == grt.cIdentificadorTipificacao);
+                        if (comparacaoExistenteJBS != null)
+                        {
+
+                            verificacaoSalvarObj = new VerificacaoTipificacaoV2()
+                            {
+                                GRT_nCdCaracteristicaTipificacao = grt.GRT_nCdCaracteristicaTipificacao,
+                                JBS_nCdCaracteristicaTipificacao = comparacaoExistenteJBS.JBS_nCdCaracteristicaTipificacao,
+                                cNmCaracteristica = grt.cNmCaracteristica,
+                                cIdentificadorTipificacao = grt.cIdentificadorTipificacao,
+                                cSgCaracteristica = grt.cSgCaracteristica
+                                // ResultadoComparacaoGRT_JBS = resultado
+                            };
+
+                            verificacaoSalvar.Add(verificacaoSalvarObj);
+                            listRemoverGRT.Add(verificacaoListGRT.IndexOf(grt));
+                            listRemoverJBS.Add(verificacaoListJBS.IndexOf(comparacaoExistenteJBS));
+                        }
+                    }
+
+                    listRemoverJBS = listRemoverJBS.Distinct().ToList();
+
+                    foreach (var i in listRemoverGRT.OrderByDescending(r => r))
+                        verificacaoListGRT.RemoveAt(i);
+
+                    foreach (var i in listRemoverJBS.OrderByDescending(r => r))
+                        verificacaoListJBS.RemoveAt(i);
+
+                    if (verificacaoListGRT.Count > 0)
+                        verificacaoSalvar.AddRange(verificacaoListGRT);
+
+                    if (verificacaoListJBS.Count > 0)
+                        verificacaoSalvar.AddRange(verificacaoListJBS);
+
+                    var key = model.VerificacaoTipificacao[0].Chave;
+                    var jaExiste = dbSgq.VerificacaoTipificacaoV2.Where(r => r.Key.Equals(key)).ToList();
+                    if (jaExiste.IsNotNull()) { dbSgq.VerificacaoTipificacaoV2.RemoveRange(jaExiste); }
+
+                    foreach (var ver in verificacaoSalvar)
+                    {
+                        ver.AddDate = DateTime.Now;
+                        ver.ParCompany_Id = model.UnidadeId; //ParCompany_Id
+                        ver.UserSgq_Id = model.AuditorId; //UserSgq_Id
+                        ver.Sequencial = model.VerificacaoTipificacao[0].Sequencial; //Sequencial
+                        ver.Banda = model.VerificacaoTipificacao[0].Banda; //Banda
+                        ver.CollectionDate = model.VerificacaoTipificacao[0].DataHora;
+                        ver.Key = model.VerificacaoTipificacao[0].Chave;
+                        ver.ResultadoComparacaoGRT_JBS = ver.GRT_nCdCaracteristicaTipificacao.GetValueOrDefault() == ver.JBS_nCdCaracteristicaTipificacao.GetValueOrDefault();
+                        if (jaExiste.IsNotNull()) { ver.AlterDate = DateTime.Now; }
+                        dbSgq.VerificacaoTipificacaoV2.Add(ver);// Resultado
+                    }
+
+                    dbSgq.SaveChanges();
                 }
-
-                listRemoverJBS = listRemoverJBS.Distinct().ToList();
-
-                foreach (var i in listRemoverGRT.OrderByDescending(r => r))
-                    verificacaoListGRT.RemoveAt(i);
-
-                foreach (var i in listRemoverJBS.OrderByDescending(r => r))
-                    verificacaoListJBS.RemoveAt(i);
-
-                if (verificacaoListGRT.Count > 0)
-                    verificacaoSalvar.AddRange(verificacaoListGRT);
-
-                if (verificacaoListJBS.Count > 0)
-                    verificacaoSalvar.AddRange(verificacaoListJBS);
-
-                var key = model.VerificacaoTipificacao[0].Chave;
-                var jaExiste = dbSgq.VerificacaoTipificacaoV2.Where(r => r.Key.Equals(key)).ToList();
-                if (jaExiste.IsNotNull()) { dbSgq.VerificacaoTipificacaoV2.RemoveRange(jaExiste); }
-
-                foreach (var ver in verificacaoSalvar)
-                {
-                    ver.AddDate = DateTime.Now;
-                    ver.ParCompany_Id = model.UnidadeId; //ParCompany_Id
-                    ver.UserSgq_Id = model.AuditorId; //UserSgq_Id
-                    ver.Sequencial = model.VerificacaoTipificacao[0].Sequencial; //Sequencial
-                    ver.Banda = model.VerificacaoTipificacao[0].Banda; //Banda
-                    ver.ResultadoComparacaoGRT_JBS = ver.GRT_nCdCaracteristicaTipificacao.GetValueOrDefault() == ver.JBS_nCdCaracteristicaTipificacao.GetValueOrDefault();
-                    ver.CollectionDate = model.VerificacaoTipificacao[0].DataHora;
-                    ver.Key = model.VerificacaoTipificacao[0].Chave;
-                    if (jaExiste.IsNotNull()) { ver.AlterDate = DateTime.Now; }
-                    dbSgq.VerificacaoTipificacaoV2.Add(ver);// Resultado
-                }
-
-                dbSgq.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                new CreateLog(new Exception("Erro ao Savar verificação da Tipificação, Objeto bkp salvo.", e), model);
+                //throw ;
             }
 
         }

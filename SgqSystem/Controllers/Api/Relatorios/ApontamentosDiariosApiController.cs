@@ -748,7 +748,7 @@ namespace SgqSystem.Controllers.Api
                            "<label for='Conforme: '> " + GetResources.getResource("conform").Value.ToString() + ": </label>" +
                             "<input class='.check-box' id='conform' name='conform' " + checkedAttr + " type='checkbox' value='true'><input name = 'conform' type='hidden' value='false'>" +
                             "<br>" +
-                             "<label for='Conforme: '> " + GetResources.getResource("not_accordance").Value.ToString() + ": </label> &nbsp " +
+                             "<label for='Conforme: '> " + GetResources.getResource("unvalued").Value.ToString() + ": </label> &nbsp " +
                             "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                        "</div>"; ;
             }
@@ -788,7 +788,7 @@ namespace SgqSystem.Controllers.Api
                             "<label for='Conforme: '> " + GetResources.getResource("new_value").Value.ToString() + ": </label> &nbsp" +
                         "<input type='text' id='decimal' class='decimal' /> ^10x <input type='text' id='precisao' class='decimal' />" +
                         "<br>" +
-                           "<label for='Conforme: '> " + GetResources.getResource("not_accordance").Value.ToString() + ": </label> &nbsp " +
+                           "<label for='Conforme: '> " + GetResources.getResource("unvalued").Value.ToString() + ": </label> &nbsp " +
                              "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                         "</div>";
             }
@@ -828,7 +828,7 @@ namespace SgqSystem.Controllers.Api
                             "<label for='Conforme: '> " + GetResources.getResource("new_value").Value.ToString() + ": </label> &nbsp" +
                         "<input type='text' id='numeroDeDefeitos' class='decimal' />" +
                         "<br>" +
-                           "<label for='Conforme: '> " + GetResources.getResource("not_accordance").Value.ToString() + ": </label> &nbsp " +
+                           "<label for='Conforme: '> " + GetResources.getResource("unvalued").Value.ToString() + ": </label> &nbsp " +
                              "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                         "</div>";
             }

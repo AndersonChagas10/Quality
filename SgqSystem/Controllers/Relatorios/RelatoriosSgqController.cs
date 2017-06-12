@@ -151,6 +151,12 @@ namespace SgqSystem.Controllers
             return View(form);
         }
 
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult VerificacaoTipificacao()
+        {
+            return View(form);
+        }
+
         #region Visao Geral da Area
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
