@@ -692,16 +692,16 @@ namespace SgqSystem.Controllers.Api
                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
                 return "<div>" +
                             //"<label for='Conforme: '> Intervalo Max: </label>" + IntervalMax +
-                            "<label for='Conforme: '> " + Resources.Resource.max_interval + ": </label>" + IntervalMax +
+                            "<label for='Conforme: '> " + GetResources.getResource("max_interval").Value.ToString() + ": </label>" + IntervalMax +
                             "<br>" +
-                            "<label for='Conforme: '> Intervalo Min: </label>" + IntervalMin +
+                            "<label for='Conforme: '> " + GetResources.getResource("min_interval").Value.ToString() + ": </label>" + IntervalMin +
                             "<br>" +
-                            "<label for='Conforme: '> Valor atual: </label>" + Value +
+                            "<label for='Conforme: '> " + GetResources.getResource("current_value").Value.ToString() + ": </label>" + Value +
                             "<br>" +
-                            "<label for='Conforme: '> Novo Valor: </label> &nbsp " +
+                            "<label for='Conforme: '> " + GetResources.getResource("new_value").Value.ToString() + ": </label> &nbsp " +
                              "<input type='text' id='intervaloValor' class='form-control decimal' value=" + Value + " />" +
                             "<br>" +
-                            "<label for='Conforme: '> Não Avaliado: </label> &nbsp " +
+                            "<label for='Conforme: '> " + GetResources.getResource("not_accordance").Value.ToString() + ": </label> &nbsp " +
                              "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                         "</div>";
             }
@@ -745,10 +745,10 @@ namespace SgqSystem.Controllers.Api
                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
                 var checkedAttr = IsConform.GetValueOrDefault() ? "checked='checked'" : "";
                 return "<div>" +
-                           "<label for='Conforme: '> Conforme: </label>" +
+                           "<label for='Conforme: '> " + GetResources.getResource("conform").Value.ToString() + ": </label>" +
                             "<input class='.check-box' id='conform' name='conform' " + checkedAttr + " type='checkbox' value='true'><input name = 'conform' type='hidden' value='false'>" +
                             "<br>" +
-                             "<label for='Conforme: '> Não Avaliado: </label> &nbsp " +
+                             "<label for='Conforme: '> " + GetResources.getResource("not_accordance").Value.ToString() + ": </label> &nbsp " +
                             "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                        "</div>"; ;
             }
@@ -779,16 +779,16 @@ namespace SgqSystem.Controllers.Api
                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
 
                 return "<div>" +
-                            "<label for='Conforme: '> Intervalo Max: </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
+                            "<label for='Conforme: '> " + GetResources.getResource("max_interval").Value.ToString() + ": </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
                             "<br>" +
-                            "<label for='Conforme: '> Intervalo Min: </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
+                            "<label for='Conforme: '> " + GetResources.getResource("min_interval").Value.ToString() + ": </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
                             "<br>" +
-                            "<label for='Conforme: '> Valor atual: </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
+                            "<label for='Conforme: '> " + GetResources.getResource("current_value").Value.ToString() + ": </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
                             "<br>" +
-                            "<label for='Conforme: '> Novo Valor: </label> &nbsp" +
+                            "<label for='Conforme: '> " + GetResources.getResource("new_value").Value.ToString() + ": </label> &nbsp" +
                         "<input type='text' id='decimal' class='decimal' /> ^10x <input type='text' id='precisao' class='decimal' />" +
                         "<br>" +
-                           "<label for='Conforme: '> Não Avaliado: </label> &nbsp " +
+                           "<label for='Conforme: '> " + GetResources.getResource("not_accordance").Value.ToString() + ": </label> &nbsp " +
                              "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                         "</div>";
             }
@@ -819,16 +819,16 @@ namespace SgqSystem.Controllers.Api
                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
 
                 return "<div>" +
-                            "<label for='Conforme: '> Intervalo Max: </label>" + double.Parse(IntervalMax, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMax) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
+                            "<label for='Conforme: '> " + GetResources.getResource("max_interval").Value.ToString() + ": </label>" + double.Parse(IntervalMax, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMax) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
                             "<br>" +
-                            "<label for='Conforme: '> Intervalo Min: </label>" + double.Parse(IntervalMin, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMin) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
+                            "<label for='Conforme: '> " + GetResources.getResource("min_interval").Value.ToString() + ": </label>" + double.Parse(IntervalMin, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMin) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
                             "<br>" +
-                            "<label for='Conforme: '> Valor atual: </label>" + double.Parse(Value, CultureInfo.InvariantCulture) + //Convert.ToDecimal(Value) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
+                            "<label for='Conforme: '> " + GetResources.getResource("current_value").Value.ToString() + ": </label>" + double.Parse(Value, CultureInfo.InvariantCulture) + //Convert.ToDecimal(Value) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
                             "<br>" +
-                            "<label for='Conforme: '> Novo Valor: </label> &nbsp" +
+                            "<label for='Conforme: '> " + GetResources.getResource("new_value").Value.ToString() + ": </label> &nbsp" +
                         "<input type='text' id='numeroDeDefeitos' class='decimal' />" +
                         "<br>" +
-                           "<label for='Conforme: '> Não Avaliado: </label> &nbsp " +
+                           "<label for='Conforme: '> " + GetResources.getResource("not_accordance").Value.ToString() + ": </label> &nbsp " +
                              "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                         "</div>";
             }
@@ -867,9 +867,9 @@ namespace SgqSystem.Controllers.Api
                             //"<br>" +
                             //"<label for='Conforme: '> Intervalo Min: </label>" + IntervalMin +
                             //"<br>" +
-                            "<label for='Conforme: '> Valor atual: </label>" + ValueText +
+                            "<label for='Conforme: '> " + GetResources.getResource("current_value").Value.ToString() + ": </label>" + ValueText +
                             "<br>" +
-                            "<label for='Conforme: '> Novo Valor: </label> &nbsp " +
+                            "<label for='Conforme: '> " + GetResources.getResource("new_value").Value.ToString() + ": </label> &nbsp " +
                              "<input type='text' id='texto' class='form-control text' value='" + ValueText + "' />" +
                         //"<br>" +
                         //"<label for='Conforme: '> Não Avaliado: </label> &nbsp " +

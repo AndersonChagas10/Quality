@@ -2070,4 +2070,16 @@
   <data name="deviation" xml:space="preserve">
     <value>Deviation</value>
   </data>
+  <data name="according" xml:space="preserve">
+    <value>According</value>
+  </data>
+  <data name="not_accordance" xml:space="preserve">
+    <value>Not in Accordance</value>
+  </data>
+  <data name="unvalued" xml:space="preserve">
+    <value>Unvalued</value>
+  </data>
+  <data name="valued" xml:space="preserve">
+    <value>Valued</value>
+  </data>
 </root>
