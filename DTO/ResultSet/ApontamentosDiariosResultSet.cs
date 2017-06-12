@@ -1,6 +1,8 @@
 ﻿using DTO;
 using System;
 
+
+
 public class ApontamentosDiariosResultSet
 {
     public System.DateTime Data { get; set; }
@@ -16,10 +18,10 @@ public class ApontamentosDiariosResultSet
     public string Lancado { get; set; }
 
     public Nullable<bool> Conforme { get; set; }
-    public string _Conforme { get { return Conforme.Value ? "Conforme" : "Não Conforme"; } }
+    public string _Conforme { get { return Conforme.Value ? GetResources.getResource("according").Value.ToString() : GetResources.getResource("not_accordance").Value.ToString();} }
 
     public Nullable<bool> NA { get; set; }
-    public string _NA { get { return NA.Value ? "Não Avaliado" : "Avaliado"; } }
+    public string _NA { get { return NA.Value ? GetResources.getResource("unvalued").Value.ToString() : GetResources.getResource("valued").Value.ToString(); } }
 
     public Nullable<decimal> AV_Peso { get; set; }
     public Nullable<decimal> _AV_Peso { get { return AV_Peso.HasValue ? AV_Peso.Value : 0M; } }
@@ -140,5 +142,5 @@ public class ApontamentosDiariosResultSet
                 " \n WHERE C2.CollectionDate BETWEEN '" + dtInit + " 00:00' AND '" + dtF + " 23:59'" +
                 sqlUnidade + sqlLevel1 + sqlLevel2 + sqlLevel3;
     }
-
+   
 }

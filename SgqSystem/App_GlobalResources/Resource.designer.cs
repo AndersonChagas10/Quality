@@ -115,6 +115,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to According.
+        /// </summary>
+        internal static string according {
+            get {
+                return ResourceManager.GetString("according", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Accumulated Tendency.
         /// </summary>
         internal static string accumulated_tendency {
@@ -3328,6 +3337,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not in Accordance.
+        /// </summary>
+        internal static string not_accordance {
+            get {
+                return ResourceManager.GetString("not_accordance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not Applicable button on level 2.
         /// </summary>
         internal static string not_applicable_on_level_2 {
@@ -5551,6 +5569,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unvalued.
+        /// </summary>
+        internal static string unvalued {
+            get {
+                return ResourceManager.GetString("unvalued", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You must be online to update parameters.
         /// </summary>
         internal static string update_parameters_must_be_online {
@@ -5700,6 +5727,15 @@ namespace Resources {
         internal static string value {
             get {
                 return ResourceManager.GetString("value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valued.
+        /// </summary>
+        internal static string valued {
+            get {
+                return ResourceManager.GetString("valued", resourceCulture);
             }
         }
         
