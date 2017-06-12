@@ -1226,6 +1226,25 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.ScreenComponent' does not hav
           <Property Name="ParCompany_Id" Type="int" />
           <Property Name="PasswordDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="VerificacaoTipificacaoV2">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="CollectionDate" Type="datetime2" Precision="7" />
+          <Property Name="Sequencial" Type="int" />
+          <Property Name="Banda" Type="int" />
+          <Property Name="ParCompany_Id" Type="int" />
+          <Property Name="UserSgq_Id" Type="int" />
+          <Property Name="GRT_nCdCaracteristicaTipificacao" Type="int" />
+          <Property Name="JBS_nCdCaracteristicaTipificacao" Type="int" />
+          <Property Name="ResultadoComparacaoGRT_JBS" Type="bit" />
+          <Property Name="cIdentificadorTipificacao" Type="nvarchar" MaxLength="250" />
+          <Property Name="cNmCaracteristica" Type="nvarchar" MaxLength="250" />
+          <Property Name="Key" Type="nvarchar" MaxLength="250" />
+        </EntityType>
         <EntityType Name="VolumeCepDesossa">
           <Key>
             <PropertyRef Name="Id" />
@@ -2733,6 +2752,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UnitUser" EntityType="Self.UnitUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSgq" EntityType="Self.UserSgq" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VerificacaoTipificacaoV2" EntityType="Self.VerificacaoTipificacaoV2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VolumeCepDesossa" EntityType="Self.VolumeCepDesossa" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VolumeCepRecortes" EntityType="Self.VolumeCepRecortes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VolumePcc1b" EntityType="Self.VolumePcc1b" Schema="dbo" store:Type="Tables" />
@@ -3881,6 +3901,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
             <End Role="CollectionLevel02" EntitySet="CollectionLevel02" />
             <End Role="CollectionLevel03" EntitySet="CollectionLevel03" />
           </AssociationSet>
+          <EntitySet Name="VerificacaoTipificacaoV2" EntityType="SgqDbModel.VerificacaoTipificacaoV2" />
           </EntityContainer>
         <EntityType Name="DelDados">
           <Key>
@@ -6779,6 +6800,25 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="VerificacaoTipificacaoV2">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="CollectionDate" Type="DateTime" Precision="7" />
+          <Property Name="Sequencial" Type="Int32" />
+          <Property Name="Banda" Type="Int32" />
+          <Property Name="ParCompany_Id" Type="Int32" />
+          <Property Name="UserSgq_Id" Type="Int32" />
+          <Property Name="GRT_nCdCaracteristicaTipificacao" Type="Int32" />
+          <Property Name="JBS_nCdCaracteristicaTipificacao" Type="Int32" />
+          <Property Name="ResultadoComparacaoGRT_JBS" Type="Boolean" />
+          <Property Name="cIdentificadorTipificacao" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="cNmCaracteristica" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Key" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8233,6 +8273,26 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
                 <ScalarProperty Name="Level02Id" ColumnName="Level02Id" />
                 <ScalarProperty Name="Level01Id" ColumnName="Level01Id" />
                 <ScalarProperty Name="ConsolidationLevel02Id" ColumnName="ConsolidationLevel02Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VerificacaoTipificacaoV2">
+            <EntityTypeMapping TypeName="SgqDbModel.VerificacaoTipificacaoV2">
+              <MappingFragment StoreEntitySet="VerificacaoTipificacaoV2">
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="cNmCaracteristica" ColumnName="cNmCaracteristica" />
+                <ScalarProperty Name="cIdentificadorTipificacao" ColumnName="cIdentificadorTipificacao" />
+                <ScalarProperty Name="ResultadoComparacaoGRT_JBS" ColumnName="ResultadoComparacaoGRT_JBS" />
+                <ScalarProperty Name="JBS_nCdCaracteristicaTipificacao" ColumnName="JBS_nCdCaracteristicaTipificacao" />
+                <ScalarProperty Name="GRT_nCdCaracteristicaTipificacao" ColumnName="GRT_nCdCaracteristicaTipificacao" />
+                <ScalarProperty Name="UserSgq_Id" ColumnName="UserSgq_Id" />
+                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
+                <ScalarProperty Name="Banda" ColumnName="Banda" />
+                <ScalarProperty Name="Sequencial" ColumnName="Sequencial" />
+                <ScalarProperty Name="CollectionDate" ColumnName="CollectionDate" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

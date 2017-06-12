@@ -3860,12 +3860,11 @@ namespace SgqSystem.Services
 
             if (isVolume)
             {
-                parLevel1List = parLevel1List.Where(r =>
-                                            r.Name.Equals("(%) NC CEP Vácuo GRD") ||
-                                            r.Name.Equals("(%) NC PCC 1B") ||
-                                            r.Name.Equals("(%) NC CEP Desossa") ||
-                                            r.Name.Equals("(%) NC CEP Recortes") ||
-                                            r.IsFixedEvaluetionNumber == true);
+                parLevel1List = parLevel1List.Where(r => 
+                                            r.Name.Equals("(%) NC CEP Vácuo GRD") || 
+                                            r.Name.Equals("(%) NC PCC 1B") || 
+                                            r.Name.Equals("(%) NC CEP Desossa") || 
+                                            r.Name.Equals("(%) NC CEP Recortes"));
             }
 
             //Agrupamos o ParLevel1 por ParCriticalLevel
