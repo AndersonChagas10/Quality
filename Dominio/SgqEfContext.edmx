@@ -1238,6 +1238,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.ScreenComponent' does not hav
           <Property Name="Banda" Type="int" />
           <Property Name="ParCompany_Id" Type="int" />
           <Property Name="UserSgq_Id" Type="int" />
+          <Property Name="cSgCaracteristica" Type="nvarchar" MaxLength="250" />
           <Property Name="GRT_nCdCaracteristicaTipificacao" Type="int" />
           <Property Name="JBS_nCdCaracteristicaTipificacao" Type="int" />
           <Property Name="ResultadoComparacaoGRT_JBS" Type="bit" />
@@ -6812,6 +6813,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <Property Name="Banda" Type="Int32" />
           <Property Name="ParCompany_Id" Type="Int32" />
           <Property Name="UserSgq_Id" Type="Int32" />
+          <Property Name="cSgCaracteristica" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="GRT_nCdCaracteristicaTipificacao" Type="Int32" />
           <Property Name="JBS_nCdCaracteristicaTipificacao" Type="Int32" />
           <Property Name="ResultadoComparacaoGRT_JBS" Type="Boolean" />
@@ -8286,6 +8288,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
                 <ScalarProperty Name="ResultadoComparacaoGRT_JBS" ColumnName="ResultadoComparacaoGRT_JBS" />
                 <ScalarProperty Name="JBS_nCdCaracteristicaTipificacao" ColumnName="JBS_nCdCaracteristicaTipificacao" />
                 <ScalarProperty Name="GRT_nCdCaracteristicaTipificacao" ColumnName="GRT_nCdCaracteristicaTipificacao" />
+                <ScalarProperty Name="cSgCaracteristica" ColumnName="cSgCaracteristica" />
                 <ScalarProperty Name="UserSgq_Id" ColumnName="UserSgq_Id" />
                 <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
                 <ScalarProperty Name="Banda" ColumnName="Banda" />

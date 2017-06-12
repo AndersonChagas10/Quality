@@ -35,6 +35,7 @@ namespace SGQDBContext
         public bool HasCompleteEvaluation { get; set; }
         public bool IsReaudit { get; set; }
         public bool EditLevel2 { get; set; }
+        public bool IsSpecificNumberEvaluetion { get; set; }
 
 
         public bool HasGroupLevel2 { get; set; }
@@ -66,6 +67,36 @@ namespace SGQDBContext
                 throw ex;
             }
         }
+
+        public IEnumerable<ParLevel1> getByFamilia(DateTime dateCollection, int ParLevel1_Id = 0)
+        {
+            try
+            {
+                //SqlConnection db = new SqlConnection(conexao);
+                string sql = "SELECT * FROM ParLevel1 WHERE Id                                              " +
+                             " IN (                                                                         " +
+                             " SELECT ParLevel1_Id FROM ParLevel2ControlCompany                             " +
+                             "WHERE                                                                         " +
+                             "((CAST(InitDate AS DATE) <= '" + dateCollection.ToString("yyyy-MM-dd") + "'    " +
+                             " AND IsActive = 1) OR                                                         " +
+                             "(CAST(InitDate AS DATE) <= '" + dateCollection.ToString("yyyy-MM-dd") + "' AND" +
+                             " CAST(AlterDate AS DATE) > '" + dateCollection.ToString("yyyy-MM-dd") + "' AND IsActive = 0))";
+                if (ParLevel1_Id > 0)
+                {
+                    sql += " AND ParLevel1_Id = "+ ParLevel1_Id;
+                }
+                sql += " GROUP BY ParLevel1_Id, InitDate                                                    " +
+                        "HAVING MAX(InitDate) = InitDate)                                                   ";
+                var parLevel1List = db.Query<ParLevel1>(sql).ToList();
+
+                return parLevel1List;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public IEnumerable<ParLevel1> getParLevel1ParCriticalLevelList(int ParCompany_Id, string Level1ListId)
         {
 
@@ -383,7 +414,7 @@ namespace SGQDBContext
                 throw ex;
             }
         }
-        public IEnumerable<ParLevel2> getLevel2ByIdLevel1(int ParLevel1_Id, int ParCompany_Id)
+        public IEnumerable<ParLevel2> getLevel2ByIdLevel1(SGQDBContext.ParLevel1 parLevel1db, DateTime dateCollection, int ParLevel1_Id, int ParCompany_Id)
         {
             //SqlConnection db = new SqlConnection(conexao);            
 
@@ -392,26 +423,11 @@ namespace SGQDBContext
             using (var dbEf = new SgqDbDevEntities())
             {
 
-                //var L2EQuery = from L1 in dbEf.ParLevel1
-                //               where L1.Id == ParLevel1_Id
-                //               select L1;
+                var level1 = parLevel1db.getByFamilia(dateCollection, ParLevel1_Id);
 
-                //var result = L2EQuery.FirstOrDefault();
-
-                //if (result != null)
-                //{
-                //    parLevel1Familia = result.IsFixedEvaluetionNumber;
-                //}
-
-                var result = (from L1 in dbEf.ParLevel1
-                              where L1.Id == ParLevel1_Id
-                              select L1).FirstOrDefault();
-
-                //var result = L2EQuery.FirstOrDefault();
-
-                if (result != null)
+                if(level1.Count() > 0)
                 {
-                    parLevel1Familia = result.IsFixedEvaluetionNumber;
+                    parLevel1Familia = true;
                 }
             }
 
@@ -429,8 +445,9 @@ namespace SGQDBContext
                              " ON AL.ParLevel2_Id = PL2.Id  AND AL.IsActive = 1                                                                                                     " +
                              "INNER JOIN (SELECT * FROM ParLevel2ControlCompany PL (nolock)  INNER JOIN                                                                                       " +
                              "(SELECT MAX(InitDate) Data, ParCompany_Id AS UNIDADE FROM ParLevel2ControlCompany   (nolock)                                                                    " +
-                             "where ParLevel1_Id = '" + ParLevel1_Id + "' AND IsActive = 1                                                                                          " +
-                             "group by ParCompany_Id) F1 on f1.data = PL.initDate and (F1.UNIDADE = PL.ParCompany_id                                                                " +
+                             "where ParLevel1_Id = '" + ParLevel1_Id + "' AND CAST(InitDate AS DATE) <= '" + dateCollection.ToString("yyyy-MM-dd") + "'    " +
+
+                             "GROUP BY ParCompany_Id) F1 ON (CAST(F1.data AS DATE) = CAST(PL.initDate AS DATE) AND PL.IsActive = 1) OR (CAST(f1.data AS DATE) = CAST(PL.initDate AS DATE) AND CAST(f1.data AS DATE) < CAST(PL.AlterDate AS DATE) AND PL.IsActive = 0) AND (F1.UNIDADE = PL.ParCompany_id                                                                " +
                              "or F1.UNIDADE is null))  Familia                                                                                                                      " +
                              "ON Familia.ParLevel2_Id = PL2.Id                                                                                                                      " +
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'                                                                                                      " +

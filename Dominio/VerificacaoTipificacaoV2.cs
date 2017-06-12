@@ -22,6 +22,7 @@ namespace Dominio
         public Nullable<int> Banda { get; set; }
         public Nullable<int> ParCompany_Id { get; set; }
         public Nullable<int> UserSgq_Id { get; set; }
+        public string cSgCaracteristica { get; set; }
         public Nullable<int> GRT_nCdCaracteristicaTipificacao { get; set; }
         public Nullable<int> JBS_nCdCaracteristicaTipificacao { get; set; }
         public Nullable<bool> ResultadoComparacaoGRT_JBS { get; set; }

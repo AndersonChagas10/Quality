@@ -2049,4 +2049,16 @@
   <data name="deviation" xml:space="preserve">
     <value>Conforme</value>
   </data>
+  <data name="according" xml:space="preserve">
+    <value>Conforme</value>
+  </data>
+  <data name="not_accordance" xml:space="preserve">
+    <value>Não Conforme</value>
+  </data>
+  <data name="unvalued" xml:space="preserve">
+    <value>Não Avaliado</value>
+  </data>
+  <data name="valued" xml:space="preserve">
+    <value>Avaliado</value>
+  </data>
 </root>

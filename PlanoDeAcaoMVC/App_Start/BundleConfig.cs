@@ -10,7 +10,8 @@ namespace PlanoDeAcaoMVC
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery.moneymask.js",
-                        "~/Scripts/moment-with-locales.min.js"));
+                        "~/Scripts/moment-with-locales.min.js",
+            "~/Scripts/Angular/angular.min.js"));
 
              // Use the development version of Modernizr to develop with and learn from. Then, when you're
              // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -25,7 +26,8 @@ namespace PlanoDeAcaoMVC
 
             bundles.Add(new StyleBundle("~/Content/cssBootstrap").Include(
                       "~/Content/bootstrap.min.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/font-awesome.min.css"));
 
             //HighCharts
             bundles.Add(new ScriptBundle("~/bundles/hc")

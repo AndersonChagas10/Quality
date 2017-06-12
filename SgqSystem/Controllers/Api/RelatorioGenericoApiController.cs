@@ -79,10 +79,12 @@ namespace SgqSystem.Controllers.Api
 
             return retorno;
         }
+        
 
         //QueryGenerica para implementar
         protected dynamic QueryNinja(DbContext db, string query)
         {
+
             db.Database.Connection.Open();
             var cmd = db.Database.Connection.CreateCommand();
             cmd.CommandText = query;
