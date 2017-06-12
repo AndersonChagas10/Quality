@@ -1,4 +1,10 @@
-﻿using System.Web.Http;
+﻿using ADOFactory;
+using DTO.Helpers;
+using Newtonsoft.Json.Linq;
+using PlanoAcaoCore;
+using System;
+using System.Linq;
+using System.Web.Http;
 
 namespace PlanoDeAcaoMVC.Controllers.Api
 {
@@ -7,9 +13,27 @@ namespace PlanoDeAcaoMVC.Controllers.Api
     {
         [HttpPost]
         [Route("CheckPass")]
-        public string teste()
+        public JObject CheckPass(JObject form)
         {
-            return "Senha validada com sucesso.";
+            dynamic user = form;
+            string pass = user.pass;
+            string name = user.name;
+            using (var db = new Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
+            {
+                var userSgq = db.QueryNinjaADO("SELECT * FROM USerSgq where Name = '" + name + "' AND Password = '" + Guard.EncryptStringAES(pass) + "'").FirstOrDefault();
+                if (userSgq != null)
+                {
+                    user.response = "Senha validada com sucesso.";
+                    user.isInvalid = false;
+                    return user;
+                }
+                else
+                {
+                    user.response = "Usuário ou senhas inválidos.";
+                    user.isInvalid = true;
+                    return user;
+                }
+            }
         }
     }
 }

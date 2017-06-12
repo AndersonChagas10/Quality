@@ -36,6 +36,13 @@
         }
     </style>
 
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/hc")
+    @Scripts.Render("~/bundles/ScriptTables")
+    @Scripts.Render("~/bundles/select2js")
+    @Scripts.Render("~/bundles/loadingoverlay")
+
 </head>
 <body>
 
@@ -82,7 +89,7 @@
             <!--/.nav-collapse -->
         </div>
     </nav>
-    <div class="container" style="margin-top:20px;">
+    <div class="container" style="margin-top:20px;" ng-app="App">
         <hr />
         @RenderBody()
         <hr />
@@ -100,12 +107,7 @@
         </div>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/hc")
-    @Scripts.Render("~/bundles/ScriptTables")
-    @Scripts.Render("~/bundles/select2js")
-    @Scripts.Render("~/bundles/loadingoverlay")
+ 
 
     @RenderSection("scripts", required: false)
 
