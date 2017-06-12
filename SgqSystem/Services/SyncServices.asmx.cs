@@ -6917,7 +6917,7 @@ namespace SgqSystem.Services
                 "\n select                                                                                                                    " +
                 "\n                                                                                                                           " +
                 "\n @Defects = isnull(sum(r3.Defects),0),                                                                                     " +
-                "\n @DefectsResult = case when sum(r3.Defects) > 0 then 1 else 0 end,                                                         " +
+                "\n @DefectsResult = case when sum(r3.WeiDefects) > 0 then 1 else 0 end,                                                         " +
                 "\n @EvatuationResult = case when sum(r3.Evaluation) > 0 then 1 else 0 end,                                                   " +
                 "\n @WeiEvaluation = isnull(sum(r3.WeiEvaluation),0),                                                                         " +
                 "\n @WeiDefects = isnull(sum(r3.WeiDefects),0),                                                                               " +
