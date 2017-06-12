@@ -523,7 +523,7 @@ namespace SgqSystem.Services
                         {
                             //if (autoSend == true)
                             //{
-                            ProcessJson(null, iSql);
+                            ProcessJson(null, iSql, false);
 
                             //}
                         }
@@ -597,7 +597,7 @@ namespace SgqSystem.Services
                             {
                                 //if (autoSend == true)
                                 //{
-                                ProcessJson(null, iSql2);
+                                ProcessJson(null, iSql2, true);
 
                                 //}
                             }
@@ -635,7 +635,7 @@ namespace SgqSystem.Services
         /// <returns></returns>
         /// Para chamar uma consolidação geral digite [web]
         [WebMethod]
-        public string ProcessJson(string device, int id)
+        public string ProcessJson(string device, int id, bool filho)
         {
 
             try
@@ -841,7 +841,7 @@ namespace SgqSystem.Services
                     else if (CollectionLevel2Id > 0 && !string.IsNullOrEmpty(c.Level03ResultJSon))
                     {
 
-                        int CollectionLevel3Id = InsertCollectionLevel3(CollectionLevel2Id.ToString(), c.level02_Id, c.Level03ResultJSon, c.AuditorId, Duplicated);
+                        int CollectionLevel3Id = InsertCollectionLevel3(CollectionLevel2Id.ToString(), c.level02_Id, c.Level03ResultJSon, c.AuditorId, Duplicated, filho);
 
 
                         headersContadores = headersContadores.Replace("</header><header>", ";").Replace("<header>", "").Replace("</header>", "");
@@ -1764,7 +1764,7 @@ namespace SgqSystem.Services
         /// <param name="auditorId">Id do Auditor</param>
         /// <param name="duplicated">Duplicado</param>
         /// <returns></returns>
-        public int InsertCollectionLevel3(string CollectionLevel02Id, int level02, string level03Results, int auditorId, string duplicated)
+        public int InsertCollectionLevel3(string CollectionLevel02Id, int level02, string level03Results, int auditorId, string duplicated, bool filho)
         {
             ///coloquei uma @ para replace, mas podemos utilizar o padrão de ; ou <> desde que todos os campos venha do script com escape()
             //string obj, string collectionDate, string level01id, string unit, string period, string shift, string device, string version
@@ -1801,13 +1801,24 @@ namespace SgqSystem.Services
             for (int i = 0; i < arrayResults.Length; i++)
             {
 
-
-
+                
                 //Gera o array com o resultado
                 var result = arrayResults[i].Split(',');
 
                 //Instancia as variáveis para preencher o script
                 string Level03Id = result[0];
+
+                Dominio.ParLevel3Level2 tarefaFilha = new Dominio.ParLevel3Level2();
+
+                if (filho)
+                {
+                    using (var db = new Dominio.SgqDbDevEntities())
+                    {
+                        int idl3 = Int32.Parse(Level03Id);
+                        tarefaFilha = db.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == idl3 && r.ParLevel2_Id == level02 && r.IsActive);
+                    }
+                }
+
 
                 bool skip = false;
 
@@ -1853,6 +1864,9 @@ namespace SgqSystem.Services
                 string id = result[7];
 
                 string weight = result[8];
+                if (filho)
+                    weight = tarefaFilha.Weight.ToString().Replace(",", ".");
+
                 weight = DefaultValueReturn(weight, "1");
 
                 string name = result[9];
@@ -1877,13 +1891,18 @@ namespace SgqSystem.Services
                 string evaluation = "1";
 
                 string WeiEvaluation = result[15].Replace(",", ".");
+                if (filho)
+                    WeiEvaluation = tarefaFilha.Weight.ToString().Replace(",", ".");
+
                 string WeiDefects = result[16].Replace(",", ".");
+                if (filho)
+                    WeiDefects = (tarefaFilha.Weight * Decimal.Parse(defects)).ToString().Replace(",", ".");
 
                 //decimal defeitos = Convert.ToDecimal(defects.ToString().Replace(".", ","));
                 //decimal punicao = Convert.ToDecimal(punishimentValue.ToString().Replace(".", ","));
                 //decimal peso = Convert.ToDecimal(weight.ToString().Replace(".", ","));
 
-                //WeiDefects = (defeitos + punicao) * peso;
+                    //WeiDefects = (defeitos + punicao) * peso;
 
                 id = DefaultValueReturn(id, "0");
 
@@ -1942,7 +1961,10 @@ namespace SgqSystem.Services
                         //Se o script foi executado, retorna o Id
                         if (i > 0)
                         {
+
+                            ReconsolidationToLevel3(CollectionLevel02Id.ToString());
                             return i;
+
                         }
                         else
                         {
@@ -3260,9 +3282,9 @@ namespace SgqSystem.Services
         public string getAPPLevelsVolume(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId)
         {
             string APPMain = string.Empty;
-            
-            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId, true); 
-            
+
+            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId, true);
+
             return APPMain;// + resource;
         }
 
@@ -4017,7 +4039,7 @@ namespace SgqSystem.Services
                     string level3Group = null;
 
                     #endregion
-                    
+
                     //Busca os Level2 e reforna no level3Group;
                     listLevel2 += GetLevel02(parlevel1, ParCompany_Id, dateCollect, ref level3Group);
 
@@ -6865,7 +6887,87 @@ namespace SgqSystem.Services
                 throw ex;
             }
         }
-    }
 
+        [WebMethod]
+        public string ReconsolidationToLevel3(string collectionLevel2_Id)
+        //int company_Id, int level1_Id, DateTime data, 
+        {
+
+            try
+            {
+
+
+                string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    connection.Open();
+
+                    SqlCommand command;
+
+                    string query = "                                                                                                              " +
+                "\n DECLARE @ID INT = " + collectionLevel2_Id +
+                "\n DECLARE @Defects DECIMAL(10,3)                                                                                            " +
+                "\n DECLARE @DefectsResult DECIMAL(10, 3)                                                                                     " +
+                "\n DECLARE @EvatuationResult DECIMAL(10, 3)                                                                                  " +
+                "\n DECLARE @WeiEvaluation DECIMAL(10, 3)                                                                                     " +
+                "\n DECLARE @WeiDefects DECIMAL(10, 3)                                                                                        " +
+                "\n DECLARE @TotalLevel3Evaluation  DECIMAL(10, 3)                                                                            " +
+                "\n DECLARE @TotalLevel3WithDefects DECIMAL(10, 3)                                                                            " +
+                "\n                                                                                                                           " +
+                "\n select                                                                                                                    " +
+                "\n                                                                                                                           " +
+                "\n @Defects = isnull(sum(r3.Defects),0),                                                                                     " +
+                "\n @DefectsResult = case when sum(r3.Defects) > 0 then 1 else 0 end,                                                         " +
+                "\n @EvatuationResult = case when sum(r3.Evaluation) > 0 then 1 else 0 end,                                                   " +
+                "\n @WeiEvaluation = isnull(sum(r3.WeiEvaluation),0),                                                                         " +
+                "\n @WeiDefects = isnull(sum(r3.WeiDefects),0),                                                                               " +
+                "\n @TotalLevel3Evaluation = count(1),                                                                                        " +
+                "\n @TotalLevel3WithDefects = (select count(1) from result_level3 where collectionLevel2_Id = @ID and Defects > 0  and IsNotEvaluate = 0)         " +
+                "\n from result_level3 r3                                                                                                     " +
+                "\n where collectionlevel2_id = @ID                                                                                           " +
+                "\n and r3.IsNotEvaluate = 0                                                                                                  " +
+                "\n                                                                                                                           " +
+                "\n                                                                                                                           " +
+                "\n UPDATE CollectionLevel2                                                                                                   " +
+                "\n SET Defects = @Defects                                                                                                    " +
+                "\n , DefectsResult = @DefectsResult                                                                                          " +
+                "\n , EvaluatedResult = @EvatuationResult                                                                                     " +
+                "\n , WeiEvaluation = @WeiEvaluation                                                                                          " +
+                "\n , WeiDefects = @WeiDefects                                                                                                " +
+                "\n , TotalLevel3Evaluation = @TotalLevel3Evaluation                                                                          " +
+                "\n , TotalLevel3WithDefects = @TotalLevel3WithDefects                                                                        " +
+                "\n , AlterDate = GETDATE()                                                                                                   " +
+                "\n WHERE Id = @ID         SELECT 1                                                                                           ";
+
+                    command = new SqlCommand(query, connection);
+
+                    var iSql = command.ExecuteScalar();
+                }
+
+                var service = new SyncServices();
+
+                using (var db = new Dominio.SgqDbDevEntities())
+                {
+                    int idl2 = Int32.Parse(collectionLevel2_Id);
+                    Dominio.CollectionLevel2 collectionLevel2 = db.CollectionLevel2.FirstOrDefault(r => r.Id == idl2);
+
+
+                    int company_Id = collectionLevel2.UnitId;
+                    int level1_Id = collectionLevel2.ParLevel1_Id;
+                    DateTime data = collectionLevel2.CollectionDate.Date;
+
+                    var retorno = service._ReConsolidationByLevel1(company_Id, level1_Id, data);
+
+                    return "OK";
+                }
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+
+        }
+
+    }
 }
 

@@ -279,7 +279,7 @@ namespace SgqSystem.Mail
                     {
                         try
                         {
-                            service.ProcessJson("", i);
+                            service.ProcessJson("", i,false);
                         }
                         catch (Exception e)
                         {
