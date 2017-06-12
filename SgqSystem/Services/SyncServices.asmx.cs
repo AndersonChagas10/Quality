@@ -3838,11 +3838,17 @@ namespace SgqSystem.Services
 
             if (isVolume)
             {
+                var parLevel1Familia = ParLevel1DB.getByFamilia(dateCollection: dateCollect);
+                
                 parLevel1List = parLevel1List.Where(r => 
                                             r.Name.Equals("(%) NC CEP Vácuo GRD") || 
                                             r.Name.Equals("(%) NC PCC 1B") || 
                                             r.Name.Equals("(%) NC CEP Desossa") || 
-                                            r.Name.Equals("(%) NC CEP Recortes"));
+                                            r.Name.Equals("(%) NC CEP Recortes") ||
+                                            r.Id.Equals(
+                                                parLevel1Familia.Where(s => s.Id == r.Id).FirstOrDefault() == null ?
+                                                0 : parLevel1Familia.Where(s => s.Id == r.Id).FirstOrDefault().Id
+                                            ));
             }
 
             //Agrupamos o ParLevel1 por ParCriticalLevel
@@ -4090,12 +4096,13 @@ namespace SgqSystem.Services
             #region Parametros e "Instancias"
 
             //Inicializa ParLevel2
+            var ParLevel1DB = new SGQDBContext.ParLevel1(db);
             var ParLevel2DB = new SGQDBContext.ParLevel2(db);
             var ParCounterDB = new SGQDBContext.ParCounter(db);
 
             //Pega uma lista de ParLevel2
             //Tem que confirmar a company e colocar na query dentro do método, ainda não foi validado
-            var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(ParLevel1.Id, ParCompany_Id);
+            var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(ParLevel1DB, dateCollect, ParLevel1.Id, ParCompany_Id);
 
             //Inicializa Cabecalhos
             var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader(db);
