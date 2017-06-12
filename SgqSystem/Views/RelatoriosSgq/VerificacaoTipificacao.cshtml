@@ -1,0 +1,180 @@
+﻿
+@{
+    ViewBag.Title = "Verificacao da Tipificacao";
+    var urlGet = Url.Action("Get", "api/VerificacaoTipificacao");
+}
+
+<div class="page-content" style="min-height: 600px;">
+    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+    <div id="formBodyContent">
+
+        <div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
+
+            <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
+        </div>
+
+        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+        @*@Html.Partial("~/Views/RelatoriosSgq/_ResultLevel3Edit.cshtml")*@
+
+        <div id="load"></div>
+        <div id="divTable">
+            <table id="results" class="display" cellspacing="0" style="width:100%"></table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+        $(".sidebar-toggler").removeClass("hide");
+        $(".page-sidebar-wrapper").removeClass("hide");
+        var $btn = $('#btnSend');
+        var urlGet = '@Html.Raw(@urlGet)';
+
+        $(document).ready(function () {
+            closeLeftSidebar();
+            formControl.showFullCallendar();
+
+            $("#btnSend").click(function (e) {
+                //$('#unitId').change();
+                Send(true);
+            });
+        });
+
+        function Send(toggle) {
+            $btn.button('loading');
+            $('#results').empty();
+
+            //if (!ValidaDadosParaEnvio()) {
+            //    $btn.button('reset');
+            //    return;
+            //}
+
+            $('#divTable').hide();
+            EasyAjax(urlGet, enviar, GerarTabela, "load", toggle);//AJAX
+        };
+
+        function GerarTabela(retornoArray) {
+
+            if(retornoArray.length == 0){
+                GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(Resources.Resource.no_appointments_in_this_period)))
+            }
+
+            else{
+                //Regra para habilitar o botão de edição somente para quem contiver as roles 366 e 346 e Admin
+
+                //var regraEdit = false;
+
+                //var roles = $.grep(getCookie('webControlCookie'), function (a, b) {
+                //    return a.indexOf('roles') != -1;
+                //})[0].split('=')[1].split(',');
+
+                //var role = roles.find(function(e) {
+                //    return e === 'Admin';
+                //});
+
+                //if (RoleUser.indexOf("366") >= 0 || RoleUser.indexOf("346") >= 0 || role == 'Admin') {
+                //    regraEdit = true ;
+                //}else{
+                //    regraEdit = false;
+                //}
+                //Fim Regra
+
+                var regraEdit = true;
+
+                retornoArray.columns.shift();
+                retornoArray.columns.unshift({ title: "@Resources.Resource.edit", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>', "visible": regraEdit })                
+                $('#divTable').show();
+                var table = $('#results').empty().DataTable({
+                    data: retornoArray.datas,
+                    columns: retornoArray.columns,
+                    @*columns: [
+                        { title: "@Resources.Resource.edit", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>', "visible": regraEdit },
+                        retornoArray.columns,
+                    ],*@
+                    scrollX: true,
+                    lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "@Resources.Resource.all"]],
+                    pageLength: 10,
+                    responsive: true,
+                    loadingRecords: true,
+                    destroy: true,
+                    info: true,
+                    responsive: true,
+                    initComplete: function () {
+                        $('#loading').hide();
+                        setTimeout(function (e) {
+                            var oTable = $('#results').dataTable();
+                            if (oTable.length > 0) {
+                                oTable.fnAdjustColumnSizing();
+                            }
+                        }, 100);
+
+                        $('#results tbody').on('click', 'button', function (data, a, b) {
+
+                            var data = table.row($(this).parents('tr')).data();
+
+                            console.log(data.Id);
+                            //$.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
+                            //    $('#estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
+                            //    $('#ResultLevel3_Id').val(r.Id);
+                            //    $('#changeConform').empty();
+                            //    $('#changeConform').append($(r.showGeneric));
+                            //    InitiMasksDefaults();
+                            //});
+
+                        });
+                    }
+                });
+
+                new $.fn.dataTable.Buttons(table, {
+                    buttons: [
+                        {
+                            extend: 'print',
+                            text: '@Resources.Resource.print',
+                            customize: function (win) {
+                                $(win.document.body).find('table')
+                                    .addClass('compact')
+                                    .css('font-size', 'inherit');
+                            },
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'excelHtml5',
+                            text: 'Excel',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                         {
+                             extend: 'pdf',
+                             text: 'PDF',
+                             exportOptions: {
+                                 columns: ':visible'
+                             }
+                         },
+                          {
+                              extend: 'colvis',
+                              text: '@Resources.Resource.visible_columns',
+                              exportOptions: {
+                                  columns: ':visible'
+                              }
+                          },
+                    ]
+                });
+
+                table.buttons(0, null).container().prependTo(
+                    table.table().container()
+                );
+
+            }
+
+        }
+
+    </script>
+
+}
+
