@@ -1150,10 +1150,11 @@ namespace SgqSystem.Services
                 throw ex;
             }
         }
-        public int updateCorrectiveAction_CollectionLevel2_By_ParLevel1(string ParLevel1_Id, string ParCompany_Id, string dataInicio, string dataFim)
+        public int updateCorrectiveAction_CollectionLevel2_By_ParLevel1(string ParLevel1_Id, string ParCompany_Id, string dataInicio, string dataFim,string reauditnumber)
         {
 
-            string sql = "UPDATE CollectionLevel2 SET HaveCorrectiveAction=0 WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND UnitId='" + ParCompany_Id + "' AND CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' AND HaveCorrectiveAction=1";
+            string sql = "UPDATE CollectionLevel2 SET HaveCorrectiveAction=0 WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND UnitId='" + ParCompany_Id + 
+                   "' AND CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' AND HaveCorrectiveAction=1 and reauditnumber='"+reauditnumber+"'";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
@@ -3260,9 +3261,9 @@ namespace SgqSystem.Services
         public string getAPPLevelsVolume(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId)
         {
             string APPMain = string.Empty;
-            
-            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId, true); 
-            
+
+            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId, true);
+
             return APPMain;// + resource;
         }
 
@@ -3838,10 +3839,10 @@ namespace SgqSystem.Services
 
             if (isVolume)
             {
-                parLevel1List = parLevel1List.Where(r => 
-                                            r.Name.Equals("(%) NC CEP Vácuo GRD") || 
-                                            r.Name.Equals("(%) NC PCC 1B") || 
-                                            r.Name.Equals("(%) NC CEP Desossa") || 
+                parLevel1List = parLevel1List.Where(r =>
+                                            r.Name.Equals("(%) NC CEP Vácuo GRD") ||
+                                            r.Name.Equals("(%) NC PCC 1B") ||
+                                            r.Name.Equals("(%) NC CEP Desossa") ||
                                             r.Name.Equals("(%) NC CEP Recortes"));
             }
 
@@ -4017,7 +4018,7 @@ namespace SgqSystem.Services
                     string level3Group = null;
 
                     #endregion
-                    
+
                     //Busca os Level2 e reforna no level3Group;
                     listLevel2 += GetLevel02(parlevel1, ParCompany_Id, dateCollect, ref level3Group);
 
@@ -4287,7 +4288,7 @@ namespace SgqSystem.Services
                 }
                 else
                 {
-                    classXSLevel2 = " col-xs-7";
+                    classXSLevel2 = " col-xs-5";
                     string btnReaudit = null;
                     if (parlevel2.IsReaudit || ParLevel1.IsReaudit)
                     {
@@ -4396,6 +4397,61 @@ namespace SgqSystem.Services
             //Se tiver agrupamentos no ParLevel1
             if (ParLevel1.HasGroupLevel2 == true)
             {
+
+                string headerCounter =
+                                     html.div(
+                                               outerhtml: "<b>" + CommonData.getResource("ev").Value.ToString() + " </b>",
+                                               classe: "col-xs-4",
+                                               style: "text-align:center"
+                                             ) +
+                                     html.div(
+                                               outerhtml: "<b>" + CommonData.getResource("sd").Value.ToString() + " </b>",
+                                               classe: "col-xs-4",
+                                               style: "text-align:center"
+                                              ) +
+                                      html.div(
+                                               outerhtml: "<b>" + CommonData.getResource("df").Value.ToString() + " </b>",
+                                               classe: "col-xs-4",
+                                               style: "text-align:center"
+                                             );
+
+                headerCounter = html.div(
+                                    //aqui vai os botoes
+                                    outerhtml: headerCounter,
+                                    classe: "counters col-xs-4 headerCounter"
+                                    );
+
+
+                string classXSLevel2 = " col-xs-5";
+
+                int totalSampleXEvaluate = evaluate * sample;
+
+                string counters =
+                                      html.div(
+                                                outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + html.span(outerhtml: "/", classe: "separator") + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
+                                                classe: "col-xs-4",
+                                                style: "text-align:center; font-size:10px;"
+                                              ) +
+                                      html.div(
+                                                outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent hide") + html.span(outerhtml: "0", classe: "sampleCurrentTotal") + html.span(outerhtml: "/", classe: "separator") + html.span(outerhtml: sample.ToString(), classe: "sampleTotal hide") + html.span(outerhtml: totalSampleXEvaluate.ToString(), classe: "sampleXEvaluateTotal"),
+                                                classe: "col-xs-4",
+                                                style: "text-align:center; font-size:10px;"
+                                              ) +
+                                       html.div(
+                                                outerhtml: html.span(outerhtml: defect.ToString(), classe: "SmpDefects"),
+                                                classe: "col-xs-4",
+                                                style: "text-align:center; font-size:10px;"
+                                              ); //+
+                                      //html.div(
+                                      //      outerhtml: html.span(outerhtml: defect.ToString(), classe: "3moreDefects"),
+                                      //      classe: "col-xs-4",
+                                      //      style: "text-align:center; font-size:10px;"
+                                      // );
+                counters = html.div(
+                                   //aqui vai os botoes
+                                   outerhtml: counters,
+                                   classe: "counters col-xs-4"
+                                   );
                 string parLevel3Group = null;
 
 
@@ -4425,10 +4481,18 @@ namespace SgqSystem.Services
                     level3Group += parLevel3Group;
                 }
 
-                headerList = null;
+                //headerList = null;
+                var listLineCounter = ParCounterDB.GetParLevelXParCounterList(ParLevel1.Id, 0, 1);
+
+                string lineCounters = "";
+
+                if (listLineCounter != null)
+                {
+                    lineCounters = html.painelCounters(listLineCounter, "margin-top: 45px;font-size: 12px;");
+                }
                 string level2 = html.level2(id: "0",
                                             label: ParLevel1.Name,
-                                            classe: "group col-xs-12",
+                                            classe: "group col-xs-5",
                                             evaluate: evaluateGroup,
                                             sample: sampleGroup,
                                             HasSampleTotal: false,
@@ -4440,8 +4504,8 @@ namespace SgqSystem.Services
                                                     id: ParLevel1.Id.ToString(),
                                                     classe: "row",
                                                     outerhtml: level2 +
-                                                               null +
-                                                               null +
+                                                               counters +
+                                                               lineCounters +
                                                                html.div(classe: "level2Debug")
                                                     );
             }
@@ -6250,7 +6314,10 @@ namespace SgqSystem.Services
             }
         }
         [WebMethod]
-        public string InsertCorrectiveAction(string CollectionLevel2_Id, string ParLevel1_Id, string ParLevel2_Id, string Shift, string Period, string ParCompany_Id, string EvaluationNumber, string ParFrequency_Id, string data, string AuditorId, string SlaughterId, string TechinicalId, string DateTimeSlaughter, string DateTimeTechinical, string DateCorrectiveAction, string AuditStartTime, string DescriptionFailure, string ImmediateCorrectiveAction, string ProductDisposition, string PreventativeMeasure, string reauditnumber)
+        public string InsertCorrectiveAction(string CollectionLevel2_Id, string ParLevel1_Id, string ParLevel2_Id, string Shift, string Period, string ParCompany_Id, 
+            string EvaluationNumber, string ParFrequency_Id, string data, string AuditorId, string SlaughterId, string TechinicalId, string DateTimeSlaughter, 
+            string DateTimeTechinical, string DateCorrectiveAction, string AuditStartTime, string DescriptionFailure, string ImmediateCorrectiveAction, 
+            string ProductDisposition, string PreventativeMeasure, string reauditnumber)
         {
             try
             {
@@ -6299,7 +6366,7 @@ namespace SgqSystem.Services
 
                     //Pega a data pela regra da frequencia
                     getFrequencyDate(Convert.ToInt32(ParFrequency_Id), dataAPP, ref dataInicio, ref dataFim);
-                    var idUpdate = updateCorrectiveAction_CollectionLevel2_By_ParLevel1(ParLevel1_Id, ParCompany_Id, dataInicio, dataFim);
+                    var idUpdate = updateCorrectiveAction_CollectionLevel2_By_ParLevel1(ParLevel1_Id, ParCompany_Id, dataInicio, dataFim,reauditnumber);
                     //transacao.complete();
                     return null;
                 }
