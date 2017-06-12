@@ -154,6 +154,7 @@
     <Compile Include="DTO\EmpresaDTO.cs" />
     <Compile Include="DTO\UserSgqDTO.cs" />
     <Compile Include="DTO\VTVerificacaoTipificacaoDTO.cs" />
+    <Compile Include="GetResources.cs" />
     <Compile Include="GlobalConfig.cs" />
     <Compile Include="ResultSet\ApontamentosDiariosResultSet.cs" />
     <Compile Include="ResultSet\ScorecardResultSet.cs" />
