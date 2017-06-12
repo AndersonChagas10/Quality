@@ -84,19 +84,20 @@ namespace SgqSystem.Controllers.Api
                         verificacaoGRT.GRT_nCdCaracteristicaTipificacao = caracteristicaTipificacao.nCdCaracteristica; //GRT_nCdCaracteristicaTipificacao EX: 83
                         verificacaoGRT.cIdentificadorTipificacao = caracteristicaTipificacao.cIdentificador;// cIdentificadorTipificacao EX: <CONTUSAO>
                         verificacaoGRT.cNmCaracteristica = caracteristicaTipificacao.cNmCaracteristica;//cNmCaracteristica EX: CONTUSÃO - 2 CONTRA FILÉ
+                        verificacaoGRT.cSgCaracteristica = caracteristicaTipificacao.cSgCaracteristica;//cNmCaracteristica EX: CONTUSÃO - 2 CONTRA FILÉ
 
                         verificacaoListGRT.Add(verificacaoGRT);
                     }
                     else
                     {
-                        dynamic aresParticipante = QueryNinja(dbSgq, "SELECT * FROM AreasParticipantes WHERE cNrCaracteristica = " + ii.AreasParticipantesId);
+                        dynamic aresParticipante = QueryNinja(dbSgq, "SELECT * FROM AreasParticipantes WHERE cNrCaracteristica = " + ii.AreasParticipantesId).FirstOrDefault();
 
-                        //aresParticipante.nCdCaracteristica
-                        //aresParticipante.cNmCaracteristica;
-                        //aresParticipante.cNrCaracteristica;
-                        //aresParticipante.cSgCaracteristica;
-                        //aresParticipante.cIdentificador;
+                        verificacaoGRT.GRT_nCdCaracteristicaTipificacao = aresParticipante.nCdCaracteristica;
+                        verificacaoGRT.cIdentificadorTipificacao = aresParticipante.cIdentificador;
+                        verificacaoGRT.cNmCaracteristica = aresParticipante.cNmCaracteristica;
+                        verificacaoGRT.cSgCaracteristica = aresParticipante.cSgCaracteristica;
 
+                        verificacaoListGRT.Add(verificacaoGRT);
 
                     }
 
@@ -117,6 +118,7 @@ namespace SgqSystem.Controllers.Api
                             JBS_nCdCaracteristicaTipificacao = comparacaoExistenteJBS.JBS_nCdCaracteristicaTipificacao,
                             cNmCaracteristica = grt.cNmCaracteristica,
                             cIdentificadorTipificacao = grt.cIdentificadorTipificacao,
+                            cSgCaracteristica = grt.cSgCaracteristica
                             // ResultadoComparacaoGRT_JBS = resultado
                         };
 
@@ -151,9 +153,9 @@ namespace SgqSystem.Controllers.Api
                     ver.UserSgq_Id = model.AuditorId; //UserSgq_Id
                     ver.Sequencial = model.VerificacaoTipificacao[0].Sequencial; //Sequencial
                     ver.Banda = model.VerificacaoTipificacao[0].Banda; //Banda
-                    ver.ResultadoComparacaoGRT_JBS = ver.GRT_nCdCaracteristicaTipificacao.GetValueOrDefault() == ver.JBS_nCdCaracteristicaTipificacao.GetValueOrDefault();
                     ver.CollectionDate = model.VerificacaoTipificacao[0].DataHora;
                     ver.Key = model.VerificacaoTipificacao[0].Chave;
+                    ver.ResultadoComparacaoGRT_JBS = ver.GRT_nCdCaracteristicaTipificacao.GetValueOrDefault() == ver.JBS_nCdCaracteristicaTipificacao.GetValueOrDefault();
                     if (jaExiste.IsNotNull()) { ver.AlterDate = DateTime.Now; }
                     dbSgq.VerificacaoTipificacaoV2.Add(ver);// Resultado
                 }
