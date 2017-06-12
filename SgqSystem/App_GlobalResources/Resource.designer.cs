@@ -1465,6 +1465,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deviation.
+        /// </summary>
+        internal static string deviation {
+            get {
+                return ResourceManager.GetString("deviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deviations per Monitoring.
         /// </summary>
         internal static string deviations_per_monitoring {
@@ -5533,6 +5542,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This may take some time (5-20 minutes), do you want to update the tablet settings? The Loader will automatically disappear when the action is finished..
+        /// </summary>
+        internal static string update_all_tablet_message {
+            get {
+                return ResourceManager.GetString("update_all_tablet_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You must be online to update parameters.
         /// </summary>
         internal static string update_parameters_must_be_online {
@@ -5547,6 +5565,15 @@ namespace Resources {
         internal static string update_tablet {
             get {
                 return ResourceManager.GetString("update_tablet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Atualizar todos os Tablets de todas as Unidades.
+        /// </summary>
+        internal static string update_tablet_all {
+            get {
+                return ResourceManager.GetString("update_tablet_all", resourceCulture);
             }
         }
         

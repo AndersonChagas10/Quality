@@ -461,6 +461,9 @@
     <Compile Include="VerificacaoTipificacaoTarefaIntegracao.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="VerificacaoTipificacaoV2.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="VerificacaoTipificacaoValidacao.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
