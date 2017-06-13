@@ -1498,7 +1498,7 @@ namespace SgqSystem.Services
 
             key += "-" + ConsolidationLevel1.ParLevel1_Id.ToString();
             key += "-" + ConsolidationLevel2.ParLevel2_Id.ToString();
-            if (hashKey == "1")
+            if (hashKey == "1" || hashKey == "5")
             {
                 key += "-" + sequential;
                 key += "-" + side;
