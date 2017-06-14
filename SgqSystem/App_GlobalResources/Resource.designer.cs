@@ -5560,20 +5560,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This may take some time (5-20 minutes), do you want to update the tablet settings? The Loader will automatically disappear when the action is finished..
-        /// </summary>
-        internal static string update_all_tablet_message {
-            get {
-                return ResourceManager.GetString("update_all_tablet_message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Unvalued.
         /// </summary>
         internal static string unvalued {
             get {
                 return ResourceManager.GetString("unvalued", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This may take some time (5-20 minutes), do you want to update the tablet settings? The Loader will automatically disappear when the action is finished..
+        /// </summary>
+        internal static string update_all_tablet_message {
+            get {
+                return ResourceManager.GetString("update_all_tablet_message", resourceCulture);
             }
         }
         
