@@ -2061,4 +2061,10 @@
   <data name="valued" xml:space="preserve">
     <value>Avaliado</value>
   </data>
+  <data name="current_value" xml:space="preserve">
+    <value>Valor atual</value>
+  </data>
+  <data name="new_value" xml:space="preserve">
+    <value>Novo Valor</value>
+  </data>
 </root>

@@ -447,7 +447,7 @@ namespace SGQDBContext
                              "(SELECT MAX(InitDate) Data, ParCompany_Id AS UNIDADE FROM ParLevel2ControlCompany   (nolock)                                                                    " +
                              "where ParLevel1_Id = '" + ParLevel1_Id + "' AND CAST(InitDate AS DATE) <= '" + dateCollection.ToString("yyyy-MM-dd") + "'    " +
 
-                             "GROUP BY ParCompany_Id) F1 ON (CAST(F1.data AS DATE) = CAST(PL.initDate AS DATE) AND PL.IsActive = 1) OR (CAST(f1.data AS DATE) = CAST(PL.initDate AS DATE) AND CAST(f1.data AS DATE) < CAST(PL.AlterDate AS DATE) AND PL.IsActive = 0) AND (F1.UNIDADE = PL.ParCompany_id                                                                " +
+                             "GROUP BY ParCompany_Id) F1 ON (CAST(F1.data AS DATE) = CAST(PL.initDate AS DATE) AND PL.IsActive = 1) OR (CAST(f1.data AS DATE) = CAST(PL.initDate AS DATE) AND CAST(f1.data AS DATE) < CAST(PL.AlterDate AS DATE) AND PL.IsActive = 1) AND (F1.UNIDADE = PL.ParCompany_id                                                                " +
                              "or F1.UNIDADE is null))  Familia                                                                                                                      " +
                              "ON Familia.ParLevel2_Id = PL2.Id                                                                                                                      " +
                              "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'                                                                                                      " +

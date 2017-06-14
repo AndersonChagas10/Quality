@@ -42,6 +42,10 @@
       <HintPath>..\packages\Microsoft.ApplicationInsights.1.2.3\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -119,6 +123,10 @@
     <ProjectReference Include="..\Helper\Helper.csproj">
       <Project>{026EFA70-BD6D-46C8-BD94-D7FCD42B9692}</Project>
       <Name>Helper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlanoAcaoEF\PlanoAcaoEF.csproj">
+      <Project>{2901B555-2F1A-4B5A-BE9D-1D50844E0F2A}</Project>
+      <Name>PlanoAcaoEF</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
