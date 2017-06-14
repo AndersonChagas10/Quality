@@ -191,6 +191,7 @@
     <Compile Include="App_Start\MoneyMaskBundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="PaMail\PaAsyncServices.cs" />
     <Compile Include="Controllers\Api\ApiPa_AcaoController.cs" />
     <Compile Include="Controllers\Api\ApiPa_PlanejamentoController.cs" />
     <Compile Include="Controllers\Api\ApiPa_UserController.cs" />
@@ -381,7 +382,16 @@
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Imagens\details_close.png" />
+    <Content Include="Imagens\details_open.png" />
     <Content Include="Imagens\Logo.png" />
+    <Content Include="Imagens\sort_asc.png" />
+    <Content Include="Imagens\sort_asc_disabled.png" />
+    <Content Include="Imagens\sort_both.png" />
+    <Content Include="Imagens\sort_desc.png" />
+    <Content Include="Imagens\sort_desc_disabled.png" />
+    <Content Include="Imagens\Thumbs-Down-24.png" />
+    <Content Include="Imagens\Thumbs-Up-24.png" />
     <Content Include="Scripts\Angular\angular.min.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap-datepicker.min.js" />

@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 
 namespace Helper
 {
-    public class EmailContent
+    public class EmailContentDTO
     {
         public int Id { get; set; }
         public DateTime AddDate { get; set; }

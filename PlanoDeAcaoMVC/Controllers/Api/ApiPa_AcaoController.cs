@@ -1,16 +1,20 @@
-﻿using AutoMapper;
+﻿using ADOFactory;
+using AutoMapper;
 using DTO.Helpers;
 using Helper;
 using PlanoAcaoCore;
 using PlanoAcaoCore.Acao;
+using PlanoDeAcaoMVC.PaMail;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace PlanoDeAcaoMVC.Controllers.Api
 {
     [RoutePrefix("api/Pa_Acao")]
-    public class ApiPa_AcaoController : ApiController
+    public class ApiPa_AcaoController : BaseApiController
     {
 
         [HttpGet]
@@ -50,6 +54,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
             {
                 SalvarAcompanhamento(db, acompanhamento);
+                var acao = db.Pa_Acao.FirstOrDefault(r=>r.Id == acompanhamento.Acao_Id);
 
                 foreach (var i in obj.MailTo)
                 {
@@ -60,6 +65,10 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                     acomXQuem.Acompanhamento_Id = acompanhamento.Id;
                     acomXQuem.Quem_Id = i;
                     SalvarAcompanhamentoXQuem(db, acomXQuem);
+
+                    Task.Run(() => CreateMail(acao.Panejamento_Id.GetValueOrDefault(), acao.Id, acomXQuem.Quem_Id, Request.RequestUri.Authority));
+                    //CreateMail(acao.Panejamento_Id.GetValueOrDefault(), acao.Id, acomXQuem.Quem_Id, Request.RequestUri.Authority).GetAwaiter();
+
                 }
             }
 
@@ -79,8 +88,49 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             SalvaFTA(fta);
             acao.Fta_Id = fta.Id;
             SalvarAcao(acao);
+            //Content.RequestContext
+            try
+            {
+                Task.Run(() => CreateMail(obj.Panejamento_Id, acao.Id, obj.Quem_Id, Request.RequestUri.Authority));
+               
+            }
+            catch (Exception)
+            {
+            }
 
             return obj;
+        }
+
+        private async Task CreateMail(int idPlanejamento, int idAcao, int idQuem, string path)
+        {
+
+            using (var ct = new Pa_PlanejamentoController())
+            {
+                var teste = ct.Details(idPlanejamento);
+            }
+            var conteudoPlanejamento = GetExternalResponse("http:/" + path +"/Pa_Planejamento/Details?id=" + idPlanejamento);
+            var conteudoAcao = GetExternalResponse("http:/" + path + "/Pa_Acao/Details?id=" + idAcao);
+
+            var todoConteudo = conteudoPlanejamento.Result + conteudoAcao.Result;
+
+
+            using (var db = new Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
+            {
+                var paUser = Pa_Quem.Get(idQuem);
+                dynamic enviarPara = db.QueryNinjaADO("SELECT * FROM UserSgq WHERE Name  = '" + paUser.Name + "'").FirstOrDefault();
+                var email = new PlanoAcaoEF.EmailContent()
+                {
+                    IsBodyHtml = true,
+                    AddDate = DateTime.Now,
+                    Subject = "Novo Relatório de Análise de Desvio criado.",
+                    Project = "Plano de Ação",
+                    Body = todoConteudo,
+                    To = enviarPara.Email,
+                };
+
+                PaAsyncServices.SendMailPATeste(email, "celso.bernar@grtsolucoes.com.br");
+
+            }
         }
 
         #region Auxiliares
@@ -168,7 +218,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 }
             }
 
-        } 
+        }
 
         #endregion
     }

@@ -191,6 +191,31 @@ namespace SgqSystem.Controllers.Api
                     texto += ValueText;
                 }
 
+
+                bool isBEA = false;
+                string WeiEvaluateBEA = "@WeiEvaluation";
+
+                using (var databaseSgq = new SgqDbDevEntities())
+                {
+
+                    var result_level3_obj = databaseSgq.Result_Level3.FirstOrDefault(r => r.Id == Id);
+
+                    var collectionLevel2_obj = databaseSgq.CollectionLevel2.FirstOrDefault(r => r.Id == result_level3_obj.CollectionLevel2_Id);
+
+                    var parLeve1BEA = databaseSgq.ParLevel1VariableProductionXLevel1.FirstOrDefault(r => r.ParLevel1_Id == collectionLevel2_obj.ParLevel1_Id);
+
+                    if (parLeve1BEA.ParLevel1VariableProduction_Id == 3)
+                    {
+                        isBEA = true;
+                        WeiEvaluateBEA = "Sample";
+                    }
+                }
+
+                
+
+
+
+
                 var query = "UPDATE [dbo].[Result_Level3] SET ";
                 query += "\n [IsConform] = " + _IsConform + ",";
                 query += "\n [Defects] = " + _Defects + ",";
@@ -218,7 +243,7 @@ namespace SgqSystem.Controllers.Api
                 "\n @Defects = isnull(sum(r3.Defects),0),                                                                                     " +
                 "\n @DefectsResult = case when sum(r3.WeiDefects) > 0 then 1 else 0 end,                                                         " +
                 "\n @EvatuationResult = case when sum(r3.Evaluation) > 0 then 1 else 0 end,                                                   " +
-                "\n @WeiEvaluation = isnull(sum(r3.WeiEvaluation),0),                                                                         " +
+                "\n @WeiEvaluation = isnull(sum(r3.WeiEvaluation),0),                                                                        " +
                 "\n @WeiDefects = isnull(sum(r3.WeiDefects),0),                                                                               " +
                 "\n @TotalLevel3Evaluation = count(1),                                                                                        " +
                 "\n @TotalLevel3WithDefects = (select count(1) from result_level3 where collectionLevel2_Id = @ID and Defects > 0  and IsNotEvaluate = 0)         " +
@@ -231,7 +256,7 @@ namespace SgqSystem.Controllers.Api
                 "\n SET Defects = @Defects                                                                                                    " +
                 "\n , DefectsResult = @DefectsResult                                                                                          " +
                 "\n , EvaluatedResult = @EvatuationResult                                                                                     " +
-                "\n , WeiEvaluation = @WeiEvaluation                                                                                          " +
+                "\n , WeiEvaluation = " + WeiEvaluateBEA + "                                                                                  " +
                 "\n , WeiDefects = @WeiDefects                                                                                                " +
                 "\n , TotalLevel3Evaluation = @TotalLevel3Evaluation                                                                          " +
                 "\n , TotalLevel3WithDefects = @TotalLevel3WithDefects                                                                        " +

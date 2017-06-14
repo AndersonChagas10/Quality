@@ -45,6 +45,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EfPa.edmx</DependentUpon>
     </Compile>
+    <Compile Include="EmailContent.cs">
+      <DependentUpon>EfPa.tt</DependentUpon>
+    </Compile>
     <Compile Include="Pa_Acao.cs">
       <DependentUpon>EfPa.tt</DependentUpon>
     </Compile>
