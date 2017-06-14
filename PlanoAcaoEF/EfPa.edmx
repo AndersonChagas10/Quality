@@ -5,6 +5,22 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="PlanoDeAcaoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="EmailContent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="To" Type="nvarchar" MaxLength="450" Nullable="false" />
+          <Property Name="Body" Type="nvarchar(max)" />
+          <Property Name="SendStatus" Type="nvarchar" MaxLength="15" />
+          <Property Name="SendDate" Type="datetime2" Precision="7" />
+          <Property Name="Project" Type="nvarchar" MaxLength="15" />
+          <Property Name="IsBodyHtml" Type="bit" />
+          <Property Name="From" Type="nvarchar" MaxLength="35" />
+          <Property Name="Subject" Type="nvarchar" MaxLength="450" />
+        </EntityType>
         <EntityType Name="Pa_Acao">
           <Key>
             <PropertyRef Name="Id" />
@@ -108,6 +124,7 @@
           <Property Name="IsFta" Type="bit" />
         </EntityType>
         <EntityContainer Name="PlanoDeAcaoModelStoreContainer">
+          <EntitySet Name="EmailContent" EntityType="Self.EmailContent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pa_Acao" EntityType="Self.Pa_Acao" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pa_Acompanhamento" EntityType="Self.Pa_Acompanhamento" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pa_AcompanhamentoXQuem" EntityType="Self.Pa_AcompanhamentoXQuem" Schema="dbo" store:Type="Tables" />
@@ -124,6 +141,7 @@
           <EntitySet Name="Pa_AcompanhamentoXQuem" EntityType="PlanoDeAcaoModel.Pa_AcompanhamentoXQuem" />
           <EntitySet Name="Pa_FTA" EntityType="PlanoDeAcaoModel.Pa_FTA" />
           <EntitySet Name="Pa_Planejamento" EntityType="PlanoDeAcaoModel.Pa_Planejamento" />
+          <EntitySet Name="EmailContent" EntityType="PlanoDeAcaoModel.EmailContent" />
         </EntityContainer>
         <EntityType Name="Pa_Acao">
           <Key>
@@ -226,6 +244,22 @@
           <Property Name="IsTatico" Type="Boolean" Nullable="false" />
           <Property Name="Tatico_Id" Type="Int32" />
           <Property Name="IsFta" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="EmailContent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="To" Type="String" Nullable="false" MaxLength="450" FixedLength="false" Unicode="true" />
+          <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SendStatus" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="SendDate" Type="DateTime" Precision="7" />
+          <Property Name="Project" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="IsBodyHtml" Type="Boolean" />
+          <Property Name="From" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="Subject" Type="String" MaxLength="450" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -334,6 +368,23 @@
                 <ScalarProperty Name="Coordenacao_Id" ColumnName="Coordenacao_Id" />
                 <ScalarProperty Name="Gerencia_Id" ColumnName="Gerencia_Id" />
                 <ScalarProperty Name="Diretoria_Id" ColumnName="Diretoria_Id" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmailContent">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.EmailContent">
+              <MappingFragment StoreEntitySet="EmailContent">
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="From" ColumnName="From" />
+                <ScalarProperty Name="IsBodyHtml" ColumnName="IsBodyHtml" />
+                <ScalarProperty Name="Project" ColumnName="Project" />
+                <ScalarProperty Name="SendDate" ColumnName="SendDate" />
+                <ScalarProperty Name="SendStatus" ColumnName="SendStatus" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="To" ColumnName="To" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

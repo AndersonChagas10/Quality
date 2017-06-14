@@ -1,6 +1,9 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace PlanoDeAcaoMVC.Controllers.Api
@@ -24,6 +27,21 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
 
             return items;
+        }
+
+        /// <summary>
+        /// Realiza Chamada para API de outro SERVIDOR
+        /// </summary>
+        /// <param name="UnitId"></param>
+        /// <returns></returns>
+        protected async Task<string> GetExternalResponse(string url)
+        {
+            using (var client = new HttpClient())
+            {
+                client.Timeout = TimeSpan.FromMinutes(2);
+                var response = await client.GetAsync(url).Result.Content.ReadAsStringAsync();
+                return response;
+            }
         }
     }
 }
