@@ -1,7 +1,8 @@
 ﻿
 @{
     ViewBag.Title = "Verificacao da Tipificacao";
-    var urlGet = Url.Action("Get", "api/VerificacaoTipificacao");
+    var urlGet = Url.Action("Get", "api/VerificacaoTipificacao2");
+    var urlEdit = Url.Action("Edit", "api/VerificacaoTipificacao2");
 }
 
 <div class="page-content" style="min-height: 600px;">
@@ -15,7 +16,7 @@
         </div>
 
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-        @*@Html.Partial("~/Views/RelatoriosSgq/_ResultLevel3Edit.cshtml")*@
+        @Html.Partial("~/Views/RelatoriosSgq/_VerificacaoTipificacaoEdit.cshtml")
 
         <div id="load"></div>
         <div id="divTable">
@@ -32,15 +33,21 @@
         $(".page-sidebar-wrapper").removeClass("hide");
         var $btn = $('#btnSend');
         var urlGet = '@Html.Raw(@urlGet)';
+        var urlEdit = '@Html.Raw(@urlEdit)';
 
         $(document).ready(function () {
             closeLeftSidebar();
             formControl.showFullCallendar();
+            formControl.showUnit();
 
             $("#btnSend").click(function (e) {
                 //$('#unitId').change();
                 Send(true);
             });
+
+            //Remove o "Todos" da Unidade
+            $("#unitId option[value='']").remove();
+            $("#unitId").change();
         });
 
         function Send(toggle) {
@@ -53,12 +60,15 @@
             //}
 
             $('#divTable').hide();
+            $('#divMensagemErro').hide();
+            $('#divMensagemAlerta').hide();
+            $('#divMensagemSucesso').hide();
             EasyAjax(urlGet, enviar, GerarTabela, "load", toggle);//AJAX
         };
 
         function GerarTabela(retornoArray) {
 
-            if(retornoArray.length == 0){
+            if (retornoArray.datas.length == 0) {
                 GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(Resources.Resource.no_appointments_in_this_period)))
             }
 
@@ -85,7 +95,7 @@
                 var regraEdit = true;
 
                 retornoArray.columns.shift();
-                retornoArray.columns.unshift({ title: "@Resources.Resource.edit", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>', "visible": regraEdit })                
+                //retornoArray.columns.unshift({ title: "@Resources.Resource.edit", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>', "visible": regraEdit })
                 $('#divTable').show();
                 var table = $('#results').empty().DataTable({
                     data: retornoArray.datas,
@@ -114,15 +124,13 @@
                         $('#results tbody').on('click', 'button', function (data, a, b) {
 
                             var data = table.row($(this).parents('tr')).data();
-
-                            console.log(data.Id);
-                            //$.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
-                            //    $('#estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
-                            //    $('#ResultLevel3_Id').val(r.Id);
-                            //    $('#changeConform').empty();
-                            //    $('#changeConform').append($(r.showGeneric));
-                            //    InitiMasksDefaults();
-                            //});
+                            $.post(urlEdit, data.Id, function (r) {
+                                //$('#estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
+                                $('#ResultLevel3_Id').val(r.Id);
+                                $('#changeConform').empty();
+                                $('#changeConform').append(r);
+                                InitiMasksDefaults();
+                            });
 
                         });
                     }

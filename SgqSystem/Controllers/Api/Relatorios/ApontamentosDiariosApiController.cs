@@ -131,7 +131,6 @@ namespace SgqSystem.Controllers.Api
 
         public class Result_Level3DTO
         {
-
             public static Result_Level3 GetById(int id)
             {
                 Result_Level3 resultLevel3;
@@ -144,6 +143,7 @@ namespace SgqSystem.Controllers.Api
                     resultLevel3.ParLevel3.ParLevel3Value = databaseSgq.ParLevel3Value.AsNoTracking().Where(r => r.ParLevel3_Id == resultLevel3.ParLevel3_Id && r.IsActive == true).ToList();
                     resultLevel3.CollectionLevel2 = databaseSgq.CollectionLevel2.AsNoTracking().FirstOrDefault(r => r.Id == resultLevel3.CollectionLevel2_Id);
                 }
+
                 return resultLevel3;
             }
 
