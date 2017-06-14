@@ -36,8 +36,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             "\n FROM VerificacaoTipificacaoV2 vp " +
             "\n INNER JOIN ParCompany on ParCompany.Id = vp.[ParCompany_Id] " +
             "\n INNER JOIN UserSgq on UserSgq.Id = vp.UserSgq_Id " +
-            "\n INNER JOIN CaracteristicaTipificacao cp ON cp.nCdCaracteristica = vp.GRT_nCdCaracteristicaTipificacao " +
-            "\n INNER JOIN CaracteristicaTipificacao cpjbs ON cpjbs.nCdCaracteristica = vp.JBS_nCdCaracteristicaTipificacao" +
+            "\n LEFT JOIN CaracteristicaTipificacao cp ON cp.nCdCaracteristica = vp.GRT_nCdCaracteristicaTipificacao " +
+            "\n LEFT JOIN CaracteristicaTipificacao cpjbs ON cpjbs.nCdCaracteristica = vp.JBS_nCdCaracteristicaTipificacao" +
             "\n WHERE CAST(CollectionDate as DATE) BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "' " +
             "\n AND vp.[ParCompany_Id] = " + form.unitId + "";
 
