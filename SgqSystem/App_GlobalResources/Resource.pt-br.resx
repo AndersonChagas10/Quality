@@ -1060,7 +1060,7 @@
     <value>permitidas/permitidos</value>
   </data>
   <data name="change_unit_must_be_online" xml:space="preserve">
-    <value>Ops! Você não está online', 'Para alterar a unidade você precisa estar online'</value>
+    <value>Para alterar a unidade você precisa estar online</value>
   </data>
   <data name="changing_unit_preferences" xml:space="preserve">
     <value>Alterando unidade. Estamos alterando as preferências de unidade, aguarde um momento...</value>
@@ -1351,7 +1351,7 @@
     <value>Utilização do SGQ</value>
   </data>
   <data name="tipification_verification" xml:space="preserve">
-    <value>Verificação do tipificação</value>
+    <value>Verificação da Tipificação</value>
   </data>
   <data name="_language" xml:space="preserve">
     <value>pt-br</value>
