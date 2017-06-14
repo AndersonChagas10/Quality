@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Net.Mail;
 using System.ComponentModel;
+using System.Net;
 using Dominio;
 using System.Linq;
 using System.Data;
@@ -8,9 +10,6 @@ using System.Collections.Generic;
 using SgqSystem.Services;
 using System.Data.Entity.Validation;
 using SgqSystem.Controllers.Api;
-using Helper;
-using AutoMapper;
-using DTO.DTO;
 
 namespace SgqSystem.Mail
 {
@@ -20,8 +19,6 @@ namespace SgqSystem.Mail
         public static List<EmailContent> ListaDeMail;
         private static int tamanhoDoPool = 4;
         private static bool running { get; set; }
-        
-        #region SGQ Email
 
         public static List<EmailContent> CreateMailSgqAppDeviation()
         {
@@ -69,6 +66,24 @@ namespace SgqSystem.Mail
 
         }
 
+        private static string RemoveEspacos(string deviationMessage)
+        {
+            try
+            {
+
+                var result = string.Empty;
+                foreach (var i in deviationMessage.Split('>'))
+                    result += i.TrimStart().TrimEnd() + "> ";
+
+                return result.Substring(0, result.IndexOf("<button"));
+            }
+            catch (Exception e)
+            {
+                new CreateLog(e);
+                return deviationMessage;
+            }
+        }
+
         public static void SendMailFromDeviationSgqApp()
         {
             try
@@ -76,7 +91,7 @@ namespace SgqSystem.Mail
                 ListaDeMail = CreateMailSgqAppDeviation();
                 if (ListaDeMail != null && ListaDeMail.Count() > 0)
                     foreach (var i in ListaDeMail.ToList())
-                        MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), GlobalConfig.emailFrom, GlobalConfig.emailPass, GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true);
+                        SendMail(i, true);
             }
             catch (Exception ex)
             {
@@ -86,7 +101,97 @@ namespace SgqSystem.Mail
 
         }
 
-        public static void SendCompletedCallbackSgq(object sender, AsyncCompletedEventArgs e)
+        public static void SendMailFromDeviationSgqAppTeste(bool callback, string mailTo)
+        {
+
+            var teste = new EmailContent()
+            {
+                AddDate = DateTime.Now,
+                Body = "Teste Global Config",
+                IsBodyHtml = true,
+                Subject = "teste v2",
+                To = mailTo,
+                Project = "SGQApp"
+            };
+
+            try
+            {
+                using (var db = new SgqDbDevEntities())
+                {
+                    using (var controller = new CorrectActApiController())
+                    {
+                        var id = db.CorrectiveAction.OrderByDescending(r=>r.Id).FirstOrDefault().Id;
+                        var model = controller.GetCorrectiveActionById(id);
+                        teste.Body = model.SendMeByMail;
+                    }
+
+                    db.EmailContent.Add(teste);
+                    db.SaveChanges();
+                    SendMail(teste, callback);
+                }
+            }
+            catch (Exception ex)
+            {
+                new CreateLog(ex, teste);
+                throw ex;
+            }
+
+          
+
+        }
+
+        public static void SendMail(EmailContent mailEntry, bool runCallBack)
+        {
+            // Command line argument must the the SMTP host.
+            if (GlobalConfig.mockEmail)
+            {
+                GlobalConfig.emailFrom = "celsogea@hotmail.com";
+                GlobalConfig.emailPass = "Thebost1";
+                GlobalConfig.emailSmtp = "smtp.live.com";
+                GlobalConfig.emailPort = 587;
+                GlobalConfig.emailSSL = true;
+            }
+
+            SmtpClient client = new SmtpClient(GlobalConfig.emailSmtp, GlobalConfig.emailPort);
+            client.EnableSsl = GlobalConfig.emailSSL; //true Hotmail
+            client.Credentials = new NetworkCredential(GlobalConfig.emailFrom, GlobalConfig.emailPass);
+
+            //Address
+            // Specify the e-mail sender.
+            // Create a mailing address that includes a UTF8 character
+            // in the display name.
+            MailAddress from = new MailAddress(GlobalConfig.emailFrom, "SGQ", System.Text.Encoding.UTF8);
+            // Set destinations for the e-mail message.
+            MailAddress to = new MailAddress(mailEntry.To);
+
+            //MailMessage - Subject + Body
+            // Specify the message content.
+            MailMessage message = new MailMessage(from, to);
+            message.Subject = mailEntry.Subject;
+            message.Body = mailEntry.Body;
+            message.Body += Environment.NewLine;
+            message.IsBodyHtml = mailEntry.IsBodyHtml.GetValueOrDefault();
+            message.SubjectEncoding = System.Text.Encoding.UTF8;
+            message.BodyEncoding = System.Text.Encoding.UTF8;
+
+            if (runCallBack)
+            {
+                //Callback
+                // Set the method that is called back when the send operation ends.
+                client.SendCompleted += new
+                SendCompletedEventHandler(SendCompletedCallback);
+            }
+
+            // The userState can be any object that allows your callback 
+            // method to identify this send operation.
+            // For this example, the userToken is a string constant.
+            mailEntry.SendStatus = "Sending";
+            string userState = mailEntry.Id.ToString();
+            client.SendAsync(message, userState);
+
+        }
+
+        public static void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
         {
             try
             {
@@ -158,65 +263,6 @@ namespace SgqSystem.Mail
             catch (Exception ex)
             {
                 new CreateLog(new Exception("Erro ao enviar e mail", ex));
-            }
-        }
-
-        public static void SendMailFromDeviationSgqAppTeste(bool callback, string mailTo)
-        {
-
-            var teste = new EmailContent()
-            {
-                AddDate = DateTime.Now,
-                Body = "Teste Global Config",
-                IsBodyHtml = true,
-                Subject = "teste v2",
-                To = mailTo,
-                Project = "SGQApp"
-            };
-
-            try
-            {
-                using (var db = new SgqDbDevEntities())
-                {
-                    using (var controller = new CorrectActApiController())
-                    {
-                        var id = db.CorrectiveAction.OrderByDescending(r => r.Id).FirstOrDefault().Id;
-                        var model = controller.GetCorrectiveActionById(id);
-                        teste.Body = model.SendMeByMail;
-                    }
-
-                    db.EmailContent.Add(teste);
-                    db.SaveChanges();
-                    MailSender.SendMail(Mapper.Map<EmailContentDTO>(teste), GlobalConfig.emailFrom, GlobalConfig.emailPass, GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true);
-                }
-            }
-            catch (Exception ex)
-            {
-                new CreateLog(ex, teste);
-                throw ex;
-            }
-
-
-
-        }
-
-        #endregion
-
-        private static string RemoveEspacos(string deviationMessage)
-        {
-            try
-            {
-
-                var result = string.Empty;
-                foreach (var i in deviationMessage.Split('>'))
-                    result += i.TrimStart().TrimEnd() + "> ";
-
-                return result.Substring(0, result.IndexOf("<button"));
-            }
-            catch (Exception e)
-            {
-                new CreateLog(e);
-                return deviationMessage;
             }
         }
 

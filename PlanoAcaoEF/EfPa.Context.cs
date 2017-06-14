@@ -30,5 +30,6 @@ namespace PlanoAcaoEF
         public virtual DbSet<Pa_AcompanhamentoXQuem> Pa_AcompanhamentoXQuem { get; set; }
         public virtual DbSet<Pa_FTA> Pa_FTA { get; set; }
         public virtual DbSet<Pa_Planejamento> Pa_Planejamento { get; set; }
+        public virtual DbSet<EmailContent> EmailContent { get; set; }
     }
 }

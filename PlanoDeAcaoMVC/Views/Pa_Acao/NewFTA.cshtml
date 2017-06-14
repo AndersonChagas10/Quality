@@ -53,192 +53,200 @@
 
 @using (Html.BeginForm())
 {
+    <div ng-app="App">
+        <div class="table-responsive" ng-controller="FTA">
 
-    <div class="table-responsive" ng-controller="FTA">
+            <table class="table table-condensed" id="tabela" border="1" cellspacing="0">
 
-        <table class="table table-condensed" id="tabela" border="1" cellspacing="0">
-
-            <tr rowspan="2">
-                <td colspan="6">
-                    <span class="tdLabel; centerThis" style="font-size: 20px;">RELATÓRIO DE ANÁLISE DE DESVIO</span>
-                </td>
-                <td colspan="4">
-                    <span class="tdLabels; centerThis">
-                        Data Inicial do período selecionado - @Model._DataInicioFTA
-                    </span>
-                    <hr />
-                    <span class="tdLabels; centerThis">Data Final do período selecionado - @Model._DataFimFTA</span>
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="4"><span class="tdLabels">INDICADORES COM DESVIOS</span></td>
-                <td colspan="2"><span class="tdLabels">Supervisor</span></td>
-                <td colspan="2"><span class="tdLabels">Unidade</span></td>
-                <td colspan="2"><span class="tdLabels">Departamento</span></td>
-            </tr>
-
-            <tr>
-                <td colspan="4">
-                    @Model._Level1
-                    @Html.HiddenFor(r => r.Level1Id)
-                    @Html.HiddenFor(r => r.Level2Id)
-                    @Html.HiddenFor(r => r.Level3Id)
-                </td>
-                <td colspan="2">
-                    @Model._Supervisor
-                    @Html.HiddenFor(r => r.Supervisor_Id)
-                </td>
-                <td colspan="2">
-                    @Model._Unidade
-                    @Html.HiddenFor(r => r.Unidade_Id)
-                </td>
-                <td colspan="2">
-                    @Model._Departamento
-                    @Html.HiddenFor(r => r.Departamento_Id)
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="5"><span class="tdLabels">META DO INDICADOR</span></td>
-                <td colspan="5"><span class="tdLabels">PERCENTUAL DE NÃO CONFORMIDADE DAS TAREFAS</span></td>
-            </tr>
-
-            <tr>
-                <td colspan="5">
-                    <k>@Model.MetaFTA</k>
-                    @Html.HiddenFor(r => r.MetaFTA)
-                </td>
-                <td colspan="5">
-                    <k>@Model.PercentualNCFTA</k>
-                    @Html.HiddenFor(r => r.PercentualNCFTA)
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="10"><span class="tdLabels">REINCIDÊNCIA DE DESVIOS NO PERÍODO</span></td>
-            </tr>
-
-            <tr>
-                <td colspan="10">
-                    <k>@Model.ReincidenciaDesvioFTA</k>
-                    @Html.HiddenFor(r => r.ReincidenciaDesvioFTA)
-                </td>
-            </tr>
-
-
-
-            <tbody ng-repeat="item in items" my-repeat-directive id="FTA{{item}}" >
-
-                <tr>
-                    <td colspan="10" style="background-color: rgba(169, 169, 169, 0.35); border-bottom: 2px solid black;" >
-                        <i ng-show="items.length > 1" ng-click="RemoverFTA(item)" class="fa fa-trash-o" aria-hidden="true">Remover </i> 
-                        &nbsp; 
-                        <i ng-click="myFunc()" class="fa fa-calendar-plus-o" aria-hidden="true">Adicionar </i>
+                <tr rowspan="2">
+                    <td colspan="6">
+                        <span class="tdLabel; centerThis" style="font-size: 20px;">RELATÓRIO DE ANÁLISE DE DESVIO</span>
+                    </td>
+                    <td colspan="4">
+                        <span class="tdLabels; centerThis">
+                            Data Inicial do período selecionado - @Model._DataInicioFTA
+                        </span>
+                        <hr />
+                        <span class="tdLabels; centerThis">Data Final do período selecionado - @Model._DataFimFTA</span>
                     </td>
                 </tr>
 
                 <tr>
-                    <td colspan="4"><span class="tdLabels">CAUSA GENÉRICA</span></td>
-                    <td colspan="2"><span class="tdLabels">GRUPO CAUSA</span></td>
-                    <td colspan="4"><span class="tdLabels">CONTRAMEDIDA GENÉRICA</span> </td>
+                    <td colspan="4"><span class="tdLabels">INDICADORES COM DESVIOS</span></td>
+                    <td colspan="2"><span class="tdLabels">Supervisor</span></td>
+                    <td colspan="2"><span class="tdLabels">Unidade</span></td>
+                    <td colspan="2"><span class="tdLabels">Departamento</span></td>
                 </tr>
 
                 <tr>
                     <td colspan="4">
-                        @Html.DropDownListFor(r => r.CausaGenerica_Id, new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione", new { @class = "form-control input-sm" })
-                        @*<select data-ng-model="FTABody.CausaGenerica_Id"
-                                    data-ng-options="s.Id as s.Name for s in CausaGenericas | orderBy:'Name'"
-                                    data-ng-change="ChangeCausaGenericas()" class="form-control" style="width:210px">
-                                <option value="">Selecione...</option>
-                            </select>*@
+                        @Model._Level1
+                        @Html.HiddenFor(r => r.Level1Id)
+                        @Html.HiddenFor(r => r.Level2Id)
+                        @Html.HiddenFor(r => r.Level3Id)
                     </td>
                     <td colspan="2">
-                        @Html.DropDownListFor(r => r.GrupoCausa_Id, new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione", new { @class = "form-control input-sm" })
+                        @Model._Supervisor
+                        @Html.HiddenFor(r => r.Supervisor_Id)
                     </td>
-                    <td colspan="4">
-                        @Html.DropDownListFor(r => r.ContramedidaGenerica_Id, new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), "Selecione", new { @class = "form-control input-sm" })
+                    <td colspan="2">
+                        @Model._Unidade
+                        @Html.HiddenFor(r => r.Unidade_Id)
                     </td>
-                </tr>
-
-                <tr>
-                    <td colspan="4">
-                        <span class="tdLabels">CAUSA ESPECÍFICA</span>
-                    </td>
-                    <td colspan="2" style="border-bottom:0;"></td>
-                    <td colspan="4">
-                        <span class="tdLabels">CONTRAMEDIDA ESPECÍFICA</span>
-                    </td>
-                </tr>
-
-
-                <tr>
-                    <td colspan="4">
-                        @Html.EditorFor(r => r.CausaEspecifica)
-                    </td>
-                    <td colspan="2" style="border-top:0;"></td>
-                    <td colspan="4">
-                        @Html.EditorFor(r => r.ContramedidaEspecifica)
+                    <td colspan="2">
+                        @Model._Departamento
+                        @Html.HiddenFor(r => r.Departamento_Id)
                     </td>
                 </tr>
 
                 <tr>
-                    @*<td colspan="3">Contramedida</td>*@
-                    <td colspan="4"><span class="tdLabels">Quem</span></td>
-                    <td colspan="2"><span class="tdLabels">Entrega</span></td>
-                    <td colspan="4"><span class="tdLabels">Como</span></td>
+                    <td colspan="5"><span class="tdLabels">META DO INDICADOR</span></td>
+                    <td colspan="5"><span class="tdLabels">PERCENTUAL DE NÃO CONFORMIDADE DAS TAREFAS</span></td>
                 </tr>
 
                 <tr>
-                    @*<td colspan="3">
+                    <td colspan="5">
+                        <k>@Model.MetaFTA</k>
+                        @Html.HiddenFor(r => r.MetaFTA)
+                    </td>
+                    <td colspan="5">
+                        <k>@Model.PercentualNCFTA</k>
+                        @Html.HiddenFor(r => r.PercentualNCFTA)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="10"><span class="tdLabels">REINCIDÊNCIA DE DESVIOS NO PERÍODO</span></td>
+                </tr>
+
+                <tr>
+                    <td colspan="10">
+                        <k>@Model.ReincidenciaDesvioFTA</k>
+                        @Html.HiddenFor(r => r.ReincidenciaDesvioFTA)
+                    </td>
+                </tr>
+
+
+
+                <tbody ng-repeat="item in items" my-repeat-directive id="FTA{{item}}">
+
+                    <tr>
+                        <td colspan="10" style="background-color: rgba(169, 169, 169, 0.35); border-bottom: 2px solid black;">
+
+                            <button ng-show="items.length > 1" ng-click="RemoverFTA(item)" type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left;">
+                                <span title="Remover" style="cursor:pointer" class="glyphicon glyphicon-trash"></span>
+                                &nbsp Remover
+                            </button>
+                            &nbsp;
+                            <button ng-click="myFunc()" type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left;">
+                                <span title="Adicionar" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>
+                                &nbsp Adicionar
+                            </button>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="4"><span class="tdLabels">CAUSA GENÉRICA</span></td>
+                        <td colspan="2"><span class="tdLabels">GRUPO CAUSA</span></td>
+                        <td colspan="4"><span class="tdLabels">CONTRAMEDIDA GENÉRICA</span> </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="4">
+                            @Html.DropDownListFor(r => r.CausaGenerica_Id, new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione", new { @class = "form-control input-sm" })
+                            @*<select data-ng-model="FTABody.CausaGenerica_Id"
+                                        data-ng-options="s.Id as s.Name for s in CausaGenericas | orderBy:'Name'"
+                                        data-ng-change="ChangeCausaGenericas()" class="form-control" style="width:210px">
+                                    <option value="">Selecione...</option>
+                                </select>*@
+                        </td>
+                        <td colspan="2">
+                            @Html.DropDownListFor(r => r.GrupoCausa_Id, new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione", new { @class = "form-control input-sm" })
+                        </td>
+                        <td colspan="4">
+                            @Html.DropDownListFor(r => r.ContramedidaGenerica_Id, new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), "Selecione", new { @class = "form-control input-sm" })
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="4">
+                            <span class="tdLabels">CAUSA ESPECÍFICA</span>
+                        </td>
+                        <td colspan="2" style="border-bottom:0;"></td>
+                        <td colspan="4">
+                            <span class="tdLabels">CONTRAMEDIDA ESPECÍFICA</span>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td colspan="4">
+                            @Html.EditorFor(r => r.CausaEspecifica)
+                        </td>
+                        <td colspan="2" style="border-top:0;"></td>
+                        <td colspan="4">
                             @Html.EditorFor(r => r.ContramedidaEspecifica)
-                        </td>*@
-                    <td colspan="4">
-                        @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                    </td>
-                    <td colspan="2">
-                        @Html.EditorFor(r => r._QuandoFim, new { htmlAttributes = new { @class = "form-control datepicker" } })
-                    </td>
-                    <td colspan="4">
-                        @Html.EditorFor(r => r.ComoPontosimportantes)
-                    </td>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        @*<td colspan="3">Contramedida</td>*@
+                        <td colspan="4"><span class="tdLabels">Quem</span></td>
+                        <td colspan="2"><span class="tdLabels">Entrega</span></td>
+                        <td colspan="4"><span class="tdLabels">Como</span></td>
+                    </tr>
+
+                    <tr>
+                        @*<td colspan="3">
+                                @Html.EditorFor(r => r.ContramedidaEspecifica)
+                            </td>*@
+                        <td colspan="4">
+                            @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                        </td>
+                        <td colspan="2">
+                            @Html.EditorFor(r => r._QuandoFim, new { htmlAttributes = new { @class = "form-control datepicker" } })
+                        </td>
+                        <td colspan="4">
+                            @Html.EditorFor(r => r.ComoPontosimportantes)
+                        </td>
+                    </tr>
+
+                </tbody>
+
+                <tr>
+                    <td colspan="10" style="border-bottom:0;"><span class="tdLabels">Vistos</span></td>
                 </tr>
 
-            </tbody>
+                <tr>
+                    <td colspan="5" style="border-top:0;border-right:0;"><span class="tdLabels; centerThis">Assinatura1</span></td>
+                    <td colspan="5" style="border-top:0;border-left:0;"><span class="tdLabels; centerThis">Assinatura2</span></td>
+                </tr>
 
-            <tr>
-                <td colspan="10" style="border-bottom:0;"><span class="tdLabels">Vistos</span></td>
-            </tr>
-
-            <tr>
-                <td colspan="5" style="border-top:0;border-right:0;"><span class="tdLabels; centerThis">Assinatura1</span></td>
-                <td colspan="5" style="border-top:0;border-left:0;"><span class="tdLabels; centerThis">Assinatura2</span></td>
-            </tr>
-
-            <tr>
-                <td colspan="5">
-                    @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                </td>
-                <td colspan="5">
-                    @Html.DropDownListFor(r => r.Assinatura2, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                </td>
-            </tr>
-            <tr style="display:none">
-                <td width="10%"></td>
-                <td width="10%"></td>
-                <td width="10%"></td>
-                <td width="10%"></td>
-                <td width="10%"></td>
-                <td width="10%"></td>
-                <td width="10%"></td>
-                <td width="10%"></td>
-                <td width="10%"></td>
-                <td width="10%"></td>
-            </tr>
-        </table>
-        <button type="button" class="btn btn-primary" id="Salvar" onclick="save();" style="">Salvar</button>
+                <tr>
+                    <td colspan="5">
+                        @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    </td>
+                    <td colspan="5">
+                        @Html.DropDownListFor(r => r.Assinatura2, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    </td>
+                </tr>
+                <tr style="display:none">
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                </tr>
+            </table>
+            <button type="button" class="btn btn-primary" id="Salvar" onclick="save();" style="">Salvar</button>
+        </div>
     </div>
-
     <script>
         var app = angular.module("App", []);
         app.controller('FTA', ['$scope', function($scope) {
@@ -252,7 +260,7 @@
 
             $scope.RemoverFTA = function(item) {
                 var index = $scope.items.indexOf(item);
-                    $scope.items.splice(index, 1);     
+                $scope.items.splice(index, 1);
             };
         }]);
 
@@ -307,7 +315,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary"  id="btnOk">Ok</button>
+                <button type="button" class="btn btn-primary" id="btnOk">Ok</button>
             </div>
         </div>
     </div>
@@ -356,7 +364,7 @@
 
         var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
         var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")';
-       
+
         $(document).ajaxStart(function () {
             $.LoadingOverlay("show");
         });
@@ -391,30 +399,46 @@
         }
 
         function save() {
-            
+
             var form = $('form').serializeObject();
             form["Panejamento_Id"] = @Html.Raw(Json.Encode(ViewBag.PlanejamentosComFTA)); //Para Salvar no Planejamento de FTA
             form["TipoIndicador"] = 2; //Para Indicador SGQ
             var index = 0;
-            form.CausaGenerica_Id.forEach(function(o,c) { 
-                var singleForm = form;
-                singleForm.CausaEspecifica = form.CausaEspecifica[index];
-                singleForm.CausaGenerica_Id = form.CausaGenerica_Id[index];
-                singleForm.ComoPontosimportantes = form.ComoPontosimportantes[index];
-                singleForm.ContramedidaEspecifica = form.ContramedidaEspecifica[index];
-                singleForm.ContramedidaGenerica_Id = form.ContramedidaGenerica_Id[index];
-                singleForm.GrupoCausa_Id = form.GrupoCausa_Id[index];
-                singleForm.Quem_Id = form.Quem_Id[index];
-                singleForm._QuandoFim = form._QuandoFim[index];
+            var arr = [];
 
-                $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', singleForm, function (r) {
+            if(typeof(form.CausaGenerica_Id) == "string"){
+                $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', form, function (r) {
                     openMessageModal('Registro salvo com sucesso!', '');
                 }).fail(function(xhr, err) {
                     var responseTitle= $(xhr.responseText).filter('title').get(0);
                     openMessageModal($(responseTitle).text(), formatErrorMessage(xhr, err));
                 });
+            }
+            else{
+                form.CausaGenerica_Id.forEach(function(o,c) {
+                    var singleForm = $('form').serializeObject();
+                    singleForm["Panejamento_Id"] = @Html.Raw(Json.Encode(ViewBag.PlanejamentosComFTA)); //Para Salvar no Planejamento de FTA
+                    singleForm["TipoIndicador"] = 2; //Para Indicador SGQ
+                    singleForm.CausaEspecifica = form.CausaEspecifica[c];
+                    singleForm.CausaGenerica_Id = form.CausaGenerica_Id[c];
+                    singleForm.ComoPontosimportantes = form.ComoPontosimportantes[c];
+                    singleForm.ContramedidaEspecifica = form.ContramedidaEspecifica[c];
+                    singleForm.ContramedidaGenerica_Id = form.ContramedidaGenerica_Id[c];
+                    singleForm.GrupoCausa_Id = form.GrupoCausa_Id[c];
+                    singleForm.Quem_Id = form.Quem_Id[c];
+                    singleForm._QuandoFim = form._QuandoFim[c];
+                    arr.push(singleForm);
 
-            })
+                    $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', singleForm, function (r) {
+                        openMessageModal('Registro salvo com sucesso!', '');
+                    }).fail(function(xhr, err) {
+                        var responseTitle= $(xhr.responseText).filter('title').get(0);
+                        openMessageModal($(responseTitle).text(), formatErrorMessage(xhr, err));
+                    });
+
+                });
+
+            }
         }
 
         $().ready(function () {
