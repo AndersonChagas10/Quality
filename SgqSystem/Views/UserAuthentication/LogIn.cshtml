@@ -1,5 +1,6 @@
-﻿
-@model SgqSystem.ViewModels.UserViewModel
+﻿@model SgqSystem.ViewModels.UserViewModel
+@using SgqSystem.Helpers
+@using DTO
 @{
     ViewBag.Title = Resources.Resource.log_in;
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -26,7 +27,10 @@
             @Html.ValidationSummary(true, Resources.Resource.username_or_password_are_incorrect)
 
             <button class="btn btn-md btn-primary marginTop10" type="submit" data-loading-text="Authenticating..." id="btnLogin">@Resources.Resource.sign_in</button>
-            <button type="button" class="btn btn-sm btn-success marginTop10" style="float:right;" id="RecPassword" onclick="ModalRecuperaSenha('Recuperar Senha');" data-toggle="modal">@Resources.Resource.forgotPass ?</button>
+            @if (!GlobalConfig.Eua)
+            {
+                <button type="button" class="btn btn-sm btn-success marginTop10" style="float:right;" id="RecPassword" onclick="ModalRecuperaSenha('Recuperar Senha');" data-toggle="modal">@Resources.Resource.forgotPass ?</button>
+            }
         </div>
         <div class="foot"></div>
     </div>
@@ -70,7 +74,7 @@
 
             $.get(RecPassword, function (r) {
                 $('#modalRecPassword').find('.modal-body').empty().append(r);
-                $('#btnSendEmail').hide();
+                $('#btnSendEmail');
             });
 
             $('#Fechar').show();
@@ -86,6 +90,7 @@
                             $('#btnGetDados').hide();
                             $('#btnSendEmail').show();
                             $('#userEmail').val(objetoReturn.Email);
+                            recSenha.enviarEmail();
                         } else {
                             $('#modalRecPassword').modal().hide();
                             openMessageModal("Usuário sem Email Cadastrado", null);
@@ -118,6 +123,7 @@
                         if (objetoReturn) {
                             openMessageModal("Senha enviada para o email!");
                             $('#modalRecPassword').modal().hide();
+                            $('.modal-backdrop').hide();
                             userId = 0;
                         } else
                             openMessageModal("Erro na Requisição de Senha!");
