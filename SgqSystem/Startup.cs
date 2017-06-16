@@ -24,22 +24,23 @@ namespace SgqSystem
             app.UseHangfireServer(joboptions);
             app.UseHangfireDashboard("/hangfire", dashboardoptions);
 
-
-           // BackgroundJob.Enqueue(
-           //() => SimpleAsynchronous.SendMailFromDeviationSgqApp());
+            // BackgroundJob.Enqueue(
+            //() => SimpleAsynchronous.SendMailFromDeviationSgqApp());
 
             // BackgroundJob.Enqueue(
             //() => SimpleAsynchronous.ResendProcessJson());
 
             //"*/1 * * * *" = 1 minutos.
-            //RecurringJob.AddOrUpdate(
+            RecurringJob.RemoveIfExists("ReProcessJson");
+            //RecurringJob.AddOrUpdate("ReProcessJson"
             //    () => SimpleAsynchronous.ResendProcessJson(),
             //    Cron.Minutely);
 
             //"*/1 * * * *" = 1 minutos.
-            //RecurringJob.AddOrUpdate(
-            //    () => SimpleAsynchronous.SendMailFromDeviationSgqApp(),
-            //    Cron.Minutely);
+            RecurringJob.RemoveIfExists("MailServer");
+            RecurringJob.AddOrUpdate("MailServer",
+                () => SimpleAsynchronous.SendMailFromDeviationSgqApp(),
+                "*/2 * * * *");
 
 
             //BackgroundJob.Enqueue(

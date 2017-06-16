@@ -39,14 +39,15 @@ namespace SgqSystem
 
             #if DEBUG
             TelemetryConfiguration.Active.DisableTelemetry = true;
-#endif
+            #endif
 
             var options = new SqlServerStorageOptions
             {
-                PrepareSchemaIfNecessary = false
+                PrepareSchemaIfNecessary = false,
             };
-
+         
             Hangfire.GlobalConfiguration.Configuration.UseSqlServerStorage("DbContextSgqEUA", options);
+
             _backgroundJobServer = new BackgroundJobServer();
 
 
