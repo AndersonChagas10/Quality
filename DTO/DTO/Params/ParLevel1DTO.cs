@@ -1,4 +1,5 @@
 ﻿using DTO.BaseEntity;
+using DTO.Helpers;
 using Resources;
 using System;
 using System.Collections.Generic;
@@ -226,6 +227,7 @@ namespace DTO.DTO.Params
         public Nullable<int> hashKey { get; set; }
 
         public Nullable<int> ParScoreType_Id { get; set; }
+        public string DataInit { get; set; }
 
 
 

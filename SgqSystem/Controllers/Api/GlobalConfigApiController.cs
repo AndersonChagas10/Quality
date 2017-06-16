@@ -29,12 +29,19 @@ namespace SgqSystem.Controllers.Api
 
         [HttpPost]
         [Route("TestaEmail")]
-        public void TestaEmail(JObject executeCallback)
+        public void TestaEmail(JObject form)
         {
-            dynamic form = executeCallback;
-            bool cb = form.executeCallback;
-            string email = form.email;
-            SimpleAsynchronous.SendMailFromDeviationSgqAppTeste(cb, email);
+            dynamic paramiters = form;
+            string emailTo = paramiters.email;
+            SimpleAsynchronous.SendMailFromDeviationSgqAppTesteBR(emailTo, false);
+        }
+
+        [HttpPost]
+        [Route("TestaEmailUSA")]
+        public void TestaEmailUSA(JObject form)
+        {
+            dynamic paramiters = form;
+            SimpleAsynchronous.SendMailFromDeviationSgqAppTesteUSA(paramiters.email);
         }
 
         [HttpPost]

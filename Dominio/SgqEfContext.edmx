@@ -294,22 +294,9 @@
           <Property Name="AlterDate" Type="datetime" />
           <Property Name="Name" Type="varchar(max)" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade_JBS.dbo.Deviation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Deviation">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="Status" />
-            <PropertyRef Name="SendDate" />
-            
-            
-            
-            
-            
-            
-            
-            
-            
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParCompany_Id" Type="int" Nullable="false" />
@@ -323,8 +310,8 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.Deviation' does not have a pr
           <Property Name="AddDate" Type="datetime" Nullable="false" />
           <Property Name="sendMail" Type="bit" />
           <Property Name="DeviationMessage" Type="nvarchar(max)" />
-          <Property Name="Status" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="SendDate" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Status" Type="nvarchar(max)" />
+          <Property Name="SendDate" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="EmailContent">
           <Key>
@@ -2692,6 +2679,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <EntitySet Name="CorrectiveAction" EntityType="Self.CorrectiveAction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Defect" EntityType="Self.Defect" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Deviation" EntityType="Self.Deviation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmailContent" EntityType="Self.EmailContent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Example" EntityType="Self.Example" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LeftControlRole" EntityType="Self.LeftControlRole" Schema="dbo" store:Type="Tables" />
@@ -2758,24 +2746,6 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <EntitySet Name="VolumeCepRecortes" EntityType="Self.VolumeCepRecortes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VolumePcc1b" EntityType="Self.VolumePcc1b" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VolumeVacuoGRD" EntityType="Self.VolumeVacuoGRD" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Deviation" EntityType="Self.Deviation" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Deviation].[Id] AS [Id], 
-    [Deviation].[ParCompany_Id] AS [ParCompany_Id], 
-    [Deviation].[ParLevel1_Id] AS [ParLevel1_Id], 
-    [Deviation].[ParLevel2_Id] AS [ParLevel2_Id], 
-    [Deviation].[Evaluation] AS [Evaluation], 
-    [Deviation].[Sample] AS [Sample], 
-    [Deviation].[AlertNumber] AS [AlertNumber], 
-    [Deviation].[Defects] AS [Defects], 
-    [Deviation].[DeviationDate] AS [DeviationDate], 
-    [Deviation].[AddDate] AS [AddDate], 
-    [Deviation].[sendMail] AS [sendMail], 
-    [Deviation].[DeviationMessage] AS [DeviationMessage], 
-    [Deviation].[Status] AS [Status], 
-    [Deviation].[SendDate] AS [SendDate]
-    FROM [dbo].[Deviation] AS [Deviation]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="ParLevel1VariableProduction" EntityType="Self.ParLevel1VariableProduction" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [ParLevel1VariableProduction].[Id] AS [Id], 
@@ -3746,7 +3716,6 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
             <End Role="ParLocal" EntitySet="ParLocal" />
             <End Role="ParCounterXLocal" EntitySet="ParCounterXLocal" />
           </AssociationSet>
-          <EntitySet Name="Deviation" EntityType="SgqDbModel.Deviation" />
           <EntitySet Name="ConsolidationLevel2" EntityType="SgqDbModel.ConsolidationLevel2" />
           <AssociationSet Name="FK_ConsolidationLevel2_ParLevel2" Association="SgqDbModel.FK_ConsolidationLevel2_ParLevel2">
             <End Role="ParLevel2" EntitySet="ParLevel2" />
@@ -3903,6 +3872,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
             <End Role="CollectionLevel03" EntitySet="CollectionLevel03" />
           </AssociationSet>
           <EntitySet Name="VerificacaoTipificacaoV2" EntityType="SgqDbModel.VerificacaoTipificacaoV2" />
+          <EntitySet Name="Deviation" EntityType="SgqDbModel.Deviation" />
           </EntityContainer>
         <EntityType Name="DelDados">
           <Key>
@@ -6081,27 +6051,6 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Deviation">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="Status" />
-            <PropertyRef Name="SendDate" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParCompany_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
-          <Property Name="ParLevel2_Id" Type="Int32" Nullable="false" />
-          <Property Name="Evaluation" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
-          <Property Name="Sample" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
-          <Property Name="AlertNumber" Type="Int32" Nullable="false" />
-          <Property Name="Defects" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
-          <Property Name="DeviationDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="sendMail" Type="Boolean" />
-          <Property Name="DeviationMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SendDate" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="ConsolidationLevel2">
           <Key>
             <PropertyRef Name="Id" />
@@ -6820,6 +6769,25 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <Property Name="cIdentificadorTipificacao" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="cNmCaracteristica" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Key" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Deviation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParCompany_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParLevel1_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParLevel2_Id" Type="Int32" Nullable="false" />
+          <Property Name="Evaluation" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Sample" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="AlertNumber" Type="Int32" Nullable="false" />
+          <Property Name="Defects" Type="Decimal" Nullable="false" Precision="10" Scale="5" />
+          <Property Name="DeviationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="sendMail" Type="Boolean" />
+          <Property Name="DeviationMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SendDate" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -8040,26 +8008,6 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Deviation">
-            <EntityTypeMapping TypeName="SgqDbModel.Deviation">
-              <MappingFragment StoreEntitySet="Deviation">
-                <ScalarProperty Name="SendDate" ColumnName="SendDate" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="DeviationMessage" ColumnName="DeviationMessage" />
-                <ScalarProperty Name="sendMail" ColumnName="sendMail" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="DeviationDate" ColumnName="DeviationDate" />
-                <ScalarProperty Name="Defects" ColumnName="Defects" />
-                <ScalarProperty Name="AlertNumber" ColumnName="AlertNumber" />
-                <ScalarProperty Name="Sample" ColumnName="Sample" />
-                <ScalarProperty Name="Evaluation" ColumnName="Evaluation" />
-                <ScalarProperty Name="ParLevel2_Id" ColumnName="ParLevel2_Id" />
-                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
-                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ConsolidationLevel2">
             <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel2">
               <MappingFragment StoreEntitySet="ConsolidationLevel2">
@@ -8296,6 +8244,26 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
                 <ScalarProperty Name="CollectionDate" ColumnName="CollectionDate" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Deviation">
+            <EntityTypeMapping TypeName="SgqDbModel.Deviation">
+              <MappingFragment StoreEntitySet="Deviation">
+                <ScalarProperty Name="SendDate" ColumnName="SendDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="DeviationMessage" ColumnName="DeviationMessage" />
+                <ScalarProperty Name="sendMail" ColumnName="sendMail" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="DeviationDate" ColumnName="DeviationDate" />
+                <ScalarProperty Name="Defects" ColumnName="Defects" />
+                <ScalarProperty Name="AlertNumber" ColumnName="AlertNumber" />
+                <ScalarProperty Name="Sample" ColumnName="Sample" />
+                <ScalarProperty Name="Evaluation" ColumnName="Evaluation" />
+                <ScalarProperty Name="ParLevel2_Id" ColumnName="ParLevel2_Id" />
+                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
+                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

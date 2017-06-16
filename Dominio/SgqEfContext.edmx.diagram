@@ -153,7 +153,6 @@
         <AssociationConnector Association="SgqDbModel.FK_ParCounterLocal_ParLevel2" />
         <AssociationConnector Association="SgqDbModel.FK_ParCounterLocal_ParLevel3" />
         <AssociationConnector Association="SgqDbModel.FK_ParCounterLocal_ParLocal" />
-        <EntityTypeShape EntityType="SgqDbModel.Deviation" Width="1.5" PointX="7.375" PointY="15.75" />
         <EntityTypeShape EntityType="SgqDbModel.ConsolidationLevel2" Width="2" PointX="22.5" PointY="51.875" />
         <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel2_ParLevel2" />
         <EntityTypeShape EntityType="SgqDbModel.CollectionLevel2" Width="1.875" PointX="25.25" PointY="40.25" />
@@ -199,6 +198,7 @@
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel02_UserSgq" />
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel03_CollectionLevel02" />
         <EntityTypeShape EntityType="SgqDbModel.VerificacaoTipificacaoV2" Width="1.5" PointX="15.375" PointY="10.75" />
+        <EntityTypeShape EntityType="SgqDbModel.Deviation" Width="1.5" PointX="7.375" PointY="15.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
