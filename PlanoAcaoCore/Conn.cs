@@ -13,7 +13,7 @@
         public static string user2 { get { return "sa"; } }
         public static string pass2 { get { return "1qazmko0"; } }
 
-        public static string selfRoot { get { return "http://localhost:59907/"; } }
+        public static string selfRoot { get { return "http://localhost/PlanoDeAcaoMVC"; } }
 
         ////grj
         //public static string catalog { get { return "grjqualidadedev"; } }
