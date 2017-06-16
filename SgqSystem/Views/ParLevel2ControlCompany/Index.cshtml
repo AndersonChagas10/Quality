@@ -5,6 +5,7 @@
     var urlSend = Url.Action("Save", "api/ParLevel2ControlCompany"); //URL relativa
     var urlChangeLevel2 = Url.Action("ChangeLevel2", "ParLevel2ControlCompany"); //URL relativa
     var urlChangeLevel2UserCompany = Url.Action("ChangeLevel2UserCompany", "ParLevel2ControlCompany"); //URL relativa
+    var urlChangeDate = Url.Action("ChangeDate", "ParLevel2ControlCompany");
 
 }
 
@@ -61,6 +62,13 @@
                                         <tbody>
 
                                             <tr class="rowTabelaFamilia">
+                                                <td style="width: 30%;" class="colTabelaFamilia">@Html.Label("Data de Início:")</td>
+                                                <td class="colTabelaFamilia" align="center">
+                                                    <input type="text" class="form-control" name="datefilter" id="datafamilia" style="background: #fff; cursor: pointer; border: 1px solid #ccc;" />
+                                                </td>
+                                            </tr>
+
+                                            <tr class="rowTabelaFamilia">
                                                 <td style="width: 30%;" class="colTabelaFamilia">@Html.Label("Empresa:")</td>
                                                 <td class="colTabelaFamilia" align="center">@Html.DropDownList("company", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control select2", style = "width: 100%" })</td>
                                             </tr>
@@ -104,12 +112,13 @@
 {
     <script>
         function selectLevel2() {
-            var id = $('#level1 :selected').val() > 0 ? $('#level1 :selected').val() : 0;
-            $.post(urlChangeLevel2, { "id": id }, function (r) {
+            var id = $('#level1 :selected').val() > 0 ? $('#level1 :selected').val() : 0;          
+            var data = $('#datafamilia').val();
+            $.post(urlChangeLevel2, { "id": id, "dataInit" : data }, function (r) {
                 $('#level2Number').val('');
-                $('#tblFamilia > tbody > tr')[2].remove();
-                $('#tblFamilia > tbody > tr')[2].remove();
-                $($('#tblFamilia > tbody > tr')[2]).prev().after(r)
+                $('#tblFamilia > tbody > tr')[3].remove();
+                $('#tblFamilia > tbody > tr')[3].remove();
+                $($('#tblFamilia > tbody > tr')[3]).prev().after(r)
             });
         }
         $(document).ready(function () {
@@ -126,11 +135,13 @@ else
 
             var id = $('#level1 :selected').val() > 0 ? $('#level1 :selected').val() : 0;
             var idComp = $('#company :selected').val() > 0 ? $('#company :selected').val() : 0;
-            $.post(urlChangeLevel2UserCompany, { "id": id, "companyId": idComp }, function (r) {
+            var data = $('#datafamilia').val();
+            $.post(urlChangeLevel2UserCompany, { "id": id, "companyId": idComp, "dataInit" : data }, function (r) {
                 $('#MonEmpresa').remove();
-                $(r).insertAfter($($('#tblFamilia > tbody > tr')[2]).closest('tr'));
-                var id2 = $('#level1 :selected').val() > 0 ? $('#level1 :selected').val() : 0;
-                $.post(urlChangeLevel2, { "id": id2 }, function (rr) {
+                $(r).insertAfter($($('#tblFamilia > tbody > tr')[2]).closest('tr'));''
+                var id2 = $('#level1 :selected').val() > 0 ? $('#level1 :selected').val() : 0;                
+                var data = $('#datafamilia').val();
+                $.post(urlChangeLevel2, { "id": id2, "dataInit" : data }, function (rr) {
                     $('#level2Number').val('');
                     $('#monCorpAtivo').remove();
                     $('#numeroFamilias').remove();
@@ -167,6 +178,7 @@ else
     var urlSend = '@Html.Raw(@urlSend)';
     var urlChangeLevel2 = '@Html.Raw(@urlChangeLevel2)';
     var urlChangeLevel2UserCompany = '@Html.Raw(@urlChangeLevel2UserCompany)';
+    var urlChangeDate = '@Html.Raw(@urlChangeDate)';
 
     $('button').button({ loadingText: '@Resources.Resource.loading...' });
 
@@ -177,6 +189,7 @@ else
         data["level2Number"] = $('#level2Number').val();
         data["level2PorCompany"] = $('#level2SelecionadoPorCompany').val();
         data["CompanyControl_Id"] = $('#company :selected').val();
+        data["DataInit"] = $('#datafamilia').val();
         if (data["Id"] == undefined)
             data["Id"] = $("#company :selected").val();
 
@@ -185,6 +198,11 @@ else
             $btn.button('reset');
             openMessageModal('Feito!', '');
         });
+    }
+
+    function selectData(){        
+        $('#level1').val("").trigger("change");
+        $('#level2').val("").trigger("change");
     }
 
     $(document).ready(function () {
@@ -199,6 +217,39 @@ else
         $('#level2').select2({ allowClear: true, placeholder: "" })
 
         $('body > div > div.page-header.navbar.navbar-fixed-top > div > div.page-logo > div').click();
+
+        var start = moment();
+        var end = moment();
+
+        //Start config datepickerrange simple
+        $('input[name="datefilter"]').daterangepicker({
+            singleDatePicker: true,
+            autoUpdateInput: false,
+            autoApply: true,
+            showDropdowns: true,
+            startDate: start,
+            endDate: end,
+            //opens: "left",
+            //"locale": localCultureRangePicker,
+            locale: {
+                cancelLabel: 'Clear'
+            }
+        }, function (start, end, label) {
+            selectData();
+        });
+
+        $('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format());
+        });
+
+        $('input[name="datefilter"]').on('cancel.daterangepicker', function (ev, picker) {
+            $(this).val('');
+            enviar['startDate'] = "";
+            enviar['endDate'] = "";
+        });
+
+        $('input[name="datefilter"]').val(start.format())
+        //End config datepickerrange simple
 
     })
 
