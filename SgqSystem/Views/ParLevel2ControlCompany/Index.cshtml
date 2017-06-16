@@ -200,7 +200,7 @@ else
         });
     }
 
-    function selectData(){        
+    function selectData(){
         $('#level1').val("").trigger("change");
         $('#level2').val("").trigger("change");
     }
@@ -238,6 +238,7 @@ else
             selectData();
         });
 
+
         $('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
             $(this).val(picker.startDate.format());
         });
@@ -248,7 +249,8 @@ else
             enviar['endDate'] = "";
         });
 
-        $('input[name="datefilter"]').val(start.format())
+        var hoje = '@ViewBag.dataInit.ToString("dd/MM/yyyy")'
+        $('input[name="datefilter"]').val(hoje);
         //End config datepickerrange simple
 
     })

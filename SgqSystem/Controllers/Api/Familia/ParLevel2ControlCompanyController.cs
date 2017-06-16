@@ -53,7 +53,7 @@ namespace SgqSystem.Controllers.Api
             else
             {
                 //desativa os registros já cadastrados da unidade
-                var listaCadastrada = _baseParLevel2ControlCompany.GetAll().Where(r => r.IsActive == true && r.ParCompany_Id == parLevel1.CompanyControl_Id && r.ParLevel1_Id == parLevel1.Id);
+                var listaCadastrada = _baseParLevel2ControlCompany.GetAll().Where(r => r.IsActive == true && r.ParCompany_Id == parLevel1.CompanyControl_Id && r.ParLevel1_Id == parLevel1.Id && r.InitDate == initDate);
 
                 if (listaCadastrada.Count() > 0)
                     foreach (var cadastro in listaCadastrada)
