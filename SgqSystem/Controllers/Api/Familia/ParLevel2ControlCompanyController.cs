@@ -1,6 +1,7 @@
 ﻿using Dominio;
 using Dominio.Interfaces.Services;
 using DTO.DTO.Params;
+using DTO.Helpers;
 using SgqSystem.Handlres;
 using System;
 using System.Collections.Generic;
@@ -30,17 +31,17 @@ namespace SgqSystem.Controllers.Api
         [Route("Save")]
         public List<ParLevel2ControlCompanyDTO> Save([FromBody]  ParLevel1DTO parLevel1)
         {
-
-            var initDate = DateTime.Now;
+            var initDate = Guard.ParseDateToSqlV2(parLevel1.DataInit);
+            
             if (parLevel1.CompanyControl_Id == null || parLevel1.CompanyControl_Id <= 0)
             {
                 //desativa os registros já cadastrados do corporativo
-                var listaCadastrada = _baseParLevel2ControlCompany.GetAll().Where(r => r.IsActive == true && r.ParCompany_Id == null && r.ParLevel1_Id == parLevel1.Id);
+                var listaCadastrada = _baseParLevel2ControlCompany.GetAll().Where(r => r.IsActive == true && r.ParCompany_Id == null && r.ParLevel1_Id == parLevel1.Id && r.InitDate == initDate);
 
                 if(listaCadastrada.Count() > 0)
                     foreach(var cadastro in listaCadastrada)
                     {
-                        _baseParLevel2ControlCompany.ExecuteSql("Update ParLevel2ControlCompany SET IsActive = 0, AlterDate = getdate() Where Id = " + cadastro.Id);
+                        _baseParLevel2ControlCompany.ExecuteSql("Update ParLevel2ControlCompany SET IsActive = 0, AlterDate = getdate() Where Id = " + cadastro.Id + " And Cast(InitDate As Date) = '"+ initDate.ToString("yyyy-MM-dd") + "'");
                     }
 
                 if (parLevel1.listLevel2Corporativos != null)
@@ -52,12 +53,12 @@ namespace SgqSystem.Controllers.Api
             else
             {
                 //desativa os registros já cadastrados da unidade
-                var listaCadastrada = _baseParLevel2ControlCompany.GetAll().Where(r => r.IsActive == true && r.ParCompany_Id == parLevel1.CompanyControl_Id && r.ParLevel1_Id == parLevel1.Id);
+                var listaCadastrada = _baseParLevel2ControlCompany.GetAll().Where(r => r.IsActive == true && r.ParCompany_Id == parLevel1.CompanyControl_Id && r.ParLevel1_Id == parLevel1.Id && r.InitDate == initDate);
 
                 if (listaCadastrada.Count() > 0)
                     foreach (var cadastro in listaCadastrada)
                     {
-                        _baseParLevel2ControlCompany.ExecuteSql("Update ParLevel2ControlCompany SET IsActive = 0, AlterDate = getdate() Where Id = " + cadastro.Id);
+                        _baseParLevel2ControlCompany.ExecuteSql("Update ParLevel2ControlCompany SET IsActive = 0, AlterDate = getdate() Where Id = " + cadastro.Id + " And Cast(InitDate As Date) = '" + initDate.ToString("yyyy-MM-dd") + "'");
                     }
 
                 if (parLevel1.level2PorCompany != null)
