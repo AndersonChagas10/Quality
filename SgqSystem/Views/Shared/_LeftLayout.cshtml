@@ -66,6 +66,15 @@
                     </li>
                     @*}*@
 
+                    @if (GlobalConfig.Brasil)
+                    {
+                        <li class="nav-item">
+                            <a href="@Url.Action("VerificacaoTipificacao", "RelatoriosSgq")" class="nav-link nav-toggle">
+                                <span class="title">@Resources.Resource.tipification_verification</span>
+                            </a>
+                        </li>
+                    }
+
 
                     @if (GlobalConfig.Eua)
                     {

@@ -134,6 +134,8 @@
                 return;
             }
 
+            enviar["auditorId"] = GetUsuarioId();
+
             EasyAjax(urlGraficoUnidades, enviar, GraficoUnidade, "RGUnidadesGrafico", toggle);//AJAX
 
         };
@@ -749,6 +751,12 @@
 
         }
         /*END Charts*/
+
+        function GetUsuarioId() {
+            return $.grep(getCookie('webControlCookie'), function (a, b) {
+                return a.indexOf('userId') != -1;
+            })[0].split('=')[1];
+        }
 
     </script>
 

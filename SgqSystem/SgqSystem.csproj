@@ -1392,6 +1392,7 @@
     <Content Include="Views\ParBinaryDataType\DeleteFalse.cshtml" />
     <Content Include="Views\Reports\CorrectiveActionReportDetails.cshtml" />
     <Content Include="Views\RelatoriosSgq\VerificacaoTipificacao.cshtml" />
+    <Content Include="Views\RelatoriosSgq\_VerificacaoTipificacaoEdit.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

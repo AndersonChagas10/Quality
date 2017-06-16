@@ -3,6 +3,7 @@ using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -19,7 +20,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         [Route("GraficoUnidades")]
         public List<NaoConformidadeResultsSet> GraficoUnidades([FromBody] FormularioParaRelatorioViewModel form)
         {
-            //_list = CriaMockGraficoUnidades();
 
         var query = "" +
 
@@ -147,6 +147,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         ON IND.Id = CL1.ParLevel1_Id " +
                 "\n         INNER JOIN ParCompany UNI  (nolock)" +
                 "\n         ON UNI.Id = CL1.UnitId " +
+                "\n         INNER JOIN ParCompanyXUserSgq CU(nolock) "+
+                "\n         ON CU.UserSgq_Id = " + form.auditorId + " and CU.ParCompany_Id = UNI.Id " + 
                 "\n         LEFT JOIN #AMOSTRATIPO4 A4 (nolock) " +
                 "\n         ON A4.UNIDADE = UNI.Id " +
                 "\n         AND A4.INDICADOR = IND.ID " +

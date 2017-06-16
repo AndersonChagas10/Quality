@@ -1,0 +1,83 @@
+﻿<style>
+    @@media screen {
+        #printSection {
+            display: none;
+        }
+
+        .footer-rodape {
+            margin-top: 15px;
+        }
+    }
+
+    @@media print {
+        body * {
+            visibility: hidden;
+        }
+
+        #printSection, #printSection * {
+            visibility: visible;
+        }
+
+        #printSection {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    }
+
+    @@media print {
+
+        .footer-rodape {
+            position: fixed;
+            bottom: 0px;
+        }
+    }
+
+    .printable {
+        display: none;
+    }
+
+    .printable {
+        display: none;
+    }
+
+    @@media print {
+        .non-printable {
+            display: none;
+        }
+
+        .printable {
+            display: block;
+        }
+    }
+</style>
+
+<div class="modal fade bd-example-modal-lg printable" id="myModal" role="dialog">
+    <div id="printThis">
+        @*This should BE printed!*@
+        <div class="modifyMe"></div>
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content" style="width:895px!important">
+                <div class="modal-header" style="font-size:14px;font-weight:bold">
+                    <div class="unitCode"><span id="estName"></span></div>
+                </div>
+
+                <div class="modal-body">
+                    <div id="correctiveActionModal" class="modal-padrao" style="margin-left:10px;margin-right:10px;margin-top:15px;">
+                        <span id="Level3Name" class="levelName" name="" style=""></span>
+                        <div id="params">
+                            @Html.Hidden("VerificacaoTipificacao_Id")
+                            <div id="changeConform"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default non-printable" data-dismiss="modal">@Resources.Resource.close</button>
+                    <button type="button" onclick="SalvarResultLevel3()" class="btn btn-default non-printable" data-dismiss="modal">@Resources.Resource.save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
