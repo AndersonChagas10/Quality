@@ -115,31 +115,31 @@ namespace SgqSystem.Controllers.Api
             return Json(dado, JsonRequestBehavior.AllowGet);
         }
 
-        //[HttpPost]
-        //public bool enviaEmail(int idUser)
-        ////{
-        //    UserSgqDTO user = _userSgqDomain.GetById(idUser);
-        //    string hash = Guard.Descriptografar3DES(user.Password);
-        //    EmailContent email = new EmailContent();
-        //    email.To = user.Email;
-        //    email.Subject = "Recuperação de Senha Sgq";
-        //    email.Body = "Seu usuário: " + user.Name + "\n " + "sua Senha: " + hash;
-        //    using (var db = new SgqDbDevEntities())
-        //    {
-        //        db.EmailContent.Add(email);
-        //        var ret = db.SaveChanges();
-        //        int r = ret;
-        //        if (ret == 1)
-        //            return true;
-        //        else
-        //            return false;
-        //    }
-        //var retorno = _emailContent.AddOrUpdate(email);
-        //var a = retorno;
-        //if (retorno != null)
-        //    return true;
-        //else
-        //    return false;
-        //}
+        [HttpPost]
+        public bool enviaEmail(int idUser)
+        {
+            UserSgqDTO user = _userSgqDomain.GetById(idUser);
+            string hash = Guard.DecryptStringAES(user.Password);
+            EmailContent email = new EmailContent();
+            email.To = user.Email;
+            email.Subject = "Recuperação de Senha Sgq";
+            email.Body = "Seu usuário: " + user.Name + "\n " + "sua Senha: " + hash;
+            using (var db = new SgqDbDevEntities())
+            {
+                db.EmailContent.Add(email);
+                var ret = db.SaveChanges();
+                int r = ret;
+                if (ret == 1)
+                    return true;
+                else
+                    return false;
+            }
+            var retorno = _emailContent.AddOrUpdate(email);
+    var a = retorno;
+        if (retorno != null)
+            return true;
+        else
+            return false;
+        }
     }
 }
