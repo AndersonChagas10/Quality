@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using RazorEngine;
 
 namespace PlanoDeAcaoMVC.Controllers.Api
 {
@@ -43,5 +45,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 return response;
             }
         }
+
+      
     }
 }
