@@ -192,8 +192,9 @@ namespace SgqSystem.Controllers.Api
                 }
 
 
-                bool isBEA = false;
-                string WeiEvaluateBEA = "@WeiEvaluation";
+                //bool isBEA = false;
+                //string WeiEvaluateBEA = "@WeiEvaluation";
+                decimal _WeiEvaluation2 = Decimal.ToInt32(_WeiEvaluation);
 
                 using (var databaseSgq = new SgqDbDevEntities())
                 {
@@ -204,17 +205,30 @@ namespace SgqSystem.Controllers.Api
 
                     var parLeve1BEA = databaseSgq.ParLevel1VariableProductionXLevel1.FirstOrDefault(r => r.ParLevel1_Id == collectionLevel2_obj.ParLevel1_Id);
 
-                    if (parLeve1BEA.ParLevel1VariableProduction_Id == 3)
-                    {
-                        isBEA = true;
-                        WeiEvaluateBEA = "Sample";
-                    }
+                    //Se for BEA
+                    if (parLeve1BEA != null)
+                        if (parLeve1BEA.ParLevel1VariableProduction_Id == 3)
+                        {
+                            var collectionLevel2_obj2 = databaseSgq.CollectionLevel2.Where(
+                            r => DbFunctions.TruncateTime(r.CollectionDate) == DbFunctions.TruncateTime(collectionLevel2_obj.CollectionDate) &&
+                            r.Shift == collectionLevel2_obj.Shift &&
+                            r.Period == collectionLevel2_obj.Period &&
+                            r.UnitId == collectionLevel2_obj.UnitId &&
+                            r.Sample < collectionLevel2_obj.Sample
+                            ).OrderByDescending(r => r.Sample).FirstOrDefault();
+
+
+                            if (collectionLevel2_obj2 != null)
+
+                                _WeiEvaluation2 = collectionLevel2_obj.Sample - collectionLevel2_obj2.Sample;
+
+                            else
+                                _WeiEvaluation2 = collectionLevel2_obj.Sample;
+
+                            //isBEA = true;
+                            //WeiEvaluateBEA = "Sample";
+                        }
                 }
-
-                
-
-
-
 
                 var query = "UPDATE [dbo].[Result_Level3] SET ";
                 query += "\n [IsConform] = " + _IsConform + ",";
@@ -223,13 +237,13 @@ namespace SgqSystem.Controllers.Api
                 query += "\n [Value] = " + _Value + ",";
                 query += "\n [IsNotEvaluate] = " + _IsNotEvaluate + ",";
                 query += "\n [ValueText] = '" + texto + "',";
-                query += "\n [WeiEvaluation] = " + Decimal.ToInt32(_WeiEvaluation) + ",";
+                query += "\n [WeiEvaluation] = " + Decimal.ToInt32(_WeiEvaluation2) + ",";//+ " " + Decimal.ToInt32(_WeiEvaluation) + ",";
                 query = query.Remove(query.Length - 1);//Remove a ultima virgula antes do where.
                 query += "\n WHERE Id = " + Id;
 
 
                 query += "                                                                                                                    " +
-                "\n DECLARE @ID INT = (SELECT TOP 1 CollectionLevel2_Id FROM Result_Level3 WHERE Id = " + Id + " )                           " +
+                "\n DECLARE @ID INT = (SELECT TOP 1 CollectionLevel2_Id FROM Result_Level3 WHERE Id = " + Id + " )                            " +
                 "\n DECLARE @Defects DECIMAL(10,3)                                                                                            " +
                 "\n DECLARE @DefectsResult DECIMAL(10, 3)                                                                                     " +
                 "\n DECLARE @EvatuationResult DECIMAL(10, 3)                                                                                  " +
@@ -256,7 +270,7 @@ namespace SgqSystem.Controllers.Api
                 "\n SET Defects = @Defects                                                                                                    " +
                 "\n , DefectsResult = @DefectsResult                                                                                          " +
                 "\n , EvaluatedResult = @EvatuationResult                                                                                     " +
-                "\n , WeiEvaluation = " + WeiEvaluateBEA + "                                                                                  " +
+                "\n , WeiEvaluation = @WeiEvaluation                                                                                          " +
                 "\n , WeiDefects = @WeiDefects                                                                                                " +
                 "\n , TotalLevel3Evaluation = @TotalLevel3Evaluation                                                                          " +
                 "\n , TotalLevel3WithDefects = @TotalLevel3WithDefects                                                                        " +
