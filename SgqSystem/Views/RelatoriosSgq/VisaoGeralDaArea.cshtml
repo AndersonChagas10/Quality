@@ -147,9 +147,9 @@
 
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
-        <div id="grafico1" style="max-height:200px;"></div>
+        <div id="grafico1" style="max-height:250px;"></div>
 
-        <div id="grafico2" style="max-height:200px;"></div>
+        <div id="grafico2" style="max-height:250px;"></div>
 
         <div id="tabela1div"></div>
 
@@ -559,7 +559,7 @@
                     zoomType: 'xy'
                 },
                 title: {
-                    text: ''
+                    text: 'Desempenho das regionais no Scorecard'
                 },
                 subtitle: {
                     text: ''
@@ -626,7 +626,7 @@
                             color: 'black',
                             align: 'right',
                             style: {
-                                fontSize: '13px',
+                                fontSize: '10px',
                                 fontFamily: 'Verdana, sans-serif'
                             }
                         },
@@ -677,7 +677,7 @@
                     zoomType: 'xy'
                 },
                 title: {
-                    text: ''
+                    text: 'Desempenho das unidades no Scorecard'
                 },
                 subtitle: {
                     text: ''
@@ -767,7 +767,8 @@
                         }
                     }]
             });
-
+            $('#menu-toggle').click();
+            $('#menu-toggle').click();
         }
 
         function Grafico3(paramCol, paramRow) {

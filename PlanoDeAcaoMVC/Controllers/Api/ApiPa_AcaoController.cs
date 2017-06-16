@@ -65,9 +65,10 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                     acomXQuem.Acompanhamento_Id = acompanhamento.Id;
                     acomXQuem.Quem_Id = i;
                     SalvarAcompanhamentoXQuem(db, acomXQuem);
-
-                    Task.Run(() => CreateMail(acao.Panejamento_Id.GetValueOrDefault(), acao.Id, acomXQuem.Quem_Id, Request.RequestUri.Authority));
-                    //CreateMail(acao.Panejamento_Id.GetValueOrDefault(), acao.Id, acomXQuem.Quem_Id, Request.RequestUri.Authority).GetAwaiter();
+                    
+                    //Task.Run(() => CreateMail(acao.Panejamento_Id.GetValueOrDefault(), acao.Id, acomXQuem.Quem_Id, Request.RequestUri.Authority));
+                    CreateMail(acao.Panejamento_Id.GetValueOrDefault(), acao.Id, "celsogea@hotmail.com", Request.RequestUri.Authority, "Atualização de acompanhamento do Plano de Ação.");
+                    //CreateMail(acao.Panejamento_Id.GetValueOrDefault(), acao.Id, "celso.bernar@grtsolucoes.com.br", Request.RequestUri.Authority);
 
                 }
             }
@@ -88,27 +89,23 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             SalvaFTA(fta);
             acao.Fta_Id = fta.Id;
             SalvarAcao(acao);
-            //Content.RequestContext
-            try
-            {
-                Task.Run(() => CreateMail(obj.Panejamento_Id, acao.Id, obj.Quem_Id, Request.RequestUri.Authority));
-               
-            }
-            catch (Exception)
-            {
-            }
+
+            Task.Run(() => CreateMail(obj.Panejamento_Id, acao.Id, obj.Quem_Id, Request.RequestUri.Authority, "Novo Relatório de Análise de Desvio criado."));
+            //CreateMail(obj.Panejamento_Id, acao.Id, "celsogea@hotmail.com", Request.RequestUri.Authority, "Novo Relatório de Análise de Desvio criado.");
 
             return obj;
         }
 
-        private async Task CreateMail(int idPlanejamento, int idAcao, int idQuem, string path)
+        #region Auxiliares
+
+        private void CreateMail(int idPlanejamento, int idAcao, int idQuem, string path, string title)
         {
 
-            using (var ct = new Pa_PlanejamentoController())
-            {
-                var teste = ct.Details(idPlanejamento);
-            }
-            var conteudoPlanejamento = GetExternalResponse("http:/" + path +"/Pa_Planejamento/Details?id=" + idPlanejamento);
+            //using (var ct = new Pa_PlanejamentoController())
+            //{
+            //    var teste = ct.Details(idPlanejamento);
+            //}
+            var conteudoPlanejamento = GetExternalResponse("http:/" + path + "/Pa_Planejamento/Details?id=" + idPlanejamento);
             var conteudoAcao = GetExternalResponse("http:/" + path + "/Pa_Acao/Details?id=" + idAcao);
 
             var todoConteudo = conteudoPlanejamento.Result + conteudoAcao.Result;
@@ -118,11 +115,12 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             {
                 var paUser = Pa_Quem.Get(idQuem);
                 dynamic enviarPara = db.QueryNinjaADO("SELECT * FROM UserSgq WHERE Name  = '" + paUser.Name + "'").FirstOrDefault();
+
                 var email = new PlanoAcaoEF.EmailContent()
                 {
                     IsBodyHtml = true,
                     AddDate = DateTime.Now,
-                    Subject = "Novo Relatório de Análise de Desvio criado.",
+                    Subject = title,
                     Project = "Plano de Ação",
                     Body = todoConteudo,
                     To = enviarPara.Email,
@@ -133,7 +131,38 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
         }
 
-        #region Auxiliares
+
+        private void CreateMail(int idPlanejamento, int idAcao, string emailTo, string path, string title)
+        {
+
+            //using (var ct = new Pa_PlanejamentoController())
+            //{
+            //    var teste = ct.Details(idPlanejamento);
+            //}
+            var conteudoPlanejamento = GetExternalResponse("http:/" + path + "/Pa_Planejamento/Details?id=" + idPlanejamento);
+            var conteudoAcao = GetExternalResponse("http:/" + path + "/Pa_Acao/Details?id=" + idAcao);
+            var todoConteudo = conteudoPlanejamento.Result + conteudoAcao.Result;
+            //var todoConteudo = "teste";
+
+
+            using (var db = new Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
+            {
+                //var paUser = Pa_Quem.Get(idQuem);
+                //dynamic enviarPara = db.QueryNinjaADO("SELECT * FROM UserSgq WHERE Name  = '" + paUser.Name + "'").FirstOrDefault();
+                var email = new PlanoAcaoEF.EmailContent()
+                {
+                    IsBodyHtml = true,
+                    AddDate = DateTime.Now,
+                    Subject = title,
+                    Project = "Plano de Ação",
+                    Body = todoConteudo,
+                    To = emailTo,
+                };
+
+                PaAsyncServices.SendMailPATeste(email, "celso.bernar@grtsolucoes.com.br");
+
+            }
+        }
 
         private void SalvarAcompanhamentoXQuem(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_AcompanhamentoXQuem quem)
         {

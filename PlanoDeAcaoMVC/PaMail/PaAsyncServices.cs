@@ -18,18 +18,8 @@ namespace PlanoDeAcaoMVC.PaMail
 
         #region PA Email
 
-        public async static Task SendMailPATeste(EmailContent email, string mailTo)
+        public static void SendMailPATeste(EmailContent email, string mailTo)
         {
-
-            var teste = new EmailContent()
-            {
-                AddDate = DateTime.Now,
-                Body = "Teste Global Config",
-                IsBodyHtml = true,
-                Subject = "teste PA v2",
-                To = mailTo,
-                Project = "PA"
-            };
 
             try
             {
@@ -38,11 +28,16 @@ namespace PlanoDeAcaoMVC.PaMail
                 var emailSmtp = "smtp.live.com";
                 var emailPort = 587;
                 var emailSSL = true;
+
+                //var emailFrom = "celsogea@hotmail.com";
+                //var emailPass = "Thebost1";
+                //var emailSmtp = "smtp.live.com";
+                //var emailPort = 587;
+                //var emailSSL = true;
+
                 using (var db = new PlanoDeAcaoEntities())
                 {
                     SaveEmailContenteEF(email, db);
-                    db.EmailContent.Add(teste);
-                    db.SaveChanges();
                     MailSender.SendMail(Mapper.Map<EmailContentDTO>(email), emailFrom, emailPass, emailSmtp, emailPort, emailSSL, SendCompletedCallbackPA, true);
                 }
             }
@@ -73,7 +68,7 @@ namespace PlanoDeAcaoMVC.PaMail
             }
         }
 
-        public async static void SendCompletedCallbackPA(object sender, AsyncCompletedEventArgs e)
+        public  static void SendCompletedCallbackPA(object sender, AsyncCompletedEventArgs e)
         {
             try
             {

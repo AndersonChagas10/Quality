@@ -112,9 +112,12 @@
                     $('#plotPrincipal').append(divClonada);
                     var div = DivManager.criaDiv(idDivTendencia, o.level1_Id, "temperatura");
                     divClonada.find('.panel-heading').html(o.Level1Name); // Insere Titulo no Panel
-
+                    var stringIdDivClonada= '#'+idDivTendencia
+                    divClonada.attr('data-toggle','collapse').attr('data-target',stringIdDivClonada).attr('href',stringIdDivClonada)
                     var tendencia = $.grep(r.listResultSetTendencia, function (level2, c) { return level2.level1_Id == o.level1_Id });
-                    GraficoTendencia(tendencia, div, Resources('audit_tendency') + ": " + tendencia[0].Level1Name + " - " + meses[0], tendencia[0].Data, tendencia[tendencia.length - 1].Data);
+                    var dataParaTendencia = $('input[name=datefilter]').val().split('/');
+                    var mesDaTendencia = parseInt(dataParaTendencia[1]);
+                    GraficoTendencia(tendencia, div, Resources('audit_tendency') + ": " + tendencia[0].Level1Name + " - " + meses[(mesDaTendencia-1)], tendencia[0].Data, tendencia[tendencia.length - 1].Data);
 
                     //GraficoTendencia(listResults["Tendencia"], div, o);//Processa e cria grafico
                     var divMonitoramento = DivManager.criaDiv(idDivTendencia, o.level1_Id, "monitoramento");

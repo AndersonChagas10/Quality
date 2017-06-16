@@ -680,11 +680,17 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             string query = VisaoGeralDaAreaApiController.sqlBase(form) +
 
+//query 1 retorna o valor da empresa    
 "\n  																																																																						                                               " +
+"\n declare @valorEmpresa decimal(5,2) "+
+"\n select @valorEmpresa = sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100" +
+"\n from #Score s left join ParStructure reg on s.regional = reg.id where reg.Active =1 and Reg.ParStructureGroup_Id = 2 "+
+//query 2 retorna o valor da regional       
 "\n   SELECT                                                                                                                                                                                                                                                                                                                               " +
 "\n   Reg.Name regName,                                                                                                                                                                                                                                                                                                                " +
 "\n   Reg.Id regId,                                                                                                                                                                                                                                                                                                                      " +
-"\n   case when sum(isnull(PontosIndicador, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end as scorecardJbs,                                                                                                                                                                               " +
+"\n @valorEmpresa as scorecardJbs, " +
+//"\n   case when sum(isnull(PontosIndicador, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end as scorecardJbs,                                                                                                                                                                               " +
 "\n   case when sum(isnull(PontosIndicador, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end as scorecardJbsReg                                                                                                                                                                             " +
 "\n   FROM ParStructure Reg                                                                                                                                                                                                                                                                                                                " +
 "\n   left join #SCORE S                                                                                                                                                                                                                                                                                                                   " +
@@ -738,11 +744,17 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             string query = VisaoGeralDaAreaApiController.sqlBase(form) +
 
+"\n declare @valorEmpresa decimal(5,2) "+
+"\n declare @valorRegional decimal(5, 2) "+
+"\n select @valorEmpresa = sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100"+
+"\n from #Score s left join ParStructure reg on s.regional = reg.id where reg.Active =1 and Reg.ParStructureGroup_Id = 2"+
+"\n  select @valorRegional = sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 " +
+ "\n from #Score s left join ParStructure reg on s.regional = reg.id where reg.id = '"+form.Query.ToString()+"' and Reg.ParStructureGroup_Id = 2"+
 "\n  SELECT " +
 "\n  C.Initials companySigla, " +
 "\n  case when sum(isnull(PontosIndicador, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end companyScorecard, " +
-"\n  case when sum(isnull(PontosIndicador, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end as scorecardJbs, " +
-"\n  case when sum(isnull(PontosIndicador, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end as scorecardJbsReg " +
+"\n  @valorEmpresa as scorecardJbs, " +
+"\n  @valorRegional as scorecardJbsReg " +
 "\n  FROM ParStructure Reg " +
 "\n  LEFT JOIN ParCompanyXStructure CS " +
 "\n  ON CS.ParStructure_Id = Reg.Id " +
