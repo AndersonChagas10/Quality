@@ -246,8 +246,6 @@ namespace PlanoDeAcaoMVC.Controllers
             }
         }
 
-       
-
         /// <summary>
         /// Mock para apresentação do plano de ação.
         /// </summary>

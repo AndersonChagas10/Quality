@@ -11,6 +11,7 @@ using SgqSystem.Controllers.Api;
 using Helper;
 using AutoMapper;
 using DTO.DTO;
+using System.Threading.Tasks;
 
 namespace SgqSystem.Mail
 {
@@ -18,9 +19,9 @@ namespace SgqSystem.Mail
     {
 
         public static List<EmailContent> ListaDeMail;
-        private static int tamanhoDoPool = 4;
+        private static int tamanhoDoPool = 1000;
         private static bool running { get; set; }
-        
+
         #region SGQ Email
 
         public static List<EmailContent> CreateMailSgqAppDeviation()
@@ -28,40 +29,60 @@ namespace SgqSystem.Mail
 
             using (var db = new SgqDbDevEntities())
             {
-                //db.Configuration.AutoDetectChangesEnabled = false;
-                db.Configuration.ValidateOnSaveEnabled = false;
-                db.Configuration.LazyLoadingEnabled = false;
-                /*Cria Novos Emails de acordo com a quantidade do pool na emailContent*/
-                var Mails = db.Deviation.Where(r => r.AlertNumber > 0 && (r.sendMail == null || r.sendMail == false) && r.DeviationMessage != null).Take(tamanhoDoPool).ToList();
-
-                if (Mails != null && Mails.Count() > 0)
+                try
                 {
-                    foreach (var m in Mails)
+                    //db.Configuration.AutoDetectChangesEnabled = false;
+                    db.Configuration.ValidateOnSaveEnabled = false;
+                    db.Configuration.LazyLoadingEnabled = false;
+                    /*Cria Novos Emails de acordo com a quantidade do pool na emailContent*/
+
+                    var Mails = db.Deviation.Where(r => r.AlertNumber > 0 && (r.sendMail == null || r.sendMail == false) && r.DeviationMessage != null).Take(tamanhoDoPool).ToList();
+
+                    if (Mails != null && Mails.Count() > 0)
                     {
-
-                        var newMail = new EmailContent()
+                        foreach (var m in Mails)
                         {
-                            AddDate = DateTime.Now,
-                            Body = RemoveEspacos(m.DeviationMessage),
-                            IsBodyHtml = true,
-                            Subject = "teste v2",
-                            To = "celso.bernar@grtsolucoes.com.br",
-                            Project = "SGQApp"
-                        };
-                        //ListaDeMail.Add(newMail);
 
-                        db.EmailContent.Add(newMail);
+                            var body = Uri.UnescapeDataString(m.DeviationMessage).ToString().Replace("O Supervisor da área será notificado Ok ", "");
+                            var parLevel1 = db.ParLevel1.FirstOrDefault(r => r.Id == m.ParLevel1_Id).Name;
+                            var parLevel2 = db.ParLevel2.FirstOrDefault(r => r.Id == m.ParLevel2_Id).Name;
+                            string company = string.Empty;
 
-                        db.Deviation.Attach(m);
-                        var entry = db.Entry(m);
-                        m.sendMail = true;
-                        entry.State = System.Data.Entity.EntityState.Modified;
-                        entry.Property(r => r.sendMail).IsModified = true;
+                            if (m.ParCompany_Id > 0)
+                                company = db.ParCompany.FirstOrDefault(r => r.Id == m.ParCompany_Id).Name;
+                            else
+                                company = "Corporativo";
+
+                            var subject = "Alerta emitido para o Indicador: " + parLevel1 + ", Monitoramento: " + parLevel2 + " da Unidade: " + company;
+
+                            var newMail = new EmailContent()
+                            {
+                                AddDate = DateTime.Now,
+                                Body = subject + "<br><br>" + RemoveEspacos(body),
+                                IsBodyHtml = true,
+                                Subject = subject,
+                                To = "cgnunes7@gmail.com",
+                                Project = "SGQApp"
+                            };
+                            //ListaDeMail.Add(newMail);
+
+                            db.EmailContent.Add(newMail);
+                            db.Database.ExecuteSqlCommand("UPDATE Deviation SET sendMail = 1 WHERE ID = " + m.Id);
+                            //db.Deviation.Attach(m);
+                            //var entry = db.Entry(m);
+                            //m.sendMail = true;
+                            //entry.State = System.Data.Entity.EntityState.Modified;
+                            //entry.Property(r => r.sendMail).IsModified = true;
+
+                        }
+
+                        db.SaveChanges();
 
                     }
-
-                    db.SaveChanges();
-
+                }
+                catch (Exception e)
+                {
+                    new CreateLog(new Exception("Ocorreu um erro em: [CreateMailSgqAppDeviation]", e));
                 }
 
                 return db.EmailContent.Where(r => r.SendStatus == null && r.Project == "SGQApp").ToList();
@@ -76,14 +97,94 @@ namespace SgqSystem.Mail
                 ListaDeMail = CreateMailSgqAppDeviation();
                 if (ListaDeMail != null && ListaDeMail.Count() > 0)
                     foreach (var i in ListaDeMail.ToList())
-                        MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), GlobalConfig.emailFrom, GlobalConfig.emailPass, GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true);
+                        Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), GlobalConfig.emailFrom, GlobalConfig.emailPass, GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true));
             }
             catch (Exception ex)
             {
-                new CreateLog(new Exception("Erro ao enviar email", ex));
+                new CreateLog(new Exception("Erro no metodo [SendMailFromDeviationSgqApp]", ex));
                 throw ex;
             }
 
+        }
+
+        public static void SendMailFromDeviationSgqAppTesteBR(string mailTo, bool deviation)
+        {
+            if (deviation)
+            {
+                ListaDeMail = CreateMailSgqAppDeviation();
+                if (ListaDeMail != null && ListaDeMail.Count() > 0)
+                    foreach (var i in ListaDeMail.Take(3).ToList())
+                    {
+                        i.To = mailTo;
+                        Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), GlobalConfig.emailFrom, GlobalConfig.emailPass, GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true));
+                    }
+            }
+            else
+            {
+
+                var testeMail = new EmailContent()
+                {
+                    AddDate = DateTime.Now,
+                    IsBodyHtml = true,
+                    Subject = "teste v2",
+                    To = mailTo,
+                    Project = "SGQApp"
+                };
+
+                Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(testeMail), GlobalConfig.emailFrom, GlobalConfig.emailPass, GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true));
+
+            }
+        }
+
+        public static void SendMailFromDeviationSgqAppTesteUSA(string mailTo)
+        {
+
+            var emailFrom = "celsogea@hotmail.com";
+            var emailPass = "Thebost1";
+            var emailSmtp = "smtp.live.com";
+            var emailPort = 587;
+            var emailSSL = true;
+
+            var testeMail = CreateMailUSAFromCOrrectiveAction(mailTo);
+
+            Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(testeMail), emailFrom, emailPass, emailSmtp, emailPort, emailSSL, SendCompletedCallbackSgq, true));
+        }
+
+        private static EmailContent CreateMailUSAFromCOrrectiveAction(string mailTo)
+        {
+            var testeMail = new EmailContent()
+            {
+                AddDate = DateTime.Now,
+                IsBodyHtml = true,
+                Subject = "teste v2",
+                To = mailTo,
+                Project = "SGQApp"
+            };
+
+            try
+            {
+
+                using (var db = new SgqDbDevEntities())
+                {
+                    using (var controller = new CorrectActApiController())
+                    {
+                        var id = db.CorrectiveAction.OrderByDescending(r => r.Id).FirstOrDefault().Id;
+                        var model = controller.GetCorrectiveActionById(id);
+                        testeMail.Body = model.SendMeByMail;
+                    }
+
+                    db.EmailContent.Add(testeMail);
+                    db.SaveChanges();
+
+                }
+
+                return testeMail;
+            }
+            catch (Exception ex)
+            {
+                new CreateLog(new Exception("Erro no metodo [CreateMailUSAFromCOrrectiveAction]", ex), testeMail);
+                throw ex;
+            }
         }
 
         public static void SendCompletedCallbackSgq(object sender, AsyncCompletedEventArgs e)
@@ -161,52 +262,12 @@ namespace SgqSystem.Mail
             }
         }
 
-        public static void SendMailFromDeviationSgqAppTeste(bool callback, string mailTo)
-        {
-
-            var teste = new EmailContent()
-            {
-                AddDate = DateTime.Now,
-                Body = "Teste Global Config",
-                IsBodyHtml = true,
-                Subject = "teste v2",
-                To = mailTo,
-                Project = "SGQApp"
-            };
-
-            try
-            {
-                using (var db = new SgqDbDevEntities())
-                {
-                    using (var controller = new CorrectActApiController())
-                    {
-                        var id = db.CorrectiveAction.OrderByDescending(r => r.Id).FirstOrDefault().Id;
-                        var model = controller.GetCorrectiveActionById(id);
-                        teste.Body = model.SendMeByMail;
-                    }
-
-                    db.EmailContent.Add(teste);
-                    db.SaveChanges();
-                    MailSender.SendMail(Mapper.Map<EmailContentDTO>(teste), GlobalConfig.emailFrom, GlobalConfig.emailPass, GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true);
-                }
-            }
-            catch (Exception ex)
-            {
-                new CreateLog(ex, teste);
-                throw ex;
-            }
-
-
-
-        }
-
         #endregion
 
         private static string RemoveEspacos(string deviationMessage)
         {
             try
             {
-
                 var result = string.Empty;
                 foreach (var i in deviationMessage.Split('>'))
                     result += i.TrimStart().TrimEnd() + "> ";
@@ -233,7 +294,7 @@ namespace SgqSystem.Mail
                     {
                         try
                         {
-                            service.ProcessJson("", i,false);
+                            service.ProcessJson("", i, false);
                         }
                         catch (Exception e)
                         {

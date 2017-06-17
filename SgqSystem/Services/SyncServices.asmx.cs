@@ -1150,11 +1150,11 @@ namespace SgqSystem.Services
                 throw ex;
             }
         }
-        public int updateCorrectiveAction_CollectionLevel2_By_ParLevel1(string ParLevel1_Id, string ParCompany_Id, string dataInicio, string dataFim,string reauditnumber)
+        public int updateCorrectiveAction_CollectionLevel2_By_ParLevel1(string ParLevel1_Id, string ParCompany_Id, string dataInicio, string dataFim, string reauditnumber)
         {
 
-            string sql = "UPDATE CollectionLevel2 SET HaveCorrectiveAction=0 WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND UnitId='" + ParCompany_Id + 
-                   "' AND CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' AND HaveCorrectiveAction=1 and reauditnumber='"+reauditnumber+"'";
+            string sql = "UPDATE CollectionLevel2 SET HaveCorrectiveAction=0 WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND UnitId='" + ParCompany_Id +
+                   "' AND CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' AND HaveCorrectiveAction=1 and reauditnumber='" + reauditnumber + "'";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
@@ -1802,7 +1802,6 @@ namespace SgqSystem.Services
             for (int i = 0; i < arrayResults.Length; i++)
             {
 
-                
                 //Gera o array com o resultado
                 var result = arrayResults[i].Split(',');
 
@@ -1903,7 +1902,7 @@ namespace SgqSystem.Services
                 //decimal punicao = Convert.ToDecimal(punishimentValue.ToString().Replace(".", ","));
                 //decimal peso = Convert.ToDecimal(weight.ToString().Replace(".", ","));
 
-                    //WeiDefects = (defeitos + punicao) * peso;
+                //WeiDefects = (defeitos + punicao) * peso;
 
                 id = DefaultValueReturn(id, "0");
 
@@ -1918,11 +1917,14 @@ namespace SgqSystem.Services
 
                 naoAvaliado = true;
 
+                //Verifica se é BEA e faz a conta do WeiEvaluation
+                var _WeiEvaluation = GetWeiEvaluation(WeiEvaluation, CollectionLevel02Id);
+
                 if (id == "0")
                 {
                     sql += "INSERT INTO Result_Level3 ([CollectionLevel2_Id],[ParLevel3_Id],[ParLevel3_Name],[Weight],[IntervalMin],[IntervalMax],[Value],[ValueText],[IsConform],[IsNotEvaluate],[PunishmentValue],[Defects],[Evaluation],[WeiEvaluation],[WeiDefects]) " +
                            "VALUES " +
-                           "('" + CollectionLevel02Id + "','" + Level03Id + "', '" + parLevel3List.FirstOrDefault(p => p.Id == Convert.ToInt32(Level03Id)).Name.Replace("'", "''") + "'," + weight + "," + intervalMin + "," + intervalMax + ", " + value + ",'" + valueText + "','" + conform + "','" + isnotEvaluate + "', " + punishimentValue + ", " + defects + ", " + evaluation + ", " + WeiEvaluation + ", " + WeiDefects + ") ";
+                           "('" + CollectionLevel02Id + "','" + Level03Id + "', '" + parLevel3List.FirstOrDefault(p => p.Id == Convert.ToInt32(Level03Id)).Name.Replace("'", "''") + "'," + weight + "," + intervalMin + "," + intervalMax + ", " + value + ",'" + valueText + "','" + conform + "','" + isnotEvaluate + "', " + punishimentValue + ", " + defects + ", " + evaluation + ", " + _WeiEvaluation + ", " + WeiDefects + ") ";
 
                     sql += " SELECT @@IDENTITY AS 'Identity'";
 
@@ -1935,7 +1937,7 @@ namespace SgqSystem.Services
                             "Value='" + value + "',                                         " +
                             "Weight='" + weight + "',                                       " +
                             "Defects='" + defects + "',                                     " +
-                            "WeiEvaluation='" + WeiEvaluation + "',                         " +
+                            "WeiEvaluation='" + _WeiEvaluation + "',                         " +
                             "WeiDefects='" + WeiDefects + "',                               " +
                             "ValueText='" + valueText + "'                                  " +
                             "WHERE Id='" + id + "'                                          ";
@@ -1990,6 +1992,46 @@ namespace SgqSystem.Services
         }
 
         #endregion
+
+        #region WeiEvaluation
+        private string GetWeiEvaluation(string WeiEvaluation, string CollectionLevel2Id)
+        {
+            string _WeiEvaluation2 = WeiEvaluation;
+
+            using (var databaseSgq = new Dominio.SgqDbDevEntities())
+            {
+
+                var collectionLevel2_obj = databaseSgq.CollectionLevel2.FirstOrDefault(r => r.Id.ToString() == CollectionLevel2Id);
+
+                var parLeve1BEA = databaseSgq.ParLevel1VariableProductionXLevel1.FirstOrDefault(r => r.ParLevel1_Id == collectionLevel2_obj.ParLevel1_Id);
+
+                //Se for BEA
+                if (parLeve1BEA != null)
+                    if (parLeve1BEA.ParLevel1VariableProduction_Id == 3)
+                    {
+                        var collectionLevel2_obj2 = databaseSgq.CollectionLevel2.Where(
+                        r => System.Data.Entity.DbFunctions.TruncateTime(r.CollectionDate) == System.Data.Entity.DbFunctions.TruncateTime(collectionLevel2_obj.CollectionDate) &&
+                        r.Shift == collectionLevel2_obj.Shift &&
+                        r.Period == collectionLevel2_obj.Period &&
+                        r.UnitId == collectionLevel2_obj.UnitId &&
+                        r.Sample < collectionLevel2_obj.Sample
+                        ).OrderByDescending(r => r.Sample).FirstOrDefault();
+
+
+                        if (collectionLevel2_obj2 != null)
+
+                            _WeiEvaluation2 = (collectionLevel2_obj.Sample - collectionLevel2_obj2.Sample).ToString();
+
+                        else
+                            _WeiEvaluation2 = (collectionLevel2_obj.Sample).ToString();
+
+                    }
+
+                return _WeiEvaluation2;
+            }
+        }
+        #endregion
+
         #region Corrective Action
         /// <summary>
         /// Metodo para gravar ação corretiva
@@ -3862,11 +3904,11 @@ namespace SgqSystem.Services
             if (isVolume)
             {
                 var parLevel1Familia = ParLevel1DB.getByFamilia(dateCollection: dateCollect);
-                
-                parLevel1List = parLevel1List.Where(r => 
-                                            r.Name.Equals("(%) NC CEP Vácuo GRD") || 
-                                            r.Name.Equals("(%) NC PCC 1B") || 
-                                            r.Name.Equals("(%) NC CEP Desossa") || 
+
+                parLevel1List = parLevel1List.Where(r =>
+                                            r.Name.Equals("(%) NC CEP Vácuo GRD") ||
+                                            r.Name.Equals("(%) NC PCC 1B") ||
+                                            r.Name.Equals("(%) NC CEP Desossa") ||
                                             r.Name.Equals("(%) NC CEP Recortes") ||
                                             r.Id.Equals(
                                                 parLevel1Familia.Where(s => s.Id == r.Id).FirstOrDefault() == null ?
@@ -4471,11 +4513,11 @@ namespace SgqSystem.Services
                                                 classe: "col-xs-4",
                                                 style: "text-align:center; font-size:10px;"
                                               ); //+
-                                      //html.div(
-                                      //      outerhtml: html.span(outerhtml: defect.ToString(), classe: "3moreDefects"),
-                                      //      classe: "col-xs-4",
-                                      //      style: "text-align:center; font-size:10px;"
-                                      // );
+                                                 //html.div(
+                                                 //      outerhtml: html.span(outerhtml: defect.ToString(), classe: "3moreDefects"),
+                                                 //      classe: "col-xs-4",
+                                                 //      style: "text-align:center; font-size:10px;"
+                                                 // );
                 counters = html.div(
                                    //aqui vai os botoes
                                    outerhtml: counters,
@@ -5998,7 +6040,7 @@ namespace SgqSystem.Services
 
                 sql += "INSERT INTO Deviation ([ParCompany_Id],[ParLevel1_Id],[ParLevel2_Id],[Evaluation],[Sample],[AlertNumber],[Defects],[DeviationDate],[AddDate],[sendMail], [DeviationMessage]) " +
                         "VALUES " +
-                        "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', '" + dt.ToString("yyyyMMdd") + "' , GetDate(), 0, " + deviationMessage + ")";
+                        "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', '" + dt.ToString("yyyyMMdd") + "' , GetDate(), 0, " + HttpUtility.UrlDecode(deviationMessage) + ")";
             }
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -6343,9 +6385,9 @@ namespace SgqSystem.Services
             }
         }
         [WebMethod]
-        public string InsertCorrectiveAction(string CollectionLevel2_Id, string ParLevel1_Id, string ParLevel2_Id, string Shift, string Period, string ParCompany_Id, 
-            string EvaluationNumber, string ParFrequency_Id, string data, string AuditorId, string SlaughterId, string TechinicalId, string DateTimeSlaughter, 
-            string DateTimeTechinical, string DateCorrectiveAction, string AuditStartTime, string DescriptionFailure, string ImmediateCorrectiveAction, 
+        public string InsertCorrectiveAction(string CollectionLevel2_Id, string ParLevel1_Id, string ParLevel2_Id, string Shift, string Period, string ParCompany_Id,
+            string EvaluationNumber, string ParFrequency_Id, string data, string AuditorId, string SlaughterId, string TechinicalId, string DateTimeSlaughter,
+            string DateTimeTechinical, string DateCorrectiveAction, string AuditStartTime, string DescriptionFailure, string ImmediateCorrectiveAction,
             string ProductDisposition, string PreventativeMeasure, string reauditnumber)
         {
             try
@@ -6395,7 +6437,7 @@ namespace SgqSystem.Services
 
                     //Pega a data pela regra da frequencia
                     getFrequencyDate(Convert.ToInt32(ParFrequency_Id), dataAPP, ref dataInicio, ref dataFim);
-                    var idUpdate = updateCorrectiveAction_CollectionLevel2_By_ParLevel1(ParLevel1_Id, ParCompany_Id, dataInicio, dataFim,reauditnumber);
+                    var idUpdate = updateCorrectiveAction_CollectionLevel2_By_ParLevel1(ParLevel1_Id, ParCompany_Id, dataInicio, dataFim, reauditnumber);
                     //transacao.complete();
                     return null;
                 }
@@ -6969,8 +7011,6 @@ namespace SgqSystem.Services
 
             try
             {
-
-
                 string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
                 using (SqlConnection connection = new SqlConnection(conexao))
                 {
@@ -6978,7 +7018,7 @@ namespace SgqSystem.Services
 
                     SqlCommand command;
 
-                    string query = "                                                                                                              " +
+                    string query = "                                                                                                          " +
                 "\n DECLARE @ID INT = " + collectionLevel2_Id +
                 "\n DECLARE @Defects DECIMAL(10,3)                                                                                            " +
                 "\n DECLARE @DefectsResult DECIMAL(10, 3)                                                                                     " +
@@ -6991,7 +7031,7 @@ namespace SgqSystem.Services
                 "\n select                                                                                                                    " +
                 "\n                                                                                                                           " +
                 "\n @Defects = isnull(sum(r3.Defects),0),                                                                                     " +
-                "\n @DefectsResult = case when sum(r3.WeiDefects) > 0 then 1 else 0 end,                                                         " +
+                "\n @DefectsResult = case when sum(r3.WeiDefects) > 0 then 1 else 0 end,                                                      " +
                 "\n @EvatuationResult = case when sum(r3.Evaluation) > 0 then 1 else 0 end,                                                   " +
                 "\n @WeiEvaluation = isnull(sum(r3.WeiEvaluation),0),                                                                         " +
                 "\n @WeiDefects = isnull(sum(r3.WeiDefects),0),                                                                               " +
