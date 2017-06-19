@@ -16,7 +16,7 @@ namespace SgqSystem.Controllers.Api
         private readonly IUserDomain _userDomain;
         private readonly IBaseDomain<UserSgq, UserDTO> _userBaseDomain;
         private IBaseDomain<UserSgq, UserSgqDTO> _userSgqDomain;
-        //private IBaseDomain<EmailContent, EmailContentDTO> _emailContent;
+        private IBaseDomain<EmailContent, EmailContentDTO> _emailContent;
 
         public UserAuthenticationController(IUserDomain userDomain, IBaseDomain<UserSgq, UserDTO> userBaseDomain, IBaseDomain<UserSgq, UserSgqDTO> userSgqDomain
             /*,IBaseDomain<EmailContent, EmailContentDTO> emailContent*/)
@@ -115,31 +115,27 @@ namespace SgqSystem.Controllers.Api
             return Json(dado, JsonRequestBehavior.AllowGet);
         }
 
-        //[HttpPost]
-        //public bool enviaEmail(int idUser)
-        ////{
-        //    UserSgqDTO user = _userSgqDomain.GetById(idUser);
-        //    string hash = Guard.Descriptografar3DES(user.Password);
-        //    EmailContent email = new EmailContent();
-        //    email.To = user.Email;
-        //    email.Subject = "Recuperação de Senha Sgq";
-        //    email.Body = "Seu usuário: " + user.Name + "\n " + "sua Senha: " + hash;
-        //    using (var db = new SgqDbDevEntities())
-        //    {
-        //        db.EmailContent.Add(email);
-        //        var ret = db.SaveChanges();
-        //        int r = ret;
-        //        if (ret == 1)
-        //            return true;
-        //        else
-        //            return false;
-        //    }
-        //var retorno = _emailContent.AddOrUpdate(email);
-        //var a = retorno;
-        //if (retorno != null)
-        //    return true;
-        //else
-        //    return false;
-        //}
+        [HttpPost]
+        public bool enviaEmail(int idUser)
+        {
+            UserSgqDTO user = _userSgqDomain.GetById(idUser);
+            string hash = Guard.DecryptStringAES(user.Password);
+            EmailContent email = new EmailContent();
+            email.To = user.Email;
+            email.Subject = "Recuperação de Senha Sgq";
+            email.Body = "Seu usuário: " + user.Name + "\n " + "sua Senha: " + hash;
+            email.AddDate = DateTime.Now;
+            email.Project = "SGQApp";
+            email.IsBodyHtml = false;
+            using (var db = new SgqDbDevEntities())
+            {
+                db.EmailContent.Add(email);
+                var ret = db.SaveChanges();
+                if (ret > 0)
+                    return true;
+                else
+                    return false;
+            }
+        }
     }
 }

@@ -18,7 +18,7 @@ namespace PlanoDeAcaoMVC.PaMail
 
         #region PA Email
 
-        public static void SendMailPATeste(EmailContent email, string mailTo)
+        public static void SendMailPATeste(EmailContent email)
         {
 
             try

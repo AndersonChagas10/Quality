@@ -187,7 +187,6 @@ namespace SgqSystem.Mail
             }
         }
 
-
         public static void SendCompletedCallbackSgq(object sender, AsyncCompletedEventArgs e)
         {
             try
@@ -263,14 +262,12 @@ namespace SgqSystem.Mail
             }
         }
 
-
         #endregion
 
         private static string RemoveEspacos(string deviationMessage)
         {
             try
             {
-
                 var result = string.Empty;
                 foreach (var i in deviationMessage.Split('>'))
                     result += i.TrimStart().TrimEnd() + "> ";

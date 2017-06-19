@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -1443,6 +1443,10 @@
       <Project>{9F15CCA3-EC01-46B6-91EC-3F408E7417BC}</Project>
       <Name>PlanoAcaoCore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlanoAcaoEF\PlanoAcaoEF.csproj">
+      <Project>{2901B555-2F1A-4B5A-BE9D-1D50844E0F2A}</Project>
+      <Name>PlanoAcaoEF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\YTOARA_DOMINIO\YTOARA_DOMINIO.csproj">
       <Project>{02cfb056-37ce-40f2-8790-0d47bc6d2b59}</Project>
       <Name>YTOARA_DOMINIO</Name>
@@ -1474,11 +1478,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>FAlse</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/SgqSystem</IISUrl>
+          <IISUrl>http://localhost:57506/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
