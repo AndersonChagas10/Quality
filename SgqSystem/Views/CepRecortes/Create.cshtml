@@ -139,7 +139,9 @@
                                             <div class="col-md-10">
                                                 <select id="NBR" name="NBR" class="form-control valid">
                                                     <option value="-1">@Resources.Resource.select</option>
-                                                    <option>1</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
                                                     
                                                 </select>
 
@@ -266,10 +268,11 @@
     });
 
     $('#TotalAvaliaColaborEsteirHoraProd, #TamanhoAmostra').on('input', function () {
-        $('#TotalAmostraAvaliaColabEsteiraHoraProd').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
-        $('#TotalAmostraAvaliaColabEsteiraHoraProdHidden').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
+        var resultadoSeiLaDoQue = Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()) * $('#QtadeTrabEsteiraRecortes').val();
+        $('#TotalAmostraAvaliaColabEsteiraHoraProd').val(resultadoSeiLaDoQue);
+        $('#TotalAmostraAvaliaColabEsteiraHoraProdHidden').val(resultadoSeiLaDoQue);
         $('#Amostras').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val() * $('#TotalAvaliaColaborEsteirHoraProd').val()));
-        $('#amostraHidden').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
+        $('#amostraHidden').val(resultadoSeiLaDoQue);
     });
 
     $('#btnTeste').click(function (e) {
