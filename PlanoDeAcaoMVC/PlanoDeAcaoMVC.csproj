@@ -17,7 +17,7 @@
     <AssemblyName>PlanoDeAcaoMVC</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -187,6 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\PivotJS\" />
     <Folder Include="Views\Shared\DisplayTemplate\" />
   </ItemGroup>
   <ItemGroup>
@@ -496,10 +497,100 @@
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Scripts\jquery-1.11.3.min.js" />
+    <None Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.1.1.js" />
+    <Content Include="Scripts\jquery-3.1.1.min.js" />
+    <Content Include="Scripts\jquery-3.1.1.slim.js" />
+    <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\pivottable-master\.gitignore" />
+    <Content Include="Scripts\pivottable-master\dist\c3_renderers.js" />
+    <Content Include="Scripts\pivottable-master\dist\c3_renderers.min.js" />
+    <Content Include="Scripts\pivottable-master\dist\d3_renderers.js" />
+    <Content Include="Scripts\pivottable-master\dist\d3_renderers.min.js" />
+    <Content Include="Scripts\pivottable-master\dist\export_renderers.js" />
+    <Content Include="Scripts\pivottable-master\dist\export_renderers.min.js" />
+    <Content Include="Scripts\pivottable-master\dist\gchart_renderers.js" />
+    <Content Include="Scripts\pivottable-master\dist\gchart_renderers.min.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.css" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.da.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.da.min.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.de.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.de.min.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.es.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.es.min.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.fr.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.fr.min.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.it.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.it.min.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.min.css" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.min.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.nl.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.nl.min.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.pl.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.pl.min.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.pt.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.pt.min.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.ru.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.ru.min.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.tr.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.tr.min.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.zh.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.zh.min.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot_spec.js" />
+    <Content Include="Scripts\pivottable-master\dist\pivot_spec.min.js" />
+    <Content Include="Scripts\pivottable-master\dist\tips_data.min.js" />
+    <Content Include="Scripts\pivottable-master\examples\c3.html" />
+    <Content Include="Scripts\pivottable-master\examples\d3.html" />
+    <Content Include="Scripts\pivottable-master\examples\fully_loaded.html" />
+    <Content Include="Scripts\pivottable-master\examples\gchart.html" />
+    <Content Include="Scripts\pivottable-master\examples\gh-fork-ribbon.css" />
+    <Content Include="Scripts\pivottable-master\examples\gh-fork-ribbon.ie.css" />
+    <Content Include="Scripts\pivottable-master\examples\index.html" />
+    <Content Include="Scripts\pivottable-master\examples\local.html" />
+    <Content Include="Scripts\pivottable-master\examples\montreal_2014.html" />
+    <Content Include="Scripts\pivottable-master\examples\mps.html" />
+    <Content Include="Scripts\pivottable-master\examples\mps_agg.html" />
+    <Content Include="Scripts\pivottable-master\examples\mps_csv.html" />
+    <Content Include="Scripts\pivottable-master\examples\mps_export.html" />
+    <Content Include="Scripts\pivottable-master\examples\mps_fr.html" />
+    <Content Include="Scripts\pivottable-master\examples\mps_prepop.html" />
+    <Content Include="Scripts\pivottable-master\examples\mps_rename.html" />
+    <Content Include="Scripts\pivottable-master\examples\onrefresh.html" />
+    <Content Include="Scripts\pivottable-master\examples\perf.html" />
+    <Content Include="Scripts\pivottable-master\examples\rcsvs.html" />
+    <Content Include="Scripts\pivottable-master\examples\save_restore.html" />
+    <Content Include="Scripts\pivottable-master\examples\scatter.html" />
+    <Content Include="Scripts\pivottable-master\examples\show_code.js" />
+    <Content Include="Scripts\pivottable-master\examples\simple.html" />
+    <Content Include="Scripts\pivottable-master\examples\simple_agg.html" />
+    <Content Include="Scripts\pivottable-master\examples\simple_function.html" />
+    <Content Include="Scripts\pivottable-master\examples\simple_ui.html" />
+    <Content Include="Scripts\pivottable-master\examples\simple_ui_from_table.html" />
+    <Content Include="Scripts\pivottable-master\examples\text_config.html" />
+    <Content Include="Scripts\pivottable-master\gulpFile.js" />
+    <Content Include="Scripts\pivottable-master\images\animation.gif" />
+    <Content Include="Scripts\pivottable-master\images\cdnjs.svg" />
+    <Content Include="Scripts\pivottable-master\images\filters.png" />
+    <Content Include="Scripts\pivottable-master\images\gender_age_bins.png" />
+    <Content Include="Scripts\pivottable-master\images\gender_imbalance.png" />
+    <Content Include="Scripts\pivottable-master\images\gender_imbalance_instructions.png" />
+    <Content Include="Scripts\pivottable-master\images\initial_state.png" />
+    <Content Include="Scripts\pivottable-master\images\license.svg" />
+    <Content Include="Scripts\pivottable-master\images\npm.svg" />
+    <Content Include="Scripts\pivottable-master\images\province_x_party_heatmap.png" />
+    <Content Include="Scripts\pivottable-master\images\province_x_party_heatmap_instructions.png" />
+    <Content Include="Scripts\pivottable-master\images\simple.png" />
+    <Content Include="Scripts\pivottable-master\images\simple_ui.png" />
+    <Content Include="Scripts\pivottable-master\images\tests.svg" />
+    <Content Include="Scripts\pivottable-master\images\whats_what.png" />
+    <Content Include="Scripts\pivottable-master\index.html" />
+    <Content Include="Scripts\pivottable-master\tests\boot.js" />
+    <Content Include="Scripts\pivottable-master\tests\index.html" />
     <Content Include="Scripts\Reports\Reports1.js" />
     <Content Include="Scripts\Reports\ReportsHC.js" />
     <Content Include="Scripts\i18n\Portuguese-Brasil.json" />
@@ -605,8 +696,6 @@
     <Content Include="Scripts\i18n\vi.js" />
     <Content Include="Scripts\i18n\zh-CN.js" />
     <Content Include="Scripts\i18n\zh-TW.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery.moneymask.js" />
     <Content Include="Scripts\loadingoverlay.min.js" />
     <Content Include="Scripts\loadingoverlay_progress.min.js" />
@@ -715,6 +804,68 @@
     <Content Include="Views\Shared\EditorTemplate\FTA.cshtml" />
     <Content Include="Views\Pa_Acao\Details.cshtml" />
     <Content Include="Views\Relatorios\Relatorios.cshtml" />
+    <Content Include="Scripts\pivottable-master\bower.json" />
+    <Content Include="Scripts\pivottable-master\c3_renderers.coffee" />
+    <Content Include="Scripts\pivottable-master\composer.json" />
+    <Content Include="Scripts\pivottable-master\CONTRIBUTING.md" />
+    <Content Include="Scripts\pivottable-master\d3_renderers.coffee" />
+    <Content Include="Scripts\pivottable-master\dist\c3_renderers.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\c3_renderers.min.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\d3_renderers.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\d3_renderers.min.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\export_renderers.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\export_renderers.min.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\gchart_renderers.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\gchart_renderers.min.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.da.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.da.min.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.de.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.de.min.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.es.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.es.min.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.fr.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.fr.min.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.it.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.it.min.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.min.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.nl.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.nl.min.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.pl.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.pl.min.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.pt.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.pt.min.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.ru.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.ru.min.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.tr.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.tr.min.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.zh.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot.zh.min.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot_spec.js.map" />
+    <Content Include="Scripts\pivottable-master\dist\pivot_spec.min.js.map" />
+    <Content Include="Scripts\pivottable-master\examples\montreal_2014.csv" />
+    <Content Include="Scripts\pivottable-master\examples\mps.csv" />
+    <Content Include="Scripts\pivottable-master\examples\mps.json" />
+    <Content Include="Scripts\pivottable-master\export_renderers.coffee" />
+    <Content Include="Scripts\pivottable-master\gchart_renderers.coffee" />
+    <Content Include="Scripts\pivottable-master\LICENSE.md" />
+    <Content Include="Scripts\pivottable-master\locales\pivot.da.coffee" />
+    <Content Include="Scripts\pivottable-master\locales\pivot.de.coffee" />
+    <Content Include="Scripts\pivottable-master\locales\pivot.es.coffee" />
+    <Content Include="Scripts\pivottable-master\locales\pivot.fr.coffee" />
+    <Content Include="Scripts\pivottable-master\locales\pivot.it.coffee" />
+    <Content Include="Scripts\pivottable-master\locales\pivot.nl.coffee" />
+    <Content Include="Scripts\pivottable-master\locales\pivot.pl.coffee" />
+    <Content Include="Scripts\pivottable-master\locales\pivot.pt.coffee" />
+    <Content Include="Scripts\pivottable-master\locales\pivot.ru.coffee" />
+    <Content Include="Scripts\pivottable-master\locales\pivot.tr.coffee" />
+    <Content Include="Scripts\pivottable-master\locales\pivot.zh.coffee" />
+    <Content Include="Scripts\pivottable-master\package.json" />
+    <Content Include="Scripts\pivottable-master\pivot.coffee" />
+    <Content Include="Scripts\pivottable-master\ReadMe.md" />
+    <Content Include="Scripts\pivottable-master\tests\pivot_spec.coffee" />
+    <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.1.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">
@@ -744,7 +895,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -764,7 +914,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>59907</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/PlanoDeAcaoMVC</IISUrl>
+          <IISUrl>http://localhost:59907/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

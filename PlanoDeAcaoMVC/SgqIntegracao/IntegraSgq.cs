@@ -27,11 +27,11 @@ namespace PlanoDeAcaoMVC
 
             using (var db = new Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
             {
-                var level1 = db.SearchQuery<ParLevel1DTO>("Select * from parlevel1").Where(r => r.IsActive).ToList();
-                var level2 = db.SearchQuery<ParLevel1DTO>("Select * from parlevel2").Where(r => r.IsActive).ToList();
-                var level3 = db.SearchQuery<ParLevel1DTO>("Select * from parlevel3").Where(r => r.IsActive).ToList();
+                var level1 = db.SearchQuery<ParLevel1DTO>("Select * from parlevel1 WHERE IsActive = 1").ToList();
+                var level2 = db.SearchQuery<ParLevel1DTO>("Select * from parlevel2 WHERE IsActive = 1").ToList();
+                var level3 = db.SearchQuery<ParLevel1DTO>("Select * from parlevel3 WHERE IsActive = 1").ToList();
                 usersgq = db.SearchQuery<UserDTO>("Select * from usersgq");
-                parcompany = db.SearchQuery<ParCompanyDTO>("Select * from parcompany").Where(r => r.IsActive).ToList();
+                parcompany = db.SearchQuery<ParCompanyDTO>("Select * from parcompany WHERE IsActive = 1").ToList();
 
                 filterContext.Controller.ViewBag.Level1 = level1;
                 filterContext.Controller.ViewBag.Level2 = level2;
@@ -60,9 +60,9 @@ namespace PlanoDeAcaoMVC
                 }
             }
 
-
             filterContext.Controller.ViewBag.Unidade = PlanoAcaoCore.Pa_Unidade.Listar();
-            filterContext.Controller.ViewBag.Quem = PlanoAcaoCore.Pa_Quem.Listar(); ;
+            filterContext.Controller.ViewBag.Quem = PlanoAcaoCore.Pa_Quem.Listar();
+
         }
     }
 }

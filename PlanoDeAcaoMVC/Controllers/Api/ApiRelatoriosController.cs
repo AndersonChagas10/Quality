@@ -19,89 +19,56 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         }
 
         //Retorna Categorias Series e Dados
-        [HttpPost]
+        [HttpGet]
         [Route("GetGrafico")]
-        public List<RetornoGrafico1> GetGrafico([FromBody] filtros filtro)
+        public List<JObject> GetGrafico([FromBody] filtros filtro)
         {
-            var categoria = filtro.categoria;
-            //var series = filtro.serie;
-            var series = "[Status]";
-            //var filtroCategoria = "";
+            //var query = "SELECT ACAO.* ,                                                                   " +
+            //            "\n  STA.*,                                                                        " +
+            //            "\n  UN.*,                                                                         " +
+            //            "\n  DPT.*,                                                                        " +
+            //            "\n  Q.*,                                                                          " +
+            //            "\n  CG.*,                                                                         " +
+            //            "\n  CMG.*,                                                                        " +
+            //            "\n  GC.*,                                                                          " +
+            //            "\n  PLANE.*                                                                          " +
+            //            "\n  FROM pa_acao ACAO                                                             " +
+            //            "\n  LEFT JOIN Pa_Unidade UN ON UN.Id = ACAO.Unidade_Id                            " +
+            //            "\n LEFT JOIN Pa_Departamento DPT ON DPT.Id = ACAO.Departamento_Id                 " +
+            //            "\n  LEFT JOIN Pa_Quem Q ON Q.Id = ACAO.Quem_Id                                    " +
+            //            "\n  LEFT JOIN Pa_CausaGenerica CG ON CG.Id = ACAO.CausaGenerica_Id                " +
+            //            "\n  LEFT JOIN Pa_ContramedidaGenerica CMG ON CMG.Id = ACAO.ContramedidaGenerica_Id" +
+            //            "\n  LEFT JOIN Pa_GrupoCausa GC ON GC.Id = ACAO.GrupoCausa_Id                      " +
+            //            "\n  LEFT JOIN Pa_Planejamento PLANE ON PLANE.Id = ACAO.Panejamento_Id "+ 
+            //            "\n LEFT JOIN Pa_Status STA ON STA.Id = ACAO.[Status]; ";
 
-            var dataInicio = Guard.ParseDateToSqlV2(filtro.dataInicio).ToString("yyyyMMdd");
-            var dataFim = Guard.ParseDateToSqlV2(filtro.dataFim).ToString("yyyyMMdd");
+            var query = "SELECT Acao.Id, Sta.Name AS [Status], ISNULL(Quem.Name, 'Não Atribuido') AS Responsavel" +
+                        "--, cast(Acao.QuandoInicio As Date) AS QuandoInicio" +
+                        "--, cast(Acao.QuandoFim As Date) AS QuandoFim" +
+                        "\n FROM Pa_Acao AS Acao                            " +
+                        "\n LEFT JOIN Pa_Status Sta ON Sta.Id = Acao.Status " +
+                        "\n LEFT JOIN Pa_Quem Quem ON Quem.Id = Acao.Quem_Id";
 
-            //var dataInicio = DateTime.ParseExact(filtro.dataInicio, "yyyyMMdd", CultureInfo.InvariantCulture); 
-            //var dataFim = DateTime.ParseExact(filtro.dataFim, "yyyyMMdd", CultureInfo.InvariantCulture).ToString();
+            dynamic results = QueryNinja(db, query);
 
-            var where = " where QuandoInicio >= '" + dataInicio + " 00:00' and QuandoFim <= '" + dataFim + " 23:59' ";
-            //O Where nao esta funcionando.;.;...
-            where = string.Empty;
-            var orderby1 = " order by 1";
-
-            var indicadores = Pa_Qualquer_Name.Listar(categoria);
-
-            var status = Pa_Qualquer_Name.Listar(series);
-
-            var sql1 = "select distinct(" + categoria + ") as valor from pa_acao a left join Pa_acaoXQuem xq on xq.Acao_Id = a.Id left join Pa_Quem q on q.id = xq.Quem_Id";
-            sql1 += where;
-            sql1 += orderby1;
-
-            var sql2 = "select distinct(" + series + ") as valor from pa_acao";
-            sql2 += where;
-            sql2 += orderby1;
-
-            var ret1 = Pa_BaseObject.ListarGenerico<RetornoInt>(sql1);
-            var ret2 = Pa_BaseObject.ListarGenerico<RetornoInt>(sql2);
-            var retorno = new List<RetornoGrafico1>();
-
-            foreach (var i in ret1)
-            {
-                var temp1 = new RetornoGrafico1() { Indicador_Id = i.valor, Indicador = indicadores.FirstOrDefault(r => r.Id == i.valor)?.Name };
-                if (temp1 == null)
-                    continue;
-                temp1.Status = new List<Status>();
-
-                foreach (var b in ret2)
-                {
-                    var statusObj = new Status() { Id = b.valor, Name = status.FirstOrDefault(r => r.Id == b.valor).Name };
-                    statusObj.QuantidadeAcoes = new List<int>();
-
-                    foreach (var ii in ret1)
-                    {
-                        var sqlQtd = "select count(1) as valor from Pa_Acao a left join Pa_acaoXQuem xq on xq.Acao_Id = a.Id left join Pa_Quem q on q.id = xq.Quem_Id";
-                        sqlQtd += where;
-                        sqlQtd += " and " + categoria + " = " + ii.valor + " and " + series + " = " + b.valor;
-                        sqlQtd += orderby1;
-
-                        var qtd = Pa_BaseObject.ListarGenerico<RetornoInt>(sqlQtd).FirstOrDefault().valor;
-                        statusObj.QuantidadeAcoes.Add(qtd);
-                    }
-                    temp1.Status.Add(statusObj);
-                }
-                retorno.Add(temp1);
-            }
-            return retorno;
+            return results;
+            //return retorno;
         }
 
         //Retorna apenas Series e Dados
         [HttpPost]
         [Route("GraficoPie")]
-        public List<GraficoPieSet> GraficoPie([FromBody] filtros filtro)
+        public List<JObject> GraficoPie([FromBody] filtros filtro)
         {
-            var dataInicio = Guard.ParseDateToSqlV2(filtro.dataInicio).ToString("yyyyMMdd");
-            var dataFim = Guard.ParseDateToSqlV2(filtro.dataFim).ToString("yyyyMMdd");
-            var listStatus = Pa_Status.Listar();
-            var total = Pa_BaseObject.ListarGenerico<RetornoInt>("Select count(*) from Pa_Acao").FirstOrDefault().valor;
-            var retorno = new List<GraficoPieSet>();
-            foreach (var i in listStatus)
-            {
-                var queryCount = "select count(id) as valor from pa_acao where [status] = " + i.Id + "and QuandoInicio <= '" + dataFim + "' and QuandoFim <= '" + dataFim + "' "; ;
-                var count = Pa_BaseObject.ListarGenerico<RetornoInt>(queryCount).FirstOrDefault().valor;
-                retorno.Add(new GraficoPieSet() { name = i.Name, y = count });
-            }
+            var dataInicio = Guard.ParseDateToSqlV2(filtro.dataInicio, Guard.CultureCurrent.BR).ToString("yyyyMMdd");
+            var dataFim = Guard.ParseDateToSqlV2(filtro.dataFim, Guard.CultureCurrent.BR).ToString("yyyyMMdd");
+            var query = "SELECT COUNT(s.id) AS y, s.Name AS name" +
+                        "\n FROM pa_acao acao INNER JOIN pa_status s ON acao.Status = s.Id" +
+                        "\n WHERE acao.AddDate BETWEEN ('" + dataInicio + " 00:00:00') AND('" + dataFim + "  23:59:59')" +
+                        "\n GROUP BY s.Id, s.Name";
+            dynamic resultPie = QueryNinja(db, query);
 
-            return retorno;
+            return resultPie;
         }
 
         [HttpPost]
@@ -110,7 +77,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         {
             dynamic teste = form;
 
-            var query = "SELECT DATEPART(mm,QuandoInicio) as Mes, Count(id) as Quantidade FROM [Pa_Acao] "+ 
+            var query = "SELECT DATEPART(mm,QuandoInicio) as Mes, Count(id) as Quantidade FROM [Pa_Acao] " +
                 //"\n where [Status] not in (4,3) "+
                 "\n group by  DATEPART(mm,QuandoInicio)";
 

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 namespace PlanoDeAcaoMVC.Controllers
 {
     //[CustomAuthorizeAttribute]
+    [IntegraSgq]
     public class Pa_PlanejamentoController : Controller
     {
         public Pa_PlanejamentoController()
@@ -23,12 +24,15 @@ namespace PlanoDeAcaoMVC.Controllers
             ViewBag.Coordenacao = Pa_Coordenacao.Listar();
             ViewBag.Missao = Pa_Missao.Listar();
             ViewBag.Visao = Pa_Visao.Listar();
-            ViewBag.Quem = Pa_Quem.Listar();
+            //ViewBag.Quem = Pa_Quem.Listar();
             ViewBag.TemaAssunto = Pa_TemaAssunto.Listar();
             ViewBag.IndicadoresDeProjeto = Pa_IndicadoresDeProjeto.Listar();
             ViewBag.Iniciativa = Pa_Iniciativas.Listar();
             ViewBag.ObjetivoGerencial = Pa_ObjetivoGeral.Listar();
             ViewBag.UnidadeMedida = Pa_UnidadeMedida.Listar();
+
+            if (ViewBag.Quem == null)
+                ViewBag.Quem = Pa_Quem.Listar();
         }
 
         // GET: Pa_Planejamento
@@ -50,6 +54,8 @@ namespace PlanoDeAcaoMVC.Controllers
             if (id > 0)
             {
                 var model = Pa_Planejamento.GetTatico(id.GetValueOrDefault());
+                if (model == null)
+                    model = Pa_Planejamento.GetEstrategico(id.GetValueOrDefault());
                 if (model != null)
                     return PartialView("Details", model);
             }
