@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -310,6 +310,7 @@
     <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\FtaApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\VerificacaoTipificacaoApiController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\VisaoGeralDaAreaCabecalhoApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\ApontamentosDiariosApiController.cs" />
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
@@ -1393,6 +1394,7 @@
     <Content Include="Views\Reports\CorrectiveActionReportDetails.cshtml" />
     <Content Include="Views\RelatoriosSgq\VerificacaoTipificacao.cshtml" />
     <Content Include="Views\RelatoriosSgq\_VerificacaoTipificacaoEdit.cshtml" />
+    <Content Include="Views\RelatoriosSgq\VisaoGeralDaAreaCabecalho.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1443,10 +1445,6 @@
       <Project>{9F15CCA3-EC01-46B6-91EC-3F408E7417BC}</Project>
       <Name>PlanoAcaoCore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlanoAcaoEF\PlanoAcaoEF.csproj">
-      <Project>{2901B555-2F1A-4B5A-BE9D-1D50844E0F2A}</Project>
-      <Name>PlanoAcaoEF</Name>
-    </ProjectReference>
     <ProjectReference Include="..\YTOARA_DOMINIO\YTOARA_DOMINIO.csproj">
       <Project>{02cfb056-37ce-40f2-8790-0d47bc6d2b59}</Project>
       <Name>YTOARA_DOMINIO</Name>
@@ -1478,11 +1476,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>false</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:57506/</IISUrl>
+          <IISUrl>http://localhost:8091/SgqSystem</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
