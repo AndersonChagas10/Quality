@@ -196,41 +196,10 @@ namespace SgqSystem.Mail
                 foreach (var i in ListaDeMail.Take(3).ToList())
                 {
                     i.To = mailTo;
-                    Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), emailFrom, emailPass, emailSmtp, emailPort, emailSSL, SendCompletedCallbackSgq, true));
+                    Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), GlobalConfig.emailFrom, GlobalConfig.emailPass, GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true));
+                    //Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), emailFrom, emailPass, emailSmtp, emailPort, emailSSL, SendCompletedCallbackSgq, true));
                 }
         }
-
-        //private static EmailContent CreateMailUSAFromCOrrectiveAction(string mailTo)
-        //{
-        //    var testeMail = new EmailContent()
-        //    {
-        //        AddDate = DateTime.Now,
-        //        IsBodyHtml = true,
-        //        Subject = "teste v2",
-        //        To = mailTo,
-        //        Project = "SGQApp"
-        //    };
-        //    try
-        //    {
-        //        using (var db = new SgqDbDevEntities())
-        //        {
-        //            using (var controller = new CorrectActApiController())
-        //            {
-        //                var id = db.CorrectiveAction.OrderByDescending(r => r.Id).FirstOrDefault().Id;
-        //                var model = controller.GetCorrectiveActionById(id);
-        //                testeMail.Body = model.SendMeByMail;
-        //            }
-        //            db.EmailContent.Add(testeMail);
-        //            db.SaveChanges();
-        //        }
-        //        return testeMail;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        new CreateLog(new Exception("Erro no metodo [CreateMailUSAFromCOrrectiveAction]", ex), testeMail);
-        //        throw ex;
-        //    }
-        //}
 
         public static void SendCompletedCallbackSgq(object sender, AsyncCompletedEventArgs e)
         {
@@ -307,6 +276,38 @@ namespace SgqSystem.Mail
             }
         }
 
+        //private static EmailContent CreateMailUSAFromCOrrectiveAction(string mailTo)
+        //{
+        //    var testeMail = new EmailContent()
+        //    {
+        //        AddDate = DateTime.Now,
+        //        IsBodyHtml = true,
+        //        Subject = "teste v2",
+        //        To = mailTo,
+        //        Project = "SGQApp"
+        //    };
+        //    try
+        //    {
+        //        using (var db = new SgqDbDevEntities())
+        //        {
+        //            using (var controller = new CorrectActApiController())
+        //            {
+        //                var id = db.CorrectiveAction.OrderByDescending(r => r.Id).FirstOrDefault().Id;
+        //                var model = controller.GetCorrectiveActionById(id);
+        //                testeMail.Body = model.SendMeByMail;
+        //            }
+        //            db.EmailContent.Add(testeMail);
+        //            db.SaveChanges();
+        //        }
+        //        return testeMail;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        new CreateLog(new Exception("Erro no metodo [CreateMailUSAFromCOrrectiveAction]", ex), testeMail);
+        //        throw ex;
+        //    }
+        //}
+        
         #endregion
 
         private static string RemoveEspacos(string deviationMessage)
