@@ -17,8 +17,6 @@
     var urlFtaGet = Url.Action("GetUrl", "api/Fta");
 
     var UnidadeUsuario = ViewBag.UnidadeUsuario;
-
-
 }
 
 <style>
@@ -575,6 +573,8 @@
                     },
                 }],
                 yAxis: [{ // Primary yAxis
+                    min: 0,
+                    max: 100,
                     labels: {
                         format: '{value} %',
                         style: {
@@ -693,6 +693,8 @@
                     },
                 }],
                 yAxis: [{
+                    min: 0,
+                    max: 100,
                     labels: {
                         format: '{value} %',
                         style: {

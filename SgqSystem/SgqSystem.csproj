@@ -310,6 +310,7 @@
     <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\FtaApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\VerificacaoTipificacaoApiController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\VisaoGeralDaAreaCabecalhoApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\ApontamentosDiariosApiController.cs" />
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
@@ -1393,6 +1394,7 @@
     <Content Include="Views\Reports\CorrectiveActionReportDetails.cshtml" />
     <Content Include="Views\RelatoriosSgq\VerificacaoTipificacao.cshtml" />
     <Content Include="Views\RelatoriosSgq\_VerificacaoTipificacaoEdit.cshtml" />
+    <Content Include="Views\RelatoriosSgq\VisaoGeralDaAreaCabecalho.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

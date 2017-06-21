@@ -139,6 +139,12 @@ namespace SgqSystem.Controllers
             return View(form);
         }
 
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult VisaoGeralDaAreaCabecalho()
+        {
+            return View(form);
+        }
+
         [FormularioPesquisa(filtraUnidadeDoUsuario = true, parLevel1e2 = true)]
         public ActionResult CartasCep()
         {
