@@ -110,7 +110,9 @@
                                             <div class="col-md-10">
                                                 <select id="NBR" name="NBR" class="form-control valid">
                                                     <option value="-1">@Resources.Resource.select</option>
-                                                    <option>1</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
                                                     
                                                 </select>
 
@@ -212,8 +214,8 @@
     });
 
     $('#HorasTrabalhadasPorDia, #QtdadeMediaKgRecProdDia').on('input', function () {
-        $('#QtdadeMediaKgRecProdHora').val(Math.ceil($('#QtdadeMediaKgRecProdDia').val() / $('#HorasTrabalhadasPorDia').val()));
-        $('#QtdadeMediaKgRecProdHoraHidden').val(Math.ceil($('#QtdadeMediaKgRecProdDia').val() / $('#HorasTrabalhadasPorDia').val()));
+        $('#QtdadeMediaKgRecProdHora').val(Math.round(($('#QtdadeMediaKgRecProdDia').val() / $('#HorasTrabalhadasPorDia').val())));
+        $('#QtdadeMediaKgRecProdHoraHidden').val(Math.round(($('#QtdadeMediaKgRecProdDia').val() / $('#HorasTrabalhadasPorDia').val())));
     });
 
     $('#QtdadeMediaKgRecProdHora, #NBR').on('input', function () {
@@ -229,15 +231,17 @@
     });
 
     $('#QtadeTrabEsteiraRecortes, #TotalKgAvaliaHoraProd').on('input', function () {
-        $('#TotalAvaliaColaborEsteirHoraProd').val(Math.ceil($('#TotalKgAvaliaHoraProd').val() / $('#QtadeTrabEsteiraRecortes').val()));
-        $('#TotalAvaliaColaborEsteirHoraProdHidden').val(Math.ceil($('#TotalKgAvaliaHoraProd').val() / $('#QtadeTrabEsteiraRecortes').val()));
+        $('#TotalAvaliaColaborEsteirHoraProd').val(($('#TotalKgAvaliaHoraProd').val() / $('#QtadeTrabEsteiraRecortes').val()));
+        $('#TotalAvaliaColaborEsteirHoraProdHidden').val(($('#TotalKgAvaliaHoraProd').val() / $('#QtadeTrabEsteiraRecortes').val()));
     });
 
+
     $('#TotalAvaliaColaborEsteirHoraProd, #TamanhoAmostra').on('input', function () {
-        $('#TotalAmostraAvaliaColabEsteiraHoraProd').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
-        $('#TotalAmostraAvaliaColabEsteiraHoraProdHidden').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
-        $('#Amostras').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val() * $('#TotalAvaliaColaborEsteirHoraProd').val()));
-        $('#amostraHidden').val(Math.ceil($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val()));
+        var resultadoSeiLaDoQue = ($('#TotalAvaliaColaborEsteirHoraProd').val() / $('#TamanhoAmostra').val());
+        $('#TotalAmostraAvaliaColabEsteiraHoraProd').val(Math.round(resultadoSeiLaDoQue));
+        $('#TotalAmostraAvaliaColabEsteiraHoraProdHidden').val(Math.round(resultadoSeiLaDoQue));
+        $('#Amostras').val((Math.round(resultadoSeiLaDoQue)) * $('#QtadeTrabEsteiraRecortes').val());
+        $('#amostraHidden').val(resultadoSeiLaDoQue);
     });
 
     $('#btnTeste').click(function (e) {
