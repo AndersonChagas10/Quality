@@ -162,6 +162,40 @@ namespace DTO.Helpers
             return _dtvalue;
         }
 
+        public enum CultureCurrent
+        {
+            BR,
+            EUA,
+        };
+
+        public static DateTime ParseDateToSqlV2(string date, CultureCurrent culture)
+        {
+            //if (string.IsNullOrEmpty(date))
+            //    return DateTime.Now;
+
+            //var _dtvalue = DateTime.Now;
+            ////if (GlobalConfig.Brasil)
+            //DateTime.TryParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
+            ////else if (GlobalConfig.Eua)
+            //if (_dtvalue == DateTime.MinValue)
+            //    DateTime.TryParseExact(date, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
+
+            //return _dtvalue;
+
+            if (string.IsNullOrEmpty(date))
+                return DateTime.Now;
+
+            var _dtvalue = DateTime.Now;
+
+            if (culture == CultureCurrent.BR)
+                DateTime.TryParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
+
+            if (culture == CultureCurrent.EUA)
+                DateTime.TryParseExact(date, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
+
+            return _dtvalue;
+        }
+
         public static DateTime ParseDateToSqlV2(string date, string format)
         {
             if (string.IsNullOrEmpty(date))

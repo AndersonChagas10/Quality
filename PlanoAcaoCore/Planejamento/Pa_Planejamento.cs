@@ -50,7 +50,7 @@ namespace PlanoAcaoCore
 
         public int? Estrategico_Id { get; set; }
 
-        public int? IsFta { get; set; }
+        public bool? IsFta { get; set; }
 
         #endregion
 
@@ -70,6 +70,9 @@ namespace PlanoAcaoCore
 
         [Display(Name = "Indicadores do Projeto / Iniciativa")]
         public int IndicadoresDeProjeto_Id { get; set; }
+
+      
+
         public string IndicadoresDeProjeto { get; set; }
 
         [Display(Name = "Objetivo Gerencial")]
@@ -319,6 +322,11 @@ namespace PlanoAcaoCore
             return GetGenerico<Pa_Planejamento>(query + " WHERE Pl.Tatico_Id = " + Id);
         }
 
+        public static Pa_Planejamento GetEstrategico(int Id)
+        {
+            return GetGenerico<Pa_Planejamento>(query + " WHERE Pl.Id = " + Id);
+        }
+
         public static List<Pa_Planejamento> GetPlanejamentoAcao()
         {
             var retorno = new List<Pa_Planejamento>();
@@ -326,7 +334,7 @@ namespace PlanoAcaoCore
             var acoes = Pa_Acao.Listar();
             var remover = new List<int>();
 
-
+            
             foreach (var i in planejamentos)
             {
                 //if(i.Estrategico_Id.GetValueOrDefault() >0)
