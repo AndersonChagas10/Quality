@@ -1157,22 +1157,28 @@
                         acaoCorrentId = data.Acao.Id;
                         //Clicked(isTaticoClicked, isNovaAcao);
 
+                        if (!(acaoCorrentId > 0)) { planejamentoCorrentId = data.Id }
+
                         $('#modalLindo').modal();
                         $('#modalLindo').find('.modal-body').empty();
                         $('#Header').html("Detalhes Gerais do Planejamento");
                         $('#modalLindo').find('.modal-footer button').hide();
 
-                        $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
-                            $('#modalLindo').find('.modal-body').append(r);
-                            //$('#NovaAcao').show();
-                            //$('#NovaAcao').click();                            
-                        });
+                        //if (planejamentoCorrentId > 0) {
+                            $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
+                                $('#modalLindo').find('.modal-body').append(r);
+                                //$('#NovaAcao').show();
+                                //$('#NovaAcao').click();                            
+                            });
+                        //}
 
-                        $.get(AcaoDetalhes, { id: acaoCorrentId }, function (r) {
-                            $('#modalLindo').find('.modal-body').append(r);
-                            //$('#NovaAcao').show();
-                            //$('#NovaAcao').click();                            
-                        });
+                        if (acaoCorrentId > 0) {
+                            $.get(AcaoDetalhes, { id: acaoCorrentId }, function (r) {
+                                $('#modalLindo').find('.modal-body').append(r);
+                                //$('#NovaAcao').show();
+                                //$('#NovaAcao').click();                            
+                            });
+                        }
 
                     });
 

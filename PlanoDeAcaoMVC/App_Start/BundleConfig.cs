@@ -31,7 +31,8 @@ namespace PlanoDeAcaoMVC
 
             //HighCharts
             bundles.Add(new ScriptBundle("~/bundles/hc")
-                .Include("~/Scripts/highcharts/4.2.0/highcharts.js")
+                .Include("~/Scripts/highcharts/4.2.0/highcharts.js",
+                "~/Scripts/highcharts/4.2.0/modules/no-data-to-display.src.js")
             );
 
             bundles.Add(new StyleBundle("~/bundles/hcstyle")
@@ -95,6 +96,21 @@ namespace PlanoDeAcaoMVC
                   "~/Content/css/select2.min.css"));
 
             #endregion
+
+            #region DateRangePicker
+
+            bundles.Add(new StyleBundle("~/Content/DatePikerContentCss").Include(
+                 "~/Content/daterangepicker.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/DatePikerContent").Include(
+                  //"~/Scripts/moment.min.js",
+                  //"~/Scripts/moment-with-locales.min.js",   
+                  "~/Scripts/inputmask/jquery.inputmask.bundle.js",
+                  "~/Scripts/daterangepicker.js",
+                  "~/Scripts/DatePikerReady.js"));
+
+            #endregion
+
         }
     }
 }
