@@ -1,15 +1,12 @@
 ﻿using AutoMapper;
-using DTO;
 using DTO.DTO;
 using Helper;
+using PlanoAcaoCore;
 using PlanoAcaoEF;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity.Validation;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PlanoDeAcaoMVC.PaMail
 {
@@ -23,26 +20,28 @@ namespace PlanoDeAcaoMVC.PaMail
 
             try
             {
-                var emailFrom = "celsogea@hotmail.com";
-                var emailPass = "Thebost1";
-                var emailSmtp = "smtp.live.com";
-                var emailPort = 587;
-                var emailSSL = true;
-
-                //var emailFrom = "celsogea@hotmail.com";
-                //var emailPass = "Thebost1";
-                //var emailSmtp = "smtp.live.com";
-                //var emailPort = 587;
-                //var emailSSL = true;
-
                 using (var db = new PlanoDeAcaoEntities())
                 {
                     SaveEmailContenteEF(email, db);
-                    MailSender.SendMail(Mapper.Map<EmailContentDTO>(email), emailFrom, emailPass, emailSmtp, emailPort, emailSSL, SendCompletedCallbackPA, true);
+                    MailSender.SendMail(Mapper.Map<EmailContentDTO>(email), Conn.emailFrom, Conn.emailPass, Conn.emailSmtp, Conn.emailPort, Conn.emailSSL, SendCompletedCallbackPA, true);
                 }
             }
             catch (Exception ex)
             {
+                using (var db = new PlanoDeAcaoEntities())
+                {
+                    db.Configuration.ValidateOnSaveEnabled = false;
+                    email.SendStatus = ex.Message;
+                    email.AlterDate = DateTime.Now;
+                    email.SendStatus = "Fail";
+
+                    var entry = db.Entry(email);
+                    entry.State = System.Data.Entity.EntityState.Modified;
+                    entry.Property(r => r.SendStatus).IsModified = true;
+                    entry.Property(r => r.AlterDate).IsModified = true;
+                    entry.Property(r => r.SendDate).IsModified = true;
+                    db.SaveChanges();
+                }
                 //new CreateLog(ex, teste);
                 //throw ex;
             }
@@ -68,7 +67,7 @@ namespace PlanoDeAcaoMVC.PaMail
             }
         }
 
-        public  static void SendCompletedCallbackPA(object sender, AsyncCompletedEventArgs e)
+        public static void SendCompletedCallbackPA(object sender, AsyncCompletedEventArgs e)
         {
             try
             {

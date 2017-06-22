@@ -2,10 +2,12 @@
 using DTO.DTO;
 using DTO.DTO.Params;
 using DTO.Helpers;
+using Newtonsoft.Json.Linq;
 using PlanoAcaoCore;
 using PlanoAcaoCore.Acao;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -40,7 +42,6 @@ namespace PlanoDeAcaoMVC.Controllers
         }
 
         #region Ações
-
 
         /// <summary>
         /// Index
@@ -165,42 +166,13 @@ namespace PlanoDeAcaoMVC.Controllers
         public ActionResult NewFTA(FTA fta)
         {
             #region MOCK
-
-            /*Recebe do AJAX*/
-            //Guard.ParseDateToSqlV2(fta._DataInicioFTA);
             fta._DataInicioFTA = Guard.ParseDateToSqlV2(fta._DataInicioFTA).ToShortDateString();
             fta._DataFimFTA = Guard.ParseDateToSqlV2(fta._DataFimFTA).ToShortDateString();
-            //fta.MetaFTA = 40;
-            //fta.PercentualNCFTA = 60;
-            //fta.ReincidenciaDesvioFTA = 50;
-            //fta.Level1Id = 8;
-            //fta.Supervisor_Id = 8;
-            //fta.Unidade_Id = 1;
-            //fta.Departamento_Id = 1;
-
-            /*Preenche na tela*/
-            //fta.ContramedidaGenerica_Id = 1;
-            //fta.ContramedidaEspecifica = "ContramedidaEspecifica TESTE";
-            //fta.Quem_Id = 5;
-            //fta.QuandoInicio = DateTime.Now;
-            //fta.QuandoFim = DateTime.Now;
-            //fta.ComoPontosimportantes = "ComoPontosimportantes TESTE";
-
             #endregion
 
             ViewBag.PlanejamentosComFTA = db.Pa_Planejamento.FirstOrDefault(r=>r.IsFta == true).Id;
-
             fta.ValidaFTA();
-
             NovoFtaModelParaSgq(fta);
-
-            //fta._Unidade = "Corporativo";
-            //fta._Departamento = "Curral";
-            //fta._Supervisor = "camilaprata-mtz";
-            //fta._Level1 = "(%) NC Expedição";
-            //fta.MetaFTA = 5;
-            //fta.ReincidenciaDesvioFTA = 15;
-            //fta.PercentualNCFTA = 15;
 
             return View(fta);
         }
@@ -232,6 +204,17 @@ namespace PlanoDeAcaoMVC.Controllers
                     fta._Unidade = "Corporativo";
                 }
 
+                var dtInit = Guard.ParseDateToSqlV2(fta._DataInicioFTA).ToString("yyyyMMdd");
+                var dtEnd = Guard.ParseDateToSqlV2(fta._DataFimFTA).ToString("yyyyMMdd");
+
+                var metaQuery = "SELECT ROUND(CASE" +
+    "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = "+ level1 .Id + " AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) AND G.AddDate <= '"+ dtEnd + " 23:59:59') > 0 THEN  " +
+    "\n     (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = " + level1.Id + "  AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) AND G.AddDate <= '" + dtEnd + " 23:59:59' ORDER BY G.ParCompany_Id DESC, AddDate DESC)" +
+    "\n     ELSE    " +
+    "\n     (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = " + level1.Id + "  AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)  " +
+    "\n  END,2) " +
+    "\n  AS META";
+
                 fta._Level1 = level1.Name;
                 fta._Departamento = parDepartment.Name;
                 fta.Departamento_Id = parDepartment.Id;
@@ -242,6 +225,9 @@ namespace PlanoDeAcaoMVC.Controllers
                 fta.PercentualNCFTA = level2.Name + " > " + level3.Name + ": " + fta.PercentualNCFTA + " %";
                 fta.ReincidenciaDesvioFTA = level2.Name + " > " + level3.Name + ": " + fta.ReincidenciaDesvioFTA;
                 fta._Supervisor = usersgq.Name;
+                dynamic meta = dbFActory.QueryNinjaADO(metaQuery).FirstOrDefault();
+                fta.MetaFTA = meta.META;
+
 
             }
         }

@@ -1,8 +1,6 @@
 ﻿using DTO.Helpers;
 using Newtonsoft.Json.Linq;
-using PlanoAcaoCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Http;
 
 namespace PlanoDeAcaoMVC.Controllers.Api
@@ -10,98 +8,85 @@ namespace PlanoDeAcaoMVC.Controllers.Api
     [RoutePrefix("api/Relatorios")]
     public class ApiRelatoriosController : BaseApiController
     {
-        PlanoAcaoEF.PlanoDeAcaoEntities db;
+
+        private PlanoAcaoEF.PlanoDeAcaoEntities db;
+
         public ApiRelatoriosController()
         {
             db = new PlanoAcaoEF.PlanoDeAcaoEntities();
             db.Configuration.LazyLoadingEnabled = false;
             db.Configuration.AutoDetectChangesEnabled = false;
         }
+        
 
         //Retorna Categorias Series e Dados
         [HttpPost]
         [Route("GetGrafico")]
-        public List<RetornoGrafico1> GetGrafico([FromBody] filtros filtro)
+        public List<JObject> GetGrafico(JObject filtro)
         {
-            var categoria = filtro.categoria;
-            //var series = filtro.serie;
-            var series = "[Status]";
-            //var filtroCategoria = "";
+            string dtInit;
+            string dtFim;
+            GetParamsPeloFiltro(filtro, out dtInit, out dtFim);
 
-            var dataInicio = Guard.ParseDateToSqlV2(filtro.dataInicio).ToString("yyyyMMdd");
-            var dataFim = Guard.ParseDateToSqlV2(filtro.dataFim).ToString("yyyyMMdd");
+            var query = "SELECT Acao.Id, Sta.Name AS[Status]," +
+            "\n  ISNULL(Quem.Name, 'Não possui Responsável') AS Responsavel," +
+            "\n  ISNULL(ContraMedGen.ContramedidaGenerica, 'Não possui Contramedida Genérica') AS 'Contramedida Genérica'," +
+            "\n  ISNULL(CausaGen.CausaGenerica, 'Não possui Causa Genérica') AS 'Causa Genérica'," +
+            "\n  ISNULL(GrpCausa.GrupoCausa, 'Não possui Grupo Causa') AS 'Grupo Causa'," +
+            "\n  ISNULL(Un.Description, 'Corporativo') AS 'Unidade'," +
+            "\n  ISNULL(IndicDir.Name, 'Não possui Indicadores Diretriz') AS 'Indicadores Diretriz'," +
+            "\n  ISNULL(DiretObj.Name, 'Não possui Diretriz / Objetivo') AS 'Diretriz / Objetivo'," +
+            "\n  ISNULL(Diretor.Name, 'Não possui Diretoria') AS 'Diretoria'," +
+            "\n  ISNULL(Dimens.Name, 'Não possui Dimensão') AS 'Dimensão'," +
+            "\n  ISNULL(Gere.Name, 'Não possui Gerência') AS 'Gerência'," +
+            "\n  ISNULL(Coord.Name, 'Não possui Coordenação') AS 'Coordenação'" +
+            "\n FROM Pa_Acao AS Acao" +
+            "\n LEFT JOIN Pa_Status Sta ON Sta.Id = Acao.Status" +
+            "\n LEFT JOIN Pa_Quem Quem ON Quem.Id = Acao.Quem_Id" +
+            "\n LEFT JOIN Pa_ContramedidaGenerica ContraMedGen ON ContraMedGen.Id = Acao.ContramedidaGenerica_Id" +
+            "\n LEFT JOIN Pa_CausaGenerica CausaGen ON CausaGen.Id = Acao.CausaGenerica_Id" +
+            "\n LEFT JOIN Pa_GrupoCausa GrpCausa ON GrpCausa.Id = Acao.GrupoCausa_Id" +
+            "\n LEFT JOIN Pa_Unidade Un ON Un.Id = Acao.Unidade_Id" +
+            "\n LEFT JOIN Pa_Planejamento PlanTatico ON PlanTatico.Id = Acao.Panejamento_Id" +
+            "\n LEFT JOIN Pa_Planejamento PlanEstrategy ON PlanEstrategy.Id = PlanTatico.Estrategico_Id" +
+            "\n LEFT JOIN Pa_IndicadoresDiretriz IndicDir ON IndicDir.Id = PlanEstrategy.IndicadoresDiretriz_Id" +
+            "\n LEFT JOIN Pa_Objetivo DiretObj ON DiretObj.Id = PlanEstrategy.Objetivo_Id" +
+            "\n LEFT JOIN Pa_Diretoria Diretor ON Diretor.Id = PlanEstrategy.Diretoria_Id" +
+            "\n LEFT JOIN Pa_Dimensao Dimens ON Dimens.Id = PlanEstrategy.Dimensao_Id" +
+            "\n LEFT JOIN Pa_Gerencia Gere ON Gere.Id = PlanTatico.Gerencia_Id" +
+            "\n LEFT JOIN Pa_Coordenacao Coord ON Coord.Id = PlanTatico.Coordenacao_Id" +
+            "\n WHERE Acao.AddDate BETWEEN ('" + dtInit + "') AND('" + dtFim + "')";
 
-            //var dataInicio = DateTime.ParseExact(filtro.dataInicio, "yyyyMMdd", CultureInfo.InvariantCulture); 
-            //var dataFim = DateTime.ParseExact(filtro.dataFim, "yyyyMMdd", CultureInfo.InvariantCulture).ToString();
+            dynamic results = QueryNinja(db, query);
 
-            var where = " where QuandoInicio >= '" + dataInicio + " 00:00' and QuandoFim <= '" + dataFim + " 23:59' ";
-            //O Where nao esta funcionando.;.;...
-            where = string.Empty;
-            var orderby1 = " order by 1";
+            return results;
+        }
 
-            var indicadores = Pa_Qualquer_Name.Listar(categoria);
-
-            var status = Pa_Qualquer_Name.Listar(series);
-
-            var sql1 = "select distinct(" + categoria + ") as valor from pa_acao a left join Pa_acaoXQuem xq on xq.Acao_Id = a.Id left join Pa_Quem q on q.id = xq.Quem_Id";
-            sql1 += where;
-            sql1 += orderby1;
-
-            var sql2 = "select distinct(" + series + ") as valor from pa_acao";
-            sql2 += where;
-            sql2 += orderby1;
-
-            var ret1 = Pa_BaseObject.ListarGenerico<RetornoInt>(sql1);
-            var ret2 = Pa_BaseObject.ListarGenerico<RetornoInt>(sql2);
-            var retorno = new List<RetornoGrafico1>();
-
-            foreach (var i in ret1)
-            {
-                var temp1 = new RetornoGrafico1() { Indicador_Id = i.valor, Indicador = indicadores.FirstOrDefault(r => r.Id == i.valor)?.Name };
-                if (temp1 == null)
-                    continue;
-                temp1.Status = new List<Status>();
-
-                foreach (var b in ret2)
-                {
-                    var statusObj = new Status() { Id = b.valor, Name = status.FirstOrDefault(r => r.Id == b.valor).Name };
-                    statusObj.QuantidadeAcoes = new List<int>();
-
-                    foreach (var ii in ret1)
-                    {
-                        var sqlQtd = "select count(1) as valor from Pa_Acao a left join Pa_acaoXQuem xq on xq.Acao_Id = a.Id left join Pa_Quem q on q.id = xq.Quem_Id";
-                        sqlQtd += where;
-                        sqlQtd += " and " + categoria + " = " + ii.valor + " and " + series + " = " + b.valor;
-                        sqlQtd += orderby1;
-
-                        var qtd = Pa_BaseObject.ListarGenerico<RetornoInt>(sqlQtd).FirstOrDefault().valor;
-                        statusObj.QuantidadeAcoes.Add(qtd);
-                    }
-                    temp1.Status.Add(statusObj);
-                }
-                retorno.Add(temp1);
-            }
-            return retorno;
+        private void GetParamsPeloFiltro(JObject filtro, out string dtInit, out string dtFim)
+        {
+            dynamic filtroObj = filtro;
+            string startDate = filtroObj.startDate;
+            string endDate = filtroObj.endDate;
+            dtInit = Guard.ParseDateToSqlV2(startDate, Guard.CultureCurrent.BR).ToString("yyyy-MM-dd 00:00:00");
+            dtFim = Guard.ParseDateToSqlV2(endDate, Guard.CultureCurrent.BR).ToString("yyyy-MM-dd 23:59:59");
         }
 
         //Retorna apenas Series e Dados
         [HttpPost]
         [Route("GraficoPie")]
-        public List<GraficoPieSet> GraficoPie([FromBody] filtros filtro)
+        public List<JObject> GraficoPie(JObject filtro)
         {
-            var dataInicio = Guard.ParseDateToSqlV2(filtro.dataInicio).ToString("yyyyMMdd");
-            var dataFim = Guard.ParseDateToSqlV2(filtro.dataFim).ToString("yyyyMMdd");
-            var listStatus = Pa_Status.Listar();
-            var total = Pa_BaseObject.ListarGenerico<RetornoInt>("Select count(*) from Pa_Acao").FirstOrDefault().valor;
-            var retorno = new List<GraficoPieSet>();
-            foreach (var i in listStatus)
-            {
-                var queryCount = "select count(id) as valor from pa_acao where [status] = " + i.Id + "and QuandoInicio <= '" + dataFim + "' and QuandoFim <= '" + dataFim + "' "; ;
-                var count = Pa_BaseObject.ListarGenerico<RetornoInt>(queryCount).FirstOrDefault().valor;
-                retorno.Add(new GraficoPieSet() { name = i.Name, y = count });
-            }
+            string dtInit;
+            string dtFim;
+            GetParamsPeloFiltro(filtro, out dtInit, out dtFim);
 
-            return retorno;
+            var query = "SELECT COUNT(s.id) AS y, s.Name AS name" +
+                        "\n FROM pa_acao acao INNER JOIN pa_status s ON acao.Status = s.Id" +
+                        "\n WHERE acao.AddDate BETWEEN ('" + dtInit + "') AND('" + dtFim + "')" +
+                        "\n GROUP BY s.Id, s.Name";
+            dynamic resultPie = QueryNinja(db, query);
+
+            return resultPie;
         }
 
         [HttpPost]
@@ -110,7 +95,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         {
             dynamic teste = form;
 
-            var query = "SELECT DATEPART(mm,QuandoInicio) as Mes, Count(id) as Quantidade FROM [Pa_Acao] "+ 
+            var query = "SELECT DATEPART(mm,QuandoInicio) as Mes, Count(id) as Quantidade FROM [Pa_Acao] " +
                 //"\n where [Status] not in (4,3) "+
                 "\n group by  DATEPART(mm,QuandoInicio)";
 
