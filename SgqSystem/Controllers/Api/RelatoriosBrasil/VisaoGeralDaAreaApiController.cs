@@ -1248,7 +1248,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         "\n   cast(month(cast(s.mesData as date)) as varchar) as mes" +
         "\n   FROM ParStructure Reg left join ParCompanyXStructure pcs on reg.Id = pcs.ParStructure_Id" +
         "\n   left join parCompany comp on comp.id = pcs.parCompany_id left join #score s on comp.id = s.parCompany_id" +
-        "\n   where reg.id = " + item.Id+
+        "\n   left join parcompanyxusersgq pcu on pcu.ParCompany_Id = s.parCompany_id" +
+        "\n   where reg.id = " + item.Id + "and pcu.UserSgq_Id =" + form.auditorId +
         "\n   group by reg.name, reg.id, month(cast(s.mesData as date))" +
         "\n   order by reg.id, mes ";
 
@@ -1292,7 +1293,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         "\n   cast(month(cast(s.mesData as date)) as varchar) as mes" +
         "\n   FROM ParStructure Reg left join ParCompanyXStructure pcs on reg.Id = pcs.ParStructure_Id" +
         "\n   left join parCompany comp on comp.id = pcs.parCompany_id left join #score s on comp.id = s.parCompany_id" +
-        "\n   where s.ParCompany_Id = " + item.ParCompany_Id + " and s.mesData is not null" +
+        "\n   left join parcompanyxusersgq pcu on pcu.ParCompany_Id = s.parCompany_id" +
+        "\n   where s.ParCompany_Id = " + item.ParCompany_Id + "and pcu.UserSgq_Id =" + form.auditorId + " and s.mesData is not null" +
         "\n   group by s.ParCompanyName,s.parCompany_id,month(cast(s.mesData as date))" +
         "\n   order by mes ";
 

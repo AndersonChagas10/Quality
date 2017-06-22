@@ -1570,6 +1570,7 @@
         }
 
         function chamaEvolutivoRegional(){
+            enviar["auditorId"] = getCookie('webControlCookie')[0].split('=')[1];
             EasyAjax(urlGraficoEvolutivoRegional, enviar, callbackAjaxRegional, "graficoEvolutivoRegional");
         }
 
@@ -1710,6 +1711,7 @@
         }
         function GraficoEvolutivoUnidade(id) {
             enviar["Query"] = id;
+            enviar["auditorId"] = getCookie('webControlCookie')[0].split('=')[1];
             //limpa os gráficos
             var count = 0;
             while(count < 28){
