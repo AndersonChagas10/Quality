@@ -9,6 +9,9 @@
     var urlGrafico3 = Url.Action("Grafico3", "api/VisaoGeralDaArea");
     var urlGrafico4 = Url.Action("Grafico4", "api/VisaoGeralDaArea");
     var urlGrafico5 = Url.Action("Grafico5", "api/VisaoGeralDaArea");
+    var urlGraficoEvolutivoEmpresa = Url.Action("GraficoEvolutivoEmpresa", "api/VisaoGeralDaArea");
+    var urlGraficoEvolutivoRegional = Url.Action("GraficoEvolutivoRegional", "api/VisaoGeralDaArea");
+    var urlGraficoEvolutivoUnidade = Url.Action("GraficoEvolutivoUnidade", "api/VisaoGeralDaArea");
 
     var urlGraficoMonitoramento = Url.Action("GraficoMonitoramento", "api/NaoConformidade");
     var urlGraficoTarefa = Url.Action("GraficoTarefa", "api/NaoConformidade");
@@ -140,10 +143,62 @@
 <div class="page-content" style="min-height: 600px;">
 
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
-    
-    <div id="formBodyContent"  style="width:1000px; margin-left:auto; margin-right:auto; border">
+
+    <div id="formBodyContent" style="width:1000px; margin-left:auto; margin-right:auto; border">
 
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+
+        <div id="graficoEvolutivoEmpresa" style="max-height:250px;"></div>
+
+        <div class="row">
+            <div id="graficoEvolutivoRegional0" class="col-md-3"></div>
+            <div id="graficoEvolutivoRegional1" class="col-md-3"></div>
+            <div id="graficoEvolutivoRegional2" class="col-md-3"></div>
+            <div id="graficoEvolutivoRegional3" class="col-md-3"></div>
+        </div>
+
+        <div class="row">
+            <div id="graficoEvolutivoUnidade0" class="col-md-3"></div>
+            <div id="graficoEvolutivoUnidade1" class="col-md-3"></div>
+            <div id="graficoEvolutivoUnidade2" class="col-md-3"></div>
+            <div id="graficoEvolutivoUnidade3" class="col-md-3"></div>
+        </div>
+        <div class="row">
+            <div id="graficoEvolutivoUnidade4" class="col-md-3"></div>
+            <div id="graficoEvolutivoUnidade5" class="col-md-3"></div>
+            <div id="graficoEvolutivoUnidade6" class="col-md-3"></div>
+            <div id="graficoEvolutivoUnidade7" class="col-md-3"></div>
+        </div>
+        <div class="row">
+            <div id="graficoEvolutivoUnidade8" class="col-md-3"></div>
+            <div id="graficoEvolutivoUnidade9" class="col-md-3"></div>
+            <div id="graficoEvolutivoUnidade10" class="col-md-3"></div>
+            <div id="graficoEvolutivoUnidade11" class="col-md-3"></div>
+        </div>
+        <div class="row">
+            <div id="graficoEvolutivoUnidade12" class="col-md-3"></div>
+            <div id="graficoEvolutivoUnidade13" class="col-md-3"></div>
+            <div id="graficoEvolutivoUnidade14" class="col-md-3"></div>
+            <div id="graficoEvolutivoUnidade15" class="col-md-3"></div>
+        </div>
+        <div class="row">
+            <div id="graficoEvolutivoUnidade16" class="col-md-3"></div>
+            <div id="graficoEvolutivoUnidade17" class="col-md-3"></div>
+            <div id="graficoEvolutivoUnidade18" class="col-md-3"></div>
+            <div id="graficoEvolutivoUnidade19" class="col-md-3"></div>
+        </div>
+        <div class="row">
+            <div id="graficoEvolutivoUnidade20" class="col-md-3"></div>
+            <div id="graficoEvolutivoUnidade21" class="col-md-3"></div>
+            <div id="graficoEvolutivoUnidade22" class="col-md-3"></div>
+            <div id="graficoEvolutivoUnidade23" class="col-md-3"></div>
+        </div>
+        <div class="row">
+            <div id="graficoEvolutivoUnidade24" class="col-md-3"></div>
+            <div id="graficoEvolutivoUnidade25" class="col-md-3"></div>
+            <div id="graficoEvolutivoUnidade26" class="col-md-3"></div>
+            <div id="graficoEvolutivoUnidade27" class="col-md-3"></div>
+        </div>
 
         <div id="grafico1" style="max-height:250px;"></div>
 
@@ -466,6 +521,9 @@
         var urlGrafico3 = '@Html.Raw(@urlGrafico3)';
         var urlGrafico4 = '@Html.Raw(@urlGrafico4)';
         var urlGrafico5 = '@Html.Raw(@urlGrafico5)';
+        var urlGraficoEvolutivoEmpresa = '@Html.Raw(urlGraficoEvolutivoEmpresa)';
+        var urlGraficoEvolutivoRegional = '@Html.Raw(urlGraficoEvolutivoRegional)';
+        var urlGraficoEvolutivoUnidade = '@Html.Raw(urlGraficoEvolutivoUnidade)';
 
         var urlGraficoMonitoramento = @Html.Raw(Json.Encode(urlGraficoMonitoramento));
         var urlGraficoTarefa = @Html.Raw(Json.Encode(urlGraficoTarefa));
@@ -480,6 +538,7 @@
 
         function Send(toggle) {
 
+            $('#graficoEvolutivoEmpresa').empty();
             $('#grafico1').empty();
             $('#grafico2').empty();
             $('#grafico3').empty();
@@ -495,6 +554,7 @@
                 return;
             }
 
+            EasyAjax(urlGraficoEvolutivoEmpresa, enviar, CallbackGraficoEvolutivoEmpresa, "graficoEvolutivoEmpresa", toggle);
 
 
             EasyAjax(urlGrafico1, enviar, CallbackGrafico1, "grafico1", toggle);
@@ -513,6 +573,10 @@
                 heatMapSingleCol(container, 'dadosDireita', 4, 'DESC', true);
                 scroolTable(container)
             }, "tabela1div");
+
+            EasyAjax(urlGrafico1, enviar, CallbackGraficoEvolutivoEmpresa, "graficoEvolutivoEmpresa", toggle);
+
+            chamaEvolutivoRegional();
         };
 
         function GetTabela2(paramCol, paramRow) {
@@ -523,7 +587,7 @@
             enviar["CallBackTableTituloColunas"] = function () { };
             enviar["CallBackTableBody"] = "Grafico3($(this).attr('dado3'), $(this).attr('dado1'));Grafico4($(this).attr('dado3'), $(this).attr('dado1'));";
             enviar["CallBackTableEsquerda"] = function () { };
-            enviar["Query"] = "GetTbl2"; 
+            enviar["Query"] = "GetTbl2";
             enviar["Title"] = "Indicadores por unidade";
 
             enviar["ParametroTableRow"] = [];
@@ -1354,11 +1418,11 @@
             });
 
         }
-       
+
         function requisitaDadosSGQparaGerarFta(tarefa, percentualNc, nc) {
             enviar['level3Name'] = tarefa;
-            enviar['PercentualNCFTA'] = percentualNc;   
-            enviar['ReincidenciaDesvioFTA'] = nc;   
+            enviar['PercentualNCFTA'] = percentualNc;
+            enviar['ReincidenciaDesvioFTA'] = nc;
             enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
             $.post('@Url.Action("GetUnitId","api/Fta")', enviar, function(c){
                 enviar["unitId"] = c.unitId;
@@ -1366,7 +1430,7 @@
                 RedirecionaParaFTA(enviar);
             });
             //EasyAjax(urlGetFta, enviar, RedirecionaParaFTA);
-           
+
         }
 
 
@@ -1413,10 +1477,375 @@
                 $(".loader").removeClass("loader");
             }
         });
+        var meses = new Array("@Resources.Resource.january", "@Resources.Resource.february", "@Resources.Resource.march", "@Resources.Resource.april", "@Resources.Resource.may", "@Resources.Resource.june", "@Resources.Resource.july", "@Resources.Resource.august", "@Resources.Resource.september", "@Resources.Resource.october", "@Resources.Resource.november", "@Resources.Resource.december");
+        function CallbackGraficoEvolutivoEmpresa(data) {
+            var count = 0;
+            while(count < 28){
+                $('#graficoEvolutivoUnidade'+count).empty();
+                count++;
+            }
+            var desvio = MapeiaValorParaHC(data, "DESVIO");
+            var meta = MapeiaValorParaHC(data, "ORCADO");
+            var real = MapeiaValorParaHC(data, "REAL");
+            var from = enviar.startDate.split("/");
+            meses = new Array("@Resources.Resource.january", "@Resources.Resource.february", "@Resources.Resource.march", "@Resources.Resource.april", "@Resources.Resource.may", "@Resources.Resource.june", "@Resources.Resource.july", "@Resources.Resource.august", "@Resources.Resource.september", "@Resources.Resource.october", "@Resources.Resource.november", "@Resources.Resource.december");
+            var mesesaux = [];
+            var count = 0;
+            var i = parseInt(from[1]);
+            while(count < meses.length){
+                mesesaux[count] = meses[i];
+                i++;
+                if(i == meses.length)
+                {
+                    i = 0;
+                }
+                count++;
+            }
+            //console.log(mesesaux);
+            //meses = mesesaux;
+            count = 0;
+            var desvioaux = [];
+            var metaaux = [];
+            var realaux = [];
+            while(count < meses.length)
+            {
+                if(count < (meses.length - data.length)){
+                    desvioaux[count]= 0;
+                    metaaux[count]= 0;
+                    realaux[count]= 0;
+                }
+                count++;
+            }
+            count = 0;
+            while(count < desvio.length){
+                desvioaux[desvioaux.length] = desvio[count];
+                metaaux[desvioaux.length] = meta[count];
+                realaux[desvioaux.length] = real[count];
+                count++;
+            }
+            Highcharts.chart('graficoEvolutivoEmpresa', {
+                title: {
+                    text: 'Gráfico Evolutivo por Empresa'
+                },
+                xAxis:{
+                    categories: mesesaux,
+                    crosshair: true
+                },
 
+                yAxis: {
+                    labels: {
+                        format: '{value} %',
+                        //style: {
+                        //    color: Highcharts.getOptions().colors[1]
+                        //}
+                    },
+                    title: {
+                        text: '% scorecard'
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            //enabled: true,
+                            format: '{point.y:.,0f}',
+                            style: {
+                                fontWeight: ' normal '
+                            }
+                        }
+                    }
+                },
+                credits: {
+                    enabled: false
+                },
+                series: [{
+                    name: 'Orçado',
+                    data: metaaux
+                }, {
+                    name: 'Real',
+                    data: realaux
+                }]
 
+            });
+        }
 
+        function chamaEvolutivoRegional(){
+            enviar["auditorId"] = getCookie('webControlCookie')[0].split('=')[1];
+            EasyAjax(urlGraficoEvolutivoRegional, enviar, callbackAjaxRegional, "graficoEvolutivoRegional");
+        }
 
+        function callbackAjaxRegional(data){
+            var desvio = [];
+            var meta = [];
+            var real = [];
+            var counter = 0;
+            while(counter < 4){
+                desvio[counter] = MapeiaValorParaHC(data[counter].lista, "DESVIO");
+                meta[counter] = MapeiaValorParaHC(data[counter].lista, "ORCADO");
+                real[counter] = MapeiaValorParaHC(data[counter].lista, "REAL");
+                CallbackGraficoEvolutivoRegional('graficoEvolutivoRegional'+counter,'Gráfico Evolutivo '+ data[counter].lista[0].CLASSIFIC_NEGOCIO,desvio[counter],
+                    meta[counter],real[counter], data[counter].lista[0].MACROPROCESSO);
+                counter++;
+            }
+
+        }
+
+        function CallbackGraficoEvolutivoRegional(div,titulo,desvio,meta,real,id) {
+            var desvio = desvio;
+            var meta = meta;
+            var real = real;
+            var from = enviar.startDate.split("/");
+            meses = new Array("@Resources.Resource.january", "@Resources.Resource.february", "@Resources.Resource.march", "@Resources.Resource.april", "@Resources.Resource.may", "@Resources.Resource.june", "@Resources.Resource.july", "@Resources.Resource.august", "@Resources.Resource.september", "@Resources.Resource.october", "@Resources.Resource.november", "@Resources.Resource.december");
+            var mesesaux = [];
+            var count = 0;
+            var i = (parseInt(from[1]));
+            while(count < meses.length){
+                mesesaux[count] = meses[i];
+                i++;
+                if(i == meses.length)
+                {
+                    i = 0;
+                }
+                count++;
+            }
+            count = 0;
+            var desvioaux =[];
+            var metaaux =[];
+            var realaux =[];
+            while(count < meses.length)
+            {
+                if(count < (meses.length - desvio.length))
+                    desvioaux[count]= 0;
+                if(count < (meses.length - meta.length))
+                    metaaux[count]= 0;
+                if(count < (meses.length - real.length))
+                    realaux[count]= 0;
+                count++;
+            }
+            count = 0;
+            while(count < desvio.length){
+                desvioaux[desvioaux.length] = desvio[count];
+                count++;
+            }
+            count = 0;
+            while(count < meta.length){
+                metaaux[metaaux.length] = meta[count];
+                count++;
+            }
+            count = 0;
+            while(count < desvio.length){
+                realaux[realaux.length] = real[count];
+                count++;
+            }
+            Highcharts.chart(div, {
+                title: {
+                    text: titulo,
+                    style: {
+                        fontSize: 'small'
+                    }
+                },
+
+                yAxis: [{
+                    allowDecimals: false,
+                    title: {
+                        text: '% scorecard'
+                    },
+                    opposite: true,
+                    gridLineWidth: 0
+
+                }, {
+                    allowDecimals: false,
+                    title: {
+                        text: ''
+                    },
+                    gridLineWidth: 0
+
+                }],
+                xAxis:{
+                    categories: mesesaux,
+                    crosshair: true
+                },
+                credits: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            //enabled: true,
+                            format: '{point.y:.,0f}',
+                            style: {
+                                fontWeight: ' normal '
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Orçado',
+                    data: metaaux,
+                    point: {
+                        events: {
+                            click: function () {
+                                //alert(id);
+                                GraficoEvolutivoUnidade(id);
+
+                            }
+                        }
+                    }
+                }, {
+                    name: 'Real',
+                    data: realaux,
+                    point: {
+                        events: {
+                            click: function () {
+                                //alert(id);
+                                GraficoEvolutivoUnidade(id);
+
+                            }
+                        }
+                    }
+                }]
+
+            });
+
+        }
+        function GraficoEvolutivoUnidade(id) {
+            enviar["Query"] = id;
+            enviar["auditorId"] = getCookie('webControlCookie')[0].split('=')[1];
+            //limpa os gráficos
+            var count = 0;
+            while(count < 28){
+                $('#graficoEvolutivoUnidade'+count).empty();
+                count++;
+            }
+            EasyAjax(urlGraficoEvolutivoUnidade, enviar, CallAjaxUnidade, "grafico2");
+        }
+        function CallAjaxUnidade(data)
+        {
+            console.log(data);
+            if(data.length > 0){
+                var meta = [];
+                var real = [];
+                var counter = 0;
+                while(counter < data.length){
+                    meta[counter] = MapeiaValorParaHC(data[counter].lista, "ORCADO");
+                    real[counter] = MapeiaValorParaHC(data[counter].lista, "REAL");
+                    CallbackGraficoEvolutivoUnidade('graficoEvolutivoUnidade'+counter,'Gráfico Evolutivo '+ data[counter].lista[0].CLASSIFIC_NEGOCIO,
+                        meta[counter],real[counter]);
+                    counter++;
+                }
+            }
+        }
+
+        function CallbackGraficoEvolutivoUnidade(div,titulo,meta,real) {
+            
+            var meta = meta;
+            var real = real;
+            var from = enviar.startDate.split("/");
+            meses = new Array("@Resources.Resource.january", "@Resources.Resource.february", "@Resources.Resource.march", "@Resources.Resource.april", "@Resources.Resource.may", "@Resources.Resource.june", "@Resources.Resource.july", "@Resources.Resource.august", "@Resources.Resource.september", "@Resources.Resource.october", "@Resources.Resource.november", "@Resources.Resource.december");
+            var mesesaux = [];
+            var count = 0;
+            var i = (parseInt(from[1]));
+            while(count < meses.length){
+                mesesaux[count] = meses[i];
+                i++;
+                if(i == meses.length)
+                {
+                    i = 0;
+                }
+                count++;
+            }
+            count = 0;
+            var metaaux =[];
+            var realaux =[];
+            while(count < meses.length)
+            {
+                if(count < (meses.length - meta.length))
+                    metaaux[count]= 0;
+                if(count < (meses.length - real.length))
+                    realaux[count]= 0;
+                count++;
+            }
+            count = 0;
+            while(count < meta.length){
+                metaaux[metaaux.length] = meta[count];
+                count++;
+            }
+            count = 0;
+            while(count < real.length){
+                realaux[realaux.length] = real[count];
+                count++;
+            }
+            Highcharts.chart(div, {
+                chart: {
+                    type: 'spline'
+                },
+                title: {
+                    text: titulo,
+                    style: {
+                        fontSize: 'small'
+                    }
+                },
+
+                yAxis: [{
+                    allowDecimals: false,
+                    title: {
+                        text: '% scorecard'
+                    },
+                    opposite: true,
+                    gridLineWidth: 0
+
+                }, {
+                    allowDecimals: false,
+                    title: {
+                        text: ''
+                    },
+                    gridLineWidth: 0
+
+                }],
+                xAxis:{
+                    categories: mesesaux,
+                    crosshair: true
+                },
+                credits: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            //enabled: true,
+                            format: '{point.y:.,0f}',
+                            style: {
+                                fontWeight: ' normal '
+                            }
+                        }
+                    }
+                },
+                //plotOptions: {
+                //    spline: {
+                //        lineWidth: 4,
+                //        states: {
+                //            hover: {
+                //                lineWidth: 5
+                //            }
+                //        },
+                //        marker: {
+                //            enabled: false
+                //        },
+                //    }
+                //},
+                series: [{
+                    name: 'Orçado',
+                    data: metaaux
+                }, {
+                    name: 'Real',
+                    data: realaux
+                }]
+
+            });
+
+        }
 
     </script>
 

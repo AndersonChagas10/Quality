@@ -2136,6 +2136,7 @@ namespace SgqSystem.Controllers
             public decimal DESVIO { get; set; }
             public decimal DESVIOPERCENTUAL { get; set; }
             public decimal REAL { get; set; }
+            
         }
 
         /// <summary>
