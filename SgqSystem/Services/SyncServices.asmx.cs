@@ -1998,10 +1998,14 @@ namespace SgqSystem.Services
         {
             string _WeiEvaluation2 = WeiEvaluation;
 
+            int CollectionLevel2Id_int = Int32.Parse(CollectionLevel2Id);
+
+            decimal WeiEvaluation_decimal = decimal.Parse(WeiEvaluation);
+
             using (var databaseSgq = new Dominio.SgqDbDevEntities())
             {
 
-                var collectionLevel2_obj = databaseSgq.CollectionLevel2.FirstOrDefault(r => r.Id.ToString() == CollectionLevel2Id);
+                var collectionLevel2_obj = databaseSgq.CollectionLevel2.FirstOrDefault(r => r.Id == CollectionLevel2Id_int);
 
                 var parLeve1BEA = databaseSgq.ParLevel1VariableProductionXLevel1.FirstOrDefault(r => r.ParLevel1_Id == collectionLevel2_obj.ParLevel1_Id);
 

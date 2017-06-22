@@ -193,9 +193,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 //Carta P
 
                 query1 = "" +
-                "\n DECLARE @N INT = 120--CASO X, ENTÃO 1                                                                                                   " +
-                "\n DECLARE @LimiteSuperiorEspecificacao DECIMAL(30, 5) = 0.8                                                                               " +
-                "\n DECLARE @LimiteInferiorEspecificacao DECIMAL(30, 5) = 0.2                                                                               " +
+                "\n DECLARE @N INT = 120 --CASO X, ENTÃO 1                                                                                                   " +
+                "\n DECLARE @LimiteSuperiorEspecificacao DECIMAL(30, 5) = 2.5                                                                               " +
+                "\n DECLARE @LimiteInferiorEspecificacao DECIMAL(30, 5) = 1                                                                               " +
                 "\n DECLARE @MEDIA DECIMAL(30, 5)                                                                                                           " +
                 "\n DECLARE @LimiteSuperiorControle DECIMAL(30, 5)                                                                                          " +
                 "\n DECLARE @LimiteInferiorControle DECIMAL(30, 5)                                                                                          " +
@@ -207,26 +207,46 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n DECLARE @INDICADOR INT = " + form.level1Id + "                                                                               " +
                 "\n DECLARE @MONITORAMENTO INT = " + form.level2Id + "                                                                           " +
 
+                "\n select top 1                                                                                                                 " +
+                "\n                                                                                                                              " +
+                "\n  @LimiteSuperiorEspecificacao = CASE WHEN L1.IsRuleConformity = 0 THEN PercentValue ELSE 0 END,                              " +
+                "\n  @LimiteInferiorEspecificacao = CASE WHEN L1.IsRuleConformity = 0 THEN 0 ELSE PercentValue END                               " +
+                "\n                                                                                                                              " +
+                "\n from parGoal G                                                                                                               " +
+                "\n  INNER JOIN ParLevel1 L1                                                                                                     " +
+                "\n  ON L1.Id = G.ParLevel1_Id                                                                                                   " +
+                "\n  where CAST(G.AddDate AS DATE) <= @DATA_FIM                                                                                  " +
+                "\n  AND(G.ParCompany_id = @UNIDADE OR G.ParCompany_Id is null)                                                                  " +
+                "\n  AND G.ParLevel1_Id = @INDICADOR                                                                                             " +
+                "\n  ORDER BY G.Adddate desc, G.IsActive desc, G.ParCompany_Id desc                                                              " +
+
+
                 "\n                                                                                                                                         " +
                 "\n /* Média */                                                                                                                             " +
-                "\n select @MEDIA = AVG(media.VALOR)  from                                                                                                  " +
+                "\n select @MEDIA = AVG(media.VALOR) * 100 from                                                                                                  " +
                 "\n --select @MEDIA = AVG(media.DEFEITOS)  from                                                                                             " +
                 "\n (                                                                                                                                       " +
-                "\n select sum(Defects) DEFEITOS, SUM(DEFECTS) / @N AS VALOR from CollectionLevel2                                                          " +
+                "\n select sum(WeiDefects) DEFEITOS, SUM(WeiDefects) / @N AS VALOR from CollectionLevel2                                                          " +
 
                 "\n where CAST(CollectionDate as date) BETWEEN @DATA_INI AND @DATA_FIM                                                                      " +
                 "\n AND UnitId = @UNIDADE                                                                                                                   " +
-                "\n AND ParLevel1_Id = @INDICADOR                                                                                                           " +
-                "\n AND ParLevel2_Id = @MONITORAMENTO                                                                                                       " +
-                "\n group by (CAST(CollectionDate AS DATE))                                                                                                 " +
+                "\n AND ParLevel1_Id = @INDICADOR                                                                                                           ";
+
+
+                if (form.level2Id != 0)
+                {
+                    query1 += "\n AND ParLevel2_Id = @MONITORAMENTO                                                                                         ";
+                }
+
+                query1 += "\n group by (CAST(CollectionDate AS DATE))                                                                                                 " +
 
                 "\n ) media                                                                                                                                 " +
                 "\n                                                                                                                                         " +
                 "\n --SELECT @MEDIA                                                                                                                         " +
                 "\n                                                                                                                                         " +
-                "\n SET @LimiteSuperiorControle = @MEDIA + 3 * SQRT(@MEDIA * (1 - @MEDIA) / @N)                                                             " +
+                "\n SET @LimiteSuperiorControle = @MEDIA + 3 * SQRT(@MEDIA * (100 - @MEDIA) / @N)                                                             " +
                 "\n                                                                                                                                         " +
-                "\n SET @LimiteInferiorControle = @MEDIA - 3 * SQRT(@MEDIA * (1 - @MEDIA) / @N)                                                             " +
+                "\n SET @LimiteInferiorControle = CASE WHEN @MEDIA - 3 * SQRT(@MEDIA * (100 - @MEDIA) / @N) < 0 THEN 0 ELSE @MEDIA - 3 * SQRT(@MEDIA * (100 - @MEDIA) / @N) END                                                              " +
                 "\n                                                                                                                                         " +
                 "\n --SELECT @MEDIA AS[p - bar], @UCL as UCL, @LCL as LCL, @LSE as LSE, @LIE as LIE                                                         " +
                 "\n                                                                                                                                         " +
@@ -238,13 +258,17 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n @LimiteInferiorControle as LCL,                                                                                                         " +
                 "\n @LimiteSuperiorEspecificacao as LSE,                                                                                                    " +
                 "\n @LimiteInferiorEspecificacao as LIE,                                                                                                    " +
-                "\n ISNULL(SUM(DEFECTS) / @N * 100, 0) AS VALOR                                                                                                   " +
+                "\n ISNULL(SUM(WeiDefects) / @N * 100, 0) AS VALOR                                                                                                   " +
                 "\n from CollectionLevel2                                                                                                                   " +
                 "\n where CAST(CollectionDate as date) BETWEEN @DATA_INI AND @DATA_FIM                                                                      " +
                 "\n AND UnitId = @UNIDADE                                                                                                                   " +
-                "\n AND ParLevel1_Id = @INDICADOR                                                                                                           " +
-                "\n AND ParLevel2_Id = @MONITORAMENTO                                                                                                       " +
-                "\n group by (CAST(CollectionDate AS DATE))                                                                                                 " +
+                "\n AND ParLevel1_Id = @INDICADOR                                                                                                           ";
+
+                if (form.level2Id != 0) {
+                    query1 += "\n AND ParLevel2_Id = @MONITORAMENTO                                                                                         ";
+                }
+
+                query1 += "\n group by (CAST(CollectionDate AS DATE))                                                                                       " +
                 "\n ORDER BY 1 ";
 
 
