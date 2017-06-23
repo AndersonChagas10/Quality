@@ -1,4 +1,12 @@
-﻿
+﻿  
+/*
+Retorna apenas elementos unicos do array
+*/
+function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+}
+
+
 /*API de SUM para DataTable
 
 Exemplo: 

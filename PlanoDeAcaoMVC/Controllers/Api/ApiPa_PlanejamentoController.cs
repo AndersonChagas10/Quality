@@ -37,6 +37,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             return planejamento;
         }
 
+        [HttpGet]
         [HttpPost]
         [Route("GetPlanejamentoAcao")]
         public IEnumerable<Pa_Planejamento> GetPlanejamentoAcao()
@@ -68,8 +69,8 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                         planejamento.ValorDe = NumericExtensions.CustomParseDecimal(planejamento._ValorDe).GetValueOrDefault();
                     if (!string.IsNullOrEmpty(planejamento._ValorPara))
                         planejamento.ValorPara = NumericExtensions.CustomParseDecimal(planejamento._ValorPara).GetValueOrDefault();
-                    planejamento.DataInicio = Guard.ParseDateToSqlV2(planejamento._DataInicio);
-                    planejamento.DataFim = Guard.ParseDateToSqlV2(planejamento._DataFim);
+                    planejamento.DataInicio = Guard.ParseDateToSqlV2(planejamento._DataInicio, Guard.CultureCurrent.BR);
+                    planejamento.DataFim = Guard.ParseDateToSqlV2(planejamento._DataFim, Guard.CultureCurrent.BR);
                 }
 
                 if (!planejamento.IsTatico)

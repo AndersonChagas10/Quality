@@ -592,7 +592,7 @@ namespace SgqSystem.Services
                             string sql2 = "INSERT INTO [dbo].[CollectionJson] " +
                                "([Unit_Id],[Shift],[Period],[level01_Id],[Level01CollectionDate],[level02_Id],[Evaluate],[Sample],[AuditorId],[Level02CollectionDate],[Level02HeaderJson],[Level03ResultJSon],[CorrectiveActionJson],[Reaudit],[ReauditNumber],[haveReaudit],[ReauditLevel],[haveCorrectiveAction],[Device_Id],[AppVersion],[Ambient],[IsProcessed],[Device_Mac],[AddDate],[AlterDate],[Key],[TTP]) " +
                                "VALUES " +
-                               "('" + unidadeId + "','" + shift + "','" + period + "','" + indicadorFilho_id + "',CAST(N'" + level01DataCollect + "' AS DateTime),'" + monitoramentoFilho_id + "','" + evaluate + "','" + sample + "', '" + auditorId + "',CAST(N'" + level02DataCollect + "' AS DateTime),'" + level02HeaderJSon + "','" + retornoFilho + "', '" + correctiveActionJson + "', '" + reaudit + "', '" + reauditNumber + "', '" + haveReaudit + "', '" + reauditlevel + "','" + haveCorrectiveAction + "' ,'" + deviceId + "','" + versaoApp + "','" + ambiente + "',0,'" + deviceMac + "',GETDATE(),NULL,'" + key + "',NULL) ";
+                               "('" + unidadeId + "','" + shift + "','" + period + "','" + indicadorFilho_id + "',CAST(N'" + level01DataCollect + "' AS DateTime),'" + level02Id + "','" + evaluate + "','" + sample + "', '" + auditorId + "',CAST(N'" + level02DataCollect + "' AS DateTime),'" + level02HeaderJSon + "','" + retornoFilho + "', '" + correctiveActionJson + "', '" + reaudit + "', '" + reauditNumber + "', '" + haveReaudit + "', '" + reauditlevel + "','" + haveCorrectiveAction + "' ,'" + deviceId + "','" + versaoApp + "','" + ambiente + "',0,'" + deviceMac + "',GETDATE(),NULL,'" + key + "',NULL) ";
 
                             sql2 += "SELECT @@IDENTITY AS 'Identity'";
 
@@ -2005,10 +2005,14 @@ namespace SgqSystem.Services
         {
             string _WeiEvaluation2 = WeiEvaluation;
 
+            int CollectionLevel2Id_int = Int32.Parse(CollectionLevel2Id);
+
+            decimal WeiEvaluation_decimal = decimal.Parse(WeiEvaluation);
+
             using (var databaseSgq = new Dominio.SgqDbDevEntities())
             {
 
-                var collectionLevel2_obj = databaseSgq.CollectionLevel2.FirstOrDefault(r => r.Id.ToString() == CollectionLevel2Id);
+                var collectionLevel2_obj = databaseSgq.CollectionLevel2.FirstOrDefault(r => r.Id == CollectionLevel2Id_int);
 
                 var parLeve1BEA = databaseSgq.ParLevel1VariableProductionXLevel1.FirstOrDefault(r => r.ParLevel1_Id == collectionLevel2_obj.ParLevel1_Id);
 
