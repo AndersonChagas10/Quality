@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using static SgqSystem.Controllers.RelatoriosSgqController;
 
 namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 {
@@ -18,6 +19,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
         private List<VisaoGeralDaAreaResultSet> _mock { get; set; }
         private List<VisaoGeralDaAreaResultSet> _list { get; set; }
+        private List<ResultQueryEvolutivo> _listEvol { get; set; }
+        private List<ResultQueryEvolutivo> _listEvolReg { get; set; }
+        private List<ListResultQueryEvolutivo> listaRegs { get; set; }
+        private List<ListResultQueryEvolutivo> listaUnidades { get; set; }
 
         [HttpPost]
         [Route("Grafico1")]
@@ -61,10 +66,16 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             return _mock;
         }
 
-        public static string sqlBase(DataCarrierFormulario form)
+        public static string sqlBase(DataCarrierFormulario form, bool evolutivo =false)
         {
+            DateTime dtIni = form._dataInicio;
+            if (evolutivo)
+            {
+                var year = dtIni.Year - 1;
+                dtIni = new DateTime(year, dtIni.Month, form._dataFim.Day);
+            }
             var query = "" +
-
+           
 // "\n DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + "'    " +
 // "\n DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + "'       " +
 "\n                                                                                                                                                                                                                                                                                                                                        " +
@@ -92,7 +103,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 "\n  	Real decimal(30,5) null,																																																															                                               " +
 "\n  	PontosAtingidos decimal(30,5) null,																																																													                                               " +
 "\n  	Scorecard decimal(30,5) null,																																																														                                               " +
-"\n  	TipoScore Varchar(153) null																																																															                                               " +
+"\n  	TipoScore Varchar(153) null,"+
+"\n mesData datetime2(7) null  " +
 "\n  	)																																																																					                                               " +
 "\n  																																																																						                                               " +
 "\n  																																																																						                                               " +
@@ -103,7 +115,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 "\n  BEGIN  																																																																					                                           " +
 "\n     																																																																						                                           " +
 "\n      																																																																					                                               " +
-"\n   DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + " 00:00'                                                                                                                                                                                                                    					                                               " +
+"\n   DECLARE @DATAINICIAL DATETIME = '" + dtIni.ToString("yyyyMMdd") + " 00:00'                                                                                                                                                                                                                    					                                               " +
 "\n   DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + " 23:59'                                                                                                                                                                                                                    					                                               " +
 "\n   CREATE TABLE #AMOSTRATIPO4 ( 																																																															                                               " +
 "\n   UNIDADE INT NULL, 																																																																		                                           " +
@@ -267,6 +279,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 "\n    , ROUND(PontosAtingidos,2)  PontosAtingidos                                                                                                                                                                                                                                                                                         " +
 "\n    , ROUND(Scorecard,2) Scorecard                                                                                                                                                                                                                                                                                                      " +
 "\n    , TipoScore                                                                                                                                                                                                                                                        					                                               " +
+"\n    , mesData"+
 "\n                                                                                                                                                                                                                                                                       					                                               " +
 "\n   FROM                                                                                                                                                                                                                                                                					                                               " +
 "\n   (                                                                                                                                                                                                                                                                   					                                               " +
@@ -386,6 +399,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 "\n    , ISNULL(CRL.Id, @CRITERIO) AS Criterio                                                                                                                                                                                                                            					                                               " +
 "\n    , ISNULL(CRL.Name, @CRITERIONAME) AS CriterioName                                                                                                                                                                                                                  					                                               " +
 "\n    , ISNULL((select top 1 Points from ParLevel1XCluster aaa where aaa.ParLevel1_Id = L1.Id AND aaa.ParCluster_Id = CL.Id AND aaa.AddDate <  @DATAFINAL), @PONTOS) AS Pontos                                                                                                                                                            " +
+"\n    , CL1.ConsolidationDate as mesData "+
 "\n                                                                                                                                                                                                                                                                       					                                               " +
 "\n    --ISNULL(CL.Id, @CLUSTER) AS Cluster                                                                                                                                                                                                                               					                                               " +
 "\n    --, (CL.Name)AS ClusterName                                                                                                                                                                                                                                        					                                               " +
@@ -621,6 +635,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 "\n       , CT.Id                                                                                                                                                                                                                                                         					                                               " +
 "\n       , L1.HashKey                                                                                                                                                                                                                                                    					                                               " +
 "\n       , C.Id                                                                                                                                                                                                                                                          					                                               " +
+"\n       , CL1.ConsolidationDate "+
 "\n                                                                                                                                                                                                                                                                       					                                               " +
 "\n   ) SCORECARD                                                                                                                                                                                                                                                         					                                               " +
 "\n                                                                                                                                                                                                                                                                       					                                               " +
@@ -682,9 +697,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
 //query 1 retorna o valor da empresa    
 "\n  																																																																						                                               " +
-"\n declare @valorEmpresa decimal(5,2) "+
+"\n declare @valorEmpresa decimal(5,2) " +
 "\n select @valorEmpresa = sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100" +
-"\n from #Score s left join ParStructure reg on s.regional = reg.id where reg.Active =1 and Reg.ParStructureGroup_Id = 2 "+
+"\n from #Score s left join ParStructure reg on s.regional = reg.id where reg.Active =1 and Reg.ParStructureGroup_Id = 2 " +
 //query 2 retorna o valor da regional       
 "\n   SELECT                                                                                                                                                                                                                                                                                                                               " +
 "\n   Reg.Name regName,                                                                                                                                                                                                                                                                                                                " +
@@ -698,8 +713,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 "\n   where                                                                                                                                                                                                                                                                                                            " +
 "\n   Reg.Active = 1 and Reg.ParStructureGroup_Id = 2                                                                                                                                                                                                                                                                                                                  " +
 "\n   GROUP BY Reg.Name, Reg.id ORDER BY 4 DESC                                                                                                                                                                                                                                                                                                      ";
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-            using (var db = new SgqDbDevEntities())                                                                                                                                                                                                                                                                                        
+
+            using (var db = new SgqDbDevEntities())
             {
                 _list = db.Database.SqlQuery<VisaoGeralDaAreaResultSet>(query).ToList();
             }
@@ -744,12 +759,12 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             string query = VisaoGeralDaAreaApiController.sqlBase(form) +
 
-"\n declare @valorEmpresa decimal(5,2) "+
-"\n declare @valorRegional decimal(5, 2) "+
-"\n select @valorEmpresa = sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100"+
-"\n from #Score s left join ParStructure reg on s.regional = reg.id where reg.Active =1 and Reg.ParStructureGroup_Id = 2"+
+"\n declare @valorEmpresa decimal(5,2) " +
+"\n declare @valorRegional decimal(5, 2) " +
+"\n select @valorEmpresa = sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100" +
+"\n from #Score s left join ParStructure reg on s.regional = reg.id where reg.Active =1 and Reg.ParStructureGroup_Id = 2" +
 "\n  select @valorRegional = sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 " +
- "\n from #Score s left join ParStructure reg on s.regional = reg.id where reg.id = '"+form.Query.ToString()+"' and Reg.ParStructureGroup_Id = 2"+
+ "\n from #Score s left join ParStructure reg on s.regional = reg.id where reg.id = '" + form.Query.ToString() + "' and Reg.ParStructureGroup_Id = 2" +
 "\n  SELECT " +
 "\n  C.Initials companySigla, " +
 "\n  case when sum(isnull(PontosIndicador, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end companyScorecard, " +
@@ -759,7 +774,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 "\n  LEFT JOIN ParCompanyXStructure CS " +
 "\n  ON CS.ParStructure_Id = Reg.Id " +
 "\n  left join ParCompany C " +
-"\n  on C.Id = CS.ParCompany_Id "+
+"\n  on C.Id = CS.ParCompany_Id " +
 "\n  left join #SCORE S  " +
 "\n  on C.Id = S.ParCompany_Id " +
 "\n  where Reg.Id = '" + form.Query.ToString() + "'" +
@@ -1056,7 +1071,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                     " \n ) S1 " +
                  " \n ) S2 " +
-                 " \n WHERE (RELATORIO_DIARIO = 1 OR(RELATORIO_DIARIO = 0 AND AV = 0)) AND Level1Name = '" + form.ParametroTableRow[1] + "' " + 
+                 " \n WHERE (RELATORIO_DIARIO = 1 OR(RELATORIO_DIARIO = 0 AND AV = 0)) AND Level1Name = '" + form.ParametroTableRow[1] + "' " +
                   " \n DROP TABLE #AMOSTRATIPO4a  ";
 
             using (var db = new SgqDbDevEntities())
@@ -1170,6 +1185,146 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             });
 
         }
+
+        [HttpPost]
+        [Route("GraficoEvolutivoEmpresa")]
+        public List<ResultQueryEvolutivo> GraficoEvolutivoEmpresa([FromBody] DataCarrierFormulario form)
+        {
+            CriaMockGraficoEvolutivoEmpresa(form);
+            //return _mock;
+            return _listEvol;
+        }
+        private void CriaMockGraficoEvolutivoEmpresa(DataCarrierFormulario form)
+        {
+            _list = new List<VisaoGeralDaAreaResultSet>();
+           
+            string query = VisaoGeralDaAreaApiController.sqlBase(form,true) +
+                
+//query 2 retorna o valor da regional       
+"\n   SELECT                                                                                                                                                                                                                                                                                                                               " +
+"\n   case when sum(isnull(PontosAtingidos, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end as real,                                                                                                                                                                               " +
+"\n   100 as orcado,"+
+"\n   100 - (case when sum(isnull(PontosAtingidos, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end ) as desvio," +
+"\n   (100 - (case when sum(isnull(PontosAtingidos, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end )) / 100 as desviopercentual," +
+"\n   cast(month(cast(s.mesData as date)) as varchar) as mes" +
+"\n   FROM ParStructure Reg left join ParCompanyXStructure pcs on reg.Id = pcs.ParStructure_Id" +
+"\n   left join parCompany comp on comp.id = pcs.parCompany_id left join #score s on comp.id = s.parCompany_id"+
+"\n   group by month(cast(s.mesData as date))";
+
+            using (var db = new SgqDbDevEntities())
+            {
+                _listEvol = db.Database.SqlQuery<ResultQueryEvolutivo>(query).ToList();
+            }
+            
+        }
+        [HttpPost]
+        [Route("GraficoEvolutivoRegional")]
+        public List<ListResultQueryEvolutivo> GraficoEvolutivoRegional([FromBody] DataCarrierFormulario form)
+        {
+            CriaMockGraficoEvolutivoRegional(form);
+            //return _mock;
+            return listaRegs;
+        }
+        private void CriaMockGraficoEvolutivoRegional(DataCarrierFormulario form)
+        {
+            // Busca as regionais
+            List<ParStructure> list = null;
+            using (var db = new SgqDbDevEntities())
+            {
+                string consulta = "select * from parstructure where parstructuregroup_id =2";
+                list = db.Database.SqlQuery<ParStructure>(consulta).ToList();
+            }
+            //Busca os dados por regional 
+            listaRegs = new List<ListResultQueryEvolutivo>();
+            foreach (var item in list)
+            {
+                string query = VisaoGeralDaAreaApiController.sqlBase(form, true) +
+        //query 2 retorna o valor da regional       
+        "\n   SELECT reg.name as CLASSIFIC_NEGOCIO, cast(reg.id as varchar) as MACROPROCESSO," +
+        "\n   case when sum(isnull(PontosAtingidos, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end as real,                                                                                                                                                                               " +
+        "\n   100 as orcado," +
+        "\n   100 - (case when sum(isnull(PontosAtingidos, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end ) as desvio," +
+        "\n   (100 - (case when sum(isnull(PontosAtingidos, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end )) / 100 as desviopercentual," +
+        "\n   cast(month(cast(s.mesData as date)) as varchar) as mes" +
+        "\n   FROM ParStructure Reg left join ParCompanyXStructure pcs on reg.Id = pcs.ParStructure_Id" +
+        "\n   left join parCompany comp on comp.id = pcs.parCompany_id left join #score s on comp.id = s.parCompany_id" +
+        "\n   left join parcompanyxusersgq pcu on pcu.ParCompany_Id = s.parCompany_id" +
+        "\n   where reg.id = " + item.Id + "and pcu.UserSgq_Id =" + form.auditorId +
+        "\n   group by reg.name, reg.id, month(cast(s.mesData as date))" +
+        "\n   order by reg.id, mes ";
+
+                using (var db = new SgqDbDevEntities())
+                {
+                    ListResultQueryEvolutivo it = new ListResultQueryEvolutivo();
+                    it.lista = db.Database.SqlQuery<ResultQueryEvolutivo>(query).ToList();
+                    listaRegs.Add(it);
+                }
+                
+            }
+        }
+        [HttpPost]
+        [Route("GraficoEvolutivoUnidade")]
+        public List<ListResultQueryEvolutivo> GraficoEvolutivoUnidade([FromBody] DataCarrierFormulario form)
+        {
+            CriaMockGraficoEvolutivoUnidade(form);
+            //return _mock;
+            return listaUnidades;
+        }
+        private void CriaMockGraficoEvolutivoUnidade(DataCarrierFormulario form)
+        {
+            // Busca as unidades na regional
+            List<ParCompanyXStructure> list = null;
+            using (var db = new SgqDbDevEntities())
+            {
+                string consulta = "select * from ParCompanyXStructure where ParStructure_Id ="+form.Query;
+                list = db.Database.SqlQuery<ParCompanyXStructure>(consulta).ToList();
+            }
+            //Busca os dados por unidade 
+            listaUnidades = new List<ListResultQueryEvolutivo>();
+            foreach (var item in list)
+            {
+                string query = VisaoGeralDaAreaApiController.sqlBase(form, true) +
+        //query 2 retorna o valor da regional       
+        "\n   SELECT s.ParCompanyName as CLASSIFIC_NEGOCIO, cast(s.ParCompany_Id as varchar) as MACROPROCESSO," +
+        "\n   case when sum(isnull(PontosAtingidos, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end as real,                                                                                                                                                                               " +
+        "\n   100 as orcado," +
+        "\n   100 - (case when sum(isnull(PontosAtingidos, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end ) as desvio," +
+        "\n   (100 - (case when sum(isnull(PontosAtingidos, 0)) = 0 then 0 else sum(isnull(PontosAtingidos, 0)) / sum(isnull(PontosIndicador, 0)) * 100 end )) / 100 as desviopercentual," +
+        "\n   cast(month(cast(s.mesData as date)) as varchar) as mes" +
+        "\n   FROM ParStructure Reg left join ParCompanyXStructure pcs on reg.Id = pcs.ParStructure_Id" +
+        "\n   left join parCompany comp on comp.id = pcs.parCompany_id left join #score s on comp.id = s.parCompany_id" +
+        "\n   left join parcompanyxusersgq pcu on pcu.ParCompany_Id = s.parCompany_id" +
+        "\n   where s.ParCompany_Id = " + item.ParCompany_Id + "and pcu.UserSgq_Id =" + form.auditorId + " and s.mesData is not null" +
+        "\n   group by s.ParCompanyName,s.parCompany_id,month(cast(s.mesData as date))" +
+        "\n   order by mes ";
+
+                using (var db = new SgqDbDevEntities())
+                {
+                    ListResultQueryEvolutivo it = new ListResultQueryEvolutivo();
+                    it.lista = db.Database.SqlQuery<ResultQueryEvolutivo>(query).ToList();
+                    if (it.lista.Count > 0)
+                        listaUnidades.Add(it);
+                }
+
+            }
+        }
+
     }
 
+    public class ResultQueryEvolutivo
+    {
+        public string CLASSIFIC_NEGOCIO { get; set; }
+        public string MACROPROCESSO { get; set; }
+        public int ORCADO { get; set; }
+        public decimal DESVIO { get; set; }
+        public decimal DESVIOPERCENTUAL { get; set; }
+        public decimal REAL { get; set; }
+        public string mes { get; set; } = null;
+        
+    }
+    public class ListResultQueryEvolutivo
+    {
+        public List<ResultQueryEvolutivo> lista { get; set; }
+        
+    }
 }

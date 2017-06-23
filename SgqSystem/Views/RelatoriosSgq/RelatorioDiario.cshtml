@@ -194,7 +194,7 @@
         }
 
         function GraficoTendencia(data, idDiv, titulo, dtInicio, dtFim) {
-
+            console.log(data);
             var valoresX = MapeiaValorParaHC(data, "Level1Name")
             var meta = MapeiaValorParaHC(data, "Meta")
             var totalNC = MapeiaValorParaHC(data, "NC")
@@ -208,6 +208,8 @@
             var total = 0;
             //var dataFim = new Date(parseInt(dtFim.replace(/[^0-9]/g, '')));
             var dataFim = new Date(parseInt(dtFim));
+
+            
 
             valoresYY = {
                 dataInicio: new Date(parseInt(dtInicio/*.replace(/[^0-9]/g, '')*/)),
