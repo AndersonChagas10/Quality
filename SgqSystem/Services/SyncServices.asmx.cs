@@ -232,7 +232,9 @@ namespace SgqSystem.Services
         [WebMethod]
         public string InsertJson(string ObjResultJSon, string deviceId, string deviceMac, bool autoSend)
         {
+            
             var objObjResultJSonPuro = ObjResultJSon;
+            
             string versaoApp = null;
 
             try
@@ -244,6 +246,7 @@ namespace SgqSystem.Services
                 }
                 //A key não está sendo utilizada
                 string key = "111111";
+                
                 //Converto o Objeto Json e prepara para extrair os dados do Level02
                 ObjResultJSon = ObjResultJSon.Replace("</level02><level02>", "@").Replace("<level02>", "").Replace("</level02>", "");
 
@@ -275,12 +278,15 @@ namespace SgqSystem.Services
                          */
 
                         //verifico se este indicador é pai de algum outro. Trago uma lista com os leveis 3 do indicador filho, se for o caso
+
+                        var ParLevel1Origin_Id = DefaultValueReturn(result[0], "0");
+                        
                         string indicadorPai = "SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1 " +
                                               "\n  inner join ParLevel3Level2Level1 p321 " +
                                               "\n  on p321.ParLevel1_Id = p1.id " +
                                               "\n  inner join ParLevel3Level2 p32 " +
                                               "\n  on p32.id = p321.ParLevel3Level2_Id " +
-                                              "\n  WHERE ParLevel1Origin_Id = " + result[0] +
+                                              "\n  WHERE ParLevel1Origin_Id = " + ParLevel1Origin_Id +
                                               "\n  and p1.isActive = 1 " +
                                               "\n  and p321.Active = 1 " +
                                               "\n  and p32.IsActive = 1";
@@ -338,7 +344,26 @@ namespace SgqSystem.Services
                         //-----------------------------
 
                         //Id do Level01
-                        string level01Id = result[0];
+                        string level01Id = DefaultValueReturn(result[0], "0");
+
+                        if(level01Id == "0")
+                        {
+                            string p1Undefined = "SELECT distinct(cast(p321.ParLevel1_Id as varchar)) retorno FROM ParLevel1 p1 " +
+                                                 "\n  inner join ParLevel3Level2Level1 p321 " +
+                                                 "\n  on p321.ParLevel1_Id = p1.id " +
+                                                 "\n  inner join ParLevel3Level2 p32 " +
+                                                 "\n  on p32.id = p321.ParLevel3Level2_Id " +
+                                                 "\n  WHERE p32.ParLevel2_Id = " + result[2] +
+                                                 "\n  and p1.isActive = 1 " +
+                                                 "\n  and p321.Active = 1 " +
+                                                 "\n  and p32.IsActive = 1";
+                            using (var db = new Dominio.SgqDbDevEntities())
+                            {
+                                
+                                level01Id = db.Database.SqlQuery<ResultadoUmaColuna>(p1Undefined).FirstOrDefault().retorno;
+                            }
+                        }
+
                         //Data que a coleta começou ser gerada, pelo Id do Level01
                         string level01DataCollect = result[1];
                         //Converte a Data para o padrão correto
@@ -719,8 +744,15 @@ namespace SgqSystem.Services
                     }
                     else
                     {
-                        DateTime dataPhase = DateCollectConvert(StartPhase);
-                        StartPhase = "CAST(N'" + dataPhase.ToString("yyyy-MM-dd 00:00:00") + "' AS DateTime)";
+                        try
+                        {
+                            DateTime dataPhase = DateCollectConvert(StartPhase);
+                            StartPhase = "CAST(N'" + dataPhase.ToString("yyyy-MM-dd 00:00:00") + "' AS DateTime)";
+                        }catch(Exception e)
+                        {
+                            StartPhase = "CAST(N'" + DateTime.Now.ToString("yyyy-MM-dd 00:00:00") + "' AS DateTime)";
+                        }
+                        
                     }
 
 
