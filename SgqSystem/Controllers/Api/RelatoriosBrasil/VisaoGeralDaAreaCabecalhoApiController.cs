@@ -57,6 +57,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             return _return;
         }
 
+        //Obra
         private void CriaMockG1(DataCarrierFormulario form)
         {
             //_mock = new List<Obra>();
@@ -107,6 +108,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
         }
 
+        //Torre
         private void CriaMockG2(DataCarrierFormulario form)
         {
             //_mock2 = new List<Torre>();
@@ -137,6 +139,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 var query =
                 "select " +
                 "\n pmv.Name as 'nome'" +
+                "\n ,cl2.UnitId as 'regId'" +
                 "\n ,count(*) as 'folhasVerificadas'" +
                 "\n ,(sum(case when cl2.Defects <> 0 then 1 else 0 end) * 100) / count(*) as 'porNC'" +
                 "\n ,sum(case when cl2.Defects = 0 then 1 else 0 end) as 'conforme'" +
@@ -146,8 +149,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n LEFT JOIN CollectionLevel2XParHeaderField cl2xphf On cl2xphf.CollectionLevel2_Id = cl2.Id" +
                 "\n LEFT JOIN ParHeaderField phf on phf.Id = cl2xphf.ParHeaderField_Id" +
                 "\n LEFT JOIN ParMultipleValues PMV (nolock)on cl2xphf.Value = cast(PMV.Id as varchar(500))" +
-                "\n Where cl2.UnitId = 1 and phf.Name = 'TORRE / PERIFERIA'" +
-                "\n GROUP BY pmv.Name";
+                "\n Where cl2.UnitId = " + form.Query + " and phf.Name = 'TORRE / PERIFERIA'" +
+                "\n GROUP BY pmv.Name, cl2.UnitId";
 
                 using (var db = new SgqDbDevEntities())
                 {
@@ -161,6 +164,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             }
         }
 
+        //Pavimento
         private void CriaMockG3(DataCarrierFormulario form)
         {
             //_mock3 = new List<Pavimento>();
@@ -185,23 +189,36 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             //    pavimentoNome = "PAV 2"
             //});
 
+            var teste = new List<string>();
+
+            teste = form.Query.Split(',').ToList();
+
             try
             {
 
                 var query =
                 "select " +
-                "\n pmv.Name as 'nome'" +
+                "\n pmv2.Name as 'nome'" +
+                "\n ,'" + teste[1] + "' as 'nome2'" +
                 "\n ,count(*) as 'folhasVerificadas'" +
                 "\n ,(sum(case when cl2.Defects <> 0 then 1 else 0 end) * 100) / count(*) as 'porNC'" +
                 "\n ,sum(case when cl2.Defects = 0 then 1 else 0 end) as 'conforme'" +
                 "\n ,sum(case when cl2.Defects <> 0 then 1 else 0 end) as 'nconforme'" +
                 "\n ,0 as 'meta'" +
-                "\n from CollectionLevel2 cl2" +
-                "\n LEFT JOIN CollectionLevel2XParHeaderField cl2xphf On cl2xphf.CollectionLevel2_Id = cl2.Id" +
-                "\n LEFT JOIN ParHeaderField phf on phf.Id = cl2xphf.ParHeaderField_Id" +
-                "\n LEFT JOIN ParMultipleValues PMV (nolock)on cl2xphf.Value = cast(PMV.Id as varchar(500))" +
-                "\n Where cl2.UnitId = 1 and phf.Name = 'PAVIMENTO TIPO'" +
-                "\n GROUP BY pmv.Name";
+                "\n ,cl2.UnitId as 'regId'" +
+
+                "\n  from CollectionLevel2 cl2" +
+                "\n  --------------------------------------------------------------- >> TORRE" +
+                "\n  LEFT JOIN CollectionLevel2XParHeaderField cl2xphf On cl2xphf.CollectionLevel2_Id = cl2.Id" +
+                "\n  LEFT JOIN ParHeaderField phf  on phf.Id = cl2xphf.ParHeaderField_Id" +
+                "\n  LEFT JOIN ParMultipleValues PMV (nolock)on cl2xphf.Value = cast(PMV.Id as varchar(500))" +
+                "\n  -------------------------------------------------------------- - >> PAVIMENTO" +
+                "\n  LEFT JOIN CollectionLevel2XParHeaderField cl2xphf2 On cl2xphf2.CollectionLevel2_Id = cl2.Id" +
+                "\n  LEFT JOIN ParHeaderField phf2 on phf2.Id = cl2xphf2.ParHeaderField_Id" +
+                "\n  LEFT JOIN ParMultipleValues PMV2(nolock)on cl2xphf2.Value = cast(PMV2.Id as varchar(500))" +
+
+                 "\n Where cl2.UnitId = " + teste[0] + " and phf.Name = 'TORRE / PERIFERIA' and phf2.Name = 'PAVIMENTO TIPO' and PMV.Name = '" + teste[1] + "'" +
+                 "\n GROUP BY pmv2.Name, cl2.UnitId";
 
                 using (var db = new SgqDbDevEntities())
                 {
@@ -212,9 +229,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             {
                 throw ex;
             }
-
         }
 
+        //Apartemento
         private void CriaMockG4(DataCarrierFormulario form)
         {
             //_mock4 = new List<Apartamento>();
@@ -239,23 +256,39 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             //    apartamentoNome = "Apartamento 2"
             //});
 
+            var teste = new List<string>();
+
+            teste = form.Query.Split(',').ToList();
+
             try
             {
 
                 var query =
-                "select " +
-                "\n pmv.Name as 'nome'" +
-                "\n ,count(*) as 'folhasVerificadas'" +
-                "\n ,(sum(case when cl2.Defects <> 0 then 1 else 0 end) * 100) / count(*) as 'porNC'" +
-                "\n ,sum(case when cl2.Defects = 0 then 1 else 0 end) as 'conforme'" +
-                "\n ,sum(case when cl2.Defects <> 0 then 1 else 0 end) as 'nconforme'" +
-                "\n ,0 as 'meta'" +
-                "\n from CollectionLevel2 cl2" +
-                "\n LEFT JOIN CollectionLevel2XParHeaderField cl2xphf On cl2xphf.CollectionLevel2_Id = cl2.Id" +
-                "\n LEFT JOIN ParHeaderField phf on phf.Id = cl2xphf.ParHeaderField_Id" +
-                "\n LEFT JOIN ParMultipleValues PMV (nolock)on cl2xphf.Value = cast(PMV.Id as varchar(500))" +
-                "\n Where cl2.UnitId = 1 and phf.Name = 'APARTAMENTO / ÁREA'" +
-                "\n GROUP BY pmv.Name";
+                " select " +
+                "\n PMV3.Name as 'nome' " +
+                "\n ,'" + teste[1] + "' as 'nome2'" +
+                "\n ,'" + teste[2] + "' as 'nome3'" +
+                "\n ,count(*) as 'folhasVerificadas' " +
+                "\n ,(sum(case when cl2.Defects <> 0 then 1 else 0 end) * 100) / count(*) as 'porNC' " +
+                "\n ,sum(case when cl2.Defects = 0 then 1 else 0 end) as 'conforme' " +
+                "\n ,sum(case when cl2.Defects <> 0 then 1 else 0 end) as 'nconforme' " +
+                "\n ,0 as 'meta' " +
+                "\n ,cl2.UnitId as 'regId' " +
+                "\n from CollectionLevel2 cl2 " +
+                "\n --------------------------------------------------------------- >> TORRE " +
+                "\n LEFT JOIN CollectionLevel2XParHeaderField(nolock) cl2xphf On cl2xphf.CollectionLevel2_Id = cl2.Id " +
+                "\n LEFT JOIN ParHeaderField(nolock) phf on phf.Id = cl2xphf.ParHeaderField_Id " +
+                "\n LEFT JOIN ParMultipleValues(nolock) PMV on cl2xphf.Value = cast(PMV.Id as varchar(500)) " +
+                "\n ------------------------------------------------------------- - >> PAVIMENTO " +
+                "\n LEFT JOIN CollectionLevel2XParHeaderField(nolock) cl2xphf2 On cl2xphf2.CollectionLevel2_Id = cl2.Id " +
+                "\n LEFT JOIN ParHeaderField(nolock) phf2 on phf2.Id = cl2xphf2.ParHeaderField_Id " +
+                "\n LEFT JOIN ParMultipleValues(nolock) PMV2 on cl2xphf2.Value = cast(PMV2.Id as varchar(500)) " +
+                "\n -------------------------------------------------------------- - >> APARTAMENTO " +
+                "\n LEFT JOIN CollectionLevel2XParHeaderField(nolock) cl2xphf3 On cl2xphf3.CollectionLevel2_Id = cl2.Id " +
+                "\n LEFT JOIN ParHeaderField(nolock) phf3 on phf3.Id = cl2xphf3.ParHeaderField_Id " +
+                "\n LEFT JOIN ParMultipleValues(nolock) PMV3 on cl2xphf3.Value = cast(PMV3.Id as varchar(500)) " +
+                "\n Where cl2.UnitId = " + teste[0] + " and phf.Name = 'TORRE / PERIFERIA' and phf2.Name = 'PAVIMENTO TIPO'  and phf3.Name = 'APARTAMENTO / ÁREA' and PMV.Name ='" + teste[1] + "' and PMV2.Name = '" + teste[2] + "' " +//PMV.Name ='TORRE 1' and PMV2.Name = 'PAV. 1' " +
+                "\n GROUP BY pmv3.Name, cl2.UnitId ";
 
                 using (var db = new SgqDbDevEntities())
                 {
@@ -268,6 +301,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             }
         }
 
+        //Cômodo
         private void CriaMockG5(DataCarrierFormulario form)
         {
             //_mock5 = new List<Comodo>();
@@ -292,22 +326,40 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             //    comodoNome = "Banheiro 2"
             //});
 
+            var teste = new List<string>();
+
+            teste = form.Query.Split(',').ToList();
+
             try
             {
                 var query =
-                "select " +
-                "\n pmv.Name as 'nome'" +
-                "\n ,count(*) as 'folhasVerificadas'" +
-                "\n ,(sum(case when cl2.Defects <> 0 then 1 else 0 end) * 100) / count(*) as 'porNC'" +
-                "\n ,sum(case when cl2.Defects = 0 then 1 else 0 end) as 'conforme'" +
-                "\n ,sum(case when cl2.Defects <> 0 then 1 else 0 end) as 'nconforme'" +
-                "\n ,0 as 'meta'" +
-                "\n from CollectionLevel2 cl2" +
-                "\n LEFT JOIN CollectionLevel2XParHeaderField cl2xphf On cl2xphf.CollectionLevel2_Id = cl2.Id" +
-                "\n LEFT JOIN ParHeaderField phf on phf.Id = cl2xphf.ParHeaderField_Id" +
-                "\n LEFT JOIN ParMultipleValues PMV (nolock)on cl2xphf.Value = cast(PMV.Id as varchar(500))" +
-                "\n Where cl2.UnitId = 1 and phf.Name = 'CÔMODOS'" +
-                "\n GROUP BY pmv.Name";
+                 "select " +
+                 "\n PMV4.Name as 'nome' " +
+                 "\n ,count(*) as 'folhasVerificadas' " +
+                 "\n ,(sum(case when cl2.Defects <> 0 then 1 else 0 end) * 100) / count(*) as 'porNC' " +
+                 "\n ,sum(case when cl2.Defects = 0 then 1 else 0 end) as 'conforme' " +
+                 "\n ,sum(case when cl2.Defects <> 0 then 1 else 0 end) as 'nconforme' " +
+                 "\n ,0 as 'meta' " +
+                 "\n ,cl2.UnitId as 'regId' " +
+                 "\n from CollectionLevel2 cl2 " +
+                 "\n --------------------------------------------------------------- >> TORRE " +
+                 "\n LEFT JOIN CollectionLevel2XParHeaderField(nolock) cl2xphf On cl2xphf.CollectionLevel2_Id = cl2.Id " +
+                 "\n LEFT JOIN ParHeaderField(nolock) phf on phf.Id = cl2xphf.ParHeaderField_Id " +
+                 "\n LEFT JOIN ParMultipleValues(nolock) PMV on cl2xphf.Value = cast(PMV.Id as varchar(500)) " +
+                 "\n ------------------------------------------------------------- - >> PAVIMENTO " +
+                 "\n LEFT JOIN CollectionLevel2XParHeaderField(nolock) cl2xphf2 On cl2xphf2.CollectionLevel2_Id = cl2.Id " +
+                 "\n LEFT JOIN ParHeaderField(nolock) phf2 on phf2.Id = cl2xphf2.ParHeaderField_Id " +
+                 "\n LEFT JOIN ParMultipleValues(nolock) PMV2 on cl2xphf2.Value = cast(PMV2.Id as varchar(500)) " +
+                 "\n -------------------------------------------------------------- - >> APARTAMENTO " +
+                 "\n LEFT JOIN CollectionLevel2XParHeaderField(nolock) cl2xphf3 On cl2xphf3.CollectionLevel2_Id = cl2.Id " +
+                 "\n LEFT JOIN ParHeaderField(nolock) phf3 on phf3.Id = cl2xphf3.ParHeaderField_Id " +
+                 "\n LEFT JOIN ParMultipleValues(nolock) PMV3 on cl2xphf3.Value = cast(PMV3.Id as varchar(500)) " +
+                 "\n --------------------------------------------------------------- >> COMODO " +
+                 "\n LEFT JOIN CollectionLevel2XParHeaderField(nolock) cl2xphf4 On cl2xphf4.CollectionLevel2_Id = cl2.Id " +
+                 "\n LEFT JOIN ParHeaderField(nolock) phf4 on phf4.Id = cl2xphf4.ParHeaderField_Id " +
+                 "\n LEFT JOIN ParMultipleValues(nolock) PMV4 on cl2xphf4.Value = cast(PMV4.Id as varchar(500)) " +
+                 "\n Where cl2.UnitId = " + teste[0] + " and phf.Name = 'TORRE / PERIFERIA' and phf2.Name = 'PAVIMENTO TIPO'  and phf3.Name = 'APARTAMENTO / ÁREA' and phf4.Name = 'CÔMODOS' and PMV.Name = '" + teste[1] + "' and PMV2.Name = '" + teste[2] + "' and PMV3.Name = '" + teste[3] + "' " + //phf4.Name = 'CÔMODOS' and PMV.Name = 'TORRE 1' and PMV2.Name = 'PAV. 1' and PMV3.Name = 'APARTAMENTO 1' " +
+                 "\n GROUP BY pmv4.Name, cl2.UnitId ";
 
                 using (var db = new SgqDbDevEntities())
                 {
@@ -329,6 +381,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         public int meta { get; set; }
         public int nconforme { get; set; }
         public string nome { get; set; }
+        public string nome2 { get; set; }
+        public string nome3 { get; set; }
         public int regId { get; set; }
     }
 }

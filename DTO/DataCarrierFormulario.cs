@@ -8,7 +8,7 @@ namespace DTO
     {
         //private DateTime _dtvalueInicio, _dtvalueFim;
         public bool hasErros;
-
+      
         public DateTime _dataInicio
         {
             get
@@ -22,6 +22,7 @@ namespace DTO
                 }
                 return DateTime.Now;
             }
+            
         }
 
         public String _dataInicioSQL
@@ -34,6 +35,7 @@ namespace DTO
                 }
                 return DateTime.Now.ToString("yyyyMMdd");
             }
+            
         }
 
         public DateTime _dataFim

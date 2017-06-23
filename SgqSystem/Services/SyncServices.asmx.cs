@@ -6079,12 +6079,20 @@ namespace SgqSystem.Services
             //Caso ocorra alguma Exception, grava o log e retorna zero
             catch (SqlException ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
+                /**
+                 * GABRIEL NUNES TIROU O LOG PARA MELHRAR PERFORMANCE
+                 * DATE 2017-06-23
+                 */
+                //int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
                 return "error";
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
+                /**
+                 * GABRIEL NUNES TIROU O LOG PARA MELHRAR PERFORMANCE
+                 * DATE 2017-06-23
+                 */
+                //int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
                 return "error";
             }
         }
@@ -6133,7 +6141,11 @@ namespace SgqSystem.Services
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson(mensagemEstouro, ex.Message, null, null, "sendEmail");
+                /**
+                 * GABRIEL NUNES TIROU A GRAVAÇÃO DO LOG DE SENDEMAIL PARA MELHORAR PERFORMANCE DO SISTEMA
+                 * DATE: 2017-06-23
+                 */
+                //int insertLog = insertLogJson(mensagemEstouro, ex.Message, null, null, "sendEmail");
             }
             return null;
         }
@@ -6195,7 +6207,7 @@ namespace SgqSystem.Services
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson(email, ex.Message, null, null, "sendEmail");
+                //int insertLog = insertLogJson(email, ex.Message, null, null, "sendEmail");
             }
             return null;
         }

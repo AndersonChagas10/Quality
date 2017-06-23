@@ -101,7 +101,6 @@
                 }],
                 yAxis: [{ // Primary yAxis
                     labels: {
-                        //format: '{value} %',
                         format: '{value}',
                         style: {
                             color: Highcharts.getOptions().colors[1]
@@ -177,10 +176,10 @@
                                 click: function () {
                                     //console.log(id[this.x])
                                     Grafico2(id[this.x]);
-
                                 }
                             }
                         },
+                        yAxis: 0,
                     },
                     {
                         name: 'Folhas Conforme',
@@ -217,6 +216,7 @@
                                 }
                             }
                         },
+                        yAxis: 0,
                     },
                     {
                         name: 'Folhas Não Conforme',
@@ -227,7 +227,6 @@
                         //        click: function () {
                         //            //console.log(id[this.x])
                         //            Grafico2(id[this.x]);
-
                         //        }
                         //    }
                         //},
@@ -337,14 +336,19 @@
                                 }
                             }
                         },
+                        yAxis: 0,
                     }
                 ]
             });
 
         }
 
-        function Grafico2(id) {
-            enviar["Query"] = id;
+        function Grafico2(obra) {
+            $('#grafico2').empty();
+            $('#grafico3').empty();
+            $('#grafico4').empty();
+            $('#grafico5').empty();
+            enviar["Query"] = obra;
             EasyAjax(urlGrafico2, enviar, CallbackGrafico2, "grafico2");
         }
 
@@ -410,6 +414,21 @@
                     //        x: 0
                     //    }
                     //}]
+                },
+                { // Secundary yAxis
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: 'Porcentagem',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    opposite: true
                 }],
                 tooltip: {
                     shared: true
@@ -445,11 +464,12 @@
                             events: {
                                 click: function () {
                                     //console.log(id[this.x])
-                                    Grafico3(id[this.x]);
+                                    Grafico3(id[this.x], torreNome[this.x]);
 
                                 }
                             }
                         },
+                        yAxis: 0,
                     },
                     {
                         name: 'Porcentagem de Não Conformidades',
@@ -460,12 +480,11 @@
                         //        click: function () {
                         //            //console.log(id[this.x])
                         //            Grafico2(id[this.x]);
-
+                        yAxis: 1,
                         //        }
                         //    }
                         //},
                         type: 'column',
-                        yAxis: 0,
                         color: Highcharts.getOptions().colors[1],
                         dataLabels: {
                             enabled: true,
@@ -492,7 +511,7 @@
                             events: {
                                 click: function () {
                                     //console.log(id[this.x])
-                                    Grafico3(id[this.x]);
+                                    Grafico3(id[this.x], torreNome[this.x]);
 
                                 }
                             }
@@ -528,11 +547,12 @@
                             events: {
                                 click: function () {
                                     //console.log(id[this.x])
-                                    Grafico3(id[this.x]);
+                                    Grafico3(id[this.x], torreNome[this.x]);
 
                                 }
                             }
                         },
+                        yAxis: 0,
                     },
                     {
                         name: 'Não Conforme',
@@ -564,11 +584,12 @@
                             events: {
                                 click: function () {
                                     //console.log(id[this.x])
-                                    Grafico3(id[this.x]);
+                                    Grafico3(id[this.x], torreNome[this.x]);
 
                                 }
                             }
                         },
+                        yAxis: 0,
                     },
                     {
                         name: 'Meta',
@@ -603,19 +624,24 @@
                             events: {
                                 click: function () {
                                     //console.log(id[this.x])
-                                    Grafico3(id[this.x]);
+                                    Grafico3(id[this.x], torreNome[this.x]);
 
                                 }
                             }
                         },
+                        yAxis: 0,
                     }
                 ]
             });
 
         }
 
-        function Grafico3(id) {
-            enviar["Query"] = id;
+        function Grafico3(obra, torre) {
+            $('#grafico3').empty();
+            $('#grafico4').empty();
+            $('#grafico5').empty();
+            enviar["Query"] = obra;
+            enviar["Query"] += "," + torre;
             EasyAjax(urlGrafico3, enviar, CallbackGrafico3, "grafico3");
         }
 
@@ -626,7 +652,8 @@
             var conforme = MapeiaValorParaHC(data, "conforme");
             var nconforme = MapeiaValorParaHC(data, "nconforme");
             var meta = MapeiaValorParaHC(data, "meta");
-            var torreNome = MapeiaValorParaHC(data, "nome");
+            var pavimentoNome = MapeiaValorParaHC(data, "nome");
+            var torreNome = MapeiaValorParaHC(data, "nome2");
             var id = MapeiaValorParaHC(data, "regId");
 
             $('#grafico3').removeClass('loader');
@@ -645,7 +672,7 @@
                     text: ''
                 },
                 xAxis: [{
-                    categories: torreNome,
+                    categories: pavimentoNome,
                     crosshair: true,
                     title: {
                         text: 'Pavimentos',
@@ -681,6 +708,21 @@
                     //        x: 0
                     //    }
                     //}]
+                },
+                { // Secundary yAxis
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: 'Porcentagem',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    opposite: true
                 }],
                 tooltip: {
                     shared: true
@@ -716,11 +758,12 @@
                             events: {
                                 click: function () {
                                     //console.log(id[this.x])
-                                    Grafico4(id[this.x]);
+                                    Grafico4(id[this.x], torreNome[this.x], pavimentoNome[this.x]);
 
                                 }
                             }
                         },
+                        yAxis: 0,
                     },
                     {
                         name: 'Porcentagem de Não Conformidades',
@@ -731,12 +774,11 @@
                         //        click: function () {
                         //            //console.log(id[this.x])
                         //            Grafico2(id[this.x]);
-
+                        yAxis: 1,
                         //        }
                         //    }
                         //},
                         type: 'column',
-                        yAxis: 0,
                         color: Highcharts.getOptions().colors[1],
                         dataLabels: {
                             enabled: true,
@@ -763,7 +805,7 @@
                             events: {
                                 click: function () {
                                     //console.log(id[this.x])
-                                    Grafico4(id[this.x]);
+                                    Grafico4(id[this.x], torreNome[this.x], pavimentoNome[this.x]);
 
                                 }
                             }
@@ -799,11 +841,12 @@
                             events: {
                                 click: function () {
                                     //console.log(id[this.x])
-                                    Grafico4(id[this.x]);
+                                    Grafico4(id[this.x], torreNome[this.x], pavimentoNome[this.x]);
 
                                 }
                             }
                         },
+                        yAxis: 0,
                     },
                     {
                         name: 'Não Conforme',
@@ -835,11 +878,12 @@
                             events: {
                                 click: function () {
                                     //console.log(id[this.x])
-                                    Grafico4(id[this.x]);
+                                    Grafico4(id[this.x], torreNome[this.x], pavimentoNome[this.x]);
 
                                 }
                             }
                         },
+                        yAxis: 0,
                     },
                     {
                         name: 'Meta',
@@ -874,19 +918,24 @@
                             events: {
                                 click: function () {
                                     //console.log(id[this.x])
-                                    Grafico4(id[this.x]);
+                                    Grafico4(id[this.x], torreNome[this.x], pavimentoNome[this.x]);
 
                                 }
                             }
                         },
+                        yAxis: 0,
                     }
                 ]
             });
 
         }
 
-        function Grafico4(id) {
-            enviar["Query"] = id;
+        function Grafico4(obra, torre, pavimento) {
+            $('#grafico4').empty();
+            $('#grafico5').empty();
+            enviar["Query"] = obra;
+            enviar["Query"] += "," + torre;
+            enviar["Query"] += "," + pavimento;
             EasyAjax(urlGrafico4, enviar, CallbackGrafico4, "grafico4");
         }
 
@@ -897,7 +946,9 @@
             var conforme = MapeiaValorParaHC(data, "conforme");
             var nconforme = MapeiaValorParaHC(data, "nconforme");
             var meta = MapeiaValorParaHC(data, "meta");
-            var torreNome = MapeiaValorParaHC(data, "nome");
+            var apartamentoNome = MapeiaValorParaHC(data, "nome");
+            var torreNome = MapeiaValorParaHC(data, "nome2");
+            var pavimentoNome = MapeiaValorParaHC(data, "nome3");
             var id = MapeiaValorParaHC(data, "regId");
 
             $('#grafico4').removeClass('loader');
@@ -916,7 +967,7 @@
                     text: ''
                 },
                 xAxis: [{
-                    categories: torreNome,
+                    categories: apartamentoNome,
                     crosshair: true,
                     title: {
                         text: 'Apartamentos/Área',
@@ -952,6 +1003,21 @@
                     //        x: 0
                     //    }
                     //}]
+                },
+                { // Secundary yAxis
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: 'Porcentagem',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    opposite: true
                 }],
                 tooltip: {
                     shared: true
@@ -987,11 +1053,12 @@
                             events: {
                                 click: function () {
                                     //console.log(id[this.x])
-                                    Grafico5(id[this.x]);
+                                    Grafico5(id[this.x], torreNome[this.x], pavimentoNome[this.x], apartamentoNome[this.x]);
 
                                 }
                             }
                         },
+                        yAxis: 0,
                     },
                     {
                         name: 'Porcentagem de Não Conformidades',
@@ -1002,12 +1069,11 @@
                         //        click: function () {
                         //            //console.log(id[this.x])
                         //            Grafico2(id[this.x]);
-
+                        yAxis: 1,
                         //        }
                         //    }
                         //},
                         type: 'column',
-                        yAxis: 0,
                         color: Highcharts.getOptions().colors[1],
                         dataLabels: {
                             enabled: true,
@@ -1034,7 +1100,7 @@
                             events: {
                                 click: function () {
                                     //console.log(id[this.x])
-                                    Grafico5(id[this.x]);
+                                    Grafico5(id[this.x], torreNome[this.x], pavimentoNome[this.x], apartamentoNome[this.x]);
 
                                 }
                             }
@@ -1070,11 +1136,12 @@
                             events: {
                                 click: function () {
                                     //console.log(id[this.x])
-                                    Grafico5(id[this.x]);
+                                    Grafico5(id[this.x], torreNome[this.x], pavimentoNome[this.x], apartamentoNome[this.x]);
 
                                 }
                             }
                         },
+                        yAxis: 0,
                     },
                     {
                         name: 'Não Conforme',
@@ -1106,11 +1173,12 @@
                             events: {
                                 click: function () {
                                     //console.log(id[this.x])
-                                    Grafico5(id[this.x]);
+                                    Grafico5(id[this.x], torreNome[this.x], pavimentoNome[this.x], apartamentoNome[this.x]);
 
                                 }
                             }
                         },
+                        yAxis: 0,
                     },
                     {
                         name: 'Meta',
@@ -1145,19 +1213,24 @@
                             events: {
                                 click: function () {
                                     //console.log(id[this.x])
-                                    Grafico5(id[this.x]);
+                                    Grafico5(id[this.x], torreNome[this.x], pavimentoNome[this.x], apartamentoNome[this.x]);
 
                                 }
                             }
                         },
+                        yAxis: 0,
                     }
                 ]
             });
 
         }
 
-        function Grafico5(id) {
-            enviar["Query"] = id;
+        function Grafico5(obra, torre, pavimento, apartamento) {
+            $('#grafico5').empty();
+            enviar["Query"] = obra;
+            enviar["Query"] += "," + torre;
+            enviar["Query"] += "," + pavimento;
+            enviar["Query"] += "," + apartamento;
             EasyAjax(urlGrafico5, enviar, CallbackGrafico5, "grafico5");
         }
 
@@ -1223,6 +1296,21 @@
                     //        x: 0
                     //    }
                     //}]
+                },
+                { // Secundary yAxis
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: 'Porcentagem',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    opposite: true
                 }],
                 tooltip: {
                     shared: true
@@ -1254,6 +1342,7 @@
                         //}, {
                         //    color: 'rgba(81,207,64,1)'
                         //}],
+                        yAxis: 0,
                     },
                     {
                         name: 'Porcentagem de Não Conformidades',
@@ -1264,12 +1353,11 @@
                         //        click: function () {
                         //            //console.log(id[this.x])
                         //            Grafico2(id[this.x]);
-
+                        yAxis: 1,
                         //        }
                         //    }
                         //},
                         type: 'column',
-                        yAxis: 0,
                         color: Highcharts.getOptions().colors[1],
                         dataLabels: {
                             enabled: true,
@@ -1319,6 +1407,7 @@
                         //}, {
                         //    color: 'rgba(81,207,64,1)'
                         //}],
+                        yAxis: 0,
                     },
                     {
                         name: 'Não Conforme',
@@ -1346,6 +1435,7 @@
                         //}, {
                         //    color: 'rgba(81,207,64,1)'
                         //}],
+                        yAxis: 0,
                     },
                     {
                         name: 'Meta',
@@ -1376,6 +1466,7 @@
                         tooltip: {
                             valueSuffix: '%'
                         },
+                        yAxis: 0,
                     }
                 ]
             });
