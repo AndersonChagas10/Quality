@@ -9,8 +9,8 @@ using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 {
-    [RoutePrefix("api/VisaoGeralDaAreaCabecalho")]
-    public class VisaoGeralDaAreaCabecalhoApiController : ApiController
+    [RoutePrefix("api/NaoConformidadePorCabecalho")]
+    public class NaoConformidadePorCabecalhoApiController : ApiController
     {
 
         private List<Generic> _return { get; set; }
