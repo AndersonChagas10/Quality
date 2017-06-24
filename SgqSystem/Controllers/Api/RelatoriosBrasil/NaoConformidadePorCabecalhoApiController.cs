@@ -94,7 +94,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n ,0 as 'meta'" +
                 "\n from CollectionLevel2 cl2" +
                 "\n LEFT JOIN ParCompany pc on cl2.UnitId = pc.Id" +
-                "\n GROUP BY pc.Name, pc.Id";
+                "\n GROUP BY pc.Name, pc.Id" +
+                "\n HAVING sum(case when Defects <> 0 then 1 else 0 end) > 0";
 
                 using (var db = new SgqDbDevEntities())
                 {
@@ -150,7 +151,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n LEFT JOIN ParHeaderField phf on phf.Id = cl2xphf.ParHeaderField_Id" +
                 "\n LEFT JOIN ParMultipleValues PMV (nolock)on cl2xphf.Value = cast(PMV.Id as varchar(500))" +
                 "\n Where cl2.UnitId = " + form.Query + " and phf.Name = 'TORRE / PERIFERIA'" +
-                "\n GROUP BY pmv.Name, cl2.UnitId";
+                "\n GROUP BY pmv.Name, cl2.UnitId" +
+                "\n HAVING sum(case when Defects <> 0 then 1 else 0 end) > 0";
 
                 using (var db = new SgqDbDevEntities())
                 {
@@ -218,7 +220,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n  LEFT JOIN ParMultipleValues PMV2(nolock)on cl2xphf2.Value = cast(PMV2.Id as varchar(500))" +
 
                  "\n Where cl2.UnitId = " + teste[0] + " and phf.Name = 'TORRE / PERIFERIA' and phf2.Name = 'PAVIMENTO TIPO' and PMV.Name = '" + teste[1] + "'" +
-                 "\n GROUP BY pmv2.Name, cl2.UnitId";
+                 "\n GROUP BY pmv2.Name, cl2.UnitId" +
+                 "\n HAVING sum(case when Defects <> 0 then 1 else 0 end) > 0";
 
                 using (var db = new SgqDbDevEntities())
                 {
@@ -288,7 +291,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n LEFT JOIN ParHeaderField(nolock) phf3 on phf3.Id = cl2xphf3.ParHeaderField_Id " +
                 "\n LEFT JOIN ParMultipleValues(nolock) PMV3 on cl2xphf3.Value = cast(PMV3.Id as varchar(500)) " +
                 "\n Where cl2.UnitId = " + teste[0] + " and phf.Name = 'TORRE / PERIFERIA' and phf2.Name = 'PAVIMENTO TIPO'  and phf3.Name = 'APARTAMENTO / ÁREA' and PMV.Name ='" + teste[1] + "' and PMV2.Name = '" + teste[2] + "' " +//PMV.Name ='TORRE 1' and PMV2.Name = 'PAV. 1' " +
-                "\n GROUP BY pmv3.Name, cl2.UnitId ";
+                "\n GROUP BY pmv3.Name, cl2.UnitId " +
+                "\n HAVING sum(case when Defects <> 0 then 1 else 0 end) > 0";
 
                 using (var db = new SgqDbDevEntities())
                 {
@@ -359,7 +363,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                  "\n LEFT JOIN ParHeaderField(nolock) phf4 on phf4.Id = cl2xphf4.ParHeaderField_Id " +
                  "\n LEFT JOIN ParMultipleValues(nolock) PMV4 on cl2xphf4.Value = cast(PMV4.Id as varchar(500)) " +
                  "\n Where cl2.UnitId = " + teste[0] + " and phf.Name = 'TORRE / PERIFERIA' and phf2.Name = 'PAVIMENTO TIPO'  and phf3.Name = 'APARTAMENTO / ÁREA' and phf4.Name = 'CÔMODOS' and PMV.Name = '" + teste[1] + "' and PMV2.Name = '" + teste[2] + "' and PMV3.Name = '" + teste[3] + "' " + //phf4.Name = 'CÔMODOS' and PMV.Name = 'TORRE 1' and PMV2.Name = 'PAV. 1' and PMV3.Name = 'APARTAMENTO 1' " +
-                 "\n GROUP BY pmv4.Name, cl2.UnitId ";
+                 "\n GROUP BY pmv4.Name, cl2.UnitId " +
+                 "\n HAVING sum(case when Defects <> 0 then 1 else 0 end) > 0";
 
                 using (var db = new SgqDbDevEntities())
                 {
