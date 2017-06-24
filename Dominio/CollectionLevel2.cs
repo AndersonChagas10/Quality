@@ -65,6 +65,7 @@ namespace Dominio
         public Nullable<int> ReauditLevel { get; set; }
         public Nullable<int> StartPhaseEvaluation { get; set; }
         public Nullable<int> CounterDonePhase { get; set; }
+        public Nullable<int> EndPhaseEvaluation { get; set; }
     
         public virtual ConsolidationLevel2 ConsolidationLevel2 { get; set; }
         public virtual ParLevel2 ParLevel2 { get; set; }
