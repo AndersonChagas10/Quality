@@ -1854,7 +1854,7 @@ namespace SgqSystem.Services
                     using (var db = new Dominio.SgqDbDevEntities())
                     {
                         int idl3 = Int32.Parse(Level03Id);
-                        tarefaFilha = db.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == idl3 && r.ParLevel2_Id == level02 && r.IsActive);
+                        tarefaFilha = db.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == idl3  && r.IsActive); //&& r.ParLevel2_Id == level02
                     }
                 }
 
