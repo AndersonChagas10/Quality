@@ -119,6 +119,20 @@ namespace SgqSystem.Controllers
             }
         }
 
+        protected void ExpireCookie()
+        {
+            HttpCookie currentUserCookie = Request.Cookies["webControlCookie"];
+            if (currentUserCookie != null)
+            {
+                Response.Cookies.Remove("webControlCookie");
+                Response.Cookies.Remove("Language");
+
+                currentUserCookie.Expires = DateTime.Now.AddDays(-10);
+                currentUserCookie.Value = null;
+                Response.SetCookie(currentUserCookie);
+            }
+
+        }
     }
 
 }

@@ -1,8 +1,12 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using DTO.DTO;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data.Entity;
+using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -67,9 +71,43 @@ namespace SgqSystem.Controllers.Api
             //proc.StartInfo.WorkingDirectory = "C:\\Watcher";
             proc.Start();
             proc.WaitForExit();
+        }
+
+        /// <summary>
+        /// Cria Cookie para UserSgq
+        /// </summary>
+        /// <param name="userDto">UserDTO</param>
+        /// <returns></returns>
+        protected CookieHeaderValue CreateCookieFromUserDTO(UserDTO userDto)
+        {
+            var values = new NameValueCollection();
+            values.Add("userId", userDto.Id.ToString());
+            values.Add("userName", userDto.Name);
+            values.Add("CompanyId", userDto.ParCompany_Id.GetValueOrDefault().ToString());
+            if (userDto.AlterDate != null)
+                values.Add("alterDate", userDto.AlterDate.GetValueOrDefault().ToString("dd/MM/yyyy"));
+            else
+                values.Add("alterDate", "");
+
+            values.Add("addDate", userDto.AddDate.ToString("dd/MM/yyyy"));
+
+            if (userDto.Role != null)
+                values.Add("roles", userDto.Role.Replace(';', ',').ToString());//"admin, teste, operacional, 3666,344, 43434,...."
+            else
+                values.Add("roles", "");
+
+            if (userDto.ParCompanyXUserSgq != null)
+                if (userDto.ParCompanyXUserSgq.Any(r => r.Role != null))
+                    values.Add("rolesCompany", string.Join(",", userDto.ParCompanyXUserSgq.Select(n => n.Role).Distinct().ToArray()));
+                else
+                    values.Add("rolesCompany", string.Join(",", userDto.ParCompanyXUserSgq.Select(n => n.ParCompany_Id).Distinct().ToArray()));
 
 
+            var cookie = new CookieHeaderValue("webControlCookie", values);
+            cookie.MaxAge = TimeSpan.FromMinutes(60);
+            cookie.Path = "/";
+
+            return cookie;
         }
     }
-
 }

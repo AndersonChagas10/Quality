@@ -1,16 +1,16 @@
 ﻿<!-- external libs from cdnjs -->
 @*<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css">
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>*@
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>*@
 
-<link href="~/Scripts/pivottable-master/dist/pivot.css" rel="stylesheet" />
-<script src="~/Scripts/pivottable-master/dist/pivot.js"></script>
-<script src="~/Scripts/pivottable-master/dist/c3_renderers.min.js"></script>
+@*<link href="~/Scripts/pivottable-master/dist/pivot.css" rel="stylesheet" />
+    <script src="~/Scripts/pivottable-master/dist/pivot.js"></script>
+    <script src="~/Scripts/pivottable-master/dist/c3_renderers.min.js"></script>*@
 
 @{
 
 
- }
+}
 
 <style>
     body {
@@ -59,9 +59,9 @@
         /*table-layout: fixed;*/
     }
 
-    input, select, textarea {
+    /*input, select, textarea {
         max-width: 150px;
-    }
+    }*/
 
     .pvtAxisContainer, .pvtVals {
         max-width: 100%;
@@ -97,7 +97,7 @@
 
                 <div id="divPie" style="height:215px;"></div>
                 <div class="col-xs-6 col-sm-6 ">
-                    <div class="panel panel-default" data-toggle="modal" data-target="#myModal" style="cursor:pointer;">
+                    <div class="panel panel-default" data-toggle="modal" data-target="#myModal" style="cursor:pointer;" onclick="geraTabela('Concluído', 'acoesConcuidasTbl')">
                         <div class="panel-body">
                             <div style="height:98px;">
                                 <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
@@ -117,7 +117,7 @@
                     </div>
                 </div>
                 <div class="col-xs-6 col-sm-6 ">
-                    <div class="panel panel-default" data-toggle="modal" data-target="#myModal" style="cursor:pointer;">
+                    <div class="panel panel-default" data-toggle="modal" data-target="#myModal" style="cursor:pointer;" onclick="geraTabela('Atrasado', 'acoesConcuidasTbl')">
                         <div class="panel-body">
                             <div style="height:98px;">
                                 <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
@@ -135,7 +135,7 @@
                     </div>
                 </div>
                 <div class="col-xs-6 col-sm-6 ">
-                    <div class="panel panel-default" data-toggle="modal" data-target="#myModal" style="cursor:pointer;">
+                    <div class="panel panel-default" data-toggle="modal" data-target="#myModal" style="cursor:pointer;" onclick="geraTabela('Atrasado', 'acoesConcuidasTbl', true)">
                         <div class="panel-body">
                             <div style="height:98px;">
                                 <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
@@ -193,7 +193,7 @@
                     <option value="Unidade">Unidade</option>
                     @*<option value="9">Indicador Operacional</option>*@
                     <option value="Grupo Causa">Grupo Causa</option>
-                    <option value="Causa Genérica" >Causa Genérica</option>
+                    <option value="Causa Genérica">Causa Genérica</option>
                     <option value="Contramedida Genérica">Contramedida Genérica</option>
                     <option value="Responsavel">Quem</option>
                     <option value="Status" selected>Status</option>
@@ -211,7 +211,7 @@
                     <option value="Unidade">Unidade</option>
                     @*<option value="9">Indicador Operacional</option>*@
                     <option value="Grupo Causa">Grupo Causa</option>
-                    <option value="Causa Genérica" >Causa Genérica</option>
+                    <option value="Causa Genérica">Causa Genérica</option>
                     <option value="Contramedida Genérica">Contramedida Genérica</option>
                     <option value="Responsavel" selected>Quem</option>
                     <option value="Status">Status</option>
@@ -236,7 +236,7 @@
                     <option value="Unidade">Unidade</option>
                     @*<option value="9">Indicador Operacional</option>*@
                     <option value="Grupo Causa">Grupo Causa</option>
-                    <option value="Causa Genérica" >Causa Genérica</option>
+                    <option value="Causa Genérica">Causa Genérica</option>
                     <option value="Contramedida Genérica">Contramedida Genérica</option>
                     <option value="Responsavel">Quem</option>
                     <option value="Status" selected>Status</option>
@@ -251,19 +251,79 @@
                     <option value="Gerência">Gerência</option>
                     <option value="Coordenação">Coordenação</option>
                     @*<option value="7">Projeto / Iniciativa</option>*@
-                    <option value="Unidade">Unidade</option>                      
+                    <option value="Unidade">Unidade</option>
                     @*<option value="9">Indicador Operacional</option>*@
-                    <option value="Grupo Causa">Grupo Causa</option>                 
-                    <option value="Causa Genérica">Causa Genérica</option>     
-                    <option value="Contramedida Genérica">Contramedida Genérica</option>       
-                    <option value="Responsavel" selected>Quem</option>                        
-                    <option value="Status">Status</option>         
+                    <option value="Grupo Causa">Grupo Causa</option>
+                    <option value="Causa Genérica">Causa Genérica</option>
+                    <option value="Contramedida Genérica">Contramedida Genérica</option>
+                    <option value="Responsavel" selected>Quem</option>
+                    <option value="Status">Status</option>
                 </select>
             </div>
             <div id="divCol" style="height:240px;"></div>
         </div>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 " style="display:none">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Indicadores</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="panel-body">
+                        <select id="filtroBarInd">
+                            <option value="0">Selecione</option>
+                            <option value="Indicador">Indicador</option>
+                            <option value="Monitoramento">Monitoramento</option>
+                            <option value="Tarefa" selected>Tarefa</option>
+                            <option value="Diretoria">Diretoria</option>
+                            <option value="Dimensão">Dimensão</option>
+                            <option value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                            <option value="Indicadores Diretriz">Indicadores / Diretriz</option>
+                            <option value="Gerência">Gerência</option>
+                            <option value="Coordenação">Coordenação</option>
+                            @*<option value="7">Projeto / Iniciativa</option>*@
+                            <option value="Unidade">Unidade</option>
+                            @*<option value="9">Indicador Operacional</option>*@
+                            <option value="Grupo Causa">Grupo Causa</option>
+                            <option value="Causa Genérica">Causa Genérica</option>
+                            <option value="Contramedida Genérica">Contramedida Genérica</option>
+                            <option value="Responsavel">Quem</option>
+                            <option value="Status">Status</option>
+                        </select>
+
+                        <select id="seriesBarInd">
+                            <option value="0">Selecione</option>
+                            <option value="Indicador">Indicador</option>
+                            <option value="Monitoramento">Monitoramento</option>
+                            <option value="Tarefa">Tarefa</option>
+                            <option value="Diretoria">Diretoria</option>
+                            <option value="Dimensão">Dimensão</option>
+                            <option value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                            <option value="Indicadores Diretriz">Indicadores / Diretriz</option>
+                            <option value="Gerência">Gerência</option>
+                            <option value="Coordenação">Coordenação</option>
+                            @*<option value="7">Projeto / Iniciativa</option>*@
+                            <option value="Unidade">Unidade</option>
+                            @*<option value="9">Indicador Operacional</option>*@
+                            <option value="Grupo Causa">Grupo Causa</option>
+                            <option value="Causa Genérica">Causa Genérica</option>
+                            <option value="Contramedida Genérica">Contramedida Genérica</option>
+                            <option value="Responsavel">Quem</option>
+                            <option value="Status" selected>Status</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12" id="divGraficoIndicadores" style="height:200px;padding:0px !important;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="panel panel-default" id="output" style="display:none"></div>
 
@@ -312,10 +372,9 @@
                 <h4 class="modal-title" id="myModalLabel">Ações Concluídas</h4>
             </div>
             <div class="modal-body" style="overflow-x:auto;">
-
-
-                <table id="exampleTD1" class="display" cellspacing="0" width="100%"><thead><tr><th>Name</th><th>Position</th><th>Office</th><th>Salary</th></tr></thead><tbody><tr><td>Tiger Nixon</td><td>System Architect</td><td>Edinburgh</td><td>$320,800</td></tr><tr><td>Garrett Winters</td><td>Accountant</td><td>Tokyo</td><td>$170,750</td></tr><tr><td>Ashton Cox</td><td>Junior Technical Author</td><td>San Francisco</td><td>$86,000</td></tr><tr><td>Cedric Kelly</td><td>Senior Javascript Developer</td><td>Edinburgh</td><td>$433,060</td></tr><tr><td>Airi Satou</td><td>Accountant</td><td>Tokyo</td><td>$162,700</td></tr><tr><td>Brielle Williamson</td><td>Integration Specialist</td><td>New York</td><td>$372,000</td></tr><tr><td>Herrod Chandler</td><td>Sales Assistant</td><td>San Francisco</td><td>$137,500</td></tr><tr><td>Rhona Davidson</td><td>Integration Specialist</td><td>Tokyo</td><td>$327,900</td></tr><tr><td>Colleen Hurst</td><td>Javascript Developer</td><td>San Francisco</td><td>$205,500</td></tr><tr><td>Sonya Frost</td><td>Software Engineer</td><td>Edinburgh</td><td>$103,600</td></tr><tr><td>Jena Gaines</td><td>Office Manager</td><td>London</td><td>$90,560</td></tr><tr><td>Quinn Flynn</td><td>Support Lead</td><td>Edinburgh</td><td>$342,000</td></tr><tr><td>Charde Marshall</td><td>Regional Director</td><td>San Francisco</td><td>$470,600</td></tr><tr><td>Haley Kennedy</td><td>Senior Marketing Designer</td><td>London</td><td>$313,500</td></tr><tr><td>Tatyana Fitzpatrick</td><td>Regional Director</td><td>London</td><td>$385,750</td></tr><tr><td>Michael Silva</td><td>Marketing Designer</td><td>London</td><td>$198,500</td></tr><tr><td>Paul Byrd</td><td>Chief Financial Officer (CFO)</td><td>New York</td><td>$725,000</td></tr><tr><td>Gloria Little</td><td>Systems Administrator</td><td>New York</td><td>$237,500</td></tr><tr><td>Bradley Greer</td><td>Software Engineer</td><td>London</td><td>$132,000</td></tr><tr><td>Dai Rios</td><td>Personnel Lead</td><td>Edinburgh</td><td>$217,500</td></tr><tr><td>Jenette Caldwell</td><td>Development Lead</td><td>New York</td><td>$345,000</td></tr><tr><td>Yuri Berry</td><td>Chief Marketing Officer (CMO)</td><td>New York</td><td>$675,000</td></tr><tr><td>Caesar Vance</td><td>Pre-Sales Support</td><td>New York</td><td>$106,450</td></tr><tr><td>Doris Wilder</td><td>Sales Assistant</td><td>Sidney</td><td>$85,600</td></tr><tr><td>Angelica Ramos</td><td>Chief Executive Officer (CEO)</td><td>London</td><td>$1,200,000</td></tr><tr><td>Gavin Joyce</td><td>Developer</td><td>Edinburgh</td><td>$92,575</td></tr><tr><td>Jennifer Chang</td><td>Regional Director</td><td>Singapore</td><td>$357,650</td></tr><tr><td>Brenden Wagner</td><td>Software Engineer</td><td>San Francisco</td><td>$206,850</td></tr><tr><td>Fiona Green</td><td>Chief Operating Officer (COO)</td><td>San Francisco</td><td>$850,000</td></tr><tr><td>Shou Itou</td><td>Regional Marketing</td><td>Tokyo</td><td>$163,000</td></tr><tr><td>Michelle House</td><td>Integration Specialist</td><td>Sidney</td><td>$95,400</td></tr><tr><td>Suki Burks</td><td>Developer</td><td>London</td><td>$114,500</td></tr><tr><td>Prescott Bartlett</td><td>Technical Author</td><td>London</td><td>$145,000</td></tr><tr><td>Gavin Cortez</td><td>Team Leader</td><td>San Francisco</td><td>$235,500</td></tr><tr><td>Martena Mccray</td><td>Post-Sales support</td><td>Edinburgh</td><td>$324,050</td></tr><tr><td>Unity Butler</td><td>Marketing Designer</td><td>San Francisco</td><td>$85,675</td></tr><tr><td>Howard Hatfield</td><td>Office Manager</td><td>San Francisco</td><td>$164,500</td></tr><tr><td>Hope Fuentes</td><td>Secretary</td><td>San Francisco</td><td>$109,850</td></tr><tr><td>Vivian Harrell</td><td>Financial Controller</td><td>San Francisco</td><td>$452,500</td></tr><tr><td>Timothy Mooney</td><td>Office Manager</td><td>London</td><td>$136,200</td></tr><tr><td>Jackson Bradshaw</td><td>Director</td><td>New York</td><td>$645,750</td></tr><tr><td>Olivia Liang</td><td>Support Engineer</td><td>Singapore</td><td>$234,500</td></tr><tr><td>Bruno Nash</td><td>Software Engineer</td><td>London</td><td>$163,500</td></tr><tr><td>Sakura Yamamoto</td><td>Support Engineer</td><td>Tokyo</td><td>$139,575</td></tr><tr><td>Thor Walton</td><td>Developer</td><td>New York</td><td>$98,540</td></tr><tr><td>Finn Camacho</td><td>Support Engineer</td><td>San Francisco</td><td>$87,500</td></tr><tr><td>Serge Baldwin</td><td>Data Coordinator</td><td>Singapore</td><td>$138,575</td></tr><tr><td>Zenaida Frank</td><td>Software Engineer</td><td>New York</td><td>$125,250</td></tr><tr><td>Zorita Serrano</td><td>Software Engineer</td><td>San Francisco</td><td>$115,000</td></tr><tr><td>Jennifer Acosta</td><td>Junior Javascript Developer</td><td>Edinburgh</td><td>$75,650</td></tr><tr><td>Cara Stevens</td><td>Sales Assistant</td><td>New York</td><td>$145,600</td></tr><tr><td>Hermione Butler</td><td>Regional Director</td><td>London</td><td>$356,250</td></tr><tr><td>Lael Greer</td><td>Systems Administrator</td><td>London</td><td>$103,500</td></tr><tr><td>Jonas Alexander</td><td>Developer</td><td>San Francisco</td><td>$86,500</td></tr><tr><td>Shad Decker</td><td>Regional Director</td><td>Edinburgh</td><td>$183,000</td></tr><tr><td>Michael Bruce</td><td>Javascript Developer</td><td>Singapore</td><td>$183,000</td></tr><tr><td>Donna Snider</td><td>Customer Support</td><td>New York</td><td>$112,000</td></tr></tbody></table>
-
+                <g id="naoExisteDados" class="highcharts-no-data" style="" transform="translate(146,124)"><text x="3" zIndex="1" style="font-size:12px;font-weight:bold;color:#60606a;fill:#60606a;" y="15"><tspan>Sem dados para exibição.</tspan></text></g>
+                <table id="acoesConcuidasTbl"></table>
+                @*<table id="exampleTD1" class="display" cellspacing="0" width="100%"><thead><tr><th>Name</th><th>Position</th><th>Office</th><th>Salary</th></tr></thead><tbody><tr><td>Tiger Nixon</td><td>System Architect</td><td>Edinburgh</td><td>$320,800</td></tr><tr><td>Garrett Winters</td><td>Accountant</td><td>Tokyo</td><td>$170,750</td></tr><tr><td>Ashton Cox</td><td>Junior Technical Author</td><td>San Francisco</td><td>$86,000</td></tr><tr><td>Cedric Kelly</td><td>Senior Javascript Developer</td><td>Edinburgh</td><td>$433,060</td></tr><tr><td>Airi Satou</td><td>Accountant</td><td>Tokyo</td><td>$162,700</td></tr><tr><td>Brielle Williamson</td><td>Integration Specialist</td><td>New York</td><td>$372,000</td></tr><tr><td>Herrod Chandler</td><td>Sales Assistant</td><td>San Francisco</td><td>$137,500</td></tr><tr><td>Rhona Davidson</td><td>Integration Specialist</td><td>Tokyo</td><td>$327,900</td></tr><tr><td>Colleen Hurst</td><td>Javascript Developer</td><td>San Francisco</td><td>$205,500</td></tr><tr><td>Sonya Frost</td><td>Software Engineer</td><td>Edinburgh</td><td>$103,600</td></tr><tr><td>Jena Gaines</td><td>Office Manager</td><td>London</td><td>$90,560</td></tr><tr><td>Quinn Flynn</td><td>Support Lead</td><td>Edinburgh</td><td>$342,000</td></tr><tr><td>Charde Marshall</td><td>Regional Director</td><td>San Francisco</td><td>$470,600</td></tr><tr><td>Haley Kennedy</td><td>Senior Marketing Designer</td><td>London</td><td>$313,500</td></tr><tr><td>Tatyana Fitzpatrick</td><td>Regional Director</td><td>London</td><td>$385,750</td></tr><tr><td>Michael Silva</td><td>Marketing Designer</td><td>London</td><td>$198,500</td></tr><tr><td>Paul Byrd</td><td>Chief Financial Officer (CFO)</td><td>New York</td><td>$725,000</td></tr><tr><td>Gloria Little</td><td>Systems Administrator</td><td>New York</td><td>$237,500</td></tr><tr><td>Bradley Greer</td><td>Software Engineer</td><td>London</td><td>$132,000</td></tr><tr><td>Dai Rios</td><td>Personnel Lead</td><td>Edinburgh</td><td>$217,500</td></tr><tr><td>Jenette Caldwell</td><td>Development Lead</td><td>New York</td><td>$345,000</td></tr><tr><td>Yuri Berry</td><td>Chief Marketing Officer (CMO)</td><td>New York</td><td>$675,000</td></tr><tr><td>Caesar Vance</td><td>Pre-Sales Support</td><td>New York</td><td>$106,450</td></tr><tr><td>Doris Wilder</td><td>Sales Assistant</td><td>Sidney</td><td>$85,600</td></tr><tr><td>Angelica Ramos</td><td>Chief Executive Officer (CEO)</td><td>London</td><td>$1,200,000</td></tr><tr><td>Gavin Joyce</td><td>Developer</td><td>Edinburgh</td><td>$92,575</td></tr><tr><td>Jennifer Chang</td><td>Regional Director</td><td>Singapore</td><td>$357,650</td></tr><tr><td>Brenden Wagner</td><td>Software Engineer</td><td>San Francisco</td><td>$206,850</td></tr><tr><td>Fiona Green</td><td>Chief Operating Officer (COO)</td><td>San Francisco</td><td>$850,000</td></tr><tr><td>Shou Itou</td><td>Regional Marketing</td><td>Tokyo</td><td>$163,000</td></tr><tr><td>Michelle House</td><td>Integration Specialist</td><td>Sidney</td><td>$95,400</td></tr><tr><td>Suki Burks</td><td>Developer</td><td>London</td><td>$114,500</td></tr><tr><td>Prescott Bartlett</td><td>Technical Author</td><td>London</td><td>$145,000</td></tr><tr><td>Gavin Cortez</td><td>Team Leader</td><td>San Francisco</td><td>$235,500</td></tr><tr><td>Martena Mccray</td><td>Post-Sales support</td><td>Edinburgh</td><td>$324,050</td></tr><tr><td>Unity Butler</td><td>Marketing Designer</td><td>San Francisco</td><td>$85,675</td></tr><tr><td>Howard Hatfield</td><td>Office Manager</td><td>San Francisco</td><td>$164,500</td></tr><tr><td>Hope Fuentes</td><td>Secretary</td><td>San Francisco</td><td>$109,850</td></tr><tr><td>Vivian Harrell</td><td>Financial Controller</td><td>San Francisco</td><td>$452,500</td></tr><tr><td>Timothy Mooney</td><td>Office Manager</td><td>London</td><td>$136,200</td></tr><tr><td>Jackson Bradshaw</td><td>Director</td><td>New York</td><td>$645,750</td></tr><tr><td>Olivia Liang</td><td>Support Engineer</td><td>Singapore</td><td>$234,500</td></tr><tr><td>Bruno Nash</td><td>Software Engineer</td><td>London</td><td>$163,500</td></tr><tr><td>Sakura Yamamoto</td><td>Support Engineer</td><td>Tokyo</td><td>$139,575</td></tr><tr><td>Thor Walton</td><td>Developer</td><td>New York</td><td>$98,540</td></tr><tr><td>Finn Camacho</td><td>Support Engineer</td><td>San Francisco</td><td>$87,500</td></tr><tr><td>Serge Baldwin</td><td>Data Coordinator</td><td>Singapore</td><td>$138,575</td></tr><tr><td>Zenaida Frank</td><td>Software Engineer</td><td>New York</td><td>$125,250</td></tr><tr><td>Zorita Serrano</td><td>Software Engineer</td><td>San Francisco</td><td>$115,000</td></tr><tr><td>Jennifer Acosta</td><td>Junior Javascript Developer</td><td>Edinburgh</td><td>$75,650</td></tr><tr><td>Cara Stevens</td><td>Sales Assistant</td><td>New York</td><td>$145,600</td></tr><tr><td>Hermione Butler</td><td>Regional Director</td><td>London</td><td>$356,250</td></tr><tr><td>Lael Greer</td><td>Systems Administrator</td><td>London</td><td>$103,500</td></tr><tr><td>Jonas Alexander</td><td>Developer</td><td>San Francisco</td><td>$86,500</td></tr><tr><td>Shad Decker</td><td>Regional Director</td><td>Edinburgh</td><td>$183,000</td></tr><tr><td>Michael Bruce</td><td>Javascript Developer</td><td>Singapore</td><td>$183,000</td></tr><tr><td>Donna Snider</td><td>Customer Support</td><td>New York</td><td>$112,000</td></tr></tbody></table>*@
             </div>
             <div class="modal-footer">
             </div>
@@ -323,216 +382,289 @@
     </div>
 </div>
 
-<script src="~/Scripts/moment-with-locales.min.js"></script>
+@*<script src="~/Scripts/moment-with-locales.min.js"></script>*@
 <script src="~/Scripts/daterangepicker.js"></script>
 <script src="~/Scripts/DatePikerReady.js"></script>
 <link href="~/Content/daterangepicker.css" rel="stylesheet" />
+
 @*<script src="~/Views/Home/AuxiliarIndexHome.js"></script>*@
 
-    <script>
+<script>
 
-        Highcharts.setOptions({
-            lang: {
-                months: moment.monthsShort(),
-                weekdays: moment.weekdaysShort(),
-                noData: "Sem dados para exibição."
-            }
+    Highcharts.setOptions({
+        lang: {
+            months: moment.monthsShort(),
+            weekdays: moment.weekdaysShort(),
+            noData: "Sem dados para exibição."
+        }
+    });
+    var resultGetGrafico = [];
+    var urlGetGrafico = '@Url.Action("GetGrafico", "api/Relatorios")';
+    var urlGetGraficoIndicadores = '@Url.Action("GetGraficoSgq", "api/Relatorios")';
+    var urlGetGraficoPie = '@Url.Action("GraficoPie", "api/Relatorios")';
+    var urlGraficoNumeroDeAcoesEstabelecidas = '@Url.Action("NumeroDeAcoesEstabelecidas", "api/Relatorios")';
+    var urlGraficoNumeroDeAcoesConcluidas = '@Url.Action("NumeroDeAcoesConcluidas", "api/Relatorios")';
+    var urlGraficoNumeroDeAcoes = '@Url.Action("NumeroDeAcoes", "api/Relatorios")';
+    var urlGraficoEvolucaoDoResultado = '@Url.Action("EvolucaoDoResultado", "api/Relatorios")';
+
+    /*Container 1*/
+    function GraficoBar(privotY, privotX) {
+        var r = resultGetGrafico
+        var title = privotY + " x " + privotX
+        var result = r;
+        var series = [];
+        var serie = [];
+        var eixoY = MapeiaValorParaHC(result, privotY).filter(onlyUnique);
+        var eixoX = MapeiaValorParaHC(result, privotX).filter(onlyUnique);
+
+        eixoX.forEach(function (o, c) {
+            var serieData = {};
+            serieData["name"] = o;
+            serieData["data"] = [];
+            eixoY.forEach(function (oo, cc) {
+                serieData["data"].push($.grep(result, function (e) { return e[privotX] == o && e[privotY] == eixoY[cc]; }).length)
+            })
+            serie.push(serieData);
         });
 
-        var urlGetGrafico = '@Url.Action("GetGrafico", "api/Relatorios")';
-        var urlGetGraficoPie = '@Url.Action("GraficoPie", "api/Relatorios")';
-        var urlGraficoNumeroDeAcoesEstabelecidas = '@Url.Action("NumeroDeAcoesEstabelecidas", "api/Relatorios")';
-        var urlGraficoNumeroDeAcoesConcluidas = '@Url.Action("NumeroDeAcoesConcluidas", "api/Relatorios")';
-        var urlGraficoNumeroDeAcoes = '@Url.Action("NumeroDeAcoes", "api/Relatorios")';
-        var urlGraficoEvolucaoDoResultado = '@Url.Action("EvolucaoDoResultado", "api/Relatorios")';
+        Highcharts.chart('divGrafico1', {
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: title,
+                style: {
+                    fontSize: '14px',
+                }
+            },
+            xAxis: {
+                categories: eixoY,
+                labels: {
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+                }
+            },
+            yAxis: {
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '8px',
+                        fontWeight: 'normal'
+                    }
+                },
+                min: 0,
+                title: {
+                    text: tituloXBar,
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+                }
+            },
+            legend: {
+                align: 'center',
+                verticalAlign: 'bottom',
+                layout: 'horizontal',
+                itemStyle: {
+                    fontSize: '10px',
+                    fontWeight: 'normal',
+                },
+            },
+            plotOptions: {
+                series: {
+                    stacking: 'normal'
+                }
+            },
+            series: serie
+        });
+    }
 
-        /*Container 1*/
-        function GraficoBar(privotY, privotX) {
-            $.post(urlGetGrafico, enviar, function (r) {
-                var title = privotY + " x " + privotX
-                var result = r;
-                var series = [];
-                var serie = [];
-                var eixoY = MapeiaValorParaHC(result, privotY).filter(onlyUnique);
-                var eixoX = MapeiaValorParaHC(result, privotX).filter(onlyUnique);
-                //if (r.length) {
-                    
-                //}
+    function GraficoCol(privotY, privotX) {
+        var r = resultGetGrafico
+        var title = privotY + " x " + privotX
+        var result = r;
+        var series = [];
+        var serie = [];
+        var eixoY = MapeiaValorParaHC(result, privotY).filter(onlyUnique);
+        var eixoX = MapeiaValorParaHC(result, privotX).filter(onlyUnique);
 
-                eixoX.forEach(function (o, c) {
-                    var serieData = {};
-                    serieData["name"] = o;
-                    serieData["data"] = [];
-                    eixoY.forEach(function (oo, cc) {
-                        serieData["data"].push($.grep(result, function (e) { return e[privotX] == o && e[privotY] == eixoY[cc]; }).length)
-                    })
-                    serie.push(serieData);
-                });
+        eixoX.forEach(function (o, c) {
+            var serieData = {};
+            serieData["name"] = o;
+            serieData["data"] = [];
+            eixoY.forEach(function (oo, cc) {
+                serieData["data"].push($.grep(result, function (e) { return e[privotX] == o && e[privotY] == eixoY[cc]; }).length)
+            })
+            serie.push(serieData);
+        });
 
-                Highcharts.chart('divGrafico1', {
-                    credits: {
-                        enabled: false
-                    },
-                    exporting: {
-                        enabled: false
-                    },
-                    chart: {
-                        type: 'bar'
-                    },
-                    title: {
-                        text: title,
+        Highcharts.chart('divCol', {
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: title,
+                style: {
+                    fontSize: '14px',
+                }
+            },
+            xAxis: {
+                categories: eixoY,
+                labels: {
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+                },
+                title: {
+                    text: tituloYColumn,
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+                }
+            },
+            yAxis: {
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '8px',
+                        fontWeight: 'normal'
+                    }
+                },
+                min: 0,
+                title: {
+                    text: tituloXColumn,
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+                }
+            },
+            legend: {
+                align: 'center',
+                verticalAlign: 'bottom',
+                layout: 'horizontal',
+                enabled: true,
+                itemStyle: {
+                    fontSize: '10px',
+                    fontWeight: 'normal',
+                },
+            },
+            plotOptions: {
+                series: {
+                    stacking: 'normal'
+                }
+            },
+            series: serie
+        });
+    }
+
+    function GraficoPizza(r) {
+        dadosPie = r;
+        var serie = [];
+        r.forEach(function (o, c) {
+            serie.push({
+                name: o.name,
+                y: parseInt(o.y)
+            })
+        });
+
+        Highcharts.chart('divPie', {
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            legend: {
+                align: 'center',
+                verticalAlign: 'bottom',
+                layout: 'horizontal',
+                enabled: true,
+                itemStyle: {
+                    fontSize: '10px',
+                    fontWeight: 'normal',
+                },
+            },
+            title: {
+                text: false
+            },
+            tooltip: {
+                pointFormat: '<b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    showInLegend: true,
+                    dataLabels: {
+                        enabled: false,
+                        format: '{point.name}' + ': ' + '{point.percentage:.1f} %',
                         style: {
-                            fontSize: '14px',
-                        }
-                    },
-                    xAxis: {
-                        categories: eixoY,
-                        labels: {
-                            style: {
-                                fontSize: '10px',
-                                fontWeight: 'normal'
-                            }
-                        }
-                    },
-                    yAxis: {
-                        labels: {
-                            format: '{value}',
-                            style: {
-                                color: Highcharts.getOptions().colors[1],
-                                fontSize: '8px',
-                                fontWeight: 'normal'
-                            }
-                        },
-                        min: 0,
-                        title: {
-                            text: tituloXBar,
-                            style: {
-                                fontSize: '10px',
-                                fontWeight: 'normal'
-                            }
-                        }
-                    },
-                    legend: {
-                        align: 'center',
-                        verticalAlign: 'bottom',
-                        layout: 'horizontal',
-                        itemStyle: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
                             fontSize: '10px',
                             fontWeight: 'normal',
                         },
-                    },
-                    plotOptions: {
-                        series: {
-                            stacking: 'normal'
-                        }
-                    },
-                    series: serie
-                });
-            });
-        }
+                        connectorColor: 'silver'
+                    }
+                }
+            },
+            series: [{
+                name: 'quantidade',
+                colorbypoint: true,
+                data: serie
+            }]
+        });
+    }
+    /*Container 1 FIM*/
 
-        function GraficoCol(privotY, privotX) {
-            $.post(urlGetGrafico, enviar, function (r) {
-
-                var title = privotY + " x " + privotX
-                var result = r;
-                var series = [];
-                var serie = [];
-                var eixoY = MapeiaValorParaHC(result, privotY).filter(onlyUnique);
-                var eixoX = MapeiaValorParaHC(result, privotX).filter(onlyUnique);
-
-                eixoX.forEach(function (o, c) {
-                    var serieData = {};
-                    serieData["name"] = o;
-                    serieData["data"] = [];
-                    eixoY.forEach(function (oo, cc) {
-                        serieData["data"].push($.grep(result, function (e) { return e[privotX] == o && e[privotY] == eixoY[cc]; }).length)
-                    })
-                    serie.push(serieData);
-                });
-
-                Highcharts.chart('divCol', {
-                    credits: {
-                        enabled: false
-                    },
-                    exporting: {
-                        enabled: false
-                    },
-                    chart: {
-                        type: 'column'
-                    },
-                    title: {
-                        text: title,
-                        style: {
-                            fontSize: '14px',
-                        }
-                    },
-                    xAxis: {
-                        categories: eixoY,
-                        labels: {
-                            style: {
-                                fontSize: '10px',
-                                fontWeight: 'normal'
-                            }
-                        },
-                        title: {
-                            text: tituloYColumn,
-                            style: {
-                                fontSize: '10px',
-                                fontWeight: 'normal'
-                            }
-                        }
-                    },
-                    yAxis: {
-                        labels: {
-                            format: '{value}',
-                            style: {
-                                color: Highcharts.getOptions().colors[1],
-                                fontSize: '8px',
-                                fontWeight: 'normal'
-                            }
-                        },
-                        min: 0,
-                        title: {
-                            text: tituloXColumn,
-                            style: {
-                                fontSize: '10px',
-                                fontWeight: 'normal'
-                            }
-                        }
-                    },
-                    legend: {
-                        align: 'center',
-                        verticalAlign: 'bottom',
-                        layout: 'horizontal',
-                        enabled: true,
-                        itemStyle: {
-                            fontSize: '10px',
-                            fontWeight: 'normal',
-                        },
-                    },
-                    plotOptions: {
-                        series: {
-                            stacking: 'normal'
-                        }
-                    },
-                    series: serie
-                });
-
-            });
-        }
-
-        function GraficoPizza(r) {
-            dadosPie = r;
+    /*Indicadores*/
+    function GraficoIndicadores(privotY, privotX) {
+        $.post(urlGetGraficoIndicadores, enviar, function (r) {
+            var title = privotY + " x " + privotX
+            var result = r;
+            var series = [];
             var serie = [];
-            r.forEach(function (o, c) {
-                serie.push({
-                    name: o.name,
-                    y: parseInt(o.y)
+            var eixoY = MapeiaValorParaHC(result, privotY).filter(onlyUnique);
+            var eixoX = MapeiaValorParaHC(result, privotX).filter(onlyUnique);
+            //if (r.length) {
+
+            //}
+
+            eixoX.forEach(function (o, c) {
+                var serieData = {};
+                serieData["name"] = o;
+                serieData["data"] = [];
+                eixoY.forEach(function (oo, cc) {
+                    serieData["data"].push($.grep(result, function (e) { return e[privotX] == o && e[privotY] == eixoY[cc]; }).length)
                 })
+                serie.push(serieData);
             });
 
-            Highcharts.chart('divPie', {
+            Highcharts.chart('divGraficoIndicadores', {
                 credits: {
                     enabled: false
                 },
@@ -540,464 +672,471 @@
                     enabled: false
                 },
                 chart: {
-                    plotBackgroundColor: null,
-                    plotBorderWidth: null,
-                    plotShadow: false,
-                    type: 'pie'
+                    type: 'bar'
+                },
+                title: {
+                    text: title,
+                    style: {
+                        fontSize: '14px',
+                    }
+                },
+                xAxis: {
+                    categories: eixoY,
+                    labels: {
+                        style: {
+                            fontSize: '10px',
+                            fontWeight: 'normal'
+                        }
+                    }
+                },
+                yAxis: {
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[1],
+                            fontSize: '8px',
+                            fontWeight: 'normal'
+                        }
+                    },
+                    min: 0,
+                    title: {
+                        text: tituloXBar,
+                        style: {
+                            fontSize: '10px',
+                            fontWeight: 'normal'
+                        }
+                    }
                 },
                 legend: {
                     align: 'center',
                     verticalAlign: 'bottom',
                     layout: 'horizontal',
-                    enabled: true,
                     itemStyle: {
                         fontSize: '10px',
                         fontWeight: 'normal',
                     },
                 },
-                title: {
-                    text: false
-                },
-                tooltip: {
-                    pointFormat: '<b>{point.percentage:.1f}%</b>'
-                },
                 plotOptions: {
-                    pie: {
-                        allowPointSelect: true,
-                        cursor: 'pointer',
-                        showInLegend: true,
-                        dataLabels: {
-                            enabled: false,
-                            format: '{point.name}' + ': ' + '{point.percentage:.1f} %',
-                            style: {
-                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
-                                fontSize: '10px',
-                                fontWeight: 'normal',
-                            },
-                            connectorColor: 'silver'
-                        }
+                    series: {
+                        stacking: 'normal'
                     }
                 },
-                series: [{
-                    name: 'quantidade',
-                    colorbypoint: true,
-                    data: serie
-                }]
+                series: serie
             });
-        }
-        /*Container 1 FIM*/
+        });
+    }
 
-        /*Container 2*/
-        function GraficoAcoesEstabelecidas(dados) {
+    /*Container 2*/
+    function GraficoAcoesEstabelecidas(dados) {
 
-            var meses = [];
-            var valores = MapeiaValorParaHC(dados, "Quantidade", true);
-            dados.forEach(function (o) {
-                meses.push(moment.monthsShort()[o.Mes]);
-            });
+        var meses = [];
+        var valores = MapeiaValorParaHC(dados, "Quantidade", true);
+        dados.forEach(function (o) {
+            meses.push(moment.monthsShort()[o.Mes]);
+        });
 
-            Highcharts.chart('divEstoque1', {
-                credits: {
-                    enabled: false
-                },
-                exporting: {
-                    enabled: false
-                },
-                legend: {
+        Highcharts.chart('divEstoque1', {
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            legend: {
 
-                    enabled: false,
+                enabled: false,
 
-                },
+            },
 
-                chart: {
-                    type: 'column'
-                },
-                title: {
-                    text: 'Número de ações estabelecidas',
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Número de ações estabelecidas',
+                style: {
+                    //color: Highcharts.getOptions().colors[0],
+                    fontSize: '12px',
+                    fontWeight: 'bold'
+                }
+
+            },
+            subtitle: {
+                text: false
+            },
+            xAxis: {
+                categories: meses,
+                labels: {
                     style: {
-                        //color: Highcharts.getOptions().colors[0],
-                        fontSize: '12px',
-                        fontWeight: 'bold'
-                    }
-
-                },
-                subtitle: {
-                    text: false
-                },
-                xAxis: {
-                    categories: meses,
-                    labels: {
-                        style: {
-                            fontSize: '10px',
-                            fontWeight: 'normal'
-                        }
-                    },
-                    crosshair: true,
-                    title: {
-                        text: 'Mes de Início',
-                        style: {
-                            color: Highcharts.getOptions().colors[1],
-                            fontSize: '10px',
-                            fontWeight: 'normal'
-                        }
-
-                    },
-                },
-                yAxis: {
-                    labels: {
-                        format: '{value}',
-                        style: {
-                            color: Highcharts.getOptions().colors[1],
-                            fontSize: '8px',
-                            fontWeight: 'normal'
-                        }
-                    },
-                    min: 0,
-
-                    title: {
-                        text: 'Número de ações',
-                        style: {
-                            color: Highcharts.getOptions().colors[1],
-                            fontSize: '10px',
-                            fontWeight: 'normal'
-
-                        }
-                    },
-                },
-                tooltip: {
-                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                        '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
-                    footerFormat: '</table>',
-                    shared: true,
-                    useHTML: true
-                },
-                plotOptions: {
-                    column: {
-                        pointPadding: 0.2,
-                        borderWidth: 0
-                    }
-                },
-                series: [{
-                    name: 'Ações',
-                    data: valores
-
-                }]
-            });
-
-        }
-
-        function GraficoAcoesConcluidas(dados) {
-
-            var meses = [];
-            var valores = MapeiaValorParaHC(dados, "Quantidade", true);
-            dados.forEach(function (o) {
-                meses.push(moment.monthsShort()[o.Mes]);
-            });
-
-            Highcharts.chart('divEstoque2', {
-                credits: {
-                    enabled: false
-                },
-                exporting: {
-                    enabled: false
-                },
-                legend: {
-
-                    enabled: false,
-
-                },
-                chart: {
-                    type: 'column'
-                },
-
-                title: {
-                    text: 'Número de ações concluídas',
-                    style: {
-                        //color: Highcharts.getOptions().colors[0],
-                        fontSize: '12px',
-                        fontWeight: 'bold'
-                    }
-
-                },
-                subtitle: {
-                    text: false
-                },
-
-                xAxis: {
-                    categories: meses,
-                    labels: {
-                        style: {
-                            fontSize: '10px',
-                            fontWeight: 'normal'
-                        }
-                    },
-                    crosshair: true,
-                    title: {
-                        text: 'Mes de Término',
-                        style: {
-                            color: Highcharts.getOptions().colors[1],
-                            fontSize: '10px',
-                            fontWeight: 'normal'
-                        }
-
-                    },
-
-                },
-                yAxis: {
-                    labels: {
-                        format: '{value}',
-                        style: {
-                            color: Highcharts.getOptions().colors[1],
-                            fontSize: '8px',
-                            fontWeight: 'normal'
-                        }
-                    },
-                    min: 0,
-
-                    title: {
-                        text: 'Número de ações',
-                        style: {
-                            color: Highcharts.getOptions().colors[1],
-                            fontSize: '10px',
-                            fontWeight: 'normal'
-                        }
-                    },
-                },
-                tooltip: {
-                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                        '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
-                    footerFormat: '</table>',
-                    shared: true,
-                    useHTML: true
-                },
-                plotOptions: {
-                    column: {
-                        pointPadding: 0.2,
-                        borderWidth: 0
-                    }
-                },
-                series: [{
-                    name: 'Ações',
-                    data: valores
-
-                }]
-            });
-        }
-
-        function GraficoEstoqueDeAcoes(dados) {
-
-            var meses = [];
-            var acumulativo = [];
-            var valoresInciadas = MapeiaValorParaHC(dados, "QuantidadeIniciadas", true);
-            var valoresConcluidas = MapeiaValorParaHC(dados, "QuantidadeConcluidas", true);
-            var acc = MapeiaValorParaHC(dados, "Acc", true);
-
-            var acumlador = 0;
-            acc.forEach(function (o) {
-                acumlador += o;
-                acumulativo.push(acumlador);
-            });
-
-            dados.forEach(function (o) {
-                meses.push(moment.monthsShort()[o.MesIniciadas]);
-
-            });
-
-            Highcharts.chart('divEstoque3', {
-                credits: {
-                    enabled: false
-                },
-                exporting: {
-                    enabled: false
-                },
-                chart: {
-                    zoomType: 'xy'
-                },
-
-                title: {
-                    text: 'Estoque de Ações',
-                    style: {
-                        //color: Highcharts.getOptions().colors[0],
-                        fontSize: '12px',
-                        fontWeight: 'bold'
-                    }
-
-                },
-                subtitle: {
-                    text: false
-                },
-
-                xAxis: [{
-                    categories: meses,
-                    labels: {
-                        style: {
-                            fontSize: '10px',
-                            fontWeight: 'normal'
-                        }
-                    },
-                    crosshair: true,
-                    title: {
-                        text: 'Meses',
-                        style: {
-                            color: Highcharts.getOptions().colors[1],
-                            fontSize: '10px',
-                            fontWeight: 'normal'
-                        }
-
-                    }
-
-                }],
-                yAxis: [{ // Primary yAxis
-                    labels: {
-                        format: '{value}',
-                        style: {
-                            color: Highcharts.getOptions().colors[1],
-                            fontSize: '8px',
-                            fontWeight: 'normal'
-                        }
-                    },
-                    title: {
-                        text: 'Número de ações',
-                        style: {
-                            color: Highcharts.getOptions().colors[1],
-                            fontSize: '10px',
-                            fontWeight: 'normal'
-                        }
-                    }
-                    //opposite: true
-                }],
-                tooltip: {
-                    shared: true
-                },
-                legend: {
-                    layout: 'horizontal',
-                    align: 'center',
-                    verticalAlign: 'bottom',
-                    itemStyle: {
-
                         fontSize: '10px',
                         fontWeight: 'normal'
                     }
                 },
-                series: [{
-                    name: 'Iniciadas',
-                    type: 'column',
-                    data: valoresInciadas,
-                    tooltip: {
-                        valueSuffix: ''
-                    },
-                    color: Highcharts.getOptions().colors[2],
+                crosshair: true,
+                title: {
+                    text: 'Mes de Início',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
 
-                }, {
-                    name: 'Concluídas',
-                    type: 'column',
-                    data: valoresConcluidas,
-                    tooltip: {
-                        valueSuffix: ''
-                    },
-                    color: Highcharts.getOptions().colors[3],
-                }, {
-                    name: 'Acumuladas',
-                    type: 'spline',
-                    data: acumulativo,
-                    tooltip: {
-                        valueSuffix: ''
-                    },
-                    color: Highcharts.getOptions().colors[0],
-                }]
-            });
-
-        }
-
-        function GraficoEvolucaoDoResultado(dados) {
-
-            var meses = [];
-            var valoresConcluidas = MapeiaValorParaHC(dados, "QuantidadeConcluidas", true);
-            var meta = MapeiaValorParaHC(dados, "Meta", true);
-            //var meta = MapeiaValorParaHC(dados, "QuantidadeConcluidas", true);
-            //var realizado = MapeiaValorParaHC(dados, "Acc", true);
-
-            dados.forEach(function (o) {
-                meses.push(moment.monthsShort()[o.MesConcluidas]);
-            });
-
-            Highcharts.chart('divIndicador', {
-                credits: {
-                    enabled: false
                 },
-                exporting: {
-                    enabled: false
+            },
+            yAxis: {
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '8px',
+                        fontWeight: 'normal'
+                    }
                 },
-                chart: {
-                    zoomType: 'xy'
+                min: 0,
+
+                title: {
+                    text: 'Número de ações',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+
+                    }
+                },
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Ações',
+                data: valores
+
+            }]
+        });
+
+    }
+
+    function GraficoAcoesConcluidas(dados) {
+
+        var meses = [];
+        var valores = MapeiaValorParaHC(dados, "Quantidade", true);
+        dados.forEach(function (o) {
+            meses.push(moment.monthsShort()[o.Mes]);
+        });
+
+        Highcharts.chart('divEstoque2', {
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            legend: {
+
+                enabled: false,
+
+            },
+            chart: {
+                type: 'column'
+            },
+
+            title: {
+                text: 'Número de ações concluídas',
+                style: {
+                    //color: Highcharts.getOptions().colors[0],
+                    fontSize: '12px',
+                    fontWeight: 'bold'
+                }
+
+            },
+            subtitle: {
+                text: false
+            },
+
+            xAxis: {
+                categories: meses,
+                labels: {
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+                },
+                crosshair: true,
+                title: {
+                    text: 'Mes de Término',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+
+                },
+
+            },
+            yAxis: {
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '8px',
+                        fontWeight: 'normal'
+                    }
+                },
+                min: 0,
+
+                title: {
+                    text: 'Número de ações',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+                },
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Ações',
+                data: valores
+
+            }]
+        });
+    }
+
+    function GraficoEstoqueDeAcoes(dados) {
+
+        var meses = [];
+        var acumulativo = [];
+        var valoresInciadas = MapeiaValorParaHC(dados, "QuantidadeIniciadas", true);
+        var valoresConcluidas = MapeiaValorParaHC(dados, "QuantidadeConcluidas", true);
+        var acc = MapeiaValorParaHC(dados, "Acc", true);
+
+        var acumlador = 0;
+        acc.forEach(function (o) {
+            acumlador += o;
+            acumulativo.push(acumlador);
+        });
+
+        dados.forEach(function (o) {
+            meses.push(moment.monthsShort()[o.MesIniciadas]);
+
+        });
+
+        Highcharts.chart('divEstoque3', {
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            chart: {
+                zoomType: 'xy'
+            },
+
+            title: {
+                text: 'Estoque de Ações',
+                style: {
+                    //color: Highcharts.getOptions().colors[0],
+                    fontSize: '12px',
+                    fontWeight: 'bold'
+                }
+
+            },
+            subtitle: {
+                text: false
+            },
+
+            xAxis: [{
+                categories: meses,
+                labels: {
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+                },
+                crosshair: true,
+                title: {
+                    text: 'Meses',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+
+                }
+
+            }],
+            yAxis: [{ // Primary yAxis
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '8px',
+                        fontWeight: 'normal'
+                    }
                 },
                 title: {
-                    text: 'Evolução do Resultado vs Ações executadas'
-                },
-                subtitle: {
-                    text: false
-                },
-                xAxis: [{
-                    categories: meses,
-                    crosshair: true
-                }],
-                yAxis: [{// Primary yAxis
-                    plotLines: [{
-                        value: meta[0],
-                        width: 2,
-                        color: 'black',
-                        dashStyle: 'dash',
-                        zIndex: 4,
-                        label: {
-                            text: 'Meta 80%',
-                            align: 'right',
-                            y: -10,
-                            x: 0
-                        }
-                    }],
-                    labels: {
-                        style: {
-                            color: Highcharts.getOptions().colors[1]
-                        }
-                    },
-                    title: {
-                        text: 'Resultado',
-                        style: {
-                            color: Highcharts.getOptions().colors[1]
-                        }
+                    text: 'Número de ações',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '10px',
+                        fontWeight: 'normal'
                     }
-                }, { // Secondary yAxis
-                    title: {
-                        text: 'Número de Ações',
-                        style: {
-                            color: Highcharts.getOptions().colors[0]
-                        }
-                    },
-                    labels: {
-                        style: {
-                            color: Highcharts.getOptions().colors[0]
-                        }
-                    },
-                    opposite: true
-                }],
+                }
+                //opposite: true
+            }],
+            tooltip: {
+                shared: true
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom',
+                itemStyle: {
+
+                    fontSize: '10px',
+                    fontWeight: 'normal'
+                }
+            },
+            series: [{
+                name: 'Iniciadas',
+                type: 'column',
+                data: valoresInciadas,
                 tooltip: {
-                    shared: true
+                    valueSuffix: ''
                 },
-                legend: {
-                    layout: 'horizontal',
-                    align: 'center',
-                    verticalAlign: 'bottom',
-                    floating: false,
-                    backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+                color: Highcharts.getOptions().colors[2],
+
+            }, {
+                name: 'Concluídas',
+                type: 'column',
+                data: valoresConcluidas,
+                tooltip: {
+                    valueSuffix: ''
                 },
-                series: [{
-                    name: 'Número de Ações Concluídas',
-                    type: 'spline',
-                    yAxis: 1,
-                    data: valoresConcluidas,
-                }, /*{
+                color: Highcharts.getOptions().colors[3],
+            }, {
+                name: 'Acumuladas',
+                type: 'spline',
+                data: acumulativo,
+                tooltip: {
+                    valueSuffix: ''
+                },
+                color: Highcharts.getOptions().colors[0],
+            }]
+        });
+
+    }
+
+    function GraficoEvolucaoDoResultado(dados) {
+
+        var meses = [];
+        var valoresConcluidas = MapeiaValorParaHC(dados, "QuantidadeConcluidas", true);
+        var meta = MapeiaValorParaHC(dados, "Meta", true);
+        //var meta = MapeiaValorParaHC(dados, "QuantidadeConcluidas", true);
+        //var realizado = MapeiaValorParaHC(dados, "Acc", true);
+
+        dados.forEach(function (o) {
+            meses.push(moment.monthsShort()[o.MesConcluidas]);
+        });
+
+        Highcharts.chart('divIndicador', {
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            chart: {
+                zoomType: 'xy'
+            },
+            title: {
+                text: 'Evolução do Resultado vs Ações executadas'
+            },
+            subtitle: {
+                text: false
+            },
+            xAxis: [{
+                categories: meses,
+                crosshair: true
+            }],
+            yAxis: [{// Primary yAxis
+                plotLines: [{
+                    value: meta[0],
+                    width: 2,
+                    color: 'black',
+                    dashStyle: 'dash',
+                    zIndex: 4,
+                    label: {
+                        text: 'Meta 80%',
+                        align: 'right',
+                        y: -10,
+                        x: 0
+                    }
+                }],
+                labels: {
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                },
+                title: {
+                    text: 'Resultado',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                }
+            }, { // Secondary yAxis
+                title: {
+                    text: 'Número de Ações',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                labels: {
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                opposite: true
+            }],
+            tooltip: {
+                shared: true
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom',
+                floating: false,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+            },
+            series: [{
+                name: 'Número de Ações Concluídas',
+                type: 'spline',
+                yAxis: 1,
+                data: valoresConcluidas,
+            }, /*{
                     name: 'Meta',
                     type: 'spline',
                     data: meta,
@@ -1006,302 +1145,546 @@
                     type: 'spline',
                     data: [],
                 }]
-            });
-
-        }
-        /*Container 2  FIM*/
-
-        /*Auxiliar*/
-        function atualizar(callback, url, obj) {
-
-            $.post(url, obj, function (r) {
-
-                //console.log(r);
-
-                callback(r);
-            });
-
-        }
-
-        function InitDatePiker() {
-            $('.datepicker').datepicker({
-                startDate: 0,
-                todayBtn: "linked",
-                language: "pt-BR",
-                multidate: false,
-                todayHighlight: true
-            });
-        }
-
-        /*
-        Retorna apenas elementos unicos do array
-        */
-        function onlyUnique(value, index, self) {
-            return self.indexOf(value) === index;
-        }
-
-        function MapeiaValorParaHC(array, prop, isInteger) {
-            var arrayRetorno = $.map(array, function (o, c) {
-                if (isInteger) {
-                    var valor = parseInt(o[prop]);
-                    if (isNaN(valor)) return 0;
-                    return valor;
-                }
-                return o[prop];
-            });
-            return arrayRetorno;
-        }
-
-        // Radialize the colors
-        Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
-            return {
-                radialGradient: {
-                    cx: 0.5,
-                    cy: 0.3,
-                    r: 0.7
-                },
-                stops: [
-                    [0, color],
-                    [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
-                ]
-            };
         });
 
-        acoesConcluidas = 25;
-        acoesAtrasadas = 21;
-        acoesAVencer = 10;
-        pessoasEnvolvidas = 12;
+    }
+    /*Container 2  FIM*/
 
-        $('#acoesConcluidas').text(acoesConcluidas);
-        $('#acoesAtrasadas').text(acoesAtrasadas);
-        $('#acoesAVencer').text(acoesAVencer);
-        $('#pessoasEnvolvidas').text(pessoasEnvolvidas);
+    /*Auxiliar*/
+    function atualizar(callback, url, obj) {
 
-        tituloXBar = 'Status das Ações';
-        tituloXColumn = "Status das Ações";
+        $.post(url, obj, function (r) {
 
-        tituloYBar = 'Número de ações';
-        tituloYColumn = 'Número de ações';
+            //console.log(r);
 
-        tituloBar = 'Status das Ações por Indicadores';
-        tituloColumn = 'Status das Ações por Responsável';
+            callback(r);
+        });
 
-        /*Config Callendar PT-BR*/
-        $('body .dropdown-toggle').dropdown();
+    }
 
-        $('.popover-markup>.trigger').popover({
-            html: true,
-            title: function () {
-                return $(this).parent().find('.head').html();
-            },
-            content: function () {
-                return $(this).parent().find('.content').html();
+    function InitDatePiker() {
+        $('.datepicker').datepicker({
+            startDate: 0,
+            todayBtn: "linked",
+            language: "pt-BR",
+            multidate: false,
+            todayHighlight: true
+        });
+    }
+
+    /*
+    Retorna apenas elementos unicos do array
+    */
+    function onlyUnique(value, index, self) {
+        return self.indexOf(value) === index;
+    }
+
+    function MapeiaValorParaHC(array, prop, isInteger) {
+        var arrayRetorno = $.map(array, function (o, c) {
+            if (isInteger) {
+                var valor = parseInt(o[prop]);
+                if (isNaN(valor)) return 0;
+                return valor;
             }
+            return o[prop];
         });
+        return arrayRetorno;
+    }
 
-        var rangesBR = {
-            'Hoje': [moment(), moment()],
-            'Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
-            'Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
-            'Este mês': [moment().startOf('month'), moment().endOf('month')],
-            'Último mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    // Radialize the colors
+    Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
+        return {
+            radialGradient: {
+                cx: 0.5,
+                cy: 0.3,
+                r: 0.7
+            },
+            stops: [
+                [0, color],
+                [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+            ]
+        };
+    });
+
+    acoesConcluidas = 25;
+    acoesAtrasadas = 21;
+    acoesAVencer = 10;
+    pessoasEnvolvidas = 12;
+
+    $('#acoesConcluidas').text(acoesConcluidas);
+    $('#acoesAtrasadas').text(acoesAtrasadas);
+    $('#acoesAVencer').text(acoesAVencer);
+    $('#pessoasEnvolvidas').text(pessoasEnvolvidas);
+
+    tituloXBar = 'Status das Ações';
+    tituloXColumn = "Status das Ações";
+
+    tituloYBar = 'Número de ações';
+    tituloYColumn = 'Número de ações';
+
+    tituloBar = 'Status das Ações por Indicadores';
+    tituloColumn = 'Status das Ações por Responsável';
+
+    /*Config Callendar PT-BR*/
+    $('body .dropdown-toggle').dropdown();
+
+    $('.popover-markup>.trigger').popover({
+        html: true,
+        title: function () {
+            return $(this).parent().find('.head').html();
+        },
+        content: function () {
+            return $(this).parent().find('.content').html();
         }
+    });
 
-        moment.locale("Pt-Br");
-        moment.defaultFormat = "DD/MM/YYYY";
+    var rangesBR = {
+        'Hoje': [moment(), moment()],
+        'Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
+        'Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
+        'Este mês': [moment().startOf('month'), moment().endOf('month')],
+        'Último mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    }
 
-        $.fn.daterangepicker('locale', {
-            "format": "DD/MM/YYYY",
-            "separator": " - ",
-            "applyLabel": "Aplicar",
-            "cancelLabel": "Cancelar",
-            "fromLabel": "de",
-            "toLabel": "até",
-            "customRangeLabel": "Customizado",
-            "weekLabel": "W",
-            "daysOfWeek": [
-                "Dom",
-                "Seg",
-                "Ter",
-                "Qua",
-                "Qui",
-                "Sex",
-                "Sab"
-            ],
-            "monthNames": [
-                "Janeiro",
-                "Fevereiro",
-                "Março",
-                "Abril",
-                "Maio",
-                "Junho",
-                "Julho",
-                "Agosto",
-                "Setembro",
-                "Outubro",
-                "Novembro",
-                "Dezembro"
-            ],
-            //"firstDay": 0
-        });
+    moment.locale("Pt-Br");
+    moment.defaultFormat = "DD/MM/YYYY";
 
-        rangesCalendar = rangesBR;
+    $.fn.daterangepicker('locale', {
+        "format": "DD/MM/YYYY",
+        "separator": " - ",
+        "applyLabel": "Aplicar",
+        "cancelLabel": "Cancelar",
+        "fromLabel": "de",
+        "toLabel": "até",
+        "customRangeLabel": "Customizado",
+        "weekLabel": "W",
+        "daysOfWeek": [
+            "Dom",
+            "Seg",
+            "Ter",
+            "Qua",
+            "Qui",
+            "Sex",
+            "Sab"
+        ],
+        "monthNames": [
+            "Janeiro",
+            "Fevereiro",
+            "Março",
+            "Abril",
+            "Maio",
+            "Junho",
+            "Julho",
+            "Agosto",
+            "Setembro",
+            "Outubro",
+            "Novembro",
+            "Dezembro"
+        ],
+        //"firstDay": 0
+    });
 
-        $.fn.daterangepicker('ranges', rangesCalendar);
+    rangesCalendar = rangesBR;
 
-        //Start config datepickerrange full
-        var start = moment();
-        var end = moment();
+    $.fn.daterangepicker('ranges', rangesCalendar);
 
-        function cb(start, end) {
-            $('#reportrange span').html(start.format() + ' - ' + end.format());
-            enviar['startDate'] = start.format();
-            enviar['endDate'] = end.format();
+    //Start config datepickerrange full
+    var start = moment();
+    var end = moment();
 
-            atualizar(GraficoPizza, urlGetGraficoPie, enviar);
+    function cb(start, end) {
+        $('#reportrange span').html(start.format() + ' - ' + end.format());
+        enviar['startDate'] = start.format();
+        enviar['endDate'] = end.format();
+
+        atualizar(GraficoPizza, urlGetGraficoPie, enviar);
+
+        $.post(urlGetGrafico, enviar, function (r) {
+            resultGetGrafico = r;
             $('#filtroBar').trigger('change');
             $('#filtroBar2').trigger('change');
+            $('#filtroBarInd').trigger('change');
+        });
+    }
+    var configQueryData = true; // @*@Html.Raw(Json.Encode(GlobalConfig.LanguageBrasil));*@
+    var configCallendar = {};
+    if (configQueryData) {
+        $('#reportrange').daterangepicker({
+            startDate: start,
+            endDate: end,
+            //opens: "left",
+            locale: {
+                "format": "DD/MM/YYYY",
+                "separator": " - ",
+                "applyLabel": "Aplicar",
+                "cancelLabel": "Cancelar",
+                "customRangeLabel": "Seleção",
+            },
+            //autoApply: false,
+            alwaysShowCalendars: true,
+            showDropdowns: true,
+            ranges: rangesCalendar,
+            linkedCalendars: false
+        }, cb);
+    } else {
+        $('#reportrange').daterangepicker({
+            startDate: start,
+            endDate: end,
+            //autoApply: false,
+            locale: {
+                "format": "MM/DD/YYYY",
+                "separator": " - ",
+            },
+            alwaysShowCalendars: true,
+            showDropdowns: true,
+            ranges: rangesCalendar,
+            linkedCalendars: false
+        }, cb);
+    }
 
+    cb(start, end);
+    //End config datepickerrange full
+
+    enviar['startDate'] = moment().format();
+    enviar['endDate'] = moment().format();
+    /*Config Callendar FIM*/
+
+    /*Auxiliar FIM*/
+
+    $(document).ready(function () {
+
+        $("#btnFiltro").click(function () {
+
+            InitDatePiker();
+
+            $("form").on("submit", function (event) {
+                var dataInicio = $('#dataInicio').val();
+                var dataFim = $('#dataFim').val();
+                var obj = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 1 };
+                //var obj2 = { categoria: 'Pa_Problema_Desvio_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 2 };
+                $('#divPie').highcharts().destroy();
+                atualizar(GraficoPizza, urlGetGraficoPie, obj);
+            });
+        });
+
+        $("#btnFiltroBar").click(function () {
+            InitDatePiker();
+            $("form").on("submit", function (event) {
+                var dataInicio = $('#dataInicio').val();
+                var dataFim = $('#dataFim').val();
+                var obj = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 1 };
+                $('#divBar').highcharts().destroy();
+                atualizar(GraficoBar, urlGetGrafico, obj);
+            });
+        });
+
+        $("#btnFiltroCol").click(function () {
+            InitDatePiker();
+            $("form").on("submit", function (event) {
+                var dataInicio = $('#dataInicio').val();
+                var dataFim = $('#dataFim').val();
+                var obj = { categoria: 'q.Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 1 };
+                //var obj2 = { categoria: 'Pa_Problema_Desvio_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 2 };
+                $('#divCol').highcharts().destroy();
+                atualizar(GraficoCol, urlGetGrafico, obj);
+            });
+        });
+
+        var obj = { categoria: 'q.Id', dataInicio: '01/01/2015', dataFim: '01/01/2019', relatorio: 1 };
+        var obj2 = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: '01/01/2015', dataFim: '01/01/2019', relatorio: 2 };
+
+        //atualizar(GraficoBar, urlGetGrafico, obj2);
+        //atualizar(GraficoCol, urlGetGrafico, obj);
+        atualizar(GraficoPizza, urlGetGraficoPie, obj);
+        atualizar(GraficoAcoesEstabelecidas, urlGraficoNumeroDeAcoesEstabelecidas, {});
+        atualizar(GraficoAcoesConcluidas, urlGraficoNumeroDeAcoesConcluidas, {});
+        atualizar(GraficoEstoqueDeAcoes, urlGraficoNumeroDeAcoes, {});
+        atualizar(GraficoEvolucaoDoResultado, urlGraficoEvolucaoDoResultado, {});
+
+        $('#exampleTD1').DataTable();
+
+        $('#exampleTD1')
+            .removeClass('display')
+            .addClass('table table-striped table-bordered');
+
+        $('#filtroBar, #seriesBar').on('change', function () {
+            GraficoBar($('#filtroBar :selected').val(), $('#seriesBar :selected').val())
+        });
+
+        $('#filtroBar2, #seriesBar2').on('change', function () {
+            GraficoCol($('#filtroBar2 :selected').val(), $('#seriesBar2 :selected').val())
+        });
+        $('#filtroBarInd, #seriesBarInd').on('change', function () {
+            GraficoIndicadores($('#filtroBarInd :selected').val(), $('#seriesBarInd :selected').val())
+        });
+
+        $('#filtroBar').trigger('change');
+        $('#filtroBar2').trigger('change');
+        $('#filtroBarInd').trigger('change');
+
+    })
+
+
+    function geraTabela(query, selector) {
+        $('#' + selector).parents('.modal-body').find('g').hide();
+        var arrColumns = [];
+        var concluidas = $.grep(resultGetGrafico, function (a, b) { return a.Status == query });
+
+        if ($.fn.DataTable.isDataTable('#' + selector)) {
+            $('#' + selector).DataTable().destroy();
+            $('#' + selector).empty();
         }
-        var configQueryData = true; // @*@Html.Raw(Json.Encode(GlobalConfig.LanguageBrasil));*@
-        var configCallendar = {};
-        if (configQueryData) {
-            $('#reportrange').daterangepicker({
-                startDate: start,
-                endDate: end,
-                //opens: "left",
-                locale: {
-                    "format": "DD/MM/YYYY",
-                    "separator": " - ",
-                    "applyLabel": "Aplicar",
-                    "cancelLabel": "Cancelar",
-                    "customRangeLabel": "Seleção",
-                },
-                //autoApply: false,
-                alwaysShowCalendars: true,
-                showDropdowns: true,
-                ranges: rangesCalendar,
-                linkedCalendars: false
-            }, cb);
-        } else {
-            $('#reportrange').daterangepicker({
-                startDate: start,
-                endDate: end,
-                //autoApply: false,
-                locale: {
-                    "format": "MM/DD/YYYY",
-                    "separator": " - ",
-                },
-                alwaysShowCalendars: true,
-                showDropdowns: true,
-                ranges: rangesCalendar,
-                linkedCalendars: false
-            }, cb);
-        }
 
-        cb(start, end);
-        //End config datepickerrange full
+        if (concluidas.length) {
+            var o = concluidas[0]
+            var row = {};
+            for (var key in o)
+                arrColumns.push({ 'title': key, 'mData': key })
 
-        enviar['startDate'] = moment().format();
-        enviar['endDate'] = moment().format();
-        /*Config Callendar FIM*/
-
-        /*Auxiliar FIM*/
-
-        $(document).ready(function () {
-
-            $("#btnFiltro").click(function () {
-
-                InitDatePiker();
-
-                $("form").on("submit", function (event) {
-                    var dataInicio = $('#dataInicio').val();
-                    var dataFim = $('#dataFim').val();
-                    var obj = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 1 };
-                    //var obj2 = { categoria: 'Pa_Problema_Desvio_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 2 };
-                    $('#divPie').highcharts().destroy();
-                    atualizar(GraficoPizza, urlGetGraficoPie, obj);
-                });
+            var table = $('#'+ selector).empty().DataTable({
+                data: concluidas,
+                columns: arrColumns,
+                "sScrollX": "100%",
+                "scrollX": true,
+                "scrollY": '550px',
+                destroy:true,
+                bScrollAutoCss: true,
+                //sScrollX: '100%',
+                bScrollCollapse: true,
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
+                pageLength: 10,
+                responsive: true,
+                loadingRecords: true,
+                destroy: true,
+                info: true,
+                responsive: true,
+                //columnDefs: visibilidadeDefault,
+                language: {
+                    "sEmptyTable": "Nenhum registro encontrado",
+                    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLengthMenu": "_MENU_ resultados por página",
+                    "sLoadingRecords": "Carregando...",
+                    "sProcessing": "Processando...",
+                    "sZeroRecords": "Nenhum registro encontrado",
+                    "sSearch": "Pesquisar",
+                    "oPaginate": {
+                        "sNext": "Próximo",
+                        "sPrevious": "Anterior",
+                        "sFirst": "Primeiro",
+                        "sLast": "Último"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Ordenar colunas de forma ascendente",
+                        "sSortDescending": ": Ordenar colunas de forma descendente"
+                    }
+                }
             });
-
-            $("#btnFiltroBar").click(function () {
-                InitDatePiker();
-                $("form").on("submit", function (event) {
-                    var dataInicio = $('#dataInicio').val();
-                    var dataFim = $('#dataFim').val();
-                    var obj = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 1 };
-                    $('#divBar').highcharts().destroy();
-                    atualizar(GraficoBar, urlGetGrafico, obj);
-                });
-            });
-
-            $("#btnFiltroCol").click(function () {
-                InitDatePiker();
-                $("form").on("submit", function (event) {
-                    var dataInicio = $('#dataInicio').val();
-                    var dataFim = $('#dataFim').val();
-                    var obj = { categoria: 'q.Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 1 };
-                    //var obj2 = { categoria: 'Pa_Problema_Desvio_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 2 };
-                    $('#divCol').highcharts().destroy();
-                    atualizar(GraficoCol, urlGetGrafico, obj);
-                });
-            });
-
-            var obj = { categoria: 'q.Id', dataInicio: '01/01/2015', dataFim: '01/01/2019', relatorio: 1 };
-            var obj2 = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: '01/01/2015', dataFim: '01/01/2019', relatorio: 2 };
-
-            //atualizar(GraficoBar, urlGetGrafico, obj2);
-            //atualizar(GraficoCol, urlGetGrafico, obj);
-            atualizar(GraficoPizza, urlGetGraficoPie, obj);
-            atualizar(GraficoAcoesEstabelecidas, urlGraficoNumeroDeAcoesEstabelecidas, {});
-            atualizar(GraficoAcoesConcluidas, urlGraficoNumeroDeAcoesConcluidas, {});
-            atualizar(GraficoEstoqueDeAcoes, urlGraficoNumeroDeAcoes, {});
-            atualizar(GraficoEvolucaoDoResultado, urlGraficoEvolucaoDoResultado, {});
-
-            $('#exampleTD1').DataTable();
-
-            $('#exampleTD1')
-                .removeClass('display')
-                .addClass('table table-striped table-bordered');
-
-            $('#filtroBar, #seriesBar').on('change', function () {
-                GraficoBar($('#filtroBar :selected').val(), $('#seriesBar :selected').val())
-            });
-
-            $('#filtroBar2, #seriesBar2').on('change', function () {
-                GraficoCol($('#filtroBar2 :selected').val(), $('#seriesBar2 :selected').val())
-            });
-
-            $('#filtroBar').trigger('change');
-            $('#filtroBar2').trigger('change');
             
-        })
+            new $.fn.dataTable.Buttons(table, {
+                buttons: [
+                      {
+                          extend: 'colvisGroup',
+                          text: 'Mostrar Todos',
+                          show: ':hidden'
+                      },
+                    {
+                        extend: 'print',
+                        text: 'Imprimir',
+                        customize: function (win) {
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        },
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Excel',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                     //{
+                     //    extend: 'pdf',
+                     //    text: 'PDF',
+                     //    exportOptions: {
+                     //        columns: ':visible'
+                     //    }
+                     //},
+                      {
+                          extend: 'colvis',
+                          text: 'Colunas Visíveis',
+                          collectionLayout: 'fixed two-column',
+                          exportOptions: {
+                              columns: ':visible',
+                          }
+                      },
+                ]
+            });
+            table.buttons(0, null).container().prependTo(
+                table.table().container()
+            );
+        } else {
+            $('#' + selector).parents('.modal-body').find('g').show();
+        }
+    }
+    function geraTabela(query, selector, isDate) {
+        $('#' + selector).parents('.modal-body').find('g').hide();
+        var arrColumns = [];
+        var concluidas = [];
+      
+        if (isDate) {
+            concluidas = $.grep(resultGetGrafico, function (a, b) {
+                var dataQuandoFim = moment(a.QuandoFim, 'DD/MM/YYYY');
+                var end = moment().add(10, 'days').endOf('day')
+                return dataQuandoFim <= end && a.Status != 'Cancelado' && a.Status != 'Concluído' && a.Status != 'Concluído com atraso' && dataQuandoFim > moment();
+            });
+        } else {
+            concluidas = $.grep(resultGetGrafico, function (a, b) {
+                return a.Status == query
+            });
+        }
 
-        ///*Pivot Table Chart*/
-        //$(function () {
-        //    var derivers = $.pivotUtilities.derivers;
-        //    var renderers = $.extend($.pivotUtilities.renderers,
-        //        $.pivotUtilities.c3_renderers);
-        //    $.post(urlGetGrafico, enviar, function (mps) {
-        //        $("#output").pivotUI(mps, {
-        //            renderers: renderers,
-        //            cols: ["Responsavel"], rows: ["Status"],
-        //            rendererName: "Horizontal Stacked Bar Chart",
-        //            rowOrder: "value_z_to_a", colOrder: "value_z_to_a",
-        //            rendererOptions: {
-        //                c3: {
-        //                    size: { height: 240, width: 500 },
-        //                    data: {
-        //                        colors: {
-        //                            Liberal: '#dc3912', Conservative: '#3366cc', NDP: '#ff9900',
-        //                            Green: '#109618', 'Bloc Quebecois': '#990099'
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        });
-        //    });
-        //});
-        ///*Pivot Table Chart FIM*/
-    </script>
+
+        if ($.fn.DataTable.isDataTable('#' + selector)) {
+            $('#' + selector).DataTable().destroy();
+            $('#' + selector).empty();
+        }
+
+        if (concluidas.length) {
+            var o = concluidas[0]
+            var row = {};
+            for (var key in o) {
+                if(key != 'Id')
+                    arrColumns.push({ 'title': key, 'mData': key })
+            }
+
+            var table = $('#' + selector).empty().DataTable({
+                data: concluidas,
+                columns: arrColumns,
+                "sScrollX": "100%",
+                "scrollX": true,
+                "scrollY": '550px',
+                destroy: true,
+                bScrollAutoCss: true,
+                //sScrollX: '100%',
+                bScrollCollapse: true,
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
+                pageLength: 10,
+                responsive: true,
+                loadingRecords: true,
+                destroy: true,
+                info: true,
+                responsive: true,
+                //columnDefs: visibilidadeDefault,
+                language: {
+                    "sEmptyTable": "Nenhum registro encontrado",
+                    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLengthMenu": "_MENU_ resultados por página",
+                    "sLoadingRecords": "Carregando...",
+                    "sProcessing": "Processando...",
+                    "sZeroRecords": "Nenhum registro encontrado",
+                    "sSearch": "Pesquisar",
+                    "oPaginate": {
+                        "sNext": "Próximo",
+                        "sPrevious": "Anterior",
+                        "sFirst": "Primeiro",
+                        "sLast": "Último"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Ordenar colunas de forma ascendente",
+                        "sSortDescending": ": Ordenar colunas de forma descendente"
+                    }
+                }
+            });
+
+            new $.fn.dataTable.Buttons(table, {
+                buttons: [
+                      {
+                          extend: 'colvisGroup',
+                          text: 'Mostrar Todos',
+                          show: ':hidden'
+                      },
+                    {
+                        extend: 'print',
+                        text: 'Imprimir',
+                        customize: function (win) {
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        },
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Excel',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                     //{
+                     //    extend: 'pdf',
+                     //    text: 'PDF',
+                     //    exportOptions: {
+                     //        columns: ':visible'
+                     //    }
+                     //},
+                      {
+                          extend: 'colvis',
+                          text: 'Colunas Visíveis',
+                          collectionLayout: 'fixed two-column',
+                          exportOptions: {
+                              columns: ':visible',
+                          }
+                      },
+                ]
+            });
+            table.buttons(0, null).container().prependTo(
+                table.table().container()
+            );
+        } else {
+            $('#' + selector).parents('.modal-body').find('g').show();
+        }
+    }
+   
+
+    ///*Pivot Table Chart*/
+    //$(function () {
+    //    var derivers = $.pivotUtilities.derivers;
+    //    var renderers = $.extend($.pivotUtilities.renderers,
+    //        $.pivotUtilities.c3_renderers);
+    //    $.post(urlGetGrafico, enviar, function (mps) {
+    //        $("#output").pivotUI(mps, {
+    //            renderers: renderers,
+    //            cols: ["Responsavel"], rows: ["Status"],
+    //            rendererName: "Horizontal Stacked Bar Chart",
+    //            rowOrder: "value_z_to_a", colOrder: "value_z_to_a",
+    //            rendererOptions: {
+    //                c3: {
+    //                    size: { height: 240, width: 500 },
+    //                    data: {
+    //                        colors: {
+    //                            Liberal: '#dc3912', Conservative: '#3366cc', NDP: '#ff9900',
+    //                            Green: '#109618', 'Bloc Quebecois': '#990099'
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //        });
+    //    });
+    //});
+    ///*Pivot Table Chart FIM*/
+</script>

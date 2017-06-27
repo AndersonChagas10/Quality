@@ -1,0 +1,158 @@
+﻿@using PlanoAcaoCore
+<div class="form-content" style="display:none;">
+    <form class="form" role="form">
+        <div class="form-group">
+            <label>Usuário</label>
+            <input type="text" class="form-control" id="Name" name="Name" placeholder="Digite o usuário" value="">
+        </div>
+        <div class="form-group">
+            <label>Senha</label>
+            <input type="password" class="form-control" id="Password" name="Password" placeholder="Digite a senha">
+        </div>
+        <label class="alert-warning" id="resultado"></label>
+        <br />
+        <label class="alert-warning" id="resultado1"></label>
+        @*<div class="checkbox">
+                <label>
+                    <input type="checkbox"> Check me out
+                </label>
+            </div>*@
+    </form>
+</div>
+
+<script>
+
+    /*Aux*/
+    var interval = 3000;
+    var intervalLabels = 4000;
+    var checkSessionControl;
+    var identy = {};
+    /*Aux END*/
+
+    /*Config Modal*/
+    var modalLogin = bootbox.dialog({
+        message: $(".form-content").html(),
+        title: "Autenticação",
+        buttons: [
+          {
+              label: "Entrar",
+              className: "btn btn-primary pull-left",
+              //callback: function () { 
+              
+              //    var user = $('#formLogin form').serializeObject();
+              //    if (!user.Name.length) {
+              //        $('#formLogin #resultado').text('O campo nome é obrigatório.').fadeIn().fadeOut(2000, "swing");
+              //    }
+              //    if (!user.Password.length) {
+              //        $('#formLogin #resultado1').text('O senha nome é obrigatório.').fadeIn().fadeOut(2000, "swing");
+              //    }
+              //    if (user.Name.length && user.Password.length) {
+              //        loginPaSgq(user);
+              //    }
+              //    return false;
+
+              //}
+          },
+        ],
+        show: false,
+        onEscape: function () {
+            //modalLogin.modal("hide");
+        },
+        closeButton: false,
+    });
+    modalLogin.attr("id", "formLogin");
+    modalLogin.find('.modal-content').css("margin-top", "15%")
+    modalLogin.find('.bootbox-body').css("height", "190px");
+    /*Config Modal END*/
+
+    /*Trigger*/
+    function checkSession() {
+        if (!getCookie('webControlCookie')) {
+            modalLogin.modal("show");
+            blurNele($('#RederBodyContainer'));
+            atribuiClickBtnModal();
+        }
+        //else
+        //    console.log('LoginPA puro')
+        //console.log("checkSession: " + Date().toString())
+    }
+    /*Trigger END*/
+
+    /*PA*/
+    var urlCookie = '@Url.Action("GetUserCookie", "api/Pa_User")';
+    var urlMaster = '@Html.Raw(Conn.SgqHost)';
+    var isSgqIntegrado = '@Html.Raw(Conn.isSgqIntegrado)';
+
+    function loginPaSgq(user) {
+        $.LoadingOverlay('show');
+        if (isSgqIntegrado) {
+            $.post(urlMaster, user, function (r) {
+                $.LoadingOverlay('hide')
+                if (r.Mensagem == null && r.MensagemExcecao == null && r.Retorno != null) {
+                    //console.log(r);
+                    removeBlur();
+                    clearInterval(checkSessionControl);//DESLIGA VERIFICAÇÃO ATÉ QUE RECEBA O COOKIE DEVOLTA
+                    modalLogin.modal("hide");
+                    createUpdateCookie(r.Retorno);
+                    identy = user;
+                }
+                else {
+                    $('#formLogin #resultado').text('Usuário ou Senha inválidos.').fadeIn().fadeOut(intervalLabels, "swing");
+                    console.log(r);
+                }
+            });
+            //} else {
+                //LOGIN PA PURO
+            //}
+        }
+    }
+
+    function createUpdateCookie(dto) {
+        $.post(urlCookie, dto, function (r, a, xhr) {
+            xhr.getResponseHeader('Set-Cookie');
+            atribuiInterval();
+        });
+    }
+
+    function atribuiInterval() {
+        checkSession();
+        clearInterval(checkSessionControl);
+        checkSessionControl = setInterval(checkSession, interval);
+    }
+
+    function atribuiClickBtnModal() {
+        $('#formLogin  > div > div > div.modal-footer > button').off('click').on('click', function () {
+
+            var user = $('#formLogin form').serializeObject();
+            if (!user.Name.length) {
+                $('#formLogin #resultado').text('O campo nome é obrigatório.').fadeIn().fadeOut(intervalLabels, "swing");
+            }
+            if (!user.Password.length) {
+                $('#formLogin #resultado1').text('O campo senha é obrigatório.').fadeIn().fadeOut(intervalLabels, "swing");
+            }
+            if (user.Name.length && user.Password.length) {
+                loginPaSgq(user);
+            }
+            return false;
+
+        });
+    }
+
+    function blurNele(element){
+        element.blurjs({
+            customClass: 'blurjs',
+            radius: 5,
+            persist: false
+        });
+    }
+
+    function removeBlur() {
+        $.blurjs('reset')
+    }
+
+    $(function () {
+        atribuiClickBtnModal();
+        atribuiInterval();
+    })
+
+</script>

@@ -13,6 +13,8 @@ namespace Helper
         private string _filter;
         private string _userSgqRoles;
         private bool _isLogin;
+        private string _controllerLogin;
+        private string _actionLogin;
 
         public CustomAuthorizeAttribute()
         {
@@ -24,6 +26,13 @@ namespace Helper
         {
             _isLogin = isLogin;
         }
+
+        public CustomAuthorizeAttribute(string controllerLogin, string actionLogin)
+        {
+            _controllerLogin = controllerLogin;
+            _actionLogin = actionLogin;
+        }  
+
 
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
@@ -42,7 +51,14 @@ namespace Helper
                 {
                     //No cookie found or cookie expired.
                     //Handle the situation here, Redirect the user or simply return;
-                    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "UserAuthentication", action = "LogIn" }));
+
+                    if (!string.IsNullOrEmpty(_controllerLogin) && !string.IsNullOrEmpty(_actionLogin))
+                    {
+                        filterContext.HttpContext.Response.SetCookie(new HttpCookie("redirect") { Expires = DateTime.Now.AddMinutes(5), Value = filterContext.HttpContext.Request.Url.OriginalString });
+                        filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = _controllerLogin, action = _actionLogin }));
+                    }
+                    else
+                        filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "UserAuthentication", action = "LogIn" }));//Default SGQ
                 }
                 else
                 {
