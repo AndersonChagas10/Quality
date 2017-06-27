@@ -2054,6 +2054,7 @@ namespace SgqSystem.Services
                     {
                         var collectionLevel2_obj2 = databaseSgq.CollectionLevel2.Where(
                         r => System.Data.Entity.DbFunctions.TruncateTime(r.CollectionDate) == System.Data.Entity.DbFunctions.TruncateTime(collectionLevel2_obj.CollectionDate) &&
+                        r.ParLevel1_Id == collectionLevel2_obj.ParLevel1_Id &&
                         r.Shift == collectionLevel2_obj.Shift &&
                         r.Period == collectionLevel2_obj.Period &&
                         r.UnitId == collectionLevel2_obj.UnitId &&
