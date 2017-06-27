@@ -160,6 +160,7 @@
           <Property Name="ReauditLevel" Type="int" />
           <Property Name="StartPhaseEvaluation" Type="int" />
           <Property Name="CounterDonePhase" Type="int" />
+          <Property Name="EndPhaseEvaluation" Type="int" />
         </EntityType>
         <EntityType Name="CollectionLevel2XParHeaderField">
           <Key>
@@ -6148,6 +6149,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <NavigationProperty Name="CollectionLevel22" Relationship="SgqDbModel.FK_CollectionLevel2_CollectionLevel2" FromRole="CollectionLevel21" ToRole="CollectionLevel2" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel1" FromRole="CollectionLevel2" ToRole="ParLevel1" />
           <NavigationProperty Name="CorrectiveAction" Relationship="SgqDbModel.FK_CorrectiveAction_CollectionLevel2" FromRole="CollectionLevel2" ToRole="CorrectiveAction" />
+          <Property Name="EndPhaseEvaluation" Type="Int32" />
         </EntityType>
         <Association Name="FK_CollectionLevel2_ConsolidationLevel2">
           <End Type="SgqDbModel.ConsolidationLevel2" Role="ConsolidationLevel2" Multiplicity="1" />
@@ -8037,6 +8039,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <EntitySetMapping Name="CollectionLevel2">
             <EntityTypeMapping TypeName="SgqDbModel.CollectionLevel2">
               <MappingFragment StoreEntitySet="CollectionLevel2">
+                <ScalarProperty Name="EndPhaseEvaluation" ColumnName="EndPhaseEvaluation" />
                 <ScalarProperty Name="CounterDonePhase" ColumnName="CounterDonePhase" />
                 <ScalarProperty Name="StartPhaseEvaluation" ColumnName="StartPhaseEvaluation" />
                 <ScalarProperty Name="ReauditLevel" ColumnName="ReauditLevel" />

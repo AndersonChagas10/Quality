@@ -310,7 +310,7 @@
     <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\FtaApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\VerificacaoTipificacaoApiController.cs" />
-    <Compile Include="Controllers\Api\RelatoriosBrasil\VisaoGeralDaAreaCabecalhoApiController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\NaoConformidadePorCabecalhoApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\ApontamentosDiariosApiController.cs" />
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
@@ -799,6 +799,7 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
@@ -1394,7 +1395,7 @@
     <Content Include="Views\Reports\CorrectiveActionReportDetails.cshtml" />
     <Content Include="Views\RelatoriosSgq\VerificacaoTipificacao.cshtml" />
     <Content Include="Views\RelatoriosSgq\_VerificacaoTipificacaoEdit.cshtml" />
-    <Content Include="Views\RelatoriosSgq\VisaoGeralDaAreaCabecalho.cshtml" />
+    <Content Include="Views\RelatoriosSgq\NaoConformidadePorCabecalho.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

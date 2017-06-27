@@ -241,7 +241,7 @@
         $('#TotalAmostraAvaliaColabEsteiraHoraProd').val(Math.round(resultadoSeiLaDoQue));
         $('#TotalAmostraAvaliaColabEsteiraHoraProdHidden').val(Math.round(resultadoSeiLaDoQue));
         $('#Amostras').val((Math.round(resultadoSeiLaDoQue)) * $('#QtadeTrabEsteiraRecortes').val());
-        $('#amostraHidden').val(resultadoSeiLaDoQue);
+        $('#amostraHidden').val((Math.round(resultadoSeiLaDoQue)) * $('#QtadeTrabEsteiraRecortes').val());
     });
 
     $('#btnTeste').click(function (e) {

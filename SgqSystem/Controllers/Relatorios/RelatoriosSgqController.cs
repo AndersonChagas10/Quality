@@ -140,7 +140,7 @@ namespace SgqSystem.Controllers
         }
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
-        public ActionResult VisaoGeralDaAreaCabecalho()
+        public ActionResult NaoConformidadePorCabecalho()
         {
             return View(form);
         }
@@ -2136,6 +2136,7 @@ namespace SgqSystem.Controllers
             public decimal DESVIO { get; set; }
             public decimal DESVIOPERCENTUAL { get; set; }
             public decimal REAL { get; set; }
+            
         }
 
         /// <summary>
