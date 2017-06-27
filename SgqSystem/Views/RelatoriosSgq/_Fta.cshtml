@@ -26,6 +26,17 @@
 
     var preffix = @Html.Raw(Json.Encode(GlobalConfig.pathFTA))
 
+        /*
+        unitName:"Pimenta Bueno"
+        level1Name:"(%) NC Análise Microbiológica em Carcaça"
+        level2Name:"Análise Microbiológica em Carcaça"
+        level3Name:"Enterobactérias"
+        auditorId:"1"
+        PercentualNCFTA:100     //Percentual de NC
+        ReincidenciaDesvioFTA:1 //Quantidade de NC 
+        endDate:"27/06/2017"
+        startDate:"29/05/2017"
+        */
     function RedirecionaParaFTA(r) {
         var url = "";
         url += preffix;
@@ -46,9 +57,9 @@
 
         url += "&_DataInicioFTA=" + encodeURIComponent(r.startDate);
         url += "&_DataFimFTA=" + encodeURIComponent(r.endDate);
-
         $('#ftaModal').modal();
         $('#ftaModalSim').attr('href', url);
+        //console.log(url);
     }
 
 </script>

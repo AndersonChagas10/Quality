@@ -886,7 +886,6 @@
     <Content Include="Scripts\pivottable-master\pivot.coffee" />
     <Content Include="Scripts\pivottable-master\ReadMe.md" />
     <Content Include="Scripts\pivottable-master\tests\pivot_spec.coffee" />
-    <Content Include="Views\Acesso\RedirecionaSgq.cshtml" />
     <Content Include="Views\Shared\_AcessoSgq.cshtml" />
     <Content Include="Scripts\jquery-3.1.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.0.min.map" />
