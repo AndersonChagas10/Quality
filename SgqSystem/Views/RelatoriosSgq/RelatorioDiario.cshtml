@@ -113,7 +113,7 @@
                     var div = DivManager.criaDiv(idDivTendencia, o.level1_Id, "temperatura");
                     divClonada.find('.panel-heading').html(o.Level1Name); // Insere Titulo no Panel
                     var stringIdDivClonada= '#'+idDivTendencia
-                    divClonada.attr('data-toggle','collapse').attr('data-target',stringIdDivClonada).attr('href',stringIdDivClonada)
+                    divClonada.find('.panel-heading').attr('data-toggle','collapse').attr('data-target',stringIdDivClonada).attr('href',stringIdDivClonada).trigger("click")
                     var tendencia = $.grep(r.listResultSetTendencia, function (level2, c) { return level2.level1_Id == o.level1_Id });
                     var dataParaTendencia = $('input[name=datefilter]').val().split('/');
                     var mesDaTendencia = parseInt(dataParaTendencia[1]);

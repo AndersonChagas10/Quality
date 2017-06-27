@@ -140,7 +140,7 @@ namespace SgqSystem.Controllers
         }
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
-        public ActionResult VisaoGeralDaAreaCabecalho()
+        public ActionResult NaoConformidadePorCabecalho()
         {
             return View(form);
         }

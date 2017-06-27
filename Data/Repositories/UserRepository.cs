@@ -41,7 +41,7 @@ namespace Data.Repositories
         public UserSgq AuthenticationLogin(UserSgq user)
         {
             var pass = Guard.EncryptStringAES(user.Password);
-            var result = db.UserSgq.Include("ParCompanyXUserSgq").Include("UnitUser")
+            var result = db.UserSgq.Include("ParCompanyXUserSgq").Include("ParCompanyXUserSgq.ParCompany").Include("UnitUser")
                 .FirstOrDefault(x => x.Name.ToLower().Equals(user.Name.ToLower()) && x.Password.Equals(pass));
 
             if (result == null)/*Verifica no caso de a senha estar descriptografada no DB e atualiza a mesma ,agora criptografada, no db.*/

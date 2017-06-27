@@ -1,16 +1,19 @@
 ﻿using ADOFactory;
+using DTO.DTO;
 using DTO.Helpers;
 using Newtonsoft.Json.Linq;
 using PlanoAcaoCore;
-using System;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 
 namespace PlanoDeAcaoMVC.Controllers.Api
 {
     [RoutePrefix("api/Pa_User")]
-    public class ApiPa_UserController : ApiController
+    public class ApiPa_UserController : BaseApiController
     {
+
         [HttpPost]
         [Route("CheckPass")]
         public JObject CheckPass(JObject form)
@@ -35,5 +38,19 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 }
             }
         }
+
+        //[HandleApi()]
+        [HttpPost]
+        [Route("GetUserCookie")]
+        public HttpResponseMessage GetUserCookie([FromBody]UserDTO userDto)
+        {
+            var resp = new HttpResponseMessage();
+            var cookie = CreateCookieFromUserDTO(userDto);
+            resp.Headers.AddCookies(new CookieHeaderValue[] { cookie });
+            return resp;
+        }
+
+      
+
     }
 }
