@@ -129,6 +129,15 @@ $(document).ready(function () {
 
 })
 
+function getCookie(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift().split('&');
+}
+
+function getRole(role) {
+    return $.grep(getCookie("webControlCookie"), function (n) { return n.indexOf(role) != -1 })
+}
 
 function getCookie(name) {
     var value = "; " + document.cookie;

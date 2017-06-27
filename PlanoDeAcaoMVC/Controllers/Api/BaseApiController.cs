@@ -6,12 +6,23 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using RazorEngine;
+using System.Collections.Specialized;
+using System.Net.Http.Headers;
+using DTO.DTO;
+using PlanoAcaoCore;
+using ADOFactory;
 
 namespace PlanoDeAcaoMVC.Controllers.Api
 {
     public class BaseApiController : ApiController
     {
+
+        /// <summary>
+        /// Retorna Objeto Dinamico com dados da query.
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
         protected List<JObject> QueryNinja(DbContext db, string query)
         {
             db.Database.Connection.Open();
@@ -27,7 +38,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
                 items.Add(row);
             }
-
+            db.Database.Connection.Close();
             return items;
         }
 
@@ -46,6 +57,69 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
         }
 
-      
+        /// <summary>
+        /// Executa 1 batch pelo caminho indicado, o arquivo deve ter permissão para o usuario do IIS
+        /// </summary>
+        /// <param name="path"></param>
+        protected void ExecuteBatch(string path)
+        {
+            var mappedPath = System.Web.Hosting.HostingEnvironment.MapPath("~/" + path);
+            var proc = new System.Diagnostics.Process();
+
+            proc.StartInfo.UseShellExecute = false;
+            proc.StartInfo.CreateNoWindow = false;
+            proc.StartInfo.FileName = mappedPath;
+            //proc.StartInfo.RedirectStandardError = true;
+            //proc.StartInfo.RedirectStandardOutput = true;
+            //proc.StartInfo.WorkingDirectory = "C:\\Watcher";
+            proc.Start();
+            proc.WaitForExit();
+        }
+
+        /// <summary>
+        /// Cria Cookie para UserSgq
+        /// </summary>
+        /// <param name="userDto">UserDTO</param>
+        /// <returns></returns>
+        protected CookieHeaderValue CreateCookieFromUserDTO(UserDTO userDto)
+        {
+            var values = new NameValueCollection();
+            values.Add("userId", userDto.Id.ToString());
+            values.Add("userName", userDto.Name);
+            values.Add("CompanyId", userDto.ParCompany_Id.GetValueOrDefault().ToString());
+            if (userDto.AlterDate != null)
+                values.Add("alterDate", userDto.AlterDate.GetValueOrDefault().ToString("dd/MM/yyyy"));
+            else
+                values.Add("alterDate", "");
+
+            values.Add("addDate", userDto.AddDate.ToString("dd/MM/yyyy"));
+
+            if (userDto.Role != null)
+                values.Add("roles", userDto.Role.Replace(';', ',').ToString());//"admin, teste, operacional, 3666,344, 43434,...."
+            else
+                values.Add("roles", "");
+
+            if (userDto.ParCompanyXUserSgq != null)
+                if (userDto.ParCompanyXUserSgq.Any(r => r.Role != null))
+                    values.Add("rolesCompany", string.Join(",", userDto.ParCompanyXUserSgq.Select(n => n.Role).Distinct().ToArray()));
+                else
+                    values.Add("rolesCompany", string.Join(",", userDto.ParCompanyXUserSgq.Select(n => n.ParCompany_Id).Distinct().ToArray()));
+
+
+            var cookie = new CookieHeaderValue("webControlCookie", values);
+            cookie.MaxAge = TimeSpan.FromMinutes(Conn.sessionTimer);
+            cookie.Path = "/";
+
+            return cookie;
+        }
+
+        protected List<JObject> QueryNinjaPeloDbSgq(string query)
+        {
+            using (var dbSgq = new Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
+            {
+                return dbSgq.QueryNinjaADO(query);
+            }
+        }
+
     }
 }

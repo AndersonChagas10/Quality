@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CookieDoUserSgqWebApi.cs" />
     <Compile Include="CustomAuthorizeAttribute.cs" />
     <Compile Include="DecimalModelBinder.cs" />
     <Compile Include="HtmlHelperExtension.cs" />
