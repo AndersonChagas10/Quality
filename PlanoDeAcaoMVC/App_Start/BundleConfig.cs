@@ -10,8 +10,8 @@ namespace PlanoDeAcaoMVC
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery.moneymask.js",
-                        "~/Scripts/moment-with-locales.min.js",
-            "~/Scripts/Angular/angular.min.js"));
+                       
+                        "~/Scripts/Angular/angular.min.js"));
 
              // Use the development version of Modernizr to develop with and learn from. Then, when you're
              // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -41,8 +41,17 @@ namespace PlanoDeAcaoMVC
 
             //Loading Overlay
             bundles.Add(new ScriptBundle("~/bundles/loadingoverlay")
-                .Include("~/Scripts/loadingoverlay.min.js",
-                "~/Scripts/loadingoverlay_progress.min.js")
+                .Include("~/Scripts/loadingoverlay.min.js",//LoadingOverlay
+                "~/Scripts/loadingoverlay_progress.min.js",//LoadingOverlay
+                 "~/Scripts/moment-with-locales.min.js",//Moment
+                "~/Scripts/bootbox.min.js",//BootBox
+                 "~/Scripts/select2.min.js",//Select 2
+                 "~/Scripts/i18n/pt-BR.js",//Select 2
+                 "~/Scripts/daterangepicker.js",//Date RAnge Piker
+                  "~/Scripts/DatePikerReady.js",//Date RAnge Piker
+                "~/Scripts/inputmask/jquery.inputmask.bundle.js",//InputMask
+                "~/Scripts/blur.js",//blur
+                "~/Scripts/GuardJs.js")
             );
 
             //Reports
@@ -89,8 +98,7 @@ namespace PlanoDeAcaoMVC
             #region Select2
 
             bundles.Add(new ScriptBundle("~/bundles/select2js").Include(
-                    "~/Scripts/select2.min.js"
-                    , "~/Scripts/i18n/pt-BR.js"));
+                   ));
 
             bundles.Add(new StyleBundle("~/Content/select2css").Include(
                   "~/Content/css/select2.min.css"));
@@ -103,11 +111,7 @@ namespace PlanoDeAcaoMVC
                  "~/Content/daterangepicker.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/DatePikerContent").Include(
-                  //"~/Scripts/moment.min.js",
-                  //"~/Scripts/moment-with-locales.min.js",   
-                  "~/Scripts/inputmask/jquery.inputmask.bundle.js",
-                  "~/Scripts/daterangepicker.js",
-                  "~/Scripts/DatePikerReady.js"));
+                  ));
 
             #endregion
 

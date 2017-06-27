@@ -1,4 +1,5 @@
-﻿@{
+﻿@using PlanoAcaoCore
+@{
     ViewBag.Title = "Index";
 }
 
@@ -150,7 +151,7 @@
 
 @*<h2>Plano de Ação</h2>*@
 
-<div>
+<div class="showAsEstrategy">
     <button type="button" class="btn btn-success" id="NovoPlanejamento" onclick="Clicked(false, false, false); ModalOpcoesEstrategico('Planejamento Estratégico', undefined, NovoPlanejamento);" data-toggle="modal"> Novo Planejamento Estratégico</button>
     <button type="button" onclick="GetDataTable();" class="btn btn-primary" style="float:right">
         Atualizar
@@ -236,21 +237,25 @@
 
     <script>
 
+        var VisaoOperacional = true;
+        var VisaoTatico = false;
+
         var counter = 0;
         var planejamentoCorrentId = 0;
         var isTaticoClicked = false;
         var isNovaAcao = false;
         var isClickedTaticoVinculado = false;
         var NovaAcaoBuscaFeita = false;
+        var tempInput;
+        var tempName;
 
+        var win = window.open('@Url.Action("Relatorios", "Relatorios")', '_blank');
         var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
         var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")';
         var urlNovaAcao = '@Url.Action("Index", "Pa_Acao")';
         var urlEditAcao = '@Url.Action("Edit", "Pa_Acao")';
         var urlEditPlanEstrat = '@Url.Action("Editar", "Pa_Planejamento")';
         var urlEditPlanOp = '@Url.Action("Editar", "Pa_Planejamento")';
-
-
         var PlanejamentoDetalhes = '@Url.Action("Details", "Pa_Planejamento")';
         var urlNovoPlanejamento = '@Url.Action("Index", "Pa_Planejamento")';
         var urlBuscarPlanejamentos = '@Url.Action("Buscar", "Pa_Planejamento")';
@@ -259,15 +264,11 @@
         var GETIndicadoresDiretriz = '@Url.Action("GETIndicadoresDiretriz", "Pa_Planejamento")';
         var GETIndicadoresProjetoIniciativa = '@Url.Action("GETIndicadoresProjetoIniciativa", "Pa_Planejamento")';
         var GETObjetivosGerenciais = '@Url.Action("GETObjetivosGerenciais", "Pa_Planejamento")';
-
         var urlSalvarPlanejamento = '@Url.Action("Save", "api/Pa_Planejamento")';
         var urlGetPlanejamentoAcao = '@Url.Action("GetPlanejamentoAcao", "api/Pa_Planejamento")';
         var urlGetPlanejamento = '@Url.Action("GET", "api/Pa_Planejamento")';
-
         var urlSalvarAcao = '@Url.Action("Save", "api/Pa_Acao")';
-
         var urlSalvarNovoItem = '@Url.Action("Save", "api/Generics")';
-
         var urlSalvarAcompanhamento = '@Url.Action("SaveAcompanhamento", "api/Pa_Acao")'
         var urlAcompanhamentoDetalhes = '@Url.Action("Acompanhamento", "Pa_Acao")'
         var AcaoDetalhes = '@Url.Action("Details","Pa_Acao")'
@@ -280,7 +281,7 @@
 
         /*Planejamento*/
         //Utiliza
-        function ModalOpcoesEstrategico(title, IdParaNovaAcao,callback) {//Pos Modal1
+        function ModalOpcoesEstrategico(title, IdParaNovaAcao, callback) {//Pos Modal1
             //console.log(ModalOpcoesEstrategico);
 
             $('#modalLindo').modal();
@@ -311,7 +312,7 @@
                 }
 
                 if (IdParaNovaAcao != undefined || planejamentoCorrentId > 0) { // Mostra Detalhes + BTN nova acao
-                    $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId}, function (r) {
+                    $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
                         $('#modalLindo').find('.modal-body').empty().append(r);
                         $('#NovaAcao').show();
                     });
@@ -391,23 +392,6 @@
             /*Fim Botões*/
         }
 
-        //function BuscarPlanejamentos() {//Pos Modal2
-        //    var title = $('#Header').html();
-        //    $('#Header').html("Buscar Planejamento")
-        //    $.get(urlBuscarPlanejamentos, function (r) {
-        //        $('#modalLindo').find('.modal-body').empty().append(r);
-        //        $('#filtrarPlanejamento').click();
-        //    });
-        //    /*Botões*/
-        //    $('#modalLindo').find('.modal-footer button').hide()
-        //    $('#Fechar2').show();
-        //    $('#Selecionar').show();
-        //    $('#Selecionar').prop('disabled', true);
-        //    $('#Selecionar').off('click');
-        //    $('#Fechar2').off('click').on('click', function () { ModalOpcoesEstrategico(title) });
-        //    /*Fim Botões*/
-        //}
-
         //Verificando
         function SalvarPlanejamento(form) {
             console.log(SalvarPlanejamento);
@@ -463,39 +447,7 @@
             });
 
         }/*planejamentoCorrentId*/
-
-        //function FiltrarPlanejamento() {
-        //    $('#Selecionar').prop('disabled', true);
-        //    $('#Selecionar').off('click');
-        //    var enviarObj = $('#PlanejamentoBuscar').serializeObject();
-        //    if (isNovaAcao) {
-        //        enviarObj["IsfiltrarAcao"] = true;
-        //    }
-        //    $.post(urlFiltraPlanejamentos, enviarObj, function (r) {
-        //        $('#planejamentosFiltrado').empty().append(r);
-        //        $('#planejamentosFiltrado > select').on('change', function (e) {
-        //            if (e.currentTarget.selectedIndex > 0) {
-        //                var id = $('#planejamentosFiltrado > select').val()
-        //                $('#Selecionar').prop('disabled', false);
-        //                $('#Selecionar').on('click', function () {
-        //                    planejamentoCorrentId = parseInt($('#planejamentosFiltrado > select').val());
-        //                    if (isClickedTaticoVinculado) {
-        //                        $.get(urlGetPlanejamento, { id: planejamentoCorrentId }, function (r) {
-        //                            EditarPlanejamento(r);
-        //                        });
-        //                    }
-        //                    else if (!isNovaAcao) {
-        //                        ModalOpcoesEstrategico();
-        //                    } else {
-        //                        ModalAcao();
-        //                    }
-        //                });
-        //            }
-        //        });
-        //    });
-        //    /*Interação com planejamentoCorrentId*/
-        //}/*planejamentoCorrentId*/
-
+      
         //Verificando
         function EditarPlanejamento(model) {
             console.log(EditarPlanejamento);
@@ -579,7 +531,7 @@
 
             var change1 = v1 != undefined ? v1 : "";
             var change2 = v2 != undefined ? v2 : "";
-           
+
 
             var rdy = true;
             $('#Dimensao_Id').off('change').on('change', function () {
@@ -612,9 +564,9 @@
                 }
             });
 
-         
 
-          
+
+
             $('#Dimensao_Id').val(change1).change();
 
             if (v2 != undefined) {
@@ -622,7 +574,7 @@
             } else {
                 $('#Objetivo_Id').val(change2).change();
             }
-          
+
             if (v3 != undefined) {
                 setTimeout(function () { $('#IndicadoresDiretriz_Id').val(v3).change(); }, 1500)
             }
@@ -765,7 +717,6 @@
 
         //Verificando
         function myfunction() {
-            console.log(myfunction);
             $('[id=tipoIndicador]').off('change').on('change', function () {
 
                 var valor = $(this).val();
@@ -798,7 +749,6 @@
                     form.find('#ContramedidaGenerica_Id').empty().attr('disabled', true);
                 }
             });
-
         } /*Causa Medida Etc...*/
 
         //Verificando
@@ -923,8 +873,6 @@
         }
 
         /*Novo item*/
-        var tempInput;
-        var tempName;
         function Novo(btn, encadeado) {
 
             /*Limpa caso haja DDL denrto do modal.*/
@@ -1155,7 +1103,6 @@
 
                         planejamentoCorrentId = data.Tatico_Id;
                         acaoCorrentId = data.Acao.Id;
-                        //Clicked(isTaticoClicked, isNovaAcao);
 
                         if (!(acaoCorrentId > 0)) { planejamentoCorrentId = data.Id }
 
@@ -1164,19 +1111,13 @@
                         $('#Header').html("Detalhes Gerais do Planejamento");
                         $('#modalLindo').find('.modal-footer button').hide();
 
-                        //if (planejamentoCorrentId > 0) {
-                            $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
-                                $('#modalLindo').find('.modal-body').append(r);
-                                //$('#NovaAcao').show();
-                                //$('#NovaAcao').click();                            
-                            });
-                        //}
+                        $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
+                            $('#modalLindo').find('.modal-body').append(r);
+                        });
 
                         if (acaoCorrentId > 0) {
                             $.get(AcaoDetalhes, { id: acaoCorrentId }, function (r) {
                                 $('#modalLindo').find('.modal-body').append(r);
-                                //$('#NovaAcao').show();
-                                //$('#NovaAcao').click();                            
                             });
                         }
 
@@ -1260,7 +1201,7 @@
                         var bgColorStatus = ""
                         var bgColorPrazo = ""
                         /*Status*/
-                        console.log(data.Acao.Status);
+                        //console.log(data.Acao.Status);
                         if (data.Acao.Status == 2) {
                             bgColorStatus = "grey";
                             bgColorPrazo = "rgb(126, 194, 253)";
@@ -1294,7 +1235,6 @@
                         }
 
                         $(row.cells[32]).css("background", bgColorPrazo);
-
 
                         if (data.Tatico_Id > 0) { // possui plan tatico
                             $(row.cells[33]).find('.btnNovoOperacional').show();
@@ -1348,75 +1288,106 @@
 
             });
 
-            //new $.fn.dataTable.FixedHeader(table, {
-            //    headerOffset: 50
-            //});
+            var show = {
+                PlanejamentoEstrategicos: {
+                    extend: 'colvisGroup',
+                    text: 'Planejamento Estratégicos',
+                    show: arrEstragy,
+                    hide: arrEstragyH
+                },
+                PlanejamentoTatico: {
+                    extend: 'colvisGroup',
+                    text: 'Planejamento Tático',
+                    show: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+                    hide: [0, 1, 2, 3, 4, 5, 6, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+                },
+                PlanejamentoOperacional: {
+                    extend: 'colvisGroup',
+                    text: 'Planejamento Operacional',
+                    show: [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+                    hide: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+                },
+                colvisGroupTodos: {
+                    extend: 'colvisGroup',
+                    text: 'Mostrar Todos',
+                    show: ':hidden'
+                },
+                print: {
+                    extend: 'print',
+                    text: 'Imprimir',
+                    customize: function (win) {
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                    },
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                excelHtml5: {
+                    extend: 'excelHtml5',
+                    text: 'Excel',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                colvis: {
+                    extend: 'colvis',
+                    text: 'Colunas Visíveis',
+                    collectionLayout: 'fixed two-column',
+                    exportOptions: {
+                        columns: ':visible',
+                    }
+                },
+                //pdf :{
+                //    extend: 'pdf',
+                //    text: 'PDF',
+                //    exportOptions: {
+                //        columns: ':visible'
+                //    }
+                //},
+            };
+
+            var arrToShow = [
+                  show.PlanejamentoEstrategicos,
+                  show.PlanejamentoTatico,
+                  show.PlanejamentoOperacional,
+                  show.colvisGroupTodos,
+                  show.print,
+                  show.excelHtml5,
+                  show.colvis,
+            ];
+
+            if (VisaoOperacional) {
+                show.colvisGroupTodos.show = [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+                show.colvisGroupTodos.hide = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+                show.colvis['columns'] = [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+                arrToShow = [
+                   show.colvisGroupTodos,
+                   show.print,
+                   show.excelHtml5,
+                   show.colvis,
+                ]
+            } else if (VisaoTatico) {
+                arrToShow = [
+                   //show.PlanejamentoEstrategicos,
+                   show.PlanejamentoTatico,
+                   show.PlanejamentoOperacional,
+                   show.colvisGroupTodos,
+                   show.print,
+                   show.excelHtml5,
+                   show.colvis,
+                ]
+            }
 
             new $.fn.dataTable.Buttons(table, {
-                buttons: [
-                     {
-                         extend: 'colvisGroup',
-                         text: 'Planejamento Estratégicos',
-                         show: arrEstragy,
-                         hide: arrEstragyH
-                     },
-                      {
-                          extend: 'colvisGroup',
-                          text: 'Planejamento Tático',
-                          show: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-                          hide: [0, 1, 2, 3, 4, 5, 6, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
-                      },
-                       {
-                           extend: 'colvisGroup',
-                           text: 'Planejamento Operacional',
-                           show: [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
-                           hide: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-                       },
-                      {
-                          extend: 'colvisGroup',
-                          text: 'Mostrar Todos',
-                          show: ':hidden'
-                      },
-                    {
-                        extend: 'print',
-                        text: 'Imprimir',
-                        customize: function (win) {
-                            $(win.document.body).find('table')
-                                .addClass('compact')
-                                .css('font-size', 'inherit');
-                        },
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'excelHtml5',
-                        text: 'Excel',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                     //{
-                     //    extend: 'pdf',
-                     //    text: 'PDF',
-                     //    exportOptions: {
-                     //        columns: ':visible'
-                     //    }
-                     //},
-                      {
-                          extend: 'colvis',
-                          text: 'Colunas Visíveis',
-                          collectionLayout: 'fixed two-column',
-                          exportOptions: {
-                              columns: ':visible',
-                          }
-                      },
-                ]
+                buttons: arrToShow
             });
 
             table.buttons(0, null).container().prependTo(
                 table.table().container()
             );
+            $('#paTable_wrapper > div.dt-buttons > a:nth-child(1)').click();
 
         }
         /*Fim Table*/
@@ -1424,7 +1395,6 @@
         //Utiliza
         function Relatorios() {
             //function openInNewTab(url) {
-            var win = window.open('@Url.Action("Relatorios", "Relatorios")', '_blank');
             win.focus();
             //}
         }
@@ -1507,8 +1477,8 @@
                 //Colocar o retorno no modal
                 formReset();
                 getAcompanhamento(obj.Acao_Id);
-                openMessageModal('Registro salvo com sucesso!', '');               
-                
+                openMessageModal('Registro salvo com sucesso!', '');
+
             })
             .fail(function (e, h, x) {
 
@@ -1566,6 +1536,7 @@
         /*Table*/
         $(document).ready(function () {
             GetDataTable();
+            if (VisaoOperacional) {   $('.showAsEstrategy').hide();   }
         });
 
     </script>
