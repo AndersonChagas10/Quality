@@ -1848,13 +1848,24 @@ namespace SgqSystem.Services
                 string Level03Id = result[0];
 
                 Dominio.ParLevel3Level2 tarefaFilha = new Dominio.ParLevel3Level2();
+                Dominio.ParLevel3Level2Level1 indicadorFilha = new Dominio.ParLevel3Level2Level1();
+                Dominio.CollectionLevel2 collectionLevel2Filha = new Dominio.CollectionLevel2();
+
+                int collectionLevel2_id = Int32.Parse(CollectionLevel02Id);
 
                 if (filho)
                 {
                     using (var db = new Dominio.SgqDbDevEntities())
                     {
                         int idl3 = Int32.Parse(Level03Id);
-                        tarefaFilha = db.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == idl3  && r.IsActive); //&& r.ParLevel2_Id == level02
+
+                        collectionLevel2Filha = db.CollectionLevel2.FirstOrDefault(r => r.Id == collectionLevel2_id);
+
+
+                        var ListaindicadorFilha = db.ParLevel3Level2Level1.Where(r => r.ParLevel1_Id == collectionLevel2Filha.ParLevel1_Id);
+
+
+                        tarefaFilha = db.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == idl3  && r.IsActive && ListaindicadorFilha.Any(z => z.ParLevel3Level2_Id == r.Id) ); //&& r.ParLevel2_Id == level02
                     }
                 }
 
