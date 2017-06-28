@@ -866,7 +866,11 @@ namespace SgqSystem.Services
                     monitoramentoultimoalerta = DefaultValueReturn(monitoramentoultimoalerta, "0");
 
                     string startphaseevaluation = DefaultValueReturn(arrayHeader[28], "0");
-                    string endphaseevaluation = DefaultValueReturn(arrayHeader[29], "0");
+                    string endphaseevaluation = "0";
+                    if (arrayHeader.Length > 29)
+                    {
+                        endphaseevaluation = DefaultValueReturn(arrayHeader[29], "0");
+                    }
 
                     int CollectionLevel2Id = InsertCollectionLevel2(consolidationLevel1, consolidationLevel2, c.AuditorId, c.Shift, c.Period, Phase, c.Reaudit, c.ReauditNumber, c.Level02CollectionDate,
                                                 StartPhase, c.Evaluate, sampleCollect, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel,
@@ -7101,7 +7105,10 @@ namespace SgqSystem.Services
                 "\n @DefectsResult = case when sum(r3.WeiDefects) > 0 then 1 else 0 end,                                                      " +
                 "\n @EvatuationResult = case when sum(r3.Evaluation) > 0 then 1 else 0 end,                                                   " +
                 "\n @WeiEvaluation = isnull(sum(r3.WeiEvaluation),0),                                                                         " +
-                "\n @WeiDefects = case when isnull(sum(r3.WeiDefects),0) > isnull(sum(r3.WeiEvaluation),0) then isnull(sum(r3.WeiEvaluation),0) else isnull(sum(r3.WeiDefects),0) end,                                                                               " +
+                "\n @WeiDefects = isnull(sum(r3.WeiDefects),0),                                                                               " +
+
+                 //"\n @WeiDefects = case when isnull(sum(r3.WeiDefects),0) > isnull(sum(r3.WeiEvaluation),0) then isnull(sum(r3.WeiEvaluation),0) else isnull(sum(r3.WeiDefects),0) end,                                                                               " +
+
                 "\n @TotalLevel3Evaluation = count(1),                                                                                        " +
                 "\n @TotalLevel3WithDefects = (select count(1) from result_level3 where collectionLevel2_Id = @ID and Defects > 0  and IsNotEvaluate = 0)         " +
                 "\n from result_level3 r3                                                                                                     " +

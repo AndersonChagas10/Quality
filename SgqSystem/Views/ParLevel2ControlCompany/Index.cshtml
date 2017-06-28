@@ -218,8 +218,10 @@ else
 
         $('body > div > div.page-header.navbar.navbar-fixed-top > div > div.page-logo > div').click();
 
-        var start = moment();
-        var end = moment();
+        var hoje = '@ViewBag.dataInit.ToString("yyyy-MM-dd")'
+
+        var start = moment(hoje);
+        var end = moment(hoje);
 
         //Start config datepickerrange simple
         $('input[name="datefilter"]').daterangepicker({
@@ -249,8 +251,7 @@ else
             enviar['endDate'] = "";
         });
 
-        var hoje = '@ViewBag.dataInit.ToString("dd/MM/yyyy")'
-        $('input[name="datefilter"]').val(hoje);
+        $('input[name="datefilter"]').val('@ViewBag.dataInit.ToString("dd/MM/yyyy")');
         //End config datepickerrange simple
 
     })
