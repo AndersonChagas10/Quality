@@ -4,6 +4,7 @@ using Dominio;
 using DTO;
 using DTO.Helpers;
 using Newtonsoft.Json;
+using SGQDBContext;
 using SgqSystem.Handlres;
 using SgqSystem.Services;
 using SgqSystem.ViewModels;
@@ -62,7 +63,7 @@ namespace SgqSystem.Controllers.Api
                 //    conexaoUndiade = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
 
                 SqlConnectionStringBuilder connectionString = new SqlConnectionStringBuilder();
-                
+
                 //connectionString.Password = "betsy1";
                 //connectionString.UserID = "sa";
                 //connectionString.InitialCatalog = "dbGQualidade_JBS";
@@ -70,7 +71,7 @@ namespace SgqSystem.Controllers.Api
 
                 connectionString.Password = "grJsoluco3s";
                 connectionString.UserID = "UserGQualidade";
-                
+
 
 
                 foreach (var verificacao in model.VerificacaoTipificacao)
@@ -87,7 +88,7 @@ namespace SgqSystem.Controllers.Api
                         codigoUnidade = company.CompanyNumber.ToString();
                         connectionString.InitialCatalog = company.DBServer.ToString();
                         connectionString.DataSource = company.IPServer.ToString();
-                    }
+                    }                   
 
                     using (var dbUnit = new Factory(connectionString))
                     {
@@ -422,6 +423,40 @@ namespace SgqSystem.Controllers.Api
 
         }
 
+        [HttpGet]
+        [Route("GetAll/{Date}/{UnidadeId}")]
+        public string GetVTVerificacaoTipificacao(String Date, int UnidadeId)
+        {
+            string retorno = "";
+            try
+            {
+
+                using (var db = new Dominio.SgqDbDevEntities())
+                {
+                    var sql = "select distinct '<div class=\"Key\" date=\""+Date+"\" unidadeid=\""+UnidadeId+"\" key=\"'+ [Key] +'\"></div>' as retorno from VerificacaoTipificacaoV2 (nolock)  " +
+                          " where FORMAT(CollectionDate, 'MMddyyyy') = '" + Date + "' and        " +
+                          " ParCompany_Id = " + UnidadeId + ";                              ";
+
+                    string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+                    var list = db.Database.SqlQuery<ResultadoUmaColuna>(sql).ToList();
+
+                    for (var i = 0; i < list.Count(); i++)
+                    {
+                        retorno += list[i].retorno.ToString();
+                    }
+                }
+
+
+            }
+            catch(Exception e)
+            {
+                new CreateLog(new Exception("Erro ao listar VTVerificacaoTipificacao.", e));
+            }
+
+            return retorno;
+
+        }
 
         #region OLD DEPRECIADO
 
