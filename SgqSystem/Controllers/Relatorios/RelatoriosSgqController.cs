@@ -802,11 +802,11 @@ namespace SgqSystem.Controllers
 
                     "\n  WHERE 1 = 1 " +
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null";
-                
+
 
             //Dados das colunas do corpo da tabela de dados central
             var query1 = "SELECT PP1.Name as CLASSIFIC_NEGOCIO, Reg.Name as MACROPROCESSO, " +
-                  "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
+                  "\n case WHEN sum(Pontos) is null then null when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
                   "\n 100  as ORCADO, " +
                   "\n 100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) as DESVIO, " +
                   "\n (100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / 100 as \"DESVIOPERCENTUAL\" " +
@@ -835,7 +835,7 @@ namespace SgqSystem.Controllers
             // Total Direita
             var query2 =
            "SELECT PP1.Name as CLASSIFIC_NEGOCIO," +
-                  "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
+                  "\n case WHEN sum(Pontos) is null then null when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
                   "\n 100  as ORCADO, " +
                   "\n 100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) as DESVIO, " +
                   "\n (100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / 100 as \"DESVIOPERCENTUAL\" " +
@@ -865,7 +865,7 @@ namespace SgqSystem.Controllers
             // Total Inferior Esquerda
             var query3 =
            "SELECT Reg.Name as MACROPROCESSO, " +
-                  "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
+                  "\n case WHEN sum(Pontos) is null then null when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
                   "\n 100  as ORCADO, " +
                   "\n 100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) as DESVIO, " +
                   "\n (100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / 100 as \"DESVIOPERCENTUAL\" " +
@@ -895,7 +895,7 @@ namespace SgqSystem.Controllers
             // Total Inferior Direita
             var query4 =
                 "SELECT " +
-                  "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
+                  "\n case WHEN sum(Pontos) is null then null when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
                   "\n 100  as ORCADO, " +
                   "\n 100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) as DESVIO, " +
                   "\n (100 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / 100 as \"DESVIOPERCENTUAL\" " +
@@ -1071,10 +1071,10 @@ namespace SgqSystem.Controllers
                 filtro = filtro.OrderBy(r => r.MACROPROCESSO).ToList();
                 foreach (var ii in filtro)
                 {
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.REAL, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.ORCADO, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIO, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL, 2).ToString("G29") });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.REAL.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.ORCADO.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIO.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL.GetValueOrDefault(), 2).ToString("G29") });
                 }
 
                 #endregion
@@ -1084,10 +1084,10 @@ namespace SgqSystem.Controllers
                 filtro = result2.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i)).ToList();
                 foreach (var ii in filtro)
                 {
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.REAL, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.ORCADO, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIO, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL, 2).ToString("G29") });
+                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.REAL.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.ORCADO.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIO.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL.GetValueOrDefault(), 2).ToString("G29") });
                 }
 
                 #endregion
@@ -1104,7 +1104,6 @@ namespace SgqSystem.Controllers
             tabela.footer = new List<Trs>();
             foreach (var i in queryRowsFooter)
             {
-                //var filtro = result3.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i)).ToList();
                 var Tr = new Trs()
                 {
                     name = i,
@@ -1116,10 +1115,10 @@ namespace SgqSystem.Controllers
 
                 foreach (var ii in result3)
                 {
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.REAL, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.ORCADO, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIO, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL, 2).ToString("G29") });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.REAL.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.ORCADO.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIO.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL.GetValueOrDefault(), 2).ToString("G29") });
                 }
 
                 #endregion
@@ -1128,10 +1127,10 @@ namespace SgqSystem.Controllers
 
                 foreach (var ii in result4)
                 {
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.REAL, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.ORCADO, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIO, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL, 2).ToString("G29") });
+                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.REAL.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.ORCADO.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIO.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL.GetValueOrDefault(), 2).ToString("G29") });
                 }
 
                 #endregion
@@ -1935,23 +1934,23 @@ namespace SgqSystem.Controllers
 
             /*1º*/
             tabela.trsCabecalho1 = new List<Ths>();
-            tabela.trsCabecalho1.Add(new Ths() { name = "Pacote: " + form.ParametroTableRow[0]  });
+            tabela.trsCabecalho1.Add(new Ths() { name = "Pacote: " + form.ParametroTableRow[0] });
             tabela.trsCabecalho1.Add(new Ths() { name = "Regional: " + form.ParametroTableCol[0] });
             /*Fim  1º*/
 
-                #region DESCRIÇÃO
-                /*2º CRIANDO CABECALHO DA SEGUNDA TABELA
+            #region DESCRIÇÃO
+            /*2º CRIANDO CABECALHO DA SEGUNDA TABELA
 
-                      name   | coolspan
-                      ------------------
-                       Reg1   | 4 
-                       Reg2   | 4
-                       RegN   | 4
+                  name   | coolspan
+                  ------------------
+                   Reg1   | 4 
+                   Reg2   | 4
+                   RegN   | 4
 
-                      coolspan depende do que vai mostrar em Orçado, real, Desvio, etc...
-                   */
-                #endregion
-                tabela.trsCabecalho2 = db.Database.SqlQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
+                  coolspan depende do que vai mostrar em Orçado, real, Desvio, etc...
+               */
+            #endregion
+            tabela.trsCabecalho2 = db.Database.SqlQuery<Ths>(query + " " + query0).OrderBy(r => r.name).ToList();
 
             var thsMeio = new List<Ths>();
             thsMeio.Add(new Ths() { name = "R", coolspan = 1 });
@@ -2047,12 +2046,13 @@ namespace SgqSystem.Controllers
                 //    if (!filtro.Any(r => r.MACROPROCESSO.Equals(x.name)))
                 //        filtro.Add(new ResultQuery1() { MACROPROCESSO = x.name, CLASSIFIC_NEGOCIO = filtro.FirstOrDefault().CLASSIFIC_NEGOCIO });
                 filtro = filtro.OrderBy(r => r.MACROPROCESSO).ToList();
+                decimal? real = 0;
                 foreach (var ii in filtro)
                 {
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.REAL, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.ORCADO, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIO, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL, 2).ToString("G29") });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.REAL.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.ORCADO.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIO.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL.GetValueOrDefault(), 2).ToString("G29") });
                 }
 
                 #endregion
@@ -2060,12 +2060,13 @@ namespace SgqSystem.Controllers
                 #region Result2
 
                 filtro = result2.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i)).ToList();
+                real = 0;
                 foreach (var ii in filtro)
                 {
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.REAL, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.ORCADO, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIO, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL, 2).ToString("G29") });
+                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.REAL.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.ORCADO.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIO.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL.GetValueOrDefault(), 2).ToString("G29") });
                 }
 
                 #endregion
@@ -2083,6 +2084,7 @@ namespace SgqSystem.Controllers
             foreach (var i in queryRowsFooter)
             {
                 //var filtro = result3.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i)).ToList();
+                decimal? real = 0;
                 var Tr = new Trs()
                 {
                     name = i,
@@ -2094,22 +2096,38 @@ namespace SgqSystem.Controllers
 
                 foreach (var ii in result3)
                 {
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.REAL, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.ORCADO, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIO, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL, 2).ToString("G29") });
+                    real = ii.REAL;
+                    if (ii.REAL == null)
+                    {
+                        Tr.tdsEsquerda.Add(new Tds() { valor = "-" });
+                    }
+                    else
+                    {
+                        Tr.tdsEsquerda.Add(new Tds() { valor = ii.REAL.ToString() });
+                    }
+                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.ORCADO.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIO.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL.GetValueOrDefault(), 2).ToString("G29") });
                 }
 
                 #endregion
 
                 #region Result4
-
+                real = 0;
                 foreach (var ii in result4)
                 {
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.REAL, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.ORCADO, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIO, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL, 2).ToString("G29") });
+                    real = ii.REAL;
+                    if (ii.REAL == null)
+                    {
+                        Tr.tdsEsquerda.Add(new Tds() { valor = "-" });
+                    }
+                    else
+                    {
+                        Tr.tdsEsquerda.Add(new Tds() { valor = ii.REAL.ToString() });
+                    }
+                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.ORCADO.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIO.GetValueOrDefault(), 2).ToString("G29") });
+                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL.GetValueOrDefault(), 2).ToString("G29") });
                 }
 
                 #endregion
@@ -2126,10 +2144,10 @@ namespace SgqSystem.Controllers
         {
             public string CLASSIFIC_NEGOCIO { get; set; }
             public string MACROPROCESSO { get; set; }
-            public int ORCADO { get; set; }
-            public decimal DESVIO { get; set; }
-            public decimal DESVIOPERCENTUAL { get; set; }
-            public decimal REAL { get; set; }
+            public int? ORCADO { get; set; }
+            public decimal? DESVIO { get; set; }
+            public decimal? DESVIOPERCENTUAL { get; set; }
+            public decimal? REAL { get; set; }
         }
 
         /// <summary>
