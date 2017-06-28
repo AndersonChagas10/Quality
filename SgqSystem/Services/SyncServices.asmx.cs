@@ -7101,7 +7101,7 @@ namespace SgqSystem.Services
                 "\n @DefectsResult = case when sum(r3.WeiDefects) > 0 then 1 else 0 end,                                                      " +
                 "\n @EvatuationResult = case when sum(r3.Evaluation) > 0 then 1 else 0 end,                                                   " +
                 "\n @WeiEvaluation = isnull(sum(r3.WeiEvaluation),0),                                                                         " +
-                "\n @WeiDefects = isnull(sum(r3.WeiDefects),0),                                                                               " +
+                "\n @WeiDefects = case when isnull(sum(r3.WeiDefects),0) > isnull(sum(r3.WeiEvaluation),0) then isnull(sum(r3.WeiEvaluation),0) else isnull(sum(r3.WeiDefects),0) end,                                                                               " +
                 "\n @TotalLevel3Evaluation = count(1),                                                                                        " +
                 "\n @TotalLevel3WithDefects = (select count(1) from result_level3 where collectionLevel2_Id = @ID and Defects > 0  and IsNotEvaluate = 0)         " +
                 "\n from result_level3 r3                                                                                                     " +
