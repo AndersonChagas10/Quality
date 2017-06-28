@@ -866,7 +866,11 @@ namespace SgqSystem.Services
                     monitoramentoultimoalerta = DefaultValueReturn(monitoramentoultimoalerta, "0");
 
                     string startphaseevaluation = DefaultValueReturn(arrayHeader[28], "0");
-                    string endphaseevaluation = DefaultValueReturn(arrayHeader[29], "0");
+                    string endphaseevaluation = "0";
+                    if (arrayHeader.Length > 29)
+                    {
+                        endphaseevaluation = DefaultValueReturn(arrayHeader[29], "0");
+                    }
 
                     int CollectionLevel2Id = InsertCollectionLevel2(consolidationLevel1, consolidationLevel2, c.AuditorId, c.Shift, c.Period, Phase, c.Reaudit, c.ReauditNumber, c.Level02CollectionDate,
                                                 StartPhase, c.Evaluate, sampleCollect, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel,
