@@ -7,6 +7,19 @@ namespace PlanoDeAcaoMVC.Controllers
 
     public class HomeController : Controller
     {
+        public HomeController()
+        {
+            UpdateStatus();
+        }
+
+        protected void UpdateStatus()
+        {
+            using (var dbPa = new PlanoAcaoEF.PlanoDeAcaoEntities())
+            {
+                dbPa.Database.ExecuteSqlCommand("UPDATE Pa_acao SET [STATUS] = 1 WHERE Id IN (SELECT Id FROM Pa_acao WHERE [Status] = (5) AND  CONVERT (date ,QuandoFim) < CONVERT (date ,GETDATE()))");
+            }
+        }
+
         public ActionResult Index()
         {
             ViewBag.Title = "Home Page";

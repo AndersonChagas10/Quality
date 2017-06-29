@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DTO.DTO;
+using DTO.Helpers;
 using Helper;
 using PlanoAcaoCore;
 using PlanoAcaoEF;
@@ -7,6 +8,7 @@ using System;
 using System.ComponentModel;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PlanoDeAcaoMVC.PaMail
 {
@@ -23,7 +25,7 @@ namespace PlanoDeAcaoMVC.PaMail
                 using (var db = new PlanoDeAcaoEntities())
                 {
                     SaveEmailContenteEF(email, db);
-                    MailSender.SendMail(Mapper.Map<EmailContentDTO>(email), Conn.emailFrom, Conn.emailPass, Conn.emailSmtp, Conn.emailPort, Conn.emailSSL, SendCompletedCallbackPA, true);
+                    Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(email), Conn.emailFrom, Guard.DecryptStringAES(Conn.emailPass), Conn.emailSmtp, Conn.emailPort, Conn.emailSSL, SendCompletedCallbackPA, true));
                 }
             }
             catch (Exception ex)

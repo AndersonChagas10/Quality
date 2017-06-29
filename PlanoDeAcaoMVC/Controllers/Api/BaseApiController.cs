@@ -121,5 +121,18 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
         }
 
+        protected Factory ConexaoSgq()
+        {
+            return new Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2);
+        }
+
+        protected void UpdateStatus()
+        {
+            using (var dbPa = new PlanoAcaoEF.PlanoDeAcaoEntities())
+            {
+                dbPa.Database.ExecuteSqlCommand("UPDATE Pa_acao SET [STATUS] = 1 WHERE Id IN (SELECT Id FROM Pa_acao WHERE [Status] = (5) AND  CONVERT (date ,QuandoFim) < CONVERT (date ,GETDATE()))");
+            }
+        }
+
     }
 }
