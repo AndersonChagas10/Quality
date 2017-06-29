@@ -3969,10 +3969,7 @@ namespace SgqSystem.Services
                                             r.Name.Equals("(%) NC PCC 1B") ||
                                             r.Name.Equals("(%) NC CEP Desossa") ||
                                             r.Name.Equals("(%) NC CEP Recortes") ||
-                                            r.Id.Equals(
-                                                parLevel1Familia.Where(s => s.Id == r.Id).FirstOrDefault() == null ?
-                                                0 : parLevel1Familia.Where(s => s.Id == r.Id).FirstOrDefault().Id
-                                            ));
+                                            r.IsFixedEvaluetionNumber == true);
             }
 
             //Agrupamos o ParLevel1 por ParCriticalLevel
@@ -4226,7 +4223,7 @@ namespace SgqSystem.Services
 
             //Pega uma lista de ParLevel2
             //Tem que confirmar a company e colocar na query dentro do método, ainda não foi validado
-            var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(ParLevel1DB, dateCollect, ParLevel1.Id, ParCompany_Id);
+            var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(ParLevel1, dateCollect, ParCompany_Id);
 
             //Inicializa Cabecalhos
             var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader(db);
