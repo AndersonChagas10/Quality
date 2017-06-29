@@ -15,7 +15,7 @@ namespace SgqSystem.Controllers.Api.Example
 {
     [HandleApi()]
     [RoutePrefix("api/Example")]
-    public class ExampleApiController : ApiController
+    public class ExampleApiController : BaseApiController
     {
 
         #region Construtor para injeção de dependencia
@@ -135,6 +135,5 @@ namespace SgqSystem.Controllers.Api.Example
 
             return newAlbum;
         }
-
     }
 }
