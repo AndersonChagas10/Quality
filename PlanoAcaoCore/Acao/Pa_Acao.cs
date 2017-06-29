@@ -13,6 +13,7 @@ namespace PlanoAcaoCore
     {
 
         #region SGQ
+        public bool isEmail { get; set; }
 
         [Display(Name = "Indicador")]
         public int? Level1Id { get; set; }
@@ -93,7 +94,7 @@ namespace PlanoAcaoCore
         [Display(Name = "Causa Especifica")]
         public string CausaEspecifica { get; set; }
 
-        [Display(Name = "Causa Generica")]
+        [Display(Name = "Contramedida Especifica")]
         public string ContramedidaEspecifica { get; set; }
 
         public int TipoIndicador { get; set; }

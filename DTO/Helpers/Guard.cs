@@ -39,6 +39,11 @@ namespace DTO.Helpers
             return new DateTime(data.Year, data.AddMonths(-1).Month, 1);
         }
 
+        /// <summary>
+        /// Returns : Property {} is Invalid.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="proName"></param>
         public static void CheckStringFullSimple(string name, string proName)
         {
             var nameValidado = "";

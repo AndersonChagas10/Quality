@@ -4,6 +4,9 @@
 }
 
 <style>
+        .hideEmail {
+        display: block !important;
+    }
     /*.dataTable td {
         max-width: 15ch;
         height: 125px !important;
@@ -151,14 +154,12 @@
 
 @*<h2>Plano de Ação</h2>*@
 
-<div class="showAsEstrategy">
-    <button type="button" class="btn btn-success" id="NovoPlanejamento" onclick="Clicked(false, false, false); ModalOpcoesEstrategico('Planejamento Estratégico', undefined, NovoPlanejamento);" data-toggle="modal"> Novo Planejamento Estratégico</button>
-    <button type="button" onclick="GetDataTable();" class="btn btn-primary" style="float:right">
-        Atualizar
-    </button>
+<div>
+    <button type="button" class="btn btn-success showAsEstrategy" id="NovoPlanejamento" onclick="Clicked(false, false, false); ModalOpcoesEstrategico('Planejamento Estratégico', undefined, NovoPlanejamento);" data-toggle="modal"> Novo Planejamento Estratégico</button>
+   
 </div>
 
-<hr />
+<hr class="showAsEstrategy"/>
 
 <div id="sasenhora" style="max-width:100%; ">
     <table id="paTable" class="table-striped dt-body-justify "></table>
@@ -237,8 +238,10 @@
 
     <script>
 
-        var VisaoOperacional = true;
-        var VisaoTatico = false;
+        var visaoOperacional = @Html.Raw(Json.Encode(Conn.visaoOperacional));
+        var nameCausaEspecifica = @Html.Raw(Json.Encode(Conn.nameCausaEspecifica));
+        var nameComoPontosImportantes = @Html.Raw(Json.Encode(Conn.nameComoPontosImportantes));
+        var nameContramedidaEspecifica = @Html.Raw(Json.Encode(Conn.nameContramedidaEspecifica));
 
         var counter = 0;
         var planejamentoCorrentId = 0;
@@ -280,7 +283,6 @@
         }
 
         /*Planejamento*/
-        //Utiliza
         function ModalOpcoesEstrategico(title, IdParaNovaAcao, callback) {//Pos Modal1
             //console.log(ModalOpcoesEstrategico);
 
@@ -330,7 +332,6 @@
 
         }
 
-        //Utiliza
         function NovoPlanejamento() {//Pos Modal2
             //console.log(NovoPlanejamento);
             var title = $('#Header').html();
@@ -447,7 +448,7 @@
             });
 
         }/*planejamentoCorrentId*/
-      
+
         //Verificando
         function EditarPlanejamento(model) {
             console.log(EditarPlanejamento);
@@ -526,7 +527,6 @@
             /*Fim Botões*/
         }
 
-        //Utiliza
         function DdlChangeEstrategico(v1, v2, v3) {
 
             var change1 = v1 != undefined ? v1 : "";
@@ -580,7 +580,6 @@
             }
         }
 
-        //Utiliza
         function DdlChangeTatico() {
 
             $('#Iniciativa_Id').off('change').on('change', function () {
@@ -920,33 +919,17 @@
         }
         /*Fim Novo item*/
 
-        //Utiliza
         function GerarTabela(retornoArray) {
 
             //console.log(retornoArray);
 
             var btnEditar = '<button type="button" class="edit btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Editar" class="glyphicon glyphicon-edit" style="cursor:pointer"></span>&nbsp Editar</button>';
             var btnDetalhes = '<button type="button" class="details btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Detalhes" style="cursor:pointer" class="glyphicon glyphicon-list-alt"></span>&nbsp Detalhes</button>';
-            var btnNovoTatico = '<button type="button" class="btnNovoTatico btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Novo Planejamento Tático para este Planejamento Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tag"></span>&nbsp Novo Tático</button>';
+            var btnNovoTatico = '<button type="button" class="btnNovoTatico showAsEstrategy btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Novo Planejamento Tático para este Planejamento Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tag"></span>&nbsp Novo Tático</button>';
             var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp Nova Acao</button>';
             var btnAcompanhamento = '<button type="button" class="btnAcompanhamento btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Acompanhamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Acompanhamento</button>';
             var arrEstragy = [0, 1, 2, 3, 4, 5, 6];
             var arrEstragyH = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
-            //var visibilidadeDefault = [];
-
-            //arrEstragy.forEach(function (o, c) {
-            //    visibilidadeDefault.push({
-            //        targets: o,
-            //        visible: true
-            //    })
-            //})
-
-            //arrEstragyH.forEach(function (o, c) {
-            //    visibilidadeDefault.push({
-            //        targets: o,
-            //        visible: false
-            //    })
-            //})
 
             var table = $('#paTable').empty().DataTable({
                 data: retornoArray,
@@ -978,12 +961,12 @@
                     { title: "Causa Genérica", mData: "Acao._CausaGenerica" },
                     { title: "Grupo Causa", mData: "Acao._GrupoCausa" },
                     { title: "Contramedida Genérica", mData: "Acao._ContramedidaGenerica" },
-                    { title: "Causa Específica", mData: "Acao.CausaEspecifica" },
-                    { title: "Contramedida Específica", mData: "Acao.ContramedidaEspecifica" },
+                    { title: nameCausaEspecifica, mData: "Acao.CausaEspecifica" },
+                    { title: nameContramedidaEspecifica, mData: "Acao.ContramedidaEspecifica" },
                     { title: "Quem", mData: "Acao._Quem" },
                     { title: "Quando (Início)", mData: "Acao._QuandoInicio" },
                     { title: "Quando (Fim)", mData: "Acao._QuandoFim" },
-                    { title: "Como/Pontos importantes", mData: "Acao.ComoPontosimportantes" },
+                    { title: nameComoPontosImportantes, mData: "Acao.ComoPontosimportantes" },
                     { title: "Pra que", mData: "Acao.PraQue" },
                     { title: "Quanto custa", mData: "Acao.QuantoCusta" },
                     { title: "Status", mData: "Acao._StatusName" },
@@ -1004,7 +987,7 @@
                     //{ title: "Duração", mData: "Acao.DuracaoDias" },
                     //{ title: "Predecessora", mData: null },
 
-                    { title: "Ação", mData: null, defaultContent: btnEditar + "<br>" + btnDetalhes + "<br>" + btnNovoTatico + "<br>" + btnNovoOperacional + "<br>" + btnAcompanhamento },
+                    { title: "Ação", mData: null, defaultContent: btnEditar + "<br>" + btnDetalhes + "<br>" + btnNovoTatico + "<br class='showAsEstrategy'>" + btnNovoOperacional + "<br>" + btnAcompanhamento },
                 ],
                 fixedColumns: {
                     leftColumns: 0,
@@ -1038,6 +1021,7 @@
                             $.get(urlEditPlanOp, { id: data.Id },
                                  function (r) {
                                      TesteRenan(r, 'Estrategico', data);
+                                     //HideForOperacional();
                                  }
                             );
                         }
@@ -1046,6 +1030,7 @@
                             $.get(urlEditPlanEstrat, { id: data.Id },
                                  function (r) {
                                      TesteRenan(r, 'Tatico', data);
+                                     //HideForOperacional();
                                  }
                             );
                         }
@@ -1087,7 +1072,7 @@
                                       //$('#Edit').show();
                                       $('#obj').show(); //Apagar depois
                                       InitDatePiker();
-
+                                      //HideForOperacional();
                                   }
                             );
 
@@ -1124,20 +1109,16 @@
                     });
 
                     $('table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
-                        var data = table.row($(this).parents('tr')).data();
-                        console.log(data);
+                            var data = table.row($(this).parents('tr')).data();
+                            console.log(data);
 
-                        Clicked(true, false, true);
-                        //$('#modalLindo').modal();
-                        //$('#modalLindo').find('.modal-body').empty();
-                        //$('#Header').html("Novo Planejamento Tático Vinculado");
+                            Clicked(true, false, true);
+                            $.get(urlGetPlanejamento, { id: data.Id }, function (r) {
+                                //EditarPlanejamento(r)
+                                ModalOpcoesEstrategico("Novo Planejamento Tático Vinculado", 0, function () { EditarPlanejamento(r) });
+                            });
 
-                        $.get(urlGetPlanejamento, { id: data.Id }, function (r) {
-                            //EditarPlanejamento(r)
-                            ModalOpcoesEstrategico("Novo Planejamento Tático Vinculado", 0, function () { EditarPlanejamento(r) });
                         });
-
-                    });
 
                     $('table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
                         var data = table.row($(this).parents('tr')).data();
@@ -1257,7 +1238,7 @@
                     } catch (e) { }
 
                     if (data.Tatico_Id > 0) { // possui plan tatico
-                        $(row.cells[33]).find('.btnNovoOperacional').show();
+                          $(row.cells[33]).find('.btnNovoOperacional').show();
                     } else {
                         $(row.cells[33]).find('.btnNovoOperacional').hide();
                     }
@@ -1288,6 +1269,12 @@
 
             });
 
+            var arrShowOperacional = [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+            var arrHideOperacional = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+            if (visaoOperacional) {
+                arrShowOperacional = [17, /*18, 19, 20, 21, 22,*/ 23, 24, 25, 26, 27, 28,/* 29, 30,*/ 31];
+                arrHideOperacional = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 22, 29, 30];
+            }
             var show = {
                 PlanejamentoEstrategicos: {
                     extend: 'colvisGroup',
@@ -1304,8 +1291,8 @@
                 PlanejamentoOperacional: {
                     extend: 'colvisGroup',
                     text: 'Planejamento Operacional',
-                    show: [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
-                    hide: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+                    show: arrShowOperacional,
+                    hide: arrHideOperacional
                 },
                 colvisGroupTodos: {
                     extend: 'colvisGroup',
@@ -1346,9 +1333,22 @@
                 //        columns: ':visible'
                 //    }
                 //},
+                atualizar: {
+                    text: 'Atualizar',
+                    action: function (e, dt, node, config) {
+                        //if (config.counterAjaxTable > 1) {
+                            GetDataTable();
+                        //}
+                        config.counterAjaxTable++;
+                        config.counterAjaxTable++;
+                        //'<button type="button" onclick="GetDataTable();" class="btn btn-primary" style="float:right">Atualizar</button>'
+                    },
+                    counterAjaxTable: 1
+                }
             };
 
             var arrToShow = [
+                  show.atualizar,
                   show.PlanejamentoEstrategicos,
                   show.PlanejamentoTatico,
                   show.PlanejamentoOperacional,
@@ -1358,21 +1358,12 @@
                   show.colvis,
             ];
 
-            if (VisaoOperacional) {
-                show.colvisGroupTodos.show = [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
-                show.colvisGroupTodos.hide = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-                show.colvis['columns'] = [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+            if (visaoOperacional) {
+                show.colvisGroupTodos.show = arrShowOperacional;
+                show.colvisGroupTodos.hide = arrHideOperacional;
+                show.colvis['columns'] = arrShowOperacional;
                 arrToShow = [
-                   show.colvisGroupTodos,
-                   show.print,
-                   show.excelHtml5,
-                   show.colvis,
-                ]
-            } else if (VisaoTatico) {
-                arrToShow = [
-                   //show.PlanejamentoEstrategicos,
-                   show.PlanejamentoTatico,
-                   show.PlanejamentoOperacional,
+                   show.atualizar,
                    show.colvisGroupTodos,
                    show.print,
                    show.excelHtml5,
@@ -1387,24 +1378,31 @@
             table.buttons(0, null).container().prependTo(
                 table.table().container()
             );
-            $('#paTable_wrapper > div.dt-buttons > a:nth-child(1)').click();
-
+            $('#paTable_wrapper > div.dt-buttons > a:nth-child(2)').click();
+            HideForOperacional();
         }
         /*Fim Table*/
 
-        //Utiliza
+
+        //METODO NAO UTILIZADO, foi substituido por STYLE CSS -CELSO GEA-
+        function HideForOperacional() {
+            //if (visaoOperacional) {
+            //    $('.dataTable .showAsEstrategy:visible').next().remove();
+            //    $('.showAsEstrategy:visible').hide();
+            //    $('.modal .showAsEstrategy').hide()
+            //}
+        }
+
         function Relatorios() {
             //function openInNewTab(url) {
             win.focus();
             //}
         }
 
-        //Utiliza
         function GetDataTable() {
             $.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
         }
 
-        //Utiliza
         function TesteRenan(r, tipo, model) {
             //console.log(TesteRenan);
             //$('#modalLindo').find('.modal-body').empty().append(r);
@@ -1427,7 +1425,7 @@
 
 
                 $('#modalLindo').find('.modal-body .content2').append(form);
-                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditTatico'))\" >Salvar Tático</button><hr>");
+                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditTatico'))\" >Salvar Tático</button><hr>");
                 myfunction();
 
             } else {
@@ -1450,7 +1448,7 @@
                 form.find('table > tbody > tr:nth-child(18)').hide();
                 form.attr('id', 'formEditEstrategy');
                 $('#modalLindo').find('.modal-body .content1').append(form);
-                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditEstrategy'))\">Salvar Estratégico</button><hr>");
+                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditEstrategy'))\">Salvar Estratégico</button><hr>");
                 DdlChangeEstrategico(model.Dimensao_Id, model.Objetivo_Id, model.IndicadoresDiretriz_Id);
                 //}
 
@@ -1469,7 +1467,6 @@
             MoneyMask();
         }
 
-        //Utiliza
         function SalvarAcompanhamento(obj) {
             console.log(SalvarAcompanhamento);
             $.post(urlSalvarAcompanhamento, obj, function (r) {
@@ -1488,7 +1485,6 @@
 
         }
 
-        //Utiliza
         function formReset() {
             //console.log(formReset);
             $('#acompanhamento #Name').val("");
@@ -1496,15 +1492,16 @@
             $('#acompanhamento #Status_Id').val(0);
         }
 
-        //Utiliza
         function getAcompanhamento(acaoCorrentId) {
             //console.log(getAcompanhamento);
             $.get(urlAcompanhamentoDetalhes, { id: acaoCorrentId }, function (r) {
                 $('#modalLindo').find('.modal-body').empty().append(r);
+                HideForOperacional();
                 $('#modalLindo').modal();
                 $('#Header').html('Acompanhamento do Planejamento Operacional');
                 $(".select2Init").select2();
                 $('.modal .modal-footer button').hide();
+                $('#showAcompnhamentoForm').show();
                 $("#SaveAcompanhamento").on("click", function (event) {
                     //event.preventDefault();
                     var obj = $("#acompanhamento").serializeObject();
@@ -1521,9 +1518,16 @@
             counter++;
         });
 
-        $(document).ajaxStop(function () {
+        //$(document).ajaxStop(function () {
+        //    $.LoadingOverlay("hide");
+        //    counter--;
+        //    HideForOperacional();
+        //});
+
+        $(document).ajaxComplete(function () {
             $.LoadingOverlay("hide");
             counter--;
+            HideForOperacional();
         });
 
         $(document).ajaxError(function (e, h, x) {
@@ -1533,12 +1537,12 @@
             //alert('Não foi possível salvar o registro: ' + e.responseJSON.ExceptionMessage);
             counter--;
         });
+
         /*Table*/
         $(document).ready(function () {
             GetDataTable();
-            if (VisaoOperacional) {   $('.showAsEstrategy').hide();   }
         });
 
     </script>
 
-} 
+}

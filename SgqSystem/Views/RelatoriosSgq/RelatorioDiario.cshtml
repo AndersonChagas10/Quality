@@ -538,7 +538,7 @@
                     shadow: true
                 },
                 series: [
-                  Chart.SimpleSerie(dados.y.NC, "@Resources.Resource.derivations", Chart.CorTotalNc(), true, 0, undefined, undefined, true, [dados.idOperacao, dados.idMonitoramento, dados.idTarefa]),
+                  Chart.SimpleSerie(dados.y.NC, "@Resources.Resource.derivations", Chart.CorTotalNc(), true, 0, undefined, undefined, true, [idDiv, dados.idOperacao, dados.idMonitoramento, dados.idTarefa]),
                   Chart.curvaPareto(dados.y.pareto)
                 ],
             });
