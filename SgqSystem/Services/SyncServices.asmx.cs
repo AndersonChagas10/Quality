@@ -866,7 +866,11 @@ namespace SgqSystem.Services
                     monitoramentoultimoalerta = DefaultValueReturn(monitoramentoultimoalerta, "0");
 
                     string startphaseevaluation = DefaultValueReturn(arrayHeader[28], "0");
-                    string endphaseevaluation = DefaultValueReturn(arrayHeader[29], "0");
+                    string endphaseevaluation = "0";
+                    if (arrayHeader.Length > 29)
+                    {
+                        endphaseevaluation = DefaultValueReturn(arrayHeader[29], "0");
+                    }
 
                     int CollectionLevel2Id = InsertCollectionLevel2(consolidationLevel1, consolidationLevel2, c.AuditorId, c.Shift, c.Period, Phase, c.Reaudit, c.ReauditNumber, c.Level02CollectionDate,
                                                 StartPhase, c.Evaluate, sampleCollect, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel,
@@ -1848,13 +1852,24 @@ namespace SgqSystem.Services
                 string Level03Id = result[0];
 
                 Dominio.ParLevel3Level2 tarefaFilha = new Dominio.ParLevel3Level2();
+                Dominio.ParLevel3Level2Level1 indicadorFilha = new Dominio.ParLevel3Level2Level1();
+                Dominio.CollectionLevel2 collectionLevel2Filha = new Dominio.CollectionLevel2();
+
+                int collectionLevel2_id = Int32.Parse(CollectionLevel02Id);
 
                 if (filho)
                 {
                     using (var db = new Dominio.SgqDbDevEntities())
                     {
                         int idl3 = Int32.Parse(Level03Id);
-                        tarefaFilha = db.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == idl3  && r.IsActive); //&& r.ParLevel2_Id == level02
+
+                        collectionLevel2Filha = db.CollectionLevel2.FirstOrDefault(r => r.Id == collectionLevel2_id);
+
+
+                        var ListaindicadorFilha = db.ParLevel3Level2Level1.Where(r => r.ParLevel1_Id == collectionLevel2Filha.ParLevel1_Id);
+
+
+                        tarefaFilha = db.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == idl3  && r.IsActive && ListaindicadorFilha.Any(z => z.ParLevel3Level2_Id == r.Id) ); //&& r.ParLevel2_Id == level02
                     }
                 }
 
@@ -7091,6 +7106,9 @@ namespace SgqSystem.Services
                 "\n @EvatuationResult = case when sum(r3.Evaluation) > 0 then 1 else 0 end,                                                   " +
                 "\n @WeiEvaluation = isnull(sum(r3.WeiEvaluation),0),                                                                         " +
                 "\n @WeiDefects = isnull(sum(r3.WeiDefects),0),                                                                               " +
+
+                 //"\n @WeiDefects = case when isnull(sum(r3.WeiDefects),0) > isnull(sum(r3.WeiEvaluation),0) then isnull(sum(r3.WeiEvaluation),0) else isnull(sum(r3.WeiDefects),0) end,                                                                               " +
+
                 "\n @TotalLevel3Evaluation = count(1),                                                                                        " +
                 "\n @TotalLevel3WithDefects = (select count(1) from result_level3 where collectionLevel2_Id = @ID and Defects > 0  and IsNotEvaluate = 0)         " +
                 "\n from result_level3 r3                                                                                                     " +

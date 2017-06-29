@@ -1,6 +1,9 @@
-﻿using Dominio;
+﻿
+using AutoMapper;
+using Dominio;
 using Dominio.Interfaces.Services;
 using DTO.DTO.Params;
+using Newtonsoft.Json.Linq;
 using SgqSystem.Handlres;
 using System;
 using System.Collections.Generic;
@@ -13,7 +16,7 @@ namespace SgqSystem.Controllers.Api.NewSync
 {
     [HandleApi()]
     [RoutePrefix("api/NewSync")]
-    public class NewSyncController : ApiController
+    public class NewSyncController : BaseApiController
     {
         private IParamsDomain _paramdDomain;
         private IBaseDomain<ParLevel1, ParLevel1DTO> _basedomain;
@@ -93,27 +96,66 @@ namespace SgqSystem.Controllers.Api.NewSync
 
         [HttpGet]
         [Route("getParams")]
-        public IEnumerable<ParLevel1DTO> getParams()
+        public ParamsVinculos getParams()
         {
-            return _paramdDomain.GetAllLevel1().Where(r => r.IsActive == true && r.listParLevel3Level2Level1Dto != null);
-
+            using (var db = new SgqDbDevEntities())
+            {
+                string query = "SELECT distinct(PL1.Id) as codigo, PL1.* "+
+                               "FROM ParLevel3Level2Level1 Pl31 "+
+                               "LEFT JOIN ParLevel3Level2 PL32 on Pl31.ParLevel3Level2_Id = Pl32.Id "+
+                               "LEFT JOIN ParLevel1 PL1 on Pl31.ParLevel1_Id = PL1.Id "+
+                               "LEFT JOIN ParLevel2 PL2 on PL32.ParLevel2_Id = PL2.Id "+
+                               "LEFT JOIN ParLevel3 PL3 on PL32.ParLevel3_Id = PL3.Id " +
+                               "where pl1.isActive = 1";
+                ParamsVinculos obj = new ParamsVinculos();
+                obj.listaDelevel1 = new List<ParamsVinculosL1>();
+                var listaL1 = db.Database.SqlQuery<ParLevel1>(query).ToList();
+                foreach (var item in listaL1)
+                {
+                    ParamsVinculosL1 paramsVL1 = new ParamsVinculosL1();
+                    paramsVL1.level1 = item;
+                    string queryL2 = "SELECT distinct(PL2.Id) as codigo, PL2.* " +
+                               "FROM ParLevel3Level2Level1 Pl31 " +
+                               "LEFT JOIN ParLevel3Level2 PL32 on Pl31.ParLevel3Level2_Id = Pl32.Id " +
+                               "LEFT JOIN ParLevel1 PL1 on Pl31.ParLevel1_Id = PL1.Id " +
+                               "LEFT JOIN ParLevel2 PL2 on PL32.ParLevel2_Id = PL2.Id " +
+                               "LEFT JOIN ParLevel3 PL3 on PL32.ParLevel3_Id = PL3.Id " +
+                               "where pl1.isActive = 1 and pl2.IsActive = 1 and pl1.id ="+item.Id;
+                    var listaL2 = db.Database.SqlQuery<ParLevel2>(queryL2).ToList();
+                    paramsVL1.listaDelevel2 = new List<ParamsVinculosL2>();
+                    foreach (var l2 in listaL2)
+                    {
+                        ParamsVinculosL2 paramsVL2 = new ParamsVinculosL2();
+                        paramsVL2.level2 = l2;
+                        string queryL3 = "SELECT distinct(PL3.Id) as codigo, PL3.* " +
+                               "FROM ParLevel3Level2Level1 Pl31 " +
+                               "LEFT JOIN ParLevel3Level2 PL32 on Pl31.ParLevel3Level2_Id = Pl32.Id " +
+                               "LEFT JOIN ParLevel1 PL1 on Pl31.ParLevel1_Id = PL1.Id " +
+                               "LEFT JOIN ParLevel2 PL2 on PL32.ParLevel2_Id = PL2.Id " +
+                               "LEFT JOIN ParLevel3 PL3 on PL32.ParLevel3_Id = PL3.Id " +
+                               "where pl1.isActive = 1 and pl2.IsActive = 1 and pl3.IsActive =1 and pl1.id = "+item.Id+" and pl2.id = " + l2.Id;
+                        paramsVL2.listaDelevel3 = db.Database.SqlQuery<ParLevel3>(queryL3).ToList();
+                        paramsVL1.listaDelevel2.Add(paramsVL2);
+                    }
+                    obj.listaDelevel1.Add(paramsVL1);
+                }
+                return obj;
+            }
         }
     }
 
     public class ParamsVinculos
     {
-        public int level1 { get; set; }
-        public int level2 { get; set; }
-        public int level3 { get; set; }
+        public List<ParamsVinculosL1> listaDelevel1 { get; set; }
     }
-    public class Level1Params
+    public class ParamsVinculosL1
     {
         public ParLevel1 level1 { get; set; }
-        public List<Level2Params> listaDeLevel2 { get; set; }
+        public List<ParamsVinculosL2> listaDelevel2 { get; set; }
     }
-    public class Level2Params
+    public class ParamsVinculosL2
     {
         public ParLevel2 level2 { get; set; }
-        public List<ParLevel3> listaDeLevel3 { get; set; }
+        public List<ParLevel3> listaDelevel3 { get; set; }
     }
 }
