@@ -38,7 +38,11 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 i.IsValid();
 
             foreach (var i in acao)
-                SalvarAcao(Mapper.Map<PlanoAcaoEF.Pa_Acao>(i));
+            {
+                var acaoSaved = Mapper.Map<PlanoAcaoEF.Pa_Acao>(i);
+                SalvarAcao(acaoSaved);
+                CreateMail(i.Panejamento_Id, acaoSaved.Id, i.Quem_Id, Conn.TitileMailNovaAcao);
+            }
 
             return acao;
         }
@@ -51,7 +55,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
             {
                 SalvarAcompanhamento(db, acompanhamento);
-                var acao = db.Pa_Acao.FirstOrDefault(r=>r.Id == acompanhamento.Acao_Id);
+                var acao = db.Pa_Acao.FirstOrDefault(r => r.Id == acompanhamento.Acao_Id);
                 foreach (var i in obj.MailTo)
                 {
                     Pa_AcompanhamentoXQuemVM obj2 = new Pa_AcompanhamentoXQuemVM();
@@ -59,7 +63,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                     acomXQuem.Acompanhamento_Id = acompanhamento.Id;
                     acomXQuem.Quem_Id = i;
                     SalvarAcompanhamentoXQuem(db, acomXQuem);
-                    Task.Run(() => CreateMail(acao.Panejamento_Id.GetValueOrDefault(), acao.Id, acomXQuem.Quem_Id, "Atualização de acompanhamento do Plano de Ação."));
+                    CreateMail(acao.Panejamento_Id.GetValueOrDefault(), acao.Id, acomXQuem.Quem_Id, Conn.TitileMailAcompanhamento, true);
                 }
             }
             return obj;
@@ -76,56 +80,54 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             SalvaFTA(fta);
             acao.Fta_Id = fta.Id;
             SalvarAcao(acao);
-            Task.Run(() => CreateMail(obj.Panejamento_Id, acao.Id, obj.Quem_Id, "Novo Relatório de Análise de Desvio criado."));
+            CreateMail(obj.Panejamento_Id, acao.Id, obj.Quem_Id, Conn.TitileMailNovoFTA);
             return obj;
         }
 
         #region Auxiliares
 
-        private void CreateMail(int idPlanejamento, int idAcao, int idQuem, string title)
+        private void CreateMail(int idPlanejamento, int idAcao, int? idQuem, string title, bool? isAcompanhamento = false)
         {
-            var conteudoPlanejamento = GetExternalResponse(Conn.selfRoot + "/Pa_Planejamento/Details?id=" + idPlanejamento);
-            var conteudoAcao = GetExternalResponse(Conn.selfRoot + "/Pa_Acao/Details?id=" + idAcao);
-            var todoConteudo = conteudoPlanejamento.Result + conteudoAcao.Result;
-
-            using (var db = new Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
-            {
-                var paUser = Pa_Quem.Get(idQuem);
-                dynamic enviarPara = db.QueryNinjaADO("SELECT * FROM UserSgq WHERE Name  = '" + paUser.Name + "'").FirstOrDefault();
-                var email = new PlanoAcaoEF.EmailContent()
+            if (idQuem.GetValueOrDefault() > 0)
+                using (var dbSgq = ConexaoSgq())
                 {
-                    IsBodyHtml = true,
-                    AddDate = DateTime.Now,
-                    Subject = title,
-                    Project = "Plano de Ação",
-                    Body = todoConteudo,
-                    To = enviarPara.Email,
-                };
-                PaAsyncServices.SendMailPATeste(email);
-            }
+                    var paUser = Pa_Quem.Get(idQuem.GetValueOrDefault());
+                    dynamic enviarPara = dbSgq.QueryNinjaADO("SELECT * FROM UserSgq WHERE Name  = '" + paUser.Name + "'").FirstOrDefault();
+                    string emailTo = enviarPara.Email;
+                 
+                    var todoConteudo = string.Empty;
+
+                    if (!isAcompanhamento.GetValueOrDefault())
+                    {
+                        var conteudoPlanejamento = GetExternalResponse(Conn.selfRoot + "/Pa_Planejamento/Details?id=" + idPlanejamento);
+                        var conteudoAcao = GetExternalResponse(Conn.selfRoot + "/Pa_Acao/Details?id=" + idAcao);
+                        if (Conn.visaoOperacional)
+                            todoConteudo = conteudoAcao.Result;
+                        else
+                            todoConteudo = conteudoPlanejamento.Result + conteudoAcao.Result;
+                    }
+                    else
+                    {
+                        var conteudoAcompanhamento = GetExternalResponse(Conn.selfRoot + "/Pa_Acao/Acompanhamento?id=" + idAcao);
+                        todoConteudo = conteudoAcompanhamento.Result;
+                    }
+                    //emailTo = "celso.bernar@grtsolucoes.com.br";
+                    CreateMail(idPlanejamento, idAcao, emailTo, title, todoConteudo);
+                }
         }
 
-        private void CreateMail(int idPlanejamento, int idAcao, string emailTo, string title)
+        private void CreateMail(int idPlanejamento, int idAcao, string emailTo, string title, string body)
         {
-            var conteudoPlanejamento = GetExternalResponse(Conn.selfRoot + "/Pa_Planejamento/Details?id=" + idPlanejamento);
-            var conteudoAcao = GetExternalResponse(Conn.selfRoot + "/Pa_Acao/Details?id=" + idAcao);
-            var todoConteudo = conteudoPlanejamento.Result + conteudoAcao.Result;
-
-            using (var db = new Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
+            var email = new PlanoAcaoEF.EmailContent()
             {
-                //var paUser = Pa_Quem.Get(idQuem);
-                //dynamic enviarPara = db.QueryNinjaADO("SELECT * FROM UserSgq WHERE Name  = '" + paUser.Name + "'").FirstOrDefault();
-                var email = new PlanoAcaoEF.EmailContent()
-                {
-                    IsBodyHtml = true,
-                    AddDate = DateTime.Now,
-                    Subject = title,
-                    Project = "Plano de Ação",
-                    Body = todoConteudo,
-                    To = emailTo,
-                };
-                PaAsyncServices.SendMailPATeste(email);
-            }
+                IsBodyHtml = true,
+                AddDate = DateTime.Now,
+                Subject = title,
+                Project = "Plano de Ação",
+                Body = body,
+                To = emailTo,
+            };
+            PaAsyncServices.SendMailPATeste(email);
         }
 
         private void SalvarAcompanhamentoXQuem(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_AcompanhamentoXQuem quem)

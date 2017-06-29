@@ -1,4 +1,4 @@
-﻿
+﻿@using PlanoAcaoCore
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,7 +52,14 @@
     @*<link href="~/Scripts/pivottable-master/dist/pivot.css" rel="stylesheet" />
     <script src="~/Scripts/pivottable-master/dist/pivot.js"></script>
     <script src="~/Scripts/pivottable-master/dist/c3_renderers.min.js"></script>*@
-
+    @if (Conn.visaoOperacional)
+    {
+        <style>
+            .showAsEstrategy {
+                display: none;
+            }
+        </style>
+    }
 </head>
 <body>
 

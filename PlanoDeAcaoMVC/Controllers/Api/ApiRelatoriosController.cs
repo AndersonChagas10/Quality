@@ -19,6 +19,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             db = new PlanoAcaoEF.PlanoDeAcaoEntities();
             db.Configuration.LazyLoadingEnabled = false;
             db.Configuration.AutoDetectChangesEnabled = false;
+          
+            UpdateStatus();
+
         }
 
         [HttpPost]
@@ -30,20 +33,26 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             GetParamsPeloFiltro(filtro, out dtInit, out dtFim);
 
             var query = "SELECT Acao.Id," +
-            "\n CAST(Acao.QuandoFim As Date) as QuandoFim," +
-            "\n Sta.Name AS[Status]," +
-            "\n  ISNULL(Quem.Name, 'Não possui Responsável') AS Responsavel," +
-            "\n  ISNULL(ContraMedGen.ContramedidaGenerica, 'Não possui Contramedida Genérica') AS 'Contramedida Genérica'," +
-            "\n  ISNULL(CausaGen.CausaGenerica, 'Não possui Causa Genérica') AS 'Causa Genérica'," +
-            "\n  ISNULL(GrpCausa.GrupoCausa, 'Não possui Grupo Causa') AS 'Grupo Causa'," +
-            "\n  ISNULL(Un.Description, 'Corporativo') AS 'Unidade'," +
-            "\n  ISNULL(IndicDir.Name, 'Não possui Indicadores Diretriz') AS 'Indicadores Diretriz'," +
-            "\n  ISNULL(DiretObj.Name, 'Não possui Diretriz / Objetivo') AS 'Diretriz / Objetivo'," +
-            "\n  ISNULL(Diretor.Name, 'Não possui Diretoria') AS 'Diretoria'," +
-            "\n  ISNULL(Dimens.Name, 'Não possui Dimensão') AS 'Dimensão'," +
-            "\n  ISNULL(Gere.Name, 'Não possui Gerência') AS 'Gerência'," +
-            "\n  ISNULL(Coord.Name, 'Não possui Coordenação') AS 'Coordenação'" +
-            "\n FROM Pa_Acao AS Acao" +
+           "\n CAST(Acao.QuandoInicio As Date) as Início," +
+           "\n CAST(Acao.QuandoFim As Date) as Fim," +
+           "\nSta.Name AS[Status]," +
+           "\n  ISNULL(Quem.Name, 'Não possui Responsável') AS Responsavel";
+
+            if (!Conn.visaoOperacional)
+            {
+                query += "\n,  ISNULL(ContraMedGen.ContramedidaGenerica, 'Não possui Contramedida Genérica') AS 'Contramedida Genérica'," +
+                "\n  ISNULL(CausaGen.CausaGenerica, 'Não possui Causa Genérica') AS 'Causa Genérica'," +
+                "\n  ISNULL(GrpCausa.GrupoCausa, 'Não possui Grupo Causa') AS 'Grupo Causa'," +
+                "\n  ISNULL(Un.Description, 'Corporativo') AS 'Unidade'," +
+                "\n  ISNULL(IndicDir.Name, 'Não possui Indicadores Diretriz') AS 'Indicadores Diretriz'," +
+                "\n  ISNULL(DiretObj.Name, 'Não possui Diretriz / Objetivo') AS 'Diretriz / Objetivo'," +
+                "\n  ISNULL(Diretor.Name, 'Não possui Diretoria') AS 'Diretoria'," +
+                "\n  ISNULL(Dimens.Name, 'Não possui Dimensão') AS 'Dimensão'," +
+                "\n  ISNULL(Gere.Name, 'Não possui Gerência') AS 'Gerência'," +
+                "\n  ISNULL(Coord.Name, 'Não possui Coordenação') AS 'Coordenação'";
+            }
+
+            query += "\n FROM Pa_Acao AS Acao" +
             "\n LEFT JOIN Pa_Status Sta ON Sta.Id = Acao.Status" +
             "\n LEFT JOIN Pa_Quem Quem ON Quem.Id = Acao.Quem_Id" +
             "\n LEFT JOIN Pa_ContramedidaGenerica ContraMedGen ON ContraMedGen.Id = Acao.ContramedidaGenerica_Id" +
@@ -151,6 +160,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             return items;
         }
+
         [HttpPost]
         [Route("GetGraficoSgq")]
         public List<JObject> GetGraficoSgq(JObject filtro)
@@ -160,23 +170,29 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             GetParamsPeloFiltro(filtro, out dtInit, out dtFim);
 
             var query = "SELECT Acao.Id," +
-                 "\n CAST(Acao.QuandoFim As Date) as QuandoFim," +
             "\n Acao.Level1Id, " +
             "\n Acao.Level2Id, " +
             "\n Acao.Level3Id, " +
+            "\n CAST(Acao.QuandoInicio As Date) as Início," +
+            "\n CAST(Acao.QuandoFim As Date) as Fim," +
             "\nSta.Name AS[Status]," +
-            "\n  ISNULL(Quem.Name, 'Não possui Responsável') AS Responsavel," +
-            "\n  ISNULL(ContraMedGen.ContramedidaGenerica, 'Não possui Contramedida Genérica') AS 'Contramedida Genérica'," +
-            "\n  ISNULL(CausaGen.CausaGenerica, 'Não possui Causa Genérica') AS 'Causa Genérica'," +
-            "\n  ISNULL(GrpCausa.GrupoCausa, 'Não possui Grupo Causa') AS 'Grupo Causa'," +
-            "\n  ISNULL(Un.Description, 'Corporativo') AS 'Unidade'," +
-            "\n  ISNULL(IndicDir.Name, 'Não possui Indicadores Diretriz') AS 'Indicadores Diretriz'," +
-            "\n  ISNULL(DiretObj.Name, 'Não possui Diretriz / Objetivo') AS 'Diretriz / Objetivo'," +
-            "\n  ISNULL(Diretor.Name, 'Não possui Diretoria') AS 'Diretoria'," +
-            "\n  ISNULL(Dimens.Name, 'Não possui Dimensão') AS 'Dimensão'," +
-            "\n  ISNULL(Gere.Name, 'Não possui Gerência') AS 'Gerência'," +
-            "\n  ISNULL(Coord.Name, 'Não possui Coordenação') AS 'Coordenação'" +
-            "\n FROM Pa_Acao AS Acao" +
+            "\n  ISNULL(Quem.Name, 'Não possui Responsável') AS Responsavel";
+
+            if (!Conn.visaoOperacional)
+            {
+                query += "\n,  ISNULL(ContraMedGen.ContramedidaGenerica, 'Não possui Contramedida Genérica') AS 'Contramedida Genérica'," +
+                "\n  ISNULL(CausaGen.CausaGenerica, 'Não possui Causa Genérica') AS 'Causa Genérica'," +
+                "\n  ISNULL(GrpCausa.GrupoCausa, 'Não possui Grupo Causa') AS 'Grupo Causa'," +
+                "\n  ISNULL(Un.Description, 'Corporativo') AS 'Unidade'," +
+                "\n  ISNULL(IndicDir.Name, 'Não possui Indicadores Diretriz') AS 'Indicadores Diretriz'," +
+                "\n  ISNULL(DiretObj.Name, 'Não possui Diretriz / Objetivo') AS 'Diretriz / Objetivo'," +
+                "\n  ISNULL(Diretor.Name, 'Não possui Diretoria') AS 'Diretoria'," +
+                "\n  ISNULL(Dimens.Name, 'Não possui Dimensão') AS 'Dimensão'," +
+                "\n  ISNULL(Gere.Name, 'Não possui Gerência') AS 'Gerência'," +
+                "\n  ISNULL(Coord.Name, 'Não possui Coordenação') AS 'Coordenação'";
+            }
+
+            query += "\n FROM Pa_Acao AS Acao" +
             "\n LEFT JOIN Pa_Status Sta ON Sta.Id = Acao.Status" +
             "\n LEFT JOIN Pa_Quem Quem ON Quem.Id = Acao.Quem_Id" +
             "\n LEFT JOIN Pa_ContramedidaGenerica ContraMedGen ON ContraMedGen.Id = Acao.ContramedidaGenerica_Id" +
@@ -230,6 +246,42 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             return results;
         }
+
+        [HttpPost]
+        [Route("GetPessoasEnvolvidas")]
+        public List<JObject> GetPessoasEnvolvidas(JObject filtro)
+        {
+            string dtInit;
+            string dtFim;
+            GetParamsPeloFiltro(filtro, out dtInit, out dtFim);
+
+            var query = "SELECT"+
+             "  ISNULL(Quem.Name, 'Não possui Responsável') AS Responsavel,"+
+             "  Sta.Name AS[Status],"+
+             "  COUNT(1) as Quantidade"+
+             " FROM Pa_Acao AS Acao"+
+             " LEFT JOIN Pa_Status Sta ON Sta.Id = Acao.Status"+
+             " LEFT JOIN Pa_Quem Quem ON Quem.Id = Acao.Quem_Id"+
+             " LEFT JOIN Pa_ContramedidaGenerica ContraMedGen ON ContraMedGen.Id = Acao.ContramedidaGenerica_Id"+
+             " LEFT JOIN Pa_CausaGenerica CausaGen ON CausaGen.Id = Acao.CausaGenerica_Id"+
+             " LEFT JOIN Pa_GrupoCausa GrpCausa ON GrpCausa.Id = Acao.GrupoCausa_Id"+
+             " LEFT JOIN Pa_Unidade Un ON Un.Id = Acao.Unidade_Id"+
+             " LEFT JOIN Pa_Planejamento PlanTatico ON PlanTatico.Id = Acao.Panejamento_Id"+
+             " LEFT JOIN Pa_Planejamento PlanEstrategy ON PlanEstrategy.Id = PlanTatico.Estrategico_Id"+
+             " LEFT JOIN Pa_IndicadoresDiretriz IndicDir ON IndicDir.Id = PlanEstrategy.IndicadoresDiretriz_Id"+
+             " LEFT JOIN Pa_Objetivo DiretObj ON DiretObj.Id = PlanEstrategy.Objetivo_Id"+
+             " LEFT JOIN Pa_Diretoria Diretor ON Diretor.Id = PlanEstrategy.Diretoria_Id"+
+             " LEFT JOIN Pa_Dimensao Dimens ON Dimens.Id = PlanEstrategy.Dimensao_Id"+
+             " LEFT JOIN Pa_Gerencia Gere ON Gere.Id = PlanTatico.Gerencia_Id"+
+             " LEFT JOIN Pa_Coordenacao Coord ON Coord.Id = PlanTatico.Coordenacao_Id"+
+             "\n WHERE Acao.AddDate BETWEEN ('" + dtInit + "') AND('" + dtFim + "')"+//; AND Sta.Id not in (2, 3, 4)"+
+             " GROUP BY ISNULL(Quem.Name, 'Não possui Responsável') , Sta.Name";
+
+            var results = QueryNinja(db, query);
+
+            return results;
+        }
+
 
         private void GetParamsPeloFiltro(JObject filtro, out string dtInit, out string dtFim)
         {
