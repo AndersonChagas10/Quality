@@ -49,13 +49,14 @@ function EasyAjax(url, dados, callback, loader, toggle) {
     //AJAX
     $.post(url, dados, function (r) {
         try {
-            if (toggle != undefined)
-                $('#menu-toggle').click();
-
+            
             if (!!loader)
                 $('#' + loader).removeClass('loader');
 
             callback(r);
+
+            if (toggle != undefined)
+                $('#menu-toggle').click();
 
         } catch (e) {
             console.log(e);

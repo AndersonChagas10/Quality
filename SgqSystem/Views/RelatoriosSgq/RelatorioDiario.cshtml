@@ -4,6 +4,7 @@
     var url = Url.Action("Index", "Home");
     var urlGrafico1 = Url.Action("Grafico1", "api/RelDiario");
     var urlGetPanelResultSet = Url.Action("GetPanelResultSet", "api/RelDiario");
+    var urlGetPorcLevel3 = Url.Action("GraficoTarefa", "api/NaoConformidade");
 }
 
 <style>
@@ -41,6 +42,8 @@
     </div>
 </div>
 
+@Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
+
 @section Scripts {
 
 
@@ -55,6 +58,8 @@
         var meses = new Array("@Resources.Resource.january", "@Resources.Resource.february", "@Resources.Resource.march", "@Resources.Resource.april", "@Resources.Resource.may", "@Resources.Resource.june", "@Resources.Resource.july", "@Resources.Resource.august", "@Resources.Resource.september", "@Resources.Resource.october", "@Resources.Resource.november", "@Resources.Resource.december");
         var url1 = '@Html.Raw(@urlGrafico1)';
         var urlGetPanelResultSet = '@Html.Raw(@urlGetPanelResultSet)';
+        var urlGetPorcLevel3 = '@Html.Raw(@urlGetPorcLevel3)';
+
         var $btn = $('#btnSend');
         $('#simpleCallendar').hide().attr('disabled', true);
 
@@ -85,9 +90,9 @@
             $('#plotPrincipal').empty().hide();
 
             //Preenche dados para o FTA.
-            FTA._unidadeId = $('#Unidade').val(),
-            FTA._dataInicio = $('#dataInicio').val(),
-            FTA._dataFim = FTA._dataInicio,
+            //FTA._unidadeId = $('#Unidade').val(),
+            //FTA._dataInicio = $('#dataInicio').val(),
+            //FTA._dataFim = FTA._dataInicio,
 
             EasyAjax(url1, enviar, CallbackGraficos, "load", toggle);//AJAX
 
@@ -209,7 +214,7 @@
             //var dataFim = new Date(parseInt(dtFim.replace(/[^0-9]/g, '')));
             var dataFim = new Date(parseInt(dtFim));
 
-            
+
 
             valoresYY = {
                 dataInicio: new Date(parseInt(dtInicio/*.replace(/[^0-9]/g, '')*/)),
@@ -308,8 +313,8 @@
                 },
                 yAxis: [{
                     // Primary yAxis
-                    //min: 0,
-                    //max: 100,
+                    min: 10,
+                    max: 100,
                     labels: {
                         format: '{value} %',
                         style: {
@@ -538,7 +543,7 @@
                     shadow: true
                 },
                 series: [
-                  Chart.SimpleSerie(dados.y.NC, "@Resources.Resource.derivations", Chart.CorTotalNc(), true, 0, undefined, undefined, true, [idDiv, dados.idOperacao, dados.idMonitoramento, dados.idTarefa]),
+                  Chart.SimpleSerie(dados.y.NC, "@Resources.Resource.derivations", Chart.CorTotalNc(), true, 0, undefined, undefined, true, data),
                   Chart.curvaPareto(dados.y.pareto)
                 ],
             });
@@ -916,6 +921,7 @@
 
             //Series
             SimpleSerie: function (data, name, color, isVisible, axy, toolTip, hasAlign, hasEventPoint, dadosFunc) {
+
                 return {
                     name: name,
                     data: data,
@@ -931,7 +937,35 @@
                         events: {
                             click: function () {
                                 if (!!hasEventPoint)
-                                    FTA.onFormAnomaliaClickedNC(dadosFunc[0], dadosFunc[1], dadosFunc[2]);
+                                {
+                                    var dados = dadosFunc[this.x];
+                                    dados['UnitName'] = dados.Unidade;
+                                    dados['startDate'] = enviar.startDate;
+                                    dados['endDate'] = enviar.endDate;
+
+                                    $.post(urlGetPorcLevel3, dados, function(r) {
+
+                                        var selector =  dados.Level3Name;
+                                        console.log($.grep(r, function(a, b) { return a.TarefaName == selector}));
+
+                                        enviar["PercentualNCFTA"] = arredondar($.grep(r, function(a, b) { return a.TarefaName == selector})[0].Proc);
+
+                                        //console.log(dados);
+                                        enviar['level1Name'] = dados.Level1Name;
+                                        enviar['level2Name'] = dados.Level2Name;
+                                        enviar['level3Name'] = dados.Level3Name;
+                                        enviar['unitName'] = dados.Unidade;
+                                        enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
+                                        //enviar['PercentualNCFTA'] = dados.ProcentagemNc;
+                                        enviar['ReincidenciaDesvioFTA'] = dados.NC;
+
+                                        //console.log(enviar);
+                                        RedirecionaParaFTA(enviar);
+                                    });
+
+
+                                    
+                                }
                             }
                         }
                     }
@@ -1041,31 +1075,13 @@
             },
         };
 
-        var FTA = {
-            _unidadeId: '',
-            _dataInicio: '',
-            _dataFim: '',
-            onFormAnomaliaClickedNC: function (operacao, monitoramento, tarefa) {
-                //tratar modal
-                JBS_MODAL.modalConfirmacao("Gerar Formulario de Anomalias?", function () {
-                    $.ajax({
-                        url: '../FormularioTratamentoAnomalia/Index/',
-                        data: {
-                            unidadeId: FTA._unidadeId,
-                            operacaoId: operacao,
-                            monitoramento: tarefa,
-                            tarefaId: monitoramento,
-                            dataInicio: FTA._dataInicio,
-                            dataFim: FTA._dataFim
-                        },
-                        complete: function () {
-                            window.location = this.url;
-                        }
-                    })
-                }
-                )
-            },
-        };
+        //Função para arredondar o PercentualNCFTA
+        function arredondar(nr) {
+            //if (nr.indexOf(',') != -1) nr = nr.replace(',', '.');
+            nr = parseFloat(nr) * 100;
+            return Math.floor(nr) / 100;
+        }
+
     </script>
 
 }
