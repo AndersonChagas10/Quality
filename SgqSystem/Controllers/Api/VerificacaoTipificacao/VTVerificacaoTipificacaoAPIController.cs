@@ -49,36 +49,35 @@ namespace SgqSystem.Controllers.Api
 
             var VT = model.VerificacaoTipificacao;
 
+            //throw new Exception("teste");
+            var verificacaoListJBS = new List<VerificacaoTipificacaoV2>();
+            var verificacaoListGRT = new List<VerificacaoTipificacaoV2>();
+            var verificacaoSalvar = new List<VerificacaoTipificacaoV2>();
+            //GlobalConfig.MockOn = true;
+
+            //if (GlobalConfig.MockOn)
+            //    conexaoUndiade = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+
+            SqlConnectionStringBuilder connectionString = new SqlConnectionStringBuilder();
+
+            connectionString.Password = "betsy1";
+            connectionString.UserID = "sa";
+            //connectionString.InitialCatalog = "dbGQualidade_JBS";
+            //connectionString.DataSource = @"DELLGABRIEL\MSSQL2014";
+
+            //connectionString.Password = "grJsoluco3s";
+            //connectionString.UserID = "UserGQualidade";
 
 
-            try
+
+            foreach (var verificacao in model.VerificacaoTipificacao)
             {
-                //throw new Exception("teste");
-                var verificacaoListJBS = new List<VerificacaoTipificacaoV2>();
-                var verificacaoListGRT = new List<VerificacaoTipificacaoV2>();
-                var verificacaoSalvar = new List<VerificacaoTipificacaoV2>();
-                //GlobalConfig.MockOn = true;
 
-                //if (GlobalConfig.MockOn)
-                //    conexaoUndiade = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+                var controleErro = false;
 
-                SqlConnectionStringBuilder connectionString = new SqlConnectionStringBuilder();
-
-                //connectionString.Password = "betsy1";
-                //connectionString.UserID = "sa";
-                //connectionString.InitialCatalog = "dbGQualidade_JBS";
-                //connectionString.DataSource = @"DELLGABRIEL\MSSQL2014";
-
-                connectionString.Password = "grJsoluco3s";
-                connectionString.UserID = "UserGQualidade";
-
-
-
-                foreach (var verificacao in model.VerificacaoTipificacao)
+                try
                 {
-
-
-
+                    #region Primeira Etapa
                     string codigoUnidade;
 
                     using (var db = new Dominio.SgqDbDevEntities())
@@ -88,7 +87,7 @@ namespace SgqSystem.Controllers.Api
                         codigoUnidade = company.CompanyNumber.ToString();
                         connectionString.InitialCatalog = company.DBServer.ToString();
                         connectionString.DataSource = company.IPServer.ToString();
-                    }                   
+                    }
 
                     using (var dbUnit = new Factory(connectionString))
                     {
@@ -202,15 +201,28 @@ namespace SgqSystem.Controllers.Api
 
                         dbSgq.SaveChanges();
 
+                    }
+                    #endregion
+                }
+                catch (Exception e)
+                {
+                    new CreateLog(new Exception("Erro ao Savar verificação da Tipificação, Objeto bkp salvo.", e), model);
+                    controleErro = true;
+                    //throw ;
+                }
 
-
+                if (!controleErro)
+                {
+                    try
+                    {
                         string[] nome = new string[] { "<CONTUSAO>", "<GORDURA>" };
 
                         foreach (var variavel in nome)
                         {
+                            #region Query
 
 
-                            sql = "" +
+                            var sql = "" +
                                 "\n DECLARE @TIPO VARCHAR(20) = '" + variavel + "'                                                                                                            " +
                                 "\n DECLARE @UNIDADE INT = " + verificacao.UnidadeId.ToString() + "                                                                                                 " +
                                 "\n DECLARE @SEQ INT = " + verificacao.Sequencial.ToString() + "                                                                                                    " +
@@ -381,8 +393,9 @@ namespace SgqSystem.Controllers.Api
                                 "\n                                                                                                                                                           " +
                                 "\n     AND CAST(CollectionDate as DATE) = @DATA                                                                                                              " +
                                 "\n SELECT @@IDENTITY AS 'Identity'                                                                                                                           ";
+                            #endregion
 
-
+                            #region Salvando Consolidação
                             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
                             using (SqlConnection connection = new SqlConnection(conexao))
                             {
@@ -411,17 +424,20 @@ namespace SgqSystem.Controllers.Api
                                 }
 
                             }
+                            #endregion
                         }
+                    }
+                    catch (Exception e)
+                    {
+                        new CreateLog(new Exception("Erro ao Salvar GORDURA E CONTUSAO verificação da Tipificação, Objeto bkp salvo.", e), model);
+                        //throw ;
                     }
                 }
             }
-            catch (Exception e)
-            {
-                new CreateLog(new Exception("Erro ao Savar verificação da Tipificação, Objeto bkp salvo.", e), model);
-                //throw ;
-            }
 
         }
+
+
 
         [HttpGet]
         [Route("GetAll/{Date}/{UnidadeId}")]
@@ -433,7 +449,7 @@ namespace SgqSystem.Controllers.Api
 
                 using (var db = new Dominio.SgqDbDevEntities())
                 {
-                    var sql = "select distinct '<div class=\"Key\" date=\""+Date+"\" unidadeid=\""+UnidadeId+"\" key=\"'+ [Key] +'\"></div>' as retorno from VerificacaoTipificacaoV2 (nolock)  " +
+                    var sql = "select distinct '<div class=\"Key\" date=\"" + Date + "\" unidadeid=\"" + UnidadeId + "\" key=\"'+ [Key] +'\"></div>' as retorno from VerificacaoTipificacaoV2 (nolock)  " +
                           " where FORMAT(CollectionDate, 'MMddyyyy') = '" + Date + "' and        " +
                           " ParCompany_Id = " + UnidadeId + ";                              ";
 
@@ -449,7 +465,7 @@ namespace SgqSystem.Controllers.Api
 
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 new CreateLog(new Exception("Erro ao listar VTVerificacaoTipificacao.", e));
             }
