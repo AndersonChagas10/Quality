@@ -19,7 +19,10 @@
             </div>*@
     </form>
 </div>
+@{
+    var path = @Url.Content("~/Imagens/Logo.png");
 
+}
 <script>
 
     /*Aux*/
@@ -32,13 +35,14 @@
     /*Config Modal*/
     var modalLogin = bootbox.dialog({
         message: $(".form-content").html(),
-        title: "Autenticação",
+        title: "<div class='' style='display:inline-block; padding:2px;'><img src='@path' style='height:45px;' /> Plano de Ação - Autenticação </div> ",
+        size: 'small',
         buttons: [
           {
               label: "Entrar",
               className: "btn btn-primary pull-left",
-              //callback: function () { 
-              
+              //callback: function () {
+
               //    var user = $('#formLogin form').serializeObject();
               //    if (!user.Name.length) {
               //        $('#formLogin #resultado').text('O campo nome é obrigatório.').fadeIn().fadeOut(2000, "swing");

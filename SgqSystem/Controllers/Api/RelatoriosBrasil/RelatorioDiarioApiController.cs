@@ -667,7 +667,8 @@ namespace SgqSystem.Controllers.Api
                 
                     " \n ) S1 " +
                  " \n ) S2 " +
-                 " \n WHERE RELATORIO_DIARIO = 1 OR(RELATORIO_DIARIO = 0 AND AV = 0) " +
+                 " \n WHERE (RELATORIO_DIARIO = 1 OR(RELATORIO_DIARIO = 0 AND AV = 0)) " +
+                 "\n and s2.Unidade_Id = @UNIDADE " +
                   " \n DROP TABLE #AMOSTRATIPO4  ";
 
             return queryGraficoTendencia;

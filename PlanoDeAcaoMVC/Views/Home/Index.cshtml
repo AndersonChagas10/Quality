@@ -1,4 +1,6 @@
-﻿<!-- external libs from cdnjs -->
+﻿@using PlanoAcaoCore;
+
+<!-- external libs from cdnjs -->
 @*<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>*@
@@ -54,7 +56,7 @@
     }*/
 
     table {
-        width: 100%;
+       width: 100% !important;
         /*text-align: left;*/
         /*table-layout: fixed;*/
     }
@@ -156,7 +158,7 @@
 
                 <div class="col-xs-6 col-sm-6 ">
 
-                    <div class="panel panel-default" data-toggle="modal" data-target="#myModal" style="cursor:pointer;">
+                    <div class="panel panel-default" data-toggle="modal" data-target="#myModal" style="cursor:pointer;" onclick="geraTabela('Atrasado', 'acoesConcuidasTbl', false, true)">
                         <div class="panel-body">
                             <div style="height:98px;">
                                 <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
@@ -183,38 +185,38 @@
             <div class="panel-body">
                 <select id="filtroBar">
                     <option value="0">Selecione</option>
-                    <option value="Diretoria">Diretoria</option>
-                    <option value="Dimensão">Dimensão</option>
-                    <option value="Diretriz / Objetivo">Diretriz / Objetivo</option>
-                    <option value="Indicadores Diretriz">Indicadores / Diretriz</option>
-                    <option value="Gerência">Gerência</option>
-                    <option value="Coordenação">Coordenação</option>
+                    <option class="showAsEstrategy" value="Diretoria">Diretoria</option>
+                    <option class="showAsEstrategy" value="Dimensão">Dimensão</option>
+                    <option class="showAsEstrategy" value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                    <option class="showAsEstrategy" value="Indicadores Diretriz">Indicadores / Diretriz</option>
+                    <option class="showAsEstrategy" value="Gerência">Gerência</option>
+                    <option class="showAsEstrategy" value="Coordenação">Coordenação</option>
+                    <option class="showAsEstrategy" value="Grupo Causa">Grupo Causa</option>
+                    <option class="showAsEstrategy" value="Causa Genérica">Causa Genérica</option>
+                    <option class="showAsEstrategy" value="Contramedida Genérica">Contramedida Genérica</option>
                     @*<option value="7">Projeto / Iniciativa</option>*@
                     <option value="Unidade">Unidade</option>
                     @*<option value="9">Indicador Operacional</option>*@
-                    <option value="Grupo Causa">Grupo Causa</option>
-                    <option value="Causa Genérica">Causa Genérica</option>
-                    <option value="Contramedida Genérica">Contramedida Genérica</option>
-                    <option value="Responsavel">Quem</option>
-                    <option value="Status" selected>Status</option>
+                    <option value="Responsavel"selected>Quem</option>
+                    <option value="Status" >Status</option>
                 </select>
 
                 <select id="seriesBar">
                     <option value="0">Selecione</option>
-                    <option value="Diretoria">Diretoria</option>
-                    <option value="Dimensão">Dimensão</option>
-                    <option value="Diretriz / Objetivo">Diretriz / Objetivo</option>
-                    <option value="Indicadores Diretriz">Indicadores / Diretriz</option>
-                    <option value="Gerência">Gerência</option>
-                    <option value="Coordenação">Coordenação</option>
+                    <option class="showAsEstrategy" value="Diretoria">Diretoria</option>
+                    <option class="showAsEstrategy" value="Dimensão">Dimensão</option>
+                    <option class="showAsEstrategy" value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                    <option class="showAsEstrategy" value="Indicadores Diretriz">Indicadores / Diretriz</option>
+                    <option class="showAsEstrategy" value="Gerência">Gerência</option>
+                    <option class="showAsEstrategy" value="Coordenação">Coordenação</option>
+                    <option class="showAsEstrategy" value="Grupo Causa">Grupo Causa</option>
+                    <option class="showAsEstrategy" value="Causa Genérica">Causa Genérica</option>
+                    <option class="showAsEstrategy" value="Contramedida Genérica">Contramedida Genérica</option>
                     @*<option value="7">Projeto / Iniciativa</option>*@
                     <option value="Unidade">Unidade</option>
                     @*<option value="9">Indicador Operacional</option>*@
-                    <option value="Grupo Causa">Grupo Causa</option>
-                    <option value="Causa Genérica">Causa Genérica</option>
-                    <option value="Contramedida Genérica">Contramedida Genérica</option>
-                    <option value="Responsavel" selected>Quem</option>
-                    <option value="Status">Status</option>
+                    <option value="Responsavel">Quem</option>
+                    <option value="Status" selected>Status</option>
                 </select>
             </div>
             <div id="divGrafico1" style="height:240px;"></div>
@@ -226,38 +228,38 @@
             <div class="panel-body">
                 <select id="filtroBar2">
                     <option value="0">Selecione</option>
-                    <option value="Diretoria">Diretoria</option>
-                    <option value="Dimensão">Dimensão</option>
-                    <option value="Diretriz / Objetivo">Diretriz / Objetivo</option>
-                    <option value="Indicadores Diretriz">Indicadores / Diretriz</option>
-                    <option value="Gerência">Gerência</option>
-                    <option value="Coordenação">Coordenação</option>
+                    <option class="showAsEstrategy" value="Diretoria">Diretoria</option>
+                    <option class="showAsEstrategy" value="Dimensão">Dimensão</option>
+                    <option class="showAsEstrategy" value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                    <option class="showAsEstrategy" value="Indicadores Diretriz">Indicadores / Diretriz</option>
+                    <option class="showAsEstrategy" value="Gerência">Gerência</option>
+                    <option class="showAsEstrategy" value="Coordenação">Coordenação</option>
+                    <option class="showAsEstrategy" value="Grupo Causa">Grupo Causa</option>
+                    <option class="showAsEstrategy" value="Causa Genérica">Causa Genérica</option>
+                    <option class="showAsEstrategy" value="Contramedida Genérica">Contramedida Genérica</option>
                     @*<option value="7">Projeto / Iniciativa</option>*@
                     <option value="Unidade">Unidade</option>
                     @*<option value="9">Indicador Operacional</option>*@
-                    <option value="Grupo Causa">Grupo Causa</option>
-                    <option value="Causa Genérica">Causa Genérica</option>
-                    <option value="Contramedida Genérica">Contramedida Genérica</option>
-                    <option value="Responsavel">Quem</option>
-                    <option value="Status" selected>Status</option>
+                    <option value="Responsavel"selected>Quem</option>
+                    <option value="Status" >Status</option>
                 </select>
 
                 <select id="seriesBar2">
                     <option value="0">Selecione</option>
-                    <option value="Diretoria">Diretoria</option>
-                    <option value="Dimensão">Dimensão</option>
-                    <option value="Diretriz / Objetivo">Diretriz / Objetivo</option>
-                    <option value="Indicadores Diretriz">Indicadores / Diretriz</option>
-                    <option value="Gerência">Gerência</option>
-                    <option value="Coordenação">Coordenação</option>
+                    <option class="showAsEstrategy" value="Diretoria">Diretoria</option>
+                    <option class="showAsEstrategy" value="Dimensão">Dimensão</option>
+                    <option class="showAsEstrategy" value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                    <option class="showAsEstrategy" value="Indicadores Diretriz">Indicadores / Diretriz</option>
+                    <option class="showAsEstrategy" value="Gerência">Gerência</option>
+                    <option class="showAsEstrategy" value="Coordenação">Coordenação</option>
+                    <option class="showAsEstrategy" value="Grupo Causa">Grupo Causa</option>
+                    <option class="showAsEstrategy" value="Causa Genérica">Causa Genérica</option>
+                    <option class="showAsEstrategy" value="Contramedida Genérica">Contramedida Genérica</option>
                     @*<option value="7">Projeto / Iniciativa</option>*@
                     <option value="Unidade">Unidade</option>
                     @*<option value="9">Indicador Operacional</option>*@
-                    <option value="Grupo Causa">Grupo Causa</option>
-                    <option value="Causa Genérica">Causa Genérica</option>
-                    <option value="Contramedida Genérica">Contramedida Genérica</option>
-                    <option value="Responsavel" selected>Quem</option>
-                    <option value="Status">Status</option>
+                    <option value="Responsavel">Quem</option>
+                    <option value="Status" selected>Status</option>
                 </select>
             </div>
             <div id="divCol" style="height:240px;"></div>
@@ -277,42 +279,36 @@
                     <div class="panel-body">
                         <select id="filtroBarInd">
                             <option value="0">Selecione</option>
-                            <option value="Indicador">Indicador</option>
-                            <option value="Monitoramento">Monitoramento</option>
-                            <option value="Tarefa" selected>Tarefa</option>
-                            <option value="Diretoria">Diretoria</option>
-                            <option value="Dimensão">Dimensão</option>
-                            <option value="Diretriz / Objetivo">Diretriz / Objetivo</option>
-                            <option value="Indicadores Diretriz">Indicadores / Diretriz</option>
-                            <option value="Gerência">Gerência</option>
-                            <option value="Coordenação">Coordenação</option>
+                                <option value="Diretoria">Diretoria</option>
+                                <option value="Dimensão">Dimensão</option>
+                                <option value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                                <option value="Indicadores Diretriz">Indicadores / Diretriz</option>
+                                <option value="Gerência">Gerência</option>
+                                <option value="Coordenação">Coordenação</option>
+                                <option value="Grupo Causa">Grupo Causa</option>
+                                <option value="Causa Genérica">Causa Genérica</option>
+                                <option value="Contramedida Genérica">Contramedida Genérica</option>
                             @*<option value="7">Projeto / Iniciativa</option>*@
                             <option value="Unidade">Unidade</option>
                             @*<option value="9">Indicador Operacional</option>*@
-                            <option value="Grupo Causa">Grupo Causa</option>
-                            <option value="Causa Genérica">Causa Genérica</option>
-                            <option value="Contramedida Genérica">Contramedida Genérica</option>
-                            <option value="Responsavel">Quem</option>
-                            <option value="Status">Status</option>
+                            <option value="Responsavel" selected>Quem</option>
+                            <option value="Status" >Status</option>
                         </select>
 
                         <select id="seriesBarInd">
                             <option value="0">Selecione</option>
-                            <option value="Indicador">Indicador</option>
-                            <option value="Monitoramento">Monitoramento</option>
-                            <option value="Tarefa">Tarefa</option>
-                            <option value="Diretoria">Diretoria</option>
-                            <option value="Dimensão">Dimensão</option>
-                            <option value="Diretriz / Objetivo">Diretriz / Objetivo</option>
-                            <option value="Indicadores Diretriz">Indicadores / Diretriz</option>
-                            <option value="Gerência">Gerência</option>
-                            <option value="Coordenação">Coordenação</option>
+                                <option value="Diretoria">Diretoria</option>
+                                <option value="Dimensão">Dimensão</option>
+                                <option value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                                <option value="Indicadores Diretriz">Indicadores / Diretriz</option>
+                                <option value="Gerência">Gerência</option>
+                                <option value="Coordenação">Coordenação</option>
+                                <option value="Grupo Causa">Grupo Causa</option>
+                                <option value="Causa Genérica">Causa Genérica</option>
+                                <option value="Contramedida Genérica">Contramedida Genérica</option>
                             @*<option value="7">Projeto / Iniciativa</option>*@
                             <option value="Unidade">Unidade</option>
                             @*<option value="9">Indicador Operacional</option>*@
-                            <option value="Grupo Causa">Grupo Causa</option>
-                            <option value="Causa Genérica">Causa Genérica</option>
-                            <option value="Contramedida Genérica">Contramedida Genérica</option>
                             <option value="Responsavel">Quem</option>
                             <option value="Status" selected>Status</option>
                         </select>
@@ -332,7 +328,7 @@
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">Estoque de ações <i>[Em desenvolvimento]</i></h3>
+                <h3 class="panel-title" title="Ultimos 6 meses">Estoque de ações</h3>
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -350,7 +346,7 @@
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">Meus indicadores<i>[Em desenvolvimento / Integrações]</i></h3>
+                <h3 class="panel-title" title="Ultimos 6 meses">Meus indicadores</h3>
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -1292,7 +1288,8 @@
     //Start config datepickerrange full
     var start = moment();
     var end = moment();
-
+    var urlGetPessoasEnvolvidas = "@Url.Action("GetPessoasEnvolvidas", "api/Relatorios")";
+    var resultPessoasEnvolvidas = [];
     function cb(start, end) {
         $('#reportrange span').html(start.format() + ' - ' + end.format());
         enviar['startDate'] = start.format();
@@ -1300,11 +1297,29 @@
 
         atualizar(GraficoPizza, urlGetGraficoPie, enviar);
 
+        $.post(urlGetPessoasEnvolvidas, enviar, function (rPessoas) {
+            resultPessoasEnvolvidas = rPessoas;
+            $('#pessoasEnvolvidas').text(resultPessoasEnvolvidas.length);
+        });
         $.post(urlGetGrafico, enviar, function (r) {
             resultGetGrafico = r;
+
             $('#filtroBar').trigger('change');
             $('#filtroBar2').trigger('change');
             $('#filtroBarInd').trigger('change');
+
+            $('#acoesConcluidas').text($.grep(resultGetGrafico, function (a, b) {
+                return a.Status == "Concluído";
+            }).length);
+
+            $('#acoesAtrasadas').text($.grep(resultGetGrafico, function (a, b) {
+                return a.Status == "Atrasado";
+            }).length);
+
+            $('#acoesAVencer').text($.grep(resultGetGrafico, function (a, b) {
+                return (a.Status != "Concluído" && a.Status != "Concluído com atraso");
+            }).length);
+
         });
     }
     var configQueryData = true; // @*@Html.Raw(Json.Encode(GlobalConfig.LanguageBrasil));*@
@@ -1442,130 +1457,6 @@
             for (var key in o)
                 arrColumns.push({ 'title': key, 'mData': key })
 
-            var table = $('#'+ selector).empty().DataTable({
-                data: concluidas,
-                columns: arrColumns,
-                "sScrollX": "100%",
-                "scrollX": true,
-                "scrollY": '550px',
-                destroy:true,
-                bScrollAutoCss: true,
-                //sScrollX: '100%',
-                bScrollCollapse: true,
-                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
-                pageLength: 10,
-                responsive: true,
-                loadingRecords: true,
-                destroy: true,
-                info: true,
-                responsive: true,
-                //columnDefs: visibilidadeDefault,
-                language: {
-                    "sEmptyTable": "Nenhum registro encontrado",
-                    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-                    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-                    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-                    "sInfoPostFix": "",
-                    "sInfoThousands": ".",
-                    "sLengthMenu": "_MENU_ resultados por página",
-                    "sLoadingRecords": "Carregando...",
-                    "sProcessing": "Processando...",
-                    "sZeroRecords": "Nenhum registro encontrado",
-                    "sSearch": "Pesquisar",
-                    "oPaginate": {
-                        "sNext": "Próximo",
-                        "sPrevious": "Anterior",
-                        "sFirst": "Primeiro",
-                        "sLast": "Último"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": Ordenar colunas de forma ascendente",
-                        "sSortDescending": ": Ordenar colunas de forma descendente"
-                    }
-                }
-            });
-            
-            new $.fn.dataTable.Buttons(table, {
-                buttons: [
-                      {
-                          extend: 'colvisGroup',
-                          text: 'Mostrar Todos',
-                          show: ':hidden'
-                      },
-                    {
-                        extend: 'print',
-                        text: 'Imprimir',
-                        customize: function (win) {
-                            $(win.document.body).find('table')
-                                .addClass('compact')
-                                .css('font-size', 'inherit');
-                        },
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'excelHtml5',
-                        text: 'Excel',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                     //{
-                     //    extend: 'pdf',
-                     //    text: 'PDF',
-                     //    exportOptions: {
-                     //        columns: ':visible'
-                     //    }
-                     //},
-                      {
-                          extend: 'colvis',
-                          text: 'Colunas Visíveis',
-                          collectionLayout: 'fixed two-column',
-                          exportOptions: {
-                              columns: ':visible',
-                          }
-                      },
-                ]
-            });
-            table.buttons(0, null).container().prependTo(
-                table.table().container()
-            );
-        } else {
-            $('#' + selector).parents('.modal-body').find('g').show();
-        }
-    }
-    function geraTabela(query, selector, isDate) {
-        $('#' + selector).parents('.modal-body').find('g').hide();
-        var arrColumns = [];
-        var concluidas = [];
-      
-        if (isDate) {
-            concluidas = $.grep(resultGetGrafico, function (a, b) {
-                var dataQuandoFim = moment(a.QuandoFim, 'DD/MM/YYYY');
-                var end = moment().add(10, 'days').endOf('day')
-                return dataQuandoFim <= end && a.Status != 'Cancelado' && a.Status != 'Concluído' && a.Status != 'Concluído com atraso' && dataQuandoFim > moment();
-            });
-        } else {
-            concluidas = $.grep(resultGetGrafico, function (a, b) {
-                return a.Status == query
-            });
-        }
-
-
-        if ($.fn.DataTable.isDataTable('#' + selector)) {
-            $('#' + selector).DataTable().destroy();
-            $('#' + selector).empty();
-        }
-
-        if (concluidas.length) {
-            var o = concluidas[0]
-            var row = {};
-            for (var key in o) {
-                if(key != 'Id')
-                    arrColumns.push({ 'title': key, 'mData': key })
-            }
-
             var table = $('#' + selector).empty().DataTable({
                 data: concluidas,
                 columns: arrColumns,
@@ -1659,7 +1550,139 @@
             $('#' + selector).parents('.modal-body').find('g').show();
         }
     }
-   
+
+    function geraTabela(query, selector, isDate, isPessoas) {
+        $('#' + selector).parents('.modal-body').find('g').hide();
+        var arrColumns = [];
+        var concluidas = [];
+        if (isPessoas) {
+            concluidas = resultPessoasEnvolvidas;
+        }
+        else if (isDate) {
+            concluidas = $.grep(resultGetGrafico, function (a, b) {
+                return (a.Status != "Concluído" && a.Status != "Concluído com atraso");
+            });
+        } else {
+            concluidas = $.grep(resultGetGrafico, function (a, b) {
+                return a.Status == query
+            });
+        }
+
+        if ($.fn.DataTable.isDataTable('#' + selector)) {
+            $('#' + selector).DataTable().destroy();
+            $('#' + selector).empty();
+        }
+
+        if (concluidas.length) {
+            var o = concluidas[0]
+            var row = {};
+            for (var key in o) {
+                if (key != 'Id')
+                    arrColumns.push({ 'title': key, 'mData': key })
+            }
+
+            var table = $('#' + selector).empty().DataTable({
+                data: concluidas,
+                columns: arrColumns,
+                "sScrollX": "100%",
+                "scrollX": true,
+                "scrollY": '550px',
+                destroy: true,
+                bScrollAutoCss: true,
+                //sScrollX: '100%',
+                bScrollCollapse: true,
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
+                pageLength: 10,
+                responsive: true,
+                loadingRecords: true,
+                destroy: true,
+                info: true,
+                responsive: true,
+                //columnDefs: visibilidadeDefault,
+                language: {
+                    "sEmptyTable": "Nenhum registro encontrado",
+                    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLengthMenu": "_MENU_ resultados por página",
+                    "sLoadingRecords": "Carregando...",
+                    "sProcessing": "Processando...",
+                    "sZeroRecords": "Nenhum registro encontrado",
+                    "sSearch": "Pesquisar",
+                    "oPaginate": {
+                        "sNext": "Próximo",
+                        "sPrevious": "Anterior",
+                        "sFirst": "Primeiro",
+                        "sLast": "Último"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Ordenar colunas de forma ascendente",
+                        "sSortDescending": ": Ordenar colunas de forma descendente"
+                    }
+                },
+                initComplete: function () {
+                    setTimeout(function (e) {
+                        var oTable = $('#' + selector).dataTable();
+                        if (oTable.length > 0) {
+                            oTable.fnAdjustColumnSizing();
+                        }
+                    }, 1400);
+                }
+            });
+
+            new $.fn.dataTable.Buttons(table, {
+                buttons: [
+                      {
+                          extend: 'colvisGroup',
+                          text: 'Mostrar Todos',
+                          show: ':hidden'
+                      },
+                    {
+                        extend: 'print',
+                        text: 'Imprimir',
+                        customize: function (win) {
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        },
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Excel',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                     //{
+                     //    extend: 'pdf',
+                     //    text: 'PDF',
+                     //    exportOptions: {
+                     //        columns: ':visible'
+                     //    }
+                     //},
+                      {
+                          extend: 'colvis',
+                          text: 'Colunas Visíveis',
+                          collectionLayout: 'fixed two-column',
+                          exportOptions: {
+                              columns: ':visible',
+                          }
+                      },
+                ]
+            });
+            table.buttons(0, null).container().prependTo(
+                table.table().container()
+            );
+        } else {
+            $('#' + selector).parents('.modal-body').find('g').show();
+        }
+    }
+
 
     ///*Pivot Table Chart*/
     //$(function () {
