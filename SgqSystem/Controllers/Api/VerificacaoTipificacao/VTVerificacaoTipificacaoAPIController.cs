@@ -60,13 +60,13 @@ namespace SgqSystem.Controllers.Api
 
             SqlConnectionStringBuilder connectionString = new SqlConnectionStringBuilder();
 
-            connectionString.Password = "betsy1";
-            connectionString.UserID = "sa";
+            //connectionString.Password = "betsy1";
+            //connectionString.UserID = "sa";
             //connectionString.InitialCatalog = "dbGQualidade_JBS";
             //connectionString.DataSource = @"DELLGABRIEL\MSSQL2014";
 
-            //connectionString.Password = "grJsoluco3s";
-            //connectionString.UserID = "UserGQualidade";
+            connectionString.Password = "grJsoluco3s";
+            connectionString.UserID = "UserGQualidade";
 
 
 
