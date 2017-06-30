@@ -57,7 +57,7 @@
 
                         @if (!GlobalConfig.Eua)
                         {
-                            <tr class="row">
+                            <tr class="row hide">
                                 @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.haveRealTimeConsolidation, new { @class = "form-control checkbox-erp" }), @Html.Label(@Resources.Resource.has_real_time_consolidation), Table.PosicaoLabel.left, null, Resources.Resource.defines_consolidation_indicator)
                             </tr>
                             <tr class="row RealTimeConsolitationUpdate padding-left" style="display:none">
