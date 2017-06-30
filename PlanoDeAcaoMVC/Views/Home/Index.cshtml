@@ -1441,115 +1441,115 @@
     })
 
 
-    function geraTabela(query, selector) {
-        $('#' + selector).parents('.modal-body').find('g').hide();
-        var arrColumns = [];
-        var concluidas = $.grep(resultGetGrafico, function (a, b) { return a.Status == query });
+    //function geraTabela(query, selector) {
+    //    $('#' + selector).parents('.modal-body').find('g').hide();
+    //    var arrColumns = [];
+    //    var concluidas = $.grep(resultGetGrafico, function (a, b) { return a.Status == query });
 
-        if ($.fn.DataTable.isDataTable('#' + selector)) {
-            $('#' + selector).DataTable().destroy();
-            $('#' + selector).empty();
-        }
+    //    if ($.fn.DataTable.isDataTable('#' + selector)) {
+    //        $('#' + selector).DataTable().destroy();
+    //        $('#' + selector).empty();
+    //    }
 
-        if (concluidas.length) {
-            var o = concluidas[0]
-            var row = {};
-            for (var key in o)
-                arrColumns.push({ 'title': key, 'mData': key })
+    //    if (concluidas.length) {
+    //        var o = concluidas[0]
+    //        var row = {};
+    //        for (var key in o)
+    //            arrColumns.push({ 'title': key, 'mData': key })
 
-            var table = $('#' + selector).empty().DataTable({
-                data: concluidas,
-                columns: arrColumns,
-                "sScrollX": "100%",
-                "scrollX": true,
-                "scrollY": '550px',
-                destroy: true,
-                bScrollAutoCss: true,
-                //sScrollX: '100%',
-                bScrollCollapse: true,
-                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
-                pageLength: 10,
-                responsive: true,
-                loadingRecords: true,
-                destroy: true,
-                info: true,
-                responsive: true,
-                //columnDefs: visibilidadeDefault,
-                language: {
-                    "sEmptyTable": "Nenhum registro encontrado",
-                    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-                    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-                    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-                    "sInfoPostFix": "",
-                    "sInfoThousands": ".",
-                    "sLengthMenu": "_MENU_ resultados por página",
-                    "sLoadingRecords": "Carregando...",
-                    "sProcessing": "Processando...",
-                    "sZeroRecords": "Nenhum registro encontrado",
-                    "sSearch": "Pesquisar",
-                    "oPaginate": {
-                        "sNext": "Próximo",
-                        "sPrevious": "Anterior",
-                        "sFirst": "Primeiro",
-                        "sLast": "Último"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": Ordenar colunas de forma ascendente",
-                        "sSortDescending": ": Ordenar colunas de forma descendente"
-                    }
-                }
-            });
+    //        var table = $('#' + selector).empty().DataTable({
+    //            data: concluidas,
+    //            columns: arrColumns,
+    //            "sScrollX": "100%",
+    //            "scrollX": true,
+    //            "scrollY": '550px',
+    //            destroy: true,
+    //            bScrollAutoCss: true,
+    //            //sScrollX: '100%',
+    //            bScrollCollapse: true,
+    //            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
+    //            pageLength: 10,
+    //            responsive: true,
+    //            loadingRecords: true,
+    //            destroy: true,
+    //            info: true,
+    //            responsive: true,
+    //            //columnDefs: visibilidadeDefault,
+    //            language: {
+    //                "sEmptyTable": "Nenhum registro encontrado",
+    //                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+    //                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+    //                "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+    //                "sInfoPostFix": "",
+    //                "sInfoThousands": ".",
+    //                "sLengthMenu": "_MENU_ resultados por página",
+    //                "sLoadingRecords": "Carregando...",
+    //                "sProcessing": "Processando...",
+    //                "sZeroRecords": "Nenhum registro encontrado",
+    //                "sSearch": "Pesquisar",
+    //                "oPaginate": {
+    //                    "sNext": "Próximo",
+    //                    "sPrevious": "Anterior",
+    //                    "sFirst": "Primeiro",
+    //                    "sLast": "Último"
+    //                },
+    //                "oAria": {
+    //                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+    //                    "sSortDescending": ": Ordenar colunas de forma descendente"
+    //                }
+    //            }
+    //        });
 
-            new $.fn.dataTable.Buttons(table, {
-                buttons: [
-                      {
-                          extend: 'colvisGroup',
-                          text: 'Mostrar Todos',
-                          show: ':hidden'
-                      },
-                    {
-                        extend: 'print',
-                        text: 'Imprimir',
-                        customize: function (win) {
-                            $(win.document.body).find('table')
-                                .addClass('compact')
-                                .css('font-size', 'inherit');
-                        },
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'excelHtml5',
-                        text: 'Excel',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                     //{
-                     //    extend: 'pdf',
-                     //    text: 'PDF',
-                     //    exportOptions: {
-                     //        columns: ':visible'
-                     //    }
-                     //},
-                      {
-                          extend: 'colvis',
-                          text: 'Colunas Visíveis',
-                          collectionLayout: 'fixed two-column',
-                          exportOptions: {
-                              columns: ':visible',
-                          }
-                      },
-                ]
-            });
-            table.buttons(0, null).container().prependTo(
-                table.table().container()
-            );
-        } else {
-            $('#' + selector).parents('.modal-body').find('g').show();
-        }
-    }
+    //        new $.fn.dataTable.Buttons(table, {
+    //            buttons: [
+    //                  {
+    //                      extend: 'colvisGroup',
+    //                      text: 'Mostrar Todos',
+    //                      show: ':hidden'
+    //                  },
+    //                {
+    //                    extend: 'print',
+    //                    text: 'Imprimir',
+    //                    customize: function (win) {
+    //                        $(win.document.body).find('table')
+    //                            .addClass('compact')
+    //                            .css('font-size', 'inherit');
+    //                    },
+    //                    exportOptions: {
+    //                        columns: ':visible'
+    //                    }
+    //                },
+    //                {
+    //                    extend: 'excelHtml5',
+    //                    text: 'Excel',
+    //                    exportOptions: {
+    //                        columns: ':visible'
+    //                    }
+    //                },
+    //                 //{
+    //                 //    extend: 'pdf',
+    //                 //    text: 'PDF',
+    //                 //    exportOptions: {
+    //                 //        columns: ':visible'
+    //                 //    }
+    //                 //},
+    //                  {
+    //                      extend: 'colvis',
+    //                      text: 'Colunas Visíveis',
+    //                      collectionLayout: 'fixed two-column',
+    //                      exportOptions: {
+    //                          columns: ':visible',
+    //                      }
+    //                  },
+    //            ]
+    //        });
+    //        table.buttons(0, null).container().prependTo(
+    //            table.table().container()
+    //        );
+    //    } else {
+    //        $('#' + selector).parents('.modal-body').find('g').show();
+    //    }
+    //}
 
     function geraTabela(query, selector, isDate, isPessoas) {
         $('#' + selector).parents('.modal-body').find('g').hide();

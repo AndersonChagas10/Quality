@@ -112,7 +112,7 @@ namespace SgqSystem.Mail
                                 AddDate = DateTime.Now,
                                 IsBodyHtml = true,
                                 Subject = subject,
-                                To = "celso.bernar@grtsolucoes.com.br",
+                                To = "cgnunes7@gmail.com",
                                 Project = "SGQApp"
                             };
                             var model = controller.GetCorrectiveActionById(ca.Id);
