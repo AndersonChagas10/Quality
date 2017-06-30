@@ -22,7 +22,20 @@ namespace DTO.DTO.Params
 
         }
 
-      
+        public ParLevel2ControlCompanyDTO(int level2Id, int level1Id, int? parcompanyId, DateTime initdate, bool isActive)
+        {
+            ParLevel2_Id = level2Id;
+            ParLevel1_Id = level1Id;
+            ParCompany_Id = parcompanyId;
+            InitDate = initdate;
+            IsActive = isActive;
+
+
+            if (parcompanyId != null)
+                if (parcompanyId > 0)
+                    ParCompany_Id = parcompanyId;
+        }
+
 
         public ParLevel2ControlCompanyDTO(int level2Id, int level1Id, int? parcompanyId, DateTime initdate)
         {
