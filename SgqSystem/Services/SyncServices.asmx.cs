@@ -1831,6 +1831,7 @@ namespace SgqSystem.Services
             //}
 
             //Prepara a string para ser convertida em Array
+            level03Results = level03Results.Replace("sebo%20%20%2C%20suporte", "sebo%20%20e%20suporte");
             level03Results = level03Results.Replace("</level03><level03>", "@").Replace("<level03>", "").Replace("</level03>", "");
             //Gera o Array
             string[] arrayResults = level03Results.Split('@');
@@ -1848,10 +1849,11 @@ namespace SgqSystem.Services
             for (int i = 0; i < arrayResults.Length; i++)
             {
                 /*ACERTO PARA JUARA, BIANCA 2017-06-30 QUE MERDA*/
-                arrayResults[i] = arrayResults[i].Replace("sebo  , suporte", "sebo e suporte"); 
+                arrayResults[i] = arrayResults[i].Replace("sebo  , suporte", "sebo e suporte");
+                arrayResults[i] = arrayResults[i].Replace("sebo%20%20%2C%20suporte", "sebo%20%20e%20suporte");
 
-                //Gera o array com o resultado
-                var result = arrayResults[i].Split(',');
+                        //Gera o array com o resultado
+                        var result = arrayResults[i].Split(',');
 
                 //Instancia as variáveis para preencher o script
                 string Level03Id = result[0];
@@ -4957,7 +4959,14 @@ namespace SgqSystem.Services
 
                 var painelLevel3HeaderListHtml = "";
 
-                var labelPecas = "<label class='font-small'>Animais Avaliados</label>";
+                var tituloLabel = "Animais Avaliados";
+
+                if(ParLevel1.Id == 42)
+                {
+                    tituloLabel = "Total Bloqueado (Kg)";
+                }
+
+                var labelPecas = "<label class='font-small'>" + tituloLabel + "</label>";
                 var formControlPecas = "<input class='form-control input-sm pecasAvaliadas' type='number'>";
                 var formGroupPecas = html.div(
                                         outerhtml: labelPecas + formControlPecas,
