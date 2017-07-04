@@ -283,13 +283,6 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         }
 
 
-        private void GetParamsPeloFiltro(JObject filtro, out string dtInit, out string dtFim)
-        {
-            dynamic filtroObj = filtro;
-            string startDate = filtroObj.startDate;
-            string endDate = filtroObj.endDate;
-            dtInit = Guard.ParseDateToSqlV2(startDate, Guard.CultureCurrent.BR).ToString("yyyy-MM-dd 00:00:00");
-            dtFim = Guard.ParseDateToSqlV2(endDate, Guard.CultureCurrent.BR).ToString("yyyy-MM-dd 23:59:59");
-        }
+       
     }
 }

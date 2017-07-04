@@ -1,5 +1,17 @@
 ﻿@model PlanoAcaoCore.Pa_Acao
 @using PlanoAcaoCore
+@{
+    var showTipo1 = "display:none";
+    var showTipo2 = "display:none";
+    if (Model.TipoIndicador == 1)
+    {
+        showTipo1 = "";
+    }
+    else if (Model.TipoIndicador == 2)
+    {
+        showTipo2 = "";
+    }
+}
 <style>
     input,
     select,
@@ -16,7 +28,8 @@
     </style>
 
 }
-
+<button type="button" class="edit btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Editar" class="glyphicon glyphicon-edit" style="cursor:pointer"></span>&nbsp Editar</button>
+<br />
 <h5>Acompanhamento da Ação</h5>
 
 <table class="borderedNinja nowrap .col-md-6 .col-md-offset-3 display" cellspacing="0" style="width: 100%;">

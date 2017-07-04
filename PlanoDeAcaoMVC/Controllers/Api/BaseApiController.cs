@@ -11,6 +11,7 @@ using System.Net.Http.Headers;
 using DTO.DTO;
 using PlanoAcaoCore;
 using ADOFactory;
+using DTO.Helpers;
 
 namespace PlanoDeAcaoMVC.Controllers.Api
 {
@@ -132,6 +133,21 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             {
                 dbPa.Database.ExecuteSqlCommand("UPDATE Pa_acao SET [STATUS] = 1 WHERE Id IN (SELECT Id FROM Pa_acao WHERE [Status] = (5) AND  CONVERT (date ,QuandoFim) < CONVERT (date ,GETDATE()))");
             }
+        }
+
+        /// <summary>
+        /// Filtro deve ser da var enviar JS pelo calendario
+        /// </summary>
+        /// <param name="filtro"></param>
+        /// <param name="dtInit"></param>
+        /// <param name="dtFim"></param>
+        protected void GetParamsPeloFiltro(JObject filtro, out string dtInit, out string dtFim)
+        {
+            dynamic filtroObj = filtro;
+            string startDate = filtroObj.startDate;
+            string endDate = filtroObj.endDate;
+            dtInit = Guard.ParseDateToSqlV2(startDate, Guard.CultureCurrent.BR).ToString("yyyy-MM-dd 00:00:00");
+            dtFim = Guard.ParseDateToSqlV2(endDate, Guard.CultureCurrent.BR).ToString("yyyy-MM-dd 23:59:59");
         }
 
     }
