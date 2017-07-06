@@ -137,11 +137,13 @@ namespace SgqSystem.Controllers.Api.App
                 }
             }
 
-            UpdateTelaDoTablet(UnitId);
-            retorno.ParteDaTela = GlobalConfig.PaginaDoTablet.FirstOrDefault(r => r.Key == UnitId).Value;
-            return retorno;
-        }
+            throw new Exception();
 
+            //UpdateTelaDoTablet(UnitId);
+            //retorno.ParteDaTela = GlobalConfig.PaginaDoTablet.FirstOrDefault(r => r.Key == UnitId).Value;
+            //return retorno;
+        }
+        
         [HttpGet]
         [Route("UpdateDbRemoto/{UnitId}")]
         public void UpdateDbRemoto(int UnitId)

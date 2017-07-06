@@ -362,19 +362,25 @@
                     var total = unidadesIds.length;
                     var passo = 100/unidadesIds.length;
                     var acumulador = passo;
-                    unidadesIds.forEach(function(o){
-                        $.get(root + '/api/AppParams/UpdateTelaDoTablet/' + o, {}, function (r) {
-                            acumulador += parseInt(passo)
-                            progress.Update(acumulador.toFixed(0));
-                            if(acumulador > 99.99)
-                                $.LoadingOverlay("hide");
 
-                        });
-                    });
+                    getTelaByTablet(progress, total, passo, acumulador,unidadesIds);
 
                 });
 
             }
+        });
+    }
+
+    function getTelaByTablet(progress, total, passo, acumulador, unidadesIds){
+        $.get(root + '/api/AppParams/UpdateTelaDoTablet/' + unidadesIds[0], {}, function (r) {
+            acumulador += parseInt(passo)
+            progress.Update(acumulador.toFixed(0));
+            if(acumulador > 99.99)
+                $.LoadingOverlay("hide");
+
+            unidadesIds.splice(0, 1);
+            if(unidadesIds.length > 0)
+                getTelaByTablet(progress, total, passo, acumulador, unidadesIds);
         });
     }
 
