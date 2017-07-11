@@ -2043,9 +2043,16 @@ namespace SGQDBContext
         {
             try
             {
-                string sql = "SELECT * FROM ConsolidationLevel2 (nolock)  WHERE UnitId = '" + ParCompany_Id + "' AND ParLevel1_Id= '" + ParLevel1_Id + "' AND CONVERT(date, ConsolidationDate) = '" + collectionDate.ToString("yyyy-MM-dd") + "'";
+                string sql = "SELECT * FROM ConsolidationLevel2 (nolock)  WHERE UnitId = " + ParCompany_Id + " AND ParLevel1_Id= " + ParLevel1_Id + " AND ConsolidationDate BETWEEN '" + collectionDate.ToString("yyyy-MM-dd") + " 00:00' AND '" + collectionDate.ToString("yyyy-MM-dd") + " 23:59:90.9999'";
 
                 //SqlConnection db = new SqlConnection(conexao);
+
+                /**
+                 * ADD PARAMETER FORLINI
+                 * DECLARA TODAS AS COLUNAS!! AO INVES DO *
+                 * INSERIR ÍNDICE NO CONSOLIDATIONLEVEL1 DENTRO DO CONOLIDATIONLEVEL2
+                 */
+
                 var obj = db.Query<ConsolidationLevel2>(sql).FirstOrDefault();
                 return obj;
             }

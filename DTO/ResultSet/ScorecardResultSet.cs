@@ -132,34 +132,36 @@ public class ScorecardResultSet
 
 
                 "\n INSERT INTO #AMOSTRATIPO4 " +
-
+                /*
                 "\n SELECT " +
                 "\n  UNIDADE, INDICADOR, " +
-                "\n COUNT(1) AM " +
-                "\n ,SUM(DEF_AM) DEF_AM " +
                 "\n FROM " +
                 "\n ( " +
+                */
                 "\n     SELECT " +
-                "\n     cast(C2.CollectionDate as DATE) AS DATA " +
-                "\n     , C.Id AS UNIDADE " +
+                //"\n     cast(C2.CollectionDate as DATE) AS DATA " +
+                "\n     C.Id AS UNIDADE " +
                 "\n     , C2.ParLevel1_Id AS INDICADOR " +
-                "\n     , C2.EvaluationNumber AS AV " +
-                "\n     , C2.Sample AS AM " +
-                "\n     , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
+                "\n , COUNT(DISTINCT CONCAT(C2.EvaluationNumber, C2.Sample, cast(cast(C2.CollectionDate as date) as varchar))) AM " +
+                "\n , SUM(IIF(C2.WeiDefects = 0, 0, 1)) DEF_AM " +
+                //"\n     , C2.EvaluationNumber AS AV " +
+                // "\n     , C2.Sample AS AM " +
+                //"\n     , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
                 "\n     FROM CollectionLevel2 C2 (nolock) " +
                 "\n     INNER JOIN ParLevel1 L1 (nolock)  " +
                 "\n     ON L1.Id = C2.ParLevel1_Id " +
 
                 "\n     INNER JOIN ParCompany C (nolock)  " +
                 "\n     ON C.Id = C2.UnitId " +
-                "\n     where cast(C2.CollectionDate as DATE) BETWEEN @DATAINICIAL AND @DATAFINAL " +
-                "\n     and C2.NotEvaluatedIs = 0 " +
+                "\n     where C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL " +
+                "\n     AND C2.UnitId = @ParCompany_Id and C2.NotEvaluatedIs = 0 " +
                 "\n     and C2.Duplicated = 0 " +
                 "\n     and L1.ParConsolidationType_Id = 4 " +
-                "\n     group by C.Id, ParLevel1_Id, EvaluationNumber, Sample, cast(CollectionDate as DATE) " +
+                "\n     group by C.Id, ParLevel1_Id" +
+                /*
                 "\n ) TAB " +
                 "\n GROUP BY UNIDADE, INDICADOR " +
-
+                */
 
 
 
@@ -273,8 +275,8 @@ public class ScorecardResultSet
            "\n  , ROUND(CASE WHEN AV = 0 THEN 0 ELSE Pontos END,2) AS PontosIndicador                                                                                                                                                                                                                                        " +
            "\n  , ROUND(Meta,2) AS Meta                                                                                                                                                                                                                                                             " +
            "\n  , ROUND(CASE WHEN Level1Id = 25 THEN CASE WHEN AV = 0 THEN 0 ELSE (AV - NC) / AV * 100 END WHEN Level1Id = 43 THEN case when NC = 0 then 0 when (Meta / NC) > 1 then 1 else Meta / NC end * 100 ELSE Real END,2) Real /* VERIFICAÇÃO DA TIPIFICAÇÃO */                                                                                                                            " +
-           "\n  , ROUND(PontosAtingidos,2)  PontosAtingidos                                                                                                                                                                                                                                               " +
-           "\n  , ROUND(Scorecard,2) Scorecard                                                                                                                                                                                                                                                        " +
+           "\n  , ROUND(CASE WHEN Level1Id = 43 AND NC = 0 THEN Pontos ELSE PontosAtingidos END,2)  PontosAtingidos                                                                                                                                                                                                                                               " +
+           "\n  , ROUND(CASE WHEN Level1Id = 43 AND NC = 0 THEN 100 ELSE Scorecard END,2)  Scorecard                                                                                                                                                                                                                                                        " +
            "\n  , TipoScore                                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
            "\n FROM                                                                                                                                                                                                                                                                " +

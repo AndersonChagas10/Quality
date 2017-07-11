@@ -910,7 +910,7 @@ namespace SgqSystem.Services
                         }
 
 
-                        if (IsBEA == 3)
+                        if (IsBEA == 3 || IsBEA == 2)
                                 ReconsolidationToLevel3(CollectionLevel2Id.ToString());
 
                         headersContadores = headersContadores.Replace("</header><header>", ";").Replace("<header>", "").Replace("</header>", "");
