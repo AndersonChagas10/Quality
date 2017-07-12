@@ -1,0 +1,667 @@
+﻿@using PlanoAcaoCore
+@{
+    ViewBag.Title = "Gerenciar";
+}
+
+@*<script src="~/Scripts/xeditable.min.js"></script>
+    <link href="~/Content/xeditable.min.css" rel="stylesheet" />*@
+<style>
+    .hideEmail {
+        display: block !important;
+    }
+    /*.dataTable td {
+        max-width: 15ch;
+        height: 125px !important;
+        max-height: 125px !important;
+        overflow: hidden;
+        text-overflow: clip;
+        white-space: nowrap;
+
+        padding: 10px;
+
+
+    }
+
+    .dataTable td:hover {
+        overflow: visible;
+        white-space: normal;
+    }*/
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        color: #333;
+    }
+
+    table {
+        text-align: left;
+        border-radius: .25rem;
+    }
+
+        table.borderedNinja {
+            border: 2px solid #c1c1c1;
+        }
+
+    thead tr:first-child {
+        background: #ffffff;
+        border: none;
+        height: 60px;
+    }
+
+    th:first-child,
+    td:first-child {
+        padding: 0 15px 0 20px;
+    }
+
+    tbody tr:hover {
+        background-color: rgba(170, 170, 170, 0.20);
+        cursor: default;
+    }
+
+    tbody tr:last-child td {
+        border: none;
+    }
+
+    td:last-child {
+        text-align: right;
+        padding-right: 10px;
+    }
+
+    .button {
+        color: #aaa;
+        cursor: pointer;
+        vertical-align: middle;
+    }
+
+    .edit:hover {
+        color: #0a79df;
+    }
+
+    .delete:hover {
+        color: #dc2a2a;
+    }
+
+    .modal-header .btnGrp {
+        position: absolute;
+        top: 8px;
+        right: 10px;
+    }
+
+
+    .min {
+        width: 250px;
+        height: 35px;
+        overflow: hidden !important;
+        padding: 0px !important;
+        margin: 0px;
+        float: left;
+        position: static !important;
+    }
+
+        .min .modal-dialog, .min .modal-content {
+            height: 100%;
+            width: 100%;
+            min-width: 70%;
+            align-self: center;
+            margin: 0px !important;
+            padding: 0px !important;
+        }
+
+    .modal-dialog {
+        width: 80% !important;
+    }
+
+    .min .modal-header {
+        height: 100%;
+        width: 100%;
+        margin: 0px !important;
+        padding: 3px 5px !important;
+    }
+
+    .display-none {
+        display: none;
+    }
+
+    button .fa {
+        font-size: 16px;
+        margin-left: 10px;
+    }
+
+    .min .fa {
+        font-size: 14px;
+    }
+
+    .min .menuTab {
+        display: none;
+    }
+
+    button:focus {
+        outline: none;
+    }
+
+    .minmaxCon {
+        height: 35px;
+        bottom: 1px;
+        left: 1px;
+        position: fixed;
+        right: 1px;
+        z-index: 9999;
+    }
+</style>
+
+<div ng-app="App">
+    <div ng-controller="Ctrl">
+
+        <table id="tableCentral">
+            <tr>
+                <td>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+
+<script>
+
+    var app = angular.module("App", []);
+
+    //app.run(function (editableOptions) {
+    //    editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
+    //});
+    var urlGetPlanejamentoAcao = '@Url.Action("GetPlanejamentoAcao", "api/Pa_Planejamento")';
+
+    app.controller('Ctrl', function ($scope, $http) {
+
+        $scope.user = {
+            name: 'awesome user'
+        };
+
+    });
+
+    var visaoOperacional = @Html.Raw(Json.Encode(Conn.visaoOperacional));
+    var nameCausaEspecifica = @Html.Raw(Json.Encode(Conn.nameCausaEspecifica));
+    var nameComoPontosImportantes = @Html.Raw(Json.Encode(Conn.nameComoPontosImportantes));
+    var nameContramedidaEspecifica = @Html.Raw(Json.Encode(Conn.nameContramedidaEspecifica));
+    var selecionado;
+
+    function GetDataTable() {
+        $.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
+    }
+
+    function GerarTabela(retornoArray) {
+
+        //console.log(retornoArray);
+
+
+        var btnDetalhes = '<button type="button" class="details btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Detalhes" style="cursor:pointer" class="glyphicon glyphicon-list-alt"></span>&nbsp Detalhes</button>';
+        var btnNovoTatico = '<button type="button" class="btnNovoTatico showAsEstrategy btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Novo Planejamento Tático para este Planejamento Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tag"></span>&nbsp Novo Tático</button>';
+        var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp Nova Acao</button>';
+        var btnAcompanhamento = '<button type="button" class="btnAcompanhamento btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Acompanhamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Acompanhamento</button>';
+        var arrEstragy = [0, 1, 2, 3, 4, 5, 6];
+        var arrEstragyH = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+
+        var table = $('#tableCentral').empty().DataTable({
+            data: retornoArray,
+            columns: [
+                { title: "Diretoria", mData: "Diretoria" },
+                { title: "Missão", mData: "Missao" },
+                { title: "Visão", mData: "Visao" },
+                { title: "Dimenção", mData: "Dimensao" },
+                { title: "Diretrizes/Objetivos", mData: "Objetivo" },//Objetivo
+                { title: "Indicadores diretriz", mData: "IndicadoresDiretriz" },
+                { title: "Responsavel pela Diretriz", mData: "Responsavel_Diretriz_Quem.Name" },
+                /*Fim Planejamento Estratégico*/
+
+                { title: "Gerência", mData: "Gerencia" },
+                { title: "Coordenação", mData: "Coordenacao" },
+                { title: "Projeto/Iniciativa", mData: "Iniciativa" },//Iniciativa
+                { title: "Indicadores do Projeto/Iniciativa", mData: "IndicadoresDeProjeto" },
+                { title: "Objetivo Gerencial", mData: "ObjetivoGerencial" },
+                { title: "Valor de", mData: "ValorDe" },
+                { title: "Valor para", mData: "ValorPara" },
+                { title: "Data (Início)", mData: "_DataInicio" },
+                { title: "Data (Fim)", mData: "_DataFim" },
+                { title: "Responsavel pelo Projeto/Iniciativa", mData: "Responsavel_Projeto_Quem.Name" },
+                /*Fim Tático*/
+
+                { title: "Unidade", mData: "Acao._Unidade" },
+                { title: "Problema ou Desvio", mData: "Acao._Pa_Problema_Desvio_Id.Name" },
+                { title: "Indicador Operacional", mData: "Acao._Pa_IndicadorSgqAcao.Name" },
+                { title: "Causa Genérica", mData: "Acao._CausaGenerica" },
+                { title: "Grupo Causa", mData: "Acao._GrupoCausa" },
+                { title: "Contramedida Genérica", mData: "Acao._ContramedidaGenerica" },
+                { title: nameCausaEspecifica, mData: "Acao.CausaEspecifica" },
+                { title: nameContramedidaEspecifica, mData: "Acao.ContramedidaEspecifica" },
+                { title: "Quem", mData: "Acao._Quem" },
+                { title: "Quando (Início)", mData: "Acao._QuandoInicio" },
+                { title: "Quando (Fim)", mData: "Acao._QuandoFim" },
+                { title: nameComoPontosImportantes, mData: "Acao.ComoPontosimportantes" },
+                { title: "Pra que", mData: "Acao.PraQue" },
+                { title: "Quanto custa", mData: "Acao.QuantoCusta" },
+                { title: "Status", mData: "Acao._StatusName" },
+                { title: "Prazo", mData: "Acao._Prazo" },//29 + 2
+                /*Fim Operacional*/
+
+                //{ title: "Data (Início)", mData: "_DataInicio" },
+                //{ title: "Indicadores do Projeto/Iniciativa", mData: "IndicadoresDeProjeto" },
+
+                /*JBS hoje*/
+
+                //{ title: "Tema / Assunto", mData: "TemaAssunto" },
+                //{ title: "Indicador SGQ", mData: null },
+                //{ title: "Monitoramento SGQ", mData: null },
+                //{ title: "Tarefa SGQ", mData: null },
+                //{ title: "Unidade", mData: "Acao.Unidade" },
+                //{ title: "Departamento", mData: "Acao.Departamento" },
+                //{ title: "Duração", mData: "Acao.DuracaoDias" },
+                //{ title: "Predecessora", mData: null },
+
+                { title: "Ação", mData: null, defaultContent: /*btnEditar + "<br>" + btnDetalhes + "<br>" + */btnNovoTatico + "<br class='showAsEstrategy'>"/* + btnNovoOperacional + "<br>"*/ + btnAcompanhamento },
+            ],
+            fixedColumns: {
+                leftColumns: 0,
+                rightColumns: 2,
+            },
+            "sScrollX": "100%",
+            "scrollX": true,
+            "scrollY": '550px',
+            bScrollAutoCss: true,
+            //sScrollX: '100%',
+            bScrollCollapse: true,
+            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
+            pageLength: 10,
+            responsive: true,
+            loadingRecords: true,
+            destroy: true,
+            info: true,
+            responsive: true,
+            //columnDefs: visibilidadeDefault,
+            initComplete: function () {
+
+                $('table > tbody').on('click', '.edit', function (data, a, b) {
+                    var data = table.row($(this).parents('tr')).data();
+
+                    console.log(data);
+
+                    $('#modalLindo').find('.modal-body').empty();
+                    $('#modalLindo').find('.modal-body').append('<div class="content1"></div><div class="content2"></div><div class="content3"></div>');
+
+                    if (data.Id > 0) {
+                        $.get(urlEditPlanOp, { id: data.Id },
+                             function (r) {
+                                 TesteRenan(r, 'Estrategico', data);
+                             }
+                        );
+                    }
+
+                    if (data.Estrategico_Id > 0) {
+                        $.get(urlEditPlanEstrat, { id: data.Id },
+                             function (r) {
+                                 TesteRenan(r, 'Tatico', data);
+                             }
+                        );
+                    }
+
+                    if (data.Acao.Id > 0) {
+
+                        $.get(urlEditAcao, { id: data.Acao.Id },
+                              function (r) {
+                                  var acao = data.Acao;
+
+
+                                  $('#Header').html("Editar Ação");
+                                  //$('#modalLindo').find('.modal-body').append(r); //colocar html depois
+                                  $('#modalLindo').find('.modal-footer button').hide();
+                                  $('#modalLindo').find('.modal-body .content3').append(r);
+
+                                  $('#modalLindo').find('.modal-body .content3').find('#CausaGenerica_Id').val(acao.CausaGenerica_Id).change();
+                                  $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoInicio"]').val(acao._QuandoInicio.split(" ")[0]);
+                                  $('#modalLindo').find('.modal-body .content3').find('[name="_QuandoFim"]').val(acao._QuandoFim.split(" ")[0]);
+                                  $('#modalLindo').find('.modal-body .content3').find('#Status').val(acao.Status);
+                                  $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').val(acao.QuantoCusta);
+                                  $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('mask.maskMoney');
+                                  $('#modalLindo').find('.modal-body .content3').find('[name="_QuantoCusta"]').trigger('blur');
+                                  $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
+
+                                  $(r).attr("id", "formEditAcao")
+
+                                  MoneyMask();
+                                  myfunction();
+
+                                  $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarAcaoEditada();\" >Salvar Operacional</button><hr>");
+
+                                  $('#obj').show(); //Apagar depois
+                                  InitDatePiker();
+                              }
+                        );
+
+                    }
+                    $('#modalLindo').find('.modal-footer button').hide();
+                    $('#Header').html("Editar");
+                    $('#modalLindo').modal();
+                });
+
+                $('table > tbody').on('click', '.details', function (data, a, b) {
+                    var data = table.row($(this).parents('tr')).data();
+                    console.log(data);
+
+                    planejamentoCorrentId = data.Tatico_Id;
+                    acaoCorrentId = data.Acao.Id;
+
+                    if (!(acaoCorrentId > 0)) { planejamentoCorrentId = data.Id }
+
+                    $('#modalLindo').modal();
+                    $('#modalLindo').find('.modal-body').empty();
+                    $('#Header').html("Detalhes Gerais do Planejamento");
+                    $('#modalLindo').find('.modal-footer button').hide();
+
+                    $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
+                        $('#modalLindo').find('.modal-body').append(r);
+                    });
+
+                    if (acaoCorrentId > 0) {
+                        $.get(AcaoDetalhes, { id: acaoCorrentId }, function (r) {
+                            $('#modalLindo').find('.modal-body').append(r);
+                        });
+                    }
+
+                });
+
+                $('table > tbody').on('click', '.btnNovoTatico', function (data, a, b) {
+                    var data = table.row($(this).parents('tr')).data();
+                    console.log(data);
+
+                    Clicked(true, false, true);
+                    $.get(urlGetPlanejamento, { id: data.Id }, function (r) {
+                        //EditarPlanejamento(r)
+                        ModalOpcoesEstrategico("Novo Planejamento Tático Vinculado", 0, function () { EditarPlanejamento(r) });
+                    });
+
+                });
+
+                $('table > tbody').on('click', '.btnNovoOperacional', function (data, a, b) {
+                    var data = table.row($(this).parents('tr')).data();
+                    console.log(data);
+                    planejamentoCorrentId = data.Tatico_Id;
+                    Clicked(isTaticoClicked, isNovaAcao);
+
+                    $('#modalLindo').modal();
+                    $('#modalLindo').find('.modal-body').empty();
+                    $('#Header').html("Planejamento Operacional");
+
+                    $.get(PlanejamentoDetalhes, { id: planejamentoCorrentId }, function (r) {
+                        $('#modalLindo').find('.modal-body').empty().append(r);
+                        $('#NovaAcao').show();
+                        $('#NovaAcao').click();
+                    });
+
+                });
+
+                $('table > tbody').on('click', '.btnAcompanhamento', function (data, a, b) {
+
+                    var data = table.row($(this).parents('tr')).data();
+                    selecionado = data;
+                    console.log(data);
+                    acaoCorrentId = data.Acao.Id;
+                    //Clicked(isTaticoClicked, isNovaAcao);
+
+                    getAcompanhamento(acaoCorrentId);
+
+                });
+
+            },
+            language: {
+                "sEmptyTable": "Nenhum registro encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "_MENU_ resultados por página",
+                "sLoadingRecords": "Carregando...",
+                "sProcessing": "Processando...",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sSearch": "Pesquisar",
+                "oPaginate": {
+                    "sNext": "Próximo",
+                    "sPrevious": "Anterior",
+                    "sFirst": "Primeiro",
+                    "sLast": "Último"
+                },
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
+                }
+            },
+            /*fixedHeader: {
+                headerOffset: 50
+            },*/
+            createdRow: function (row, data, index) {
+
+                try {
+                    var bgColorStatus = ""
+                    var bgColorPrazo = ""
+                    /*Status*/
+                    //console.log(data.Acao.Status);
+                    if (data.Acao.Status == 2) {
+                        bgColorStatus = "grey";
+                        bgColorPrazo = "rgb(126, 194, 253)";
+                    } else if (data.Acao.Status == 5) {
+                        bgColorStatus = "#ADD8E6";
+                    } else if (data.Acao.Status == 5 && data.Acao.StatusName.indexOf('Atrasado') > -1) {
+                        bgColorStatus = "#458fa8"
+                    } else if (data.Acao.Status == 3/* > -1 && data.Acao.StatusName.indexOf('Prazo') > -1*/) {
+                        bgColorPrazo = "rgb(126, 194, 253)";
+                        bgColorStatus = "cyan"
+                    } else if (data.Acao.Status == 4) {
+                        bgColorPrazo = "rgb(126, 194, 253)";
+                        bgColorStatus = "steelblue"
+                    }
+
+                    //else if (data.Acao.StatusName.indexOf('Replanejado') > -1) {
+                    //    bgColorStatus = "yellow"
+                    //}
+
+                    $(row.cells[31]).css("background", bgColorStatus);
+
+                    /*Prazo*/
+                    if (data.Acao.Status == 2) {
+
+                    } else if (data.Acao.Status == 3) {
+
+                    } else if (data.Acao._Prazo.indexOf('Faltam') > -1) {
+                        bgColorPrazo = "#90EE90"
+                    } else if (data.Acao._Prazo.indexOf('-') > -1 && data.Acao._Prazo.indexOf(' Dias') > -1) {
+                        bgColorPrazo = "rgb(250, 128, 114)"
+                    }
+
+                    $(row.cells[32]).css("background", bgColorPrazo);
+
+                    if (data.Tatico_Id > 0) { // possui plan tatico
+                        $(row.cells[33]).find('.btnNovoOperacional').show();
+                    } else {
+                        $(row.cells[33]).find('.btnNovoOperacional').hide();
+                    }
+
+                    if (data.Id > 0) { // Possui plan Estrat
+                        $(row.cells[33]).find('.btnNovoTatico').show();
+                    } else {
+                        $(row.cells[33]).find('.btnNovoTatico').hide();
+                    }
+
+                    if (data.Acao.Id > 0) { // Possui plan Operac
+                        $(row.cells[33]).find('.btnAcompanhamento').show();
+                    } else {
+                        $(row.cells[33]).find('.btnAcompanhamento').hide();
+                    }
+
+                } catch (e) { }
+
+                if (data.Tatico_Id > 0) { // possui plan tatico
+                    $(row.cells[33]).find('.btnNovoOperacional').show();
+                } else {
+                    $(row.cells[33]).find('.btnNovoOperacional').hide();
+                }
+
+                if (data.Id > 0) { // Possui plan Estrat
+                    $(row.cells[33]).find('.btnNovoTatico').show();
+                } else {
+                    $(row.cells[33]).find('.btnNovoTatico').hide();
+                }
+
+                if (data.Acao.Id > 0) { // Possui plan Operac
+                    $(row.cells[33]).find('.btnAcompanhamento').show();
+                } else {
+                    $(row.cells[33]).find('.btnAcompanhamento').hide();
+                }
+
+            },
+            fnDrawCallback: function (data, d, o) {
+
+            },
+
+            //rowsGroup: [// Always the array (!) of the column-selectors in specified order to which rows groupping is applied
+            //// (column-selector could be any of specified in https://datatables.net/reference/type/column-selector)
+            //    'second:name',
+            //    0,
+            //    2
+            //],
+
+        });
+
+        var arrShowOperacional = [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+        var arrHideOperacional = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        if (visaoOperacional) {
+            arrShowOperacional = [17, /*18, 19, 20, 21, 22,*/ 23, 24, 25, 26, 27, 28,/* 29, 30,*/ 31];
+            arrHideOperacional = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 22, 29, 30];
+        }
+        var show = {
+            PlanejamentoEstrategicos: {
+                extend: 'colvisGroup',
+                text: 'Planejamento Estratégicos',
+                show: arrEstragy,
+                hide: arrEstragyH
+            },
+            PlanejamentoTatico: {
+                extend: 'colvisGroup',
+                text: 'Planejamento Tático',
+                show: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+                hide: [0, 1, 2, 3, 4, 5, 6, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+            },
+            PlanejamentoOperacional: {
+                extend: 'colvisGroup',
+                text: 'Planejamento Operacional',
+                show: arrShowOperacional,
+                hide: arrHideOperacional
+            },
+            colvisGroupTodos: {
+                extend: 'colvisGroup',
+                text: 'Mostrar Todos',
+                show: ':hidden'
+            },
+            print: {
+                extend: 'print',
+                text: 'Imprimir',
+                customize: function (win) {
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+                },
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            excelHtml5: {
+                extend: 'excelHtml5',
+                text: 'Excel',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            colvis: {
+                extend: 'colvis',
+                text: 'Colunas Visíveis',
+                collectionLayout: 'fixed two-column',
+                exportOptions: {
+                    columns: ':visible',
+                }
+            },
+            //pdf :{
+            //    extend: 'pdf',
+            //    text: 'PDF',
+            //    exportOptions: {
+            //        columns: ':visible'
+            //    }
+            //},
+            atualizar: {
+                text: 'Atualizar',
+                action: function (e, dt, node, config) {
+                    GetDataTable();
+                },
+                counterAjaxTable: 1
+            },
+            novaAcao: {
+                text: 'Nova Ação',
+                action: function (e, dt, node, config) {
+                    Clicked(isTaticoClicked, isNovaAcao);
+
+                    $('#modalLindo').modal();
+                    $('#modalLindo').find('.modal-body').empty();
+                    $('#Header').html("Planejamento Operacional");
+
+                    $.get(PlanejamentoDetalhes, { id: 1040 }, function (r) {
+                        $('#modalLindo').find('.modal-body').empty().append(r);
+                        $('#NovaAcao').show();
+                        $('#NovaAcao').click();
+                    });
+                },
+            }
+        };
+
+        var arrToShow = [
+              show.atualizar,
+              show.novaAcao,
+              show.PlanejamentoEstrategicos,
+              show.PlanejamentoTatico,
+              show.PlanejamentoOperacional,
+              show.colvisGroupTodos,
+              show.print,
+              show.excelHtml5,
+              show.colvis,
+        ];
+
+        if (visaoOperacional) {
+            show.colvisGroupTodos.show = arrShowOperacional;
+            show.colvisGroupTodos.hide = arrHideOperacional;
+            show.colvis['columns'] = arrShowOperacional;
+            arrToShow = [
+               show.atualizar,
+               show.novaAcao,
+               show.colvisGroupTodos,
+               show.print,
+               show.excelHtml5,
+               show.colvis,
+            ]
+        }
+
+        new $.fn.dataTable.Buttons(table, {
+            buttons: arrToShow
+        });
+
+        table.buttons(0, null).container().prependTo(
+            table.table().container()
+        );
+        $('#paTable_wrapper > div.dt-buttons > a:nth-child(3)').click();
+    }
+
+    $(function () {
+        GetDataTable();
+    })
+
+</script>

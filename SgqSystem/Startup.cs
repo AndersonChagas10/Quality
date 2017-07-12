@@ -31,10 +31,12 @@ namespace SgqSystem
             //() => SimpleAsynchronous.ResendProcessJson());
 
             //"*/1 * * * *" = 1 minutos.
-            RecurringJob.RemoveIfExists("ReProcessJson");
-            //RecurringJob.AddOrUpdate("ReProcessJson"
-            //    () => SimpleAsynchronous.ResendProcessJson(),
-            //    Cron.Minutely);
+            /*
+             * RecurringJob.RemoveIfExists("ReProcessJson");
+            RecurringJob.AddOrUpdate("ReProcessJson",
+                () => SimpleAsynchronous.ResendProcessJson(),
+                Cron.Minutely);
+                */
 
             //"*/1 * * * *" = 1 minutos.
             RecurringJob.RemoveIfExists("MailServer");

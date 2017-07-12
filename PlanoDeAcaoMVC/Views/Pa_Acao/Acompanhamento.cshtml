@@ -1,5 +1,17 @@
-﻿
-@model PlanoAcaoCore.Pa_Acao
+﻿@model PlanoAcaoCore.Pa_Acao
+@using PlanoAcaoCore
+@{
+    var showTipo1 = "display:none";
+    var showTipo2 = "display:none";
+    if (Model.TipoIndicador == 1)
+    {
+        showTipo1 = "";
+    }
+    else if (Model.TipoIndicador == 2)
+    {
+        showTipo2 = "";
+    }
+}
 <style>
     input,
     select,
@@ -7,7 +19,17 @@
         max-width: 100% !important;
     }
 </style>
+@if (Conn.visaoOperacional)
+{
+    <style>
+        .showAsEstrategy {
+            display: none;
+        }
+    </style>
 
+}
+<button type="button" class="edit btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Editar" class="glyphicon glyphicon-edit" style="cursor:pointer"></span>&nbsp Editar</button>
+<br />
 <h5>Acompanhamento da Ação</h5>
 
 <table class="borderedNinja nowrap .col-md-6 .col-md-offset-3 display" cellspacing="0" style="width: 100%;">
@@ -17,12 +39,12 @@
                 @Html.DisplayNameFor(model => model.Unidade_Id)
             </td>
             <td style="width: 43%;">
-                @Html.DisplayFor(model => model.Unidade_Id) 
+                @Html.DisplayFor(model => model.Unidade_Id)
                 @*@Html.DisplayFor(model => model._Unidade)*@
             </td>
             <td style="width: 16%;"></td>
         </tr>
-        <tr>
+        <tr class="showAsEstrategy">
             <td>
                 @Html.DisplayNameFor(model => model.Pa_Problema_Desvio_Id)
             </td>
@@ -31,7 +53,7 @@
             </td>
             <td></td>
         </tr>
-        <tr>
+        <tr class="showAsEstrategy">
             <td>
                 @Html.DisplayNameFor(model => model.Pa_IndicadorSgqAcao_Id)
             </td>
@@ -40,7 +62,7 @@
             </td>
             <td></td>
         </tr>
-        <tr>
+        <tr class="showAsEstrategy">
             <td>
                 @Html.DisplayNameFor(model => model.Level1Id)
             </td>
@@ -49,7 +71,7 @@
             </td>
             <td></td>
         </tr>
-        <tr>
+        <tr class="showAsEstrategy">
             <td>
                 @Html.DisplayNameFor(model => model.Level2Id)
             </td>
@@ -58,7 +80,7 @@
             </td>
             <td></td>
         </tr>
-        <tr>
+        <tr class="showAsEstrategy">
             <td>
                 @Html.DisplayNameFor(model => model.Level3Id)
             </td>
@@ -68,7 +90,7 @@
             <td></td>
         </tr>
 
-        <tr>
+        <tr class="showAsEstrategy">
             <td>
                 @Html.DisplayNameFor(model => model.CausaGenerica_Id)
             </td>
@@ -77,7 +99,7 @@
             </td>
             <td></td>
         </tr>
-        <tr>
+        <tr class="showAsEstrategy">
             <td>
                 @Html.DisplayNameFor(model => model.GrupoCausa_Id)
             </td>
@@ -86,7 +108,7 @@
             </td>
             <td></td>
         </tr>
-        <tr>
+        <tr class="showAsEstrategy">
             <td>
                 @Html.DisplayNameFor(model => model.ContramedidaGenerica_Id)
             </td>
@@ -97,7 +119,7 @@
         </tr>
         <tr>
             <td>
-                @Html.DisplayNameFor(model => model.CausaEspecifica)
+                @Html.DisplayName(Conn.nameCausaEspecifica)
             </td>
             <td>
                 @Html.DisplayFor(model => model.CausaEspecifica)
@@ -106,7 +128,7 @@
         </tr>
         <tr>
             <td>
-                @Html.DisplayNameFor(model => model.ContramedidaEspecifica)
+                @Html.DisplayName(Conn.nameContramedidaEspecifica)
             </td>
             <td>
                 @Html.DisplayFor(model => model.ContramedidaEspecifica)
@@ -146,7 +168,7 @@
 
         <tr>
             <td>
-                @Html.DisplayNameFor(model => model.ComoPontosimportantes)
+                @Html.DisplayName(Conn.nameComoPontosImportantes)
             </td>
             <td>
                 @Html.DisplayFor(model => model.ComoPontosimportantes)
@@ -212,7 +234,7 @@
 
 <br />
 
-<div class="container-fluid">
+<div id="showAcompnhamentoForm" class="container-fluid" style="display:none">
     <div class="row">
         <form id="acompanhamento">
             <div class="col-sm-6">

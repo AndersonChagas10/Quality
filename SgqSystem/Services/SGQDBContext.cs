@@ -36,7 +36,7 @@ namespace SGQDBContext
         public bool IsReaudit { get; set; }
         public bool EditLevel2 { get; set; }
         public bool IsSpecificNumberEvaluetion { get; set; }
-
+        public bool IsFixedEvaluetionNumber { get; set; }
 
         public bool HasGroupLevel2 { get; set; }
 
@@ -77,13 +77,11 @@ namespace SGQDBContext
                              " IN (                                                                         " +
                              " SELECT ParLevel1_Id FROM ParLevel2ControlCompany                             " +
                              "WHERE                                                                         " +
-                             "((CAST(InitDate AS DATE) <= '" + dateCollection.ToString("yyyy-MM-dd") + "'    " +
-                             " AND IsActive = 1) OR                                                         " +
-                             "(CAST(InitDate AS DATE) <= '" + dateCollection.ToString("yyyy-MM-dd") + "' AND" +
-                             " CAST(AlterDate AS DATE) > '" + dateCollection.ToString("yyyy-MM-dd") + "' AND IsActive = 0))";
+                             "CAST(InitDate AS DATE) <= '" + dateCollection.ToString("yyyy-MM-dd") + "'     " +
+                             " AND IsActive = 1                                                             ";
                 if (ParLevel1_Id > 0)
                 {
-                    sql += " AND ParLevel1_Id = "+ ParLevel1_Id;
+                    sql += " AND ParLevel1_Id = " + ParLevel1_Id;
                 }
                 sql += " GROUP BY ParLevel1_Id, InitDate                                                    " +
                         "HAVING MAX(InitDate) = InitDate)                                                   ";
@@ -111,7 +109,7 @@ namespace SGQDBContext
             //SqlConnection db = new SqlConnection(conexao);
             string sql = "\n SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
                          "\n P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate, P1.IsLimitedEvaluetionNumber, P1.IsPartialSave" +
-                         "\n ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, AL.IsReaudit AS IsReaudit, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2, P1.EditLevel2 AS EditLevel2                                                                                                                                     " +
+                         "\n ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, AL.IsReaudit AS IsReaudit, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2, P1.EditLevel2 AS EditLevel2, P1.IsFixedEvaluetionNumber AS IsFixedEvaluetionNumber " +
                          "\n FROM ParLevel1 P1  (nolock)                                                                                                         " +
                          "\n INNER JOIN (SELECT ParLevel1_Id FROM ParLevel3Level2Level1 GROUP BY ParLevel1_Id) P321                                     " +
                          "\n ON P321.ParLevel1_Id = P1.Id                                                                                               " +
@@ -132,9 +130,9 @@ namespace SGQDBContext
                          "\n WHERE CC.ParCompany_Id = '" + ParCompany_Id + "'                                                                           " +
                          "\n " + whereIsChildren + "                                                                                                       " +
                          "\n AND P1.IsActive = 1 AND C.IsActive = 1 AND P1C.IsActive = 1 AND CC.Active = 1                                                                                                       ";
-            if(Level1ListId != "" && Level1ListId != null)
+            if (Level1ListId != "" && Level1ListId != null)
             {
-                sql += " AND P1.Id IN ("+ Level1ListId.Substring(0, Level1ListId.Length - 1) + ") ";
+                sql += " AND P1.Id IN (" + Level1ListId.Substring(0, Level1ListId.Length - 1) + ") ";
             }
 
             sql += "\n ORDER BY CL.Name, P1.Name                                                                                                           ";
@@ -152,7 +150,7 @@ namespace SGQDBContext
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
         public decimal Nivel1 { get; set; }
         public decimal Nivel2 { get; set; }
-        public string  Nivel3 { get; set; }
+        public string Nivel3 { get; set; }
         public decimal VolumeAlerta { get; set; }
         public decimal Meta { get; set; }
 
@@ -170,7 +168,7 @@ namespace SGQDBContext
         }
         public ParLevel1Alertas getAlertas(int ParLevel1_Id, int ParCompany_Id, DateTime DateCollect)
         {
-            
+
 
             string _DataCollect = DateCollect.ToString("yyyyMMdd");
 
@@ -339,7 +337,7 @@ namespace SGQDBContext
         public DateTime AlterDate { get; set; }
 
         public bool IsActive { get; set; }
-     
+
 
         public int ParNotConformityRule_id { get; set; }
 
@@ -414,26 +412,26 @@ namespace SGQDBContext
                 throw ex;
             }
         }
-        public IEnumerable<ParLevel2> getLevel2ByIdLevel1(SGQDBContext.ParLevel1 parLevel1db, DateTime dateCollection, int ParLevel1_Id, int ParCompany_Id)
+        public IEnumerable<ParLevel2> getLevel2ByIdLevel1(SGQDBContext.ParLevel1 parLevel1, DateTime dateCollection, int ParCompany_Id)
         {
             //SqlConnection db = new SqlConnection(conexao);            
 
-            bool parLevel1Familia = false;
+            //bool parLevel1Familia = false;
 
-            using (var dbEf = new SgqDbDevEntities())
-            {
+            //using (var dbEf = new SgqDbDevEntities())
+            //{
 
-                var level1 = parLevel1db.getByFamilia(dateCollection, ParLevel1_Id);
+            //    var level1 = parLevel1db.getByFamilia(dateCollection, ParLevel1_Id);
 
-                if(level1.Count() > 0)
-                {
-                    parLevel1Familia = true;
-                }
-            }
+            //    if(level1.Count() > 0 || parLevel1db.IsFixedEvaluetionNumber == true)
+            //    {
+            //        parLevel1Familia = true;
+            //    }
+            //}
 
             /****CONTROLE DE FAMÍLIA DE PRODUTOS*****/
 
-            if (parLevel1Familia == true)
+            if (parLevel1.IsFixedEvaluetionNumber == true)
             {
                 string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit, PL2.ParFrequency_id " +
                              "FROM ParLevel3Level2 P32   (nolock)                                                                                                                             " +
@@ -445,12 +443,12 @@ namespace SGQDBContext
                              " ON AL.ParLevel2_Id = PL2.Id  AND AL.IsActive = 1                                                                                                     " +
                              "INNER JOIN (SELECT * FROM ParLevel2ControlCompany PL (nolock)  INNER JOIN                                                                                       " +
                              "(SELECT MAX(InitDate) Data, ParCompany_Id AS UNIDADE FROM ParLevel2ControlCompany   (nolock)                                                                    " +
-                             "where ParLevel1_Id = '" + ParLevel1_Id + "' AND CAST(InitDate AS DATE) <= '" + dateCollection.ToString("yyyy-MM-dd") + "'    " +
+                             "where ParLevel1_Id = '" + parLevel1.Id + "' AND CAST(InitDate AS DATE) <= '" + dateCollection.ToString("yyyy-MM-dd") + "'    " +
 
                              "GROUP BY ParCompany_Id) F1 ON (CAST(F1.data AS DATE) = CAST(PL.initDate AS DATE) AND PL.IsActive = 1) OR (CAST(f1.data AS DATE) = CAST(PL.initDate AS DATE) AND CAST(f1.data AS DATE) < CAST(PL.AlterDate AS DATE) AND PL.IsActive = 1) AND (F1.UNIDADE = PL.ParCompany_id                                                                " +
                              "or F1.UNIDADE is null))  Familia                                                                                                                      " +
                              "ON Familia.ParLevel2_Id = PL2.Id                                                                                                                      " +
-                             "WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'                                                                                                      " +
+                             "WHERE P321.ParLevel1_Id = '" + parLevel1.Id + "'                                                                                                      " +
                              "AND PL2.IsActive = 1                                                                                                                                  " +
                              "AND (Familia.ParCompany_Id = '" + ParCompany_Id + "'  or Familia.ParCompany_Id IS NULL)                                                               " +
                              "GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id             ";
@@ -463,9 +461,9 @@ namespace SGQDBContext
             else
             {
 
-               
 
-                
+
+
 
                 string sql = "\n SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit,PL2.ParFrequency_id  " +
                          "\n FROM ParLevel3Level2 P32                                      " +
@@ -475,7 +473,7 @@ namespace SGQDBContext
                          "\n ON PL2.Id = P32.ParLevel2_Id                                  " +
                          "\n LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
                          "\n ON AL.ParLevel2_Id = PL2.Id     AND AL.IsActive = 1                                                                                             " +
-                        "\n WHERE P321.ParLevel1_Id = '" + ParLevel1_Id + "'              " +
+                        "\n WHERE P321.ParLevel1_Id = '" + parLevel1.Id + "'              " +
                          "\n AND PL2.IsActive = 1  AND P32.IsActive = 1 AND P321.Active = 1                                        " +
 
                          "\n AND " +
@@ -503,6 +501,7 @@ namespace SGQDBContext
             }
         }
     }
+
     public partial class ParLevel2Evaluate
     {
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -952,7 +951,7 @@ namespace SGQDBContext
                             "\n  , L32.Weight " +
                             "\n  , L3V.ParCompany_Id " +
                             "\n  , L32.ParCompany_Id ";
-         
+
 
             /*
              * MOCK GABRIEL PARA TESTE DE TRAZER TAREFAS DO OUTRO INDICADOR
@@ -972,7 +971,7 @@ namespace SGQDBContext
                 }
             }
 
-           
+
 
             ParLevel1Origin_Id += "null";
 
@@ -995,7 +994,7 @@ namespace SGQDBContext
                     }
                 }
 
-                if(IndicadorFilhoPeso == "0")
+                if (IndicadorFilhoPeso == "0")
                 {
                     sqlPeso = "0";
                 }
@@ -1051,7 +1050,7 @@ namespace SGQDBContext
            " , L32.Weight " +
            "\n  , L3V.ParCompany_Id " +
            " , L32.ParCompany_Id ";
-            
+
 
 
             }
@@ -1163,7 +1162,7 @@ namespace SGQDBContext
         public IEnumerable<Level2Result> getList(int ParLevel1_Id, int ParCompany_Id, string dataInicio, string dataFim)
         {
 
-           
+
             //SqlConnection db = new SqlConnection(conexao);
 
             string sql = "SELECT ParLevel1_Id, ParLevel2_Id, UnitId AS Unit_Id, Shift, Period, CollectionDate, MAX(EvaluationNumber) AS EvaluateLast, MAX(Sample) AS SampleLast, MAX(ConsolidationLevel2_Id) AS ConsolidationLevel2_Id " +
@@ -1292,7 +1291,7 @@ namespace SGQDBContext
         public bool haveReaudit { get; set; }
         public int ReauditLevel { get; set; }
         public int ReauditNumber { get; set; }
-        public bool IsReaudit { get; set; }        
+        public bool IsReaudit { get; set; }
         public int CollectionLevel2_ID_CorrectiveAction { get; set; }
         public int CollectionLevel2_Period_CorrectiveAction { get; set; }
         public int More3DefectsEvaluate { get; set; }
@@ -1447,7 +1446,7 @@ namespace SGQDBContext
         {
             string conexaoBR = System.Configuration.ConfigurationManager.ConnectionStrings["SGQ_GlobalADO"].ConnectionString;
             db = new SqlConnection(conexaoBR);
-            
+
             var sql = "SELECT null Id, null as Name, 0 as PunishmentValue, 0 as IsDefaultOption";
 
             var valores = integracao.Split('|');
@@ -1464,21 +1463,21 @@ namespace SGQDBContext
                 {
                     subtipo = "subtipo = '" + valores[1] + "'";
                 }
-                
+
                 sql = "\n SELECT Id, Nome as Name, 0 as PunishmentValue, 0 as IsDefaultOption " +
                              "\n FROM Equipamentos  (nolock) " +
                              "\n WHERE (Tipo = '" + valores[0] + "' AND " + subtipo + ") " +
                              "\n AND ParCompany_id = " + ParCompany_Id;
 
             }
-            else if(valores[0] == "Produto")
+            else if (valores[0] == "Produto")
             {
                 sql = "\n SELECT nCdProduto Id, cast(nCdProduto as varchar) + ' | ' + cNmProduto as Name, 0 as PunishmentValue, 0 as IsDefaultOption  " +
                       "\n FROM Produto  (nolock) ";
             }
 
             var multipleValues = db.Query<ParFieldType>(sql);
-            
+
             return multipleValues;
         }
     }
@@ -1531,7 +1530,7 @@ namespace SGQDBContext
 
             string sql = "SELECT Id FROM Result_Level3  (nolock)          " +
                          "WHERE ParLevel3_Id = '" + ParLevel3_Id + "' and " +
-                         "CollectionLevel2_Id = "+ CollectionLevel2_Id + ";";
+                         "CollectionLevel2_Id = " + CollectionLevel2_Id + ";";
 
             var parResultLevel3 = db.Query<Result_Level3>(sql).FirstOrDefault();
 
@@ -1800,7 +1799,7 @@ namespace SGQDBContext
                       " from CaracteristicaTipificacao CP (nolock)  where LEN(CP.cNrCaracteristica) >= 5 and SUBSTRING(CP.cNrCaracteristica, 1, 3) = '" + id + "';";
             }
 
-            var list = db.Query<CaracteristicaTipificacao>(sql);                     
+            var list = db.Query<CaracteristicaTipificacao>(sql);
 
             return list;
         }
@@ -1869,13 +1868,13 @@ namespace SGQDBContext
             return list;
         }
     }
-    
+
     public partial class CollectionLevel2Consolidation
     {
         public int ConsolidationLevel2_Id { get; set; }
 
         public int ParLevel2_Id { get; set; }
-        
+
         public decimal WeiEvaluationTotal { get; set; }
         // public decimal EvaluateTotal { get; set; }
         public decimal DefectsTotal { get; set; }
@@ -2044,9 +2043,16 @@ namespace SGQDBContext
         {
             try
             {
-                string sql = "SELECT * FROM ConsolidationLevel2 (nolock)  WHERE UnitId = '" + ParCompany_Id + "' AND ParLevel1_Id= '" + ParLevel1_Id + "' AND CONVERT(date, ConsolidationDate) = '" + collectionDate.ToString("yyyy-MM-dd") + "'";
+                string sql = "SELECT * FROM ConsolidationLevel2 (nolock)  WHERE UnitId = " + ParCompany_Id + " AND ParLevel1_Id= " + ParLevel1_Id + " AND ConsolidationDate BETWEEN '" + collectionDate.ToString("yyyy-MM-dd") + " 00:00' AND '" + collectionDate.ToString("yyyy-MM-dd") + " 23:59:90.9999'";
 
                 //SqlConnection db = new SqlConnection(conexao);
+
+                /**
+                 * ADD PARAMETER FORLINI
+                 * DECLARA TODAS AS COLUNAS!! AO INVES DO *
+                 * INSERIR ÍNDICE NO CONSOLIDATIONLEVEL1 DENTRO DO CONOLIDATIONLEVEL2
+                 */
+
                 var obj = db.Query<ConsolidationLevel2>(sql).FirstOrDefault();
                 return obj;
             }
@@ -2075,8 +2081,8 @@ namespace SGQDBContext
         {
             try
             {
-                string sql = "SELECT Id, ConsolidationLevel1_Id, UnitId, ParLevel2_Id, ConsolidationDate, WeiEvaluation, EvaluateTotal, DefectsTotal, WeiDefects, TotalLevel3Evaluation, TotalLevel3WithDefects, EvaluatedResult, ReauditIs, ReauditNumber FROM ConsolidationLevel2 (nolock)  WHERE ConsolidationLevel1_Id = '" + 
-                    ConsolidationLevel1_Id + "' AND ParLevel2_Id= '" + ParLevel2_Id + "' AND UnitId='" + ParCompany_Id + "' AND ReauditIs="+reaudit+" and reauditnumber="+reauditNumber+";";
+                string sql = "SELECT Id, ConsolidationLevel1_Id, UnitId, ParLevel2_Id, ConsolidationDate, WeiEvaluation, EvaluateTotal, DefectsTotal, WeiDefects, TotalLevel3Evaluation, TotalLevel3WithDefects, EvaluatedResult, ReauditIs, ReauditNumber FROM ConsolidationLevel2 (nolock)  WHERE ConsolidationLevel1_Id = '" +
+                    ConsolidationLevel1_Id + "' AND ParLevel2_Id= '" + ParLevel2_Id + "' AND UnitId='" + ParCompany_Id + "' AND ReauditIs=" + reaudit + " and reauditnumber=" + reauditNumber + ";";
                 //SqlConnection db = new SqlConnection(conexao);
                 var obj = db.Query<ConsolidationLevel2>(sql).FirstOrDefault();
                 return obj;
@@ -2200,7 +2206,7 @@ namespace SGQDBContext
                                  "   AND PO.Name = '" + Local + "'                                                             " +
                                  "   AND PC.Level = " + Level + " AND PL.IsActive = 1;                                      ";
                         */
-                        
+
                         sql = "SELECT Distinct PO.level, PC.Name as Counter, PO.Name as Local, PL.ParLevel2_Id AS indicador FROM ParCounterXLocal PL (nolock)  " +
                               "LEFT JOIN ParCounter PC (nolock)  ON PL.ParCounter_Id = PC.Id " +
                               "LEFT JOIN ParLocal PO (nolock)  ON PO.Id = PL.ParLocal_Id " +
@@ -2260,7 +2266,7 @@ namespace SGQDBContext
                 throw;
             }
         }
-        
+
     }
     public partial class CollectionLevel2
     {
@@ -2354,7 +2360,7 @@ namespace SGQDBContext
                 }
                 else if (IsReaudit == true && HaveReaudit == 0)
                 {
-                    sql = "UPDATE CollectionLevel2 SET HaveReaudit = 0, ReauditNumber = "+ ReauditNumber +" WHERE [Key] = '" + Key + "'";
+                    sql = "UPDATE CollectionLevel2 SET HaveReaudit = 0, ReauditNumber = " + ReauditNumber + " WHERE [Key] = '" + Key + "'";
                 }
 
                 //SqlConnection db = new SqlConnection(conexao);
@@ -2435,18 +2441,18 @@ namespace SGQDBContext
             try
             {
                 string sql = "SELECT   " +
-                            "Id, "+
+                            "Id, " +
                             "ParLevel1_Id, " +
                             "ParLevel2_Id, " +
                             "FORMAT(CollectionDate, 'MMddyyyy') as CollectionDate, " +
                             "Period, " +
                             "Shift, " +
                             "Phase, " +
-                            "EvaluationNumber " + 
+                            "EvaluationNumber " +
                             "FROM CollectionLevel2 c1                                                                                       " +
                             "WHERE CollectionDate                                                                                           " +
-                            "BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00'  and '" + EndDate.ToString("yyyyMMdd") + " 23:59' and   "+
-                            "Phase > 0  and UnitId = "+ ParCompany_Id + "                                                                   " +
+                            "BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00'  and '" + EndDate.ToString("yyyyMMdd") + " 23:59' and   " +
+                            "Phase > 0  and UnitId = " + ParCompany_Id + "                                                                   " +
                             "AND CONCAT(c1.ParLevel1_id, c1.ParLevel2_Id, CAST(c1.CollectionDate AS VARCHAR(500))) IN                       " +
                             "  (SELECT CONCAT(c1b.ParLevel1_id, c1b.ParLevel2_Id, CAST(MAX(c1b.CollectionDate) AS VARCHAR(500)))            " +
                             "                                                                                                               " +
@@ -2457,8 +2463,8 @@ namespace SGQDBContext
                             "          AND c1b.CollectionDate BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00' and '" + EndDate.ToString("yyyyMMdd") + " 23:59'                                     " +
                             "          AND c1b.UnitId = " + ParCompany_Id + "                                                                       " +
                             "      GROUP BY c1b.ParLevel1_id, c1b.ParLevel2_Id                                                              " +
-                            "  )                                                                                                            " ;
-                
+                            "  )                                                                                                            ";
+
 
                 //SqlConnection db = new SqlConnection(conexao);
                 var list = db.Query<ResultPhase>(sql).ToList();
@@ -2474,7 +2480,7 @@ namespace SGQDBContext
     public partial class ResultPhaseFrequency
     {
         public int ParFrequency_Id { get; set; }
-        
+
         private SqlConnection db { get; set; }
         public ResultPhaseFrequency() { }
         public ResultPhaseFrequency(SqlConnection _db)
@@ -2485,12 +2491,12 @@ namespace SGQDBContext
         {
             try
             {
-                string sql = "SELECT * FROM (                                                                               "+
-                             "   SELECT ROW_NUMBER() OVER(ORDER BY Id ASC) AS Phase, p.ParFrequency_Id AS ParFrequency_Id   "+
-                             "   FROM ParRelapse p  (nolock) WHERE ParLevel1_Id = " + ParLevel1_Id + " AND IsActive = 1                "+
-                             "   ) AS T                                                                                     "+
-                             "   WHERE T.Phase = "+ Phase + "                                                               "+
-                             "                                                                                              ";                                 
+                string sql = "SELECT * FROM (                                                                               " +
+                             "   SELECT ROW_NUMBER() OVER(ORDER BY Id ASC) AS Phase, p.ParFrequency_Id AS ParFrequency_Id   " +
+                             "   FROM ParRelapse p  (nolock) WHERE ParLevel1_Id = " + ParLevel1_Id + " AND IsActive = 1                " +
+                             "   ) AS T                                                                                     " +
+                             "   WHERE T.Phase = " + Phase + "                                                               " +
+                             "                                                                                              ";
 
 
                 //SqlConnection db = new SqlConnection(conexao);
@@ -2521,9 +2527,9 @@ namespace SGQDBContext
             {
                 string sql = "SELECT CAST(CollectionDate as date) as CollectionDate, Period, Shift                                                      " +
                              "FROM CollectionLevel2  (nolock) WHERE  Id >= " + Id + " AND UnitId = " + ParCompany_Id + "  AND  Shift = " + Shift + "  AND          " +
-                             "CollectionDate BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00' AND '" + EndDate.ToString("yyyyMMdd") + " 23:59'    "+
+                             "CollectionDate BETWEEN '" + StartDate.ToString("yyyyMMdd") + " 00:00' AND '" + EndDate.ToString("yyyyMMdd") + " 23:59'    " +
                              "GROUP BY CAST(CollectionDate as date), Period, Shift ORDER BY 1";
-                         
+
                 var obj = db.Query<ResultLevel2Period>(sql).ToList();
                 return obj;
             }
@@ -2554,10 +2560,10 @@ namespace SGQDBContext
             try
             {
                 string sql = "SELECT SUM(Defects) AS Defects, EvaluationNumber, Sample, Period, Shift from CollectionLevel2 (nolock)                                " +
-                                "WHERE                                                                                  "+
-                                "ParLevel1_Id = "+ ParLevel1_Id + " AND                                                 "+
-                                "CAST(CollectionDate as date) = CAST('"+ Date.ToString("yyyyMMdd") + "' as DATE)        "+
-                                "GROUP BY EvaluationNumber, Sample, Period, Shift; ";                                           
+                                "WHERE                                                                                  " +
+                                "ParLevel1_Id = " + ParLevel1_Id + " AND                                                 " +
+                                "CAST(CollectionDate as date) = CAST('" + Date.ToString("yyyyMMdd") + "' as DATE)        " +
+                                "GROUP BY EvaluationNumber, Sample, Period, Shift; ";
 
                 //SqlConnection db = new SqlConnection(conexao);
                 var list = db.Query<ResultEvaluationDefects>(sql).ToList();

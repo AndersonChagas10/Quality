@@ -13,6 +13,7 @@ namespace PlanoAcaoCore
     {
 
         #region SGQ
+        public bool isEmail { get; set; }
 
         [Display(Name = "Indicador")]
         public int? Level1Id { get; set; }
@@ -93,7 +94,7 @@ namespace PlanoAcaoCore
         [Display(Name = "Causa Especifica")]
         public string CausaEspecifica { get; set; }
 
-        [Display(Name = "Causa Generica")]
+        [Display(Name = "Contramedida Especifica")]
         public string ContramedidaEspecifica { get; set; }
 
         public int TipoIndicador { get; set; }
@@ -174,6 +175,9 @@ namespace PlanoAcaoCore
             {
                 var old = Pa_Acao.Get(Id);
                 Panejamento_Id = old.Panejamento_Id;
+
+              
+
             }
 
             //if (Pa_IndicadorSgqAcao_Id <= 0)
@@ -235,15 +239,16 @@ namespace PlanoAcaoCore
             if (_QuantoCusta != null)
                 QuantoCusta = NumericExtensions.CustomParseDecimal(_QuantoCusta).GetValueOrDefault();
 
-            if (_QuandoInicio != null)
-                QuandoInicio = Guard.ParseDateToSqlV2(_QuandoInicio);
+            if (!string.IsNullOrEmpty(_QuandoFim))
+                QuandoFim = Guard.ParseDateToSqlV2(_QuandoFim, Guard.CultureCurrent.BR);
+            else
+                QuandoFim = DateTime.Now;
+
+            if (!string.IsNullOrEmpty(_QuandoInicio))
+                QuandoInicio = Guard.ParseDateToSqlV2(_QuandoInicio, Guard.CultureCurrent.BR);
             else
                 QuandoInicio = DateTime.Now;
 
-            if (_QuandoFim != null)
-                QuandoFim = Guard.ParseDateToSqlV2(_QuandoFim);
-            else
-                QuandoFim = DateTime.Now;
 
 
             #endregion

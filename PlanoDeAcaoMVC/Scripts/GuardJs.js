@@ -1,4 +1,12 @@
 ﻿
+/*
+Retorna apenas elementos unicos do array
+*/
+function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+}
+
+
 /*API de SUM para DataTable
 
 Exemplo: 
@@ -121,6 +129,15 @@ $(document).ready(function () {
 
 })
 
+function getCookie(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift().split('&');
+}
+
+function getRole(role) {
+    return $.grep(getCookie("webControlCookie"), function (n) { return n.indexOf(role) != -1 })
+}
 
 function getCookie(name) {
     var value = "; " + document.cookie;
@@ -161,12 +178,12 @@ function heatMap(tableId, isInLine, isInColumn, startIndex, delimiterIndex) {
             while (!!$(o).find('td:eq(' + startIndex + ')')[0]) {
                 elems.push({
                     //obj javascript > td
-                    td: $(o).find('td:eq(' + startIndex + ')') 
+                    td: $(o).find('td:eq(' + startIndex + ')')
                     // Extrai valor numerico da TD.
-                    , valor: $(o).find('td:eq(' + startIndex + ')')[0].textContent.match(/\d+(\.\d{1,2})?/g)[0] 
+                    , valor: $(o).find('td:eq(' + startIndex + ')')[0].textContent.match(/\d+(\.\d{1,2})?/g)[0]
                 });
                 //Proximo index de TD a se inserir.
-                startIndex += delimiterIndex + 1; 
+                startIndex += delimiterIndex + 1;
             }
 
             //Valor minimo e maximo encontrados na TR.
@@ -359,8 +376,8 @@ GuardJs = {
         $(e).inputmask("numeric");
     },
 
-    mascaraInteger: function(e) {
-        $(e).inputmask("integer", { rightAlign: false });  
+    mascaraInteger: function (e) {
+        $(e).inputmask("integer", { rightAlign: false });
     },
     /*FIM DESCONTINUAR ESTES METODOS< E UTILIZAR APENA INSTANCIA POR CLASSE*/
 
@@ -600,3 +617,124 @@ $.fn.serializeObject = function () {
     });
     return o;
 };
+
+
+function geraTabela(query, selector, ajaxFunc, arrayData) {
+    $('#' + selector).parents('.modal-body').find('g').hide();
+    var arrColumns = [];
+    var arrayDataTbl;
+    if (query != '') { arrayDataTbl = $.grep(arrayData, function (a, b) { return a.Status == query }); } else { arrayDataTbl = arrayData; }
+
+    if ($.fn.DataTable.isDataTable('#' + selector)) {
+        $('#' + selector).DataTable().destroy();
+        $('#' + selector).empty();
+    }
+
+    if (arrayDataTbl.length) {
+        var o = arrayDataTbl[0]
+        var row = {};
+        for (var key in o)
+            arrColumns.push({ 'title': key, 'mData': key })
+
+        var table = $('#' + selector).empty().DataTable({
+            data: arrayDataTbl,
+            columns: arrColumns,
+            "sScrollX": "100%",
+            "scrollX": true,
+            "scrollY": '550px',
+            destroy: true,
+            bScrollAutoCss: true,
+            //sScrollX: '100%',
+            bScrollCollapse: true,
+            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
+            pageLength: 10,
+            responsive: true,
+            loadingRecords: true,
+            destroy: true,
+            info: true,
+            responsive: true,
+            //columnDefs: visibilidadeDefault,
+            language: {
+                "sEmptyTable": "Nenhum registro encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "_MENU_ resultados por página",
+                "sLoadingRecords": "Carregando...",
+                "sProcessing": "Processando...",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sSearch": "Pesquisar",
+                "oPaginate": {
+                    "sNext": "Próximo",
+                    "sPrevious": "Anterior",
+                    "sFirst": "Primeiro",
+                    "sLast": "Último"
+                },
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
+                }
+            }
+        });
+
+        new $.fn.dataTable.Buttons(table, {
+            buttons: [
+                 {
+                     text: 'Atualizar',
+                     action: function (e, dt, node, config) {
+                         if (ajaxFunc != undefined) { ajaxFunc(); }
+                     },
+                 },
+                  {
+                      extend: 'colvisGroup',
+                      text: 'Mostrar Todos',
+                      show: ':hidden'
+                  },
+                {
+                    extend: 'print',
+                    text: 'Imprimir',
+                    customize: function (win) {
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                    },
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: 'Excel',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                 //{
+                 //    extend: 'pdf',
+                 //    text: 'PDF',
+                 //    exportOptions: {
+                 //        columns: ':visible'
+                 //    }
+                 //},
+                  {
+                      extend: 'colvis',
+                      text: 'Colunas Visíveis',
+                      collectionLayout: 'fixed two-column',
+                      exportOptions: {
+                          columns: ':visible',
+                      }
+                  },
+                  
+            ]
+        });
+
+        table.buttons(0, null).container().prependTo(
+            table.table().container()
+        );
+
+    } else {
+        //$('#' + selector).parents('.modal-body').find('g').show();
+    }
+}

@@ -1,0 +1,1555 @@
+﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@{
+    ViewBag.Title = "Não Conformidade";
+    var url = Url.Action("Index", "Home");
+    var urlGrafico1 = Url.Action("Grafico1", "api/NaoConformidadePorCabecalho");
+    var urlGrafico2 = Url.Action("Grafico2", "api/NaoConformidadePorCabecalho");
+    var urlGrafico3 = Url.Action("Grafico3", "api/NaoConformidadePorCabecalho");
+    var urlGrafico4 = Url.Action("Grafico4", "api/NaoConformidadePorCabecalho");
+    var urlGrafico5 = Url.Action("Grafico5", "api/NaoConformidadePorCabecalho");
+
+}
+
+<div class="page-content" style="min-height: 600px;">
+
+    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+    <div id="formBodyContent" style="width:1000px; margin-left:auto; margin-right:auto; border">
+
+        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+
+        <div id="grafico1" @*style="max-height:250px;"*@></div>
+
+        <div id="grafico2" @*style="max-height:250px;"*@></div>
+
+        <div id="grafico3" @*style="max-height:250px;"*@></div>
+
+        <div id="grafico4" @*style="max-height:250px;"*@></div>
+
+        <div id="grafico5" @*style="max-height:250px;"*@></div>
+
+        @Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+        var urlGrafico1 = '@Html.Raw(@urlGrafico1)';
+        var urlGrafico2 = '@Html.Raw(@urlGrafico2)';
+        var urlGrafico3 = '@Html.Raw(@urlGrafico3)';
+        var urlGrafico4 = '@Html.Raw(@urlGrafico4)';
+        var urlGrafico5 = '@Html.Raw(@urlGrafico5)';
+
+        var $btn = $('#btnSend');
+        $('#simpleCallendar').hide().attr('disabled', true);
+
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+
+        function Send(toggle) {
+
+            $('#grafico1').empty();
+            $('#grafico2').empty();
+            $('#grafico3').empty();
+            $('#grafico4').empty();
+            $('#grafico5').empty();
+
+            $btn.button('loading');
+
+            if (!ValidaDadosParaEnvio()) {
+                $btn.button('reset');
+                return;
+            }
+
+            EasyAjax(urlGrafico1, enviar, CallbackGrafico1, "grafico1", toggle);
+        };
+
+        function CallbackGrafico1(data) {
+
+            var porNC = MapeiaValorParaHC(data, "porNC");
+            var folhasVerificadas = MapeiaValorParaHC(data, "folhasVerificadas");
+            var conforme = MapeiaValorParaHC(data, "conforme");
+            var nconforme = MapeiaValorParaHC(data, "nconforme");
+            var meta = MapeiaValorParaHC(data, "meta");
+            var obraNome = MapeiaValorParaHC(data, "nome");
+            var id = MapeiaValorParaHC(data, "regId");
+
+            //Gráfico de Pareto
+            //var sentido = 'desc';
+            //var inverse = sentido == 'desc' ? undefined : 1;
+
+            //var pareto = Pareto(data, nconforme, 1, inverse)
+            //{
+            //  type: 'line',
+            //  yAxis: 1,
+            //  name: Resources('pareto_chart'),
+            //  color: "Red",
+            //  data: data,
+            //  tooltip: {
+            //      valueDecimals: 2,
+            //      valueSuffix: ' %'
+            //  },
+            //  zones: [{
+            //      value: 80,
+            //      color: inverse == undefined ? 'Red' : 'Black'
+            //  }, {
+            //      color: inverse == undefined ? 'Black' : 'Red'
+            //  }],
+            //  }
+
+            $('#grafico1').empty().highcharts({
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    zoomType: 'xy'
+                },
+                title: {
+                    text: 'Folha de Verificação Por Obra'
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: [{
+                    categories: obraNome,
+                    crosshair: true,
+                    title: {
+                        text: 'Obras',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                }],
+                yAxis: [{ // Primary yAxis
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: 'Quantidade',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    //plotLines: [{
+                    //    value: 80,
+                    //    width: 2,
+                    //    color: 'black',
+                    //    dashStyle: 'dash',
+                    //    zIndex: 4,
+                    //    label: {
+                    //        text: 'Meta 80%',
+                    //        align: 'right',
+                    //        y: -10,
+                    //        x: 0
+                    //    }
+                    //}]
+                },
+                { // Secundary yAxis
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: 'Porcentagem',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    opposite: true
+                }],
+                tooltip: {
+                    shared: true
+                },
+                series: [
+                    {
+                        name: '% Folhas Não Conforme',
+                        data: porNC,
+                        color: '#FF6347',
+                        dataLabels: {
+                            //format: '{y:.2f} %',
+                            format: '{y} %',
+                            enabled: true,
+                            color: 'black',
+                            align: 'right',
+                            style: {
+                                fontSize: '10px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        tooltip: {
+                            valueSuffix: '%'
+                        },
+                        type: 'column',
+                        //zones: [{
+                        //    value: 69,
+                        //    color: 'rgba(189,76,76,1)'
+                        //}, {
+                        //    value: 80,
+                        //    color: 'rgba(207,206,64,1)'
+                        //}, {
+                        //    color: 'rgba(81,207,64,1)'
+                        //}],
+                        point: {
+                            events: {
+                                click: function () {
+                                    //console.log(id[this.x])
+                                    Grafico2(id[this.x]);
+
+                                }
+                            }
+                        },
+                        yAxis: 1,
+                    },
+                    {
+                        name: 'Folhas Não Conforme',
+                        data: nconforme,
+                        //linkedTo: 'id1',
+                        //point: {
+                        //    events: {
+                        //        click: function () {
+                        //            //console.log(id[this.x])
+                        //            Grafico2(id[this.x]);
+                        //        }
+                        //    }
+                        //},
+                        type: 'column',
+                        yAxis: 0,
+                        color: '#F7BCB0',
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'right',
+                            style: {
+                                fontSize: '10px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        //tooltip: {
+                        //    valueSuffix: '%'
+                        //},
+                        //zones: [{
+                        //    value: 69,
+                        //    color: 'rgba(189,76,76,1)'
+                        //}, {
+                        //    value: 80,
+                        //    color: 'rgba(207,206,64,1)'
+                        //}, {
+                        //    color: 'rgba(81,207,64,1)'
+                        //}],
+                        point: {
+                            events: {
+                                click: function () {
+                                    //console.log(id[this.x])
+                                    Grafico2(id[this.x]);
+
+                                }
+                            }
+                        },
+                    },
+                    {
+                        visible: false,
+                        name: 'Folhas Verificadas',
+                        data: folhasVerificadas,
+                        color: '#ccc',
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'right',
+                            style: {
+                                fontSize: '10px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        //tooltip: {
+                        //    valueSuffix: '%'
+                        //},
+                        type: 'column',
+                        //zones: [{
+                        //    value: 69,
+                        //    color: 'rgba(189,76,76,1)'
+                        //}, {
+                        //    value: 80,
+                        //    color: 'rgba(207,206,64,1)'
+                        //}, {
+                        //    color: 'rgba(81,207,64,1)'
+                        //}],
+                        point: {
+                            events: {
+                                click: function () {
+                                    //console.log(id[this.x])
+                                    Grafico2(id[this.x]);
+                                }
+                            }
+                        },
+                        yAxis: 0,
+                    },
+                    {
+                        visible: false,
+                        name: 'Meta',
+                        data: meta,
+                        color: '#67D184',
+                        dataLabels: {                           
+                            enabled: true,
+                            color: 'black',
+                            align: 'right',
+                            style: {
+                                fontSize: '10px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        //tooltip: {
+                        //    valueSuffix: '%'
+                        //},
+                        type: 'column',
+                        //zones: [{
+                        //    value: 69,
+                        //    color: 'rgba(189,76,76,1)'
+                        //}, {
+                        //    value: 80,
+                        //    color: 'rgba(207,206,64,1)'
+                        //}, {
+                        //    color: 'rgba(81,207,64,1)'
+                        //}],
+                        point: {
+                            events: {
+                                click: function () {
+                                    //console.log(id[this.x])
+                                    Grafico2(id[this.x]);
+
+                                }
+                            }
+                        },
+                        yAxis: 0,
+                    }
+                    //{
+                    //    name: 'Folhas Conforme',
+                    //    data: conforme,
+                    //    color: Highcharts.getOptions().colors[3],
+                    //    dataLabels: {
+                    //        enabled: true,
+                    //        color: 'black',
+                    //        align: 'right',
+                    //        style: {
+                    //            fontSize: '10px',
+                    //            fontFamily: 'Verdana, sans-serif'
+                    //        }
+                    //    },
+                    //    //tooltip: {
+                    //    //    valueSuffix: '%'
+                    //    //},
+                    //    type: 'column',
+                    //    //zones: [{
+                    //    //    value: 69,
+                    //    //    color: 'rgba(189,76,76,1)'
+                    //    //}, {
+                    //    //    value: 80,
+                    //    //    color: 'rgba(207,206,64,1)'
+                    //    //}, {
+                    //    //    color: 'rgba(81,207,64,1)'
+                    //    //}],
+                    //    point: {
+                    //        events: {
+                    //            click: function () {
+                    //                //console.log(id[this.x])
+                    //                Grafico2(id[this.x]);
+                    //            }
+                    //        }
+                    //    },
+                    //    yAxis: 0,
+                    //},
+
+                ]
+            });
+
+        }
+
+        function Grafico2(obra) {
+            $('#grafico2').empty();
+            $('#grafico3').empty();
+            $('#grafico4').empty();
+            $('#grafico5').empty();
+            enviar["Query"] = obra;
+            EasyAjax(urlGrafico2, enviar, CallbackGrafico2, "grafico2");
+        }
+
+        function CallbackGrafico2(data) {
+
+            var porNC = MapeiaValorParaHC(data, "porNC");
+            var folhasVerificadas = MapeiaValorParaHC(data, "folhasVerificadas");
+            var conforme = MapeiaValorParaHC(data, "conforme");
+            var nconforme = MapeiaValorParaHC(data, "nconforme");
+            var meta = MapeiaValorParaHC(data, "meta");
+            var torreNome = MapeiaValorParaHC(data, "nome");
+            var id = MapeiaValorParaHC(data, "regId");
+
+            $('#grafico2').removeClass('loader');
+
+            $('#grafico2').empty().highcharts({
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    zoomType: 'xy'
+                },
+                title: {
+                    text: 'Torre/Periferia'
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: [{
+                    categories: torreNome,
+                    crosshair: true,
+                    title: {
+                        text: 'Torres/Periferias',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                }],
+                yAxis: [{ // Primary yAxis
+                    labels: {
+                        //format: '{value} %',
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: 'Quantidade',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    //plotLines: [{
+                    //    value: 80,
+                    //    width: 2,
+                    //    color: 'black',
+                    //    dashStyle: 'dash',
+                    //    zIndex: 4,
+                    //    label: {
+                    //        text: 'Meta 80%',
+                    //        align: 'right',
+                    //        y: -10,
+                    //        x: 0
+                    //    }
+                    //}]
+                },
+                { // Secundary yAxis
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: 'Porcentagem',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    opposite: true
+                }],
+                tooltip: {
+                    shared: true
+                },
+                series: [
+                    {
+                        name: '% Folhas Não Conforme',
+                        data: porNC,
+                        //linkedTo: 'id1',
+                        //point: {
+                        //    events: {
+                        //        click: function () {
+                        //            //console.log(id[this.x])
+                        //            Grafico2(id[this.x]);
+                        yAxis: 1,
+                        //        }
+                        //    }
+                        //},
+                        type: 'column',
+                        color: '#FF6347',
+                        dataLabels: {
+                            format: '{y} %',
+                            enabled: true,
+                            color: 'black',
+                            align: 'right',
+                            style: {
+                                fontSize: '10px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        tooltip: {
+                            valueSuffix: '%'
+                        },
+                        //zones: [{
+                        //    value: 69,
+                        //    color: 'rgba(189,76,76,1)'
+                        //}, {
+                        //    value: 80,
+                        //    color: 'rgba(207,206,64,1)'
+                        //}, {
+                        //    color: 'rgba(81,207,64,1)'
+                        //}],
+                        point: {
+                            events: {
+                                click: function () {
+                                    //console.log(id[this.x])
+                                    Grafico3(id[this.x], torreNome[this.x]);
+
+                                }
+                            }
+                        },
+                    },
+                    {
+                        name: 'Não Conforme',
+                        data: nconforme,
+                        color: '#F7BCB0',
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'right',
+                            style: {
+                                fontSize: '10px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        //tooltip: {
+                        //    valueSuffix: '%'
+                        //},
+                        type: 'column',
+                        //zones: [{
+                        //    value: 69,
+                        //    color: 'rgba(189,76,76,1)'
+                        //}, {
+                        //    value: 80,
+                        //    color: 'rgba(207,206,64,1)'
+                        //}, {
+                        //    color: 'rgba(81,207,64,1)'
+                        //}],
+                        point: {
+                            events: {
+                                click: function () {
+                                    //console.log(id[this.x])
+                                    Grafico3(id[this.x], torreNome[this.x]);
+
+                                }
+                            }
+                        },
+                        yAxis: 0,
+                    },
+                    {
+                        visible: false,
+                        name: 'Folhas Verificadas',
+                        data: folhasVerificadas,
+                        color: '#ccc',
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'right',
+                            style: {
+                                fontSize: '10px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        //tooltip: {
+                        //    valueSuffix: '%'
+                        //},
+                        type: 'column',
+                        //zones: [{
+                        //    value: 69,
+                        //    color: 'rgba(189,76,76,1)'
+                        //}, {
+                        //    value: 80,
+                        //    color: 'rgba(207,206,64,1)'
+                        //}, {
+                        //    color: 'rgba(81,207,64,1)'
+                        //}],
+                        point: {
+                            events: {
+                                click: function () {
+                                    //console.log(id[this.x])
+                                    Grafico3(id[this.x], torreNome[this.x]);
+
+                                }
+                            }
+                        },
+                        yAxis: 0,
+                    },
+                    {
+                        visible: false,
+                        name: 'Meta',
+                        data: meta,
+                        color: '#67D184',
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'right',
+                            style: {
+                                fontSize: '10px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        //tooltip: {
+                        //    valueSuffix: '%'
+                        //},
+                        type: 'column',
+                        //zones: [{
+                        //    value: 69,
+                        //    color: 'rgba(189,76,76,1)'
+                        //}, {
+                        //    value: 80,
+                        //    color: 'rgba(207,206,64,1)'
+                        //}, {
+                        //    color: 'rgba(81,207,64,1)'
+                        //}],
+                        tooltip: {
+                            valueSuffix: '%'
+                        },
+                        point: {
+                            events: {
+                                click: function () {
+                                    //console.log(id[this.x])
+                                    Grafico3(id[this.x], torreNome[this.x]);
+
+                                }
+                            }
+                        },
+                        yAxis: 0,
+                    },
+                    //{
+                    //    name: 'Corforme',
+                    //    data: conforme,
+                    //    color: Highcharts.getOptions().colors[3],
+                    //    dataLabels: {
+                    //        enabled: true,
+                    //        color: 'black',
+                    //        align: 'right',
+                    //        style: {
+                    //            fontSize: '10px',
+                    //            fontFamily: 'Verdana, sans-serif'
+                    //        }
+                    //    },
+                    //    //tooltip: {
+                    //    //    valueSuffix: '%'
+                    //    //},
+                    //    type: 'column',
+                    //    //zones: [{
+                    //    //    value: 69,
+                    //    //    color: 'rgba(189,76,76,1)'
+                    //    //}, {
+                    //    //    value: 80,
+                    //    //    color: 'rgba(207,206,64,1)'
+                    //    //}, {
+                    //    //    color: 'rgba(81,207,64,1)'
+                    //    //}],
+                    //    point: {
+                    //        events: {
+                    //            click: function () {
+                    //                //console.log(id[this.x])
+                    //                Grafico3(id[this.x], torreNome[this.x]);
+                    //            }
+                    //        }
+                    //    },
+                    //    yAxis: 0,
+                    //},
+                ]
+            });
+
+        }
+
+        function Grafico3(obra, torre) {
+            $('#grafico3').empty();
+            $('#grafico4').empty();
+            $('#grafico5').empty();
+            enviar["Query"] = obra;
+            enviar["Query"] += "," + torre;
+            EasyAjax(urlGrafico3, enviar, CallbackGrafico3, "grafico3");
+        }
+
+        function CallbackGrafico3(data) {
+
+            var porNC = MapeiaValorParaHC(data, "porNC");
+            var folhasVerificadas = MapeiaValorParaHC(data, "folhasVerificadas");
+            var conforme = MapeiaValorParaHC(data, "conforme");
+            var nconforme = MapeiaValorParaHC(data, "nconforme");
+            var meta = MapeiaValorParaHC(data, "meta");
+            var pavimentoNome = MapeiaValorParaHC(data, "nome");
+            var torreNome = MapeiaValorParaHC(data, "nome2");
+            var id = MapeiaValorParaHC(data, "regId");
+
+            $('#grafico3').removeClass('loader');
+
+            $('#grafico3').empty().highcharts({
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    zoomType: 'xy'
+                },
+                title: {
+                    text: 'Tipo de Pavimento'
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: [{
+                    categories: pavimentoNome,
+                    crosshair: true,
+                    title: {
+                        text: 'Pavimentos',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                }],
+                yAxis: [{ // Primary yAxis
+                    labels: {
+                        //format: '{value} %',
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: 'Quantidade',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    //plotLines: [{
+                    //    value: 80,
+                    //    width: 2,
+                    //    color: 'black',
+                    //    dashStyle: 'dash',
+                    //    zIndex: 4,
+                    //    label: {
+                    //        text: 'Meta 80%',
+                    //        align: 'right',
+                    //        y: -10,
+                    //        x: 0
+                    //    }
+                    //}]
+                },
+                { // Secundary yAxis
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: 'Porcentagem',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    opposite: true
+                }],
+                tooltip: {
+                    shared: true
+                },
+                series: [
+                    {
+                        name: '% Folhas Não Conforme',
+                        data: porNC,
+                        //linkedTo: 'id1',
+                        //point: {
+                        //    events: {
+                        //        click: function () {
+                        //            //console.log(id[this.x])
+                        //            Grafico2(id[this.x]);
+                        yAxis: 1,
+                        //        }
+                        //    }
+                        //},
+                        type: 'column',
+                        color: '#FF6347',
+                        dataLabels: {
+                            format: '{y} %',
+                            enabled: true,
+                            color: 'black',
+                            align: 'right',
+                            style: {
+                                fontSize: '10px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        tooltip: {
+                            valueSuffix: '%'
+                        },
+                        //zones: [{
+                        //    value: 69,
+                        //    color: 'rgba(189,76,76,1)'
+                        //}, {
+                        //    value: 80,
+                        //    color: 'rgba(207,206,64,1)'
+                        //}, {
+                        //    color: 'rgba(81,207,64,1)'
+                        //}],
+                        point: {
+                            events: {
+                                click: function () {
+                                    //console.log(id[this.x])
+                                    Grafico4(id[this.x], torreNome[this.x], pavimentoNome[this.x]);
+
+                                }
+                            }
+                        },
+                    },
+                    {
+                        name: 'Folhas Não Conforme',
+                        data: nconforme,
+                        color: '#F7BCB0',
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'right',
+                            style: {
+                                fontSize: '10px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        //tooltip: {
+                        //    valueSuffix: '%'
+                        //},
+                        type: 'column',
+                        //zones: [{
+                        //    value: 69,
+                        //    color: 'rgba(189,76,76,1)'
+                        //}, {
+                        //    value: 80,
+                        //    color: 'rgba(207,206,64,1)'
+                        //}, {
+                        //    color: 'rgba(81,207,64,1)'
+                        //}],
+                        point: {
+                            events: {
+                                click: function () {
+                                    //console.log(id[this.x])
+                                    Grafico4(id[this.x], torreNome[this.x], pavimentoNome[this.x]);
+
+                                }
+                            }
+                        },
+                        yAxis: 0,
+                    },
+                    {
+                        visible: false,
+                        name: 'Folhas Verificadas',
+                        data: folhasVerificadas,
+                        color: '#ccc',
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'right',
+                            style: {
+                                fontSize: '10px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        //tooltip: {
+                        //    valueSuffix: '%'
+                        //},
+                        type: 'column',
+                        //zones: [{
+                        //    value: 69,
+                        //    color: 'rgba(189,76,76,1)'
+                        //}, {
+                        //    value: 80,
+                        //    color: 'rgba(207,206,64,1)'
+                        //}, {
+                        //    color: 'rgba(81,207,64,1)'
+                        //}],
+                        point: {
+                            events: {
+                                click: function () {
+                                    //console.log(id[this.x])
+                                    Grafico4(id[this.x], torreNome[this.x], pavimentoNome[this.x]);
+
+                                }
+                            }
+                        },
+                        yAxis: 0,
+                    },
+                    {
+                        visible: false,
+                        name: 'Meta',
+                        data: meta,
+                        color: Highcharts.getOptions().colors[5],
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'right',
+                            style: {
+                                fontSize: '10px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        //tooltip: {
+                        //    valueSuffix: '%'
+                        //},
+                        type: 'column',
+                        //zones: [{
+                        //    value: 69,
+                        //    color: 'rgba(189,76,76,1)'
+                        //}, {
+                        //    value: 80,
+                        //    color: 'rgba(207,206,64,1)'
+                        //}, {
+                        //    color: 'rgba(81,207,64,1)'
+                        //}],
+                        tooltip: {
+                            valueSuffix: '%'
+                        },
+                        point: {
+                            events: {
+                                click: function () {
+                                    //console.log(id[this.x])
+                                    Grafico4(id[this.x], torreNome[this.x], pavimentoNome[this.x]);
+
+                                }
+                            }
+                        },
+                        yAxis: 0,
+                    }
+                    //{
+                    //    name: 'Corforme',
+                    //    data: conforme,
+                    //    color: Highcharts.getOptions().colors[3],
+                    //    dataLabels: {
+                    //        enabled: true,
+                    //        color: 'black',
+                    //        align: 'right',
+                    //        style: {
+                    //            fontSize: '10px',
+                    //            fontFamily: 'Verdana, sans-serif'
+                    //        }
+                    //    },
+                    //    //tooltip: {
+                    //    //    valueSuffix: '%'
+                    //    //},
+                    //    type: 'column',
+                    //    //zones: [{
+                    //    //    value: 69,
+                    //    //    color: 'rgba(189,76,76,1)'
+                    //    //}, {
+                    //    //    value: 80,
+                    //    //    color: 'rgba(207,206,64,1)'
+                    //    //}, {
+                    //    //    color: 'rgba(81,207,64,1)'
+                    //    //}],
+                    //    point: {
+                    //        events: {
+                    //            click: function () {
+                    //                //console.log(id[this.x])
+                    //                Grafico4(id[this.x], torreNome[this.x], pavimentoNome[this.x]);
+                    //            }
+                    //        }
+                    //    },
+                    //    yAxis: 0,
+                    //},
+                ]
+            });
+
+        }
+
+        function Grafico4(obra, torre, pavimento) {
+            $('#grafico4').empty();
+            $('#grafico5').empty();
+            enviar["Query"] = obra;
+            enviar["Query"] += "," + torre;
+            enviar["Query"] += "," + pavimento;
+            EasyAjax(urlGrafico4, enviar, CallbackGrafico4, "grafico4");
+        }
+
+        function CallbackGrafico4(data) {
+
+            var porNC = MapeiaValorParaHC(data, "porNC");
+            var folhasVerificadas = MapeiaValorParaHC(data, "folhasVerificadas");
+            var conforme = MapeiaValorParaHC(data, "conforme");
+            var nconforme = MapeiaValorParaHC(data, "nconforme");
+            var meta = MapeiaValorParaHC(data, "meta");
+            var apartamentoNome = MapeiaValorParaHC(data, "nome");
+            var torreNome = MapeiaValorParaHC(data, "nome2");
+            var pavimentoNome = MapeiaValorParaHC(data, "nome3");
+            var id = MapeiaValorParaHC(data, "regId");
+
+            $('#grafico4').removeClass('loader');
+
+            $('#grafico4').empty().highcharts({
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    zoomType: 'xy'
+                },
+                title: {
+                    text: 'Apartamento/Área'
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: [{
+                    categories: apartamentoNome,
+                    crosshair: true,
+                    title: {
+                        text: 'Apartamentos/Área',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                }],
+                yAxis: [{ // Primary yAxis
+                    labels: {
+                        //format: '{value} %',
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: 'Quantidade',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    //plotLines: [{
+                    //    value: 80,
+                    //    width: 2,
+                    //    color: 'black',
+                    //    dashStyle: 'dash',
+                    //    zIndex: 4,
+                    //    label: {
+                    //        text: 'Meta 80%',
+                    //        align: 'right',
+                    //        y: -10,
+                    //        x: 0
+                    //    }
+                    //}]
+                },
+                { // Secundary yAxis
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: 'Porcentagem',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    opposite: true
+                }],
+                tooltip: {
+                    shared: true
+                },
+                series: [
+                    {
+                        name: '% Folhas Não Conforme',
+                        data: porNC,
+                        //linkedTo: 'id1',
+                        //point: {
+                        //    events: {
+                        //        click: function () {
+                        //            //console.log(id[this.x])
+                        //            Grafico2(id[this.x]);
+                        yAxis: 1,
+                        //        }
+                        //    }
+                        //},
+                        type: 'column',
+                        color: '#FF6347',
+                        dataLabels: {
+                            format: '{y} %',
+                            enabled: true,
+                            color: 'black',
+                            align: 'right',
+                            style: {
+                                fontSize: '10px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        tooltip: {
+                            valueSuffix: '%'
+                        },
+                        //zones: [{
+                        //    value: 69,
+                        //    color: 'rgba(189,76,76,1)'
+                        //}, {
+                        //    value: 80,
+                        //    color: 'rgba(207,206,64,1)'
+                        //}, {
+                        //    color: 'rgba(81,207,64,1)'
+                        //}],
+                        point: {
+                            events: {
+                                click: function () {
+                                    //console.log(id[this.x])
+                                    Grafico5(id[this.x], torreNome[this.x], pavimentoNome[this.x], apartamentoNome[this.x]);
+
+                                }
+                            }
+                        },
+                    },
+                    {
+                        name: 'Não Conforme',
+                        data: nconforme,
+                        color: '#F7BCB0',
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'right',
+                            style: {
+                                fontSize: '10px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        //tooltip: {
+                        //    valueSuffix: '%'
+                        //},
+                        type: 'column',
+                        //zones: [{
+                        //    value: 69,
+                        //    color: 'rgba(189,76,76,1)'
+                        //}, {
+                        //    value: 80,
+                        //    color: 'rgba(207,206,64,1)'
+                        //}, {
+                        //    color: 'rgba(81,207,64,1)'
+                        //}],
+                        point: {
+                            events: {
+                                click: function () {
+                                    //console.log(id[this.x])
+                                    Grafico5(id[this.x], torreNome[this.x], pavimentoNome[this.x], apartamentoNome[this.x]);
+
+                                }
+                            }
+                        },
+                        yAxis: 0,
+                    },
+                    {
+                        visible: false,
+                        name: 'Folhas Verificadas',
+                        data: folhasVerificadas,
+                        color: '#ccc',
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'right',
+                            style: {
+                                fontSize: '10px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        //tooltip: {
+                        //    valueSuffix: '%'
+                        //},
+                        type: 'column',
+                        //zones: [{
+                        //    value: 69,
+                        //    color: 'rgba(189,76,76,1)'
+                        //}, {
+                        //    value: 80,
+                        //    color: 'rgba(207,206,64,1)'
+                        //}, {
+                        //    color: 'rgba(81,207,64,1)'
+                        //}],
+                        point: {
+                            events: {
+                                click: function () {
+                                    //console.log(id[this.x])
+                                    Grafico5(id[this.x], torreNome[this.x], pavimentoNome[this.x], apartamentoNome[this.x]);
+
+                                }
+                            }
+                        },
+                        yAxis: 0,
+                    },
+                    {
+                        visible: false,
+                        name: 'Meta',
+                        data: meta,
+                        color: '#67D184',
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'right',
+                            style: {
+                                fontSize: '10px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        //tooltip: {
+                        //    valueSuffix: '%'
+                        //},
+                        type: 'column',
+                        //zones: [{
+                        //    value: 69,
+                        //    color: 'rgba(189,76,76,1)'
+                        //}, {
+                        //    value: 80,
+                        //    color: 'rgba(207,206,64,1)'
+                        //}, {
+                        //    color: 'rgba(81,207,64,1)'
+                        //}],
+                        tooltip: {
+                            valueSuffix: '%'
+                        },
+                        point: {
+                            events: {
+                                click: function () {
+                                    //console.log(id[this.x])
+                                    Grafico5(id[this.x], torreNome[this.x], pavimentoNome[this.x], apartamentoNome[this.x]);
+
+                                }
+                            }
+                        },
+                        yAxis: 0,
+                    }
+                    //{
+                    //    name: 'Corforme',
+                    //    data: conforme,
+                    //    color: Highcharts.getOptions().colors[3],
+                    //    dataLabels: {
+                    //        enabled: true,
+                    //        color: 'black',
+                    //        align: 'right',
+                    //        style: {
+                    //            fontSize: '10px',
+                    //            fontFamily: 'Verdana, sans-serif'
+                    //        }
+                    //    },
+                    //    //tooltip: {
+                    //    //    valueSuffix: '%'
+                    //    //},
+                    //    type: 'column',
+                    //    //zones: [{
+                    //    //    value: 69,
+                    //    //    color: 'rgba(189,76,76,1)'
+                    //    //}, {
+                    //    //    value: 80,
+                    //    //    color: 'rgba(207,206,64,1)'
+                    //    //}, {
+                    //    //    color: 'rgba(81,207,64,1)'
+                    //    //}],
+                    //    point: {
+                    //        events: {
+                    //            click: function () {
+                    //                //console.log(id[this.x])
+                    //                Grafico5(id[this.x], torreNome[this.x], pavimentoNome[this.x], apartamentoNome[this.x]);
+                    //            }
+                    //        }
+                    //    },
+                    //    yAxis: 0,
+                    //},
+                ]
+            });
+
+        }
+
+        function Grafico5(obra, torre, pavimento, apartamento) {
+            $('#grafico5').empty();
+            enviar["Query"] = obra;
+            enviar["Query"] += "," + torre;
+            enviar["Query"] += "," + pavimento;
+            enviar["Query"] += "," + apartamento;
+            EasyAjax(urlGrafico5, enviar, CallbackGrafico5, "grafico5");
+        }
+
+        function CallbackGrafico5(data) {
+
+            var porNC = MapeiaValorParaHC(data, "porNC");
+            var folhasVerificadas = MapeiaValorParaHC(data, "folhasVerificadas");
+            var conforme = MapeiaValorParaHC(data, "conforme");
+            var nconforme = MapeiaValorParaHC(data, "nconforme");
+            var meta = MapeiaValorParaHC(data, "meta");
+            var torreNome = MapeiaValorParaHC(data, "nome");
+            var id = MapeiaValorParaHC(data, "regId");
+
+            $('#grafico5').removeClass('loader');
+
+            $('#grafico5').empty().highcharts({
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    zoomType: 'xy'
+                },
+                title: {
+                    text: 'Cômodos'
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: [{
+                    categories: torreNome,
+                    crosshair: true,
+                    title: {
+                        text: 'Cômodos',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                }],
+                yAxis: [{ // Primary yAxis
+                    labels: {
+                        //format: '{value} %',
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: 'Quantidade',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    //plotLines: [{
+                    //    value: 80,
+                    //    width: 2,
+                    //    color: 'black',
+                    //    dashStyle: 'dash',
+                    //    zIndex: 4,
+                    //    label: {
+                    //        text: 'Meta 80%',
+                    //        align: 'right',
+                    //        y: -10,
+                    //        x: 0
+                    //    }
+                    //}]
+                },
+                { // Secundary yAxis
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: 'Porcentagem',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    opposite: true
+                }],
+                tooltip: {
+                    shared: true
+                },
+                series: [
+                    {
+                        name: '% Folhas Não Conforme',
+                        data: porNC,
+                        //linkedTo: 'id1',
+                        //point: {
+                        //    events: {
+                        //        click: function () {
+                        //            //console.log(id[this.x])
+                        //            Grafico2(id[this.x]);
+                        yAxis: 1,
+                        //        }
+                        //    }
+                        //},
+                        type: 'column',
+                        color: '#FF6347',
+                        dataLabels: {
+                            format: '{y} %',
+                            enabled: true,
+                            color: 'black',
+                            align: 'right',
+                            style: {
+                                fontSize: '10px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        tooltip: {
+                            valueDecimals: 2,
+                            valueSuffix: '%'
+                        },
+                        //zones: [{
+                        //    value: 69,
+                        //    color: 'rgba(189,76,76,1)'
+                        //}, {
+                        //    value: 80,
+                        //    color: 'rgba(207,206,64,1)'
+                        //}, {
+                        //    color: 'rgba(81,207,64,1)'
+                        //}],
+                    },
+                    {
+                        name: 'Não Conforme',
+                        data: nconforme,
+                        color: '#F7BCB0',
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'right',
+                            style: {
+                                fontSize: '10px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        //tooltip: {
+                        //    valueSuffix: '%'
+                        //},
+                        type: 'column',
+                        //zones: [{
+                        //    value: 69,
+                        //    color: 'rgba(189,76,76,1)'
+                        //}, {
+                        //    value: 80,
+                        //    color: 'rgba(207,206,64,1)'
+                        //}, {
+                        //    color: 'rgba(81,207,64,1)'
+                        //}],
+                        yAxis: 0,
+                    },
+                    {
+                        visible: false,
+                        name: 'Folhas Verificadas',
+                        data: folhasVerificadas,
+                        color: '#ccc',
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'right',
+                            style: {
+                                fontSize: '10px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        //tooltip: {
+                        //    valueSuffix: '%'
+                        //},
+                        type: 'column',
+                        //zones: [{
+                        //    value: 69,
+                        //    color: 'rgba(189,76,76,1)'
+                        //}, {
+                        //    value: 80,
+                        //    color: 'rgba(207,206,64,1)'
+                        //}, {
+                        //    color: 'rgba(81,207,64,1)'
+                        //}],
+                        yAxis: 0,
+                    },
+                    {
+                        visible: false,
+                        name: 'Meta',
+                        data: meta,
+                        color: '#67D184',
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'right',
+                            style: {
+                                fontSize: '10px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        //tooltip: {
+                        //    valueSuffix: '%'
+                        //},
+                        type: 'column',
+                        //zones: [{
+                        //    value: 69,
+                        //    color: 'rgba(189,76,76,1)'
+                        //}, {
+                        //    value: 80,
+                        //    color: 'rgba(207,206,64,1)'
+                        //}, {
+                        //    color: 'rgba(81,207,64,1)'
+                        //}],
+                        tooltip: {
+                            valueSuffix: '%'
+                        },
+                        yAxis: 0,
+                    }
+                    //{
+                    //    name: 'Corforme',
+                    //    data: conforme,
+                    //    color: Highcharts.getOptions().colors[3],
+                    //    dataLabels: {
+                    //        enabled: true,
+                    //        color: 'black',
+                    //        align: 'right',
+                    //        style: {
+                    //            fontSize: '10px',
+                    //            fontFamily: 'Verdana, sans-serif'
+                    //        }
+                    //    },
+                    //    //tooltip: {
+                    //    //    valueSuffix: '%'
+                    //    //},
+                    //    type: 'column',
+                    //    //zones: [{
+                    //    //    value: 69,
+                    //    //    color: 'rgba(189,76,76,1)'
+                    //    //}, {
+                    //    //    value: 80,
+                    //    //    color: 'rgba(207,206,64,1)'
+                    //    //}, {
+                    //    //    color: 'rgba(81,207,64,1)'
+                    //    //}],
+                    //    yAxis: 0,
+                    //},
+                ]
+            });
+
+        }
+
+        function ValidaDadosParaEnvio() {
+            GuardJs.resetForValidation();
+            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+            /*Especifico*/
+            //if (!($('#unitId :selected').val() > 0))
+            //{
+            //    GuardJs.exibirMensagemAlerta("Por favor selecione uma unidade.");
+            //    return false;
+            //}
+            if (!GuardJs.isValid)
+                return !GuardJs.isValid;
+            GuardJs.esconderMensagem();
+
+            return true;
+        }
+
+        function Pareto(dados, dadosNC, axis, inverse) {
+
+            var totalNC = dadosNC.reduce(function (a, b) { return a + b; }, 0);
+            var porcentagemAcumuladaNC = 0;
+            var data = []
+
+            dadosNC.forEach(function (a) {
+                porcentagemAcumuladaNC += a / totalNC * 100;
+                data.push(Math.round(porcentagemAcumuladaNC, 2));
+            });
+
+            return dados;
+        }
+
+        $(document).ready(function () {
+
+            $("#btnSend").click(function (e) {
+                Send(true);
+            });
+
+            formControl.showFullCallendar();
+            //formControl.showUnit();
+
+        });
+    </script>
+
+}

@@ -5,14 +5,18 @@
 
 }
 <style>
-
     /*td span {
         padding: 2px 0;
         text-align:center;
         vertical-align:middle;
     }*/
 
-    td span.centerThis{display:block; text-align:center;  font-family: Tahoma; font-size: 16px; }
+    td span.centerThis {
+        display: block;
+        text-align: center;
+        font-family: Tahoma;
+        font-size: 16px;
+    }
 
     input {
         width: 100%;
@@ -45,7 +49,6 @@
         font-family: Tahoma;
         font-size: 16px;
     }
-
 </style>
 
 
@@ -327,14 +330,21 @@
 
         var user0 = {Status: false};
         var user1 = {Status: false};
-        function ValidaSenha(user) {
+        function ValidaSenha(user, ddl) {
             /*Encriptar aqui!!!!*/
             var check = $('#passCheck').serializeObject();
+
+
             $.post('@Url.Action("CheckPass", "api/Pa_User")', check, function (r) {
                 if(user == 0){ user0.Status = !r.isInvalid; }
                 if(user == 1){ user1.Status = !r.isInvalid; }
                 openMessageModal(r.response, '');
                 if(user0.Status && user1.Status){ $('#Salvar').attr('disabled', false); } else { $('#Salvar').attr('disabled', true);}
+                if(!user0.Status)
+                    $('[id=Assinatura1]').val('').change();
+                if(!user1.Status)
+                    $('[id=Assinatura2]').val('').change();
+
                 $('#modalPass').modal("hide");
             }).fail(function (e, h, x) {
 
@@ -351,6 +361,7 @@
             $('#passCheck').find('#name').val($('[id=Assinatura1] :selected').text());
             $('#btnOk').off('click').on('click', function() { ValidaSenha(0); });
             $('#modalPass').modal();
+            $('#passCheck').find('[name=pass]').val('')
             if(user0.Status && user1.Status){ $('#Salvar').attr('disabled', false); } else { $('#Salvar').attr('disabled', true);}
         });
 
@@ -359,6 +370,7 @@
             $('#passCheck').find('#name').val($('[id=Assinatura2] :selected').text());
             $('#btnOk').off('click').on('click', function() { ValidaSenha(1); });
             $('#modalPass').modal();
+            $('#passCheck').find('[name=pass]').val('')
             if(user0.Status && user1.Status){ $('#Salvar').attr('disabled', false); } else { $('#Salvar').attr('disabled', true);}
         });
 
