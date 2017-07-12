@@ -3,6 +3,7 @@ using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -19,7 +20,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         [Route("GraficoUnidades")]
         public List<NaoConformidadeResultsSet> GraficoUnidades([FromBody] FormularioParaRelatorioViewModel form)
         {
-            //_list = CriaMockGraficoUnidades();
 
         var query = "" +
 
@@ -49,11 +49,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n     , C2.EvaluationNumber AS AV " +
                 "\n     , C2.Sample AS AM " +
                 "\n     , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
-                "\n     FROM CollectionLevel2 C2 " +
-                "\n     INNER JOIN ParLevel1 L1 " +
+                "\n     FROM CollectionLevel2 C2 (nolock) " +
+                "\n     INNER JOIN ParLevel1 L1 (nolock) " +
                 "\n     ON L1.Id = C2.ParLevel1_Id " +
-                
-                "\n     INNER JOIN ParCompany C " +
+
+                "\n     INNER JOIN ParCompany C (nolock) " +
                 "\n     ON C.Id = C2.UnitId " +
                 "\n     where cast(C2.CollectionDate as DATE) BETWEEN @DATAINICIAL AND @DATAFINAL " +
                 "\n     and C2.NotEvaluatedIs = 0 " +
@@ -67,7 +67,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n SELECT " +
 
                 "\n Unidade as UnidadeName" +
-                "\n ,CONVERT(varchar(max), Unidade_Id) as Unidade_Id" +
+                "\n ,CONVERT(varchar(153), Unidade_Id) as Unidade_Id" +
                 "\n ,ProcentagemNc as [proc] " +
 
                 "\n ,nc" +
@@ -142,12 +142,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
 
 
-                "\n         FROM ConsolidationLevel1 CL1 " +
-                "\n         INNER JOIN ParLevel1 IND " +
+                "\n         FROM ConsolidationLevel1 CL1 (nolock) " +
+                "\n         INNER JOIN ParLevel1 IND (nolock) " +
                 "\n         ON IND.Id = CL1.ParLevel1_Id " +
-                "\n         INNER JOIN ParCompany UNI " +
+                "\n         INNER JOIN ParCompany UNI  (nolock)" +
                 "\n         ON UNI.Id = CL1.UnitId " +
-                "\n         LEFT JOIN #AMOSTRATIPO4 A4 " +
+                "\n         INNER JOIN ParCompanyXUserSgq CU(nolock) "+
+                "\n         ON CU.UserSgq_Id = " + form.auditorId + " and CU.ParCompany_Id = UNI.Id " + 
+                "\n         LEFT JOIN #AMOSTRATIPO4 A4 (nolock) " +
                 "\n         ON A4.UNIDADE = UNI.Id " +
                 "\n         AND A4.INDICADOR = IND.ID " +
                 "\n         WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL " +
@@ -218,11 +220,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n     , C2.EvaluationNumber AS AV " +
                 "\n     , C2.Sample AS AM " +
                 "\n     , case when SUM(C2.WeiDefects) = 0 then 0 else 1 end DEF_AM " +
-                "\n     FROM CollectionLevel2 C2 " +
-                "\n     INNER JOIN ParLevel1 L1 " +
+                "\n     FROM CollectionLevel2 C2  (nolock)" +
+                "\n     INNER JOIN ParLevel1 L1  (nolock)" +
                 "\n     ON L1.Id = C2.ParLevel1_Id " +
 
-                "\n     INNER JOIN ParCompany C " +
+                "\n     INNER JOIN ParCompany C  (nolock)" +
                 "\n     ON C.Id = C2.UnitId " +
                 "\n     where cast(C2.CollectionDate as DATE) BETWEEN @DATAINICIAL AND @DATAFINAL " +
                 "\n     and C2.NotEvaluatedIs = 0 " +
@@ -234,10 +236,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                 "\n SELECT " +
 
-                "\n  CONVERT(varchar(max), Unidade) as UnidadeName" +
-                "\n ,CONVERT(varchar(max), Unidade_Id) as Unidade_Id" +
-                "\n ,CONVERT(varchar(max), level1_Id) as Indicador_Id" +
-                "\n ,CONVERT(varchar(max), Level1Name) as IndicadorName" +
+                "\n  CONVERT(varchar(153), Unidade) as UnidadeName" +
+                "\n ,CONVERT(varchar(153), Unidade_Id) as Unidade_Id" +
+                "\n ,CONVERT(varchar(153), level1_Id) as Indicador_Id" +
+                "\n ,CONVERT(varchar(153), Level1Name) as IndicadorName" +
 
                 
                 "\n ,ProcentagemNc as [proc] " +
@@ -312,12 +314,12 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                "\n         (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G WHERE G.ParLevel1_id = CL1.ParLevel1_Id AND(G.ParCompany_id = CL1.UnitId OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)                                                                      " +
                "\n  END                                                                                                                                                                                                                                                                " +
                "\n  AS Meta                                                                                                                                                                                                                                                            " +
-                "\n         FROM ConsolidationLevel1 CL1 " +
-                "\n         INNER JOIN ParLevel1 IND " +
+                "\n         FROM ConsolidationLevel1 CL1  (nolock)" +
+                "\n         INNER JOIN ParLevel1 IND  (nolock)" +
                 "\n         ON IND.Id = CL1.ParLevel1_Id " +
-                "\n         INNER JOIN ParCompany UNI " +
+                "\n         INNER JOIN ParCompany UNI  (nolock)" +
                 "\n         ON UNI.Id = CL1.UnitId " +
-                "\n         LEFT JOIN #AMOSTRATIPO4 A4 " +
+                "\n         LEFT JOIN #AMOSTRATIPO4 A4  (nolock)" +
                 "\n         ON A4.UNIDADE = UNI.Id " +
                 "\n         AND A4.INDICADOR = IND.ID " +
                 "\n         WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL " +
@@ -417,17 +419,17 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
 
 
-               "\n 	FROM ConsolidationLevel2 CL2 " +
-               "\n 	INNER JOIN ConsolidationLevel1 CL1 " +
+               "\n 	FROM ConsolidationLevel2 CL2  (nolock)" +
+               "\n 	INNER JOIN ConsolidationLevel1 CL1  (nolock)" +
                "\n 	ON CL1.Id = CL2.ConsolidationLevel1_Id " +
-               "\n 	INNER JOIN ParLevel1 IND " +
+               "\n 	INNER JOIN ParLevel1 IND  (nolock)" +
                "\n 	ON IND.Id = CL1.ParLevel1_Id " +
-               "\n 	INNER JOIN ParLevel2 MON " +
+               "\n 	INNER JOIN ParLevel2 MON  (nolock)" +
                "\n 	ON MON.Id = CL2.ParLevel2_Id " +
-               "\n 	INNER JOIN ParCompany UNI " +
+               "\n 	INNER JOIN ParCompany UNI (nolock) " +
                "\n 	ON UNI.Id = CL1.UnitId " +
                "\n 	WHERE CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL" +
-               "\n 	AND UNI.Name = '" + form.unitName + "'" +
+               "\n 	AND (UNI.Name = '" + form.unitName + "' OR UNI.Initials = '" + form.unitName + "')" +
                "\n 	AND IND.Name = '" + form.level1Name + "' " + //
                
                "\n ) S1 " +
@@ -477,33 +479,33 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                     //     "\n ,UNI.Id AS Unidade_Id " +
                          "\n ,SUM(R3.WeiDefects) AS Nc " +
                          "\n ,CASE WHEN IND.ParConsolidationType_Id = 2 THEN SUM(r3.WeiDefects) ELSE SUM(R3.Defects) END AS NcSemPeso  " +
-                         "\n ,CASE " +                 
-                         "\n WHEN IND.HashKey = 1 THEN(SELECT TOP 1 SUM(Quartos) / 2 FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
+                         "\n ,CASE " +
+                         "\n WHEN IND.HashKey = 1 THEN(SELECT TOP 1 SUM(Quartos) / 2 FROM VolumePcc1b (nolock) WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
                          "\n ELSE SUM(R3.WeiEvaluation) END AS Av " +
                          "\n ,CASE " +
-                         "\n WHEN IND.HashKey = 1 THEN(SELECT TOP 1 SUM(Quartos) / 2 FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
+                         "\n WHEN IND.HashKey = 1 THEN(SELECT TOP 1 SUM(Quartos) / 2 FROM VolumePcc1b (nolock) WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
                          "\n WHEN IND.ParConsolidationType_Id = 2 THEN SUM(r3.WeiEvaluation) " +
                          "\n ELSE SUM(R3.Evaluation) END AS AvSemPeso " + 
                          "\n ,SUM(R3.WeiDefects) / " +
-                         "\n CASE " +                 
-                         "\n WHEN IND.HashKey = 1 THEN(SELECT TOP 1 SUM(Quartos) / 2 FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
+                         "\n CASE " +
+                         "\n WHEN IND.HashKey = 1 THEN(SELECT TOP 1 SUM(Quartos) / 2 FROM VolumePcc1b (nolock) WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
                          "\n ELSE SUM(R3.WeiEvaluation) END * 100 AS [Proc] " +
-                         "\n FROM Result_Level3 R3 " +
-                         "\n INNER JOIN CollectionLevel2 C2 " +
+                         "\n FROM Result_Level3 R3 (nolock) " +
+                         "\n INNER JOIN CollectionLevel2 C2  (nolock)" +
                          "\n ON C2.Id = R3.CollectionLevel2_Id " +
-                         "\n INNER JOIN ConsolidationLevel2 CL2 " +
+                         "\n INNER JOIN ConsolidationLevel2 CL2  (nolock)" +
                          "\n ON CL2.Id = C2.ConsolidationLevel2_Id " +
-                         "\n INNER JOIN ConsolidationLevel1 CL1 " +
+                         "\n INNER JOIN ConsolidationLevel1 CL1  (nolock)" +
                          "\n ON CL1.Id = CL2.ConsolidationLevel1_Id " +
-                         "\n INNER JOIN ParCompany UNI " +
+                         "\n INNER JOIN ParCompany UNI  (nolock)" +
                          "\n ON UNI.Id = C2.UnitId " +
-                         "\n INNER JOIN ParLevel1 IND  " +
+                         "\n INNER JOIN ParLevel1 IND   (nolock)" +
                          "\n ON IND.Id = C2.ParLevel1_Id " +
-                         "\n INNER JOIN ParLevel2 MON " +
+                         "\n INNER JOIN ParLevel2 MON  (nolock)" +
                          "\n ON MON.Id = C2.ParLevel2_Id " +
                          "\n WHERE IND.Name = '" + form.level1Name + "' " +
                          "\n    and MON.Name = '" + form.level2Name + "' " +
-                         "\n 	AND UNI.Name = '" + form.unitName + "'" +
+                         "\n 	AND (UNI.Name = '" + form.unitName + "' OR UNI.Initials = '" + form.unitName + "')" +
                          "\n 	AND CL2.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
                          "\n GROUP BY " +
                          "\n  IND.Id " +
@@ -547,18 +549,18 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                         "\n ,SUM(R3.WeiDefects) AS Nc " +
                         "\n ,SUM(R3.WeiEvaluation) AS Av " +
                         "\n ,SUM(R3.WeiDefects) / SUM(R3.WeiEvaluation) * 100 AS [Proc] " +
-                        "\n FROM Result_Level3 R3 " +
-                        "\n INNER JOIN CollectionLevel2 C2 " +
+                        "\n FROM Result_Level3 R3  (nolock)" +
+                        "\n INNER JOIN CollectionLevel2 C2  (nolock)" +
                         "\n ON C2.Id = R3.CollectionLevel2_Id " +
-                        "\n INNER JOIN ConsolidationLevel2 CL2 " +
+                        "\n INNER JOIN ConsolidationLevel2 CL2  (nolock)" +
                         "\n ON CL2.Id = C2.ConsolidationLevel2_Id " +
-                        "\n INNER JOIN ConsolidationLevel1 CL1 " +
+                        "\n INNER JOIN ConsolidationLevel1 CL1  (nolock)" +
                         "\n ON CL1.Id = CL2.ConsolidationLevel1_Id " +
-                        "\n INNER JOIN ParCompany UNI " +
+                        "\n INNER JOIN ParCompany UNI  (nolock)" +
                         "\n ON UNI.Id = CL1.UnitId " +
-                        "\n INNER JOIN ParLevel1 IND  " +
+                        "\n INNER JOIN ParLevel1 IND   (nolock)" +
                         "\n ON IND.Id = CL1.ParLevel1_Id " +
-                        "\n INNER JOIN ParLevel2 MON " +
+                        "\n INNER JOIN ParLevel2 MON  (nolock)" +
                         "\n ON MON.Id = CL2.ParLevel2_Id " +
                         "\n WHERE IND.Name ='" + form.level1Name + "' " +
                         "\n /* and MON.Id = 1 */" +

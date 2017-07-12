@@ -1,4 +1,9 @@
-﻿
+﻿function GetUnidadeUsuario() {
+    return $.grep(getCookie('webControlCookie'), function (a, b) {
+        return a.indexOf('CompanyId') != -1;
+    })[0].split('=')[1];
+}
+
 /*API de SUM para DataTable
 
 Exemplo: 
@@ -44,13 +49,14 @@ function EasyAjax(url, dados, callback, loader, toggle) {
     //AJAX
     $.post(url, dados, function (r) {
         try {
-            if (toggle != undefined)
-                $('#menu-toggle').click();
-
+            
             if (!!loader)
                 $('#' + loader).removeClass('loader');
 
             callback(r);
+
+            if (toggle != undefined)
+                $('#menu-toggle').click();
 
         } catch (e) {
             console.log(e);
@@ -70,15 +76,16 @@ function EasyAjax(url, dados, callback, loader, toggle) {
     });
 }
 
-/*Mascaras e instancias de Select 2 por classe*/
-$(document).ready(function () {
+
+function InitiMasksDefaults() {
 
     /*Input Mask*/
     $('.integer').each(function (index) {
         $(this).inputmask("integer", { rightAlign: false });
     });
     $('.decimal').each(function (index) {
-        $(this).inputmask("decimal", { rightAlign: false });
+        $(this).val($(this).val().replace(',', '.'));
+        $(this).inputmask("decimal", { rightAlign: false, radixPoint: '.' });
     });
 
     $('.integer-direita').each(function (index) {
@@ -86,7 +93,7 @@ $(document).ready(function () {
     });
     $('.decimal-direita').each(function (index) {
         $(this).val($(this).val().replace(',', '.'));
-        $(this).inputmask("decimal", { rightAlign: true });
+        $(this).inputmask("decimal", { rightAlign: true, radixPoint: '.' });
     });
 
     $('.integer-esquerda').each(function (index) {
@@ -94,7 +101,7 @@ $(document).ready(function () {
     });
     $('.decimal-esquerda').each(function (index) {
         $(this).val($(this).val().replace(',', '.'));
-        $(this).inputmask("decimal", { rightAlign: false });
+        $(this).inputmask("decimal", { rightAlign: false, radixPoint: '.' });
     });
     /*FIM Input Mask*/
 
@@ -102,6 +109,7 @@ $(document).ready(function () {
     $('.select2ddl').each(function (index) {
         $(this).select2();
     });
+
     /*FIM Select 2*/
 
     $('.DataPiker').daterangepicker({
@@ -112,12 +120,23 @@ $(document).ready(function () {
         }
     });
 
+}
+
+/*Mascaras e instancias de Select 2 por classe*/
+$(document).ready(function () {
+
+    InitiMasksDefaults();
+
 })
 
 function getCookie(name) {
     var value = "; " + document.cookie;
     var parts = value.split("; " + name + "=");
     if (parts.length == 2) return parts.pop().split(";").shift().split('&');
+}
+
+function getRole(role){
+    return $.grep(getCookie("webControlCookie"), function (n) { return n.indexOf(role) != -1 })
 }
 
 Array.prototype.max = function () {
@@ -128,6 +147,41 @@ Array.prototype.min = function () {
     return Math.min.apply(null, this);
 };
 
+function heatMapSingleCol(container, tableId, index, order, isBenchemark) {
+
+    var elems = [];
+    $('#' + container).find('#' + tableId).find('td:nth-child(' + index + ')').each(function (c, o) {
+
+        elems.push({
+            //obj javascript > td
+            td: $(o)
+            // Extrai valor numerico da TD.
+            , valor: o.textContent.trim().replace(',', '.')
+        });
+    });
+
+    var valorMaximo = Math.max.apply(Math, elems.map(function (o) { return o.valor; }))
+    var valorMinimo = Math.min.apply(Math, elems.map(function (o) { return o.valor; }))
+
+    if (isBenchemark) {
+        elems.forEach(function (oo, cc) {
+            var range = valorMaximo - valorMinimo;
+            var diferencaPeloRange = oo["valor"] - valorMinimo;
+            var percentual = (diferencaPeloRange / range) * 100;
+            oo.td[0].style.backgroundColor = percentToRGB(percentual, order);
+        });
+    } else {
+        elems.forEach(function (oo, cc) {
+            //Encontra valor em 1 percentual dentre os valores escolhidos, maior valor é 100% e menos é 0%
+            var percentual = parseFloat((((oo["valor"] * 100) / valorMaximo) / 100).toFixed(2));
+            //Atribui o Style com a cor de acordo com o valor percentual obtido acima.
+            var val = parseFloat(oo["valor"]);
+            oo.td[0].style.backgroundColor = percentToRGB(val, order);
+        });
+    }
+
+}
+
 /*
     tableId [type=string] Ex: "Table1",
     isInLine [type=bool] Ex: true,
@@ -136,82 +190,94 @@ Array.prototype.min = function () {
     delimiterIndex [type=int] Ex: 3, (Representa o índice da ultima TD aonde começa a zona de repetição dos dados).
     order [type=string] 'ASC' or 'DESC'.
 */
-function heatMap(tableId, isInLine, isInColumn, startIndex, delimiterIndex, order) {
+function heatMap(container, tableId, startIndex, delimiterIndex, order) {
 
     var startIndexFixed = startIndex;
 
-    //Se for por TR.
-    if (isInLine) {
+    //Se for In Line > para cada TR procura indice e calcula o percentual.
+    $('#' + container).find('#' + tableId).find('tr').each(function (c, o) {
 
-        //Se for In Line > para cada TR procura indice e calcula o percentual.
-        $('#fixBody1 > table tr').each(function (c, o) {
+        //Para manejar contadores por TR
+        startIndex = startIndexFixed;
+        var elems = [];
 
-            //Para manejar contadores por TR
-            startIndex = startIndexFixed;
-            var elems = [];
-
-            //Insere no array todos os elementos indicados em startIndex, insere o elemento Jquery "td" e o valor da "td".
-            while (!!$(o).find('td:eq(' + startIndex + ')')[0]) {
+        //Insere no array todos os elementos indicados em startIndex, insere o elemento Jquery "td" e o valor da "td".
+        while (!!$(o).find('td:eq(' + startIndex + ')')[0]) {
+            if ($(o).find('td:eq(' + (startIndex - delimiterIndex) + ')')[0].textContent.match(/\d+(\.\d{1,2})?/g)[0] > 0) {
                 elems.push({
                     //obj javascript > td
-                    td: $(o).find('td:eq(' + startIndex + ')') 
+                    td: $(o).find('td:eq(' + startIndex + ')')
                     // Extrai valor numerico da TD.
-                    , valor: $(o).find('td:eq(' + startIndex + ')')[0].textContent.match(/\d+(\.\d{1,2})?/g)[0] 
+                    , valor: $(o).find('td:eq(' + startIndex + ')')[0].textContent.trim().replace(',', '.')
                 });
                 //Proximo index de TD a se inserir.
-                startIndex += delimiterIndex + 1; 
             }
+            startIndex += delimiterIndex + 1;
+        }
 
-            //Valor minimo e maximo encontrados na TR.
-            var valorMaximo = Math.max.apply(Math, elems.map(function (o) { return o.valor; }))
-            var valorMinimo = Math.min.apply(Math, elems.map(function (o) { return o.valor; }))
+        //Valor minimo e maximo encontrados na TR.
+        var valorMaximo = Math.max.apply(Math, elems.map(function (o) { return o.valor; }))
+        var valorMinimo = Math.min.apply(Math, elems.map(function (o) { return o.valor; }))
 
+        if (elems.length == 1) {
             elems.forEach(function (oo, cc) {
                 //Encontra valor em 1 percentual dentre os valores escolhidos, maior valor é 100% e menos é 0%
                 var percentual = parseFloat((((oo["valor"] * 100) / valorMaximo) / 100).toFixed(2));
                 //Atribui o Style com a cor de acordo com o valor percentual obtido acima.
-
                 var val = parseFloat(oo["valor"]);
-                
-                //if (val > 100) {
-                //    val = 100;
-                //}
-                //else if (val < 0) {
-                //    val = 0;
-                //}
-
-                //var h = Math.floor((100 - val) * 120 / 100);
-                //var s = Math.abs(val - 50) / 50;
-                //var v = 1;
-
                 oo.td[0].style.backgroundColor = percentToRGB(val, order);
             });
-        })
-    }
+        } else {
+            elems.forEach(function (oo, cc) {
+                var range = valorMaximo - valorMinimo;
+                var diferencaPeloRange = oo["valor"] - valorMinimo;
+                var percentual = (diferencaPeloRange / range) * 100;
+                oo.td[0].style.backgroundColor = percentToRGB(percentual, order);
+            });
+        }
+    })
 }
 
 function percentToRGB(percent, order) {
-    var val = percent;
-    if (val > 100) {
-        val = 100;
-    }
-    else if (val < 0) {
-        val = 0;
-    }
-    if (order == 'DESC') {
-        var r = Math.floor((255 * (100 - val)) / 100),
-            g = Math.floor((255 * val) / 100),
-            b = 0;
 
-    } else {
-        var r = Math.floor((255 * val) / 100),
-           g = Math.floor((255 * (100 - val)) / 100),
-           b = 0;
-    }
+    listaCorPura = [];
+    listaCorPura.push('#00FF00');
+    listaCorPura.push('#11FF00');
+    listaCorPura.push('#22FF00');
+    listaCorPura.push('#77FF00');
+    listaCorPura.push('#88FF00');
+    listaCorPura.push('#99FF00');
+    listaCorPura.push('#AAFF00');
+    listaCorPura.push('#BBFF00');
+    listaCorPura.push('#CCFF00');
+    listaCorPura.push('#DDFF00');
+    listaCorPura.push('#EEFF00');
+    listaCorPura.push('#FFFF00');
+    listaCorPura.push('#FFEE00');
+    listaCorPura.push('#FFDD00');
+    listaCorPura.push('#FFCC00');
+    listaCorPura.push('#FFBB00');//60%
+    listaCorPura.push('#FFBB00');//64
+    listaCorPura.push('#FFBB00');//68
+    listaCorPura.push('#FFBB00');//72
+    listaCorPura.push('#FFBB00');//76
+    listaCorPura.push('#ff6901');//80
+    listaCorPura.push('#ff6901');//84
+    listaCorPura.push('#ff6901');//88
+    listaCorPura.push('#ed3b1c');//92
+    listaCorPura.push('#ed3b1c');
+    listaCorPura.push('#ed3b1c');
 
-    return "rgb(" + r + "," + g + "," + b + ")";
+    var listaCor = [];
+    listaCorPura.forEach(function (o, c) {
+        for (var i = 0; i < 4; i++) {
+            listaCor.push(o);
+        }
+    });
+
+    return listaCor[parseInt(percent)];
+
 }
-
 
 /*DESCONTINUAR ESTES METODOS< E UTILIZAR APENA INSTANCIA POR CLASSE*/
 Inputmask.extendAliases({
@@ -348,8 +414,8 @@ GuardJs = {
         $(e).inputmask("numeric");
     },
 
-    mascaraInteger: function(e) {
-        $(e).inputmask("integer", { rightAlign: false });  
+    mascaraInteger: function (e) {
+        $(e).inputmask("integer", { rightAlign: false });
     },
     /*FIM DESCONTINUAR ESTES METODOS< E UTILIZAR APENA INSTANCIA POR CLASSE*/
 

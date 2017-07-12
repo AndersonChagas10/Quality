@@ -931,7 +931,7 @@
     <value>O primeiro login precisa ser conectado à unidade.</value>
   </data>
   <data name="indicators_error_try_again" xml:space="preserve">
-    <value>Não foi possível carregar os indicadores, tente novamente</value>
+    <value>Não foi possível sincronizar os indicadores</value>
   </data>
   <data name="inform_retroactive_date" xml:space="preserve">
     <value>Informa a data retroativa</value>
@@ -940,7 +940,7 @@
     <value>Não foi possível carregar as chaves, tente novamente</value>
   </data>
   <data name="login_error_try_again" xml:space="preserve">
-    <value>Não foi possível efetuar o login, tente novamente.</value>
+    <value>Não foi possível logar e sincronizar, tente novamente.</value>
   </data>
   <data name="not_connected_to_network" xml:space="preserve">
     <value>Você parece não estar conectado a rede da JBS. Peça ajuda ao pessoal de TI</value>
@@ -1054,13 +1054,13 @@
     <value>Tentando novamente</value>
   </data>
   <data name="you_need_to_be_connected" xml:space="preserve">
-    <value>Você precisa estar on-line para efetuar o login</value>
+    <value>Você precisa entrar e sincronizar para efetuar o login.</value>
   </data>
   <data name="allowed" xml:space="preserve">
     <value>permitidas/permitidos</value>
   </data>
   <data name="change_unit_must_be_online" xml:space="preserve">
-    <value>Ops! Você não está online', 'Para alterar a unidade você precisa estar online'</value>
+    <value>Para alterar a unidade você precisa estar online</value>
   </data>
   <data name="changing_unit_preferences" xml:space="preserve">
     <value>Alterando unidade. Estamos alterando as preferências de unidade, aguarde um momento...</value>
@@ -1351,7 +1351,7 @@
     <value>Utilização do SGQ</value>
   </data>
   <data name="tipification_verification" xml:space="preserve">
-    <value>Verificação do tipificação</value>
+    <value>Verificação da Tipificação</value>
   </data>
   <data name="_language" xml:space="preserve">
     <value>pt-br</value>
@@ -1931,5 +1931,140 @@
   </data>
   <data name="synced" xml:space="preserve">
     <value>Sincronizado.</value>
+  </data>
+  <data name="change_module" xml:space="preserve">
+    <value>Trocar módulo</value>
+  </data>
+  <data name="enter_online" xml:space="preserve">
+    <value>Entrar e sincronizar</value>
+  </data>
+  <data name="enter_offline" xml:space="preserve">
+    <value>Entrar</value>
+  </data>
+  <data name="slow_network" xml:space="preserve">
+    <value>Sua rede está apresentando muita lentidão. Tente mais tarde.</value>
+  </data>
+  <data name="fill_the_header_name_field" xml:space="preserve">
+    <value>O campo Nome deve ser preenchido para Nível do Campo</value>
+  </data>
+  <data name="select_the_field_type" xml:space="preserve">
+    <value>O campo Tipo deve ser selecionado para Nível do Campo</value>
+  </data>
+  <data name="select_the_field_where" xml:space="preserve">
+    <value>O Nível do Campo deve ser selecionado</value>
+  </data>
+  <data name="default_company" xml:space="preserve">
+    <value>Empresa Padrão</value>
+  </data>
+  <data name="alter_defaut_company_success" xml:space="preserve">
+    <value>Empresa padrão alterada com sucesso</value>
+  </data>
+  <data name="logout_confirm" xml:space="preserve">
+    <value>Você tem dados não sincronizados, deseja mesmo deslogar?</value>
+  </data>
+  <data name="description_has_between_3_and_10" xml:space="preserve">
+    <value>A Descrição deverá ter no mínimo 0 e máximo 10 caracteres</value>
+  </data>
+  <data name="maximum_description_300_characteres" xml:space="preserve">
+    <value>O tamanho máximo da Descrição são 300 caracteres</value>
+  </data>
+  <data name="maximum_name_300_characteres" xml:space="preserve">
+    <value>O tamanho máximo do Nome são 300 caracteres</value>
+  </data>
+  <data name="minimum_description_1_characteres" xml:space="preserve">
+    <value>O tamanho mínimo da Descrição deve ser 1 caracter</value>
+  </data>
+  <data name="minimum_name_3_characteres" xml:space="preserve">
+    <value>O tamanho mínimo do Nome são 3 caracteres</value>
+  </data>
+  <data name="name_has_between_3_and_10" xml:space="preserve">
+    <value>O Nome deverá ter no mínimo 3 e no máximo 10 caracteres</value>
+  </data>
+  <data name="select_the_department" xml:space="preserve">
+    <value>O departamento é obrigatório</value>
+  </data>
+  <data name="select_the_name" xml:space="preserve">
+    <value>O Nome é obrigatório</value>
+  </data>
+  <data name="select_the_colosolidation_type" xml:space="preserve">
+    <value>É obrigatório selecionar o tipo de consolidação.</value>
+  </data>
+  <data name="must_select_complete_link_to_perform" xml:space="preserve">
+    <value>É necessário selecionar um vinculo completo para realizar esta ação</value>
+  </data>
+  <data name="unable_to_complete_data_request" xml:space="preserve">
+    <value>Não foi possivel completar a requisição de dados</value>
+  </data>
+  <data name="binary_input_type" xml:space="preserve">
+    <value>Tipo de Entrada Binária</value>
+  </data>
+  <data name="negative_input_type" xml:space="preserve">
+    <value>Tipo de entrada negativa</value>
+  </data>
+  <data name="positive_input_type" xml:space="preserve">
+    <value>Tipo de entrada positiva</value>
+  </data>
+  <data name="sequential" xml:space="preserve">
+    <value>Sequêncial</value>
+  </data>
+  <data name="side_banda" xml:space="preserve">
+    <value>Banda</value>
+  </data>
+  <data name="no_appointments_in_this_period" xml:space="preserve">
+    <value>Não existem apontamentos neste período!</value>
+  </data>
+  <data name="close_all" xml:space="preserve">
+    <value>Fechar todos</value>
+  </data>
+  <data name="update_tablet" xml:space="preserve">
+    <value>Atualizar Cadastros</value>
+  </data>
+  <data name="update_tablet_message" xml:space="preserve">
+    <value>Esta ação pode demorar algum tempo, deseja atualizar a parametrização dos tablets? O Loader sumira automaticamente ao finalizar a ação.</value>
+  </data>
+  <data name="time" xml:space="preserve">
+    <value>Hora</value>
+  </data>
+  <data name="has_edit_level2" xml:space="preserve">
+    <value>Têm edição de monitoramento</value>
+  </data>
+  <data name="level1_children" xml:space="preserve">
+    <value>Indicador Filho</value>
+  </data>
+  <data name="level1_destiny" xml:space="preserve">
+    <value>Indicador Destino</value>
+  </data>
+  <data name="level1_origin" xml:space="preserve">
+    <value>Indicador de Origem</value>
+  </data>
+  <data name="points_destiny" xml:space="preserve">
+    <value>Pontua para o Indicador de Origem</value>
+  </data>
+  <data name="update_tablet_all" xml:space="preserve">
+    <value>Atualizar todos os Tablets de todas as Unidades</value>
+  </data>
+  <data name="update_all_tablet_message" xml:space="preserve">
+    <value>Esta ação pode demorar algum tempo (5 a 25 minutos), deseja atualizar a parametrização dos tablets? O Loader sumira automaticamente ao finalizar a ação.</value>
+  </data>
+  <data name="deviation" xml:space="preserve">
+    <value>Conforme</value>
+  </data>
+  <data name="according" xml:space="preserve">
+    <value>Conforme</value>
+  </data>
+  <data name="not_accordance" xml:space="preserve">
+    <value>Não Conforme</value>
+  </data>
+  <data name="unvalued" xml:space="preserve">
+    <value>Não Avaliado</value>
+  </data>
+  <data name="valued" xml:space="preserve">
+    <value>Avaliado</value>
+  </data>
+  <data name="current_value" xml:space="preserve">
+    <value>Valor atual</value>
+  </data>
+  <data name="new_value" xml:space="preserve">
+    <value>Novo Valor</value>
   </data>
 </root>

@@ -134,6 +134,8 @@
                 return;
             }
 
+            enviar["auditorId"] = GetUsuarioId();
+
             EasyAjax(urlGraficoUnidades, enviar, GraficoUnidade, "RGUnidadesGrafico", toggle);//AJAX
 
         };
@@ -359,9 +361,37 @@
                     }
                 },
                 series: [
-                    Chart.ProcNc(porc, requisitaDadosSGQparaGerarFta),
-                    Chart.NC(nc, requisitaDadosSGQparaGerarFta),
-                    Chart.Av(qtdAv, requisitaDadosSGQparaGerarFta),
+                    {
+                        name: '% @Resources.Resource.nonconformity',
+                        color: Chart.CorTotalProcNc(),//'rgba(240,124,0,1)',
+                        data: porc,
+                        yAxis: 1,
+                        tooltip: {
+                            valueSuffix: ' %'
+                        },
+                        //pointPadding: 0.4,
+                        //pointPlacement: -0.2,
+                        dataLabels: Chart.DataLabelPadrao('%'),
+                        point: {
+                            events: {
+                                click: function () {
+                                    enviar['level3Name'] = this.category;
+                                    enviar['PercentualNCFTA'] = this.y;
+                                    enviar['ReincidenciaDesvioFTA'] = qtdAv[this.x];
+                                    enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
+                                    //EasyAjax(urlGetFta, enviar, RedirecionaParaFTA);
+                                    RedirecionaParaFTA(enviar);
+                                }
+                            }
+                        },
+                        tooltip: {
+                            valueDecimals: 2,
+                            valueSuffix: ' % (@Resources.Resource.nonconformity * @Resources.Resource.weight)'
+                        }
+                    },
+                   // Chart.ProcNc(porc, requisitaDadosSGQparaGerarFta),
+                    Chart.NC(nc, function() {}),
+                    Chart.Av(qtdAv, function() {}),
                     Chart.curvaPareto(data, nc, 1, inverse)
                 ]
             });
@@ -721,6 +751,12 @@
 
         }
         /*END Charts*/
+
+        function GetUsuarioId() {
+            return $.grep(getCookie('webControlCookie'), function (a, b) {
+                return a.indexOf('userId') != -1;
+            })[0].split('=')[1];
+        }
 
     </script>
 

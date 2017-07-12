@@ -1,4 +1,6 @@
 ﻿using DTO.BaseEntity;
+using DTO.Helpers;
+using Resources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,23 +14,30 @@ namespace DTO.DTO.Params
         public List<ParLevel2DTO> listParLevel2Colleta;
 
         //[Display(Name = "select_the_consolidation_type", ResourceType = typeof(Resource))]
-        [Range(0, 9999999999, ErrorMessage = "É obrigatório selecionar o tipo de consolidação.")]
+        //[Range(0, 9999999999, ErrorMessage = "É obrigatório selecionar o tipo de consolidação.")]
+        [Range(0, 9999999999, ErrorMessageResourceName = "select_the_colosolidation_type", ErrorMessageResourceType = typeof(Resource))]
         public int ParConsolidationType_Id { get; set; }
 
         //[Display(Name = "select_the_frequency", ResourceType = typeof(Resource))]
-        [Range(0, 9999999999, ErrorMessage = "É obrigatório selecionar a frequencia.")]
+        //[Range(0, 9999999999, ErrorMessage = "É obrigatório selecionar a frequencia.")]
+        [Range(0, 9999999999, ErrorMessageResourceName = "select_the_frequency", ErrorMessageResourceType = typeof(Resource))]
         public int ParFrequency_Id { get; set; }
 
         //[Display(Name = "level1_name", ResourceType = typeof(Resource))]
         //[Required(ErrorMessage = "O Nome deverá ter no mínimo 3 e máximo 10 caracteres.")]
-        [MinLength(3, ErrorMessage = "O tamanho mínimo do Nome são 3 caracteres.")]
-        [MaxLength(300, ErrorMessage = "O tamanho máximo do Nome são 300 caracteres.")]
+        //[MinLength(3, ErrorMessage = "O tamanho mínimo do Nome são 3 caracteres.")]
+        //[MaxLength(300, ErrorMessage = "O tamanho máximo do Nome são 300 caracteres.")]
+        [MinLength(3, ErrorMessageResourceName = "minimum_name_3_characteres", ErrorMessageResourceType = typeof(Resource))]
+        [MaxLength(300, ErrorMessageResourceName = "maximum_name_300_characteres", ErrorMessageResourceType = typeof(Resource))]
         public string Name { get; set; }
 
         //[Display(Name = "level1_description", ResourceType = typeof(Resource))]
-        [Required(ErrorMessage = "A Descrição deverá ter no mínimo 0 e máximo 10 caracteres.")]
-        [MinLength(1, ErrorMessage = "O tamanho mínimo da Descrição deve ser 1 caracter.")]
-        [MaxLength(300, ErrorMessage = "O tamanho máximo da Descrição são 300 caracteres.")]
+        //[Required(ErrorMessage = "A Descrição deverá ter no mínimo 0 e máximo 10 caracteres.")]
+        //[MinLength(1, ErrorMessage = "O tamanho mínimo da Descrição deve ser 1 caracter.")]
+        //[MaxLength(300, ErrorMessage = "O tamanho máximo da Descrição são 300 caracteres.")]
+        [Required(ErrorMessageResourceName = "description_has_between_3_and_10", ErrorMessageResourceType = typeof(Resource))]
+        [MinLength(1, ErrorMessageResourceName = "minimum_description_1_characteres", ErrorMessageResourceType = typeof(Resource))]
+        [MaxLength(300, ErrorMessageResourceName = "maximum_description_300_characteres", ErrorMessageResourceType = typeof(Resource))]
         public string Description { get; set; }
 
         //[Display(Name = "save_button_on_level2", ResourceType = typeof(Resource))]
@@ -76,7 +85,57 @@ namespace DTO.DTO.Params
 
         public bool haveRealTimeConsolidation { get; set; }
         public bool HasCompleteEvaluation { get; set; }
+        public bool EditLevel2 { get; set; }
         public Nullable<int> RealTimeConsolitationUpdate { get; set; }
+
+        public bool IsChildren { get; set; }
+
+        private Nullable<int> parLevel1Origin_Id;
+        public Nullable<int> ParLevel1Origin_Id
+        {
+            get
+            {
+                if (IsChildren)
+                    return parLevel1Origin_Id;
+                else
+                    return null;
+            }
+            set
+            {
+                parLevel1Origin_Id = value;
+            }
+        }
+        private bool pointsDestiny;
+        public bool PointsDestiny
+        {
+            get
+            {
+                if (IsChildren)
+                    return pointsDestiny;
+                else
+                    return false;
+            }
+            set
+            {
+                pointsDestiny = value;
+            }
+        }
+
+        private Nullable<int> parLevel1Destiny_Id;
+        public Nullable<int> ParLevel1Destiny_Id
+        {
+            get
+            {
+                if (IsChildren)
+                    return parLevel1Destiny_Id;
+                else
+                    return null;
+            }
+            set
+            {
+                parLevel1Destiny_Id = value;
+            }
+        }
 
         public List<ParLevel2ControlCompanyDTO> listLevel2CorporativosObj { get; set; }
 
@@ -89,7 +148,7 @@ namespace DTO.DTO.Params
         #region Props utilizadas para alteração
 
         public List<ParLevel1XHeaderFieldDTO> cabecalhosInclusos { get; set; }
-        
+
         public List<ParCounterXLocalDTO> contadoresIncluidos { get; set; }
         public List<ParRelapseDTO> listParRelapseDto { get; set; }
 
@@ -100,7 +159,7 @@ namespace DTO.DTO.Params
         public List<ParGoalDTO> listParGoalLevel1 { get; set; }
 
         public IEnumerable<SelectListItem> DdlLevel2Vinculados { get; set; }
-        
+
         public void CreateSelectListParamsViewModelListLevel(List<ParLevel2DTO> listLevel2, List<ParLevel3Level2Level1DTO> listParLevel3Level2Level1Dto)
         {
 
@@ -112,8 +171,8 @@ namespace DTO.DTO.Params
             var group = new SelectListGroup() { Name = (GlobalConfig.Eua || GlobalConfig.Canada) ? "Unlinked" : "Não vinculado:" };
             var groupSelecionado = new SelectListGroup();
             //listParLevel3Level2Level1Dto = listParLevel3Level2Level1Dto.OrderBy(r => listLevel2.Any(ll2 => ll2.Id == r.ParLevel3Level2.ParLevel2_Id)).ToList();
-            
-            
+
+
             foreach (var i in listLevel2)
             {
 
@@ -168,6 +227,7 @@ namespace DTO.DTO.Params
         public Nullable<int> hashKey { get; set; }
 
         public Nullable<int> ParScoreType_Id { get; set; }
+        public string DataInit { get; set; }
 
 
 

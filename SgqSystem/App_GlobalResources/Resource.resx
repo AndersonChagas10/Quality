@@ -1953,4 +1953,133 @@
   <data name="synced" xml:space="preserve">
     <value>Synced data.</value>
   </data>
+  <data name="change_module" xml:space="preserve">
+    <value>Change module</value>
+  </data>
+  <data name="enter_online" xml:space="preserve">
+    <value>Login online</value>
+  </data>
+  <data name="enter_offline" xml:space="preserve">
+    <value>Login offline</value>
+  </data>
+  <data name="slow_network" xml:space="preserve">
+    <value>Your network is slow right. Try again later.</value>
+  </data>
+  <data name="fill_the_header_name_field" xml:space="preserve">
+    <value>Please, fill the header name field</value>
+  </data>
+  <data name="select_the_field_type" xml:space="preserve">
+    <value>Please, select the fild Type</value>
+  </data>
+  <data name="select_the_field_where" xml:space="preserve">
+    <value>Please, select the fild Where</value>
+  </data>
+  <data name="default_company" xml:space="preserve">
+    <value>Default Company</value>
+  </data>
+  <data name="alter_defaut_company_success" xml:space="preserve">
+    <value>Default company changed successfully</value>
+  </data>
+  <data name="logout_confirm" xml:space="preserve">
+    <value>Do you have unsynchronized data, do you really want to move?</value>
+  </data>
+  <data name="description_has_between_3_and_10" xml:space="preserve">
+    <value>Description has to be between 3 and 10 characters</value>
+  </data>
+  <data name="maximum_description_300_characteres" xml:space="preserve">
+    <value>The maximum Description length is 300 characters</value>
+  </data>
+  <data name="maximum_name_300_characteres" xml:space="preserve">
+    <value>The maximum Name length is 300 characters</value>
+  </data>
+  <data name="minimum_description_1_characteres" xml:space="preserve">
+    <value>The minimum Description length is 1 characters</value>
+  </data>
+  <data name="minimum_name_3_characteres" xml:space="preserve">
+    <value>The minimum Name length is 3 characters</value>
+  </data>
+  <data name="name_has_between_3_and_10" xml:space="preserve">
+    <value>Name has to be between 3 and 10 characters</value>
+  </data>
+  <data name="select_the_department" xml:space="preserve">
+    <value>Please select department</value>
+  </data>
+  <data name="select_the_name" xml:space="preserve">
+    <value>Please select Name</value>
+  </data>
+  <data name="select_the_colosolidation_type" xml:space="preserve">
+    <value>Please select consolidation type</value>
+  </data>
+  <data name="must_select_complete_link_to_perform" xml:space="preserve">
+    <value>You must select a complete link to perform this action</value>
+  </data>
+  <data name="unable_to_complete_data_request" xml:space="preserve">
+    <value>Unable to complete data request</value>
+  </data>
+  <data name="binary_input_type" xml:space="preserve">
+    <value>Binary Input Type</value>
+  </data>
+  <data name="negative_input_type" xml:space="preserve">
+    <value>Negative input</value>
+  </data>
+  <data name="positive_input_type" xml:space="preserve">
+    <value>Positive input</value>
+  </data>
+  <data name="sequential" xml:space="preserve">
+    <value>Sequential</value>
+  </data>
+  <data name="side_banda" xml:space="preserve">
+    <value>Side</value>
+  </data>
+  <data name="no_appointments_in_this_period" xml:space="preserve">
+    <value>There are no appointments in this period.</value>
+  </data>
+  <data name="close_all" xml:space="preserve">
+    <value>Fechar Todos</value>
+  </data>
+  <data name="update_tablet" xml:space="preserve">
+    <value>Update Tablets</value>
+  </data>
+  <data name="update_tablet_message" xml:space="preserve">
+    <value>This may take some time, do you want to update the tablet settings? The Loader will automatically disappear when the action is finished.</value>
+  </data>
+  <data name="time" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="has_edit_level2" xml:space="preserve">
+    <value>Level2 edition</value>
+  </data>
+  <data name="level1_children" xml:space="preserve">
+    <value>Level1 Children</value>
+  </data>
+  <data name="level1_destiny" xml:space="preserve">
+    <value>Level1 Destiny</value>
+  </data>
+  <data name="level1_origin" xml:space="preserve">
+    <value>Level1 Origin</value>
+  </data>
+  <data name="points_destiny" xml:space="preserve">
+    <value>Points Destiny</value>
+  </data>
+  <data name="update_tablet_all" xml:space="preserve">
+    <value>Atualizar todos os Tablets de todas as Unidades</value>
+  </data>
+  <data name="update_all_tablet_message" xml:space="preserve">
+    <value>This may take some time (5-20 minutes), do you want to update the tablet settings? The Loader will automatically disappear when the action is finished.</value>
+  </data>
+  <data name="deviation" xml:space="preserve">
+    <value>Deviation</value>
+  </data>
+  <data name="according" xml:space="preserve">
+    <value>According</value>
+  </data>
+  <data name="not_accordance" xml:space="preserve">
+    <value>Not in Accordance</value>
+  </data>
+  <data name="unvalued" xml:space="preserve">
+    <value>Unvalued</value>
+  </data>
+  <data name="valued" xml:space="preserve">
+    <value>Valued</value>
+  </data>
 </root>

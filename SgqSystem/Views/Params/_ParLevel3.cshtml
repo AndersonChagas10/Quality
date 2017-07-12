@@ -75,6 +75,7 @@
                                     <tr class="row ParBinarios" style="display: none;">
                                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolTrue_Id", Model.paramsDdl.DdlParLevel3BoolTrue, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.positive_value), Table.PosicaoLabel.top)
                                         @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
+                                        @*@Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top)*@
                                     </tr>
                                     <tr class="row" id="companyValueL3">
                                         @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeParL3Value" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top
@@ -265,7 +266,7 @@
 
             if(companyValue == -1){
                 companyValue = null;
-                companyName = "Todas";
+                companyName = "@Resources.Resource.all";
             }
 
             if(selectTipoInput == 2 || selectTipoInput == 3 || selectTipoInput == 4 || selectTipoInput == 5){
@@ -374,7 +375,7 @@
                 if(exist.length){
 
                     if(companySelected == -1)
-                        display= "Todas";
+                        display= "@Resources.Resource.all";
 
                     openMessageModal(Resources('data_already_register_on_company')+" " + display + ".", "")
                     return false;
@@ -421,8 +422,7 @@
                     if(o.ParCompany_Id > 0)
                         o["ParCompany_Name"] = o.ParCompany.Name;
                     else
-                        o["ParCompany_Name"] = "Todas";
-
+                        o["ParCompany_Name"] = "@Resources.Resource.all";
 
                     if(o.ParLevel3InputType_Id == 1){
                         o["ParLevel3BoolFalse_Name"] = o.ParLevel3BoolFalse.Name;
@@ -605,15 +605,15 @@
             var options =
                 "<option value='0'>" +
                     Resources('value_is_acceptable_between')
-                    + " " + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() + 
-                    + " " + Resources('and') 
+                    + " " + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() +
+                    + " " + Resources('and')
                     + " " + $("#crudNxNEdit #parLevel3Value_IntervalMax").val() +" "+ value+
                 "</option>" +
                 "<option value='1'>" +
-                    Resources('value_is_acceptable_less_than') 
-                    + " " + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() + 
-                    + " " + Resources('and_greater_than') 
-                    + " " + $("#crudNxNEdit #parLevel3Value_IntervalMax").val() 
+                    Resources('value_is_acceptable_less_than')
+                    + " " + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() +
+                    + " " + Resources('and_greater_than')
+                    + " " + $("#crudNxNEdit #parLevel3Value_IntervalMax").val()
                     + " " + value +
                 "</option>";
 
@@ -757,9 +757,10 @@
 
     $('#selectTipoInput').change();
 
-    function clicModalBinarioSave () {
+    function clicModalBinarioSave() {
+        
         var valInpPos = $('#modalInputPositive').val();
-        var valInpNeg =  $('#modalInputNegative').val();
+        var valInpNeg =  $('#modalInputNegative').val();       
 
         if(!valInpPos.length){
             alert("Valor invalido para:", "Valor Positivo");
@@ -771,12 +772,28 @@
             return;
         }
 
-        $('#selectConforme').append("<option>" + valInpPos + "</option>");
-        $('#selectNaoConforme').append("<option>" + valInpNeg + "</option>");
-        $('#modalInputPositive').val("");
-        $('#modalInputNegative').val("");
+        var dados = {nameTrue : valInpPos, nameFalse : valInpNeg}
+        $.post(urlSaveBinaryImputType, dados, function (r) {
 
-        $('#modalPositiveNegative').modal("hide");
+            try {
+
+                $('#selectConforme').append('<option value="' + r.True.Id + '">' + r.True.Name + '</option>');
+                $('#selectNaoConforme').append('<option value="' + r.False.Id + '">' + r.False.Name + '</option>');
+
+                $('#selectConforme').val(r.True.Id).change();
+                $('#selectNaoConforme').val(r.False.Id).change();
+                
+                $('#modalInputPositive').val("");
+                $('#modalInputNegative').val("");
+
+                $('#modalPositiveNegative').modal("hide");
+
+            } catch (e) {
+                console.log(e);
+            }
+        }).fail(function (e, h, x) {
+            
+        });     
     };
 
     var urlLowPerm = '@Url.Action("AlteraVinculoLevel3", "api/ParamsApi")';

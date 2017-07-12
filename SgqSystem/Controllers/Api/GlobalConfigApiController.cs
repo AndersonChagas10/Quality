@@ -1,7 +1,7 @@
-﻿using DTO;
-using DTO.Helpers;
+﻿using DTO.Helpers;
+using Newtonsoft.Json.Linq;
 using SgqSystem.Handlres;
-using System.Collections.Generic;
+using SgqSystem.Mail;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -26,6 +26,23 @@ namespace SgqSystem.Controllers.Api
         //{
         //    return GlobalConfig.CheckGC();
         //}
+
+        [HttpPost]
+        [Route("TestaEmail")]
+        public void TestaEmail(JObject form)
+        {
+            dynamic paramiters = form;
+            string emailTo = paramiters.email;
+            SimpleAsynchronous.SendMailFromDeviationSgqAppTesteBR(emailTo, false);
+        }
+
+        [HttpPost]
+        [Route("TestaEmailUSA")]
+        public void TestaEmailUSA(JObject form)
+        {
+            dynamic paramiters = form;
+            SimpleAsynchronous.SendMailFromDeviationSgqAppTesteUSA(paramiters.email);
+        }
 
         [HttpPost]
         [Route("RecSenha")]

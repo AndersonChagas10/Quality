@@ -5,6 +5,22 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="PlanoDeAcaoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="EmailContent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="To" Type="nvarchar" MaxLength="450" Nullable="false" />
+          <Property Name="Body" Type="nvarchar(max)" />
+          <Property Name="SendStatus" Type="nvarchar" MaxLength="15" />
+          <Property Name="SendDate" Type="datetime2" Precision="7" />
+          <Property Name="Project" Type="nvarchar" MaxLength="15" />
+          <Property Name="IsBodyHtml" Type="bit" />
+          <Property Name="From" Type="nvarchar" MaxLength="35" />
+          <Property Name="Subject" Type="nvarchar" MaxLength="450" />
+        </EntityType>
         <EntityType Name="Pa_Acao">
           <Key>
             <PropertyRef Name="Id" />
@@ -105,8 +121,10 @@
           <Property Name="UnidadeDeMedida_Id" Type="int" />
           <Property Name="IsTatico" Type="bit" Nullable="false" />
           <Property Name="Tatico_Id" Type="int" />
+          <Property Name="IsFta" Type="bit" />
         </EntityType>
         <EntityContainer Name="PlanoDeAcaoModelStoreContainer">
+          <EntitySet Name="EmailContent" EntityType="Self.EmailContent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pa_Acao" EntityType="Self.Pa_Acao" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pa_Acompanhamento" EntityType="Self.Pa_Acompanhamento" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pa_AcompanhamentoXQuem" EntityType="Self.Pa_AcompanhamentoXQuem" Schema="dbo" store:Type="Tables" />
@@ -118,44 +136,13 @@
     <edmx:ConceptualModels>
       <Schema Namespace="PlanoDeAcaoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="PlanoDeAcaoEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Pa_Acao" EntityType="PlanoDeAcaoModel.Pa_Acao" />
           <EntitySet Name="Pa_Acompanhamento" EntityType="PlanoDeAcaoModel.Pa_Acompanhamento" />
           <EntitySet Name="Pa_AcompanhamentoXQuem" EntityType="PlanoDeAcaoModel.Pa_AcompanhamentoXQuem" />
           <EntitySet Name="Pa_FTA" EntityType="PlanoDeAcaoModel.Pa_FTA" />
           <EntitySet Name="Pa_Planejamento" EntityType="PlanoDeAcaoModel.Pa_Planejamento" />
+          <EntitySet Name="EmailContent" EntityType="PlanoDeAcaoModel.EmailContent" />
+          <EntitySet Name="Pa_Acao" EntityType="PlanoDeAcaoModel.Pa_Acao" />
         </EntityContainer>
-        <EntityType Name="Pa_Acao">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AddDate" Type="DateTime" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="Unidade_Id" Type="Int32" />
-          <Property Name="Departamento_Id" Type="Int32" />
-          <Property Name="QuandoInicio" Type="DateTime" Precision="7" />
-          <Property Name="DuracaoDias" Type="Int32" />
-          <Property Name="QuandoFim" Type="DateTime" Precision="7" />
-          <Property Name="ComoPontosimportantes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Predecessora_Id" Type="Int32" />
-          <Property Name="PraQue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="QuantoCusta" Type="Decimal" Precision="35" Scale="10" />
-          <Property Name="Status" Type="Int32" />
-          <Property Name="Panejamento_Id" Type="Int32" />
-          <Property Name="Pa_IndicadorSgqAcao_Id" Type="Int32" />
-          <Property Name="Pa_Problema_Desvio_Id" Type="Int32" />
-          <Property Name="Level1Id" Type="Int32" />
-          <Property Name="Level2Id" Type="Int32" />
-          <Property Name="Level3Id" Type="Int32" />
-          <Property Name="Quem_Id" Type="Int32" />
-          <Property Name="CausaGenerica_Id" Type="Int32" />
-          <Property Name="ContramedidaGenerica_Id" Type="Int32" />
-          <Property Name="GrupoCausa_Id" Type="Int32" />
-          <Property Name="CausaEspecifica" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ContramedidaEspecifica" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="TipoIndicador" Type="Int32" />
-          <Property Name="Fta_Id" Type="Int32" />
-        </EntityType>
         <EntityType Name="Pa_Acompanhamento">
           <Key>
             <PropertyRef Name="Id" />
@@ -224,6 +211,55 @@
           <Property Name="UnidadeDeMedida_Id" Type="Int32" />
           <Property Name="IsTatico" Type="Boolean" Nullable="false" />
           <Property Name="Tatico_Id" Type="Int32" />
+          <Property Name="IsFta" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="EmailContent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="To" Type="String" Nullable="false" MaxLength="450" FixedLength="false" Unicode="true" />
+          <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SendStatus" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="SendDate" Type="DateTime" Precision="7" />
+          <Property Name="Project" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="IsBodyHtml" Type="Boolean" />
+          <Property Name="From" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="Subject" Type="String" MaxLength="450" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Pa_Acao">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Unidade_Id" Type="Int32" />
+          <Property Name="Departamento_Id" Type="Int32" />
+          <Property Name="QuandoInicio" Type="DateTime" Precision="7" />
+          <Property Name="DuracaoDias" Type="Int32" />
+          <Property Name="QuandoFim" Type="DateTime" Precision="7" />
+          <Property Name="ComoPontosimportantes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Predecessora_Id" Type="Int32" />
+          <Property Name="PraQue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="QuantoCusta" Type="Decimal" Precision="35" Scale="10" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="Panejamento_Id" Type="Int32" />
+          <Property Name="Pa_IndicadorSgqAcao_Id" Type="Int32" />
+          <Property Name="Pa_Problema_Desvio_Id" Type="Int32" />
+          <Property Name="Level1Id" Type="Int32" />
+          <Property Name="Level2Id" Type="Int32" />
+          <Property Name="Level3Id" Type="Int32" />
+          <Property Name="Quem_Id" Type="Int32" />
+          <Property Name="CausaGenerica_Id" Type="Int32" />
+          <Property Name="ContramedidaGenerica_Id" Type="Int32" />
+          <Property Name="GrupoCausa_Id" Type="Int32" />
+          <Property Name="CausaEspecifica" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ContramedidaEspecifica" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TipoIndicador" Type="Int32" />
+          <Property Name="Fta_Id" Type="Int32" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -231,39 +267,6 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="PlanoDeAcaoModelStoreContainer" CdmEntityContainer="PlanoDeAcaoEntities">
-          <EntitySetMapping Name="Pa_Acao">
-            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Acao">
-              <MappingFragment StoreEntitySet="Pa_Acao">
-                <ScalarProperty Name="Fta_Id" ColumnName="Fta_Id" />
-                <ScalarProperty Name="TipoIndicador" ColumnName="TipoIndicador" />
-                <ScalarProperty Name="ContramedidaEspecifica" ColumnName="ContramedidaEspecifica" />
-                <ScalarProperty Name="CausaEspecifica" ColumnName="CausaEspecifica" />
-                <ScalarProperty Name="GrupoCausa_Id" ColumnName="GrupoCausa_Id" />
-                <ScalarProperty Name="ContramedidaGenerica_Id" ColumnName="ContramedidaGenerica_Id" />
-                <ScalarProperty Name="CausaGenerica_Id" ColumnName="CausaGenerica_Id" />
-                <ScalarProperty Name="Quem_Id" ColumnName="Quem_Id" />
-                <ScalarProperty Name="Level3Id" ColumnName="Level3Id" />
-                <ScalarProperty Name="Level2Id" ColumnName="Level2Id" />
-                <ScalarProperty Name="Level1Id" ColumnName="Level1Id" />
-                <ScalarProperty Name="Pa_Problema_Desvio_Id" ColumnName="Pa_Problema_Desvio_Id" />
-                <ScalarProperty Name="Pa_IndicadorSgqAcao_Id" ColumnName="Pa_IndicadorSgqAcao_Id" />
-                <ScalarProperty Name="Panejamento_Id" ColumnName="Panejamento_Id" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="QuantoCusta" ColumnName="QuantoCusta" />
-                <ScalarProperty Name="PraQue" ColumnName="PraQue" />
-                <ScalarProperty Name="Predecessora_Id" ColumnName="Predecessora_Id" />
-                <ScalarProperty Name="ComoPontosimportantes" ColumnName="ComoPontosimportantes" />
-                <ScalarProperty Name="QuandoFim" ColumnName="QuandoFim" />
-                <ScalarProperty Name="DuracaoDias" ColumnName="DuracaoDias" />
-                <ScalarProperty Name="QuandoInicio" ColumnName="QuandoInicio" />
-                <ScalarProperty Name="Departamento_Id" ColumnName="Departamento_Id" />
-                <ScalarProperty Name="Unidade_Id" ColumnName="Unidade_Id" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Pa_Acompanhamento">
             <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Acompanhamento">
               <MappingFragment StoreEntitySet="Pa_Acompanhamento">
@@ -305,6 +308,7 @@
           <EntitySetMapping Name="Pa_Planejamento">
             <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Planejamento">
               <MappingFragment StoreEntitySet="Pa_Planejamento">
+                <ScalarProperty Name="IsFta" ColumnName="IsFta" />
                 <ScalarProperty Name="Tatico_Id" ColumnName="Tatico_Id" />
                 <ScalarProperty Name="IsTatico" ColumnName="IsTatico" />
                 <ScalarProperty Name="UnidadeDeMedida_Id" ColumnName="UnidadeDeMedida_Id" />
@@ -331,6 +335,56 @@
                 <ScalarProperty Name="Coordenacao_Id" ColumnName="Coordenacao_Id" />
                 <ScalarProperty Name="Gerencia_Id" ColumnName="Gerencia_Id" />
                 <ScalarProperty Name="Diretoria_Id" ColumnName="Diretoria_Id" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmailContent">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.EmailContent">
+              <MappingFragment StoreEntitySet="EmailContent">
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="From" ColumnName="From" />
+                <ScalarProperty Name="IsBodyHtml" ColumnName="IsBodyHtml" />
+                <ScalarProperty Name="Project" ColumnName="Project" />
+                <ScalarProperty Name="SendDate" ColumnName="SendDate" />
+                <ScalarProperty Name="SendStatus" ColumnName="SendStatus" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="To" ColumnName="To" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pa_Acao">
+            <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Acao">
+              <MappingFragment StoreEntitySet="Pa_Acao">
+                <ScalarProperty Name="Fta_Id" ColumnName="Fta_Id" />
+                <ScalarProperty Name="TipoIndicador" ColumnName="TipoIndicador" />
+                <ScalarProperty Name="ContramedidaEspecifica" ColumnName="ContramedidaEspecifica" />
+                <ScalarProperty Name="CausaEspecifica" ColumnName="CausaEspecifica" />
+                <ScalarProperty Name="GrupoCausa_Id" ColumnName="GrupoCausa_Id" />
+                <ScalarProperty Name="ContramedidaGenerica_Id" ColumnName="ContramedidaGenerica_Id" />
+                <ScalarProperty Name="CausaGenerica_Id" ColumnName="CausaGenerica_Id" />
+                <ScalarProperty Name="Quem_Id" ColumnName="Quem_Id" />
+                <ScalarProperty Name="Level3Id" ColumnName="Level3Id" />
+                <ScalarProperty Name="Level2Id" ColumnName="Level2Id" />
+                <ScalarProperty Name="Level1Id" ColumnName="Level1Id" />
+                <ScalarProperty Name="Pa_Problema_Desvio_Id" ColumnName="Pa_Problema_Desvio_Id" />
+                <ScalarProperty Name="Pa_IndicadorSgqAcao_Id" ColumnName="Pa_IndicadorSgqAcao_Id" />
+                <ScalarProperty Name="Panejamento_Id" ColumnName="Panejamento_Id" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="QuantoCusta" ColumnName="QuantoCusta" />
+                <ScalarProperty Name="PraQue" ColumnName="PraQue" />
+                <ScalarProperty Name="Predecessora_Id" ColumnName="Predecessora_Id" />
+                <ScalarProperty Name="ComoPontosimportantes" ColumnName="ComoPontosimportantes" />
+                <ScalarProperty Name="QuandoFim" ColumnName="QuandoFim" />
+                <ScalarProperty Name="DuracaoDias" ColumnName="DuracaoDias" />
+                <ScalarProperty Name="QuandoInicio" ColumnName="QuandoInicio" />
+                <ScalarProperty Name="Departamento_Id" ColumnName="Departamento_Id" />
+                <ScalarProperty Name="Unidade_Id" ColumnName="Unidade_Id" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

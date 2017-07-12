@@ -22,7 +22,7 @@ namespace Dominio.Services
             {
                 get
                 {
-                    if (GlobalConfig.Brasil)
+                    if (GlobalConfig.LanguageBrasil)
                         return "Usuário e senha não encontrados, por favor verifique os dados utilizados.";
                     else
                         return "Username and Password not found, please check Username and Password";
@@ -33,7 +33,7 @@ namespace Dominio.Services
             {
                 get
                 {
-                    if (GlobalConfig.Brasil)
+                    if (GlobalConfig.LanguageBrasil)
                         return "Não foi possível recuperar os dados do usuário.";
                     else
                         return "It was not possible retrieve any data.";
@@ -44,7 +44,7 @@ namespace Dominio.Services
             {
                 get
                 {
-                    if (GlobalConfig.Brasil)
+                    if (GlobalConfig.LanguageBrasil)
                         return "É necessário ao menos uma unidade cadastrada para o usuario.";
                     else
                         return "Cannot log in, user must have at least one Company Active in database to have acess.";
@@ -85,7 +85,6 @@ namespace Dominio.Services
         public GenericReturn<UserDTO> AuthenticationLogin(UserDTO userDto)
         {
            
-            //throw new Exception("teste");
             try
             {
                 UserSgq userByName;
@@ -98,7 +97,10 @@ namespace Dominio.Services
 
                 /*Verifica se o UserName Existe no DB*/
                 userByName = _userRepo.GetByName(userDto.Name);
-                
+
+                if(!userDto.IsWeb)
+                    DescriptografaSenha(userDto);
+
                 //Verificar o local de login
                 /*Se for Brasil executa RN do Sistema Brasil*/
                 if (GlobalConfig.Brasil)
@@ -110,7 +112,7 @@ namespace Dominio.Services
 
                 /*Login Ytoara*/
                 if (GlobalConfig.Ytoara)
-                    isUser = CheckUserAndPassDataBase(userDto);
+                    isUser = LoginSgq(userDto, userByName);
 
                 if (isUser.IsNull())
                     throw new ExceptionHelper(mensagens.naoEncontrado);
@@ -121,6 +123,28 @@ namespace Dominio.Services
                 if (isUser.ParCompany_Id <= 0)
                     throw new Exception(mensagens.erroUnidade);
 
+                /*Verificação se o ParCompany_Id da tabela UserSgq tem que ser atualizada*/
+                var defaultCompany = _baseParCompanyXUserSgq.GetAll().FirstOrDefault(
+                    r => r.UserSgq_Id == isUser.Id && r.ParCompany_Id == isUser.ParCompany_Id);
+
+                if (defaultCompany == null)
+                {
+                    defaultCompany = _baseParCompanyXUserSgq.GetAll().FirstOrDefault(
+                    r => r.UserSgq_Id == isUser.Id);
+                    //var atualizarCompanyUser = _userRepo.GetByName(isUser.Name);
+                    //atualizarCompanyUser.ParCompany_Id = defaultCompany.ParCompany_Id;
+                    using (var db = new SgqDbDevEntities())
+                    {
+                        var atualizarUsuario = db.UserSgq.FirstOrDefault(r=> r.Id == isUser.Id);
+                        atualizarUsuario.ParCompany_Id = defaultCompany.ParCompany_Id;
+                        db.UserSgq.Attach(atualizarUsuario);
+                        db.Entry(atualizarUsuario).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    //_userRepo.Salvar(isUser);
+
+                }
+
                 return new GenericReturn<UserDTO>(Mapper.Map<UserSgq, UserDTO>(isUser));
             }
             catch (Exception e)
@@ -129,6 +153,15 @@ namespace Dominio.Services
                 return new GenericReturn<UserDTO>(e, e.Message);
             }
 
+        }
+
+        /// <summary>
+        /// A senha vem criptografada do tablet, caso seja tablet precisamos descriptografar para comparar no AD e DB.
+        /// </summary>
+        /// <param name="userDto"></param>
+        private void DescriptografaSenha(UserDTO userDto)
+        {
+             userDto.Password = Guard.DecryptStringAES(userDto.Password);
         }
 
         /// <summary>
@@ -186,11 +219,30 @@ namespace Dominio.Services
             }
         }
 
+        #region LoginSgq
 
+        public UserSgq LoginSgq(UserDTO userDto, UserSgq userByName)
+        {
+
+            ///*Descriptografa para comparar no AD*/
+            //if (userByName != null)
+            //{
+            //    var decripted = Guard.DecryptStringAES(userByName.Password);
+            //    if (userDto.Password != decripted)/*Senha esta criptografada*/
+            //    {
+            //        userDto.Password = Guard.DecryptStringAES(userDto.Password);
+            //    }
+            //}
+
+            return CheckUserAndPassDataBase(userDto);
+
+        } 
+
+        #endregion
 
         #region LoginEUA
 
-     
+
         /// <summary>
         /// Verifica se o UsuarioExiste no AD dos EUA, 
         /// 1 - caso exista no AD, verifica no DB se ele ja existe: 1.1 - caso exista no DB (e no AD) retorna o mesmo e procede o login
@@ -202,15 +254,15 @@ namespace Dominio.Services
         /// <returns></returns>
         private UserSgq LoginEUA(UserDTO userDto, UserSgq userByName)
         {
-            /*Descriptografa para comparar no AD*/
-            if (userByName != null)
-            {
-                var decripted = Guard.DecryptStringAES(userByName.Password);
-                if (userDto.Password != decripted)/*Senha esta criptografada*/
-                {
-                    userDto.Password = Guard.DecryptStringAES(userDto.Password);
-                }
-            }
+            ///*Descriptografa para comparar no AD*/
+            //if (userByName != null)
+            //{
+            //    var decripted = Guard.DecryptStringAES(userByName.Password);
+            //    if (userDto.Password != decripted)/*Senha esta criptografada*/
+            //    {
+            //        userDto.Password = Guard.DecryptStringAES(userDto.Password);
+            //    }
+            //}
 
             /*Mock Login Desenvolvimento, descomentar caso HML ou PRODUÇÃO*/
             if (GlobalConfig.mockLoginEUA)
@@ -374,15 +426,7 @@ namespace Dominio.Services
 
             #endregion
 
-            /*Descriptografa para comparar no AD*/
-            if (userByName != null)
-            {
-                var decripted = Guard.DecryptStringAES(userByName.Password);
-                if (userDto.Password != decripted)/*Senha esta criptografada*/
-                {
-                    userDto.Password = Guard.DecryptStringAES(userDto.Password);
-                }
-            }
+          
 
 
             UserSgq isUser = CheckUserAndPassDataBase(userDto);
@@ -408,7 +452,7 @@ namespace Dominio.Services
             }
 
             #endregion
-
+            isUser.ParCompanyXUserSgq = _baseParCompanyXUserSgq.GetAll().Where(r => r.UserSgq_Id == isUser.Id).ToList();
             return isUser;
         }
 
@@ -522,7 +566,7 @@ namespace Dominio.Services
                                 Name = existenteNoDbAntigo.cSigla.ToLower(),
                                 FullName = existenteNoDbAntigo.cNmUsuario,
                                 //Email = existenteNoDbAntigo.cEMail,
-                                Password = Guard.EncryptStringAES(userDto.Password),
+                                Password = Guard.EncryptStringAES(userDto.Password)
                             };
                         }
                         catch (Exception e)
@@ -555,7 +599,6 @@ namespace Dominio.Services
         }
 
         #endregion
-
 
     }
 

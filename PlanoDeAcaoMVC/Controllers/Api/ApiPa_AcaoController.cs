@@ -1,16 +1,19 @@
-﻿using AutoMapper;
-using DTO.Helpers;
-using Helper;
+﻿using ADOFactory;
+using AutoMapper;
 using PlanoAcaoCore;
 using PlanoAcaoCore.Acao;
+using PlanoDeAcaoMVC.PaMail;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Routing;
 
 namespace PlanoDeAcaoMVC.Controllers.Api
 {
     [RoutePrefix("api/Pa_Acao")]
-    public class ApiPa_AcaoController : ApiController
+    public class ApiPa_AcaoController : BaseApiController
     {
 
         [HttpGet]
@@ -35,7 +38,11 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 i.IsValid();
 
             foreach (var i in acao)
-                SalvarAcao(Mapper.Map<PlanoAcaoEF.Pa_Acao>(i));
+            {
+                var acaoSaved = Mapper.Map<PlanoAcaoEF.Pa_Acao>(i);
+                SalvarAcao(acaoSaved);
+                CreateMail(i.Panejamento_Id, acaoSaved.Id, i.Quem_Id, Conn.TitileMailNovaAcao);
+            }
 
             return acao;
         }
@@ -44,29 +51,86 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         [Route("SaveAcompanhamento")]
         public Pa_Acompanhamento Acompanhamento(Pa_Acompanhamento obj)
         {
-
             var acompanhamento = Mapper.Map<PlanoAcaoEF.Pa_Acompanhamento>(obj);
-
             using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
             {
                 SalvarAcompanhamento(db, acompanhamento);
-
+                var acao = db.Pa_Acao.FirstOrDefault(r => r.Id == acompanhamento.Acao_Id);
                 foreach (var i in obj.MailTo)
                 {
                     Pa_AcompanhamentoXQuemVM obj2 = new Pa_AcompanhamentoXQuemVM();
-
                     var acomXQuem = Mapper.Map<PlanoAcaoEF.Pa_AcompanhamentoXQuem>(obj2);
-
                     acomXQuem.Acompanhamento_Id = acompanhamento.Id;
                     acomXQuem.Quem_Id = i;
                     SalvarAcompanhamentoXQuem(db, acomXQuem);
+                    CreateMail(acao.Panejamento_Id.GetValueOrDefault(), acao.Id, acomXQuem.Quem_Id, Conn.TitileMailAcompanhamento, true);
                 }
             }
-
             return obj;
         }
 
-        public static void SalvarAcompanhamentoXQuem(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_AcompanhamentoXQuem quem)
+        [HttpPost]
+        [Route("SaveFTA")]
+        public FTA SaveFTA(FTA obj)
+        {
+            obj.ValidaFTA();
+            obj.IsValid();
+            var acao = Mapper.Map<PlanoAcaoEF.Pa_Acao>(obj);
+            var fta = Mapper.Map<PlanoAcaoEF.Pa_FTA>(obj);
+            SalvaFTA(fta);
+            acao.Fta_Id = fta.Id;
+            SalvarAcao(acao);
+            CreateMail(obj.Panejamento_Id, acao.Id, obj.Quem_Id, Conn.TitileMailNovoFTA);
+            return obj;
+        }
+
+        #region Auxiliares
+
+        private void CreateMail(int idPlanejamento, int idAcao, int? idQuem, string title, bool? isAcompanhamento = false)
+        {
+            if (idQuem.GetValueOrDefault() > 0)
+                using (var dbSgq = ConexaoSgq())
+                {
+                    var paUser = Pa_Quem.Get(idQuem.GetValueOrDefault());
+                    dynamic enviarPara = dbSgq.QueryNinjaADO("SELECT * FROM UserSgq WHERE Name  = '" + paUser.Name + "'").FirstOrDefault();
+                    string emailTo = enviarPara.Email;
+                 
+                    var todoConteudo = string.Empty;
+
+                    if (!isAcompanhamento.GetValueOrDefault())
+                    {
+                        var conteudoPlanejamento = GetExternalResponse(Conn.selfRoot + "/Pa_Planejamento/Details?id=" + idPlanejamento);
+                        var conteudoAcao = GetExternalResponse(Conn.selfRoot + "/Pa_Acao/Details?id=" + idAcao);
+                        if (Conn.visaoOperacional)
+                            todoConteudo = conteudoAcao.Result;
+                        else
+                            todoConteudo = conteudoPlanejamento.Result + conteudoAcao.Result;
+                    }
+                    else
+                    {
+                        var conteudoAcompanhamento = GetExternalResponse(Conn.selfRoot + "/Pa_Acao/Acompanhamento?id=" + idAcao);
+                        todoConteudo = conteudoAcompanhamento.Result;
+                    }
+                    //emailTo = "celso.bernar@grtsolucoes.com.br";
+                    CreateMail(idPlanejamento, idAcao, emailTo, title, todoConteudo);
+                }
+        }
+
+        private void CreateMail(int idPlanejamento, int idAcao, string emailTo, string title, string body)
+        {
+            var email = new PlanoAcaoEF.EmailContent()
+            {
+                IsBodyHtml = true,
+                AddDate = DateTime.Now,
+                Subject = title,
+                Project = "Plano de Ação",
+                Body = body,
+                To = emailTo,
+            };
+            PaAsyncServices.SendMailPATeste(email);
+        }
+
+        private void SalvarAcompanhamentoXQuem(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_AcompanhamentoXQuem quem)
         {
             if (quem.Id > 0)
             {
@@ -82,7 +146,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
         }
 
-        public static void SalvarAcompanhamento(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_Acompanhamento acom)
+        private void SalvarAcompanhamento(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_Acompanhamento acom)
         {
             if (acom.Id > 0)
             {
@@ -100,23 +164,6 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 db.SaveChanges();
                 db.Database.ExecuteSqlCommand("Update Pa_Acao set Status = " + acom.Status_Id + " where Id = " + acom.Acao_Id);
             }
-        }
-
-        [HttpPost]
-        [Route("SaveFTA")]
-        public FTA SaveFTA(FTA obj)
-        {
-            obj.ValidaFTA();
-            obj.IsValid();
-
-            var acao = Mapper.Map<PlanoAcaoEF.Pa_Acao>(obj);
-            var fta = Mapper.Map<PlanoAcaoEF.Pa_FTA>(obj);
-
-            SalvaFTA(fta);
-            acao.Fta_Id = fta.Id;
-            SalvarAcao(acao);
-
-            return obj;
         }
 
         private void SalvarAcao(PlanoAcaoEF.Pa_Acao acao)
@@ -167,5 +214,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
 
         }
+
+        #endregion
+
     }
+
 }

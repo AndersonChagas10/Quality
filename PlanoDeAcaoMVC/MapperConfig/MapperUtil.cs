@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DTO.DTO;
 using PlanoAcaoCore;
 using PlanoAcaoCore.Acao;
 
@@ -22,6 +23,9 @@ namespace SgqSystem.MapperConfig
 
             CreateMap<Pa_AcompanhamentoXQuemVM, PlanoAcaoEF.Pa_AcompanhamentoXQuem>();
             CreateMap<PlanoAcaoEF.Pa_AcompanhamentoXQuem, Pa_AcompanhamentoXQuemVM>();
+
+            CreateMap<PlanoAcaoEF.EmailContent, EmailContentDTO>();
+            CreateMap<EmailContentDTO, PlanoAcaoEF.EmailContent>();
         }
     }
 }

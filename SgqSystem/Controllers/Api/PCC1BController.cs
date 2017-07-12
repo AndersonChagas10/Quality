@@ -1,7 +1,9 @@
 ﻿using ADOFactory;
 using Dominio;
+using DTO;
 using SgqSystem.Handlres;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 
@@ -73,7 +75,8 @@ namespace SgqSystem.Controllers.Api
 
             try
             {
-
+                if (GlobalConfig.MockOn)
+                    throw new Exception();
             
                 using (var db = new Factory(company.IPServer, company.DBServer, pass, userName))
                 {
@@ -104,38 +107,41 @@ namespace SgqSystem.Controllers.Api
 
         [HttpPost]
         [Route("TotalNC/{parLevel2IdDianteiro}/{parLevel2Id2Traseiro}")]
-        public ResultTotalNC TotalNC(_Receive receive, int parLevel2IdDianteiro, int parLevel2Id2Traseiro)
+        public IEnumerable<CollectionLevel2PCC1B> TotalNC(_Receive receive, int parLevel2IdDianteiro, int parLevel2Id2Traseiro)
         {
             ParLevel1 parLevel1 = new ParLevel1();
             using (var db = new SgqDbDevEntities())
             {
                 parLevel1 = db.ParLevel1.FirstOrDefault(r => r.Id == 3);
             }
-            var _result = new ResultTotalNC();
-
-            var query = "\n SELECT * from (SELECT ISNULL (SUM(CONVERT(Decimal,DefectsResult)), 0) as ncDianteiro                                            " +
-                        "\n FROM CollectionLevel2                                                                                                           " +
-                        "\n WHERE parlevel1_Id = " + parLevel1.Id + "                                                                                       " +
-                        "\n and ParLevel2_Id = " + parLevel2IdDianteiro + " --Dianteiro                                                                     " +
-                        "\n and UnitId = " + receive.Unit +
-                        "\n and CollectionDate Between ('" + receive.Data.ToString() + " 00:00:00.0000000') and ('" + receive.Data + " 23:59:59.0000000')   " +
-                        "\n ) j, (                                                                                                                          " +
-                        "\n select ISNULL (SUM(CONVERT(Decimal,DefectsResult)), 0) as ncTraseiro                                                            " +
-                        "\n from CollectionLevel2                                                                                                           " +
-                        "\n WHERE parlevel1_Id = " + parLevel1.Id + "                                                                                       " +
-                        "\n and ParLevel2_Id = " + parLevel2Id2Traseiro + " --Traseiro                                                                      " +
-                        "\n and UnitId = " + receive.Unit +
-                        "\n and CollectionDate Between ('" + receive.Data + " 00:00:00.0000000') and ('" + receive.Data + " 23:59:59.0000000')              " +
-                        "\n ) m";
+                                                                                                                    
+            var query =
+                "SELECT FORMAT(CollectionDate, 'MMddyyyy') as CollectionDate, ParLevel1_Id, ParLevel2_Id, UnitId,  " +
+                "Sequential, Side, DefectsResult, [Key]  FROM CollectionLevel2                                     " +
+                "WHERE parlevel1_Id = "+ parLevel1.Id + "                                                          " +
+                "and ParLevel2_Id in ("+ parLevel2IdDianteiro + ", "+ parLevel2Id2Traseiro + ")                    " +   
+                "and UnitId = "+receive.Unit+"                                                                     " +
+                "and CollectionDate Between('"+ receive.Data+ " 00:00:00.0000000') and('" + receive.Data +         " 23:59:59.0000000')   ";
 
             using (var db = new SgqDbDevEntities())
             {
-                _result = db.Database.SqlQuery<ResultTotalNC>(query).FirstOrDefault();
+
+                return db.Database.SqlQuery<CollectionLevel2PCC1B>(query).ToList();
             }
 
-            return _result;
         }
 
+    }
+    public class CollectionLevel2PCC1B
+    {
+        public string CollectionDate { get; set; }
+        public int ParLevel1_Id { get; set; }
+        public int ParLevel2_Id { get; set; }
+        public int UnitId { get; set; }
+        public int Sequential { get; set; }
+        public int Side { get; set; }
+        public int DefectsResult { get; set; }
+        public string Key { get; set; }
     }
 
     public class ResultadosSequencialBanda

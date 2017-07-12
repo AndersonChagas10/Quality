@@ -3,12 +3,14 @@ using Dominio;
 using DTO;
 using DTO.DTO.Params;
 using DTO.Helpers;
+using Newtonsoft.Json;
 using SgqSystem.Handlres;
 using SgqSystem.Helpers;
 using SgqSystem.Services;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -69,6 +71,7 @@ namespace SgqSystem.Controllers.Api
             try
             {
                 db.Database.ExecuteSqlCommand(query);
+                var level3Result = db.Result_Level3.FirstOrDefault(r => r.Id == resultLevel3.Id);
                 ConsolidacaoEdicao(resultLevel3.Id);
                 //db.Database.ExecuteSqlCommand(queryLevel2);
             }
@@ -81,23 +84,37 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        [Route("GetRL/{id}")]
-        public List<Result_Level3> GetResultLevel3(int id)
+        [Route("GetRL/{level1}/{shift}/{period}/{date}")]
+        public List<CollectionLevel2> GetResultLevel3(int level1, int shift, int period, DateTime date)
         {
+            db.Configuration.LazyLoadingEnabled = false;
+            db.Configuration.ProxyCreationEnabled = false;
 
-            //var query = "select * from Result_Level3 where CollectionLevel2_Id = "+id+" and IsConform = 0";
 
-            try
-            {
-                var result = db.Result_Level3.Where(r => r.CollectionLevel2_Id == id && r.IsConform == false).ToList();
-                return result;
+            var retorno = db.CollectionLevel2.Where(r => r.ParLevel1_Id == level1).Include("Result_Level3").Include("Result_Level3.ParlLevel3").ToList();
+            return retorno;
 
-            }
-            catch (System.Exception e)
-            {
-                throw e;
-            }
 
+
+            ////var query = "select * from Result_Level3 where CollectionLevel2_Id = "+id+" and IsConform = 0";
+            //var list = new List<Result_Level3>();
+            //List<CollectionLevel2> collectionL2 = db.CollectionLevel2.Where(r => r.ParLevel1_Id == level1 && r.Shift == shift && r.Period == period && 
+            //  DbFunctions.TruncateTime(r.CollectionDate)== date).ToList();
+
+            //foreach (var col in collectionL2)
+            //{
+            //    var result = db.Result_Level3.Where(r => r.CollectionLevel2_Id == col.Id && r.IsConform == false).ToList();
+            //    //var item = Mapper.Map<List<Result_Level3>>(result);
+            //    foreach (var res in result) {
+            //        var obj = JsonConvert.SerializeObject(res, Formatting.Indented,new JsonSerializerSettings {
+            //            ReferenceLoopHandling = ReferenceLoopHandling.Serialize});
+            //        list.Add(res);
+            //    }
+            //}
+
+            ////var lista = Newtonsoft.Json.JsonConvert.SerializeObject(list);
+
+            //return list;
         }
 
         public void ConsolidacaoEdicao(int id)
@@ -114,7 +131,6 @@ namespace SgqSystem.Controllers.Api
 
         public class Result_Level3DTO
         {
-
             public static Result_Level3 GetById(int id)
             {
                 Result_Level3 resultLevel3;
@@ -127,6 +143,7 @@ namespace SgqSystem.Controllers.Api
                     resultLevel3.ParLevel3.ParLevel3Value = databaseSgq.ParLevel3Value.AsNoTracking().Where(r => r.ParLevel3_Id == resultLevel3.ParLevel3_Id && r.IsActive == true).ToList();
                     resultLevel3.CollectionLevel2 = databaseSgq.CollectionLevel2.AsNoTracking().FirstOrDefault(r => r.Id == resultLevel3.CollectionLevel2_Id);
                 }
+
                 return resultLevel3;
             }
 
@@ -174,6 +191,46 @@ namespace SgqSystem.Controllers.Api
                     texto += ValueText;
                 }
 
+
+                //bool isBEA = false;
+                //string WeiEvaluateBEA = "@WeiEvaluation";
+                decimal _WeiEvaluation2 = Decimal.ToInt32(_WeiEvaluation);
+
+                using (var databaseSgq = new SgqDbDevEntities())
+                {
+
+                    var result_level3_obj = databaseSgq.Result_Level3.FirstOrDefault(r => r.Id == Id);
+
+                    var collectionLevel2_obj = databaseSgq.CollectionLevel2.FirstOrDefault(r => r.Id == result_level3_obj.CollectionLevel2_Id);
+
+                    var parLeve1BEA = databaseSgq.ParLevel1VariableProductionXLevel1.FirstOrDefault(r => r.ParLevel1_Id == collectionLevel2_obj.ParLevel1_Id);
+
+                    //Se for BEA
+                    if (parLeve1BEA != null)
+                        if (parLeve1BEA.ParLevel1VariableProduction_Id == 3)
+                        {
+                            var collectionLevel2_obj2 = databaseSgq.CollectionLevel2.Where(
+                            r => DbFunctions.TruncateTime(r.CollectionDate) == DbFunctions.TruncateTime(collectionLevel2_obj.CollectionDate) &&
+                            r.ParLevel1_Id == collectionLevel2_obj.ParLevel1_Id &&
+                            r.Shift == collectionLevel2_obj.Shift &&
+                            r.Period == collectionLevel2_obj.Period &&
+                            r.UnitId == collectionLevel2_obj.UnitId &&
+                            r.Sample < collectionLevel2_obj.Sample
+                            ).OrderByDescending(r => r.Sample).FirstOrDefault();
+
+
+                            if (collectionLevel2_obj2 != null)
+
+                                _WeiEvaluation2 = collectionLevel2_obj.Sample - collectionLevel2_obj2.Sample;
+
+                            else
+                                _WeiEvaluation2 = collectionLevel2_obj.Sample;
+
+                            //isBEA = true;
+                            //WeiEvaluateBEA = "Sample";
+                        }
+                }
+
                 var query = "UPDATE [dbo].[Result_Level3] SET ";
                 query += "\n [IsConform] = " + _IsConform + ",";
                 query += "\n [Defects] = " + _Defects + ",";
@@ -181,12 +238,13 @@ namespace SgqSystem.Controllers.Api
                 query += "\n [Value] = " + _Value + ",";
                 query += "\n [IsNotEvaluate] = " + _IsNotEvaluate + ",";
                 query += "\n [ValueText] = '" + texto + "',";
+                query += "\n [WeiEvaluation] = " + Decimal.ToInt32(_WeiEvaluation2) + ",";//+ " " + Decimal.ToInt32(_WeiEvaluation) + ",";
                 query = query.Remove(query.Length - 1);//Remove a ultima virgula antes do where.
                 query += "\n WHERE Id = " + Id;
 
 
                 query += "                                                                                                                    " +
-                "\n DECLARE @ID INT = (SELECT TOP 1 CollectionLevel2_Id FROM Result_Level3 WHERE Id = " + Id + " )                           " +
+                "\n DECLARE @ID INT = (SELECT TOP 1 CollectionLevel2_Id FROM Result_Level3 WHERE Id = " + Id + " )                            " +
                 "\n DECLARE @Defects DECIMAL(10,3)                                                                                            " +
                 "\n DECLARE @DefectsResult DECIMAL(10, 3)                                                                                     " +
                 "\n DECLARE @EvatuationResult DECIMAL(10, 3)                                                                                  " +
@@ -197,11 +255,11 @@ namespace SgqSystem.Controllers.Api
                 "\n                                                                                                                           " +
                 "\n select                                                                                                                    " +
                 "\n                                                                                                                           " +
-                "\n @Defects = sum(r3.Defects),                                                                                               " +
-                "\n @DefectsResult = case when sum(r3.Defects) > 0 then 1 else 0 end,                                                         " +
+                "\n @Defects = isnull(sum(r3.Defects),0),                                                                                     " +
+                "\n @DefectsResult = case when sum(r3.WeiDefects) > 0 then 1 else 0 end,                                                         " +
                 "\n @EvatuationResult = case when sum(r3.Evaluation) > 0 then 1 else 0 end,                                                   " +
-                "\n @WeiEvaluation = sum(r3.WeiEvaluation),                                                                                   " +
-                "\n @WeiDefects = sum(r3.WeiDefects),                                                                                         " +
+                "\n @WeiEvaluation = isnull(sum(r3.WeiEvaluation),0),                                                                        " +
+                "\n @WeiDefects = isnull(sum(r3.WeiDefects),0),                                                                               " +
                 "\n @TotalLevel3Evaluation = count(1),                                                                                        " +
                 "\n @TotalLevel3WithDefects = (select count(1) from result_level3 where collectionLevel2_Id = @ID and Defects > 0  and IsNotEvaluate = 0)         " +
                 "\n from result_level3 r3                                                                                                     " +
@@ -217,6 +275,7 @@ namespace SgqSystem.Controllers.Api
                 "\n , WeiDefects = @WeiDefects                                                                                                " +
                 "\n , TotalLevel3Evaluation = @TotalLevel3Evaluation                                                                          " +
                 "\n , TotalLevel3WithDefects = @TotalLevel3WithDefects                                                                        " +
+                "\n , AlterDate = GETDATE()                                                                                                   " +
                 "\n WHERE Id = @ID                                                                                                            ";
 
                 return query;
@@ -262,7 +321,7 @@ namespace SgqSystem.Controllers.Api
                         try
                         {
                             if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 3) != null)//INTERVALOS
-                                return Guard.ConverteValorCalculado(Value).ToString("G29"); //010.0000 = 10
+                                return Guard.ConverteValorCalculado(Value).ToString("G29").Replace(",", "."); //010.0000 = 10
                         }
                         catch (Exception e)
                         {
@@ -272,7 +331,7 @@ namespace SgqSystem.Controllers.Api
                         try
                         {
                             if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == CollectionLevel2.UnitId && r.ParLevel3InputType_Id == 4) != null)//CALCULADO
-                                return Guard.ConverteValorCalculado(Value).ToString("G29"); //10x104 = 10.0000
+                                return Guard.ConverteValorCalculado(Value).ToString("G29").Replace(",", "."); //10x104 = 10.0000
                         }
                         catch (Exception e)
                         {
@@ -315,7 +374,7 @@ namespace SgqSystem.Controllers.Api
                         try
                         {
                             if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 3) != null)//INTERVALOS
-                                return Guard.ConverteValorCalculado(Value).ToString("G29"); //010.0000 = 10
+                                return Guard.ConverteValorCalculado(Value).ToString("G29").Replace(",", "."); //010.0000 = 10
                         }
                         catch (Exception e)
                         {
@@ -325,7 +384,7 @@ namespace SgqSystem.Controllers.Api
                         try
                         {
                             if (ParLevel3.ParLevel3Value.FirstOrDefault(r => r.ParCompany_Id == null && r.ParLevel3InputType_Id == 4) != null)//CALCULADO
-                                return Guard.ConverteValorCalculado(Value).ToString("G29"); //10x104 = 10.0000
+                                return Guard.ConverteValorCalculado(Value).ToString("G29").Replace(",", "."); //10x104 = 10.0000
                         }
                         catch (Exception e)
                         {
@@ -550,6 +609,20 @@ namespace SgqSystem.Controllers.Api
 
             public Nullable<decimal> PunishmentValue { get; set; }
             public Nullable<decimal> WeiEvaluation { get; set; }
+            public decimal _WeiEvaluation
+            {
+                get
+                {
+
+                    if (IsNotEvaluate == true)
+                    {
+                        return 0;
+                    }
+
+                    //Fazer a soma ponderada
+                    return Weight.GetValueOrDefault();
+                }
+            }
             public Nullable<decimal> Evaluation { get; set; }
 
             public Nullable<decimal> WeiDefects { get; set; }
@@ -659,16 +732,16 @@ namespace SgqSystem.Controllers.Api
                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
                 return "<div>" +
                             //"<label for='Conforme: '> Intervalo Max: </label>" + IntervalMax +
-                            "<label for='Conforme: '> " + Resources.Resource.max_interval + ": </label>" + IntervalMax +
+                            "<label for='Conforme: '> " + GetResources.getResource("max_interval").Value.ToString() + ": </label>" + IntervalMax +
                             "<br>" +
-                            "<label for='Conforme: '> Intervalo Min: </label>" + IntervalMin +
+                            "<label for='Conforme: '> " + GetResources.getResource("min_interval").Value.ToString() + ": </label>" + IntervalMin +
                             "<br>" +
-                            "<label for='Conforme: '> Valor atual: </label>" + Value +
+                            "<label for='Conforme: '> " + GetResources.getResource("current_value").Value.ToString() + ": </label>" + Value +
                             "<br>" +
-                            "<label for='Conforme: '> Novo Valor: </label> &nbsp " +
+                            "<label for='Conforme: '> " + GetResources.getResource("new_value").Value.ToString() + ": </label> &nbsp " +
                              "<input type='text' id='intervaloValor' class='form-control decimal' value=" + Value + " />" +
                             "<br>" +
-                            "<label for='Conforme: '> Não Avaliado: </label> &nbsp " +
+                            "<label for='Conforme: '> " + GetResources.getResource("not_accordance").Value.ToString() + ": </label> &nbsp " +
                              "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                         "</div>";
             }
@@ -712,10 +785,10 @@ namespace SgqSystem.Controllers.Api
                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
                 var checkedAttr = IsConform.GetValueOrDefault() ? "checked='checked'" : "";
                 return "<div>" +
-                           "<label for='Conforme: '> Conforme: </label>" +
+                           "<label for='Conforme: '> " + GetResources.getResource("conform").Value.ToString() + ": </label>" +
                             "<input class='.check-box' id='conform' name='conform' " + checkedAttr + " type='checkbox' value='true'><input name = 'conform' type='hidden' value='false'>" +
                             "<br>" +
-                             "<label for='Conforme: '> Não Avaliado: </label> &nbsp " +
+                             "<label for='Conforme: '> " + GetResources.getResource("unvalued").Value.ToString() + ": </label> &nbsp " +
                             "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                        "</div>"; ;
             }
@@ -746,16 +819,16 @@ namespace SgqSystem.Controllers.Api
                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
 
                 return "<div>" +
-                            "<label for='Conforme: '> Intervalo Max: </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
+                            "<label for='Conforme: '> " + GetResources.getResource("max_interval").Value.ToString() + ": </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
                             "<br>" +
-                            "<label for='Conforme: '> Intervalo Min: </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
+                            "<label for='Conforme: '> " + GetResources.getResource("min_interval").Value.ToString() + ": </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
                             "<br>" +
-                            "<label for='Conforme: '> Valor atual: </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
+                            "<label for='Conforme: '> " + GetResources.getResource("current_value").Value.ToString() + ": </label>" + Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
                             "<br>" +
-                            "<label for='Conforme: '> Novo Valor: </label> &nbsp" +
+                            "<label for='Conforme: '> " + GetResources.getResource("new_value").Value.ToString() + ": </label> &nbsp" +
                         "<input type='text' id='decimal' class='decimal' /> ^10x <input type='text' id='precisao' class='decimal' />" +
                         "<br>" +
-                           "<label for='Conforme: '> Não Avaliado: </label> &nbsp " +
+                           "<label for='Conforme: '> " + GetResources.getResource("unvalued").Value.ToString() + ": </label> &nbsp " +
                              "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                         "</div>";
             }
@@ -786,16 +859,16 @@ namespace SgqSystem.Controllers.Api
                 var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
 
                 return "<div>" +
-                            "<label for='Conforme: '> Intervalo Max: </label>" + double.Parse(IntervalMax, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMax) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
+                            "<label for='Conforme: '> " + GetResources.getResource("max_interval").Value.ToString() + ": </label>" + double.Parse(IntervalMax, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMax) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
                             "<br>" +
-                            "<label for='Conforme: '> Intervalo Min: </label>" + double.Parse(IntervalMin, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMin) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
+                            "<label for='Conforme: '> " + GetResources.getResource("min_interval").Value.ToString() + ": </label>" + double.Parse(IntervalMin, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMin) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
                             "<br>" +
-                            "<label for='Conforme: '> Valor atual: </label>" + double.Parse(Value, CultureInfo.InvariantCulture) + //Convert.ToDecimal(Value) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
+                            "<label for='Conforme: '> " + GetResources.getResource("current_value").Value.ToString() + ": </label>" + double.Parse(Value, CultureInfo.InvariantCulture) + //Convert.ToDecimal(Value) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
                             "<br>" +
-                            "<label for='Conforme: '> Novo Valor: </label> &nbsp" +
+                            "<label for='Conforme: '> " + GetResources.getResource("new_value").Value.ToString() + ": </label> &nbsp" +
                         "<input type='text' id='numeroDeDefeitos' class='decimal' />" +
                         "<br>" +
-                           "<label for='Conforme: '> Não Avaliado: </label> &nbsp " +
+                           "<label for='Conforme: '> " + GetResources.getResource("unvalued").Value.ToString() + ": </label> &nbsp " +
                              "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                         "</div>";
             }
@@ -834,9 +907,9 @@ namespace SgqSystem.Controllers.Api
                             //"<br>" +
                             //"<label for='Conforme: '> Intervalo Min: </label>" + IntervalMin +
                             //"<br>" +
-                            "<label for='Conforme: '> Valor atual: </label>" + ValueText +
+                            "<label for='Conforme: '> " + GetResources.getResource("current_value").Value.ToString() + ": </label>" + ValueText +
                             "<br>" +
-                            "<label for='Conforme: '> Novo Valor: </label> &nbsp " +
+                            "<label for='Conforme: '> " + GetResources.getResource("new_value").Value.ToString() + ": </label> &nbsp " +
                              "<input type='text' id='texto' class='form-control text' value='" + ValueText + "' />" +
                         //"<br>" +
                         //"<label for='Conforme: '> Não Avaliado: </label> &nbsp " +

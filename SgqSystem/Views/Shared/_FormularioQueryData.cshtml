@@ -116,7 +116,7 @@
     }
 
     .sidebar-nav select {
-        margin-left: 20px;
+        margin-left: 20px !important;
     }
 
     .sidebar-nav div {
@@ -215,6 +215,10 @@
 
     .sidebar-nav #indicadores input {
         margin-left: 0px !important;
+    }
+
+    .select2.select2-container.select2-container--default {
+        margin-left: 20px !important;
     }
 </style>
 
@@ -321,7 +325,7 @@
             <div id="showUnit" style="display:none">
                 <span class="redLabel">@Resources.Resource.unit</span>
 
-                @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control", @style = "width:210px" })
+                @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })
             </div>
         </li>
         @*<li>
@@ -813,7 +817,7 @@
             enviar['startDate'] = start.format();
             enviar['endDate'] = end.format();
         }
-        var configQueryData = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+        var configQueryData = @Html.Raw(Json.Encode(GlobalConfig.LanguageBrasil));
         var configCallendar = {};
         if(configQueryData){
             $('#reportrange').daterangepicker({
@@ -911,7 +915,9 @@
             }, 500)
 
         });
-       
+
+        $('#unitId').select2();
+
     });
 
     var formControl = {
@@ -1076,4 +1082,3 @@
     }
 
 </script>
-

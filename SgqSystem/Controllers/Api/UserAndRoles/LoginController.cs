@@ -4,12 +4,13 @@ using System.Web.Http.Cors;
 
 namespace SgqSystem.Controllers.Api.Login
 {
-    [HandleApi()]
+    [HandleApi(saveLog: false)]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/LoginApi")]
     public class LoginController : ApiController
     {
         [HttpGet]
+        //[HttpPost]
         [Route("Logado")]
         public string Logado()
         {
@@ -20,12 +21,12 @@ namespace SgqSystem.Controllers.Api.Login
             //    using (SqlConnection connection = new SqlConnection(conexao))
             //    {
             //        connection.Open();
-                    return "onLine";
+            return "onLine";
             //    }
             //}
             //catch (SqlException ex)
             //{
-               
+
             //    return mensagem;
             //}
             //catch (Exception ex)
@@ -33,5 +34,23 @@ namespace SgqSystem.Controllers.Api.Login
             //    return mensagem;
             //}
         }
+
+        // Route /status to this controller
+
+        /// <summary>
+        /// Metodo CORRETO a ser utilizado para PING:
+        ///     $.post("http://localhost/SgqSystem/api/LoginApi")
+        ///     $.get("http://localhost/SgqSystem/api/LoginApi")
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        //[HttpGet] // accept get
+        //[HttpPost] // accept post
+        //[Route("Logado")] // route default request to this method.
+        //public IHttpActionResult Get()
+        //{
+        //    return Ok();
+        //}
+
     }
 }

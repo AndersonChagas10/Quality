@@ -32,6 +32,7 @@ namespace Dominio
             this.ParLevel3Value = new HashSet<ParLevel3Value>();
             this.ParNotConformityRuleXLevel = new HashSet<ParNotConformityRuleXLevel>();
             this.ParSample = new HashSet<ParSample>();
+            this.ConsolidationLevel2 = new HashSet<ConsolidationLevel2>();
             this.ConsolidationLevel1 = new HashSet<ConsolidationLevel1>();
         }
     
@@ -79,6 +80,8 @@ namespace Dominio
         public virtual ICollection<ParNotConformityRuleXLevel> ParNotConformityRuleXLevel { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParSample> ParSample { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ConsolidationLevel2> ConsolidationLevel2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ConsolidationLevel1> ConsolidationLevel1 { get; set; }
     }

@@ -1,5 +1,6 @@
 ﻿using DTO.Helpers;
 using System;
+using System.Collections.Generic;
 
 namespace DTO
 {
@@ -7,7 +8,7 @@ namespace DTO
     {
         //private DateTime _dtvalueInicio, _dtvalueFim;
         public bool hasErros;
-
+      
         public DateTime _dataInicio
         {
             get
@@ -21,6 +22,7 @@ namespace DTO
                 }
                 return DateTime.Now;
             }
+            
         }
 
         public String _dataInicioSQL
@@ -33,6 +35,7 @@ namespace DTO
                 }
                 return DateTime.Now.ToString("yyyyMMdd");
             }
+            
         }
 
         public DateTime _dataFim
@@ -86,6 +89,14 @@ namespace DTO
         public int MetaFTA { get; set; }
         public int PercentualNCFTA { get; set; }
         public int ReincidenciaDesvioFTA { get; set; }
-        
+
+        public string CallBackTableBody { get; set; }
+        public string CallBackTableEsquerda { get; set; }
+        public string CallBackTableTituloColunas { get; set; }
+        public string Query { get; set; }
+        public string Title { get; set; }
+        public List<string> ParametroTableRow { get; set; }
+        public List<string> ParametroTableCol { get; set; }
+
     }
 }

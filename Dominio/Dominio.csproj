@@ -100,9 +100,6 @@
     <Compile Include="Deviation.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DimManutencaoColetaITs.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="EmailContent.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -169,12 +166,6 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="LogSgqGlobal.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ManColetaDados.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ManDataCollectIT.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Metas.cs">
@@ -470,6 +461,9 @@
     <Compile Include="VerificacaoTipificacaoTarefaIntegracao.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="VerificacaoTipificacaoV2.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="VerificacaoTipificacaoValidacao.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
@@ -527,6 +521,7 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Transactions" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DTO\DTO.csproj">

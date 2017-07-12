@@ -7,6 +7,14 @@
     var urlSave = Url.Action("Save", "api/ApontamentosDiarios");
 }
 
+<style>
+
+    /*Não quebra a linha nos campos de cabeçalho*/
+    #results>tbody>tr:last-child > td:last-child{
+        white-space: nowrap;
+    }
+</style>
+
 <div class="page-content" style="min-height: 600px;">
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
@@ -69,139 +77,170 @@
 
         function GerarTabela(retornoArray) {
 
-            //Regra para habilitar o botão de edição somente para quem contiver as roles 366 e 346
-            var regraEdit = false;
-
-            if (RoleUser.indexOf("366") >= 0 || RoleUser.indexOf("346") >= 0) {
-                regraEdit = true ;
-            }else{
-                regraEdit = false;
+            if(retornoArray.length == 0){
+                GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(Resources.Resource.no_appointments_in_this_period)))
             }
-            //Fim Regra
 
-            $('#divTable').show();
-            var table = $('#results').empty().DataTable({
-                data: retornoArray,
-                columns: [
-                    { title: "@Resources.Resource.edit", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>', "visible" : regraEdit },
-                    { title: "@Resources.Resource.unit", mData: "Unidade" }, //{ title: "Unidade", mData: "Unidade" },
-                    { title: "@Resources.Resource.shift", mData: "Turno" },
-                    { title: "@Resources.Resource.period", mData: "Periodo" },
-                    { title: "@Resources.Resource.auditor", mData: "Auditor"},
-                    { title: "@Resources.Resource.date", mData: "_Data" },
-                    { title: "@Resources.Resource.audit", mData: "Indicador" },
-                    { title: "@Resources.Resource.monitoring", mData: "Monitoramento" },
-                    { title: "@Resources.Resource.task", mData: "Tarefa" },
-                    { title: "@Resources.Resource.weight", mData: "Peso" },
-                    {
-                        title: "@Resources.Resource.min_interval", mData: "IntervaloMinimo", mRender: function (data, type, full) {
-                            return data.toString().match(/\d+(\.\d{1,2})?/g)[0];
-                        }
-                    },
-                    {
-                        title: "@Resources.Resource.max_interval ", mData: "IntervaloMaximo", mRender: function (data, type, full) {
-                            return data.toString().match(/\d+(\.\d{1,2})?/g)[0];
-                        }
-                    },
-                    { title: "@Resources.Resource.value", mData: "Lancado" },
-                    { title: "@Resources.Resource.derivation ?", mData: "_Conforme" },
-                    { title: "@Resources.Resource.na ?", mData: "_NA" },
-                    { title: "@Resources.Resource.weighted_ev", mData: "AV_Peso" },
-                    { title: "@Resources.Resource.weighted_defects", mData: "NC_Peso" },
-                    { title: "@Resources.Resource.evaluation", mData: "Avaliacao" },
-                    { title: "@Resources.Resource.sample", mData: "Amostra" },
+            else{
+                //Regra para habilitar o botão de edição somente para quem contiver as roles 366 e 346 e Admin
 
-                ],
-                scrollX: true,
-                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
-                pageLength: 10,
-                responsive: true,
-                loadingRecords: true,
-                destroy: true,
-                info: true,
-                responsive: true,
-                initComplete: function () {
-                    $('#loading').hide();
-                    setTimeout(function (e) {
-                        var oTable = $('#results').dataTable();
-                        if (oTable.length > 0) {
-                            oTable.fnAdjustColumnSizing();
-                        }
-                    }, 100);
+                var regraEdit = false;
 
-                    $('#results tbody').on('click', 'button', function (data, a, b) {
+                var roles = $.grep(getCookie('webControlCookie'), function (a, b) {
+                    return a.indexOf('roles') != -1;
+                })[0].split('=')[1].split(',');
 
-                        var data = table.row($(this).parents('tr')).data();
-                        //console.log(data);
-                        $.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
+                var role = roles.find(function(e) {
+                    return e === 'Admin';
+                });
 
-                            $('#estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
-                            $('#ResultLevel3_Id').val(r.Id);
-
-                            $('#changeConform').empty();
-                            //$('#changeConform').append($(r.showIntervalos));
-                            //$('#changeConform').append($(r.showConform));
-                            //$('#changeConform').append($(r.showCalculado));
-                            //$('#changeConform').append($(r.showNumeroDefeitos));
-                            //$('#changeConform').append($(r.showTexto));
-                            $('#changeConform').append($(r.showGeneric));
-
-                            //console.log(r.Id);
-                        });
-
-                    });
-                },
-                createdRow: function (row, data, index) {
-
-
-                },
-                fnDrawCallback: function (data, d, o) {
-
-
+                if (RoleUser.indexOf("366") >= 0 || RoleUser.indexOf("346") >= 0 || role == 'Admin') {
+                    regraEdit = true ;
+                }else{
+                    regraEdit = false;
                 }
-            });
+                //Fim Regra
 
-            new $.fn.dataTable.Buttons(table, {
-                buttons: [
-                    {
-                        extend: 'print',
-                        text: '@Resources.Resource.print',
-                        customize: function (win) {
-                            $(win.document.body).find('table')
-                                .addClass('compact')
-                                .css('font-size', 'inherit');
+                var Tipo1 = {};
+                var Tipo2 = {};
+                if(retornoArray[0].HashKey == 1 || retornoArray[0].HashKey == 5){
+
+                    Tipo1 = { title: "@Resources.Resource.sequential", mData: "Sequencial" };
+                    Tipo2 = { title: "@Resources.Resource.side_banda", mData: "Banda" };
+                }else{
+                    Tipo1 = { title: "@Resources.Resource.evaluation", mData: "Avaliacao" };
+                    Tipo2 = { title: "@Resources.Resource.sample", mData: "Amostra" };
+                }
+
+                //Fim
+
+                $('#divTable').show();
+                var table = $('#results').empty().DataTable({
+                    data: retornoArray,
+                    columns: [
+                        { title: "@Resources.Resource.edit", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>', "visible" : regraEdit },
+                        { title: "@Resources.Resource.unit", mData: "Unidade" }, //{ title: "Unidade", mData: "Unidade" },
+                        { title: "@Resources.Resource.shift", mData: "Turno" },
+                        { title: "@Resources.Resource.period", mData: "Periodo" },
+                        { title: "@Resources.Resource.auditor", mData: "Auditor"},
+                        { title: "@Resources.Resource.date", mData: "_Data" },
+                        { title: "@Resources.Resource.time", mData: "_Hora" },
+                        { title: "@Resources.Resource.audit", mData: "Indicador" },
+                        { title: "@Resources.Resource.monitoring", mData: "Monitoramento" },
+                        { title: "@Resources.Resource.task", mData: "Tarefa" },
+                        { title: "@Resources.Resource.weight", mData: "Peso" },
+                        {
+                            title: "@Resources.Resource.min_interval", mData: "IntervaloMinimo", mRender: function (data, type, full) {
+                                return data.toString().match(/\d+(\.\d{1,2})?/g)[0];
+                            }
                         },
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'excelHtml5',
-                        text: 'Excel',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                     {
-                         extend: 'pdf',
-                         text: 'PDF',
-                         exportOptions: {
-                             columns: ':visible'
-                         }
-                     },
-                      {
-                          extend: 'colvis',
-                          text: '@Resources.Resource.visible_columns',
-                          exportOptions: {
-                              columns: ':visible'
-                          }
-                      },
-                ]
-            });
+                        {
+                            title: "@Resources.Resource.max_interval ", mData: "IntervaloMaximo", mRender: function (data, type, full) {
+                                return data.toString().match(/\d+(\.\d{1,2})?/g)[0];
+                            }
+                        },
+                        { title: "@Resources.Resource.value", mData: "Lancado" },
+                        { title: "@Resources.Resource.deviation ?", mData: "_Conforme" },
+                        { title: "@Resources.Resource.na ?", mData: "_NA" },
+                        { title: "@Resources.Resource.weighted_ev", mData: "AV_Peso" },
+                        { title: "@Resources.Resource.weighted_defects", mData: "NC_Peso" },
+                        Tipo1,
+                        Tipo2,
+                        { title: "@Resources.Resource.header_fields", mData: "HeaderFieldList", "width": "50%"}
 
-            table.buttons(0, null).container().prependTo(
-                table.table().container()
-            );
+                    ],
+                    scrollX: true,
+                    lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "@Resources.Resource.all"]],
+                    pageLength: 10,
+                    responsive: true,
+                    loadingRecords: true,
+                    destroy: true,
+                    info: true,
+                    responsive: true,
+                    initComplete: function () {
+                        $('#loading').hide();
+                        setTimeout(function (e) {
+                            var oTable = $('#results').dataTable();
+                            if (oTable.length > 0) {
+                                oTable.fnAdjustColumnSizing();
+                            }
+                        }, 100);
+
+                        $('#results tbody').on('click', 'button', function (data, a, b) {
+
+                            var data = table.row($(this).parents('tr')).data();
+                            //console.log(data);
+                            $.post(urlEdit + "/" + data.ResultLevel3Id, function (r, x, e) {
+
+                                $('#estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
+                                $('#ResultLevel3_Id').val(r.Id);
+
+                                $('#changeConform').empty();
+                                //$('#changeConform').append($(r.showIntervalos));
+                                //$('#changeConform').append($(r.showConform));
+                                //$('#changeConform').append($(r.showCalculado));
+                                //$('#changeConform').append($(r.showNumeroDefeitos));
+                                //$('#changeConform').append($(r.showTexto));
+                                $('#changeConform').append($(r.showGeneric));
+                                InitiMasksDefaults();
+                                //console.log(r.Id);
+                            });
+
+                        });
+                    },
+                    createdRow: function (row, data, index) {
+
+
+                    },
+                    fnDrawCallback: function (data, d, o) {
+
+
+                    }
+                });
+
+                new $.fn.dataTable.Buttons(table, {
+                    buttons: [
+                        {
+                            extend: 'print',
+                            text: '@Resources.Resource.print',
+                            customize: function (win) {
+                                $(win.document.body).find('table')
+                                    .addClass('compact')
+                                    .css('font-size', 'inherit');
+                            },
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'excelHtml5',
+                            text: 'Excel',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                         {
+                             extend: 'pdf',
+                             text: 'PDF',
+                             exportOptions: {
+                                 columns: ':visible'
+                             }
+                         },
+                          {
+                              extend: 'colvis',
+                              text: '@Resources.Resource.visible_columns',
+                              exportOptions: {
+                                  columns: ':visible'
+                              }
+                          },
+                    ]
+                });
+
+                table.buttons(0, null).container().prependTo(
+                    table.table().container()
+                );
+
+            }
 
         }
 

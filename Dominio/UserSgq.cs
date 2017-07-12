@@ -17,12 +17,12 @@ namespace Dominio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public UserSgq()
         {
-            this.CollectionLevel2 = new HashSet<CollectionLevel2>();
             this.CorrectiveAction = new HashSet<CorrectiveAction>();
             this.CorrectiveAction1 = new HashSet<CorrectiveAction>();
             this.CorrectiveAction2 = new HashSet<CorrectiveAction>();
             this.ParCompanyXUserSgq = new HashSet<ParCompanyXUserSgq>();
             this.UnitUser = new HashSet<UnitUser>();
+            this.CollectionLevel2 = new HashSet<CollectionLevel2>();
             this.CollectionLevel02 = new HashSet<CollectionLevel02>();
         }
     
@@ -40,8 +40,6 @@ namespace Dominio
         public Nullable<System.DateTime> PasswordDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CorrectiveAction> CorrectiveAction { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CorrectiveAction> CorrectiveAction1 { get; set; }
@@ -51,6 +49,8 @@ namespace Dominio
         public virtual ICollection<ParCompanyXUserSgq> ParCompanyXUserSgq { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UnitUser> UnitUser { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionLevel02> CollectionLevel02 { get; set; }
     }

@@ -1,5 +1,25 @@
 ﻿@model PlanoAcaoCore.Pa_Acao
-
+@using PlanoAcaoCore
+@{
+    var showTipo1 = "display:none";
+    var showTipo2 = "display:none";
+    if (Model.TipoIndicador == 1)
+    {
+        showTipo1 = "";
+    }
+    else if (Model.TipoIndicador == 2)
+    {
+        showTipo2 = "";
+    }
+}
+@if (Conn.visaoOperacional)
+{
+    <style>
+        .showAsEstrategy {
+            display: none;
+        }
+    </style>
+}
 <form id="Acao" class="Acao">
     <table class="nowrap .col-md-6 .col-md-offset-3" style="width: 100%;">
         <tbody>
@@ -23,7 +43,7 @@
                     </td>
                     <td></td>
                 </tr>*@
-            <tr>
+            <tr class="showAsEstrategy">
                 <td style="width: 43%;">
                     @Html.Label("Tipo de Indicador:", htmlAttributes: new { @class = "control-label " })
                 </td>
@@ -37,7 +57,7 @@
                 <td style="width: 16%;"></td>
             </tr>
 
-            <tr style="display:none" class="IndicadorSgq">
+            <tr style="@showTipo2" class="showAsEstrategy IndicadorSgq">
                 <td>
                     @Html.LabelFor(r => r.Level1Id, htmlAttributes: new { @class = "control-label " })
                 </td>
@@ -46,7 +66,7 @@
                 </td>
                 <td></td>
             </tr>
-            <tr style="display:none" class="IndicadorSgq">
+            <tr style="@showTipo2" class="IndicadorSgq">
                 <td>
                     @Html.LabelFor(r => r.Level2Id, htmlAttributes: new { @class = "control-label " })
                 </td>
@@ -55,7 +75,7 @@
                 </td>
                 <td></td>
             </tr>
-            <tr style="display:none" class="IndicadorSgq">
+            <tr style="@showTipo2" class="IndicadorSgq">
                 <td>
                     @Html.LabelFor(r => r.Level3Id, htmlAttributes: new { @class = "control-label " })
                 </td>
@@ -66,7 +86,7 @@
             </tr>
 
 
-            <tr style="display:none" class="IndicadorOutros">
+            <tr class="showAsEstrategy" style="@showTipo1" class="IndicadorOutros">
                 <td>
                     @Html.LabelFor(r => r.Pa_IndicadorSgqAcao_Id, htmlAttributes: new { @class = "control-label " })
                 </td>
@@ -76,7 +96,8 @@
                 </td>
                 <td></td>
             </tr>
-            <tr>
+
+            <tr class="showAsEstrategy">
                 <td>
                     @Html.LabelFor(r => r.Pa_Problema_Desvio_Id, htmlAttributes: new { @class = "control-label " })
                 </td>
@@ -86,7 +107,7 @@
                 </td>
                 <td></td>
             </tr>
-            <tr>
+            <tr class="showAsEstrategy">
                 <td>
                     @Html.Label("Causa generica", htmlAttributes: new { @class = "control-label " })
                 </td>
@@ -95,7 +116,7 @@
                 </td>
                 <td></td>
             </tr>
-            <tr>
+            <tr class="showAsEstrategy">
                 <td>
                     @Html.Label("Grupo causa", htmlAttributes: new { @class = "control-label " })
                 </td>
@@ -104,7 +125,7 @@
                 </td>
                 <td></td>
             </tr>
-            <tr>
+            <tr class="showAsEstrategy">
                 <td>
                     @Html.Label("Contramedida generica", htmlAttributes: new { @class = "control-label " })
                 </td>
@@ -115,7 +136,7 @@
             </tr>
             <tr>
                 <td>
-                    @Html.Label("Causa Específica", htmlAttributes: new { @class = "control-label " })
+                    @Html.Label(Conn.nameCausaEspecifica, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
                     @Html.EditorFor(r => r.CausaEspecifica, new { htmlAttributes = new { @class = "form-control" } })
@@ -125,7 +146,7 @@
             </tr>
             <tr>
                 <td>
-                    @Html.Label("Contramedida Específica", htmlAttributes: new { @class = "control-label " })
+                    @Html.Label(Conn.nameContramedidaEspecifica, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
                     @Html.EditorFor(r => r.ContramedidaEspecifica, new { htmlAttributes = new { @class = "form-control" } })
@@ -184,7 +205,7 @@
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.ComoPontosimportantes, htmlAttributes: new { @class = "control-label " })
+                    @Html.Label(Conn.nameComoPontosImportantes, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
                     @Html.EditorFor(model => model.ComoPontosimportantes, new { htmlAttributes = new { @class = "form-control" } })
@@ -202,7 +223,7 @@
                     </td>
                     <td></td>
                 </tr>*@
-            <tr>
+            <tr class="showAsEstrategy">
                 <td>
                     @Html.LabelFor(model => model.PraQue, htmlAttributes: new { @class = "control-label " })
                 </td>
@@ -217,7 +238,7 @@
                     @Html.LabelFor(model => model.QuantoCusta, htmlAttributes: new { @class = "control-label" })
                 </td>
                 <td>
-                    @Html.Editor("_QuantoCusta", new { htmlAttributes = new { @class = "form-control money"} })
+                    @Html.Editor("_QuantoCusta", new { htmlAttributes = new { @class = "form-control money" } })
                     @*@Html.EditorFor(model => model._QuantoCusta, new { htmlAttributes = new { @class = "form-control money" } })*@
                     @*@Html.ValidationMessageFor(model => model.QuantoCusta, "", new { @class = "text-danger" })*@
                     @Html.ValidationMessageFor(model => model._QuantoCusta, "", new { @class = "text-danger" })

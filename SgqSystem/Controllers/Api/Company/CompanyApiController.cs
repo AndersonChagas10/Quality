@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Dominio;
 using Dominio.Interfaces.Services;
+using DTO.DTO.Params;
 using SgqSystem.Handlres;
 using SgqSystem.ViewModels;
 using System.Collections.Generic;
@@ -16,10 +17,12 @@ namespace SgqSystem.Controllers.Api.Company
         #region Construtor para injeção de dependencia
 
         private ICompanyDomain _companyDomain;
+        public IBaseDomain<ParCompany, ParCompanyDTO> _basedomain;
         
-        public CompanyApiController(ICompanyDomain companyDomain)
+        public CompanyApiController(ICompanyDomain companyDomain, IBaseDomain<ParCompany,ParCompanyDTO> basedomain)
         {
             _companyDomain = companyDomain;
+            _basedomain = basedomain;
         }
 
         #endregion
@@ -56,6 +59,13 @@ namespace SgqSystem.Controllers.Api.Company
             _companyDomain.AddUpdateParStructureGroup(companyViewModel.parStructureGroupDTO);
         }
 
+        [HttpGet]
+        [HandleApi()]
+        [Route("getCompany")]
+        public ParCompanyDTO GETCompany(int id)
+        {
+            return _basedomain.GetById(id);
+        }
         #endregion
     }
 }

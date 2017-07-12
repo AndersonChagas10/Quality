@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -11,6 +12,7 @@ namespace ADOFactory
     {
         public SqlConnection connection;
         private SqlConnectionStringBuilder connectionString;
+        private SqlConnectionStringBuilder connectionString1;
 
         /// <summary>
         /// 
@@ -57,6 +59,27 @@ namespace ADOFactory
             try
             {
                 var connectionString = ConfigurationManager.ConnectionStrings[connectionStringDoWebConfig].ConnectionString;
+                connection = new SqlConnection();
+                connection.ConnectionString = connectionString;
+                connection.Open();
+            }
+            catch (SqlException ex)
+            {
+                closeConnection();
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                closeConnection();
+                throw ex;
+            }
+        }
+
+        public Factory(SqlConnectionStringBuilder connectionString1)
+        {
+            try
+            {
+                var connectionString = connectionString1.ConnectionString;
                 connection = new SqlConnection();
                 connection.ConnectionString = connectionString;
                 connection.Open();
@@ -147,9 +170,27 @@ namespace ADOFactory
 
         }
 
+        public List<JObject> QueryNinjaADO(string query)
+        {
+            List<JObject> items = new List<JObject>();
+            SqlCommand command = new SqlCommand(query, connection);
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    JObject row = new JObject();
+                    for (int i = 0; i < reader.FieldCount; i++)
+                        row[reader.GetName(i)] = reader[i].ToString();
+
+                    items.Add(row);
+                }
+            }
+            return items;
+        }
+
         public int InsertUpdateData(SqlCommand cmd)
         {
-         
+
             cmd.CommandType = CommandType.Text;
             cmd.Connection = connection;
             try
@@ -173,8 +214,8 @@ namespace ADOFactory
         public T InsertUpdateData<T>(T obj)
         {
             SqlCommand cmd = GetQuery(obj);
-   
-            
+
+
             cmd.CommandType = CommandType.Text;
             cmd.Connection = connection;
             try

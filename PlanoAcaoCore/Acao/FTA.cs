@@ -21,11 +21,11 @@ namespace PlanoAcaoCore.Acao
 
         public string _Departamento { get; set; }
 
-        public int MetaFTA { get; set; }
+        public string MetaFTA { get; set; }
 
-        public int PercentualNCFTA { get; set; }
+        public string PercentualNCFTA { get; set; }
 
-        public int ReincidenciaDesvioFTA { get; set; }
+        public string ReincidenciaDesvioFTA { get; set; }
 
         public int Assinatura1 { get; set; }
 

@@ -9,10 +9,22 @@ namespace SgqSystem.Handlres
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class HandleApi : ExceptionFilterAttribute
     {
+        private bool saveLog;
+
+        public HandleApi()
+        {
+            saveLog = true;
+        }
+
+        public HandleApi(bool saveLog)
+        {
+            this.saveLog = saveLog;
+        }
+
         public override void OnException(HttpActionExecutedContext context)
         {
-
-            LogException(context.Exception);
+            if(saveLog)
+                LogException(context.Exception);
             context.Response = context.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, context.Exception.Message.ToString());
             base.OnException(context);
         }

@@ -5,6 +5,8 @@
     var urlRelatorioDiario = Url.Action("RelatorioDiario", "RelatoriosSgq");
     var urlApontamentosDiarios = Url.Action("ApontamentosDiarios", "RelatoriosSgq");
     var urlNaoConformidade = Url.Action("NaoConformidade", "RelatoriosSgq");
+    var urlVerificacaoTipificacao = Url.Action("VerificacaoTipificacao", "RelatoriosSgq");
+    var urlVisaoGeralDaArea = Url.Action("VisaoGeralDaArea", "RelatoriosSgq");
 }
 
 <style>
@@ -278,7 +280,8 @@
 
                     <ul id="nav">
 
-                        <li><a href="#">@Resources.Resource.general_view_of_the_area</a>
+                        <li><a href="#">@Resources.Resource.general_view_of_the_area (Em Desenvolvimento)</a>
+                        @*<li><a href="@urlVisaoGeralDaArea">@Resources.Resource.general_view_of_the_area</a>*@
 
                         <li><a href="#">@Resources.Resource.action_plan</a></li>
                     </ul>
@@ -299,7 +302,7 @@
                                     <li><a href="#">@Resources.Resource.customization</a></li>
                                     <li><a href="#">@Resources.Resource.sgq_using</a></li>
                                     <li><a href="@urlApontamentosDiarios">@Resources.Resource.daily_apointments</a></li>
-                                    <li><a href="#">@Resources.Resource.tipification_verification</a></li>
+                                    <li><a href="@urlVerificacaoTipificacao">@Resources.Resource.tipification_verification</a></li>
                                 </ul>
                             </li>
                         </ul>

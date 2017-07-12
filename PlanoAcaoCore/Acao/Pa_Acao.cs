@@ -1,4 +1,5 @@
-﻿using DTO.Helpers;
+﻿using ADOFactory;
+using DTO.Helpers;
 using Helper;
 using PlanoAcaoCore.Acao;
 using System;
@@ -12,6 +13,7 @@ namespace PlanoAcaoCore
     {
 
         #region SGQ
+        public bool isEmail { get; set; }
 
         [Display(Name = "Indicador")]
         public int? Level1Id { get; set; }
@@ -92,7 +94,7 @@ namespace PlanoAcaoCore
         [Display(Name = "Causa Especifica")]
         public string CausaEspecifica { get; set; }
 
-        [Display(Name = "Causa Generica")]
+        [Display(Name = "Contramedida Especifica")]
         public string ContramedidaEspecifica { get; set; }
 
         public int TipoIndicador { get; set; }
@@ -173,6 +175,9 @@ namespace PlanoAcaoCore
             {
                 var old = Pa_Acao.Get(Id);
                 Panejamento_Id = old.Panejamento_Id;
+
+              
+
             }
 
             //if (Pa_IndicadorSgqAcao_Id <= 0)
@@ -234,15 +239,16 @@ namespace PlanoAcaoCore
             if (_QuantoCusta != null)
                 QuantoCusta = NumericExtensions.CustomParseDecimal(_QuantoCusta).GetValueOrDefault();
 
-            if (_QuandoInicio != null)
-                QuandoInicio = Guard.ParseDateToSqlV2(_QuandoInicio);
+            if (!string.IsNullOrEmpty(_QuandoFim))
+                QuandoFim = Guard.ParseDateToSqlV2(_QuandoFim, Guard.CultureCurrent.BR);
+            else
+                QuandoFim = DateTime.Now;
+
+            if (!string.IsNullOrEmpty(_QuandoInicio))
+                QuandoInicio = Guard.ParseDateToSqlV2(_QuandoInicio, Guard.CultureCurrent.BR);
             else
                 QuandoInicio = DateTime.Now;
 
-            if (_QuandoFim != null)
-                QuandoFim = Guard.ParseDateToSqlV2(_QuandoFim);
-            else
-                QuandoFim = DateTime.Now;
 
 
             #endregion
@@ -292,7 +298,7 @@ namespace PlanoAcaoCore
 
         public static Pa_Acao Get(int Id)
         {
-            var retorno = GetGenerico<Pa_Acao>(query + " AND ACAO.Id = " + Id);
+            var retorno = GetGenerico<Pa_Acao>(query + " WHERE ACAO.Id = " + Id);
 
             //retorno._Quem = Pa_Quem.GetQuemXAcao(retorno.Id).Select(r => r.Name).ToList();
             //retorno.AcaoXQuem = Pa_AcaoXQuem.Get(retorno.Id).ToList();
@@ -300,6 +306,36 @@ namespace PlanoAcaoCore
             //retorno.CausaMedidasXAcao = Pa_CausaMedidasXAcao.GetByAcaoId(retorno.Id);
             retorno._QuandoInicio = retorno.QuandoInicio.ToShortDateString() + " " + retorno.QuandoInicio.ToShortTimeString();
             retorno._QuandoFim = retorno.QuandoFim.ToShortDateString() + " " + retorno.QuandoFim.ToShortTimeString();
+
+            using (var dbSgq = new Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
+            {
+                if (retorno.Level1Id != null && retorno.Level1Id > 0)
+                {
+                    dynamic level1 = dbSgq.QueryNinjaADO("SELECT * FROM ParLevel1 WHERE ID = " + retorno.Level1Id).FirstOrDefault();
+                    if (level1 != null)
+                        retorno._Level1 = level1.Name;
+                    
+                }
+                if (retorno.Level2Id != null && retorno.Level2Id > 0)
+                {
+                    dynamic level2 = dbSgq.QueryNinjaADO("SELECT * FROM ParLevel2 WHERE ID = " + retorno.Level1Id).FirstOrDefault();
+                    if (level2 != null)
+                        retorno._Level2 = level2.Name;
+                }
+                if (retorno.Level3Id != null && retorno.Level3Id > 0)
+                {
+                    dynamic level3 = dbSgq.QueryNinjaADO("SELECT * FROM ParLevel3 WHERE ID = " + retorno.Level1Id).FirstOrDefault();
+                    if (level3 != null)
+                        retorno._Level3 = level3.Name;
+                }
+                if (retorno.Unidade_Id != null && string.IsNullOrEmpty(retorno._Unidade))
+                {
+                    dynamic company = dbSgq.QueryNinjaADO("SELECT * FROM ParCompany WHERE ID = " + retorno.Unidade_Id).FirstOrDefault();
+                    if (company != null)
+                        retorno._Unidade = company.Name;
+                }
+            }
+
 
             return retorno;
         }

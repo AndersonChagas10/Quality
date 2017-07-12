@@ -1,8 +1,11 @@
 ﻿using Dominio;
 using DTO.DTO.Params;
+using DTO.Helpers;
 using Helper;
 using SgqSystem.Secirity;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -30,7 +33,7 @@ namespace SgqSystem.Controllers
             db = new SgqDbDevEntities();
             db.Configuration.LazyLoadingEnabled = false;
 
-            ViewBag.ParLevel1 = db.ParLevel1.Where(r => r.IsFixedEvaluetionNumber == true);
+            ViewBag.ParLevel1 = db.ParLevel1.Where(r => r.IsFixedEvaluetionNumber == true).ToList();
             ViewBag.ParLevel2Todos = new List<ParLevel2DTO>();
             ViewBag.level2Number = 0;
             ViewBag.level2Comporativo = new List<ParLevel2DTO>();
@@ -40,16 +43,24 @@ namespace SgqSystem.Controllers
 
         public ActionResult Index()
         {
+            var allControlCompany = db.ParLevel2ControlCompany.Include("ParLevel2").Where(r => r.IsActive == true && r.InitDate <= DateTime.Now);
+            var lastDateDaControlCompany = allControlCompany.Where(r => r.ParCompany_Id == null).OrderByDescending(r => r.InitDate).FirstOrDefault()?.InitDate;
+
+            if (lastDateDaControlCompany == null)
+                lastDateDaControlCompany = DateTime.Now;
+
+            ViewBag.dataInit = lastDateDaControlCompany;
             return View();
         }
-      
-        public ActionResult ChangeLevel2(int id)
+
+        public ActionResult ChangeLevel2(int id, string dataInit)
         {
+            var _dataInit = Guard.ParseDateToSqlV2(dataInit);
             if (id > 0)
             {
-                var allControlCompany = db.ParLevel2ControlCompany.Include("ParLevel2").Where(r => r.ParLevel1_Id == id && r.IsActive == true);
+                var allControlCompany = db.ParLevel2ControlCompany.Include("ParLevel2").Where(r => r.ParLevel1_Id == id && r.InitDate == _dataInit && r.IsActive == true);
                 var lastDateDaControlCompany = allControlCompany.Where(r => r.ParCompany_Id == null).OrderByDescending(r => r.InitDate).FirstOrDefault()?.InitDate;
-                var level2Comporativo = allControlCompany.Where(r => r.InitDate == lastDateDaControlCompany).Select(r => r.ParLevel2);
+                var level2Comporativo = allControlCompany.Where(r => r.InitDate == lastDateDaControlCompany && r.ParCompany_Id == null).Select(r => r.ParLevel2);
                 var level2VinculadosAoLevel1Selecionado = db.ParLevel3Level2Level1.Where(r => r.ParLevel1_Id == id).Select(r => r.ParLevel3Level2.ParLevel2).Distinct().ToList();
                
                 ViewBag.ParLevel2Todos = level2VinculadosAoLevel1Selecionado;
@@ -64,13 +75,14 @@ namespace SgqSystem.Controllers
             return PartialView("_ControlCompanySelectBoxLevel2");
         }
 
-        public ActionResult ChangeLevel2UserCompany(int id, int companyId)
+        public ActionResult ChangeLevel2UserCompany(int id, int companyId, string dataInit)
         {
+            var _dataInit = Guard.ParseDateToSqlV2(dataInit);
             if (id > 0 && companyId > 0)
             {
-                var allControlCompany = db.ParLevel2ControlCompany.Include("ParLevel2").Where(r => r.ParLevel1_Id == id && r.IsActive == true);
+                var allControlCompany = db.ParLevel2ControlCompany.Include("ParLevel2").Where(r => r.ParLevel1_Id == id && r.InitDate == _dataInit && r.IsActive == true);
                 var lastDateDaControlCompany = allControlCompany.Where(r => r.ParCompany_Id == null).OrderByDescending(r => r.InitDate).FirstOrDefault()?.InitDate;
-                var level2Comporativo = allControlCompany.Where(r => r.InitDate == lastDateDaControlCompany).Select(r => r.ParLevel2);
+                var level2Comporativo = allControlCompany.Where(r => r.InitDate == lastDateDaControlCompany && r.ParCompany_Id == null).Select(r => r.ParLevel2);
 
                 var lastDateCompany = allControlCompany.Where(r => r.ParCompany_Id == companyId).OrderByDescending(r => r.InitDate).FirstOrDefault()?.InitDate;
                 var level2SelecionadosParaEmpresa = allControlCompany.Where(r => r.ParCompany_Id == companyId && r.InitDate == lastDateCompany).Select(r => r.ParLevel2);

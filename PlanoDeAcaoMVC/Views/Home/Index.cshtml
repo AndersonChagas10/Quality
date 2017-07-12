@@ -1,5 +1,87 @@
-﻿
+﻿@using PlanoAcaoCore;
+
+<!-- external libs from cdnjs -->
+@*<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>*@
+
+@*<link href="~/Scripts/pivottable-master/dist/pivot.css" rel="stylesheet" />
+    <script src="~/Scripts/pivottable-master/dist/pivot.js"></script>
+    <script src="~/Scripts/pivottable-master/dist/c3_renderers.min.js"></script>*@
+
+@{
+
+
+}
+
+<style>
+    body {
+        font-family: Verdana;
+    }
+
+    .c3-line, .c3-focused {
+        stroke-width: 3px !important;
+    }
+
+    .c3-bar {
+        stroke: white !important;
+        stroke-width: 1;
+    }
+
+    .c3 text {
+        font-size: 12px;
+        color: grey;
+    }
+
+    .tick line {
+        stroke: white;
+    }
+
+    .c3-axis path {
+        stroke: grey;
+    }
+
+    .c3-circle {
+        opacity: 1 !important;
+    }
+
+    .c3-xgrid-focus {
+        visibility: hidden !important;
+    }
+
+    /*.pvtUi {
+        display: block;
+        width: 100%;
+        overflow: auto;
+    }*/
+
+    table {
+       width: 100% !important;
+        /*text-align: left;*/
+        /*table-layout: fixed;*/
+    }
+
+    /*input, select, textarea {
+        max-width: 150px;
+    }*/
+
+    .pvtAxisContainer, .pvtVals {
+        max-width: 100%;
+    }
+
+    /*th, td {
+        word-wrap: break-word;
+        width: 50%;
+    }*/
+
+    /*@@media screen and (max-width: 450px) {
+        thead { min-width: 10px }
+        td,th { display: block }
+    }*/
+</style>
+
 <div class="row">
+
     <div class="col-xs-12 col-sm-6 col-lg-4" style="min-height:500px;">
 
         <div class="panel panel-primary">
@@ -7,27 +89,17 @@
                 <h3 class="panel-title">Situação geral das ações no período</h3>
             </div>
             <div class="panel-body">
-                <div class="popover-markup" style="margin-top:-12px;margin-left:-12px;">
-                    <a id="btnFiltro" href="#" class="trigger btn btn-default">Datas <i>[Em Desenvolvimento]</i></a>
-                    
-                    <div class="content hide">
-                        <form>
-                            <div class="form-group">
-                                <span>Data Inicio</span>
-                                <input type="text" class="datepicker form-control" placeholder="" id="dataInicio"/>
-                                <span>Data Fim</span>
-                                <input type="text" class="datepicker form-control" placeholder="" id="dataFim" />
-                            </div>
-                            <button id="enviar" type="submit" class="btn btn-primary btn-block">
-                                Filtrar
-                            </button>
-                        </form>
+                <div class="" id="complexCallendar" style="">
+                    @*<span class="redLabel">Data</span>*@
+                    <div id="reportrange" class="" style="background: #fff; cursor: pointer; border: 1px solid #ccc; width: 230px">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                        <span></span> <b class="caret"></b>
                     </div>
                 </div>
 
                 <div id="divPie" style="height:215px;"></div>
                 <div class="col-xs-6 col-sm-6 ">
-                    <div class="panel panel-default" data-toggle="modal" data-target="#myModal" style="cursor:pointer;">
+                    <div class="panel panel-default" data-toggle="modal" data-target="#myModal" style="cursor:pointer;" onclick="geraTabela('Concluído', 'acoesConcuidasTbl')">
                         <div class="panel-body">
                             <div style="height:98px;">
                                 <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
@@ -47,7 +119,7 @@
                     </div>
                 </div>
                 <div class="col-xs-6 col-sm-6 ">
-                    <div class="panel panel-default" data-toggle="modal" data-target="#myModal" style="cursor:pointer;">
+                    <div class="panel panel-default" data-toggle="modal" data-target="#myModal" style="cursor:pointer;" onclick="geraTabela('Atrasado', 'acoesConcuidasTbl')">
                         <div class="panel-body">
                             <div style="height:98px;">
                                 <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
@@ -65,7 +137,7 @@
                     </div>
                 </div>
                 <div class="col-xs-6 col-sm-6 ">
-                    <div class="panel panel-default" data-toggle="modal" data-target="#myModal" style="cursor:pointer;">
+                    <div class="panel panel-default" data-toggle="modal" data-target="#myModal" style="cursor:pointer;" onclick="geraTabela('Atrasado', 'acoesConcuidasTbl', true)">
                         <div class="panel-body">
                             <div style="height:98px;">
                                 <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
@@ -86,7 +158,7 @@
 
                 <div class="col-xs-6 col-sm-6 ">
 
-                    <div class="panel panel-default" data-toggle="modal" data-target="#myModal" style="cursor:pointer;">
+                    <div class="panel panel-default" data-toggle="modal" data-target="#myModal" style="cursor:pointer;" onclick="geraTabela('Atrasado', 'acoesConcuidasTbl', false, true)">
                         <div class="panel-body">
                             <div style="height:98px;">
                                 <div class="col-xs-12 col-sm-12 " style="padding:0; text-align:center;">
@@ -107,143 +179,156 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-12 col-sm-6 col-lg-8">
 
+    <div class="col-xs-12 col-sm-6 col-lg-8">
         <div class="panel panel-default">
             <div class="panel-body">
-                <div class="popover-markup" style="margin-top:-12px;margin-left:-12px;">
+                <select id="filtroBar">
+                    <option value="0">Selecione</option>
+                    <option class="showAsEstrategy" value="Diretoria">Diretoria</option>
+                    <option class="showAsEstrategy" value="Dimensão">Dimensão</option>
+                    <option class="showAsEstrategy" value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                    <option class="showAsEstrategy" value="Indicadores Diretriz">Indicadores / Diretriz</option>
+                    <option class="showAsEstrategy" value="Gerência">Gerência</option>
+                    <option class="showAsEstrategy" value="Coordenação">Coordenação</option>
+                    <option class="showAsEstrategy" value="Grupo Causa">Grupo Causa</option>
+                    <option class="showAsEstrategy" value="Causa Genérica">Causa Genérica</option>
+                    <option class="showAsEstrategy" value="Contramedida Genérica">Contramedida Genérica</option>
+                    @*<option value="7">Projeto / Iniciativa</option>*@
+                    <option value="Unidade">Unidade</option>
+                    @*<option value="9">Indicador Operacional</option>*@
+                    <option value="Responsavel"selected>Quem</option>
+                    <option value="Status" >Status</option>
+                </select>
 
-                    <a id="btnFiltroBar" href="#" class="trigger btn btn-default">Filtro <i>[Em Desenvolvimento]</i></a>
-                    
-                    <div class="content hide">
-                        <form>
-                            <div class="form-group">
-                                <span>Filtro</span>
-                                <br />
-                                <select id="filtroBar">
-                                    <option value="0">Selecione</option>
-                                    <option value="1">Diretoria</option>
-                                    <option value="2">Dimensao</option>
-                                    <option value="3">Diretriz / Objetivo</option>
-                                    <option value="4">Indicadores / Diretriz</option>
-                                    <option value="5">Gerência</option>
-                                    <option value="6">Coordenação</option>
-                                    <option value="7">Projeto / Iniciativa</option>
-                                    <option value="8">Unidade</option>
-                                    <option value="9">Indicador Operacional</option>
-                                    <option value="10">Grupo Causa</option>
-                                    <option value="11" selected>Causa Genérica</option>
-                                    <option value="12">Contramedida Genérica</option>
-                                    <option value="13">Quem</option>                                    
-                                    <option value="14">Status</option>
-                                </select>
-                                <br />
-                                <span>Series</span>
-                                <br />
-                                <select id="seriesBar">
-                                    <option value="0">Selecione</option>
-                                    <option value="1">Diretoria</option>
-                                    <option value="2">Dimensao</option>
-                                    <option value="3">Diretriz / Objetivo</option>
-                                    <option value="4">Indicadores / Diretriz</option>
-                                    <option value="5">Gerência</option>
-                                    <option value="6">Coordenação</option>
-                                    <option value="7">Projeto / Iniciativa</option>
-                                    <option value="8">Unidade</option>
-                                    <option value="9">Indicador Operacional</option>
-                                    <option value="10">Grupo Causa</option>
-                                    <option value="11">Causa Genérica</option>
-                                    <option value="12">Contramedida Genérica</option>
-                                    <option value="13">Quem</option>
-                                    <option value="14" selected>Status</option>
-                                </select>
-                                
-                           
-                            </div>
-                            <button id="enviar" type="submit" class="btn btn-primary btn-block">
-                                Filtrar
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <div id="divBar" style="height:240px;"></div>
+                <select id="seriesBar">
+                    <option value="0">Selecione</option>
+                    <option class="showAsEstrategy" value="Diretoria">Diretoria</option>
+                    <option class="showAsEstrategy" value="Dimensão">Dimensão</option>
+                    <option class="showAsEstrategy" value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                    <option class="showAsEstrategy" value="Indicadores Diretriz">Indicadores / Diretriz</option>
+                    <option class="showAsEstrategy" value="Gerência">Gerência</option>
+                    <option class="showAsEstrategy" value="Coordenação">Coordenação</option>
+                    <option class="showAsEstrategy" value="Grupo Causa">Grupo Causa</option>
+                    <option class="showAsEstrategy" value="Causa Genérica">Causa Genérica</option>
+                    <option class="showAsEstrategy" value="Contramedida Genérica">Contramedida Genérica</option>
+                    @*<option value="7">Projeto / Iniciativa</option>*@
+                    <option value="Unidade">Unidade</option>
+                    @*<option value="9">Indicador Operacional</option>*@
+                    <option value="Responsavel">Quem</option>
+                    <option value="Status" selected>Status</option>
+                </select>
             </div>
+            <div id="divGrafico1" style="height:240px;"></div>
         </div>
     </div>
-    <div class="col-xs-12 col-sm-6 col-lg-8 ">
 
+    <div class="col-xs-12 col-sm-6 col-lg-8">
         <div class="panel panel-default">
             <div class="panel-body">
+                <select id="filtroBar2">
+                    <option value="0">Selecione</option>
+                    <option class="showAsEstrategy" value="Diretoria">Diretoria</option>
+                    <option class="showAsEstrategy" value="Dimensão">Dimensão</option>
+                    <option class="showAsEstrategy" value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                    <option class="showAsEstrategy" value="Indicadores Diretriz">Indicadores / Diretriz</option>
+                    <option class="showAsEstrategy" value="Gerência">Gerência</option>
+                    <option class="showAsEstrategy" value="Coordenação">Coordenação</option>
+                    <option class="showAsEstrategy" value="Grupo Causa">Grupo Causa</option>
+                    <option class="showAsEstrategy" value="Causa Genérica">Causa Genérica</option>
+                    <option class="showAsEstrategy" value="Contramedida Genérica">Contramedida Genérica</option>
+                    @*<option value="7">Projeto / Iniciativa</option>*@
+                    <option value="Unidade">Unidade</option>
+                    @*<option value="9">Indicador Operacional</option>*@
+                    <option value="Responsavel"selected>Quem</option>
+                    <option value="Status" >Status</option>
+                </select>
 
-                <div class="popover-markup" style="margin-top:-12px;margin-left:-12px;">
+                <select id="seriesBar2">
+                    <option value="0">Selecione</option>
+                    <option class="showAsEstrategy" value="Diretoria">Diretoria</option>
+                    <option class="showAsEstrategy" value="Dimensão">Dimensão</option>
+                    <option class="showAsEstrategy" value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                    <option class="showAsEstrategy" value="Indicadores Diretriz">Indicadores / Diretriz</option>
+                    <option class="showAsEstrategy" value="Gerência">Gerência</option>
+                    <option class="showAsEstrategy" value="Coordenação">Coordenação</option>
+                    <option class="showAsEstrategy" value="Grupo Causa">Grupo Causa</option>
+                    <option class="showAsEstrategy" value="Causa Genérica">Causa Genérica</option>
+                    <option class="showAsEstrategy" value="Contramedida Genérica">Contramedida Genérica</option>
+                    @*<option value="7">Projeto / Iniciativa</option>*@
+                    <option value="Unidade">Unidade</option>
+                    @*<option value="9">Indicador Operacional</option>*@
+                    <option value="Responsavel">Quem</option>
+                    <option value="Status" selected>Status</option>
+                </select>
+            </div>
+            <div id="divCol" style="height:240px;"></div>
+        </div>
+    </div>
+</div>
 
-                    <a id="btnFiltroCol" href="#" class="trigger btn btn-default">Filtro <i>[Em Desenvolvimento]</i></a>
-                    
-                    <div class="content hide">
-                        <form>
-                            <div class="form-group">
-                                <span>Filtro</span>
-                                <br />
-                                <select id="filtroBar">
-                                    <option value="0">Selecione</option>
-                                    <option value="1">Diretoria</option>
-                                    <option value="2">Dimensao</option>
-                                    <option value="3">Diretriz / Objetivo</option>
-                                    <option value="4">Indicadores / Diretriz</option>
-                                    <option value="5">Gerência</option>
-                                    <option value="6">Coordenação</option>
-                                    <option value="7">Projeto / Iniciativa</option>
-                                    <option value="8">Unidade</option>
-                                    <option value="9">Indicador Operacional</option>
-                                    <option value="10">Grupo Causa</option>
-                                    <option value="11">Causa Genérica</option>
-                                    <option value="12">Contramedida Genérica</option>
-                                    <option value="13" selected>Quem</option>
-                                    <option value="14">Status</option>
-                                </select>
-                                <br />
-                                <span>Series</span>
-                                <br />
-                                <select id="seriesBar">
-                                    <option value="0">Selecione</option>
-                                    <option value="1">Diretoria</option>
-                                    <option value="2">Dimensao</option>
-                                    <option value="3">Diretriz / Objetivo</option>
-                                    <option value="4">Indicadores / Diretriz</option>
-                                    <option value="5">Gerência</option>
-                                    <option value="6">Coordenação</option>
-                                    <option value="7">Projeto / Iniciativa</option>
-                                    <option value="8">Unidade</option>
-                                    <option value="9">Indicador Operacional</option>
-                                    <option value="10">Grupo Causa</option>
-                                    <option value="11">Causa Genérica</option>
-                                    <option value="12">Contramedida Genérica</option>
-                                    <option value="13">Quem</option>
-                                    <option value="14" selected>Status</option>
-                                </select>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 " style="display:none">
 
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Indicadores</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="panel-body">
+                        <select id="filtroBarInd">
+                            <option value="0">Selecione</option>
+                                <option value="Diretoria">Diretoria</option>
+                                <option value="Dimensão">Dimensão</option>
+                                <option value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                                <option value="Indicadores Diretriz">Indicadores / Diretriz</option>
+                                <option value="Gerência">Gerência</option>
+                                <option value="Coordenação">Coordenação</option>
+                                <option value="Grupo Causa">Grupo Causa</option>
+                                <option value="Causa Genérica">Causa Genérica</option>
+                                <option value="Contramedida Genérica">Contramedida Genérica</option>
+                            @*<option value="7">Projeto / Iniciativa</option>*@
+                            <option value="Unidade">Unidade</option>
+                            @*<option value="9">Indicador Operacional</option>*@
+                            <option value="Responsavel" selected>Quem</option>
+                            <option value="Status" >Status</option>
+                        </select>
 
-                            </div>
-                            <button id="enviar" type="submit" class="btn btn-primary btn-block">
-                                Filtrar
-                            </button>
-                        </form>
+                        <select id="seriesBarInd">
+                            <option value="0">Selecione</option>
+                                <option value="Diretoria">Diretoria</option>
+                                <option value="Dimensão">Dimensão</option>
+                                <option value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                                <option value="Indicadores Diretriz">Indicadores / Diretriz</option>
+                                <option value="Gerência">Gerência</option>
+                                <option value="Coordenação">Coordenação</option>
+                                <option value="Grupo Causa">Grupo Causa</option>
+                                <option value="Causa Genérica">Causa Genérica</option>
+                                <option value="Contramedida Genérica">Contramedida Genérica</option>
+                            @*<option value="7">Projeto / Iniciativa</option>*@
+                            <option value="Unidade">Unidade</option>
+                            @*<option value="9">Indicador Operacional</option>*@
+                            <option value="Responsavel">Quem</option>
+                            <option value="Status" selected>Status</option>
+                        </select>
                     </div>
+                    <div class="col-xs-12 col-sm-12" id="divGraficoIndicadores" style="height:200px;padding:0px !important;"></div>
                 </div>
-
-                <div id="divCol" style="height:240px;"></div>
             </div>
         </div>
     </div>
 </div>
+
+
+<div class="panel panel-default" id="output" style="display:none"></div>
 
 <div class="row">
     <div class="col-xs-12 col-sm-12 ">
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">Estoque de ações <i>[Em desenvolvimento]</i></h3>
+                <h3 class="panel-title" title="Ultimos 6 meses">Estoque de ações</h3>
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -261,7 +346,7 @@
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">Meus indicadores<i>[Em desenvolvimento / Integrações]</i></h3>
+                <h3 class="panel-title" title="Ultimos 6 meses">Meus indicadores</h3>
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -283,10 +368,9 @@
                 <h4 class="modal-title" id="myModalLabel">Ações Concluídas</h4>
             </div>
             <div class="modal-body" style="overflow-x:auto;">
-
-
-                <table id="exampleTD1" class="display" cellspacing="0" width="100%"><thead><tr><th>Name</th><th>Position</th><th>Office</th><th>Salary</th></tr></thead><tbody><tr><td>Tiger Nixon</td><td>System Architect</td><td>Edinburgh</td><td>$320,800</td></tr><tr><td>Garrett Winters</td><td>Accountant</td><td>Tokyo</td><td>$170,750</td></tr><tr><td>Ashton Cox</td><td>Junior Technical Author</td><td>San Francisco</td><td>$86,000</td></tr><tr><td>Cedric Kelly</td><td>Senior Javascript Developer</td><td>Edinburgh</td><td>$433,060</td></tr><tr><td>Airi Satou</td><td>Accountant</td><td>Tokyo</td><td>$162,700</td></tr><tr><td>Brielle Williamson</td><td>Integration Specialist</td><td>New York</td><td>$372,000</td></tr><tr><td>Herrod Chandler</td><td>Sales Assistant</td><td>San Francisco</td><td>$137,500</td></tr><tr><td>Rhona Davidson</td><td>Integration Specialist</td><td>Tokyo</td><td>$327,900</td></tr><tr><td>Colleen Hurst</td><td>Javascript Developer</td><td>San Francisco</td><td>$205,500</td></tr><tr><td>Sonya Frost</td><td>Software Engineer</td><td>Edinburgh</td><td>$103,600</td></tr><tr><td>Jena Gaines</td><td>Office Manager</td><td>London</td><td>$90,560</td></tr><tr><td>Quinn Flynn</td><td>Support Lead</td><td>Edinburgh</td><td>$342,000</td></tr><tr><td>Charde Marshall</td><td>Regional Director</td><td>San Francisco</td><td>$470,600</td></tr><tr><td>Haley Kennedy</td><td>Senior Marketing Designer</td><td>London</td><td>$313,500</td></tr><tr><td>Tatyana Fitzpatrick</td><td>Regional Director</td><td>London</td><td>$385,750</td></tr><tr><td>Michael Silva</td><td>Marketing Designer</td><td>London</td><td>$198,500</td></tr><tr><td>Paul Byrd</td><td>Chief Financial Officer (CFO)</td><td>New York</td><td>$725,000</td></tr><tr><td>Gloria Little</td><td>Systems Administrator</td><td>New York</td><td>$237,500</td></tr><tr><td>Bradley Greer</td><td>Software Engineer</td><td>London</td><td>$132,000</td></tr><tr><td>Dai Rios</td><td>Personnel Lead</td><td>Edinburgh</td><td>$217,500</td></tr><tr><td>Jenette Caldwell</td><td>Development Lead</td><td>New York</td><td>$345,000</td></tr><tr><td>Yuri Berry</td><td>Chief Marketing Officer (CMO)</td><td>New York</td><td>$675,000</td></tr><tr><td>Caesar Vance</td><td>Pre-Sales Support</td><td>New York</td><td>$106,450</td></tr><tr><td>Doris Wilder</td><td>Sales Assistant</td><td>Sidney</td><td>$85,600</td></tr><tr><td>Angelica Ramos</td><td>Chief Executive Officer (CEO)</td><td>London</td><td>$1,200,000</td></tr><tr><td>Gavin Joyce</td><td>Developer</td><td>Edinburgh</td><td>$92,575</td></tr><tr><td>Jennifer Chang</td><td>Regional Director</td><td>Singapore</td><td>$357,650</td></tr><tr><td>Brenden Wagner</td><td>Software Engineer</td><td>San Francisco</td><td>$206,850</td></tr><tr><td>Fiona Green</td><td>Chief Operating Officer (COO)</td><td>San Francisco</td><td>$850,000</td></tr><tr><td>Shou Itou</td><td>Regional Marketing</td><td>Tokyo</td><td>$163,000</td></tr><tr><td>Michelle House</td><td>Integration Specialist</td><td>Sidney</td><td>$95,400</td></tr><tr><td>Suki Burks</td><td>Developer</td><td>London</td><td>$114,500</td></tr><tr><td>Prescott Bartlett</td><td>Technical Author</td><td>London</td><td>$145,000</td></tr><tr><td>Gavin Cortez</td><td>Team Leader</td><td>San Francisco</td><td>$235,500</td></tr><tr><td>Martena Mccray</td><td>Post-Sales support</td><td>Edinburgh</td><td>$324,050</td></tr><tr><td>Unity Butler</td><td>Marketing Designer</td><td>San Francisco</td><td>$85,675</td></tr><tr><td>Howard Hatfield</td><td>Office Manager</td><td>San Francisco</td><td>$164,500</td></tr><tr><td>Hope Fuentes</td><td>Secretary</td><td>San Francisco</td><td>$109,850</td></tr><tr><td>Vivian Harrell</td><td>Financial Controller</td><td>San Francisco</td><td>$452,500</td></tr><tr><td>Timothy Mooney</td><td>Office Manager</td><td>London</td><td>$136,200</td></tr><tr><td>Jackson Bradshaw</td><td>Director</td><td>New York</td><td>$645,750</td></tr><tr><td>Olivia Liang</td><td>Support Engineer</td><td>Singapore</td><td>$234,500</td></tr><tr><td>Bruno Nash</td><td>Software Engineer</td><td>London</td><td>$163,500</td></tr><tr><td>Sakura Yamamoto</td><td>Support Engineer</td><td>Tokyo</td><td>$139,575</td></tr><tr><td>Thor Walton</td><td>Developer</td><td>New York</td><td>$98,540</td></tr><tr><td>Finn Camacho</td><td>Support Engineer</td><td>San Francisco</td><td>$87,500</td></tr><tr><td>Serge Baldwin</td><td>Data Coordinator</td><td>Singapore</td><td>$138,575</td></tr><tr><td>Zenaida Frank</td><td>Software Engineer</td><td>New York</td><td>$125,250</td></tr><tr><td>Zorita Serrano</td><td>Software Engineer</td><td>San Francisco</td><td>$115,000</td></tr><tr><td>Jennifer Acosta</td><td>Junior Javascript Developer</td><td>Edinburgh</td><td>$75,650</td></tr><tr><td>Cara Stevens</td><td>Sales Assistant</td><td>New York</td><td>$145,600</td></tr><tr><td>Hermione Butler</td><td>Regional Director</td><td>London</td><td>$356,250</td></tr><tr><td>Lael Greer</td><td>Systems Administrator</td><td>London</td><td>$103,500</td></tr><tr><td>Jonas Alexander</td><td>Developer</td><td>San Francisco</td><td>$86,500</td></tr><tr><td>Shad Decker</td><td>Regional Director</td><td>Edinburgh</td><td>$183,000</td></tr><tr><td>Michael Bruce</td><td>Javascript Developer</td><td>Singapore</td><td>$183,000</td></tr><tr><td>Donna Snider</td><td>Customer Support</td><td>New York</td><td>$112,000</td></tr></tbody></table>
-
+                <g id="naoExisteDados" class="highcharts-no-data" style="" transform="translate(146,124)"><text x="3" zIndex="1" style="font-size:12px;font-weight:bold;color:#60606a;fill:#60606a;" y="15"><tspan>Sem dados para exibição.</tspan></text></g>
+                <table id="acoesConcuidasTbl"></table>
+                @*<table id="exampleTD1" class="display" cellspacing="0" width="100%"><thead><tr><th>Name</th><th>Position</th><th>Office</th><th>Salary</th></tr></thead><tbody><tr><td>Tiger Nixon</td><td>System Architect</td><td>Edinburgh</td><td>$320,800</td></tr><tr><td>Garrett Winters</td><td>Accountant</td><td>Tokyo</td><td>$170,750</td></tr><tr><td>Ashton Cox</td><td>Junior Technical Author</td><td>San Francisco</td><td>$86,000</td></tr><tr><td>Cedric Kelly</td><td>Senior Javascript Developer</td><td>Edinburgh</td><td>$433,060</td></tr><tr><td>Airi Satou</td><td>Accountant</td><td>Tokyo</td><td>$162,700</td></tr><tr><td>Brielle Williamson</td><td>Integration Specialist</td><td>New York</td><td>$372,000</td></tr><tr><td>Herrod Chandler</td><td>Sales Assistant</td><td>San Francisco</td><td>$137,500</td></tr><tr><td>Rhona Davidson</td><td>Integration Specialist</td><td>Tokyo</td><td>$327,900</td></tr><tr><td>Colleen Hurst</td><td>Javascript Developer</td><td>San Francisco</td><td>$205,500</td></tr><tr><td>Sonya Frost</td><td>Software Engineer</td><td>Edinburgh</td><td>$103,600</td></tr><tr><td>Jena Gaines</td><td>Office Manager</td><td>London</td><td>$90,560</td></tr><tr><td>Quinn Flynn</td><td>Support Lead</td><td>Edinburgh</td><td>$342,000</td></tr><tr><td>Charde Marshall</td><td>Regional Director</td><td>San Francisco</td><td>$470,600</td></tr><tr><td>Haley Kennedy</td><td>Senior Marketing Designer</td><td>London</td><td>$313,500</td></tr><tr><td>Tatyana Fitzpatrick</td><td>Regional Director</td><td>London</td><td>$385,750</td></tr><tr><td>Michael Silva</td><td>Marketing Designer</td><td>London</td><td>$198,500</td></tr><tr><td>Paul Byrd</td><td>Chief Financial Officer (CFO)</td><td>New York</td><td>$725,000</td></tr><tr><td>Gloria Little</td><td>Systems Administrator</td><td>New York</td><td>$237,500</td></tr><tr><td>Bradley Greer</td><td>Software Engineer</td><td>London</td><td>$132,000</td></tr><tr><td>Dai Rios</td><td>Personnel Lead</td><td>Edinburgh</td><td>$217,500</td></tr><tr><td>Jenette Caldwell</td><td>Development Lead</td><td>New York</td><td>$345,000</td></tr><tr><td>Yuri Berry</td><td>Chief Marketing Officer (CMO)</td><td>New York</td><td>$675,000</td></tr><tr><td>Caesar Vance</td><td>Pre-Sales Support</td><td>New York</td><td>$106,450</td></tr><tr><td>Doris Wilder</td><td>Sales Assistant</td><td>Sidney</td><td>$85,600</td></tr><tr><td>Angelica Ramos</td><td>Chief Executive Officer (CEO)</td><td>London</td><td>$1,200,000</td></tr><tr><td>Gavin Joyce</td><td>Developer</td><td>Edinburgh</td><td>$92,575</td></tr><tr><td>Jennifer Chang</td><td>Regional Director</td><td>Singapore</td><td>$357,650</td></tr><tr><td>Brenden Wagner</td><td>Software Engineer</td><td>San Francisco</td><td>$206,850</td></tr><tr><td>Fiona Green</td><td>Chief Operating Officer (COO)</td><td>San Francisco</td><td>$850,000</td></tr><tr><td>Shou Itou</td><td>Regional Marketing</td><td>Tokyo</td><td>$163,000</td></tr><tr><td>Michelle House</td><td>Integration Specialist</td><td>Sidney</td><td>$95,400</td></tr><tr><td>Suki Burks</td><td>Developer</td><td>London</td><td>$114,500</td></tr><tr><td>Prescott Bartlett</td><td>Technical Author</td><td>London</td><td>$145,000</td></tr><tr><td>Gavin Cortez</td><td>Team Leader</td><td>San Francisco</td><td>$235,500</td></tr><tr><td>Martena Mccray</td><td>Post-Sales support</td><td>Edinburgh</td><td>$324,050</td></tr><tr><td>Unity Butler</td><td>Marketing Designer</td><td>San Francisco</td><td>$85,675</td></tr><tr><td>Howard Hatfield</td><td>Office Manager</td><td>San Francisco</td><td>$164,500</td></tr><tr><td>Hope Fuentes</td><td>Secretary</td><td>San Francisco</td><td>$109,850</td></tr><tr><td>Vivian Harrell</td><td>Financial Controller</td><td>San Francisco</td><td>$452,500</td></tr><tr><td>Timothy Mooney</td><td>Office Manager</td><td>London</td><td>$136,200</td></tr><tr><td>Jackson Bradshaw</td><td>Director</td><td>New York</td><td>$645,750</td></tr><tr><td>Olivia Liang</td><td>Support Engineer</td><td>Singapore</td><td>$234,500</td></tr><tr><td>Bruno Nash</td><td>Software Engineer</td><td>London</td><td>$163,500</td></tr><tr><td>Sakura Yamamoto</td><td>Support Engineer</td><td>Tokyo</td><td>$139,575</td></tr><tr><td>Thor Walton</td><td>Developer</td><td>New York</td><td>$98,540</td></tr><tr><td>Finn Camacho</td><td>Support Engineer</td><td>San Francisco</td><td>$87,500</td></tr><tr><td>Serge Baldwin</td><td>Data Coordinator</td><td>Singapore</td><td>$138,575</td></tr><tr><td>Zenaida Frank</td><td>Software Engineer</td><td>New York</td><td>$125,250</td></tr><tr><td>Zorita Serrano</td><td>Software Engineer</td><td>San Francisco</td><td>$115,000</td></tr><tr><td>Jennifer Acosta</td><td>Junior Javascript Developer</td><td>Edinburgh</td><td>$75,650</td></tr><tr><td>Cara Stevens</td><td>Sales Assistant</td><td>New York</td><td>$145,600</td></tr><tr><td>Hermione Butler</td><td>Regional Director</td><td>London</td><td>$356,250</td></tr><tr><td>Lael Greer</td><td>Systems Administrator</td><td>London</td><td>$103,500</td></tr><tr><td>Jonas Alexander</td><td>Developer</td><td>San Francisco</td><td>$86,500</td></tr><tr><td>Shad Decker</td><td>Regional Director</td><td>Edinburgh</td><td>$183,000</td></tr><tr><td>Michael Bruce</td><td>Javascript Developer</td><td>Singapore</td><td>$183,000</td></tr><tr><td>Donna Snider</td><td>Customer Support</td><td>New York</td><td>$112,000</td></tr></tbody></table>*@
             </div>
             <div class="modal-footer">
             </div>
@@ -294,84 +378,289 @@
     </div>
 </div>
 
-@section Scripts {
+@*<script src="~/Scripts/moment-with-locales.min.js"></script>*@
+<script src="~/Scripts/daterangepicker.js"></script>
+<script src="~/Scripts/DatePikerReady.js"></script>
+<link href="~/Content/daterangepicker.css" rel="stylesheet" />
 
-    <script>
+@*<script src="~/Views/Home/AuxiliarIndexHome.js"></script>*@
 
-        function InitDatePiker() {
-            $('.datepicker').datepicker({
-                startDate: 0,
-                todayBtn: "linked",
-                language: "pt-BR",
-                multidate: false,
-                todayHighlight: true
-            });
+<script>
+
+    Highcharts.setOptions({
+        lang: {
+            months: moment.monthsShort(),
+            weekdays: moment.weekdaysShort(),
+            noData: "Sem dados para exibição."
         }
+    });
+    var resultGetGrafico = [];
+    var urlGetGrafico = '@Url.Action("GetGrafico", "api/Relatorios")';
+    var urlGetGraficoIndicadores = '@Url.Action("GetGraficoSgq", "api/Relatorios")';
+    var urlGetGraficoPie = '@Url.Action("GraficoPie", "api/Relatorios")';
+    var urlGraficoNumeroDeAcoesEstabelecidas = '@Url.Action("NumeroDeAcoesEstabelecidas", "api/Relatorios")';
+    var urlGraficoNumeroDeAcoesConcluidas = '@Url.Action("NumeroDeAcoesConcluidas", "api/Relatorios")';
+    var urlGraficoNumeroDeAcoes = '@Url.Action("NumeroDeAcoes", "api/Relatorios")';
+    var urlGraficoEvolucaoDoResultado = '@Url.Action("EvolucaoDoResultado", "api/Relatorios")';
 
-        function MapeiaValorParaHC(array, prop) {
-            var arrayRetorno = $.map(array, function (o, c) {
-                return o[prop];
-            });
-            return arrayRetorno;
-        }
+    /*Container 1*/
+    function GraficoBar(privotY, privotX) {
+        var r = resultGetGrafico
+        var title = privotY + " x " + privotX
+        var result = r;
+        var series = [];
+        var serie = [];
+        var eixoY = MapeiaValorParaHC(result, privotY).filter(onlyUnique);
+        var eixoX = MapeiaValorParaHC(result, privotX).filter(onlyUnique);
 
-        // Radialize the colors
-        Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
-            return {
-                radialGradient: {
-                    cx: 0.5,
-                    cy: 0.3,
-                    r: 0.7
-                },
-                stops: [
-                    [0, color],
-                    [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
-                ]
-            };
+        eixoX.forEach(function (o, c) {
+            var serieData = {};
+            serieData["name"] = o;
+            serieData["data"] = [];
+            eixoY.forEach(function (oo, cc) {
+                serieData["data"].push($.grep(result, function (e) { return e[privotX] == o && e[privotY] == eixoY[cc]; }).length)
+            })
+            serie.push(serieData);
         });
 
-        acoesConcluidas = 25;
-        acoesAtrasadas = 21;
-        acoesAVencer = 10;
-        pessoasEnvolvidas = 12;
+        Highcharts.chart('divGrafico1', {
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: title,
+                style: {
+                    fontSize: '14px',
+                }
+            },
+            xAxis: {
+                categories: eixoY,
+                labels: {
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+                }
+            },
+            yAxis: {
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '8px',
+                        fontWeight: 'normal'
+                    }
+                },
+                min: 0,
+                title: {
+                    text: tituloXBar,
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+                }
+            },
+            legend: {
+                align: 'center',
+                verticalAlign: 'bottom',
+                layout: 'horizontal',
+                itemStyle: {
+                    fontSize: '10px',
+                    fontWeight: 'normal',
+                },
+            },
+            plotOptions: {
+                series: {
+                    stacking: 'normal'
+                }
+            },
+            series: serie
+        });
+    }
 
-        $('#acoesConcluidas').text(acoesConcluidas);
-        $('#acoesAtrasadas').text(acoesAtrasadas);
-        $('#acoesAVencer').text(acoesAVencer);
-        $('#pessoasEnvolvidas').text(pessoasEnvolvidas);
+    function GraficoCol(privotY, privotX) {
+        var r = resultGetGrafico
+        var title = privotY + " x " + privotX
+        var result = r;
+        var series = [];
+        var serie = [];
+        var eixoY = MapeiaValorParaHC(result, privotY).filter(onlyUnique);
+        var eixoX = MapeiaValorParaHC(result, privotX).filter(onlyUnique);
 
-        tituloXBar = 'Status das Ações';
-        tituloXColumn = "Status das Ações";
+        eixoX.forEach(function (o, c) {
+            var serieData = {};
+            serieData["name"] = o;
+            serieData["data"] = [];
+            eixoY.forEach(function (oo, cc) {
+                serieData["data"].push($.grep(result, function (e) { return e[privotX] == o && e[privotY] == eixoY[cc]; }).length)
+            })
+            serie.push(serieData);
+        });
 
-        tituloYBar = 'Número de ações';
-        tituloYColumn = 'Número de ações';
+        Highcharts.chart('divCol', {
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: title,
+                style: {
+                    fontSize: '14px',
+                }
+            },
+            xAxis: {
+                categories: eixoY,
+                labels: {
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+                },
+                title: {
+                    text: tituloYColumn,
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+                }
+            },
+            yAxis: {
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[1],
+                        fontSize: '8px',
+                        fontWeight: 'normal'
+                    }
+                },
+                min: 0,
+                title: {
+                    text: tituloXColumn,
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+                }
+            },
+            legend: {
+                align: 'center',
+                verticalAlign: 'bottom',
+                layout: 'horizontal',
+                enabled: true,
+                itemStyle: {
+                    fontSize: '10px',
+                    fontWeight: 'normal',
+                },
+            },
+            plotOptions: {
+                series: {
+                    stacking: 'normal'
+                }
+            },
+            series: serie
+        });
+    }
 
-        tituloBar = 'Status das Ações por Indicadores';
-        tituloColumn = 'Status das Ações por Responsável';
+    function GraficoPizza(r) {
+        dadosPie = r;
+        var serie = [];
+        r.forEach(function (o, c) {
+            serie.push({
+                name: o.name,
+                y: parseInt(o.y)
+            })
+        });
 
-        var urlGetGrafico = '@Url.Action("GetGrafico", "api/Relatorios")';
-        var urlGetGraficoPie = '@Url.Action("GraficoPie", "api/Relatorios")';
+        Highcharts.chart('divPie', {
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            legend: {
+                align: 'center',
+                verticalAlign: 'bottom',
+                layout: 'horizontal',
+                enabled: true,
+                itemStyle: {
+                    fontSize: '10px',
+                    fontWeight: 'normal',
+                },
+            },
+            title: {
+                text: false
+            },
+            tooltip: {
+                pointFormat: '<b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    showInLegend: true,
+                    dataLabels: {
+                        enabled: false,
+                        format: '{point.name}' + ': ' + '{point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                            fontSize: '10px',
+                            fontWeight: 'normal',
+                        },
+                        connectorColor: 'silver'
+                    }
+                }
+            },
+            series: [{
+                name: 'quantidade',
+                colorbypoint: true,
+                data: serie
+            }]
+        });
+    }
+    /*Container 1 FIM*/
 
-        function atualizar(callback, url, obj) {
+    /*Indicadores*/
+    function GraficoIndicadores(privotY, privotX) {
+        $.post(urlGetGraficoIndicadores, enviar, function (r) {
+            var title = privotY + " x " + privotX
+            var result = r;
+            var series = [];
+            var serie = [];
+            var eixoY = MapeiaValorParaHC(result, privotY).filter(onlyUnique);
+            var eixoX = MapeiaValorParaHC(result, privotX).filter(onlyUnique);
+            //if (r.length) {
 
-            $.post(url, obj, function (r) {
+            //}
 
-                //console.log(r);
-
-                callback(r);
+            eixoX.forEach(function (o, c) {
+                var serieData = {};
+                serieData["name"] = o;
+                serieData["data"] = [];
+                eixoY.forEach(function (oo, cc) {
+                    serieData["data"].push($.grep(result, function (e) { return e[privotX] == o && e[privotY] == eixoY[cc]; }).length)
+                })
+                serie.push(serieData);
             });
 
-        }
-
-        function GraficoBar(r) {
-            seriesBar = [];
-            categoriesBar = MapeiaValorParaHC(r, "Indicador");
-
-            r[0].Status.forEach(function (oo, cc) {
-                seriesBar.push({ name: oo.Name, data: oo.QuantidadeAcoes })
-            })
-
-            Highcharts.chart('divBar', {
+            Highcharts.chart('divGraficoIndicadores', {
                 credits: {
                     enabled: false
                 },
@@ -382,13 +671,13 @@
                     type: 'bar'
                 },
                 title: {
-                    text: tituloBar,
+                    text: title,
                     style: {
                         fontSize: '14px',
                     }
                 },
                 xAxis: {
-                    categories: categoriesBar,
+                    categories: eixoY,
                     labels: {
                         style: {
                             fontSize: '10px',
@@ -428,246 +717,19 @@
                         stacking: 'normal'
                     }
                 },
-                series: seriesBar
+                series: serie
             });
-        }
+        });
+    }
 
-        function GraficoCol(r) {
+    /*Container 2*/
+    function GraficoAcoesEstabelecidas(dados) {
 
-            seriesColumn = [];
-            categoriesColumn = MapeiaValorParaHC(r, "Indicador");
-
-            r[0].Status.forEach(function (oo, cc) {
-                seriesColumn.push({ name: oo.Name, data: oo.QuantidadeAcoes })
-            })
-
-            Highcharts.chart('divCol', {
-                credits: {
-                    enabled: false
-                },
-                exporting: {
-                    enabled: false
-                },
-                chart: {
-                    type: 'column'
-                },
-                title: {
-                    text: tituloColumn,
-                    style: {
-                        fontSize: '14px',
-                    }
-                },
-                xAxis: {
-                    categories: categoriesColumn,
-                    labels: {
-                        style: {
-                            fontSize: '10px',
-                            fontWeight: 'normal'
-                        }
-                    },
-                    title: {
-                        text: tituloYColumn,
-                        style: {
-                            fontSize: '10px',
-                            fontWeight: 'normal'
-                        }
-                    }
-                },
-                yAxis: {
-                    labels: {
-                        format: '{value}',
-                        style: {
-                            color: Highcharts.getOptions().colors[1],
-                            fontSize: '8px',
-                            fontWeight: 'normal'
-                        }
-                    },
-                    min: 0,
-                    title: {
-                        text: tituloXColumn,
-                        style: {
-                            fontSize: '10px',
-                            fontWeight: 'normal'
-                        }
-                    }
-                },
-                legend: {
-                    align: 'center',
-                    verticalAlign: 'bottom',
-                    layout: 'horizontal',
-                    enabled: true,
-                    itemStyle: {
-                        fontSize: '10px',
-                        fontWeight: 'normal',
-                    },
-                },
-                plotOptions: {
-                    series: {
-                        stacking: 'normal'
-                    }
-                },
-                series: seriesColumn
-            });
-        }
-
-        function GraficoPizza(r) {
-
-            dadosPie = r;
-
-            Highcharts.chart('divPie', {
-                credits: {
-                    enabled: false
-                },
-                exporting: {
-                    enabled: false
-                },
-                chart: {
-                    plotBackgroundColor: null,
-                    plotBorderWidth: null,
-                    plotShadow: false,
-                    type: 'pie'
-                },
-                legend: {
-                    align: 'center',
-                    verticalAlign: 'bottom',
-                    layout: 'horizontal',
-                    enabled: true,
-                    itemStyle: {
-                        fontSize: '10px',
-                        fontWeight: 'normal',
-                    },
-                },
-                title: {
-                    text: false
-                },
-                tooltip: {
-                    pointFormat: '<b>{point.percentage:.1f}%</b>'
-                },
-                plotOptions: {
-                    pie: {
-                        allowPointSelect: true,
-                        cursor: 'pointer',
-                        showInLegend: true,
-                        dataLabels: {
-                            enabled: false,
-                            format: '{point.name}' + ': ' + '{point.percentage:.1f} %',
-                            style: {
-                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
-                                fontSize: '10px',
-                                fontWeight: 'normal',
-                            },
-                            connectorColor: 'silver'
-                        }
-                    }
-                },
-                series: [{
-                    name: '',
-                    data: dadosPie
-                }]
-            });
-        }
-
-        $(document).ready(function () {
-
-            $("#btnFiltro").click(function () {
-
-                InitDatePiker();
-
-                $("form").on("submit", function (event) {
-
-                    var dataInicio = $('#dataInicio').val();
-                    var dataFim = $('#dataFim').val();
-
-                    var obj = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 1 };
-                    //var obj2 = { categoria: 'Pa_Problema_Desvio_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 2 };
-
-                 
-                    $('#divPie').highcharts().destroy();
-
-                  
-                    atualizar(GraficoPizza, urlGetGraficoPie, obj);
-
-                });
-
-            });
-
-            $("#btnFiltroBar").click(function () {
-
-                InitDatePiker();
-
-                $("form").on("submit", function (event) {
-
-                    var dataInicio = $('#dataInicio').val();
-                    var dataFim = $('#dataFim').val();
-
-                    var obj = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 1 };
-                    //var obj2 = { categoria: 'Pa_Problema_Desvio_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 2 };
-
-                    $('#divBar').highcharts().destroy();
-                    
-
-                    atualizar(GraficoBar, urlGetGrafico, obj);
-                    
-
-                });
-
-            });
-
-            $("#btnFiltroCol").click(function () {
-
-                InitDatePiker();
-
-                $("form").on("submit", function (event) {
-
-                    var dataInicio = $('#dataInicio').val();
-                    var dataFim = $('#dataFim').val();
-
-                    var obj = { categoria: 'q.Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 1 };
-                    //var obj2 = { categoria: 'Pa_Problema_Desvio_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 2 };
-
-                    
-                    $('#divCol').highcharts().destroy();
-                    
-
-                    
-                    atualizar(GraficoCol, urlGetGrafico, obj);
-                   
-
-                });
-
-            });
-
-            var obj = { categoria: 'q.Id', dataInicio: '01/01/2015', dataFim: '01/01/2019', relatorio: 1 };
-            var obj2 = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: '01/01/2015', dataFim: '01/01/2019', relatorio: 2 };
-
-            atualizar(GraficoBar, urlGetGrafico, obj2);
-            atualizar(GraficoCol, urlGetGrafico, obj);
-            atualizar(GraficoPizza, urlGetGraficoPie, obj);
-
-            $('#exampleTD1').DataTable();
-
-            $('#exampleTD1')
-                .removeClass('display')
-                .addClass('table table-striped table-bordered');
-        })
-
-        meses = [
-                        'Jan',
-                        'Fev',
-                        'Mar',
-                        'Abr',
-                        'Mai',
-                        'Jun',
-                        'Jul',
-                        'Ago',
-                        'Set',
-                        'Out',
-                        'Nov',
-                        'Dez'
-        ];
-
-        acoesIniciadas = [1, 4, 8, 1, 1];
-        acoesEncerradas = [0, 0, 1, 1, 2];
+        var meses = [];
+        var valores = MapeiaValorParaHC(dados, "Quantidade", true);
+        dados.forEach(function (o) {
+            meses.push(moment.monthsShort()[o.Mes]);
+        });
 
         Highcharts.chart('divEstoque1', {
             credits: {
@@ -688,7 +750,7 @@
             title: {
                 text: 'Número de ações estabelecidas',
                 style: {
-                    color: Highcharts.getOptions().colors[0],
+                    //color: Highcharts.getOptions().colors[0],
                     fontSize: '12px',
                     fontWeight: 'bold'
                 }
@@ -740,7 +802,7 @@
             tooltip: {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                 pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                    '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true
@@ -752,10 +814,20 @@
                 }
             },
             series: [{
-                name: 'Tokyo',
-                data: acoesIniciadas
+                name: 'Ações',
+                data: valores
 
             }]
+        });
+
+    }
+
+    function GraficoAcoesConcluidas(dados) {
+
+        var meses = [];
+        var valores = MapeiaValorParaHC(dados, "Quantidade", true);
+        dados.forEach(function (o) {
+            meses.push(moment.monthsShort()[o.Mes]);
         });
 
         Highcharts.chart('divEstoque2', {
@@ -777,7 +849,7 @@
             title: {
                 text: 'Número de ações concluídas',
                 style: {
-                    color: Highcharts.getOptions().colors[0],
+                    //color: Highcharts.getOptions().colors[0],
                     fontSize: '12px',
                     fontWeight: 'bold'
                 }
@@ -830,7 +902,7 @@
             tooltip: {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                 pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                    '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true
@@ -842,10 +914,30 @@
                 }
             },
             series: [{
-                name: 'Tokyo',
-                data: acoesEncerradas
+                name: 'Ações',
+                data: valores
 
             }]
+        });
+    }
+
+    function GraficoEstoqueDeAcoes(dados) {
+
+        var meses = [];
+        var acumulativo = [];
+        var valoresInciadas = MapeiaValorParaHC(dados, "QuantidadeIniciadas", true);
+        var valoresConcluidas = MapeiaValorParaHC(dados, "QuantidadeConcluidas", true);
+        var acc = MapeiaValorParaHC(dados, "Acc", true);
+
+        var acumlador = 0;
+        acc.forEach(function (o) {
+            acumlador += o;
+            acumulativo.push(acumlador);
+        });
+
+        dados.forEach(function (o) {
+            meses.push(moment.monthsShort()[o.MesIniciadas]);
+
         });
 
         Highcharts.chart('divEstoque3', {
@@ -862,7 +954,7 @@
             title: {
                 text: 'Estoque de Ações',
                 style: {
-                    color: Highcharts.getOptions().colors[0],
+                    //color: Highcharts.getOptions().colors[0],
                     fontSize: '12px',
                     fontWeight: 'bold'
                 }
@@ -927,29 +1019,43 @@
             series: [{
                 name: 'Iniciadas',
                 type: 'column',
-                data: [1, 5, 13, 14, 15],
+                data: valoresInciadas,
                 tooltip: {
-                    valueSuffix: ' mm'
+                    valueSuffix: ''
                 },
                 color: Highcharts.getOptions().colors[2],
 
             }, {
                 name: 'Concluídas',
                 type: 'column',
-                data: [0, 0, 1, 2, 4],
+                data: valoresConcluidas,
                 tooltip: {
-                    valueSuffix: '°C'
+                    valueSuffix: ''
                 },
                 color: Highcharts.getOptions().colors[3],
             }, {
                 name: 'Acumuladas',
                 type: 'spline',
-                data: [1, 5, 12, 12, 11],
+                data: acumulativo,
                 tooltip: {
-                    valueSuffix: '°C'
+                    valueSuffix: ''
                 },
                 color: Highcharts.getOptions().colors[0],
             }]
+        });
+
+    }
+
+    function GraficoEvolucaoDoResultado(dados) {
+
+        var meses = [];
+        var valoresConcluidas = MapeiaValorParaHC(dados, "QuantidadeConcluidas", true);
+        var meta = MapeiaValorParaHC(dados, "Meta", true);
+        //var meta = MapeiaValorParaHC(dados, "QuantidadeConcluidas", true);
+        //var realizado = MapeiaValorParaHC(dados, "Acc", true);
+
+        dados.forEach(function (o) {
+            meses.push(moment.monthsShort()[o.MesConcluidas]);
         });
 
         Highcharts.chart('divIndicador', {
@@ -972,9 +1078,21 @@
                 categories: meses,
                 crosshair: true
             }],
-            yAxis: [{ // Primary yAxis
+            yAxis: [{// Primary yAxis
+                plotLines: [{
+                    value: meta[0],
+                    width: 2,
+                    color: 'black',
+                    dashStyle: 'dash',
+                    zIndex: 4,
+                    label: {
+                        text: 'Meta 80%',
+                        align: 'right',
+                        y: -10,
+                        x: 0
+                    }
+                }],
                 labels: {
-
                     style: {
                         color: Highcharts.getOptions().colors[1]
                     }
@@ -993,7 +1111,6 @@
                     }
                 },
                 labels: {
-
                     style: {
                         color: Highcharts.getOptions().colors[0]
                     }
@@ -1006,9 +1123,7 @@
             legend: {
                 layout: 'horizontal',
                 align: 'center',
-
                 verticalAlign: 'bottom',
-
                 floating: false,
                 backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
             },
@@ -1016,35 +1131,583 @@
                 name: 'Número de Ações Concluídas',
                 type: 'spline',
                 yAxis: 1,
-                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
-
-
-            }, {
-                name: 'Meta',
-                type: 'spline',
-                data: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
-
-            }, {
-                name: 'Realizado',
-                type: 'spline',
-                data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
-
-            }]
+                data: valoresConcluidas,
+            }, /*{
+                    name: 'Meta',
+                    type: 'spline',
+                    data: meta,
+                },*/ {
+                    name: 'Realizado',
+                    type: 'spline',
+                    data: [],
+                }]
         });
 
-        $('body .dropdown-toggle').dropdown();
+    }
+    /*Container 2  FIM*/
 
-        $('.popover-markup>.trigger').popover({
-            html: true,
-            title: function () {
-                return $(this).parent().find('.head').html();
-            },
-            content: function () {
-                return $(this).parent().find('.content').html();
+    /*Auxiliar*/
+    function atualizar(callback, url, obj) {
+
+        $.post(url, obj, function (r) {
+
+            //console.log(r);
+
+            callback(r);
+        });
+
+    }
+
+    function InitDatePiker() {
+        $('.datepicker').datepicker({
+            startDate: 0,
+            todayBtn: "linked",
+            language: "pt-BR",
+            multidate: false,
+            todayHighlight: true
+        });
+    }
+
+    /*
+    Retorna apenas elementos unicos do array
+    */
+    function onlyUnique(value, index, self) {
+        return self.indexOf(value) === index;
+    }
+
+    function MapeiaValorParaHC(array, prop, isInteger) {
+        var arrayRetorno = $.map(array, function (o, c) {
+            if (isInteger) {
+                var valor = parseInt(o[prop]);
+                if (isNaN(valor)) return 0;
+                return valor;
             }
+            return o[prop];
+        });
+        return arrayRetorno;
+    }
+
+    // Radialize the colors
+    Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
+        return {
+            radialGradient: {
+                cx: 0.5,
+                cy: 0.3,
+                r: 0.7
+            },
+            stops: [
+                [0, color],
+                [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+            ]
+        };
+    });
+
+    acoesConcluidas = 25;
+    acoesAtrasadas = 21;
+    acoesAVencer = 10;
+    pessoasEnvolvidas = 12;
+
+    $('#acoesConcluidas').text(acoesConcluidas);
+    $('#acoesAtrasadas').text(acoesAtrasadas);
+    $('#acoesAVencer').text(acoesAVencer);
+    $('#pessoasEnvolvidas').text(pessoasEnvolvidas);
+
+    tituloXBar = 'Status das Ações';
+    tituloXColumn = "Status das Ações";
+
+    tituloYBar = 'Número de ações';
+    tituloYColumn = 'Número de ações';
+
+    tituloBar = 'Status das Ações por Indicadores';
+    tituloColumn = 'Status das Ações por Responsável';
+
+    /*Config Callendar PT-BR*/
+    $('body .dropdown-toggle').dropdown();
+
+    $('.popover-markup>.trigger').popover({
+        html: true,
+        title: function () {
+            return $(this).parent().find('.head').html();
+        },
+        content: function () {
+            return $(this).parent().find('.content').html();
+        }
+    });
+
+    var rangesBR = {
+        'Hoje': [moment(), moment()],
+        'Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
+        'Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
+        'Este mês': [moment().startOf('month'), moment().endOf('month')],
+        'Último mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    }
+
+    moment.locale("Pt-Br");
+    moment.defaultFormat = "DD/MM/YYYY";
+
+    $.fn.daterangepicker('locale', {
+        "format": "DD/MM/YYYY",
+        "separator": " - ",
+        "applyLabel": "Aplicar",
+        "cancelLabel": "Cancelar",
+        "fromLabel": "de",
+        "toLabel": "até",
+        "customRangeLabel": "Customizado",
+        "weekLabel": "W",
+        "daysOfWeek": [
+            "Dom",
+            "Seg",
+            "Ter",
+            "Qua",
+            "Qui",
+            "Sex",
+            "Sab"
+        ],
+        "monthNames": [
+            "Janeiro",
+            "Fevereiro",
+            "Março",
+            "Abril",
+            "Maio",
+            "Junho",
+            "Julho",
+            "Agosto",
+            "Setembro",
+            "Outubro",
+            "Novembro",
+            "Dezembro"
+        ],
+        //"firstDay": 0
+    });
+
+    rangesCalendar = rangesBR;
+
+    $.fn.daterangepicker('ranges', rangesCalendar);
+
+    //Start config datepickerrange full
+    var start = moment();
+    var end = moment();
+    var urlGetPessoasEnvolvidas = "@Url.Action("GetPessoasEnvolvidas", "api/Relatorios")";
+    var resultPessoasEnvolvidas = [];
+    function cb(start, end) {
+        $('#reportrange span').html(start.format() + ' - ' + end.format());
+        enviar['startDate'] = start.format();
+        enviar['endDate'] = end.format();
+
+        atualizar(GraficoPizza, urlGetGraficoPie, enviar);
+
+        $.post(urlGetPessoasEnvolvidas, enviar, function (rPessoas) {
+            resultPessoasEnvolvidas = rPessoas;
+            $('#pessoasEnvolvidas').text(resultPessoasEnvolvidas.length);
+        });
+        $.post(urlGetGrafico, enviar, function (r) {
+            resultGetGrafico = r;
+
+            $('#filtroBar').trigger('change');
+            $('#filtroBar2').trigger('change');
+            $('#filtroBarInd').trigger('change');
+
+            $('#acoesConcluidas').text($.grep(resultGetGrafico, function (a, b) {
+                return a.Status == "Concluído";
+            }).length);
+
+            $('#acoesAtrasadas').text($.grep(resultGetGrafico, function (a, b) {
+                return a.Status == "Atrasado";
+            }).length);
+
+            $('#acoesAVencer').text($.grep(resultGetGrafico, function (a, b) {
+                return (a.Status != "Concluído" && a.Status != "Concluído com atraso");
+            }).length);
+
+        });
+    }
+    var configQueryData = true; // @*@Html.Raw(Json.Encode(GlobalConfig.LanguageBrasil));*@
+    var configCallendar = {};
+    if (configQueryData) {
+        $('#reportrange').daterangepicker({
+            startDate: start,
+            endDate: end,
+            //opens: "left",
+            locale: {
+                "format": "DD/MM/YYYY",
+                "separator": " - ",
+                "applyLabel": "Aplicar",
+                "cancelLabel": "Cancelar",
+                "customRangeLabel": "Seleção",
+            },
+            //autoApply: false,
+            alwaysShowCalendars: true,
+            showDropdowns: true,
+            ranges: rangesCalendar,
+            linkedCalendars: false
+        }, cb);
+    } else {
+        $('#reportrange').daterangepicker({
+            startDate: start,
+            endDate: end,
+            //autoApply: false,
+            locale: {
+                "format": "MM/DD/YYYY",
+                "separator": " - ",
+            },
+            alwaysShowCalendars: true,
+            showDropdowns: true,
+            ranges: rangesCalendar,
+            linkedCalendars: false
+        }, cb);
+    }
+
+    cb(start, end);
+    //End config datepickerrange full
+
+    enviar['startDate'] = moment().format();
+    enviar['endDate'] = moment().format();
+    /*Config Callendar FIM*/
+
+    /*Auxiliar FIM*/
+
+    $(document).ready(function () {
+
+        $("#btnFiltro").click(function () {
+
+            InitDatePiker();
+
+            $("form").on("submit", function (event) {
+                var dataInicio = $('#dataInicio').val();
+                var dataFim = $('#dataFim').val();
+                var obj = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 1 };
+                //var obj2 = { categoria: 'Pa_Problema_Desvio_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 2 };
+                $('#divPie').highcharts().destroy();
+                atualizar(GraficoPizza, urlGetGraficoPie, obj);
+            });
         });
 
-    </script>
+        $("#btnFiltroBar").click(function () {
+            InitDatePiker();
+            $("form").on("submit", function (event) {
+                var dataInicio = $('#dataInicio').val();
+                var dataFim = $('#dataFim').val();
+                var obj = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 1 };
+                $('#divBar').highcharts().destroy();
+                atualizar(GraficoBar, urlGetGrafico, obj);
+            });
+        });
 
-}
+        $("#btnFiltroCol").click(function () {
+            InitDatePiker();
+            $("form").on("submit", function (event) {
+                var dataInicio = $('#dataInicio').val();
+                var dataFim = $('#dataFim').val();
+                var obj = { categoria: 'q.Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 1 };
+                //var obj2 = { categoria: 'Pa_Problema_Desvio_Id', dataInicio: dataInicio, dataFim: dataFim, relatorio: 2 };
+                $('#divCol').highcharts().destroy();
+                atualizar(GraficoCol, urlGetGrafico, obj);
+            });
+        });
 
+        var obj = { categoria: 'q.Id', dataInicio: '01/01/2015', dataFim: '01/01/2019', relatorio: 1 };
+        var obj2 = { categoria: 'Pa_IndicadorSgqAcao_Id', dataInicio: '01/01/2015', dataFim: '01/01/2019', relatorio: 2 };
+
+        //atualizar(GraficoBar, urlGetGrafico, obj2);
+        //atualizar(GraficoCol, urlGetGrafico, obj);
+        atualizar(GraficoPizza, urlGetGraficoPie, obj);
+        atualizar(GraficoAcoesEstabelecidas, urlGraficoNumeroDeAcoesEstabelecidas, {});
+        atualizar(GraficoAcoesConcluidas, urlGraficoNumeroDeAcoesConcluidas, {});
+        atualizar(GraficoEstoqueDeAcoes, urlGraficoNumeroDeAcoes, {});
+        atualizar(GraficoEvolucaoDoResultado, urlGraficoEvolucaoDoResultado, {});
+
+        $('#exampleTD1').DataTable();
+
+        $('#exampleTD1')
+            .removeClass('display')
+            .addClass('table table-striped table-bordered');
+
+        $('#filtroBar, #seriesBar').on('change', function () {
+            GraficoBar($('#filtroBar :selected').val(), $('#seriesBar :selected').val())
+        });
+
+        $('#filtroBar2, #seriesBar2').on('change', function () {
+            GraficoCol($('#filtroBar2 :selected').val(), $('#seriesBar2 :selected').val())
+        });
+        $('#filtroBarInd, #seriesBarInd').on('change', function () {
+            GraficoIndicadores($('#filtroBarInd :selected').val(), $('#seriesBarInd :selected').val())
+        });
+
+        $('#filtroBar').trigger('change');
+        $('#filtroBar2').trigger('change');
+        $('#filtroBarInd').trigger('change');
+
+    })
+
+
+    //function geraTabela(query, selector) {
+    //    $('#' + selector).parents('.modal-body').find('g').hide();
+    //    var arrColumns = [];
+    //    var concluidas = $.grep(resultGetGrafico, function (a, b) { return a.Status == query });
+
+    //    if ($.fn.DataTable.isDataTable('#' + selector)) {
+    //        $('#' + selector).DataTable().destroy();
+    //        $('#' + selector).empty();
+    //    }
+
+    //    if (concluidas.length) {
+    //        var o = concluidas[0]
+    //        var row = {};
+    //        for (var key in o)
+    //            arrColumns.push({ 'title': key, 'mData': key })
+
+    //        var table = $('#' + selector).empty().DataTable({
+    //            data: concluidas,
+    //            columns: arrColumns,
+    //            "sScrollX": "100%",
+    //            "scrollX": true,
+    //            "scrollY": '550px',
+    //            destroy: true,
+    //            bScrollAutoCss: true,
+    //            //sScrollX: '100%',
+    //            bScrollCollapse: true,
+    //            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
+    //            pageLength: 10,
+    //            responsive: true,
+    //            loadingRecords: true,
+    //            destroy: true,
+    //            info: true,
+    //            responsive: true,
+    //            //columnDefs: visibilidadeDefault,
+    //            language: {
+    //                "sEmptyTable": "Nenhum registro encontrado",
+    //                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+    //                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+    //                "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+    //                "sInfoPostFix": "",
+    //                "sInfoThousands": ".",
+    //                "sLengthMenu": "_MENU_ resultados por página",
+    //                "sLoadingRecords": "Carregando...",
+    //                "sProcessing": "Processando...",
+    //                "sZeroRecords": "Nenhum registro encontrado",
+    //                "sSearch": "Pesquisar",
+    //                "oPaginate": {
+    //                    "sNext": "Próximo",
+    //                    "sPrevious": "Anterior",
+    //                    "sFirst": "Primeiro",
+    //                    "sLast": "Último"
+    //                },
+    //                "oAria": {
+    //                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+    //                    "sSortDescending": ": Ordenar colunas de forma descendente"
+    //                }
+    //            }
+    //        });
+
+    //        new $.fn.dataTable.Buttons(table, {
+    //            buttons: [
+    //                  {
+    //                      extend: 'colvisGroup',
+    //                      text: 'Mostrar Todos',
+    //                      show: ':hidden'
+    //                  },
+    //                {
+    //                    extend: 'print',
+    //                    text: 'Imprimir',
+    //                    customize: function (win) {
+    //                        $(win.document.body).find('table')
+    //                            .addClass('compact')
+    //                            .css('font-size', 'inherit');
+    //                    },
+    //                    exportOptions: {
+    //                        columns: ':visible'
+    //                    }
+    //                },
+    //                {
+    //                    extend: 'excelHtml5',
+    //                    text: 'Excel',
+    //                    exportOptions: {
+    //                        columns: ':visible'
+    //                    }
+    //                },
+    //                 //{
+    //                 //    extend: 'pdf',
+    //                 //    text: 'PDF',
+    //                 //    exportOptions: {
+    //                 //        columns: ':visible'
+    //                 //    }
+    //                 //},
+    //                  {
+    //                      extend: 'colvis',
+    //                      text: 'Colunas Visíveis',
+    //                      collectionLayout: 'fixed two-column',
+    //                      exportOptions: {
+    //                          columns: ':visible',
+    //                      }
+    //                  },
+    //            ]
+    //        });
+    //        table.buttons(0, null).container().prependTo(
+    //            table.table().container()
+    //        );
+    //    } else {
+    //        $('#' + selector).parents('.modal-body').find('g').show();
+    //    }
+    //}
+
+    function geraTabela(query, selector, isDate, isPessoas) {
+        $('#' + selector).parents('.modal-body').find('g').hide();
+        var arrColumns = [];
+        var concluidas = [];
+        if (isPessoas) {
+            concluidas = resultPessoasEnvolvidas;
+        }
+        else if (isDate) {
+            concluidas = $.grep(resultGetGrafico, function (a, b) {
+                return (a.Status != "Concluído" && a.Status != "Concluído com atraso");
+            });
+        } else {
+            concluidas = $.grep(resultGetGrafico, function (a, b) {
+                return a.Status == query
+            });
+        }
+
+        if ($.fn.DataTable.isDataTable('#' + selector)) {
+            $('#' + selector).DataTable().destroy();
+            $('#' + selector).empty();
+        }
+
+        if (concluidas.length) {
+            var o = concluidas[0]
+            var row = {};
+            for (var key in o) {
+                if (key != 'Id')
+                    arrColumns.push({ 'title': key, 'mData': key })
+            }
+
+            var table = $('#' + selector).empty().DataTable({
+                data: concluidas,
+                columns: arrColumns,
+                "sScrollX": "100%",
+                "scrollX": true,
+                "scrollY": '550px',
+                destroy: true,
+                bScrollAutoCss: true,
+                //sScrollX: '100%',
+                bScrollCollapse: true,
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
+                pageLength: 10,
+                responsive: true,
+                loadingRecords: true,
+                destroy: true,
+                info: true,
+                responsive: true,
+                //columnDefs: visibilidadeDefault,
+                language: {
+                    "sEmptyTable": "Nenhum registro encontrado",
+                    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ".",
+                    "sLengthMenu": "_MENU_ resultados por página",
+                    "sLoadingRecords": "Carregando...",
+                    "sProcessing": "Processando...",
+                    "sZeroRecords": "Nenhum registro encontrado",
+                    "sSearch": "Pesquisar",
+                    "oPaginate": {
+                        "sNext": "Próximo",
+                        "sPrevious": "Anterior",
+                        "sFirst": "Primeiro",
+                        "sLast": "Último"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Ordenar colunas de forma ascendente",
+                        "sSortDescending": ": Ordenar colunas de forma descendente"
+                    }
+                },
+                initComplete: function () {
+                    setTimeout(function (e) {
+                        var oTable = $('#' + selector).dataTable();
+                        if (oTable.length > 0) {
+                            oTable.fnAdjustColumnSizing();
+                        }
+                    }, 1400);
+                }
+            });
+
+            new $.fn.dataTable.Buttons(table, {
+                buttons: [
+                      {
+                          extend: 'colvisGroup',
+                          text: 'Mostrar Todos',
+                          show: ':hidden'
+                      },
+                    {
+                        extend: 'print',
+                        text: 'Imprimir',
+                        customize: function (win) {
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        },
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Excel',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                     //{
+                     //    extend: 'pdf',
+                     //    text: 'PDF',
+                     //    exportOptions: {
+                     //        columns: ':visible'
+                     //    }
+                     //},
+                      {
+                          extend: 'colvis',
+                          text: 'Colunas Visíveis',
+                          collectionLayout: 'fixed two-column',
+                          exportOptions: {
+                              columns: ':visible',
+                          }
+                      },
+                ]
+            });
+            table.buttons(0, null).container().prependTo(
+                table.table().container()
+            );
+        } else {
+            $('#' + selector).parents('.modal-body').find('g').show();
+        }
+    }
+
+
+    ///*Pivot Table Chart*/
+    //$(function () {
+    //    var derivers = $.pivotUtilities.derivers;
+    //    var renderers = $.extend($.pivotUtilities.renderers,
+    //        $.pivotUtilities.c3_renderers);
+    //    $.post(urlGetGrafico, enviar, function (mps) {
+    //        $("#output").pivotUI(mps, {
+    //            renderers: renderers,
+    //            cols: ["Responsavel"], rows: ["Status"],
+    //            rendererName: "Horizontal Stacked Bar Chart",
+    //            rowOrder: "value_z_to_a", colOrder: "value_z_to_a",
+    //            rendererOptions: {
+    //                c3: {
+    //                    size: { height: 240, width: 500 },
+    //                    data: {
+    //                        colors: {
+    //                            Liberal: '#dc3912', Conservative: '#3366cc', NDP: '#ff9900',
+    //                            Green: '#109618', 'Bloc Quebecois': '#990099'
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //        });
+    //    });
+    //});
+    ///*Pivot Table Chart FIM*/
+</script>

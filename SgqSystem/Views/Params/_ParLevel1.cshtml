@@ -40,6 +40,12 @@
                             </td>
                         </tr>
                         <tr class="row">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.EditLevel2, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.has_edit_level2), Table.PosicaoLabel.left, null, Resources.Resource.has_edit_level2)
+                            <td>
+                                @*<p style="color:red; font-weight:bold;">ERRO!</p>*@
+                            </td>
+                        </tr>
+                        <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasNoApplicableLevel2, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.not_applicable_on_level_2), Table.PosicaoLabel.left, null, Resources.Resource.not_applicable_on_level_2_popover)
                             <td>
                                 @*<p style="color:red; font-weight:bold;">ERRO!</p>*@
@@ -51,12 +57,12 @@
 
                         @if (!GlobalConfig.Eua)
                         {
-                        <tr class="row">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.haveRealTimeConsolidation, new { @class = "form-control checkbox-erp" }), @Html.Label(@Resources.Resource.has_real_time_consolidation), Table.PosicaoLabel.left, null, Resources.Resource.defines_consolidation_indicator)
-                        </tr>
-                        <tr class="row RealTimeConsolitationUpdate padding-left" style="display:none">
-                            @Table.GerarColunaCheckbox(@Html.TextBox("paramsDto.parLevel1Dto.RealTimeConsolitationUpdate", Model.paramsDto.parLevel1Dto.RealTimeConsolitationUpdate, new { @class = "form-control checkbox-erp integer" }), @Html.Label(Resources.Resource.time_interval_consolidation, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.time_interval_above_item)
-                        </tr>
+                            <tr class="row hide">
+                                @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.haveRealTimeConsolidation, new { @class = "form-control checkbox-erp" }), @Html.Label(@Resources.Resource.has_real_time_consolidation), Table.PosicaoLabel.left, null, Resources.Resource.defines_consolidation_indicator)
+                            </tr>
+                            <tr class="row RealTimeConsolitationUpdate padding-left" style="display:none">
+                                @Table.GerarColunaCheckbox(@Html.TextBox("paramsDto.parLevel1Dto.RealTimeConsolitationUpdate", Model.paramsDto.parLevel1Dto.RealTimeConsolitationUpdate, new { @class = "form-control checkbox-erp integer" }), @Html.Label(Resources.Resource.time_interval_consolidation, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.time_interval_above_item)
+                            </tr>
                         }
 
                         <tr class="row">
@@ -95,10 +101,26 @@
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasCompleteEvaluation, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.hascompleteevaluation), Table.PosicaoLabel.left, null, null)
                         </tr>
-                        
+
                         <!--Partial Save-->
                         <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsPartialSave, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.isPartialSave), Table.PosicaoLabel.left, null, null)
+                        </tr>
+
+                        <tr class="row">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsChildren, new { @class = "make-switch checkbox-erp" }), @Html.Label(Resources.Resource.level1_children), Table.PosicaoLabel.left, null, Resources.Resource.level1_children)
+                            <td>
+                                @*<p style="color:red; font-weight:bold;">ERRO!</p>*@
+                            </td>
+                        </tr>
+                        <tr class="row groupChildren padding-left" style="display:none">
+                            @Table.GerarColunaCheckbox(@Html.DropDownListFor(model => model.paramsDto.parLevel1Dto.ParLevel1Origin_Id, Model.paramsDdl.DdlparLevel1Active, htmlAttributes: new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_origin, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
+                        </tr>
+                        <tr class="row groupChildren padding-left" style="display:none">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.PointsDestiny, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.points_destiny, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.points_destiny)
+                        </tr>
+                        <tr class="row groupChildren padding-left" style="display:none">
+                            @Table.GerarColunaCheckbox(@Html.DropDownListFor(model => model.paramsDto.parLevel1Dto.ParLevel1Destiny_Id, Model.paramsDdl.DdlparLevel1Active, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level1_destiny, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
                         </tr>
 
                         <tr class="row">
@@ -136,9 +158,9 @@
                                 <table id="CamposDoCabecalho" class="table-erp">
                                     <tbody>
                                         <tr class="row">
-                                            @Table.GerarColuna(@Html.DropDownList("headerLevel", Model.paramsDdl.DdlparLevelDefinition, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.field_level), Table.PosicaoLabel.top, @Html.ErrorManual("nivelCampoCabecalho", "O Nível do Campo deve ser selecionado"), null)
-                                            @Table.GerarColuna(@Html.DropDownList("parFieldType", Model.paramsDdl.DdlParFieldType, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.type), Table.PosicaoLabel.top, @Html.ErrorManual("tipoCampoCabecalho", "O campo Tipo deve ser selecionado para Nível do Campo"), null)
-                                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parHeaderFieldDto.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.field_name), Table.PosicaoLabel.top, @Html.ErrorManual("nomeCampoCabecalho", "O campo Nome deve ser preenchido para Nível do Campo"), null)
+                                            @Table.GerarColuna(@Html.DropDownList("headerLevel", Model.paramsDdl.DdlparLevelDefinition, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.field_level), Table.PosicaoLabel.top, @Html.ErrorManual("nivelCampoCabecalho", Resources.Resource.select_the_field_where), null)
+                                            @Table.GerarColuna(@Html.DropDownList("parFieldType", Model.paramsDdl.DdlParFieldType, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.type), Table.PosicaoLabel.top, @Html.ErrorManual("tipoCampoCabecalho", Resources.Resource.select_the_field_type), null)
+                                            @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parHeaderFieldDto.Name, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.field_name), Table.PosicaoLabel.top, @Html.ErrorManual("nomeCampoCabecalho", Resources.Resource.fill_the_header_name_field), null)
                                             @*@Table.GerarColunaCheckbox(@Html.EditorFor(m => m.paramsDto.parHeaderFieldDto.LinkNumberEvaluetion, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.link_number_evaluation), Table.PosicaoLabel.top, null, null)*@
                                         </tr>
                                     </tbody>
@@ -199,45 +221,45 @@
 
                                     @if (GlobalConfig.Brasil)
                                     {
-                                    @*Obj Integrações*@
-                                    <div id="objIntegracoes" style="display:none;">
-                                        <table id="tblIntegracoes">
-                                            <tbody>
-                                                <tr class="row">
+                                        @*Obj Integrações*@
+                                        <div id="objIntegracoes" style="display:none;">
+                                            <table id="tblIntegracoes">
+                                                <tbody>
+                                                    <tr class="row">
 
-                                                    <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoEquipamento" value="integracaoEquipamentoValor"></td>
-                                                    <td style="padding:5px;">Equipamento</td>
-                                                    <td style="padding:5px;">@Html.DropDownList("integracaoEquipamentoList", Model.paramsDdl.DdlEquipamentos, new { @class = "form-control input-sm equipamentos" })</td>
+                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoEquipamento" value="integracaoEquipamentoValor"></td>
+                                                        <td style="padding:5px;">Equipamento</td>
+                                                        <td style="padding:5px;">@Html.DropDownList("integracaoEquipamentoList", Model.paramsDdl.DdlEquipamentos, new { @class = "form-control input-sm equipamentos" })</td>
 
-                                                </tr>
-                                                <tr class="row">
+                                                    </tr>
+                                                    <tr class="row">
 
-                                                    <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoCamara" value="integracaoCamaraValor"></td>
-                                                    <td style="padding:5px;">Câmara</td>
-                                                    <td style="padding:5px;">@Html.DropDownList("integracaoCamaraList", Model.paramsDdl.DdlCamaras, new { @class = "form-control input-sm equipamentos" })</td>
+                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoCamara" value="integracaoCamaraValor"></td>
+                                                        <td style="padding:5px;">Câmara</td>
+                                                        <td style="padding:5px;">@Html.DropDownList("integracaoCamaraList", Model.paramsDdl.DdlCamaras, new { @class = "form-control input-sm equipamentos" })</td>
 
-                                                </tr>
+                                                    </tr>
 
-                                                <tr class="row">
+                                                    <tr class="row">
 
-                                                    <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoPontoDeColeta" value="integracaoPontoDeColetaValor"></td>
-                                                    <td style="padding:5px;">Ponto de Coleta</td>
-                                                    <td style="padding:5px;">@Html.DropDownList("integracaoPontoDeColetaList", Model.paramsDdl.DdlPontosDeColeta, new { @class = "form-control input-sm equipamentos" })</td>
+                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoPontoDeColeta" value="integracaoPontoDeColetaValor"></td>
+                                                        <td style="padding:5px;">Ponto de Coleta</td>
+                                                        <td style="padding:5px;">@Html.DropDownList("integracaoPontoDeColetaList", Model.paramsDdl.DdlPontosDeColeta, new { @class = "form-control input-sm equipamentos" })</td>
 
-                                                </tr>
+                                                    </tr>
 
-                                                <tr class="row">
+                                                    <tr class="row">
 
-                                                    <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoProduto"></td>
-                                                    <td style="padding:5px;">Produtos</td>
-                                                    <td style="padding:5px;"></td>
+                                                        <td style="padding:5px;"><input type="radio" name="integracaoRB" id="integracaoProduto"></td>
+                                                        <td style="padding:5px;">Produtos</td>
+                                                        <td style="padding:5px;"></td>
 
-                                                </tr>
+                                                    </tr>
 
-                                            </tbody>
-                                        </table>
-                                        <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Integrações" id="btnIncluirIntegracoes" onclick="Cabecalhos.IncluirIntegracoes();" />
-                                    </div>
+                                                </tbody>
+                                            </table>
+                                            <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Integrações" id="btnIncluirIntegracoes" onclick="Cabecalhos.IncluirIntegracoes();" />
+                                        </div>
                                     }
                                     <div id="objTexto" style="display:none;">
                                         @*@Table.GerarColuna(@Html.Editor("objTextoName", new { htmlAttributes = new { @value = 0, @type = "text", @style = "max-width: 200px;", @class = "form-control input-erp" } }), @Html.Label(Resources.Resource.option), Table.PosicaoLabel.top, @Html.ErrorManual("objTextoName", "*"), null)*@
@@ -336,162 +358,162 @@
                                                 {
                                                     foreach (var parLevel1XHeaderField in Model.paramsDto.parLevel1Dto.cabecalhosInclusos)
                                                     {
-                                                <tr class="alteracao">
-                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
+                                                        <tr class="alteracao">
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
                                                             {
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
-                                                            <td>
-                                                                @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
-                                                                @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
-                                                                <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
-                                                                    <span class="glyphicon glyphicon-pencil"></span>
-                                                                </button>
-                                                            </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+                                                                <td>
+                                                                    @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
+                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
+                                                                    <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
+                                                                        <span class="glyphicon glyphicon-pencil"></span>
+                                                                    </button>
+                                                                </td>
 
                                                             }
 
-                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 2)
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 2)
                                                             {
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
-                                                            <td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+                                                                <td>
 
-                                                                @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
-                                                                @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
-                                                                <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
-                                                                    <span class="glyphicon glyphicon-pencil"></span>
-                                                                </button>
-                                                            </td>
+                                                                    @Html.DropDownList("DropDownList", parLevel1XHeaderField.ParHeaderField.DropDownList, htmlAttributes: new { @class = "form-control input-sm fixed-width", @id = parLevel1XHeaderField.ParHeaderField.Id })
+                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @disabled = "disabled" })
+                                                                    <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
+                                                                        <span class="glyphicon glyphicon-pencil"></span>
+                                                                    </button>
+                                                                </td>
 
                                                             }
 
-                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 3)
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 3)
                                                             {
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
-                                                            <td>
-                                                                @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
-                                                                        {
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+                                                                <td>
+                                                                    @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
+                                                                    {
                                                                         <label>@radioOpt.Name</label>
                                                                         @Html.RadioButton("removerParHeaderField", true, new { @class = "" });
-                                                                        }
-                                                                @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                                <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
-                                                                    <span class="glyphicon glyphicon-pencil"></span>
-                                                                </button>
-                                                            </td>
+                                                                    }
+                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
+                                                                    <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
+                                                                        <span class="glyphicon glyphicon-pencil"></span>
+                                                                    </button>
+                                                                </td>
                                                             }
 
-                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 4)
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 4)
                                                             {
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
-                                                            <td>
-                                                                @Html.TextBox("a", null, new { @class = "fixed-width form-control input-sm" })
-                                                                @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                                <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
-                                                                    <span class="glyphicon glyphicon-pencil"></span>
-                                                                </button>
-                                                            </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+                                                                <td>
+                                                                    @Html.TextBox("a", null, new { @class = "fixed-width form-control input-sm" })
+                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
+                                                                    <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
+                                                                        <span class="glyphicon glyphicon-pencil"></span>
+                                                                    </button>
+                                                                </td>
                                                             }
 
-                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 5)
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 5)
                                                             {
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
-                                                            <td>
-                                                                <input type="number" class="fixed-width form-control input-sm" />
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+                                                                <td>
+                                                                    <input type="number" class="fixed-width form-control input-sm" />
 
-                                                                @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                                <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
-                                                                    <span class="glyphicon glyphicon-pencil"></span>
-                                                                </button>
-                                                            </td>
+                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
+                                                                    <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
+                                                                        <span class="glyphicon glyphicon-pencil"></span>
+                                                                    </button>
+                                                                </td>
                                                             }
-                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 6)
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 6)
                                                             {
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
-                                                            <td>
-                                                                <input type="text" class="dataInput active form-control input-sm">
-                                                                @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                                <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
-                                                                    <span class="glyphicon glyphicon-pencil"></span>
-                                                                </button>
-                                                            </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+                                                                <td>
+                                                                    <input type="text" class="dataInput active form-control input-sm">
+                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
+                                                                    <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
+                                                                        <span class="glyphicon glyphicon-pencil"></span>
+                                                                    </button>
+                                                                </td>
                                                             }
-                                                    @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 7)
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 7)
                                                             {
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
-                                                            <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
-                                                            <td>
-                                                                <input type="time" class="active form-control input-sm">
-                                                                @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
-                                                                <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
-                                                                    <span class="glyphicon glyphicon-pencil"></span>
-                                                                </button>
-                                                            </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+                                                                <td>
+                                                                    <input type="time" class="active form-control input-sm">
+                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
+                                                                    <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
+                                                                        <span class="glyphicon glyphicon-pencil"></span>
+                                                                    </button>
+                                                                </td>
                                                             }
-                                                    <td>
-                                                        <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
-                                                    </td>
-                                                    <td>
-                                                        <select id="parLevel1XHeaderField_ParHeaderField_IsRequired" class="form-control input-sm" onchange="Cabecalhos.SetRequired($(this), @parLevel1XHeaderField.ParHeaderField.Id);">
-                                                            @if (parLevel1XHeaderField.ParHeaderField.IsRequired != null)
+                                                            <td>
+                                                                <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
+                                                            </td>
+                                                            <td>
+                                                                <select id="parLevel1XHeaderField_ParHeaderField_IsRequired" class="form-control input-sm" onchange="Cabecalhos.SetRequired($(this), @parLevel1XHeaderField.ParHeaderField.Id);">
+                                                                    @if (parLevel1XHeaderField.ParHeaderField.IsRequired != null)
                                                                     {
                                                                         if (parLevel1XHeaderField.ParHeaderField.IsRequired.Value)
                                                                         {
-                                                                    <option value="0">@Resources.Resource.no</option>
-                                                                    <option value="1" selected>@Resources.Resource.yes</option>
+                                                                            <option value="0">@Resources.Resource.no</option>
+                                                                            <option value="1" selected>@Resources.Resource.yes</option>
                                                                         }
                                                                         else
                                                                         {
-                                                                    <option value="0" selected>@Resources.Resource.no</option>
-                                                                    <option value="1">@Resources.Resource.yes</option>
+                                                                            <option value="0" selected>@Resources.Resource.no</option>
+                                                                            <option value="1">@Resources.Resource.yes</option>
                                                                         }
                                                                     }
                                                                     else
                                                                     {
-                                                                    <option value="0" selected>@Resources.Resource.no</option>
-                                                                    <option value="1">@Resources.Resource.yes</option>
+                                                                        <option value="0" selected>@Resources.Resource.no</option>
+                                                                        <option value="1">@Resources.Resource.yes</option>
                                                                     }
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
                                                                 {
-                                                                <div class="input-group">
-                                                                    <div class="input-group-btn">
-                                                                        <select class="form-control input-sm" id="@parLevel1XHeaderField.ParHeaderField_Id" style="padding-left:-10px;max-width:80px;">
-                                                                            <option value="0" selected>Nenhum</option>
-                                                                            @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-btn">
+                                                                            <select class="form-control input-sm" id="@parLevel1XHeaderField.ParHeaderField_Id" style="padding-left:-10px;max-width:80px;">
+                                                                                <option value="0" selected>Nenhum</option>
+                                                                                @foreach (var radioOpt in parLevel1XHeaderField.ParHeaderField.ParMultipleValues)
                                                                                 {
                                                                                     if (radioOpt.IsDefaultOption == true)
                                                                                     {
-                                                                                <option value="@radioOpt.Id" selected>@radioOpt.Name</option>
+                                                                                        <option value="@radioOpt.Id" selected>@radioOpt.Name</option>
                                                                                     }
                                                                                     else
                                                                                     {
-                                                                                <option value="@radioOpt.Id">@radioOpt.Name</option>
+                                                                                        <option value="@radioOpt.Id">@radioOpt.Name</option>
                                                                                     }
                                                                                 }
-                                                                        </select>
-                                                                        <button type="button" onclick="Cabecalhos.SetMultipleDefault($(this));" class="btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></button>
+                                                                            </select>
+                                                                            <button type="button" onclick="Cabecalhos.SetMultipleDefault($(this));" class="btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></button>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
                                                                 }
 
-                                                    </td>
+                                                            </td>
 
-                                                </tr>
+                                                        </tr>
                                                     }
                                                 }
                                             </tbody>
@@ -564,7 +586,7 @@
                 <button type="button" data-loading-text="@Resources.Resource.saving_the_level1" id="btnSaveNewLevel1" onclick="indexParamsLevel1.enviarDadosParaApi();" class="btn btn-primary">@Resources.Resource.save_level1</button>
             </div>
         </div>
-    }
+                    }
 
 </div>
 
@@ -580,6 +602,17 @@
             $('.groupCadastroEspecificoUnidade').fadeIn();
         } else {
             $('.groupCadastroEspecificoUnidade').fadeOut();
+        }
+    });
+
+    $('#paramsDto_parLevel1Dto_IsChildren').on('switchChange.bootstrapSwitch', function (event, state) {
+        if (state) {
+            $('.groupChildren').fadeIn();
+        } else {
+            //$('#paramsDto_parLevel1Dto_ParLevel1Origin_Id').prop('selectedIndex',0);
+            //$('#paramsDto_parLevel1Dto_PointsDestiny').bootstrapSwitch('state', false);
+            //$('#paramsDto.parLevel1Dto.ParLevel1Destiny_Id').prop('selectedIndex',0);
+            $('.groupChildren').fadeOut();
         }
     });
 
@@ -1086,7 +1119,7 @@
 
 
             if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
-                openMessageModal("Alerta", "Digite o nome para o Campo Texto");
+                openMessageModal("@Resources.Resource.alert", "Digite o nome para o Campo Texto");
                 //alert('Digite o nome para o Campo Texto');
                 return;
             }
@@ -1561,6 +1594,9 @@
 
         if($('#paramsDto_parLevel1Dto_IsSpecific').is(':checked'))
             $('.groupCadastroEspecificoUnidade').fadeIn();
+
+        if($('#paramsDto_parLevel1Dto_IsChildren').is(':checked'))
+            $('.groupChildren').fadeIn();
 
         if($('#paramsDto_parLevel1Dto_haveRealTimeConsolidation').is(':checked'))
             $('.RealTimeConsolitationUpdate').fadeIn();

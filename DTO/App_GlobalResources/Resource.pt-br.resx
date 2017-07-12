@@ -1,0 +1,2007 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="auditor" xml:space="preserve">
+    <value>Monitor</value>
+  </data>
+  <data name="authenticating" xml:space="preserve">
+    <value>Validando...</value>
+  </data>
+  <data name="corrective_action_reports" xml:space="preserve">
+    <value>Relatório de Ação Corretiva </value>
+  </data>
+  <data name="data_collection_reports" xml:space="preserve">
+    <value>Relatórios de Coleta de Dados</value>
+  </data>
+  <data name="department" xml:space="preserve">
+    <value>Departamento</value>
+  </data>
+  <data name="evaluated" xml:space="preserve">
+    <value>Avaliado</value>
+  </data>
+  <data name="home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="jbs_and_grt_aplication" xml:space="preserve">
+    <value>Aplicação JBS e GRT</value>
+  </data>
+  <data name="login" xml:space="preserve">
+    <value>Entrar</value>
+  </data>
+  <data name="log_in" xml:space="preserve">
+    <value>Entrar</value>
+  </data>
+  <data name="log_out" xml:space="preserve">
+    <value>Sair</value>
+  </data>
+  <data name="password" xml:space="preserve">
+    <value>Senha</value>
+  </data>
+  <data name="please_sign_in" xml:space="preserve">
+    <value>Faça o login</value>
+  </data>
+  <data name="reports" xml:space="preserve">
+    <value>Relatórios</value>
+  </data>
+  <data name="sign_in" xml:space="preserve">
+    <value>Entrar</value>
+  </data>
+  <data name="username" xml:space="preserve">
+    <value>Usuário</value>
+  </data>
+  <data name="all" xml:space="preserve">
+    <value>Todos</value>
+  </data>
+  <data name="date" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="period" xml:space="preserve">
+    <value>Período</value>
+  </data>
+  <data name="send" xml:space="preserve">
+    <value>Enviar</value>
+  </data>
+  <data name="shift" xml:space="preserve">
+    <value>Turno</value>
+  </data>
+  <data name="unit" xml:space="preserve">
+    <value>Unidade</value>
+  </data>
+  <data name="april" xml:space="preserve">
+    <value>Abril</value>
+  </data>
+  <data name="august" xml:space="preserve">
+    <value>Agosto</value>
+  </data>
+  <data name="december" xml:space="preserve">
+    <value>Dezembro</value>
+  </data>
+  <data name="february" xml:space="preserve">
+    <value>Fevereiro</value>
+  </data>
+  <data name="january" xml:space="preserve">
+    <value>Janeiro</value>
+  </data>
+  <data name="july" xml:space="preserve">
+    <value>Julho</value>
+  </data>
+  <data name="june" xml:space="preserve">
+    <value>Junho</value>
+  </data>
+  <data name="march" xml:space="preserve">
+    <value>Marco</value>
+  </data>
+  <data name="may" xml:space="preserve">
+    <value>Maio</value>
+  </data>
+  <data name="november" xml:space="preserve">
+    <value>Novembro</value>
+  </data>
+  <data name="october" xml:space="preserve">
+    <value>Outubro</value>
+  </data>
+  <data name="september" xml:space="preserve">
+    <value>Setembro</value>
+  </data>
+  <data name="consolidation_type" xml:space="preserve">
+    <value>Tipo de Consolidação</value>
+  </data>
+  <data name="level1_description" xml:space="preserve">
+    <value>Descrição do Indicador</value>
+  </data>
+  <data name="level1_name" xml:space="preserve">
+    <value>Nome do Indicador</value>
+  </data>
+  <data name="of" xml:space="preserve">
+    <value>de</value>
+  </data>
+  <data name="alert_emissor" xml:space="preserve">
+    <value>Emite alerta</value>
+  </data>
+  <data name="allow_create_and_or_edit_of_tasks" xml:space="preserve">
+    <value>Permite criar e/ou editar tarefas</value>
+  </data>
+  <data name="allow_field_edition_of_the_header" xml:space="preserve">
+    <value>Permite editar campos do cabeçalho</value>
+  </data>
+  <data name="allow_specific_register_by_unit" xml:space="preserve">
+    <value>Permite cadastro especifico por unidade</value>
+  </data>
+  <data name="allow_the_edition_of_the_evaluation_number" xml:space="preserve">
+    <value>Permite editar número de avaliações / amostras</value>
+  </data>
+  <data name="allow_the_edition_of_the_goal_of_the_level1_by_unit" xml:space="preserve">
+    <value>Permite editar meta do indicador por unidade</value>
+  </data>
+  <data name="allow_the_edition_of_the_sample_number" xml:space="preserve">
+    <value>Permite editar numeros de amostras</value>
+  </data>
+  <data name="allow_the_not_applicable_button_on_level2" xml:space="preserve">
+    <value>Botão Não Aplicado (N/A) no monitoramento</value>
+  </data>
+  <data name="frequency" xml:space="preserve">
+    <value>Frequência</value>
+  </data>
+  <data name="level2_group" xml:space="preserve">
+    <value>Agrupador de Monitoramento</value>
+  </data>
+  <data name="save_button_on_level2" xml:space="preserve">
+    <value>Botão salvar no Monitoramento</value>
+  </data>
+  <data name="consolidation_type_popover" xml:space="preserve">
+    <value>Definir o tipo da consolidação dentre os tipos padrões. Contadores do sistema serão baseados no tipo da consolidação.</value>
+  </data>
+  <data name="select_the_consolidation_type" xml:space="preserve">
+    <value>Selecione o tipo de consolidacao</value>
+  </data>
+  <data name="level1_clusters" xml:space="preserve">
+    <value>Clusters do Indicador</value>
+  </data>
+  <data name="level1_counter" xml:space="preserve">
+    <value>Contador do Indicador</value>
+  </data>
+  <data name="not_conformity_rule" xml:space="preserve">
+    <value>Regra de Não conformidade</value>
+  </data>
+  <data name="reaudit" xml:space="preserve">
+    <value>Reauditoria</value>
+  </data>
+  <data name="rule" xml:space="preserve">
+    <value>Regra</value>
+  </data>
+  <data name="select" xml:space="preserve">
+    <value>Selecione</value>
+  </data>
+  <data name="show_level1_counters" xml:space="preserve">
+    <value>Mostrar contadores do indicador</value>
+  </data>
+  <data name="value" xml:space="preserve">
+    <value>Valor</value>
+  </data>
+  <data name="emit_warning" xml:space="preserve">
+    <value>Emitir Alerta</value>
+  </data>
+  <data name="goal_value" xml:space="preserve">
+    <value>Valor da meta (%)</value>
+  </data>
+  <data name="limited_number_of_evaluations" xml:space="preserve">
+    <value>Número de Avaliações Limitados</value>
+  </data>
+  <data name="points" xml:space="preserve">
+    <value>Pontos</value>
+  </data>
+  <data name="register_total_evaluated" xml:space="preserve">
+    <value>Define monitoramentos por Família de produtos</value>
+  </data>
+  <data name="standard" xml:space="preserve">
+    <value>Critério</value>
+  </data>
+  <data name="field_level" xml:space="preserve">
+    <value>Nível do campo</value>
+  </data>
+  <data name="field_level_popover" xml:space="preserve">
+    <value>Define em qual cabeçalho (Nível 1 ou Nível 2) o campo será inserido</value>
+  </data>
+  <data name="field_name" xml:space="preserve">
+    <value>Nome do campo</value>
+  </data>
+  <data name="header_fields" xml:space="preserve">
+    <value>Campos do cabeçalho</value>
+  </data>
+  <data name="absent" xml:space="preserve">
+    <value>Ausente</value>
+  </data>
+  <data name="allow_the_audit_of_detached_level3" xml:space="preserve">
+    <value>Permite lançamento de tarefa avulso</value>
+  </data>
+  <data name="allow_the_audit_of_detached_level3_popover" xml:space="preserve">
+    <value>Define se irá permitir lançamento de tarefa avulso</value>
+  </data>
+  <data name="conform" xml:space="preserve">
+    <value>Conforme</value>
+  </data>
+  <data name="frequency_popover" xml:space="preserve">
+    <value>Define a frequência que o monitoramento será feito/executado: diariamente, semanalmente, mensalmente, etc.</value>
+  </data>
+  <data name="level2_group_popover" xml:space="preserve">
+    <value>Define se haverá agrupamentos no monitoramento. Se houverem, crie os agrupamentos abaixo.</value>
+  </data>
+  <data name="level2_name" xml:space="preserve">
+    <value>Nome do Monitoramento</value>
+  </data>
+  <data name="level3_group" xml:space="preserve">
+    <value>Agrupamento de tarefas</value>
+  </data>
+  <data name="no" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="not_applicable_on_level_2" xml:space="preserve">
+    <value>Botão N/A no Monitoramento</value>
+  </data>
+  <data name="not_applicable_on_level_2_popover" xml:space="preserve">
+    <value>Define se haverá botão de não avaliado (n/a) no Monitoramento.</value>
+  </data>
+  <data name="not_conform" xml:space="preserve">
+    <value>Não conf.</value>
+  </data>
+  <data name="positive_value" xml:space="preserve">
+    <value>Valor Positivo</value>
+  </data>
+  <data name="present" xml:space="preserve">
+    <value>Presente</value>
+  </data>
+  <data name="range" xml:space="preserve">
+    <value>Intervalo</value>
+  </data>
+  <data name="recidivism" xml:space="preserve">
+    <value>Reincidência</value>
+  </data>
+  <data name="rule_for_recidivism" xml:space="preserve">
+    <value>Regra para reincidência</value>
+  </data>
+  <data name="save_button_on_level2_popover" xml:space="preserve">
+    <value>Define se haverá botão de salvar no monitoramento.</value>
+  </data>
+  <data name="save_button_on_level3" xml:space="preserve">
+    <value>Botão salvar na Tarefa</value>
+  </data>
+  <data name="save_button_on_level3_popover" xml:space="preserve">
+    <value>Define se haverá botão de salvar na tarefa.</value>
+  </data>
+  <data name="select_the_frequency" xml:space="preserve">
+    <value>Selecione a frequência</value>
+  </data>
+  <data name="type_of_data_entry" xml:space="preserve">
+    <value>Tipo de dados de entrada</value>
+  </data>
+  <data name="yes" xml:space="preserve">
+    <value>Sim</value>
+  </data>
+  <data name="id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="allow_level2_group_popover" xml:space="preserve">
+    <value>Define se existirão agrupadores de monitoramentos. Se sim, abre uma lista para criar os grupos.</value>
+  </data>
+  <data name="allow_specific_register_by_unit_popover" xml:space="preserve">
+    <value>Define se as unidades terão liberdade de editar o indicador.  Caso a resposta para essa pergunta seja sim, o campo de cadastros específicos será habilitado para a definição de quais edições estarão à disposição da unidade.</value>
+  </data>
+  <data name="has_alert" xml:space="preserve">
+    <value>Emitir alerta</value>
+  </data>
+  <data name="has_alert_popover" xml:space="preserve">
+    <value>Define se esse nível acionará alertas. As regras do alerta serão definidas posteriormente no vínculo entre nível 2 e nível 3.</value>
+  </data>
+  <data name="permanent" xml:space="preserve">
+    <value>Sim</value>
+  </data>
+  <data name="variable" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="clusters" xml:space="preserve">
+    <value>Clusters</value>
+  </data>
+  <data name="cluster_edit_delete" xml:space="preserve">
+    <value>Editar ou deletar o cluster</value>
+  </data>
+  <data name="cluster_list" xml:space="preserve">
+    <value>Lista de clusters</value>
+  </data>
+  <data name="cluster_name" xml:space="preserve">
+    <value>Nome do cluster</value>
+  </data>
+  <data name="cluster_points" xml:space="preserve">
+    <value>Pontos do cluster</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>Excluir</value>
+  </data>
+  <data name="edit" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="negative" xml:space="preserve">
+    <value>Negativo</value>
+  </data>
+  <data name="option" xml:space="preserve">
+    <value>Opção</value>
+  </data>
+  <data name="positive" xml:space="preserve">
+    <value>Positivo</value>
+  </data>
+  <data name="punishment_value" xml:space="preserve">
+    <value>Valor da punição/recompensa</value>
+  </data>
+  <data name="punishment_value_popover" xml:space="preserve">
+    <value>Define o valor de punição e/ou premiação atribuído às opções conforme o cadastro anterior</value>
+  </data>
+  <data name="customization" xml:space="preserve">
+    <value>Parametrização</value>
+  </data>
+  <data name="edit_level1" xml:space="preserve">
+    <value>Editar Indicador</value>
+  </data>
+  <data name="level1" xml:space="preserve">
+    <value>Indicador</value>
+  </data>
+  <data name="level2" xml:space="preserve">
+    <value>Monitoramento</value>
+  </data>
+  <data name="level3" xml:space="preserve">
+    <value>Tarefa</value>
+  </data>
+  <data name="new_level1" xml:space="preserve">
+    <value>Novo Indicador</value>
+  </data>
+  <data name="new_level2" xml:space="preserve">
+    <value>Novo Monitoramento</value>
+  </data>
+  <data name="new_level3" xml:space="preserve">
+    <value>Nova Tarefa</value>
+  </data>
+  <data name="main_data" xml:space="preserve">
+    <value>Dados Principais</value>
+  </data>
+  <data name="allow_the_edition_of_the_level3_connection" xml:space="preserve">
+    <value>Permite editar vínculo com a tarefa</value>
+  </data>
+  <data name="allow_the_edition_of_the_level3_connection_popover" xml:space="preserve">
+    <value>Define se as unidades poderão editar/criar os vínculos com as tarefas</value>
+  </data>
+  <data name="link_number_evaluation" xml:space="preserve">
+    <value>Link com o número da avaliação</value>
+  </data>
+  <data name="evaluation" xml:space="preserve">
+    <value>Avaliação</value>
+  </data>
+  <data name="group" xml:space="preserve">
+    <value>Grupo</value>
+  </data>
+  <data name="groups" xml:space="preserve">
+    <value>Grupos</value>
+  </data>
+  <data name="has_group_on_level3" xml:space="preserve">
+    <value>Possui grupos no nível 3</value>
+  </data>
+  <data name="level2_description" xml:space="preserve">
+    <value>Descrição do Monitoramento</value>
+  </data>
+  <data name="sample" xml:space="preserve">
+    <value>Amostra</value>
+  </data>
+  <data name="show_group_on_level3" xml:space="preserve">
+    <value>Mostrar as tarefas agrupadas no monitoramento</value>
+  </data>
+  <data name="counter" xml:space="preserve">
+    <value>Contador</value>
+  </data>
+  <data name="counters" xml:space="preserve">
+    <value>Contadores</value>
+  </data>
+  <data name="level3_description" xml:space="preserve">
+    <value>Descrição da tarefa</value>
+  </data>
+  <data name="level3_name" xml:space="preserve">
+    <value>Nome da tarefa</value>
+  </data>
+  <data name="local" xml:space="preserve">
+    <value>Local</value>
+  </data>
+  <data name="number_nc" xml:space="preserve">
+    <value>Desvios #</value>
+  </data>
+  <data name="repetition" xml:space="preserve">
+    <value>Reincidência</value>
+  </data>
+  <data name="save_level2" xml:space="preserve">
+    <value>Salve o Monitoramento</value>
+  </data>
+  <data name="save_level3" xml:space="preserve">
+    <value>Salve a Tarefa</value>
+  </data>
+  <data name="validation" xml:space="preserve">
+    <value>Vigência</value>
+  </data>
+  <data name="data_type_entry" xml:space="preserve">
+    <value>Tipo de Dados de Entrada</value>
+  </data>
+  <data name="maximum_range" xml:space="preserve">
+    <value>Limite Superior</value>
+  </data>
+  <data name="measurement_unit" xml:space="preserve">
+    <value>Unidade de Medida</value>
+  </data>
+  <data name="minimum_range" xml:space="preserve">
+    <value>Limite Inferior</value>
+  </data>
+  <data name="negative_value" xml:space="preserve">
+    <value>Valor negativo</value>
+  </data>
+  <data name="positive_negative" xml:space="preserve">
+    <value>Positivo / Negativo</value>
+  </data>
+  <data name="save" xml:space="preserve">
+    <value>Salvar</value>
+  </data>
+  <data name="values_between" xml:space="preserve">
+    <value>Valores entre</value>
+  </data>
+  <data name="include_options" xml:space="preserve">
+    <value>Incluir opção</value>
+  </data>
+  <data name="attach" xml:space="preserve">
+    <value>Vincular</value>
+  </data>
+  <data name="back" xml:space="preserve">
+    <value>Voltar</value>
+  </data>
+  <data name="inform_the_weight_of_the_level3" xml:space="preserve">
+    <value>Infome o peso do nível 3</value>
+  </data>
+  <data name="weight" xml:space="preserve">
+    <value>Peso</value>
+  </data>
+  <data name="defined_weight" xml:space="preserve">
+    <value>Peso definido</value>
+  </data>
+  <data name="error_select_consolidation" xml:space="preserve">
+    <value>É obrigatório selecionar o tipo de consolidação.</value>
+  </data>
+  <data name="save_level1" xml:space="preserve">
+    <value>Salve o Indicador</value>
+  </data>
+  <data name="saving_the_level1" xml:space="preserve">
+    <value>Salvando o Indicador</value>
+  </data>
+  <data name="saving_the_level2" xml:space="preserve">
+    <value>Salvando o Monitoramento</value>
+  </data>
+  <data name="saving_the_level3" xml:space="preserve">
+    <value>Salvando a Tarefa</value>
+  </data>
+  <data name="info" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="loading_the_level1" xml:space="preserve">
+    <value>Carregando o Indicador</value>
+  </data>
+  <data name="loading_the_level2" xml:space="preserve">
+    <value>Carregando o Monitoramento</value>
+  </data>
+  <data name="loading_the_level3" xml:space="preserve">
+    <value>Carregando a Tarefa</value>
+  </data>
+  <data name="removing_the_level3_group" xml:space="preserve">
+    <value>Removendo o grupo da tarefa</value>
+  </data>
+  <data name="confirm_the_action" xml:space="preserve">
+    <value>Confirme essa ação</value>
+  </data>
+  <data name="alert_rule" xml:space="preserve">
+    <value>Regra de Alerta</value>
+  </data>
+  <data name="samples_per_evaluation" xml:space="preserve">
+    <value>Amostras por Avaliação</value>
+  </data>
+  <data name="loading" xml:space="preserve">
+    <value>Carregando</value>
+  </data>
+  <data name="please_wait" xml:space="preserve">
+    <value>Por favor, espere um momento</value>
+  </data>
+  <data name="cluster" xml:space="preserve">
+    <value>Cluster</value>
+  </data>
+  <data name="company_register" xml:space="preserve">
+    <value>Cadastro da Empresa</value>
+  </data>
+  <data name="company_structure" xml:space="preserve">
+    <value>Estrutura da Empresa</value>
+  </data>
+  <data name="main" xml:space="preserve">
+    <value>Principal</value>
+  </data>
+  <data name="register" xml:space="preserve">
+    <value>Cadastros</value>
+  </data>
+  <data name="register_company_and_its_structure" xml:space="preserve">
+    <value>Registro de empresas e sua estrutura</value>
+  </data>
+  <data name="structure_register" xml:space="preserve">
+    <value>Cadastro de estrutura</value>
+  </data>
+  <data name="saving" xml:space="preserve">
+    <value>Salvando</value>
+  </data>
+  <data name="structure_group" xml:space="preserve">
+    <value>Estrutura do Grupo</value>
+  </data>
+  <data name="company" xml:space="preserve">
+    <value>Empresa</value>
+  </data>
+  <data name="description" xml:space="preserve">
+    <value>Descrição</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
+  <data name="username_or_password_are_incorrect" xml:space="preserve">
+    <value>O usuário ou senha estão incorretos</value>
+  </data>
+  <data name="data_collection" xml:space="preserve">
+    <value>Coleta de Dados</value>
+  </data>
+  <data name="management" xml:space="preserve">
+    <value>Gestão</value>
+  </data>
+  <data name="new_cluster" xml:space="preserve">
+    <value>Novo cluster</value>
+  </data>
+  <data name="new_group" xml:space="preserve">
+    <value>Novo grupo</value>
+  </data>
+  <data name="new_structure" xml:space="preserve">
+    <value>Nova estrutura empresarial</value>
+  </data>
+  <data name="departments" xml:space="preserve">
+    <value>Departamentos</value>
+  </data>
+  <data name="new_department" xml:space="preserve">
+    <value>Novo departamento</value>
+  </data>
+  <data name="measurement_units" xml:space="preserve">
+    <value>Unidades de Medida</value>
+  </data>
+  <data name="company_number" xml:space="preserve">
+    <value>Número da Empresa</value>
+  </data>
+  <data name="db_server" xml:space="preserve">
+    <value>Servidor Banco de Dados</value>
+  </data>
+  <data name="initials" xml:space="preserve">
+    <value>Sigla</value>
+  </data>
+  <data name="ip_server" xml:space="preserve">
+    <value>IP do Servidor</value>
+  </data>
+  <data name="sif" xml:space="preserve">
+    <value>SIF</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Fechar</value>
+  </data>
+  <data name="cep_desossa" xml:space="preserve">
+    <value>CEP Desossa</value>
+  </data>
+  <data name="cep_recortes" xml:space="preserve">
+    <value>CEP Recortes</value>
+  </data>
+  <data name="nqa" xml:space="preserve">
+    <value>NQA</value>
+  </data>
+  <data name="pcc1b" xml:space="preserve">
+    <value>PCC1B</value>
+  </data>
+  <data name="vacuo_grd" xml:space="preserve">
+    <value>Vácuo GRD</value>
+  </data>
+  <data name="volume" xml:space="preserve">
+    <value>Volume</value>
+  </data>
+  <data name="resource_id" xml:space="preserve">
+    <value>pt_br</value>
+  </data>
+  <data name="_new" xml:space="preserve">
+    <value>Novo</value>
+  </data>
+  <data name="details" xml:space="preserve">
+    <value>Detalhes</value>
+  </data>
+  <data name="add_date" xml:space="preserve">
+    <value>Data de adição</value>
+  </data>
+  <data name="alter_date" xml:space="preserve">
+    <value>Data de alteração</value>
+  </data>
+  <data name="back_to_list" xml:space="preserve">
+    <value>Voltar para a lista</value>
+  </data>
+  <data name="cluster_group" xml:space="preserve">
+    <value>Grupo de Cluster</value>
+  </data>
+  <data name="create" xml:space="preserve">
+    <value>Criar</value>
+  </data>
+  <data name="is_active" xml:space="preserve">
+    <value>Está ativo</value>
+  </data>
+  <data name="confirm_delete" xml:space="preserve">
+    <value>Deseja deletar esse registro</value>
+  </data>
+  <data name="frequency1_popover" xml:space="preserve">
+    <value>Define a frequência que o indicador será analisado: diariamente, semanalmente, mensalmente, etc.</value>
+  </data>
+  <data name="quantity" xml:space="preserve">
+    <value>Quantidade</value>
+  </data>
+  <data name="headers" xml:space="preserve">
+    <value>Cabeçalhos</value>
+  </data>
+  <data name="has_sample_total" xml:space="preserve">
+    <value>Tem amostra total</value>
+  </data>
+  <data name="controls" xml:space="preserve">
+    <value>Controles</value>
+  </data>
+  <data name="daily_apointments" xml:space="preserve">
+    <value>Apontamentos Diários</value>
+  </data>
+  <data name="daily_report" xml:space="preserve">
+    <value>Relatório Diário</value>
+  </data>
+  <data name="family" xml:space="preserve">
+    <value>Familias</value>
+  </data>
+  <data name="scorecard" xml:space="preserve">
+    <value>Scorecard</value>
+  </data>
+  <data name="users" xml:space="preserve">
+    <value>Usuários</value>
+  </data>
+  <data name="email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="new_user" xml:space="preserve">
+    <value>Novo usuário</value>
+  </data>
+  <data name="edit_user" xml:space="preserve">
+    <value>Editar usuário</value>
+  </data>
+  <data name="confirm_password" xml:space="preserve">
+    <value>Confirmar a senha</value>
+  </data>
+  <data name="phone" xml:space="preserve">
+    <value>Telefone</value>
+  </data>
+  <data name="role" xml:space="preserve">
+    <value>Regra</value>
+  </data>
+  <data name="profiles" xml:space="preserve">
+    <value>Perfis</value>
+  </data>
+  <data name="profiles_and_roles" xml:space="preserve">
+    <value>Perfis e Regras</value>
+  </data>
+  <data name="roles" xml:space="preserve">
+    <value>Regras</value>
+  </data>
+  <data name="roles_sgq" xml:space="preserve">
+    <value>Regras SGQ</value>
+  </data>
+  <data name="screen_components" xml:space="preserve">
+    <value>Componentes de Tela</value>
+  </data>
+  <data name="new_role" xml:space="preserve">
+    <value>Nova Regra</value>
+  </data>
+  <data name="new_component" xml:space="preserve">
+    <value>Novo Componente</value>
+  </data>
+  <data name="component" xml:space="preserve">
+    <value>Componente</value>
+  </data>
+  <data name="hashkey" xml:space="preserve">
+    <value>HashKey</value>
+  </data>
+  <data name="type" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="screen_component" xml:space="preserve">
+    <value>Componente de Tela</value>
+  </data>
+  <data name="nc_report" xml:space="preserve">
+    <value>Relatório de Não Conformidade</value>
+  </data>
+  <data name="hascompleteevaluation" xml:space="preserve">
+    <value>Exige Avaliação Completa</value>
+  </data>
+  <data name="role_jbs" xml:space="preserve">
+    <value>Regra JBS</value>
+  </data>
+  <data name="role_sgq" xml:space="preserve">
+    <value>Regra SGQ</value>
+  </data>
+  <data name="change_password" xml:space="preserve">
+    <value>Mudar a senha</value>
+  </data>
+  <data name="do_not_change_password" xml:space="preserve">
+    <value>Não mudar a senha</value>
+  </data>
+  <data name="fullname" xml:space="preserve">
+    <value>Nome Completo</value>
+  </data>
+  <data name="fullname_required" xml:space="preserve">
+    <value>Preenchimento do nome completo é obrigatório</value>
+  </data>
+  <data name="invalid_password" xml:space="preserve">
+    <value>A senha preenchida é inválida</value>
+  </data>
+  <data name="password_required" xml:space="preserve">
+    <value>Preenchimento da senha é obrigatória</value>
+  </data>
+  <data name="username_required" xml:space="preserve">
+    <value>Preenchimento do nome  do usuário é obrigatório</value>
+  </data>
+  <data name="user_save_success" xml:space="preserve">
+    <value>Usuário salvo com sucesso</value>
+  </data>
+  <data name="enter" xml:space="preserve">
+    <value>Entrar</value>
+  </data>
+  <data name="entering" xml:space="preserve">
+    <value>Entrando</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>Erro</value>
+  </data>
+  <data name="invalid_user_or_password" xml:space="preserve">
+    <value>Usuário ou senha inválidos</value>
+  </data>
+  <data name="loading_indicators" xml:space="preserve">
+    <value>Carregando indicadores</value>
+  </data>
+  <data name="recording_information" xml:space="preserve">
+    <value>Gravando informações</value>
+  </data>
+  <data name="verifying_keys" xml:space="preserve">
+    <value>Verificando chaves</value>
+  </data>
+  <data name="verifying_users" xml:space="preserve">
+    <value>Verificando usuários</value>
+  </data>
+  <data name="version" xml:space="preserve">
+    <value>Versão</value>
+  </data>
+  <data name="alter_collection_date" xml:space="preserve">
+    <value>Altere a data de coleta</value>
+  </data>
+  <data name="attention_lose_information" xml:space="preserve">
+    <value>Atenção! Se você continuar, você perderá informações.</value>
+  </data>
+  <data name="change_date_collection_need_to_be_online" xml:space="preserve">
+    <value>Para mudar a data de coleta, você precisa estar on-line</value>
+  </data>
+  <data name="changing_date" xml:space="preserve">
+    <value>Alterando Data</value>
+  </data>
+  <data name="changing_date_please_wait" xml:space="preserve">
+    <value>Estamos alterando a data de coleta, por favor aguarde</value>
+  </data>
+  <data name="clear_database" xml:space="preserve">
+    <value>Limpar banco de dados</value>
+  </data>
+  <data name="consolidated_results" xml:space="preserve">
+    <value>Resultados consolidados</value>
+  </data>
+  <data name="do_you_want_to_continue" xml:space="preserve">
+    <value>Deseja continuar?</value>
+  </data>
+  <data name="everything_synchronized_sucessfully" xml:space="preserve">
+    <value>Todos os dados foram sincronizados com sucesso</value>
+  </data>
+  <data name="first_time_login_error" xml:space="preserve">
+    <value>O primeiro login precisa ser conectado à unidade.</value>
+  </data>
+  <data name="indicators_error_try_again" xml:space="preserve">
+    <value>Não foi possível sincronizar os indicadores</value>
+  </data>
+  <data name="inform_retroactive_date" xml:space="preserve">
+    <value>Informa a data retroativa</value>
+  </data>
+  <data name="keys_error_try_again" xml:space="preserve">
+    <value>Não foi possível carregar as chaves, tente novamente</value>
+  </data>
+  <data name="login_error_try_again" xml:space="preserve">
+    <value>Não foi possível logar e sincronizar, tente novamente.</value>
+  </data>
+  <data name="not_connected_to_network" xml:space="preserve">
+    <value>Você parece não estar conectado a rede da JBS. Peça ajuda ao pessoal de TI</value>
+  </data>
+  <data name="no_data_to_send" xml:space="preserve">
+    <value>Sem dados para enviar</value>
+  </data>
+  <data name="no_volumn_level" xml:space="preserve">
+    <value>Não há volume de coleta nesse indicador!</value>
+  </data>
+  <data name="online_to_login" xml:space="preserve">
+    <value>Você precisa estar on-line para efetuar o login.</value>
+  </data>
+  <data name="preparing_the_data_to_send" xml:space="preserve">
+    <value>Preparando os dados para o envio</value>
+  </data>
+  <data name="ready" xml:space="preserve">
+    <value>Pronto</value>
+  </data>
+  <data name="receiving_data" xml:space="preserve">
+    <value>Recebendo dados</value>
+  </data>
+  <data name="server_not_found" xml:space="preserve">
+    <value>Servidor não encontrado</value>
+  </data>
+  <data name="synchronization_error" xml:space="preserve">
+    <value>Erro de sincronização</value>
+  </data>
+  <data name="synchronize_data_before_change_unit" xml:space="preserve">
+    <value>Tem dados de outra unidade ainda não sincronizados. Sincronize antes de trocar de unidade.</value>
+  </data>
+  <data name="synchronizing" xml:space="preserve">
+    <value>Sincronizando</value>
+  </data>
+  <data name="try_again_contact_support" xml:space="preserve">
+    <value>Tente novamente daqui a pouco. Se o erro persistir, entre em contato com o suporte.</value>
+  </data>
+  <data name="unit_change" xml:space="preserve">
+    <value>Troca de unidade</value>
+  </data>
+  <data name="unsyncronized_data" xml:space="preserve">
+    <value>There's still unsync data</value>
+  </data>
+  <data name="user_information_error_try_again" xml:space="preserve">
+    <value>Não foi possível verificar as informações do usuário, tente novamente</value>
+  </data>
+  <data name="user_load_error_try_again" xml:space="preserve">
+    <value>Não foi possível carregar os usuário, tente novamente</value>
+  </data>
+  <data name="verifying_if_theres_data_to_receive" xml:space="preserve">
+    <value>Verificando se existem dados para receber</value>
+  </data>
+  <data name="verifying_the_collected_data" xml:space="preserve">
+    <value>Verificando os dados coletados</value>
+  </data>
+  <data name="warning" xml:space="preserve">
+    <value>Alerta</value>
+  </data>
+  <data name="you_are_not_online" xml:space="preserve">
+    <value>Você não está online.</value>
+  </data>
+  <data name="action_not_allowed" xml:space="preserve">
+    <value>Ação não permitida</value>
+  </data>
+  <data name="ca_pending" xml:space="preserve">
+    <value>Você não pode mudar de avaliação enquando houver ações corretivas pendentes na avaliação</value>
+  </data>
+  <data name="inactive" xml:space="preserve">
+    <value>Inativo</value>
+  </data>
+  <data name="inactive_for" xml:space="preserve">
+    <value>Você ficou inativo por</value>
+  </data>
+  <data name="logging_in" xml:space="preserve">
+    <value>Entrando</value>
+  </data>
+  <data name="login_again" xml:space="preserve">
+    <value>minutos. Faça o login novamente.</value>
+  </data>
+  <data name="mornitorings_pedding" xml:space="preserve">
+    <value>Você não pode mudar de avaliação enquando houver monitoramentos na avaliação</value>
+  </data>
+  <data name="not_finished" xml:space="preserve">
+    <value>não encerrada</value>
+  </data>
+  <data name="number_of_animals" xml:space="preserve">
+    <value>O número de animais mal avaliados precisa ser menor ou igual ao número de animais avaliados.</value>
+  </data>
+  <data name="required_fields_open_screen" xml:space="preserve">
+    <value>Existem campos de preenchimento obrigatórios neste monitoramento. Já deixamos a tela aberta para você preenche-los corretamente</value>
+  </data>
+  <data name="required_fields_unfilled" xml:space="preserve">
+    <value>Campos obrigatórios não preenchidos</value>
+  </data>
+  <data name="required_items_not_selected" xml:space="preserve">
+    <value>Um dos items obrigatórios não foram selecionados</value>
+  </data>
+  <data name="sequential_must_be_filled" xml:space="preserve">
+    <value>O sequencial precisa ser preenchido</value>
+  </data>
+  <data name="side_must_be_filled" xml:space="preserve">
+    <value>A banda precisa ser preenchida.</value>
+  </data>
+  <data name="the_number_parts_filled" xml:space="preserve">
+    <value>O número de peças avaliadas precisa ser preenchido.</value>
+  </data>
+  <data name="total_evaluated_parts_exceed" xml:space="preserve">
+    <value>O total de peças avaliadas excede a quantidade de amostras.</value>
+  </data>
+  <data name="trying_again" xml:space="preserve">
+    <value>Tentando novamente</value>
+  </data>
+  <data name="you_need_to_be_connected" xml:space="preserve">
+    <value>Você precisa entrar e sincronizar para efetuar o login.</value>
+  </data>
+  <data name="allowed" xml:space="preserve">
+    <value>permitidas/permitidos</value>
+  </data>
+  <data name="change_unit_must_be_online" xml:space="preserve">
+    <value>Ops! Você não está online', 'Para alterar a unidade você precisa estar online'</value>
+  </data>
+  <data name="changing_unit_preferences" xml:space="preserve">
+    <value>Alterando unidade. Estamos alterando as preferências de unidade, aguarde um momento...</value>
+  </data>
+  <data name="collection_dropped" xml:space="preserve">
+    <value>Verificamos que a coleta que está fazendo já foi lançada. Esta coleta será descartada</value>
+  </data>
+  <data name="day_target_exceed" xml:space="preserve">
+    <value>Foi excedida a meta dia</value>
+  </data>
+  <data name="duplicated_collection" xml:space="preserve">
+    <value>Coleta Duplicada</value>
+  </data>
+  <data name="error_recovery_sequential" xml:space="preserve">
+    <value>Problema na recuperação do próximo sequencial, deseja continuar com o próximo ou aguardar o automático</value>
+  </data>
+  <data name="evaluation_target" xml:space="preserve">
+    <value>e a meta avaliação</value>
+  </data>
+  <data name="fail_description_is_empty" xml:space="preserve">
+    <value>A falha da descrição está vazia.</value>
+  </data>
+  <data name="fill_header_fields" xml:space="preserve">
+    <value>Preencha os campos de cabeçalho que são obrigatórios</value>
+  </data>
+  <data name="fill_the_corrective_action" xml:space="preserve">
+    <value>Preencha a ação corretiva primeiro.</value>
+  </data>
+  <data name="fired" xml:space="preserve">
+    <value>Disparado</value>
+  </data>
+  <data name="first_synchronization_of_the_day" xml:space="preserve">
+    <value>Primeiro sincronismo do dia</value>
+  </data>
+  <data name="immediate_corrective_action_is_empty" xml:space="preserve">
+    <value>A ação corretiva imediata está vazia.</value>
+  </data>
+  <data name="loading_next_sequential" xml:space="preserve">
+    <value>Carregando o próximo sequencial</value>
+  </data>
+  <data name="nc_of" xml:space="preserve">
+    <value>NC de</value>
+  </data>
+  <data name="nc_target_exceed" xml:space="preserve">
+    <value>Foi excedida a meta de NC</value>
+  </data>
+  <data name="problem_occur" xml:space="preserve">
+    <value>Ocorreu um problema</value>
+  </data>
+  <data name="sequential_side_already_filled" xml:space="preserve">
+    <value>O sequencial dessa banda já foi preenchido.</value>
+  </data>
+  <data name="some_problems_occur" xml:space="preserve">
+    <value>Alguns problemas ocorreram</value>
+  </data>
+  <data name="supervisor_manager_director" xml:space="preserve">
+    <value>O Supervisor, o Gerente e o Diretor da área serão notificados</value>
+  </data>
+  <data name="supervisor_manager_notification" xml:space="preserve">
+    <value>O Supervisor e o Gerente da área serão notificados.</value>
+  </data>
+  <data name="supervisor_notification" xml:space="preserve">
+    <value>O Supervisor da área será notificado</value>
+  </data>
+  <data name="target_exceed" xml:space="preserve">
+    <value>Foi excedida a meta</value>
+  </data>
+  <data name="tolerance_target_exceed" xml:space="preserve">
+    <value>Foi excedida a meta tolerância</value>
+  </data>
+  <data name="unit_changed_login_again" xml:space="preserve">
+    <value>Unidade Alterada. A unidade foi alterada, efetue o login novamente para atualizar os indicadores</value>
+  </data>
+  <data name="update_parameters_must_be_online" xml:space="preserve">
+    <value>Para atualizar os parâmetros, você precisa estar on-line</value>
+  </data>
+  <data name="updating_parameters" xml:space="preserve">
+    <value>Atualizando Parâmetros</value>
+  </data>
+  <data name="user_doesnt_belong_unit" xml:space="preserve">
+    <value>Este usuário não pertence a esta unidade</value>
+  </data>
+  <data name="user_has_no_permission_fill_form" xml:space="preserve">
+    <value>O usuário não tem permissão para assinar este formulário.</value>
+  </data>
+  <data name="verifying_parameters" xml:space="preserve">
+    <value>Sincronizando a parametrização</value>
+  </data>
+  <data name="has_group_level2" xml:space="preserve">
+    <value>Agrupamento no Monitoramento</value>
+  </data>
+  <data name="acceptable_value_equal_or_greater_than" xml:space="preserve">
+    <value>O valor aceitável deve ser igual ou maior que</value>
+  </data>
+  <data name="acceptable_value_less_than" xml:space="preserve">
+    <value>O valor aceitável deve ser menor que</value>
+  </data>
+  <data name="and" xml:space="preserve">
+    <value>e</value>
+  </data>
+  <data name="and_greater_than" xml:space="preserve">
+    <value>e maior que </value>
+  </data>
+  <data name="cluster_can_not_be_duplicated" xml:space="preserve">
+    <value>O cluster não pode ser duplicado, por favor verifique a seleção.</value>
+  </data>
+  <data name="data_already_register_on_company" xml:space="preserve">
+    <value>Dados já cadastrados para a empresa</value>
+  </data>
+  <data name="done" xml:space="preserve">
+    <value>Feito</value>
+  </data>
+  <data name="fill_the_alert_rule_value" xml:space="preserve">
+    <value>É necessário preencher o campo Valor da Regra de alerta.</value>
+  </data>
+  <data name="fill_the_cluster_points" xml:space="preserve">
+    <value>Por favor preencha o campo pontos do cluster</value>
+  </data>
+  <data name="fill_the_numeric_field_name" xml:space="preserve">
+    <value>Digite o nome para o campo numéico</value>
+  </data>
+  <data name="fill_the_permanency" xml:space="preserve">
+    <value>Preencha a vigência.</value>
+  </data>
+  <data name="group_name" xml:space="preserve">
+    <value>Nome do grupo</value>
+  </data>
+  <data name="header_name" xml:space="preserve">
+    <value>Nome do cabeçalho</value>
+  </data>
+  <data name="inform_the_nc_number" xml:space="preserve">
+    <value>É necessário informar o Número de NC</value>
+  </data>
+  <data name="invalid_evaluations_number" xml:space="preserve">
+    <value>Número de avaliações inválido.</value>
+  </data>
+  <data name="invalid_samples_number" xml:space="preserve">
+    <value>Número de amostras inválido.</value>
+  </data>
+  <data name="invalid_value_for" xml:space="preserve">
+    <value>Valor inválido para:</value>
+  </data>
+  <data name="level" xml:space="preserve">
+    <value>Nível</value>
+  </data>
+  <data name="level2_linked_to_level3_successfully" xml:space="preserve">
+    <value>Tarefa vinculada ao Monitoramento com sucesso!</value>
+  </data>
+  <data name="linked" xml:space="preserve">
+    <value>Vinculado</value>
+  </data>
+  <data name="options" xml:space="preserve">
+    <value>Opções</value>
+  </data>
+  <data name="or_greater_than" xml:space="preserve">
+    <value>ou maior que</value>
+  </data>
+  <data name="pattern" xml:space="preserve">
+    <value>Padrão</value>
+  </data>
+  <data name="percentage" xml:space="preserve">
+    <value>Porcentagem</value>
+  </data>
+  <data name="preview" xml:space="preserve">
+    <value>Visualização</value>
+  </data>
+  <data name="required" xml:space="preserve">
+    <value>Obrigatório</value>
+  </data>
+  <data name="required_field" xml:space="preserve">
+    <value>Campo obrigatório:</value>
+  </data>
+  <data name="required_field_was_not_filled" xml:space="preserve">
+    <value>Um campo obrigatório não foi preenchido:</value>
+  </data>
+  <data name="samples" xml:space="preserve">
+    <value>Amostras</value>
+  </data>
+  <data name="select_negative_value_for_binary_field" xml:space="preserve">
+    <value>Por favor, selecione o valor negative para o campo binário.</value>
+  </data>
+  <data name="select_not_conformity_rule" xml:space="preserve">
+    <value>Selecione a regra de não conformidade</value>
+  </data>
+  <data name="select_positive_value_for_binary_field" xml:space="preserve">
+    <value>Por favor, selecione o valor positivo para o campo binário.</value>
+  </data>
+  <data name="select_the_cluster" xml:space="preserve">
+    <value>Por favor selecione o cluster.</value>
+  </data>
+  <data name="select_the_counter" xml:space="preserve">
+    <value>Por favor selecione o contador.</value>
+  </data>
+  <data name="select_the_critical_level" xml:space="preserve">
+    <value>Por favor, selecione o nível critico.</value>
+  </data>
+  <data name="select_the_group" xml:space="preserve">
+    <value>Por favor selecione o grupo.</value>
+  </data>
+  <data name="select_the_header_level" xml:space="preserve">
+    <value>Selecione o nível de cabeçalho</value>
+  </data>
+  <data name="select_the_level2" xml:space="preserve">
+    <value>É necessario selecionar o monitoramento</value>
+  </data>
+  <data name="select_the_level3" xml:space="preserve">
+    <value>É necessario selecionar a tarefa</value>
+  </data>
+  <data name="select_the_measurement_unit" xml:space="preserve">
+    <value>Por favor selecione a unidade de medida.</value>
+  </data>
+  <data name="select_the_not_conformity_rule" xml:space="preserve">
+    <value>Selecione a regra de não conformidade</value>
+  </data>
+  <data name="select_the_place" xml:space="preserve">
+    <value>Por favor selecione o local.</value>
+  </data>
+  <data name="show_on_this_level" xml:space="preserve">
+    <value>Mostrar nesse nível</value>
+  </data>
+  <data name="success" xml:space="preserve">
+    <value>Sucesso</value>
+  </data>
+  <data name="there_id_not_a_pattern_value" xml:space="preserve">
+    <value>Não existe mais um valor padrão.</value>
+  </data>
+  <data name="there_is_group_for_input" xml:space="preserve">
+    <value>Já cadastrou esse grupo para o input</value>
+  </data>
+  <data name="value_is_acceptable_between" xml:space="preserve">
+    <value>O valor é aceitável quando esta entre</value>
+  </data>
+  <data name="value_is_acceptable_less_than" xml:space="preserve">
+    <value>O valor e aceitavel quando e menor que</value>
+  </data>
+  <data name="access_denied" xml:space="preserve">
+    <value>Acesso negado</value>
+  </data>
+  <data name="action_plan" xml:space="preserve">
+    <value>Plano de Ação</value>
+  </data>
+  <data name="add" xml:space="preserve">
+    <value>Adicionar</value>
+  </data>
+  <data name="chronic_problems_and_anomaly_reports" xml:space="preserve">
+    <value>Problemas Crônicos e Relatos de Anomalia</value>
+  </data>
+  <data name="collection_date" xml:space="preserve">
+    <value>Data da coleta</value>
+  </data>
+  <data name="collection_reports" xml:space="preserve">
+    <value>Relatórios de coletas</value>
+  </data>
+  <data name="daily_meeting" xml:space="preserve">
+    <value>Reunião Diária</value>
+  </data>
+  <data name="data_collection_description" xml:space="preserve">
+    <value>Descrição da Coleta</value>
+  </data>
+  <data name="data_collect_execution_and_action_plan" xml:space="preserve">
+    <value>Execução da Coleta de dados e Planos de Ação</value>
+  </data>
+  <data name="general_view_of_the_area" xml:space="preserve">
+    <value>Visão Geral da Área</value>
+  </data>
+  <data name="indicators_evolution" xml:space="preserve">
+    <value>Evolutivo dos indicadores</value>
+  </data>
+  <data name="insert" xml:space="preserve">
+    <value>Inserir</value>
+  </data>
+  <data name="letters_cep" xml:space="preserve">
+    <value>Cartas CEP</value>
+  </data>
+  <data name="not_conformities" xml:space="preserve">
+    <value>Não Conformidades</value>
+  </data>
+  <data name="online_to_change_language" xml:space="preserve">
+    <value>Você precisa estar online para mudar o idioma.</value>
+  </data>
+  <data name="planning" xml:space="preserve">
+    <value>Planejamento</value>
+  </data>
+  <data name="result_evaluation_and_deviation_communication" xml:space="preserve">
+    <value>Avaliação de Resultados e Comunicacão dos Desvios</value>
+  </data>
+  <data name="sgq_using" xml:space="preserve">
+    <value>Utilização do SGQ</value>
+  </data>
+  <data name="tipification_verification" xml:space="preserve">
+    <value>Verificação do tipificação</value>
+  </data>
+  <data name="_language" xml:space="preserve">
+    <value>pt-br</value>
+  </data>
+  <data name="current_evaluation" xml:space="preserve">
+    <value>Avaliação Completa</value>
+  </data>
+  <data name="current_sample_defects" xml:space="preserve">
+    <value>Defeitos Amostra Atual</value>
+  </data>
+  <data name="current_side" xml:space="preserve">
+    <value>Amostra Atual</value>
+  </data>
+  <data name="defects_evaluate" xml:space="preserve">
+    <value>Defeitos Avaliação</value>
+  </data>
+  <data name="evaluation_complete" xml:space="preserve">
+    <value>Avaliação Completa</value>
+  </data>
+  <data name="level2_defects" xml:space="preserve">
+    <value>Defeitos Monitoramento</value>
+  </data>
+  <data name="three_more_defects" xml:space="preserve">
+    <value>3 ou mais Defeitos</value>
+  </data>
+  <data name="total_defects" xml:space="preserve">
+    <value>Defeitos na amostra</value>
+  </data>
+  <data name="level1_line" xml:space="preserve">
+    <value>Linha do indicador</value>
+  </data>
+  <data name="level2_header" xml:space="preserve">
+    <value>Cabeçalho do monitoramento</value>
+  </data>
+  <data name="level2_line" xml:space="preserve">
+    <value>Linha do monitoramento</value>
+  </data>
+  <data name="level3_header" xml:space="preserve">
+    <value>Cabeçalho da tarefa</value>
+  </data>
+  <data name="select_the_shift" xml:space="preserve">
+    <value>Selecione o turno...</value>
+  </data>
+  <data name="shift_a" xml:space="preserve">
+    <value>Turno 1</value>
+  </data>
+  <data name="shift_b" xml:space="preserve">
+    <value>Turno 2</value>
+  </data>
+  <data name="select_the_period" xml:space="preserve">
+    <value>Selecione o período...</value>
+  </data>
+  <data name="cannot_finish_action" xml:space="preserve">
+    <value>Não foi possivel concluir a ação.</value>
+  </data>
+  <data name="consolidation" xml:space="preserve">
+    <value>Consolidação</value>
+  </data>
+  <data name="data_consolidated" xml:space="preserve">
+    <value>Dados consolidados</value>
+  </data>
+  <data name="data_not_saved_continue" xml:space="preserve">
+    <value>Existem dados que não foram salvos. Deseja continuar?</value>
+  </data>
+  <data name="ev" xml:space="preserve">
+    <value>Av.</value>
+  </data>
+  <data name="evaluation_and_sample" xml:space="preserve">
+    <value>Avaliação e Amostra</value>
+  </data>
+  <data name="goal" xml:space="preserve">
+    <value>Meta</value>
+  </data>
+  <data name="results" xml:space="preserve">
+    <value>Resultados</value>
+  </data>
+  <data name="sd" xml:space="preserve">
+    <value>Am.</value>
+  </data>
+  <data name="sending" xml:space="preserve">
+    <value>Enviando</value>
+  </data>
+  <data name="slaughter" xml:space="preserve">
+    <value>Indicadores</value>
+  </data>
+  <data name="audit_information" xml:space="preserve">
+    <value>Informação da Auditoria</value>
+  </data>
+  <data name="corrective_action" xml:space="preserve">
+    <value>Ação Corretiva</value>
+  </data>
+  <data name="corrective_action_taken" xml:space="preserve">
+    <value>Ação Corretiva Tomada</value>
+  </data>
+  <data name="date_time" xml:space="preserve">
+    <value>Data/Hora</value>
+  </data>
+  <data name="failure_description" xml:space="preserve">
+    <value>Descrição da Falha</value>
+  </data>
+  <data name="immediate_corrective_action" xml:space="preserve">
+    <value>Ação Corretiva Imediata</value>
+  </data>
+  <data name="initial_date" xml:space="preserve">
+    <value>Data Inicial</value>
+  </data>
+  <data name="preventive_measure" xml:space="preserve">
+    <value>Acão Preventiva</value>
+  </data>
+  <data name="product_disposition" xml:space="preserve">
+    <value>Disposição do produto</value>
+  </data>
+  <data name="select_the_period_first" xml:space="preserve">
+    <value>Selecione o período antes de entrar no indicador</value>
+  </data>
+  <data name="sign" xml:space="preserve">
+    <value>Assinar</value>
+  </data>
+  <data name="slaughter_signature" xml:space="preserve">
+    <value>Assinatura do abate</value>
+  </data>
+  <data name="technical_signature" xml:space="preserve">
+    <value>Assinatura Técnica</value>
+  </data>
+  <data name="number_of_evaluation_completed" xml:space="preserve">
+    <value>O número de avaliações desse indicador foi completado.</value>
+  </data>
+  <data name="audit" xml:space="preserve">
+    <value>Indicador</value>
+  </data>
+  <data name="defects_per_audit" xml:space="preserve">
+    <value>NC Por Indicador</value>
+  </data>
+  <data name="defects_per_monitoring" xml:space="preserve">
+    <value>NC Por Monitoramento</value>
+  </data>
+  <data name="defects_per_tasks" xml:space="preserve">
+    <value>NC Por Tarefa</value>
+  </data>
+  <data name="defects_per_unit" xml:space="preserve">
+    <value>NC Por Unidade</value>
+  </data>
+  <data name="defects_reports" xml:space="preserve">
+    <value>Não Conformidades</value>
+  </data>
+  <data name="derivation" xml:space="preserve">
+    <value>Conforme</value>
+  </data>
+  <data name="max_interval" xml:space="preserve">
+    <value>Intervalo Máximo</value>
+  </data>
+  <data name="min_interval" xml:space="preserve">
+    <value>Intervalo Mínimo</value>
+  </data>
+  <data name="monitoring" xml:space="preserve">
+    <value>Monitoramento</value>
+  </data>
+  <data name="na" xml:space="preserve">
+    <value>Não Avaliado</value>
+  </data>
+  <data name="nonconformity" xml:space="preserve">
+    <value>NC</value>
+  </data>
+  <data name="number_samplers" xml:space="preserve">
+    <value>Numero Amostras</value>
+  </data>
+  <data name="pareto_chart" xml:space="preserve">
+    <value>Grafico de Pareto</value>
+  </data>
+  <data name="refresh" xml:space="preserve">
+    <value>Atualizar</value>
+  </data>
+  <data name="select_the_unit_first" xml:space="preserve">
+    <value>Por favor selecione uma unidade.</value>
+  </data>
+  <data name="task" xml:space="preserve">
+    <value>Tarefa</value>
+  </data>
+  <data name="weighted_defects" xml:space="preserve">
+    <value>Não Conforme (Com peso)</value>
+  </data>
+  <data name="weighted_ev" xml:space="preserve">
+    <value>Avaliado (Com peso)</value>
+  </data>
+  <data name="clean_db" xml:space="preserve">
+    <value>Limpar banco de dados</value>
+  </data>
+  <data name="logout" xml:space="preserve">
+    <value>Sair</value>
+  </data>
+  <data name="remove_signature" xml:space="preserve">
+    <value>Remover assinatura</value>
+  </data>
+  <data name="show_counters" xml:space="preserve">
+    <value>Mostrar contadores</value>
+  </data>
+  <data name="sync_parameretrization" xml:space="preserve">
+    <value>Sincronizar parametrização</value>
+  </data>
+  <data name="sync_results" xml:space="preserve">
+    <value>Sincronizar resultados</value>
+  </data>
+  <data name="view_db" xml:space="preserve">
+    <value>Visualizar banco de dados</value>
+  </data>
+  <data name="view_log" xml:space="preserve">
+    <value>Visualizar log</value>
+  </data>
+  <data name="auto_send_off" xml:space="preserve">
+    <value>Envio automático desligado</value>
+  </data>
+  <data name="auto_send_on" xml:space="preserve">
+    <value>Envio automático ligado</value>
+  </data>
+  <data name="sync_finished" xml:space="preserve">
+    <value>Sincronização feita com sucesso.</value>
+  </data>
+  <data name="control_charts" xml:space="preserve">
+    <value>Cartas CEP</value>
+  </data>
+  <data name="statistical_report" xml:space="preserve">
+    <value>Relatório Estatístico</value>
+  </data>
+  <data name="impossible_refresh_result" xml:space="preserve">
+    <value>Não foi possível atualizar o resultado</value>
+  </data>
+  <data name="registry_alter_success" xml:space="preserve">
+    <value>Registro alterado com sucesso. (por favor atualize a tabela de apontamentos diários).</value>
+  </data>
+  <data name="phase" xml:space="preserve">
+    <value>Fase</value>
+  </data>
+  <data name="perfil_user" xml:space="preserve">
+    <value>Perfil de Usuário</value>
+  </data>
+  <data name="old_password" xml:space="preserve">
+    <value>Senha Antiga</value>
+  </data>
+  <data name="confirmation_password_required" xml:space="preserve">
+    <value>Senha de Confirmação Necessária</value>
+  </data>
+  <data name="old_password_required" xml:space="preserve">
+    <value>Senha Antiga Requirida</value>
+  </data>
+  <data name="Passwords_do_not_match" xml:space="preserve">
+    <value>As Senhas Não Coincidem</value>
+  </data>
+  <data name="old_password_incorrect" xml:space="preserve">
+    <value>Senha antiga incorreta</value>
+  </data>
+  <data name="remain_logged_in" xml:space="preserve">
+    <value>Sua sessão irá expirar. Deseja permanecer conectado?</value>
+  </data>
+  <data name="password_expired" xml:space="preserve">
+    <value>Senha Expirada</value>
+  </data>
+  <data name="left_menu_control" xml:space="preserve">
+    <value>Controle do Menu Esquerdo</value>
+  </data>
+  <data name="action" xml:space="preserve">
+    <value>Ação</value>
+  </data>
+  <data name="action_required" xml:space="preserve">
+    <value>Ação Necessária</value>
+  </data>
+  <data name="controller" xml:space="preserve">
+    <value>Controlador</value>
+  </data>
+  <data name="controller_required" xml:space="preserve">
+    <value>Controlador Necessário</value>
+  </data>
+  <data name="saved_successfully" xml:space="preserve">
+    <value>Salvo com sucesso!</value>
+  </data>
+  <data name="no_data_to_show" xml:space="preserve">
+    <value>Sem dados.</value>
+  </data>
+  <data name="defines_consolidation_indicator" xml:space="preserve">
+    <value>Define consolidação em tempo real para o indicador</value>
+  </data>
+  <data name="group_name2" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="has_real_time_consolidation" xml:space="preserve">
+    <value>Possui consolidação em tempo real</value>
+  </data>
+  <data name="time_interval_above_item" xml:space="preserve">
+    <value>Define intervalo de tempo para o item acima</value>
+  </data>
+  <data name="time_interval_consolidation" xml:space="preserve">
+    <value>Intervalo de tempo para a consolidação em tempo real</value>
+  </data>
+  <data name="company_list" xml:space="preserve">
+    <value>Lista de Empresas</value>
+  </data>
+  <data name="new_company" xml:space="preserve">
+    <value>Nova empresa</value>
+  </data>
+  <data name="equipaments" xml:space="preserve">
+    <value>Equipamentos</value>
+  </data>
+  <data name="fill_the_equipaments" xml:space="preserve">
+    <value>Preencha o campo de equipamentos</value>
+  </data>
+  <data name="fill_the_integration_field_name" xml:space="preserve">
+    <value>Preencha o campo de integração</value>
+  </data>
+  <data name="alert" xml:space="preserve">
+    <value>Alerta</value>
+  </data>
+  <data name="monitoring_task_linked_indicator_successfully" xml:space="preserve">
+    <value>Monitoramento e Tarefa vinculados ao Indicador com sucesso!</value>
+  </data>
+  <data name="select_audit_first" xml:space="preserve">
+    <value>É necessario selecionar um indicador para realizar este vínculo</value>
+  </data>
+  <data name="select_monitoring_first" xml:space="preserve">
+    <value>É necessario selecionar um monitoramento para realizar este vínculo</value>
+  </data>
+  <data name="select_task_first" xml:space="preserve">
+    <value>É necessario selecionar uma tarefa para realizar este vínculo</value>
+  </data>
+  <data name="reaudit_period" xml:space="preserve">
+    <value>Existe reauditoria para ser preenchida em outro periodo</value>
+  </data>
+  <data name="accumulated_tendency" xml:space="preserve">
+    <value>Tendência Acumulada</value>
+  </data>
+  <data name="analytical" xml:space="preserve">
+    <value>Analítico</value>
+  </data>
+  <data name="audit_tendency" xml:space="preserve">
+    <value>Tendência do Indicador</value>
+  </data>
+  <data name="audit_type" xml:space="preserve">
+    <value>Tipo Indicador</value>
+  </data>
+  <data name="average" xml:space="preserve">
+    <value>Média</value>
+  </data>
+  <data name="defects" xml:space="preserve">
+    <value>NC</value>
+  </data>
+  <data name="derivations" xml:space="preserve">
+    <value>Total NC</value>
+  </data>
+  <data name="derivations_per_defects" xml:space="preserve">
+    <value>NC por Tarefas acumuladas</value>
+  </data>
+  <data name="deviations_per_monitoring" xml:space="preserve">
+    <value>NC por Tarefas</value>
+  </data>
+  <data name="from" xml:space="preserve">
+    <value>de</value>
+  </data>
+  <data name="group2" xml:space="preserve">
+    <value>Critério</value>
+  </data>
+  <data name="lcl" xml:space="preserve">
+    <value>LCL</value>
+  </data>
+  <data name="levelSpc" xml:space="preserve">
+    <value>Nível</value>
+  </data>
+  <data name="ncc" xml:space="preserve">
+    <value>NC/C</value>
+  </data>
+  <data name="performance" xml:space="preserve">
+    <value>Temperatura</value>
+  </data>
+  <data name="points2" xml:space="preserve">
+    <value>Pontos</value>
+  </data>
+  <data name="points_achieved" xml:space="preserve">
+    <value>Pontos Ating.</value>
+  </data>
+  <data name="points_possible" xml:space="preserve">
+    <value>Pontos Disputados</value>
+  </data>
+  <data name="registers" xml:space="preserve">
+    <value>Registers</value>
+  </data>
+  <data name="resgisters_page" xml:space="preserve">
+    <value>Registros por Pagina</value>
+  </data>
+  <data name="scorecard_type" xml:space="preserve">
+    <value>Tipo Scorecard</value>
+  </data>
+  <data name="search" xml:space="preserve">
+    <value>Procurar</value>
+  </data>
+  <data name="show" xml:space="preserve">
+    <value>Mostrar</value>
+  </data>
+  <data name="showing" xml:space="preserve">
+    <value>Exibindo</value>
+  </data>
+  <data name="smp" xml:space="preserve">
+    <value>AV</value>
+  </data>
+  <data name="spc" xml:space="preserve">
+    <value>Carta CEP</value>
+  </data>
+  <data name="synthetic" xml:space="preserve">
+    <value>Sintético</value>
+  </data>
+  <data name="title" xml:space="preserve">
+    <value>Título</value>
+  </data>
+  <data name="to" xml:space="preserve">
+    <value>a</value>
+  </data>
+  <data name="total_evaluated" xml:space="preserve">
+    <value>Total AV</value>
+  </data>
+  <data name="ucl" xml:space="preserve">
+    <value>LCS</value>
+  </data>
+  <data name="registerPerUnit" xml:space="preserve">
+    <value>Cadastro por unidade</value>
+  </data>
+  <data name="tipoScore" xml:space="preserve">
+    <value>Tipo de Score</value>
+  </data>
+  <data name="equipment_registration" xml:space="preserve">
+    <value>Cadastro de Equipamentos</value>
+  </data>
+  <data name="forgotPass" xml:space="preserve">
+    <value>Esqueceu a Senha</value>
+  </data>
+  <data name="recoveryPassword" xml:space="preserve">
+    <value>Recuperar Senha</value>
+  </data>
+  <data name="sendPassEmail" xml:space="preserve">
+    <value>Enviar Senha para Email</value>
+  </data>
+  <data name="alter" xml:space="preserve">
+    <value>Alterar</value>
+  </data>
+  <data name="remove" xml:space="preserve">
+    <value>Remover</value>
+  </data>
+  <data name="inactivate" xml:space="preserve">
+    <value>Inativar</value>
+  </data>
+  <data name="reactivate" xml:space="preserve">
+    <value>Reativar</value>
+  </data>
+  <data name="evaluations_not_completed" xml:space="preserve">
+    <value>Avaliações não completadas</value>
+  </data>
+  <data name="df" xml:space="preserve">
+    <value>Def.</value>
+  </data>
+  <data name="generic_forms" xml:space="preserve">
+    <value>Cadastros Gerais</value>
+  </data>
+  <data name="local_forms" xml:space="preserve">
+    <value>Cadastros Locais</value>
+  </data>
+  <data name="system" xml:space="preserve">
+    <value>Sistema</value>
+  </data>
+  <data name="audit_start_time" xml:space="preserve">
+    <value>Hora de Início da Auditoria</value>
+  </data>
+  <data name="description_failure" xml:space="preserve">
+    <value>Descrição da Falha</value>
+  </data>
+  <data name="preventative_measure" xml:space="preserve">
+    <value>Medida Preventiva</value>
+  </data>
+  <data name="start_time" xml:space="preserve">
+    <value>Hora de Início</value>
+  </data>
+  <data name="technical" xml:space="preserve">
+    <value>Técnico</value>
+  </data>
+  <data name="view" xml:space="preserve">
+    <value>Ver</value>
+  </data>
+  <data name="print" xml:space="preserve">
+    <value>Imprimir</value>
+  </data>
+  <data name="visible_columns" xml:space="preserve">
+    <value>Colunas Visíveis</value>
+  </data>
+  <data name="document_confidential_information1" xml:space="preserve">
+    <value>Este Documento Contém</value>
+  </data>
+  <data name="document_confidential_information2" xml:space="preserve">
+    <value>Informações Confidenciais</value>
+  </data>
+  <data name="document_confidential_information3" xml:space="preserve">
+    <value />
+  </data>
+  <data name="origionation_date" xml:space="preserve">
+    <value>Data de Origem</value>
+  </data>
+  <data name="printed" xml:space="preserve">
+    <value>Impresso</value>
+  </data>
+  <data name="revision_date" xml:space="preserve">
+    <value>Data de Revisão</value>
+  </data>
+  <data name="safe_program_audit_form" xml:space="preserve">
+    <value>Formulário de Ação Corretiva de Segurança Alimentar</value>
+  </data>
+  <data name="supersedes_date" xml:space="preserve">
+    <value>Data de Substituição</value>
+  </data>
+  <data name="origionation_date_value" xml:space="preserve">
+    <value>30 de Janeiro de 2014</value>
+  </data>
+  <data name="next" xml:space="preserve">
+    <value>Próximo</value>
+  </data>
+  <data name="previous" xml:space="preserve">
+    <value>Anterior</value>
+  </data>
+  <data name="first" xml:space="preserve">
+    <value>Primeiro</value>
+  </data>
+  <data name="last" xml:space="preserve">
+    <value>Último</value>
+  </data>
+  <data name="total_defects_avaliation" xml:space="preserve">
+    <value>Total defeitos na avaliação</value>
+  </data>
+  <data name="company_active" xml:space="preserve">
+    <value>Empresa Atual</value>
+  </data>
+  <data name="hide_all" xml:space="preserve">
+    <value>Fechar Todos</value>
+  </data>
+  <data name="show_all" xml:space="preserve">
+    <value>Mostrar Todos</value>
+  </data>
+  <data name="s" xml:space="preserve">
+    <value>Total de Defeitos das Amostra</value>
+  </data>
+  <data name="total_defects_sample" xml:space="preserve">
+    <value>Amostras com defeitos</value>
+  </data>
+  <data name="Amostras_com_defeitos" xml:space="preserve">
+    <value>Amostras com defeito</value>
+  </data>
+  <data name="Avaliacoes" xml:space="preserve">
+    <value>Avaliações</value>
+  </data>
+  <data name="no_families_level" xml:space="preserve">
+    <value>Sem monitoramentos para o indicador</value>
+  </data>
+  <data name="isPartialSave" xml:space="preserve">
+    <value>Permite salvar parcialmente</value>
+  </data>
+  <data name="duration_of_validation" xml:space="preserve">
+    <value>Duração da Vigência</value>
+  </data>
+  <data name="ca_evaluations_not_completed" xml:space="preserve">
+    <value>As avaliações não foram completadas. Deseja continuar?</value>
+  </data>
+  <data name="repeated_username" xml:space="preserve">
+    <value>Este nome de usuário já está sendo usado</value>
+  </data>
+  <data name="select_one_company" xml:space="preserve">
+    <value>Selecione pelo menos uma empresa.</value>
+  </data>
+  <data name="select_the_level1" xml:space="preserve">
+    <value>É necessario selecionar o indicador</value>
+  </data>
+  <data name="data_not_synced" xml:space="preserve">
+    <value>Dados não sincronizados.</value>
+  </data>
+  <data name="data_synced" xml:space="preserve">
+    <value>Dados sincronizados.</value>
+  </data>
+  <data name="synced" xml:space="preserve">
+    <value>Sincronizado.</value>
+  </data>
+  <data name="change_module" xml:space="preserve">
+    <value>Trocar módulo</value>
+  </data>
+  <data name="enter_online" xml:space="preserve">
+    <value>Entrar e sincronizar</value>
+  </data>
+  <data name="enter_offline" xml:space="preserve">
+    <value>Entrar</value>
+  </data>
+  <data name="slow_network" xml:space="preserve">
+    <value>Sua rede está apresentando muita lentidão. Tente mais tarde.</value>
+  </data>
+  <data name="fill_the_header_name_field" xml:space="preserve">
+    <value>O campo Nome deve ser preenchido para Nível do Campo</value>
+  </data>
+  <data name="select_the_field_type" xml:space="preserve">
+    <value>O campo Tipo deve ser selecionado para Nível do Campo</value>
+  </data>
+  <data name="select_the_field_where" xml:space="preserve">
+    <value>O Nível do Campo deve ser selecionado</value>
+  </data>
+  <data name="default_company" xml:space="preserve">
+    <value>Empresa Padrão</value>
+  </data>
+  <data name="alter_defaut_company_success" xml:space="preserve">
+    <value>Empresa padrão alterada com sucesso</value>
+  </data>
+  <data name="logout_confirm" xml:space="preserve">
+    <value>Você tem dados não sincronizados, deseja mesmo deslogar?</value>
+  </data>
+  <data name="description_has_between_3_and_10" xml:space="preserve">
+    <value>A Descrição deverá ter no mínimo 0 e máximo 10 caracteres</value>
+  </data>
+  <data name="maximum_description_300_characteres" xml:space="preserve">
+    <value>O tamanho máximo da Descrição são 300 caracteres</value>
+  </data>
+  <data name="maximum_name_300_characteres" xml:space="preserve">
+    <value>O tamanho máximo do Nome são 300 caracteres</value>
+  </data>
+  <data name="minimum_description_1_characteres" xml:space="preserve">
+    <value>O tamanho mínimo da Descrição deve ser 1 caracter</value>
+  </data>
+  <data name="minimum_name_3_characteres" xml:space="preserve">
+    <value>O tamanho mínimo do Nome são 3 caracteres</value>
+  </data>
+  <data name="name_has_between_3_and_10" xml:space="preserve">
+    <value>O Nome deverá ter no mínimo 3 e no máximo 10 caracteres</value>
+  </data>
+  <data name="select_the_department" xml:space="preserve">
+    <value>O departamento é obrigatório</value>
+  </data>
+  <data name="select_the_name" xml:space="preserve">
+    <value>O Nome é obrigatório</value>
+  </data>
+  <data name="select_the_colosolidation_type" xml:space="preserve">
+    <value>É obrigatório selecionar o tipo de consolidação.</value>
+  </data>
+  <data name="unable_to_complete_data_request" xml:space="preserve">
+    <value>Não foi possivel completar a requisição de dados.</value>
+  </data>
+  <data name="according" xml:space="preserve">
+    <value>Conforme</value>
+  </data>
+  <data name="not_accordance" xml:space="preserve">
+    <value>Não Conforme</value>
+  </data>
+  <data name="unvalued" xml:space="preserve">
+    <value>Não Avaliado</value>
+  </data>
+  <data name="valued" xml:space="preserve">
+    <value>Avaliado</value>
+  </data>
+</root>

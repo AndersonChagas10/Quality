@@ -11,6 +11,13 @@ namespace PlanoDeAcaoMVC.Controllers.Api
     [RoutePrefix("api/Pa_Planejamento")]
     public class ApiPa_PlanejamentoController : ApiController
     {
+        PlanoAcaoEF.PlanoDeAcaoEntities db;
+
+        public ApiPa_PlanejamentoController()
+        {
+            db = new PlanoAcaoEF.PlanoDeAcaoEntities();
+        }
+
         [HttpGet]
         [Route("List")]
         public IEnumerable<Pa_Planejamento> List()
@@ -30,6 +37,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             return planejamento;
         }
 
+        [HttpGet]
         [HttpPost]
         [Route("GetPlanejamentoAcao")]
         public IEnumerable<Pa_Planejamento> GetPlanejamentoAcao()
@@ -50,20 +58,19 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         [Route("Save")]
         public Pa_Planejamento Save([FromBody]Pa_Planejamento planejamento)
         {
-            using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
-            {
+           
                 planejamento.IsValid();
 
                 planejamento.IsfiltrarAcao = null;
 
                 if (planejamento.Estrategico_Id.GetValueOrDefault() > 0)
                 {
-                    if(!string.IsNullOrEmpty(planejamento._ValorDe))
+                    if (!string.IsNullOrEmpty(planejamento._ValorDe))
                         planejamento.ValorDe = NumericExtensions.CustomParseDecimal(planejamento._ValorDe).GetValueOrDefault();
                     if (!string.IsNullOrEmpty(planejamento._ValorPara))
                         planejamento.ValorPara = NumericExtensions.CustomParseDecimal(planejamento._ValorPara).GetValueOrDefault();
-                    planejamento.DataInicio = Guard.ParseDateToSqlV2(planejamento._DataInicio);
-                    planejamento.DataFim = Guard.ParseDateToSqlV2(planejamento._DataFim);
+                    planejamento.DataInicio = Guard.ParseDateToSqlV2(planejamento._DataInicio, Guard.CultureCurrent.BR);
+                    planejamento.DataFim = Guard.ParseDateToSqlV2(planejamento._DataFim, Guard.CultureCurrent.BR);
                 }
 
                 if (!planejamento.IsTatico)
@@ -116,12 +123,18 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
                 }
 
-                #endregion
-            }
+            #endregion
+
             return planejamento;
         }
 
-       
+        //[HttpPost]
+        //[Route("GetPlanejamentosFTA")]
+        //public List<PlanoAcaoEF.Pa_Planejamento> GetPlanejamentosFTA()
+        //{
+        //    return db.Pa_Planejamento.Where(r => r.IsFta == true).ToList();
+        //}
+
 
     }
 }

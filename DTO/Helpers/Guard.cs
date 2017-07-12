@@ -39,6 +39,17 @@ namespace DTO.Helpers
             return new DateTime(data.Year, data.AddMonths(-1).Month, 1);
         }
 
+        /// <summary>
+        /// Returns : Property {} is Invalid.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="proName"></param>
+        public static void CheckStringFullSimple(string name, string proName)
+        {
+            var nameValidado = "";
+            Guard.CheckStringFull(out nameValidado, proName, name, "Property " + proName + " is invalid", true);
+        }
+
         public static string CheckStringFullSimple(string name)
         {
             var nameValidado = "";
@@ -96,6 +107,7 @@ namespace DTO.Helpers
         {
             decimal number;
             decimal retorno;
+            valorString = valorString.ToUpper().Replace('.', ',');
             if (Decimal.TryParse(valorString, out number))
             {
                 retorno = number;
@@ -115,22 +127,75 @@ namespace DTO.Helpers
 
         public static void ParseDateToSql(string date, ref DateTime _dtvalue)
         {
-            if (GlobalConfig.Brasil)
+            //if (GlobalConfig.Brasil)
+            //    DateTime.TryParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
+            //else if (GlobalConfig.Eua)
+            //    DateTime.TryParseExact(date, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
+
+            if (GlobalConfig.LanguageBrasil)
                 DateTime.TryParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
-            else if (GlobalConfig.Eua)
+
+            if (GlobalConfig.LanguageEUA)
                 DateTime.TryParseExact(date, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
         }
 
         public static DateTime ParseDateToSqlV2(string date)
         {
+            //if (string.IsNullOrEmpty(date))
+            //    return DateTime.Now;
+
+            //var _dtvalue = DateTime.Now;
+            ////if (GlobalConfig.Brasil)
+            //DateTime.TryParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
+            ////else if (GlobalConfig.Eua)
+            //if (_dtvalue == DateTime.MinValue)
+            //    DateTime.TryParseExact(date, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
+
+            //return _dtvalue;
+
             if (string.IsNullOrEmpty(date))
                 return DateTime.Now;
 
             var _dtvalue = DateTime.Now;
-            //if (GlobalConfig.Brasil)
-            DateTime.TryParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
-            //else if (GlobalConfig.Eua)
-            if (_dtvalue == DateTime.MinValue)
+
+            if (GlobalConfig.LanguageBrasil)
+                DateTime.TryParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
+
+            if (GlobalConfig.LanguageEUA)
+                DateTime.TryParseExact(date, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
+
+            return _dtvalue;
+        }
+
+        public enum CultureCurrent
+        {
+            BR,
+            EUA,
+        };
+
+        public static DateTime ParseDateToSqlV2(string date, CultureCurrent culture)
+        {
+            //if (string.IsNullOrEmpty(date))
+            //    return DateTime.Now;
+
+            //var _dtvalue = DateTime.Now;
+            ////if (GlobalConfig.Brasil)
+            //DateTime.TryParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
+            ////else if (GlobalConfig.Eua)
+            //if (_dtvalue == DateTime.MinValue)
+            //    DateTime.TryParseExact(date, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
+
+            //return _dtvalue;
+
+            if (string.IsNullOrEmpty(date))
+                return DateTime.Now;
+
+            var _dtvalue = DateTime.Now;
+
+            if (culture == CultureCurrent.BR)
+                DateTime.TryParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
+
+            if (culture == CultureCurrent.EUA)
                 DateTime.TryParseExact(date, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _dtvalue);
 
             return _dtvalue;

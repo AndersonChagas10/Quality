@@ -48,10 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CookieDoUserSgqWebApi.cs" />
     <Compile Include="CustomAuthorizeAttribute.cs" />
     <Compile Include="DecimalModelBinder.cs" />
-    <Compile Include="EmailContent.cs" />
     <Compile Include="HtmlHelperExtension.cs" />
+    <Compile Include="MailSender.cs" />
     <Compile Include="NumericExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

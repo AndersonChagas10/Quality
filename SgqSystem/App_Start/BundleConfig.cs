@@ -20,7 +20,9 @@ namespace SgqSystem
             );
 
             bundles.Add(new ScriptBundle("~/bundles/Guard")
-             .Include("~/Scripts/GuardJs.js")
+             .Include("~/Scripts/GuardJs.js",
+                "~/Scripts/loadingoverlay.min.js",
+                "~/Scripts/loadingoverlay_progress.min.js")
             );
 
             bundles.Add(new ScriptBundle("~/bundles/mask")
@@ -56,7 +58,8 @@ namespace SgqSystem
 
             bundles.Add(new ScriptBundle("~/bundles/theme").Include(
                         "~/Content/bootstrap-switch/js/bootstrap-switch.min.js",
-                        "~/Scripts/theme/js/app.min.js"));
+                        "~/Scripts/theme/js/app.min.js"
+                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/select2js").Include(
                      "~/Scripts/select2.min.js"

@@ -1,10 +1,17 @@
 ﻿@model PlanoAcaoCore.Pa_Acao
-
-
+@using PlanoAcaoCore
+@if (Conn.visaoOperacional)
+{
+    <style>
+        .showAsEstrategy {
+            display: none;
+        }
+    </style>
+}
 <div style="display:none" id="obj">
     <p>
         <button aria-expanded="false" data-target="#collapsible_obj_0" data-toggle="collapse" class="btn btn-default collapsed">Ação Name</button>
-        <span class="glyphicon glyphicon-minus-sign" style="cursor:pointer" onclick="RemoveAcao(this)"></span>
+        &nbsp;<span data-toggle="tooltip" title="Excluir Ação"class="glyphicon glyphicon-trash" style="cursor:pointer" onclick="RemoveAcao(this)"></span>
     </p>
     <div style="height: 0px;" aria-expanded="false" id="collapsible_obj_0" class="collapse">
 
@@ -36,7 +43,7 @@
                             </td>
                             <td></td>
                         </tr>*@
-                    <tr>
+                    <tr class="showAsEstrategy">
                         <td style="width: 43%;">
                             @Html.Label("Tipo de Indicador:", htmlAttributes: new { @class = "control-label " })
                         </td>
@@ -89,7 +96,7 @@
                         </td>
                         <td></td>
                     </tr>
-                    <tr>
+                    <tr class="showAsEstrategy">
                         <td>
                             @Html.LabelFor(r => r.Pa_Problema_Desvio_Id, htmlAttributes: new { @class = "control-label " })
                         </td>
@@ -99,7 +106,7 @@
                         </td>
                         <td></td>
                     </tr>
-                    <tr>
+                    <tr class="showAsEstrategy">
                         <td>
                             @Html.Label("Causa generica", htmlAttributes: new { @class = "control-label " })
                         </td>
@@ -108,7 +115,7 @@
                         </td>
                         <td></td>
                     </tr>
-                    <tr>
+                    <tr class="showAsEstrategy">
                         <td>
                             @Html.Label("Grupo causa", htmlAttributes: new { @class = "control-label " })
                         </td>
@@ -117,7 +124,7 @@
                         </td>
                         <td></td>
                     </tr>
-                    <tr>
+                    <tr class="showAsEstrategy">
                         <td>
                             @Html.Label("Contramedida generica", htmlAttributes: new { @class = "control-label " })
                         </td>
@@ -128,7 +135,7 @@
                     </tr>
                     <tr>
                         <td>
-                            @Html.Label("Causa Específica", htmlAttributes: new { @class = "control-label " })
+                            @Html.Label(Conn.nameCausaEspecifica, htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
                             @Html.EditorFor(r=>r.CausaEspecifica, new { htmlAttributes = new { @class = "form-control" } })
@@ -138,7 +145,7 @@
                     </tr>
                     <tr>
                         <td>
-                            @Html.Label("Contramedida Específica", htmlAttributes: new { @class = "control-label " })
+                            @Html.Label(Conn.nameContramedidaEspecifica, htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
                             @Html.EditorFor(r => r.ContramedidaEspecifica, new { htmlAttributes = new { @class = "form-control" } })                          
@@ -197,7 +204,7 @@
                     </tr>
                     <tr>
                         <td>
-                            @Html.LabelFor(model => model.ComoPontosimportantes, htmlAttributes: new { @class = "control-label " })
+                            @Html.Label(Conn.nameComoPontosImportantes, htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
                             @Html.EditorFor(model => model.ComoPontosimportantes, new { htmlAttributes = new { @class = "form-control" } })
@@ -215,7 +222,7 @@
                             </td>
                             <td></td>
                         </tr>*@
-                    <tr>
+                    <tr class="showAsEstrategy">
                         <td>
                             @Html.LabelFor(model => model.PraQue, htmlAttributes: new { @class = "control-label " })
                         </td>

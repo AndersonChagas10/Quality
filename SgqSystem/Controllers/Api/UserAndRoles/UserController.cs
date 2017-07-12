@@ -4,8 +4,11 @@ using DTO.Helpers;
 using SgqSystem.Handlres;
 using SgqSystem.Secirity;
 using SgqSystem.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -13,7 +16,7 @@ namespace SgqSystem.Controllers.Api
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/User")]
-    public class UserController : ApiController
+    public class UserController : BaseApiController
     {
 
         private readonly IUserDomain _userDomain;

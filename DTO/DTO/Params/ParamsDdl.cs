@@ -19,7 +19,9 @@ namespace DTO.DTO.Params
         public IEnumerable<SelectListItem> DdlparCluster { get; set; }
         public IEnumerable<SelectListItem> DdlparCrit { get; set; }
         public IEnumerable<SelectListItem> DdlScoretype { get; set; }
-        
+
+        public IEnumerable<SelectListItem> DdlparLevel1Active { get; set; }
+
         public IEnumerable<SelectListItem> DdlParDepartment { get; set; }
 
         //[Range(0, 999, ErrorMessage = "É obrigatório selecionar o Nível do Campo.")]
@@ -131,11 +133,12 @@ namespace DTO.DTO.Params
             DdlparLevel1 = CreateSelectListParamsViewModelListLevel(ddlparLevel1.OrderBy(r => r.Name));
             DdlparLevel2 = CreateSelectListParamsViewModelListLevel(ddlparLevel2.OrderBy(r => r.Name));
             DdlparLevel3 = CreateSelectListParamsViewModelListLevel(ddlparLevel3.OrderBy(r => r.Name));
+            DdlparLevel1Active = CreateSelectListParamsViewModelListLevel(ddlparLevel1.Where(r => r.IsActive == true).OrderBy(r => r.Name));
 
             DdlparLevel1 = DdlparLevel1.OrderBy(r => r.Group);
             DdlparLevel2 = DdlparLevel2.OrderBy(r => r.Group);
             DdlparLevel3 = DdlparLevel3.OrderBy(r => r.Group);
-
+            DdlparLevel1Active = DdlparLevel1Active.OrderBy(r => r.Group);
         }
 
         private List<SelectListItem> CreateSelectListParamsViewModelListLevel<T>(List<T> lista)

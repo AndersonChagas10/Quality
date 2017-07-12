@@ -1,5 +1,9 @@
-﻿using Dominio.Interfaces.Services;
+﻿using AutoMapper;
+using Dominio;
+using Dominio.Interfaces.Services;
 using DTO.DTO;
+using DTO.DTO.Params;
+using Newtonsoft.Json.Linq;
 using SgqSystem.Handlres;
 using SgqSystem.ViewModels;
 using System.Collections;
@@ -13,7 +17,7 @@ namespace SgqSystem.Controllers.Api.Example
 {
     [HandleApi()]
     [RoutePrefix("api/Example")]
-    public class ExampleApiController : ApiController
+    public class ExampleApiController : BaseApiController
     {
 
         #region Construtor para injeção de dependencia
@@ -33,7 +37,7 @@ namespace SgqSystem.Controllers.Api.Example
         [Route("AddExample")]
         public ContextExampleDTO AddExample([FromBody] ContextExampleViewModel paramsViewModel)
         {
-           return _exampleDomain.AddUpdateExample(paramsViewModel);
+            return _exampleDomain.AddUpdateExample(paramsViewModel);
         }
 
         #endregion
@@ -61,7 +65,7 @@ namespace SgqSystem.Controllers.Api.Example
             //returna paramsViewModel;
         }
 
-         [HttpGet]
+        [HttpGet]
         [Route("ExemploGet3/{idLevel1}/{idLevel2}/{idLevel3}")]
         public string ExemploGet3(string idLevel1, string idLevel2, string idLevel3)
         {
@@ -92,5 +96,69 @@ namespace SgqSystem.Controllers.Api.Example
             return resourceSet.Cast<DictionaryEntry>();
         }
 
-    }
+        [HttpPost]
+        [Route("PostAlbum")]
+        public string PostAlbum(JObject jsonData)
+        {
+            dynamic json = jsonData;
+            JObject jalbum = json.Album;
+            JObject juser = json.User;
+            string token = json.UserToken;
+
+            return string.Empty;
+        }
+
+        [HttpPost]
+        [Route("PostAlbumJObject")]
+        public JObject PostAlbumJObject(JObject jAlbum)
+        {
+            // dynamic input from inbound JSON
+            dynamic album = jAlbum;
+
+            // create a new JSON object to write out
+            dynamic newAlbum = new JObject();
+
+            // Create properties on the new instance
+            // with values from the first
+            newAlbum.AlbumName = " New";
+            newAlbum.NewProperty = "something new";
+            newAlbum.Songs = new JArray();
+
+            using (var db = new SgqDbDevEntities())
+            {
+                dynamic teste = new JObject();
+                teste = db.Database.SqlQuery<JObject>("Select * from SgqConfig").FirstOrDefault();
+            }
+            //foreach (dynamic song in album.Songs)
+            //{
+            //    song.SongName = song.SongName + " New";
+            //    newAlbum.Songs.Add(song);
+            //}
+
+            return newAlbum;
+        }
+
+        [HttpPost]
+        [Route("GetParams")]
+        public List<ParLevel1DTO> GetParams(JObject paramiters)
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+                db.Configuration.ProxyCreationEnabled = false;
+                var retorno = db.ParLevel1
+                    .Include("ParLevel3Level2Level1")
+                    .Include("ParLevel3Level2Level1.ParLevel3Level2")
+                    .Include("ParLevel3Level2Level1.ParLevel3Level2.ParLevel2")
+                    .Include("ParLevel3Level2Level1.ParLevel3Level2.ParLevel3")
+                    .ToList();
+
+                var level1 = Mapper.Map<List<ParLevel1DTO>>(retorno);
+                level1.ForEach(r => r.listParLevel3Level2Level1Dto = Mapper.Map<List<ParLevel3Level2Level1DTO>>(retorno.Select(c => c.ParLevel3Level2Level1).ToList()));
+
+                return level1;
+            }
+        }
+
+        }
 }

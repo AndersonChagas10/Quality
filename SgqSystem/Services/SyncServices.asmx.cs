@@ -35,7 +35,7 @@ namespace SgqSystem.Services
         //private SqlConnection connection;
         string conexao;
         string conexaoSGQ_GlobalADO;
-        
+
         public SqlConnection db;
         public SqlConnection SGQ_GlobalADO;
 
@@ -93,7 +93,7 @@ namespace SgqSystem.Services
          * OU YYYY-MM-DD (2017-05-03)
          * COMENTÁRIO: GABRIEL 2017-04-24
          * 
-         */ 
+         */
 
         private DateTime DateCollectConvert(string collectionDate)
         {
@@ -189,6 +189,9 @@ namespace SgqSystem.Services
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         connection.Open();
+
+                        
+
                         var i = Convert.ToInt32(command.ExecuteNonQuery());
                         if (i > 0)
                         {
@@ -199,7 +202,9 @@ namespace SgqSystem.Services
                             return 0;
                         }
 
+                        
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close(); 
                 }
             }
             catch (SqlException ex)
@@ -232,23 +237,40 @@ namespace SgqSystem.Services
         [WebMethod]
         public string InsertJson(string ObjResultJSon, string deviceId, string deviceMac, bool autoSend)
         {
-            if (string.IsNullOrEmpty(ObjResultJSon))
-            {
-                return null;
-            }
-            //A key não está sendo utilizada
-            string key = "111111";
-            //Converto o Objeto Json e prepara para extrair os dados do Level02
-            ObjResultJSon = ObjResultJSon.Replace("</level02><level02>", "@").Replace("<level02>", "").Replace("</level02>", "");
-            //Gera um array
-            string[] arrayObj = ObjResultJSon.Split('@');
-            //Instanciamos a linha que gera a query
-            //Percorre o Objeto
+
+            SqlConnection.ClearAllPools();
+
+            var objObjResultJSonPuro = ObjResultJSon;
+
+            //ObjResultJSon = "<level02>8;06/30/2017 09:18:022:612;21;06/30/2017 09:18:022:764;27;1;1;558;0;false;06302017;1;1;;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>1065,06/30/2017 09:18:022:780,1,false,558,null,tela%20do%20f%EDgado%20com%20sebo%20%20%2C%20suporte%20de%20bandeija%20com%20sangue%20,undefined,1.00000,,0,0,false,0,1,1,1</level03><level03>304,06/30/2017 09:18:022:821,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>309,06/30/2017 09:18:022:827,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>321,06/30/2017 09:18:022:831,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>327,06/30/2017 09:18:022:833,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>378,06/30/2017 09:18:022:836,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>396,06/30/2017 09:18:022:838,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>400,06/30/2017 09:18:022:840,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>410,06/30/2017 09:18:022:843,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>426,06/30/2017 09:18:022:846,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>444,06/30/2017 09:18:022:848,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>465,06/30/2017 09:18:022:851,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>483,06/30/2017 09:18:022:853,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>493,06/30/2017 09:18:022:854,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>502,06/30/2017 09:18:022:857,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>538,06/30/2017 09:18:022:860,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>581,06/30/2017 09:18:022:863,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>620,06/30/2017 09:18:022:865,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>649,06/30/2017 09:18:022:867,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>657,06/30/2017 09:18:022:869,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>674,06/30/2017 09:18:022:871,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;21;1;1;1;21;0;1;1;0;0;0;undefined;undefined</level02><level02>12;06/30/2017 12:22:050:157;26;06/30/2017 12:22:050:441;27;1;1;558;0;false;06302017;2;1;;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>142,06/30/2017 12:22:050:470,8,true,558,null,undefined,undefined,1.00000,,5.0000000000,15.0000000000,false,0,0,1,0</level03><level03>140,06/30/2017 12:22:050:481,12,true,558,null,undefined,undefined,1.00000,,0.0000000000,30.0000000000,false,0,0,1,0</level03><level03>141,06/30/2017 12:22:050:488,3,true,558,null,undefined,undefined,1.00000,,3.0000000000,100.0000000000,false,0,0,1,0</level03><level03>143,06/30/2017 12:22:050:494,3,true,558,null,undefined,undefined,1.00000,,3.0000000000,6.0000000000,false,0,0,1,0</level03><level03>144,06/30/2017 12:22:050:529,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>145,06/30/2017 12:22:050:532,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;6;0;0;0;6;0;1;0;0;0;0;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;1;06/30/2017 12:24:025:664;27;1;1;558;0;false;0;3;1;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>14,06/30/2017 12:24:025:710,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>16,06/30/2017 12:24:025:713,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>27,06/30/2017 12:24:025:715,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>29,06/30/2017 12:24:025:718,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;4;0;1.32;4;4;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;1;06/30/2017 12:24:026:556;27;1;1;558;0;false;0;3;2;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>14,06/30/2017 12:24:026:597,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>16,06/30/2017 12:24:026:599,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>27,06/30/2017 12:24:026:602,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>29,06/30/2017 12:24:026:604,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;4;0;1.32;4;4;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;1;06/30/2017 12:24:027:468;27;1;1;558;0;false;0;3;3;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>14,06/30/2017 12:24:027:532,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>16,06/30/2017 12:24:027:535,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>27,06/30/2017 12:24:027:539,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>29,06/30/2017 12:24:027:542,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;4;0;1.32;4;4;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;2;06/30/2017 12:24:042:964;27;1;1;558;0;false;0;3;1;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>1230,06/30/2017 12:24:043:016,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>10,06/30/2017 12:24:043:020,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>12,06/30/2017 12:24:043:024,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>14,06/30/2017 12:24:043:027,,false,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,1,2,2.66</level03><level03>17,06/30/2017 12:24:043:030,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>19,06/30/2017 12:24:043:031,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>22,06/30/2017 12:24:043:036,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>28,06/30/2017 12:24:043:040,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;18;1;7.940000000000001;8;8;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;2;06/30/2017 12:24:045:552;27;1;1;558;0;false;0;3;2;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>1230,06/30/2017 12:24:045:594,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>10,06/30/2017 12:24:045:596,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>12,06/30/2017 12:24:045:598,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>14,06/30/2017 12:24:045:601,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:24:045:604,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>19,06/30/2017 12:24:045:608,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>22,06/30/2017 12:24:045:611,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>28,06/30/2017 12:24:045:614,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;18;0;5.94;8;8;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;2;06/30/2017 12:24:046:493;27;1;1;558;0;false;0;3;3;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>1230,06/30/2017 12:24:046:531,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>10,06/30/2017 12:24:046:535,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>12,06/30/2017 12:24:046:537,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>14,06/30/2017 12:24:046:541,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:24:046:544,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>19,06/30/2017 12:24:046:546,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>22,06/30/2017 12:24:046:548,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>28,06/30/2017 12:24:046:551,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;18;0;5.94;8;8;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;3;06/30/2017 12:27:001:471;27;1;1;558;0;false;0;3;1;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>1230,06/30/2017 12:27:001:528,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>10,06/30/2017 12:27:001:531,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>12,06/30/2017 12:27:001:534,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>14,06/30/2017 12:27:001:537,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:27:001:539,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>19,06/30/2017 12:27:001:541,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>22,06/30/2017 12:27:001:544,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>28,06/30/2017 12:27:001:547,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;18;0;5.94;8;8;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;3;06/30/2017 12:27:002:610;27;1;1;558;0;false;0;3;2;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>1230,06/30/2017 12:27:002:653,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>10,06/30/2017 12:27:002:655,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>12,06/30/2017 12:27:002:657,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>14,06/30/2017 12:27:002:660,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:27:002:663,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>19,06/30/2017 12:27:002:666,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>22,06/30/2017 12:27:002:670,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>28,06/30/2017 12:27:002:672,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;18;0;5.94;8;8;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;3;06/30/2017 12:27:003:468;27;1;1;558;0;false;0;3;3;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>1230,06/30/2017 12:27:003:507,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>10,06/30/2017 12:27:003:510,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>12,06/30/2017 12:27:003:514,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>14,06/30/2017 12:27:003:517,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:27:003:519,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>19,06/30/2017 12:27:003:521,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>22,06/30/2017 12:27:003:523,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>28,06/30/2017 12:27:003:526,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;18;0;5.94;8;8;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;4;06/30/2017 12:27:015:421;27;1;1;558;0;false;0;3;1;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>8,06/30/2017 12:27:015:471,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>14,06/30/2017 12:27:015:474,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:27:015:480,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>25,06/30/2017 12:27:015:483,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;7;0;2.31;4;4;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;4;06/30/2017 12:27:016:301;27;1;1;558;0;false;0;3;2;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>8,06/30/2017 12:27:016:343,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>14,06/30/2017 12:27:016:345,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:27:016:348,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>25,06/30/2017 12:27:016:351,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;7;0;2.31;4;4;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;4;06/30/2017 12:27:017:157;27;1;1;558;0;false;0;3;3;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>8,06/30/2017 12:27:017:194,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>14,06/30/2017 12:27:017:199,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:27:017:203,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>25,06/30/2017 12:27:017:207,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;7;0;2.31;4;4;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;5;06/30/2017 12:27:032:297;27;1;1;558;0;false;0;3;1;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>8,06/30/2017 12:27:032:352,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>14,06/30/2017 12:27:032:355,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:27:032:358,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>25,06/30/2017 12:27:032:362,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;7;0;2.31;4;4;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;5;06/30/2017 12:27:033:178;27;1;1;558;0;false;0;3;2;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>8,06/30/2017 12:27:033:218,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>14,06/30/2017 12:27:033:221,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:27:033:223,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>25,06/30/2017 12:27:033:225,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;7;0;2.31;4;4;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;5;06/30/2017 12:27:034:044;27;1;1;558;0;false;0;3;3;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>8,06/30/2017 12:27:034:086,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>14,06/30/2017 12:27:034:088,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:27:034:090,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>25,06/30/2017 12:27:034:093,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;7;0;2.31;4;4;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;6;06/30/2017 12:27:045:531;27;1;1;558;0;false;0;3;1;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>8,06/30/2017 12:27:045:568,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>14,06/30/2017 12:27:045:571,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:27:045:572,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>25,06/30/2017 12:27:045:574,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;7;0;2.31;4;4;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;6;06/30/2017 12:27:046:462;27;1;1;558;0;false;0;3;2;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>8,06/30/2017 12:27:046:501,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>14,06/30/2017 12:27:046:503,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:27:046:505,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>25,06/30/2017 12:27:046:507,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;7;0;2.31;4;4;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;6;06/30/2017 12:27:047:302;27;1;1;558;0;false;0;3;3;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>8,06/30/2017 12:27:047:455,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>14,06/30/2017 12:27:047:457,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:27:047:460,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>25,06/30/2017 12:27:047:463,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;7;0;2.31;4;4;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;7;06/30/2017 12:28:000:137;27;1;1;558;0;false;0;3;1;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>7,06/30/2017 12:28:000:183,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>13,06/30/2017 12:28:000:185,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>14,06/30/2017 12:28:000:188,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>16,06/30/2017 12:28:000:190,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>21,06/30/2017 12:28:000:193,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;12;0;3.96;5;5;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;7;06/30/2017 12:28:001:057;27;1;1;558;0;false;0;3;2;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>7,06/30/2017 12:28:001:091,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>13,06/30/2017 12:28:001:094,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>14,06/30/2017 12:28:001:097,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>16,06/30/2017 12:28:001:100,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>21,06/30/2017 12:28:001:104,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;12;0;3.96;5;5;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;7;06/30/2017 12:28:001:983;27;1;1;558;0;false;0;3;3;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>7,06/30/2017 12:28:002:021,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>13,06/30/2017 12:28:002:023,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>14,06/30/2017 12:28:002:025,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>16,06/30/2017 12:28:002:028,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>21,06/30/2017 12:28:002:031,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;12;0;3.96;5;5;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;8;06/30/2017 12:28:011:530;27;1;1;558;0;false;0;3;1;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>9,06/30/2017 12:28:011:585,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>12,06/30/2017 12:28:011:588,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>14,06/30/2017 12:28:011:590,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:28:011:592,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>24,06/30/2017 12:28:011:595,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;10;0;3.3;5;5;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;8;06/30/2017 12:28:012:464;27;1;1;558;0;false;0;3;2;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>9,06/30/2017 12:28:012:507,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>12,06/30/2017 12:28:012:511,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>14,06/30/2017 12:28:012:514,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:28:012:517,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>24,06/30/2017 12:28:012:519,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;10;0;3.3;5;5;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;8;06/30/2017 12:28:019:654;27;1;1;558;0;false;0;3;3;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>9,06/30/2017 12:28:019:696,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>12,06/30/2017 12:28:019:700,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>14,06/30/2017 12:28:019:703,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:28:019:706,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>24,06/30/2017 12:28:019:711,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;10;0;3.3;5;5;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;9;06/30/2017 12:28:027:917;27;1;1;558;0;false;0;3;1;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>2,06/30/2017 12:28:027:966,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>15,06/30/2017 12:28:027:970,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>17,06/30/2017 12:28:027:973,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>26,06/30/2017 12:28:027:977,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;10;0;3.3;4;4;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;9;06/30/2017 12:28:028:999;27;1;1;558;0;false;0;3;2;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>2,06/30/2017 12:28:029:047,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>15,06/30/2017 12:28:029:050,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>17,06/30/2017 12:28:029:053,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>26,06/30/2017 12:28:029:056,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;10;0;3.3;4;4;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;9;06/30/2017 12:28:030:031;27;1;1;558;0;false;0;3;3;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>2,06/30/2017 12:28:030:072,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>15,06/30/2017 12:28:030:074,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>17,06/30/2017 12:28:030:077,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>26,06/30/2017 12:28:030:080,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;10;0;3.3;4;4;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;10;06/30/2017 12:28:045:487;27;1;1;558;0;false;0;3;1;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>6,06/30/2017 12:28:045:535,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>14,06/30/2017 12:28:045:538,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>16,06/30/2017 12:28:045:543,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>18,06/30/2017 12:28:045:546,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>20,06/30/2017 12:28:045:549,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;13;0;4.29;5;5;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;10;06/30/2017 12:28:046:605;27;1;1;558;0;false;0;3;2;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>6,06/30/2017 12:28:046:647,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>14,06/30/2017 12:28:046:650,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>16,06/30/2017 12:28:046:653,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>18,06/30/2017 12:28:046:656,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>20,06/30/2017 12:28:046:658,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;13;0;4.29;5;5;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;10;06/30/2017 12:28:047:716;27;1;1;558;0;false;0;3;3;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>6,06/30/2017 12:28:047:763,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>14,06/30/2017 12:28:047:766,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>16,06/30/2017 12:28:047:771,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>18,06/30/2017 12:28:047:774,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>20,06/30/2017 12:28:047:777,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;13;0;4.29;5;5;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;11;06/30/2017 12:28:055:036;27;1;1;558;0;false;0;3;1;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>2,06/30/2017 12:28:055:079,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>11,06/30/2017 12:28:055:081,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>14,06/30/2017 12:28:055:085,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>32,06/30/2017 12:28:055:087,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;10;0;3.3000000000000003;4;4;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;11;06/30/2017 12:28:056:104;27;1;1;558;0;false;0;3;2;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>2,06/30/2017 12:28:056:152,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>11,06/30/2017 12:28:056:154,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>14,06/30/2017 12:28:056:157,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>32,06/30/2017 12:28:056:159,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;10;0;3.3000000000000003;4;4;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;11;06/30/2017 12:28:057:110;27;1;1;558;0;false;0;3;3;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>2,06/30/2017 12:28:057:149,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>11,06/30/2017 12:28:057:152,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>14,06/30/2017 12:28:057:155,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>32,06/30/2017 12:28:057:157,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;10;0;3.3000000000000003;4;4;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;12;06/30/2017 12:29:004:341;27;1;1;558;0;false;0;3;1;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>15,06/30/2017 12:29:004:387,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;2;0;0.66;1;1;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;12;06/30/2017 12:29:005:411;27;1;1;558;0;false;0;3;2;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>15,06/30/2017 12:29:005:454,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;2;0;0.66;1;1;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;12;06/30/2017 12:29:006:385;27;1;1;558;0;false;0;3;3;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>15,06/30/2017 12:29:006:424,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;2;0;0.66;1;1;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:29:013:677;13;06/30/2017 12:29:013:886;27;1;1;558;0;false;0;3;1;;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>31,06/30/2017 12:29:013:922,,false,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,1,3,3</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;3;1;3;1;1;3;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:34:026:606;1;06/30/2017 12:32:022:829;27;1;1;558;0;false;0;4;1;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>14,06/30/2017 12:32:022:880,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>16,06/30/2017 12:32:022:884,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>27,06/30/2017 12:32:022:887,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>29,06/30/2017 12:32:022:890,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;4;0;1.32;4;4;4;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:34:026:606;1;06/30/2017 12:32:024:031;27;1;1;558;0;false;0;4;2;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>14,06/30/2017 12:32:024:076,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>16,06/30/2017 12:32:024:081,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>27,06/30/2017 12:32:024:085,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>29,06/30/2017 12:32:024:089,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;4;0;1.32;4;4;4;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:34:026:606;1;06/30/2017 12:32:025:007;27;1;1;558;0;false;0;4;3;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>14,06/30/2017 12:32:025:053,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>16,06/30/2017 12:32:025:057,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>27,06/30/2017 12:32:025:060,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>29,06/30/2017 12:32:025:064,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;4;0;1.32;4;4;4;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:34:026:606;2;06/30/2017 12:32:032:019;27;1;1;558;0;false;0;4;1;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>1230,06/30/2017 12:32:032:057,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>10,06/30/2017 12:32:032:059,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>12,06/30/2017 12:32:032:062,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>14,06/30/2017 12:32:032:065,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:32:032:067,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>19,06/30/2017 12:32:032:069,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>22,06/30/2017 12:32:032:071,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>28,06/30/2017 12:32:032:073,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;18;0;5.94;8;8;4;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:34:026:606;2;06/30/2017 12:32:033:009;27;1;1;558;0;false;0;4;2;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>1230,06/30/2017 12:32:033:056,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>10,06/30/2017 12:32:033:059,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>12,06/30/2017 12:32:033:063,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>14,06/30/2017 12:32:033:066,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:32:033:070,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>19,06/30/2017 12:32:033:073,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>22,06/30/2017 12:32:033:076,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>28,06/30/2017 12:32:033:078,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;18;0;5.94;8;8;4;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:34:026:606;2;06/30/2017 12:32:034:134;27;1;1;558;0;false;0;4;3;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>1230,06/30/2017 12:32:034:178,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>10,06/30/2017 12:32:034:181,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>12,06/30/2017 12:32:034:184,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>14,06/30/2017 12:32:034:187,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:32:034:189,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>19,06/30/2017 12:32:034:191,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>22,06/30/2017 12:32:034:194,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>28,06/30/2017 12:32:034:197,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;18;0;5.94;8;8;4;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:34:026:606;3;06/30/2017 12:32:040:841;27;1;1;558;0;false;0;4;1;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>1230,06/30/2017 12:32:040:889,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>10,06/30/2017 12:32:040:893,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>12,06/30/2017 12:32:040:895,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>14,06/30/2017 12:32:040:898,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:32:040:901,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>19,06/30/2017 12:32:040:904,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>22,06/30/2017 12:32:040:906,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>28,06/30/2017 12:32:040:908,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;18;0;5.94;8;8;4;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:34:026:606;3;06/30/2017 12:32:041:898;27;1;1;558;0;false;0;4;2;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>1230,06/30/2017 12:32:041:961,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>10,06/30/2017 12:32:041:964,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>12,06/30/2017 12:32:041:967,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>14,06/30/2017 12:32:041:970,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:32:041:972,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>19,06/30/2017 12:32:041:975,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>22,06/30/2017 12:32:041:978,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>28,06/30/2017 12:32:041:981,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;18;0;5.94;8;8;4;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:34:026:606;3;06/30/2017 12:32:043:204;27;1;1;558;0;false;0;4;3;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>1230,06/30/2017 12:32:043:247,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>10,06/30/2017 12:32:043:250,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>12,06/30/2017 12:32:043:253,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>14,06/30/2017 12:32:043:255,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:32:043:257,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>19,06/30/2017 12:32:043:258,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>22,06/30/2017 12:32:043:261,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>28,06/30/2017 12:32:043:263,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;18;0;5.94;8;8;4;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:34:026:606;4;06/30/2017 12:32:049:845;27;1;1;558;0;false;0;4;1;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>8,06/30/2017 12:32:049:890,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>14,06/30/2017 12:32:049:893,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:32:049:895,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>25,06/30/2017 12:32:049:898,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;7;0;2.31;4;4;4;1;1;0;0;1;undefined;undefined</level02><level02>1;06/30/2017 12:34:026:606;4;06/30/2017 12:32:050:935;27;1;1;558;0;false;0;4;2;<header>17,1,4</header>;false;false;;undefined;undefined;false; 2.0.33 Android;JBS ;<level03>8,06/30/2017 12:32:050:982,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03><level03>14,06/30/2017 12:32:050:985,,true,558,null,null,undefined,2.00000,,0.0000000000,0.0000000000,false,0.33,0,2,0.66</level03><level03>17,06/30/2017 12:32:050:988,,true,558,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0.33,0,3,0.99</level03><level03>25,06/30/2017 12:32:050:990,,true,558,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0.33,0,1,0.33</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;7;0;2.31;4;4;4;1;1;0;0;1;undefined;undefined</level02>";
+
+
             string versaoApp = null;
 
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
+
+                if (string.IsNullOrEmpty(ObjResultJSon))
+                {
+                    return null;
+                }
+                //A key não está sendo utilizada
+                string key = "111111";
+                
+                //Converto o Objeto Json e prepara para extrair os dados do Level02
+                ObjResultJSon = ObjResultJSon.Replace("</level02><level02>", "@").Replace("<level02>", "").Replace("</level02>", "");
+
+                //ObjResultJSon = "" +
+
+                //    "2;06/08/2017 13:36:035:230;14;06/08/2017 13:36:016:863;1;1;1;426;0;false;06082017;1;1;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>266,06/08/2017 13:36:016:867,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>3,06/08/2017 13:36:016:868,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>4,06/08/2017 13:36:016:868,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>5,06/08/2017 13:36:016:868,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>267,06/08/2017 13:36:016:869,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>264,06/08/2017 13:36:016:869,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>265,06/08/2017 13:36:016:869,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>23,06/08/2017 13:36:016:869,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>30,06/08/2017 13:36:016:870,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;2;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@2;06/08/2017 13:36:035:230;14;06/08/2017 13:36:017:325;1;1;1;426;0;false;06082017;1;2;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>266,06/08/2017 13:36:017:328,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>3,06/08/2017 13:36:017:329,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>4,06/08/2017 13:36:017:329,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>5,06/08/2017 13:36:017:329,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>267,06/08/2017 13:36:017:330,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>264,06/08/2017 13:36:017:331,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>265,06/08/2017 13:36:017:331,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>23,06/08/2017 13:36:017:332,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>30,06/08/2017 13:36:017:332,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;2;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@2;06/08/2017 13:36:035:230;14;06/08/2017 13:36:017:741;1;1;1;426;0;false;06082017;1;3;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>266,06/08/2017 13:36:017:744,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>3,06/08/2017 13:36:017:745,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>4,06/08/2017 13:36:017:745,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>5,06/08/2017 13:36:017:745,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>267,06/08/2017 13:36:017:746,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>264,06/08/2017 13:36:017:746,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>265,06/08/2017 13:36:017:746,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>23,06/08/2017 13:36:017:747,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>30,06/08/2017 13:36:017:747,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;2;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@2;06/08/2017 13:36:035:230;67;06/08/2017 13:36:021:111;1;1;1;426;0;false;06082017;1;1;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>266,06/08/2017 13:36:021:115,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>3,06/08/2017 13:36:021:115,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>4,06/08/2017 13:36:021:115,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>5,06/08/2017 13:36:021:116,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>267,06/08/2017 13:36:021:116,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>264,06/08/2017 13:36:021:117,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>265,06/08/2017 13:36:021:117,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>23,06/08/2017 13:36:021:117,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>30,06/08/2017 13:36:021:118,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;2;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@2;06/08/2017 13:36:035:230;67;06/08/2017 13:36:021:638;1;1;1;426;0;false;06082017;1;2;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>266,06/08/2017 13:36:021:641,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>3,06/08/2017 13:36:021:642,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>4,06/08/2017 13:36:021:642,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>5,06/08/2017 13:36:021:642,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>267,06/08/2017 13:36:021:643,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>264,06/08/2017 13:36:021:643,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>265,06/08/2017 13:36:021:643,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>23,06/08/2017 13:36:021:644,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>30,06/08/2017 13:36:021:644,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;2;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@2;06/08/2017 13:36:035:230;67;06/08/2017 13:36:022:198;1;1;1;426;0;false;06082017;1;3;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>266,06/08/2017 13:36:022:202,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>3,06/08/2017 13:36:022:203,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>4,06/08/2017 13:36:022:203,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>5,06/08/2017 13:36:022:203,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>267,06/08/2017 13:36:022:204,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>264,06/08/2017 13:36:022:204,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>265,06/08/2017 13:36:022:204,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>23,06/08/2017 13:36:022:204,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>30,06/08/2017 13:36:022:205,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;2;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@2;06/08/2017 13:36:035:230;68;06/08/2017 13:36:025:372;1;1;1;426;0;false;06082017;1;1;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>266,06/08/2017 13:36:025:376,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>3,06/08/2017 13:36:025:376,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>4,06/08/2017 13:36:025:377,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>5,06/08/2017 13:36:025:377,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>267,06/08/2017 13:36:025:377,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>264,06/08/2017 13:36:025:378,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>265,06/08/2017 13:36:025:378,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>23,06/08/2017 13:36:025:378,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>30,06/08/2017 13:36:025:378,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;2;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@2;06/08/2017 13:36:035:230;68;06/08/2017 13:36:025:900;1;1;1;426;0;false;06082017;1;2;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>266,06/08/2017 13:36:025:904,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>3,06/08/2017 13:36:025:904,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>4,06/08/2017 13:36:025:905,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>5,06/08/2017 13:36:025:905,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>267,06/08/2017 13:36:025:905,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>264,06/08/2017 13:36:025:905,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>265,06/08/2017 13:36:025:906,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>23,06/08/2017 13:36:025:906,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>30,06/08/2017 13:36:025:906,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;2;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@2;06/08/2017 13:36:035:230;68;06/08/2017 13:36:026:439;1;1;1;426;0;false;06082017;1;3;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>266,06/08/2017 13:36:026:443,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>3,06/08/2017 13:36:026:443,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>4,06/08/2017 13:36:026:444,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>5,06/08/2017 13:36:026:444,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>267,06/08/2017 13:36:026:444,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>264,06/08/2017 13:36:026:444,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>265,06/08/2017 13:36:026:445,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>23,06/08/2017 13:36:026:445,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>30,06/08/2017 13:36:026:445,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;2;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@2;06/08/2017 13:36:035:230;70;06/08/2017 13:36:029:545;1;1;1;426;0;false;06082017;1;1;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>266,06/08/2017 13:36:029:549,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>3,06/08/2017 13:36:029:549,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>4,06/08/2017 13:36:029:550,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>5,06/08/2017 13:36:029:550,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>267,06/08/2017 13:36:029:550,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>264,06/08/2017 13:36:029:550,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>265,06/08/2017 13:36:029:551,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>23,06/08/2017 13:36:029:551,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>30,06/08/2017 13:36:029:551,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;2;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@2;06/08/2017 13:36:035:230;70;06/08/2017 13:36:030:202;1;1;1;426;0;false;06082017;1;2;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>266,06/08/2017 13:36:030:206,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>3,06/08/2017 13:36:030:207,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>4,06/08/2017 13:36:030:207,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>5,06/08/2017 13:36:030:207,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>267,06/08/2017 13:36:030:207,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>264,06/08/2017 13:36:030:208,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>265,06/08/2017 13:36:030:208,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>23,06/08/2017 13:36:030:208,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>30,06/08/2017 13:36:030:209,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;2;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@2;06/08/2017 13:36:035:230;70;06/08/2017 13:36:031:280;1;1;1;426;0;false;06082017;1;3;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>266,06/08/2017 13:36:031:284,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>3,06/08/2017 13:36:031:284,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>4,06/08/2017 13:36:031:285,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>5,06/08/2017 13:36:031:285,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>267,06/08/2017 13:36:031:285,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>264,06/08/2017 13:36:031:287,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>265,06/08/2017 13:36:031:287,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>23,06/08/2017 13:36:031:288,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>30,06/08/2017 13:36:031:288,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;2;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@2;06/08/2017 13:36:035:230;75;06/08/2017 13:36:034:185;1;1;1;426;0;false;06082017;1;1;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>266,06/08/2017 13:36:034:189,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>3,06/08/2017 13:36:034:190,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>4,06/08/2017 13:36:034:191,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>5,06/08/2017 13:36:034:191,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>267,06/08/2017 13:36:034:191,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>264,06/08/2017 13:36:034:192,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>265,06/08/2017 13:36:034:192,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>23,06/08/2017 13:36:034:192,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>30,06/08/2017 13:36:034:193,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;2;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@2;06/08/2017 13:36:035:230;75;06/08/2017 13:36:034:798;1;1;1;426;0;false;06082017;1;2;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>266,06/08/2017 13:36:034:803,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>3,06/08/2017 13:36:034:803,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>4,06/08/2017 13:36:034:804,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>5,06/08/2017 13:36:034:804,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>267,06/08/2017 13:36:034:804,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>264,06/08/2017 13:36:034:805,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>265,06/08/2017 13:36:034:805,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>23,06/08/2017 13:36:034:805,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>30,06/08/2017 13:36:034:805,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;2;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@2;06/08/2017 13:36:035:230;75;06/08/2017 13:36:035:250;1;1;1;426;0;false;06082017;1;3;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>266,06/08/2017 13:36:035:254,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>3,06/08/2017 13:36:035:254,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>4,06/08/2017 13:36:035:255,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>5,06/08/2017 13:36:035:255,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>267,06/08/2017 13:36:035:255,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>264,06/08/2017 13:36:035:256,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>265,06/08/2017 13:36:035:256,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>23,06/08/2017 13:36:035:256,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>30,06/08/2017 13:36:035:257,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;2;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@6;06/08/2017 16:30:037:505;18;06/08/2017 13:33:016:526;1;1;1;426;0;false;06082017;5;1;<header>14,2,18</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>70,06/08/2017 13:33:016:529,,true,426,null,null,undefined,0.00000,,0.0000000000,0.0000000000,true,0,0,0,0</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;0;0;0;0;0;0;0;0;0;0;0;undefined;undefined@6;06/08/2017 16:30:037:505;16;06/08/2017 16:30:031:944;1;1;1;426;0;false;06082017;5;1;<header>15,2,1126</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>60,06/08/2017 16:30:031:949,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>49,06/08/2017 16:30:031:949,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>50,06/08/2017 16:30:031:950,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>55,06/08/2017 16:30:031:950,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>51,06/08/2017 16:30:031:950,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>52,06/08/2017 16:30:031:951,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>59,06/08/2017 16:30:031:951,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>54,06/08/2017 16:30:031:951,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>53,06/08/2017 16:30:031:952,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@6;06/08/2017 16:30:037:505;17;06/08/2017 16:30:037:537;1;1;1;426;0;false;06082017;5;1;<header>16,2,16</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>60,06/08/2017 16:30:037:541,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>49,06/08/2017 16:30:037:542,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>69,06/08/2017 16:30:037:542,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>66,06/08/2017 16:30:037:542,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>67,06/08/2017 16:30:037:543,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>64,06/08/2017 16:30:037:543,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>65,06/08/2017 16:30:037:543,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;7;0;0;0;7;0;1;0;0;0;0;undefined;undefined@6;06/08/2017 16:30:045:178;18;06/08/2017 13:33:027:428;1;1;1;426;0;false;06082017;6;1;<header>14,2,18</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>70,06/08/2017 13:33:027:432,,true,426,null,null,undefined,0.00000,,0.0000000000,0.0000000000,true,0,0,0,0</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;0;0;0;0;0;0;0;0;0;0;0;undefined;undefined@6;06/08/2017 16:30:045:178;16;06/08/2017 16:30:045:204;1;1;1;426;0;false;06082017;6;1;<header>15,2,1127</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>60,06/08/2017 16:30:045:208,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>49,06/08/2017 16:30:045:209,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>50,06/08/2017 16:30:045:209,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>55,06/08/2017 16:30:045:209,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>51,06/08/2017 16:30:045:210,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>52,06/08/2017 16:30:045:210,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>59,06/08/2017 16:30:045:210,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>54,06/08/2017 16:30:045:211,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>53,06/08/2017 16:30:045:211,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;0;undefined;undefined;undefined;undefined;undefined;0;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@44;06/08/2017 13:35:017:874;299;06/08/2017 13:23:008:517;1;1;1;240;0;false;06082017;1;1;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>3215,06/08/2017 13:23:008:523,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>3216,06/08/2017 13:23:008:524,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>3243,06/08/2017 13:23:008:524,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>3267,06/08/2017 13:23:008:525,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>3270,06/08/2017 13:23:008:525,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>3272,06/08/2017 13:23:008:525,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>3284,06/08/2017 13:23:008:526,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>3286,06/08/2017 13:23:008:526,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>3289,06/08/2017 13:23:008:526,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@44;06/08/2017 13:35:017:874;300;06/08/2017 13:23:017:805;1;1;1;240;0;false;06082017;1;1;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>3195,06/08/2017 13:23:017:808,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>3248,06/08/2017 13:23:017:808,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;2;0;0;0;2;0;1;0;0;0;0;undefined;undefined@44;06/08/2017 13:35:017:874;301;06/08/2017 13:23:021:396;1;1;1;240;0;false;06082017;1;1;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>3195,06/08/2017 13:23:021:399,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>3248,06/08/2017 13:23:021:400,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;2;0;0;0;2;0;1;0;0;0;0;undefined;undefined@44;06/08/2017 13:35:017:874;302;06/08/2017 13:23:029:368;1;1;1;240;0;false;06082017;1;1;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>3195,06/08/2017 13:23:029:371,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>3248,06/08/2017 13:23:029:371,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;2;0;0;0;2;0;1;0;0;0;0;undefined;undefined@44;06/08/2017 13:35:017:874;317;06/08/2017 13:34:005:886;1;1;1;426;0;false;06082017;1;1;<header>10,5,59</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>1109,06/08/2017 13:34:005:889,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1162,06/08/2017 13:34:005:889,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;2;0;0;0;2;0;1;0;0;0;0;undefined;undefined@44;06/08/2017 13:35:017:874;318;06/08/2017 13:34:013:532;1;1;1;426;0;false;06082017;1;1;<header>10,5,818</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>1109,06/08/2017 13:34:013:535,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1162,06/08/2017 13:34:013:535,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;2;0;0;0;2;0;1;0;0;0;0;undefined;undefined@44;06/08/2017 13:35:017:874;319;06/08/2017 13:34:023:141;1;1;1;426;0;false;06082017;1;1;<header>10,5,8836</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>1109,06/08/2017 13:34:023:143,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1162,06/08/2017 13:34:023:147,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;2;0;0;0;2;0;1;0;0;0;0;undefined;undefined@44;06/08/2017 13:35:017:874;316;06/08/2017 13:34:041:007;1;1;1;426;0;false;06082017;1;1;<header>10,5,818</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>1129,06/08/2017 13:34:041:010,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1130,06/08/2017 13:34:041:010,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1157,06/08/2017 13:34:041:010,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1181,06/08/2017 13:34:041:011,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1184,06/08/2017 13:34:041:011,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1186,06/08/2017 13:34:041:015,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1198,06/08/2017 13:34:041:015,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1200,06/08/2017 13:34:041:015,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1203,06/08/2017 13:34:041:016,,true,426,null,null,undefined,1.00000,,0,0,true,0,0,0,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;8;0;0;0;8;0;1;0;0;0;0;undefined;undefined@44;06/08/2017 13:35:017:874;316;06/08/2017 13:34:042:404;1;1;1;426;0;false;06082017;1;2;<header>10,5,818</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>1129,06/08/2017 13:34:042:407,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1130,06/08/2017 13:34:042:407,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1157,06/08/2017 13:34:042:408,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1181,06/08/2017 13:34:042:408,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1184,06/08/2017 13:34:042:408,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1186,06/08/2017 13:34:042:409,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1198,06/08/2017 13:34:042:409,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1200,06/08/2017 13:34:042:409,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1203,06/08/2017 13:34:042:410,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@44;06/08/2017 13:35:017:874;316;06/08/2017 13:34:052:959;1;1;1;426;0;false;06082017;1;3;<header>10,5,353667</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>1129,06/08/2017 13:34:052:961,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1130,06/08/2017 13:34:052:963,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1157,06/08/2017 13:34:052:963,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1181,06/08/2017 13:34:052:963,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1184,06/08/2017 13:34:052:964,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1186,06/08/2017 13:34:052:964,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1198,06/08/2017 13:34:052:973,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1200,06/08/2017 13:34:052:974,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1203,06/08/2017 13:34:052:974,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@44;06/08/2017 13:35:017:874;316;06/08/2017 13:35:000:653;1;1;1;426;0;false;06082017;1;4;<header>10,5,363355</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>1129,06/08/2017 13:35:000:656,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1130,06/08/2017 13:35:000:656,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1157,06/08/2017 13:35:000:657,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1181,06/08/2017 13:35:000:657,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1184,06/08/2017 13:35:000:657,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1186,06/08/2017 13:35:000:662,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1198,06/08/2017 13:35:000:662,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1200,06/08/2017 13:35:000:662,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1203,06/08/2017 13:35:000:663,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@44;06/08/2017 13:35:017:874;316;06/08/2017 13:35:010:320;1;1;1;426;0;false;06082017;1;5;<header>10,5,364264</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>1129,06/08/2017 13:35:010:323,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1130,06/08/2017 13:35:010:323,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1157,06/08/2017 13:35:010:324,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1181,06/08/2017 13:35:010:324,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1184,06/08/2017 13:35:010:324,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1186,06/08/2017 13:35:010:325,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1198,06/08/2017 13:35:010:325,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1200,06/08/2017 13:35:010:325,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1203,06/08/2017 13:35:010:326,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@44;06/08/2017 13:35:017:874;316;06/08/2017 13:35:017:890;1;1;1;426;0;false;06082017;1;6;<header>10,5,372367</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>1129,06/08/2017 13:35:017:893,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1130,06/08/2017 13:35:017:893,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1157,06/08/2017 13:35:017:894,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1181,06/08/2017 13:35:017:894,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1184,06/08/2017 13:35:017:898,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1186,06/08/2017 13:35:017:898,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1198,06/08/2017 13:35:017:899,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1200,06/08/2017 13:35:017:899,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1203,06/08/2017 13:35:017:900,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@5;06/08/2017 13:05:044:246;255;06/08/2017 13:05:032:831;1;1;1;240;0;false;06082017;1;1;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>1056,06/08/2017 13:05:032:839,,true,240,null,null,undefined,5.00000,,0.0000000000,0.0000000000,false,0,0,5,0</level03>;;undefined;undefined;0;1;undefined;undefined;undefined;undefined;undefined;0;0;5;0;0;0;1;1;1;0;0;0;254;undefined;undefined@5;06/08/2017 13:05:044:246;15;06/08/2017 13:05:036:479;1;1;1;240;0;false;06082017;1;1;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>36,06/08/2017 13:05:036:482,,true,240,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>42,06/08/2017 13:05:036:482,,true,240,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>48,06/08/2017 13:05:036:482,,true,240,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>37,06/08/2017 13:05:036:483,,true,240,null,null,undefined,5.00000,,0.0000000000,0.0000000000,false,0,0,5,0</level03><level03>39,06/08/2017 13:05:036:483,,true,240,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>44,06/08/2017 13:05:036:483,,true,240,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>40,06/08/2017 13:05:036:483,,true,240,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>41,06/08/2017 13:05:036:484,,true,240,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>43,06/08/2017 13:05:036:484,,true,240,null,null,undefined,5.00000,,0.0000000000,0.0000000000,false,0,0,5,0</level03><level03>38,06/08/2017 13:05:036:484,,true,240,null,null,undefined,5.00000,,0.0000000000,0.0000000000,false,0,0,5,0</level03>;;undefined;undefined;0;1;undefined;undefined;undefined;undefined;undefined;0;0;30;0;0;0;10;1;1;0;0;0;254;undefined;undefined@5;06/08/2017 13:05:044:246;254;06/08/2017 13:05:044:264;1;1;1;240;0;false;06082017;1;1;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>47,06/08/2017 13:05:044:268,,true,240,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>45,06/08/2017 13:05:044:268,,true,240,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03><level03>46,06/08/2017 13:05:044:269,,false,240,null,null,undefined,5.00000,,0.0000000000,0.0000000000,false,0,1,5,5</level03><level03>1057,06/08/2017 13:05:044:269,,true,240,null,null,undefined,3.00000,,0.0000000000,0.0000000000,false,0,0,3,0</level03>;;undefined;havecorrectiveaction;0;1;undefined;undefined;undefined;undefined;undefined;0;0;14;1;5;1;4;1;1;1;0;0;254;undefined;undefined@44;06/08/2017 13:36:010:556;299;06/08/2017 13:27:047:648;1;1;1;240;0;false;06082017;2;1;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>3215,06/08/2017 13:27:047:652,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>3216,06/08/2017 13:27:047:653,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>3243,06/08/2017 13:27:047:653,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>3267,06/08/2017 13:27:047:653,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>3270,06/08/2017 13:27:047:654,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>3272,06/08/2017 13:27:047:654,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>3284,06/08/2017 13:27:047:654,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>3286,06/08/2017 13:27:047:654,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>3289,06/08/2017 13:27:047:655,,true,240,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@44;06/08/2017 13:36:010:556;316;06/08/2017 13:35:033:090;1;1;1;426;0;false;06082017;2;1;<header>10,5,363639</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>1129,06/08/2017 13:35:033:093,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1130,06/08/2017 13:35:033:093,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1157,06/08/2017 13:35:033:093,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1181,06/08/2017 13:35:033:094,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1184,06/08/2017 13:35:033:094,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1186,06/08/2017 13:35:033:094,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1198,06/08/2017 13:35:033:095,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1200,06/08/2017 13:35:033:095,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1203,06/08/2017 13:35:033:095,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@44;06/08/2017 13:36:010:556;316;06/08/2017 13:35:039:904;1;1;1;426;0;false;06082017;2;2;<header>10,5,6175</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>1129,06/08/2017 13:35:039:910,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1130,06/08/2017 13:35:039:911,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1157,06/08/2017 13:35:039:911,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1181,06/08/2017 13:35:039:912,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1184,06/08/2017 13:35:039:912,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1186,06/08/2017 13:35:039:912,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1198,06/08/2017 13:35:039:912,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1200,06/08/2017 13:35:039:913,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1203,06/08/2017 13:35:039:913,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@44;06/08/2017 13:36:010:556;316;06/08/2017 13:35:047:830;1;1;1;426;0;false;06082017;2;3;<header>10,5,818</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>1129,06/08/2017 13:35:047:833,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1130,06/08/2017 13:35:047:833,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1157,06/08/2017 13:35:047:834,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1181,06/08/2017 13:35:047:834,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1184,06/08/2017 13:35:047:834,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1186,06/08/2017 13:35:047:839,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1198,06/08/2017 13:35:047:839,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1200,06/08/2017 13:35:047:839,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1203,06/08/2017 13:35:047:840,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@44;06/08/2017 13:36:010:556;316;06/08/2017 13:35:055:657;1;1;1;426;0;false;06082017;2;4;<header>10,5,363355</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>1129,06/08/2017 13:35:055:659,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1130,06/08/2017 13:35:055:660,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1157,06/08/2017 13:35:055:660,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1181,06/08/2017 13:35:055:660,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1184,06/08/2017 13:35:055:661,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1186,06/08/2017 13:35:055:661,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1198,06/08/2017 13:35:055:662,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1200,06/08/2017 13:35:055:662,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1203,06/08/2017 13:35:055:663,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@44;06/08/2017 13:36:010:556;316;06/08/2017 13:36:005:746;1;1;1;426;0;false;06082017;2;5;<header>10,5,364264</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>1129,06/08/2017 13:36:005:748,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1130,06/08/2017 13:36:005:749,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1157,06/08/2017 13:36:005:749,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1181,06/08/2017 13:36:005:750,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1184,06/08/2017 13:36:005:750,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1186,06/08/2017 13:36:005:755,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1198,06/08/2017 13:36:005:755,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1200,06/08/2017 13:36:005:756,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1203,06/08/2017 13:36:005:756,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@44;06/08/2017 13:36:010:556;316;06/08/2017 13:36:010:573;1;1;1;426;0;false;06082017;2;6;<header>10,5,59</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>1129,06/08/2017 13:36:010:576,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1130,06/08/2017 13:36:010:577,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1157,06/08/2017 13:36:010:577,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1181,06/08/2017 13:36:010:577,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1184,06/08/2017 13:36:010:581,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1186,06/08/2017 13:36:010:581,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1198,06/08/2017 13:36:010:582,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1200,06/08/2017 13:36:010:582,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03><level03>1203,06/08/2017 13:36:010:582,,true,426,null,null,undefined,1.00000,,0,0,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@6;06/08/2017 13:32:050:502;18;06/08/2017 13:31:058:652;1;1;1;426;0;false;06082017;1;1;<header>14,2,5</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>70,06/08/2017 13:31:058:657,,true,426,null,null,undefined,0.00000,,0.0000000000,0.0000000000,true,0,0,0,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;0;0;0;0;0;0;0;0;0;0;0;undefined;undefined@6;06/08/2017 13:32:050:502;16;06/08/2017 13:32:039:868;1;1;1;426;0;false;06082017;1;1;<header>15,2,22</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>60,06/08/2017 13:32:039:872,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>49,06/08/2017 13:32:039:872,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>50,06/08/2017 13:32:039:872,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>55,06/08/2017 13:32:039:873,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>51,06/08/2017 13:32:039:873,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>52,06/08/2017 13:32:039:873,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>59,06/08/2017 13:32:039:874,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>54,06/08/2017 13:32:039:874,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>53,06/08/2017 13:32:039:874,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@6;06/08/2017 13:32:050:502;17;06/08/2017 13:32:050:523;1;1;1;426;0;false;06082017;1;1;<header>16,2,4</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>60,06/08/2017 13:32:050:527,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>49,06/08/2017 13:32:050:527,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>69,06/08/2017 13:32:050:527,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>66,06/08/2017 13:32:050:528,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>67,06/08/2017 13:32:050:528,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>64,06/08/2017 13:32:050:528,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>65,06/08/2017 13:32:050:529,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;7;0;0;0;7;0;1;0;0;0;0;undefined;undefined@6;06/08/2017 13:33:006:675;18;06/08/2017 13:32:011:205;1;1;1;426;0;false;06082017;2;1;<header>14,2,11</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>70,06/08/2017 13:32:011:209,,true,426,null,null,undefined,0.00000,,0.0000000000,0.0000000000,true,0,0,0,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;0;0;0;0;0;0;0;0;0;0;0;undefined;undefined@6;06/08/2017 13:33:006:675;16;06/08/2017 13:32:059:738;1;1;1;426;0;false;06082017;2;1;<header>15,2,23</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>60,06/08/2017 13:32:059:742,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>49,06/08/2017 13:32:059:743,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>50,06/08/2017 13:32:059:743,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>55,06/08/2017 13:32:059:743,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>51,06/08/2017 13:32:059:744,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>52,06/08/2017 13:32:059:745,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>59,06/08/2017 13:32:059:745,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>54,06/08/2017 13:32:059:745,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>53,06/08/2017 13:32:059:746,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@6;06/08/2017 13:33:006:675;17;06/08/2017 13:33:006:696;1;1;1;426;0;false;06082017;2;1;<header>16,2,13</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>60,06/08/2017 13:33:006:699,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>49,06/08/2017 13:33:006:699,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>69,06/08/2017 13:33:006:700,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>66,06/08/2017 13:33:006:700,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>67,06/08/2017 13:33:006:701,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>64,06/08/2017 13:33:006:701,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>65,06/08/2017 13:33:006:701,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;7;0;0;0;7;0;1;0;0;0;0;undefined;undefined@6;06/08/2017 16:29:056:893;18;06/08/2017 13:32:022:232;1;1;1;426;0;false;06082017;3;1;<header>14,2,12</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>70,06/08/2017 13:32:022:236,,true,426,null,null,undefined,0.00000,,0.0000000000,0.0000000000,true,0,0,0,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;0;0;0;0;0;0;0;0;0;0;0;undefined;undefined@6;06/08/2017 16:30:023:284;18;06/08/2017 13:32:032:147;1;1;1;426;0;false;06082017;4;1;<header>14,2,17</header>;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>70,06/08/2017 13:32:032:150,,true,426,null,null,undefined,0.00000,,0.0000000000,0.0000000000,true,0,0,0,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;0;0;0;0;0;0;0;0;0;0;0;undefined;undefined@2;06/08/2017 13:36:057:727;14;06/08/2017 13:36:038:307;1;1;1;426;0;false;06082017;2;1;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>266,06/08/2017 13:36:038:311,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>3,06/08/2017 13:36:038:312,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>4,06/08/2017 13:36:038:312,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>5,06/08/2017 13:36:038:313,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>267,06/08/2017 13:36:038:313,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>264,06/08/2017 13:36:038:313,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>265,06/08/2017 13:36:038:313,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>23,06/08/2017 13:36:038:314,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>30,06/08/2017 13:36:038:314,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;2;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined@2;06/08/2017 13:36:057:727;14;06/08/2017 13:36:038:940;1;1;1;426;0;false;06082017;2;2;;false;false;;undefined;undefined;false; 2.0.30;JBS ;<level03>266,06/08/2017 13:36:038:945,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>3,06/08/2017 13:36:038:945,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>4,06/08/2017 13:36:038:946,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>5,06/08/2017 13:36:038:946,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>267,06/08/2017 13:36:038:946,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>264,06/08/2017 13:36:038:947,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>265,06/08/2017 13:36:038:947,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>23,06/08/2017 13:36:038:947,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03><level03>30,06/08/2017 13:36:038:948,,true,426,null,null,undefined,1.00000,,0.0000000000,0.0000000000,false,0,0,1,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;2;0;9;0;0;0;9;0;1;0;0;0;0;undefined;undefined";
+
+
+                //Gera um array
+                string[] arrayObj = ObjResultJSon.Split('@');
+                //Instanciamos a linha que gera a query
+                //Percorre o Objeto
+
+                string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
                 using (SqlConnection connection = new SqlConnection(conexao))
                 {
                     connection.Open();
@@ -258,8 +280,100 @@ namespace SgqSystem.Services
                     {
                         //Estrai o resultado
                         string[] result = arrayObj[i].Split(';');
+
+                        /**
+                         * autor: Gabriel Nunes
+                         * date: 2017-06-05
+                         * title: indicador pai
+                         */
+
+                        //verifico se este indicador é pai de algum outro. Trago uma lista com os leveis 3 do indicador filho, se for o caso
+
+                        var ParLevel1Origin_Id = DefaultValueReturn(result[0], "0");
+                        
+                        string indicadorPai = "SELECT distinct(cast(p32.ParLevel3_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
+                                              "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)" +
+                                              "\n  on p321.ParLevel1_Id = p1.id " +
+                                              "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK)" +
+                                              "\n  on p32.id = p321.ParLevel3Level2_Id " +
+                                              "\n  WHERE ParLevel1Origin_Id = " + ParLevel1Origin_Id +
+                                              "\n  and p1.isActive = 1 " +
+                                              "\n  and p321.Active = 1 " +
+                                              "\n  and p32.IsActive = 1";
+
+
+                        List<ResultadoUmaColuna> list;
+
+                        using (var db = new Dominio.SgqDbDevEntities())
+                        {
+                            list = db.Database.SqlQuery<ResultadoUmaColuna>(indicadorPai).ToList();
+                        }
+
+
+                        string level3split = result[22].Replace("</level03>", "@").Replace("<level03>", ""); //tiro as tags de <level3></level3>, deixando o simbolo @ para separar os elementos.
+                        string[] leveis3 = level3split.Split('@'); //faço um array contendo cada elemento level3 vindo do sistema
+
+                        //string[][] matrizLevel3 = new string[leveis3.Length][];
+
+                        string retorno = "";
+
+                        string retornoFilho = "";
+
+                        //tiro todos os level3 que não são do indicador
+                        for (int j = 0; j < leveis3.Length; j++) //Percorro cada elemento do array
+                        {
+                            string[] esteLevel3 = leveis3[j].Split(',');
+
+                            for (var k = 0; k < list.Count(); k++)
+                            {
+                                if (list[k].retorno.ToString() == esteLevel3[0])
+                                {
+                                    retornoFilho += "<level03>";
+                                    retornoFilho += leveis3[j];
+                                    retornoFilho += "</level03>";
+                                    leveis3[j] = "";
+                                }
+                            }
+                        }
+
+
+                        //coloco as tag de level3 e tiro quando não houver elementos
+                        for (int j = 0; j < leveis3.Length; j++) //Percorro cada elemento do array
+                        {
+                            if (leveis3[j] != "")
+                            {
+                                retorno += "<level03>";
+                                retorno += leveis3[j];
+                                retorno += "</level03>";
+                            }
+
+                        }
+
+                        result[22] = retorno;
+
+                        //-----------------------------
+
                         //Id do Level01
-                        string level01Id = result[0];
+                        string level01Id = DefaultValueReturn(result[0], "0");
+
+                        if(level01Id == "0")
+                        {
+                            string p1Undefined = "SELECT distinct(cast(p321.ParLevel1_Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK)" +
+                                                 "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK)" +
+                                                 "\n  on p321.ParLevel1_Id = p1.id " +
+                                                 "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK)" +
+                                                 "\n  on p32.id = p321.ParLevel3Level2_Id " +
+                                                 "\n  WHERE p32.ParLevel2_Id = " + result[2] +
+                                                 "\n  and p1.isActive = 1 " +
+                                                 "\n  and p321.Active = 1 " +
+                                                 "\n  and p32.IsActive = 1";
+                            using (var db = new Dominio.SgqDbDevEntities())
+                            {
+                                
+                                level01Id = db.Database.SqlQuery<ResultadoUmaColuna>(p1Undefined).FirstOrDefault().retorno;
+                            }
+                        }
+
                         //Data que a coleta começou ser gerada, pelo Id do Level01
                         string level01DataCollect = result[1];
                         //Converte a Data para o padrão correto
@@ -296,6 +410,10 @@ namespace SgqSystem.Services
 
                         //Pega o Auditor
                         string auditorId = result[7];
+
+
+                        //auditorId = "1";
+
                         //Verifica se é reauditoria
                         string reaudit = result[9];
                         //Converte para o padrão Sql
@@ -354,10 +472,15 @@ namespace SgqSystem.Services
                         string sequential = result[43];
                         string side = result[44];
                         string monitoramentoultimoalerta = result[45];
-                        string startphaseevaluation = null;
+                        string startphaseevaluation = "0";
+                        string endphaseevaluation = "0";
                         if (result.Length > 47)
                         {
                             startphaseevaluation = result[47];
+                        }
+                        if (result.Length > 48)
+                        {
+                            endphaseevaluation = result[48];
                         }
 
                         //Gera o Cabeçalho do Level02
@@ -390,6 +513,7 @@ namespace SgqSystem.Services
                         level02HeaderJSon += ";" + hashKey;
                         level02HeaderJSon += ";" + monitoramentoultimoalerta;
                         level02HeaderJSon += ";" + startphaseevaluation;
+                        level02HeaderJSon += ";" + endphaseevaluation;
 
                         //level02HeaderJSon += ";" + alertaAtual;
 
@@ -431,25 +555,18 @@ namespace SgqSystem.Services
                                "VALUES " +
                                "('" + unidadeId + "','" + shift + "','" + period + "','" + level01Id + "',CAST(N'" + level01DataCollect + "' AS DateTime),'" + level02Id + "','" + evaluate + "','" + sample + "', '" + auditorId + "',CAST(N'" + level02DataCollect + "' AS DateTime),'" + level02HeaderJSon + "','" + level03ResultJson + "', '" + correctiveActionJson + "', '" + reaudit + "', '" + reauditNumber + "', '" + haveReaudit + "', '" + reauditlevel + "','" + haveCorrectiveAction + "' ,'" + deviceId + "','" + versaoApp + "','" + ambiente + "',0,'" + deviceMac + "',GETDATE(),NULL,'" + key + "',NULL) ";
 
-                        if (autoSend == true)
-                        {
-                            sql += "SELECT @@IDENTITY AS 'Identity'";
-                        }
-                        else
-                        {
-                            sql += "SELECT '1' AS 'Identity'";
-                        }
+                        sql += "SELECT @@IDENTITY AS 'Identity'";
 
                         command = new SqlCommand(sql, connection);
-
-                        // var i = command.ExecuteNonQuery();
                         var iSql = Convert.ToInt32(command.ExecuteScalar());
+
                         if (iSql > 0)
                         {
-                            if (autoSend == true)
-                            {
-                                ProcessJson(null, iSql);
-                            }
+                            //if (autoSend == true)
+                            //{
+                            ProcessJson(null, iSql, false);
+
+                            //}
                         }
 
                         else
@@ -458,19 +575,98 @@ namespace SgqSystem.Services
                             throw new Exception("erro json");
 
                         }
+
+                        if (retornoFilho != "")
+                        {
+
+
+                            List<ResultadoUmaColuna> list2;
+
+                            var indicadorFilho_id = "";
+                            var monitoramentoFilho_id = "";
+
+                            using (var db = new Dominio.SgqDbDevEntities())
+                            {
+
+                                //verifico se este indicador é pai de algum outro. Trago uma lista com os leveis 3 do indicador filho, se for o caso
+                                string indicadorFilho = "SELECT distinct(cast(p1.Id as varchar)) retorno FROM ParLevel1 p1  WITH (NOLOCK) " +
+                                                      "\n  inner join ParLevel3Level2Level1 p321  WITH (NOLOCK) " +
+                                                      "\n  on p321.ParLevel1_Id = p1.id " +
+                                                      "\n  inner join ParLevel3Level2 p32  WITH (NOLOCK) " +
+                                                      "\n  on p32.id = p321.ParLevel3Level2_Id " +
+                                                      "\n  WHERE ParLevel1Origin_Id = " + result[0] +
+                                                      "\n  and p1.isActive = 1 " +
+                                                      "\n  and p321.Active = 1 " +
+                                                      "\n  and p32.IsActive = 1";
+
+                                list2 = db.Database.SqlQuery<ResultadoUmaColuna>(indicadorFilho).ToList();
+
+
+
+                                for (var l = 0; l < list2.Count(); l++)
+                                {
+                                    indicadorFilho_id = list2[l].retorno.ToString();
+                                }
+
+                                //verifico se este indicador é pai de algum outro. Trago uma lista com os leveis 3 do indicador filho, se for o caso
+                                string monitoramentoFilho = "select top 1 cast(p32.ParLevel2_Id as varchar) retorno " +
+                                                            "\n from parlevel3level2level1 p321 WITH (NOLOCK) " +
+                                                            "\n inner join parlevel3level2 p32 WITH (NOLOCK) " +
+                                                            "\n on p321.parlevel3level2_id = p32.id " +
+                                                            "\n where p321.parlevel1_id = " + indicadorFilho_id;
+
+                                list2 = db.Database.SqlQuery<ResultadoUmaColuna>(monitoramentoFilho).ToList();
+
+                                for (var l = 0; l < list2.Count(); l++)
+                                {
+                                    monitoramentoFilho_id = list2[l].retorno.ToString();
+                                }
+
+
+                            }
+                            string sql2 = "INSERT INTO [dbo].[CollectionJson] " +
+                               "([Unit_Id],[Shift],[Period],[level01_Id],[Level01CollectionDate],[level02_Id],[Evaluate],[Sample],[AuditorId],[Level02CollectionDate],[Level02HeaderJson],[Level03ResultJSon],[CorrectiveActionJson],[Reaudit],[ReauditNumber],[haveReaudit],[ReauditLevel],[haveCorrectiveAction],[Device_Id],[AppVersion],[Ambient],[IsProcessed],[Device_Mac],[AddDate],[AlterDate],[Key],[TTP]) " +
+                               "VALUES " +
+                               "('" + unidadeId + "','" + shift + "','" + period + "','" + indicadorFilho_id + "',CAST(N'" + level01DataCollect + "' AS DateTime),'" + level02Id + "','" + evaluate + "','" + sample + "', '" + auditorId + "',CAST(N'" + level02DataCollect + "' AS DateTime),'" + level02HeaderJSon + "','" + retornoFilho + "', '" + correctiveActionJson + "', '" + reaudit + "', '" + reauditNumber + "', '" + haveReaudit + "', '" + reauditlevel + "','" + haveCorrectiveAction + "' ,'" + deviceId + "','" + versaoApp + "','" + ambiente + "',0,'" + deviceMac + "',GETDATE(),NULL,'" + key + "',NULL) ";
+
+                            sql2 += "SELECT @@IDENTITY AS 'Identity'";
+
+                            command = new SqlCommand(sql2, connection);
+                            var iSql2 = Convert.ToInt32(command.ExecuteScalar());
+
+                            if (iSql2 > 0)
+                            {
+                                //if (autoSend == true)
+                                //{
+                                ProcessJson(null, iSql2, true);
+
+                                //}
+                            }
+
+                            else
+                            {
+                                //Se não ocorre sem problemas, retorna um erro
+                                throw new Exception("erro json");
+
+                            }
+
+                        }
+                        
                     }
+
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
                 return null;
             }
             catch (SqlException ex)
             {
-                int insertLog = insertLogJson(ObjResultJSon, ex.Message, deviceId, versaoApp, "InsertJson");
+                int insertLog = insertLogJson(objObjResultJSonPuro, ex.Message, deviceId, versaoApp, "InsertJson");
                 return "error";
                 //return "error sql insert";
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson(ObjResultJSon, ex.Message, deviceId, versaoApp, "InsertJson");
+                int insertLog = insertLogJson(objObjResultJSonPuro, ex.Message, deviceId, versaoApp, "InsertJson");
                 return "error";
             }
         }
@@ -482,7 +678,7 @@ namespace SgqSystem.Services
         /// <returns></returns>
         /// Para chamar uma consolidação geral digite [web]
         [WebMethod]
-        public string ProcessJson(string device, int id)
+        public string ProcessJson(string device, int id, bool filho)
         {
 
             try
@@ -507,7 +703,7 @@ namespace SgqSystem.Services
                     query = "[Id] = '" + id + "' AND";
                 }
 
-                string sql = "SELECT [level01_Id], [Level01CollectionDate], [level02_Id], [Level02CollectionDate], [Unit_Id],[Period], [Shift], [AppVersion], [Ambient], [Device_Id], [Device_Mac] , [Key], [Level03ResultJSon], [Id], [Level02HeaderJson], [Evaluate],[Sample],[AuditorId], [Reaudit], [CorrectiveActionJson],[haveReaudit],[ReauditLevel],[haveCorrectiveAction],[ReauditNumber]  FROM CollectionJson WHERE " + query + " [IsProcessed] = 0";
+                string sql = "SELECT [level01_Id], [Level01CollectionDate], [level02_Id], [Level02CollectionDate], [Unit_Id],[Period], [Shift], [AppVersion], [Ambient], [Device_Id], [Device_Mac] , [Key], [Level03ResultJSon], [Id], [Level02HeaderJson], [Evaluate],[Sample],[AuditorId], [Reaudit], [CorrectiveActionJson],[haveReaudit],[ReauditLevel],[haveCorrectiveAction],[ReauditNumber]  FROM CollectionJson (nolock)  WHERE " + query + " [IsProcessed] = 0";
 
 
                 var CollectionJsonDB = new SGQDBContext.CollectionJson(db);
@@ -560,8 +756,15 @@ namespace SgqSystem.Services
                     }
                     else
                     {
-                        DateTime dataPhase = DateCollectConvert(StartPhase);
-                        StartPhase = "CAST(N'" + dataPhase.ToString("yyyy-MM-dd 00:00:00") + "' AS DateTime)";
+                        try
+                        {
+                            DateTime dataPhase = DateCollectConvert(StartPhase);
+                            StartPhase = "CAST(N'" + dataPhase.ToString("yyyy-MM-dd 00:00:00") + "' AS DateTime)";
+                        }catch(Exception e)
+                        {
+                            StartPhase = "CAST(N'" + DateTime.Now.ToString("yyyy-MM-dd 00:00:00") + "' AS DateTime)";
+                        }
+                        
                     }
 
 
@@ -628,13 +831,13 @@ namespace SgqSystem.Services
 
                     string reauditNumber = DefaultValueReturn(c.ReauditNumber.ToString(), "0");
 
-                    var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(c.Unit_Id, c.level01_Id, c.Level01CollectionDate);
+                    var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(c.Unit_Id, c.level01_Id, c.Level01CollectionDate, c.Shift, c.Period);
 
                     if (c.Reaudit)
-                        consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(c.Unit_Id, c.level01_Id, c.Level01CollectionDate);
+                        consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(c.Unit_Id, c.level01_Id, c.Level01CollectionDate, c.Shift, c.Period);
                     if (consolidationLevel1 == null)
                     {
-                        consolidationLevel1 = InsertConsolidationLevel1(c.Unit_Id, c.level01_Id, c.Level01CollectionDate);
+                        consolidationLevel1 = InsertConsolidationLevel1(c.Unit_Id, c.level01_Id, c.Level01CollectionDate, c.Shift, c.Period);
                         if (consolidationLevel1 == null)
                         {
                             throw new Exception();
@@ -644,7 +847,7 @@ namespace SgqSystem.Services
                     var consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(c.Unit_Id, consolidationLevel1.Id, c.level02_Id);
 
                     if (c.Reaudit)
-                        consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(c.Unit_Id, consolidationLevel1.Id, c.level02_Id, 1);
+                        consolidationLevel2 = ConsolidationLevel2DB.getByConsolidationLevel1(c.Unit_Id, consolidationLevel1.Id, c.level02_Id, 1, reauditNumber);
 
                     if (consolidationLevel2 == null)
                     {
@@ -675,21 +878,40 @@ namespace SgqSystem.Services
                     monitoramentoultimoalerta = DefaultValueReturn(monitoramentoultimoalerta, "0");
 
                     string startphaseevaluation = DefaultValueReturn(arrayHeader[28], "0");
+                    string endphaseevaluation = "0";
+                    if (arrayHeader.Length > 29)
+                    {
+                        endphaseevaluation = DefaultValueReturn(arrayHeader[29], "0");
+                    }
 
                     int CollectionLevel2Id = InsertCollectionLevel2(consolidationLevel1, consolidationLevel2, c.AuditorId, c.Shift, c.Period, Phase, c.Reaudit, c.ReauditNumber, c.Level02CollectionDate,
                                                 StartPhase, c.Evaluate, sampleCollect, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel,
                                                 haveCorrectiveAction, havePhases, completed, idCollectionLevel2, AlertLevel, sequential, side,
-                                                weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, startphaseevaluation, hashKey);
+                                                weievaluation, weidefects, defects, totallevel3withdefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, startphaseevaluation, endphaseevaluation, hashKey);
 
                     if (CollectionLevel2Id == 2627)
                     {
                         int jsonUpdate = updateJsonDuplicated(c.Id);
                     }
-                    else if (CollectionLevel2Id > 0)
+                    else if (CollectionLevel2Id > 0 && !string.IsNullOrEmpty(c.Level03ResultJSon))
                     {
 
-                        int CollectionLevel3Id = InsertCollectionLevel3(CollectionLevel2Id.ToString(), c.level02_Id, c.Level03ResultJSon, c.AuditorId, Duplicated);
+                        int CollectionLevel3Id = InsertCollectionLevel3(CollectionLevel2Id.ToString(), c.level02_Id, c.Level03ResultJSon, c.AuditorId, Duplicated, filho);
 
+                        int IsBEA = 0;
+
+                        using (var db = new Dominio.SgqDbDevEntities())
+                        {
+                            
+                            var BEA = db.ParLevel1VariableProductionXLevel1.FirstOrDefault(r => r.ParLevel1_Id == c.level01_Id);
+                            if(BEA != null)
+                                IsBEA = BEA.ParLevel1VariableProduction_Id;
+
+                        }
+
+
+                        if (IsBEA == 3 || IsBEA == 2)
+                                ReconsolidationToLevel3(CollectionLevel2Id.ToString());
 
                         headersContadores = headersContadores.Replace("</header><header>", ";").Replace("<header>", "").Replace("</header>", "");
                         if (!string.IsNullOrEmpty(headersContadores))
@@ -790,6 +1012,11 @@ namespace SgqSystem.Services
                         var updateConsolidationLevel1Id = updateConsolidationLevel1(ConsolidationLevel1_Id, AlertLevel, avaliacaoultimoalerta, monitoramentoultimoalerta, consolidationLevel1XConsolidationLevel2);
 
                     }
+                    else if (string.IsNullOrEmpty(c.Level03ResultJSon))
+                    {
+                        var ids = "Level2ID:" + CollectionLevel2Id + " CollectionJsonID: " + c.Id;
+                        int insertLog = insertLogJson("", "Level 3 VAZIO " + ids, "N/A", "N/A", "Erro no [ProcessJson].");
+                    }
 
                 }
 
@@ -797,6 +1024,7 @@ namespace SgqSystem.Services
             }
             catch (Exception ex)
             {
+                int insertLog = insertLogJson("", ex.Message, "N/A", "N/A", "Erro no [ProcessJson]" + ex.ToString());
                 throw ex;
             }
         }
@@ -827,6 +1055,7 @@ namespace SgqSystem.Services
                             return 0;
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             catch (SqlException ex)
@@ -862,6 +1091,7 @@ namespace SgqSystem.Services
                             return 0;
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             catch (SqlException ex)
@@ -879,13 +1109,35 @@ namespace SgqSystem.Services
         public int updateConsolidationLevel2(int ConsolidationLevel2_Id, string AlertLevel, string LastEvaluationAlert, string LastLevel2Alert, SGQDBContext.CollectionLevel2Consolidation CollectionLevel2Consolidation)
         {
             //verificar se não vai sobreescrever informação com tablet antigo
-            int LastEvaluationAlertCheck = Convert.ToInt32(LastEvaluationAlert);
+
+            if (LastEvaluationAlert == "NULL")
+            {
+                LastEvaluationAlert = "0";
+            }
+
+            if (LastLevel2Alert == "NULL")
+            {
+                LastLevel2Alert = "null";
+            }
+
+            int LastEvaluationAlertCheck = 0;
+
+            if (LastEvaluationAlert == "NULL")
+            {
+                LastEvaluationAlertCheck = Convert.ToInt32(0);
+            }
+            else
+            {
+                LastEvaluationAlertCheck = Convert.ToInt32(LastEvaluationAlert);
+            }
+
+
             if (CollectionLevel2Consolidation.LastEvaluationAlert > LastEvaluationAlertCheck)
             {
                 LastEvaluationAlert = CollectionLevel2Consolidation.LastEvaluationAlert.ToString();
             }
 
-            string sql = "UPDATE ConsolidationLevel2 SET AlertLevel=" + AlertLevel.ToString().Replace(",", ".") + ", WeiEvaluation=" + CollectionLevel2Consolidation.WeiEvaluationTotal.ToString().Replace(",", ".") + ", EvaluateTotal=" + CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", DefectsTotal=" + CollectionLevel2Consolidation.DefectsTotal.ToString().Replace(",", ".") + ", WeiDefects=" + CollectionLevel2Consolidation.WeiDefectsTotal.ToString().Replace(",", ".") + ", TotalLevel3Evaluation=" + CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", TotalLevel3WithDefects=" + CollectionLevel2Consolidation.TotalLevel3WithDefects.ToString().Replace(",", ".") + ", LastEvaluationAlert='" + LastEvaluationAlert.ToString().Replace(",", ".") + "', LastLevel2Alert='" + LastLevel2Alert.ToString().Replace(",", ".") + "', EvaluatedResult='" + CollectionLevel2Consolidation.EvaluatedResult + "', DefectsResult='" + CollectionLevel2Consolidation.DefectsResult + "' WHERE ID='" + ConsolidationLevel2_Id.ToString().Replace(",", ".") + "'";
+            string sql = "UPDATE ConsolidationLevel2 SET AlertLevel=" + AlertLevel.ToString().Replace(",", ".") + ", WeiEvaluation=" + CollectionLevel2Consolidation.WeiEvaluationTotal.ToString().Replace(",", ".") + ", EvaluateTotal=" + CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", DefectsTotal=" + CollectionLevel2Consolidation.DefectsTotal.ToString().Replace(",", ".") + ", WeiDefects=" + CollectionLevel2Consolidation.WeiDefectsTotal.ToString().Replace(",", ".") + ", TotalLevel3Evaluation=" + CollectionLevel2Consolidation.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", TotalLevel3WithDefects=" + CollectionLevel2Consolidation.TotalLevel3WithDefects.ToString().Replace(",", ".") + ", LastEvaluationAlert='" + LastEvaluationAlert.ToString().Replace(",", ".") + "', LastLevel2Alert=" + LastLevel2Alert.ToString().Replace(",", ".") + ", EvaluatedResult='" + CollectionLevel2Consolidation.EvaluatedResult + "', DefectsResult='" + CollectionLevel2Consolidation.DefectsResult + "' WHERE ID='" + ConsolidationLevel2_Id.ToString().Replace(",", ".") + "'";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
@@ -904,6 +1156,7 @@ namespace SgqSystem.Services
                             return 0;
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             catch (SqlException ex)
@@ -920,13 +1173,24 @@ namespace SgqSystem.Services
 
         public int updateConsolidationLevel1(int ConsolidationLevel1_Id, string AlertLevel, string LastEvaluationAlert, string LastLevel2Alert, SGQDBContext.ConsolidationLevel1XConsolidationLevel2 CL1XCL2)
         {
+
+            if (LastEvaluationAlert == "NULL")
+            {
+                LastEvaluationAlert = "0";
+            }
+
+            if (LastLevel2Alert == "NULL")
+            {
+                LastLevel2Alert = "null";
+            }
+
             int LastEvaluationAlertCheck = Convert.ToInt32(LastEvaluationAlert);
             if (CL1XCL2.LastEvaluationAlert > LastEvaluationAlertCheck)
             {
                 LastEvaluationAlert = CL1XCL2.LastEvaluationAlert.ToString();
             }
 
-            string sql = "UPDATE ConsolidationLevel1 SET AtualAlert=" + AlertLevel.ToString().Replace(",", ".") + ", Evaluation=" + CL1XCL2.EvaluateTotal.ToString().Replace(",", ".") + ", WeiEvaluation=" + CL1XCL2.WeiEvaluation.ToString().Replace(",", ".") + ", EvaluateTotal=" + CL1XCL2.EvaluateTotal.ToString().Replace(",", ".") + ", DefectsTotal=" + CL1XCL2.DefectsTotal.ToString().Replace(",", ".") + ", WeiDefects=" + CL1XCL2.WeiDefects.ToString().Replace(",", ".") + ", TotalLevel3Evaluation=" + CL1XCL2.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", TotalLevel3WithDefects=" + CL1XCL2.TotalLevel3WithDefects.ToString().Replace(",", ".") + ", LastEvaluationAlert='" + LastEvaluationAlert.ToString().Replace(",", ".") + "', LastLevel2Alert='" + LastLevel2Alert.ToString().Replace(",", ".") + "', EvaluatedResult='" + CL1XCL2.EvaluatedResult.ToString().Replace(",", ",") + "', DefectsResult='" + CL1XCL2.DefectsResult.ToString().Replace(",", ".") + "' WHERE ID='" + ConsolidationLevel1_Id.ToString().Replace(",", ".") + "'";
+            string sql = "UPDATE ConsolidationLevel1 SET AtualAlert=" + AlertLevel.ToString().Replace(",", ".") + ", Evaluation=" + CL1XCL2.EvaluateTotal.ToString().Replace(",", ".") + ", WeiEvaluation=" + CL1XCL2.WeiEvaluation.ToString().Replace(",", ".") + ", EvaluateTotal=" + CL1XCL2.EvaluateTotal.ToString().Replace(",", ".") + ", DefectsTotal=" + CL1XCL2.DefectsTotal.ToString().Replace(",", ".") + ", WeiDefects=" + CL1XCL2.WeiDefects.ToString().Replace(",", ".") + ", TotalLevel3Evaluation=" + CL1XCL2.TotalLevel3Evaluation.ToString().Replace(",", ".") + ", TotalLevel3WithDefects=" + CL1XCL2.TotalLevel3WithDefects.ToString().Replace(",", ".") + ", LastEvaluationAlert='" + LastEvaluationAlert.ToString().Replace(",", ".") + "', LastLevel2Alert=" + LastLevel2Alert.ToString().Replace(",", ".") + ", EvaluatedResult='" + CL1XCL2.EvaluatedResult.ToString().Replace(",", ",") + "', DefectsResult='" + CL1XCL2.DefectsResult.ToString().Replace(",", ".") + "' WHERE ID='" + ConsolidationLevel1_Id.ToString().Replace(",", ".") + "'";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
@@ -945,6 +1209,7 @@ namespace SgqSystem.Services
                             return 0;
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             catch (SqlException ex)
@@ -958,10 +1223,11 @@ namespace SgqSystem.Services
                 throw ex;
             }
         }
-        public int updateCorrectiveAction_CollectionLevel2_By_ParLevel1(string ParLevel1_Id, string ParCompany_Id, string dataInicio, string dataFim)
+        public int updateCorrectiveAction_CollectionLevel2_By_ParLevel1(string ParLevel1_Id, string ParCompany_Id, string dataInicio, string dataFim, string reauditnumber)
         {
 
-            string sql = "UPDATE CollectionLevel2 SET HaveCorrectiveAction=0 WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND UnitId='" + ParCompany_Id + "' AND CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' AND HaveCorrectiveAction=1";
+            string sql = "UPDATE CollectionLevel2 SET HaveCorrectiveAction=0 WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND UnitId='" + ParCompany_Id +
+                   "' AND CollectionDate BETWEEN '" + dataInicio + " 00:00:00' AND '" + dataFim + " 23:59:59' AND HaveCorrectiveAction=1 and reauditnumber='" + reauditnumber + "'";
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
@@ -980,6 +1246,7 @@ namespace SgqSystem.Services
                             return 0;
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             catch (SqlException ex)
@@ -1015,6 +1282,7 @@ namespace SgqSystem.Services
                             return 0;
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             catch (SqlException ex)
@@ -1037,15 +1305,24 @@ namespace SgqSystem.Services
         /// <param name="level01Id">Id do Level01</param>
         /// <param name="collectionDate">Data da Coleta que verifica a consolidação</param>
         /// <param name="departmentId">Id do Departamento</param>
+        /// <param name="Shift">Turno</param>
+        /// <param name="Period">Periodo</param>
         /// <returns></returns>
-        public SGQDBContext.ConsolidationLevel1 InsertConsolidationLevel1(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate, string departmentId = "1")
+        public SGQDBContext.ConsolidationLevel1 InsertConsolidationLevel1(int ParCompany_Id, int ParLevel1_Id, DateTime collectionDate, int Shift, int Period, string departmentId = "1")
         {
             var ConsolidationLevel1DB = new SGQDBContext.ConsolidationLevel1(db);
 
             //Script de Insert para consolidação
-            string sql = "INSERT ConsolidationLevel1 ([UnitId],[DepartmentId],[ParLevel1_Id],[AddDate],[AlterDate],[ConsolidationDate]) " +
+            //string sql = "INSERT ConsolidationLevel1 ([UnitId],[DepartmentId],[ParLevel1_Id],[AddDate],[AlterDate],[ConsolidationDate],[shift],[period]) " +
+            //             "VALUES " +
+            //             "('" + ParCompany_Id + "','" + departmentId + "','" + ParLevel1_Id + "', GetDate(),null, CONVERT(DATE, '" + collectionDate.ToString("yyyy-MM-dd") + "'),"+
+            //             Shift+","+Period+")"+
+            //             "SELECT @@IDENTITY AS 'Identity'";
+
+            string sql = "INSERT ConsolidationLevel1 ([UnitId],[DepartmentId],[ParLevel1_Id],[AddDate],[AlterDate],[ConsolidationDate],[shift],[period]) " +
                          "VALUES " +
-                         "('" + ParCompany_Id + "','" + departmentId + "','" + ParLevel1_Id + "', GetDate(),null, CONVERT(DATE, '" + collectionDate.ToString("yyyy-MM-dd") + "')) " +
+                         "('" + ParCompany_Id + "','" + departmentId + "','" + ParLevel1_Id + "', GetDate(),null, CONVERT(DATE, '" + collectionDate.ToString("yyyy-MM-dd") + "')" +
+                         ", " + Shift + "," + Period + ")" +
                          "SELECT @@IDENTITY AS 'Identity'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -1060,7 +1337,7 @@ namespace SgqSystem.Services
                         //Se o registro for inserido retorno o Id da Consolidação
                         if (i > 0)
                         {
-                            return ConsolidationLevel1DB.getConsolidation(ParCompany_Id, ParLevel1_Id, collectionDate);
+                            return ConsolidationLevel1DB.getConsolidation(ParCompany_Id, ParLevel1_Id, collectionDate, Shift, Period);
                         }
                         else
                         {
@@ -1068,6 +1345,7 @@ namespace SgqSystem.Services
                             return null;
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Caso ocorra alguma Exception, grava o log e retorna zero
@@ -1095,7 +1373,7 @@ namespace SgqSystem.Services
             //Converte a data no padrão de busca do Banco de Dados
             collectionDate = Convert.ToDateTime(collectionDate).ToString("yyyy-MM-dd");
 
-            string sql = "SELECT Id FROM ConsolidationLevel1 WHERE UnitId = '" + unitId + "' AND ParLevel1_Id= '" + level01Id + "' AND CONVERT(date, ConsolidationDate) = '" + collectionDate + "'";
+            string sql = "SELECT Id FROM ConsolidationLevel1 (nolock)  WHERE UnitId = '" + unitId + "' AND ParLevel1_Id= '" + level01Id + "' AND CONVERT(date, ConsolidationDate) = '" + collectionDate + "'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -1141,7 +1419,7 @@ namespace SgqSystem.Services
         /// <param name="unitId">Id da Unidade</param>
         /// <param name="collectionDate">Data da Consolidação</param>
         /// <returns></returns>
-        public SGQDBContext.ConsolidationLevel2 InsertConsolidationLevel2(int ConsolidationLevel1_Id, int ParLevel2_Id, int ParCompany_Id, DateTime collectionDate, bool reaudit,int reauditNumber)
+        public SGQDBContext.ConsolidationLevel2 InsertConsolidationLevel2(int ConsolidationLevel1_Id, int ParLevel2_Id, int ParCompany_Id, DateTime collectionDate, bool reaudit, int reauditNumber)
         {
             //Verifica se já existe uma consolidação para o level02
             var ConsolidationLevel2DB = new SGQDBContext.ConsolidationLevel2(db);
@@ -1163,10 +1441,16 @@ namespace SgqSystem.Services
             //             reaud + reauditNumber+") " +
             //             "SELECT @@IDENTITY AS 'Identity'";
 
-            string sql = "INSERT ConsolidationLevel2 ([ConsolidationLevel1_Id], [ParLevel2_Id], [UnitId], [AddDate], [AlterDate], [ConsolidationDate], [ReauditIs]) " +
-                         "VALUES  " +
-                         "('" + ConsolidationLevel1_Id + "', '" + ParLevel2_Id + "', '" + ParCompany_Id + "', GETDATE(), NULL, CAST(N'" + collectionDate.ToString("yyyy-MM-dd") + "' AS DateTime)"+","+reaud + ") " +
-                         "SELECT @@IDENTITY AS 'Identity'";
+            //string sql = "INSERT ConsolidationLevel2 ([ConsolidationLevel1_Id], [ParLevel2_Id], [UnitId], [AddDate], [AlterDate], [ConsolidationDate], [ReauditIs]) " +
+            //             "VALUES  " +
+            //             "('" + ConsolidationLevel1_Id + "', '" + ParLevel2_Id + "', '" + ParCompany_Id + "', GETDATE(), NULL, CAST(N'" + collectionDate.ToString("yyyy-MM-dd") + "' AS DateTime)"+","+reaud + ") " +
+            //             "SELECT @@IDENTITY AS 'Identity'";
+
+            string sql = "INSERT ConsolidationLevel2 ([ConsolidationLevel1_Id], [ParLevel2_Id], [UnitId], [AddDate], [AlterDate], [ConsolidationDate], [ReauditIs],[ReauditNumber]) " +
+                        "VALUES  " +
+                        "('" + ConsolidationLevel1_Id + "', '" + ParLevel2_Id + "', '" + ParCompany_Id + "', GETDATE(), NULL, CAST(N'" + collectionDate.ToString("yyyy-MM-dd") + "' AS DateTime)," +
+                        reaud + "," + reauditNumber + " ) " +
+                        "SELECT @@IDENTITY AS 'Identity'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -1180,8 +1464,8 @@ namespace SgqSystem.Services
                         //Se inserir corretamente, retorno o Id da Consolidação
                         if (i > 0)
                         {
-                            if(reaudit)
-                                return ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, ConsolidationLevel1_Id, ParLevel2_Id,1);
+                            if (reaudit)
+                                return ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, ConsolidationLevel1_Id, ParLevel2_Id, 1, reauditNumber.ToString());
                             else
                                 return ConsolidationLevel2DB.getByConsolidationLevel1(ParCompany_Id, ConsolidationLevel1_Id, ParLevel2_Id);
                         }
@@ -1191,6 +1475,7 @@ namespace SgqSystem.Services
                             return null;
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Caso ocorra qualquer Exception, insere no log e retorna zero
@@ -1278,7 +1563,7 @@ namespace SgqSystem.Services
                                            string StartPhase, int Evaluation, int Sample, string ConsecuticeFalireIs, string ConsecutiveFailureTotal, string NotEvaluateIs,
                                            string Duplicated, string haveReaudit, int reauditLevel, string haveCorrectiveAction, string HavePhase, string Completed, string id, string AlertLevel,
                                            string sequential, string side, string WeiEvaluation, string Defects, string WeiDefects, string TotalLevel3WithDefects, string totalLevel3evaluation,
-                                           string avaliacaoultimoalerta, string monitoramentoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3, string startphaseevaluation, string hashKey = null)
+                                           string avaliacaoultimoalerta, string monitoramentoultimoalerta, string evaluatedresult, string defectsresult, string isemptylevel3, string startphaseevaluation, string endphaseevaluation, string hashKey = null)
         {
             //Converte a data da coleta
             string sql = null;
@@ -1291,7 +1576,7 @@ namespace SgqSystem.Services
 
             key += "-" + ConsolidationLevel1.ParLevel1_Id.ToString();
             key += "-" + ConsolidationLevel2.ParLevel2_Id.ToString();
-            if (hashKey == "1")
+            if (hashKey == "1" || hashKey == "5")
             {
                 key += "-" + sequential;
                 key += "-" + side;
@@ -1303,14 +1588,24 @@ namespace SgqSystem.Services
             }
             key += "-" + CollectionDate.ToString("yyyyMMdd");
 
-            var keySolid = key;
-
             if (Reaudit)
             {
                 key += "-r" + ReauditNumber;
             }
 
+            var keySolid = key;
+
             //NotEvaluateIs = (naoAvaliado) ? "1" : "0";
+
+            var CollectionLevel2DB = new SGQDBContext.CollectionLevel2(db);
+            var colLevel2 = CollectionLevel2DB.GetByKey(key);
+            if (colLevel2 != null)
+                id = Convert.ToString(colLevel2.Id);
+
+            if (evaluatedresult == null || evaluatedresult == "undefined")
+                evaluatedresult = "0";
+            if (defectsresult == null || defectsresult == "undefined")
+                defectsresult = "0";
 
             if (id == "0")
             {
@@ -1319,9 +1614,9 @@ namespace SgqSystem.Services
                 //"VALUES " +
                 //"('" + key + "', '" + ConsolidationLevel2.Id + "','" + ConsolidationLevel1.ParLevel1_Id + "','" + ConsolidationLevel2.ParLevel2_Id + "','" + ConsolidationLevel1.UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + BoolConverter(Reaudit.ToString()) + "','" + ReauditNumber + "', CAST(N'" + CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") + "' AS DateTime), " + StartPhase + ",'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', " + reauditLevel + ", '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "', '" + sequential + "', '" + side + "','" + WeiEvaluation + "','" + Defects + "','" + WeiDefects + "','" + TotalLevel3WithDefects + "', '" + totalLevel3evaluation + "', '" + avaliacaoultimoalerta + "', '" + monitoramentoultimoalerta + "', '" + evaluatedresult + "', '" + defectsresult + "', '" + isemptylevel3 + "', '" + startphaseevaluation + "') ";
 
-                sql = "INSERT INTO CollectionLevel2 ([Key],[ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit],[ReauditLevel], [HaveCorrectiveAction],[HavePhase],[Completed],[AlertLevel],[Sequential],[Side],[WeiEvaluation],[Defects],[WeiDefects],[TotalLevel3WithDefects], [TotalLevel3Evaluation], [LastEvaluationAlert],[LastLevel2Alert],[EvaluatedResult],[DefectsResult],[IsEmptyLevel3], [StartPhaseEvaluation]) " +
+                sql = "INSERT INTO CollectionLevel2 ([Key],[ConsolidationLevel2_Id],[ParLevel1_Id],[ParLevel2_Id],[UnitId],[AuditorId],[Shift],[Period],[Phase],[ReauditIs],[ReauditNumber],[CollectionDate],[StartPhaseDate],[EvaluationNumber],[Sample],[AddDate],[AlterDate],[ConsecutiveFailureIs],[ConsecutiveFailureTotal],[NotEvaluatedIs],[Duplicated],[HaveReaudit],[ReauditLevel], [HaveCorrectiveAction],[HavePhase],[Completed],[AlertLevel],[Sequential],[Side],[WeiEvaluation],[Defects],[WeiDefects],[TotalLevel3WithDefects], [TotalLevel3Evaluation], [LastEvaluationAlert],[LastLevel2Alert],[EvaluatedResult],[DefectsResult],[IsEmptyLevel3], [StartPhaseEvaluation], [EndPhaseEvaluation]) " +
              "VALUES " +
-             "('" + key + "', '" + ConsolidationLevel2.Id + "','" + ConsolidationLevel1.ParLevel1_Id + "','" + ConsolidationLevel2.ParLevel2_Id + "','" + ConsolidationLevel1.UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + BoolConverter(Reaudit.ToString()) + "','" + ReauditNumber + "', CAST(N'" + CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") + "' AS DateTime), GETDATE(),'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', " + reauditLevel + ", '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "', '" + sequential + "', '" + side + "','" + WeiEvaluation + "','" + Defects + "','" + WeiDefects + "','" + TotalLevel3WithDefects + "', '" + totalLevel3evaluation + "', '" + avaliacaoultimoalerta + "', '" + monitoramentoultimoalerta + "', '" + evaluatedresult + "', '" + defectsresult + "', '" + isemptylevel3 + "', null) ";
+             "('" + key + "', '" + ConsolidationLevel2.Id + "','" + ConsolidationLevel1.ParLevel1_Id + "','" + ConsolidationLevel2.ParLevel2_Id + "','" + ConsolidationLevel1.UnitId + "','" + AuditorId + "','" + Shift + "','" + Period + "','" + Phase + "','" + BoolConverter(Reaudit.ToString()) + "','" + ReauditNumber + "', CAST(N'" + CollectionDate.ToString("yyyy-MM-dd HH:mm:ss") + "' AS DateTime), GETDATE(),'" + Evaluation + "','" + Sample + "',GETDATE(),NULL,'" + ConsecuticeFalireIs + "','" + ConsecutiveFailureTotal + "','" + NotEvaluateIs + "','" + Duplicated + "', '" + haveReaudit + "', " + reauditLevel + ", '" + haveCorrectiveAction + "', '" + HavePhase + "', '" + Completed + "', '" + AlertLevel + "', '" + sequential + "', '" + side + "','" + WeiEvaluation + "','" + Defects + "','" + WeiDefects + "','" + TotalLevel3WithDefects + "', '" + totalLevel3evaluation + "', '" + avaliacaoultimoalerta + "', '" + monitoramentoultimoalerta + "', '" + evaluatedresult + "', '" + defectsresult + "', '" + isemptylevel3 + "', '"+startphaseevaluation+"', '"+endphaseevaluation+"') ";
 
                 sql += " SELECT @@IDENTITY AS 'Identity' ";
 
@@ -1331,7 +1626,7 @@ namespace SgqSystem.Services
             {
                 ///podemos melhorar a verificação para Id zero, id null e id not null
                 //Caso contrário  é u Update
-                sql = "UPDATE CollectionLevel2 SET NotEvaluatedIs='" + NotEvaluateIs + "', AlterDate='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', HaveReaudit='" + haveReaudit + "', ReauditLevel=" + reauditLevel + ", HaveCorrectiveAction='" + haveCorrectiveAction + "', WeiEvaluation=" + WeiEvaluation + ", Defects=" + defectsresult + ", WeiDefects=" + WeiDefects + ", TotalLevel3WithDefects=" + TotalLevel3WithDefects + ", TotalLevel3Evaluation=" + totalLevel3evaluation + ", LastEvaluationAlert=" + avaliacaoultimoalerta + ", EvaluatedResult=" + evaluatedresult + ", DefectsResult=" + defectsresult + ", IsEmptyLevel3=" + isemptylevel3 + " WHERE Id='" + id + "'";
+                sql = "UPDATE CollectionLevel2 SET NotEvaluatedIs='" + NotEvaluateIs + "', AlterDate='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', HaveReaudit='" + haveReaudit + "', ReauditLevel=" + reauditLevel + ", HaveCorrectiveAction='" + haveCorrectiveAction + "', WeiEvaluation=" + WeiEvaluation + ", Defects=" + defectsresult + ", WeiDefects=" + WeiDefects + ", TotalLevel3WithDefects=" + TotalLevel3WithDefects + ", TotalLevel3Evaluation=" + totalLevel3evaluation + ", LastEvaluationAlert=" + avaliacaoultimoalerta + ", EvaluatedResult=" + evaluatedresult + ", DefectsResult=" + defectsresult + ", IsEmptyLevel3=" + isemptylevel3 + ", StartPhaseEvaluation="+startphaseevaluation+ ", EndPhaseEvaluation="+endphaseevaluation+" WHERE Id='" + id + "'";
 
                 sql += " SELECT '" + id + "' AS 'Identity'";
             }
@@ -1367,6 +1662,7 @@ namespace SgqSystem.Services
                             return 0;
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Caso ocorra alguma exception, grava no log e retorna zero
@@ -1376,10 +1672,9 @@ namespace SgqSystem.Services
                 {
                     if (hashKey == "1")
                     {
-                        var CollectionLevel2DB = new SGQDBContext.CollectionLevel2(db);
                         var collectionLevel2 = CollectionLevel2DB.GetByKey(key);
 
-                        var updateLevel2Id = InsertCollectionLevel2(ConsolidationLevel1, ConsolidationLevel2, AuditorId, Shift, Period, Phase, Reaudit, ReauditNumber, CollectionDate, StartPhase, Evaluation, Sample, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel, haveCorrectiveAction, HavePhase, Completed, collectionLevel2.Id.ToString(), AlertLevel, sequential, side, WeiEvaluation, Defects, WeiDefects, TotalLevel3WithDefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, startphaseevaluation, hashKey);
+                        var updateLevel2Id = InsertCollectionLevel2(ConsolidationLevel1, ConsolidationLevel2, AuditorId, Shift, Period, Phase, Reaudit, ReauditNumber, CollectionDate, StartPhase, Evaluation, Sample, ConsecuticeFalireIs, ConsecutiveFailureTotal, NotEvaluateIs, Duplicated, haveReaudit, reauditLevel, haveCorrectiveAction, HavePhase, Completed, collectionLevel2.Id.ToString(), AlertLevel, sequential, side, WeiEvaluation, Defects, WeiDefects, TotalLevel3WithDefects, totalLevel3evaluation, avaliacaoultimoalerta, monitoramentoultimoalerta, evaluatedresult, defectsresult, isemptylevel3, startphaseevaluation, endphaseevaluation, hashKey);
                         if (updateLevel2Id > 0)
                         {
                             int removeLevel3 = ResultLevel3Delete(collectionLevel2.Id);
@@ -1394,7 +1689,7 @@ namespace SgqSystem.Services
                     {
                         int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel2");
 
-                        if(ex.Number == 2627)
+                        if (ex.Number == 2627)
                         {
                             return ex.Number;
                         }
@@ -1423,7 +1718,7 @@ namespace SgqSystem.Services
         public int ResultLevel3Delete(int CollectionLevel2_Id)
         {
 
-            string sql = "DELETE FROM Result_Level3 WHERE CollectionLevel2_Id=" + CollectionLevel2_Id;
+            string sql = "DELETE FROM Result_Level3 (nolock)  WHERE CollectionLevel2_Id=" + CollectionLevel2_Id;
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
@@ -1443,6 +1738,7 @@ namespace SgqSystem.Services
                         }
 
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             catch (SqlException ex)
@@ -1467,7 +1763,11 @@ namespace SgqSystem.Services
                 string ParFieldType_Id = header[1];
                 string Value = header[2];
 
-                sql += "INSERT INTO[dbo].[CollectionLevel2XParHeaderField]               " +
+                //Tratamento de erros Gabriel 2017-05-27
+                if (ParHeaderField_Id != "undefined" && ParFieldType_Id != "undefined")
+                {
+
+                    sql += "INSERT INTO[dbo].[CollectionLevel2XParHeaderField]               " +
                          "      ([CollectionLevel2_Id]                                     " +
                          "      ,[ParHeaderField_Id]                                       " +
                          "      ,[ParHeaderField_Name]                                     " +
@@ -1476,52 +1776,61 @@ namespace SgqSystem.Services
                          "VALUES                                                           " +
                          "      ('" + CollectionLevel2Id + "'                              " +
                          "      ," + ParHeaderField_Id + "                                     " +
-                         "      ,(SELECT Name FROM ParHeaderField WHERE Id='" + ParHeaderField_Id + "')   " +
+                         "      ,(SELECT Name FROM ParHeaderField (nolock)  WHERE Id='" + ParHeaderField_Id + "')   " +
                          "      ,'" + ParFieldType_Id + "'                                  " +
                          "      ,'" + Value + "')                                           ";
+
+                }
+
             }
 
-
-
-
-
-            string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
-            try
+            //Tratamento de erros Gabriel 2017-05-27
+            if (sql != null)
             {
-                using (SqlConnection connection = new SqlConnection(conexao))
-                {
-                    using (SqlCommand command = new SqlCommand(sql, connection))
-                    {
-                        connection.Open();
-                        var i = Convert.ToInt32(command.ExecuteNonQuery());
-                        //Se o script for executado corretamente retorna o Id
-                        if (i > 0)
-                        {
-                            return i;
-                        }
-                        else
-                        {
-                            //Se o script não for executado corretamente, retorna zero
-                            return 0;
-                        }
 
+                string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(conexao))
+                    {
+                        using (SqlCommand command = new SqlCommand(sql, connection))
+                        {
+                            connection.Open();
+                            var i = Convert.ToInt32(command.ExecuteNonQuery());
+                            //Se o script for executado corretamente retorna o Id
+                            if (i > 0)
+                            {
+                                return i;
+                            }
+                            else
+                            {
+                                //Se o script não for executado corretamente, retorna zero
+                                return 0;
+                            }
+
+                        }
+                        if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                     }
                 }
-            }
-            //Caso ocorra alguma exception, grava no log e retorna zero
-            catch (SqlException ex)
-            {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel2HeaderField");
-                if (ex.Number == 2627) // <-- but this will
+                //Caso ocorra alguma exception, grava no log e retorna zero
+                catch (SqlException ex)
                 {
-                    return 0;
+                    int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel2HeaderField");
+                    if (ex.Number == 2627) // <-- but this will
+                    {
+                        return 0;
+                    }
+                    throw ex;
                 }
-                throw ex;
+                catch (Exception ex)
+                {
+                    int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel2HeaderField");
+                    throw ex;
+                }
             }
-            catch (Exception ex)
+            else //Tratamento de erros Gabriel 2017-05-27
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel2HeaderField");
-                throw ex;
+                return 1;
             }
         }
 
@@ -1536,7 +1845,7 @@ namespace SgqSystem.Services
         /// <param name="auditorId">Id do Auditor</param>
         /// <param name="duplicated">Duplicado</param>
         /// <returns></returns>
-        public int InsertCollectionLevel3(string CollectionLevel02Id, int level02, string level03Results, int auditorId, string duplicated)
+        public int InsertCollectionLevel3(string CollectionLevel02Id, int level02, string level03Results, int auditorId, string duplicated, bool filho)
         {
             ///coloquei uma @ para replace, mas podemos utilizar o padrão de ; ou <> desde que todos os campos venha do script com escape()
             //string obj, string collectionDate, string level01id, string unit, string period, string shift, string device, string version
@@ -1556,6 +1865,7 @@ namespace SgqSystem.Services
             //}
 
             //Prepara a string para ser convertida em Array
+            level03Results = level03Results.Replace("sebo%20%20%2C%20suporte", "sebo%20%20e%20suporte");
             level03Results = level03Results.Replace("</level03><level03>", "@").Replace("<level03>", "").Replace("</level03>", "");
             //Gera o Array
             string[] arrayResults = level03Results.Split('@');
@@ -1566,19 +1876,44 @@ namespace SgqSystem.Services
             //Lista de Level3
 
             var ParLevel3DB = new SGQDBContext.ParLevel3(db);
+            var Result_Level3DB = new SGQDBContext.Result_Level3(db);
             var parLevel3List = ParLevel3DB.getList();
 
             //Percorre o Array para gerar os inserts
             for (int i = 0; i < arrayResults.Length; i++)
             {
+                /*ACERTO PARA JUARA, BIANCA 2017-06-30 QUE MERDA*/
+                arrayResults[i] = arrayResults[i].Replace("sebo  , suporte", "sebo e suporte");
+                arrayResults[i] = arrayResults[i].Replace("sebo%20%20%2C%20suporte", "sebo%20%20e%20suporte");
 
-
-
-                //Gera o array com o resultado
-                var result = arrayResults[i].Split(',');
+                        //Gera o array com o resultado
+                        var result = arrayResults[i].Split(',');
 
                 //Instancia as variáveis para preencher o script
                 string Level03Id = result[0];
+
+                Dominio.ParLevel3Level2 tarefaFilha = new Dominio.ParLevel3Level2();
+                Dominio.ParLevel3Level2Level1 indicadorFilha = new Dominio.ParLevel3Level2Level1();
+                Dominio.CollectionLevel2 collectionLevel2Filha = new Dominio.CollectionLevel2();
+
+                int collectionLevel2_id = Int32.Parse(CollectionLevel02Id);
+
+                if (filho)
+                {
+                    using (var db = new Dominio.SgqDbDevEntities())
+                    {
+                        int idl3 = Int32.Parse(Level03Id);
+
+                        collectionLevel2Filha = db.CollectionLevel2.FirstOrDefault(r => r.Id == collectionLevel2_id);
+
+
+                        var ListaindicadorFilha = db.ParLevel3Level2Level1.Where(r => r.ParLevel1_Id == collectionLevel2Filha.ParLevel1_Id);
+
+
+                        tarefaFilha = db.ParLevel3Level2.FirstOrDefault(r => r.ParLevel3_Id == idl3  && r.IsActive && ListaindicadorFilha.Any(z => z.ParLevel3Level2_Id == r.Id) ); //&& r.ParLevel2_Id == level02
+                    }
+                }
+
 
                 bool skip = false;
 
@@ -1596,13 +1931,13 @@ namespace SgqSystem.Services
                 //}
                 //else
                 //{
-                    //foreach (var l3_filho in parLevel3List_IndicadorFilho)
-                    //{
-                    //    if (l3_filho.Id.ToString() == Level03Id)
-                    //    {
-                    //        skip = true;
-                    //    }
-                    //}
+                //foreach (var l3_filho in parLevel3List_IndicadorFilho)
+                //{
+                //    if (l3_filho.Id.ToString() == Level03Id)
+                //    {
+                //        skip = true;
+                //    }
+                //}
                 //}
 
                 if (skip)
@@ -1624,6 +1959,9 @@ namespace SgqSystem.Services
                 string id = result[7];
 
                 string weight = result[8];
+                if (filho)
+                    weight = tarefaFilha.Weight.ToString().Replace(",", ".");
+
                 weight = DefaultValueReturn(weight, "1");
 
                 string name = result[9];
@@ -1648,7 +1986,12 @@ namespace SgqSystem.Services
                 string evaluation = "1";
 
                 string WeiEvaluation = result[15].Replace(",", ".");
+                if (filho)
+                    WeiEvaluation = tarefaFilha.Weight.ToString().Replace(",", ".");
+
                 string WeiDefects = result[16].Replace(",", ".");
+                if (filho)
+                    WeiDefects = (tarefaFilha.Weight * Decimal.Parse(defects)).ToString().Replace(",", ".");
 
                 //decimal defeitos = Convert.ToDecimal(defects.ToString().Replace(".", ","));
                 //decimal punicao = Convert.ToDecimal(punishimentValue.ToString().Replace(".", ","));
@@ -1658,20 +2001,41 @@ namespace SgqSystem.Services
 
                 id = DefaultValueReturn(id, "0");
 
+                if (Int64.Parse(id) == 0)
+                {
+                    var r = Result_Level3DB.get(Int32.Parse(CollectionLevel02Id), Int32.Parse(Level03Id));
+                    if (r != null)
+                    {
+                        id = r.Id.ToString();
+                    }
+                }
+
                 naoAvaliado = true;
+
+                //Verifica se é BEA e faz a conta do WeiEvaluation
+                var _WeiEvaluation = GetWeiEvaluation(WeiEvaluation, CollectionLevel02Id);
 
                 if (id == "0")
                 {
                     sql += "INSERT INTO Result_Level3 ([CollectionLevel2_Id],[ParLevel3_Id],[ParLevel3_Name],[Weight],[IntervalMin],[IntervalMax],[Value],[ValueText],[IsConform],[IsNotEvaluate],[PunishmentValue],[Defects],[Evaluation],[WeiEvaluation],[WeiDefects]) " +
                            "VALUES " +
-                           "('" + CollectionLevel02Id + "','" + Level03Id + "', '" + parLevel3List.FirstOrDefault(p => p.Id == Convert.ToInt32(Level03Id)).Name.Replace("'", "''") + "'," + weight + "," + intervalMin + "," + intervalMax + ", " + value + ",'" + valueText + "','" + conform + "','" + isnotEvaluate + "', " + punishimentValue + ", " + defects + ", " + evaluation + ", " + WeiEvaluation + ", " + WeiDefects + ") ";
+                           "('" + CollectionLevel02Id + "','" + Level03Id + "', '" + parLevel3List.FirstOrDefault(p => p.Id == Convert.ToInt32(Level03Id)).Name.Replace("'", "''") + "'," + weight + "," + intervalMin + "," + intervalMax + ", " + value + ",'" + valueText + "','" + conform + "','" + isnotEvaluate + "', " + punishimentValue + ", " + defects + ", " + evaluation + ", " + _WeiEvaluation + ", " + WeiDefects + ") ";
 
                     sql += " SELECT @@IDENTITY AS 'Identity'";
 
                 }
                 else
                 {
-                    sql += "UPDATE Result_Level3 SET IsConform='" + conform + "', IsNotEvaluate='" + isnotEvaluate + "', Value='" + value + "', ValueText='" + valueText + "' WHERE Id='" + id + "' ";
+                    sql += "UPDATE Result_Level3 SET                                        " +
+                            "IsConform='" + conform + "',                                   " +
+                            "IsNotEvaluate='" + isnotEvaluate + "',                         " +
+                            "Value='" + value + "',                                         " +
+                            "Weight='" + weight + "',                                       " +
+                            "Defects='" + defects + "',                                     " +
+                            "WeiEvaluation='" + _WeiEvaluation + "',                         " +
+                            "WeiDefects='" + WeiDefects + "',                               " +
+                            "ValueText='" + valueText + "'                                  " +
+                            "WHERE Id='" + id + "'                                          ";
                     sql += " SELECT '" + id + "' AS 'Identity'";
 
                 }
@@ -1695,7 +2059,10 @@ namespace SgqSystem.Services
                         //Se o script foi executado, retorna o Id
                         if (i > 0)
                         {
+
+                            //ReconsolidationToLevel3(CollectionLevel02Id.ToString());
                             return i;
+
                         }
                         else
                         {
@@ -1704,6 +2071,7 @@ namespace SgqSystem.Services
                         }
 
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Caso ocorra Exception, insere no banco e retorna zero
@@ -1720,6 +2088,51 @@ namespace SgqSystem.Services
         }
 
         #endregion
+
+        #region WeiEvaluation
+        private string GetWeiEvaluation(string WeiEvaluation, string CollectionLevel2Id)
+        {
+            string _WeiEvaluation2 = WeiEvaluation;
+
+            int CollectionLevel2Id_int = Int32.Parse(CollectionLevel2Id);
+
+            decimal WeiEvaluation_decimal = decimal.Parse(WeiEvaluation);
+
+            using (var databaseSgq = new Dominio.SgqDbDevEntities())
+            {
+
+                var collectionLevel2_obj = databaseSgq.CollectionLevel2.FirstOrDefault(r => r.Id == CollectionLevel2Id_int);
+
+                var parLeve1BEA = databaseSgq.ParLevel1VariableProductionXLevel1.FirstOrDefault(r => r.ParLevel1_Id == collectionLevel2_obj.ParLevel1_Id);
+
+                //Se for BEA
+                if (parLeve1BEA != null)
+                    if (parLeve1BEA.ParLevel1VariableProduction_Id == 3)
+                    {
+                        var collectionLevel2_obj2 = databaseSgq.CollectionLevel2.Where(
+                        r => System.Data.Entity.DbFunctions.TruncateTime(r.CollectionDate) == System.Data.Entity.DbFunctions.TruncateTime(collectionLevel2_obj.CollectionDate) &&
+                        r.ParLevel1_Id == collectionLevel2_obj.ParLevel1_Id &&
+                        r.Shift == collectionLevel2_obj.Shift &&
+                        r.Period == collectionLevel2_obj.Period &&
+                        r.UnitId == collectionLevel2_obj.UnitId &&
+                        r.Sample < collectionLevel2_obj.Sample
+                        ).OrderByDescending(r => r.Sample).FirstOrDefault();
+
+
+                        if (collectionLevel2_obj2 != null)
+
+                            _WeiEvaluation2 = (collectionLevel2_obj.Sample - collectionLevel2_obj2.Sample).ToString();
+
+                        else
+                            _WeiEvaluation2 = (collectionLevel2_obj.Sample).ToString();
+
+                    }
+
+                return _WeiEvaluation2;
+            }
+        }
+        #endregion
+
         #region Corrective Action
         /// <summary>
         /// Metodo para gravar ação corretiva
@@ -1776,6 +2189,7 @@ namespace SgqSystem.Services
                             return 0;
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Em caso de Exception, gera um log no banco e retorna zero
@@ -1798,7 +2212,7 @@ namespace SgqSystem.Services
         /// <returns></returns>
         public string GetMaxDateCollection(DateTime date)
         {
-            string sql = "SELECT TOP 1 ConsolidationDate FROM ConsolidationLevel01 WHERE ConsolidationDate < '" + date.ToString("yyyyMMdd") + "' ORDER BY ConsolidationDate DESC";
+            string sql = "SELECT TOP 1 ConsolidationDate FROM ConsolidationLevel01 (nolock)  WHERE ConsolidationDate < '" + date.ToString("yyyyMMdd") + "' ORDER BY ConsolidationDate DESC";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -1818,6 +2232,7 @@ namespace SgqSystem.Services
                             return UltimaDataColeta.ToString("yyyyMMdd");
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Em caso de erro, gera um exception retorna null
@@ -1964,10 +2379,10 @@ namespace SgqSystem.Services
 
             string clusterDaUnidade = "1";
 
-            string sql = "select Cl.Id from parCompany C " +
-                        "\n inner join ParCompanyCluster CC " +
+            string sql = "select Cl.Id from parCompany C (nolock)  " +
+                        "\n inner join ParCompanyCluster CC (nolock)  " +
                         "\n on CC.ParCompany_Id = C.Id " +
-                        "\n inner join ParCluster Cl " +
+                        "\n inner join ParCluster Cl (nolock)  " +
                         "\n on Cl.Id = CC.ParCluster_Id " +
                         "\n where C.Id = " + ParCompany_Id +
                         "\n and Cl.IsActive = 1" +
@@ -1991,6 +2406,7 @@ namespace SgqSystem.Services
 
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
 
@@ -2162,7 +2578,7 @@ namespace SgqSystem.Services
             return Results;
         }
 
-        
+
 
         public string getConsolidation(string ParCompany_Id, DateTime data, int ParLevel1_Id)
         {
@@ -2173,326 +2589,8 @@ namespace SgqSystem.Services
 
             using (var db = new Dominio.SgqDbDevEntities())
             {
-                string sql = "" +
-
-                    "\n declare @data date = '" + dataIni + "'                                                                                                                                    " +
-                    "\n declare @unidade int = " + ParCompany_Id  +
-                    "\n declare @datainicio date                                                                                                                                                  " +
-                    "\n declare @datafim date                                                                                                                                                     " +
-                    "\n declare @datadiario date                                                                                                                                                  " +
-                    "\n declare @datasemanal date " +
-                    "\n declare @dataquinzenal date " +
-                    "\n declare @datamensal date " +
-                    "\n  " +
-                    "\n set @datainicio =  @data  " +
-                    "\n set @datafim =  @data " +
-                    "\n " +
-                    "\n set @datadiario = @data     --1,2,3 " +
-                    "\n set @datasemanal = DATEADD(DAY,-(DATEPART(WEEKDAY,@data)-1),@data)    --4 " +
-                    "\n set @dataquinzenal = CASE WHEN DAY(@data) < 16 THEN dateadd(month,1,DateAdd(mm, DateDiff(mm,0,@data) - 1, 0)) ELSE DATEADD(DAY,15,dateadd(month,1,DateAdd(mm, DateDiff(mm,0,@data) - 1, 0))) END   --5 " +
-                    "\n set @datamensal = dateadd(month,1,DateAdd(mm, DateDiff(mm,0,@data) - 1, 0))      --6 " +
-                    "\n " +
-                    "\n --select @datainicio = dateadd(mm, 0, dateadd(dd, -day(@data) + 1, @data))                                                                                                " +
-                    "\n                                                                                                                                                                           " +
-                    "\n --select @datafim = dateadd(dd,-day(dateadd(MONTH,1,dateadd(mm,0,dateadd(dd,-day(@data)+1,@data)))),dateadd(MONTH,1,dateadd(mm,0,dateadd(dd,-day(@data)+1,@data))))       " +
-                    "\n set @datainicio =  @data                                                                                                                                                  " +
-                    "\n set @datafim =  @data                                                                                                                                                     " +
-                    "\n                                                                                                                                                                           " +
-                    "\n SELECT                                                                                                                                                                    " +
-                    "\n --L1.Id parLevel1_Id,                                                                                                                                                     " +
-                    "\n --C2.ParLevel2_Id parLevel2_Id,                                                                                                                                           " +
-                    "\n ROW_NUMBER() OVER(ORDER BY R3.ParLevel3_Id) AS ROW,                                                                                                                       " +
-                    "\n '<div id=' + cast(R3.ParLevel3_Id as varchar) + 'class=\"r3l2\"></div>' COLUNA                                                                                            " +
-                    "\n INTO #MOTHERFOCKER                                                                                                                                                        " +
-                    "\n FROM CollectionLevel2 C2                                                                                                                                                  " +
-                    "\n INNER JOIN ParLevel1 L1                                                                                                                                                   " +
-                    "\n ON C2.ParLevel1_Id = L1.Id AND L1.IsPartialSave = 1                                                                                                                       " +
-                    "\n INNER JOIN ParLevel2 L2                                                                                                                                                   " +
-                    "\n ON C2.ParLevel2_Id = L2.Id                                                                                                                       " +
-                    "\n INNER JOIN Result_Level3 R3                                                                                                                                               " +
-                    "\n ON R3.CollectionLevel2_Id = C2.Id                                                                                                                                         " +
-                    "\n WHERE C2.UnitId = @unidade                                                                                                                                                " +
-                    "\n --AND L1.Id =                                                                                                                                                             " +
-                    "\n --AND C2.ParLevel2_Id = ''                                                                                                                            " +
-                    "\n                                                                                                                                                                           " +
-                    "\n AND cast(C2.CollectionDate as Date) BETWEEN                                                                                                     " +
-
-                    "\n       CASE " +
-                    "\n       WHEN(L2.ParFrequency_Id) IN(1, 2, 3) THEN @datadiario " +
-                    "\n       WHEN(L2.ParFrequency_Id) IN(4) THEN @datasemanal " +
-                    "\n       WHEN(L2.ParFrequency_Id) IN(5) THEN @dataquinzenal " +
-                    "\n       WHEN(L2.ParFrequency_Id) IN(6) THEN @datamensal " +
-                    "\n       ELSE @datadiario END and @datafim " +
-
-
-                    "\n                                                                                                                                                                           " +
-                    "\n DECLARE @HOMENSFORBRUNO INT = (SELECT COUNT(1) FROM #MOTHERFOCKER);                                                                                                       " +
-                    "\n                                                                                                                                                                           " +
-                    "\n                                                                                                                                                                           " +
-                    "\n                                                                                                                                                                           " +
-                    "\n                                                                                                                                                                           " +
-                    "\n                                                                                                                                                                           " +
-                    "\n                                                                                                                                                                           " +
-                    "\n DECLARE @I INT = 1;                                                                                                                                                       " +
-                    "\n                 DECLARE @RESPOSTA VARCHAR(MAX) = '';                                                                                                                      " +
-                    "\n                                                                                                                                                                           " +
-                    "\n                 WHILE @I < @HOMENSFORBRUNO                                                                                                                                " +
-                    "\n                                                                                                                                                                           " +
-                    "\n BEGIN                                                                                                                                                                     " +
-                    "\n                                                                                                                                                                           " +
-                    "\n     SELECT @RESPOSTA = @RESPOSTA + COLUNA FROM(                                                                                                                           " +
-                    "\n     SELECT * FROM #MOTHERFOCKER                                                                                                                                           " +
-	                "\n                                                                                                                                                                           " +
-	                "\n     ) consulta                                                                                                                                                            " +
-                    "\n     WHERE ROW = @I                                                                                                                                                        " +
-                    "\n                                                                                                                                                                           " +
-                    "\n                                                                                                                                                                           " +
-                    "\n     SET @I = @I + 1;                                                                                                                                                      " +
-                    "\n                                                                                                                                                                           " +
-                    "\n                                                                                                                                                            " +
-                    "\n                                                                                                                                                                           " +
-                    "\n                                                                                                                                                                           " +
-                    "\n END                                                                                                                                                                       " +
-                    "\n                                                                                                                                                                           " +
-                    "\n --SELECT @RESPOSTA                                                                                                                                                        " +
-                    "\n                                                                                                                                                                           " +
-                    "\n SELECT                                                                                                                                                                    " +
-                    "\n                                                                                                                                                                           " +
-                    "\n --CDL2.ParLevel2_Id,                                                                                                                                                      " +
-                    "\n                                                                                                                                                                           " +
-                    "\n --CDL1.AtualAlert AS AlertLevelL1,                                                                                                                                        " +
-                    "\n --CDL1.WeiEvaluation AS WeiEvaluationL1,                                                                                                                                  " +
-                    "\n --CDL1.EvaluateTotal AS EvaluateTotalL1,                                                                                                                                  " +
-                    "\n --CDL1.DefectsTotal AS DefectsTotalL1,                                                                                                                                    " +
-                    "\n --CDL1.WeiDefects AS WeiDefectsL1,                                                                                                                                        " +
-                    "\n --CDL1.TotalLevel3Evaluation AS TotalLevel3EvaluationL1,                                                                                                                  " +
-                    "\n --CDL1.TotalLevel3WithDefects AS TotalLevel3WithDefectsL1,                                                                                                                " +
-                    "\n --CDL1.LastEvaluationAlert AS LastEvaluationAlertL1,                                                                                                                      " +
-                    "\n --CDL1.LastLevel2Alert AS LastLevel2AlertL1,                                                                                                                              " +
-                    "\n --CDL1.EvaluatedResult AS EvaluatedResultL1,                                                                                                                              " +
-                    "\n --CDL1.DefectsResult AS DefectsResultL1,                                                                                                                                  " +
-                    "\n --CDL2.AlertLevel AS AlertLevelL2,                                                                                                                                        " +
-                    "\n --CDL2.WeiEvaluation AS WeiEvaluationL2,                                                                                                                                  " +
-                    "\n --CDL2.DefectsTotal AS DefectsL2,                                                                                                                                         " +
-                    "\n --CDL2.WeiDefects AS WeiDefectsL2,                                                                                                                                        " +
-                    "\n --CDL2.TotalLevel3WithDefects AS TotalLevel3WithDefectsL2,                                                                                                                " +
-                    "\n --CDL2.TotalLevel3Evaluation AS TotalLevel3EvaluationL2,                                                                                                                  " +
-                    "\n --CDL2.EvaluateTotal AS EvaluateTotalL2,                                                                                                                                  " +
-                    "\n --CDL2.DefectsTotal AS DefectsTotalL2,                                                                                                                                    " +
-                    "\n --CDL2.EvaluatedResult AS EvaluatedResultL2,                                                                                                                              " +
-                    "\n --CDL2.DefectsResult AS DefectsResultL2,                                                                                                                                  " +
-                    "\n --CL2.HaveCorrectiveAction AS HaveCorrectiveAction,                                                                                                                       " +
-                    "\n --CL2.HaveReaudit AS HaveReaudit,                                                                                                                                         " +
-                    "\n --CL2.ReauditIs AS ReauditIs,                                                                                                                                             " +
-                    "\n --CL2.ReauditLevel AS ReauditLevel,                                                                                                                                       " +
-                    "\n --CL2.ReauditNumber AS ReauditNumber,                                                                                                                                     " +
-                    "\n --CL2.Phase AS Phase,                                                                                                                                                     " +
-                    "\n --CL2.StartPhaseDate AS StartPhaseDate,                                                                                                                                   " +
-                    "\n --CL2.StartPhaseEvaluation AS StartPhaseEvaluation,                                                                                                                       " +
-                    "\n --MIN(CL2.Id) AS CollectionLevel2_ID_CorrectiveAction,                                                                                                                    " +
-                    "\n --MIN(CL2.Period) AS CollectionLevel2_Period_CorrectiveAction,                                                                                                            " +
-                    "\n                                                                                                                                                                           " +
-                    "\n --Level2Result.ParLevel1_Id,                                                                                                                                              " +
-                    "\n --Level2Result.ParLevel2_Id,                                                                                                                                              " +
-                    "\n --Level2Result.Unit_Id,                                                                                                                                                   " +
-                    "\n --Level2Result.Shift,                                                                                                                                                     " +
-                    "\n --Level2Result.Period,                                                                                                                                                    " +
-                    "\n --Level2Result.CollectionDate,                                                                                                                                            " +
-                    "\n --Level2Result.EvaluateLast,                                                                                                                                              " +
-                    "\n --Level2Result.SampleLast,                                                                                                                                                " +
-                    "\n --Level2Result.ConsolidationLevel2_Id,                                                                                                                                    " +
-                    "\n                                                                                                                                                                           " +
-                    "\n '<div class=\"Resultlevel2\"" +
-                    "\n AlertLevelL1=\"0\"" +
-                    "\n WeiEvaluationL1=\"' + ISNULL(REPLACE(CAST(CDL1.WeiEvaluation AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n EvaluateTotalL1=\"' + ISNULL(REPLACE(CAST(CDL1.EvaluateTotal AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n DefectsTotalL1=\"' + ISNULL(REPLACE(CAST(CDL1.WeiDefects AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n WeiDefectsL1=\"' + ISNULL(REPLACE(CAST(CDL1.WeiDefects AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n TotalLevel3EvaluationL1=\"' + ISNULL(REPLACE(CAST(CDL1.TotalLevel3Evaluation AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n TotalLevel3WithDefectsL1=\"' + ISNULL(REPLACE(CAST(CDL1.TotalLevel3WithDefects AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n LastEvaluationAlertL1=\"' + ISNULL(REPLACE(CAST(CDL1.LastEvaluationAlert AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n LastLevel2AlertL1=\"' + ISNULL(REPLACE(CAST(CDL1.LastLevel2Alert AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n EvaluatedResultL1=\"' + ISNULL(REPLACE(CAST(CDL1.EvaluatedResult AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n DefectsResultL1=\"' + ISNULL(REPLACE(CAST(CDL1.DefectsResult AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n EvaluateTotalL2=\"' + ISNULL(REPLACE(CAST(CDL2.EvaluateTotal AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n DefectsTotalL2=\"' + ISNULL(REPLACE(CAST(CDL2.DefectsTotal AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n WeiEvaluationL2=\"' + ISNULL(REPLACE(CAST(CDL2.WeiEvaluation AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n DefectsL2=\"' + ISNULL(REPLACE(CAST(CDL2.DefectsTotal AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n WeiDefectsL2=\"' + ISNULL(REPLACE(CAST(CDL2.WeiDefects AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n TotalLevel3WithDefectsL2=\"' + ISNULL(REPLACE(CAST(CDL2.TotalLevel3WithDefects AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n TotalLevel3EvaluationL2=\"' + ISNULL(REPLACE(CAST(CDL2.TotalLevel3Evaluation AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n EvaluatedResultL2=\"' + ISNULL(REPLACE(CAST(CDL2.EvaluateTotal AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n DefectsResultL2=\"' + ISNULL(REPLACE(CAST(CDL2.DefectsResult AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n Level1Id=\"' + ISNULL(REPLACE(CAST(Level2Result.ParLevel1_Id AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n Level2Id=\"' + ISNULL(REPLACE(CAST(Level2Result.ParLevel2_Id AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n UnitId=\"' + ISNULL(REPLACE(CAST(Level2Result.Unit_Id AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n Shift=\"' + ISNULL(REPLACE(CAST(Level2Result.Shift AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n Period=\"' + ISNULL(REPLACE(CAST(Level2Result.Period AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n CollectionDate=\"' + ISNULL(REPLACE(CAST(Level2Result.CollectionDate AS VARCHAR),'.',','),'NULL') +'\"" +
-                    "\n Evaluation=\"' + ISNULL(REPLACE(CAST(Level2Result.EvaluateLast AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n Sample=\"' + ISNULL(REPLACE(CAST(Level2Result.SampleLast AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n Phase=\"' + ISNULL(REPLACE(CAST(CL2.Phase AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n StartPhaseDate=\"' + ISNULL(REPLACE(CAST(CL2.StartPhaseDate AS VARCHAR),'.',','),'NULL') +'\"" +
-                    "\n StartPhaseEvaluation=\"' + ISNULL(REPLACE(CAST(CL2.StartPhaseEvaluation AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n havecorrectiveaction=\"' + ISNULL(REPLACE(CAST(CL2.haveCorrectiveAction AS VARCHAR),'1','true'),'NULL') + '\"" +
-                    "\n havereaudit=\"' + ISNULL(REPLACE(CAST(CL2.haveReaudit AS VARCHAR),'1','true'),'NULL') + '\"" +
-                    "\n reauditlevel=\"' + ISNULL(REPLACE(CAST(CL2.ReauditLevel AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n reauditnumber=\"' + ISNULL(REPLACE(CAST(CL2.ReauditNumber AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n isreaudit=\"' + ISNULL(REPLACE(CAST(CL2.ReauditIs AS VARCHAR),'1','true'),'NULL') + '\"" +
-                    "\n more3defectsEvaluate=\"' + '33' + '" +
-                    "\n CollectionLevel2_ID_CorrectiveAction=\"' + ISNULL(REPLACE(CAST(MIN(CL2.Id) AS VARCHAR),'.',','),'NULL') + '\"" +
-                    "\n CollectionLevel2_Period_CorrectiveAction=\"' + ISNULL(REPLACE(CAST(MIN(CL2.Period) AS VARCHAR),'.',','),'NULL') + '\"\">" +
-                    "\n ' + @RESPOSTA + ' " +
-                    "\n </div>'  AS retorno                                                                                                                                                            " +
-                    "\n                                                                                                                                                                           " +
-                    "\n FROM ConsolidationLevel2 AS CDL2                                                                                                                                          " +
-                    "\n INNER JOIN ConsolidationLevel1 AS CDL1                                                                                                                                    " +
-                    "\n ON CDL2.ConsolidationLevel1_Id = CDL1.Id                                                                                                                                  " +
-                    "\n LEFT JOIN CollectionLevel2 CL2                                                                                                                                            " +
-                    "\n ON CL2.ConsolidationLevel2_Id = CDL2.Id                                                                                                                                   " +
-                    "\n AND(CL2.HaveCorrectiveAction = 1 OR CL2.HaveReaudit = 1)                                                                                                                  " +
-                    "\n INNER JOIN                                                                                                                                                                " +
-                    "\n (                                                                                                                                                                         " +
-                    "\n                                                                                                                                                                           " +
-                    "\n SELECT                                                                                                                                                                    " +
-                    "\n  ParLevel1_Id,                                                                                                                                                            " +
-                    "\n  ParLevel2_Id,                                                                                                                                                            " +
-                    "\n  UnitId AS Unit_Id,                                                                                                                                                       " +
-                    "\n  Shift,                                                                                                                                                                   " +
-                    "\n  Period,                                                                                                                                                                  " +
-                    "\n  CollectionDate,                                                                                                                                                          " +
-                    "\n  MAX(EvaluationNumber)AS EvaluateLast,                                                                                                                                    " +
-                    "\n  MAX(Sample) AS SampleLast,                                                                                                                                               " +
-                    "\n  MAX(ConsolidationLevel2_Id) AS ConsolidationLevel2_Id                                                                                                                    " +
-                    "\n  FROM                                                                                                                                                                     " +
-                    "\n  (                                                                                                                                                                        " +
-                    "\n     SELECT                                                                                                                                                                " +
-                    "\n                                                                                                                                                                           " +
-                    "\n     CL2.ParLevel1_Id,                                                                                                                                                     " +
-                    "\n     CL2.ParLevel2_Id,                                                                                                                                                     " +
-                    "\n     CL2.UnitId,                                                                                                                                                           " +
-                    "\n     CL2.Shift,                                                                                                                                                                " +
-                    "\n     CL2.Period,                                                                                                                                                               " +
-                    "\n     CONVERT(date, CollectionDate) AS CollectionDate,                                                                                                                      " +
-                    "\n     EvaluationNumber,                                                                                                                                                     " +
-                    "\n     MAX(Sample) AS Sample,                                                                                                                                                " +
-                    "\n     MAX(ConsolidationLevel2_Id) AS ConsolidationLevel2_Id                                                                                                                 " +
-                    "\n                                                                                                                                                                           " +
-                    "\n     FROM CollectionLevel2 CL2                                                                                                                                             " +
-                    "\n                                                                                                                                                                           " +
-                    "\n     INNER JOIN ConsolidationLevel2 CDL2                                                                                                                                   " +
-                    "\n                                                                                                                                                                           " +
-                    "\n     ON CL2.ConsolidationLevel2_Id = CDL2.ID                                                                                                                               " +
-                    "\n                                                                                                                                                                           " +
-                    "\n     INNER JOIN ConsolidationLevel1 CDL1                                                                                                                                   " +
-                    "\n                                                                                                                                                                           " +
-                    "\n     ON CDL2.ConsolidationLevel1_Id = CDL1.Id                                                                                                                              " +
-                    "\n                                                                                                                                                                           " +
-                    "\n     WHERE                                                                                                                                                                 " +
-                    "\n     (                                                                                                                                                                     " +
-                    "\n         1 = 1                                                                                                                                                             " +
-                    "\n         --CDL1.ParLevel1_Id = '1043'                                                                                                                                      " +
-                    "\n                                                                                                                                                                           " +
-                    "\n         AND CDL1.UnitId = @unidade                                                                                                                                        " +
-                    "\n                                                                                                                                                                           " +
-                    "\n         AND cast(CDL2.ConsolidationDate as DATE) BETWEEN                                                                                        " +
-
-                    "\n              CASE " +
-                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(1, 2, 3) THEN @datadiario " +
-                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(4) THEN @datasemanal " +
-                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(5) THEN @dataquinzenal " +
-                    "\n              WHEN(SELECT TOP 1 ParFrequency_Id FROM ParLevel2 WHERE ID = CDL2.ParLevel2_Id) IN(6) THEN @datamensal " +
-                    "\n              ELSE @datadiario END and @datafim " +
-
-                    "\n     )                                                                                                                                                                     " +
-                    "\n                                                                                                                                                                           " +
-                    "\n     GROUP BY                                                                                                                                                              " +
-                    "\n                                                                                                                                                                           " +
-                    "\n     CL2.ParLevel1_Id,                                                                                                                                                     " +
-                    "\n     CL2.ParLevel2_Id,                                                                                                                                                     " +
-                    "\n     CL2.UnitId,                                                                                                                                                           " +
-                    "\n     CL2.Shift,                                                                                                                                                                " +
-                    "\n     CL2.Period,                                                                                                                                                               " +
-                    "\n     CONVERT(date, CollectionDate),                                                                                                                                        " +
-                    "\n     EvaluationNumber,                                                                                                                                                     " +
-                    "\n     ConsolidationLevel2_Id                                                                                                                                                " +
-                    "\n ) AS ultimas_amostras                                                                                                                                                     " +
-                    "\n GROUP BY                                                                                                                                                                  " +
-                    "\n ParLevel1_Id,                                                                                                                                                             " +
-                    "\n ParLevel2_Id,                                                                                                                                                             " +
-                    "\n UnitId,                                                                                                                                                                   " +
-                    "\n Shift,                                                                                                                                                                    " +
-                    "\n Period,                                                                                                                                                                   " +
-                    "\n CollectionDate,                                                                                                                                                            " +
-                    "\n ConsolidationLevel2_Id                                                                                                                                                    " +
-                    "\n                                                                                                                                                                           " +
-                    "\n ) Level2Result                                                                                                                                                            " +
-                    //"\n ON Level2Result.ParLevel2_Id = CDL2.ParLevel2_Id                                                                                                                          " +
-
-                    "\n ON Level2Result.ParLevel2_Id = CDL2.ParLevel2_Id AND Level2Result.ConsolidationLevel2_Id = CDL2.Id                                                                        " +
-
-                    "\n WHERE 1 = 1                                                                                                                                                               " +
-                    "\n --AND(CDL2.ParLevel2_Id = 1268)                                                                                                                                           " +
-                    "\n --AND CDL1.ParLevel1_Id = 1043                                                                                                                                            " +
-                    "\n AND(CDL1.UnitId = @unidade)                                                                                                                                               " +
-                    "\n AND CDL1.Id IN                                                                                                                                                            " +
-                    "\n (                                                                                                                                                                         " +
-                    "\n                                                                                                                                                                           " +
-                    "\n SELECT                                                                                                                                                                    " +
-                    "\n  CDL1.Id                                                                                                                                                                  " +
-                    "\n  FROM ConsolidationLevel1 CDL1                                                                                                                                            " +
-                    "\n  INNER JOIN ParLevel1 PL1                                                                                                                                                 " +
-                    "\n  ON CDL1.ParLevel1_Id = PL1.Id                                                                                                                                            " +
-                    "\n  WHERE CDL1.UnitId = @unidade                                                                                                                                             " +
-                    "\n  AND cast(CDL1.Consolidationdate as Date) BETWEEN @datamensal and @datafim " +
-
-
-                    "\n  AND PL1.IsActive = 1                                                                                                                                                     " +
-                    "\n  GROUP BY CDL1.Id, CDL1.ParLevel1_Id, PL1.ParFrequency_Id, PL1.IsPartialSave                                                                                              " +
-                    "\n                                                                                                                                                                           " +
-                    "\n )                                                                                                                                                                         " +
-                    "\n GROUP BY                                                                                                                                                                  " +
-                    "\n CDL2.ParLevel2_Id,                                                                                                                                                        " +
-                    "\n CDL1.AtualAlert,                                                                                                                                                          " +
-                    "\n CDL1.WeiEvaluation,                                                                                                                                                       " +
-                    "\n CDL1.EvaluateTotal,                                                                                                                                                       " +
-                    "\n CDL1.DefectsTotal,                                                                                                                                                        " +
-                    "\n CDL1.WeiDefects,                                                                                                                                                          " +
-                    "\n CDL1.TotalLevel3Evaluation,                                                                                                                                               " +
-                    "\n CDL1.TotalLevel3WithDefects,                                                                                                                                              " +
-                    "\n CDL1.LastEvaluationAlert,                                                                                                                                                 " +
-                    "\n CDL1.LastLevel2Alert,                                                                                                                                                     " +
-                    "\n CDL1.EvaluatedResult,                                                                                                                                                     " +
-                    "\n CDL1.DefectsResult,                                                                                                                                                       " +
-                    "\n CDL2.AlertLevel,                                                                                                                                                          " +
-                    "\n CDL2.WeiEvaluation,                                                                                                                                                       " +
-                    "\n CDL2.DefectsTotal,                                                                                                                                                        " +
-                    "\n CDL2.WeiDefects,                                                                                                                                                          " +
-                    "\n CDL2.TotalLevel3WithDefects,                                                                                                                                              " +
-                    "\n CDL2.TotalLevel3Evaluation,                                                                                                                                               " +
-                    "\n CDL2.EvaluateTotal,                                                                                                                                                       " +
-                    "\n CDL2.EvaluatedResult,                                                                                                                                                     " +
-                    "\n CDL2.DefectsResult,                                                                                                                                                       " +
-                    "\n CL2.HaveCorrectiveAction,                                                                                                                                                 " +
-                    "\n CL2.HaveReaudit,                                                                                                                                                          " +
-                    "\n CL2.ReauditLevel,                                                                                                                                                         " +
-                    "\n CL2.ReauditNumber,                                                                                                                                                        " +
-                    "\n CL2.ReauditIs,                                                                                                                                                            " +
-                    "\n CL2.Phase,                                                                                                                                                                " +
-                    "\n CL2.StartPhaseDate,                                                                                                                                                       " +
-                    "\n CL2.StartPhaseEvaluation,                                                                                                                                                 " +
-                    "\n                                                                                                                                                                           " +
-                    "\n Level2Result.ParLevel1_Id,                                                                                                                                                " +
-                    "\n Level2Result.ParLevel2_Id,                                                                                                                                                " +
-                    "\n Level2Result.Unit_Id,                                                                                                                                                     " +
-                    "\n Level2Result.Shift,                                                                                                                                                       " +
-                    "\n Level2Result.Period,                                                                                                                                                      " +
-                    "\n Level2Result.CollectionDate,                                                                                                                                              " +
-                    "\n Level2Result.EvaluateLast,                                                                                                                                                " +
-                    "\n Level2Result.SampleLast,                                                                                                                                                  " +
-                    "\n Level2Result.ConsolidationLevel2_Id                                                                                                                                       " +
-                    "\n DROP TABLE #MOTHERFOCKER " +
-                    "";
+                string sql = "EXEC grtSP_getConsolidation '" + dataIni + "', " + ParCompany_Id;
+                    
                 var list = db.Database.SqlQuery<ResultadoUmaColuna>(sql).ToList();
 
                 for (var i = 0; i < list.Count(); i++)
@@ -2500,7 +2598,7 @@ namespace SgqSystem.Services
                     retorno += list[i].retorno.ToString();
                 }
             }
-                    
+
             return retorno;
         }
 
@@ -2668,7 +2766,7 @@ namespace SgqSystem.Services
 
         public string getMaxEvaluate(string CollectionLevel02Ids, string Level02Ids)
         {
-            string sql = "SELECT MAX([EvaluationNumber]) FROM CollectionLevel02 WHERE ConsolidationLevel02id IN (" + CollectionLevel02Ids + ") AND Level02id IN (" + Level02Ids + ")";
+            string sql = "SELECT MAX([EvaluationNumber]) FROM CollectionLevel02 (nolock)  WHERE ConsolidationLevel02id IN (" + CollectionLevel02Ids + ") AND Level02id IN (" + Level02Ids + ")";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -2688,6 +2786,7 @@ namespace SgqSystem.Services
                             return maxEvaluate;
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             catch (SqlException ex)
@@ -2848,7 +2947,7 @@ namespace SgqSystem.Services
         //}
         public string GetCollectionLevel03(string CollectionLevel02Id, string date, string auditorId, ref int defects)
         {
-            string sql = "SELECT [Id], [Level03Id], [ConformedIs], [Value], [ValueText] FROM CollectionLevel03 WHERE CollectionLevel02Id = '" + CollectionLevel02Id + "'";
+            string sql = "SELECT [Id], [Level03Id], [ConformedIs], [Value], [ValueText] FROM CollectionLevel03 (nolock)  WHERE CollectionLevel02Id = '" + CollectionLevel02Id + "'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -2890,6 +2989,7 @@ namespace SgqSystem.Services
                             return Level03Results;
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             catch (SqlException ex)
@@ -2924,9 +3024,9 @@ namespace SgqSystem.Services
         {
 
             string APPMain = string.Empty;
-            
-           //colocar autenticação
-           APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, null); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
+
+            //colocar autenticação
+            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, null); //  /**** COLOQUEI A UNIDADE PRA MONTAR O APP ****/
 
 
             string supports = "<div class=\"Results hide\"></div>" +
@@ -2969,10 +3069,20 @@ namespace SgqSystem.Services
             return APPMain + supports;// + resource;
         }
 
+        [WebMethod]
+        public string getAPPLevelsVolume(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId)
+        {
+            string APPMain = string.Empty;
+
+            APPMain = getAPPMain(UserSgq_Id, ParCompany_Id, Date, Level1ListId, true);
+
+            return APPMain;// + resource;
+        }
+
 
         public string GetResource()
         {
-            if (GlobalConfig.Brasil)
+            if (GlobalConfig.LanguageBrasil)
             {
                 Thread.CurrentThread.CurrentCulture = new CultureInfo(Guard.LANGUAGE_PT_BR);
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(Guard.LANGUAGE_PT_BR);
@@ -3033,11 +3143,11 @@ namespace SgqSystem.Services
                 "\n DECLARE @ParCompany_id int = 16 " +
                 "\n DECLARE @ParLevel1_id int =  " + parlevel1.Id +
 
-                "\n SELECT max(Number) as av FROM ParEvaluation EV " +
+                "\n SELECT max(Number) as av FROM ParEvaluation EV (nolock)  " +
                 "\n WHERE ParLevel2_id in ( " +
-                    "\n SELECT p32.ParLevel2_Id FROM ParLevel3Level2Level1 P321 " +
+                    "\n SELECT p32.ParLevel2_Id FROM ParLevel3Level2Level1 P321 (nolock)  " +
 
-                    "\n inner join ParLevel3Level2 P32 " +
+                    "\n inner join ParLevel3Level2 P32 (nolock)  " +
 
                     "\n on p32.id = p321.ParLevel3Level2_Id " +
 
@@ -3064,6 +3174,7 @@ namespace SgqSystem.Services
                             }
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
 
@@ -3108,11 +3219,11 @@ namespace SgqSystem.Services
                "\n DECLARE @ParCompany_id int = 16 " +
                "\n DECLARE @ParLevel1_id int =  " + parlevel1.Id +
 
-               "\n SELECT max(Number) as av FROM ParSample EV " +
+               "\n SELECT max(Number) as av FROM ParSample EV (nolock)  " +
                "\n WHERE ParLevel2_id in ( " +
-                   "\n SELECT p32.ParLevel2_Id FROM ParLevel3Level2Level1 P321 " +
+                   "\n SELECT p32.ParLevel2_Id FROM ParLevel3Level2Level1 P321 (nolock)  " +
 
-                   "\n inner join ParLevel3Level2 P32 " +
+                   "\n inner join ParLevel3Level2 P32  (nolock) " +
 
                    "\n on p32.id = p321.ParLevel3Level2_Id " +
 
@@ -3139,6 +3250,7 @@ namespace SgqSystem.Services
                             }
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
 
@@ -3151,14 +3263,14 @@ namespace SgqSystem.Services
             return evaluate;
         }
 
-        public string getAPPMain(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId)
+        public string getAPPMain(int UserSgq_Id, int ParCompany_Id, DateTime Date, string Level1ListId, bool isVolume = false)
         {
             #region Antes do loop1
 
             var html = new Html();
             string culture;
 
-            if (GlobalConfig.Brasil)
+            if (GlobalConfig.LanguageBrasil)
             {
                 culture = "pt-br";
             }
@@ -3175,7 +3287,7 @@ namespace SgqSystem.Services
                               html.option("4", CommonData.getResource("period").Value.ToString() + " 4");
 
             string hide = string.Empty;
-            if (GlobalConfig.Brasil)
+            if (GlobalConfig.Brasil || GlobalConfig.Ytoara)
             {
                 hide = "hide";
             }
@@ -3186,12 +3298,15 @@ namespace SgqSystem.Services
 
             #endregion
 
-            var seiLaLevel1 = GetLevel01(ParCompany_Id: ParCompany_Id, dateCollect: Date, Level1ListId: Level1ListId); /****** PORQUE ESTA MOKADO ESSA UNIDADE 1? *******/
+            var seiLaLevel1 = GetLevel01(ParCompany_Id: ParCompany_Id, dateCollect: Date, Level1ListId: Level1ListId, isVolume: isVolume); /****** PORQUE ESTA MOKADO ESSA UNIDADE 1? *******/
 
             string container = html.div(outerhtml: breadCrumb + selectPeriod + seiLaLevel1, classe: "container");
 
-            string buttons = " <button id=\"btnSave\" class=\"btn btn-lg btn-warning hide\"><i id=\"saveIcon\" class=\"fa fa-save\"></i><i id=\"loadIcon\" class=\"fa fa-circle-o-notch fa-spin\" style=\"display:none;\"></i></button><!--Save-->" +
-                             " <button class=\"btn btn-lg btn-danger btnCA hide\">" + CommonData.getResource("corrective_action").Value.ToString() + "</button><!--Corrective Action-->";
+            string buttons = " <button id=\"btnSave\" class=\"btn btn-lg btn-warning hide\"><i id=\"saveIcon\" class=\"fa fa-save\"></i><i id=\"loadIcon\" class=\"fa fa-circle-o-notch fa-spin\" style=\"display:none;\"></i></button>";
+
+            buttons += " <button id=\"btnSaveTemp\" class=\"btn btn-lg btn-warning hide\"><i id=\"saveIcon\" class=\"fa fa-chevron-right\"></i><i id=\"loadIcon\" class=\"fa fa-circle-o-notch fa-spin\" style=\"display:none;\"></i></button>";
+
+            buttons += " <button id=\"btnSaveAllTemp\" class=\"btn btn-lg btn-warning hide\"><i id=\"saveIcon\" class=\"fa fa-save\"></i><i id=\"loadIcon\" class=\"fa fa-circle-o-notch fa-spin\" style=\"display:none;\"></i></button>";
 
             string message = "<div class=\"message padding20\" style=\"display:none\">                                                                                      " +
                              "   <h1 class=\"head\">Titulo</h1>                                                                                                           " +
@@ -3339,16 +3454,20 @@ namespace SgqSystem.Services
             string menu = "<div class=\"rightMenu\">                                                                                                  " +
                            "     <div class=\"list-group list-group-inverse rightMenuList\">                                                           " +
                            "         <a href=\"#\" id=\"btnSync\" class=\"list-group-item\" style=\"background-color: black; font-weight: bold;\">" + CommonData.getResource("sync_results").Value.ToString() + "</a>                                                  " +
-                           "         <a href=\"#\" id=\"btnSyncParam\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">" + CommonData.getResource("sync_parameretrization").Value.ToString() + "</a>                                                  " +
-
-                           "         <a href=\"#\" id=\"btnLogout\" class=\"list-group-item\">" + CommonData.getResource("logout").Value.ToString() + "</a>                                                     " +
+                           "         <a href=\"#\" id=\"btnSyncParam\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">" + CommonData.getResource("sync_parameretrization").Value.ToString() + "</a>                                                  ";
+            if (GlobalConfig.Brasil == true)
+            {
+                menu += "         <a href=\"#\" id=\"btnSyncVolume\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">Sincronizar Volume</a> ";
+                //"         <a href=\"#\" id=\"btnChangeModule\" class=\"list-group-item\"  style=\"background-color: black; font-weight: bold;\">" + CommonData.getResource("change_module").Value.ToString() + "</a>                                                  ";
+            }
+            menu += "         <a href=\"#\" id=\"btnLogout\" class=\"list-group-item\">" + CommonData.getResource("logout").Value.ToString() + "</a>                                                     " +
                            "         <a href=\"#\" id=\"btnLog\" class=\"list-group-item\">" + CommonData.getResource("view_log").Value.ToString() + "</a>                                                      " +
                            "         <a href=\"#\" id=\"btnCollectDB\" class=\"list-group-item\">" + CommonData.getResource("view_db").Value.ToString() + "</a>                                                 " +
                            "         <a href=\"#\" id=\"btnClearDatabase\" class=\"list-group-item\">" + CommonData.getResource("clean_db").Value.ToString() + "</a>                                            " +
                            "         <a href=\"#\" id=\"btnMostrarContadores\" class=\"list-group-item\">" + CommonData.getResource("show_counters").Value.ToString() + "</a>                                   " +
                            "         <a href=\"#\" id=\"btnAutoSend\" class=\"list-group-item\">" + CommonData.getResource("auto_send_on").Value.ToString() + "</a>                                   " +
-                           "         <span id=\"version\" class=\"list-group-item\">" + CommonData.getResource("version").Value.ToString() + ": <span class=\"number\"></span></span>                           " +
-                           "         <span id=\"ambiente\" class=\"list-group-item\"><span class=\"base\"></span></span>                                                                                        " +
+                           "         <span id=\"version\" style=\"font-size: 11px\" class=\"list-group-item\">" + CommonData.getResource("version").Value.ToString() + ": <span class=\"number\"></span></span>                           " +
+                           "         <span id=\"ambiente\" style=\"font-size: 11px\" class=\"list-group-item\"><span class=\"base\"></span></span>                                                                                        " +
                            "     </div>                                                                                                                                                                         " +
                            " </div>                                                                                                                                                                             ";
 
@@ -3384,8 +3503,8 @@ namespace SgqSystem.Services
                                         "</div>" +
                                     "</div>" +
                                 "</div>" +
-                            
-                                
+
+
                                 "<div class=\"form-group\">" +
                                     "<label>" + CommonData.getResource("failure_description").Value.ToString() + ":</label>" +
                                     "<textarea id=\"DescriptionFailure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
@@ -3425,9 +3544,9 @@ namespace SgqSystem.Services
                                     "</div>" +
                                 "</div>";
             }
-                        
 
-            correctiveAction += 
+
+            correctiveAction +=
                                 "<div class=\"modal-footer\">";
 
             if (GlobalConfig.Eua)
@@ -3501,7 +3620,7 @@ namespace SgqSystem.Services
 
         public string footer()
         {
-            string foot = "<footer class=\"footer\">                                                                                                                                       " +
+            string foot = "<footer class=\"footer\" style=\"font-size: 11px;\">                                                                                                                                       " +
                           "   <p style=\"color:white; margin-left:16px; margin-right:16px; margin-top: 12px;\">                                                                      " +
                           "       <span class=\"user\">Admin</span> - <span class=\"unit\">Colorado</span> | <span class=\"urlPrefix\"></span>                                          " +
                           "        <span class=\"status pull-right\"></span> <span class=\"database pull-right\"></span>                                                                                                         " +
@@ -3514,7 +3633,7 @@ namespace SgqSystem.Services
         /// Recupera Level1 e seus monitoramentos e tarefas relacionados
         /// </summary>
         /// <returns></returns>
-        public string GetLevel01(int ParCompany_Id, DateTime dateCollect, string Level1ListId)
+        public string GetLevel01(int ParCompany_Id, DateTime dateCollect, string Level1ListId, bool isVolume)
         {
 
             #region Parametros do level 1 e "instancias"
@@ -3530,8 +3649,20 @@ namespace SgqSystem.Services
             var ParRelapseDB = new SGQDBContext.ParRelapse(db);
 
             //Buscamos os ParLevel11 para a unidade selecionada
-            var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id, Level1ListId: Level1ListId); 
-            
+            var parLevel1List = ParLevel1DB.getParLevel1ParCriticalLevelList(ParCompany_Id: ParCompany_Id, Level1ListId: Level1ListId);
+
+            if (isVolume)
+            {
+                var parLevel1Familia = ParLevel1DB.getByFamilia(dateCollection: dateCollect);
+
+                parLevel1List = parLevel1List.Where(r =>
+                                            r.Name.Equals("(%) NC CEP Vácuo GRD") ||
+                                            r.Name.Equals("(%) NC PCC 1B") ||
+                                            r.Name.Equals("(%) NC CEP Desossa") ||
+                                            r.Name.Equals("(%) NC CEP Recortes") ||
+                                            r.IsFixedEvaluetionNumber == true);
+            }
+
             //Agrupamos o ParLevel1 por ParCriticalLevel
             var parLevel1GroupByCriticalLevel = parLevel1List.OrderBy(p => p.ParCriticalLevel_Id).GroupBy(p => p.ParCriticalLevel_Id);
 
@@ -3596,7 +3727,7 @@ namespace SgqSystem.Services
 
                         decimal alertaNivel1 = 0;
                         decimal alertaNivel2 = 0;
-                        string  alertaNivel3 = "";
+                        string alertaNivel3 = "";
 
                         decimal volumeAlerta = 0;
                         decimal meta = 0;
@@ -3664,7 +3795,7 @@ namespace SgqSystem.Services
                         //Identidicar se possui contador para o indicador
                         if (listCounter != null)
                         {
-                            painelCounters = html.painelCounters(listCounter, "margin-top: 40px;font-size: 12px;");
+                            painelCounters = html.painelCounters(listCounter.Where(r => r.Local == "level1_line"), "margin-top: 40px;font-size: 12px;");
                         }
 
                         if (GlobalConfig.Eua && parlevel1.Name.Contains("CFF"))
@@ -3705,10 +3836,8 @@ namespace SgqSystem.Services
 
                     #endregion
 
-                    //Mock de modularização
-                    if(Level1ListId != "" || Level1ListId == null)
-                        //Busca os Level2 e reforna no level3Group;
-                        listLevel2 += GetLevel02(parlevel1, ParCompany_Id, dateCollect, ref level3Group);
+                    //Busca os Level2 e reforna no level3Group;
+                    listLevel2 += GetLevel02(parlevel1, ParCompany_Id, dateCollect, ref level3Group);
 
                     //Incrementa Level3Group
                     listLevel3 += level3Group;
@@ -3779,12 +3908,13 @@ namespace SgqSystem.Services
             #region Parametros e "Instancias"
 
             //Inicializa ParLevel2
+            var ParLevel1DB = new SGQDBContext.ParLevel1(db);
             var ParLevel2DB = new SGQDBContext.ParLevel2(db);
             var ParCounterDB = new SGQDBContext.ParCounter(db);
 
             //Pega uma lista de ParLevel2
             //Tem que confirmar a company e colocar na query dentro do método, ainda não foi validado
-            var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(ParLevel1.Id, ParCompany_Id);
+            var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(ParLevel1, dateCollect, ParCompany_Id);
 
             //Inicializa Cabecalhos
             var ParLevelHeaderDB = new SGQDBContext.ParLevelHeader(db);
@@ -3792,7 +3922,7 @@ namespace SgqSystem.Services
             var ParFieldTypeDB = new SGQDBContext.ParFieldType(db);
             var ParNCRuleDB = new SGQDBContext.NotConformityRule(db);
 
-            var reauditFlag = "<li class='painel row list-group-item hide reauditFlag'> Reaudit <span class='reauditnumber'></span></li>";
+            var reauditFlag = "<li class='painel row list-group-item hide active reauditFlag'> Reaudit <span class='reauditnumber'></span></li>";
 
             var html = new Html();
 
@@ -3804,24 +3934,24 @@ namespace SgqSystem.Services
             //Inicializa Avaliações e Amostras
             var ParEvaluateDB = new SGQDBContext.ParLevel2Evaluate(db);
             var ParSampleDB = new SGQDBContext.ParLevel2Sample(db);
-            
+
 
             //Verifica avaliações padrão
             var ParEvaluatePadrao = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
-                                                              ParCompany_Id: null);
+                                                              ParCompany_Id: null, DateCollection: dateCollect);
 
             //Verifica avaliações pela company informada
             var ParEvaluateCompany = ParEvaluateDB.getEvaluate(ParLevel1: ParLevel1,
-                                                               ParCompany_Id: ParCompany_Id);
+                                                               ParCompany_Id: ParCompany_Id, DateCollection: dateCollect);
 
             //Verifia amostra padrão
             var ParSamplePadrao = ParSampleDB.getSample(ParLevel1: ParLevel1,
-                                                        ParCompany_Id: null);
+                                                        ParCompany_Id: null, DateCollection: dateCollect);
 
             //Verifica amostra pela company informada
             var ParSampleCompany = ParSampleDB.getSample(ParLevel1: ParLevel1,
-                                                        ParCompany_Id: ParCompany_Id);
-            
+                                                        ParCompany_Id: ParCompany_Id, DateCollection: dateCollect);
+
             //Variaveis para avaliação de grupos
             int evaluateGroup = 0;
             int sampleGroup = 0;
@@ -3886,10 +4016,10 @@ namespace SgqSystem.Services
                 headerCounter = html.div(
                                     //aqui vai os botoes
                                     outerhtml: headerCounter,
-                                    classe: "counters col-xs-4"
+                                    classe: "counters col-xs-4 headerCounter"
                                     );
 
-                
+
                 string classXSLevel2 = " col-xs-5";
 
                 int totalSampleXEvaluate = evaluate * sample;
@@ -3906,12 +4036,12 @@ namespace SgqSystem.Services
                                                 style: "text-align:center; font-size:10px;"
                                               ) +
                                        html.div(
-                                                outerhtml: html.span(outerhtml: defect.ToString() , classe: "defectstotal"),
+                                                outerhtml: html.span(outerhtml: defect.ToString(), classe: "defectstotal"),
                                                 classe: "col-xs-4",
                                                 style: "text-align:center; font-size:10px;"
                                               );
 
-                
+
 
                 //                        html.div(
                 //                                    outerhtml: html.span(outerhtml: "0", classe: "defectsLevel2"),
@@ -3976,7 +4106,7 @@ namespace SgqSystem.Services
                 }
                 else
                 {
-                    classXSLevel2 = " col-xs-7";
+                    classXSLevel2 = " col-xs-5";
                     string btnReaudit = null;
                     if (parlevel2.IsReaudit || ParLevel1.IsReaudit)
                     {
@@ -4029,7 +4159,7 @@ namespace SgqSystem.Services
 
                 if (listLineCounter != null)
                 {
-                    lineCounters = html.painelCounters(listLineCounter, "margin-top: 45px;font-size: 12px;");
+                    lineCounters = html.painelCounters(listLineCounter.Where(r => r.Local == "level2_line"), "margin-top: 45px;font-size: 12px;");
                 }
 
                 //Gera linha do Level2
@@ -4085,23 +4215,68 @@ namespace SgqSystem.Services
             //Se tiver agrupamentos no ParLevel1
             if (ParLevel1.HasGroupLevel2 == true)
             {
+
+                string headerCounter =
+                                     html.div(
+                                               outerhtml: "<b>" + CommonData.getResource("ev").Value.ToString() + " </b>",
+                                               classe: "col-xs-4",
+                                               style: "text-align:center"
+                                             ) +
+                                     html.div(
+                                               outerhtml: "<b>" + CommonData.getResource("sd").Value.ToString() + " </b>",
+                                               classe: "col-xs-4",
+                                               style: "text-align:center"
+                                              ) +
+                                      html.div(
+                                               outerhtml: "<b>" + CommonData.getResource("df").Value.ToString() + " </b>",
+                                               classe: "col-xs-4",
+                                               style: "text-align:center"
+                                             );
+
+                headerCounter = html.div(
+                                    //aqui vai os botoes
+                                    outerhtml: headerCounter,
+                                    classe: "counters col-xs-4 headerCounter"
+                                    );
+
+
+                string classXSLevel2 = " col-xs-5";
+
+                int totalSampleXEvaluate = evaluate * sample;
+
+                string counters =
+                                      html.div(
+                                                outerhtml: html.span(outerhtml: "0", classe: "evaluateCurrent") + html.span(outerhtml: "/", classe: "separator") + html.span(outerhtml: evaluate.ToString(), classe: "evaluateTotal"),
+                                                classe: "col-xs-4",
+                                                style: "text-align:center; font-size:10px;"
+                                              ) +
+                                      html.div(
+                                                outerhtml: html.span(outerhtml: "0", classe: "sampleCurrent hide") + html.span(outerhtml: "0", classe: "sampleCurrentTotal") + html.span(outerhtml: "/", classe: "separator") + html.span(outerhtml: sample.ToString(), classe: "sampleTotal hide") + html.span(outerhtml: totalSampleXEvaluate.ToString(), classe: "sampleXEvaluateTotal"),
+                                                classe: "col-xs-4",
+                                                style: "text-align:center; font-size:10px;"
+                                              ) +
+                                       html.div(
+                                                outerhtml: html.span(outerhtml: defect.ToString(), classe: "SmpDefects"),
+                                                classe: "col-xs-4",
+                                                style: "text-align:center; font-size:10px;"
+                                              ); //+
+                                                 //html.div(
+                                                 //      outerhtml: html.span(outerhtml: defect.ToString(), classe: "3moreDefects"),
+                                                 //      classe: "col-xs-4",
+                                                 //      style: "text-align:center; font-size:10px;"
+                                                 // );
+                counters = html.div(
+                                   //aqui vai os botoes
+                                   outerhtml: counters,
+                                   classe: "counters col-xs-4"
+                                   );
                 string parLevel3Group = null;
 
 
                 string accordeonbuttons = null;
 
-                accordeonbuttons = "<button class=\"btn btn-default button-expand marginRight10\"><i class=\"fa fa-expand\" aria-hidden=\"true\"></i> " + @Resources.Resource.show_all +"</button>" +
+                accordeonbuttons = "<button class=\"btn btn-default button-expand marginRight10\"><i class=\"fa fa-expand\" aria-hidden=\"true\"></i> " + @Resources.Resource.show_all + "</button>" +
                                    "<button class=\"btn btn-default button-collapse\"><i class=\"fa fa-compress\" aria-hidden=\"true\"></i> " + @Resources.Resource.hide_all + "</button>";
-
-
-                //painellevel3 = html.listgroupItem(
-                //                                            outerhtml: avaliacoes +
-                //                                                       amostras +
-                //                                                       painelLevel3HeaderListHtml,
-
-                //                               classe: "painel painelLevel03 row");
-
-
 
                 string panelAccordeon = html.listgroupItem(
                                                            outerhtml: accordeonbuttons,
@@ -4115,17 +4290,27 @@ namespace SgqSystem.Services
                                                classe: "level3Group",
                                                tags: "level1idgroup=\"" + ParLevel1.Id + "\"",
 
-                                               outerhtml: painelLevel3 + panelAccordeon +
+                                               outerhtml: reauditFlag +
+                                                          painelLevel3 +
+                                                          panelAccordeon +
                                                           groupLevel3Level2
                                              );
 
                     level3Group += parLevel3Group;
                 }
 
-                headerList = null;
+                //headerList = null;
+                var listLineCounter = ParCounterDB.GetParLevelXParCounterList(ParLevel1.Id, 0, 1);
+
+                string lineCounters = "";
+
+                if (listLineCounter != null)
+                {
+                    lineCounters = html.painelCounters(listLineCounter, "margin-top: 45px;font-size: 12px;");
+                }
                 string level2 = html.level2(id: "0",
                                             label: ParLevel1.Name,
-                                            classe: "group col-xs-12",
+                                            classe: "group col-xs-5",
                                             evaluate: evaluateGroup,
                                             sample: sampleGroup,
                                             HasSampleTotal: false,
@@ -4137,8 +4322,8 @@ namespace SgqSystem.Services
                                                     id: ParLevel1.Id.ToString(),
                                                     classe: "row",
                                                     outerhtml: level2 +
-                                                               null +
-                                                               null +
+                                                               counters +
+                                                               lineCounters +
                                                                html.div(classe: "level2Debug")
                                                     );
             }
@@ -4152,13 +4337,13 @@ namespace SgqSystem.Services
             var painelLevel2HeaderListHtml = GetHeaderHtml(ParLevelHeaderDB.getHeaderByLevel1(ParLevel1.Id), ParFieldTypeDB, html);
 
 
-            if (!string.IsNullOrEmpty(painelLevel2HeaderListHtml))
-            {
-                painelLevel2HeaderListHtml = html.listgroupItem(
-                                                                outerhtml: painelLevel2HeaderListHtml,
-                                                                classe: "row painelLevel02"
-                                                                );
-            }
+            //if (!string.IsNullOrEmpty(painelLevel2HeaderListHtml))
+            //{
+            //    painelLevel2HeaderListHtml = html.listgroupItem(
+            //                                                    outerhtml: painelLevel2HeaderListHtml,
+            //                                                    classe: "row painelLevel02"
+            //                                                    );
+            //}
 
             var listCounter = ParCounterDB.GetParLevelXParCounterList(ParLevel1.Id, 0, 1);
 
@@ -4166,7 +4351,26 @@ namespace SgqSystem.Services
 
             if (listCounter != null)
             {
-                painelCounters = html.painelCounters(listCounter);
+                //var listAux = listCounter.Where(r => r.Local == "level2_header" && Convert.ToInt32(r.indicador) == ParLevel1.Id);
+                painelCounters = html.painelCounters(listCounter.Where(r => r.Local == "level2_header"), "margin-top: 45px;font-size: 12px;");
+                var form_dentro = html.div(
+                                            outerhtml: painelCounters,
+                                            classe: "form-group header",
+                                            style: "margin-bottom: 4px;"
+                                           );
+                painelCounters += html.div(
+                                            outerhtml: form_dentro,
+                                            classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
+                                            style: "padding-right: 4px !important; padding-left: 4px !important;"
+                                           );
+            }
+
+            if (!string.IsNullOrEmpty(painelLevel2HeaderListHtml))
+            {
+                painelLevel2HeaderListHtml = html.listgroupItem(
+                                                                outerhtml: painelLevel2HeaderListHtml + painelCounters,
+                                                                classe: "row painelLevel02"
+                                                                );
             }
 
             //Se contem  monitoramentos
@@ -4176,7 +4380,7 @@ namespace SgqSystem.Services
                 ParLevel2List = html.listgroup(
                                                 outerhtml: reauditFlag +
                                                            painelLevel2HeaderListHtml +
-                                                           painelCounters +
+                                                           null +
                                                            ParLevel2List,
                                                 tags: "level01Id=\"" + ParLevel1.Id + "\""
                                                , classe: "level2Group hide");
@@ -4189,7 +4393,7 @@ namespace SgqSystem.Services
         {
             string retorno = "";
 
-            int id= 0;
+            int id = 0;
 
             foreach (var header in list) //LOOP7
             {
@@ -4212,7 +4416,7 @@ namespace SgqSystem.Services
 
                 #region Switch com Loop
                 //ParFieldType 
-                
+
                 switch (header.ParFieldType_Id)
                 {
                     //Multipla Escolha
@@ -4220,17 +4424,17 @@ namespace SgqSystem.Services
                         var listMultiple = ParFieldTypeDB.getMultipleValues(header.ParHeaderField_Id);
                         var optionsMultiple = "";
                         bool hasDefault = false;
-                        
+
                         foreach (var value in listMultiple) //LOOP8
                         {
                             if (value.IsDefaultOption == 1)
                             {
-                                optionsMultiple += "<option selected=\"selected\" value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue +  "\">" + value.Name + "</option>";
+                                optionsMultiple += "<option selected=\"selected\" value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
                                 hasDefault = true;
                             }
                             else
                             {
-                                optionsMultiple += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue +  "\">" + value.Name + "</option>";
+                                optionsMultiple += "<option value=\"" + value.Id + "\" PunishmentValue=\"" + value.PunishmentValue + "\">" + value.Name + "</option>";
                             }
                         }
 
@@ -4239,7 +4443,7 @@ namespace SgqSystem.Services
 
                         //form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\"  ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\">" + optionsMultiple + "</select>";
 
-                        form_control = "<select class=\"form-control input-sm\" Id=\"cb" + header.ParHeaderField_Id + "\" name=cb  \"  ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\">" + optionsMultiple + "</select>";
+                        form_control = "<select class=\"form-control input-sm ddl\" Id=\"cb" + header.ParHeaderField_Id + "\" name=cb   ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\" IdPai=\"" + id + "\">" + optionsMultiple + "</select>";
 
 
                         break;
@@ -4325,7 +4529,7 @@ namespace SgqSystem.Services
 
             return retorno;
         }
-        
+
 
         /// <summary>
         /// Obter tela da Ytoara com o cabeçalho
@@ -4335,8 +4539,8 @@ namespace SgqSystem.Services
         {
             return ytoaraUtil.criarHeader(ytoaraUtil.getElementoEstruturado());
         }
-        
-        
+
+
         /// <summary>
         /// Retorna Level3 
         /// </summary>
@@ -4347,7 +4551,7 @@ namespace SgqSystem.Services
         {
             var html = new Html();
 
-            var reauditFlag = "<li class='painel row list-group-item hide reauditFlag'> Reaudit <span class='reauditnumber'></span></li>";
+            var reauditFlag = "<li class='painel row list-group-item active hide reauditFlag'> Reaudit <span class='reauditnumber'></span></li>";
 
             //Inicializa ParLevel3
             var ParLevel3DB = new SGQDBContext.ParLevel3(db);
@@ -4439,7 +4643,14 @@ namespace SgqSystem.Services
 
                 var painelLevel3HeaderListHtml = "";
 
-                var labelPecas = "<label class='font-small'>Animais Avaliados</label>";
+                var tituloLabel = "Animais Avaliados";
+
+                if(ParLevel1.Id == 42)
+                {
+                    tituloLabel = "Total Bloqueado (Kg)";
+                }
+
+                var labelPecas = "<label class='font-small'>" + tituloLabel + "</label>";
                 var formControlPecas = "<input class='form-control input-sm pecasAvaliadas' type='number'>";
                 var formGroupPecas = html.div(
                                         outerhtml: labelPecas + formControlPecas,
@@ -4616,7 +4827,9 @@ namespace SgqSystem.Services
                             area.cNmCaracteristica + "</div>";
                 }
 
-                var CtIdAP = CaracteristicaTipificacaoDB.getAreasParticipantesUnico().First().nCdCaracteristica;
+                var CtIdAP = "";
+                if (CaracteristicaTipificacaoDB.getAreasParticipantesUnico().First().nCdCaracteristica != null)
+                    CtIdAP = CaracteristicaTipificacaoDB.getAreasParticipantesUnico().First().nCdCaracteristica;
                 var TIdAP = VerificacaoTipificacaoTarefaIntegracaoDB.getTarefa(Convert.ToInt32(CtIdAP)).First().TarefaId;
                 var areasParticipantes = html.listgroupItem(
                                                 id: "400",
@@ -4651,7 +4864,9 @@ namespace SgqSystem.Services
                 //var formControlBanda = "<select class='form-control input-sm banda' style='font-size:30px; height: 50px; text-align:center;'><option value = '1'>1</option><option value='2'>2</option></select>";
 
 
-                var formControlBanda = "<input class='form-control input-sm banda' min='1' max='2' style='font-size:30px; height: 50px; text-align:center;' type='number'>";
+                //var formControlBanda = "<input class='form-control input-sm banda' min='1' max='2' style='font-size:30px; height: 50px; text-align:center;' type='number'>";
+                var formControlBanda = "<select class='form-control input-sm banda' style='font-size:30px; height: 50px; text-align:center;'><option value='1'>1</option><option value='2'>2</option></select>";
+
                 var formGroupBanda = html.div(
                                         outerhtml: labelBanda + formControlBanda,
                                         classe: "form-group",
@@ -4763,13 +4978,13 @@ namespace SgqSystem.Services
 
                 painelLevel3HeaderListHtml += html.div(
                                                 outerhtml: formGroupSequencial,
-                                                classe: "col-xs-8 col-sm-6 col-md-6 col-lg-6",
+                                                classe: "col-xs-6 col-sm-6 col-md-6 col-lg-6",
                                                 style: "padding-right: 4px !important; padding-left: 4px !important;"
                                                 );
 
                 painelLevel3HeaderListHtml += html.div(
                                                 outerhtml: formGroupBanda,
-                                                classe: "col-xs-2 col-sm-2 col-md-2 col-lg-2",
+                                                classe: "col-xs-4 col-sm-2 col-md-2 col-lg-2",
                                                 style: "padding-right: 4px !important; padding-left: 4px !important;"
                                                 );
 
@@ -4918,7 +5133,7 @@ namespace SgqSystem.Services
                     string painelCounters = "";
                     if (listCounter != null)
                     {
-                        painelCounters = html.painelCounters(listCounter);
+                        painelCounters = html.painelCounters(listCounter.Where(r => r.Local == "level3_header"));
                     }
 
                     parLevel3Group += level3Group;
@@ -4941,6 +5156,11 @@ namespace SgqSystem.Services
                                     outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("samples").Value.ToString() + " </label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(classe: "sampleCurrent") + html.span(outerhtml: " / ", classe: "separator") + html.span(classe: "sampleTotal") + "</label>",
                                     style: "margin-bottom: 4px;",
                                     classe: "form-group");
+                string defeitoshtml = html.div(
+                                    outerhtml: "<label class=\"font-small\" style=\"display:inherit\">" + CommonData.getResource("defects").Value.ToString() +
+                                    "</label><label style=\"display:inline-block; font-size: 20px;\">" + html.span(outerhtml: "0", classe: "defects") + "</label>",
+                                    style: "margin-bottom: 4px;",
+                                    classe: "form-group");
 
                 string avaliacoes = html.div(
                                     outerhtml: avaliacoeshtml,
@@ -4948,6 +5168,10 @@ namespace SgqSystem.Services
                                     classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
                 string amostras = html.div(
                                     outerhtml: amostrashtml,
+                                    style: "padding-right: 4px !important; padding-left: 4px !important;",
+                                    classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
+                string defeitos = html.div(
+                                    outerhtml: defeitoshtml,
                                     style: "padding-right: 4px !important; padding-left: 4px !important;",
                                     classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2");
 
@@ -4962,12 +5186,12 @@ namespace SgqSystem.Services
                 string accordeonbuttons = null;
                 if (haveAccordeon == true)
                 {
-                    accordeonbuttons = "<button class=\"btn btn-default button-expand marginRight10\"><i class=\"fa fa-expand\" aria-hidden=\"true\"></i> Mostrar Todos</button>" +
-                                       "<button class=\"btn btn-default button-collapse\"><i class=\"fa fa-compress\" aria-hidden=\"true\"></i> Fechar Todos</button>";
+                    accordeonbuttons = "<button class=\"btn btn-default button-expand marginRight10\"><i class=\"fa fa-expand\" aria-hidden=\"true\"></i> " + Resources.Resource.show_all + " </button>" +
+                                       "<button class=\"btn btn-default button-collapse\"><i class=\"fa fa-compress\" aria-hidden=\"true\"></i> " + Resources.Resource.hide_all + " </button>";
                 }
 
                 // incluir coluna e obter o total de amostras com defeito agrupado.
-                var level2 = dbEf.ParCounterXLocal.FirstOrDefault(r => r.ParLevel1_Id == ParLevel1.Id && r.ParCounter_Id == 21 && r.IsActive);
+                var level2 = dbEf.ParCounterXLocal.FirstOrDefault(r => r.ParLevel1_Id == ParLevel1.Id && r.ParCounter.Name == "defects" && r.IsActive);
                 if (level2 != null)
                 {
                     var teste = new ContadoresXX().GetContadoresXX(dbEf, ParLevel1.Id, ParCompany_Id);
@@ -4984,50 +5208,63 @@ namespace SgqSystem.Services
 
                     if (teste.IsNotNull() && teste.Count > 0)
                     {
-
-                        foreach (var s in listaShift)
+                        if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
                         {
-                            foreach (var p in listaPeriod)
+
+                            foreach (var s in listaShift)
                             {
-                                painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId"+ ParLevel1.Id + "'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>";
-                                //painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.LastOrDefault(r=>r.Period == p && r.Shift == s)?.WeiDefects.ToString("G29") + "</span></div>";
-                                painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.Where(r => r.Period == p && r.Shift == s).Sum(r => r.WeiDefects).ToString("G29") + "</span></div>";
+                                foreach (var p in listaPeriod)
+                                {
+                                    painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>";
+                                    //painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.LastOrDefault(r=>r.Period == p && r.Shift == s)?.WeiDefects.ToString("G29") + "</span></div>";
+                                    painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>" + teste.Where(r => r.Period == p && r.Shift == s).Sum(r => r.WeiDefects).ToString("G29") + "</span></div>";
+
+                                    if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
+                                        painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("three_more_defects").Value.ToString() + ": <span>0</span></div>";
+
+                                }
 
                             }
-
                         }
                     }
                     else
                     {
-                        foreach (var s in listaShift)
+                        if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
                         {
-                            foreach (var p in listaPeriod)
+                            foreach (var s in listaShift)
                             {
-                                painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>";
-                                painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>0</span></div>";
-                            }
+                                foreach (var p in listaPeriod)
+                                {
+                                    painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects").Value.ToString() + ": <span>0</span></div>";
+                                    painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("total_defects_sample").Value.ToString() + ": <span>0</span></div>";
 
+                                    if ((GlobalConfig.Eua || GlobalConfig.Canada) && ParLevel1.Id == 55)
+                                        painelLevel3HeaderListHtml += "<div style='display: none;' level1TdefId=" + ParLevel1.Id + " id='tdefPeriod" + p + "Shif" + s + "level1TdefId" + ParLevel1.Id + "'>" + CommonData.getResource("three_more_defects").Value.ToString() + ": <span>0</span></div>";
+                                }
+
+                            }
                         }
                     }
                 }
 
                 painellevel3 = html.listgroupItem(outerhtml: avaliacoes +
                                                              amostras +
+                                                             defeitos +
                                                              painelLevel3HeaderListHtml,
                                                   classe: "painel painelLevel03 row") +
                               html.painelCounters(listCounter);
-       
+
                 //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
 
                 var botoesTodos = "";
                 if (GlobalConfig.Brasil)
                 {
-                    botoesTodos =   "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
+                    botoesTodos = "<button id='btnAllNA' class='btn btn-warning btn-sm pull-right'> Todos N/A </button>" +
                                     "<button id='btnAllNC' class='btn btn-danger btn-sm pull-right' style='margin-right: 10px;'> Clicar em Todos </button>";
                 }
 
                 string panelButton = html.listgroupItem(
-                                                        outerhtml: botoesTodos,
+                                                        outerhtml: botoesTodos + accordeonbuttons,
                                                         classe: "painel row"
                                                     );
 
@@ -5068,10 +5305,11 @@ namespace SgqSystem.Services
             {
                 classInput = " defects";
                 labels = html.div(
-                                           outerhtml: "<b>Max: </b>" + parLevel3.IntervalMax.ToString("G29"),
-                                           classe: "levelName"
-                                           //style: "margin-top:7px;"
-                                       );
+                           outerhtml: "<b>Max: </b>" + parLevel3.IntervalMax.ToString("G29"),
+                           classe: "levelName",
+                           //style: "margin-top:7px;"
+                           style: "visibility: hidden;"
+                         );
 
                 input = html.campoNumeroDeDefeitos(id: parLevel3.Id.ToString(),
                                                 intervalMin: parLevel3.IntervalMin,
@@ -5084,7 +5322,7 @@ namespace SgqSystem.Services
                 labels = html.div(
                                            outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29") + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29") + " " + parLevel3.ParMeasurementUnit_Name,
                                            classe: "levelName"
-                                           //style: "margin-top:7px;"
+                                       //style: "margin-top:7px;"
                                        );
 
                 input = html.campoIntervalo(id: parLevel3.Id.ToString(),
@@ -5102,7 +5340,7 @@ namespace SgqSystem.Services
                 labels = html.div(
                                            outerhtml: "<b>Min: </b> " + Guard.ConverteValorCalculado(parLevel3.IntervalMin) + " ~ <b>Max: </b>" + Guard.ConverteValorCalculado(parLevel3.IntervalMax) + " " + parLevel3.ParMeasurementUnit_Name,
                                            classe: "levelName"
-                                           //style: "margin-top:7px;"
+                                       //style: "margin-top:7px;"
                                        );
 
                 input = html.campoCalculado(id: parLevel3.Id.ToString(),
@@ -5116,7 +5354,7 @@ namespace SgqSystem.Services
                 labels = html.div(
                                            outerhtml: "",
                                            classe: "levelName"
-                                           //style: "margin-top:7px;"
+                                       //style: "margin-top:7px;"
                                        );
 
                 input = html.campoTexto(id: parLevel3.Id.ToString());
@@ -5129,7 +5367,7 @@ namespace SgqSystem.Services
                 labels = html.div(
                                     outerhtml: "<b>Min: </b>" + parLevel3.IntervalMin.ToString("G29") + " ~ <b>Max: </b>" + parLevel3.IntervalMax.ToString("G29") + " " + parLevel3.ParMeasurementUnit_Name,
                                     classe: "levelName"
-                                    //style: "margin-top:7px;"
+                                //style: "margin-top:7px;"
                                 );
 
                 input = html.campoIntervalo(id: parLevel3.Id.ToString(),
@@ -5145,8 +5383,8 @@ namespace SgqSystem.Services
             string input = null;
             classInput = " defects";
             labels = html.div(
-                                       classe: "font10",
-                                       style: "margin-top:7px;"
+                                   //classe: "font10"
+                                   //style: "margin-top:7px;"
                                    );
 
             input = html.campoNumeroDeDefeitos(id: parLevel3.Id.ToString(),
@@ -5313,9 +5551,20 @@ namespace SgqSystem.Services
                                   html.label(labelfor: "inputUserName", classe: "sr-only", outerhtml: CommonData.getResource("username").Value.ToString()) +
                                   html.input(id: "inputUserName", placeholder: CommonData.getResource("username").Value.ToString(), required: true, disabled: inputsDesabilitados) +
                                   html.label(labelfor: "inputPassword", classe: "sr-only", outerhtml: CommonData.getResource("password").Value.ToString()) +
-                                  html.input(type: Html.type.password, id: "inputPassword", placeholder: CommonData.getResource("password").Value.ToString(), required: true, disabled: inputsDesabilitados) +
-                                  html.button(label: CommonData.getResource("enter").Value.ToString(), id: "btnLogin", classe: "btn-lg btn-primary btn-block marginTop10", dataloading: "<i class='fa fa-spinner fa-spin'></i> <span class='wMessage' style='font-size:14px;'>" + CommonData.getResource("authenticating").Value.ToString() + "</span>") +
-
+                                  html.input(type: Html.type.password, id: "inputPassword", placeholder: CommonData.getResource("password").Value.ToString(), required: true, disabled: inputsDesabilitados);
+            if (GlobalConfig.Brasil == true && GlobalConfig.Ytoara == false && GlobalConfig.Guarani == false)
+            {
+                formOuterHtml +=
+                    html.button(label: CommonData.getResource("enter_offline").Value.ToString(), id: "btnLoginOffline", classe: "btn-lg btn-primary btn-block marginTop10", dataloading: "<i class='fa fa-spinner fa-spin'></i> <span class='wMessage' style='font-size:14px;'>" + CommonData.getResource("authenticating").Value.ToString() + "</span>") +
+                    html.button(label: CommonData.getResource("enter_online").Value.ToString(), id: "btnLoginOnline", classe: "btn-lg btn-default btn-sm btn-block marginTop10", dataloading: "<i class='fa fa-spinner fa-spin'></i> <span class='wMessage' style='font-size:14px;'>" + CommonData.getResource("authenticating").Value.ToString() + "</span>");
+            }
+            else
+            {
+                formOuterHtml +=
+                    html.button(label: CommonData.getResource("enter").Value.ToString(), id: "btnLoginOnline", classe: "btn-lg btn-primary btn-block marginTop10", dataloading: "<i class='fa fa-spinner fa-spin'></i> <span class='wMessage' style='font-size:14px;'>" + CommonData.getResource("authenticating").Value.ToString() + "</span>") +
+                    html.button(label: CommonData.getResource("enter_offline").Value.ToString(), id: "btnLoginOffline", classe: "btn-lg btn-primary btn-block hide marginTop10", dataloading: "<i class='fa fa-spinner fa-spin'></i> <span class='wMessage' style='font-size:14px;'>" + CommonData.getResource("authenticating").Value.ToString() + "</span>");
+            }
+            formOuterHtml +=
                                   html.div(id: "messageError", classe: "alert alert-danger hide", tags: "role=\"alert\"",
                                            outerhtml: html.span(classe: "icon-remove-sign") + "<strong>Erro! </strong>" + html.span(id: "mensagemErro")) +
 
@@ -5373,7 +5622,7 @@ namespace SgqSystem.Services
             string footOuterHtml = html.br() +
                                    html.br() +
                                    html.br() +
-                                   html.span(classe: "hide", id: "local", attr: " empresa='"+empresa+"' local='"+local+"'") +
+                                   html.span(classe: "hide", id: "local", attr: " empresa='" + empresa + "' local='" + local + "'") +
                                    html.span(
                                               outerhtml: CommonData.getResource("version").Value.ToString() +
                                                          html.span(classe: "number")
@@ -5419,7 +5668,7 @@ namespace SgqSystem.Services
                 var roles = RolesXUserSgqDB.getRoles(Convert.ToInt32(user.UserSGQ_Id), Convert.ToInt32(ParCompany_Id));
 
                 usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name, roles);
-                
+
             }
             return usersList;
         }
@@ -5439,7 +5688,7 @@ namespace SgqSystem.Services
                 //Password = Guard.EncryptStringAES(Password);
 
                 usersList += html.user(user.UserSGQ_Id, user.UserSGQ_Name, user.UserSGQ_Login, Password, user.Role, user.ParCompany_Id, user.ParCompany_Name, null);
-                
+
             }
             return usersList;
         }
@@ -5545,9 +5794,9 @@ namespace SgqSystem.Services
 
                 sql += "INSERT INTO Deviation ([ParCompany_Id],[ParLevel1_Id],[ParLevel2_Id],[Evaluation],[Sample],[AlertNumber],[Defects],[DeviationDate],[AddDate],[sendMail], [DeviationMessage]) " +
                         "VALUES " +
-                        "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', '"+ dt.ToString("yyyyMMdd") + "' , GetDate(), 0, " + deviationMessage + ")";
+                        "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', '" + dt.ToString("yyyyMMdd") + "' , GetDate(), 0, " + HttpUtility.UrlDecode(deviationMessage) + ")";
             }
-            
+
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
             {
@@ -5568,17 +5817,26 @@ namespace SgqSystem.Services
                             return null;
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Caso ocorra alguma Exception, grava o log e retorna zero
             catch (SqlException ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
+                /**
+                 * GABRIEL NUNES TIROU O LOG PARA MELHRAR PERFORMANCE
+                 * DATE 2017-06-23
+                 */
+                //int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
                 return "error";
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
+                /**
+                 * GABRIEL NUNES TIROU O LOG PARA MELHRAR PERFORMANCE
+                 * DATE 2017-06-23
+                 */
+                //int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
                 return "error";
             }
         }
@@ -5627,7 +5885,11 @@ namespace SgqSystem.Services
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson(mensagemEstouro, ex.Message, null, null, "sendEmail");
+                /**
+                 * GABRIEL NUNES TIROU A GRAVAÇÃO DO LOG DE SENDEMAIL PARA MELHORAR PERFORMANCE DO SISTEMA
+                 * DATE: 2017-06-23
+                 */
+                //int insertLog = insertLogJson(mensagemEstouro, ex.Message, null, null, "sendEmail");
             }
             return null;
         }
@@ -5689,7 +5951,7 @@ namespace SgqSystem.Services
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson(email, ex.Message, null, null, "sendEmail");
+                //int insertLog = insertLogJson(email, ex.Message, null, null, "sendEmail");
             }
             return null;
         }
@@ -5698,7 +5960,7 @@ namespace SgqSystem.Services
         {
             //Converte a data no padrão de busca do Banco de Dados
 
-            string sql = "SELECT FullName, Name, email FROM UserSgq where role='somentemanutencao-sgq' and id > 432";
+            string sql = "SELECT FullName, Name, email FROM UserSgq (nolock)  where role='somentemanutencao-sgq' and id > 432";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -5738,6 +6000,7 @@ namespace SgqSystem.Services
                             return null;
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Em caso de Exception, grava um log no Banco de Dados e Retorna Zero
@@ -5777,6 +6040,7 @@ namespace SgqSystem.Services
                             return null;
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Caso ocorra alguma Exception, grava o log e retorna zero
@@ -5816,6 +6080,7 @@ namespace SgqSystem.Services
 
 
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             catch (SqlException ex)
@@ -5835,7 +6100,7 @@ namespace SgqSystem.Services
         public string selectUserCompanys(int UserSgq_Id, int ParCompany_Id)
         {
             var ParCompanyXUserSgqDB = new SGQDBContext.ParCompanyXUserSgq(db);
-            var parCompanyXUserSgq = ParCompanyXUserSgqDB.getUserCompany(UserSgq_Id);
+            var parCompanyXUserSgq = dbEf.ParCompany.Where(r => r.IsActive).ToList(); //ParCompanyXUserSgqDB.getUserCompany(UserSgq_Id);
 
             string options = null;
 
@@ -5847,7 +6112,7 @@ namespace SgqSystem.Services
                     selected = " selected";
                 }
 
-                options += "<option" + selected + " value=\"" + p.ParCompany_Id + "\">" + p.ParCompany_Name + "</option>";
+                options += "<option" + selected + " value=\"" + p.Id + "\">" + p.Name/*p.ParCompany_Name*/ + "</option>";
             }
 
             if (!string.IsNullOrEmpty(options))
@@ -5881,6 +6146,7 @@ namespace SgqSystem.Services
                             return "Não foi possivel alterar a unidade";
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
 
             }
@@ -5890,7 +6156,10 @@ namespace SgqSystem.Services
             }
         }
         [WebMethod]
-        public string InsertCorrectiveAction(string CollectionLevel2_Id, string ParLevel1_Id, string ParLevel2_Id, string Shift, string Period, string ParCompany_Id, string EvaluationNumber, string ParFrequency_Id, string data, string AuditorId, string SlaughterId, string TechinicalId, string DateTimeSlaughter, string DateTimeTechinical, string DateCorrectiveAction, string AuditStartTime, string DescriptionFailure, string ImmediateCorrectiveAction, string ProductDisposition, string PreventativeMeasure)
+        public string InsertCorrectiveAction(string CollectionLevel2_Id, string ParLevel1_Id, string ParLevel2_Id, string Shift, string Period, string ParCompany_Id,
+            string EvaluationNumber, string ParFrequency_Id, string data, string AuditorId, string SlaughterId, string TechinicalId, string DateTimeSlaughter,
+            string DateTimeTechinical, string DateCorrectiveAction, string AuditStartTime, string DescriptionFailure, string ImmediateCorrectiveAction,
+            string ProductDisposition, string PreventativeMeasure, string reauditnumber)
         {
             try
             {
@@ -5904,7 +6173,7 @@ namespace SgqSystem.Services
 
                 if (string.IsNullOrEmpty(CollectionLevel2_Id) || CollectionLevel2_Id == "0")
                 {
-                    CollectionLevel2_Id = getCollectionLevel2WithCorrectiveAction(ParLevel1_Id, ParLevel2_Id, Shift, Period, ParCompany_Id, EvaluationNumber).ToString();
+                    CollectionLevel2_Id = getCollectionLevel2WithCorrectiveAction(ParLevel1_Id, ParLevel2_Id, Shift, Period, ParCompany_Id, EvaluationNumber, reauditnumber, data).ToString();
                     if (CollectionLevel2_Id == "0")
                     {
                         return "error";
@@ -5916,9 +6185,9 @@ namespace SgqSystem.Services
                 ProductDisposition = HttpUtility.UrlDecode(ProductDisposition, System.Text.Encoding.Default);
                 PreventativeMeasure = HttpUtility.UrlDecode(PreventativeMeasure, System.Text.Encoding.Default);
 
-                int id = correctiveActionInsert(AuditorId, CollectionLevel2_Id, SlaughterId, TechinicalId, DateTimeSlaughter, DateTimeTechinical, DateCorrectiveAction, AuditStartTime, DescriptionFailure, 
+                int id = correctiveActionInsert(AuditorId, CollectionLevel2_Id, SlaughterId, TechinicalId, DateTimeSlaughter, DateTimeTechinical, DateCorrectiveAction, AuditStartTime, DescriptionFailure,
                     ImmediateCorrectiveAction, ProductDisposition, PreventativeMeasure);
-                
+
                 if (id > 0)
                 {
                     //01/20/2017
@@ -5939,7 +6208,7 @@ namespace SgqSystem.Services
 
                     //Pega a data pela regra da frequencia
                     getFrequencyDate(Convert.ToInt32(ParFrequency_Id), dataAPP, ref dataInicio, ref dataFim);
-                    var idUpdate = updateCorrectiveAction_CollectionLevel2_By_ParLevel1(ParLevel1_Id, ParCompany_Id, dataInicio, dataFim);
+                    var idUpdate = updateCorrectiveAction_CollectionLevel2_By_ParLevel1(ParLevel1_Id, ParCompany_Id, dataInicio, dataFim, reauditnumber);
                     //transacao.complete();
                     return null;
                 }
@@ -5957,11 +6226,24 @@ namespace SgqSystem.Services
                 throw ex;
             }
         }
-        public int getCollectionLevel2WithCorrectiveAction(string ParLevel1_Id, string ParLevel2_Id, string Shift, string Period, string ParCompany_Id, string EvaluationNumber)
+        public int getCollectionLevel2WithCorrectiveAction(string ParLevel1_Id, string ParLevel2_Id, string Shift, string Period, string ParCompany_Id, string EvaluationNumber, string reauditnumber, string data)
         {
             //Converte a data no padrão de busca do Banco de Dados
 
-            string sql = "SELECT Id FROM CollectionLevel2 WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND ParLevel2_Id='" + ParLevel2_Id + "' AND UnitId='" + ParCompany_Id + "' AND Shift='" + Shift + "' AND Period='" + Period + "' AND EvaluationNumber='" + EvaluationNumber + "' AND HaveCorrectiveAction=1";
+            if (!data.Contains("-"))
+            {
+                string dia = data.Substring(2, 2);
+                string mes = data.Substring(0, 2);
+                string ano = data.Substring(4, 4);
+
+                data = ano + "-" + mes + "-" + dia;
+            }
+
+            string sql = "SELECT Id FROM CollectionLevel2  WITH (NOLOCK) WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND ParLevel2_Id='" + ParLevel2_Id + "' AND UnitId='" + ParCompany_Id + "' AND Shift='" + Shift +
+                    "' AND Period='" + Period + "' AND EvaluationNumber='" + EvaluationNumber + "' and CAST(CollectionDate as date)=CAST('" + data + "' as date) and reauditNumber=" + reauditnumber; //"' AND HaveCorrectiveAction=1";
+
+            //string sql = "SELECT Id FROM CollectionLevel2 WHERE ParLevel1_Id='" + ParLevel1_Id + "' AND UnitId='" + ParCompany_Id + "' AND Shift='" + Shift + "' AND Period='" + Period + "' AND EvaluationNumber='" + EvaluationNumber + "'AND ReauditNumber='" + reauditnumber +
+            //"' AND HaveCorrectiveAction=1";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -5982,6 +6264,7 @@ namespace SgqSystem.Services
                             return 0;
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Em caso de Exception, grava um log no Banco de Dados e Retorna Zero
@@ -6004,7 +6287,7 @@ namespace SgqSystem.Services
             var ResultPhaseDB = new SGQDBContext.ResultPhase(db);
             var ResultPhaseFrequencyDB = new SGQDBContext.ResultPhaseFrequency(db);
             var ResultLevel2PeriodDB = new SGQDBContext.ResultLevel2Period(db);
-            
+
             //Instanciamos uma variável que irá 
 
             DateTime startDate = DateCollectConvert(date);
@@ -6027,12 +6310,12 @@ namespace SgqSystem.Services
                 if (frequency != null && frequency.ParFrequency_Id == 1)
                 {
                     var listResultLevel2 = ResultLevel2PeriodDB.GetResultLevel2Period(c.Id, ParCompany_Id, c.ParLevel1_Id, c.ParLevel2_Id, startDate, endDate, c.Shift);
-                    
-                    foreach(var obj in listResultLevel2)
+
+                    foreach (var obj in listResultLevel2)
                     {
-                        divPeriod += "<div class='countPeriod' period='"+ obj.Period+ "' date='"+obj.CollectionDate.ToString("MMddyyyy") + "'></div>";
+                        divPeriod += "<div class='countPeriod' period='" + obj.Period + "' date='" + obj.CollectionDate.ToString("MMddyyyy") + "'></div>";
                     }
-                    
+
                 }
 
                 PhaseResult += "<div " +
@@ -6043,7 +6326,7 @@ namespace SgqSystem.Services
                     "period=\"" + c.Period + "\" " +
                     "shift=\"" + c.Shift + "\" " +
                     "phase=\"" + c.Phase + "\" " +
-                    "class=\"PhaseResultlevel2\">"+
+                    "class=\"PhaseResultlevel2\">" +
                     divPeriod
                     + "</div>";
             }
@@ -6144,8 +6427,8 @@ namespace SgqSystem.Services
                 "\n ROW_NUMBER() OVER(ORDER BY CL2.ParLevel1_Id) AS ROW,                                                                                                 " +
                 "\n CL2.ParLevel1_Id,                                                                                                                                    " +
                 "\n '<div id=\"' + CL2.[Key] + '\" class=\"collectionLevel2Key\"></div>' COLUNA                                                                            " +
-                "\n INTO #MOTHERFOCKER                                                                                                                                   " +
-                "\n FROM CollectionLevel2 CL2                                                                                                                            " +
+                "\n INTO #COLETASLEVEL3                                                                                                                                   " +
+                "\n FROM CollectionLevel2 CL2   (nolock)                                                                                                                           " +
                 "\n WHERE CL2.UnitId = '" + ParCompany_Id + "' AND CAST(CL2.CollectionDate AS DATE) BETWEEN '" + dataS + "' AND '" + dataS + "'                                                    " +
                 "\n                                                                                                                                                      " +
                 "\n ----------------------------------------------------------                                                                                           " +
@@ -6154,7 +6437,7 @@ namespace SgqSystem.Services
                 "\n DECLARE @Indicadores Table(ParLevel1_ID int)                                                                                                         " +
                 "\n                                                                                                                                                      " +
                 "\n insert into @Indicadores                                                                                                                             " +
-                "\n select distinct ParLevel1_ID from #MOTHERFOCKER                                                                                                      " +
+                "\n select distinct ParLevel1_ID from #COLETASLEVEL3                                                                                                      " +
                 "\n                                                                                                                                                      " +
                 "\n ----------------------------------------------------------                                                                                           " +
                 "\n -- PRIMEIRO INDICADOR --                                                                                                                             " +
@@ -6172,22 +6455,22 @@ namespace SgqSystem.Services
                 "\n                                                                                                                                                      " +
                 "\n                                                                                                                                                      " +
                 "\n                                                                                                                                                      " +
-                "\n     WHILE @I <= (SELECT Count(*) FROM #MOTHERFOCKER WHERE @Indicador = ParLevel1_ID)                                                                 " +
-	            "\n     BEGIN                                                                                                                                            " +
+                "\n     WHILE @I <= (SELECT Count(*) FROM #COLETASLEVEL3 WHERE @Indicador = ParLevel1_ID)                                                                 " +
+                "\n     BEGIN                                                                                                                                            " +
                 "\n                                                                                                                                                      " +
                 "\n                                                                                                                                                      " +
                 "\n         INSERT INTO @TBL_RESPOSTA                                                                                                                    " +
                 "\n         SELECT ROW,ParLevel1_id,Coluna + '' + @CONCAT FROM(                                                                                          " +
                 "\n                                                                                                                                                      " +
-                "\n                 SELECT ROW_NUMBER() OVER(ORDER BY ParLevel1_Id) AS ROW, ParLevel1_id, Coluna FROM #MOTHERFOCKER  WHERE @Indicador = ParLevel1_ID    " +                            
+                "\n                 SELECT ROW_NUMBER() OVER(ORDER BY ParLevel1_Id) AS ROW, ParLevel1_id, Coluna FROM #COLETASLEVEL3  WHERE @Indicador = ParLevel1_ID    " +
                 "\n                                                                                                                                                     " +
-		        "\n         ) consulta                                                                                                                                  " +
+                "\n         ) consulta                                                                                                                                  " +
                 "\n         WHERE ROW = @I                                                                                                                              " +
                 "\n                                                                                                                                                     " +
                 "\n                                                                                                                                                     " +
                 "\n         SET @CONCAT = (SELECT TOP 1 Coluna FROM @TBL_RESPOSTA WHERE ROW = @I AND @Indicador = ParLevel1_ID   )                                      " +
                 "\n                                                                                                                                                     " +
-		        "\n         DELETE FROM @TBL_RESPOSTA WHERE ROW = (@I - 1) AND @Indicador = ParLevel1_ID                                                                " +
+                "\n         DELETE FROM @TBL_RESPOSTA WHERE ROW = (@I - 1) AND @Indicador = ParLevel1_ID                                                                " +
                 "\n                                                                                                                                                     " +
                 "\n                                                                                                                                                     " +
                 "\n         SET @I = @I + 1                                                                                                                             " +
@@ -6212,13 +6495,13 @@ namespace SgqSystem.Services
                 "\n                                                                                                                                                     " +
                 "\n     SELECT* FROM #TBL_RESPOSTA                                                                                                                      " +
                 "\n                                                                                                                                                     " +
-                "\n DROP TABLE #TBL_RESPOSTA DROP TABLE #MOTHERFOCKER ";
+                "\n DROP TABLE #TBL_RESPOSTA DROP TABLE #COLETASLEVEL3 ";
 
-            
+
 
             List<ResultadoUmaColuna> Lista1 = dbEf.Database.SqlQuery<ResultadoUmaColuna>(sql).ToList();
 
-            foreach(var i in Lista1)
+            foreach (var i in Lista1)
             {
                 ResultsKeys += i.retorno;
             }
@@ -6231,7 +6514,7 @@ namespace SgqSystem.Services
         {
             //Converte a data no padrão de busca do Banco de Dados
 
-            string sql = "select ParLevel1_Id, ParLevel2_Id, UnitId,  CAST(CollectionDate AS DATE) from CollectionLevel2 GROUP BY ParLevel1_Id, ParLevel2_Id, UnitId,  CAST(CollectionDate AS DATE)";
+            string sql = "select ParLevel1_Id, ParLevel2_Id, UnitId,  CAST(CollectionDate AS DATE),shift,period from CollectionLevel2  (nolock) GROUP BY ParLevel1_Id, ParLevel2_Id, UnitId,  CAST(CollectionDate AS DATE)";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -6255,11 +6538,13 @@ namespace SgqSystem.Services
                                 int ParLevel2_Id = Convert.ToInt32(r[1]);
                                 int ParCompany_Id = Convert.ToInt32(r[2]);
                                 DateTime CollectionDate = Convert.ToDateTime(r[3]);
+                                int shift = Convert.ToInt32(r[4]);
+                                int period = Convert.ToInt32(r[5]);
 
-                                var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(ParCompany_Id, ParLevel1_Id, CollectionDate);
+                                var consolidationLevel1 = ConsolidationLevel1DB.getConsolidation(ParCompany_Id, ParLevel1_Id, CollectionDate, shift, period);
                                 if (consolidationLevel1 == null)
                                 {
-                                    consolidationLevel1 = InsertConsolidationLevel1(ParCompany_Id, ParLevel1_Id, CollectionDate);
+                                    consolidationLevel1 = InsertConsolidationLevel1(ParCompany_Id, ParLevel1_Id, CollectionDate, shift, period);
                                     if (consolidationLevel1 == null)
                                     {
                                         throw new Exception();
@@ -6270,7 +6555,7 @@ namespace SgqSystem.Services
 
                                 if (consolidationLevel2 == null)
                                 {
-                                    consolidationLevel2 = InsertConsolidationLevel2(consolidationLevel1.Id, ParLevel2_Id, ParCompany_Id, CollectionDate,false,0);
+                                    consolidationLevel2 = InsertConsolidationLevel2(consolidationLevel1.Id, ParLevel2_Id, ParCompany_Id, CollectionDate, false, 0);
                                     if (consolidationLevel2 == null)
                                     {
                                         throw new Exception();
@@ -6282,6 +6567,7 @@ namespace SgqSystem.Services
                             return null;
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Em caso de Exception, grava um log no Banco de Dados e Retorna Zero
@@ -6301,8 +6587,8 @@ namespace SgqSystem.Services
         public string _CollectionLevel02_ConsolidationLevel2Update(string dataInicio, string dataFim)
         {
             string sql = "SELECT CL2.Id, CL1.ParLevel1_Id, CL2.ParLevel2_Id, CL2.UnitId, CAST(CL2.ConsolidationDate AS DATE) " +
-                         "FROM ConsolidationLevel2 CL2 INNER JOIN " +
-                         "ConsolidationLevel1 CL1 ON CL2.ConsolidationLevel1_Id = CL1.Id   " +
+                         "FROM ConsolidationLevel2 CL2 (nolock)  INNER JOIN " +
+                         "ConsolidationLevel1 CL1 (nolock)  ON CL2.ConsolidationLevel1_Id = CL1.Id   " +
                          "WHERE CAST(CL2.ConsolidationDate AS DATE) BETWEEN '" + dataInicio + "' AND '" + dataFim + "' ";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -6332,6 +6618,7 @@ namespace SgqSystem.Services
                             return null;
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Em caso de Exception, grava um log no Banco de Dados e Retorna Zero
@@ -6351,7 +6638,7 @@ namespace SgqSystem.Services
         public string _ReConsolidation(int ParCompany_Id)
         {
 
-            string sql = "SELECT Id, ParLevel2_Id, ConsolidationLevel1_Id FROM ConsolidationLevel2 WHERE UnitId='" + ParCompany_Id + "'";
+            string sql = "SELECT Id, ParLevel2_Id, ConsolidationLevel1_Id FROM ConsolidationLevel2 (nolock)  WHERE UnitId='" + ParCompany_Id + "'";
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
             try
@@ -6388,6 +6675,7 @@ namespace SgqSystem.Services
                             return null;
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Em caso de Exception, grava um log no Banco de Dados e Retorna Zero
@@ -6407,9 +6695,9 @@ namespace SgqSystem.Services
         public string _ReConsolidationByLevel1(int ParCompany_Id, int ParLevel1_Id, DateTime ConsolidationDate)
         {
 
-            string sql = "SELECT CL2.Id, CL2.ParLevel2_Id, CL2.ConsolidationLevel1_Id FROM ConsolidationLevel2 CL2 " +
-                         "\n INNER JOIN ConsolidationLevel1 CL1 ON CL2.ConsolidationLevel1_Id=CL1.ID " +
-               "WHERE CL2.UnitId='" + ParCompany_Id + "' AND CL1.ParLevel1_Id='" + ParLevel1_Id + "' AND CAST(CL1.ConsolidationDate AS DATE) = '" + ConsolidationDate.ToString("yyyyMMdd") + "'";
+            string sql = "SELECT CL2.Id, CL2.ParLevel2_Id, CL2.ConsolidationLevel1_Id FROM ConsolidationLevel2 CL2 WITH (NOLOCK) " +
+                         "\n INNER JOIN ConsolidationLevel1 CL1 WITH (NOLOCK)  ON CL2.ConsolidationLevel1_Id=CL1.ID " +
+               "WHERE CL2.UnitId=" + ParCompany_Id + " AND CL1.ParLevel1_Id=" + ParLevel1_Id + " AND CAST(CL1.ConsolidationDate AS DATE) = '" + ConsolidationDate.ToString("yyyyMMdd") + "'";
 
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -6447,17 +6735,18 @@ namespace SgqSystem.Services
                             return null;
                         }
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             //Em caso de Exception, grava um log no Banco de Dados e Retorna Zero
             catch (SqlException ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel1Consolidation");
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "_ReConsolidationByLevel1");
                 return ex.Message;
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "GetLevel1Consolidation");
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "_ReConsolidationByLevel1");
                 return ex.Message;
             }
         }
@@ -6477,6 +6766,7 @@ namespace SgqSystem.Services
                         var i = Convert.ToInt32(command.ExecuteNonQuery());
 
                     }
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
                 }
             }
             catch (SqlException ex)
@@ -6490,7 +6780,90 @@ namespace SgqSystem.Services
                 throw ex;
             }
         }
-    }
 
+        [WebMethod]
+        public string ReconsolidationToLevel3(string collectionLevel2_Id)
+        //int company_Id, int level1_Id, DateTime data, 
+        {
+
+            try
+            {
+                string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    connection.Open();
+
+                    SqlCommand command;
+
+                    string query = "                                                                                                          " +
+                "\n DECLARE @ID INT = " + collectionLevel2_Id +
+                "\n DECLARE @Defects DECIMAL(10,3)                                                                                            " +
+                "\n DECLARE @DefectsResult DECIMAL(10, 3)                                                                                     " +
+                "\n DECLARE @EvatuationResult DECIMAL(10, 3)                                                                                  " +
+                "\n DECLARE @WeiEvaluation DECIMAL(10, 3)                                                                                     " +
+                "\n DECLARE @WeiDefects DECIMAL(10, 3)                                                                                        " +
+                "\n DECLARE @TotalLevel3Evaluation  DECIMAL(10, 3)                                                                            " +
+                "\n DECLARE @TotalLevel3WithDefects DECIMAL(10, 3)                                                                            " +
+                "\n                                                                                                                           " +
+                "\n select                                                                                                                    " +
+                "\n                                                                                                                           " +
+                "\n @Defects = isnull(sum(r3.Defects),0),                                                                                     " +
+                "\n @DefectsResult = case when sum(r3.WeiDefects) > 0 then 1 else 0 end,                                                      " +
+                "\n @EvatuationResult = case when sum(r3.Evaluation) > 0 then 1 else 0 end,                                                   " +
+                "\n @WeiEvaluation = isnull(sum(r3.WeiEvaluation),0),                                                                         " +
+                "\n @WeiDefects = isnull(sum(r3.WeiDefects),0),                                                                               " +
+
+                 //"\n @WeiDefects = case when isnull(sum(r3.WeiDefects),0) > isnull(sum(r3.WeiEvaluation),0) then isnull(sum(r3.WeiEvaluation),0) else isnull(sum(r3.WeiDefects),0) end,                                                                               " +
+
+                "\n @TotalLevel3Evaluation = count(1),                                                                                        " +
+                "\n @TotalLevel3WithDefects = (select count(1) from result_level3  WITH (NOLOCK) where collectionLevel2_Id = @ID and Defects > 0  and IsNotEvaluate = 0)         " +
+                "\n from result_level3 r3 WITH (NOLOCK)                                                                                                    " +
+                "\n where collectionlevel2_id = @ID                                                                                           " +
+                "\n and r3.IsNotEvaluate = 0                                                                                                  " +
+                "\n                                                                                                                           " +
+                "\n                                                                                                                           " +
+                "\n UPDATE CollectionLevel2                                                                                                   " +
+                "\n SET Defects = @Defects                                                                                                    " +
+                "\n , DefectsResult = @DefectsResult                                                                                          " +
+                "\n , EvaluatedResult = @EvatuationResult                                                                                     " +
+                "\n , WeiEvaluation = @WeiEvaluation                                                                                          " +
+                "\n , WeiDefects = @WeiDefects                                                                                                " +
+                "\n , TotalLevel3Evaluation = @TotalLevel3Evaluation                                                                          " +
+                "\n , TotalLevel3WithDefects = @TotalLevel3WithDefects                                                                        " +
+                "\n , AlterDate = GETDATE()                                                                                                   " +
+                "\n WHERE Id = @ID         SELECT 1                                                                                           ";
+
+                    command = new SqlCommand(query, connection);
+
+                    var iSql = command.ExecuteScalar();
+
+                    if (connection.State == System.Data.ConnectionState.Open) connection.Close();
+                }
+
+                //var service = new SyncServices();
+
+                using (var db = new Dominio.SgqDbDevEntities())
+                {
+                    int idl2 = Int32.Parse(collectionLevel2_Id);
+                    Dominio.CollectionLevel2 collectionLevel2 = db.CollectionLevel2.FirstOrDefault(r => r.Id == idl2);
+
+
+                    int company_Id = collectionLevel2.UnitId;
+                    int level1_Id = collectionLevel2.ParLevel1_Id;
+                    DateTime data = collectionLevel2.CollectionDate.Date;
+
+                    var retorno = _ReConsolidationByLevel1(company_Id, level1_Id, data);
+
+                    return "OK";
+                }
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+
+        }
+
+    }
 }
 

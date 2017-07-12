@@ -273,7 +273,7 @@
             'Último mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
 
-        var configLayout = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
+        var configLayout = @Html.Raw(Json.Encode(GlobalConfig.LanguageBrasil));
         var rangesCalendar;
 
         /*Configura date range picker para PT-BR*/
