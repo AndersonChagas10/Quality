@@ -435,17 +435,17 @@
                         o["ParMeasurementUnit_Name"] = "";
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
-                        o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "O valor e aceitavel quando esta entre " + o.IntervalMin + " e " + o.IntervalMax : "O valor e aceitavel quando e menor que " + o.IntervalMin + " ou maior que " + o.IntervalMax;
+                        o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax;
                     }else if (o.ParLevel3InputType_Id == 3){
                         o["ParMeasurementUnit_Name"] = o.ParMeasurementUnit.Name;
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
-                        o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "O valor e aceitavel quando esta entre " + o.IntervalMin + " e " + o.IntervalMax : "O valor e aceitavel quando e menor que " + o.IntervalMin + " ou maior que " + o.IntervalMax;
+                        o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax;
                     }else if(o.ParLevel3InputType_Id == 4){
                         o["ParMeasurementUnit_Name"] = o.ParMeasurementUnit.Name;
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
-                        o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "O valor e aceitavel quando esta entre " + o.IntervalMinCalculado + " e " + o.IntervalMaxCalculado : "O valor e aceitavel quando e menor que " + o.IntervalMinCalculado + " ou maior que " + o.IntervalMaxCalculado;
+                        o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMinCalculado + " @Resources.Resource.and " + o.IntervalMaxCalculado : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMinCalculado + " @Resources.Resource.or_greater_than " + o.IntervalMaxCalculado;
                         o["IntervalMin"] = o.IntervalMinCalculado;
                         o["IntervalMinCalculado"] = o.IntervalMinCalculado;
                         o["IntervalMax"] = o.IntervalMaxCalculado;
@@ -758,9 +758,9 @@
     $('#selectTipoInput').change();
 
     function clicModalBinarioSave() {
-        
+
         var valInpPos = $('#modalInputPositive').val();
-        var valInpNeg =  $('#modalInputNegative').val();       
+        var valInpNeg =  $('#modalInputNegative').val();
 
         if(!valInpPos.length){
             alert("Valor invalido para:", "Valor Positivo");
@@ -782,7 +782,7 @@
 
                 $('#selectConforme').val(r.True.Id).change();
                 $('#selectNaoConforme').val(r.False.Id).change();
-                
+
                 $('#modalInputPositive').val("");
                 $('#modalInputNegative').val("");
 
@@ -792,8 +792,8 @@
                 console.log(e);
             }
         }).fail(function (e, h, x) {
-            
-        });     
+
+        });
     };
 
     var urlLowPerm = '@Url.Action("AlteraVinculoLevel3", "api/ParamsApi")';
