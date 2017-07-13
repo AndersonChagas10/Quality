@@ -511,7 +511,7 @@
         parIntervalosTypeCreateEdit();
     }
     function level03ValueIntervalWriter(valueMin, valueMax) {
-        return Resources('acceptable_value_less_than') + " " + valueMin + Resources('and_greater_than') + " " + valueMax;
+        return Resources('acceptable_value_less_than') + " " + valueMin + " " + Resources('and_greater_than') + " " + valueMax;
     }
 
     function parIntervalosTypeCreate() {
@@ -524,7 +524,8 @@
             var options =''
             "<option value='0'>" +
                 Resources('acceptable_value_equal_or_greater_than')
-                + $("#parLevel3Value_IntervalMax").val()+" "+ value+
+                + " "
+                + $("#parLevel3Value_IntervalMax").val() + " " + value +
             "</option>";
 
             $('#parIntervalosType').empty();
@@ -537,7 +538,8 @@
             var options =
                 "<option value='0'>" +
                     Resources('acceptable_value_equal_or_greater_than')
-                    + $("#parLevel3Value_IntervalMin").val()+" "+ value +
+                    + " "
+                    + $("#parLevel3Value_IntervalMin").val() + " " + value +
                 "</option>";
 
             $('#parIntervalosType').empty();
@@ -550,14 +552,14 @@
             var options =
                 "<option value='0'>"
                     + Resources('value_is_acceptable_between')
-                    + " " + $("#parLevel3Value_IntervalMin").val() +
+                    + " " + $("#parLevel3Value_IntervalMin").val()
                     + " " + Resources('and')
                     + " " + $("#parLevel3Value_IntervalMax").val() + " " + value +
                 "</option>" +
-                "<option value='1'>" +
+                "<option value='1'>"
                     + Resources('value_is_acceptable_less_than')
                     + " " + $("#parLevel3Value_IntervalMin").val()
-                    + " " + Resources('or_greater_than') +
+                    + " " + Resources('or_greater_than')
                     + " " + $("#parLevel3Value_IntervalMax").val() + " " + value+
                 "</option>";
 
@@ -592,7 +594,8 @@
             var options =
                 "<option value='0'>" +
                     Resources('acceptable_value_equal_or_greater_than')
-                     + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() + " " + value +
+                    + " "
+                    + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() + " " + value +
                 "</option>";
 
             $('#crudNxNEdit #parIntervalosType').empty();
