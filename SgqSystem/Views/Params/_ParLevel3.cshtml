@@ -435,17 +435,17 @@
                         o["ParMeasurementUnit_Name"] = "";
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
-                        o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "O valor e aceitavel quando esta entre " + o.IntervalMin + " e " + o.IntervalMax : "O valor e aceitavel quando e menor que " + o.IntervalMin + " ou maior que " + o.IntervalMax;
+                        o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax;
                     }else if (o.ParLevel3InputType_Id == 3){
                         o["ParMeasurementUnit_Name"] = o.ParMeasurementUnit.Name;
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
-                        o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "O valor e aceitavel quando esta entre " + o.IntervalMin + " e " + o.IntervalMax : "O valor e aceitavel quando e menor que " + o.IntervalMin + " ou maior que " + o.IntervalMax;
+                        o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMin + " @Resources.Resource.and " + o.IntervalMax : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMin + " @Resources.Resource.or_greater_than " + o.IntervalMax;
                     }else if(o.ParLevel3InputType_Id == 4){
                         o["ParMeasurementUnit_Name"] = o.ParMeasurementUnit.Name;
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
-                        o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "O valor e aceitavel quando esta entre " + o.IntervalMinCalculado + " e " + o.IntervalMaxCalculado : "O valor e aceitavel quando e menor que " + o.IntervalMinCalculado + " ou maior que " + o.IntervalMaxCalculado;
+                        o["AcceptableValueBetween_Name"] = o.AcceptableValueBetween == 0 ? "@Resources.Resource.value_is_acceptable_between " + o.IntervalMinCalculado + " @Resources.Resource.and " + o.IntervalMaxCalculado : " @Resources.Resource.value_is_acceptable_less_than " + o.IntervalMinCalculado + " @Resources.Resource.or_greater_than " + o.IntervalMaxCalculado;
                         o["IntervalMin"] = o.IntervalMinCalculado;
                         o["IntervalMinCalculado"] = o.IntervalMinCalculado;
                         o["IntervalMax"] = o.IntervalMaxCalculado;
@@ -511,7 +511,7 @@
         parIntervalosTypeCreateEdit();
     }
     function level03ValueIntervalWriter(valueMin, valueMax) {
-        return Resources('acceptable_value_less_than') + " " + valueMin + Resources('and_greater_than') + " " + valueMax;
+        return Resources('acceptable_value_less_than') + " " + valueMin + " " + Resources('and_greater_than') + " " + valueMax;
     }
 
     function parIntervalosTypeCreate() {
@@ -524,7 +524,8 @@
             var options =''
             "<option value='0'>" +
                 Resources('acceptable_value_equal_or_greater_than')
-                + $("#parLevel3Value_IntervalMax").val()+" "+ value+
+                + " "
+                + $("#parLevel3Value_IntervalMax").val() + " " + value +
             "</option>";
 
             $('#parIntervalosType').empty();
@@ -537,7 +538,8 @@
             var options =
                 "<option value='0'>" +
                     Resources('acceptable_value_equal_or_greater_than')
-                    + $("#parLevel3Value_IntervalMin").val()+" "+ value +
+                    + " "
+                    + $("#parLevel3Value_IntervalMin").val() + " " + value +
                 "</option>";
 
             $('#parIntervalosType').empty();
@@ -550,14 +552,14 @@
             var options =
                 "<option value='0'>"
                     + Resources('value_is_acceptable_between')
-                    + " " + $("#parLevel3Value_IntervalMin").val() +
+                    + " " + $("#parLevel3Value_IntervalMin").val()
                     + " " + Resources('and')
                     + " " + $("#parLevel3Value_IntervalMax").val() + " " + value +
                 "</option>" +
-                "<option value='1'>" +
+                "<option value='1'>"
                     + Resources('value_is_acceptable_less_than')
                     + " " + $("#parLevel3Value_IntervalMin").val()
-                    + " " + Resources('or_greater_than') +
+                    + " " + Resources('or_greater_than')
                     + " " + $("#parLevel3Value_IntervalMax").val() + " " + value+
                 "</option>";
 
@@ -592,7 +594,8 @@
             var options =
                 "<option value='0'>" +
                     Resources('acceptable_value_equal_or_greater_than')
-                     + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() + " " + value +
+                    + " "
+                    + $("#crudNxNEdit #parLevel3Value_IntervalMin").val() + " " + value +
                 "</option>";
 
             $('#crudNxNEdit #parIntervalosType').empty();
@@ -758,9 +761,9 @@
     $('#selectTipoInput').change();
 
     function clicModalBinarioSave() {
-        
+
         var valInpPos = $('#modalInputPositive').val();
-        var valInpNeg =  $('#modalInputNegative').val();       
+        var valInpNeg =  $('#modalInputNegative').val();
 
         if(!valInpPos.length){
             alert("Valor invalido para:", "Valor Positivo");
@@ -782,7 +785,7 @@
 
                 $('#selectConforme').val(r.True.Id).change();
                 $('#selectNaoConforme').val(r.False.Id).change();
-                
+
                 $('#modalInputPositive').val("");
                 $('#modalInputNegative').val("");
 
@@ -792,8 +795,8 @@
                 console.log(e);
             }
         }).fail(function (e, h, x) {
-            
-        });     
+
+        });
     };
 
     var urlLowPerm = '@Url.Action("AlteraVinculoLevel3", "api/ParamsApi")';

@@ -243,7 +243,7 @@
                 ParNotConformityRule_Name: $('#' + RegraNcL2.level + ' #selectNotConformityRule :selected').text(),
                 Value: $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, ''),
                 IsReaudit: $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked"),
-                IsReauditShowTable: $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "Sim" : "Não",
+                IsReauditShowTable: $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "@Resources.Resource.yes" : "@Resources.Resource.no",
                 IsActive: true,
                 //btn: crudNxN.btnRemove + crudNxN.btnEdit,
             }
@@ -275,7 +275,7 @@
         carregaDadosDoDb: function(){
             if( RegraNcL2.listObjSalvo != null){ /*Carrega regras de NC*/
                 RegraNcL2.listObjSalvo.forEach(function(o, c){
-                    o["IsReauditShowTable"] = o.IsReaudit ? "Sim" : "Não";
+                    o["IsReauditShowTable"] = o.IsReaudit ? "@Resources.Resource.yes" : "@Resources.Resource.no";
                     o["ParNotConformityRule_Name"] = o.ParNotConformityRule.Name;
                     crudNxN.adiciona(o, RegraNcL2.level + ' #tableRegraNc', RegraNcL2.tdsNames);
                 });

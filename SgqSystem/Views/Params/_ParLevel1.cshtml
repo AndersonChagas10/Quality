@@ -799,7 +799,7 @@
             var nivelDoCampoVal = $('#headerLevel option:selected').val();
 
             var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
-            var vinculado = $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').is(':checked') ? "Sim" : "Não";
+            var vinculado = $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').is(':checked') ? "@Resources.Resource.yes" : "@Resources.Resource.no";
             var tipo = $('#parFieldType option:selected').text();
             var tipoVal = $('#parFieldType option:selected').val();
             var opcoes = $('#objMultiplaEscolhaName').val();
@@ -962,7 +962,7 @@
                 var nivelDoCampo = $('#headerLevel option:selected').text();
                 var nivelDoCampoVal = $('#headerLevel option:selected').val();
                 var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
-                var vinculado = $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').is(':checked') ? "Sim" : "Não";
+                var vinculado = $('#paramsDto_parHeaderFieldDto_LinkNumberEvaluetion').is(':checked') ? "@Resources.Resource.yes" : "@Resources.Resource.no";
                 var tipo = $('#parFieldType option:selected').text();
                 var tipoVal = $('#parFieldType option:selected').val();
 
@@ -1450,7 +1450,7 @@
                 ParNotConformityRule_Name: $('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').text(),
                 Value: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, ''),
                 IsReaudit: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked"),
-                IsReauditShowTable: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "Sim" : "Não",
+                IsReauditShowTable: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "@Resources.Resource.yes" : "@Resources.Resource.no",
                 IsActive: true,
                 //btn: crudNxN.btnRemove + crudNxN.btnEdit,
             }
@@ -1481,7 +1481,7 @@
         carregaDadosDoDb: function(){
             if( RegraNcL1.listObjSalvo != null){ /*Carrega regras de NC*/
                 RegraNcL1.listObjSalvo.forEach(function(o, c){
-                    o["IsReauditShowTable"] = o.IsReaudit ? "Sim" : "Não";
+                    o["IsReauditShowTable"] = o.IsReaudit ? "@Resources.Resource.yes" : "@Resources.Resource.no";
                     o["ParNotConformityRule_Name"] = o.ParNotConformityRule.Name;
                     crudNxN.adiciona(o, RegraNcL1.level + ' #tableRegraNc', RegraNcL1.tdsNames);
                 });
