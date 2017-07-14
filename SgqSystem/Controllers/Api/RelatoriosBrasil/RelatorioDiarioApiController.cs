@@ -1,5 +1,6 @@
 ﻿using Dominio;
 using DTO.Helpers;
+using SgqSystem.Helpers;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -240,6 +241,9 @@ namespace SgqSystem.Controllers.Api
         [Route("Grafico1")]
         public PanelResulPanel GetGrafico1Level1([FromBody] FormularioParaRelatorioViewModel form)
         {
+
+            CommonLog.SaveReport(form, "Report_Relatorio_Diario");
+
             using (var db = new SgqDbDevEntities())
             {
 

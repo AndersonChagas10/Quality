@@ -94,6 +94,8 @@
             //FTA._dataInicio = $('#dataInicio').val(),
             //FTA._dataFim = FTA._dataInicio,
 
+            enviar["auditorId"] = GetUsuarioId();
+
             EasyAjax(url1, enviar, CallbackGraficos, "load", toggle);//AJAX
 
         };

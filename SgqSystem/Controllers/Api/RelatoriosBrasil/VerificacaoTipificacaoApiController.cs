@@ -18,6 +18,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         [Route("Get")]
         public dynamic Get([FromBody] FormularioParaRelatorioViewModel form)
         {
+            CommonLog.SaveReport(form, "Report_Verificacao_Tipificacao");
+
             var db = new SgqDbDevEntities();
 
             var query =

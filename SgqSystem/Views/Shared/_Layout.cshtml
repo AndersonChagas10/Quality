@@ -558,6 +558,12 @@
             else
                 return _event_;
         }
+        
+        function GetUsuarioId() {
+            return $.grep(getCookie('webControlCookie'), function (a, b) {
+                return a.indexOf('userId') != -1;
+            })[0].split('=')[1];
+        }
 
     </script>
 

@@ -375,6 +375,7 @@
     <Compile Include="Handlres\HandleController.cs" />
     <Compile Include="Handlres\ValidateModelAttribute.cs" />
     <Compile Include="Helpers\CommonData.cs" />
+    <Compile Include="Helpers\CommonLog.cs" />
     <Compile Include="Helpers\GenericTable.cs" />
     <Compile Include="Helpers\HandleCultureAPI.cs" />
     <Compile Include="Helpers\Table.cs" />

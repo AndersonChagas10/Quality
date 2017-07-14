@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using SgqSystem.Helpers;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -75,6 +76,8 @@ namespace SgqSystem.Controllers.Api
         public List<ScorecardResultSet> GetScorecard([FromBody] FormularioParaRelatorioViewModel form)
         {
             //CriaMock();
+
+            CommonLog.SaveReport(form, "Report_Scorecard");
 
             decimal[] pontosTotais = SelectPontosScorecard(form._dataInicio, form._dataFim, form.unitId, 0);
 

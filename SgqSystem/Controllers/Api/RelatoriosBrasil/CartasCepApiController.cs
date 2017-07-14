@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using SgqSystem.Helpers;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         [Route("Get")]
         public CartasCepResultSet GetApontamentosDiarios([FromBody] FormularioParaRelatorioViewModel form)
         {
+
+            CommonLog.SaveReport(form, "Report_Cartas_Cep");
 
             CartasCepResultSet _mockcartasCep = new CartasCepResultSet();
 
