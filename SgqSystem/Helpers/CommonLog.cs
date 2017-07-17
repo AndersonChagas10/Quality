@@ -31,16 +31,8 @@ namespace SgqSystem.Helpers
                 log.callback = ReportName;
                 log.AddDate = DateTime.Now;
                 log.log = 
-                    "Usuario:" + form.auditorId + "|"+
-                    "Unidade:"+form.unitId+"|"+
-                    "DataInicio:"+form._dataInicio+"|"+
-                    "DataFim:"+form._dataFim+"|"+
-                    "Indicador:"+form.level1Id+"|"+
-                    "Monitoramento:"+form.level2Id+"|"+
-                    "Tarefa:"+form.level3Id + "|" +
                     "Usuario:" + form.auditorId + "|" +
-                    "UsuarioNome: " + form.auditorName
-                    ;
+                    "UsuarioNome: " + form.auditorName;
                 
                 log.result =
                     "Unidade:" + form.unitId + "|" +
@@ -52,8 +44,7 @@ namespace SgqSystem.Helpers
                     "Monitoramento:" + form.level2Id + "|" +
                     "MonitoramentoNome:" + form.level2Name + "|" +
                     "Tarefa:" + form.level3Id+
-                    "TarefaNome:" + form.level3Name 
-                    ;
+                    "TarefaNome:" + form.level3Name;
 
                 db.LogJson.Add(log);
                 db.SaveChanges();
@@ -72,9 +63,6 @@ namespace SgqSystem.Helpers
                 log.Device_Id = "Web";
                 log.callback = ReportName;
                 log.AddDate = DateTime.Now;
-                log.log =
-                    "Unidade:" + UnitId + "|" 
-                    ;
 
                 log.result =
                     "Unidade:" + UnitId + "|" +
