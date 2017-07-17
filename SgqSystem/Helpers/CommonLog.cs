@@ -63,6 +63,7 @@ namespace SgqSystem.Helpers
                 log.Device_Id = "Web";
                 log.callback = ReportName;
                 log.AddDate = DateTime.Now;
+                log.log = "";
 
                 log.result =
                     "Unidade:" + UnitId + "|" +
