@@ -59,5 +59,48 @@ namespace SgqSystem.Helpers
                 db.SaveChanges();
             }
         }
+
+        public static void SaveReport(int UnitId, string ReportName)
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+                var UnitName = "";
+                if (UnitId > 0)
+                    UnitName = db.ParCompany.Where(r => r.Id == UnitId).FirstOrDefault().Name;
+
+                var log = new LogJson();
+                log.Device_Id = "Web";
+                log.callback = ReportName;
+                log.AddDate = DateTime.Now;
+                log.log =
+                    "Unidade:" + UnitId + "|" 
+                    ;
+
+                log.result =
+                    "Unidade:" + UnitId + "|" +
+                    "UnidadeNome:" + UnitName 
+                    ;
+
+                db.LogJson.Add(log);
+                db.SaveChanges();
+            }
+        }
+
+        public static void SaveReport(string ReportName)
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+
+                var log = new LogJson();
+                log.Device_Id = "Web";
+                log.callback = ReportName;
+                log.AddDate = DateTime.Now;
+                log.log = "";
+                log.result ="";
+
+                db.LogJson.Add(log);
+                db.SaveChanges();
+            }
+        }
     }
 }
