@@ -3,6 +3,7 @@ using DTO.Helpers;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
 
@@ -53,25 +54,37 @@ namespace SgqSystem.Helpers
 
         public static void SaveReport(int UnitId, string ReportName)
         {
-            using (var db = new SgqDbDevEntities())
+            try
             {
-                var UnitName = "";
-                if (UnitId > 0)
-                    UnitName = db.ParCompany.Where(r => r.Id == UnitId).FirstOrDefault().Name;
+                using (var db = new SgqDbDevEntities())
+                {
+                    var UnitName = "";
+                    if (UnitId > 0)
+                        UnitName = db.ParCompany.Where(r => r.Id == UnitId).FirstOrDefault().Name;
 
-                var log = new LogJson();
-                log.Device_Id = "Web";
-                log.callback = ReportName;
-                log.AddDate = DateTime.Now;
+                    var log = new LogJson();
+                    log.Device_Id = "Web";
+                    log.callback = ReportName;
+                    log.AddDate = DateTime.Now;
+                    log.result =
+                        "Unidade:" + UnitId + "|" +
+                        "UnidadeNome:" + UnitName
+                        ;
 
-                log.result =
-                    "Unidade:" + UnitId + "|" +
-                    "UnidadeNome:" + UnitName 
-                    ;
-
-                db.LogJson.Add(log);
-                db.SaveChanges();
+                    db.LogJson.Add(log);
+                    db.SaveChanges();
+                }
             }
+            catch (DbEntityValidationException e)
+            {
+                string fdp = "";
+                foreach (var error in e.EntityValidationErrors.FirstOrDefault().ValidationErrors)
+                {
+                    fdp += error.PropertyName + ": " + error.ErrorMessage + " ";
+                }
+               
+            }
+
         }
 
         public static void SaveReport(string ReportName)

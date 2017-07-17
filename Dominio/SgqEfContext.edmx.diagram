@@ -108,7 +108,6 @@
         <AssociationConnector Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParNotConformityRule" />
         <AssociationConnector Association="SgqDbModel.FK_ParStructure_ParStructureGroup" />
         <AssociationConnector Association="SgqDbModel.FK_UnitUser_Unit" />
-        <EntityTypeShape EntityType="SgqDbModel.ParLevel2XHeaderField" Width="1.5" PointX="9.375" PointY="11.75" />
         <EntityTypeShape EntityType="SgqDbModel.Defect" Width="1.5" PointX="14.25" PointY="45.75" />
         <EntityTypeShape EntityType="SgqDbModel.ConsolidationLevel02" Width="2.25" PointX="15.75" PointY="15.625" />
         <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel02_ConsolidationLevel01" />
@@ -199,6 +198,7 @@
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel03_CollectionLevel02" />
         <EntityTypeShape EntityType="SgqDbModel.VerificacaoTipificacaoV2" Width="1.5" PointX="15.375" PointY="10.75" />
         <EntityTypeShape EntityType="SgqDbModel.Deviation" Width="1.5" PointX="7.375" PointY="15.75" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLevel2XHeaderField" Width="1.5" PointX="9.375" PointY="11.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
