@@ -2,6 +2,7 @@
 using Dominio;
 using DTO;
 using DTO.Helpers;
+using SgqSystem.Helpers;
 using SgqSystem.Services;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,7 @@ namespace SgqSystem.Controllers.Api.App
         [Route("UpdateTelaDoTablet")]
         public RetornoParaTablet UpdateTelaDoTablet()
         {
+            CommonLog.SaveReport("Update_GetTelaAll");
 
             GlobalConfig.ParamsDisponiveis = string.Empty;
             GlobalConfig.PaginaDoTablet = new Dictionary<int, string>();
@@ -78,6 +80,7 @@ namespace SgqSystem.Controllers.Api.App
         [Route("UpdateTelaDoTablet/{UnitId}")]
         public RetornoParaTablet UpdateTelaDoTablet(int UnitId)
         {
+            CommonLog.SaveReport(UnitId, "Update_GetTela");
 
             if (GlobalConfig.PaginaDoTablet == null)
                 GlobalConfig.PaginaDoTablet = new Dictionary<int, string>();

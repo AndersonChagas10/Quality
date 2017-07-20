@@ -48,6 +48,9 @@ namespace SgqSystem.Controllers.Api
         [Route("Get")]
         public List<ApontamentosDiariosResultSet> GetApontamentosDiarios([FromBody] FormularioParaRelatorioViewModel form)
         {
+
+            CommonLog.SaveReport(form, "Report_Apontamentos_Diarios");
+
             var query = new ApontamentosDiariosResultSet().Select(form);
             _list = db.Database.SqlQuery<ApontamentosDiariosResultSet>(query).ToList();
             return _list;

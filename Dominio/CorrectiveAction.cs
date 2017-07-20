@@ -30,6 +30,7 @@ namespace Dominio
         public string ImmediateCorrectiveAction { get; set; }
         public string ProductDisposition { get; set; }
         public string PreventativeMeasure { get; set; }
+        public Nullable<bool> MailProcessed { get; set; }
     
         public virtual UserSgq UserSgq { get; set; }
         public virtual UserSgq UserSgq1 { get; set; }

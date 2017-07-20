@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using SgqSystem.Helpers;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         public List<NaoConformidadeResultsSet> GraficoUnidades([FromBody] FormularioParaRelatorioViewModel form)
         {
 
-        var query = "" +
+            CommonLog.SaveReport(form, "Relatorio_Nao_Conformidade");
+
+            var query = "" +
 
                 "\n DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + "'                                                                                                                                                                                                                    " +
                 "\n DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + "'                                                                                                                                                                                                                    " +

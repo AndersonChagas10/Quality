@@ -72,6 +72,9 @@
             }
 
             $('#divTable').hide();
+
+            enviar["auditorId"] = GetUsuarioId();
+
             EasyAjax(urlGet, enviar, GerarTabela, "load", toggle);//AJAX
         };
 

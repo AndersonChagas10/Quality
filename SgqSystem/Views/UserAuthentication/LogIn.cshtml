@@ -8,6 +8,7 @@
     var urlBuscaEmail = @Url.Action("buscaEmail", "UserAuthentication");
     var urlEnviaEmail = @Url.Action("enviaEmail", "UserAuthentication");
     //Model.IsWeb = true;
+    var Ytoara = GlobalConfig.Ytoara;
 }
 @using (Html.BeginForm())
 {
@@ -20,7 +21,7 @@
             <input type="text" id="inputUserName" class="form-control" placeholder="@Resources.Resource.username" required="" autofocus="" name="Name">
             <label for="inputPassword" class="sr-only">@Resources.Resource.password</label>
             <input type="password" id="inputPassword" class="form-control" placeholder="@Resources.Resource.password" required="" name="Password">
-            @Html.HiddenFor(r=>r.IsWeb)
+            @Html.HiddenFor(r => r.IsWeb)
             @*<span id="errMsg"></span>*@
 
             @Html.AntiForgeryToken()
@@ -32,7 +33,15 @@
                 <button type="button" class="btn btn-sm btn-success marginTop10" style="float:right;" id="RecPassword" onclick="ModalRecuperaSenha('Recuperar Senha');" data-toggle="modal">@Resources.Resource.forgotPass ?</button>
             }
         </div>
-        <div class="foot"></div>
+        @if (GlobalConfig.Ytoara)
+        {
+            <div class="foot" style="background-image: url('Content/Imagens/GRTYtoaraLogo.png');"></div>
+        }
+        else
+        {          
+            <div class="foot" style="background-image: url('Content/Imagens/GRTJBSLogo.png');"></div>
+        }
+
     </div>
 }
 <!--Modal Recupera Senha-->
@@ -144,8 +153,8 @@
         }
 
         //$(document).ready(function () {
-        //    //Função que limita o máximo de caracteres no password           
-        //    var maxLen = 7; 
+        //    //Função que limita o máximo de caracteres no password
+        //    var maxLen = 7;
         //    $('#inputPassword').keyup(function (event) {
         //        var Length = $("#inputPassword").val().length;
         //        var AmountLeft = maxLen - Length;
@@ -161,5 +170,12 @@
         //        }
         //    });
         //});
+
+        $(document).ready(function () {
+
+
+
+        });
+
     </script>
 }

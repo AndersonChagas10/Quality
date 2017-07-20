@@ -3607,7 +3607,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ou maior que.
+        ///   Looks up a localized string similar to or greater than.
         /// </summary>
         internal static string or_greater_than {
             get {

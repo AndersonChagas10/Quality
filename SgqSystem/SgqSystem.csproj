@@ -375,6 +375,7 @@
     <Compile Include="Handlres\HandleController.cs" />
     <Compile Include="Handlres\ValidateModelAttribute.cs" />
     <Compile Include="Helpers\CommonData.cs" />
+    <Compile Include="Helpers\CommonLog.cs" />
     <Compile Include="Helpers\GenericTable.cs" />
     <Compile Include="Helpers\HandleCultureAPI.cs" />
     <Compile Include="Helpers\Table.cs" />
@@ -700,6 +701,7 @@
     <Content Include="Content\gridmvc.datepicker.css" />
     <Content Include="Content\gridmvc.datepicker.min.css" />
     <Content Include="Content\Imagens\GRTJBSLogo.png" />
+    <Content Include="Content\Imagens\GRTYtoaraLogo.png" />
     <Content Include="Content\Imagens\SGQLogo01.png" />
     <Content Include="Content\select2.min.css" />
     <Content Include="Content\themes\base\accordion.css" />

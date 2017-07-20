@@ -554,6 +554,8 @@
                 return;
             }
 
+            enviar["auditorId"] = GetUsuarioId();
+
             EasyAjax(urlGraficoEvolutivoEmpresa, enviar, CallbackGraficoEvolutivoEmpresa, "graficoEvolutivoEmpresa", toggle);
 
 

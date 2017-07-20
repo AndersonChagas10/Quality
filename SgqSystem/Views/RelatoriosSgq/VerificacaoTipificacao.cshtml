@@ -63,6 +63,9 @@
             $('#divMensagemErro').hide();
             $('#divMensagemAlerta').hide();
             $('#divMensagemSucesso').hide();
+
+            enviar["auditorId"] = GetUsuarioId();
+
             EasyAjax(urlGet, enviar, GerarTabela, "load", toggle);//AJAX
         };
 
