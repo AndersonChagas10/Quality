@@ -240,8 +240,12 @@ namespace SgqSystem.Services
 
             SqlConnection.ClearAllPools();
             
-            var objObjResultJSonPuro = ObjResultJSon;
             
+
+            //ObjResultJSon = "<level02>42;06/30/2017 16:20:042:304;306;06/30/2017 16:20:042:335;45;1;1;1424;0;false;06302017;1;427336;<header>undefined,undefined,427336</header>;false;false;;undefined;undefined;false; 2.0.36.1;JBS ;<level03>1142,06/30/2017 16:20:042:338,86752,false,1424,null,undefined,undefined,1.00000,,0.0000000000,0.0000000000,false,0,86752,427336,86752</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;427336;86752;86752;1;1;0;1;1;0;0;0;undefined;0;0</level02><level02>43;06/30/2017 16:22:002:511;297;06/30/2017 16:21:026:423;45;1;1;1424;0;false;06302017;1;1;;false;false;;undefined;undefined;false; 2.0.36.1;JBS ;<level03>1237,06/30/2017 16:21:026:424,9,true,1424,null,undefined,undefined,0.00000,,0.0000000000,11.0000000000,false,0,0,0,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;0;9;0;0;0;0;0;0;0;0;0;undefined;0;0</level02><level02>43;06/30/2017 16:22:002:511;312;06/30/2017 16:22:002:533;45;1;1;1424;0;false;06302017;1;1;;false;false;;undefined;undefined;false; 2.0.36.1;JBS ;<level03>1156,06/30/2017 16:22:002:534,14,false,1424,null,undefined,undefined,1.00000,,0.0000000000,11.0000000000,false,0,14,1,14</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;1;14;1;1;1;0;1;1;0;0;0;undefined;0;0</level02>";
+
+            var objObjResultJSonPuro = ObjResultJSon;
+
             string versaoApp = null;
 
             try
