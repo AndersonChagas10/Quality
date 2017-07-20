@@ -11,7 +11,7 @@ namespace Helper
         public static void SendMail(EmailContentDTO mailEntry, string emailFrom, string emailPass, string emailSmtp, int emailPort, bool emailSSL,  SendCompletedEventHandler callback, bool runCallBack)
         {
 
-            return;
+            //return;
 
             SmtpClient client = new SmtpClient(emailSmtp, emailPort);
             client.EnableSsl = emailSSL; //true Hotmail
