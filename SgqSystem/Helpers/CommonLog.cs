@@ -33,7 +33,7 @@ namespace SgqSystem.Helpers
                 log.AddDate = DateTime.Now;
                 log.log = 
                     "Usuario:" + form.auditorId + "|" +
-                    "UsuarioNome: " + form.auditorName;
+                    "UsuarioNome: " + form.auditorName + "|";
                 
                 log.result =
                     "Unidade:" + form.unitId + "|" +
@@ -44,8 +44,8 @@ namespace SgqSystem.Helpers
                     "IndicadorNome:" + form.level1Name + "|" +
                     "Monitoramento:" + form.level2Id + "|" +
                     "MonitoramentoNome:" + form.level2Name + "|" +
-                    "Tarefa:" + form.level3Id+
-                    "TarefaNome:" + form.level3Name;
+                    "Tarefa:" + form.level3Id+ "|" +
+                    "TarefaNome:" + form.level3Name + "|";
 
                 db.LogJson.Add(log);
                 db.SaveChanges();
@@ -68,8 +68,7 @@ namespace SgqSystem.Helpers
 
                 log.result =
                     "Unidade:" + UnitId + "|" +
-                    "UnidadeNome:" + UnitName 
-                    ;
+                    "UnidadeNome:" + UnitName + "|";
 
                 db.LogJson.Add(log);
                 db.SaveChanges();
