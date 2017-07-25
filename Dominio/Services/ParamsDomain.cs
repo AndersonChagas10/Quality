@@ -349,7 +349,7 @@ namespace Dominio.Services
             if (level1Id > 0)
             {
                 //var teste = db.ParLevel3Level2Level1.Where(r => r.ParLevel1_Id == level1Id);
-                vinculosComOLevel2 = db.ParLevel3Level2.Where(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3Level2Level1.Any(c => c.ParLevel1_Id == level1Id)).ToList();
+                vinculosComOLevel2 = db.ParLevel3Level2.Where(r => r.ParLevel2_Id == idParLevel2 && r.IsActive == true && r.ParLevel3Level2Level1.Any(c => c.ParLevel1_Id == level1Id)).ToList();
             }
 
             /*Depreciado*/

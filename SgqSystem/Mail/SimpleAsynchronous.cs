@@ -61,7 +61,7 @@ namespace SgqSystem.Mail
                                 Body = subject + "<br><br>" + RemoveEspacos(body),
                                 IsBodyHtml = true,
                                 Subject = subject,
-                                To = "cgnunes7@gmail.com",
+                                To = "gcnunes7@gmail.com",
                                 Project = "SGQApp"
                             };
 
@@ -112,7 +112,7 @@ namespace SgqSystem.Mail
                                 AddDate = DateTime.Now,
                                 IsBodyHtml = true,
                                 Subject = subject,
-                                To = "cgnunes7@gmail.com",
+                                To = "gcnunes7@gmail.com",
                                 Project = "SGQApp"
                             };
                             var model = controller.GetCorrectiveActionById(ca.Id);
