@@ -140,11 +140,11 @@ namespace SgqSystem.Controllers.Api.App
                 }
             }
 
-            throw new Exception();
+            //throw new Exception();
 
-            //UpdateTelaDoTablet(UnitId);
-            //retorno.ParteDaTela = GlobalConfig.PaginaDoTablet.FirstOrDefault(r => r.Key == UnitId).Value;
-            //return retorno;
+            UpdateTelaDoTablet(UnitId);
+            retorno.ParteDaTela = GlobalConfig.PaginaDoTablet.FirstOrDefault(r => r.Key == UnitId).Value;
+            return retorno;
         }
         
         [HttpGet]
