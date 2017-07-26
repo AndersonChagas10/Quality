@@ -887,9 +887,9 @@ namespace SgqSystem.Controllers
             //Dados das colunas do corpo da tabela de dados central
             var query1 = "SELECT PP1.Name as CLASSIFIC_NEGOCIO, Reg.Name as MACROPROCESSO, " +
                   "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
-                  "\n 83  as ORCADO, " +
-                  "\n 83 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) as DESVIO, " +
-                  "\n (83 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / 83 as \"DESVIOPERCENTUAL\" " +
+                  "\n " + getMetaScore().ToString() + "  as ORCADO, " +
+                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) end as DESVIO, " +
+                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / " + getMetaScore().ToString() + " * 100 end as \"DESVIOPERCENTUAL\" " +
                    "\n FROM ParStructure Reg " +
                     "\n  LEFT JOIN ParCompanyXStructure CS " +
                     "\n  ON CS.ParStructure_Id = Reg.Id " +
@@ -912,13 +912,14 @@ namespace SgqSystem.Controllers
                   "\n GROUP BY Reg.Name, PP1.Name" +
                   "\n ORDER BY 1, 2";
 
+            
             // Total Direita
             var query2 =
            "SELECT PP1.Name as CLASSIFIC_NEGOCIO," +
                   "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
-                  "\n 83  as ORCADO, " +
-                  "\n 83 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) as DESVIO, " +
-                  "\n (83 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / 83 as \"DESVIOPERCENTUAL\" " +
+                  "\n " + getMetaScore().ToString() + "  as ORCADO, " +
+                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) end as DESVIO, " +
+                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / " + getMetaScore().ToString() + " * 100 end as \"DESVIOPERCENTUAL\" " +
 
                   "\n FROM ParStructure Reg " +
                     "\n  LEFT JOIN ParCompanyXStructure CS " +
@@ -946,9 +947,9 @@ namespace SgqSystem.Controllers
             var query3 =
            "SELECT Reg.Name as MACROPROCESSO, " +
                   "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
-                  "\n 83  as ORCADO, " +
-                  "\n 83 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) as DESVIO, " +
-                  "\n (83 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / 83 as \"DESVIOPERCENTUAL\" " +
+                  "\n " + getMetaScore().ToString() + "  as ORCADO, " +
+                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) end as DESVIO, " +
+                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / " + getMetaScore().ToString() + " * 100 end as \"DESVIOPERCENTUAL\" " +
 
                   "\n FROM ParStructure Reg " +
                     "\n  LEFT JOIN ParCompanyXStructure CS " +
@@ -976,9 +977,9 @@ namespace SgqSystem.Controllers
             var query4 =
                 "SELECT " +
                   "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
-                  "\n 83  as ORCADO, " +
-                  "\n 83 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) as DESVIO, " +
-                  "\n (83 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / 83 as \"DESVIOPERCENTUAL\" " +
+                  "\n " + getMetaScore().ToString() + "  as ORCADO, " +
+                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) end as DESVIO, " +
+                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / " + getMetaScore().ToString() + " * 100 end as \"DESVIOPERCENTUAL\" " +
 
                   "\n FROM ParStructure Reg " +
                     "\n  LEFT JOIN ParCompanyXStructure CS " +
@@ -1457,11 +1458,11 @@ namespace SgqSystem.Controllers
            "\n  , CriterioName                                                                                                                                                                                                                                                     " +
            "\n  , ROUND(AV,2) AV                                                                                                                                                                                                                                                               " +
            "\n  , ROUND(CASE WHEN Level1Id = 25 THEN AV - NC ELSE NC END,2) NC /* VERIFICAÇÃO DA TIPIFICAÇÃO */                                                                                                                                                                             " +
-           "\n  , ROUND(Pontos,2) Pontos                                                                                                                                                                                                                                                           " +
-           "\n  , ROUND(CASE WHEN AV = 0 THEN 0 ELSE Pontos END,2) AS PontosIndicador                                                                                                                                                                                                                                        " +
+           "\n  , Pontos Pontos                                                                                                                                                                                                                                                           " +
+           "\n  , CASE WHEN AV = 0 THEN 0 ELSE Pontos END AS PontosIndicador                                                                                                                                                                                                                                        " +
            "\n  , ROUND(Meta,2) AS Meta                                                                                                                                                                                                                                                             " +
            "\n  , ROUND(CASE WHEN Level1Id = 25 THEN CASE WHEN AV = 0 THEN 0 ELSE (AV - NC) / AV * 100 END WHEN Level1Id = 43 THEN case when NC = 0 then 0 when (Meta / NC) > 1 then 1 else Meta / NC end * 100 ELSE Real END,2) Real /* VERIFICAÇÃO DA TIPIFICAÇÃO */                                                                                                                            " +
-           "\n  , ROUND(CASE WHEN Level1Id = 43 AND NC = 0 THEN Pontos ELSE PontosAtingidos END,2)  PontosAtingidos                                                                                                                                                                                                                                               " +
+           "\n  , CASE WHEN Level1Id = 43 AND NC = 0 THEN Pontos ELSE PontosAtingidos END  PontosAtingidos                                                                                                                                                                                                                                               " +
            "\n  , ROUND(CASE WHEN Level1Id = 43 AND NC = 0 THEN 100 ELSE Scorecard END,2)  Scorecard                                                                                                                                                                                                                                                        " +
            "\n  , TipoScore ,mesData                                                                                                                                                                                                                                                        " +
            "\n                                                                                                                                                                                                                                                                     " +
@@ -1927,9 +1928,9 @@ namespace SgqSystem.Controllers
             //Dados das colunas do corpo da tabela de dados central
             var query1 = "SELECT P1.Name as CLASSIFIC_NEGOCIO, C.Initials as MACROPROCESSO, " +
                   "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
-                  "\n 83  as ORCADO, " +
-                  "\n 83 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) as DESVIO, " +
-                  "\n (83 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / 83 as \"DESVIOPERCENTUAL\" " +
+                  "\n " + getMetaScore().ToString() + "  as ORCADO, " +
+                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) end as DESVIO, " +
+                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / " + getMetaScore().ToString() + " * 100 end as \"DESVIOPERCENTUAL\" " +
 
                    "\n FROM ParStructure Reg " +
                     "\n  LEFT JOIN ParCompanyXStructure CS " +
@@ -1959,9 +1960,9 @@ namespace SgqSystem.Controllers
             var query2 =
            "SELECT P1.Name as CLASSIFIC_NEGOCIO," +
                   "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
-                  "\n 83  as ORCADO, " +
-                  "\n 83 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) as DESVIO, " +
-                  "\n (83 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / 83 as \"DESVIOPERCENTUAL\" " +
+                  "\n " + getMetaScore().ToString() + "  as ORCADO, " +
+                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) end as DESVIO, " +
+                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / " + getMetaScore().ToString() + " * 100 end as \"DESVIOPERCENTUAL\" " +
 
                    "\n FROM ParStructure Reg " +
                     "\n  LEFT JOIN ParCompanyXStructure CS " +
@@ -1991,9 +1992,9 @@ namespace SgqSystem.Controllers
             var query3 =
            "SELECT C.Initials as MACROPROCESSO, " +
                   "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
-                  "\n 83  as ORCADO, " +
-                  "\n 83 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) as DESVIO, " +
-                  "\n (83 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / 83 as \"DESVIOPERCENTUAL\" " +
+                  "\n " + getMetaScore().ToString() + "  as ORCADO, " +
+                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) end as DESVIO, " +
+                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / " + getMetaScore().ToString() + " * 100 end as \"DESVIOPERCENTUAL\" " +
 
                    "\n FROM ParStructure Reg " +
                     "\n  LEFT JOIN ParCompanyXStructure CS " +
@@ -2023,9 +2024,9 @@ namespace SgqSystem.Controllers
             var query4 =
                 "SELECT " +
                   "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
-                  "\n 83  as ORCADO, " +
-                  "\n 83 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) as DESVIO, " +
-                  "\n (83 - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / 83 as \"DESVIOPERCENTUAL\" " +
+                  "\n " + getMetaScore().ToString() + "  as ORCADO, " +
+                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) end as DESVIO, " +
+                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / " + getMetaScore().ToString() + " * 100 end as \"DESVIOPERCENTUAL\" " +
 
                     "\n FROM ParStructure Reg " +
                     "\n  LEFT JOIN ParCompanyXStructure CS " +
@@ -2500,6 +2501,14 @@ namespace SgqSystem.Controllers
 
         #endregion
 
+        public static decimal getMetaScore()
+        {
+            decimal meta = 100;
+            return meta;
+        }
+
     }
+
+   
 
 }

@@ -280,6 +280,9 @@
                         enabled: true,
                         color: 'black',
                         align: 'center',
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y,2);
+                        },
                         style: {
                             fontSize: '10px',
                         }
@@ -294,7 +297,9 @@
                         }
                     },
                     tooltip: {
+                        valueDecimals: 2,
                         valueSuffix: sufix
+
                     }
                 }
 
@@ -416,6 +421,7 @@
                     data: data,
                     yAxis: 1,
                     tooltip: {
+                        valueDecimals: 2,
                         valueSuffix: ' %'
                     },
                     //pointPadding: 0.4,
@@ -654,13 +660,13 @@
                         }
                     },
                     plotLines: [{
-                        value: 80,
+                        value: 83,
                         width: 2,
                         color: 'black',
                         dashStyle: 'dash',
                         zIndex: 4,
                         label: {
-                            text: 'Meta 80%',
+                            text: 'Meta 83%',
                             align: 'right',
                             y: -10,
                             x: 0
@@ -691,19 +697,23 @@
                             enabled: true,
                             color: 'black',
                             align: 'right',
+                            formatter: function () {
+                                return Highcharts.numberFormat(this.y,2);
+                            },
                             style: {
                                 fontSize: '10px',
                                 fontFamily: 'Verdana, sans-serif'
                             }
                         },
                         tooltip: {
+                            valueDecimals: 2,
                             valueSuffix: '%'
                         },
                         zones: [{
                             value: 69,
                             color: 'rgba(189,76,76,1)'
                         }, {
-                            value: 80,
+                            value: 83,
                             color: 'rgba(207,206,64,1)'
                         }, {
                             color: 'rgba(81,207,64,1)'
@@ -714,6 +724,7 @@
                         data: scorecardJbs,
                         color: 'rgba(170,0,0,1)',
                         tooltip: {
+                            valueDecimals: 2,
                             valueSuffix: '%'
                         }
                     }
@@ -774,13 +785,13 @@
                         }
                     },
                     plotLines: [{
-                        value: 80,
+                        value: 83,
                         width: 2,
                         color: 'black',
                         dashStyle: 'dash',
                         zIndex: 4,
                         label: {
-                            text: 'Meta 80%',
+                            text: 'Meta 83%',
                             align: 'right',
                             y: -10,
                             x: 0
@@ -802,19 +813,23 @@
                             enabled: true,
                             color: 'black',
                             align: 'right',
+                            formatter: function () {
+                                return Highcharts.numberFormat(this.y,2);
+                            },
                             style: {
-                                fontSize: '13px',
+                                fontSize: '10px',
                                 fontFamily: 'Verdana, sans-serif'
                             }
                         },
                         tooltip: {
+                            valueDecimals: 2,
                             valueSuffix: '%'
                         },
                         zones: [{
                             value: 69,
                             color: 'rgba(189,76,76,1)'
                         }, {
-                            value: 80,
+                            value: 83,
                             color: 'rgba(207,206,64,1)'
                         }, {
                             color: 'rgba(81,207,64,1)'
@@ -824,6 +839,7 @@
                         data: scorecardJbs,
                         color: 'rgba(170,0,0,1)',
                         tooltip: {
+                            valueDecimals: 2,
                             valueSuffix: '%'
                         }
                     }, {
@@ -831,6 +847,7 @@
                         data: scorecardRegional,
                         color: 'rgba(0,0,139,1)',
                         tooltip: {
+                            valueDecimals: 2,
                             valueSuffix: '%'
                         }
                     }]
@@ -933,11 +950,15 @@
                         enabled: true,
                         color: 'black',
                         align: 'center',
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y,2);
+                        },
                         style: {
                             fontSize: '10px',
                         }
                     },
                     tooltip: {
+                        valueDecimals: 2,
                         valueSuffix: ' qtd'
                     }
                 }, {
@@ -958,11 +979,15 @@
                         enabled: true,
                         color: 'black',
                         align: 'center',
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y,2);
+                        },
                         style: {
                             fontSize: '10px',
                         }
                     },
                     tooltip: {
+                        valueDecimals: 2,
                         valueSuffix: ' %'
                     }
                 }, {
@@ -984,11 +1009,15 @@
                         enabled: true,
                         color: 'black',
                         align: 'center',
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y,2);
+                        },
                         style: {
                             fontSize: '10px',
                         }
                     },
                     tooltip: {
+                        valueDecimals: 2,
                         valueSuffix: ' qtd'
                     }
                 }]
@@ -1098,11 +1127,15 @@
                         enabled: true,
                         color: 'black',
                         align: 'center',
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y,2);
+                        },
                         style: {
                             fontSize: '10px',
                         }
                     },
                     tooltip: {
+                        valueDecimals: 2,
                         valueSuffix: ' qtd'
                     }
                 }, {
@@ -1123,11 +1156,15 @@
                         enabled: true,
                         color: 'black',
                         align: 'center',
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y,2);
+                        },
                         style: {
                             fontSize: '10px',
                         }
                     },
                     tooltip: {
+                        valueDecimals: 2,
                         valueSuffix: ' %'
                     }
                 }, {
@@ -1149,11 +1186,15 @@
                         enabled: true,
                         color: 'black',
                         align: 'center',
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y,2);
+                        },
                         style: {
                             fontSize: '10px',
                         }
                     },
                     tooltip: {
+                        valueDecimals: 2,
                         valueSuffix: ' qtd'
                     }
                 }]
@@ -1306,11 +1347,15 @@
                         enabled: true,
                         color: 'black',
                         align: 'center',
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y,2);
+                        },
                         style: {
                             fontSize: '10px',
                         }
                     },
                     tooltip: {
+                        valueDecimals: 2,
                         valueSuffix: ' qtd'
                     }
                 }, {
@@ -1332,11 +1377,15 @@
                         enabled: true,
                         color: 'black',
                         align: 'center',
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y,2);
+                        },
                         style: {
                             fontSize: '10px',
                         }
                     },
                     tooltip: {
+                        valueDecimals: 2,
                         valueSuffix: ' %'
                     }
                 }, {
@@ -1359,11 +1408,15 @@
                         enabled: true,
                         color: 'black',
                         align: 'center',
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y,2);
+                        },
                         style: {
                             fontSize: '10px',
                         }
                     },
                     tooltip: {
+                        valueDecimals: 2,
                         valueSuffix: ' qtd'
                     }
                 }]
@@ -1551,6 +1604,7 @@
                         dataLabels: {
                             //enabled: true,
                             format: '{point.y:.,0f}',
+
                             style: {
                                 fontWeight: ' normal '
                             }
