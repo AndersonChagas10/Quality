@@ -443,7 +443,7 @@ namespace SGQDBContext
                              "\n  ON AL.ParLevel2_Id = PL2.Id  AND AL.IsActive = 1                                                                                                     " +
                              "\n INNER JOIN (SELECT * FROM ParLevel2ControlCompany PL (nolock)  INNER JOIN                                                                                       " +
                              "\n (SELECT MAX(InitDate) Data, ParCompany_Id AS UNIDADE FROM ParLevel2ControlCompany   (nolock)                                                                    " +
-                             "\n where ParLevel1_Id = '" + parLevel1.Id + "' AND CAST(InitDate AS DATE) <= '" + dateCollection.ToString("yyyy-MM-dd") + "'  and ParCompany_Id =  " + ParCompany_Id + "  " +
+                             "\n where ParLevel1_Id = '" + parLevel1.Id + "' AND CAST(InitDate AS DATE) <= '" + dateCollection.ToString("yyyy-MM-dd") + "'  and (ParCompany_Id =  " + ParCompany_Id + " or ParCompany_Id is null)   and IsActive = 1 " +
 
                              "\n GROUP BY ParCompany_Id) F1 ON (CAST(F1.data AS DATE) = CAST(PL.initDate AS DATE) AND PL.IsActive = 1) OR (CAST(f1.data AS DATE) = CAST(PL.initDate AS DATE) AND CAST(f1.data AS DATE) < CAST(PL.AlterDate AS DATE) AND PL.IsActive = 1) AND (F1.UNIDADE = PL.ParCompany_id                                                                " +
                              "\n or F1.UNIDADE is null))  Familia                                                                                                                      " +

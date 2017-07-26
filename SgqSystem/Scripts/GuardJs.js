@@ -203,7 +203,7 @@ function heatMap(container, tableId, startIndex, delimiterIndex, order) {
 
         //Insere no array todos os elementos indicados em startIndex, insere o elemento Jquery "td" e o valor da "td".
         while (!!$(o).find('td:eq(' + startIndex + ')')[0]) {
-            if ($(o).find('td:eq(' + (startIndex - delimiterIndex) + ')')[0].textContent.match(/\d+(\.\d{1,2})?/g)[0] > 0) {
+            if ($(o).find('td:eq(' + (startIndex - delimiterIndex) + ')')[0].textContent.match(/\d+(\.\d{1,2})?/g)[0] > -1) {
                 elems.push({
                     //obj javascript > td
                     td: $(o).find('td:eq(' + startIndex + ')')
@@ -266,6 +266,8 @@ function percentToRGB(percent, order) {
     listaCorPura.push('#ff6901');//88
     listaCorPura.push('#ed3b1c');//92
     listaCorPura.push('#ed3b1c');
+    listaCorPura.push('#ed3b1c');
+
     listaCorPura.push('#ed3b1c');
 
     var listaCor = [];
