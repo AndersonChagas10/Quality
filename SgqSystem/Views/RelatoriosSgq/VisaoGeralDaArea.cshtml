@@ -108,7 +108,7 @@
     }
 
     #fixBody1::-webkit-scrollbar-thumb {
-        background: #bf0d0e;
+        background: #383434 ; /*#bf0d0e;*/
     }
 
     #colUie1::-webkit-scrollbar-track {
@@ -122,7 +122,7 @@
     }
 
     #colUie1::-webkit-scrollbar-thumb {
-        background: #bf0d0e;
+        background: #383434 ; /*#bf0d0e;*/
     }
 
     #colUieFim1::-webkit-scrollbar-track {
@@ -136,7 +136,7 @@
     }
 
     #colUieFim1::-webkit-scrollbar-thumb {
-        background: #bf0d0e;
+        background: #383434 ; /*#bf0d0e;*/
     }
 </style>
 
@@ -556,7 +556,7 @@
 
             enviar["auditorId"] = GetUsuarioId();
 
-            EasyAjax(urlGraficoEvolutivoEmpresa, enviar, CallbackGraficoEvolutivoEmpresa, "graficoEvolutivoEmpresa", toggle);
+            // EasyAjax(urlGraficoEvolutivoEmpresa, enviar, CallbackGraficoEvolutivoEmpresa, "graficoEvolutivoEmpresa", toggle);
 
 
             EasyAjax(urlGrafico1, enviar, CallbackGrafico1, "grafico1", toggle);
@@ -576,9 +576,9 @@
                 scroolTable(container)
             }, "tabela1div");
 
-            EasyAjax(urlGrafico1, enviar, CallbackGraficoEvolutivoEmpresa, "graficoEvolutivoEmpresa", toggle);
+            //EasyAjax(urlGrafico1, enviar, CallbackGraficoEvolutivoEmpresa, "graficoEvolutivoEmpresa", toggle);
 
-            chamaEvolutivoRegional();
+            //chamaEvolutivoRegional();
         };
 
         function GetTabela2(paramCol, paramRow) {
