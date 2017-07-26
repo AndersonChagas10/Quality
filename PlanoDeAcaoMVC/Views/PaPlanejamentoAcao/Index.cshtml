@@ -985,7 +985,7 @@
                     //{ title: "Duração", mData: "Acao.DuracaoDias" },
                     //{ title: "Predecessora", mData: null },
 
-                    { title: "Ação", mData: null, defaultContent: /*btnEditar + "<br>" + btnDetalhes + "<br>" + */btnNovoTatico + "<br class='showAsEstrategy'>"/* + btnNovoOperacional + "<br>"*/ + btnAcompanhamento },
+                    { title: "Ação", mData: null, defaultContent: /*btnEditar + "<br>" + btnDetalhes + "<br>" + */btnNovoTatico + "<br class='showAsEstrategy'>" + btnNovoOperacional + "<br>" + btnAcompanhamento },
                 ],
                 fixedColumns: {
                     leftColumns: 0,
@@ -1397,6 +1397,9 @@
             );
             $('#paTable_wrapper > div.dt-buttons > a:nth-child(3)').click();
             HideForOperacional();
+            if(!visaoOperacional){
+                $('#paTable_wrapper > div.dt-buttons > a:nth-child(2)').hide()
+            }
         }
         /*Fim Table*/
 
@@ -1619,6 +1622,7 @@
         /*Table*/
         $(document).ready(function () {
             GetDataTable();
+            
         });
 
     </script>
