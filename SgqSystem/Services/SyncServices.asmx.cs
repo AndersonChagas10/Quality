@@ -5817,7 +5817,18 @@ namespace SgqSystem.Services
                 string ParLevel1_Id = deviation[1];
                 string ParLevel2_Id = deviation[2];
                 string Evaluation = deviation[3];
+
+                if(Evaluation == "undefined")
+                {
+                    Evaluation = "0";
+                }
+
                 string Sample = deviation[4];
+
+                if (Sample == "undefined")
+                {
+                    Sample = "0";
+                }
                 string alertNumber = deviation[5];
                 string defects = deviation[6];
                 string deviationDate = deviation[7];
@@ -5868,19 +5879,19 @@ namespace SgqSystem.Services
             catch (SqlException ex)
             {
                 /**
-                 * GABRIEL NUNES TIROU O LOG PARA MELHRAR PERFORMANCE
-                 * DATE 2017-06-23
+                 * GABRIEL NUNES VOLTOU TIROU O LOG PARA MELHRAR PERFORMANCE
+                 * DATE 2017-07-27
                  */
-                //int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
                 return "error";
             }
             catch (Exception ex)
             {
                 /**
-                 * GABRIEL NUNES TIROU O LOG PARA MELHRAR PERFORMANCE
-                 * DATE 2017-06-23
-                 */
-                //int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
+                * GABRIEL NUNES VOLTOU TIROU O LOG PARA MELHRAR PERFORMANCE
+                * DATE 2017-07-27
+                */
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
                 return "error";
             }
         }
