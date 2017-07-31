@@ -90,6 +90,7 @@
 
     function loginPaSgq(user) {
         $.LoadingOverlay('show');
+        user['IsWeb'] = true;
         if (isSgqIntegrado) {
             $.post(urlMaster, user, function (r) {
                 $.LoadingOverlay('hide')

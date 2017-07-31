@@ -13,27 +13,50 @@
         public static string TitileMailNovaAcao = "Plano de Ação - Nova Ação.";
         public static string TitileMailNovoFTA = "Plano de Ação - Novo Relatório de Análise de Desvio criado.";
 
-        //Config para dev GRT
-        //Local Db
-        public static string catalog { get { return "PlanoDeAcao"; } }
+        ////Config para dev GRT
+        ////Local Db
+        //public static string catalog { get { return "PlanoDeAcao"; } }
+        //public static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
+        //public static string user { get { return "sa"; } }
+        //public static string pass { get { return "1qazmko0"; } }
+
+        ////Remoto SGQ
+        //public static string catalog2 { get { return "dbGQualidade_JBS"; } }
+        //public static string dataSource2 { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
+        //public static string user2 { get { return "sa"; } }
+        //public static string pass2 { get { return "1qazmko0"; } }
+
+        //public static string selfRoot { get { return "http://192.168.25.200/PlanoAcao/"; } }
+        //public static string SgqHost { get { return "http://192.168.25.200/sgqbr/api/User/AuthenticationLogin"; } }
+
+        //public static string emailFrom = "celsogea@hotmail.com";
+        //public static string emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
+        //public static string emailSmtp = "smtp.live.com";
+        //public static int emailPort = 587;
+        //public static bool emailSSL = true;
+
+        //Config para dev GRT UTILIZAÇÃO LOCAL
+        //Local Db GRT UTILIZAÇÃO LOCAL
+        public static string catalog { get { return "PlanoDeAcao_GRT"; } }
         public static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
         public static string user { get { return "sa"; } }
         public static string pass { get { return "1qazmko0"; } }
 
-        //Remoto SGQ
-        public static string catalog2 { get { return "dbGQualidade_JBS"; } }
+        //Remoto SGQ GRT UTILIZAÇÃO LOCAL
+        public static string catalog2 { get { return "dbGQualidade_GRT"; } }
         public static string dataSource2 { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
         public static string user2 { get { return "sa"; } }
         public static string pass2 { get { return "1qazmko0"; } }
 
-        public static string selfRoot { get { return "http://192.168.25.200/PlanoAcao/"; } }
-        public static string SgqHost { get { return "http://192.168.25.200/sgqbr/api/User/AuthenticationLogin"; } }
+        public static string selfRoot { get { return "http://192.168.25.200/PlanoAcaoGRT/"; } }
+        public static string SgqHost { get { return "http://192.168.25.200/sgqgrt/api/User/AuthenticationLogin"; } }
 
         public static string emailFrom = "celsogea@hotmail.com";
         public static string emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
         public static string emailSmtp = "smtp.live.com";
         public static int emailPort = 587;
         public static bool emailSSL = true;
+
 
         ////Azure
         ////Local DB
@@ -98,7 +121,7 @@
         //public static string pass { get { return "grJsoluco3s"; } }
         ////Remoto SGQ
         //public static string catalog2 { get { return "dbGQualidade"; } }
-        //public static string dataSource2 { get { return @"10.255.0.16"; } }
+        //public static string dataSource2 { get { return @"10.255.5.93"; } }
         //public static string user2 { get { return "UserGQualidade"; } }
         //public static string pass2 { get { return "grJsoluco3s"; } }
 

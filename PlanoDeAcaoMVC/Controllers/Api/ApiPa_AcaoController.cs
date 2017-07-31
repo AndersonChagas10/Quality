@@ -86,50 +86,6 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
         #region Auxiliares
 
-        private void CreateMail(int idPlanejamento, int idAcao, int? idQuem, string title, bool? isAcompanhamento = false)
-        {
-            if (idQuem.GetValueOrDefault() > 0)
-                using (var dbSgq = ConexaoSgq())
-                {
-                    var paUser = Pa_Quem.Get(idQuem.GetValueOrDefault());
-                    dynamic enviarPara = dbSgq.QueryNinjaADO("SELECT * FROM UserSgq WHERE Name  = '" + paUser.Name + "'").FirstOrDefault();
-                    string emailTo = enviarPara.Email;
-                 
-                    var todoConteudo = string.Empty;
-
-                    if (!isAcompanhamento.GetValueOrDefault())
-                    {
-                        var conteudoPlanejamento = GetExternalResponse(Conn.selfRoot + "/Pa_Planejamento/Details?id=" + idPlanejamento);
-                        var conteudoAcao = GetExternalResponse(Conn.selfRoot + "/Pa_Acao/Details?id=" + idAcao);
-                        if (Conn.visaoOperacional)
-                            todoConteudo = conteudoAcao.Result;
-                        else
-                            todoConteudo = conteudoPlanejamento.Result + conteudoAcao.Result;
-                    }
-                    else
-                    {
-                        var conteudoAcompanhamento = GetExternalResponse(Conn.selfRoot + "/Pa_Acao/Acompanhamento?id=" + idAcao);
-                        todoConteudo = conteudoAcompanhamento.Result;
-                    }
-                    //emailTo = "celso.bernar@grtsolucoes.com.br";
-                    CreateMail(idPlanejamento, idAcao, emailTo, title, todoConteudo);
-                }
-        }
-
-        private void CreateMail(int idPlanejamento, int idAcao, string emailTo, string title, string body)
-        {
-            var email = new PlanoAcaoEF.EmailContent()
-            {
-                IsBodyHtml = true,
-                AddDate = DateTime.Now,
-                Subject = title,
-                Project = "Plano de Ação",
-                Body = body,
-                To = emailTo,
-            };
-            PaAsyncServices.SendMailPATeste(email);
-        }
-
         private void SalvarAcompanhamentoXQuem(PlanoAcaoEF.PlanoDeAcaoEntities db, PlanoAcaoEF.Pa_AcompanhamentoXQuem quem)
         {
             if (quem.Id > 0)

@@ -525,6 +525,7 @@
     <Content Include="Scripts\inputmask\min\inputmask\jquery.inputmask.min.js" />
     <Content Include="Scripts\inputmask\min\jquery.inputmask.bundle.min.js" />
     <Content Include="Scripts\jquery-1.11.3.min.js" />
+    <None Include="Properties\PublishProfiles\GRT PA.pubxml" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.0.js" />
     <Content Include="Scripts\jquery-3.1.0.min.js" />
