@@ -34,6 +34,7 @@ namespace Data.Repositories
         public RepositoryBase(SgqDbDevEntities Db)
         {
             db = Db;
+           
             //db.Database.ExecuteSqlCommand("SET TRANSACTION ISOLATION LEVEL READ COMMITTED;");
         }
 
@@ -82,6 +83,10 @@ namespace Data.Repositories
 
         public void Update(T obj)
         {
+            //var old = DB.ParStructure.Find(obj.Id);
+            //DB.Entry(old).CurrentValues.SetValues(obj);
+            //DB.SaveChanges();
+
             //VerificaElementoInexistenteEmDb(obj);
             verifyDate(obj, "AlterDate");
             Entity.Attach(obj);

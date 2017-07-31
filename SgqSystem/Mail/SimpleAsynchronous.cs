@@ -55,17 +55,44 @@ namespace SgqSystem.Mail
 
                             var subject = "Alerta emitido para o Indicador: " + parLevel1 + ", Monitoramento: " + parLevel2 + " da Unidade: " + company;
 
-                            var newMail = new EmailContent()
-                            {
-                                AddDate = DateTime.Now,
-                                Body = subject + "<br><br>" + RemoveEspacos(body),
-                                IsBodyHtml = true,
-                                Subject = subject,
-                                To = "cgnunes7@gmail.com",
-                                Project = "SGQApp"
-                            };
+                            string emailEnviar = "sgq@jbs.com.br";
 
-                            db.EmailContent.Add(newMail);
+
+
+                            if (m.AlertNumber == 1) {
+                           
+                                emailEnviar = "camila.prata@jbs.com.br";
+
+                            } else if (m.AlertNumber == 2 || m.AlertNumber > 3)
+                            {
+                        
+                                emailEnviar = "miriagualberto@jbs.com.br";
+                                
+
+                            }
+                            else if(m.AlertNumber == 3)
+                            {
+                               
+                                emailEnviar = "mariana.martins@jbs.com.br";
+                               
+                            }
+
+                           
+                                var newMail = new EmailContent()
+                                {
+                                    AddDate = DateTime.Now,
+                                    Body = subject + "<br><br>" + RemoveEspacos(body),
+                                    IsBodyHtml = true,
+                                    Subject = subject,
+                                    To = emailEnviar,
+                                    Project = "SGQApp"
+                                };
+
+                                db.EmailContent.Add(newMail);
+
+                          
+
+                            
                             db.Database.ExecuteSqlCommand("UPDATE Deviation SET sendMail = 1 WHERE ID = " + m.Id);
 
                         }
@@ -112,7 +139,7 @@ namespace SgqSystem.Mail
                                 AddDate = DateTime.Now,
                                 IsBodyHtml = true,
                                 Subject = subject,
-                                To = "cgnunes7@gmail.com",
+                                To = "gcnunes7@gmail.com",
                                 Project = "SGQApp"
                             };
                             var model = controller.GetCorrectiveActionById(ca.Id);

@@ -240,8 +240,12 @@ namespace SgqSystem.Services
 
             SqlConnection.ClearAllPools();
             
-            var objObjResultJSonPuro = ObjResultJSon;
             
+
+            //ObjResultJSon = "<level02>42;06/30/2017 16:20:042:304;306;06/30/2017 16:20:042:335;45;1;1;1424;0;false;06302017;1;427336;<header>undefined,undefined,427336</header>;false;false;;undefined;undefined;false; 2.0.36.1;JBS ;<level03>1142,06/30/2017 16:20:042:338,86752,false,1424,null,undefined,undefined,1.00000,,0.0000000000,0.0000000000,false,0,86752,427336,86752</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;427336;86752;86752;1;1;0;1;1;0;0;0;undefined;0;0</level02><level02>43;06/30/2017 16:22:002:511;297;06/30/2017 16:21:026:423;45;1;1;1424;0;false;06302017;1;1;;false;false;;undefined;undefined;false; 2.0.36.1;JBS ;<level03>1237,06/30/2017 16:21:026:424,9,true,1424,null,undefined,undefined,0.00000,,0.0000000000,11.0000000000,false,0,0,0,0</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;0;9;0;0;0;0;0;0;0;0;0;undefined;0;0</level02><level02>43;06/30/2017 16:22:002:511;312;06/30/2017 16:22:002:533;45;1;1;1424;0;false;06302017;1;1;;false;false;;undefined;undefined;false; 2.0.36.1;JBS ;<level03>1156,06/30/2017 16:22:002:534,14,false,1424,null,undefined,undefined,1.00000,,0.0000000000,11.0000000000,false,0,14,1,14</level03>;;undefined;undefined;0;undefined;undefined;undefined;undefined;undefined;undefined;0;0;1;14;1;1;1;0;1;1;0;0;0;undefined;0;0</level02>";
+
+            var objObjResultJSonPuro = ObjResultJSon;
+
             string versaoApp = null;
 
             try
@@ -3318,9 +3322,9 @@ namespace SgqSystem.Services
             {
                 culture = "en-us";
             }
-
-            string breadCrumb = "<ol class=\"breadcrumb\" breadmainlevel=\"Slaughter\"></ol>";
-
+            
+            string breadCrumb = "<ol class=\"breadcrumb\" breadmainlevel=\"Audit\"></ol>";
+            
             string selectPeriod = html.option("1", CommonData.getResource("period").Value.ToString() + " 1") +
                               html.option("2", CommonData.getResource("period").Value.ToString() + " 2") +
                               html.option("3", CommonData.getResource("period").Value.ToString() + " 3") +
@@ -5813,7 +5817,18 @@ namespace SgqSystem.Services
                 string ParLevel1_Id = deviation[1];
                 string ParLevel2_Id = deviation[2];
                 string Evaluation = deviation[3];
+
+                if(Evaluation == "undefined")
+                {
+                    Evaluation = "0";
+                }
+
                 string Sample = deviation[4];
+
+                if (Sample == "undefined")
+                {
+                    Sample = "0";
+                }
                 string alertNumber = deviation[5];
                 string defects = deviation[6];
                 string deviationDate = deviation[7];
@@ -5864,19 +5879,19 @@ namespace SgqSystem.Services
             catch (SqlException ex)
             {
                 /**
-                 * GABRIEL NUNES TIROU O LOG PARA MELHRAR PERFORMANCE
-                 * DATE 2017-06-23
+                 * GABRIEL NUNES VOLTOU TIROU O LOG PARA MELHRAR PERFORMANCE
+                 * DATE 2017-07-27
                  */
-                //int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
                 return "error";
             }
             catch (Exception ex)
             {
                 /**
-                 * GABRIEL NUNES TIROU O LOG PARA MELHRAR PERFORMANCE
-                 * DATE 2017-06-23
-                 */
-                //int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
+                * GABRIEL NUNES VOLTOU TIROU O LOG PARA MELHRAR PERFORMANCE
+                * DATE 2017-07-27
+                */
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "insertDeviation");
                 return "error";
             }
         }
