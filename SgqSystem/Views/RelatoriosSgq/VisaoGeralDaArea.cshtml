@@ -887,7 +887,7 @@
                     zoomType: 'x,y'
                 },
                 title: {
-                    text: data[1].level1Name
+                    text: enviar.unitName + ' - ' + data[1].level1Name
                 },
                 xAxis: {
                     categories: dia,
@@ -1219,7 +1219,7 @@
             $('#' + selector).empty().highcharts({
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
-                title: Chart.Titulo(GraficoMon, enviar["level1Name"]),
+                title: Chart.Titulo(enviar.unitName + ' - ' + GraficoMon, enviar["level1Name"]),
                 xAxis: Chart.Xaxis(nome),
                 yAxis: Chart.yAxisPadraoRelNc(),
                 legend: {
@@ -1283,7 +1283,7 @@
                     type: 'column'
                 },
                 title: {
-                    text: ('Total NC Por Monitoramento - ' + level2Name)
+                    text: (enviar.unitName + ' - ' + 'Total NC Por Monitoramento - ' + level2Name)
                 },
                 xAxis: {
                     categories: nome,
@@ -1441,7 +1441,7 @@
             $('#' + selector).empty().highcharts({
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
-                title: Chart.Titulo(GraficoTarefa, enviar["level2Name"]),
+                title: Chart.Titulo(enviar.unitName + ' - ' + GraficoTarefa, enviar["level2Name"]),
                 xAxis: Chart.Xaxis(nome),
                 yAxis: Chart.yAxisPadraoRelNc(),
                 legend: {
