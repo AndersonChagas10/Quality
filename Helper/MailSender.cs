@@ -7,7 +7,17 @@ namespace Helper
 {
     public static class MailSender
     {
-
+        /// <summary>
+        /// Enviar email Asyncrono, os destinatários devem ser separados por VIRGULA, adivindos de mailEntry.To: Type string. ex: "email1@teste.com, email2@teste.com"
+        /// </summary>
+        /// <param name="mailEntry"></param>
+        /// <param name="emailFrom"></param>
+        /// <param name="emailPass"></param>
+        /// <param name="emailSmtp"></param>
+        /// <param name="emailPort"></param>
+        /// <param name="emailSSL"></param>
+        /// <param name="callback"></param>
+        /// <param name="runCallBack"></param>
         public static void SendMail(EmailContentDTO mailEntry, string emailFrom, string emailPass, string emailSmtp, int emailPort, bool emailSSL,  SendCompletedEventHandler callback, bool runCallBack)
         {
 
@@ -23,11 +33,16 @@ namespace Helper
             // in the display name.
             MailAddress from = new MailAddress(emailFrom, "SGQ", System.Text.Encoding.UTF8);
             // Set destinations for the e-mail message.
-            MailAddress to = new MailAddress(mailEntry.To);
+            //MailAddress to = new MailAddress();
+            var mails = mailEntry.To.Split(',');
+
 
             //MailMessage - Subject + Body
             // Specify the message content.
-            MailMessage message = new MailMessage(from, to);
+            MailMessage message = new MailMessage();
+            message.From = from;
+            foreach (var i in mails)
+                message.To.Add(i);
             message.Subject = mailEntry.Subject;
             message.Body = mailEntry.Body;
             message.Body += Environment.NewLine;
