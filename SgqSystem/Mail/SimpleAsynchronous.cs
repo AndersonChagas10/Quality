@@ -66,7 +66,7 @@ namespace SgqSystem.Mail
                             } else if (m.AlertNumber == 2 || m.AlertNumber > 3)
                             {
                         
-                                emailEnviar = "miriagualberto@jbs.com.br";
+                                emailEnviar = "camila.prata@jbs.com.br miria.gualberto@jbs.com.br";
                                 
 
                             }
