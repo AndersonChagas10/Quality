@@ -31,21 +31,33 @@ namespace SgqSystem.Helpers
                 log.Device_Id = "Web";
                 log.callback = ReportName;
                 log.AddDate = DateTime.Now;
-                log.log = 
-                    "Usuario:" + form.auditorId + "|" +
-                    "UsuarioNome: " + form.auditorName + "|";
-                
+                log.log =
+                    "{ \"Unidade\" : \"" + form.unitId + "\", " +
+                    " \"UnidadeNome\" : \"" + form.unitName + "\", " +
+                    " \"DataInicio\" : \"" + form._dataInicio + "\", " +
+                    " \"DataFim\" : \"" + form._dataFim + "\", " +
+                    " \"Indicador\" : \"" + form.level1Id + "\", " +
+                    " \"IndicadorNome\" : \"" + form.level1Name + "\", " +
+                    " \"Monitoramento\" : \"" + form.level2Id + "\", " +
+                    " \"MonitoramentoNome\" : \"" + form.level2Name + "\", " +
+                    " \"Tarefa\" : \"" + form.level3Id + "\", " +
+                    " \"TarefaNome\" : \"" + form.level3Name + "\", " +
+                    " \"Usuario\" : \"" + form.auditorId + "\", " +
+                    " \"UsuarioNome\": \"" + form.auditorName + "\" }";
+
                 log.result =
-                    "Unidade:" + form.unitId + "|" +
-                    "UnidadeNome:" + form.unitName + "|" +
-                    "DataInicio:" + form._dataInicio + "|" +
-                    "DataFim:" + form._dataFim + "|" +
-                    "Indicador:" + form.level1Id + "|" +
-                    "IndicadorNome:" + form.level1Name + "|" +
-                    "Monitoramento:" + form.level2Id + "|" +
-                    "MonitoramentoNome:" + form.level2Name + "|" +
-                    "Tarefa:" + form.level3Id+ "|" +
-                    "TarefaNome:" + form.level3Name + "|";
+                    "{ \"Unidade\" : \"" + form.unitId + "\", " +
+                    " \"UnidadeNome\" : \"" + form.unitName + "\", " +
+                    " \"DataInicio\" : \"" + form._dataInicio + "\", " +
+                    " \"DataFim\" : \"" + form._dataFim + "\", " +
+                    " \"Indicador\" : \"" + form.level1Id + "\", " +
+                    " \"IndicadorNome\" : \"" + form.level1Name + "\", " +
+                    " \"Monitoramento\" : \"" + form.level2Id + "\", " +
+                    " \"MonitoramentoNome\" : \"" + form.level2Name + "\", " +
+                    " \"Tarefa\" : \"" + form.level3Id+ "\", " +
+                    " \"TarefaNome\" : \"" + form.level3Name + "\", "+
+                    " \"Usuario\" : \"" + form.auditorId + "\", " +
+                    " \"UsuarioNome\": \"" + form.auditorName + "\" }";
 
                 db.LogJson.Add(log);
                 db.SaveChanges();

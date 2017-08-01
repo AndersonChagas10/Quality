@@ -3322,9 +3322,9 @@ namespace SgqSystem.Services
             {
                 culture = "en-us";
             }
-
-            string breadCrumb = "<ol class=\"breadcrumb\" breadmainlevel=\"Slaughter\"></ol>";
-
+            
+            string breadCrumb = "<ol class=\"breadcrumb\" breadmainlevel=\"Audit\"></ol>";
+            
             string selectPeriod = html.option("1", CommonData.getResource("period").Value.ToString() + " 1") +
                               html.option("2", CommonData.getResource("period").Value.ToString() + " 2") +
                               html.option("3", CommonData.getResource("period").Value.ToString() + " 3") +

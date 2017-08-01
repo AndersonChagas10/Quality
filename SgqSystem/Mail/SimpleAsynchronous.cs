@@ -12,9 +12,13 @@ using Helper;
 using AutoMapper;
 using DTO.DTO;
 using System.Threading.Tasks;
+using DTO.Helpers;
 
 namespace SgqSystem.Mail
 {
+    /// <summary>
+    /// Classe de serviços asyncronos, utilizada principalmnente pela instancia do HANGFIRE do SGQ
+    /// </summary>
     public class SimpleAsynchronous
     {
 
@@ -24,6 +28,12 @@ namespace SgqSystem.Mail
 
         #region SGQ Email
 
+        /// <summary>
+        /// Cria lista de emails na tabela EmailContent, a partir da tabela !!!DEVIATION!!!, TUDO que esta na EmailContent é enviado atravez do SGQ pelo send mail.
+        /// Os destinatários devem ser preenchidos neste método, e isneridos na tabela EmailContent corretamente. Devem ser separados por VIRGULA caso exista mais de um,
+        /// EX com 2 destinatários: EmailContent.To = "email1@teste.com, email2@teste.com"
+        /// EX com 1 destinatário: EmailContent.To = "email1@teste.com"
+        /// </summary>
         public static void CreateMailSgqAppDeviation()
         {
 
@@ -57,42 +67,36 @@ namespace SgqSystem.Mail
 
                             string emailEnviar = "sgq@jbs.com.br";
 
-
-
-                            if (m.AlertNumber == 1) {
-                           
+                            if (m.AlertNumber == 1)
+                            {
                                 emailEnviar = "camila.prata@jbs.com.br";
-
-                            } else if (m.AlertNumber == 2 || m.AlertNumber > 3)
-                            {
-                        
-                                emailEnviar = "camila.prata@jbs.com.br miria.gualberto@jbs.com.br";
-                                
-
                             }
-                            else if(m.AlertNumber == 3)
+                            else if (m.AlertNumber == 2 || m.AlertNumber > 3)
                             {
-                               
+                                emailEnviar = "miriagualberto@jbs.com.br";
+                            }
+                            else if (m.AlertNumber == 3)
+                            {
                                 emailEnviar = "mariana.martins@jbs.com.br";
-                               
                             }
 
-                           
-                                var newMail = new EmailContent()
-                                {
-                                    AddDate = DateTime.Now,
-                                    Body = subject + "<br><br>" + RemoveEspacos(body),
-                                    IsBodyHtml = true,
-                                    Subject = subject,
-                                    To = emailEnviar,
-                                    Project = "SGQApp"
-                                };
+                            emailEnviar = "celsogea@hotmail.com, celso.bernar";
 
-                                db.EmailContent.Add(newMail);
+                            var newMail = new EmailContent()
+                            {
+                                AddDate = DateTime.Now,
+                                Body = subject + "<br><br>" + RemoveEspacos(body),
+                                IsBodyHtml = true,
+                                Subject = subject,
+                                To = emailEnviar,
+                                Project = "SGQApp"
+                            };
 
-                          
+                            db.EmailContent.Add(newMail);
 
-                            
+
+
+
                             db.Database.ExecuteSqlCommand("UPDATE Deviation SET sendMail = 1 WHERE ID = " + m.Id);
 
                         }
@@ -111,6 +115,12 @@ namespace SgqSystem.Mail
 
         }
 
+        /// <summary>
+        /// Cria lista de emails na tabela EmailContent, a partir da tabela !!!CorrectiveAction!!!, TUDO que esta na EmailContent é enviado atravez do SGQ pelo send mail.
+        /// Os destinatários devem ser preenchidos neste método, e isneridos na tabela EmailContent corretamente. Devem ser separados por VIRGULA caso exista mais de um,
+        /// EX com 2 destinatários: EmailContent.To = "email1@teste.com, email2@teste.com"
+        /// EX com 1 destinatário: EmailContent.To = "email1@teste.com"
+        /// </summary>
         public static void CreateMailSgqAppCorrectiveAction()
         {
             try
@@ -160,6 +170,10 @@ namespace SgqSystem.Mail
 
         }
 
+        /// <summary>
+        /// Controle de chamadas para envio de email SGQ utilizando os email que estão na tabela EmailContent: (r => r.SendStatus == null && r.Project == "SGQApp"),
+        /// utiliza callback e configs da tabela SgqConfig
+        /// </summary>
         public static void SendMailFromDeviationSgqApp()
         {
             try
@@ -178,16 +192,21 @@ namespace SgqSystem.Mail
                 new CreateLog(new Exception("Erro no metodo [SendMailFromDeviationSgqApp]", ex));
                 throw ex;
             }
-
         }
 
+        /// <summary>
+        /// Metodo para testes de rotinas de email, pode ser chamado do GlobalConfig/Config
+        /// </summary>
+        /// <param name="mailTo"></param>
+        /// <param name="deviation"></param>
         public static void SendMailFromDeviationSgqAppTesteBR(string mailTo, bool deviation)
         {
             var emailFrom = "celsogea@hotmail.com";
-            var emailPass = "Thebost1";
+            var emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
             var emailSmtp = "smtp.live.com";
             var emailPort = 587;
             var emailSSL = true;
+         
 
             CreateMailSgqAppDeviation();
             CreateMailSgqAppCorrectiveAction();
@@ -199,16 +218,21 @@ namespace SgqSystem.Mail
                 foreach (var i in ListaDeMail.Take(3).ToList())
                 {
                     i.To = mailTo;
-                    Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), emailFrom, emailPass, emailSmtp, emailPort, emailSSL, SendCompletedCallbackSgq, true));
+                    //Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), GlobalConfig.emailFrom, GlobalConfig.emailPass, GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true));
+                    Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), emailFrom, Guard.DecryptStringAES(emailPass), emailSmtp, emailPort, emailSSL, SendCompletedCallbackSgq, true));
                 }
-
         }
 
+        /// <summary>
+        /// Metodo para testes de rotinas de email, pode ser chamado do GlobalConfig/Config
+        /// </summary>
+        /// <param name="mailTo"></param>
+        /// <param name="deviation"></param>
         public static void SendMailFromDeviationSgqAppTesteUSA(string mailTo)
         {
 
             var emailFrom = "celsogea@hotmail.com";
-            var emailPass = "Thebost1";
+            var emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
             var emailSmtp = "smtp.live.com";
             var emailPort = 587;
             var emailSSL = true;
@@ -223,11 +247,17 @@ namespace SgqSystem.Mail
                 foreach (var i in ListaDeMail.Take(3).ToList())
                 {
                     i.To = mailTo;
-                    Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), GlobalConfig.emailFrom, GlobalConfig.emailPass, GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true));
+                    Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), GlobalConfig.emailFrom, Guard.DecryptStringAES(GlobalConfig.emailPass), GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true));
                     //Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), emailFrom, emailPass, emailSmtp, emailPort, emailSSL, SendCompletedCallbackSgq, true));
                 }
         }
 
+        /// <summary>
+        /// Este callback preenche os campos AlterDate, SendDate, e SendStatus da tabela EmailContent, dos emails enviados, falhos, etc.... 
+        /// TODO email que executar este callback em seua chamada exibirá algum resultado refletido nestes campos.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public static void SendCompletedCallbackSgq(object sender, AsyncCompletedEventArgs e)
         {
             try
@@ -303,59 +333,13 @@ namespace SgqSystem.Mail
             }
         }
 
-        //private static EmailContent CreateMailUSAFromCOrrectiveAction(string mailTo)
-        //{
-        //    var testeMail = new EmailContent()
-        //    {
-        //        AddDate = DateTime.Now,
-        //        IsBodyHtml = true,
-        //        Subject = "teste v2",
-        //        To = mailTo,
-        //        Project = "SGQApp"
-        //    };
-        //    try
-        //    {
-        //        using (var db = new SgqDbDevEntities())
-        //        {
-        //            using (var controller = new CorrectActApiController())
-        //            {
-        //                var id = db.CorrectiveAction.OrderByDescending(r => r.Id).FirstOrDefault().Id;
-        //                var model = controller.GetCorrectiveActionById(id);
-        //                testeMail.Body = model.SendMeByMail;
-        //            }
-        //            db.EmailContent.Add(testeMail);
-        //            db.SaveChanges();
-        //        }
-        //        return testeMail;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        new CreateLog(new Exception("Erro no metodo [CreateMailUSAFromCOrrectiveAction]", ex), testeMail);
-        //        throw ex;
-        //    }
-        //}
-        
         #endregion
-
-        private static string RemoveEspacos(string deviationMessage)
-        {
-            try
-            {
-                var result = string.Empty;
-                foreach (var i in deviationMessage.Split('>'))
-                    result += i.TrimStart().TrimEnd() + "> ";
-
-                return result.Substring(0, result.IndexOf("<button"));
-            }
-            catch (Exception e)
-            {
-                new CreateLog(e);
-                return deviationMessage;
-            }
-        }
 
         #region ResendProcessJson
 
+        /// <summary>
+        /// Reenvia a solicitação para reprocesamento do Json salvo pela coleta de TODOS os registros aonde CollectionJson.Where(r => !r.IsProcessed)
+        /// </summary>
         public static void ResendProcessJson()
         {
             using (var db = new SgqDbDevEntities())
@@ -375,6 +359,32 @@ namespace SgqSystem.Mail
                         }
                     }
                 }
+            }
+        }
+
+        #endregion
+
+        #region Auxiliares
+
+        /// <summary>
+        /// Remove espaços desnecessários em partes do HTML salvos nas tabelas deviation ou corrective action.
+        /// </summary>
+        /// <param name="deviationMessage"></param>
+        /// <returns></returns>
+        private static string RemoveEspacos(string deviationMessage)
+        {
+            try
+            {
+                var result = string.Empty;
+                foreach (var i in deviationMessage.Split('>'))
+                    result += i.TrimStart().TrimEnd() + "> ";
+
+                return result.Substring(0, result.IndexOf("<button"));
+            }
+            catch (Exception e)
+            {
+                new CreateLog(e);
+                return deviationMessage;
             }
         }
 

@@ -83,6 +83,10 @@ namespace Data.Repositories
 
         public void Update(T obj)
         {
+            //var old = DB.ParStructure.Find(obj.Id);
+            //DB.Entry(old).CurrentValues.SetValues(obj);
+            //DB.SaveChanges();
+
             //VerificaElementoInexistenteEmDb(obj);
             verifyDate(obj, "AlterDate");
             Entity.Attach(obj);

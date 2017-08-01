@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dominio", "Dominio\Dominio.csproj", "{777D8E88-0D52-446A-BC77-2F50A7D936E5}"
 EndProject
@@ -36,6 +36,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YTOARA_DOMINIO", "YTOARA_DOMINIO\YTOARA_DOMINIO.csproj", "{02CFB056-37CE-40F2-8790-0D47BC6D2B59}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SgqSystem.Tests", "SgqSystem.Tests\SgqSystem.Tests.csproj", "{7214EE4F-5B17-42A6-9387-0B0BE979E08D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB Scripts", "DB Scripts", "{62235ADA-D5E9-4526-9AD5-CAFAF4DC363E}"
+	ProjectSection(SolutionItems) = preProject
+		Em desenvolvimento.txt = Em desenvolvimento.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ja implementado aporvado", "Ja implementado aporvado", "{808314E8-18AF-481B-A15F-AC2A36EFCA75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -108,5 +115,6 @@ Global
 		{2901B555-2F1A-4B5A-BE9D-1D50844E0F2A} = {716C9494-D29A-4CB7-AC2A-D6303127A795}
 		{02CFB056-37CE-40F2-8790-0D47BC6D2B59} = {C1002FDC-28A0-4D38-B2AD-1F3E1D580629}
 		{7214EE4F-5B17-42A6-9387-0B0BE979E08D} = {EA53B2C1-DA5F-46EC-B4AC-4B4D63AE84E5}
+		{808314E8-18AF-481B-A15F-AC2A36EFCA75} = {62235ADA-D5E9-4526-9AD5-CAFAF4DC363E}
 	EndGlobalSection
 EndGlobal
