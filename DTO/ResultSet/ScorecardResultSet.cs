@@ -142,7 +142,7 @@ public class ScorecardResultSet
                 //"\n     cast(C2.CollectionDate as DATE) AS DATA " +
                 "\n     C.Id AS UNIDADE " +
                 "\n     , C2.ParLevel1_Id AS INDICADOR " +
-                "\n , COUNT(DISTINCT CONCAT(C2.EvaluationNumber, C2.Sample, cast(cast(C2.CollectionDate as date) as varchar))) AM " +
+                "\n , COUNT(DISTINCT CONCAT(c2.Period, '-', c2.shift, '-', C2.EvaluationNumber, '-', C2.Sample, '-', cast(cast(C2.CollectionDate as date) as varchar))) AM  " +
                 "\n , SUM(IIF(C2.WeiDefects = 0, 0, 1)) DEF_AM " +
                 //"\n     , C2.EvaluationNumber AS AV " +
                 // "\n     , C2.Sample AS AM " +

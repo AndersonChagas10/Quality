@@ -1040,6 +1040,11 @@ namespace SgqSystem.Services
 
                         var updateConsolidationLevel1Id = updateConsolidationLevel1(ConsolidationLevel1_Id, AlertLevel, avaliacaoultimoalerta, monitoramentoultimoalerta, consolidationLevel1XConsolidationLevel2);
 
+                        if (filho)
+                        {
+                            ReconsolidationToLevel3(CollectionLevel2Id.ToString());
+                        }
+
                     }
                     else if (string.IsNullOrEmpty(c.Level03ResultJSon))
                     {
