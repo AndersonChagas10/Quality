@@ -198,7 +198,11 @@ namespace DTO.DTO
                 if (Id <= 0)
                     return string.Empty;
 
-                var body = "<div class='header' style='font-size:14px;font-weight:bold'>";
+                if (Unit == null)
+                    return string.Empty;
+
+
+                    var body = "<div class='header' style='font-size:14px;font-weight:bold'>";
                 if (GlobalConfig.Eua)
                     body += "    <div class='unitCode'>JBS <span id='estName'>" + Unit.Name + "</span> Beef, Est. <span id='estCode'>" + Unit.Code + "</span></div>";
                 if (GlobalConfig.Brasil)
