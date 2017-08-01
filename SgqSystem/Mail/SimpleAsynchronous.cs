@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using DTO.Helpers;
 using Newtonsoft.Json.Linq;
 using System.Data.Entity;
+using System.Net.Http;
 
 namespace SgqSystem.Mail
 {
@@ -29,6 +30,34 @@ namespace SgqSystem.Mail
         private static bool running { get; set; }
 
         #region SGQ Email
+
+        /// <summary>
+        /// Realiza Chamada para API de outro SERVIDOR
+        /// </summary>
+        public static void Mail()
+        {
+            using (var client = new HttpClient())
+            {
+                var url = "http://mtzsvmqsc/SGQ/api/hf/SendMail";
+                //var url = "http://localhost:57506/" + "api/hf/SendMail";
+                client.Timeout = TimeSpan.FromMinutes(2);
+                client.GetAsync(url).Result.Content.ReadAsStringAsync();
+            }
+        }
+
+        /// <summary>
+        /// Realiza Chamada para API de outro SERVIDOR
+        /// </summary>
+        public static void Reconsolidacao()
+        {
+            using (var client = new HttpClient())
+            {
+                var url = "http://mtzsvmqsc/SGQ/api/hf/SendMail";
+                //var url = "http://localhost:57506/" + "api/hf/Reconsolidacao";
+                client.Timeout = TimeSpan.FromMinutes(2);
+                client.GetAsync(url).Result.Content.ReadAsStringAsync();
+            }
+        }
 
         /// <summary>
         /// Controle de chamadas para envio de email SGQ utilizando os email que estão na tabela EmailContent: (r => r.SendStatus == null && r.Project == "SGQApp"),

@@ -33,14 +33,14 @@ namespace SgqSystem
             //"*/1 * * * *" = 1 minutos.
             RecurringJob.RemoveIfExists("ReProcessJson");
             RecurringJob.AddOrUpdate("ReProcessJson",
-                () => SimpleAsynchronous.ResendProcessJson(),
+                () => SimpleAsynchronous.Reconsolidacao(),
                 "*/15 * * * *");
 
 
             //"*/1 * * * *" = 1 minutos.
             RecurringJob.RemoveIfExists("MailServer");
             RecurringJob.AddOrUpdate("MailServer",
-                () => SimpleAsynchronous.SendMailFromDeviationSgqApp(),
+                () => SimpleAsynchronous.Mail(),
                 "*/2 * * * *");
 
 
