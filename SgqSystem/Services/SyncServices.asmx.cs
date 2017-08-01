@@ -1040,6 +1040,11 @@ namespace SgqSystem.Services
 
                         var updateConsolidationLevel1Id = updateConsolidationLevel1(ConsolidationLevel1_Id, AlertLevel, avaliacaoultimoalerta, monitoramentoultimoalerta, consolidationLevel1XConsolidationLevel2);
 
+                        if (filho)
+                        {
+                            ReconsolidationToLevel3(CollectionLevel2Id.ToString());
+                        }
+
                     }
                     else if (string.IsNullOrEmpty(c.Level03ResultJSon))
                     {
@@ -5849,7 +5854,7 @@ namespace SgqSystem.Services
 
                 sql += "INSERT INTO Deviation ([ParCompany_Id],[ParLevel1_Id],[ParLevel2_Id],[Evaluation],[Sample],[AlertNumber],[Defects],[DeviationDate],[AddDate],[sendMail], [DeviationMessage]) " +
                         "VALUES " +
-                        "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', '" + dt.ToString("yyyyMMdd") + "' , GetDate(), 0, " + HttpUtility.UrlDecode(deviationMessage) + ")";
+                        "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', '" + dt.ToString("yyyyMMdd HH:mm:ss") + "' , GetDate(), 0, " + HttpUtility.UrlDecode(deviationMessage) + ")";
             }
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
