@@ -36,12 +36,20 @@ namespace SgqSystem.Mail
         /// </summary>
         public static void Mail()
         {
-            using (var client = new HttpClient())
+            try
             {
-                var url = "http://mtzsvmqsc/SGQ/api/hf/SendMail";
-                //var url = "http://localhost:57506/" + "api/hf/SendMail";
-                client.Timeout = TimeSpan.FromMinutes(2);
-                client.GetAsync(url).Result.Content.ReadAsStringAsync();
+                using (var client = new HttpClient())
+                {
+                    var url = "http://mtzsvmqsc/SGQ/api/hf/SendMail";
+                    //var url = "http://localhost:57506/" + "api/hf/SendMail";
+                    //var url = "http://localhost:8091/SgqSystem/" + "api/hf/SendMail";
+                    client.Timeout = TimeSpan.FromMinutes(2);
+                    client.GetAsync(url).Result.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                
             }
         }
 
@@ -50,12 +58,19 @@ namespace SgqSystem.Mail
         /// </summary>
         public static void Reconsolidacao()
         {
-            using (var client = new HttpClient())
+            try
             {
-                var url = "http://mtzsvmqsc/SGQ/api/hf/SendMail";
-                //var url = "http://localhost:57506/" + "api/hf/Reconsolidacao";
-                client.Timeout = TimeSpan.FromMinutes(2);
-                client.GetAsync(url).Result.Content.ReadAsStringAsync();
+                using (var client = new HttpClient())
+                {
+                    var url = "http://mtzsvmqsc/SGQ/api/hf/SendMail";
+                    //var url = "http://localhost:57506/" + "api/hf/Reconsolidacao";
+                    client.Timeout = TimeSpan.FromMinutes(2);
+                    client.GetAsync(url).Result.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception e)
+            {
+
             }
         }
 
@@ -242,16 +257,16 @@ namespace SgqSystem.Mail
                 Project = "SGQApp"
             };
 
-            if (alertNumber > 1)
-            {
-                var alerta = m.AlertNumber - 1;
-                var deviationAnterior = db.Deviation.Where(r => r.AlertNumber == alerta && r.ParCompany_Id == m.ParCompany_Id && r.ParLevel1_Id == m.ParLevel1_Id && r.DeviationMessage != null).OrderByDescending(r => r.DeviationDate).FirstOrDefault();
-                if (deviationAnterior != null)
-                {
-                    newMail.Body += "<hr><br> Alerta Anterior: <br><br>";
-                    newMail.Body += GetMailByDeviation(db, deviationAnterior, alerta).Body;
-                }
-            }
+            //if (alertNumber > 1)
+            //{
+            //    var alerta = m.AlertNumber - 1;
+            //    var deviationAnterior = db.Deviation.Where(r => r.AlertNumber == alerta && r.ParCompany_Id == m.ParCompany_Id && r.ParLevel1_Id == m.ParLevel1_Id && r.DeviationMessage != null).OrderByDescending(r => r.DeviationDate).FirstOrDefault();
+            //    if (deviationAnterior != null)
+            //    {
+            //        newMail.Body += "<hr><br> Alerta Anterior: <br><br>";
+            //        newMail.Body += GetMailByDeviation(db, deviationAnterior, alerta).Body;
+            //    }
+            //}
 
             return newMail;
         }
