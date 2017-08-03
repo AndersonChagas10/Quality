@@ -1,5 +1,6 @@
 ﻿using ADOFactory;
 using AutoMapper;
+using Newtonsoft.Json.Linq;
 using PlanoAcaoCore;
 using PlanoAcaoCore.Acao;
 using PlanoDeAcaoMVC.PaMail;
@@ -126,6 +127,53 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         {
             //var acao = Mapper.Map<PlanoAcaoEF.Pa_Acao>(obj);
 
+            GetLevelName(acao);
+
+            GetUnidadeName(acao);
+
+            Salvar(acao);
+
+        }
+
+        private void GetUnidadeName(PlanoAcaoEF.Pa_Acao acao)
+        {
+            using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
+            {
+                acao.UnidadeName = QueryNinja(db, "SELECT * from PA_UNIDADE WHERE ID = " + acao.Unidade_Id).FirstOrDefault().GetValue("Description").Value<string>();
+            }
+        }
+
+        private void GetLevelName(PlanoAcaoEF.Pa_Acao acao)
+        {
+            using (var db = new Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
+            {
+                try
+                {
+                    if (acao.Level1Id > 0)
+                    {
+                        acao.Level1Name = db.QueryNinjaADO("SELECT Name FROM ParLevel1 WHERE ID = " + acao.Level1Id).FirstOrDefault().GetValue("Name").Value<string>();
+                    }
+
+                    if (acao.Level2Id > 0)
+                    {
+                        acao.Level2Name = db.QueryNinjaADO("SELECT Name FROM ParLevel2 WHERE ID = " + acao.Level2Id).FirstOrDefault().GetValue("Name").Value<string>();
+                    }
+
+                    if (acao.Level3Id > 0)
+                    {
+                        acao.Level3Name = db.QueryNinjaADO("SELECT Name FROM ParLevel3 WHERE ID = " + acao.Level3Id).FirstOrDefault().GetValue("Name").Value<string>();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+            }
+        }
+
+        private static void Salvar(PlanoAcaoEF.Pa_Acao acao)
+        {
             using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
             {
                 if (acao.Id > 0)
@@ -144,7 +192,6 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                     db.SaveChanges();
                 }
             }
-
         }
 
         private void SalvaFTA(PlanoAcaoEF.Pa_FTA fta)

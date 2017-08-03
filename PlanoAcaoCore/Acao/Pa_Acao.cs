@@ -97,6 +97,18 @@ namespace PlanoAcaoCore
         [Display(Name = "Contramedida Especifica")]
         public string ContramedidaEspecifica { get; set; }
 
+        [Display(Name = "Indicador")]
+        public string Level1Name { get; set; }
+
+        [Display(Name = "Monitoramento")]
+        public string Level2Name { get; set; }
+
+        [Display(Name = "Tarefa")]
+        public string Level3Name { get; set; }
+
+        [Display(Name = "Unidade")]
+        public string UnidadeName { get; set; }
+
         public int TipoIndicador { get; set; }
 
         //public List<Pa_AcaoXQuem> AcaoXQuem { get; set; }
@@ -341,6 +353,5 @@ namespace PlanoAcaoCore
         }
 
         //public Pa_CausaMedidasXAcao CausaMedidasXAcao { get; set; }
-
     }
 }

@@ -41,5 +41,11 @@ namespace PlanoAcaoEF
         public string ContramedidaEspecifica { get; set; }
         public Nullable<int> TipoIndicador { get; set; }
         public Nullable<int> Fta_Id { get; set; }
+        public string Observacao { get; set; }
+        public string Level1Name { get; set; }
+        public string Level2Name { get; set; }
+        public string Level3Name { get; set; }
+        public string Regional { get; set; }
+        public string UnidadeName { get; set; }
     }
 }
