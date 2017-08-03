@@ -7,6 +7,7 @@
     var urlNaoConformidade = Url.Action("NaoConformidade", "RelatoriosSgq");
     var urlVerificacaoTipificacao = Url.Action("VerificacaoTipificacao", "RelatoriosSgq");
     var urlVisaoGeralDaArea = Url.Action("VisaoGeralDaArea", "RelatoriosSgq");
+    var urlPlanoDeAcao = "http://mtzsvmqsc/PlanoDeAcao";
 }
 
 <style>
@@ -283,7 +284,7 @@
                         @*<li><a href="#">@Resources.Resource.general_view_of_the_area (Em Desenvolvimento)</a>*@
                         <li><a href="@urlVisaoGeralDaArea">@Resources.Resource.general_view_of_the_area</a>
 
-                        <li><a href="#">@Resources.Resource.action_plan</a></li>
+                        <li><a href="@urlPlanoDeAcao">@Resources.Resource.action_plan</a></li>
                     </ul>
 
                 </div>

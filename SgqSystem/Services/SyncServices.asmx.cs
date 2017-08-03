@@ -939,7 +939,7 @@ namespace SgqSystem.Services
                         }
 
 
-                        if (IsBEA == 3 || IsBEA == 2)
+                        if (IsBEA == 3 || IsBEA == 2 || c.level01_Id == 43 || c.level01_Id == 42)
                                 ReconsolidationToLevel3(CollectionLevel2Id.ToString());
 
                         headersContadores = headersContadores.Replace("</header><header>", ";").Replace("<header>", "").Replace("</header>", "");
@@ -3357,6 +3357,8 @@ namespace SgqSystem.Services
 
             buttons += " <button id=\"btnSaveAllTemp\" class=\"btn btn-lg btn-warning hide\"><i id=\"saveIcon\" class=\"fa fa-save\"></i><i id=\"loadIcon\" class=\"fa fa-circle-o-notch fa-spin\" style=\"display:none;\"></i></button>";
 
+            buttons += " <button id=\"btnCA\" class=\"btn btn-lg btn-danger hide\">"+ Resources.Resource.corrective_action + "</button>";
+            
             string message = "<div class=\"message padding20\" style=\"display:none\">                                                                                      " +
                              "   <h1 class=\"head\">Titulo</h1>                                                                                                           " +
                              "   <div class=\"body font16\">Mensagem</div>                                                                                                " +
