@@ -137,9 +137,13 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
         private void GetUnidadeName(PlanoAcaoEF.Pa_Acao acao)
         {
-            using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
+
+            if(acao.Unidade_Id > 0)
             {
-                acao.UnidadeName = QueryNinja(db, "SELECT * from PA_UNIDADE WHERE ID = " + acao.Unidade_Id).FirstOrDefault().GetValue("Description").Value<string>();
+                using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
+                {
+                    acao.UnidadeName = QueryNinja(db, "SELECT * from PA_UNIDADE WHERE ID = " + acao.Unidade_Id).FirstOrDefault().GetValue("Description").Value<string>();
+                }
             }
         }
 
