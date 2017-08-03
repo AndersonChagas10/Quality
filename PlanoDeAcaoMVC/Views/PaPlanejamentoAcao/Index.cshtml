@@ -1206,7 +1206,7 @@
                         //    bgColorStatus = "yellow"
                         //}
 
-                        $(row.cells[31]).css("background", bgColorStatus);
+                        $(row.cells[35]).css("background", bgColorStatus);
 
                         /*Prazo*/
                         if (data.Acao.Status == 2) {
@@ -1219,44 +1219,44 @@
                             bgColorPrazo = "rgb(250, 128, 114)"
                         }
 
-                        $(row.cells[32]).css("background", bgColorPrazo);
+                        $(row.cells[36]).css("background", bgColorPrazo);
 
                         if (data.Tatico_Id > 0) { // possui plan tatico
-                            $(row.cells[33]).find('.btnNovoOperacional').show();
+                            $(row.cells[37]).find('.btnNovoOperacional').show();
                         } else {
-                            $(row.cells[33]).find('.btnNovoOperacional').hide();
+                            $(row.cells[37]).find('.btnNovoOperacional').hide();
                         }
 
                         if (data.Id > 0) { // Possui plan Estrat
-                            $(row.cells[33]).find('.btnNovoTatico').show();
+                            $(row.cells[37]).find('.btnNovoTatico').show();
                         } else {
-                            $(row.cells[33]).find('.btnNovoTatico').hide();
+                            $(row.cells[37]).find('.btnNovoTatico').hide();
                         }
 
                         if (data.Acao.Id > 0) { // Possui plan Operac
-                            $(row.cells[33]).find('.btnAcompanhamento').show();
+                            $(row.cells[37]).find('.btnAcompanhamento').show();
                         } else {
-                            $(row.cells[33]).find('.btnAcompanhamento').hide();
+                            $(row.cells[37]).find('.btnAcompanhamento').hide();
                         }
 
                     } catch (e) { }
 
                     if (data.Tatico_Id > 0) { // possui plan tatico
-                        $(row.cells[33]).find('.btnNovoOperacional').show();
+                        $(row.cells[37]).find('.btnNovoOperacional').show();
                     } else {
-                        $(row.cells[33]).find('.btnNovoOperacional').hide();
+                        $(row.cells[37]).find('.btnNovoOperacional').hide();
                     }
 
                     if (data.Id > 0) { // Possui plan Estrat
-                        $(row.cells[33]).find('.btnNovoTatico').show();
+                        $(row.cells[37]).find('.btnNovoTatico').show();
                     } else {
-                        $(row.cells[33]).find('.btnNovoTatico').hide();
+                        $(row.cells[37]).find('.btnNovoTatico').hide();
                     }
 
                     if (data.Acao.Id > 0) { // Possui plan Operac
-                        $(row.cells[33]).find('.btnAcompanhamento').show();
+                        $(row.cells[37]).find('.btnAcompanhamento').show();
                     } else {
-                        $(row.cells[33]).find('.btnAcompanhamento').hide();
+                        $(row.cells[37]).find('.btnAcompanhamento').hide();
                     }
 
                 },
