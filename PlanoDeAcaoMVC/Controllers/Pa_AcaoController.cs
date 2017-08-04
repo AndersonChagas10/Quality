@@ -188,7 +188,7 @@ namespace PlanoDeAcaoMVC.Controllers
         [HttpGet]
         public ActionResult NewFTA(FTA fta)
         {
-            ViewBag.PlanejamentosComFTA = GetPlanejamentoId();
+            ViewBag.PlanejamentosComFTA = GetPlanejamentoFTAId();
             fta.ValidaFTA();
             NovoFtaModelParaSgq(fta);
             return View(fta);
@@ -275,13 +275,13 @@ namespace PlanoDeAcaoMVC.Controllers
 
         }
 
-        private int GetPlanejamentoId()
+        private int GetPlanejamentoFTAId()
         {
-            var novoPlanejamentoTatico = Mapper.Map<Pa_Planejamento>(db.Pa_Planejamento.FirstOrDefault(r => r.Estrategico_Id != null));
+            var novoPlanejamentoTatico = Mapper.Map<Pa_Planejamento>(db.Pa_Planejamento.FirstOrDefault(r => r.IsFta == true));
 
             if (novoPlanejamentoTatico == null)
                 using (var apiTmp = new ApiPa_PlanejamentoController())
-                    novoPlanejamentoTatico = apiTmp.CreateGenericEstrategicoTatico();
+                    novoPlanejamentoTatico = apiTmp.CreateGenericEstrategicoTaticoFta();
 
             return novoPlanejamentoTatico.Id;
         }

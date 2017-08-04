@@ -164,6 +164,35 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         }
 
 
+        public Pa_Planejamento CreateGenericEstrategicoTaticoFta()
+        {
+            //db.Database.ExecuteSqlCommand("Insert into pa_planejamento (IsFta, IsTatico) values (1, 0)");
+            //db.Database.ExecuteSqlCommand("Insert into pa_planejamento (IsFta, IsTatico, Estrategico_Id) values (1, 1, (select Top 1 Id from pa_planejamento))");
+
+            var estrategico = new PlanoAcaoEF.Pa_Planejamento() { IsTatico = false };
+            estrategico.Tatico_Id = null;
+            estrategico.Gerencia_Id = 0;
+            estrategico.Coordenacao_Id = 0;
+            estrategico.Iniciativa_Id = 0;
+            estrategico.ObjetivoGerencial_Id = 0;
+            estrategico.Responsavel_Projeto = 0;
+            estrategico.UnidadeDeMedida_Id = 0;
+            estrategico.IndicadoresDeProjeto_Id = 0;
+            SavePlanejamentoInDb(estrategico);
+
+            var tatico = new PlanoAcaoEF.Pa_Planejamento() { IsTatico = true, Estrategico_Id = estrategico.Id };
+            SavePlanejamentoInDb(tatico);
+            tatico.Tatico_Id = tatico.Id;
+            tatico.IsFta = true;
+            SavePlanejamentoInDb(tatico);
+
+            //var cuelho = db.Pa_Planejamento.OrderByDescending(r => r.Id).FirstOrDefault();
+            //var cuelho = db.Pa_Planejamento.FirstOrDefault(r => r.Estrategico_Id != null);
+
+            return Mapper.Map<Pa_Planejamento>(tatico);
+        }
+
+
         private void SavePlanejamentoInDb(PlanoAcaoEF.Pa_Planejamento a)
         {
             if (a.Id > 0)
