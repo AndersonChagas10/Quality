@@ -109,6 +109,9 @@ namespace PlanoAcaoCore
         [Display(Name = "Unidade")]
         public string UnidadeName { get; set; }
 
+        [Display(Name = "Regional")]
+        public string Regional { get; set; }
+
         public int TipoIndicador { get; set; }
 
         //public List<Pa_AcaoXQuem> AcaoXQuem { get; set; }
