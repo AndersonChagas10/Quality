@@ -379,8 +379,14 @@
                                     enviar['PercentualNCFTA'] = this.y;
                                     enviar['ReincidenciaDesvioFTA'] = nc[this.x];
                                     enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
+                                    enviar['byName'] = true;
+                                    $.post('@Url.Action("GetUnitId","api/Fta")', enviar, function(c){
+                                        enviar["unitId"] = c.unitId;
+                                        //enviar["MetaFTA"] = "0";
+                                        RedirecionaParaFTA(enviar);
+                                    });
                                     //EasyAjax(urlGetFta, enviar, RedirecionaParaFTA);
-                                    RedirecionaParaFTA(enviar);
+                                    //RedirecionaParaFTA(enviar);
                                 }
                             }
                         },
@@ -404,8 +410,14 @@
                                     enviar['PercentualNCFTA'] = this.y;
                                     enviar['ReincidenciaDesvioFTA'] = nc[this.x];
                                     enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
+                                    enviar['byName'] = true;
+                                    $.post('@Url.Action("GetUnitId", "api/Fta")', enviar, function(c){
+                                        enviar["unitId"] = c.unitId;
+                                        //enviar["MetaFTA"] = "0";
+                                        RedirecionaParaFTA(enviar);
+                                    });
                                     //EasyAjax(urlGetFta, enviar, RedirecionaParaFTA);
-                                    RedirecionaParaFTA(enviar);
+                                    //RedirecionaParaFTA(enviar);
                                 }
                             }
                         },
@@ -463,6 +475,7 @@
         function requisitaDadosSGQparaGerarFta(tarefa) {
             enviar['level3Name'] = tarefa;
             enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
+            //enviar['unitId'] =
             EasyAjax(urlGetFta, enviar, RedirecionaParaFTA);
         }
 
