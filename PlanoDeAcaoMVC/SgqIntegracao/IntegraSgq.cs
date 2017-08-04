@@ -2,6 +2,7 @@
 using DTO.DTO;
 using DTO.DTO.Params;
 using PlanoAcaoCore;
+using PlanoDeAcaoMVC.SgqIntegracao;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -25,7 +26,7 @@ namespace PlanoDeAcaoMVC
             var parcompany = new List<ParCompanyDTO>();
             var usersgq = new List<UserDTO>();
 
-            using (var db = new Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
+            using (var db = new ConexaoSgq().db)
             {
                 var level1 = db.SearchQuery<ParLevel1DTO>("Select * from parlevel1 WHERE IsActive = 1").ToList();
                 var level2 = db.SearchQuery<ParLevel1DTO>("Select * from parlevel2 WHERE IsActive = 1").ToList();
