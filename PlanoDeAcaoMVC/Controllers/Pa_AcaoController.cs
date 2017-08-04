@@ -6,6 +6,7 @@ using DTO.Helpers;
 using Newtonsoft.Json.Linq;
 using PlanoAcaoCore;
 using PlanoAcaoCore.Acao;
+using PlanoDeAcaoMVC.Controllers.Api;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -187,7 +188,7 @@ namespace PlanoDeAcaoMVC.Controllers
         [HttpGet]
         public ActionResult NewFTA(FTA fta)
         {
-            ViewBag.PlanejamentosComFTA = db.Pa_Planejamento.FirstOrDefault(r => r.IsFta == true).Id;
+            ViewBag.PlanejamentosComFTA = GetPlanejamentoId();
             fta.ValidaFTA();
             NovoFtaModelParaSgq(fta);
             return View(fta);
@@ -272,6 +273,17 @@ namespace PlanoDeAcaoMVC.Controllers
 
             return View("NewFTA", fta);
 
+        }
+
+        private int GetPlanejamentoId()
+        {
+            var novoPlanejamentoTatico = Mapper.Map<Pa_Planejamento>(db.Pa_Planejamento.FirstOrDefault(r => r.Estrategico_Id != null));
+
+            if (novoPlanejamentoTatico == null)
+                using (var apiTmp = new ApiPa_PlanejamentoController())
+                    novoPlanejamentoTatico = apiTmp.CreateGenericEstrategicoTatico();
+
+            return novoPlanejamentoTatico.Id;
         }
 
         #endregion
