@@ -13,52 +13,52 @@
         public static string TitileMailNovaAcao = "Plano de Ação - Nova Ação.";
         public static string TitileMailNovoFTA = "Plano de Ação - Novo Relatório de Análise de Desvio criado.";
 
-        //Config para dev GRT
-        //Local Db
-        public static string catalog { get { return "PlanoDeAcao"; } }
-        public static string dataSource { get { return @"dellgabriel\MSSQL2014"; } }
-        public static string user { get { return "sa"; } }
-        public static string pass { get { return "betsy1"; } }
-
-        //Remoto SGQ
-        public static string catalog2 { get { return "dbGQualidade_JBS"; } }
-        public static string dataSource2 { get { return @"dellgabriel\MSSQL2014"; } }
-        public static string user2 { get { return "sa"; } }
-        public static string pass2 { get { return "betsy1"; } }
-
-        public static string selfRoot { get { return "http://localhost:59907/"; } }
-        public static string SgqHost { get { return "http://localhost:8091/SgqSystem/api/User/AuthenticationLogin"; } }
-
-        public static string emailFrom = "celsogea@hotmail.com";
-        public static string emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
-        public static string emailSmtp = "smtp.live.com";
-        public static int emailPort = 587;
-        public static bool emailSSL = true;
-
-        ////Config para dev GRT UTILIZAÇÃO LOCAL
-        ////Local Db GRT UTILIZAÇÃO LOCAL
-        //public static string catalog { get { return "PlanoDeAcao_GRT"; } }
         ////Config para dev GRT
         ////Local Db
         //public static string catalog { get { return "PlanoDeAcao"; } }
-        //public static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
+        //public static string dataSource { get { return @"dellgabriel\MSSQL2014"; } }
         //public static string user { get { return "sa"; } }
-        //public static string pass { get { return "1qazmko0"; } }
+        //public static string pass { get { return "betsy1"; } }
 
         ////Remoto SGQ
         //public static string catalog2 { get { return "dbGQualidade_JBS"; } }
-        //public static string dataSource2 { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
+        //public static string dataSource2 { get { return @"dellgabriel\MSSQL2014"; } }
         //public static string user2 { get { return "sa"; } }
-        //public static string pass2 { get { return "1qazmko0"; } }
+        //public static string pass2 { get { return "betsy1"; } }
 
-        //public static string selfRoot { get { return "http://192.168.25.200/PlanoAcao/"; } }
-        //public static string SgqHost { get { return "http://192.168.25.200/sgqbr/api/User/AuthenticationLogin"; } }
+        //public static string selfRoot { get { return "http://localhost:59907/"; } }
+        //public static string SgqHost { get { return "http://localhost:8091/SgqSystem/api/User/AuthenticationLogin"; } }
 
         //public static string emailFrom = "celsogea@hotmail.com";
         //public static string emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
         //public static string emailSmtp = "smtp.live.com";
         //public static int emailPort = 587;
         //public static bool emailSSL = true;
+
+        //Config para dev GRT UTILIZAÇÃO LOCAL
+        //Local Db GRT UTILIZAÇÃO LOCAL
+        //public static string catalog { get { return "PlanoDeAcao_GRT"; } }
+        //Config para dev GRT
+        //Local Db
+        public static string catalog { get { return "PlanoDeAcao"; } }
+        public static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
+        public static string user { get { return "sa"; } }
+        public static string pass { get { return "1qazmko0"; } }
+
+        //Remoto SGQ
+        public static string catalog2 { get { return "dbGQualidade_JBS"; } }
+        public static string dataSource2 { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
+        public static string user2 { get { return "sa"; } }
+        public static string pass2 { get { return "1qazmko0"; } }
+
+        public static string selfRoot { get { return "http://192.168.25.200/PlanoAcao/"; } }
+        public static string SgqHost { get { return "http://192.168.25.200/sgqbr/api/User/AuthenticationLogin"; } }
+
+        public static string emailFrom = "celsogea@hotmail.com";
+        public static string emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
+        public static string emailSmtp = "smtp.live.com";
+        public static int emailPort = 587;
+        public static bool emailSSL = true;
 
         //Config para dev GRT UTILIZAÇÃO LOCAL
         //Local Db GRT UTILIZAÇÃO LOCAL
