@@ -1481,7 +1481,7 @@
             enviar['level3Name'] = tarefa;
             enviar['PercentualNCFTA'] = percentualNc;
             enviar['ReincidenciaDesvioFTA'] = nc;
-            enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
+            enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];           
             $.post('@Url.Action("GetUnitId","api/Fta")', enviar, function(c){
                 enviar["unitId"] = c.unitId;
                 enviar["MetaFTA"] = "0";

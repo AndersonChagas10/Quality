@@ -744,7 +744,7 @@ namespace SgqSystem.Controllers.Api
                             "<label for='Conforme: '> " + GetResources.getResource("new_value").Value.ToString() + ": </label> &nbsp " +
                              "<input type='text' id='intervaloValor' class='form-control decimal' value=" + Value + " />" +
                             "<br>" +
-                            "<label for='Conforme: '> " + GetResources.getResource("not_accordance").Value.ToString() + ": </label> &nbsp " +
+                            "<label for='Conforme: '> " + GetResources.getResource("unvalued").Value.ToString() + ": </label> &nbsp " +
                              "<input type='checkbox' id='IsEvaluated' " + naoAvaliado + " class='.check-box' />" +
                         "</div>";
             }

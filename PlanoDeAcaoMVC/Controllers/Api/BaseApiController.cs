@@ -143,7 +143,11 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 {
                     var paUser = Pa_Quem.Get(idQuem.GetValueOrDefault());
                     dynamic enviarPara = dbSgq.QueryNinjaADO("SELECT * FROM UserSgq WHERE Name  = '" + paUser.Name + "'").FirstOrDefault();
-                    string emailTo = enviarPara.Email;
+                    string emailTo = "";
+                    if (enviarPara != null)
+                    {
+                        emailTo = enviarPara.Email;
+                    }
 
                     var todoConteudo = string.Empty;
 
