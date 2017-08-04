@@ -931,10 +931,10 @@ namespace SgqSystem.Controllers
 
             //Dados das colunas do corpo da tabela de dados central
             var query1 = "SELECT PP1.Name as CLASSIFIC_NEGOCIO, Reg.Name as MACROPROCESSO, " +
-                  "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
-                  "\n " + getMetaScore().ToString() + "  as ORCADO, " +
-                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) end as DESVIO, " +
-                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / " + getMetaScore().ToString() + " * 100 end as \"DESVIOPERCENTUAL\" " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end )) / " + getMetaScore().ToString() + " * 100 end as decimal (10,1)),2) as varchar) end as \"DESVIOPERCENTUAL\" " +
                    "\n FROM ParStructure Reg " +
                     "\n  LEFT JOIN ParCompanyXStructure CS " +
                     "\n  ON CS.ParStructure_Id = Reg.Id " +
@@ -961,10 +961,10 @@ namespace SgqSystem.Controllers
             // Total Direita
             var query2 =
            "SELECT PP1.Name as CLASSIFIC_NEGOCIO," +
-                  "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
-                  "\n " + getMetaScore().ToString() + "  as ORCADO, " +
-                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) end as DESVIO, " +
-                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / " + getMetaScore().ToString() + " * 100 end as \"DESVIOPERCENTUAL\" " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end )) / " + getMetaScore().ToString() + " * 100 end as decimal (10,1)),2) as varchar) end as \"DESVIOPERCENTUAL\" " +
 
                   "\n FROM ParStructure Reg " +
                     "\n  LEFT JOIN ParCompanyXStructure CS " +
@@ -991,10 +991,10 @@ namespace SgqSystem.Controllers
             // Total Inferior Esquerda
             var query3 =
            "SELECT Reg.Name as MACROPROCESSO, " +
-                  "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
-                  "\n " + getMetaScore().ToString() + "  as ORCADO, " +
-                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) end as DESVIO, " +
-                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / " + getMetaScore().ToString() + " * 100 end as \"DESVIOPERCENTUAL\" " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end )) / " + getMetaScore().ToString() + " * 100 end as decimal (10,1)),2) as varchar) end as \"DESVIOPERCENTUAL\" " +
 
                   "\n FROM ParStructure Reg " +
                     "\n  LEFT JOIN ParCompanyXStructure CS " +
@@ -1021,10 +1021,10 @@ namespace SgqSystem.Controllers
             // Total Inferior Direita
             var query4 =
                 "SELECT " +
-                  "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
-                  "\n " + getMetaScore().ToString() + "  as ORCADO, " +
-                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) end as DESVIO, " +
-                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / " + getMetaScore().ToString() + " * 100 end as \"DESVIOPERCENTUAL\" " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end )) / " + getMetaScore().ToString() + " * 100 end as decimal (10,1)),2) as varchar) end as \"DESVIOPERCENTUAL\" " +
 
                   "\n FROM ParStructure Reg " +
                     "\n  LEFT JOIN ParCompanyXStructure CS " +
@@ -1197,10 +1197,10 @@ namespace SgqSystem.Controllers
                 filtro = filtro.OrderBy(r => r.MACROPROCESSO).ToList();
                 foreach (var ii in filtro)
                 {
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.REAL, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.ORCADO, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIO, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL, 2).ToString("G29") });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.REAL.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.ORCADO.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.DESVIO.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.DESVIOPERCENTUAL.ToString() });
                 }
 
                 #endregion
@@ -1210,10 +1210,10 @@ namespace SgqSystem.Controllers
                 filtro = result2.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i)).ToList();
                 foreach (var ii in filtro)
                 {
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.REAL, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.ORCADO, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIO, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL, 2).ToString("G29") });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.REAL.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.ORCADO.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.DESVIO.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.DESVIOPERCENTUAL.ToString() });
                 }
 
                 #endregion
@@ -1242,10 +1242,10 @@ namespace SgqSystem.Controllers
 
                 foreach (var ii in result3)
                 {
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.REAL, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.ORCADO, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIO, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL, 2).ToString("G29") });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.REAL.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.ORCADO.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.DESVIO.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.DESVIOPERCENTUAL.ToString() });
                 }
 
                 #endregion
@@ -1254,10 +1254,10 @@ namespace SgqSystem.Controllers
 
                 foreach (var ii in result4)
                 {
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.REAL, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.ORCADO, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIO, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL, 2).ToString("G29") });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.REAL.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.ORCADO.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.DESVIO.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.DESVIOPERCENTUAL.ToString() });
                 }
 
                 #endregion
@@ -2013,14 +2013,14 @@ namespace SgqSystem.Controllers
 
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1 " +
 
-                    "\n ORDER BY 1";
+                    "\n ORDER BY 1"; 
 
             //Dados das colunas do corpo da tabela de dados central
             var query1 = "SELECT P1.Name as CLASSIFIC_NEGOCIO, C.Initials as MACROPROCESSO, " +
-                  "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
-                  "\n " + getMetaScore().ToString() + "  as ORCADO, " +
-                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) end as DESVIO, " +
-                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / " + getMetaScore().ToString() + " * 100 end as \"DESVIOPERCENTUAL\" " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end )) / " + getMetaScore().ToString() + " * 100 end as decimal (10,1)),2) as varchar) end as \"DESVIOPERCENTUAL\" " +
 
                    "\n FROM ParStructure Reg " +
                     "\n  LEFT JOIN ParCompanyXStructure CS " +
@@ -2049,10 +2049,10 @@ namespace SgqSystem.Controllers
             // Total Direita
             var query2 =
            "SELECT P1.Name as CLASSIFIC_NEGOCIO," +
-                  "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
-                  "\n " + getMetaScore().ToString() + "  as ORCADO, " +
-                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) end as DESVIO, " +
-                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / " + getMetaScore().ToString() + " * 100 end as \"DESVIOPERCENTUAL\" " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end )) / " + getMetaScore().ToString() + " * 100 end as decimal (10,1)),2) as varchar) end as \"DESVIOPERCENTUAL\" " +
 
                    "\n FROM ParStructure Reg " +
                     "\n  LEFT JOIN ParCompanyXStructure CS " +
@@ -2081,10 +2081,10 @@ namespace SgqSystem.Controllers
             // Total Inferior Esquerda
             var query3 =
            "SELECT C.Initials as MACROPROCESSO, " +
-                  "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
-                  "\n " + getMetaScore().ToString() + "  as ORCADO, " +
-                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) end as DESVIO, " +
-                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / " + getMetaScore().ToString() + " * 100 end as \"DESVIOPERCENTUAL\" " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end )) / " + getMetaScore().ToString() + " * 100 end as decimal (10,1)),2) as varchar) end as \"DESVIOPERCENTUAL\" " +
 
                    "\n FROM ParStructure Reg " +
                     "\n  LEFT JOIN ParCompanyXStructure CS " +
@@ -2113,10 +2113,10 @@ namespace SgqSystem.Controllers
             // Total Inferior Direita
             var query4 =
                 "SELECT " +
-                  "\n case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end as REAL," +
-                  "\n " + getMetaScore().ToString() + "  as ORCADO, " +
-                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end ) end as DESVIO, " +
-                  "\n case when (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),0) = 0 or isnull(sum(PontosAtingidos),0) = 0 then 0 else (ISNULL(sum(PontosAtingidos), 0) / isnull(sum(Pontos),0))*100  end )) / " + getMetaScore().ToString() + " * 100 end as \"DESVIOPERCENTUAL\" " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
+                  "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else (" + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end )) / " + getMetaScore().ToString() + " * 100 end as decimal (10,1)),2) as varchar) end as \"DESVIOPERCENTUAL\" " +
 
                     "\n FROM ParStructure Reg " +
                     "\n  LEFT JOIN ParCompanyXStructure CS " +
@@ -2293,10 +2293,10 @@ namespace SgqSystem.Controllers
                 filtro = filtro.OrderBy(r => r.MACROPROCESSO).ToList();
                 foreach (var ii in filtro)
                 {
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.REAL, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.ORCADO, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIO, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL, 2).ToString("G29") });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.REAL.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.ORCADO.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.DESVIO.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.DESVIOPERCENTUAL.ToString() });
                 }
 
                 #endregion
@@ -2306,10 +2306,10 @@ namespace SgqSystem.Controllers
                 filtro = result2.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i)).ToList();
                 foreach (var ii in filtro)
                 {
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.REAL, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.ORCADO, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIO, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL, 2).ToString("G29") });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.REAL.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.ORCADO.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.DESVIO.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.DESVIOPERCENTUAL.ToString() });
                 }
 
                 #endregion
@@ -2338,10 +2338,10 @@ namespace SgqSystem.Controllers
 
                 foreach (var ii in result3)
                 {
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.REAL, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.ORCADO, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIO, 2).ToString("G29") });
-                    Tr.tdsEsquerda.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL, 2).ToString("G29") });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.REAL.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.ORCADO.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.DESVIO.ToString() });
+                    Tr.tdsEsquerda.Add(new Tds() { valor = ii.DESVIOPERCENTUAL.ToString() });
                 }
 
                 #endregion
@@ -2350,10 +2350,10 @@ namespace SgqSystem.Controllers
 
                 foreach (var ii in result4)
                 {
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.REAL, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.ORCADO, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIO, 2).ToString("G29") });
-                    Tr.tdsDireita.Add(new Tds() { valor = Decimal.Round(ii.DESVIOPERCENTUAL, 2).ToString("G29") });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.REAL.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.ORCADO.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.DESVIO.ToString() });
+                    Tr.tdsDireita.Add(new Tds() { valor = ii.DESVIOPERCENTUAL.ToString() });
                 }
 
                 #endregion
@@ -2370,10 +2370,10 @@ namespace SgqSystem.Controllers
         {
             public string CLASSIFIC_NEGOCIO { get; set; }
             public string MACROPROCESSO { get; set; }
-            public int ORCADO { get; set; }
-            public decimal DESVIO { get; set; }
-            public decimal DESVIOPERCENTUAL { get; set; }
-            public decimal REAL { get; set; }
+            public string ORCADO { get; set; }
+            public string DESVIO { get; set; }
+            public string DESVIOPERCENTUAL { get; set; }
+            public string REAL { get; set; }
             
         }
 

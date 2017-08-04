@@ -150,25 +150,39 @@ Array.prototype.min = function () {
 function heatMapSingleCol(container, tableId, index, order, isBenchemark) {
 
     var elems = [];
+    var elemsHM = [];
     $('#' + container).find('#' + tableId).find('td:nth-child(' + index + ')').each(function (c, o) {
 
         elems.push({
             //obj javascript > td
             td: $(o)
             // Extrai valor numerico da TD.
-            , valor: o.textContent.trim().replace(',', '.')
+            , valor: o.textContent.trim().replace(',', '.') == "-" ? "" : o.textContent.trim().replace(',', '.')
         });
+
+        if (o.textContent.trim().replace(',', '.') != "-") {
+            elemsHM.push({
+                //obj javascript > td
+                td: $(o)
+                // Extrai valor numerico da TD.
+                , valor: o.textContent.trim().replace(',', '.')
+            });
+        }
+
+
     });
 
-    var valorMaximo = Math.max.apply(Math, elems.map(function (o) { return o.valor; }))
-    var valorMinimo = Math.min.apply(Math, elems.map(function (o) { return o.valor; }))
+    var valorMaximo = Math.max.apply(Math, elemsHM.map(function (o) { return o.valor; }))
+    var valorMinimo = Math.min.apply(Math, elemsHM.map(function (o) { return o.valor; }))
 
     if (isBenchemark) {
         elems.forEach(function (oo, cc) {
             var range = valorMaximo - valorMinimo;
             var diferencaPeloRange = oo["valor"] - valorMinimo;
             var percentual = (diferencaPeloRange / range) * 100;
-            oo.td[0].style.backgroundColor = percentToRGB(percentual, order);
+            if (oo["valor"] != "") {
+                oo.td[0].style.backgroundColor = percentToRGB(percentual, order);
+            }
         });
     } else {
         elems.forEach(function (oo, cc) {
@@ -203,7 +217,8 @@ function heatMap(container, tableId, startIndex, delimiterIndex, order) {
 
         //Insere no array todos os elementos indicados em startIndex, insere o elemento Jquery "td" e o valor da "td".
         while (!!$(o).find('td:eq(' + startIndex + ')')[0]) {
-            if ($(o).find('td:eq(' + (startIndex - delimiterIndex) + ')')[0].textContent.match(/\d+(\.\d{1,2})?/g)[0] > -1) {
+            if ($(o).find('td:eq(' + (startIndex - delimiterIndex) + ')')[0].textContent.match(/[/-]/g) != "-"){
+            //if ($(o).find('td:eq(' + (startIndex - delimiterIndex) + ')')[0].textContent.match(/\d+(\.\d{1,2})?/g)[0] > -1) {
                 elems.push({
                     //obj javascript > td
                     td: $(o).find('td:eq(' + startIndex + ')')
