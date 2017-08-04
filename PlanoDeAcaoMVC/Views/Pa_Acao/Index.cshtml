@@ -11,7 +11,7 @@
 <div style="display:none" id="obj">
     <p>
         <button aria-expanded="false" data-target="#collapsible_obj_0" data-toggle="collapse" class="btn btn-default collapsed">Ação Name</button>
-        &nbsp;<span data-toggle="tooltip" title="Excluir Ação"class="glyphicon glyphicon-trash" style="cursor:pointer" onclick="RemoveAcao(this)"></span>
+        &nbsp;<span data-toggle="tooltip" title="Excluir Ação" class="glyphicon glyphicon-trash" style="cursor:pointer" onclick="RemoveAcao(this)"></span>
     </p>
     <div style="height: 0px;" aria-expanded="false" id="collapsible_obj_0" class="collapse">
 
@@ -23,17 +23,17 @@
             <table class="nowrap .col-md-6 .col-md-offset-3" style="width: 100%;">
                 <tbody>
 
-                    @*<tr>
-                            <td style="width: 43%;">
-                                @Html.LabelFor(model => model.Unidade_Id, htmlAttributes: new { @class = "control-label " })
-                            </td>
-                            <td style="width: 43%;">
-                                @Html.DropDownList("Unidade_Id", new SelectList(ViewBag.Unidade, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                                @Html.ValidationMessageFor(model => model.Unidade_Id, "", new { @class = "text-danger" })
-                            </td>
-                            <td style="width: 16%;"></td>
-                        </tr>
-                        <tr>
+                    <tr>
+                        <td style="width: 43%;">
+                            @Html.LabelFor(model => model.Unidade_Id, htmlAttributes: new { @class = "control-label " })
+                        </td>
+                        <td style="width: 43%;">
+                            @Html.DropDownList("Unidade_Id", new SelectList(ViewBag.Unidade, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                            @Html.ValidationMessageFor(model => model.Unidade_Id, "", new { @class = "text-danger" })
+                        </td>
+                        <td style="width: 16%;"></td>
+                    </tr>
+                    @* <tr>
                             <td>
                                 @Html.LabelFor(model => model.Departamento_Id, htmlAttributes: new { @class = "control-label " })
                             </td>
@@ -111,7 +111,7 @@
                             @Html.Label("Causa generica", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @Html.DropDownListFor(r=>r.CausaGenerica_Id, new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione", new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.CausaGenerica_Id, new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione", new { @class = "form-control input-sm" })
                         </td>
                         <td></td>
                     </tr>
@@ -120,7 +120,7 @@
                             @Html.Label("Grupo causa", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td id="GrupoCausa">
-                            @Html.DropDownListFor(r=>r.GrupoCausa_Id, new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
+                            @Html.DropDownListFor(r => r.GrupoCausa_Id, new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
                         </td>
                         <td></td>
                     </tr>
@@ -129,7 +129,7 @@
                             @Html.Label("Contramedida generica", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td id="ContramedidaGenerica">
-                            @Html.DropDownListFor(r=>r.ContramedidaGenerica_Id, new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
+                            @Html.DropDownListFor(r => r.ContramedidaGenerica_Id, new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
                         </td>
                         <td></td>
                     </tr>
@@ -138,8 +138,8 @@
                             @Html.Label(Conn.nameCausaEspecifica, htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @Html.EditorFor(r=>r.CausaEspecifica, new { htmlAttributes = new { @class = "form-control" } })
-                            
+                            @Html.EditorFor(r => r.CausaEspecifica, new { htmlAttributes = new { @class = "form-control" } })
+
                         </td>
                         <td></td>
                     </tr>
@@ -148,7 +148,7 @@
                             @Html.Label(Conn.nameContramedidaEspecifica, htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @Html.EditorFor(r => r.ContramedidaEspecifica, new { htmlAttributes = new { @class = "form-control" } })                          
+                            @Html.EditorFor(r => r.ContramedidaEspecifica, new { htmlAttributes = new { @class = "form-control" } })
                         </td>
                         <td></td>
                     </tr>
@@ -158,17 +158,17 @@
                             @Html.Label("Quem", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @Html.DropDownListFor(r=>r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
                         </td>
                         <td style="text-align: center; display:none; vertical-align: bottom;" id="CausaMedidasXAcaoAdd">
 
                             @*<button id="adicionar" type="button" class="btn btn-default btn-sm" onclick="Adicionar(this);">
-                                <span class="glyphicon glyphicon-plus"></span> Adicionar
-                            </button>
+                                    <span class="glyphicon glyphicon-plus"></span> Adicionar
+                                </button>
 
-                            <button id="remove" style="display:none" type="button" class="btn btn-default btn-sm" onclick="Remover(this);">
-                                <span class="glyphicon glyphicon-remove"></span> Remover
-                            </button>*@
+                                <button id="remove" style="display:none" type="button" class="btn btn-default btn-sm" onclick="Remover(this);">
+                                    <span class="glyphicon glyphicon-remove"></span> Remover
+                                </button>*@
 
                         </td>
                     </tr>
@@ -243,7 +243,7 @@
                         </td>
                         <td></td>
                     </tr>
-                    
+
                     @if (Model != null)
                     {
                         if (Model.Id > 0)
