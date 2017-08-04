@@ -46,7 +46,7 @@
         public static string pass { get { return "1qazmko0"; } }
 
         //Remoto SGQ
-        public static string catalog2 { get { return "dbGQualidade_JBS"; } }
+        public static string catalog2 { get { return "dbGQualidade"; } }
         public static string dataSource2 { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
         public static string user2 { get { return "sa"; } }
         public static string pass2 { get { return "1qazmko0"; } }
