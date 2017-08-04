@@ -927,7 +927,7 @@
             var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp Nova Acao</button>';
             var btnAcompanhamento = '<button type="button" class="btnAcompanhamento btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Acompanhamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Acompanhamento</button>';
             var arrEstragy = [0, 1, 2, 3, 4, 5, 6];
-            var arrEstragyH = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, /*17,*/ 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35];
+            var arrEstragyH = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35];
 
             var table = $('#paTable').empty().DataTable({
                 data: retornoArray,
@@ -1273,10 +1273,10 @@
 
             });
 
-            var arrShowOperacional = [/*17, */18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36];
-            var arrHideOperacional = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+            var arrShowOperacional = [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36];
+            var arrHideOperacional = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
             if (visaoOperacional) {
-                arrShowOperacional = [/*17,*/ 18, 19, 20, 21, /*22, 23, 24, 25, 26,*/ 27, 28, 29, 30, 31, 32,/* 33, 34,*/ 35];
+                arrShowOperacional = [17, 18, 19, 20, 21, /*22, 23, 24, 25, 26,*/ 27, 28, 29, 30, 31, 32,/* 33, 34,*/ 35];
                 arrHideOperacional = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 33, 34];
             }
             var show = {
@@ -1290,7 +1290,7 @@
                     extend: 'colvisGroup',
                     text: 'Planejamento Tático',
                     show: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-                    hide: [0, 1, 2, 3, 4, 5, 6, /*17,*/ 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]
+                    hide: [0, 1, 2, 3, 4, 5, 6, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]
                 },
                 PlanejamentoOperacional: {
                     extend: 'colvisGroup',
