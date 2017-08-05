@@ -1,4 +1,5 @@
 ﻿using ADOFactory;
+using Dominio;
 using DTO.Helpers;
 using Newtonsoft.Json.Linq;
 using PlanoAcaoCore;
@@ -287,7 +288,28 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             return results;
         }
 
+        [HttpGet]
+        [Route("getUnits")]
+        public List<JObject> getUnits()
+        {
+            var query = "SELECT * from Pa_Unidade";
+            var items = QueryNinja(db, query);
 
-       
+            return items;
+        }
+
+        [HttpGet]
+        [Route("getIndicadores")]
+        public List<ParLevel1> getIndicadores()
+        {
+            var items = new List<ParLevel1>();
+            using (var db = new SgqDbDevEntities())
+            {
+                items = db.ParLevel1.ToList();
+            }
+            //var items = QueryNinja(db, query);
+            
+            return items;
+        }
     }
 }

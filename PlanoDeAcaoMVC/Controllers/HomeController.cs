@@ -4,7 +4,7 @@ using System.Web.Mvc;
 
 namespace PlanoDeAcaoMVC.Controllers
 {
-
+    [IntegraSgq]
     public class HomeController : Controller
     {
         public HomeController()
