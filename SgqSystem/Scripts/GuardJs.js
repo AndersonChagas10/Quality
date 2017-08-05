@@ -4,14 +4,62 @@
     })[0].split('=')[1];
 }
 
+/*FTA NOS GRAFICOS*/
+
+var ftaPreffixLabel = ' (FTA:';
+
+function trataTooltipComFTA(hcObject) {
+    let s = '<b>' + removeFtaDaLabel(hcObject.x) + '</b>';
+    $.each(hcObject.points, function (i, point) {
+        s += '<br/><span style="color:' + point.color + '">\u25CF</span> ' + point.series.name + ': ' + point.y;
+    });
+    if (verificaFtaLabel(hcObject.x)) {
+        s += '<br/><span style="color:blue">Ações Corretivas no período:' + pegaNumeroDoFtaEmLabelQueContemFta(hcObject.x) + '</span>';
+    }
+    return s;
+}
+
+function insereLabelFtaPelaColunName(arr, res) {
+    //Preenche label x Axys com FTA
+    //I = Key
+    //n = Value
+    $.each(res, function (i, n) {
+        if (arr.indexOf(i) != -1 && n > 0) {
+            arr[arr.indexOf(i)] = arr[arr.indexOf(i)] + ftaPreffixLabel + n + ")"
+        }
+        //console.log("Tratamentos de Anomalia: " + n)
+    });
+
+}
+
+function pegaNumeroDoFtaEmLabelQueContemFta(label) {
+    let tmp = label.slice(label.indexOf(ftaPreffixLabel) + ftaPreffixLabel.length, label.length)
+    tmp = tmp.slice(0, tmp.indexOf(')'))
+    return tmp
+}
+
+function verificaFtaLabel(label) {
+    return label.indexOf(ftaPreffixLabel) != -1
+}
+
 function removeFtaDaLabel(label) {
-    if (label.indexOf(' (FTA:') > 0) {
-        return label.slice(0, label.indexOf(' (FTA:'))
+    if (verificaFtaLabel(label)) {
+        return label.slice(0, label.indexOf(ftaPreffixLabel))
     } else {
         return label
     }
 }
 
+function daUmaPintadaNaLabel(selector) {
+    $('#' + selector + ' svg > g.highcharts-axis-labels.highcharts-xaxis-labels text').each(function (c, o) {
+        if ($(o).text().indexOf('(FTA:') != -1) {
+            console.log(o)
+            $(o).css({ 'fill': "blue" })
+        }
+    })
+}
+
+/*FTA NOS GRAFICOS FIM*/
 
 /*API de SUM para DataTable
 
