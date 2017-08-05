@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using PlanoAcaoCore;
 using PlanoAcaoCore.Acao;
 using PlanoDeAcaoMVC.PaMail;
+using PlanoDeAcaoMVC.SgqIntegracao;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -143,9 +144,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             {
                 //try
                 //{
-                using (var db = new Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
+                using (var dbSgq = new ConexaoSgq().db)
                 {
-                    var Regional = db.QueryNinjaADO("SELECT PS.Id as 'Id', PS.Name as 'Name' FROM ParStructure PS " +
+                    var Regional = dbSgq.QueryNinjaADO("SELECT PS.Id as 'Id', PS.Name as 'Name' FROM ParStructure PS " +
                                     "Inner join ParCompanyXStructure PC on PC.ParStructure_Id = PS.Id " +
                                     "WHERE PC.ParCompany_ID =" + acao.Unidade_Id).FirstOrDefault();
                     if (Regional != null)
@@ -166,32 +167,32 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             if (acao.Unidade_Id > 0)
             {
-                using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
+                using (var dbPa = new PlanoAcaoEF.PlanoDeAcaoEntities())
                 {
-                    acao.UnidadeName = QueryNinja(db, "SELECT * from PA_UNIDADE WHERE ID = " + acao.Unidade_Id).FirstOrDefault().GetValue("Description").Value<string>();
+                    acao.UnidadeName = QueryNinja(dbPa, "SELECT * from PA_UNIDADE WHERE ID = " + acao.Unidade_Id).FirstOrDefault().GetValue("Description").Value<string>();
                 }
             }
         }
 
         private void GetLevelName(PlanoAcaoEF.Pa_Acao acao)
         {
-            using (var db = new Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
+            using (var dbSgq = new ConexaoSgq().db)
             {
                 try
                 {
                     if (acao.Level1Id > 0)
                     {
-                        acao.Level1Name = db.QueryNinjaADO("SELECT Name FROM ParLevel1 WHERE ID = " + acao.Level1Id).FirstOrDefault().GetValue("Name").Value<string>();
+                        acao.Level1Name = dbSgq.QueryNinjaADO("SELECT Name FROM ParLevel1 WHERE ID = " + acao.Level1Id).FirstOrDefault().GetValue("Name").Value<string>();
                     }
 
                     if (acao.Level2Id > 0)
                     {
-                        acao.Level2Name = db.QueryNinjaADO("SELECT Name FROM ParLevel2 WHERE ID = " + acao.Level2Id).FirstOrDefault().GetValue("Name").Value<string>();
+                        acao.Level2Name = dbSgq.QueryNinjaADO("SELECT Name FROM ParLevel2 WHERE ID = " + acao.Level2Id).FirstOrDefault().GetValue("Name").Value<string>();
                     }
 
                     if (acao.Level3Id > 0)
                     {
-                        acao.Level3Name = db.QueryNinjaADO("SELECT Name FROM ParLevel3 WHERE ID = " + acao.Level3Id).FirstOrDefault().GetValue("Name").Value<string>();
+                        acao.Level3Name = dbSgq.QueryNinjaADO("SELECT Name FROM ParLevel3 WHERE ID = " + acao.Level3Id).FirstOrDefault().GetValue("Name").Value<string>();
                     }
                 }
                 catch (Exception ex)
