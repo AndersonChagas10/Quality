@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2d0b2f43444e43308802f10bb8403f7b" Name="Diagram1" ZoomLevel="92">
+      <Diagram DiagramId="2d0b2f43444e43308802f10bb8403f7b" Name="Diagram1" ZoomLevel="77">
         <EntityTypeShape EntityType="PlanoDeAcaoModel.Pa_Acompanhamento" Width="1.5" PointX="2.75" PointY="0.75" />
         <EntityTypeShape EntityType="PlanoDeAcaoModel.Pa_AcompanhamentoXQuem" Width="1.5" PointX="4.75" PointY="0.75" />
         <EntityTypeShape EntityType="PlanoDeAcaoModel.Pa_FTA" Width="1.5" PointX="2.75" PointY="4.75" />

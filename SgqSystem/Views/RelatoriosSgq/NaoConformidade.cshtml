@@ -379,8 +379,14 @@
                                     enviar['PercentualNCFTA'] = this.y;
                                     enviar['ReincidenciaDesvioFTA'] = nc[this.x];
                                     enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
+                                    enviar['byName'] = true;
+                                    $.post('@Url.Action("GetUnitId","api/Fta")', enviar, function(c){
+                                        enviar["unitId"] = c.unitId;
+                                        //enviar["MetaFTA"] = "0";
+                                        RedirecionaParaFTA(enviar);
+                                    });
                                     //EasyAjax(urlGetFta, enviar, RedirecionaParaFTA);
-                                    RedirecionaParaFTA(enviar);
+                                    //RedirecionaParaFTA(enviar);
                                 }
                             }
                         },
@@ -389,8 +395,39 @@
                             valueSuffix: ' % (@Resources.Resource.nonconformity * @Resources.Resource.weight)'
                         }
                     },
-                   // Chart.ProcNc(porc, requisitaDadosSGQparaGerarFta),
-                    Chart.NC(nc, function() {}),
+                    {
+                        name: '@Resources.Resource.nonconformity',
+                        color: Chart.CorTotalNc(),//'rgba(77,143,189,1)',
+                        data: nc,
+                        yAxis: 0,
+                        //pointPadding: 0.3,
+                        //pointPlacement: -0.2,
+                        dataLabels: Chart.DataLabelPadrao(),
+                        point: {
+                            events: {
+                                click: function () {
+                                    enviar['level3Name'] = this.category;
+                                    enviar['PercentualNCFTA'] = this.y;
+                                    enviar['ReincidenciaDesvioFTA'] = nc[this.x];
+                                    enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
+                                    enviar['byName'] = true;
+                                    $.post('@Url.Action("GetUnitId", "api/Fta")', enviar, function(c){
+                                        enviar["unitId"] = c.unitId;
+                                        //enviar["MetaFTA"] = "0";
+                                        RedirecionaParaFTA(enviar);
+                                    });
+                                    //EasyAjax(urlGetFta, enviar, RedirecionaParaFTA);
+                                    //RedirecionaParaFTA(enviar);
+                                }
+                            }
+                        },
+                        tooltip: {
+                            valueDecimals: 2,
+                            valueSuffix: ' qtd'
+                        }
+                    },
+                    //Chart.ProcNc(porc, requisitaDadosSGQparaGerarFta),
+                    //Chart.NC(nc, function() {}),
                     Chart.Av(qtdAv, function() {}),
                     Chart.curvaPareto(data, nc, 1, inverse)
                 ]
@@ -438,6 +475,7 @@
         function requisitaDadosSGQparaGerarFta(tarefa) {
             enviar['level3Name'] = tarefa;
             enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
+            //enviar['unitId'] =
             EasyAjax(urlGetFta, enviar, RedirecionaParaFTA);
         }
 

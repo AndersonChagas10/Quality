@@ -52,6 +52,12 @@
           <Property Name="ContramedidaEspecifica" Type="nvarchar(max)" />
           <Property Name="TipoIndicador" Type="int" />
           <Property Name="Fta_Id" Type="int" />
+          <Property Name="Observacao" Type="varchar" MaxLength="255" />
+          <Property Name="Level1Name" Type="varchar" MaxLength="500" />
+          <Property Name="Level2Name" Type="varchar" MaxLength="500" />
+          <Property Name="Level3Name" Type="varchar" MaxLength="500" />
+          <Property Name="Regional" Type="varchar" MaxLength="500" />
+          <Property Name="UnidadeName" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="Pa_Acompanhamento">
           <Key>
@@ -260,6 +266,12 @@
           <Property Name="ContramedidaEspecifica" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="TipoIndicador" Type="Int32" />
           <Property Name="Fta_Id" Type="Int32" />
+          <Property Name="Observacao" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Level1Name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Level2Name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Level3Name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Regional" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="UnidadeName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -361,6 +373,12 @@
           <EntitySetMapping Name="Pa_Acao">
             <EntityTypeMapping TypeName="PlanoDeAcaoModel.Pa_Acao">
               <MappingFragment StoreEntitySet="Pa_Acao">
+                <ScalarProperty Name="UnidadeName" ColumnName="UnidadeName" />
+                <ScalarProperty Name="Regional" ColumnName="Regional" />
+                <ScalarProperty Name="Level3Name" ColumnName="Level3Name" />
+                <ScalarProperty Name="Level2Name" ColumnName="Level2Name" />
+                <ScalarProperty Name="Level1Name" ColumnName="Level1Name" />
+                <ScalarProperty Name="Observacao" ColumnName="Observacao" />
                 <ScalarProperty Name="Fta_Id" ColumnName="Fta_Id" />
                 <ScalarProperty Name="TipoIndicador" ColumnName="TipoIndicador" />
                 <ScalarProperty Name="ContramedidaEspecifica" ColumnName="ContramedidaEspecifica" />

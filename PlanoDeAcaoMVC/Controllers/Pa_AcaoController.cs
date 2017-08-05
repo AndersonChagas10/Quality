@@ -6,6 +6,7 @@ using DTO.Helpers;
 using Newtonsoft.Json.Linq;
 using PlanoAcaoCore;
 using PlanoAcaoCore.Acao;
+using PlanoDeAcaoMVC.Controllers.Api;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -187,7 +188,7 @@ namespace PlanoDeAcaoMVC.Controllers
         [HttpGet]
         public ActionResult NewFTA(FTA fta)
         {
-            ViewBag.PlanejamentosComFTA = db.Pa_Planejamento.FirstOrDefault(r=>r.IsFta == true).Id;
+            ViewBag.PlanejamentosComFTA = GetPlanejamentoFTAId();
             fta.ValidaFTA();
             NovoFtaModelParaSgq(fta);
             return View(fta);
@@ -228,7 +229,7 @@ namespace PlanoDeAcaoMVC.Controllers
                 var dtEnd = Guard.ParseDateToSqlV2(fta._DataFimFTA).ToString("yyyyMMdd");
 
                 var metaQuery = "SELECT ROUND(CASE" +
-    "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = "+ level1 .Id + " AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) AND G.AddDate <= '"+ dtEnd + " 23:59:59') > 0 THEN  " +
+    "\n     WHEN(SELECT COUNT(1) FROM ParGoal G WHERE G.ParLevel1_id = " + level1.Id + " AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) AND G.AddDate <= '" + dtEnd + " 23:59:59') > 0 THEN  " +
     "\n     (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = " + level1.Id + "  AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) AND G.AddDate <= '" + dtEnd + " 23:59:59' ORDER BY G.ParCompany_Id DESC, AddDate DESC)" +
     "\n     ELSE    " +
     "\n     (SELECT TOP 1 ISNULL(G.PercentValue, 0) FROM ParGoal G (nolock)  WHERE G.ParLevel1_id = " + level1.Id + "  AND(G.ParCompany_id = " + fta.Unidade_Id + " OR G.ParCompany_id IS NULL) ORDER BY G.ParCompany_Id DESC, AddDate ASC)  " +
@@ -246,9 +247,8 @@ namespace PlanoDeAcaoMVC.Controllers
                 fta.ReincidenciaDesvioFTA = level2.Name + " > " + level3.Name + ": " + fta.ReincidenciaDesvioFTA;
                 fta._Supervisor = usersgq.Name;
                 dynamic meta = dbFActory.QueryNinjaADO(metaQuery).FirstOrDefault();
-                fta.MetaFTA = meta.META;
-
-
+                string meta2 = meta.META;
+                fta.MetaFTA = decimal.Round(decimal.Parse(meta2), 2, MidpointRounding.AwayFromZero).ToString();
             }
         }
 
@@ -273,6 +273,17 @@ namespace PlanoDeAcaoMVC.Controllers
 
             return View("NewFTA", fta);
 
+        }
+
+        private int GetPlanejamentoFTAId()
+        {
+            var novoPlanejamentoTatico = Mapper.Map<Pa_Planejamento>(db.Pa_Planejamento.FirstOrDefault(r => r.IsFta == true));
+
+            if (novoPlanejamentoTatico == null)
+                using (var apiTmp = new ApiPa_PlanejamentoController())
+                    novoPlanejamentoTatico = apiTmp.CreateGenericEstrategicoTaticoFta();
+
+            return novoPlanejamentoTatico.Id;
         }
 
         #endregion

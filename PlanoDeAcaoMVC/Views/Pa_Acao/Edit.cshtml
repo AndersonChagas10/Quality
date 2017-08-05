@@ -23,17 +23,17 @@
 <form id="Acao" class="Acao">
     <table class="nowrap .col-md-6 .col-md-offset-3" style="width: 100%;">
         <tbody>
+            <tr>
+                <td style="width: 43%;">
+                    @Html.LabelFor(model => model.Unidade_Id, htmlAttributes: new { @class = "control-label " })
+                </td>
+                <td style="width: 43%;">
+                    @Html.DropDownList("Unidade_Id", new SelectList(ViewBag.Unidade, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    @Html.ValidationMessageFor(model => model.Unidade_Id, "", new { @class = "text-danger" })
+                </td>
+                <td style="width: 16%;"></td>
+            </tr>
             @*<tr>
-                    <td style="width: 43%;">
-                        @Html.LabelFor(model => model.Unidade_Id, htmlAttributes: new { @class = "control-label " })
-                    </td>
-                    <td style="width: 43%;">
-                        @Html.DropDownList("Unidade_Id", new SelectList(ViewBag.Unidade, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                        @Html.ValidationMessageFor(model => model.Unidade_Id, "", new { @class = "text-danger" })
-                    </td>
-                    <td style="width: 16%;"></td>
-                </tr>
-                <tr>
                     <td>
                         @Html.LabelFor(model => model.Departamento_Id, htmlAttributes: new { @class = "control-label " })
                     </td>

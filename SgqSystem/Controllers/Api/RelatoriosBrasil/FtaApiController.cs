@@ -20,10 +20,29 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         [Route("GetUnitId")]
         public JObject GetUnitId(JObject json)
         {
-            dynamic form = json;
-            string name =  form.unitName;
-            form.unitId = db.ParCompany.FirstOrDefault(r => r.Initials.Equals(name)).Id;
-            return form;
+            try
+            {
+                dynamic form = json;
+                string name = form.unitName;
+                bool isByname = false;
+
+                if (form.byName != null)
+                {
+                    isByname = form.byName;
+                }
+                
+                if (isByname)
+                    form.unitId = db.ParCompany.FirstOrDefault(r => r.Name.Equals(name)).Id;
+                else
+                    form.unitId = db.ParCompany.FirstOrDefault(r => r.Initials.Equals(name)).Id;
+
+                return form;
+            }
+            catch (System.Exception ex)
+            {
+                throw;
+            }
+
         }
 
         /// <summary>
