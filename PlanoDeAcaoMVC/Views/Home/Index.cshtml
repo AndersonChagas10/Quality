@@ -381,6 +381,30 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-xs-12 col-sm-12 ">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" title="Grafico de acoes">Sem nome</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-3 col-md-3">
+                        <div class="panel-body">
+                            @Html.DropDownList("Unidade_Id", new SelectList(ViewBag.Unidade, "Id", "Name"), "Selecione a Unidade", new { @class = "form-control input-sm" })
+                            @Html.DropDownList("Indicador_Id", new SelectList(ViewBag.Level1, "Id", "Name"), "Selecione o Indicador", new { @class = "form-control input-sm" })
+                           
+                            <button class="btn btn-primary" type="button" value="Buscar" style="margin-top:10px;float:right;" id="btnBuscarUnidade">Buscar</button>
+                        </div>
+                    </div>
+                    <div class="col-xs-9 col-md-9" id="divHistoricoIndicadores" style="height:300px;padding:0px !important;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--modallllll-->
 <div class="modal fade in" role="dialog" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" style="display: none;">
     <div class="modal-dialog" role="document" style="width:100%;">
@@ -426,6 +450,7 @@
     var urlGraficoNumeroDeAcoesConcluidas = '@Url.Action("NumeroDeAcoesConcluidas", "api/Relatorios")';
     var urlGraficoNumeroDeAcoes = '@Url.Action("NumeroDeAcoes", "api/Relatorios")';
     var urlGraficoEvolucaoDoResultado = '@Url.Action("EvolucaoDoResultado", "api/Relatorios")';
+    
 
     /*Container 1*/
     function GraficoBar(privotY, privotX) {
@@ -1734,4 +1759,13 @@
     //    });
     //});
     ///*Pivot Table Chart FIM*/
+
+    /*Adição do gráfico de açoes por indicador*/
+
+    $('#btnBuscarUnidade').click(function (r) {
+        var unidade = $('#Unidade_Id :selected').val();
+        var indicador = $('#Indicador_Id :selected').val();
+        enviar['unidade'] = unidade;
+    });
+    /*Fim*/
 </script>
