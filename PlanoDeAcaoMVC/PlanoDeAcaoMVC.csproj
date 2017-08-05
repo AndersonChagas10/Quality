@@ -206,7 +206,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Api\ApiGerenciarController.cs" />
-    <Compile Include="Controllers\Api\SgqApiController.cs" />
+    <Compile Include="Controllers\Api\ApiSgqController.cs" />
     <Compile Include="Controllers\GerenciarController.cs" />
     <Compile Include="PaMail\PaAsyncServices.cs" />
     <Compile Include="Controllers\Api\ApiPa_AcaoController.cs" />
