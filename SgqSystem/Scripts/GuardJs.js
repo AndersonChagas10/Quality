@@ -4,6 +4,15 @@
     })[0].split('=')[1];
 }
 
+function removeFtaDaLabel(label) {
+    if (label.indexOf(' (FTA:') > 0) {
+        return label.slice(0, label.indexOf(' (FTA:'))
+    } else {
+        return label
+    }
+}
+
+
 /*API de SUM para DataTable
 
 Exemplo: 
