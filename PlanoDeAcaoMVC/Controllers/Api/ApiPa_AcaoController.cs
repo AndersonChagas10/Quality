@@ -131,14 +131,40 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             GetUnidadeName(acao);
 
+            GetRegionalName(acao);
+
             Salvar(acao);
 
+        }
+
+        private static void GetRegionalName(PlanoAcaoEF.Pa_Acao acao)
+        {
+            if (acao.Unidade_Id > 0)
+            {
+                //try
+                //{
+                using (var db = new Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
+                {
+                    var Regional = db.QueryNinjaADO("SELECT PS.Id as 'Id', PS.Name as 'Name' FROM ParStructure PS " +
+                                    "Inner join ParCompanyXStructure PC on PC.ParStructure_Id = PS.Id " +
+                                    "WHERE PC.ParCompany_ID =" + acao.Unidade_Id).FirstOrDefault();
+                    if (Regional != null)
+                    {
+                        acao.Regional = Regional.GetValue("Name").Value<string>();
+                    }
+                }
+                //}
+                //catch (Exception ex)
+                //{
+                //    throw ex;
+                //}
+            }
         }
 
         private void GetUnidadeName(PlanoAcaoEF.Pa_Acao acao)
         {
 
-            if(acao.Unidade_Id > 0)
+            if (acao.Unidade_Id > 0)
             {
                 using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
                 {
