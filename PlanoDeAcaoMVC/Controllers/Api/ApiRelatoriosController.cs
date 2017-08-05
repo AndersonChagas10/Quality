@@ -49,7 +49,12 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 "\n  ISNULL(Diretor.Name, 'Não possui Diretoria') AS 'Diretoria'," +
                 "\n  ISNULL(Dimens.Name, 'Não possui Dimensão') AS 'Dimensão'," +
                 "\n  ISNULL(Gere.Name, 'Não possui Gerência') AS 'Gerência'," +
-                "\n  ISNULL(Coord.Name, 'Não possui Coordenação') AS 'Coordenação'";
+                "\n  ISNULL(Coord.Name, 'Não possui Coordenação') AS 'Coordenação', " +
+                "\n  ISNULL(Acao.Regional, 'Não possui Regional') as 'Regional', "+
+                "\n  ISNULL(Acao.UnidadeName, 'Não possui Unidade') as 'Unidade', " +
+                "\n  ISNULL(Acao.Level1Name, 'Não possui Indicador') as 'Indicador', " +
+                "\n  ISNULL(Acao.Level2Name, 'Não possui Monitoramento') as 'Monitoramento', " +
+                "\n  ISNULL(Acao.Level3Name, 'Não possui Tarefa') as 'Tarefa' ";
             }
 
             query += "\n FROM Pa_Acao AS Acao" +
