@@ -141,7 +141,11 @@
                         var level3DoLevel2 = $.grep(r.listResultSetLevel3, function (level2, c) { return level2.level2_Id == oo.level2_Id });
 
                         if(   level3DoLevel2.length > 0 )   {
-                            GraficoTarefa(level3DoLevel2, divTarefas, "@Resources.Resource.deviations_per_monitoring:" + level3DoLevel2[0].Level2Name, o.level1_Id);//Processa e cria grafico
+                            var dadosFTA = enviar
+                            dadosFTA['level1Name'] = o.Level1Name
+                            dadosFTA['level2Name'] = level3DoLevel2[0].Level2Name
+
+                            GraficoTarefa(level3DoLevel2, divTarefas, "@Resources.Resource.deviations_per_monitoring:" + level3DoLevel2[0].Level2Name, o.level1_Id, dadosFTA);//Processa e cria grafico
                         }
 
                     });
@@ -165,7 +169,7 @@
             var percentual = MapeiaValorParaHC(data, "ProcentagemNc")
             var unidadeName = MapeiaValorParaHC(data, "Unidade")[0];
             var totalAvaliado = MapeiaValorParaHC(data, "Av")
-
+            enviar['unitName'] = unidadeName
             //Cria GRafico
             $('#plotPrincipal').empty().highcharts({
                 credits: Chart.Credits(),
@@ -522,34 +526,69 @@
             });
         }
 
-        function GraficoTarefa(data, idDiv, titulo, index) {
+        function GraficoTarefa(data, idDiv, titulo, index, dadosFTA) {
 
             //Auxiliares.loading(idDiv);
 
             //Organiza dados do grafico
             var dados = DadoEspecificos.Tarefa(data);
             ////////////////////////////////////////////
+            dadosFTA["level3names"] = dados.x
+            $.post('http://localhost:59907/api/sgq/getacoes', dadosFTA , function (r) {
 
-            $('#' + idDiv).empty().highcharts({
-                credits: Chart.Credits(),
-                title: Chart.Titulo(titulo),
-                xAxis: Chart.Xaxis(dados.x),
-                tooltip: Chart.ToolTip(true, true),
-                legend: Chart.Legend(),
-                yAxis: Chart.yAxisPadrao(true, true, true),
-                chart: {
-                    type: 'column',
-                    zoomType: 'x, y',
-                    plotBackgroundColor: '#FFFFFF',
-                    //plotShadow: true
-                    shadow: true
-                },
-                series: [
-                  Chart.SimpleSerie(dados.y.NC, "@Resources.Resource.derivations", Chart.CorTotalNc(), true, 0, undefined, undefined, true, data),
-                  Chart.curvaPareto(dados.y.pareto)
-                ],
-            });
-            //$('#' + idDiv).find("img").remove();
+                //Preenche label x Axys com FTA
+                /*$.each(r, function(i, n){
+                    if(nome.indexOf(i)  != -1 && n > 0){
+                        nome[nome.indexOf(i)] = nome[nome.indexOf(i)] + ftaPreffixLabel + n + ")"
+                    }
+                    //console.log("Tratamentos de Anomalia: " + n)
+                });*/
+
+                insereLabelFtaPelaColunName(dados.x, r)
+
+
+                $('#' + idDiv).empty().highcharts({
+                    credits: Chart.Credits(),
+                    title: Chart.Titulo(titulo),
+                    xAxis: Chart.Xaxis(dados.x),
+                    tooltip: {
+                         formatter: function() {
+
+                            /*var s = '<b>'+ removeFtaDaLabel(this.x) +'</b>';
+                            $.each(this.points, function(i, point) {
+                                s += '<br/><span style="color:' + point.color + '">\u25CF</span> ' + point.series.name + ': ' + point.y;
+                            });
+                            if(verificaFtaLabel(this.x)){
+                                s += '<br/><span style="color:blue">Ações Corretivas no período:' + pegaNumeroDoFtaEmLabelQueContemFta(this.x) + '</span>';
+                            }*/
+                            return trataTooltipComFTA(this);
+                        },
+                        //split: true,
+                        //distance: 30,
+                        //padding: 5,
+                        shared: true,
+                        //crosshairs: true
+                    },
+                    legend: Chart.Legend(),
+                    yAxis: Chart.yAxisPadrao(true, true, true),
+                    chart: {
+                        type: 'column',
+                        zoomType: 'x, y',
+                        plotBackgroundColor: '#FFFFFF',
+                        //plotShadow: true
+                        shadow: true
+                    },
+                    series: [
+                      Chart.SimpleSerie(dados.y.NC, "@Resources.Resource.derivations", Chart.CorTotalNc(), true, 0, undefined, undefined, true, data),
+                      Chart.curvaPareto(dados.y.pareto)
+                    ],
+                },function(chart){
+
+                    setTimeout(function () { daUmaPintadaNaLabel(idDiv)}, 2000)
+
+                });
+
+            })
         }
 
         function GraficoTarefaIndicadores(data, idDiv, titulo) {
@@ -966,7 +1005,7 @@
                                     });
 
 
-                                    
+
                                 }
                             }
                         }

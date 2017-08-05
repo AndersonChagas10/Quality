@@ -336,6 +336,18 @@
             var qtdAv = MapeiaValorParaHC(data, "Av")
             var porc = MapeiaValorParaHC(data, "Proc")
             var selector = "RGMonitoramentosGrafico";
+            enviar["level3names"] = nome
+            $.post('http://localhost:59907/api/sgq/getacoes', enviar , function (r) {
+
+                //Preenche label x Axys com FTA
+                /*$.each(r, function(i, n){
+                    if(nome.indexOf(i)  != -1 && n > 0){
+                        nome[nome.indexOf(i)] = nome[nome.indexOf(i)] + ftaPreffixLabel + n + ")"
+                    }
+                    //console.log("Tratamentos de Anomalia: " + n)
+                });*/
+
+                insereLabelFtaPelaColunName(nome, r)
 
             /*?*/
             var sentido = 'desc';
@@ -375,7 +387,7 @@
                         point: {
                             events: {
                                 click: function () {
-                                    enviar['level3Name'] = this.category;
+                                    enviar['level3Name'] = removeFtaDaLabel(this.category);
                                     enviar['PercentualNCFTA'] = this.y;
                                     enviar['ReincidenciaDesvioFTA'] = nc[this.x];
                                     enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
@@ -406,7 +418,7 @@
                         point: {
                             events: {
                                 click: function () {
-                                    enviar['level3Name'] = this.category;
+                                    enviar['level3Name'] = removeFtaDaLabel(this.category);
                                     enviar['PercentualNCFTA'] = this.y;
                                     enviar['ReincidenciaDesvioFTA'] = nc[this.x];
                                     enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
@@ -432,6 +444,8 @@
                     Chart.curvaPareto(data, nc, 1, inverse)
                 ]
             });
+                daUmaPintadaNaLabel(selector)
+            })
 
         }
 

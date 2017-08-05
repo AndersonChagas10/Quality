@@ -4,8 +4,6 @@
     })[0].split('=')[1];
 }
 
-/*FTA NOS GRAFICOS*/
-
 var ftaPreffixLabel = ' (FTA:';
 
 function trataTooltipComFTA(hcObject) {
@@ -23,7 +21,10 @@ function insereLabelFtaPelaColunName(arr, res) {
     //Preenche label x Axys com FTA
     //I = Key
     //n = Value
+    // console.log(arr)
     $.each(res, function (i, n) {
+        console.log(i)
+        console.log(n)
         if (arr.indexOf(i) != -1 && n > 0) {
             arr[arr.indexOf(i)] = arr[arr.indexOf(i)] + ftaPreffixLabel + n + ")"
         }
@@ -53,13 +54,11 @@ function removeFtaDaLabel(label) {
 function daUmaPintadaNaLabel(selector) {
     $('#' + selector + ' svg > g.highcharts-axis-labels.highcharts-xaxis-labels text').each(function (c, o) {
         if ($(o).text().indexOf('(FTA:') != -1) {
-            console.log(o)
+            //console.log(o)
             $(o).css({ 'fill': "blue" })
         }
     })
 }
-
-/*FTA NOS GRAFICOS FIM*/
 
 /*API de SUM para DataTable
 
@@ -106,7 +105,7 @@ function EasyAjax(url, dados, callback, loader, toggle) {
     //AJAX
     $.post(url, dados, function (r) {
         try {
-            
+
             if (!!loader)
                 $('#' + loader).removeClass('loader');
 
@@ -192,7 +191,7 @@ function getCookie(name) {
     if (parts.length == 2) return parts.pop().split(";").shift().split('&');
 }
 
-function getRole(role){
+function getRole(role) {
     return $.grep(getCookie("webControlCookie"), function (n) { return n.indexOf(role) != -1 })
 }
 
@@ -274,8 +273,8 @@ function heatMap(container, tableId, startIndex, delimiterIndex, order) {
 
         //Insere no array todos os elementos indicados em startIndex, insere o elemento Jquery "td" e o valor da "td".
         while (!!$(o).find('td:eq(' + startIndex + ')')[0]) {
-            if ($(o).find('td:eq(' + (startIndex - delimiterIndex) + ')')[0].textContent.match(/[/-]/g) != "-"){
-            //if ($(o).find('td:eq(' + (startIndex - delimiterIndex) + ')')[0].textContent.match(/\d+(\.\d{1,2})?/g)[0] > -1) {
+            if ($(o).find('td:eq(' + (startIndex - delimiterIndex) + ')')[0].textContent.match(/[/-]/g) != "-") {
+                //if ($(o).find('td:eq(' + (startIndex - delimiterIndex) + ')')[0].textContent.match(/\d+(\.\d{1,2})?/g)[0] > -1) {
                 elems.push({
                     //obj javascript > td
                     td: $(o).find('td:eq(' + startIndex + ')')
