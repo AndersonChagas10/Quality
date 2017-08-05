@@ -53,11 +53,11 @@
           <Property Name="TipoIndicador" Type="int" />
           <Property Name="Fta_Id" Type="int" />
           <Property Name="Observacao" Type="varchar" MaxLength="255" />
-          <Property Name="Level1Name" Type="varchar" MaxLength="100" />
-          <Property Name="Level2Name" Type="varchar" MaxLength="100" />
-          <Property Name="Level3Name" Type="varchar" MaxLength="100" />
-          <Property Name="Regional" Type="varchar" MaxLength="100" />
-          <Property Name="UnidadeName" Type="varchar" MaxLength="100" />
+          <Property Name="Level1Name" Type="varchar" MaxLength="500" />
+          <Property Name="Level2Name" Type="varchar" MaxLength="500" />
+          <Property Name="Level3Name" Type="varchar" MaxLength="500" />
+          <Property Name="Regional" Type="varchar" MaxLength="500" />
+          <Property Name="UnidadeName" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="Pa_Acompanhamento">
           <Key>
@@ -267,11 +267,11 @@
           <Property Name="TipoIndicador" Type="Int32" />
           <Property Name="Fta_Id" Type="Int32" />
           <Property Name="Observacao" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Level1Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Level2Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Level3Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Regional" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="UnidadeName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Level1Name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Level2Name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Level3Name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Regional" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="UnidadeName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
