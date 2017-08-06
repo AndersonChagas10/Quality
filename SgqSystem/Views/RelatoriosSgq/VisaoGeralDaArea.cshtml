@@ -1056,6 +1056,9 @@
 
             $('#grafico4').removeClass('loader');
 
+    //$('#grafico5').removeClass('loader');
+
+
             $('#grafico4').empty().highcharts({
                 credits: {
                     enabled: false
@@ -1200,6 +1203,7 @@
                 }]
             });//Fim HC
 
+
         }
 
         function GraficoMonitoramento(data, tarefa) {
@@ -1215,6 +1219,12 @@
             /*?*/
             var sentido = 'desc';
             var inverse = sentido == 'desc' ? undefined : 1;
+
+  enviar.level2names = nome
+            enviar.isLevel = 2
+            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
+
+                insereLabelFtaPelaColunName(nome, r)
 
             $('#' + selector).empty().highcharts({
                 credits: Chart.Credits(),
@@ -1243,11 +1253,13 @@
                 ]
             });
 
+  daUmaPintadaNaLabel(selector)
+            })
 
         }
 
         function GetTarefa(monitoramento){
-            enviar["level2Name"] = monitoramento;
+            enviar["level2Name"] = removeFtaDaLabel(monitoramento);
             EasyAjax(urlGraficoTarefa, enviar, GraficoTarefas, "grafico5");
         };
 
@@ -1273,154 +1285,155 @@
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
 
-            //$('#grafico5').removeClass('loader');
 
-            $('#grafico5').empty().highcharts({
-                credits: {
-                    enabled: false
-                },
-                chart: {
-                    type: 'column'
-                },
-                title: {
-                    text: (enviar.unitName + ' - ' + 'Total NC Por Monitoramento - ' + level2Name)
-                },
-                xAxis: {
-                    categories: nome,
+
+                $('#grafico5').empty().highcharts({
+                    credits: {
+                        enabled: false
+                    },
+                    chart: {
+                        type: 'column'
+                    },
                     title: {
-                        text: 'Monitoramentos',
+                        text: (enviar.unitName + ' - ' + 'Total NC Por Monitoramento - ' + level2Name)
                     },
-                },
-                yAxis: [
-                    {
-                        min: 0,
+                    xAxis: {
+                        categories: nome,
                         title: {
-                            text: 'Quantidade'
+                            text: 'Monitoramentos',
                         },
-                        labels: {
-                            format: '{value}',
-                            style: {
-                                color: Highcharts.getOptions().colors[1]
+                    },
+                    yAxis: [
+                        {
+                            min: 0,
+                            title: {
+                                text: 'Quantidade'
+                            },
+                            labels: {
+                                format: '{value}',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                        }, {
+                            labels: {
+                                format: '{value} %',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                            title: {
+                                text: '% NC',
+                            },
+                            opposite: true
+                        }],
+                    legend: {
+                        shadow: false
+                    },
+                    tooltip: {
+                        shared: true
+                    },
+                    plotOptions: {
+                        column: {
+                            grouping: false,
+                            shadow: false,
+                            borderWidth: 0
+                        }
+                    },
+                    series: [{
+                        name: 'NC',
+                        color: 'rgba(77,143,189,1)',
+                        data: nc,
+                        yAxis: 0,
+                        pointPadding: 0.3,
+                        pointPlacement: -0.2,
+                        point: {
+                            events: {
+                                click: function () {
+                                    _MonitoramentoId = id[this.x];
+                                    Index.onTarefaClickedNC(nome[this.x], id[this.x]);
+                                }
                             }
                         },
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'center',
+                            formatter: function () {
+                                return Highcharts.numberFormat(this.y,2);
+                            },
+                            style: {
+                                fontSize: '10px',
+                            }
+                        },
+                        tooltip: {
+                            valueDecimals: 2,
+                            valueSuffix: ' qtd'
+                        }
                     }, {
-                        labels: {
-                            format: '{value} %',
+                        name: '% NC',
+                        color: 'rgba(240,124,0,1)',
+                        data: porc,
+                        yAxis: 1,
+                        pointPadding: 0.4,
+                        pointPlacement: -0.2,
+                        point: {
+                            events: {
+                                click: function () {
+                                    //_MonitoramentoId = id[this.x];
+                                    //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
+                                }
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'center',
+                            formatter: function () {
+                                return Highcharts.numberFormat(this.y,2);
+                            },
                             style: {
-                                color: Highcharts.getOptions().colors[1]
+                                fontSize: '10px',
                             }
                         },
-                        title: {
-                            text: '% NC',
-                        },
-                        opposite: true
-                    }],
-                legend: {
-                    shadow: false
-                },
-                tooltip: {
-                    shared: true
-                },
-                plotOptions: {
-                    column: {
-                        grouping: false,
-                        shadow: false,
-                        borderWidth: 0
-                    }
-                },
-                series: [{
-                    name: 'NC',
-                    color: 'rgba(77,143,189,1)',
-                    data: nc,
-                    yAxis: 0,
-                    pointPadding: 0.3,
-                    pointPlacement: -0.2,
-                    point: {
-                        events: {
-                            click: function () {
-                                _MonitoramentoId = id[this.x];
-                                Index.onTarefaClickedNC(nome[this.x], id[this.x]);
+                        tooltip: {
+                            valueDecimals: 2,
+                            valueSuffix: ' %'
+                        }
+                    }, {
+                        visible: false,
+                        name: 'Avaliações',
+                        data: qtdAv,
+                        color: 'rgba(81,207,64,1)',
+                        pointPadding: 0.3,
+                        pointPlacement: 0.2,
+                        yAxis: 0,
+                        point: {
+                            events: {
+                                click: function () {
+                                    //_MonitoramentoId = id[this.x];
+                                    //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
+                                }
                             }
-                        }
-                    },
-                    dataLabels: {
-                        enabled: true,
-                        color: 'black',
-                        align: 'center',
-                        formatter: function () {
-                            return Highcharts.numberFormat(this.y,2);
                         },
-                        style: {
-                            fontSize: '10px',
-                        }
-                    },
-                    tooltip: {
-                        valueDecimals: 2,
-                        valueSuffix: ' qtd'
-                    }
-                }, {
-                    name: '% NC',
-                    color: 'rgba(240,124,0,1)',
-                    data: porc,
-                    yAxis: 1,
-                    pointPadding: 0.4,
-                    pointPlacement: -0.2,
-                    point: {
-                        events: {
-                            click: function () {
-                                //_MonitoramentoId = id[this.x];
-                                //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
+                        dataLabels: {
+                            enabled: true,
+                            color: 'black',
+                            align: 'center',
+                            formatter: function () {
+                                return Highcharts.numberFormat(this.y,2);
+                            },
+                            style: {
+                                fontSize: '10px',
                             }
-                        }
-                    },
-                    dataLabels: {
-                        enabled: true,
-                        color: 'black',
-                        align: 'center',
-                        formatter: function () {
-                            return Highcharts.numberFormat(this.y,2);
                         },
-                        style: {
-                            fontSize: '10px',
+                        tooltip: {
+                            valueDecimals: 2,
+                            valueSuffix: ' qtd'
                         }
-                    },
-                    tooltip: {
-                        valueDecimals: 2,
-                        valueSuffix: ' %'
-                    }
-                }, {
-                    visible: false,
-                    name: 'Avaliações',
-                    data: qtdAv,
-                    color: 'rgba(81,207,64,1)',
-                    pointPadding: 0.3,
-                    pointPlacement: 0.2,
-                    yAxis: 0,
-                    point: {
-                        events: {
-                            click: function () {
-                                //_MonitoramentoId = id[this.x];
-                                //Index.onTarefaClickedNC(nome[this.x], id[this.x]);
-                            }
-                        }
-                    },
-                    dataLabels: {
-                        enabled: true,
-                        color: 'black',
-                        align: 'center',
-                        formatter: function () {
-                            return Highcharts.numberFormat(this.y,2);
-                        },
-                        style: {
-                            fontSize: '10px',
-                        }
-                    },
-                    tooltip: {
-                        valueDecimals: 2,
-                        valueSuffix: ' qtd'
-                    }
-                }]
-            });
+                    }]
+                });
+
 
         }
 
@@ -1437,8 +1450,8 @@
             enviar.level1Name
             enviar.level2Name
             enviar.level3names = nome
-
-            $.post('http://192.168.25.200/PlanoAcao/api/sgq/getacoes', enviar , function (r) {
+            enviar.isLevel = 3
+            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
 
                 //Preenche label x Axys com FTA
                 /*$.each(r, function(i, n){

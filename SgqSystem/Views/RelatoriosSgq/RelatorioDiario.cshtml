@@ -534,15 +534,8 @@
             var dados = DadoEspecificos.Tarefa(data);
             ////////////////////////////////////////////
             dadosFTA["level3names"] = dados.x
-            $.post('http://localhost:59907/api/sgq/getacoes', dadosFTA , function (r) {
-
-                //Preenche label x Axys com FTA
-                /*$.each(r, function(i, n){
-                    if(nome.indexOf(i)  != -1 && n > 0){
-                        nome[nome.indexOf(i)] = nome[nome.indexOf(i)] + ftaPreffixLabel + n + ")"
-                    }
-                    //console.log("Tratamentos de Anomalia: " + n)
-                });*/
+            dadosFTA.isLevel = 3
+            $.post(preffixFta + 'api/sgq/getacoes', dadosFTA , function (r) {
 
                 insereLabelFtaPelaColunName(dados.x, r)
 
