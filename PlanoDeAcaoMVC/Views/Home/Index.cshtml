@@ -1242,9 +1242,8 @@
                 endDate: moment().add(-i + 1, 'month').format('DD/MM/YYYY'),
                 unitName: UnidadeName,
                 auditorId: 1,
-                level1names: ['(%) NC CEP Vácuo GRD'],
+                level1names: [indicador],
                 isLevel: 1
-                level1names: [indicador]
             }, function (PAr) {
                 progress.Update(parseInt((((numroDeMeses - $.active) / numroDeMeses) * 100).toFixed(0)))
                 totalArrPa.push(PAr)
@@ -1273,13 +1272,14 @@
 
         serieData["name"] = indicador;
         serieData["data"] = eixoY;
+        serieData["yAxis"] = 0;
         serie.push(serieData);
 
         var segundoArrY = []
         totalArrPa.forEach(function (o) {
             segundoArrY.push(o[indicador])
         })
-        var serieData2 = { name: 'Ações', data: segundoArrY }
+        var serieData2 = { name: 'Ações', data: segundoArrY, yAxis: 1 }
         serie.push(serieData2);
 
         Highcharts.chart('divIndicador', {
@@ -1314,24 +1314,45 @@
                     }
                 }
             },
-            yAxis: {
+            yAxis: [{
+                min: 10,
+                max: 100,
                 labels: {
-                    format: '{value}',
+                    format: '{value} %',
                     style: {
-                        color: Highcharts.getOptions().colors[1],
+                        color: Highcharts.getOptions().colors[0],
                         fontSize: '8px',
                         fontWeight: 'normal'
                     }
                 },
                 min: 0,
                 title: {
-                    text: tituloXColumn,
+                    text: 'Porcentagem',
                     style: {
                         fontSize: '10px',
                         fontWeight: 'normal'
                     }
                 }
             },
+            {
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[0],
+                        fontSize: '8px',
+                        fontWeight: 'normal'
+                    }
+                },
+                min: 0,
+                title: {
+                    text: 'Numero de ações',
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'normal'
+                    }
+                },
+                opposite: true
+            }],
             legend: {
                 align: 'center',
                 verticalAlign: 'bottom',
