@@ -1215,7 +1215,7 @@
                 unitId: undaide,
                 auditorId: auditor
             }, function (r) {
-                totalArrSc.push([{ Data: moment().format('MM/YYYY'), Dados: r }]);
+                totalArrSc.push([{ Data: moment().add(-i, 'month').format('MM/YYYY'), Dados: r }]);
                 //if ($.active == 0)
 
                     GraficoUltimo(totalArrSc, (finish == numroDeMeses - 1))
@@ -1234,12 +1234,15 @@
                 isLevel: 1
             }, function (PAr) {
                 progress.Update(parseInt((((numroDeMeses - $.active) / numroDeMeses) * 100).toFixed(0)))
+                PAr['Data'] = moment().format('MM/YYYY')
                 totalArrPa.push(PAr)
             })
         }
     }
 
     function GraficoUltimo(totalArrSc, finish) {
+        totalArrSc.sort(function (a, b) { return a[0].Data.split('/')[0] - b[0].Data.split('/')[0] });
+        totalArrPa.sort(function (a, b) { return a.Data.split('/')[0] - b.Data.split('/')[0] });
         var privotY = 'Scorecard'
         var privotX = 'data'
         var r = totalArrSc
