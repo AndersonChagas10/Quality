@@ -1237,11 +1237,13 @@
             })
 
             totalArrPa = []
-            $.post('http://localhost:59907/api/Sgq/GetAcoes', {
+            $.post('http://192.168.25.200/PlanoAcaoGRT/api/Sgq/GetAcoes', {
                 startDate: moment().add(-i, 'month').format('DD/MM/YYYY'),
                 endDate: moment().add(-i + 1, 'month').format('DD/MM/YYYY'),
                 unitName: UnidadeName,
                 auditorId: 1,
+                level1names: ['(%) NC CEP Vácuo GRD'],
+                isLevel: 1
                 level1names: [indicador]
             }, function (PAr) {
                 progress.Update(parseInt((((numroDeMeses - $.active) / numroDeMeses) * 100).toFixed(0)))
