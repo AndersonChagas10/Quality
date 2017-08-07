@@ -69,13 +69,20 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             return retorno;
         }
 
+
+//1	2017-03-08 20:12:27.8500000	NULL Atrasado
+//2	2017-03-08 20:12:27.8500000	NULL Cancelado
+//3	2017-03-08 20:12:27.8500000	NULL Concluído
+//4	2017-03-08 20:12:27.8500000	NULL Concluído com atraso
+//5	2017-03-08 20:12:27.8500000	NULL Em Andamento
+
         private Dictionary<string, int> FiltraPorLevel2(DateTime dataInicio, DateTime dataFim, Factory dbSgq, string level1, int unidadeId, List<string> level2Name)
         {
             var registros = 0;
             var retorno = new Dictionary<string, int>();
             foreach (var l2Name in level2Name)
             {
-                registros = db.Pa_Acao.Count(r => r.Unidade_Id == unidadeId && r.Level1Name == level1 && r.Level2Name == l2Name && r.AddDate<= dataFim && r.AddDate >= dataInicio);
+                registros = db.Pa_Acao.Count(r => r.Unidade_Id == unidadeId && r.Level1Name == level1 && r.Level2Name == l2Name && r.AddDate<= dataFim && r.AddDate >= dataInicio && (r.Status == 5 || r.Status == 1));
                 retorno.Add(l2Name, registros);
             }
             return retorno;
@@ -87,19 +94,19 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             var retorno = new Dictionary<string, int>();
             foreach (var l1Name in level1Name)
             {
-                registros = db.Pa_Acao.Count(r => r.Unidade_Id == unidadeId && r.Level1Name == l1Name && r.AddDate <= dataFim && r.AddDate >= dataInicio);
+                registros = db.Pa_Acao.Count(r => r.Unidade_Id == unidadeId && r.Level1Name == l1Name && r.AddDate <= dataFim && r.AddDate >= dataInicio && (r.Status == 5  || r.Status == 1));
                 retorno.Add(l1Name, registros);
             }
             return retorno;
         }
 
-        private new Dictionary<string, int> FiltraPorLevel3(dynamic filtroDyn, DateTime dataInicio, DateTime dataFim, Factory dbSgq, string unidade, string level1, int unidadeId, string level2, List<string> level3Name)
+        private Dictionary<string, int> FiltraPorLevel3(dynamic filtroDyn, DateTime dataInicio, DateTime dataFim, Factory dbSgq, string unidade, string level1, int unidadeId, string level2, List<string> level3Name)
         {
             var registros = 0;
             var retorno = new Dictionary<string, int>();
             foreach (var l3Name in level3Name)
             {
-                registros = db.Pa_Acao.Count(r => r.Unidade_Id == unidadeId && r.Level1Name == level1 && r.Level2Name == level2 && r.Level3Name == l3Name && r.AddDate <= dataFim && r.AddDate >= dataInicio);
+                registros = db.Pa_Acao.Count(r => r.Unidade_Id == unidadeId && r.Level1Name == level1 && r.Level2Name == level2 && r.Level3Name == l3Name && r.AddDate <= dataFim && r.AddDate >= dataInicio && (r.Status == 5 || r.Status == 1));
                 retorno.Add(l3Name, registros);
             }
             return retorno;
