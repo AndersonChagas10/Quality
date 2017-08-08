@@ -30,6 +30,8 @@ namespace PlanoAcaoCore.Acao
         public int Assinatura1 { get; set; }
 
         public int Assinatura2 { get; set; }
+
+        public bool IsFTA { get; set; }
         
     }
 }
