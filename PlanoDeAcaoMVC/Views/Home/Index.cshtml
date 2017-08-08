@@ -1237,7 +1237,7 @@
             })
 
             totalArrPa = []
-            $.post('http://192.168.25.200/PlanoAcaoGRT/api/Sgq/GetAcoes', {
+            $.post('http://192.168.25.200/PlanoAcao/api/Sgq/GetAcoes', {
                 startDate: moment().add(-i, 'month').format('DD/MM/YYYY'),
                 endDate: moment().add(-i + 1, 'month').format('DD/MM/YYYY'),
                 unitName: UnidadeName,
