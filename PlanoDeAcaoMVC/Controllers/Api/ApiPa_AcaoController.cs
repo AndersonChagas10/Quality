@@ -170,15 +170,23 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             {
                 if (IsFTA)//Pelo FTA
                 {
+                    //GetName
                     using (var dbSgq = new ConexaoSgq().db)
                     {
                         acao.UnidadeName = dbSgq.QueryNinjaADO("SELECT Name FROM ParCompany WHERE ID = " + acao.Unidade_Id).FirstOrDefault().GetValue("Name").Value<string>();
                     }
-                }else//Pelo PA
-                {
-                    using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
+
+                    //Atribui o Id da Unidade do PA na Acao
+                    using (var dbPa = new PlanoAcaoEF.PlanoDeAcaoEntities())
                     {
-                        acao.UnidadeName = QueryNinja(db, "SELECT * from PA_UNIDADE WHERE ID = " + acao.Unidade_Id).FirstOrDefault().GetValue("Description").Value<string>();
+                        acao.Unidade_Id = QueryNinja(dbPa, "SELECT * from PA_UNIDADE WHERE DESCRIPTION = '" + acao.UnidadeName + "'").FirstOrDefault().GetValue("Id").Value<int>();
+                    }
+                }
+                else//Pelo PA
+                {
+                    using (var dbPa = new PlanoAcaoEF.PlanoDeAcaoEntities())
+                    {
+                        acao.UnidadeName = QueryNinja(dbPa, "SELECT * from PA_UNIDADE WHERE ID = " + acao.Unidade_Id).FirstOrDefault().GetValue("Description").Value<string>();
                     }
                 }
 
