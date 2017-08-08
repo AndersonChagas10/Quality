@@ -191,6 +191,7 @@ namespace PlanoDeAcaoMVC.Controllers
             ViewBag.PlanejamentosComFTA = GetPlanejamentoFTAId();
             fta.ValidaFTA();
             NovoFtaModelParaSgq(fta);
+            fta.IsFTA = true;
             return View(fta);
         }
 

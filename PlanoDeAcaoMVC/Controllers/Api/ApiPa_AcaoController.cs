@@ -36,13 +36,15 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         [Route("Save")]
         public List<Pa_Acao> Save([FromBody] List<Pa_Acao> acao)
         {
+            bool IsFTA = false;
+
             foreach (var i in acao)
                 i.IsValid();
 
             foreach (var i in acao)
             {
                 var acaoSaved = Mapper.Map<PlanoAcaoEF.Pa_Acao>(i);
-                SalvarAcao(acaoSaved);
+                SalvarAcao(acaoSaved, IsFTA);
                 CreateMail(i.Panejamento_Id, acaoSaved.Id, i.Quem_Id, Conn.TitileMailNovaAcao);
             }
 
@@ -78,11 +80,10 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             obj.ValidaFTA();
             obj.IsValid();
             var acao = Mapper.Map<PlanoAcaoEF.Pa_Acao>(obj);
-
             var fta = Mapper.Map<PlanoAcaoEF.Pa_FTA>(obj);
             SalvaFTA(fta);
             acao.Fta_Id = fta.Id;
-            SalvarAcao(acao);
+            SalvarAcao(acao, obj.IsFTA);
             CreateMail(obj.Panejamento_Id, acao.Id, obj.Quem_Id, Conn.TitileMailNovoFTA);
             return obj;
         }
@@ -125,13 +126,13 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
         }
 
-        private void SalvarAcao(PlanoAcaoEF.Pa_Acao acao)
+        private void SalvarAcao(PlanoAcaoEF.Pa_Acao acao, bool IsFTA)
         {
             //var acao = Mapper.Map<PlanoAcaoEF.Pa_Acao>(obj);
 
             GetLevelName(acao);
 
-            GetUnidadeName(acao);
+            GetUnidadeName(acao, IsFTA);
 
             GetRegionalName(acao);
 
@@ -163,15 +164,24 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             }
         }
 
-        private void GetUnidadeName(PlanoAcaoEF.Pa_Acao acao)
+        private void GetUnidadeName(PlanoAcaoEF.Pa_Acao acao, bool IsFTA)
         {
-
             if (acao.Unidade_Id > 0)
             {
-                using (var dbSgq = new ConexaoSgq().db)
+                if (IsFTA)//Pelo FTA
                 {
-                    acao.UnidadeName = dbSgq.QueryNinjaADO("SELECT Name FROM ParCompany WHERE ID = " + acao.Unidade_Id).FirstOrDefault().GetValue("Name").Value<string>();
+                    using (var dbSgq = new ConexaoSgq().db)
+                    {
+                        acao.UnidadeName = dbSgq.QueryNinjaADO("SELECT Name FROM ParCompany WHERE ID = " + acao.Unidade_Id).FirstOrDefault().GetValue("Name").Value<string>();
+                    }
+                }else//Pelo PA
+                {
+                    using (var db = new PlanoAcaoEF.PlanoDeAcaoEntities())
+                    {
+                        acao.UnidadeName = QueryNinja(db, "SELECT * from PA_UNIDADE WHERE ID = " + acao.Unidade_Id).FirstOrDefault().GetValue("Description").Value<string>();
+                    }
                 }
+
             }
         }
 
