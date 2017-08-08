@@ -78,6 +78,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             obj.ValidaFTA();
             obj.IsValid();
             var acao = Mapper.Map<PlanoAcaoEF.Pa_Acao>(obj);
+
             var fta = Mapper.Map<PlanoAcaoEF.Pa_FTA>(obj);
             SalvaFTA(fta);
             acao.Fta_Id = fta.Id;
@@ -167,9 +168,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             if (acao.Unidade_Id > 0)
             {
-                using (var dbPa = new PlanoAcaoEF.PlanoDeAcaoEntities())
+                using (var dbSgq = new ConexaoSgq().db)
                 {
-                    acao.UnidadeName = QueryNinja(dbPa, "SELECT * from PA_UNIDADE WHERE ID = " + acao.Unidade_Id).FirstOrDefault().GetValue("Description").Value<string>();
+                    acao.UnidadeName = dbSgq.QueryNinjaADO("SELECT Name FROM ParCompany WHERE ID = " + acao.Unidade_Id).FirstOrDefault().GetValue("Name").Value<string>();
                 }
             }
         }
