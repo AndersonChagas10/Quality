@@ -1261,8 +1261,8 @@
         var privotX = 'data'
         var r = totalArrSc
         var title = privotY + " x " + privotX
-        var series = [];
-        var serie = [];
+        var series = []
+        var serie = []
         var serieData = []
         var eixoX = []
         var eixoY = []
@@ -1285,6 +1285,45 @@
         })
         var serieData2 = { name: 'Ações', data: segundoArrY }
         serie.push(serieData2);
+
+        //Highcharts.chart('divIndicador', {
+        //    chart: {
+        //        marginRight: 80 // like left
+        //    },
+        //    xAxis: {
+        //        categories: eixoX,
+        //        labels: {
+        //            style: {
+        //                fontSize: '10px',
+        //                fontWeight: 'normal'
+        //            }
+        //        },
+        //        title: {
+        //            text: tituloYColumn,
+        //            style: {
+        //                fontSize: '10px',
+        //                fontWeight: 'normal'
+        //            }
+        //        }
+        //    },
+        //    yAxis: [{
+        //        lineWidth: 1,
+        //        title: {
+        //            text: 'Primary Axis'
+        //        }
+        //    }, {
+        //        lineWidth: 1,
+        //        opposite: true,
+        //        title: {
+        //            text: 'Secondary Axis'
+        //        }
+        //    }],
+
+        //    series: serie
+        //}, function () {
+        //    if ($.active == 1)
+        //        $("#divIndicador").LoadingOverlay("hide", true);
+        //});
 
         Highcharts.chart('divIndicador', {
             credits: {
@@ -1318,24 +1357,18 @@
                     }
                 }
             },
-            yAxis: {
-                labels: {
-                    format: '{value}',
-                    style: {
-                        color: Highcharts.getOptions().colors[1],
-                        fontSize: '8px',
-                        fontWeight: 'normal'
-                    }
-                },
-                min: 0,
+            yAxis: [{
+                lineWidth: 1,
                 title: {
-                    text: tituloXColumn,
-                    style: {
-                        fontSize: '10px',
-                        fontWeight: 'normal'
-                    }
+                    text: 'Primary Axis'
                 }
-            },
+            }, {
+                lineWidth: 1,
+                opposite: true,
+                title: {
+                    text: 'Secondary Axis'
+                }
+            }],
             legend: {
                 align: 'center',
                 verticalAlign: 'bottom',

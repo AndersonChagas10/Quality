@@ -31,6 +31,7 @@
     <div id="formBodyContent">
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
         <div id="load"></div>
+        <div id="plotPrincipal2"></div>
         <div id="plotPrincipal"></div>
         <div class="panel panel-info" id="PanelFull" style="display:none">
             <div class="panel-heading"></div>
@@ -88,6 +89,7 @@
             }
 
             $('#plotPrincipal').empty().hide();
+            $('#plotPrincipal2').empty().hide();
 
             //Preenche dados para o FTA.
             //FTA._unidadeId = $('#Unidade').val(),
@@ -107,7 +109,7 @@
             }
             try {
                 $('#plotPrincipal').empty().show();
-
+                $('#plotPrincipal2').empty().show();
                 GraficoInicialLeTodosLevel1(r.listResultSetLevel1);
 
                 r.listResultSetLevel1.forEach(function (o, c) {
@@ -118,13 +120,13 @@
                     var idDivTendencia = divClonada.find('.panel-body').attr('id');
                     $('#plotPrincipal').append(divClonada);
                     var div = DivManager.criaDiv(idDivTendencia, o.level1_Id, "temperatura");
-                    divClonada.find('.panel-heading').html(o.Level1Name); // Insere Titulo no Panel
+                    divClonada.find('.panel-heading').html(removeFtaDaLabel(o.Level1Name)); // Insere Titulo no Panel
                     var stringIdDivClonada= '#'+idDivTendencia
                     divClonada.find('.panel-heading').attr('data-toggle','collapse').attr('data-target',stringIdDivClonada).attr('href',stringIdDivClonada).trigger("click")
                     var tendencia = $.grep(r.listResultSetTendencia, function (level2, c) { return level2.level1_Id == o.level1_Id });
                     var dataParaTendencia = $('input[name=datefilter]').val().split('/');
                     var mesDaTendencia = parseInt(dataParaTendencia[1]);
-                    GraficoTendencia(tendencia, div, Resources('audit_tendency') + ": " + tendencia[0].Level1Name + " - " + meses[(mesDaTendencia-1)], tendencia[0].Data, tendencia[tendencia.length - 1].Data);
+                    GraficoTendencia(tendencia, div, Resources('audit_tendency') + ": " + removeFtaDaLabel(tendencia[0].Level1Name) + " - " + meses[(mesDaTendencia-1)], tendencia[0].Data, tendencia[tendencia.length - 1].Data);
 
                     //GraficoTendencia(listResults["Tendencia"], div, o);//Processa e cria grafico
                     var divMonitoramento = DivManager.criaDiv(idDivTendencia, o.level1_Id, "monitoramento");
@@ -134,7 +136,7 @@
 
                     var divTarefaIndicador = DivManager.criaDiv(divMonitoramento, o.level1_Id, "tarefaIndicador");
                     var tarefaPorIndicador = $.grep(r.listResultSetTarefaPorIndicador, function (level2, c) { return level2.level1_Id == o.level1_Id });
-                    GraficoTarefaIndicadores(tarefaPorIndicador, divTarefaIndicador, "@Resources.Resource.derivations_per_defects: " + tendencia[0].Level1Name);//Processa e cria grafico
+                    GraficoTarefaIndicadores(tarefaPorIndicador, divTarefaIndicador, "@Resources.Resource.derivations_per_defects: " + removeFtaDaLabel(tendencia[0].Level1Name));//Processa e cria grafico
 
                     level2DoLevel1.forEach(function (oo, cc) {
                         var divTarefas = DivManager.criaDiv(divMonitoramento, oo.level2_Id, "monitoramento");
@@ -142,10 +144,10 @@
 
                         if(   level3DoLevel2.length > 0 )   {
                             var dadosFTA = enviar
-                            dadosFTA['level1Name'] = o.Level1Name
-                            dadosFTA['level2Name'] = level3DoLevel2[0].Level2Name
+                            dadosFTA['level1Name'] = removeFtaDaLabel(o.Level1Name)
+                            dadosFTA['level2Name'] = removeFtaDaLabel(level3DoLevel2[0].Level2Name)
 
-                            GraficoTarefa(level3DoLevel2, divTarefas, "@Resources.Resource.deviations_per_monitoring:" + level3DoLevel2[0].Level2Name, o.level1_Id, dadosFTA);//Processa e cria grafico
+                            GraficoTarefa(level3DoLevel2, divTarefas, "@Resources.Resource.deviations_per_monitoring:" + removeFtaDaLabel(level3DoLevel2[0].Level2Name), o.level1_Id, dadosFTA);//Processa e cria grafico
                         }
 
                     });
@@ -164,43 +166,55 @@
         function GraficoInicialLeTodosLevel1(data) {
 
             var valoresX = MapeiaValorParaHC(data, "Level1Name")//["Lins", "Barretos", "Etc.."]
+            var valoresXX = MapeiaValorParaHC(data, "Level1Name")//["Lins", "Barretos", "Etc.."]
             var meta = MapeiaValorParaHC(data, "Meta")
             var nc = MapeiaValorParaHC(data, "NC")
             var percentual = MapeiaValorParaHC(data, "ProcentagemNc")
             var unidadeName = MapeiaValorParaHC(data, "Unidade")[0];
             var totalAvaliado = MapeiaValorParaHC(data, "Av")
             enviar['unitName'] = unidadeName
-            //Cria GRafico
-            $('#plotPrincipal').empty().highcharts({
-                credits: Chart.Credits(),
-                title: Chart.Titulo("@Resources.Resource.defects_per_audit" + unidadeName),
-                xAxis: Chart.Xaxis(valoresX),
-                tooltip: Chart.ToolTip(true, true),
-                legend: Chart.Legend(),
-                yAxis: Chart.yAxisPadrao(),
-                chart: {
-                    type: 'column',
-                    zoomType: 'x, y',
-                    height: '350'
-                },
-                zones: [{
-                    value: 69,
-                    color: '#FF6666'
-                }, {
-                    value: 80,
-                    color: 'Yellow'
-                }, {
-                    color: '#98FB98'
-                }],
-                series: [
-                    Chart.ProcNc(percentual),
-                    Chart.Meta(meta, true),
-                    //, Chart.SimpleSerie(valoresY.meta, "% Meta", Chart.CorMeta(), true, 0, ' %')
-                    Chart.SimpleSerie(nc, "@Resources.Resource.derivations", Chart.CorTotalNc(), false, 1),
-                    Chart.SimpleSerie(totalAvaliado, "@Resources.Resource.total_evaluated", Chart.CorTotalAv(), false, 1)
-                ],
 
-            });
+            enviar["level1names"] = valoresXX
+            enviar.isLevel = 1
+            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
+                insereLabelFtaPelaColunName(valoresXX, r)
+
+                //Cria Grafico
+                $('#plotPrincipal2').empty().highcharts({
+                    credits: Chart.Credits(),
+                    title: Chart.Titulo("@Resources.Resource.defects_per_audit" + unidadeName),
+                    xAxis: Chart.Xaxis(valoresX),
+                    tooltip: Chart.ToolTip(true, true),
+                    legend: Chart.Legend(),
+                    yAxis: Chart.yAxisPadrao(),
+                    chart: {
+                        type: 'column',
+                        zoomType: 'x, y',
+                        height: '350'
+                    },
+                    zones: [{
+                        value: 69,
+                        color: '#FF6666'
+                    }, {
+                        value: 80,
+                        color: 'Yellow'
+                    }, {
+                        color: '#98FB98'
+                    }],
+                    series: [
+                        Chart.ProcNc(percentual),
+                        Chart.Meta(meta, true),
+                        //, Chart.SimpleSerie(valoresY.meta, "% Meta", Chart.CorMeta(), true, 0, ' %')
+                        Chart.SimpleSerie(nc, "@Resources.Resource.derivations", Chart.CorTotalNc(), false, 1),
+                        Chart.SimpleSerie(totalAvaliado, "@Resources.Resource.total_evaluated", Chart.CorTotalAv(), false, 1)
+                    ],
+
+                });
+
+                //daUmaPintadaNaLabel('plotPrincipal')
+
+            })
+
 
         }
 
@@ -475,9 +489,11 @@
             });
         }
 
+        var MonitoramentoFTA = []
         function GraficoMonitoramentos(data, idDiv) {
 
             var valoresX = MapeiaValorParaHC(data, "Level2Name")
+            var valoresXCopia = MapeiaValorParaHC(data, "Level2Name")
             var NC = MapeiaValorParaHC(data, "NC")
             var TotalAvaliado = MapeiaValorParaHC(data, "Av")
             var titulo = Resources('level1') + ": " + MapeiaValorParaHC(data, "Level1Name")[0];
@@ -496,12 +512,38 @@
             //Fim PAreto
             ////////////////////////////////////////////
 
+            enviar["level2names"] = valoresX
+            enviar.isLevel = 2
+            enviar.level1Name = MapeiaValorParaHC(data, "Level1Name")[0]
+            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
+                //$.post('http://localhost:59907/api/sgq/getacoes', enviar , function (r) {
+                insereLabelFtaPelaColunName(valoresXCopia, r)
+                MonitoramentoFTA = MonitoramentoFTA.concat(valoresXCopia);
+            })
+
             //Cria Grafico
             $('#' + idDiv).empty().highcharts({
                 credits: Chart.Credits(),
                 title: Chart.Titulo(titulo),
                 xAxis: Chart.Xaxis(valoresX),
-                tooltip: Chart.ToolTip(true, true),
+                tooltip: {
+                    formatter: function() {
+
+                        var s = '<b>'+ removeFtaDaLabel(this.x) +'</b>';
+                        $.each(this.points, function(i, point) {
+                            s += '<br/><span style="color:' + point.color + '">\u25CF</span> ' + point.series.name + ': ' + point.y;
+                        });
+                        s += tootipFTA(MonitoramentoFTA, this.x)
+                        /*if(verificaFtaLabel(MonitoramentoFTA[this.x])){
+                            s += '<br/><span style="color:blue">Ações Corretivas no período:' + pegaNumeroDoFtaEmLabelQueContemFta(this.x) + '</span>';
+                        }*/
+                        return s
+                    },
+                    //split: true,
+                    //distance: 30,
+                    //padding: 5,
+                    shared: true
+                },
                 legend: Chart.Legend(),
                 yAxis: Chart.yAxisPadrao(true, true, true),
                 chart: {
@@ -524,8 +566,13 @@
                     , Chart.curvaPareto(pareto)
                 ],
             });
-        }
+            //daUmaPintadaNaLabel(idDiv)
+            //valoresX.forEach(function (o) {
+            //  o = removeFtaDaLabel(o)
+            //})
 
+        }
+        var TarefaFTA = []
         function GraficoTarefa(data, idDiv, titulo, index, dadosFTA) {
 
             //Auxiliares.loading(idDiv);
@@ -533,55 +580,54 @@
             //Organiza dados do grafico
             var dados = DadoEspecificos.Tarefa(data);
             ////////////////////////////////////////////
-            dadosFTA["level3names"] = dados.x
+            /*dadosFTA["level3names"] = dados.x
             dadosFTA.isLevel = 3
             $.post(preffixFta + 'api/sgq/getacoes', dadosFTA , function (r) {
 
-                insereLabelFtaPelaColunName(dados.x, r)
-
-
-                $('#' + idDiv).empty().highcharts({
-                    credits: Chart.Credits(),
-                    title: Chart.Titulo(titulo),
-                    xAxis: Chart.Xaxis(dados.x),
-                    tooltip: {
-                         formatter: function() {
-
-                            /*var s = '<b>'+ removeFtaDaLabel(this.x) +'</b>';
-                            $.each(this.points, function(i, point) {
-                                s += '<br/><span style="color:' + point.color + '">\u25CF</span> ' + point.series.name + ': ' + point.y;
-                            });
-                            if(verificaFtaLabel(this.x)){
-                                s += '<br/><span style="color:blue">Ações Corretivas no período:' + pegaNumeroDoFtaEmLabelQueContemFta(this.x) + '</span>';
-                            }*/
-                            return trataTooltipComFTA(this);
-                        },
-                        //split: true,
-                        //distance: 30,
-                        //padding: 5,
-                        shared: true,
-                        //crosshairs: true
-                    },
-                    legend: Chart.Legend(),
-                    yAxis: Chart.yAxisPadrao(true, true, true),
-                    chart: {
-                        type: 'column',
-                        zoomType: 'x, y',
-                        plotBackgroundColor: '#FFFFFF',
-                        //plotShadow: true
-                        shadow: true
-                    },
-                    series: [
-                      Chart.SimpleSerie(dados.y.NC, "@Resources.Resource.derivations", Chart.CorTotalNc(), true, 0, undefined, undefined, true, data),
-                      Chart.curvaPareto(dados.y.pareto)
-                    ],
-                },function(chart){
-
-                    setTimeout(function () { daUmaPintadaNaLabel(idDiv)}, 2000)
-
-                });
-
+                insereLabelFtaPelaColunName(dados.x, r)*/
+            let valoresXCopia = dados.x
+            enviar["level3names"] = dados.x
+            enviar.isLevel = 3
+            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
+                //$.post('http://localhost:59907/api/sgq/getacoes', enviar , function (r) {
+                insereLabelFtaPelaColunName(valoresXCopia, r)
+                TarefaFTA = TarefaFTA.concat(valoresXCopia);
             })
+            dados = DadoEspecificos.Tarefa(data);
+            $('#' + idDiv).empty().highcharts({
+                credits: Chart.Credits(),
+                title: Chart.Titulo(titulo),
+                xAxis: Chart.Xaxis(dados.x),
+                tooltip: {
+                    formatter: function() {
+
+                        var s = '<b>'+ removeFtaDaLabel(this.x) +'</b>';
+                        $.each(this.points, function(i, point) {
+                            s += '<br/><span style="color:' + point.color + '">\u25CF</span> ' + point.series.name + ': ' + point.y;
+                        });
+                        s += tootipFTA(TarefaFTA, this.x)
+                        return s
+                    },
+                    shared: true
+                },
+                legend: Chart.Legend(),
+                yAxis: Chart.yAxisPadrao(true, true, true),
+                chart: {
+                    type: 'column',
+                    zoomType: 'x, y',
+                    plotBackgroundColor: '#FFFFFF',
+                    //plotShadow: true
+                    shadow: true
+                },
+                series: [
+                  Chart.SimpleSerie(dados.y.NC, "@Resources.Resource.derivations", Chart.CorTotalNc(), true, 0, undefined, undefined, true, data),
+                  Chart.curvaPareto(dados.y.pareto)
+                ],
+            },function(chart){
+                //setTimeout(function () { daUmaPintadaNaLabel(idDiv)}, 2000)
+            });
+
+            //})
         }
 
         function GraficoTarefaIndicadores(data, idDiv, titulo) {
@@ -979,15 +1025,15 @@
 
                                     $.post(urlGetPorcLevel3, dados, function(r) {
 
-                                        var selector =  dados.Level3Name;
-                                        console.log($.grep(r, function(a, b) { return a.TarefaName == selector}));
+                                        var selector =  removeFtaDaLabel(dados.Level3Name);
+                                        console.log($.grep(r, function(a, b) { return removeFtaDaLabel(a.TarefaName) == selector}));
 
-                                        enviar["PercentualNCFTA"] = arredondar($.grep(r, function(a, b) { return a.TarefaName == selector})[0].Proc);
+                                        enviar["PercentualNCFTA"] = arredondar($.grep(r, function(a, b) { return removeFtaDaLabel(a.TarefaName) == selector})[0].Proc);
 
                                         //console.log(dados);
-                                        enviar['level1Name'] = dados.Level1Name;
-                                        enviar['level2Name'] = dados.Level2Name;
-                                        enviar['level3Name'] = dados.Level3Name;
+                                        enviar['level1Name'] = removeFtaDaLabel(dados.Level1Name);
+                                        enviar['level2Name'] = removeFtaDaLabel(dados.Level2Name);
+                                        enviar['level3Name'] = removeFtaDaLabel(dados.Level3Name);
                                         enviar['unitName'] = dados.Unidade;
                                         enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
                                         //enviar['PercentualNCFTA'] = dados.ProcentagemNc;
@@ -1047,9 +1093,9 @@
                         events: {
                             click: function () {
                                 if (!!func)
-                                    func(nome[this.x], id[this.x]);
+                                    func(removeFtaDaLabel(nome[this.x]), id[this.x]);
                                 if (!!funcParaAcumuladas && id[this.x] != '0')
-                                    funcParaAcumuladas(this.category, id[this.x]);
+                                    funcParaAcumuladas(removeFtaDaLabel(this.category), id[this.x]);
                             }
                         }
                     },
@@ -1076,9 +1122,9 @@
 
                             click: function () {
                                 if (!!func)
-                                    func(nome[this.x], id[this.x]);
+                                    func(removeFtaDaLabel(nome[this.x]), id[this.x]);
                                 if (!!funcParaAcumuladas && id[this.x] != '0')
-                                    funcParaAcumuladas(this.category, id[this.x]);
+                                    funcParaAcumuladas(removeFtaDaLabel(this.category), id[this.x]);
                             }
                         }
                     },

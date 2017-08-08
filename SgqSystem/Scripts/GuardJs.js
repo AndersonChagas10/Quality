@@ -53,7 +53,7 @@ function removeFtaDaLabel(label) {
 
 function daUmaPintadaNaLabel(selector) {
     $('#' + selector + ' svg > g.highcharts-axis-labels.highcharts-xaxis-labels text').each(function (c, o) {
-        if ($(o).text().indexOf('(FTA:') != -1) {
+        if ($(o).text().indexOf(ftaPreffixLabel) != -1) {
             //console.log(o)
             $(o).css({ 'fill': "blue" })
         }
