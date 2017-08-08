@@ -1236,6 +1236,20 @@
                         shadow: false
                     },
                     tooltip: {
+                        formatter: function() {
+
+                            /*var s = '<b>'+ removeFtaDaLabel(this.x) +'</b>';
+                            $.each(this.points, function(i, point) {
+                                s += '<br/><span style="color:' + point.color + '">\u25CF</span> ' + point.series.name + ': ' + point.y;
+                            });
+                            if(verificaFtaLabel(this.x)){
+                                s += '<br/><span style="color:blue">Ações Corretivas no período:' + pegaNumeroDoFtaEmLabelQueContemFta(this.x) + '</span>';
+                            }*/
+                            return trataTooltipComFTA(this);
+                        },
+                        //split: true,
+                        //distance: 30,
+                        //padding: 5,
                         shared: true
                     },
                     plotOptions: {

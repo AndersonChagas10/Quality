@@ -30,43 +30,52 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         [Route("GetAcoes")]
         public Dictionary<string, int> GetAcoes(JObject filtro)
         {
-            dynamic filtroDyn = filtro;
-            //var dataInicio = DateTime.Now.AddDays(-3);
-            //var dataFim = DateTime.Now.AddDays(3);
-            var retorno = new Dictionary<string, int>();
-            string inicio = filtroDyn.startDate;
-            string fim = filtroDyn.endDate;
-            int level = filtroDyn.isLevel;
-            var dataInicio = Guard.ParseDateToSqlV2(inicio, Guard.CultureCurrent.BR);
-            var dataFim = Guard.ParseDateToSqlV2(fim, Guard.CultureCurrent.BR).AddHours(23).AddMinutes(59).AddSeconds(59);
-            
-            using (var dbSgq = new ConexaoSgq().db)
+            try
             {
-                string unidade = filtroDyn.unitName;
-                dynamic unidadeDyn = dbSgq.QueryNinjaADO("SELECT Id FROM PARCOMPANY WHERE Initials = '" + unidade + "' OR Name = '" + unidade + "'").FirstOrDefault();
-                int unidadeId = unidadeDyn.Id;
+                dynamic filtroDyn = filtro;
+                //var dataInicio = DateTime.Now.AddDays(-3);
+                //var dataFim = DateTime.Now.AddDays(3);
+                var retorno = new Dictionary<string, int>();
+                string inicio = filtroDyn.startDate;
+                string fim = filtroDyn.endDate;
+                int level = filtroDyn.isLevel;
+                var dataInicio = Guard.ParseDateToSqlV2(inicio, Guard.CultureCurrent.BR);
+                var dataFim = Guard.ParseDateToSqlV2(fim, Guard.CultureCurrent.BR).AddHours(23).AddMinutes(59).AddSeconds(59);
 
-                if (level == 3)
+                using (var dbSgq = new ConexaoSgq().db)
                 {
-                    string level1 = filtroDyn.level1Name;
-                    string level2 = filtroDyn.level2Name;
-                    List<string> level3Name = filtroDyn.level3names.ToObject<List<string>>();
-                    retorno = FiltraPorLevel3(filtroDyn, dataInicio, dataFim, dbSgq, unidade, level1, unidadeId, level2, level3Name);
-                } else if (level == 2)
-                {
-                    string level1 = filtroDyn.level1Name;
-                    List<string> level2Name = filtroDyn.level2names.ToObject<List<string>>();
-                    retorno = FiltraPorLevel2(dataInicio, dataFim, dbSgq, level1, unidadeId , level2Name);
-                }
-                else if (level == 1)
-                {
-                    List<string> level1Name = filtroDyn.level1names.ToObject<List<string>>();
-                    retorno = FiltraPorLevel1(dataInicio, dataFim, dbSgq, level1Name, unidadeId);
+                    string unidade = filtroDyn.unitName;
+                    dynamic unidadeDyn = dbSgq.QueryNinjaADO("SELECT Id FROM PARCOMPANY WHERE Initials = '" + unidade + "' OR Name = '" + unidade + "'").FirstOrDefault();
+                    int unidadeId = unidadeDyn.Id;
+
+                    if (level == 3)
+                    {
+                        string level1 = filtroDyn.level1Name;
+                        string level2 = filtroDyn.level2Name;
+                        List<string> level3Name = filtroDyn.level3names.ToObject<List<string>>();
+                        retorno = FiltraPorLevel3(filtroDyn, dataInicio, dataFim, dbSgq, unidade, level1, unidadeId, level2, level3Name);
+                    }
+                    else if (level == 2)
+                    {
+                        string level1 = filtroDyn.level1Name;
+                        List<string> level2Name = filtroDyn.level2names.ToObject<List<string>>();
+                        retorno = FiltraPorLevel2(dataInicio, dataFim, dbSgq, level1, unidadeId, level2Name);
+                    }
+                    else if (level == 1)
+                    {
+                        List<string> level1Name = filtroDyn.level1names.ToObject<List<string>>();
+                        retorno = FiltraPorLevel1(dataInicio, dataFim, dbSgq, level1Name, unidadeId);
+                    }
+
                 }
 
+                return retorno;
+            }
+            catch (Exception e)
+            {
+                return new Dictionary<string, int>();
             }
 
-            return retorno;
         }
 
 
