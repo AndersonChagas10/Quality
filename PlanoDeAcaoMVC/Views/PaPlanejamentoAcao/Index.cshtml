@@ -251,7 +251,7 @@
         var tempInput;
         var tempName;
 
-        var win = window.open('@Url.Action("Relatorios", "Relatorios")', '_blank');
+        @*var win = window.open('@Url.Action("Relatorios", "Relatorios")', '_blank');*@
         var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
         var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")';
         var urlNovaAcao = '@Url.Action("Index", "Pa_Acao")';
@@ -965,8 +965,10 @@
                     /*27*/{ title: nameCausaEspecifica, mData: "Acao.CausaEspecifica" },
                     /*28*/{ title: nameContramedidaEspecifica, mData: "Acao.ContramedidaEspecifica" },
                     /*29*/{ title: "Quem", mData: "Acao._Quem" },
-                    /*30*/{ title: "Quando (Início)", mData: "Acao._QuandoInicio" },
-                    /*31*/{ title: "Quando (Fim)", mData: "Acao._QuandoFim" },
+                    ///*30*/{ title: "Quando (Início)", mData: "Acao._QuandoInicio" },
+                    ///*31*/{ title: "Quando (Fim)", mData: "Acao._QuandoFim" },
+                    /*30*/{ title: "Quando (Início)", mData: "Acao._QuandoInicioData" },
+                    /*31*/{ title: "Quando (Fim)", mData: "Acao._QuandoFimData" },
                     /*32*/{ title: nameComoPontosImportantes, mData: "Acao.ComoPontosimportantes" },
                     /*33*/{ title: "Pra que", mData: "Acao.PraQue" },
                     /*34*/{ title: "Quanto custa", mData: "Acao.QuantoCusta" },
