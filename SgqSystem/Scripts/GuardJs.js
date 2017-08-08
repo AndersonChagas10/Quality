@@ -6,6 +6,32 @@
 
 var ftaPreffixLabel = ' (FTA:';
 
+function tootipFTA(arr, closureThisInTooltip) {
+    var result = $.grep(arr, function (o, c) {
+        if (removeFtaDaLabel(o) === closureThisInTooltip)
+            if (verificaFtaLabel(o))
+                return o
+    })[0]
+
+    if (result)
+        return '<br/><span style="color:blue">Ações Corretivas no período: ' + pegaNumeroDoFtaEmLabelQueContemFta(result) + '</span>'
+    else
+        return ''
+}
+
+function labelFTA(arr, closureThisInTooltip) {
+    var result = $.grep(arr, function (o, c) {
+        if (removeFtaDaLabel(o) === closureThisInTooltip)
+            if (verificaFtaLabel(o))
+                return o
+    })[0]
+
+    if (result)
+        return result
+    else
+        return closureThisInTooltip
+}
+
 function trataTooltipComFTA(hcObject) {
     let s = '<b>' + removeFtaDaLabel(hcObject.x) + '</b>';
     $.each(hcObject.points, function (i, point) {
