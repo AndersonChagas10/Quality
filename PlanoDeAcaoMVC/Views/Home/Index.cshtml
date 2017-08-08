@@ -393,7 +393,15 @@
                     <div class="col-xs-3 col-md-3">
                         <div class="panel-body">
                             @Html.DropDownList("Unidade_Id", new SelectList(ViewBag.Unidade, "Id", "Name"), "Selecione a Unidade", new { @class = "form-control input-sm" })
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-md-3">
+                        <div class="panel-body">
                             @Html.DropDownList("Indicador_Id", new SelectList(ViewBag.Level1, "Id", "Name"), "Selecione o Indicador", new { @class = "form-control input-sm" })
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-md-3">
+                        <div class="panel-body">
                             <select class="form-control input-sm" id="Mes_Id" name="Mes_Id">
                                 <option value="">Selecione o Número de Meses</option>
                                 <option value="2">2 Meses</option>
@@ -408,10 +416,16 @@
                                 <option value="11">11 Meses</option>
                                 <option value="12">12 Meses</option>
                             </select>
-                            <button class="btn btn-primary" type="button" value="Buscar" style="margin-top:10px;float:right;" id="btnBuscarUnidade">Buscar</button>
                         </div>
                     </div>
-                    <div class="col-xs-9 col-md-9" id="divHistoricoIndicadores" style="height:300px;padding:0px !important;"></div>
+                    <div class="col-xs-3 col-md-3">
+                        <div class="panel-body">
+                            <button class="btn btn-primary" type="button" value="Buscar" style="float:left;" id="btnBuscarUnidade">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-12" id="divHistoricoIndicadores" style="height:300px;padding:0px !important;"></div>
                 </div>
             </div>
         </div>
@@ -1216,7 +1230,7 @@
         let finish = 0
 
         var progress = new LoadingOverlayProgress();
-        $('#divIndicador').LoadingOverlay("show", {
+        $('#divHistoricoIndicadores').LoadingOverlay("show", {
             custom: progress.Init()
         });
 
@@ -1233,7 +1247,7 @@
                 GraficoUltimo(totalArrSc, (finish == numroDeMeses - 1), indicador)
                 progress.Update(parseInt((((numroDeMeses - $.active) / numroDeMeses) * 100).toFixed(0)))
                 if ($.active == 1)
-                    $("#divIndicador").LoadingOverlay("hide", true);
+                    $("#divHistoricoIndicadores").LoadingOverlay("hide", true);
             })
 
             totalArrPa = []
@@ -1253,7 +1267,7 @@
     }
 
     function GraficoUltimo(totalArrSc, finish, indicador) {
-   
+
         totalArrSc.sort(function (a, b) { return a[0].Data.split('/')[0] - b[0].Data.split('/')[0] });
         totalArrPa.sort(function (a, b) { return a.Data.split('/')[0] - b.Data.split('/')[0] });
         var privotY = 'Scorecard'
@@ -1262,7 +1276,7 @@
         var title = privotY + " x " + privotX
         var series = [];
         var serie = [];
-        var serieData = []
+        //var serieData = {}
         var eixoX = []
         var eixoY = []
         totalArrSc.forEach(function (o, c) {
@@ -1274,19 +1288,23 @@
         eixoY = MapeiaValorParaHC(eixoY, privotY);
         eixoX = MapeiaValorParaHC(eixoX, privotX);
 
-        serieData["name"] = indicador;
-        serieData["data"] = eixoY;
-        serieData["yAxis"] = 0;
+        var serieData = {
+            name: indicador, data: eixoY, yAxis: 0, tooltip: { valueSuffix: '%' }
+        }
+
         serie.push(serieData);
 
         var segundoArrY = []
         totalArrPa.forEach(function (o) {
             segundoArrY.push(o[indicador])
         })
-        var serieData2 = { name: 'Ações', data: segundoArrY, yAxis: 1 }
+        var serieData2 = {
+            name: 'Ações', data: segundoArrY, yAxis: 1
+        }
         serie.push(serieData2);
 
-        Highcharts.chart('divIndicador', {
+        $('#divHistoricoIndicadores').highcharts({
+        //Highcharts.chart('divHistoricoIndicadores', {
             credits: {
                 enabled: false
             },
@@ -1318,20 +1336,26 @@
                     }
                 }
             },
+            tooltip: {
+                shared: true,
+                crosshairs: true
+            },
             yAxis: [{
-                min: 10,
                 max: 100,
+                min: 0,
                 labels: {
                     format: '{value} %',
                     style: {
-                        color: Highcharts.getOptions().colors[0],
+                        color: Highcharts.getOptions().colors[1],
                         fontSize: '8px',
                         fontWeight: 'normal'
+                    },
+                    tooltip: {
+                        valueSuffix: '%'
                     }
                 },
-                min: 0,
                 title: {
-                    text: 'Porcentagem',
+                    text: tituloYBar2,
                     style: {
                         fontSize: '10px',
                         fontWeight: 'normal'
@@ -1342,21 +1366,21 @@
                 labels: {
                     format: '{value}',
                     style: {
-                        color: Highcharts.getOptions().colors[0],
+                        color: Highcharts.getOptions().colors[1],
                         fontSize: '8px',
                         fontWeight: 'normal'
                     }
                 },
-                min: 0,
                 title: {
-                    text: 'Numero de ações',
+                    text: tituloYBar,
                     style: {
                         fontSize: '10px',
                         fontWeight: 'normal'
                     }
                 },
                 opposite: true
-            }],
+            }
+            ],
             legend: {
                 align: 'center',
                 verticalAlign: 'bottom',
@@ -1372,9 +1396,14 @@
             series: serie
         }, function () {
             if ($.active == 1)
-                $("#divIndicador").LoadingOverlay("hide", true);
+                $("#divHistoricoIndicadores").LoadingOverlay("hide", true);
         });
 
+        //Exibe os yAxis
+        if ($('#divHistoricoIndicadores').highcharts().yAxis[0]) {
+            $('#divHistoricoIndicadores').highcharts().yAxis[0].update();
+            $('#divHistoricoIndicadores').highcharts().yAxis[1].update();
+        }
     }
 
     /*Auxiliar*/
@@ -1451,6 +1480,8 @@
 
     tituloBar = 'Status das Ações por Indicadores';
     tituloColumn = 'Status das Ações por Responsável';
+
+    tituloYBar2 = 'Scorecard';
 
     /*Config Callendar PT-BR*/
     $('body .dropdown-toggle').dropdown();
@@ -1963,4 +1994,5 @@
         enviar['unidade'] = unidade;
     });
     /*Fim*/
+
 </script>
