@@ -39,8 +39,8 @@
                 @Html.DisplayNameFor(model => model.Unidade_Id)
             </td>
             <td style="width: 43%;">
-                @Html.DisplayFor(model => model.Unidade_Id)
-                @*@Html.DisplayFor(model => model._Unidade)*@
+                @*@Html.DisplayFor(model => model.Unidade_Id)*@
+                @Html.DisplayFor(model => model.UnidadeName)
             </td>
             <td style="width: 16%;"></td>
         </tr>
@@ -67,7 +67,7 @@
                 @Html.DisplayNameFor(model => model.Level1Id)
             </td>
             <td>
-                @Html.DisplayFor(model => model.Level1Id)
+                @Html.DisplayFor(model => model.Level1Name)
             </td>
             <td></td>
         </tr>
@@ -76,7 +76,7 @@
                 @Html.DisplayNameFor(model => model.Level2Id)
             </td>
             <td>
-                @Html.DisplayFor(model => model.Level2Id)
+                @Html.DisplayFor(model => model.Level2Name)
             </td>
             <td></td>
         </tr>
@@ -85,7 +85,7 @@
                 @Html.DisplayNameFor(model => model.Level3Id)
             </td>
             <td>
-                @Html.DisplayFor(model => model.Level3Id)
+                @Html.DisplayFor(model => model.Level3Name)
             </td>
             <td></td>
         </tr>
