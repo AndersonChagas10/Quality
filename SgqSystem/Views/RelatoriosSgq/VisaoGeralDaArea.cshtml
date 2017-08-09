@@ -570,6 +570,7 @@
             enviar["CallBackTableTituloColunas"] = function () { };
             enviar["CallBackTableBody"] = "GetTabela2($(this).attr('dado3'), $(this).attr('dado1'));";
             enviar["CallBackTableEsquerda"] = function () { };
+            //enviar["Query"] = "GetTbl1SemGrupos";
             enviar["Query"] = "GetTbl1";
             enviar["Title"] = "Pacotes por Regional";
 
@@ -595,6 +596,7 @@
             enviar["CallBackTableTituloColunas"] = function () { };
             enviar["CallBackTableBody"] = "Grafico3($(this).attr('dado3'), $(this).attr('dado1'));Grafico4($(this).attr('dado3'), $(this).attr('dado1'));";
             enviar["CallBackTableEsquerda"] = function () { };
+            //enviar["Query"] = "GetTbl2SemGrupos";
             enviar["Query"] = "GetTbl2";
             enviar["Title"] = "Indicadores por unidade";
 
@@ -1439,6 +1441,7 @@
             enviar.level3names = nome
 
             $.post('http://localhost:59907/api/sgq/getacoes', enviar , function (r) {
+            
 
                 //Preenche label x Axys com FTA
                 $.each(r, function(i, n){
