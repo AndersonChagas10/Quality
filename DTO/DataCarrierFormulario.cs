@@ -98,5 +98,7 @@ namespace DTO
         public List<string> ParametroTableRow { get; set; }
         public List<string> ParametroTableCol { get; set; }
 
+        public int clusterSelected_Id { get; set; }
+
     }
 }

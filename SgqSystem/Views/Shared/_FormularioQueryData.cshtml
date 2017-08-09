@@ -316,11 +316,14 @@
         {
             <li>
                 <div class="dropdown" id="showUnidadesManutencao" style="display:none">
-                    <span class="redLabel">Unidade</span>
+                    <span class="redLabel">Unidades</span>
                     @Html.DropDownList("UnidadeId", new SelectList(ViewBag.Unidades, "Grupo", "Nome"), htmlAttributes: new { @class = "form-control", @style = "width:210px" })
                 </div>
             </li>
         }
+
+        
+
         <li>
             <div id="showUnit" style="display:none">
                 <span class="redLabel">@Resources.Resource.unit</span>
@@ -328,6 +331,15 @@
                 @Html.DropDownList("unitId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })
             </div>
         </li>
+
+        <li>
+            <div id="showProcesso" style="display:none">
+                <span class="redLabel">Processo</span>
+
+                @Html.DropDownList("clusterId", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })
+            </div>
+        </li>
+
         @*<li>
                 <div id="showOnlyUnit" style="display:none">
                     <span class="redLabel">Unidade</span>
@@ -774,6 +786,10 @@
             enviar['auditorId'] = $('#auditorId option:selected').val();
         });
 
+        $('#clusterId').on('change', function (e) {
+            enviar['clusterSelected_Id'] = $('#clusterId option:selected').val();
+        });
+
         //enviar['level01Id'] = null;
         //enviar['level02Id'] = null;
         //enviar['level03Id'] = null;
@@ -806,6 +822,8 @@
             enviar['startDate'] = "";
             enviar['endDate'] = "";
         });
+
+       
         //Start config datepickerrange simple
 
         //Start config datepickerrange full
@@ -858,6 +876,8 @@
 
         enviar['startDate'] = moment().format();
         enviar['endDate'] = moment().format();
+
+
     });
 
 
@@ -938,6 +958,9 @@
         },
         showUnit: function () {
             $('#showUnit').show();
+        },
+        showProcesso: function () {
+            $('#showProcesso').show();
         },
         //showOnlyUnit: function () {
         //    $('#showOnlyUnit').show();

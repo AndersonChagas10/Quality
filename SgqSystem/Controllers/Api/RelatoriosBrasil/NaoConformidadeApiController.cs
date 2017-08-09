@@ -411,6 +411,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id in (3,4) THEN CL2.EvaluatedResult " +
+                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN CL2.WeiEvaluation " +
+                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN CL2.WeiEvaluation " +
                 "\n         ELSE 0 " +
                 "\n        END AS Av " +
 
@@ -419,6 +421,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL2.EvaluateTotal " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id in (3,4) THEN CL2.EvaluatedResult " +
+                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN CL2.EvaluateTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN CL2.EvaluateTotal " +
                 "\n         ELSE 0 " +
                 "\n        END AS AvSemPeso " +
 
@@ -426,6 +430,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiDefects " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiDefects " +
                 "\n         WHEN IND.ParConsolidationType_Id in (3,4) THEN CL2.DefectsResult " +
+                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN CL2.WeiDefects " +
+                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN CL2.TotalLevel3WithDefects " +
                 "\n         ELSE 0 " +
 
                 "\n         END AS NC " +
@@ -434,6 +440,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL2.DefectsTotal " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL2.DefectsTotal " +
                 "\n         WHEN IND.ParConsolidationType_Id in (3,4) THEN CL2.DefectsResult " +
+                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN CL2.DefectsTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN CL2.TotalLevel3WithDefects " +
                 "\n         ELSE 0 " +
 
                 "\n         END AS NCSemPeso " +

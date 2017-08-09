@@ -33,7 +33,7 @@ public class ScorecardResultSet
 
     public string TipoScore { get; set; }
 
-    public string getSQLScorecard(DateTime dtInicio, DateTime dtFim, int unidadeId, int tipo) //Se tipo 0, tras pontos , se 1, tras tudo
+    public string getSQLScorecard(DateTime dtInicio, DateTime dtFim, int unidadeId, int tipo, int clusterSelected_Id) //Se tipo 0, tras pontos , se 1, tras tudo
     {
 
         /*
@@ -707,6 +707,7 @@ public class ScorecardResultSet
            "\n AND CCC.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL)                                                                                                                                                                                                      " +
            "\n AND CL.Id = @CLUSTER                                                                                                                                                                                                                                                                    " +
            "\n  ) SC                                                                                                                                                                                                                                                               " +
+           "\n WHERE cluster = " + clusterSelected_Id +
            "\n  " + orderby + "                                                                                                                                                                                                                                                    " +
            "\n  DROP TABLE #AMOSTRATIPO4 ";
 
@@ -715,11 +716,11 @@ public class ScorecardResultSet
 
 
 
-    public string SelectScorecardCompleto(DateTime dtInicio, DateTime dtFim, int unidadeId, int tipo) //Se 0, tras pontos , se 1, tras tudo
+    public string SelectScorecardCompleto(DateTime dtInicio, DateTime dtFim, int unidadeId, int tipo, int clusterSelected_Id) //Se 0, tras pontos , se 1, tras tudo
     {
         string sql;
 
-        sql = getSQLScorecard(dtInicio, dtFim, unidadeId, tipo); //Se 0, tras pontos , se 1, tras tudo
+        sql = getSQLScorecard(dtInicio, dtFim, unidadeId, tipo, clusterSelected_Id); //Se 0, tras pontos , se 1, tras tudo
 
 
         return sql;

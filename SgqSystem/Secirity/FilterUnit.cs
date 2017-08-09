@@ -35,6 +35,8 @@ namespace SgqSystem.Secirity
                     var rolesCompany = "";
                     var userId = 0;
 
+                    
+
                     if (!string.IsNullOrEmpty(cookie.Values["userId"]))
                         int.TryParse(cookie.Values["userId"].ToString(), out userId);
 

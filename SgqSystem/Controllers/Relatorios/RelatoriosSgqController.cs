@@ -1,6 +1,8 @@
-﻿using Dominio;
+﻿using AutoMapper;
+using Dominio;
 using Dominio.Interfaces.Services;
 using DTO;
+using DTO.DTO.Params;
 using DTO.ResultSet;
 using Helper;
 using SgqSystem.Secirity;
@@ -35,6 +37,10 @@ namespace SgqSystem.Controllers
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult Scorecard()
         {
+            using (var db = new SgqDbDevEntities())
+            {
+                ViewBag.Clusters = Mapper.Map<IEnumerable<ParClusterDTO>>(db.ParCluster.Where(r => r.IsActive == true));
+            }
             GetMetaAtualScorecard();
             return View(form);
         }

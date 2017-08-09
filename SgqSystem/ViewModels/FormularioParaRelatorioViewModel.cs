@@ -8,6 +8,7 @@ namespace SgqSystem.ViewModels
 {
     public class FormularioParaRelatorioViewModel : DataCarrierFormulario
     {
+        
 
         #region Contrutor
 

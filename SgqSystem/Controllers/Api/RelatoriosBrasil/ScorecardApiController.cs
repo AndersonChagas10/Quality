@@ -17,7 +17,7 @@ namespace SgqSystem.Controllers.Api
         private List<ScorecardResultSet> _mock { get; set; }
         private List<ScorecardResultSet> _list { get; set; }
 
-        public decimal[] SelectPontosScorecard(DateTime dtInicio, DateTime dtFim, int unidadeId, int tipo) //Se 0, tras pontos , se 1, tras tudo                                                                                                                                                                                               
+        public decimal[] SelectPontosScorecard(DateTime dtInicio, DateTime dtFim, int unidadeId, int tipo, int clusterSelected_Id) //Se 0, tras pontos , se 1, tras tudo                                                                                                                                                                                               
         {
 
             decimal[] pontosTotais = { 0, 0 };
@@ -29,6 +29,8 @@ namespace SgqSystem.Controllers.Api
 
             DateTime _novaDataIni = _dtIni;
             DateTime _novaDataFim = _dtIni;
+
+            
 
             int numMeses = (12 * (_dtFim.Year - _dtIni.Year) + _dtFim.Month - _dtIni.Month) + 1;
 
@@ -48,7 +50,7 @@ namespace SgqSystem.Controllers.Api
                     _novaDataFim = _dtFim;
                 }
 
-                sql = new ScorecardResultSet().SelectScorecardCompleto(_novaDataIni, _novaDataFim, unidadeId, 0);
+                sql = new ScorecardResultSet().SelectScorecardCompleto(_novaDataIni, _novaDataFim, unidadeId, 0, clusterSelected_Id);
 
                 using (var db = new SgqDbDevEntities())
                 {
@@ -79,9 +81,9 @@ namespace SgqSystem.Controllers.Api
 
             CommonLog.SaveReport(form, "Report_Scorecard");
 
-            decimal[] pontosTotais = SelectPontosScorecard(form._dataInicio, form._dataFim, form.unitId, 0);
+            decimal[] pontosTotais = SelectPontosScorecard(form._dataInicio, form._dataFim, form.unitId, 0, form.clusterSelected_Id);
 
-            var query = new ScorecardResultSet().SelectScorecardCompleto(form._dataInicio, form._dataFim, form.unitId, 1);
+            var query = new ScorecardResultSet().SelectScorecardCompleto(form._dataInicio, form._dataFim, form.unitId, 1, form.clusterSelected_Id);
             using (var db = new SgqDbDevEntities())
             {
 
