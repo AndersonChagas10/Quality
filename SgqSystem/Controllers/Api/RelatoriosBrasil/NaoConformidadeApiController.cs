@@ -97,7 +97,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
                 "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM" +
-                
+                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN WeiEvaluation " +
+                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN WeiEvaluation " +
+
                 "\n         ELSE 0 " +
                 "\n        END AS Av " +
 
@@ -107,7 +109,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
                 "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM" +
-                
+                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN EvaluateTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN EvaluateTotal " +
+
+
                 "\n         ELSE 0 " +
                 "\n        END AS AvSemPeso " +
 
@@ -116,7 +121,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiDefects " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult " +
                 "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM" +
-                
+                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN WeiDefects " +
+                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN TotalLevel3WithDefects " +
+
                 "\n         ELSE 0 " +
 
                 "\n         END AS NC " +
@@ -126,7 +133,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN DefectsTotal " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult " +
                 "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM" +
-                
+                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN DefectsTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN TotalLevel3WithDefects " +
+
                 "\n         ELSE 0 " +
 
                 "\n         END AS NCSemPeso " +
@@ -156,7 +165,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         ON A4.UNIDADE = UNI.Id " +
                 "\n         AND A4.INDICADOR = IND.ID " +
                 "\n         WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL " +
-                "\n         AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) " +
+                "\n         -- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) " +
 
                 "\n     ) S1 " +
 
@@ -278,6 +287,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
                 "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM" +
+                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN WeiEvaluation " +
+                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN WeiEvaluation "+
+
+
                 "\n         ELSE 0 " +
                 "\n        END AS Av " +
 
@@ -287,6 +300,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
                 "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM" +
+                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN EvaluateTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN EvaluateTotal " +
                 "\n         ELSE 0 " +
                 "\n        END AS AvSemPeso " +
 
@@ -295,6 +310,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiDefects " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult " +
                 "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM" +
+                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN WeiDefects "+
+                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN TotalLevel3WithDefects "+
                 "\n         ELSE 0 " +
 
                 "\n         END AS NC " +
@@ -304,6 +321,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN DefectsTotal " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult " +
                 "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM" +
+                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN DefectsTotal " +
+                "\n         WHEN IND.ParConsolidationType_Id = 6 THEN TotalLevel3WithDefects " +
                 "\n         ELSE 0 " +
 
                 "\n         END AS NCSemPeso " +
@@ -327,7 +346,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         AND A4.INDICADOR = IND.ID " +
                 "\n         WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL " +
                 "\n         AND UNI.Name = '" + form.unitName + "'" +
-                "\n         AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) " +
+                "\n         -- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) " +
 
                 "\n     ) S1 " +
 
