@@ -20,6 +20,9 @@
     //GRT
     var UrlPa = 'http://192.168.25.200/PlanoAcao/';
     var UrlSgq = 'http://192.168.25.200/SgqBr/';
+    //Local
+    //var UrlPa = 'http://localhost:59907/';
+    //var UrlSgq = 'http://192.168.25.200/SgqBr/';
 </script>
 
 <style>
@@ -412,7 +415,7 @@
                 <div class="row">
                     <div class="col-xs-3 col-md-3">
                         <div class="panel-body">
-                            @Html.DropDownList("Unidade_Id", new SelectList(ViewBag.Unidade, "Id", "Name"), "Selecione a Unidade", new { @class = "form-control input-sm" })
+                            @Html.DropDownList("Unidade_Id", new SelectList(ViewBag.Unidade, "Sgq_Id", "Name"), "Selecione a Unidade", new { @class = "form-control input-sm" })
                         </div>
                     </div>
                     <div class="col-xs-3 col-md-3">
@@ -429,12 +432,12 @@
                                 <option value="4">4 Meses</option>
                                 <option value="5">5 Meses</option>
                                 <option value="6">6 Meses</option>
-                                <option value="7">7 Meses</option>
+                                @*<option value="7">7 Meses</option>
                                 <option value="8">8 Meses</option>
                                 <option value="9">9 Meses</option>
                                 <option value="10">10 Meses</option>
                                 <option value="11">11 Meses</option>
-                                <option value="12">12 Meses</option>
+                                <option value="12">12 Meses</option>*@
                             </select>
                         </div>
                     </div>
@@ -1255,11 +1258,36 @@
         $('#divHistoricoIndicadores').LoadingOverlay("show", {
             custom: progress.Init()
         });
+        //startDate: moment().add(-i, 'month').format('DD/MM/YYYY'),
+        //endDate: moment().add(-i - 1, 'month').format('DD/MM/YYYY'),
 
         for (let i = 0; i < numroDeMeses; i++) {
+
+            //jQuery.ajax({
+            //    url: UrlSgq + 'api/Scorecard/GetScorecard',
+            //    type: 'POST',
+            //    data: { //Url está na linha 16
+            //        endDate: moment().add(-i, 'month').format('DD/MM/YYYY'),
+            //        startDate: moment().add(-i - 1, 'month').format('DD/MM/YYYY'),
+            //        unitId: unidade,
+            //        auditorId: auditor
+            //    },
+            //    success: function (r) {
+            //        totalArrSc.push([{ Data: moment().add(-i, 'month').format('MM/YYYY'), Dados: r }]);
+            //        //if ($.active == 0)
+
+            //        GraficoUltimo(totalArrSc, (finish == numroDeMeses - 1), indicador)
+            //        progress.Update(parseInt((((numroDeMeses - $.active) / numroDeMeses) * 100).toFixed(0)))
+            //        if ($.active == 1)
+            //            $("#divHistoricoIndicadores").LoadingOverlay("hide", true);
+
+            //    },
+            //    async: false
+            //});
+
             $.post(UrlSgq + 'api/Scorecard/GetScorecard', { //Url está na linha 16
-                startDate: moment().add(-i, 'month').format('DD/MM/YYYY'),
-                endDate: moment().add(-i + 1, 'month').format('DD/MM/YYYY'),
+                endDate: moment().add(-i, 'month').format('DD/MM/YYYY'),
+                startDate: moment().add(-i - 1, 'month').format('DD/MM/YYYY'),
                 unitId: unidade,
                 auditorId: auditor
             }, function (r) {
@@ -1274,18 +1302,40 @@
 
             totalArrPa = []
             $.post(UrlPa + 'api/Sgq/GetAcoes', { //Url está na linha 16
-                startDate: moment().add(-i, 'month').format('DD/MM/YYYY'),
-                endDate: moment().add(-i + 1, 'month').format('DD/MM/YYYY'),
+                endDate: moment().add(-i, 'month').format('DD/MM/YYYY'),
+                startDate: moment().add(-i - 1, 'month').format('DD/MM/YYYY'),
                 unitName: UnidadeName,
                 auditorId: 1,
                 level1names: [indicador],
                 isLevel: 1
             }, function (PAr) {
                 progress.Update(parseInt((((numroDeMeses - $.active) / numroDeMeses) * 100).toFixed(0)))
-                PAr['Data'] = moment().format('MM/YYYY')
+                PAr['Data'] = moment().add(-i, 'month').format('MM/YYYY')
                 totalArrPa.push(PAr)
             })
         }
+
+        //for (let j = 0; j < numroDeMeses; j++) {
+        //    jQuery.ajax({
+        //        url: UrlPa + 'api/Sgq/GetAcoes',
+        //        data: { //Url está na linha 16
+        //            endDate: moment().add(-j, 'month').format('DD/MM/YYYY'),
+        //            startDate: moment().add(-j - 1, 'month').format('DD/MM/YYYY'),
+        //            unitId: unidade,
+        //            auditorId: auditor
+        //        },
+        //        type: 'POST',
+        //        success: function (PAr) {
+        //            progress.Update(parseInt((((numroDeMeses - $.active) / numroDeMeses) * 100).toFixed(0)))
+        //            PAr['Data'] = moment().add(-j, 'month').format('MM/YYYY')
+        //            totalArrPa.push(PAr)
+        //            if ($.active == 1)
+        //                $("#divHistoricoIndicadores").LoadingOverlay("hide", true);
+
+        //        },
+        //        async: false
+        //    });
+        //}
     }
 
     function GraficoUltimo(totalArrSc, finish, indicador) {
@@ -1304,7 +1354,7 @@
         totalArrSc.forEach(function (o, c) {
             eixoX.push({ data: o[0].Data })
             eixoY.push($.grep(o[0].Dados, function (oo, cc) {
-                return oo.Level1Name == '(%) NC CEP Vácuo GRD'
+                return oo.Level1Name == indicador
             })[0])
         })
         eixoY = MapeiaValorParaHC(eixoY, privotY);
