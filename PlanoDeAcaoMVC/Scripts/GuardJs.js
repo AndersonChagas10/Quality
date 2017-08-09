@@ -6,7 +6,6 @@ function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 
-
 /*API de SUM para DataTable
 
 Exemplo: 

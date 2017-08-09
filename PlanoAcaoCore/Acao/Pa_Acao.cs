@@ -114,6 +114,22 @@ namespace PlanoAcaoCore
 
         public int TipoIndicador { get; set; }
 
+        public string _QuandoFimData
+        {
+            get
+            {
+                return QuandoFim.ToString("dd/MM/yyyy");
+            }
+        }
+
+        public string _QuandoInicioData
+        {
+            get
+            {
+                return QuandoInicio.ToString("dd/MM/yyyy");
+            }
+        }
+
         //public List<Pa_AcaoXQuem> AcaoXQuem { get; set; }
 
         //public List<string> _Quem { get; set; }
@@ -132,7 +148,7 @@ namespace PlanoAcaoCore
                 return RenanConvulsao;
             }
         }
-      
+
         public Pa_Problema_Desvio _Pa_Problema_Desvio_Id
         {
             get
@@ -143,7 +159,7 @@ namespace PlanoAcaoCore
                     return new Pa_Problema_Desvio();
             }
         }
-       
+
         public Pa_IndicadorSgqAcao _Pa_IndicadorSgqAcao
         {
             get
@@ -191,7 +207,7 @@ namespace PlanoAcaoCore
                 var old = Pa_Acao.Get(Id);
                 Panejamento_Id = old.Panejamento_Id;
 
-              
+
 
             }
 
@@ -329,7 +345,7 @@ namespace PlanoAcaoCore
                     dynamic level1 = dbSgq.QueryNinjaADO("SELECT * FROM ParLevel1 WHERE ID = " + retorno.Level1Id).FirstOrDefault();
                     if (level1 != null)
                         retorno._Level1 = level1.Name;
-                    
+
                 }
                 if (retorno.Level2Id != null && retorno.Level2Id > 0)
                 {

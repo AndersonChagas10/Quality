@@ -166,12 +166,12 @@
         function GetMonitoramento(indicador){
             $("#PanelFull0").hide();
             $("#RGMonitoramentosGrafico").empty();
-            enviar["level1Name"] = indicador;
+            enviar["level1Name"] = removeFtaDaLabel(indicador);
             EasyAjax(urlGraficoMonitoramento, enviar, GraficoMonitoramento, "RGTarefasGrafico");
         };
 
         function GetTarefa(monitoramento){
-            enviar["level2Name"] = monitoramento;
+            enviar["level2Name"] = removeFtaDaLabel(monitoramento);
             EasyAjax(urlGraficoTarefa, enviar, GraficoTarefas, "RGMonitoramentosGrafico");
         };
 
@@ -248,7 +248,10 @@
             var meta = MapeiaValorParaHC(data, "Meta");
             var selector = "RGOperacoesGrafico";
             //var id = MapeiaValorParaHC(data, "UnidadeName")
-
+   enviar["level1names"] = nome
+              enviar.isLevel = 1
+            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
+                 insereLabelFtaPelaColunName(nome, r)
             $('#' + selector).empty().highcharts({
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
@@ -276,7 +279,8 @@
                     //Chart.curvaPareto(data, nc, 1, inverse),
                 ]
             });
-
+daUmaPintadaNaLabel(selector)
+            })
         }
 
         function GraficoDepartamento() {
@@ -296,7 +300,10 @@
             /*?*/
             var sentido = 'desc';
             var inverse = sentido == 'desc' ? undefined : 1;
-
+   enviar["level2names"] = nome
+              enviar.isLevel = 2
+            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
+                 insereLabelFtaPelaColunName(nome, r)
             $('#' + selector).empty().highcharts({
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
@@ -323,6 +330,8 @@
                     Chart.curvaPareto(data, nc, 1, inverse)
                 ]
             });
+     daUmaPintadaNaLabel(selector)
+            })
 
 
         }
@@ -336,6 +345,19 @@
             var qtdAv = MapeiaValorParaHC(data, "Av")
             var porc = MapeiaValorParaHC(data, "Proc")
             var selector = "RGMonitoramentosGrafico";
+            enviar["level3names"] = nome
+              enviar.isLevel = 3
+            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
+
+                //Preenche label x Axys com FTA
+                /*$.each(r, function(i, n){
+                    if(nome.indexOf(i)  != -1 && n > 0){
+                        nome[nome.indexOf(i)] = nome[nome.indexOf(i)] + ftaPreffixLabel + n + ")"
+                    }
+                    //console.log("Tratamentos de Anomalia: " + n)
+                });*/
+
+                insereLabelFtaPelaColunName(nome, r)
 
             /*?*/
             var sentido = 'desc';
@@ -375,7 +397,7 @@
                         point: {
                             events: {
                                 click: function () {
-                                    enviar['level3Name'] = this.category;
+                                    enviar['level3Name'] = removeFtaDaLabel(this.category);
                                     enviar['PercentualNCFTA'] = this.y;
                                     enviar['ReincidenciaDesvioFTA'] = nc[this.x];
                                     enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
@@ -406,7 +428,7 @@
                         point: {
                             events: {
                                 click: function () {
-                                    enviar['level3Name'] = this.category;
+                                    enviar['level3Name'] = removeFtaDaLabel(this.category);
                                     enviar['PercentualNCFTA'] = this.y;
                                     enviar['ReincidenciaDesvioFTA'] = nc[this.x];
                                     enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
@@ -432,6 +454,8 @@
                     Chart.curvaPareto(data, nc, 1, inverse)
                 ]
             });
+                daUmaPintadaNaLabel(selector)
+            })
 
         }
 

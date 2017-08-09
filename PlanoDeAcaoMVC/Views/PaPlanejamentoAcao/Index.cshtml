@@ -251,7 +251,7 @@
         var tempInput;
         var tempName;
 
-        var win = window.open('@Url.Action("Relatorios", "Relatorios")', '_blank');
+        @*var win = window.open('@Url.Action("Relatorios", "Relatorios")', '_blank');*@
         var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
         var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")';
         var urlNovaAcao = '@Url.Action("Index", "Pa_Acao")';
@@ -795,7 +795,6 @@
 
             $.post(urlSalvarAcao, { "": listaAcoes }, function (r) {
                 $.post(urlGetPlanejamentoAcao, {}, function (r) {
-
                     //if (counter == 1 && !jaLiberouCallback) {
                     jaLiberouCallback = true;
                     $('#modalLindo').modal('hide');
@@ -921,7 +920,6 @@
 
             //console.log(retornoArray);
 
-
             var btnDetalhes = '<button type="button" class="details btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Detalhes" style="cursor:pointer" class="glyphicon glyphicon-list-alt"></span>&nbsp Detalhes</button>';
             var btnNovoTatico = '<button type="button" class="btnNovoTatico showAsEstrategy btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Novo Planejamento Tático para este Planejamento Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tag"></span>&nbsp Novo Tático</button>';
             var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp Nova Acao</button>';
@@ -967,8 +965,10 @@
                     /*27*/{ title: nameCausaEspecifica, mData: "Acao.CausaEspecifica" },
                     /*28*/{ title: nameContramedidaEspecifica, mData: "Acao.ContramedidaEspecifica" },
                     /*29*/{ title: "Quem", mData: "Acao._Quem" },
-                    /*30*/{ title: "Quando (Início)", mData: "Acao._QuandoInicio" },
-                    /*31*/{ title: "Quando (Fim)", mData: "Acao._QuandoFim" },
+                    ///*30*/{ title: "Quando (Início)", mData: "Acao._QuandoInicio" },
+                    ///*31*/{ title: "Quando (Fim)", mData: "Acao._QuandoFim" },
+                    /*30*/{ title: "Quando (Início)", mData: "Acao._QuandoInicioData" },
+                    /*31*/{ title: "Quando (Fim)", mData: "Acao._QuandoFimData" },
                     /*32*/{ title: nameComoPontosImportantes, mData: "Acao.ComoPontosimportantes" },
                     /*33*/{ title: "Pra que", mData: "Acao.PraQue" },
                     /*34*/{ title: "Quanto custa", mData: "Acao.QuantoCusta" },
@@ -1015,7 +1015,7 @@
                     $('table > tbody').on('click', '.edit', function (data, a, b) {
                         var data = table.row($(this).parents('tr')).data();
 
-                        console.log(data);
+                        //console.log(data);
 
                         $('#modalLindo').find('.modal-body').empty();
                         $('#modalLindo').find('.modal-body').append('<div class="content1"></div><div class="content2"></div><div class="content3"></div>');
@@ -1520,6 +1520,9 @@
         }
 
         function getAcompanhamento(acaoCorrentId) {
+
+            $('#modalLindo').modal('hide');
+
             //console.log(getAcompanhamento);
             $.get(urlAcompanhamentoDetalhes, { id: acaoCorrentId }, function (r) {
                 $('#modalLindo').find('.modal-body').empty().append(r);
@@ -1601,7 +1604,12 @@
             })
         }
 
-        $(document).ajaxStart(function () {
+        //$(document).ajaxStart(function () {
+        //    $.LoadingOverlay("show");
+        //    counter++;
+        //});
+
+        $(document).ajaxSend(function () {
             $.LoadingOverlay("show");
             counter++;
         });
@@ -1622,14 +1630,14 @@
             console.log(e);
             console.log(h);
             console.log(x);
+            $.LoadingOverlay("hide");
             //alert('Não foi possível salvar o registro: ' + e.responseJSON.ExceptionMessage);
-            counter--;
+            counter--;           
         });
 
         /*Table*/
         $(document).ready(function () {
             GetDataTable();
-
         });
 
     </script>

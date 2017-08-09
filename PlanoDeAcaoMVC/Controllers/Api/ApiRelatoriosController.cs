@@ -1,4 +1,5 @@
 ﻿using ADOFactory;
+using Dominio;
 using DTO.Helpers;
 using Newtonsoft.Json.Linq;
 using PlanoAcaoCore;
@@ -49,7 +50,12 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 "\n  ISNULL(Diretor.Name, 'Não possui Diretoria') AS 'Diretoria'," +
                 "\n  ISNULL(Dimens.Name, 'Não possui Dimensão') AS 'Dimensão'," +
                 "\n  ISNULL(Gere.Name, 'Não possui Gerência') AS 'Gerência'," +
-                "\n  ISNULL(Coord.Name, 'Não possui Coordenação') AS 'Coordenação'";
+                "\n  ISNULL(Coord.Name, 'Não possui Coordenação') AS 'Coordenação', " +
+                "\n  ISNULL(Acao.Regional, 'Não possui Regional') as 'Regional', "+
+                "\n  ISNULL(Acao.UnidadeName, 'Não possui Unidade') as 'Unidade', " +
+                "\n  ISNULL(Acao.Level1Name, 'Não possui Indicador') as 'Indicador', " +
+                "\n  ISNULL(Acao.Level2Name, 'Não possui Monitoramento') as 'Monitoramento', " +
+                "\n  ISNULL(Acao.Level3Name, 'Não possui Tarefa') as 'Tarefa' ";
             }
 
             query += "\n FROM Pa_Acao AS Acao" +
@@ -282,7 +288,28 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             return results;
         }
 
+        [HttpGet]
+        [Route("getUnits")]
+        public List<JObject> getUnits()
+        {
+            var query = "SELECT * from Pa_Unidade";
+            var items = QueryNinja(db, query);
 
-       
+            return items;
+        }
+
+        [HttpGet]
+        [Route("getIndicadores")]
+        public List<ParLevel1> getIndicadores()
+        {
+            var items = new List<ParLevel1>();
+            using (var db = new SgqDbDevEntities())
+            {
+                items = db.ParLevel1.ToList();
+            }
+            //var items = QueryNinja(db, query);
+            
+            return items;
+        }
     }
 }

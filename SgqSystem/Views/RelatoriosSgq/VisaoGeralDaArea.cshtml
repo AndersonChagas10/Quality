@@ -1058,6 +1058,9 @@
 
             $('#grafico4').removeClass('loader');
 
+            //$('#grafico5').removeClass('loader');
+
+
             $('#grafico4').empty().highcharts({
                 credits: {
                     enabled: false
@@ -1202,6 +1205,7 @@
                 }]
             });//Fim HC
 
+
         }
 
         function GraficoMonitoramento(data, tarefa) {
@@ -1218,38 +1222,60 @@
             var sentido = 'desc';
             var inverse = sentido == 'desc' ? undefined : 1;
 
-            $('#' + selector).empty().highcharts({
-                credits: Chart.Credits(),
-                chart: Chart.Chart('column', 'xy'),
-                title: Chart.Titulo(enviar.unitName + ' - ' + GraficoMon, enviar["level1Name"]),
-                xAxis: Chart.Xaxis(nome),
-                yAxis: Chart.yAxisPadraoRelNc(),
-                legend: {
-                    shadow: false
-                },
-                tooltip: {
-                    shared: true
-                },
-                plotOptions: {
-                    column: {
-                        //grouping: false,
-                        shadow: false,
-                        borderWidth: 0
-                    }
-                },
-                series: [
-                    Chart.ProcNc(porc, GetTarefa),
-                    Chart.NC(nc, GetTarefa),
-                    Chart.Av(qtdAv, GetTarefa),
-                    Chart.curvaPareto(data, nc, 1, inverse)
-                ]
-            });
+            enviar.level2names = nome
+            enviar.isLevel = 2
+            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
 
+                insereLabelFtaPelaColunName(nome, r)
+
+                $('#' + selector).empty().highcharts({
+                    credits: Chart.Credits(),
+                    chart: Chart.Chart('column', 'xy'),
+                    title: Chart.Titulo(enviar.unitName + ' - ' + GraficoMon, enviar["level1Name"]),
+                    xAxis: Chart.Xaxis(nome),
+                    yAxis: Chart.yAxisPadraoRelNc(),
+                    legend: {
+                        shadow: false
+                    },
+                    tooltip: {
+                        formatter: function() {
+
+                            /*var s = '<b>'+ removeFtaDaLabel(this.x) +'</b>';
+                            $.each(this.points, function(i, point) {
+                                s += '<br/><span style="color:' + point.color + '">\u25CF</span> ' + point.series.name + ': ' + point.y;
+                            });
+                            if(verificaFtaLabel(this.x)){
+                                s += '<br/><span style="color:blue">Ações Corretivas no período:' + pegaNumeroDoFtaEmLabelQueContemFta(this.x) + '</span>';
+                            }*/
+                            return trataTooltipComFTA(this);
+                        },
+                        //split: true,
+                        //distance: 30,
+                        //padding: 5,
+                        shared: true
+                    },
+                    plotOptions: {
+                        column: {
+                            //grouping: false,
+                            shadow: false,
+                            borderWidth: 0
+                        }
+                    },
+                    series: [
+                        Chart.ProcNc(porc, GetTarefa),
+                        Chart.NC(nc, GetTarefa),
+                        Chart.Av(qtdAv, GetTarefa),
+                        Chart.curvaPareto(data, nc, 1, inverse)
+                    ]
+                });
+
+                daUmaPintadaNaLabel(selector)
+            })
 
         }
 
         function GetTarefa(monitoramento){
-            enviar["level2Name"] = monitoramento;
+            enviar["level2Name"] = removeFtaDaLabel(monitoramento);
             EasyAjax(urlGraficoTarefa, enviar, GraficoTarefas, "grafico5");
         };
 
@@ -1275,7 +1301,7 @@
             var porc = MapeiaValorParaHC(data, "procentagemNc");
             var qtdAv = MapeiaValorParaHC(data, "av");
 
-            //$('#grafico5').removeClass('loader');
+
 
             $('#grafico5').empty().highcharts({
                 credits: {
@@ -1424,6 +1450,7 @@
                 }]
             });
 
+
         }
 
         function GraficoTarefas(data, monitoramento) {
@@ -1439,17 +1466,20 @@
             enviar.level1Name
             enviar.level2Name
             enviar.level3names = nome
+            enviar.isLevel = 3
+            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
 
             $.post('http://localhost:59907/api/sgq/getacoes', enviar , function (r) {
-            
 
                 //Preenche label x Axys com FTA
-                $.each(r, function(i, n){
-                    if(nome.indexOf(i) > 0 && n > 0){
-                        nome[nome.indexOf(i)] = nome[nome.indexOf(i)] + " (FTA: " + n + ")"
+                /*$.each(r, function(i, n){
+                    if(nome.indexOf(i)  != -1 && n > 0){
+                        nome[nome.indexOf(i)] = nome[nome.indexOf(i)] + ftaPreffixLabel + n + ")"
                     }
-                    console.log("Tratamentos de Anomalia: " + n)
-                });
+                    //console.log("Tratamentos de Anomalia: " + n)
+                });*/
+
+                insereLabelFtaPelaColunName(nome, r)
 
                 /*?*/
                 var sentido = 'desc';
@@ -1465,6 +1495,20 @@
                         shadow: false
                     },
                     tooltip: {
+                        formatter: function() {
+
+                            /*var s = '<b>'+ removeFtaDaLabel(this.x) +'</b>';
+                            $.each(this.points, function(i, point) {
+                                s += '<br/><span style="color:' + point.color + '">\u25CF</span> ' + point.series.name + ': ' + point.y;
+                            });
+                            if(verificaFtaLabel(this.x)){
+                                s += '<br/><span style="color:blue">Ações Corretivas no período:' + pegaNumeroDoFtaEmLabelQueContemFta(this.x) + '</span>';
+                            }*/
+                            return trataTooltipComFTA(this);
+                        },
+                        //split: true,
+                        //distance: 30,
+                        //padding: 5,
                         shared: true
                     },
                     plotOptions: {
@@ -1477,31 +1521,32 @@
                     series: [
                         Chart.ProcNc(porc, function(category) {
 
-                            requisitaDadosSGQparaGerarFta(removeFtaDaLabel(nome[nome.indexOf(category)]), porc[nome.indexOf(category)], nc[nome.indexOf(category)])
+                            requisitaDadosSGQparaGerarFta(nome[nome.indexOf(category)], porc[nome.indexOf(category)], nc[nome.indexOf(category)])
                         }),
                         Chart.NC(nc, function(category) {
-                            requisitaDadosSGQparaGerarFta(removeFtaDaLabel(nome[nome.indexOf(category)]), porc[nome.indexOf(category)], nc[nome.indexOf(category)])
+                            requisitaDadosSGQparaGerarFta(nome[nome.indexOf(category)], porc[nome.indexOf(category)], nc[nome.indexOf(category)])
                         }),
                         Chart.Av(qtdAv, function(category) {
-                            requisitaDadosSGQparaGerarFta(removeFtaDaLabel(nome[nome.indexOf(category)]), porc[nome.indexOf(category)], nc[nome.indexOf(category)])
+                            requisitaDadosSGQparaGerarFta(nome[nome.indexOf(category)], porc[nome.indexOf(category)], nc[nome.indexOf(category)])
                         }),
                         Chart.curvaPareto(data, nc, 1, inverse)
                     ]
                 });
 
                 //DA 1 "PINTADA" NA LABEL
-                $('#'+ selector +' svg > g.highcharts-axis-labels.highcharts-xaxis-labels text').each(function (c,o) {
-                    if($(o).text().indexOf('(FTA:') > 0){
+                /*$('#'+ selector +' svg > g.highcharts-axis-labels.highcharts-xaxis-labels text').each(function (c,o) {
+                    if($(o).text().indexOf('(FTA:') != -1){
                         console.log(o)
                         $(o).css({ 'fill': "blue" })
                     }
-                })
+                })*/
+                daUmaPintadaNaLabel(selector)
             })
 
         }
 
         function requisitaDadosSGQparaGerarFta(tarefa, percentualNc, nc) {
-            enviar['level3Name'] = tarefa;
+            enviar['level3Name'] = removeFtaDaLabel(tarefa);
             enviar['PercentualNCFTA'] = percentualNc;
             enviar['ReincidenciaDesvioFTA'] = nc;
             enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];

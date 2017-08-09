@@ -6,6 +6,8 @@ namespace PlanoAcaoCore
     {
         public string Name { get; set; }
         public string Description { get; set; }
+        public int Sgq_Id { get; set; }
+
         public static List<Pa_Unidade> Listar()
         {
             var query = "SELECT * FROM Pa_Unidade";

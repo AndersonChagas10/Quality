@@ -4,14 +4,87 @@
     })[0].split('=')[1];
 }
 
+var ftaPreffixLabel = ' (FTA:';
+
+function tootipFTA(arr, closureThisInTooltip) {
+    var result = $.grep(arr, function (o, c) {
+        if (removeFtaDaLabel(o) === closureThisInTooltip)
+            if (verificaFtaLabel(o))
+                return o
+    })[0]
+
+    if (result)
+        return '<br/><span style="color:blue">Ações Corretivas no período: ' + pegaNumeroDoFtaEmLabelQueContemFta(result) + '</span>'
+    else
+        return ''
+}
+
+function labelFTA(arr, closureThisInTooltip) {
+    var result = $.grep(arr, function (o, c) {
+        if (removeFtaDaLabel(o) === closureThisInTooltip)
+            if (verificaFtaLabel(o))
+                return o
+    })[0]
+
+    if (result)
+        return result
+    else
+        return closureThisInTooltip
+}
+
+function trataTooltipComFTA(hcObject) {
+    let s = '<b>' + removeFtaDaLabel(hcObject.x) + '</b>';
+    $.each(hcObject.points, function (i, point) {
+        s += '<br/><span style="color:' + point.color + '">\u25CF</span> ' + point.series.name + ': ' + point.y;
+    });
+    if (verificaFtaLabel(hcObject.x)) {
+        s += '<br/><span style="color:blue">Ações Corretivas no período:' + pegaNumeroDoFtaEmLabelQueContemFta(hcObject.x) + '</span>';
+    }
+    return s;
+}
+
+function insereLabelFtaPelaColunName(arr, res) {
+    //Preenche label x Axys com FTA
+    //I = Key
+    //n = Value
+    // console.log(arr)
+    $.each(res, function (i, n) {
+        console.log(i)
+        console.log(n)
+        if (arr.indexOf(i) != -1 && n > 0) {
+            arr[arr.indexOf(i)] = arr[arr.indexOf(i)] + ftaPreffixLabel + n + ")"
+        }
+        //console.log("Tratamentos de Anomalia: " + n)
+    });
+
+}
+
+function pegaNumeroDoFtaEmLabelQueContemFta(label) {
+    let tmp = label.slice(label.indexOf(ftaPreffixLabel) + ftaPreffixLabel.length, label.length)
+    tmp = tmp.slice(0, tmp.indexOf(')'))
+    return tmp
+}
+
+function verificaFtaLabel(label) {
+    return label.indexOf(ftaPreffixLabel) != -1
+}
+
 function removeFtaDaLabel(label) {
-    if (label.indexOf(' (FTA:') > 0) {
-        return label.slice(0, label.indexOf(' (FTA:'))
+    if (verificaFtaLabel(label)) {
+        return label.slice(0, label.indexOf(ftaPreffixLabel))
     } else {
         return label
     }
 }
 
+function daUmaPintadaNaLabel(selector) {
+    $('#' + selector + ' svg > g.highcharts-axis-labels.highcharts-xaxis-labels text').each(function (c, o) {
+        if ($(o).text().indexOf(ftaPreffixLabel) != -1) {
+            //console.log(o)
+            $(o).css({ 'fill': "blue" })
+        }
+    })
+}
 
 /*API de SUM para DataTable
 
@@ -58,7 +131,7 @@ function EasyAjax(url, dados, callback, loader, toggle) {
     //AJAX
     $.post(url, dados, function (r) {
         try {
-            
+
             if (!!loader)
                 $('#' + loader).removeClass('loader');
 
@@ -144,7 +217,7 @@ function getCookie(name) {
     if (parts.length == 2) return parts.pop().split(";").shift().split('&');
 }
 
-function getRole(role){
+function getRole(role) {
     return $.grep(getCookie("webControlCookie"), function (n) { return n.indexOf(role) != -1 })
 }
 
@@ -226,8 +299,8 @@ function heatMap(container, tableId, startIndex, delimiterIndex, order) {
 
         //Insere no array todos os elementos indicados em startIndex, insere o elemento Jquery "td" e o valor da "td".
         while (!!$(o).find('td:eq(' + startIndex + ')')[0]) {
-            if ($(o).find('td:eq(' + (startIndex - delimiterIndex) + ')')[0].textContent.match(/[/-]/g) != "-"){
-            //if ($(o).find('td:eq(' + (startIndex - delimiterIndex) + ')')[0].textContent.match(/\d+(\.\d{1,2})?/g)[0] > -1) {
+            if ($(o).find('td:eq(' + (startIndex - delimiterIndex) + ')')[0].textContent.match(/[/-]/g) != "-") {
+                //if ($(o).find('td:eq(' + (startIndex - delimiterIndex) + ')')[0].textContent.match(/\d+(\.\d{1,2})?/g)[0] > -1) {
                 elems.push({
                     //obj javascript > td
                     td: $(o).find('td:eq(' + startIndex + ')')

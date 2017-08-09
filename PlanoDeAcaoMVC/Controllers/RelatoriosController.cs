@@ -1,7 +1,9 @@
-﻿using System.Web.Mvc;
+﻿using PlanoAcaoCore;
+using System.Web.Mvc;
 
 namespace PlanoDeAcaoMVC.Controllers
 {
+    [IntegraSgq]
     public class RelatoriosController : Controller
     {
         public RelatoriosController()
