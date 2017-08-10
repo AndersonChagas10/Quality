@@ -106,6 +106,14 @@ public class ScorecardResultSet
         string selectTipo = "SELECT * FROM ";
         string orderby = "ORDER BY 11, 10";
 
+        string where = "";
+
+        if(clusterSelected_Id > 0)
+        {
+            where = " WHERE cluster = " + clusterSelected_Id;
+        }
+       
+
         if (tipo == 0)
         {
             selectTipo = "SELECT SUM(PontosIndicador) as PontosAtingidosIndicador, SUM(PontosAtingidos) as PontosAtingidos FROM ";
@@ -707,7 +715,7 @@ public class ScorecardResultSet
            "\n AND CCC.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL)                                                                                                                                                                                                      " +
            "\n AND CL.Id = @CLUSTER                                                                                                                                                                                                                                                                    " +
            "\n  ) SC                                                                                                                                                                                                                                                               " +
-           "\n WHERE cluster = " + clusterSelected_Id +
+           "\n  " + where +
            "\n  " + orderby + "                                                                                                                                                                                                                                                    " +
            "\n  DROP TABLE #AMOSTRATIPO4 ";
 
