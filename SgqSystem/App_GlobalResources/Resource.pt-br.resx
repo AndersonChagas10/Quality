@@ -271,7 +271,7 @@
     <value>Selecione o tipo de consolidacao</value>
   </data>
   <data name="level1_clusters" xml:space="preserve">
-    <value>Clusters do Indicador</value>
+    <value>Processos do Indicador</value>
   </data>
   <data name="level1_counter" xml:space="preserve">
     <value>Contador do Indicador</value>
@@ -415,19 +415,19 @@
     <value>Não</value>
   </data>
   <data name="clusters" xml:space="preserve">
-    <value>Clusters</value>
+    <value>Processos</value>
   </data>
   <data name="cluster_edit_delete" xml:space="preserve">
-    <value>Editar ou deletar o cluster</value>
+    <value>Editar ou deletar o processo</value>
   </data>
   <data name="cluster_list" xml:space="preserve">
-    <value>Lista de clusters</value>
+    <value>Lista de processos</value>
   </data>
   <data name="cluster_name" xml:space="preserve">
-    <value>Nome do cluster</value>
+    <value>Nome do processo</value>
   </data>
   <data name="cluster_points" xml:space="preserve">
-    <value>Pontos do cluster</value>
+    <value>Pontos do processo</value>
   </data>
   <data name="delete" xml:space="preserve">
     <value>Excluir</value>
@@ -625,7 +625,7 @@
     <value>Por favor, espere um momento</value>
   </data>
   <data name="cluster" xml:space="preserve">
-    <value>Cluster</value>
+    <value>Processo</value>
   </data>
   <data name="company_register" xml:space="preserve">
     <value>Cadastro da Empresa</value>
@@ -673,7 +673,7 @@
     <value>Gestão</value>
   </data>
   <data name="new_cluster" xml:space="preserve">
-    <value>Novo cluster</value>
+    <value>Novo processo</value>
   </data>
   <data name="new_group" xml:space="preserve">
     <value>Novo grupo</value>
@@ -745,7 +745,7 @@
     <value>Voltar para a lista</value>
   </data>
   <data name="cluster_group" xml:space="preserve">
-    <value>Grupo de Cluster</value>
+    <value>Módulo</value>
   </data>
   <data name="create" xml:space="preserve">
     <value>Criar</value>
@@ -1165,7 +1165,7 @@
     <value>e maior que </value>
   </data>
   <data name="cluster_can_not_be_duplicated" xml:space="preserve">
-    <value>O cluster não pode ser duplicado, por favor verifique a seleção.</value>
+    <value>O processo não pode ser duplicado, por favor verifique a seleção.</value>
   </data>
   <data name="data_already_register_on_company" xml:space="preserve">
     <value>Dados já cadastrados para a empresa</value>
@@ -1177,7 +1177,7 @@
     <value>É necessário preencher o campo Valor da Regra de alerta.</value>
   </data>
   <data name="fill_the_cluster_points" xml:space="preserve">
-    <value>Por favor preencha o campo pontos do cluster</value>
+    <value>Por favor preencha o campo pontos do processo</value>
   </data>
   <data name="fill_the_numeric_field_name" xml:space="preserve">
     <value>Digite o nome para o campo numéico</value>
@@ -1249,7 +1249,7 @@
     <value>Por favor, selecione o valor positivo para o campo binário.</value>
   </data>
   <data name="select_the_cluster" xml:space="preserve">
-    <value>Por favor selecione o cluster.</value>
+    <value>Por favor selecione o processo.</value>
   </data>
   <data name="select_the_counter" xml:space="preserve">
     <value>Por favor selecione o contador.</value>
