@@ -10,7 +10,9 @@ using System.Web.Mvc;
 using System.Data;
 using Helper;
 using System.Collections;
-
+using AutoMapper;
+using DTO.DTO.Params;
+using System.Collections.Generic;
 
 namespace SgqSystem.Controllers
 {
@@ -22,6 +24,16 @@ namespace SgqSystem.Controllers
         {
            
             ViewBag.UrlDataCollect = GlobalConfig.urlAppColleta;
+
+            using (var db = new SgqDbDevEntities())
+            {
+                ViewBag.Clusters = Mapper.Map<IEnumerable<ParClusterDTO>>(db.ParCluster.Where(r => r.IsActive == true));        
+            }
+
+            using (var db = new SgqDbDevEntities())
+            {
+                ViewBag.Modulos = Mapper.Map<IEnumerable<ParClusterGroupDTO>>(db.ParClusterGroup.Where(p => p.IsActive == true));
+            }
 
         }
 

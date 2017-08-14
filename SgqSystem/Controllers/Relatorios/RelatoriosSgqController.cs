@@ -37,10 +37,7 @@ namespace SgqSystem.Controllers
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult Scorecard()
         {
-            using (var db = new SgqDbDevEntities())
-            {
-                ViewBag.Clusters = Mapper.Map<IEnumerable<ParClusterDTO>>(db.ParCluster.Where(r => r.IsActive == true));
-            }
+            
             GetMetaAtualScorecard();
             return View(form);
         }
