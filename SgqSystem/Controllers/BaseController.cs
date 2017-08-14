@@ -32,7 +32,7 @@ namespace SgqSystem.Controllers
 
             using (var db = new SgqDbDevEntities())
             {
-                ViewBag.Modulos = Mapper.Map<IEnumerable<ParClusterDTO>>(db.ParCluster.Where(r => r.IsActive == true));
+                ViewBag.Modulos = db.ParClusterGroup.Where(r => r.IsActive == true);
             }
 
         }
