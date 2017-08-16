@@ -94,6 +94,7 @@ namespace SgqSystem.Mappers
                 x.AddProfile<RoleMapperProfile>();
                 x.AddProfile<DefectMapperProfile>();
                 x.AddProfile<UserSgqMapperProfile>();
+                x.AddProfile<ParClusterGroupMapperProfile>();
 
 
 
