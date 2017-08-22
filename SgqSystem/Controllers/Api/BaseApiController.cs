@@ -1,5 +1,7 @@
-﻿using DTO.DTO;
+﻿using ADOFactory;
+using DTO.DTO;
 using Newtonsoft.Json.Linq;
+using SGQDBContext;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -109,5 +111,8 @@ namespace SgqSystem.Controllers.Api
 
             return cookie;
         }
+
+        
+
     }
 }

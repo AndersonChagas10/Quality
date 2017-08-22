@@ -2587,7 +2587,6 @@ namespace SGQDBContext
 
         public string retorno { get; set; }
 
-
     }
 
 }

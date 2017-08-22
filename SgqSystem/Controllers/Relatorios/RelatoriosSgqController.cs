@@ -941,7 +941,7 @@ namespace SgqSystem.Controllers
                 
 
             //Dados das colunas do corpo da tabela de dados central
-            var query1 = "SELECT PP1.Name as CLASSIFIC_NEGOCIO, Reg.Name as MACROPROCESSO, " +
+            var query1 = " SELECT 1 AS QUERY, PP1.Name as CLASSIFIC_NEGOCIO, Reg.Name as MACROPROCESSO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
@@ -966,12 +966,12 @@ namespace SgqSystem.Controllers
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
 
                   "\n GROUP BY Reg.Name, PP1.Name" +
-                  "\n ORDER BY 1, 2";
+                  "\n --ORDER BY 1, 2";
 
             
             // Total Direita
             var query2 =
-           "SELECT PP1.Name as CLASSIFIC_NEGOCIO," +
+           " SELECT 2 AS QUERY,  PP1.Name as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
@@ -997,11 +997,11 @@ namespace SgqSystem.Controllers
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2 and PP1.Name is not null" +
 
                   "\n GROUP BY PP1.Name " +
-                  "\n ORDER BY 1";
+                  "\n --ORDER BY 1";
 
             // Total Inferior Esquerda
             var query3 =
-           "SELECT Reg.Name as MACROPROCESSO, " +
+           " SELECT 3 AS QUERY,  NULL as CLASSIFIC_NEGOCIO, Reg.Name as MACROPROCESSO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
@@ -1027,11 +1027,11 @@ namespace SgqSystem.Controllers
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
 
                   "\n GROUP BY Reg.Name " +
-                  "\n ORDER BY 1";
+                  "\n --ORDER BY 1";
 
             // Total Inferior Direita
             var query4 =
-                "SELECT " +
+                " SELECT 4 AS QUERY,  NULL as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
@@ -1060,7 +1060,7 @@ namespace SgqSystem.Controllers
 
 
             //Nome das linhas da tabela esquerda por ex, indicador X, indicador Y (de uma unidade X, y...)
-            var query6 = "SELECT DISTINCT PP1.Name " +
+            var query6 = " SELECT 6 AS QUERY, PP1.Name as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, NULL AS REAL, NULL AS ORCADO, NULL AS DESVIO, NULL AS DEVIOPERCENTUAL " +
                 "\n FROM ParStructure Reg " +
                     "\n  LEFT JOIN ParCompanyXStructure CS " +
                     "\n  ON CS.ParStructure_Id = Reg.Id " +
@@ -1078,15 +1078,30 @@ namespace SgqSystem.Controllers
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
 
                     "\n  WHERE 1 = 1 " +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2 and PP1.Name is not null ";
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2 and PP1.Name is not null " +
+                    "\n GROUP BY PP1.Name";
+
+            var orderby = "\n ORDER BY 1, 2, 3";
 
             var db = new SgqDbDevEntities();
             //db.Database.ExecuteSqlCommand(query);
-            var result1 = db.Database.SqlQuery<ResultQuery1>(query + " " + query1).ToList();
-            var result2 = db.Database.SqlQuery<ResultQuery1>(query + " " + query2).ToList();
-            var result3 = db.Database.SqlQuery<ResultQuery1>(query + " " + query3).ToList();
-            var result4 = db.Database.SqlQuery<ResultQuery1>(query + " " + query4).ToList();
-            var queryRowsBody = db.Database.SqlQuery<string>(query + " " + query6).ToList();
+
+            string grandeQuery = query + " " + query1 + "\n UNION ALL \n" + query2 + "\n UNION ALL \n" + query3 + "\n UNION ALL \n" + query4 + "\n UNION ALL \n" + query6 + orderby ;
+
+            var result = db.Database.SqlQuery<ResultQuery1>(grandeQuery).ToList();
+
+            //var result1 = db.Database.SqlQuery<ResultQuery1>(query + " " + query1).ToList();
+            //var result2 = db.Database.SqlQuery<ResultQuery1>(query + " " + query2).ToList();
+            //var result3 = db.Database.SqlQuery<ResultQuery1>(query + " " + query3).ToList();
+            //var result4 = db.Database.SqlQuery<ResultQuery1>(query + " " + query4).ToList();
+            //var queryRowsBody = db.Database.SqlQuery<string>(query + " " + query6).ToList();
+
+            var result1 = result.Where(r => r.QUERY == 1).ToList();
+            var result2 = result.Where(r => r.QUERY == 2).ToList();
+            var result3 = result.Where(r => r.QUERY == 3).ToList();
+            var result4 = result.Where(r => r.QUERY == 4).ToList();
+            var queryRowsBody = result.Where(r => r.QUERY == 6).ToList();
+
 
             #endregion
 
@@ -1191,10 +1206,10 @@ namespace SgqSystem.Controllers
             foreach (var i in queryRowsBody)
             {
 
-                var filtro = result1.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i)).ToList();
+                var filtro = result1.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i.CLASSIFIC_NEGOCIO)).ToList();
                 var Tr = new Trs()
                 {
-                    name = i,
+                    name = i.CLASSIFIC_NEGOCIO,
                     tdsEsquerda = new List<Tds>(),
                     tdsDireita = new List<Tds>()
                 };
@@ -1218,7 +1233,7 @@ namespace SgqSystem.Controllers
 
                 #region Result2
 
-                filtro = result2.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i)).ToList();
+                filtro = result2.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i.CLASSIFIC_NEGOCIO)).ToList();
                 foreach (var ii in filtro)
                 {
                     Tr.tdsDireita.Add(new Tds() { valor = ii.REAL.ToString() });
@@ -2027,7 +2042,7 @@ namespace SgqSystem.Controllers
                     "\n ORDER BY 1"; 
 
             //Dados das colunas do corpo da tabela de dados central
-            var query1 = "SELECT P1.Name as CLASSIFIC_NEGOCIO, C.Initials as MACROPROCESSO, " +
+            var query1 = " SELECT 1 AS QUERY, P1.Name as CLASSIFIC_NEGOCIO, C.Initials as MACROPROCESSO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
@@ -2055,11 +2070,11 @@ namespace SgqSystem.Controllers
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
 
                   "\n GROUP BY P1.Name, C.Initials " +
-                  "\n ORDER BY 1, 2";
+                  "\n --ORDER BY 1, 2";
 
             // Total Direita
             var query2 =
-           "SELECT P1.Name as CLASSIFIC_NEGOCIO," +
+           " SELECT 2 AS QUERY, P1.Name as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
@@ -2087,11 +2102,11 @@ namespace SgqSystem.Controllers
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
 
                   "\n GROUP BY P1.Name " +
-                  "\n ORDER BY 1";
+                  "\n --ORDER BY 1";
 
             // Total Inferior Esquerda
             var query3 =
-           "SELECT C.Initials as MACROPROCESSO, " +
+           " SELECT 3 AS QUERY,  NULL as CLASSIFIC_NEGOCIO, C.Initials as MACROPROCESSO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
@@ -2119,11 +2134,11 @@ namespace SgqSystem.Controllers
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
 
                   "\n GROUP BY C.Initials " +
-                  "\n ORDER BY 1";
+                  "\n --ORDER BY 1";
 
             // Total Inferior Direita
             var query4 =
-                "SELECT " +
+                " SELECT 4 AS QUERY,  NULL as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
@@ -2154,7 +2169,7 @@ namespace SgqSystem.Controllers
 
 
             //Nome das linhas da tabela esquerda por ex, indicador X, indicador Y (de uma unidade X, y...)
-            var query6 = "SELECT DISTINCT P1.Name " +
+            var query6 = " SELECT 6 AS QUERY, P1.Name as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, NULL AS REAL, NULL AS ORCADO, NULL AS DESVIO, NULL AS DEVIOPERCENTUAL " +
              "\n FROM ParStructure Reg " +
                     "\n  LEFT JOIN ParCompanyXStructure CS " +
                     "\n  ON CS.ParStructure_Id = Reg.Id " +
@@ -2174,15 +2189,29 @@ namespace SgqSystem.Controllers
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
                     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1";
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n GROUP BY P1.Name";
+
+            var orderby = "\n ORDER BY 1, 2, 3";
 
             var db = new SgqDbDevEntities();
-            //db.Database.ExecuteSqlCommand(query);
-            var result1 = db.Database.SqlQuery<ResultQuery1>(query + " " + query1).ToList();
-            var result2 = db.Database.SqlQuery<ResultQuery1>(query + " " + query2).ToList();
-            var result3 = db.Database.SqlQuery<ResultQuery1>(query + " " + query3).ToList();
-            var result4 = db.Database.SqlQuery<ResultQuery1>(query + " " + query4).ToList();
-            var queryRowsBody = db.Database.SqlQuery<string>(query + " " + query6).ToList();
+           
+
+            string grandeQuery = query + " " + query1 + "\n UNION ALL \n" + query2 + "\n UNION ALL \n" + query3 + "\n UNION ALL \n" + query4 + "\n UNION ALL \n" + query6 + orderby;
+
+            var result = db.Database.SqlQuery<ResultQuery1>(grandeQuery).ToList();
+
+            //var result1 = db.Database.SqlQuery<ResultQuery1>(query + " " + query1).ToList();
+            //var result2 = db.Database.SqlQuery<ResultQuery1>(query + " " + query2).ToList();
+            //var result3 = db.Database.SqlQuery<ResultQuery1>(query + " " + query3).ToList();
+            //var result4 = db.Database.SqlQuery<ResultQuery1>(query + " " + query4).ToList();
+            //var queryRowsBody = db.Database.SqlQuery<string>(query + " " + query6).ToList();
+
+            var result1 = result.Where(r => r.QUERY == 1).ToList();
+            var result2 = result.Where(r => r.QUERY == 2).ToList();
+            var result3 = result.Where(r => r.QUERY == 3).ToList();
+            var result4 = result.Where(r => r.QUERY == 4).ToList();
+            var queryRowsBody = result.Where(r => r.QUERY == 6).ToList();
 
             #endregion
 
@@ -2287,10 +2316,10 @@ namespace SgqSystem.Controllers
             foreach (var i in queryRowsBody)
             {
 
-                var filtro = result1.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i)).ToList();
+                var filtro = result1.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i.CLASSIFIC_NEGOCIO)).ToList();
                 var Tr = new Trs()
                 {
-                    name = i,
+                    name = i.CLASSIFIC_NEGOCIO,
                     tdsEsquerda = new List<Tds>(),
                     tdsDireita = new List<Tds>()
                 };
@@ -2314,7 +2343,7 @@ namespace SgqSystem.Controllers
 
                 #region Result2
 
-                filtro = result2.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i)).ToList();
+                filtro = result2.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i.CLASSIFIC_NEGOCIO)).ToList();
                 foreach (var ii in filtro)
                 {
                     Tr.tdsDireita.Add(new Tds() { valor = ii.REAL.ToString() });
@@ -3120,7 +3149,7 @@ namespace SgqSystem.Controllers
 
 
             //Dados das colunas do corpo da tabela de dados central
-            var query1 = "SELECT P1.Name as CLASSIFIC_NEGOCIO, Reg.Name as MACROPROCESSO, " +
+            var query1 = " SELECT 1 AS QUERY, P1.Name as CLASSIFIC_NEGOCIO, Reg.Name as MACROPROCESSO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
@@ -3145,12 +3174,12 @@ namespace SgqSystem.Controllers
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
 
                   "\n GROUP BY Reg.Name, P1.Name" +
-                  "\n ORDER BY 1, 2";
+                  "\n --ORDER BY 1, 2";
 
 
             // Total Direita
             var query2 =
-           "SELECT P1.Name as CLASSIFIC_NEGOCIO," +
+           " SELECT 2 AS QUERY, P1.Name as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
@@ -3176,11 +3205,11 @@ namespace SgqSystem.Controllers
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2 and PP1.Name is not null" +
 
                   "\n GROUP BY P1.Name " +
-                  "\n ORDER BY 1";
+                  "\n --ORDER BY 1";
 
             // Total Inferior Esquerda
             var query3 =
-           "SELECT Reg.Name as MACROPROCESSO, " +
+           " SELECT 3 AS QUERY,  NULL as CLASSIFIC_NEGOCIO, Reg.Name as MACROPROCESSO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
@@ -3206,11 +3235,11 @@ namespace SgqSystem.Controllers
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null" +
 
                   "\n GROUP BY Reg.Name " +
-                  "\n ORDER BY 1";
+                  "\n --ORDER BY 1";
 
             // Total Inferior Direita
             var query4 =
-                "SELECT " +
+                " SELECT 4 AS QUERY,  NULL as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
@@ -3239,7 +3268,7 @@ namespace SgqSystem.Controllers
 
 
             //Nome das linhas da tabela esquerda por ex, indicador X, indicador Y (de uma unidade X, y...)
-            var query6 = "SELECT DISTINCT P1.Name " +
+            var query6 = " SELECT 6 AS QUERY, P1.Name as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, NULL AS REAL, NULL AS ORCADO, NULL AS DESVIO, NULL AS DEVIOPERCENTUAL " +
                 "\n FROM ParStructure Reg " +
                     "\n  LEFT JOIN ParCompanyXStructure CS " +
                     "\n  ON CS.ParStructure_Id = Reg.Id " +
@@ -3257,15 +3286,27 @@ namespace SgqSystem.Controllers
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
 
                     "\n  WHERE 1 = 1 " +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2 and PP1.Name is not null ";
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2 and PP1.Name is not null " +
+                    "\n GROUP BY P1.Name";
+
+            var orderby = "\n ORDER BY 1, 2, 3";
 
             var db = new SgqDbDevEntities();
-            //db.Database.ExecuteSqlCommand(query);
-            var result1 = db.Database.SqlQuery<ResultQuery1>(query + " " + query1).ToList();
-            var result2 = db.Database.SqlQuery<ResultQuery1>(query + " " + query2).ToList();
-            var result3 = db.Database.SqlQuery<ResultQuery1>(query + " " + query3).ToList();
-            var result4 = db.Database.SqlQuery<ResultQuery1>(query + " " + query4).ToList();
-            var queryRowsBody = db.Database.SqlQuery<string>(query + " " + query6).ToList();
+            string grandeQuery = query + " " + query1 + "\n UNION ALL \n" + query2 + "\n UNION ALL \n" + query3 + "\n UNION ALL \n" + query4 + "\n UNION ALL \n" + query6 + orderby;
+
+            var result = db.Database.SqlQuery<ResultQuery1>(grandeQuery).ToList();
+
+            //var result1 = db.Database.SqlQuery<ResultQuery1>(query + " " + query1).ToList();
+            //var result2 = db.Database.SqlQuery<ResultQuery1>(query + " " + query2).ToList();
+            //var result3 = db.Database.SqlQuery<ResultQuery1>(query + " " + query3).ToList();
+            //var result4 = db.Database.SqlQuery<ResultQuery1>(query + " " + query4).ToList();
+            //var queryRowsBody = db.Database.SqlQuery<string>(query + " " + query6).ToList();
+
+            var result1 = result.Where(r => r.QUERY == 1).ToList();
+            var result2 = result.Where(r => r.QUERY == 2).ToList();
+            var result3 = result.Where(r => r.QUERY == 3).ToList();
+            var result4 = result.Where(r => r.QUERY == 4).ToList();
+            var queryRowsBody = result.Where(r => r.QUERY == 6).ToList();
 
             #endregion
 
@@ -3370,10 +3411,10 @@ namespace SgqSystem.Controllers
             foreach (var i in queryRowsBody)
             {
 
-                var filtro = result1.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i)).ToList();
+                var filtro = result1.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i.CLASSIFIC_NEGOCIO)).ToList();
                 var Tr = new Trs()
                 {
-                    name = i,
+                    name = i.CLASSIFIC_NEGOCIO,
                     tdsEsquerda = new List<Tds>(),
                     tdsDireita = new List<Tds>()
                 };
@@ -3397,7 +3438,7 @@ namespace SgqSystem.Controllers
 
                 #region Result2
 
-                filtro = result2.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i)).ToList();
+                filtro = result2.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i.CLASSIFIC_NEGOCIO)).ToList();
                 foreach (var ii in filtro)
                 {
                     Tr.tdsDireita.Add(new Tds() { valor = ii.REAL.ToString() });
@@ -4206,7 +4247,7 @@ namespace SgqSystem.Controllers
                     "\n ORDER BY 1";
 
             //Dados das colunas do corpo da tabela de dados central
-            var query1 = "SELECT P1.Name as CLASSIFIC_NEGOCIO, C.Initials as MACROPROCESSO, " +
+            var query1 = " SELECT 1 AS QUERY, P1.Name as CLASSIFIC_NEGOCIO, C.Initials as MACROPROCESSO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
@@ -4234,11 +4275,11 @@ namespace SgqSystem.Controllers
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
 
                   "\n GROUP BY P1.Name, C.Initials " +
-                  "\n ORDER BY 1, 2";
+                  "\n --ORDER BY 1, 2";
 
             // Total Direita
             var query2 =
-           "SELECT P1.Name as CLASSIFIC_NEGOCIO," +
+           " SELECT 2 AS QUERY, P1.Name as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
@@ -4266,11 +4307,11 @@ namespace SgqSystem.Controllers
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
 
                   "\n GROUP BY P1.Name " +
-                  "\n ORDER BY 1";
+                  "\n --ORDER BY 1";
 
             // Total Inferior Esquerda
             var query3 =
-           "SELECT C.Initials as MACROPROCESSO, " +
+           " SELECT 3 AS QUERY,  NULL as CLASSIFIC_NEGOCIO, C.Initials as MACROPROCESSO,  " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
@@ -4298,11 +4339,11 @@ namespace SgqSystem.Controllers
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
 
                   "\n GROUP BY C.Initials " +
-                  "\n ORDER BY 1";
+                  "\n --ORDER BY 1";
 
             // Total Inferior Direita
             var query4 =
-                "SELECT " +
+                " SELECT 4 AS QUERY,  NULL as CLASSIFIC_NEGOCIO, null as MACROPROCESSO,  " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end  as decimal (10,1)),2) as varchar) end as REAL," +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else '" + getMetaScore().ToString() + "' end  as ORCADO, " +
                   "\n case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100 end) > " + getMetaScore().ToString() + " then 0 else " + getMetaScore().ToString() + " - (case when isnull(sum(Pontos),100) = 0 or isnull(sum(PontosAtingidos),100) = 0 then 0 else (ISNULL(sum(PontosAtingidos),100) / isnull(sum(Pontos),100))*100  end ) end as decimal (10,1)),2) as varchar) end as DESVIO, " +
@@ -4333,7 +4374,7 @@ namespace SgqSystem.Controllers
 
 
             //Nome das linhas da tabela esquerda por ex, indicador X, indicador Y (de uma unidade X, y...)
-            var query6 = "SELECT DISTINCT P1.Name " +
+            var query6 = " SELECT 6 AS QUERY, P1.Name as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, NULL AS REAL, NULL AS ORCADO, NULL AS DESVIO, NULL AS DEVIOPERCENTUAL " +
              "\n FROM ParStructure Reg " +
                     "\n  LEFT JOIN ParCompanyXStructure CS " +
                     "\n  ON CS.ParStructure_Id = Reg.Id " +
@@ -4353,15 +4394,27 @@ namespace SgqSystem.Controllers
                     "\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
                     "\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1";
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n GROUP BY P1.Name";
+
+            var orderby = "\n ORDER BY 1, 2, 3";
 
             var db = new SgqDbDevEntities();
-            //db.Database.ExecuteSqlCommand(query);
-            var result1 = db.Database.SqlQuery<ResultQuery1>(query + " " + query1).ToList();
-            var result2 = db.Database.SqlQuery<ResultQuery1>(query + " " + query2).ToList();
-            var result3 = db.Database.SqlQuery<ResultQuery1>(query + " " + query3).ToList();
-            var result4 = db.Database.SqlQuery<ResultQuery1>(query + " " + query4).ToList();
-            var queryRowsBody = db.Database.SqlQuery<string>(query + " " + query6).ToList();
+            string grandeQuery = query + " " + query1 + "\n UNION ALL \n" + query2 + "\n UNION ALL \n" + query3 + "\n UNION ALL \n" + query4 + "\n UNION ALL \n" + query6 + orderby;
+
+            var result = db.Database.SqlQuery<ResultQuery1>(grandeQuery).ToList();
+
+            //var result1 = db.Database.SqlQuery<ResultQuery1>(query + " " + query1).ToList();
+            //var result2 = db.Database.SqlQuery<ResultQuery1>(query + " " + query2).ToList();
+            //var result3 = db.Database.SqlQuery<ResultQuery1>(query + " " + query3).ToList();
+            //var result4 = db.Database.SqlQuery<ResultQuery1>(query + " " + query4).ToList();
+            //var queryRowsBody = db.Database.SqlQuery<string>(query + " " + query6).ToList();
+
+            var result1 = result.Where(r => r.QUERY == 1).ToList();
+            var result2 = result.Where(r => r.QUERY == 2).ToList();
+            var result3 = result.Where(r => r.QUERY == 3).ToList();
+            var result4 = result.Where(r => r.QUERY == 4).ToList();
+            var queryRowsBody = result.Where(r => r.QUERY == 6).ToList();
 
             #endregion
 
@@ -4466,10 +4519,10 @@ namespace SgqSystem.Controllers
             foreach (var i in queryRowsBody)
             {
 
-                var filtro = result1.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i)).ToList();
+                var filtro = result1.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i.CLASSIFIC_NEGOCIO)).ToList();
                 var Tr = new Trs()
                 {
-                    name = i,
+                    name = i.CLASSIFIC_NEGOCIO,
                     tdsEsquerda = new List<Tds>(),
                     tdsDireita = new List<Tds>()
                 };
@@ -4493,7 +4546,7 @@ namespace SgqSystem.Controllers
 
                 #region Result2
 
-                filtro = result2.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i)).ToList();
+                filtro = result2.Where(r => r.CLASSIFIC_NEGOCIO.Equals(i.CLASSIFIC_NEGOCIO)).ToList();
                 foreach (var ii in filtro)
                 {
                     Tr.tdsDireita.Add(new Tds() { valor = ii.REAL.ToString() });
@@ -4559,6 +4612,7 @@ namespace SgqSystem.Controllers
 
         public class ResultQuery1
         {
+            public int QUERY { get; set; }
             public string CLASSIFIC_NEGOCIO { get; set; }
             public string MACROPROCESSO { get; set; }
             public string ORCADO { get; set; }
