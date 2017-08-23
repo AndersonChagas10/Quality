@@ -236,13 +236,14 @@ namespace SgqSystem.Controllers.Api
 
             List<ResultadoUmaColuna> collectionlevel2List = new List<ResultadoUmaColuna>();
 
+            //inserir o ambiente do cliente a ser copiado
             using (var db = new Factory("10.160.227.40", "QA_GRJ", "wordpass14t", "grjuser"))
             {
                 var collectionlevel2 = "" +
 
                     "\n SELECT-- top 10 " +
                     "\n 'INSERT INTO CollectionLevel2 ([Key],ConsolidationLevel2_Id,ParLevel1_Id,ParLevel2_Id,UnitId,AuditorId,[Shift],Period,Phase,ReauditIs,ReauditNumber,CollectionDate,StartPhaseDate,EvaluationNumber,[Sample],AddDate,AlterDate,ConsecutiveFailureIs,ConsecutiveFailureTotal,NotEvaluatedIs,Duplicated,HaveCorrectiveAction,HaveReaudit,HavePhase,Completed,ParFrequency_Id,AlertLevel,Sequential,Side,WeiEvaluation,Defects,WeiDefects,TotalLevel3WithDefects,TotalLevel3Evaluation,LastEvaluationAlert,EvaluatedResult,DefectsResult,IsEmptyLevel3,LastLevel2Alert,ReauditLevel,StartPhaseEvaluation) VALUES (' + " +
-                    "\n  '''' + ISNULL(CAST([UnitId] AS VARCHAR(500)) + '-' + CAST(c2.Id AS VARCHAR(500)),'NULL') +''',' + --KEY                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          " +
+                    "\n  '''' + ISNULL(CAST('hyrum' AS VARCHAR(500)) + '-' + CAST(c2.Id AS VARCHAR(500)),'NULL') +''',' + --KEY                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          " +
                     "\n + '1' + ', ' + --ConsolidationLevel2_Id                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           " +
                     "\n + '(SELECT TOP 1 Id FROM ParLevel1 L1 WHERE L1.[Description] = ''' + CAST(Level01Id as VARCHAR) + '''), ' + --Level01Id                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           " +
                     "\n + '(SELECT TOP 1 Id FROM ParLevel2 L2 WHERE L2.[Description] = ''' + CAST(Level02Id as VARCHAR) + '''), ' + --Level02Id                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           " +
@@ -285,8 +286,8 @@ namespace SgqSystem.Controllers.Api
                     "\n + 'NULL' + ')'--  A                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               " +
                     "\n AS retorno FROM CollectionLevel02 c2 WITH(NOLOCK)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            " +
                     "\n  INNER JOIN (SELECT ID COD, NAME NOME FROM UserSgq WITH(NOLOCK)) UU                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               " +
-                    "\n ON UU.COD = C2.[AuditorId]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ";
-
+                    "\n ON UU.COD = C2.[AuditorId]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        " +
+                "\n WHERE c2.addDate between '20170110' and '20170115' ";
 
                 dynamic resultado = db.QueryNinjaADO(collectionlevel2);
 
@@ -312,6 +313,7 @@ namespace SgqSystem.Controllers.Api
 
             #region parte02
 
+            //inserir dados do clinete que receberá os dados
             using (var db = new Factory("10.190.1.166", "SGQUSAHML", "wordpass14t", "grjuser"))
             {
 
@@ -336,10 +338,10 @@ namespace SgqSystem.Controllers.Api
 
             #region parte03
 
-            string unitId = "112"; //saber o id por ip da unidate
+            string unitId = "hyrum"; //saber o id por ip da unidate
 
             List<ResultadoUmaColuna> result_level3List = new List<ResultadoUmaColuna>();
-
+            //inserir o ambiente do cliente a ser copiado
             using (var db = new Factory("10.160.227.40", "QA_GRJ", "wordpass14t", "grjuser"))
             {
 
@@ -370,7 +372,8 @@ namespace SgqSystem.Controllers.Api
                     "\n LEFT JOIN Level03                                                                                                                                                                                                                                   " +
                     "\n     ON CollectionLevel03.Level03Id = Level03.Id                                                                                                                                                                                                     " +
                     "\n LEFT JOIN ParLevel3                                                                                                                                                                                                                                 " +
-                    "\n     ON CASE WHEN ParLevel3.[Description] = 'Other' then '18' ELSE ParLevel3.Description END = CAST(Level03.Id AS VARCHAR(500))                                                                                                                      ";
+                    "\n     ON CASE WHEN ParLevel3.[Description] = 'Other' then '18' ELSE ParLevel3.Description END = CAST(Level03.Id AS VARCHAR(500))                                                                                                                      " +
+                "\n WHERE CollectionLevel03.addDate between '20170110' and '20170115' ";
 
                 dynamic resultado = db.QueryNinjaADO(result_level3);
 
@@ -395,8 +398,8 @@ namespace SgqSystem.Controllers.Api
             #endregion
 
             #region parte04
-
-            using (var db = new Factory("10.160.227.40", "QA_GRJ", "wordpass14t", "grjuser"))
+            //inserir dados do cliente que receberá os dados
+            using (var db = new Factory("10.190.1.166", "SGQUSAHML", "wordpass14t", "grjuser"))
             {
 
                 foreach (var i in result_level3List)
@@ -500,7 +503,7 @@ namespace SgqSystem.Controllers.Api
 "\n         DEALLOCATE CollectionL2;                                                                                                                                                    ";
 
 
-            using (var db = new Factory("10.160.227.40", "QA_GRJ", "wordpass14t", "grjuser"))
+            using (var db = new Factory("10.190.1.166", "SGQUSAHML", "wordpass14t", "grjuser"))
             {
                 try
                 {
@@ -534,7 +537,7 @@ namespace SgqSystem.Controllers.Api
 "\n and CS1.ParLevel1_Id = C2.ParLevel1_Id                          " +
 "\n -- WHERE C2.Id IN (30623, 38667, 38685, 38703)                  " +
 "\n --AND CAST(C2.CollectionDate AS DATE) >= '20170301'             " +
-"\n -- and CS2.Id = 1                                               " +
+"\n and CS2.Id = 1                                               " +
 "\n                                                                 " +
 "\n ;                                                               " +
 "\n             OPEN Consulta01;                                    " +
@@ -566,7 +569,7 @@ namespace SgqSystem.Controllers.Api
 "\n             CLOSE Consulta01;                                   " +
 "\n             DEALLOCATE Consulta01;                              ";
 
-            using (var db = new Factory("10.160.227.40", "QA_GRJ", "wordpass14t", "grjuser"))
+            using (var db = new Factory("10.190.1.166", "SGQUSAHML", "wordpass14t", "grjuser"))
             {
                 try
                 {
@@ -587,12 +590,12 @@ namespace SgqSystem.Controllers.Api
             #region Parte07
             Services.SyncServices s = new Services.SyncServices();
 
-            using (var db = new Factory("10.160.227.40", "QA_GRJ", "wordpass14t", "grjuser"))
+            using (var db = new Factory("10.190.1.166", "SGQUSAHML", "wordpass14t", "grjuser"))
             {
 
                 ResultadoUmaColuna list = new ResultadoUmaColuna();
 
-                dynamic resultado = db.QueryNinjaADO("select id as retorno from collectionLevel2");
+                dynamic resultado = db.QueryNinjaADO("select id as retorno from collectionLevel2 where addDate between '20170110' and '20170115'");
 
                 for (var i = 0; i < resultado.Count; i++)
                 {
