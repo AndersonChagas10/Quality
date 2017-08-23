@@ -92,7 +92,8 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             var retorno = new Dictionary<string, int>();
             foreach (var l2Name in level2Name)
             {
-                registros = db.Pa_Acao.Count(r => r.UnidadeName == unidadeNameSGQ && r.Level1Name == level1 && r.Level2Name == l2Name && r.AddDate<= dataFim && r.AddDate >= dataInicio && (r.Status == 5 || r.Status == 1));
+                //registros = db.Pa_Acao.Count(r => r.UnidadeName == unidadeNameSGQ && r.Level1Name == level1 && r.Level2Name == l2Name && r.AddDate<= dataFim && r.AddDate >= dataInicio && (r.Status == 5 || r.Status == 1));7
+                registros = db.Pa_Acao.Count(r => r.UnidadeName == unidadeNameSGQ && r.Level1Name == level1 && r.Level2Name == l2Name &&  (r.Status == 5 || r.Status == 1));
                 retorno.Add(l2Name, registros);
             }
             return retorno;
@@ -104,7 +105,8 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             var retorno = new Dictionary<string, int>();
             foreach (var l1Name in level1Name)
             {
-                registros = db.Pa_Acao.Count(r => r.UnidadeName == unidadeNameSGQ && r.Level1Name == l1Name && r.AddDate <= dataFim && r.AddDate >= dataInicio && (r.Status == 5  || r.Status == 1));
+                //registros = db.Pa_Acao.Count(r => r.UnidadeName == unidadeNameSGQ && r.Level1Name == l1Name && r.AddDate <= dataFim && r.AddDate >= dataInicio && (r.Status == 5  || r.Status == 1));
+                registros = db.Pa_Acao.Count(r => r.UnidadeName == unidadeNameSGQ && r.Level1Name == l1Name && (r.Status == 5 || r.Status == 1));
                 retorno.Add(l1Name, registros);
             }
             return retorno;
@@ -116,7 +118,8 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             var retorno = new Dictionary<string, int>();
             foreach (var l3Name in level3Name)
             {
-                registros = db.Pa_Acao.Count(r => r.UnidadeName == unidadeNameSGQ && r.Level1Name == level1 && r.Level2Name == level2 && r.Level3Name == l3Name && r.AddDate <= dataFim && r.AddDate >= dataInicio && (r.Status == 5 || r.Status == 1));
+                //registros = db.Pa_Acao.Count(r => r.UnidadeName == unidadeNameSGQ && r.Level1Name == level1 && r.Level2Name == level2 && r.Level3Name == l3Name && r.AddDate <= dataFim && r.AddDate >= dataInicio && (r.Status == 5 || r.Status == 1));
+                registros = db.Pa_Acao.Count(r => r.UnidadeName == unidadeNameSGQ && r.Level1Name == level1 && r.Level2Name == level2 && r.Level3Name == l3Name &&  (r.Status == 5 || r.Status == 1));
                 retorno.Add(l3Name, registros);
             }
             return retorno;
