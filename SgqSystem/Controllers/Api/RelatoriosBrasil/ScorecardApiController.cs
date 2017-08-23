@@ -292,9 +292,18 @@ namespace SgqSystem.Controllers.Api
 
                 for (var i = 0; i < resultado.Count; i++)
                 {
+                    try
+                    {
                     ResultadoUmaColuna item = new ResultadoUmaColuna();
                     item.retorno = resultado[i].retorno;
                     collectionlevel2List.Add(item);
+
+                    }
+                    catch (Exception)
+                    {
+
+                        
+                    }
                 }
 
             }
@@ -308,7 +317,16 @@ namespace SgqSystem.Controllers.Api
 
                 foreach (var i in collectionlevel2List)
                 {
+                    try
+                    {
                     db.ExecuteSql(i.retorno.ToString());
+
+                    }
+                    catch (Exception)
+                    {
+
+                        
+                    }
                 }
 
 
@@ -358,9 +376,18 @@ namespace SgqSystem.Controllers.Api
 
                 for (var i = 0; i < resultado.Count; i++)
                 {
-                    ResultadoUmaColuna item = new ResultadoUmaColuna();
-                    item.retorno = resultado[i].retorno;
-                    result_level3List.Add(item);
+                    try
+                    {
+                        ResultadoUmaColuna item = new ResultadoUmaColuna();
+                        item.retorno = resultado[i].retorno;
+                        result_level3List.Add(item);
+
+                    }
+                    catch (Exception)
+                    {
+
+
+                    }
                 }
 
             }
@@ -374,7 +401,15 @@ namespace SgqSystem.Controllers.Api
 
                 foreach (var i in result_level3List)
                 {
-                    db.ExecuteSql(i.retorno.ToString());
+                    try
+                    {
+                        db.ExecuteSql(i.retorno.ToString());
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+
                 }
 
 
@@ -467,7 +502,16 @@ namespace SgqSystem.Controllers.Api
 
             using (var db = new Factory("10.160.227.40", "QA_GRJ", "wordpass14t", "grjuser"))
             {
-                db.ExecuteSql(etapa1);
+                try
+                {
+
+                    db.ExecuteSql(etapa1);
+                }
+                catch (Exception)
+                {
+
+
+                }
             }
 
             #endregion
@@ -524,7 +568,16 @@ namespace SgqSystem.Controllers.Api
 
             using (var db = new Factory("10.160.227.40", "QA_GRJ", "wordpass14t", "grjuser"))
             {
-                db.ExecuteSql(etapa2);
+                try
+                {
+                    db.ExecuteSql(etapa2);
+
+                }
+                catch (Exception)
+                {
+
+
+                }
             }
 
             //--------------------------------------------------------------------------------
@@ -543,10 +596,19 @@ namespace SgqSystem.Controllers.Api
 
                 for (var i = 0; i < resultado.Count; i++)
                 {
-                    ResultadoUmaColuna item = new ResultadoUmaColuna();
-                    item.retorno = resultado[i].retorno;
-                    s.ReconsolidationToLevel3(item.retorno.ToString());
-                    System.Console.Write("Reconsolidando: " + item.retorno.ToString());
+                    try
+                    {
+                        ResultadoUmaColuna item = new ResultadoUmaColuna();
+                        item.retorno = resultado[i].retorno;
+                        s.ReconsolidationToLevel3(item.retorno.ToString());
+                        System.Console.Write("Reconsolidando: " + item.retorno.ToString());
+
+                    }
+                    catch (Exception)
+                    {
+
+                        
+                    }
                 }
 
             }

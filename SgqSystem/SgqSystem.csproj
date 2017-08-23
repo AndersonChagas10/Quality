@@ -372,9 +372,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Handlres\HandleApi.cs" />
-    <Compile Include="Handlres\HandleController.cs" />
-    <Compile Include="Handlres\ValidateModelAttribute.cs" />
+    <Compile Include="Helpers\Handlres\HandleApi.cs" />
+    <Compile Include="Helpers\Handlres\HandleController.cs" />
+    <Compile Include="Helpers\Handlres\ValidateModelAttribute.cs" />
     <Compile Include="Helpers\CommonData.cs" />
     <Compile Include="Helpers\CommonLog.cs" />
     <Compile Include="Helpers\GenericTable.cs" />
