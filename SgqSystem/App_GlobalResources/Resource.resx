@@ -2062,7 +2062,7 @@
     <value>Points Destiny</value>
   </data>
   <data name="update_tablet_all" xml:space="preserve">
-    <value>Atualizar todos os Tablets de todas as Unidades</value>
+    <value>Update all tablets from all Companies</value>
   </data>
   <data name="update_all_tablet_message" xml:space="preserve">
     <value>This may take some time (5-20 minutes), do you want to update the tablet settings? The Loader will automatically disappear when the action is finished.</value>
@@ -2081,5 +2081,8 @@
   </data>
   <data name="valued" xml:space="preserve">
     <value>Valued</value>
+  </data>
+  <data name="edit_input_data_type" xml:space="preserve">
+    <value>Edit input data type</value>
   </data>
 </root>
