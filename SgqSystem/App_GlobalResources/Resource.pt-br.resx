@@ -2067,4 +2067,7 @@
   <data name="new_value" xml:space="preserve">
     <value>Novo Valor</value>
   </data>
+  <data name="edit_input_data_type" xml:space="preserve">
+    <value>Editar tipo de dados de entrada:</value>
+  </data>
 </root>

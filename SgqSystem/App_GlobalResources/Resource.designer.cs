@@ -1582,6 +1582,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit input data type.
+        /// </summary>
+        internal static string edit_input_data_type {
+            get {
+                return ResourceManager.GetString("edit_input_data_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit level 1.
         /// </summary>
         internal static string edit_level1 {
@@ -5596,7 +5605,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Atualizar todos os Tablets de todas as Unidades.
+        ///   Looks up a localized string similar to Update all tablets from all Companies.
         /// </summary>
         internal static string update_tablet_all {
             get {
