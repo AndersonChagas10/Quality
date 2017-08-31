@@ -6,7 +6,7 @@
 }
 
 <style>
-     .panel-info {
+    .panel-info {
         border-color: #999;
     }
 
@@ -23,10 +23,79 @@
     }
 </style>
 
+<script>
+
+    function migr(unidade, ip, banco, ipProd, bancoProd ){
+
+
+        $.ajax({
+            type: 'GET'
+            , url: 'http://10.190.2.34/migracaoHyrumHML/api/Scorecard/Migracao/' + unidade + '/' + ip + '/' + banco + '/' + ipProd + '/' + bancoProd
+            , contentType: 'application/json; charset=utf-8'
+            , dataType: 'json'
+            , data: '{ unidade: unidade; ip: ip; banco:banco; ipProd: ipProd; bancoProd: bancoProd  }'
+            , async: false //blocks window close
+        , success: function (data, status) {
+
+            console.log(data);
+
+        },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log("erro");
+            }
+        })
+    }
+
+</script>
+
+
 <div class="page-content" style="min-height: 600px;">
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
     <div id="formBodyContent">
-        asdasdsadsad
+        <button onclick="migr('Cactus', '10.164.67.22', 'QA_GRJ',
+
+'10.190.24.44', 'SGQUSAHML');">
+            Migrar Banco Cactus
+        </button>
+        <br /><br />
+        <button onclick="migr('GrandIsland', '10.164.3.22',
+
+'QA_GRJ', '10.190.24.44', 'SGQUSAHML');">
+            Migrar Banco Grand
+
+            Island
+        </button>
+        <br /><br />
+        <button onclick="migr('GreenBay', '10.161.3.2', 'QA_GRJ',
+
+'10.190.24.44', 'SGQUSAHML');">
+            Migrar Banco Green Bay
+        </button>
+        <br /><br />
+        <button onclick="migr('Hyrum', '10.160.227.40', 'QA_GRJ',
+
+'10.190.24.44', 'SGQUSAHML');">
+            Migrar Banco Hyrum
+        </button>
+        <br /><br />
+        <button onclick="migr('Omaha', '10.166.241.86', 'QA_GRJ',
+
+'10.190.24.44', 'SGQUSAHML');">
+            Migrar Banco Omaha
+        </button>
+        <br /><br />
+        <button onclick="migr('Plainwell', '10.161.131.53', 'QA_GRJ',
+
+'10.190.24.44', 'SGQUSAHML');">
+            Migrar Banco Plainwell
+        </button>
+        <br /><br />
+        <button onclick="migr('Souderton', 'uspaso01dbs11i', 'QA_GRJ',
+
+'10.190.24.44', 'SGQUSAHML');">
+            Migrar Banco Souderton
+        </button>
+
     </div>
 </div>
 
@@ -35,7 +104,9 @@
 
     <script type="text/javascript">
 
-        var meses = new Array("Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
+        var meses = new Array("Janeiro", "Fevereiro", "Março", "Abril", "Maio",
+
+"Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
         var $btn = $('#btnSend');
         $('#simpleCallendar').hide().attr('disabled', true);
 
@@ -89,7 +160,9 @@
 
         function ValidaDadosParaEnvio() {
             GuardJs.resetForValidation();
-            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate,
+
+"Initial date", "End date");
 
             /*Validação Específica*/
 
