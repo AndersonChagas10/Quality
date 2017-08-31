@@ -289,8 +289,9 @@ namespace SgqSystem.Mail
             var emailPort = 587;
             var emailSSL = true;
 
-            //CreateMailSgqAppDeviation();
-            //CreateMailSgqAppCorrectiveAction();
+            //CRIA LISTA DE EMAIL NA EMAIL CONTENT COM TODOS OS CAMPOS
+            CreateMailSgqAppDeviationUSA(); //DEVIATION 
+            CreateMailSgqAppCorrectiveActionUSA(); //CORRECTIVE ACTION
 
             using (var db = new SgqDbDevEntities())
                 ListaDeMail = db.EmailContent.Where(r => r.SendStatus == null && r.Project == "SGQApp").ToList();
