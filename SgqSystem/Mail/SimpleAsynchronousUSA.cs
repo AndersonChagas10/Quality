@@ -39,8 +39,8 @@ namespace SgqSystem.Mail
         public static void SendMailUSA()
         {
             //CRIA LISTA DE EMAIL NA EMAIL CONTENT COM TODOS OS CAMPOS
-            CreateMailSgqAppDeviationUSA(); //DEVIATION 
-            CreateMailSgqAppCorrectiveActionUSA(); //CORRECTIVE ACTION
+            //CreateMailSgqAppDeviationUSA(); //DEVIATION 
+            CreateMailFromCorrectiveActionUSA(); //CORRECTIVE ACTION
             using (var db = new SgqDbDevEntities())//RECUPERA EMAILS NA EMAILCONTENT
                 ListaDeMail = db.EmailContent.Where(r => r.SendStatus == null && r.Project == "SGQApp").ToList();
 
@@ -53,45 +53,12 @@ namespace SgqSystem.Mail
         }
 
         /// <summary>
-        /// CRIA LISTA DE EMAIL NA EMAIL CONTENT COM TODOS OS CAMPOS, INCLUSIVE DESTINATÁRIOS
-        /// </summary>
-        private static void CreateMailSgqAppDeviationUSA()
-        {
-            using (var db = new SgqDbDevEntities())
-            {
-                try
-                {
-                    db.Configuration.ValidateOnSaveEnabled = false;
-                    db.Configuration.LazyLoadingEnabled = false;
-                    /*Cria Novos Emails de acordo com a quantidade do pool na emailContent*/
-                    var Mails = db.Deviation.Where(r => r.AlertNumber > 0 && (r.sendMail == null || r.sendMail == false) && r.DeviationMessage != null).Take(tamanhoDoPool).ToList();
-                    if (Mails != null && Mails.Count() > 0)
-                    {
-                        foreach (var m in Mails)
-                        {
-                            EmailContent newMail = CreateNewEmailFromDeviationUSA(db, m, m.AlertNumber);
-                            newMail.To = DestinatariosSGQJBSUSA(newMail, m);
-                            db.EmailContent.Add(newMail);
-                            db.Database.ExecuteSqlCommand("UPDATE Deviation SET sendMail = 1 WHERE ID = " + m.Id);
-                        }
-                        db.SaveChanges();
-                    }
-                }
-                catch (Exception e)
-                {
-                    new CreateLog(new Exception("Ocorreu um erro em: [CreateMailSgqAppDeviation]", e));
-                }
-            }
-
-        }
-
-        /// <summary>
         /// Cria lista de emails na tabela EmailContent, a partir da tabela !!!CorrectiveAction!!!, TUDO que esta na EmailContent é enviado atravez do SGQ pelo send mail.
         /// Os destinatários devem ser preenchidos neste método, e isneridos na tabela EmailContent corretamente. Devem ser separados por VIRGULA caso exista mais de um,
         /// EX com 2 destinatários: EmailContent.To = "email1@teste.com, email2@teste.com"
         /// EX com 1 destinatário: EmailContent.To = "email1@teste.com"
         /// </summary>
-        public static void CreateMailSgqAppCorrectiveActionUSA()
+        public static void CreateMailFromCorrectiveActionUSA()
         {
             try
             {
@@ -99,7 +66,19 @@ namespace SgqSystem.Mail
                 {
                     using (var controller = new CorrectActApiController())
                     {
-                        var listaCorrectiveActionDb = db.Database.SqlQuery<CorrectiveAction>("SELECT * FROM CorrectiveAction WHERE MailProcessed = 0");
+                        var sql = "SELECT "+
+                        "\n dev.AlertNumber," +
+                        "\n dev.ParLevel1_Id, " +
+                        "\n dev.ParCompany_Id, " +
+                        "\n ca.* " +
+                        "\n FROM " +
+                        "\n CollectionLevel2 cl2 " +
+                        "\n INNER JOIN correctiveaction ca ON cl2.Id = ca.CollectionLevel02Id " +
+                        "\n INNER JOIN deviation dev ON dev.parlevel2_id = cl2.parlevel2_id and dev.alertnumber > 0 AND dev.DeviationDate = CAST(cl2.CollectionDate AS Date) " +
+                        "\n WHERE ca.MailProcessed = 0";
+
+                        var listaCorrectiveActionDb = db.Database.SqlQuery<CorrectiveActionEmail>(sql);
+
                         foreach (var ca in listaCorrectiveActionDb)
                         {
                             var colectionLevel2 = db.CollectionLevel2.FirstOrDefault(r => r.Id == ca.CollectionLevel02Id);
@@ -110,20 +89,20 @@ namespace SgqSystem.Mail
                             if (colectionLevel2.UnitId > 0)
                                 company = db.ParCompany.FirstOrDefault(r => r.Id == colectionLevel2.UnitId).Name;
                             else
-                                company = "Corporativo";
+                                company = "All";
 
-                            var subject = "Ação coretiva emitida para o Indicador: " + parLevel1 + ", Monitoramento: " + parLevel2 + " da Unidade: " + company;
+                            var subject = "Corrective action triggered: " + parLevel1 + ", For: " + parLevel2 + " Unit: " + company;
 
                             var newMail = new EmailContent()
                             {
                                 AddDate = DateTime.Now,
                                 IsBodyHtml = true,
                                 Subject = subject,
-                                To = "gcnunes7@gmail.com",
                                 Project = "SGQApp"
                             };
                             var model = controller.GetCorrectiveActionById(ca.Id);
                             newMail.Body = subject + "<br><br>" + model.SendMeByMail;
+                            newMail.To = DestinatariosSGQJBSUSA(newMail, ca);
                             db.EmailContent.Add(newMail);
                             db.SaveChanges();
 
@@ -139,128 +118,33 @@ namespace SgqSystem.Mail
             }
 
         }
-
+      
         /// <summary>
-        /// 1.2 - O Conteúdo do Email:
-        /// 1.2.1 - Se for alerta 1 enviar somente o alerta
-        /// 1.2.2 - Se for alerta > 1 alerta e seu historico
-        /// 1.2.3 - Colocar a data do alerta(depende do tablet tbm)
-        /// 1.2.4 - Remover Possivel OK das mensagens
-        /// </summary>
-        /// <param name="db"></param>
-        /// <param name="m"></param>
-        /// <param name="alertNumber"></param>
-        /// <returns></returns>
-        private static EmailContent CreateNewEmailFromDeviationUSA(SgqDbDevEntities db, Deviation m, int alertNumber)
-        {
-            var body = Uri.UnescapeDataString(m.DeviationMessage).ToString();//.Replace(Resources.Resource., "").Replace("O Supervisor, o Gerente e o Diretor da área serão notificados Ok ", "").Replace("O Supervisor e o Gerente da área serão notificados. Ok", "").Replace(" Ok", "");
-            var parLevel1 = db.ParLevel1.FirstOrDefault(r => r.Id == m.ParLevel1_Id).Name;
-            var parLevel2 = db.ParLevel2.FirstOrDefault(r => r.Id == m.ParLevel2_Id).Name;
-            string company = string.Empty;
-
-            if (m.ParCompany_Id > 0)
-                company = db.ParCompany.FirstOrDefault(r => r.Id == m.ParCompany_Id).Name;
-            else
-                company = "Corporativo";
-
-            var subject = "Alert trigger for: " + parLevel1 + " -> " + parLevel2 + " Company: " + company;
-
-
-            var newMail = new EmailContent()
-            {
-                AddDate = DateTime.Now,
-                Body = m.DeviationDate.ToShortDateString() + " " + m.DeviationDate.ToShortTimeString() + ": " + subject + "<br><br>" + RemoveEspacos(body),
-                IsBodyHtml = true,
-                Subject = subject,
-                Project = "SGQApp"
-            };
-
-            return newMail;
-        }
-
-        /// <summary>
-        /// 
+        /// Envia para destinatários de acordo com documento na pasta desta classe
         /// </summary>
         /// <param name="m"></param>
         /// <param name="d"></param>
         /// <returns></returns>
-        private static string DestinatariosSGQJBSUSA(EmailContent m, Deviation d)
+        private static string DestinatariosSGQJBSUSA(EmailContent m, CorrectiveActionEmail d)
         {
             using (var dbLegado = new SgqDbDevEntities())
             {
-                const int CCA = 52;
-                const int CFF = 55;
-                const int HTP = 56;
                 var Roles = new List<string>();
-                var query = "SELECT * FROM UserSgq WHERE  1=1 AND [role] like ";
-                switch (d.ParLevel1_Id)
-                {
-                    case CCA:
-                        if (d.AlertNumber == 1)
-                        {
-                            query += "'%CCALVL1%' \n AND ";
-                            //Roles.Add("CCALVL1");
-                        }
-                        else if (d.AlertNumber > 1)
-                        {
-                            query += "'%CCALVL1%' \n AND ";
-                            query += "'%CCALVL2%' \n AND ";
-                            //Roles.Add("CCALVL1");
-                            //Roles.Add("CCALVL2");
-                        }
-                        break;
-                    case CFF:
-                        if (d.AlertNumber == 1)
-                        {
-                            query += "'%CCALVL1%' \n AND ";
-                            //Roles.Add("CFFLVL1");
-                        }
-                        else if (d.AlertNumber > 1)
-                        {
-                            query += "'%CFFLVL1%' \n AND ";
-                            query += "'%CFFLVL2%' \n AND ";
-                            //Roles.Add("CFFLVL1");
-                            //Roles.Add("CFFLVL2");
-                        }
-                        break;
-                    case HTP:
-                        if (d.AlertNumber == 1)
-                        {
-                            query += "'%HTPLVL1%' \n AND ";
-                            //Roles.Add("HTPLVL1");
-                        }
-                        else if (d.AlertNumber > 1)
-                        {
-                            query += "'%HTPLVL1%' \n AND ";
-                            query += "'%HTPLVL2%' \n AND ";
-                            //Roles.Add("HTPLVL1");
-                            //Roles.Add("HTPLVL2");
-                        }
-                        break;
+                var listaEmails = new List<string>();
+                var query = "SELECT * FROM UserSgq WHERE  1=1 AND ([role] like ";// ;)
 
-                    default:
-                        break;
-                }
-
+                if (d.AlertNumber == 1)
+                    query += "'%Alert1%' \n AND ParCompany_Id = " + d.ParCompany_Id + ") \n AND ";
+                else 
+                    query += "'%Alert1%' AND ParCompany_Id = " + d.ParCompany_Id + ") OR [role] like '%Alert2%' \n AND ";
+                   
                 query += "\n AND Email IS NOT NULL";
                 query += "\n AND Email <> ''";
-                query += "\n 1=1"; // ;)
 
-                var listaEmails = new List<string>();
                 var listaUsuario = dbLegado.Database.SqlQuery<UserSgq>(query);
 
-                //var query = "\n SELECT Email FROM UserSgq" +
-                //            "\n WHERE Id in (SELECT UserSgq_Id FROM ParCompanyXUserSgq WHERE ParCompany_Id = " + companyId + " AND [Role] IN (SELECT Nivel FROM desvioNiveis WHERE Desvio = " + nivel + "))" +
-                //            "\n  AND Email IS NOT NULL" +
-                //            "\n  AND Email <> ''";
-
                 foreach (var usuario in listaUsuario)
-                {
-                    var rolesUser = usuario.Role.Split(',');
-                    foreach (var role in Roles)
-                        if (rolesUser.Contains(role))
-                            listaEmails.Add(usuario.Email);
-                }
+                    listaEmails.Add(usuario.Email);
 
                 if (listaEmails != null && listaEmails.Count() > 0)
                     return string.Join(",", listaEmails.ToArray());
@@ -273,7 +157,6 @@ namespace SgqSystem.Mail
                 }
             }
         }
-
 
         /// <summary>
         /// Metodo para testes de rotinas de email, pode ser chamado do GlobalConfig/Config
@@ -290,8 +173,7 @@ namespace SgqSystem.Mail
             var emailSSL = true;
 
             //CRIA LISTA DE EMAIL NA EMAIL CONTENT COM TODOS OS CAMPOS
-            CreateMailSgqAppDeviationUSA(); //DEVIATION 
-            CreateMailSgqAppCorrectiveActionUSA(); //CORRECTIVE ACTION
+            CreateMailFromCorrectiveActionUSA(); //CORRECTIVE ACTION
 
             using (var db = new SgqDbDevEntities())
                 ListaDeMail = db.EmailContent.Where(r => r.SendStatus == null && r.Project == "SGQApp").ToList();
@@ -414,5 +296,13 @@ namespace SgqSystem.Mail
 
         #endregion
 
+        public class CorrectiveActionEmail : CorrectiveAction
+        {
+            public int AlertNumber { get; set; }
+            public int ParLevel1_Id { get; set; }
+            public int ParCompany_Id { get; set; }
+        }
+
     }
+
 }

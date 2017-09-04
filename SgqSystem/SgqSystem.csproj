@@ -336,6 +336,7 @@
     <Compile Include="Controllers\Exemplo\ExemploInputController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
     <Compile Include="Controllers\Gestao\GestaoController.cs" />
+    <Compile Include="Controllers\Params\EmailConfigEUAController.cs" />
     <Compile Include="Controllers\Params\EquipamentosController.cs" />
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\Familia\ParLevel2ControlCompanyController.cs" />
@@ -1403,6 +1404,7 @@
     <Content Include="Views\RelatoriosSgq\VerificacaoTipificacao.cshtml" />
     <Content Include="Views\RelatoriosSgq\_VerificacaoTipificacaoEdit.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoConformidadePorCabecalho.cshtml" />
+    <Content Include="Views\EmailConfigEUA\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

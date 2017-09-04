@@ -1,0 +1,74 @@
+﻿@model SgqSystem.Controllers.Params.EmailConfig
+@{
+    ViewBag.Title = "Index";
+    var urlHome = Url.Action("Index", "Home");
+    List<SelectListItem> Niveis = new List<SelectListItem>();
+    var ArrAlert = new[]{
+                 new SelectListItem{ Value="1",Text="Alerta Nivel 1"},
+                 new SelectListItem{ Value="2",Text="Alerta Nivel 2"},
+             };
+
+}
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content" style="min-height: 650px;">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE TITLE-->
+        <h1 class="page-title">
+            Parametrização de Email Alerta
+        </h1>
+        <!-- END PAGE TITLE-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@urlHome">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>Parametrização de Email Alerta</span>
+                </li>
+            </ul>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+
+                    <div class="form-group">
+                        <label>Frequência</label>
+                        @Html.DropDownListFor(r => r.Frequency_Id, new SelectList(ViewBag.ParFrequency, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    </div>
+                    <div class="form-group">
+                        <label>Condições para envio</label>
+                        @Html.DropDownListFor(r => r.AlertLevel_Id, new SelectList(ArrAlert, "Value", "Text"), "Selecione", new { @class = "form-control input-sm" })
+                    </div>
+                    <div class="form-group">
+                        <label>Perfil</label>
+                        @Html.DropDownListFor(r => r.RoleUserSgq_Id, new SelectList(ViewBag.RoleUserSgq, "Id", "Name"), "Selecione", new { @class = "form-control input-sm", multiple = true })
+                    </div>
+                    <div class="form-group">
+                        <label>Destinatários</label>
+                        @Html.DropDownListFor(r=>r.UserSgq_Id, new SelectList(ViewBag.UserSgq, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" , multiple=true})
+                    </div>
+                    <div class="form-group">
+                        <label>Enviar para unidade do ocorrido somente?</label>
+                        @Html.CheckBoxFor(r=>r.isCoorporated)
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('select').select2()
+    });
+
+</script>
+
+
