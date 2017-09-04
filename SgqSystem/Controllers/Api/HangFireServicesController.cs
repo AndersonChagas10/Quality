@@ -1,4 +1,5 @@
-﻿using SgqSystem.Mail;
+﻿using DTO;
+using SgqSystem.Mail;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,14 @@ namespace SgqSystem.Controllers.Api
         [Route("SendMail")]
         public void SendMail()
         {
-            SimpleAsynchronous.SendMailFromDeviationSgqApp();
+            if (GlobalConfig.Brasil)
+            {
+                SimpleAsynchronous.SendMailFromDeviationSgqApp();
+            }
+            else if (GlobalConfig.Eua)
+            {
+                SimpleAsynchronousUSA.SendMailUSA();
+            }
         }
     }
 }

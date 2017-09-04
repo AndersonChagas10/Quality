@@ -392,35 +392,6 @@ namespace SgqSystem.Mail
                 }
         }
 
-        /// <summary>
-        /// Metodo para testes de rotinas de email, pode ser chamado do GlobalConfig/Config
-        /// </summary>
-        /// <param name="mailTo"></param>
-        /// <param name="deviation"></param>
-        public static void SendMailFromDeviationSgqAppTesteUSA(string mailTo)
-        {
-
-            var emailFrom = "celsogea@hotmail.com";
-            var emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
-            var emailSmtp = "smtp.live.com";
-            var emailPort = 587;
-            var emailSSL = true;
-
-            //CreateMailSgqAppDeviation();
-            CreateMailSgqAppCorrectiveAction();
-
-            using (var db = new SgqDbDevEntities())
-                ListaDeMail = db.EmailContent.Where(r => r.SendStatus == null && r.Project == "SGQApp").ToList();
-
-            if (ListaDeMail != null && ListaDeMail.Count() > 0)
-                foreach (var i in ListaDeMail.Take(3).ToList())
-                {
-                    i.To = mailTo;
-                    Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), GlobalConfig.emailFrom, Guard.DecryptStringAES(GlobalConfig.emailPass), GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true));
-                    //Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), emailFrom, emailPass, emailSmtp, emailPort, emailSSL, SendCompletedCallbackSgq, true));
-                }
-        }
-
         #endregion
 
         #region ResendProcessJson
@@ -477,82 +448,6 @@ namespace SgqSystem.Mail
         }
 
         #endregion
-
+       
     }
 }
-
-//public class FimDoEnvio
-//{
-//    private SgqDbDevEntities db = new SgqDbDevEntities();
-
-//    public void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
-//    {
-//        try
-//        {
-//            db.Configuration.AutoDetectChangesEnabled = false;
-//            db.Configuration.ValidateOnSaveEnabled = false;
-
-//            // Get the unique identifier for this asynchronous operation.
-//            String token = (string)e.UserState;
-//            var id = int.Parse(token);
-
-//            var emailContent = db.EmailContent.FirstOrDefault(r => r.Id == id);
-//            //var emailContent = ListaDeMail.FirstOrDefault(r => r.Id == id);
-//            if (e.Cancelled)
-//            {
-//                //Console.WriteLine("[{0}] Send canceled.", token);
-//                emailContent.SendStatus = string.Format("[{0}] Send canceled.", token);
-//            }
-//            if (e.Error != null)
-//            {
-//                //Console.WriteLine("[{0}] {1}", token, e.Error.ToString());
-//                emailContent.SendStatus = string.Format("[{0}] {1}", token, e.Error.ToString());
-//            }
-//            else
-//            {
-//                //Console.WriteLine("Message sent.");
-//                emailContent.SendStatus = string.Format("Message sent.");
-//            }
-
-//            //
-//            //await db.SaveChangesAsync();
-
-//            emailContent.AlterDate = DateTime.Now;
-//            emailContent.SendDate = DateTime.Now;
-
-//            db.EmailContent.Attach(emailContent);
-//            var entry = db.Entry(emailContent);
-//            entry.State = System.Data.Entity.EntityState.Modified;
-//            entry.Property(r => r.SendStatus).IsModified = true;
-//            entry.Property(r => r.AlterDate).IsModified = true;
-//            entry.Property(r => r.SendDate).IsModified = true;
-
-//            db.SaveChanges();
-//            //mailSent = true;
-//            db.Dispose();
-//        }
-//        catch (Exception ex)
-//        {
-//            new CreateLog(new Exception("Erro ao enviar e mail", ex));
-//            //throw ex;
-//        }
-//    }
-//}
-//MailMessage Message = new MailMessage();
-//Message.IsBodyHtml = true;
-//Message.To.Add(new MailAddress(toEmail, toName));
-//Message.From = (new MailAddress(this.emailLogin, this.emailLoginName));
-//Message.Subject = this.subject;
-//Message.Body = this.messageBody;
-
-//SmtpClient sc = new SmtpClient();
-//sc.Port = 587;
-//sc.Host = "smtp.live.com";
-//sc.EnableSsl = true; // <-- ATENÇÃO.
-//sc.UseDefaultCredentials = false;
-//sc.Credentials = new NetworkCredential(this.emailLogin, this.pass);
-
-
-//sc.Send(Message);
-//}
-

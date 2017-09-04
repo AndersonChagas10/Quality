@@ -41,7 +41,7 @@ namespace SgqSystem.Controllers.Api
         public void TestaEmailUSA(JObject form)
         {
             dynamic paramiters = form;
-            SimpleAsynchronous.SendMailFromDeviationSgqAppTesteUSA(paramiters.email);
+            //SimpleAsynchronousUSA.SendMailUSA(paramiters.email);
         }
 
         [HttpPost]
