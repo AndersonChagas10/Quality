@@ -610,7 +610,7 @@ namespace Data.Repositories
                     db.ParLevel2Level1.Add(salvarL2L1);
                     db.SaveChanges();
                 }
-                if (existenteL2L1.IsActive == false)
+                else if (existenteL2L1.IsActive == false)
                 {
                     existenteL2L1.IsActive = true;
                     var old = db.ParLevel2Level1.Find(existenteL2L1.Id);
@@ -636,16 +636,19 @@ namespace Data.Repositories
                     else
                     {
                         idL3L2 = existenteL3L2.Id;
+
+                        if (existenteL3L2.IsActive == false)
+                        {
+                            existenteL3L2.IsActive = true;
+                            var old = db.ParLevel3Level2.Find(existenteL3L2.Id);
+                            var entry = db.Entry(existenteL3L2);
+                            entry.CurrentValues.SetValues(existenteL3L2);
+                            //db.Configuration.ValidateOnSaveEnabled = false;
+                            db.SaveChanges();
+                        }
+
                     }
-                    if (existenteL3L2.IsActive == false)
-                    {
-                        existenteL3L2.IsActive = true;
-                        var old = db.ParLevel3Level2.Find(existenteL3L2.Id);
-                        var entry = db.Entry(existenteL3L2);
-                        entry.CurrentValues.SetValues(existenteL3L2);
-                        //db.Configuration.ValidateOnSaveEnabled = false;
-                        db.SaveChanges();
-                    }
+                    
 
                     /**/
                     existenteL3L2L1 = db.ParLevel3Level2Level1.FirstOrDefault(r => r.ParLevel1_Id == idLevel1 && r.ParLevel3Level2_Id == idL3L2 && r.ParCompany_Id == companyId);
@@ -655,7 +658,7 @@ namespace Data.Repositories
                         db.ParLevel3Level2Level1.Add(salvarL3L2L1);
                         db.SaveChanges();
                     }
-                    if (existenteL3L2L1.Active == false)
+                    else if (existenteL3L2L1.Active == false)
                     {
                         existenteL3L2L1.Active = true;
                         var old = db.ParLevel3Level2Level1.Find(existenteL3L2L1.Id);

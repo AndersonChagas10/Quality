@@ -5758,6 +5758,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Value Text.
+        /// </summary>
+        internal static string valueText {
+            get {
+                return ResourceManager.GetString("valueText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value is acceptable is between.
         /// </summary>
         internal static string value_is_acceptable_between {
