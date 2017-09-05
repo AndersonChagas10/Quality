@@ -38,6 +38,7 @@ public class ApontamentosDiariosResultSet
     public string Periodo { get; set; }
     public string Turno { get; set; }
     public string Auditor { get; set; }
+    public string ValueText { get; set; }
     public string HeaderFieldList { get; set; }
 
     public string Select(DataCarrierFormulario form)
@@ -93,6 +94,7 @@ public class ApontamentosDiariosResultSet
                 " \n ,R3.IsNotEvaluate AS 'NA'              " +
                 " \n ,R3.WeiEvaluation AS 'AV_Peso'         " +
                 " \n ,R3.WeiDefects AS 'NC_Peso'            " +
+                " \n ,case when isnull(R3.ValueText, '') = 'undefined' OR isnull(R3.ValueText, '') = 'null' THEN '' ELSE isnull(R3.ValueText, '') END AS ValueText       " +
                 " \n ,C2.EvaluationNumber AS 'Avaliacao'    " +
                 " \n ,C2.Sample AS 'Amostra'                " +
                 " \n ,C2.Sequential AS 'Sequencial'         " +
