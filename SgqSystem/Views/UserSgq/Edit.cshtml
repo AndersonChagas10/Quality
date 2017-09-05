@@ -98,11 +98,11 @@
                                         </div>
 
                                         @*<div class="form-group">
-                                            @Html.Label(Resources.Resource.default_company, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.DropDownList("userSgqDto.ParCompany_Id", new SelectList(ViewBag.listaParCompany, "Id", "Name"), new { @class = "form-control" })
-                                            </div>
-                                        </div>*@
+                                                @Html.Label(Resources.Resource.default_company, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.DropDownList("userSgqDto.ParCompany_Id", new SelectList(ViewBag.listaParCompany, "Id", "Name"), new { @class = "form-control" })
+                                                </div>
+                                            </div>*@
 
                                         <div class="form-group">
                                             @Html.Label(Resources.Resource.company, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -126,6 +126,16 @@
                                                 @Html.Editor("userSgqDto.Name", new { htmlAttributes = new { @class = "form-control" } })
                                             </div>
                                         </div>
+
+                                        @if (@DTO.GlobalConfig.Eua)
+                                        {
+                                            <div class="form-group">
+                                                @Html.Label(Resources.Resource.is_active, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.CheckBox("userSgqDto.IsActive", new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+                                        }
 
                                         @if (@DTO.GlobalConfig.Eua == false)
                                         {
@@ -247,6 +257,10 @@
                 if (!!$('#userSgqDto_' + key).data("select2")) {
                     $('#userSgqDto_' + key).val(obj).trigger("change");
                 }
+            }
+            
+            if(object["IsActive"]){
+                $("#userSgqDto_IsActive").attr('checked', true)
             }
 
             $(".password").addClass("hide");
