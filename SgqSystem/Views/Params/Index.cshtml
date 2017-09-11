@@ -670,6 +670,7 @@
                         indexParamsLevel2.GetLevel2(objetoReturn.paramsDto.parLevel2Dto.Id, $('#paramsDto_parLevel3Dto_Id').val(), true)
                         openMessageModal("@Resources.Resource.alert", statusmessage);
                     }
+                    disableEvry()
                 }).fail(function (e, h, x) {
                     try {
                         closeLoader();
@@ -728,6 +729,9 @@
         },/*Executa ao selecionar um level2*/
         GetLevel2: function(thislevel2Id, thislevel3Id, isSave, thislevel1Id) {
             thislevel1Id = !thislevel1Id ? '0' : thislevel1Id;
+            if(thislevel1Id == '0' && $('#paramsDto_parLevel1Dto_Id') &&  $('#paramsDto_parLevel1Dto_Id').val() > 0)
+                thislevel1Id = $('#paramsDto_parLevel1Dto_Id').val()
+
             $.get('GetParLevel2ById',{  level2Id: thislevel2Id, level3Id: thislevel3Id, level1Id: thislevel1Id}, function (obj, responseText, xhr) {
 
                 if (obj != null) {
@@ -1177,6 +1181,7 @@
             $('#paramsDto_parLevel2Dto_ParDepartment_Id option').not(':selected').remove();
             $('#paramsDto_parLevel2Dto_ParFrequency_Id option').not(':selected').remove();
             var permiteCadastroEspecificoPorUnidade = $($('[name="paramsDto.parLevel1Dto.IsSpecific"]')[0]).bootstrapSwitch('state')
+            var level2Vinculado = $('#paramsDto_parLevel2Dto_isVinculado').val() == "True"
             $('#btnSaveNewLevel2').attr('disabled', true);
 
             //console.log(permiteCadastroEspecificoPorUnidade)
@@ -1184,7 +1189,7 @@
             //console.log($('#paramsDto_parLevel2Dto_isVinculado').val())
 
             /*Level2*/
-            if(permiteCadastroEspecificoPorUnidade && r._PermiteEditarNumeroDeAv && $('#paramsDto_parLevel2Dto_isVinculado').val() == "True"){
+            if(permiteCadastroEspecificoPorUnidade && r._PermiteEditarNumeroDeAv && level2Vinculado){
                 console.log("if")
 
                 $('#btnSaveNewLevel2').attr('disabled', false);
@@ -1243,7 +1248,7 @@
                 });
                 $('#level3_data_type_accordion').find('button').attr("disabled", true);
 
-                if(permiteEditarPadrãoDasTarefas){
+                if(permiteEditarPadrãoDasTarefas  && level2Vinculado){
                     /*Libera os campos para Tipos de dados de entrada*/
                     $('#level3_data_type_accordion').find('button').attr("disabled", false);
                     $('#level3_data_type_accordion').find('input, select, button').attr("readonly", false);
@@ -1271,7 +1276,7 @@
                 });
                 $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', true)
 
-                if(permiteEditarPesoDasTarefas){
+                if(permiteEditarPesoDasTarefas  && level2Vinculado){
                         /*habilita Edicao do Peso*/
                         $('#tablePeso > tbody > tr').each(function() {
                             if($(this).data().ParCompany_Id == unitId){
@@ -1281,7 +1286,8 @@
                         $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', false)
                 }
 
-               
+                if(!permiteEditarPadrãoDasTarefas && !permiteEditarPesoDasTarefas || !level2Vinculado)
+                    $('#btnSaveNewLevel3').attr('disabled', true);
             }else{
                 $('#btnSaveNewLevel3').attr('disabled', true);
                 $('#vinculoLevel1').attr("disabled", true);
