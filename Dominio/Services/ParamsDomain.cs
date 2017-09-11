@@ -399,8 +399,15 @@ namespace Dominio.Services
             paramsDto.parLevel2Dto = level2;
             paramsDto.parLevel2Dto.listParLevel3Level2Dto = null;
 
+            if (level1Id > 0)
+            {
+                var possuiVinculoComLevel1 = db.ParLevel2Level1.Where(r => r.ParLevel1_Id == level1Id && r.ParLevel2_Id == level2.Id);
+                if (possuiVinculoComLevel1 != null && possuiVinculoComLevel1.Count() > 0)
+                    paramsDto.parLevel2Dto.isVinculado = true;
+            }
             if (level1Id > 0)/*Caso exista Level1 Selecionado, é necessario verificar regras especificas para este ao mostrar os fields do level2*/
                 paramsDto.parLevel2Dto.RegrasParamsLevel1(Mapper.Map<ParLevel1DTO>(db.ParLevel1.FirstOrDefault(r => r.Id == level1Id)));//Configura regras especificas do level2 de acordo com level1.
+
 
             #endregion
 

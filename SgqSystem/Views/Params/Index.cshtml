@@ -1176,9 +1176,17 @@
 
             $('#paramsDto_parLevel2Dto_ParDepartment_Id option').not(':selected').remove();
             $('#paramsDto_parLevel2Dto_ParFrequency_Id option').not(':selected').remove();
+            var permiteCadastroEspecificoPorUnidade = $($('[name="paramsDto.parLevel1Dto.IsSpecific"]')[0]).bootstrapSwitch('state')
+            $('#btnSaveNewLevel2').attr('disabled', true);
+
+            console.log(permiteCadastroEspecificoPorUnidade)
+            console.log(r._PermiteEditarNumeroDeAv)
+            console.log($('#paramsDto_parLevel2Dto_isVinculado').val())
 
             /*Level2*/
-            if(r._PermiteEditarNumeroDeAv){
+            if(permiteCadastroEspecificoPorUnidade && r._PermiteEditarNumeroDeAv && $('#paramsDto_parLevel2Dto_isVinculado').val() == "True"){
+                console.log("if")
+
                 $('#btnSaveNewLevel2').attr('disabled', false);
                 /*Libera os campos para AV AM*/
                 $('#level2_AvAmostra_accordion').find('input, select, button').attr("readonly", false);
@@ -1189,19 +1197,21 @@
                     if($(this).data().companyId != unitId)
                         $(this).find('input, select, button').attr("disabled", true);
                 });
-
             }else{
                 $('#btnSaveNewLevel2').attr('disabled', true);
+                $('#level2_AvAmostra_accordion').find('input, select').attr("readonly", true);
+                $('#level2_AvAmostra_accordion').find('button').attr("disabled", true);         
             }
+
             $('#level2_nc_collapse > div > table.table-erp > tbody > tr > td:nth-child(4) > button').attr('disabled', true);
             $($('[id=btnSaveCounter]')[1]).attr('disabled', true);
 
-            if ($($('[name="paramsDto.parLevel1Dto.IsSpecific"]')[0]).bootstrapSwitch('state')) {
+            //if ($($('[name="paramsDto.parLevel1Dto.IsSpecific"]')[0]).bootstrapSwitch('state')) {
 
-            }
+            //}
 
             /*Level3*/
-            var permiteCadastroEspecificoPorUnidade = $($('[name="paramsDto.parLevel1Dto.IsSpecific"]')[0]).bootstrapSwitch('state')
+           
             var permiteVincularMonitoramentosTarefas = $($('[name="paramsDto.parLevel1Dto.AllowAddLevel3"]')[0]).bootstrapSwitch('state')
             var permiteEditarPesoDasTarefas = $($('[name="paramsDto.parLevel1Dto.AllowEditWeightOnLevel3"]')[0]).bootstrapSwitch('state')
             var permiteEditarPadrãoDasTarefas  = $($('[name="paramsDto.parLevel1Dto.AllowEditPatternLevel3Task"]')[0]).bootstrapSwitch('state')
