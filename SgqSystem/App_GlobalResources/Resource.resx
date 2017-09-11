@@ -2085,4 +2085,7 @@
   <data name="edit_input_data_type" xml:space="preserve">
     <value>Edit input data type</value>
   </data>
+  <data name="valueText" xml:space="preserve">
+    <value>Value Text</value>
+  </data>
 </root>

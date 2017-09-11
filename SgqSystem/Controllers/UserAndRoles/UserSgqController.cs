@@ -14,6 +14,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using SgqSystem.Secirity;
+using DTO;
 
 namespace SgqSystem.Controllers
 {
@@ -181,6 +182,15 @@ namespace SgqSystem.Controllers
 
             }
 
+
+            if (userSgqDto != null)
+                if (GlobalConfig.Eua)
+                {
+                    var ativo = userSgqDto.IsActive ? "1" : "0";
+                    var ativoQuery = "UPDATE UserSgq SET IsActive = " + ativo + " WHERE Id = " + userSgqDto.Id + " SELECT IsActive FROM usersgq WHERE Id = " + userSgqDto.Id;
+                    var estadoAtual = db.Database.SqlQuery<bool>(ativoQuery).FirstOrDefault();
+                }
+
             /////*Empresas do usuario*/
             //_baseDomainParCompanyXUserSgq.ExecuteSql("DELETE FROM ParCompanyXUserSgq WHERE UserSgq_Id = " + userSgqDto.Id);
             //if (ListParCompany_Id != null)
@@ -203,6 +213,12 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
+            //if (userSgq != null)
+            //    if (GlobalConfig.Eua)
+            //    {
+            //        userSgq.IsActive = db.Database.SqlQuery<bool>("SELECT IsActive FROM usersgq WHERE Id = " + userSgq.Id).FirstOrDefault();
+            //    }
+
             return View();
         }
 

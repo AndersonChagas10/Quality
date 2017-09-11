@@ -55,7 +55,7 @@ namespace Dominio.Services
         private readonly IUserRepository _userRepo;
         private readonly IBaseRepository<ParCompanyXUserSgq> _baseParCompanyXUserSgq;
         private readonly IBaseRepository<ParCompany> _baseParCompany;
-
+        private SgqDbDevEntities db;
         private static string dominio = "global.corp.prod";
 
         //public string erroUnidade = "É necessário ao menos uma unidade cadastrada para o usuario.";
@@ -72,6 +72,7 @@ namespace Dominio.Services
             _baseParCompany = baseParCompany;
             _baseParCompanyXUserSgq = baseParCompanyXUserSgq;
             _userRepo = userRepo;
+            db = new SgqDbDevEntities();
         }
 
         #endregion
@@ -271,9 +272,18 @@ namespace Dominio.Services
                 return userDev;
             }
 
+            if (userByName != null)
+            {
+                var IsActive = db.Database.SqlQuery<bool>("SELECT IsActive FROM usersgq WHERE Id = " + userByName.Id).FirstOrDefault();
+                if (!IsActive)
+                    throw new Exception("User disabled.");
+            }
+
             /*1*/
             if (CheckUserInAD(dominio, userDto.Name, userDto.Password))
             {
+              
+
                 /*1.1*/
                 UserSgq isUser = CheckUserAndPassDataBase(userDto);
 

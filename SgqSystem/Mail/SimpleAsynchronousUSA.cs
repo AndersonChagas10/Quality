@@ -19,6 +19,20 @@ using System.Net.Http;
 
 namespace SgqSystem.Mail
 {
+    public static class IntegerExtensions
+    {
+        public static string DisplayWithSuffix(this int num)
+        {
+            if (num.ToString().EndsWith("11")) return num.ToString() + "th";
+            if (num.ToString().EndsWith("12")) return num.ToString() + "th";
+            if (num.ToString().EndsWith("13")) return num.ToString() + "th";
+            if (num.ToString().EndsWith("1")) return num.ToString() + "st";
+            if (num.ToString().EndsWith("2")) return num.ToString() + "nd";
+            if (num.ToString().EndsWith("3")) return num.ToString() + "rd";
+            return num.ToString() + "th";
+        }
+    }
+
     /// <summary>
     /// Classe de serviços asyncronos, utilizada principalmnente pela instancia do HANGFIRE do SGQ
     /// </summary>
@@ -45,8 +59,30 @@ namespace SgqSystem.Mail
                 ListaDeMail = db.EmailContent.Where(r => r.SendStatus == null && r.Project == "SGQApp").ToList();
 
             if (ListaDeMail != null && ListaDeMail.Count() > 0)
-                foreach (var i in ListaDeMail.Take(3).ToList())
+                foreach (var i in ListaDeMail.Take(tamanhoDoPool).ToList())
                 {
+                    Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), GlobalConfig.emailFrom, Guard.DecryptStringAES(GlobalConfig.emailPass), GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true));//ENVIA EMAILS NA EMAILCONTENT
+                }
+
+        }
+
+        /// <summary>
+        /// 1 - CRIA LISTA DE EMAIL NA EMAIL CONTENT COM TODOS OS CAMPOS, INCLUSIVE DESTINATÁRIOS, DEVIATION e CORRECTIVE ACTION
+        /// 2 - ENVIA EMAILS NA EMAILCONTENT
+        /// 3 - CALLBACK PREENCHE EMAIL CONTENT COM RESULTADO DO ENVIO
+        /// </summary>
+        public static void SendMailUSA(string destinatario)
+        {
+            //CRIA LISTA DE EMAIL NA EMAIL CONTENT COM TODOS OS CAMPOS
+            //CreateMailSgqAppDeviationUSA(); //DEVIATION 
+            CreateMailFromCorrectiveActionUSA(); //CORRECTIVE ACTION
+            using (var db = new SgqDbDevEntities())//RECUPERA EMAILS NA EMAILCONTENT
+                ListaDeMail = db.EmailContent.Where(r => r.SendStatus == null && r.Project == "SGQApp").ToList();
+
+            if (ListaDeMail != null && ListaDeMail.Count() > 0)
+                foreach (var i in ListaDeMail.Take(tamanhoDoPool).ToList())
+                {
+                    //i.To = destinatario;
                     Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), GlobalConfig.emailFrom, Guard.DecryptStringAES(GlobalConfig.emailPass), GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true));//ENVIA EMAILS NA EMAILCONTENT
                 }
 
@@ -66,21 +102,67 @@ namespace SgqSystem.Mail
                 {
                     using (var controller = new CorrectActApiController())
                     {
-                        var sql = "SELECT "+
-                        "\n dev.AlertNumber," +
-                        "\n dev.ParLevel1_Id, " +
-                        "\n dev.ParCompany_Id, " +
-                        "\n ca.* " +
-                        "\n FROM " +
-                        "\n CollectionLevel2 cl2 " +
-                        "\n INNER JOIN correctiveaction ca ON cl2.Id = ca.CollectionLevel02Id " +
-                        "\n INNER JOIN deviation dev ON dev.parlevel2_id = cl2.parlevel2_id and dev.alertnumber > 0 AND dev.DeviationDate = CAST(cl2.CollectionDate AS Date) " +
-                        "\n WHERE ca.MailProcessed = 0";
+                        var sql = "SELECT TOP 1000 CA.*,                                                                                                                        "
++ " \n ParLevel1_Id,                                                                                                                                                            "
+//+ " \n Period,                                                                                                                                                                  "
++ " \n ParCompany_Id                                                                                                                                                            "
++ " \n FROM                                                                                                                                                                     "
++ " \n     (                                                                                                                                                                    "
++ " \n                                                                                                                                                                          "
++ " \n         SELECT                                                                                                                                                           "
++ " \n                                                                                                                                                                          "
++ " \n         ca.id,                                                                                                                                                           "
++ " \n         CAST(cl2.CollectionDate AS Date) CollectionDate,                                                                                                                 "
++ " \n         cl2.UnitId as ParCompany_Id,                                                                                                                                     "
++ " \n         cl2.ParLevel1_Id as ParLevel1_Id,                                                                                                                                "
++ " \n         cl2.[shift] as Shift,                                                                                                                                            "
++ " \n         cl2.period as Period,                                                                                                                                            "
++ " \n         cl2.ReauditNumber                                                                                                                                                "
++ " \n         --COUNT(1) AS AlertLevel                                                                                                                                         "
++ " \n                                                                                                                                                                          "
++ " \n         FROM                                                                                                                                                             "
++ " \n                                                                                                                                                                          "
++ " \n         CollectionLevel2 cl2                                                                                                                                             "
++ " \n                                                                                                                                                                          "
++ " \n         INNER JOIN correctiveaction ca ON cl2.Id = ca.CollectionLevel02Id                                                                                                "
++ " \n         --INNER JOIN deviation dev ON dev.Parlevel1_Id = cl2.Parlevel1_Id and dev.alertnumber > 0 AND CAST(dev.DeviationDate AS Date) = CAST(cl2.CollectionDate AS Date) "
++ " \n                                                                                                                                                                          "
++ " \n         WHERE ca.MailProcessed = 0                                                                                                                                       "
++ " \n                                                                                                                                                                          "
++ " \n         AND CAST(GETDATE() AS Date) = CAST(cl2.CollectionDate AS Date)                                                                                                   "
++ " \n                                                                                                                                                                          "
++ " \n         GROUP BY                                                                                                                                                         "
++ " \n                                                                                                                                                                          "
++ " \n         ca.id,                                                                                                                                                           "
++ " \n         cl2.CollectionDate,                                                                                                                                              "
++ " \n         cl2.UnitId,                                                                                                                                                      "
++ " \n         cl2.ParLevel1_Id,                                                                                                                                                "
++ " \n         cl2.[shift],                                                                                                                                                     "
++ " \n         cl2.period,                                                                                                                                                      "
++ " \n         cl2.ReauditNumber                                                                                                                                                "
++ " \n                                                                                                                                                                          "
++ " \n     ) vaiLaJesus                                                                                                                                                         "
++ " \n INNER JOIN correctiveaction CA ON CA.Id = vaiLaJesus.Id                                                                                                                  "
++ " \n order by 1 ASC";                                                                                                                                                         
 
-                        var listaCorrectiveActionDb = db.Database.SqlQuery<CorrectiveActionEmail>(sql);
+                        var listaCorrectiveActionDb = db.Database.SqlQuery<CorrectiveActionEmail>(sql).ToList();
 
                         foreach (var ca in listaCorrectiveActionDb)
                         {
+
+                            var alertNivelQuery = string.Format("\n SELECT              "
+                               + "\n COUNT(*) AS AlertLevel                                                "
+                               + "\n FROM                                                                  "
+                               + "\n CollectionLevel2 cl2                                                  "
+                               + "\n INNER JOIN correctiveaction ca ON cl2.Id = ca.CollectionLevel02Id     "
+                               + "\n WHERE--ca.MailProcessed = 0                                           "
+                               + "\n CAST(GETDATE() AS Date) = CAST(cl2.CollectionDate AS Date)            "
+                               + "\n AND cl2.ParLevel1_Id = {0}                                             "
+                               + "\n AND cl2.UnitId = {1}                                                   "
+                               + "\n AND ca.Id <= {2}", ca.ParLevel1_Id, ca.ParCompany_Id, ca.Id);
+
+                            ca.AlertNumber = db.Database.SqlQuery<int>(alertNivelQuery).FirstOrDefault();
+
                             var colectionLevel2 = db.CollectionLevel2.FirstOrDefault(r => r.Id == ca.CollectionLevel02Id);
                             var parLevel1 = db.ParLevel1.FirstOrDefault(r => r.Id == colectionLevel2.ParLevel1_Id).Name;
                             var parLevel2 = db.ParLevel2.FirstOrDefault(r => r.Id == colectionLevel2.ParLevel2_Id).Name;
@@ -91,7 +173,8 @@ namespace SgqSystem.Mail
                             else
                                 company = "All";
 
-                            var subject = "Corrective action triggered: " + parLevel1 + ", For: " + parLevel2 + " Unit: " + company;
+                            //"unidade" - "nome do indicador": 1st failure of the day
+                            var subject = string.Format("SGQ Corretive Action: Unit - {0}: {1}: {2} failure of the day.", company, parLevel1, ca.AlertNumber.DisplayWithSuffix());
 
                             var newMail = new EmailContent()
                             {
@@ -100,6 +183,7 @@ namespace SgqSystem.Mail
                                 Subject = subject,
                                 Project = "SGQApp"
                             };
+
                             var model = controller.GetCorrectiveActionById(ca.Id);
                             newMail.Body = subject + "<br><br>" + model.SendMeByMail;
                             newMail.To = DestinatariosSGQJBSUSA(newMail, ca);
@@ -134,9 +218,9 @@ namespace SgqSystem.Mail
                 var query = "SELECT * FROM UserSgq WHERE  1=1 AND ([role] like ";// ;)
 
                 if (d.AlertNumber == 1)
-                    query += "'%Alert1%' \n AND ParCompany_Id = " + d.ParCompany_Id + ") \n AND ";
+                    query += "'%Alert1%' \n AND ParCompany_Id = " + d.ParCompany_Id + ") \n  ";
                 else 
-                    query += "'%Alert1%' AND ParCompany_Id = " + d.ParCompany_Id + ") OR [role] like '%Alert2%' \n AND ";
+                    query += "'%Alert1%' AND ParCompany_Id = " + d.ParCompany_Id + ") OR [role] like '%Alert2%' \n  ";
                    
                 query += "\n AND Email IS NOT NULL";
                 query += "\n AND Email <> ''";
@@ -156,35 +240,6 @@ namespace SgqSystem.Mail
                     return string.Empty;
                 }
             }
-        }
-
-        /// <summary>
-        /// Metodo para testes de rotinas de email, pode ser chamado do GlobalConfig/Config
-        /// </summary>
-        /// <param name="mailTo"></param>
-        /// <param name="deviation"></param>
-        public static void SendMailFromDeviationSgqAppTesteUSA(string mailTo)
-        {
-
-            var emailFrom = "celsogea@hotmail.com";
-            var emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
-            var emailSmtp = "smtp.live.com";
-            var emailPort = 587;
-            var emailSSL = true;
-
-            //CRIA LISTA DE EMAIL NA EMAIL CONTENT COM TODOS OS CAMPOS
-            CreateMailFromCorrectiveActionUSA(); //CORRECTIVE ACTION
-
-            using (var db = new SgqDbDevEntities())
-                ListaDeMail = db.EmailContent.Where(r => r.SendStatus == null && r.Project == "SGQApp").ToList();
-
-            if (ListaDeMail != null && ListaDeMail.Count() > 0)
-                foreach (var i in ListaDeMail.Take(3).ToList())
-                {
-                    i.To = mailTo;
-                    Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), GlobalConfig.emailFrom, Guard.DecryptStringAES(GlobalConfig.emailPass), GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true));
-                    //Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), emailFrom, emailPass, emailSmtp, emailPort, emailSSL, SendCompletedCallbackSgq, true));
-                }
         }
 
         #endregion
@@ -301,7 +356,13 @@ namespace SgqSystem.Mail
             public int AlertNumber { get; set; }
             public int ParLevel1_Id { get; set; }
             public int ParCompany_Id { get; set; }
+            //public int Period { get; set; }
+            //public int Shift { get; set; }
+            //public int ReauditNumber { get; set; }
+            public DateTime CollectionDate { get; set; }
         }
+
+        
 
     }
 

@@ -19,5 +19,6 @@ namespace DTO.DTO
         public Nullable<int> ParCompany_Id { get; set; }
         public IEnumerable<int> ListParCompany_Id { get; set; }
         public IEnumerable<string> ListRole { get; set; }
+        public bool IsActive { get; set; }
     }
 }

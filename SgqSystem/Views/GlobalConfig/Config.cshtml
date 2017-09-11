@@ -81,6 +81,13 @@
         <td> <input type="email" id="mailTo"/></td>
         <td> <button id="email" onclick="testeEmail(true);"> Testar</button> </td>
     </tr>
+
+    <tr id="email">
+        <td>Testar Email EUA: </td>
+        <td> <input type="email" id="mailToUSA" /></td>
+        <td> <button id="email" onclick="testeEmailEua(true);"> Testar</button> </td>
+    </tr>
+
 </table>
 
 <table>
@@ -112,6 +119,12 @@
 
     function testeEmail(executeCallback){
         $.post('@Url.Action("TestaEmail", "GlobalConfigApi")', { "executeCallback": executeCallback, email: $('#mailTo').val() }, function (r) {
+
+        });
+    }
+
+    function testeEmailEua(executeCallback) {
+        $.post('@Url.Action("TestaEmailUSA", "GlobalConfigApi")', { "executeCallback": executeCallback, email: $('#mailToUSA').val() }, function (r) {
 
         });
     }
