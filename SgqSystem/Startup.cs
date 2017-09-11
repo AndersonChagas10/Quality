@@ -24,26 +24,26 @@ namespace SgqSystem
             app.UseHangfireServer(joboptions);
             app.UseHangfireDashboard("/hangfire", dashboardoptions);
 
-            //"*/1 * * * *" = 1 minutos.
-            if (GlobalConfig.Eua)
-            {
-                RecurringJob.RemoveIfExists("MailServer");
-                RecurringJob.AddOrUpdate("MailServer",
-                    () => SimpleAsynchronousUSA.SendMailUSA(),
-                    "*/2 * * * *");
-            }
-            else if (GlobalConfig.Brasil)
-            {
-                RecurringJob.RemoveIfExists("ReProcessJson");
-                RecurringJob.AddOrUpdate("ReProcessJson",
-                    () => SimpleAsynchronous.Reconsolidacao(),
-                    "*/15 * * * *");
+            ////"*/1 * * * *" = 1 minutos.
+            //if (GlobalConfig.Eua)
+            //{
+            //    RecurringJob.RemoveIfExists("MailServer");
+            //    RecurringJob.AddOrUpdate("MailServer",
+            //        () => SimpleAsynchronousUSA.SendMailUSA(),
+            //        "*/2 * * * *");
+            //}
+            //else if (GlobalConfig.Brasil)
+            //{
+            //    RecurringJob.RemoveIfExists("ReProcessJson");
+            //    RecurringJob.AddOrUpdate("ReProcessJson",
+            //        () => SimpleAsynchronous.Reconsolidacao(),
+            //        "*/15 * * * *");
 
-                RecurringJob.RemoveIfExists("MailServer");
-                RecurringJob.AddOrUpdate("MailServer",
-                    () => SimpleAsynchronous.Mail(),
-                    "*/2 * * * *");
-            }
+            //    RecurringJob.RemoveIfExists("MailServer");
+            //    RecurringJob.AddOrUpdate("MailServer",
+            //        () => SimpleAsynchronous.Mail(),
+            //        "*/2 * * * *");
+            //}
 
             //BackgroundJob.Enqueue(
             //() => Debug.WriteLine(" >>>>>>>>>>>>>>>>>>>>>> TESTE"));

@@ -172,7 +172,7 @@ namespace Dominio.Services
         /// <returns></returns>
         public ParamsDTO AddUpdateLevel1(ParamsDTO paramsDto)
         {
-            
+
             //paramsDto.parLevel1Dto.IsValid();
             ParLevel1 saveParamLevel1 = Mapper.Map<ParLevel1>(paramsDto.parLevel1Dto);//ParLevel1
             List<ParGoal> listParGoal = Mapper.Map<List<ParGoal>>(paramsDto.parLevel1Dto.listParGoalLevel1);
@@ -197,6 +197,19 @@ namespace Dominio.Services
                 /*Enviando para repository salvar, envia todos, pois como existe transaction, faz rolback de tudo se der erro.*/
                 _paramsRepo.SaveParLevel1(saveParamLevel1, listaParHEadField, ListaParLevel1XCluster, removerHeadField
                                             , ListaParCounterLocal, listNonCoformitRule, listaReincidencia, listParGoal);
+
+                if (DTO.GlobalConfig.Brasil)
+                    if (paramsDto.parLevel1Dto.IsSpecific)
+                    {
+                        var query = "UPDATE PARLEVEL1 SET {0} = {1} WHERE id = {2} SELECT 1";
+                        var queryExcute = string.Empty;
+                        queryExcute = string.Format(query, "AllowAddLevel3", paramsDto.parLevel1Dto.AllowAddLevel3 ? 1 : 0, paramsDto.parLevel1Dto.Id);
+                        db.Database.ExecuteSqlCommand(queryExcute);
+                        queryExcute = string.Format(query, "AllowEditPatternLevel3Task", paramsDto.parLevel1Dto.AllowEditPatternLevel3Task ? 1 : 0, paramsDto.parLevel1Dto.Id);
+                        db.Database.ExecuteSqlCommand(queryExcute);
+                        queryExcute = string.Format(query, "AllowEditWeightOnLevel3", paramsDto.parLevel1Dto.AllowEditWeightOnLevel3 ? 1 : 0, paramsDto.parLevel1Dto.Id);
+                        db.Database.ExecuteSqlCommand(queryExcute);
+                    }
             }
             catch (DbUpdateException e)
             {
@@ -216,60 +229,72 @@ namespace Dominio.Services
         {
             ParLevel1DTO parlevel1Dto;
 
-          
-                db.Configuration.LazyLoadingEnabled = false;
 
-                #region Query
-                
-                var parlevel1 = _baseRepoParLevel1.GetById(idParLevel1);
-                var counter = parlevel1.ParCounterXLocal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
-                var goal = parlevel1.ParGoal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
-                var cluster = parlevel1.ParLevel1XCluster.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
-                var listL3L2L1 = db.ParLevel3Level2Level1.Include("ParLevel3Level2").AsNoTracking().Where(r => r.Active == true && r.ParLevel1_Id == idParLevel1).ToList();
-                var relapse = parlevel1.ParRelapse.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
-                var notConformityrule = parlevel1.ParNotConformityRuleXLevel.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
-                var cabecalhos = parlevel1.ParLevel1XHeaderField.Where(r => r.IsActive == true).OrderBy(r => r.IsActive).ToList();
-                var level2List = _baseRepoParLevel2NLL.GetAll().Where(r => r.IsActive == true);
+            db.Configuration.LazyLoadingEnabled = false;
 
-                #endregion
+            #region Query
 
-                #region DTO
+            var parlevel1 = _baseRepoParLevel1.GetById(idParLevel1);
+            var counter = parlevel1.ParCounterXLocal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
+            var goal = parlevel1.ParGoal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
+            var cluster = parlevel1.ParLevel1XCluster.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
+            var listL3L2L1 = db.ParLevel3Level2Level1.Include("ParLevel3Level2").AsNoTracking().Where(r => r.Active == true && r.ParLevel1_Id == idParLevel1).ToList();
+            var relapse = parlevel1.ParRelapse.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
+            var notConformityrule = parlevel1.ParNotConformityRuleXLevel.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
+            var cabecalhos = parlevel1.ParLevel1XHeaderField.Where(r => r.IsActive == true).OrderBy(r => r.IsActive).ToList();
+            var level2List = _baseRepoParLevel2NLL.GetAll().Where(r => r.IsActive == true);
 
-                parlevel1Dto = Mapper.Map<ParLevel1DTO>(parlevel1);
-                parlevel1Dto.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(counter);/*Contadores*/
-                parlevel1Dto.listParGoalLevel1 = Mapper.Map<List<ParGoalDTO>>(goal);/*Meta*/
-                parlevel1Dto.listLevel1XClusterDto = Mapper.Map<List<ParLevel1XClusterDTO>>(cluster);/*Clusters*/
-                parlevel1Dto.listParLevel3Level2Level1Dto = Mapper.Map<List<ParLevel3Level2Level1DTO>>(listL3L2L1);/*Level 2 e 3 vinculados*/
-                parlevel1Dto.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(relapse);/*Reincidencia*/
-                parlevel1Dto.listParNotConformityRuleXLevelDto = Mapper.Map<List<ParNotConformityRuleXLevelDTO>>(notConformityrule);/*Regra de alerta (Regra de NC)*/
-                parlevel1Dto.cabecalhosInclusos = Mapper.Map<List<ParLevel1XHeaderFieldDTO>>(cabecalhos);/*Cabeçalhos*/
-                parlevel1Dto.parNotConformityRuleXLevelDto = new ParNotConformityRuleXLevelDTO();
+            #endregion
 
-                parlevel1Dto.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel2DTO>>(level2List), parlevel1Dto.listParLevel3Level2Level1Dto); 
+            #region DTO
 
-                #endregion
+            parlevel1Dto = Mapper.Map<ParLevel1DTO>(parlevel1);
+            parlevel1Dto.listParCounterXLocal = Mapper.Map<List<ParCounterXLocalDTO>>(counter);/*Contadores*/
+            parlevel1Dto.listParGoalLevel1 = Mapper.Map<List<ParGoalDTO>>(goal);/*Meta*/
+            parlevel1Dto.listLevel1XClusterDto = Mapper.Map<List<ParLevel1XClusterDTO>>(cluster);/*Clusters*/
+            parlevel1Dto.listParLevel3Level2Level1Dto = Mapper.Map<List<ParLevel3Level2Level1DTO>>(listL3L2L1);/*Level 2 e 3 vinculados*/
+            parlevel1Dto.listParRelapseDto = Mapper.Map<List<ParRelapseDTO>>(relapse);/*Reincidencia*/
+            parlevel1Dto.listParNotConformityRuleXLevelDto = Mapper.Map<List<ParNotConformityRuleXLevelDTO>>(notConformityrule);/*Regra de alerta (Regra de NC)*/
+            parlevel1Dto.cabecalhosInclusos = Mapper.Map<List<ParLevel1XHeaderFieldDTO>>(cabecalhos);/*Cabeçalhos*/
+            parlevel1Dto.parNotConformityRuleXLevelDto = new ParNotConformityRuleXLevelDTO();
 
-                #region Depreciado
+            parlevel1Dto.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel2DTO>>(level2List), parlevel1Dto.listParLevel3Level2Level1Dto);
 
-                //foreach (var i in parlevel1Dto.listParLevel3Level2Level1Dto)
-                //{
-                //    i.ParLevel3Level2.ParLevel2 = null;
-                //    i.ParLevel3Level2.ParCompany = null;
-                //    i.ParLevel3Level2.ParLevel3 = null;
-                //    i.ParLevel3Level2.ParLevel3Group = null;
-                //    i.ParLevel1 = null;
-                //}
+            if (DTO.GlobalConfig.Brasil)
+            {
+                var query = "SELECT {0} FROM  PARLEVEL1 WHERE id = {1}";
+                var queryExcute = string.Empty;
+                queryExcute = string.Format(query, "AllowAddLevel3", parlevel1Dto.Id);
+                parlevel1Dto.AllowAddLevel3 = db.Database.SqlQuery<bool>(queryExcute).FirstOrDefault();
+                queryExcute = string.Format(query, "AllowEditPatternLevel3Task", parlevel1Dto.Id);
+                parlevel1Dto.AllowEditPatternLevel3Task = db.Database.SqlQuery<bool>(queryExcute).FirstOrDefault();
+                queryExcute = string.Format(query, "AllowEditWeightOnLevel3", parlevel1Dto.Id);
+                parlevel1Dto.AllowEditWeightOnLevel3 = db.Database.SqlQuery<bool>(queryExcute).FirstOrDefault();
+            }
 
-                foreach (var i in parlevel1Dto.listParRelapseDto)
-                {
-                    i.parLevel1 = null;
-                    i.parLevel2 = null;
-                    i.parLevel3 = null;
-                } 
+            #endregion
 
-                #endregion
+            #region Depreciado
 
-            
+            //foreach (var i in parlevel1Dto.listParLevel3Level2Level1Dto)
+            //{
+            //    i.ParLevel3Level2.ParLevel2 = null;
+            //    i.ParLevel3Level2.ParCompany = null;
+            //    i.ParLevel3Level2.ParLevel3 = null;
+            //    i.ParLevel3Level2.ParLevel3Group = null;
+            //    i.ParLevel1 = null;
+            //}
+
+            foreach (var i in parlevel1Dto.listParRelapseDto)
+            {
+                i.parLevel1 = null;
+                i.parLevel2 = null;
+                i.parLevel3 = null;
+            }
+
+            #endregion
+
+
             return parlevel1Dto;
         }
 
@@ -344,7 +369,7 @@ namespace Dominio.Services
 
             /*Todos os Vinculos com este level2 / level3.*/
             var vinculosComOLevel2 = parLevel2.ParLevel3Level2.Where(r => r.IsActive == true);/*Vinculo L3 L2*/
-            
+
             /*Se houver level 1 selecionado na tela filtro somente os que estão vinculados com level2 / Level3, e tem id do level 1 em ParLevel3Level2level1*/
             if (level1Id > 0)
             {
@@ -353,7 +378,7 @@ namespace Dominio.Services
             }
 
             /*Depreciado*/
-                //vinculosComOLevel2 = vinculosComOLevel2.Where(r => r.ParLevel3Level2Level1.Any(c => c.ParLevel1_Id == level1Id));
+            //vinculosComOLevel2 = vinculosComOLevel2.Where(r => r.ParLevel3Level2Level1.Any(c => c.ParLevel1_Id == level1Id));
             //else if(level1Id > 0 && level3Id <= 0)
             //    vinculosComOLevel2 = _baseRepoParLevel2Level1.GetAll().Where(r=>r.ParLevel1_Id == level1Id && r.ParLevel2_Id == level2.Id ).Select(r=>r.)
 
@@ -372,10 +397,10 @@ namespace Dominio.Services
                 level2.pesoDoVinculoSelecionado = 0;
 
             paramsDto.parLevel2Dto = level2;
-            paramsDto.parLevel2Dto.listParLevel3Level2Dto = null; 
+            paramsDto.parLevel2Dto.listParLevel3Level2Dto = null;
 
             if (level1Id > 0)/*Caso exista Level1 Selecionado, é necessario verificar regras especificas para este ao mostrar os fields do level2*/
-                paramsDto.parLevel2Dto.RegrasParamsLevel1(Mapper.Map<ParLevel1DTO>(db.ParLevel1.FirstOrDefault( r=>r.Id == level1Id)));//Configura regras especificas do level2 de acordo com level1.
+                paramsDto.parLevel2Dto.RegrasParamsLevel1(Mapper.Map<ParLevel1DTO>(db.ParLevel1.FirstOrDefault(r => r.Id == level1Id)));//Configura regras especificas do level2 de acordo com level1.
 
             #endregion
 
@@ -436,15 +461,15 @@ namespace Dominio.Services
             {
 
                 _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, listParRelapse, parLevel3Level2peso?.ToList(), paramsDto.level1Selected);
-                if(parLevel3Level2peso != null)
-                    foreach (var i in parLevel3Level2peso?.Where(r=> r.IsActive))
+                if (parLevel3Level2peso != null)
+                    foreach (var i in parLevel3Level2peso?.Where(r => r.IsActive))
                         AddVinculoL1L2(paramsDto.level1Selected, paramsDto.level2Selected, saveParamLevel3.Id, 0, i.ParCompany_Id);
 
             }
             catch (DbUpdateException e)
             {
                 VerifyUniqueName(saveParamLevel3, e);
-            } 
+            }
 
             #endregion
 
@@ -599,7 +624,7 @@ namespace Dominio.Services
                 var DdlParLocal_Level1 = Mapper.Map<List<ParLocalDTO>>(_baseParLocal.GetAllAsNoTracking().Where(p => p.Level == 1));
                 var DdlParLocal_Level2 = Mapper.Map<List<ParLocalDTO>>(_baseParLocal.GetAllAsNoTracking().Where(p => p.Level == 2));
 
-                var DdlParCounter_Level1 = Mapper.Map<List<ParCounterDTO>>(_baseParCounter.GetAllAsNoTracking().Where(p => p.Level == 1).Where(p=> p.Hashkey != null));
+                var DdlParCounter_Level1 = Mapper.Map<List<ParCounterDTO>>(_baseParCounter.GetAllAsNoTracking().Where(p => p.Level == 1).Where(p => p.Hashkey != null));
                 var DdlParCounter_Level2 = Mapper.Map<List<ParCounterDTO>>(_baseParCounter.GetAllAsNoTracking().Where(p => p.Level == 2).Where(p => p.Hashkey != null));
 
                 var DdlParLevel3InputType = Mapper.Map<List<ParLevel3InputTypeDTO>>(_baseParLevel3InputType.GetAllAsNoTracking());
