@@ -78,13 +78,13 @@
                                 @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberEvaluetion, new { @class = "form-control checkbox-erp"  }), @Html.Label(Resources.Resource.allow_the_edition_of_the_evaluation_number, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
                             </tr>*@
                         <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberSample, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_evaluation_number, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificNumberSample, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_evaluation_number, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.allows_less_privileged_users_to_edit_the_tasks_samples)
                         </tr>
                         <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificLevel3, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_level3_connection, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.allow_the_edition_of_the_level3_connection_popover)
                         </tr>
                         <tr class="row groupCadastroEspecificoUnidade padding-left" style="display:none">
-                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificGoal, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_goal_of_the_level1_by_unit, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, null)
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsSpecificGoal, new { @class = "form-control checkbox-erp" }), @Html.Label(Resources.Resource.allow_the_edition_of_the_goal_of_the_level1_by_unit, new { @class = "padding-left" }), Table.PosicaoLabel.left, null, Resources.Resource.allow_less_privileged_users_to_edit_the_monitoring)
                         </tr>
 
                         @if (GlobalConfig.Brasil)
