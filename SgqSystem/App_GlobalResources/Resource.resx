@@ -2088,4 +2088,10 @@
   <data name="valueText" xml:space="preserve">
     <value>Value Text</value>
   </data>
+  <data name="allows_less_privileged_users_to_edit_the_tasks_samples" xml:space="preserve">
+    <value>Allows less privileged users to edit the Tasks / Samples Related to Monitoring Linked to this Audit</value>
+  </data>
+  <data name="allow_less_privileged_users_to_edit_the_monitoring" xml:space="preserve">
+    <value>Allow less privileged users to edit the Monitoring Related Task Goal Linked to this Audit</value>
+  </data>
 </root>
