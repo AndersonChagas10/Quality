@@ -1414,6 +1414,7 @@
     <Content Include="Views\Recravacao\TipoLata.cshtml" />
     <Content Include="Views\RecravacaoTipoLata\Index.cshtml" />
     <Content Include="Views\RecravacaoTipoLata\Create.cshtml" />
+    <Content Include="Views\RecravacaoTipoLata\Details.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
