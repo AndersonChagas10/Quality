@@ -3769,6 +3769,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show in Tablet.
+        /// </summary>
+        internal static string Pl1ShowInTablet {
+            get {
+                return ResourceManager.GetString("Pl1ShowInTablet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Planning.
         /// </summary>
         internal static string planning {

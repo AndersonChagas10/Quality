@@ -13,3 +13,47 @@ alter table parlevel1 add AllowEditWeightOnLevel3 bit default 0
 UPDATE PARLEVEL1 SET AllowAddLevel3 = 0
 UPDATE PARLEVEL1 SET AllowEditPatternLevel3Task = 0
 UPDATE PARLEVEL1 SET AllowEditWeightOnLevel3 = 0
+
+
+13 09 2017 - CG RECRAVACAO
+
+alter table parlevel1 add ShowInTablet bit default 1
+UPDATE PARLEVEL1 SET ShowInTablet = 1
+
+
+CREATE TABLE [dbo].[ParRecravacao_TipoLata](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+
+	[Name] [nvarchar](100) NOT NULL,
+	[Description] [nvarchar](500) NULL default(''),
+	[NumberOfPoints] [int] NOT NULL,
+
+	
+	[AddDate] [datetime2](7) NOT NULL default(GETDATE()),
+	[AlterDate] [datetime2](7) NULL,
+	[IsActive] [bit] NULL default(1)
+	
+ CONSTRAINT [Pk_ParRecravacao_TipoLata] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+)
+
+CREATE TABLE [dbo].[ParRecravacao_Linhas](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+
+	[Name] [nvarchar](100) NOT NULL,
+	[ParCompany_Id] [int] NULL,
+	[ParRecravacao_TypeLata_Id] [int] NULL,
+	NumberOfHeads [int] NULL,
+	[Description] [nvarchar](500) NULL default(''),
+
+	[AddDate] [datetime2](7) NOT NULL default(GETDATE()),
+	[AlterDate] [datetime2](7) NULL,
+	[IsActive] [bit] NULL default(1)
+	
+ CONSTRAINT [Pk_ParRecravacao_Linhas] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+)

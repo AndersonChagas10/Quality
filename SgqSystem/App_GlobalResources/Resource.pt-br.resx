@@ -2079,4 +2079,7 @@
   <data name="allow_less_privileged_users_to_edit_the_monitoring" xml:space="preserve">
     <value>Permitir que usuários menos privilegiados editem o Objetivo da Tarefa vinculadas ao Monitoramento Ligado a este Indicador</value>
   </data>
+  <data name="Pl1ShowInTablet" xml:space="preserve">
+    <value>Mostrar Indicador no Tablet</value>
+  </data>
 </root>
