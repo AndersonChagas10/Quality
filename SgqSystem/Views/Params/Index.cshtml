@@ -34,10 +34,9 @@
 
 <style>
     /*Para fixar a coluna da tabela do lvl1*/
-    #newLevel1Modal > form > div > div > table > tbody > tr  > td:nth-child(1){
-        width:60%;
+    #newLevel1Modal > form > div > div > table > tbody > tr > td:nth-child(1) {
+        width: 60%;
     }
-
 </style>
 
 <div class="page-content-wrapper">
@@ -1190,7 +1189,7 @@
 
             /*Level2*/
             if(permiteCadastroEspecificoPorUnidade && r._PermiteEditarNumeroDeAv && level2Vinculado){
-                console.log("if")
+                //console.log("if")
 
                 $('#btnSaveNewLevel2').attr('disabled', false);
                 /*Libera os campos para AV AM*/
@@ -1205,7 +1204,7 @@
             }else{
                 $('#btnSaveNewLevel2').attr('disabled', true);
                 $('#level2_AvAmostra_accordion').find('input, select').attr("readonly", true);
-                $('#level2_AvAmostra_accordion').find('button').attr("disabled", true);         
+                $('#level2_AvAmostra_accordion').find('button').attr("disabled", true);
             }
 
             $('#level2_nc_collapse > div > table.table-erp > tbody > tr > td:nth-child(4) > button').attr('disabled', true);
@@ -1216,18 +1215,18 @@
             //}
 
             /*Level3*/
-           
+
             var permiteVincularMonitoramentosTarefas = $($('[name="paramsDto.parLevel1Dto.AllowAddLevel3"]')[0]).bootstrapSwitch('state')
             var permiteEditarPesoDasTarefas = $($('[name="paramsDto.parLevel1Dto.AllowEditWeightOnLevel3"]')[0]).bootstrapSwitch('state')
             var permiteEditarPadrãoDasTarefas  = $($('[name="paramsDto.parLevel1Dto.AllowEditPatternLevel3Task"]')[0]).bootstrapSwitch('state')
-            var hasVinculoLevel3  = $('[name="paramsDto.parLevel3Dto.hasVinculo"]').val()
+            var hasVinculoLevel3  = $('[name="paramsDto.parLevel3Dto.hasVinculo"]').val() == "True"
 
             $('#vinculoLevel1').attr("disabled", true);
             if(permiteVincularMonitoramentosTarefas){
                 $('#vinculoLevel1').attr("disabled", false);
             }
-           
-            if (permiteCadastroEspecificoPorUnidade && hasVinculoLevel3) {
+
+            if (permiteCadastroEspecificoPorUnidade) {
                 $('#btnSaveNewLevel3').attr('disabled', false);
 
                 /*Bloqueia os campos para Tipos de dados de entrada*/
@@ -1247,8 +1246,9 @@
                     $(this).find('input, select, button').attr("disabled", true);
                 });
                 $('#level3_data_type_accordion').find('button').attr("disabled", true);
+                $('#btnSaveNewLevel3').attr('disabled', true);
 
-                if(permiteEditarPadrãoDasTarefas  && level2Vinculado){
+                if(permiteEditarPadrãoDasTarefas  && level2Vinculado && hasVinculoLevel3){
                     /*Libera os campos para Tipos de dados de entrada*/
                     $('#level3_data_type_accordion').find('button').attr("disabled", false);
                     $('#level3_data_type_accordion').find('input, select, button').attr("readonly", false);
@@ -1268,6 +1268,7 @@
                             $(this).find('input, select, button').attr("disabled", true);
                     });
                     $('#btnSaveCounter').attr("disabled", true);
+                    $('#btnSaveNewLevel3').attr('disabled', false);
                 }
 
                 /*Bloqueia Edicao do Peso*/
@@ -1276,22 +1277,23 @@
                 });
                 $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', true)
 
-                if(permiteEditarPesoDasTarefas  && level2Vinculado){
-                        /*habilita Edicao do Peso*/
-                        $('#tablePeso > tbody > tr').each(function() {
-                            if($(this).data().ParCompany_Id == unitId){
-                                $(this).find('input, select, button').attr("disabled", false);
-                            }
-                        });
-                        $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', false)
+                if(permiteEditarPesoDasTarefas  && level2Vinculado && hasVinculoLevel3){
+                    /*habilita Edicao do Peso*/
+                    $('#tablePeso > tbody > tr').each(function() {
+                        if($(this).data().ParCompany_Id == unitId){
+                            $(this).find('input, select, button').attr("disabled", false);
+                        }
+                    });
+                    $('#level3__PesoL3_collapse > div > table.table-erp > tbody > tr > td:nth-child(3) > div > span > button').attr('disabled', false)
+                    $('#btnSaveNewLevel3').attr('disabled', false);
                 }
 
-                if(!permiteEditarPadrãoDasTarefas && !permiteEditarPesoDasTarefas || !level2Vinculado)
-                    $('#btnSaveNewLevel3').attr('disabled', true);
+                //if(!permiteEditarPadrãoDasTarefas && !permiteEditarPesoDasTarefas || (!level2Vinculado && !hasVinculoLevel3))
+                //    $('#btnSaveNewLevel3').attr('disabled', true);
             }else{
                 $('#btnSaveNewLevel3').attr('disabled', true);
                 $('#vinculoLevel1').attr("disabled", true);
-                console.log('permite editar vinculo unidade Parlevel3')
+                //console.log('permite editar vinculo unidade Parlevel3')
                 $('#tablePeso > tbody > tr').each(function() {
                     $(this).find('input, select, button').attr("disabled", true);
                 });
