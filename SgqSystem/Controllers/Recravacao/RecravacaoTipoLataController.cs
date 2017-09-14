@@ -40,6 +40,12 @@ namespace SgqSystem.Controllers.Recravacao
             return View("Create", model);
         }
 
+        [HttpPost]
+        public ActionResult Edit(ParRecravacao_TipoLata collection)
+        {
+            return Create(collection);
+        }
+
         // GET: RecravacaoTipoLata/Details/5
         public ActionResult Details(int id)
         {
@@ -71,6 +77,23 @@ namespace SgqSystem.Controllers.Recravacao
         {
             if (model.Id > 0)
             {
+                var update = string.Format("\n UPDATE [dbo].[ParRecravacao_TipoLata] " +
+                    "\n   SET[Name] = N'{0}'" +
+                    "\n      ,[Description] = N'{1}'" +
+                    "\n      ,[NumberOfPoints] = {2}" +
+                    "\n      ,[AlterDate] = {3}" +
+                    "\n      ,[IsActive] = {4}" +
+                    "\n WHERE Id = {5}"
+                    , model.Name
+                    , model.Description
+                    , model.NumberOfPoints.ToString()
+                    , "GETDATE()"
+                    , model.IsActive ? "1" : "0"
+                    , model.Id
+                    );
+
+                db.Database.ExecuteSqlCommand(update);
+
             }
             else
             {

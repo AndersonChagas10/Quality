@@ -343,6 +343,8 @@
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\Familia\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Params\ParBinaryDataTypeController.cs" />
+    <Compile Include="Controllers\Recravacao\RecravacaoLinhasController.cs" />
+    <Compile Include="Controllers\Recravacao\ParRecravacao_Linhas.cs" />
     <Compile Include="Controllers\Recravacao\ParRecravacao_TipoLata.cs" />
     <Compile Include="Controllers\Recravacao\RecravacaoController.cs" />
     <Compile Include="Controllers\Recravacao\RecravacaoTipoLataController.cs" />
@@ -1418,6 +1420,10 @@
     <Content Include="Views\Recravacao\TipoLata.cshtml" />
     <Content Include="Views\RecravacaoTipoLata\Index.cshtml" />
     <Content Include="Views\RecravacaoTipoLata\Create.cshtml" />
+    <Content Include="Views\RecravacaoTipoLata\Details.cshtml" />
+    <Content Include="Views\RecravacaoLinhas\Index.cshtml" />
+    <Content Include="Views\RecravacaoLinhas\Create.cshtml" />
+    <Content Include="Views\RecravacaoLinhas\Details.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
