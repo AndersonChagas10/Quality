@@ -14,6 +14,7 @@ namespace DTO.DTO.Params
         public decimal pesoDoVinculoSelecionado;
         public List<ParLevel3DTO> listaParLevel3Colleta;
         public List<int> listVinculoExistenLevel1Id;
+        public bool isVinculado { get; set; }
 
         public List<ParCounterXLocalDTO> listParCounterXLocal { get; set; }
 

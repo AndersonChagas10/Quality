@@ -1495,7 +1495,9 @@
         }
 
         function SalvarAcompanhamento(obj) {
-            console.log(SalvarAcompanhamento);
+            //console.log(SalvarAcompanhamento);
+
+            $('#modalLindo').modal('hide');
             $.post(urlSalvarAcompanhamento, obj, function (r) {
 
                 //Colocar o retorno no modal

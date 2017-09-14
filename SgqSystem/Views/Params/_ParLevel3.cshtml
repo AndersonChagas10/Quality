@@ -115,7 +115,7 @@
                 @*<div id="reincidencia">
                         @Html.Partial("_ReincidenciaXLevel", Model)
                     </div>*@
-
+                @Html.HiddenFor(r=>r.paramsDto.parLevel3Dto.hasVinculo)
                 @if (Model.paramsDto.parLevel3Dto.hasVinculo)
                 {
                     @Html.Partial("_Peso", Model)
