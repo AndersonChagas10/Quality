@@ -112,7 +112,25 @@ namespace SgqSystem.Controllers.Api
             return cookie;
         }
 
-        
+        protected object ToDynamic(string value)
+        {
+            var settings = new Newtonsoft.Json.JsonSerializerSettings
+            {
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            };
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject(value, settings);
+        }
+
+        protected string ToJson(object value)
+        {
+            var settings = new Newtonsoft.Json.JsonSerializerSettings
+            {
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            };
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(value, Newtonsoft.Json.Formatting.Indented, settings);
+        }
 
     }
 }

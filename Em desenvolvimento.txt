@@ -57,3 +57,21 @@ CREATE TABLE [dbo].[ParRecravacao_Linhas](
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 )
+
+
+CREATE TABLE [dbo].[RecravacaoJson] (
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+
+	UserSgqId int NOT NULL,
+	ParCompany_Id [int] NOT NULL,
+	ObjectRecravacaoJson [nvarchar](MAX) NOT NULL,
+	
+	[AddDate] [datetime2](7) NOT NULL default(GETDATE()),
+	[AlterDate] [datetime2](7) NULL,
+	[IsActive] [bit] NULL default(1)
+	
+ CONSTRAINT [Pk_RecravacaoJson] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+)

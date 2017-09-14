@@ -3,78 +3,290 @@
     ViewBag.Title = "Index";
     var urlHome = Url.Action("Index", "Home");
 }
-
+<link href="~/Content/toastr.min.css" rel="stylesheet" />
 <div ng-controller="reencravationCtrl" class="page-content" style="min-height: 600px;">
-    <br />
-    <h1 class="page-title">
-        Recavação
-        <small>Cadastrar</small>
-    </h1>
-    <!-- END PAGE TITLE-->
-    <!-- BEGIN PAGE BAR -->
-    <div class="page-bar">
-        <ul class="page-breadcrumb">
-            <li>
-                <a href="@urlHome">Home</a>
-                <i class="fa fa-angle-right"></i>
-            </li>
-            <li>
-                <span> Recavação </span>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+            <li class="active" ng-repeat="item in linhas track by $index" ng-click="getLinha($index)">
+                <a href="#">
+                    <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> {{item.Name}}
+                    <span class="glyphicon glyphicon-sound-stereo" aria-hidden="true"></span>
+                    <span class="sr-only">(current)</span>
+                </a>
             </li>
         </ul>
-        <div class="page-toolbar">
+
+       
+
+        <hr />
+        <div ng-show="seletedLinha.Id > 0" class="col-lg-12 col-md-12 col-sm-12">
+            <form role="form" class="ng-pristine ng-valid">
+                <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                    <label for="">Produto</label>
+                    <select ng-options="item as item.Name for item in produtos track by item.Id" ng-model="seletedLinha.form.Produto" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true"></select>
+                </div>
+                <div class="form-group float-label-control col-lg-3 col-md-3 col-sm-3">
+                    <label for="">Hora do início da Produção</label>
+                    <input type="time" class="form-control" placeholder="Hora do início da Produção" ng-model="seletedLinha.form.HoraInicioProducao">
+                </div>
+                <div class="form-group float-label-control col-lg-3 col-md-3 col-sm-3">
+                    <label for="">Hora do final da Produção</label>
+                    <input type="time" class="form-control" placeholder="Hora do final da Produção" ng-model="seletedLinha.form.HoraFimProducao">
+                </div>
+                <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                    <label for="">Fornecedor da Lata</label>
+                    <select ng-options="item as item.Name for item in fornecedorLata track by item.Id" ng-model="seletedLinha.form.FornecedorLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true"></select>
+                </div>
+                <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                    <label for="">Data do recebimento das latas</label>
+                    <input type="date" class="form-control" placeholder="Data do recebimento das latas" ng-model="seletedLinha.form.DataRecebimentoLatas">
+                </div>
+                <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                    <label for="">Fornecedor das tampas e funtos das latas</label>
+                    <select ng-options="item as item.Name for item in fornecedorTampaLata track by item.Id" ng-model="seletedLinha.form.FornecedorTampaFundoLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true"></select>
+                </div>
+                <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                    <label for="">Data do recebimento das tampas e fundos das latas</label>
+                    <input type="date" class="form-control" placeholder="Data do recebimento das tampas e fundos das latas" ng-model="seletedLinha.form.DataRecebimentoTampasFundosLatas">
+                </div>
+                <hr />
+                @*{{seletedLinha.form}}*@
+                <hr />
+            </form>
+            <div style="text-align:right;">
+                <button ng-disabled="linha.FinalizarForm" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModalLogin">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Finalizar Linha
+                </button>
+            </div>
 
         </div>
+
+        @*<hr />
+        {{seletedLinha}}
+        <hr />*@
+
+        <div ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" class="col-lg-3 col-md-6 col-sm-6  col-xs-12" ng-repeat="item in seletedLinha.latas track by $index">
+            <div style="text-align: right; padding-bottom: 5px; padding-top: 5px; float: left; vertical-align: middle; font-size: 18px;">{{item.Name}}</div>
+
+            <div style="text-align: right; padding-bottom: 5px; padding-top: 5px; float: right; ">
+                <button ng-show="item.finalizado" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
+                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                </button>
+                <button ng-show="!item.finalizado" type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                </button>
+                <button ng-show="!item.finalizado" type="button" class="btn btn-danger btn-sm" ng-click="deleteLata(seletedLinha, $index)">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </button>
+                <button ng-show="item.prontoParaFinalizar" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModalLogin">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                </button>
+
+            </div>
+
+            <table style="width: 100%">
+                <tbody>
+                    <tr>
+                        <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold;">Pontos <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
+                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;">2</td>
+                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;">3</td>
+                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;">4</td>
+                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;">5</td>
+                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;">6</td>
+                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;">7</td>
+                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;">8</td>
+                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;">9</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Espessura</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">0</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">5</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">0</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">0</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">0</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">0</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">2</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">0</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Espaço Livre</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">2</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">2</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">2</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Escareação</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">3</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">3</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Altura</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">3</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">3</td>
+                        <td style="border:1px solid #cccccc; padding: 2px; background-color:#f86b6b;">8</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">5</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Gancho Corpo</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">3</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">3</td>
+                        <td style="border:1px solid #cccccc; padding: 2px; background-color:#f86b6b;">8</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">5</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Gancho Tampa</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">2</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">% GC Butting</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">2</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">% Overlap</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">2</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Overlap</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">2</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Rugas</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">2</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Puker</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;">2</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Espessura da Tampa</td>
+                        <td colspan="9" style="border:1px solid #cccccc; padding: 2px;">23</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Espessura do Corpo</td>
+                        <td colspan="9" style="border:1px solid #cccccc; padding: 2px;">32</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Semi-corte</td>
+                        <td colspan="9" style="border:1px solid #cccccc; padding: 2px;">10</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">% Junção</td>
+                        <td colspan="9" style="border:1px solid #cccccc; padding: 2px;">12</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Compressão</td>
+                        <td colspan="9" style="border:1px solid #cccccc; padding: 2px;">12</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Lingueta</td>
+                        <td colspan="9" style="border:1px solid #cccccc; padding: 2px;">12</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="text-align: left; padding-top: 5px; height:40px;">
+
+                <div style="float:left;">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Mônica (monica-lin)
+                </div>
+                <div style="float:right;">
+                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> 05/09/2017 08:54
+                </div>
+            </div>
+        </div>
+        <button ng-show="seletedLinha.Id > 0" type="button" ng-click="newLata(seletedLinha)" class="btn btn-sucsdfcess btn-lg">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Adicionar Lata
+        </button>
+
     </div>
 
-    <div>
-
-        Cadastro de Linhas de Recravação
-
-        <div class="form-group">
-            <label>Nome da Linha</label>
-            <input ng-model="line.Name" type="text" class="form-control" placeholder="Nome da Linha" />
-        </div>
-        <div class="form-group">
-            <label>Empresa</label>
-            <input ng-model="line.ParCompany_Id" type="text" class="form-control" placeholder="Nome da Linha" />
-        </div>
-        <div class="form-group">
-            <label>Quantidade de Cabeçotes</label>
-            <input ng-model="line.NumberOfHeads" type="number" class="form-control" placeholder="Nome da Linha" />
-        </div>
-        <div class="form-group">
-            <label>Tipo de Lata</label>
-            <input ng-model="line.ParRecravacao_TipoLata_Id" type="text" class="form-control" placeholder="Nome da Linha" />
-            <button type="button" class="btn btn-danger btn-sm" ng-click="newLata = !newLata">
-                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            </button>
-        </div>
-
-        {{line}}
-    </div>
-
-    <div ng-show="newLata">
-
-        Cadastro de Tipos de Lata
-
-        <div class="form-group">
-            <label>Nome</label>
-            <input ng-model="lata.Name" type="text" class="form-control" placeholder="Nome da Linha" />
-        </div>
-        <div class="form-group">
-            <label>Descrição</label>
-            <input ng-model="lata.Description" type="text" class="form-control" placeholder="Nome da Linha" />
-        </div>
-        <div class="form-group">
-            <label>Quantidade de Cabeçotes</label>
-            <input ng-model="lata.NumberOfPoints" type="number" class="form-control" placeholder="Nome da Linha" />
-        </div>
-
-        {{lata}}
-
-    </div>
-
+    <button type="button" ng-click="saveState()" class="btn btn-sucsdfcess btn-lg">
+        <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>POST
+    </button>
+    <button  type="button" ng-click="getState()" class="btn btn-sucsdfcess btn-lg">
+        <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>GET
+    </button>
+    <button type="button" ng-click="getLinhas()" class="btn btn-sucsdfcess btn-lg">
+        <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>GET LINHAS DB
+    </button>
+    <button  type="button" ng-click="mockLinhas()" class="btn btn-sucsdfcess btn-lg">
+        <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>MOCK
+    </button>
+    <hr />
+    {{linhas}}
 </div>
 
 <script src="~/Scripts/toastr.min.js"></script>
@@ -89,30 +301,35 @@
         app.controller('reencravationCtrl', ['$scope', '$http',
             function ($scope, $http) {
                 let vm = $scope
-                vm.newLata = false
-                vm.line = {
-                    Name: '',
-                    ParCompany_Id: null,
-                    NumberOfHeads: 0,
-                    ParRecravacao_TipoLata_Id: 0
-                }
-                vm.lata = {
-                    Name: '',
-                    Description: '',
-                    NumberOfPoints: 0,
-                }
-                vm.companyes = [
-                    { Id: 14, Name: 'Barra do Garças' }
-                    , { Id: 15, Name: 'Cachoeira Alta' }
-                    , { Id: 16, Name: 'Cassilândia' }
-                    , { Id: 17, Name: 'Colider' }
-                    , { Id: 18, Name: 'Confresa' }
-                ]
-                vm.latas = []
 
-                vm.saveLataUrl = ''
-                vm.saveLata = function () {
-                    $http({ method: 'POST', url: vm.saveLataUrl, data: vm.lata })
+                vm.linhas = [{}]
+                vm.produtos = [{}]
+                vm.fornecedorLata = [{}]
+                vm.fornecedorTampaLata = [{}]
+                vm.seletedLinha = { Id: 0 }
+
+                vm.getLinha = function (index) {
+                    vm.seletedLinha = vm.linhas[index]
+                    setTimeout(function () { $('select').select2() }, 200)
+                }
+
+                vm.newLata = function (linha) {
+                    if (linha["counterDeLatas"] == undefined)
+                        linha["counterDeLatas"] = 1
+                    linha.latas.push({
+                        Name: 'Lata - ' + (linha["counterDeLatas"]),
+                        finalizado: false
+                    })
+                    linha.counterDeLatas++
+                }
+
+                vm.deleteLata = function (linha, index) {
+                    linha.latas.splice(index, 1)
+                }
+
+                vm.saveStateUrl = 'http://localhost:57506/api/RecravacaoApi'
+                vm.saveState = function () {
+                    $http({ method: 'POST', url: vm.saveStateUrl, data: vm.linhas })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {
@@ -122,6 +339,146 @@
                                 toastr.success(r.data.resposta)
                             }
                         });
+                }
+
+                //*Carrega DDLs
+
+                vm.getProdutos = function () {
+                    //MOCK
+                    vm.produtos = []
+                    vm.produtos.push({
+                        Name: 'Picanha',
+                        Id: 1
+                    })
+                    vm.produtos.push({
+                        Name: 'Contra-filé',
+                        Id: 2
+                    })
+                    vm.produtos.push({
+                        Name: 'Filé Mignon',
+                        Id: 3
+                    })
+                }
+                vm.getFornecedorLata = function () {
+                    //MOCK
+                    vm.fornecedorLata = []
+                    vm.fornecedorLata.push({
+                        Name: 'JBS Lins',
+                        Id: 1
+                    })
+                    vm.fornecedorLata.push({
+                        Name: 'Outros',
+                        Id: 2
+                    })
+                }
+                vm.getFornecedorTampaLata = function () {
+                    //MOCK
+                    vm.fornecedorTampaLata = []
+                    vm.fornecedorTampaLata.push({
+                        Name: 'JBS Lins',
+                        Id: 1
+                    })
+                    vm.fornecedorTampaLata.push({
+                        Name: 'Outros',
+                        Id: 2
+                    })
+                }
+
+                vm.getFornecedorLata()
+                vm.getFornecedorTampaLata()
+                vm.getProdutos()
+                //vm.mockLinhas()
+
+                vm.getLinhasUrl = 'http://localhost:57506/api/RecravacaoLinhaApi'
+                vm.getLinhas = function () {
+                    $http({ method: 'GET', url: vm.getLinhasUrl, data: {} })
+                        .then(function (r) {
+                            if (r.data.errors) {
+                                r.data.errors.forEach(function (o) {
+                                    toastr.error(o)
+                                })
+                            } else {
+                                toastr.success(r.data.resposta)
+                                //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
+                                vm.linhas = r.data.model
+                                vm.linhas.forEach(function (o,c){
+                                    o["latas"] = []
+                                })
+                                setTimeout(function () { $('select').select2() }, 200)
+                            }
+                        });
+                }
+
+                vm.getState = function () {
+                    $http({ method: 'GET', url: vm.saveStateUrl, data: {} })
+                        .then(function (r) {
+                            if (r.data.errors) {
+                                r.data.errors.forEach(function (o) {
+                                    toastr.error(o)
+                                })
+                            } else {
+                                toastr.success(r.data.resposta)
+                                //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
+                                let linhasSalvas = jQuery.parseJSON(r.data.model.ObjectRecravacaoJson)
+                                vm.linhas.forEach(function (o, c) {
+                                    var objetoSalvo = linhasSalvas.filter(function (s) {
+                                        return s.Id == o.Id;
+                                    });
+                                    o = objetoSalvo
+                                })
+                                vm.linhas = linhasSalvas
+                                setTimeout(function () { $('select').select2() }, 200)
+                            }
+                        });
+                }
+                //vm.getState()
+
+                setTimeout(function () { $('select').select2() }, 200)
+
+                ////MOCK
+                vm.mockLinhas = function () {
+                    vm.linhas = []
+                    //MOCK
+                    let dif = 1 + Math.floor(Math.random() * 600)
+                    vm.linhas.push({
+                        Id: dif,
+                        Name: 'Linha teste ' + dif,
+                        ParCompany_Id: 14,
+                        ParRecravacao_TypeLata_Id: 1,
+                        NumberOfHeads: 1,
+                        Description: '',
+                        latas: []
+                    })
+                    dif = 1 + Math.floor(Math.random() * 600)
+                    vm.linhas.push({
+                        Id: dif,
+                        Name: 'Linha teste ' + dif,
+                        ParCompany_Id: 14,
+                        ParRecravacao_TypeLata_Id: 1,
+                        NumberOfHeads: 1,
+                        Description: '',
+                        latas: []
+                    })
+                    dif = 1 + Math.floor(Math.random() * 600)
+                    vm.linhas.push({
+                        Id: dif,
+                        Name: 'Linha teste ' + dif,
+                        ParCompany_Id: 14,
+                        ParRecravacao_TypeLata_Id: 1,
+                        NumberOfHeads: 1,
+                        Description: '',
+                        latas: []
+                    })
+                    dif = 1 + Math.floor(Math.random() * 600)
+                    vm.linhas.push({
+                        Id: dif,
+                        Name: 'Linha teste ' + dif,
+                        ParCompany_Id: 14,
+                        ParRecravacao_TypeLata_Id: 1,
+                        NumberOfHeads: 1,
+                        Description: '',
+                        latas: []
+                    })
                 }
 
             }])
