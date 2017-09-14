@@ -1418,6 +1418,8 @@
     <Content Include="Views\RecravacaoTipoLata\Create.cshtml" />
     <Content Include="Views\RecravacaoTipoLata\Details.cshtml" />
     <Content Include="Views\RecravacaoLinhas\Index.cshtml" />
+    <Content Include="Views\RecravacaoLinhas\Create.cshtml" />
+    <Content Include="Views\RecravacaoLinhas\Details.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
