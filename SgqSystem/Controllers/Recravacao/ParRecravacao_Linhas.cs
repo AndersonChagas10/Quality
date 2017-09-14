@@ -1,5 +1,7 @@
-﻿using DTO.BaseEntity;
+﻿using Dominio;
+using DTO.BaseEntity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SgqSystem.Controllers.Recravacao
 {
@@ -10,11 +12,11 @@ namespace SgqSystem.Controllers.Recravacao
         [MaxLength(100, ErrorMessage = "O tamanho máximo do Nome são 100 caracteres.")]
         public string Name { get; set; }
 
-        [Display(Name = "Nome")]
+        [Display(Name = "Unidade")]
         [Required(ErrorMessage = "É necessário selecionar uma empresa.")]
         public int ParCompany_Id { get; set; }
 
-        [Display(Name = "Nome")]
+        [Display(Name = "Tipo de Lata")]
         [Required(ErrorMessage = "É necessário selecionar um tipo de lata.")]
         public int ParRecravacao_TypeLata_Id { get; set; }
 
@@ -28,5 +30,11 @@ namespace SgqSystem.Controllers.Recravacao
 
         [Display(Name = "Ativo")]
         public bool IsActive { get; set; }
+
+        [ForeignKey("ParCompany_Id")]
+        public virtual ParCompany ParCompany { get; set; }
+
+        [ForeignKey("ParRecravacao_TypeLata_Id")]
+        public virtual ParRecravacao_TipoLata TipoLata { get; set; }
     }
 }
