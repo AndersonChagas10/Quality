@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -310,6 +310,7 @@
     <Compile Include="Controllers\Api\HangFireServicesController.cs" />
     <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\FtaApiController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\NaoCumprimentoMetaApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\VerificacaoTipificacaoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\NaoConformidadePorCabecalhoApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\ApontamentosDiariosApiController.cs" />
@@ -1405,6 +1406,7 @@
     <Content Include="Views\RelatoriosSgq\_VerificacaoTipificacaoEdit.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoConformidadePorCabecalho.cshtml" />
     <Content Include="Views\EmailConfigEUA\Index.cshtml" />
+    <Content Include="Views\RelatoriosSgq\NaoCumprimentoMeta.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1486,7 +1488,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>false</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
