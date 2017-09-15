@@ -1,0 +1,1161 @@
+﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@{
+    ViewBag.Title = "Metas não Alcançadas";
+    var url = Url.Action("Index", "Home");
+    var urlGrafico1 = Url.Action("Grafico1", "api/NaoCumprimentoMeta");
+    var urlGetPanelResultSet = Url.Action("GetPanelResultSet", "api/NaoCumprimentoMeta");
+    var urlGetPorcLevel3 = Url.Action("GraficoTarefa", "api/NaoCumprimentoMeta");
+}
+
+<style>
+    .panel-info {
+        border-color: #999;
+    }
+
+        .panel-info > .panel-heading {
+            background-color: #ccc;
+            border-color: #999;
+            color: #333;
+        }
+
+    .chart-inner {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<div class="page-content" style="min-height: 600px;">
+    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+    <div id="formBodyContent">
+        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+        <div id="load"></div>
+        <div id="plotPrincipal2"></div>
+        <div id="plotPrincipal"></div>
+        <div class="panel panel-info" id="PanelFull" style="display:none">
+            <div class="panel-heading"></div>
+            <div class="panel-body" id="g1">
+            </div>
+            *O Peso atribuído as Tarefas influenciam no resultado gráfico.
+        </div>
+        @*<table id="results" class="display" cellspacing="0" style="width:100%"></table>*@
+    </div>
+</div>
+
+@Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
+
+@section Scripts {
+
+
+    <script type="text/javascript">
+
+        $(".sidebar-toggler").removeClass("hide");
+        $(".page-sidebar-wrapper").removeClass("hide");
+
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+
+        var meses = new Array("@Resources.Resource.january", "@Resources.Resource.february", "@Resources.Resource.march", "@Resources.Resource.april", "@Resources.Resource.may", "@Resources.Resource.june", "@Resources.Resource.july", "@Resources.Resource.august", "@Resources.Resource.september", "@Resources.Resource.october", "@Resources.Resource.november", "@Resources.Resource.december");
+        var url1 = '@Html.Raw(@urlGrafico1)';
+        var urlGetPanelResultSet = '@Html.Raw(@urlGetPanelResultSet)';
+        var urlGetPorcLevel3 = '@Html.Raw(@urlGetPorcLevel3)';
+
+        var $btn = $('#btnSend');
+        $('#simpleCallendar').hide().attr('disabled', true);
+
+        $(document).ready(function () {
+            $("#btnSend").click(function (e) {
+                $('#unitId').change();
+                Send(true);
+            });
+
+            //formControl.showSimpleDate();
+            formControl.showFullCallendar();
+            //formControl.showOnlyUnit(); //showOnlyUnit showUnit
+            formControl.showUnit();
+            closeLeftSidebar();
+
+            //Remove o 'Todos' da unidade
+            $("#unitId option[value='']").remove();
+        });
+
+        function Send(toggle) {
+            $btn.button('loading');
+            $('#results').empty();
+
+            if (!ValidaDadosParaEnvio()) {
+                $btn.button('reset');
+                return;
+            }
+
+            $('#plotPrincipal').empty().hide();
+            $('#plotPrincipal2').empty().hide();
+
+            enviar["auditorId"] = GetUsuarioId();
+
+            EasyAjax(url1, enviar, CallbackGraficos, "load", toggle);
+
+        };
+
+        function CallbackGraficos(r) {
+            if (!(r.listResultSetLevel1.length > 0)) {
+                GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(Resources.Resource.no_data_to_show)));
+                return;
+            }
+            try {
+                $('#plotPrincipal').empty().show();
+                $('#plotPrincipal2').empty().show();
+                GraficoInicialLeTodosLevel1(r.listResultSetLevel1);
+
+                r.listResultSetLevel1.forEach(function (o, c) {
+
+                    var divClonada = $('#PanelFull').clone();
+                    divClonada.attr('id', divClonada.attr('id') + o.level1_Id).show();
+                    divClonada.find('.panel-body').attr('id', divClonada.find('.panel-body').attr('id') + o.level1_Id);
+                    var idDivTendencia = divClonada.find('.panel-body').attr('id');
+                    $('#plotPrincipal').append(divClonada);
+                    var div = DivManager.criaDiv(idDivTendencia, o.level1_Id, "temperatura");
+                    divClonada.find('.panel-heading').html(removeFtaDaLabel(o.Level1Name)); // Insere Titulo no Panel
+                    var stringIdDivClonada= '#'+idDivTendencia
+                    divClonada.find('.panel-heading').attr('data-toggle','collapse').attr('data-target',stringIdDivClonada).attr('href',stringIdDivClonada).trigger("click")
+                    var tendencia = $.grep(r.listResultSetTendencia, function (level2, c) { return level2.level1_Id == o.level1_Id });
+                    var dataParaTendencia = enviar.endDate.split('/');
+                    //var dataParaTendencia = $('input[name=datefilter]').val().split('/');
+                    var mesDaTendencia = parseInt(dataParaTendencia[1]);
+                    GraficoTendencia(tendencia, div, Resources('audit_tendency') + ": " + removeFtaDaLabel(tendencia[0].Level1Name) + " - " + meses[(mesDaTendencia-1)], tendencia[0].Data, tendencia[tendencia.length - 1].Data);
+
+                    //GraficoTendencia(listResults["Tendencia"], div, o);//Processa e cria grafico
+                    var divMonitoramento = DivManager.criaDiv(idDivTendencia, o.level1_Id, "monitoramento");
+                    var level2DoLevel1 = $.grep(r.listResultSetLevel2, function (level2, c) { return level2.level1_Id == o.level1_Id });
+                    GraficoMonitoramentos(level2DoLevel1, divMonitoramento);//Processa e cria grafico
+
+
+                    var divTarefaIndicador = DivManager.criaDiv(divMonitoramento, o.level1_Id, "tarefaIndicador");
+                    var tarefaPorIndicador = $.grep(r.listResultSetTarefaPorIndicador, function (level2, c) { return level2.level1_Id == o.level1_Id });
+                    GraficoTarefaIndicadores(tarefaPorIndicador, divTarefaIndicador, "@Resources.Resource.derivations_per_defects: " + removeFtaDaLabel(tendencia[0].Level1Name));//Processa e cria grafico
+
+                    level2DoLevel1.forEach(function (oo, cc) {
+                        var divTarefas = DivManager.criaDiv(divMonitoramento, oo.level2_Id, "monitoramento");
+                        var level3DoLevel2 = $.grep(r.listResultSetLevel3, function (level2, c) { return level2.level2_Id == oo.level2_Id });
+
+                        if(   level3DoLevel2.length > 0 )   {
+                            var dadosFTA = enviar
+                            dadosFTA['level1Name'] = removeFtaDaLabel(o.Level1Name)
+                            dadosFTA['level2Name'] = removeFtaDaLabel(level3DoLevel2[0].Level2Name)
+
+                            GraficoTarefa(level3DoLevel2, divTarefas, "@Resources.Resource.deviations_per_monitoring:" + removeFtaDaLabel(level3DoLevel2[0].Level2Name), o.level1_Id, dadosFTA);//Processa e cria grafico
+                        }
+
+                    });
+
+
+
+                });
+            } catch (e) {
+                console.log(e);
+            } finally {
+                $btn.button('reset');
+            }
+        }
+
+
+        function GraficoInicialLeTodosLevel1(data) {
+
+            var valoresX = MapeiaValorParaHC(data, "Level1Name")//["Lins", "Barretos", "Etc.."]
+            var valoresXX = MapeiaValorParaHC(data, "Level1Name")//["Lins", "Barretos", "Etc.."]
+            var meta = MapeiaValorParaHC(data, "Meta")
+            var nc = MapeiaValorParaHC(data, "NC")
+            var percentual = MapeiaValorParaHC(data, "ProcentagemNc")
+            var unidadeName = MapeiaValorParaHC(data, "Unidade")[0];
+            var totalAvaliado = MapeiaValorParaHC(data, "Av")
+            enviar['unitName'] = unidadeName
+
+            enviar["level1names"] = valoresXX
+            enviar.isLevel = 1
+            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
+                insereLabelFtaPelaColunName(valoresXX, r)
+
+                //Cria Grafico
+                $('#plotPrincipal2').empty().highcharts({
+                    credits: Chart.Credits(),
+                    title: Chart.Titulo("@Resources.Resource.defects_per_audit" + " " + unidadeName),
+                    xAxis: Chart.Xaxis(valoresX),
+                    tooltip: Chart.ToolTip(true, true),
+                    legend: Chart.Legend(),
+                    yAxis: Chart.yAxisPadrao(),
+                    chart: {
+                        type: 'column',
+                        zoomType: 'x, y',
+                        height: '350'
+                    },
+                    zones: [{
+                        value: 69,
+                        color: '#FF6666'
+                    }, {
+                        value: 80,
+                        color: 'Yellow'
+                    }, {
+                        color: '#98FB98'
+                    }],
+                    series: [
+                        Chart.ProcNc(percentual),
+                        Chart.Meta(meta, true),
+                        //, Chart.SimpleSerie(valoresY.meta, "% Meta", Chart.CorMeta(), true, 0, ' %')
+                        Chart.SimpleSerie(nc, "@Resources.Resource.derivations", Chart.CorTotalNc(), false, 1),
+                        Chart.SimpleSerie(totalAvaliado, "@Resources.Resource.total_evaluated", Chart.CorTotalAv(), false, 1)
+                    ],
+
+                });
+
+                //daUmaPintadaNaLabel('plotPrincipal')
+
+            })
+
+
+        }
+
+        function GraficoTendencia(data, idDiv, titulo, dtInicio, dtFim) {
+            console.log(data);
+            var valoresX = MapeiaValorParaHC(data, "Level1Name")
+            var meta = MapeiaValorParaHC(data, "Meta")
+            var totalNC = MapeiaValorParaHC(data, "NC")
+            var percentual = MapeiaValorParaHC(data, "ProcentagemNc")
+            var totalAvaliado = MapeiaValorParaHC(data, "Av")
+
+            //var from = $("#dataInicio").val().split("/");
+            var from = enviar.startDate.split("/");
+            var dataSelecionada = new Date(from[2], from[1] - 1, from[0]);
+            var tNcProc = 0;
+            var total = 0;
+            //var dataFim = new Date(parseInt(dtFim.replace(/[^0-9]/g, '')));
+            var dataFim = new Date(parseInt(dtFim));
+
+            valoresYY = {
+                dataInicio: new Date(parseInt(dtInicio/*.replace(/[^0-9]/g, '')*/)),
+                metaEstatica: meta[0],
+                NC: [],
+                totalNC: [],
+                ProcNC: [],
+                totalAvaliado: [],
+                linhaTendencia: [],
+                ContaTA: [],
+                ContaNC: [],
+            };
+
+            //Erro
+            data.forEach(function (a, i) {
+                var dia = parseInt(a.Data);
+                //dia = new Date(dia).setHours(0,0,0,0);
+                var lastDay = new Date(dataSelecionada.getFullYear(), dataSelecionada.getMonth(), 0);
+                if (i == 0) {
+                    valoresYY.ContaNC.push([Date.UTC(dataSelecionada.getFullYear(), dataSelecionada.getMonth() - 1, 1), null]);;
+                }
+
+                tNcProc += a.NC;
+                total += a.Av;
+
+                valoresYY.totalNC.push([dia, tNcProc]),
+                valoresYY.ContaTA.push([dia, total]),
+                valoresYY.ContaNC.push([dia, tNcProc]),
+
+                valoresYY.ProcNC.push([dia, parseFloat(a.ProcentagemNc.toFixed(2))]);
+                valoresYY.totalAvaliado.push([dia, a.Av]);
+                valoresYY.NC.push([dia, a.NC]);
+            });
+
+            var inicio = new Date(parseInt(dtInicio));
+            //inicio.setDate(1);
+            var fim = new Date(parseInt(dtFim));
+
+            var valorTA = 0;
+            var valorNC = 0;
+            while (inicio <= fim) {
+
+                var dt = inicio.setDate(inicio.getDate());
+
+                valoresYY.ContaTA.forEach(function (a, i) {
+                    if (new Date(a[0]).toLocaleDateString() == new Date(dt).toLocaleDateString()) {
+                        valorTA = a[1];
+                        return;//AAAAAAAAAAAAAAAAAAAAAAAAA
+                    }
+                });
+
+                valoresYY.ContaNC.forEach(function (a, i) {
+                    if (new Date(a[0]).toLocaleDateString() == new Date(dt).toLocaleDateString()) {
+                        valorNC = a[1];
+                        return;
+                    }
+                });
+
+                var calculo = valorTA == 0 ? 0 : valorNC / valorTA * 100;
+                calculo = parseFloat(calculo.toFixed(2));
+                var primeiroDia = new Date(dataSelecionada.getFullYear(), dataSelecionada.getMonth(), 1);
+
+                if (inicio >= primeiroDia) {
+                    valoresYY.linhaTendencia.push([dt, calculo]);
+                } else {
+                    valoresYY.linhaTendencia.push([dt, null]);
+                }
+
+                inicio.setDate(inicio.getDate() + 1)
+            }
+
+            $('#' + idDiv).highcharts({
+                credits: Chart.Credits(),
+                title: Chart.Titulo(titulo),
+                legend: Chart.Legend(),
+                chart: {
+                    type: 'column',
+                    zoomType: 'x, y'
+                },
+                tooltip: {
+                    crosshairs: true,
+                    shared: true,
+                    valueSuffix: ''
+                },
+                xAxis: {
+                    type: "datetime",
+                    tickInterval: 24 * 3600 * 1000,
+                    labels: {
+                        rotation: -45,
+                        align: 'right'
+                    },
+                    dateTimeLabelFormats: { // don't display the dummy year
+                        day: '%e. %b',
+                    },
+
+                },
+                yAxis: [{
+                    // Primary yAxis
+                    min: 10,
+                    max: 100,
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: "Black"
+                        }
+                    },
+                    title: {
+                        text: '% @Resources.Resource.defects',
+                        style: {
+                            color: "Black"
+                        }
+                    }, plotLines: [{
+                        value: valoresYY.metaEstatica,
+                        width: 2,
+                        color: 'black',
+                        dashStyle: 'dash',
+                        zIndex: 4,
+                        label: {
+                            text: 'Meta %' + valoresYY.metaEstatica,
+                            align: 'right',
+                            y: -10,
+                            x: 0
+                        }
+                    }],
+
+                }, { // Secondary yAxis
+                    gridLineWidth: 0,
+                    title: {
+                        text: '@Resources.Resource.number_samplers',
+                        style: {
+                            color: "Black"
+                        }
+                    },
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: "Black"
+                        }
+                    },
+                    opposite: true
+                }],
+                series: [{
+                    yAxis: 0,
+                    name: '% @Resources.Resource.defects',
+                    color: Chart.CorTotalProcNc(),
+                    data: valoresYY.ProcNC,
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' % (NC * Peso)'
+                    },
+                    //pointStart: Date.UTC(valoresYY.dataInicio.getFullYear(), valoresYY.dataInicio.getMonth(), 1),
+                    dataLabels: Chart.DataLabelPadrao('%'),
+                    //{
+                    //        format: '{y:.2f} %',
+                    //        enabled: true,
+                    //        color: 'black',
+                    //        align: 'center',
+                    //        style: {
+                    //            fontSize: '10px',
+                    //        },
+                    ////formatter: function () {
+                    //    if (this.y > 0) {
+                    //        return this.y + ' %';
+                    //    } else {
+                    //        return "";
+                    //    }
+                    //},
+                    //},
+                },
+            {
+                type: 'spline',
+                name: @Html.Raw(Json.Encode(Resources.Resource.accumulated_tendency)),
+                color: Chart.CorTotalPareto(),
+                data: valoresYY.linhaTendencia,
+                yAxis: 0,
+                marker: {
+                    enabled: false
+                },
+                zones: [{
+                    value: valoresYY.metaEstatica,
+                    color: 'Black'
+                }, {
+                    color: 'Red'
+                }],
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix: ' %'
+                },
+                //pointStart: Date.UTC(valoresYY.dataInicio.getFullYear(), valoresYY.dataInicio.getMonth(), 1),
+            },
+            {
+                yAxis: 1,
+                name: '@Resources.Resource.derivations',
+                color: Chart.CorTotalNc(),
+                data: valoresYY.NC,
+                visible: false,
+                //pointStart: Date.UTC(valoresYY.dataInicio.getFullYear(), valoresYY.dataInicio.getMonth(), 1),
+                dataLabels: {
+                    enabled: true,
+                    color: 'black',
+                    align: 'center',
+                    rotation: 270,
+                    x: 2,
+                    y: -25,
+                    style: {
+                        fontSize: '12px',
+                        fontWeight: 'Arial'
+                    },
+                    formatter: function () {
+                        if (this.y > 0) {
+                            return this.y;
+                        } else {
+                            return "";
+                        }
+                    },
+                }
+            },
+            {
+                yAxis: 1,
+                name: '@Resources.Resource.total_evaluated',
+                data: valoresYY.totalAvaliado,
+                color: Chart.CorTotalAv(),
+                visible: false,
+                //pointStart: Date.UTC(valoresYY.dataInicio.getFullYear(), valoresYY.dataInicio.getMonth(), 1),
+                dataLabels: {
+                    enabled: true,
+                    color: 'black',
+                    align: 'center',
+                    rotation: 270,
+                    x: 2,
+                    y: -25,
+                    style: {
+                        fontSize: '12px',
+                        fontWeight: 'Arial'
+                    },
+                    formatter: function () {
+                        if (this.y > 0) {
+                            return this.y;
+                        } else {
+                            return "";
+                        }
+                    },
+                }
+            }],
+                plotOptions: {
+                    series: {
+                        //stacking: 'normal',
+                        pointRange: 24 * 3600 * 1000, // one day
+                        pointStart: valoresYY.start,
+                    }
+                }
+            });
+        }
+
+        var MonitoramentoFTA = []
+        function GraficoMonitoramentos(data, idDiv) {
+
+            var valoresX = MapeiaValorParaHC(data, "Level2Name")
+            var valoresXCopia = MapeiaValorParaHC(data, "Level2Name")
+            var NC = MapeiaValorParaHC(data, "NC")
+            var TotalAvaliado = MapeiaValorParaHC(data, "Av")
+            var titulo = Resources('level1') + ": " + MapeiaValorParaHC(data, "Level1Name")[0];
+            //Auxiliares.loading(idDiv);
+
+            //Organiza dados do grafico
+            var pareto = []
+            //Pareto
+            var totalNC = 0;
+            var totalNC = NC.reduce(function (a, b) { return a + b; }, 0);
+            var porcentagemAcumuladaNC = 0;
+            NC.forEach(function (a) {
+                porcentagemAcumuladaNC += a / totalNC * 100;
+                pareto.push(Math.round(porcentagemAcumuladaNC, 0));
+            });
+            //Fim PAreto
+            ////////////////////////////////////////////
+
+            enviar["level2names"] = valoresX
+            enviar.isLevel = 2
+            enviar.level1Name = MapeiaValorParaHC(data, "Level1Name")[0]
+            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
+                //$.post('http://localhost:57506/api/sgq/getacoes', enviar , function (r) {
+                insereLabelFtaPelaColunName(valoresXCopia, r)
+                MonitoramentoFTA = MonitoramentoFTA.concat(valoresXCopia);
+            })
+
+            //Cria Grafico
+            $('#' + idDiv).empty().highcharts({
+                credits: Chart.Credits(),
+                title: Chart.Titulo(titulo),
+                xAxis: Chart.Xaxis(valoresX),
+                tooltip: {
+                    formatter: function() {
+
+                        var s = '<b>'+ removeFtaDaLabel(this.x) +'</b>';
+                        $.each(this.points, function(i, point) {
+                            s += '<br/><span style="color:' + point.color + '">\u25CF</span> ' + point.series.name + ': ' + point.y;
+                        });
+                        s += tootipFTA(MonitoramentoFTA, this.x)
+                        /*if(verificaFtaLabel(MonitoramentoFTA[this.x])){
+                            s += '<br/><span style="color:blue">Ações Corretivas no período:' + pegaNumeroDoFtaEmLabelQueContemFta(this.x) + '</span>';
+                        }*/
+                        return s
+                    },
+                    //split: true,
+                    //distance: 30,
+                    //padding: 5,
+                    shared: true
+                },
+                legend: Chart.Legend(),
+                yAxis: Chart.yAxisPadrao(true, true, true),
+                chart: {
+                    type: 'column',
+                    zoomType: 'x, y',
+                    height: '350'
+                },
+                zones: [{
+                    value: 69,
+                    color: '#FF6666'
+                }, {
+                    value: 80,
+                    color: 'Yellow'
+                }, {
+                    color: '#98FB98'
+                }],
+                series: [
+                      Chart.SimpleSerie(NC, "@Resources.Resource.derivations", Chart.CorTotalNc(), true)
+                    , Chart.SimpleSerie(TotalAvaliado, '@Resources.Resource.total_evaluated', Chart.CorTotalAv(), true)
+                    , Chart.curvaPareto(pareto)
+                ],
+            });
+            //daUmaPintadaNaLabel(idDiv)
+            //valoresX.forEach(function (o) {
+            //  o = removeFtaDaLabel(o)
+            //})
+
+        }
+        var TarefaFTA = []
+        function GraficoTarefa(data, idDiv, titulo, index, dadosFTA) {
+
+            //Auxiliares.loading(idDiv);
+
+            //Organiza dados do grafico
+            var dados = DadoEspecificos.Tarefa(data);
+            ////////////////////////////////////////////
+            /*dadosFTA["level3names"] = dados.x
+            dadosFTA.isLevel = 3
+            $.post(preffixFta + 'api/sgq/getacoes', dadosFTA , function (r) {
+
+                insereLabelFtaPelaColunName(dados.x, r)*/
+            let valoresXCopia = dados.x
+            enviar["level3names"] = dados.x
+            enviar.isLevel = 3
+            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
+                //$.post('http://localhost:57506/api/sgq/getacoes', enviar , function (r) {
+                insereLabelFtaPelaColunName(valoresXCopia, r)
+                TarefaFTA = TarefaFTA.concat(valoresXCopia);
+            })
+            dados = DadoEspecificos.Tarefa(data);
+            $('#' + idDiv).empty().highcharts({
+                credits: Chart.Credits(),
+                title: Chart.Titulo(titulo),
+                xAxis: Chart.Xaxis(dados.x),
+                tooltip: {
+                    formatter: function() {
+
+                        var s = '<b>'+ removeFtaDaLabel(this.x) +'</b>';
+                        $.each(this.points, function(i, point) {
+                            s += '<br/><span style="color:' + point.color + '">\u25CF</span> ' + point.series.name + ': ' + point.y;
+                        });
+                        s += tootipFTA(TarefaFTA, this.x)
+                        return s
+                    },
+                    shared: true
+                },
+                legend: Chart.Legend(),
+                yAxis: Chart.yAxisPadrao(true, true, true),
+                chart: {
+                    type: 'column',
+                    zoomType: 'x, y',
+                    plotBackgroundColor: '#FFFFFF',
+                    //plotShadow: true
+                    shadow: true
+                },
+                series: [
+                  Chart.SimpleSerie(dados.y.NC, "@Resources.Resource.derivations", Chart.CorTotalNc(), true, 0, undefined, undefined, true, data),
+                  Chart.curvaPareto(dados.y.pareto)
+                ],
+            },function(chart){
+                //setTimeout(function () { daUmaPintadaNaLabel(idDiv)}, 2000)
+            });
+
+            //})
+        }
+
+        function GraficoTarefaIndicadores(data, idDiv, titulo) {
+
+            var valoresX = MapeiaValorParaHC(data, "Level3Name")
+            var valoresY = {
+                //NC: obj.NC[0],
+                NC: MapeiaValorParaHC(data, "NC"),
+                pareto: []
+            };
+
+            var totalNC = valoresY.NC.reduce(function (a, b) { return a + b; }, 0);
+            var porcentagemAcumuladaNC = 0;
+            valoresY.NC.forEach(function (a) {
+                porcentagemAcumuladaNC += a / totalNC * 100;
+                valoresY.pareto.push(Math.round(porcentagemAcumuladaNC, 0));
+            });
+
+            //Cria Grafico
+            $('#' + idDiv).empty().highcharts({
+                credits: Chart.Credits(),
+                title: Chart.Titulo(titulo),
+                xAxis: Chart.Xaxis(valoresX),
+                tooltip: Chart.ToolTip(true, true),
+                legend: Chart.Legend(),
+                yAxis: Chart.yAxisPadrao(true, true, true),
+                chart: {
+                    type: 'column',
+                    zoomType: 'x, y',
+                    //borderColor: '#EBBA95',
+                    //borderWidth: 2,
+                    plotBackgroundColor: '#FFFFFF',
+                    plotShadow: true
+                },
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                    }
+                },
+                series: [
+                    Chart.SimpleSerie(valoresY.NC, "@Resources.Resource.derivations", Chart.CorTotalNc(), true),
+                    Chart.curvaPareto(valoresY.pareto)
+                ],
+            });
+
+        }
+
+        function Tendencia() {
+            $('#' + idString).empty().highcharts({
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    //renderTo: 'graficoNc',
+                    //type: 'column',
+                    zoomType: 'x,y'
+                },
+                title: {
+                    text: valorAbsoluto.titulo,
+                    x: -20 //center
+                },
+                xAxis: {
+                    type: 'datetime',
+                    labels: {
+                        rotation: 45
+                    },
+                    dateTimeLabelFormats: {
+                        day: '%e'
+                    },
+                    tickInterval: 24 * 3600 * 1000
+                },
+                yAxis: [
+                { // Primary yAxis
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[0]
+                        }
+                    },
+                    title: {
+                        text: '(%) NC',
+                        style: {
+                            color: Highcharts.getOptions().colors[0]
+                        }
+                    }, plotLines: [{
+                        value: valorAbsoluto.dados.metaReal.Meta,
+                        width: 2,
+                        color: 'black',
+                        dashStyle: 'dash',
+                        zIndex: 4,
+                        label: {
+                            text: 'Meta %' + valorAbsoluto.dados.metaReal.Meta,
+                            align: 'right',
+                            y: -10,
+                            x: 0
+                        }
+                    }]
+                },
+                { // Secondary yAxis
+                    gridLineWidth: 0,
+                    title: {
+                        text: 'Numero Amostras',
+                        style: {
+                            color: Highcharts.getOptions().colors[2]
+                        }
+                    },
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[2]
+                        }
+                    },
+                    opposite: true
+                }],
+                tooltip: {
+                    crosshairs: true,
+                    shared: true,
+                    valueSuffix: ''
+                },
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom',
+                    borderWidth: 0
+                },
+                series: [{
+                    name: "% NC Dia",
+                    data: valorAbsoluto.proc,
+                    type: 'column',
+                    yAxis: 0,
+                    dataLabels: {
+                        enabled: true,
+                        color: 'black',
+                        align: 'center',
+                        style: {
+                            fontSize: '10px',
+                        },
+                        formatter: function () {
+                            if (this.y > 0) {
+                                return this.y + ' %';
+                            } else {
+                                return "";
+                            }
+                        },
+
+                    },
+                    pointStart: Date.UTC(dataInicioDate.getFullYear(), dataInicioDate.getMonth(), 1),
+                    pointInterval: 24 * 3600 * 1000 // one day
+                    //zones: [{
+                    //    value: valorAbsoluto.dados.metaReal.Meta,
+                    //    color: '#7cb5ec'
+                    //}, {
+                    //    color: '#FF6666'
+                    //}],
+                },
+                 //{
+                 //    name: "Acc",
+                 //    type: 'column',
+                 //    //type: 'spline',
+                 //    color: Highcharts.getOptions().colors[3],
+                 //    yAxis: 0,
+                 //    visible: true,
+                 //    data: valorAbsoluto.procAcc
+                 //},
+                {
+                    name: "% Tendência",
+                    //type: 'column',
+                    type: 'spline',
+                    yAxis: 0,
+                    marker: {
+                        enabled: false
+                    },
+                    color: Highcharts.getOptions().colors[3],
+                    visible: true,
+                    data: valorAbsoluto.linhaProc,
+                    pointStart: Date.UTC(dataInicioDate.getFullYear(), dataInicioDate.getMonth(), 1),
+                    pointInterval: 24 * 3600 * 1000 // one day
+                },
+                {
+                    name: "Total Fora do Padrao",
+                    yAxis: 1,
+                    type: 'column',
+                    color: "red",
+                    //color: Highcharts.getOptions().colors[2],
+                    visible: false,
+                    data: valorAbsoluto.TotalForaPadrao,
+                    pointStart: Date.UTC(dataInicioDate.getFullYear(), dataInicioDate.getMonth(), 1),
+                    pointInterval: 24 * 3600 * 1000 // one day
+                },
+                {
+                    name: "Total Avaliado",
+                    yAxis: 1,
+                    type: 'column',
+                    color: "black",
+                    //color: Highcharts.getOptions().colors[4],
+                    visible: false,
+                    data: valorAbsoluto.NumTotalAvaliado,
+                    pointStart: Date.UTC(dataInicioDate.getFullYear(), dataInicioDate.getMonth(), 1),
+                    pointInterval: 24 * 3600 * 1000 // one day
+                },
+                ]
+            });
+        }
+
+        var DadoEspecificos = {
+
+            Tarefa: function (data) {
+                //Organiza dados do grafico
+                var obj = data;
+                var valoresX = MapeiaValorParaHC(data, "Level3Name");
+                var idOp = MapeiaValorParaHC(data, "Level1_Id");
+                var idMon = MapeiaValorParaHC(data, "Level2_Id");
+                var idTar = MapeiaValorParaHC(data, "Level3_Id");
+                //valoresY("Meta", "Proncetagem")
+                var valoresY = {
+                    //NC: obj.NC[0],
+                    NC: MapeiaValorParaHC(data, "NC"),
+                    pareto: []
+                };
+                //Pareto
+                var totalNC = 0;
+                var totalNC = valoresY.NC.reduce(function (a, b) { return a + b; }, 0);
+                var porcentagemAcumuladaNC = 0;
+                valoresY.NC.forEach(function (a, b) {
+                    porcentagemAcumuladaNC += a / totalNC * 100;
+                    valoresY.pareto.push(Math.round(porcentagemAcumuladaNC, 0));
+                });
+                //Fim PAreto
+                ////////////////////////////////////////////
+                return { x: valoresX, y: valoresY, idOperacao: idOp, idMonitoramento: idMon, idTarefa: idTar }
+
+            }
+
+        };
+
+        function ValidaDadosParaEnvio() {
+            GuardJs.resetForValidation();
+            GuardJs.CheckRangeDateTime(enviar.endDate, enviar.startDate, "Initial date", "End date");
+            /*Especifico*/
+            if (!($('#unitId :selected').val() > 0)) {
+                GuardJs.exibirMensagemAlerta('@Resources.Resource.select_the_unit_first');//"Por favor selecione uma unidade.");
+                return false;
+            }
+            if (!GuardJs.isValid)
+                return !GuardJs.isValid;
+            GuardJs.esconderMensagem();
+
+            return true;
+        }
+
+        var Chart = {
+            CorTotalNc: function () { return '#F7BCB0' },
+            CorTotalAv: function () { return '#ccc' },
+            CorTotalPareto: function () { return '#900000' },
+            CorMeta: function () { return '#67D184' },
+            CorTotalProcNc: function () { return '#FF6347' },
+            Legend: function () {
+                return {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom',
+                    borderWidth: 0
+                };
+            },
+            ToolTip: function (isShared, isCrosshairs) {
+                return {
+                    //valueDecimals: 2,
+                    shared: isShared,
+                    crosshairs: isCrosshairs
+                }
+            },
+            Titulo: function (data) {
+                return {
+                    text: data,
+                    x: -20 //center
+                };
+            },
+            Credits: function () {
+                return {
+                    enabled: false
+                }
+            },
+            Zones: function () {
+                return {
+                    enabled: false
+                }
+            },
+            Chart: function (tipo, zoon) {
+                return {
+                    type: tipo,
+                    zoomType: zoon
+                }
+            },
+            yAxisPadrao: function (inverso, pareto, totalNC) {
+                if (inverso == undefined) {
+                    return [{ // Primary yAxis
+                        allowDecimals: false,
+                        min: 0,
+                        max: 100,
+                        //tickInterval: 20,
+                        labels: {
+                            format: '{value} %',
+                            style: {
+                                color: "Black"
+                            }
+                        },
+                        title: {
+                            text: (pareto == undefined || pareto == false) ? '% @Resources.Resource.defects' : '@Resources.Resource.pareto_chart',
+                            style: {
+                                color: "Black"
+                            }
+                        },
+                    }, { // Secondary yAxis
+                        allowDecimals: false,
+                        gridLineWidth: 0,
+                        title: {
+                            text: (totalNC == undefined || totalNC == false) ? 'Numero Amostras' : '@Resources.Resource.derivations',
+                            style: {
+                                color: "Black"
+                            }
+                        },
+                        labels: {
+                            format: '{value}',
+                            style: {
+                                color: "Black"
+                            }
+                        },
+                        opposite: true,
+                    }]
+                } else {
+                    return [{ // Primary yAxis
+                        gridLineWidth: 0,
+                        title: {
+                            text: (totalNC == undefined || totalNC == false) ? 'Numero Amostras' : '@Resources.Resource.derivations',
+                            style: {
+                                color: "Black"
+                            }
+                        },
+                        labels: {
+                            format: '{value}',
+                            style: {
+                                color: "Black"
+                            }
+                        },
+
+                    }, { // Secondary yAxis
+                        min: 0,
+                        max: 100,
+                        //tickInterval: 20,
+                        labels: {
+                            format: '{value} %',
+                            style: {
+                                color: "Black"
+                            }
+                        },
+                        title: {
+                            text: (pareto == undefined || pareto == false) ? '% @Resources.Resource.defects' : '@Resources.Resource.pareto_chart',
+                            style: {
+                                color: "Black"
+                            }
+                        },
+                        opposite: true
+                    }]
+                }
+            },
+            Xaxis: function (dados) {
+                return [{
+                    categories: dados
+                }];
+            },
+
+            //Series
+            SimpleSerie: function (data, name, color, isVisible, axy, toolTip, hasAlign, hasEventPoint, dadosFunc) {
+
+                return {
+                    name: name,
+                    data: data,
+                    color: color,
+                    yAxis: axy || 0,
+                    visible: isVisible == undefined ? false : isVisible,
+                    dataLabels: Chart.DataLabelPadrao(undefined, hasAlign),
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: toolTip == undefined ? '' : toolTip,
+                    },
+                    point: {
+                        events: {
+                            click: function () {
+                                if (!!hasEventPoint)
+                                {
+                                    var dados = dadosFunc[this.x];
+                                    dados['UnitName'] = dados.Unidade;
+                                    dados['startDate'] = enviar.startDate;
+                                    dados['endDate'] = enviar.endDate;
+
+                                    $.post(urlGetPorcLevel3, dados, function(r) {
+
+                                        var selector =  removeFtaDaLabel(dados.Level3Name);
+                                        console.log($.grep(r, function(a, b) { return removeFtaDaLabel(a.TarefaName) == selector}));
+
+                                        enviar["PercentualNCFTA"] = arredondar($.grep(r, function(a, b) { return removeFtaDaLabel(a.TarefaName) == selector})[0].Proc);
+
+                                        //console.log(dados);
+                                        enviar['level1Name'] = removeFtaDaLabel(dados.Level1Name);
+                                        enviar['level2Name'] = removeFtaDaLabel(dados.Level2Name);
+                                        enviar['level3Name'] = removeFtaDaLabel(dados.Level3Name);
+                                        enviar['unitName'] = dados.Unidade;
+                                        enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
+                                        //enviar['PercentualNCFTA'] = dados.ProcentagemNc;
+                                        enviar['ReincidenciaDesvioFTA'] = dados.NC;
+
+                                        //console.log(enviar);
+                                        RedirecionaParaFTA(enviar);
+                                    });
+
+
+
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+
+            //Series com %
+            curvaPareto: function (dados) {
+                return {
+                    type: 'line',
+                    yAxis: 1,
+                    name: '@Resources.Resource.pareto_chart',
+                    color: "Red",
+                    data: dados,
+                    yAxis: 1,
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' %'
+                    },
+                    zones: [{
+                        value: 80,
+                        color: 'Red'
+                    }, {
+                        color: 'Black'
+                    }],
+                }
+            },
+            ProcNc: function (data, func, nome, id, funcParaAcumuladas) {
+                //$.each(data, function(a, b){
+                //    data[a] = parseFloat(b.toFixed(2));
+                //});
+                return {
+                    name: '% @Resources.Resource.defects',
+                    color: Chart.CorTotalProcNc(),//'rgba(240,124,0,1)',
+                    data: data,
+                    yAxis: 0,
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' %'
+                    },
+                    //pointPadding: 0.4,
+                    //pointPlacement: -0.2,
+                    dataLabels: Chart.DataLabelPadrao('%'),
+                    point: {
+                        events: {
+                            click: function () {
+                                if (!!func)
+                                    func(removeFtaDaLabel(nome[this.x]), id[this.x]);
+                                if (!!funcParaAcumuladas && id[this.x] != '0')
+                                    funcParaAcumuladas(removeFtaDaLabel(this.category), id[this.x]);
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' % (NC * Peso)'
+                    }
+                };
+
+            },
+            Meta: function (data, isVisible, func, nome, id, funcParaAcumuladas) {
+
+                return {
+                    visible: !!isVisible,
+                    name: '% @Resources.Resource.goal',
+                    data: data,
+                    color: Chart.CorMeta(),//'rgba(81,207,64,1)',
+                    //pointPadding: 0.4,
+                    //pointPlacement: 0.4,
+                    yAxis: 0,
+                    dataLabels: Chart.DataLabelPadrao('%'),
+                    point: {
+                        events: {
+
+                            click: function () {
+                                if (!!func)
+                                    func(removeFtaDaLabel(nome[this.x]), id[this.x]);
+                                if (!!funcParaAcumuladas && id[this.x] != '0')
+                                    funcParaAcumuladas(removeFtaDaLabel(this.category), id[this.x]);
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' %'
+                    }
+                };
+
+            },
+
+            DataLabelPadrao: function (affix, hasAlign) {
+
+                return {
+                    format: !!affix ? '{y:.2f} ' + affix : '{y:.2f}',
+                    enabled: true,
+                    rotation: 270,
+                    x: 2,
+                    y: -25,
+                    align: 'center',//!!hasAlign ? 'center' : hasAlign,
+                    color: 'black',
+                    align: 'center',
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'Arial'
+                    }
+                };
+            },
+        };
+
+        //Função para arredondar o PercentualNCFTA
+        function arredondar(nr) {
+            //if (nr.indexOf(',') != -1) nr = nr.replace(',', '.');
+            nr = parseFloat(nr) * 100;
+            return Math.floor(nr) / 100;
+        }
+
+    </script>
+
+}
