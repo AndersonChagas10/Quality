@@ -333,6 +333,7 @@
     <Compile Include="Controllers\Api\VerificacaoTipificacao\VerificacaoTipificacaoResultadosController.cs" />
     <Compile Include="Controllers\Api\Volume\VolumeController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacao\VTVerificacaoTipificacaoApiController.cs" />
+    <Compile Include="Controllers\Auxiliares\EUADbController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Exemplo\ExemploInputController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
@@ -1407,6 +1408,7 @@
     <Content Include="Views\RelatoriosSgq\NaoConformidadePorCabecalho.cshtml" />
     <Content Include="Views\EmailConfigEUA\Index.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoCumprimentoMeta.cshtml" />
+    <Content Include="Views\EUADb\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
