@@ -93,6 +93,7 @@ namespace DTO
         public string CallBackTableBody { get; set; }
         public string CallBackTableEsquerda { get; set; }
         public string CallBackTableTituloColunas { get; set; }
+        public string CallBackTableX { get; set; }
         public string Query { get; set; }
         public string Title { get; set; }
         public List<string> ParametroTableRow { get; set; }

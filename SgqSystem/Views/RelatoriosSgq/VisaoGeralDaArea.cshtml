@@ -206,6 +206,12 @@
 
         <div id="tabela1div"></div>
 
+        <div id="funcoesPorUnidade"></div>
+
+        <div id="inicadoresPorRegional"></div>
+
+        <div id="inicadoresPorUnidade"></div>
+
         <div id="tabela2div"></div>
 
         <div id="grafico3"></div>
@@ -567,9 +573,12 @@
 
             EasyAjax(urlGrafico1, enviar, CallbackGrafico1, "grafico1", toggle);
 
-            enviar["CallBackTableTituloColunas"] = function () { };
+            //enviar["CallBackTableTituloColunas"] = function () { };
+            enviar["CallBackTableTituloColunas"] = "GetFuncoesPorUnidade($(this).attr('dado1'))";
             enviar["CallBackTableBody"] = "GetTabela2($(this).attr('dado3'), $(this).attr('dado1'));";
-            enviar["CallBackTableEsquerda"] = function () { };
+            //enviar["CallBackTableEsquerda"] = function () { };
+            enviar["CallBackTableEsquerda"] = "GetInicadoresPorRegional($(this).attr('dado3'))";
+            enviar["CallBackTableX"] = "GetIndicadoresPorUnidade()";
             //enviar["Query"] = "GetTbl1SemGrupos";
             enviar["Query"] = "GetTbl1";
             enviar["Title"] = "Pacotes por Regional";
@@ -587,6 +596,87 @@
 
             //chamaEvolutivoRegional();
         };
+
+        function GetFuncoesPorUnidade(paramCol){
+            $('#grafico3').empty();
+            $('#grafico4').empty();
+            $('#grafico5').empty();
+
+            enviar["CallBackTableTituloColunas"] = function () { };
+            enviar["CallBackTableBody"] = "Grafico3($(this).attr('dado3'), $(this).attr('dado1'));Grafico4($(this).attr('dado3'), $(this).attr('dado1'));";
+            enviar["CallBackTableEsquerda"] = function () { };
+            //enviar["Query"] = "GetTbl2SemGrupos";
+            enviar["Query"] = "GetTblFuncoesPorUnidade";
+            enviar["Title"] = "Indicadores por unidade";
+
+            enviar["ParametroTableRow"] = [];
+            enviar["ParametroTableCol"] = [];
+            //enviar["ParametroTableRow"].push(paramRow);
+            enviar["ParametroTableCol"].push(paramCol);
+
+            EasyAjax(urlTabela2, enviar, function (r) {
+                $('#funcoesPorUnidade').empty().append(r);
+                var container = 'funcoesPorUnidade';
+                heatMap(container, 'dadosEsquerda', 3, 3, 'DESC');
+                heatMap(container, 'footer2', 3, 3, 'DESC');
+                heatMapSingleCol(container, 'dadosDireita', 4, 'DESC', true);
+                scroolTable(container)
+            }, "funcoesPorUnidade");
+        }
+
+        function GetInicadoresPorRegional(paramRow){
+            $('#grafico3').empty();
+            $('#grafico4').empty();
+            $('#grafico5').empty();
+
+            enviar["CallBackTableTituloColunas"] = function () { };
+            enviar["CallBackTableBody"] = "Grafico3($(this).attr('dado3'), $(this).attr('dado1'));Grafico4($(this).attr('dado3'), $(this).attr('dado1'));";
+            enviar["CallBackTableEsquerda"] = function () { };
+            //enviar["Query"] = "GetTbl2SemGrupos";
+            enviar["Query"] = "GetTblInicadoresPorRegional";
+            enviar["Title"] = "Indicadores por unidade";
+
+            enviar["ParametroTableRow"] = [];
+            enviar["ParametroTableCol"] = [];
+            enviar["ParametroTableRow"].push(paramRow);
+            //enviar["ParametroTableCol"].push(paramCol);
+
+            EasyAjax(urlTabela2, enviar, function (r) {
+                $('#inicadoresPorRegional').empty().append(r);
+                var container = 'inicadoresPorRegional';
+                heatMap(container, 'dadosEsquerda', 3, 3, 'DESC');
+                heatMap(container, 'footer2', 3, 3, 'DESC');
+                heatMapSingleCol(container, 'dadosDireita', 4, 'DESC', true);
+                scroolTable(container)
+            }, "inicadoresPorRegional");
+        }
+
+        function GetIndicadoresPorUnidade(){
+            $('#grafico3').empty();
+            $('#grafico4').empty();
+            $('#grafico5').empty();
+
+            enviar["CallBackTableTituloColunas"] = function () { };
+            enviar["CallBackTableBody"] = "Grafico3($(this).attr('dado3'), $(this).attr('dado1'));Grafico4($(this).attr('dado3'), $(this).attr('dado1'));";
+            enviar["CallBackTableEsquerda"] = function () { };           
+            //enviar["Query"] = "GetTbl2SemGrupos";
+            enviar["Query"] = "GetTblInicadoresPorUnidade";
+            enviar["Title"] = "Indicadores por unidade";
+
+            enviar["ParametroTableRow"] = [];
+            enviar["ParametroTableCol"] = [];
+            //enviar["ParametroTableRow"].push(paramRow);
+            //enviar["ParametroTableCol"].push(paramCol);
+
+            EasyAjax(urlTabela2, enviar, function (r) {
+                $('#inicadoresPorRegional').empty().append(r);
+                var container = 'inicadoresPorRegional';
+                heatMap(container, 'dadosEsquerda', 3, 3, 'DESC');
+                heatMap(container, 'footer2', 3, 3, 'DESC');
+                heatMapSingleCol(container, 'dadosDireita', 4, 'DESC', true);
+                scroolTable(container);
+            }, "inicadoresPorRegional");
+        }
 
         function GetTabela2(paramCol, paramRow) {
             $('#grafico3').empty();
