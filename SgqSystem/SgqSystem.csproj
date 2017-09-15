@@ -332,6 +332,7 @@
     <Compile Include="Controllers\Api\VerificacaoTipificacao\VerificacaoTipificacaoResultadosController.cs" />
     <Compile Include="Controllers\Api\Volume\VolumeController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacao\VTVerificacaoTipificacaoApiController.cs" />
+    <Compile Include="Controllers\Auxiliares\EUADbController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Exemplo\ExemploInputController.cs" />
     <Compile Include="Controllers\FirstConfigController.cs" />
@@ -1405,6 +1406,7 @@
     <Content Include="Views\RelatoriosSgq\_VerificacaoTipificacaoEdit.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoConformidadePorCabecalho.cshtml" />
     <Content Include="Views\EmailConfigEUA\Index.cshtml" />
+    <Content Include="Views\EUADb\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1486,7 +1488,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>false</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
