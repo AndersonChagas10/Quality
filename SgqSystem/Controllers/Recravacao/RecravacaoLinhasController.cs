@@ -1,8 +1,5 @@
 ﻿using Dominio;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Recravacao
@@ -22,7 +19,7 @@ namespace SgqSystem.Controllers.Recravacao
         // GET: RecravacaoTipoLata
         public ActionResult Index()
         {
-            var model = db.Database.SqlQuery<ParRecravacao_Linhas>("SELECT * FROM ParRecravacao_Linhas WHERE IsActive = 1").ToList();
+            var model = db.Database.SqlQuery<ParRecravacao_Linhas>("SELECT * FROM ParRecravacao_Linhas ORDER BY IsActive").OrderByDescending(r=>r.IsActive == false).ToList();
             return View(model);
         }
 
@@ -133,7 +130,7 @@ namespace SgqSystem.Controllers.Recravacao
         {
             var model = new ParRecravacao_Linhas();
             if (id > 0)
-                model = db.Database.SqlQuery<ParRecravacao_Linhas>("SELECT * FROM ParRecravacao_Linhas WHERE IsActive = 1 AND Id = " + id).FirstOrDefault();
+                model = db.Database.SqlQuery<ParRecravacao_Linhas>("SELECT * FROM ParRecravacao_Linhas WHERE Id = " + id).FirstOrDefault();
             return model;
         }
     }

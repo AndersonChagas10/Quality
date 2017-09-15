@@ -3,11 +3,13 @@
     ViewBag.Title = "Index";
     var urlHome = Url.Action("Index", "Home");
 }
+
 <link href="~/Content/toastr.min.css" rel="stylesheet" />
+
 <div ng-controller="reencravationCtrl" class="page-content" style="min-height: 600px;">
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-            <li class="active" ng-repeat="item in linhas track by $index" ng-click="getLinha($index)">
+            <li class="active" ng-repeat="item in linhas track by $index" ng-click="getLinha($index)" ng-show="item.IsActive == 'True'" >
                 <a href="#">
                     <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> {{item.Name}}
                     <span class="glyphicon glyphicon-sound-stereo" aria-hidden="true"></span>
@@ -53,6 +55,7 @@
                 @*{{seletedLinha.form}}*@
                 <hr />
             </form>
+
             <div style="text-align:right;">
                 <button ng-disabled="linha.FinalizarForm" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModalLogin">
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Finalizar Linha
@@ -72,7 +75,7 @@
                 <button ng-show="item.finalizado" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
                     <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                 </button>
-                <button ng-show="!item.finalizado" type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal">
+                <button ng-show="!item.finalizado" type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal">
                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                 </button>
                 <button ng-show="!item.finalizado" type="button" class="btn btn-danger btn-sm" ng-click="deleteLata(seletedLinha, $index)">
@@ -273,6 +276,8 @@
 
     </div>
 
+
+
     <button type="button" ng-click="saveState()" class="btn btn-sucsdfcess btn-lg">
         <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>POST
     </button>
@@ -285,9 +290,44 @@
     <button  type="button" ng-click="mockLinhas()" class="btn btn-sucsdfcess btn-lg">
         <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>MOCK
     </button>
+
+    
+    <!-- Modal Edit-->
+    <div class="modal fade modal-lg" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                          
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <hr />
+
+
+
     {{linhas}}
+    {{activeInLine}}
 </div>
+
+
 
 <script src="~/Scripts/toastr.min.js"></script>
 
@@ -307,9 +347,13 @@
                 vm.fornecedorLata = [{}]
                 vm.fornecedorTampaLata = [{}]
                 vm.seletedLinha = { Id: 0 }
-
+                vm.activeInLine = 0
+                //MOCK
+                vm.company = 14
+                //vm.company = GetUnidadeUsuario()
                 vm.getLinha = function (index) {
                     vm.seletedLinha = vm.linhas[index]
+                    vm.activeInLine = vm.seletedLinha.Id
                     setTimeout(function () { $('select').select2() }, 200)
                 }
 
@@ -322,14 +366,16 @@
                     })
                     linha.counterDeLatas++
                 }
-
                 vm.deleteLata = function (linha, index) {
                     linha.latas.splice(index, 1)
                 }
 
                 vm.saveStateUrl = 'http://localhost:57506/api/RecravacaoApi'
                 vm.saveState = function () {
-                    $http({ method: 'POST', url: vm.saveStateUrl, data: vm.linhas })
+                    let model = vm.linhas.filter(function (s) {
+                       return s.Id == vm.activeInLine
+                    })[0]
+                    $http({ method: 'POST', url: vm.saveStateUrl, data: model })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {
@@ -389,9 +435,10 @@
                 vm.getProdutos()
                 //vm.mockLinhas()
 
+                /*GET Todas as linhas cadastradas*/
                 vm.getLinhasUrl = 'http://localhost:57506/api/RecravacaoLinhaApi'
                 vm.getLinhas = function () {
-                    $http({ method: 'GET', url: vm.getLinhasUrl, data: {} })
+                    $http({ method: 'GET', url: vm.getLinhasUrl + "?Company=" + vm.company })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {
@@ -409,8 +456,9 @@
                         });
                 }
 
+                /*GET os Dados das linhas cadastradas*/
                 vm.getState = function () {
-                    $http({ method: 'GET', url: vm.saveStateUrl, data: {} })
+                    $http({ method: 'GET', url: vm.saveStateUrl + "?Company=" + vm.company })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {
@@ -419,14 +467,24 @@
                             } else {
                                 toastr.success(r.data.resposta)
                                 //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
-                                let linhasSalvas = jQuery.parseJSON(r.data.model.ObjectRecravacaoJson)
+                                let linhasSalvas = r.data.model//jQuery.parseJSON(r.data.model.ObjectRecravacaoJson)
+                                let novaLinha = []
                                 vm.linhas.forEach(function (o, c) {
-                                    var objetoSalvo = linhasSalvas.filter(function (s) {
-                                        return s.Id == o.Id;
+                                    var objetoSalvo = linhasSalvas.filter(function (objArr) {
+                                        let s = jQuery.parseJSON(objArr.ObjectRecravacaoJson)
+                                        if (s.Id == o.Id && (o.IsActive == "True" || o.IsActive == true) && (s.IsActive == "False" || s.IsActive == false))
+                                            s.IsActive = "True"
+                                        else if (s.Id == o.Id && (o.IsActive == "False" || o.IsActive == false) && (s.IsActive == "True" || s.IsActive == true))
+                                            s.IsActive = "False"
+
+                                        return s.Id == o.Id
                                     });
-                                    o = objetoSalvo
+                                    if (objetoSalvo.length)
+                                        novaLinha.push(JSON.parse(JSON.stringify(jQuery.parseJSON(objetoSalvo[0].ObjectRecravacaoJson))))
+                                    else 
+                                        novaLinha.push(JSON.parse(JSON.stringify(o)))
                                 })
-                                vm.linhas = linhasSalvas
+                                vm.linhas = JSON.parse(JSON.stringify(novaLinha))
                                 setTimeout(function () { $('select').select2() }, 200)
                             }
                         });

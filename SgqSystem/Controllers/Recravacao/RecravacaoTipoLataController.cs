@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
-using SgqSystem.Controllers.Recravacao;
 using Dominio;
-using System.Data.SqlClient;
 
 namespace SgqSystem.Controllers.Recravacao
 {
@@ -21,7 +16,7 @@ namespace SgqSystem.Controllers.Recravacao
         // GET: RecravacaoTipoLata
         public ActionResult Index()
         {
-            var model = db.Database.SqlQuery<ParRecravacao_TipoLata>("SELECT * FROM ParRecravacao_TipoLata WHERE IsActive = 1").ToList();
+            var model = db.Database.SqlQuery<ParRecravacao_TipoLata>("SELECT * FROM ParRecravacao_TipoLata").OrderByDescending(r=>r.IsActive).ToList();
             return View(model);
         }
 

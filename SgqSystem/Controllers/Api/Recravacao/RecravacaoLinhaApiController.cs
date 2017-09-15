@@ -21,10 +21,10 @@ namespace SgqSystem.Controllers.Api
         }
 
         // GET: api/RecravacaoLinhaApi
-        public HttpResponseMessage Get()
+        public HttpResponseMessage Get(int Company)
         {
             var paramsFromRequest = ToDynamic(Request.Content.ReadAsStringAsync().Result);
-            var query = string.Format("SELECT * FROM ParRecravacao_Linhas WHERE IsActive = 1 AND ParCompany_Id = {0}", 14);
+            var query = string.Format("SELECT * FROM ParRecravacao_Linhas WHERE ParCompany_Id = {0}", Company);
             var results = QueryNinja(db, query).ToList();
             return Request.CreateResponse(HttpStatusCode.OK, new { resposta = "Recuperados dados das Linhas", model = results });
         }
