@@ -558,6 +558,9 @@
             $('#grafico5').empty();
             $('#tabela1div').empty();
             $('#tabela2div').empty();
+            $('#funcoesPorUnidade').empty();
+            $('#inicadoresPorRegional').empty();
+            $('#inicadoresPorUnidade').empty();
 
             $btn.button('loading');
 
@@ -603,12 +606,12 @@
             $('#grafico5').empty();
 
             enviar["CallBackTableTituloColunas"] = function () { };
-            enviar["CallBackTableBody"] = "Grafico3($(this).attr('dado3'), $(this).attr('dado1'));Grafico4($(this).attr('dado3'), $(this).attr('dado1'));";
+            enviar["CallBackTableBody"] = "GetIndicadoresPorUnidade2($(this).attr('dado3'), $(this).attr('dado1'));";
             enviar["CallBackTableEsquerda"] = function () { };
             //enviar["Query"] = "GetTbl2SemGrupos";
             enviar["Query"] = "GetTblFuncoesPorUnidade";
-            enviar["Title"] = "Indicadores por unidade";
-
+            enviar["Title"] = "Pacotes por Unidade";
+            enviar["CallBackTableX"] = function () {};
             enviar["ParametroTableRow"] = [];
             enviar["ParametroTableCol"] = [];
             //enviar["ParametroTableRow"].push(paramRow);
@@ -624,7 +627,7 @@
             }, "funcoesPorUnidade");
         }
 
-        function GetInicadoresPorRegional(paramRow){
+        function GetIndicadoresPorUnidade2(paramCol, paramRow){
             $('#grafico3').empty();
             $('#grafico4').empty();
             $('#grafico5').empty();
@@ -632,9 +635,38 @@
             enviar["CallBackTableTituloColunas"] = function () { };
             enviar["CallBackTableBody"] = "Grafico3($(this).attr('dado3'), $(this).attr('dado1'));Grafico4($(this).attr('dado3'), $(this).attr('dado1'));";
             enviar["CallBackTableEsquerda"] = function () { };
+            enviar["CallBackTableX"] = function () {};
+            //enviar["Query"] = "GetTbl2SemGrupos";
+            enviar["Query"] = "GetTblInicadoresPorUnidade2";
+            enviar["Title"] = "Indicadores por unidade";
+
+            enviar["ParametroTableRow"] = [];
+            enviar["ParametroTableCol"] = [];
+            enviar["ParametroTableRow"].push(paramRow);
+            enviar["ParametroTableCol"].push(paramCol);
+
+            EasyAjax(urlTabela2, enviar, function (r) {
+                $('#tabela2div').empty().append(r);
+                var container = 'tabela2div';
+                heatMap(container, 'dadosEsquerda', 3, 3, 'DESC');
+                heatMap(container, 'footer2', 3, 3, 'DESC');
+                heatMapSingleCol(container, 'dadosDireita', 4, 'DESC', true);
+                scroolTable(container)
+            }, "tabela2div");
+        }
+
+        function GetInicadoresPorRegional(paramRow){
+            $('#grafico3').empty();
+            $('#grafico4').empty();
+            $('#grafico5').empty();
+
+            enviar["CallBackTableTituloColunas"] = function () { };
+            enviar["CallBackTableBody"] = "GetIndicadoresPorUnidade3($(this).attr('dado3'), $(this).attr('dado1'));";
+            enviar["CallBackTableEsquerda"] = function () { };
+            enviar["CallBackTableX"] = function () {};
             //enviar["Query"] = "GetTbl2SemGrupos";
             enviar["Query"] = "GetTblInicadoresPorRegional";
-            enviar["Title"] = "Indicadores por unidade";
+            enviar["Title"] = "Indicadores por Regionais";
 
             enviar["ParametroTableRow"] = [];
             enviar["ParametroTableCol"] = [];
@@ -651,6 +683,34 @@
             }, "inicadoresPorRegional");
         }
 
+        function GetIndicadoresPorUnidade3(paramCol, paramRow){
+            $('#grafico3').empty();
+            $('#grafico4').empty();
+            $('#grafico5').empty();
+
+            enviar["CallBackTableTituloColunas"] = function () { };
+            enviar["CallBackTableBody"] = "Grafico3($(this).attr('dado3'), $(this).attr('dado1'));Grafico4($(this).attr('dado3'), $(this).attr('dado1'));";
+            enviar["CallBackTableEsquerda"] = function () { };
+            enviar["CallBackTableX"] = function () {};
+            //enviar["Query"] = "GetTbl2SemGrupos";
+            enviar["Query"] = "GetTblInicadoresPorUnidade3";
+            enviar["Title"] = "Indicadores por unidade";
+
+            enviar["ParametroTableRow"] = [];
+            enviar["ParametroTableCol"] = [];
+            enviar["ParametroTableRow"].push(paramRow);
+            enviar["ParametroTableCol"].push(paramCol);
+
+            EasyAjax(urlTabela2, enviar, function (r) {
+                $('#tabela2div').empty().append(r);
+                var container = 'tabela2div';
+                heatMap(container, 'dadosEsquerda', 3, 3, 'DESC');
+                heatMap(container, 'footer2', 3, 3, 'DESC');
+                heatMapSingleCol(container, 'dadosDireita', 4, 'DESC', true);
+                scroolTable(container)
+            }, "tabela2div");
+        }
+
         function GetIndicadoresPorUnidade(){
             $('#grafico3').empty();
             $('#grafico4').empty();
@@ -658,7 +718,8 @@
 
             enviar["CallBackTableTituloColunas"] = function () { };
             enviar["CallBackTableBody"] = "Grafico3($(this).attr('dado3'), $(this).attr('dado1'));Grafico4($(this).attr('dado3'), $(this).attr('dado1'));";
-            enviar["CallBackTableEsquerda"] = function () { };           
+            enviar["CallBackTableEsquerda"] = function () { };
+            enviar["CallBackTableX"] = function () {};
             //enviar["Query"] = "GetTbl2SemGrupos";
             enviar["Query"] = "GetTblInicadoresPorUnidade";
             enviar["Title"] = "Indicadores por unidade";
@@ -686,6 +747,7 @@
             enviar["CallBackTableTituloColunas"] = function () { };
             enviar["CallBackTableBody"] = "Grafico3($(this).attr('dado3'), $(this).attr('dado1'));Grafico4($(this).attr('dado3'), $(this).attr('dado1'));";
             enviar["CallBackTableEsquerda"] = function () { };
+            enviar["CallBackTableX"] = function () {};
             //enviar["Query"] = "GetTbl2SemGrupos";
             enviar["Query"] = "GetTbl2";
             enviar["Title"] = "Indicadores por unidade";
