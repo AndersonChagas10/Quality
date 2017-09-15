@@ -192,7 +192,7 @@ namespace DTO
             emailPort = dto.MailPort;
             mockEmail = dto.MockEmail;
             pathFTA = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao/NewFTA?";
-            //pathFTA = "http://localhost:59907//Pa_Acao/NewFTA?";
+            //pathFTA = "http://localhost:57506/Pa_Acao/NewFTA?";
             //pathFTA = "http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?";
 
             Verifica += "recoveryPassAvaliable:  " + recoveryPassAvaliable.ToString() + "\n";
