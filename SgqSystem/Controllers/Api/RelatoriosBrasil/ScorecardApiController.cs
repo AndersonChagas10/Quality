@@ -238,8 +238,8 @@ namespace SgqSystem.Controllers.Api
             List<ResultadoUmaColuna> collectionlevel2List = new List<ResultadoUmaColuna>();
 
             //inserir o ambiente do cliente a ser copiado
-            //using (var db = new Factory(ip, banco, "wordpass14t", "grjuser"))
-            using (var db = new Factory(ip, banco, "betsy1", "sa"))
+            using (var db = new Factory(ip, banco, "wordpass14t", "grjuser"))
+            //using (var db = new Factory(ip, banco, "betsy1", "sa"))
             {
                 var collectionlevel2 = "" +
 
@@ -316,8 +316,8 @@ namespace SgqSystem.Controllers.Api
             #region parte02
 
             //inserir dados do clinete que receberá os dados
-            //using (var db = new Factory(ipProd, bancoProd, "wordpass14t", "grjuser"))
-            using (var db = new Factory(ipProd, bancoProd, "betsy1", "sa"))
+            using (var db = new Factory(ipProd, bancoProd, "wordpass14t", "grjuser"))
+            //using (var db = new Factory(ipProd, bancoProd, "betsy1", "sa"))
             {
 
                 foreach (var i in collectionlevel2List)
@@ -343,8 +343,8 @@ namespace SgqSystem.Controllers.Api
 
             List<ResultadoUmaColuna> result_level3List = new List<ResultadoUmaColuna>();
             //inserir o ambiente do cliente a ser copiado
-            //using (var db = new Factory(ip, banco, "wordpass14t", "grjuser"))
-            using (var db = new Factory(ip, banco, "betsy1", "sa"))
+            using (var db = new Factory(ip, banco, "wordpass14t", "grjuser"))
+            //using (var db = new Factory(ip, banco, "betsy1", "sa"))
             {
 
                 var result_level3 = "" +
