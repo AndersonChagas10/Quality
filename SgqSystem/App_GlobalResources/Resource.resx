@@ -2094,4 +2094,7 @@
   <data name="allow_less_privileged_users_to_edit_the_monitoring" xml:space="preserve">
     <value>Allow less privileged users to edit the Monitoring Related Task Goal Linked to this Audit</value>
   </data>
+  <data name="unreached_goals" xml:space="preserve">
+    <value>Unreached Goals</value>
+  </data>
 </root>
