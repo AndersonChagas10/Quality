@@ -40,5 +40,6 @@ namespace SgqSystem.Controllers.Api
                 SimpleAsynchronousUSA.SendMailUSA();
             }
         }
+
     }
 }
