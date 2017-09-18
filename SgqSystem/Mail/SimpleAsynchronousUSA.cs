@@ -61,7 +61,8 @@ namespace SgqSystem.Mail
                     }
                     else if (GlobalConfig.Eua)
                     {
-                        url = "http://sgqtest.jbssa.com/hmlusa/api/hf/SendMail";
+                        //url = "http://sgqtest.jbssa.com/hmlusa/api/hf/SendMail";
+                        url = "http://sgq.jbssa.com/sgq/api/hf/SendMail";
                     }
                     //var url = "http://localhost:57506/" + "api/hf/SendMail";
                     //var url = "http://localhost:8091/SgqSystem/" + "api/hf/SendMail";
