@@ -5578,6 +5578,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unreached Goals.
+        /// </summary>
+        internal static string unreached_goals {
+            get {
+                return ResourceManager.GetString("unreached_goals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There still unsynced data in the tablet database.
         /// </summary>
         internal static string unsyncronized_data {
