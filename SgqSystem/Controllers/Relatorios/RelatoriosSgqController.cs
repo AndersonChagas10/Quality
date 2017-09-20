@@ -1138,7 +1138,7 @@ namespace SgqSystem.Controllers
 
             /*1º*/
             tabela.trsCabecalho1 = new List<Ths>();
-            tabela.trsCabecalho1.Add(new Ths() { name = "" });
+            tabela.trsCabecalho1.Add(new Ths() { name = "Indicadores por Unidades" });
             tabela.trsCabecalho1.Add(new Ths() { name = "" });
             /*Fim  1º*/
 
@@ -3175,10 +3175,10 @@ namespace SgqSystem.Controllers
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
 
                     //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
-                    "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1 " +
                     "\n where Reg.ParStructureParent_Id = 1 "+
+                    "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
                     "\n ORDER BY 1";
 
             //Dados das colunas do corpo da tabela de dados central
@@ -3205,10 +3205,10 @@ namespace SgqSystem.Controllers
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
 
                     //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
-                    "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
                     "\n where Reg.ParStructureParent_Id = 1 " +
+                    "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
                   "\n GROUP BY P1.Name, Reg.Name " +
                   "\n --ORDER BY 1, 2";
 
@@ -3237,10 +3237,10 @@ namespace SgqSystem.Controllers
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
 
                     //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
-                    "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null AND C.IsActive = 1" +
                     "\n where Reg.ParStructureParent_Id = 1 " +
+                    "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
                   "\n GROUP BY P1.Name " +
                   "\n --ORDER BY 1";
 
@@ -3269,10 +3269,10 @@ namespace SgqSystem.Controllers
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
 
                     //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
-                    "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
                     "\n where Reg.ParStructureParent_Id = 1 " +
+                    "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
                   "\n GROUP BY Reg.Name " +
                   "\n --ORDER BY 1";
 
@@ -3301,10 +3301,10 @@ namespace SgqSystem.Controllers
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
 
                     //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
-                    "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
                     "\n where Reg.ParStructureParent_Id = 1 " +
+                    "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
                   "\n";
 
 
@@ -3327,10 +3327,10 @@ namespace SgqSystem.Controllers
                     "\n  on C.Id = S.ParCompany_Id and S.Level1Id = P1.Id " +
 
                     //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
-                    "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
 
                     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 2  and PP1.Name is not null  AND C.IsActive = 1" +
                     "\n where Reg.ParStructureParent_Id = 1 " +
+                    "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
                     "\n GROUP BY P1.Name";
 
             var orderby = "\n ORDER BY 1, 2, 3";
