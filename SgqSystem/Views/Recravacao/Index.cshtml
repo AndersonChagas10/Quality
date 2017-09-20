@@ -6,10 +6,10 @@
 
 <link href="~/Content/toastr.min.css" rel="stylesheet" />
 
-<div ng-controller="reencravationCtrl" class="page-content" style="min-height: 600px;">
+<div ng-controller="reencravationCtrl as r" class="page-content" style="min-height: 600px;">
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-            <li class="active" ng-repeat="item in linhas track by $index" ng-click="getLinha($index)" ng-show="item.IsActive == 'True'" >
+            <li class="active" ng-repeat="item in linhas track by $index" ng-click="getLinha($index)" ng-show="item.IsActive == 'True'">
                 <a href="#">
                     <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> {{item.Name}}
                     <span class="glyphicon glyphicon-sound-stereo" aria-hidden="true"></span>
@@ -17,8 +17,6 @@
                 </a>
             </li>
         </ul>
-
-       
 
         <hr />
         <div ng-show="seletedLinha.Id > 0" class="col-lg-12 col-md-12 col-sm-12">
@@ -64,18 +62,13 @@
 
         </div>
 
-        @*<hr />
-        {{seletedLinha}}
-        <hr />*@
-
         <div ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" class="col-lg-3 col-md-6 col-sm-6  col-xs-12" ng-repeat="item in seletedLinha.latas track by $index">
             <div style="text-align: right; padding-bottom: 5px; padding-top: 5px; float: left; vertical-align: middle; font-size: 18px;">{{item.Name}}</div>
-
             <div style="text-align: right; padding-bottom: 5px; padding-top: 5px; float: right; ">
                 <button ng-show="item.finalizado" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
                     <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                 </button>
-                <button ng-show="!item.finalizado" type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal">
+                <button ng-show="!item.finalizado" type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal{{$index}}">
                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                 </button>
                 <button ng-show="!item.finalizado" type="button" class="btn btn-danger btn-sm" ng-click="deleteLata(seletedLinha, $index)">
@@ -84,184 +77,65 @@
                 <button ng-show="item.prontoParaFinalizar" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModalLogin">
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                 </button>
-
             </div>
 
             <table style="width: 100%">
                 <tbody>
+                    
                     <tr>
-                        <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold;">Pontos <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
-                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;">2</td>
-                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;">3</td>
-                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;">4</td>
-                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;">5</td>
-                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;">6</td>
-                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;">7</td>
-                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;">8</td>
-                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;">9</td>
+                        <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold;">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
+                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{$index + 1}}</td>
                     </tr>
-                    <tr>
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Espessura</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">0</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">5</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">0</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">0</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">0</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">0</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">2</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">0</td>
+                    
+                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                        <td style="border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                            @*{{ParLevel3.ResultValue[$index]}}*@
+                            {{ParLevel3.ResultValue['Ponto' + ($index +1)]}}
+                            @*<i ng-show="!(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue[$index] &&  ParLevel3.ResultValue[$index] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-times" aria-hidden="true"></i>
+                            <i ng-show="(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue[$index] &&  ParLevel3.ResultValue[$index] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-check" aria-hidden="true"></i>*@
+                        </td>
                     </tr>
-                    <tr>
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Espaço Livre</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">2</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">2</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">2</td>
+
+                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                            BINARIO
+                        </td>
                     </tr>
-                    <tr>
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Escareação</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">3</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">3</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
+
+                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '4')">
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                            CALCULADO
+                        </td>
                     </tr>
-                    <tr>
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Altura</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">3</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">3</td>
-                        <td style="border:1px solid #cccccc; padding: 2px; background-color:#f86b6b;">8</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">5</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
+
+                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                            Nº  de DEFEITOS
+                        </td>
                     </tr>
-                    <tr>
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Gancho Corpo</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">3</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">3</td>
-                        <td style="border:1px solid #cccccc; padding: 2px; background-color:#f86b6b;">8</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">5</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">4</td>
+
+                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                            TEXTO
+                        </td>
                     </tr>
-                    <tr>
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Gancho Tampa</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">2</td>
+
+                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '99')">
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                            NOVO CALCULADO POR OUTRO
+                        </td>
                     </tr>
-                    <tr>
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">% GC Butting</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">2</td>
-                    </tr>
-                    <tr>
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">% Overlap</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">2</td>
-                    </tr>
-                    <tr>
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Overlap</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">2</td>
-                    </tr>
-                    <tr>
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Rugas</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">2</td>
-                    </tr>
-                    <tr>
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Puker</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">1</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;">2</td>
-                    </tr>
-                    <tr>
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Espessura da Tampa</td>
-                        <td colspan="9" style="border:1px solid #cccccc; padding: 2px;">23</td>
-                    </tr>
-                    <tr>
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Espessura do Corpo</td>
-                        <td colspan="9" style="border:1px solid #cccccc; padding: 2px;">32</td>
-                    </tr>
-                    <tr>
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Semi-corte</td>
-                        <td colspan="9" style="border:1px solid #cccccc; padding: 2px;">10</td>
-                    </tr>
-                    <tr>
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">% Junção</td>
-                        <td colspan="9" style="border:1px solid #cccccc; padding: 2px;">12</td>
-                    </tr>
-                    <tr>
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Compressão</td>
-                        <td colspan="9" style="border:1px solid #cccccc; padding: 2px;">12</td>
-                    </tr>
-                    <tr>
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">Lingueta</td>
-                        <td colspan="9" style="border:1px solid #cccccc; padding: 2px;">12</td>
-                    </tr>
+
                 </tbody>
             </table>
 
             <div style="text-align: left; padding-top: 5px; height:40px;">
-
                 <div style="float:left;">
                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Mônica (monica-lin)
                 </div>
@@ -269,7 +143,98 @@
                     <span class="glyphicon glyphicon-time" aria-hidden="true"></span> 05/09/2017 08:54
                 </div>
             </div>
+
+            <!-- Modal Edit-->
+            <div class="modal fade bd-example-modal-lg" id="editModal{{$index}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content modal-lg">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <table style="width: 100%">
+                                <tbody>
+                    
+                                    <tr>
+                                        <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold;">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
+                                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{$index + 1}}</td>
+                                    </tr>
+                                    
+                                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
+                                      
+                                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                                            <input title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].IntervalMax}}"
+                                                   ng-model="ParLevel3.ResultValue['Ponto' + ($index +1)]"
+                                                   style="width:60%"
+                                                   type="number" />
+                                            <i ng-show="!(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-times" aria-hidden="true"></i>
+                                            <i ng-show="(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-check" aria-hidden="true"></i>
+                                        </td>
+                                        @*<td>{{ParLevel3}}</td>*@
+                                    </tr>
+
+                                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
+                                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                                           BINARIO
+                                        </td>
+                                        @*<td>{{ParLevel3}}</td>*@
+                                    </tr>
+
+                                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '4')">
+                                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                                            CALCULADO
+                                        </td>
+                                        @*<td>{{ParLevel3}}</td>*@
+                                    </tr>
+
+                                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
+                                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                                            Nº  de DEFEITOS
+                                        </td>
+                                         @*<td>{{ParLevel3}}</td>*@
+                                    </tr>
+
+                                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
+                                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                                            TEXTO
+                                        </td>
+                                        @*<td>{{ParLevel3}}</td>*@
+                                    </tr>
+
+                                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '99')">
+                                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                                            NOVO CALCULADO POR OUTRO
+                                        </td>
+                                        @*<td>{{ParLevel3}}</td>*@
+                                    </tr>
+                                  
+                                </tbody>
+                            </table>
+
+                        </div>
+                        @*{{item}}*@
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
+
         <button ng-show="seletedLinha.Id > 0" type="button" ng-click="newLata(seletedLinha)" class="btn btn-sucsdfcess btn-lg">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Adicionar Lata
         </button>
@@ -279,52 +244,39 @@
 
 
     <button type="button" ng-click="saveState()" class="btn btn-sucsdfcess btn-lg">
-        <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>POST
+        <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>POST LINHA
     </button>
-    <button  type="button" ng-click="getState()" class="btn btn-sucsdfcess btn-lg">
-        <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>GET
+    <button type="button" ng-click="getState()" class="btn btn-sucsdfcess btn-lg">
+        <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>GET TODAS AS LINHAS
     </button>
     <button type="button" ng-click="getLinhas()" class="btn btn-sucsdfcess btn-lg">
         <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>GET LINHAS DB
     </button>
-    <button  type="button" ng-click="mockLinhas()" class="btn btn-sucsdfcess btn-lg">
+    <button type="button" ng-click="mockLinhas()" class="btn btn-sucsdfcess btn-lg">
         <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>MOCK
     </button>
 
-    
-    <!-- Modal Edit-->
-    <div class="modal fade modal-lg" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
 
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                          
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
+   
 
     <hr />
 
 
-
-    {{linhas}}
-    {{activeInLine}}
+    @*{{linhas[0].ListParlevel3}}*@
+    <hr />
+    @*{{linhas}}*@
+    <hr />
+    @*seletedLinha<br />
+    {{seletedLinha}}
+    <hr />
+    seletedLinha.TipoDeLata<br />
+    {{seletedLinha.TipoDeLata}}
+    {{range(seletedLinha.TipoDeLata.NumberOfPoints)}}
+    <hr />
+    seletedLinha.ListParlevel3<br />
+    {{seletedLinha.ListParlevel3}}
+    <hr />
+    {{activeInLine}}*@
 </div>
 
 
@@ -355,6 +307,14 @@
                     vm.seletedLinha = vm.linhas[index]
                     vm.activeInLine = vm.seletedLinha.Id
                     setTimeout(function () { $('select').select2() }, 200)
+                    //vm.$apply()
+                }
+
+                vm.range = function (n) {
+                    if (n)
+                        return new Array(parseInt(n))
+                    else
+                        return new Array()
                 }
 
                 vm.newLata = function (linha) {
@@ -362,7 +322,8 @@
                         linha["counterDeLatas"] = 1
                     linha.latas.push({
                         Name: 'Lata - ' + (linha["counterDeLatas"]),
-                        finalizado: false
+                        finalizado: false,
+                        ListParlevel3: JSON.parse(JSON.stringify(linha.ListParlevel3))
                     })
                     linha.counterDeLatas++
                 }
@@ -373,7 +334,7 @@
                 vm.saveStateUrl = 'http://localhost:57506/api/RecravacaoApi'
                 vm.saveState = function () {
                     let model = vm.linhas.filter(function (s) {
-                       return s.Id == vm.activeInLine
+                        return s.Id == vm.activeInLine
                     })[0]
                     $http({ method: 'POST', url: vm.saveStateUrl, data: model })
                         .then(function (r) {
@@ -448,7 +409,7 @@
                                 toastr.success(r.data.resposta)
                                 //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
                                 vm.linhas = r.data.model
-                                vm.linhas.forEach(function (o,c){
+                                vm.linhas.forEach(function (o, c) {
                                     o["latas"] = []
                                 })
                                 setTimeout(function () { $('select').select2() }, 200)
@@ -481,7 +442,7 @@
                                     });
                                     if (objetoSalvo.length)
                                         novaLinha.push(JSON.parse(JSON.stringify(jQuery.parseJSON(objetoSalvo[0].ObjectRecravacaoJson))))
-                                    else 
+                                    else
                                         novaLinha.push(JSON.parse(JSON.stringify(o)))
                                 })
                                 vm.linhas = JSON.parse(JSON.stringify(novaLinha))

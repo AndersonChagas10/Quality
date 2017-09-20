@@ -118,7 +118,7 @@ namespace SgqSystem.Controllers.Recravacao
         {
             var model = new ParRecravacao_TipoLata();
             if (id > 0)
-                model = db.Database.SqlQuery<ParRecravacao_TipoLata>("SELECT * FROM ParRecravacao_TipoLata WHERE IsActive = 1 AND Id = " + id).FirstOrDefault();
+                model = db.Database.SqlQuery<ParRecravacao_TipoLata>("SELECT * FROM ParRecravacao_TipoLata WHERE Id = " + id).FirstOrDefault();
             return model;
         }
 

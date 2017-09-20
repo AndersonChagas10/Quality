@@ -78,11 +78,49 @@
                                         @*@Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top)*@
                                     </tr>
                                     <tr class="row" id="companyValueL3">
-                                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeParL3Value" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top
+                                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top
                                             , button: "<button type='button' id='btnSaveCounter' onclick='level3Value.adiciona(); ' class='btn btn-primary btn-sm'><i class='fa fa-plus' aria-hidden='true'></i></button>")
+                                    </tr>
 
+                                    <tr class="row reencravacaoL3">
+                                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "empresaRecravacao", @onchange = "getLevel3ReencravacaoInputCalcOutro($('#empresaRecravacao option:selected').val())" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top)
+                                    </tr>
+                                    <tr class="row reencravacaoL3">
+                                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlparLevel3, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3Recravacao", @onchange = "getLevel3ValueReencravacaoInputCalcOutro($('#parlevel3Recravacao option:selected').val())" }), @Html.Label("Selecione Par Level 3"), Table.PosicaoLabel.top)
+                                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlparLevel3, htmlAttributes: new { @class = "form-control input-sm", @id = "", @onchange = "function(){ }" }), @Html.Label("Selecione Valor do Tipo de Dado de Entrada"), Table.PosicaoLabel.top)
+                                    </tr>
+                                    <tr class="row reencravacaoL3">
+                                        <td class="td-erp">
+                                            <button type='button' id='' onclick='' class='btn btn-sm'>
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                            &nbsp;
+                                            <button type='button' id='' onclick='' class='btn btn-sm'>
+                                                <i class="fa fa-minus" aria-hidden="true"></i>
+                                            </button>
+                                            &nbsp;
+                                            <button type='button' id='' onclick='' class='btn btn-sm'>
+                                                <i class="fa fa-asterisk" aria-hidden="true"></i>
+                                            </button>
+                                            &nbsp;
+                                            <button type='button' id='' onclick='' class='btn btn-sm'>
+                                                <i class="fa fa-code" aria-hidden="true"></i>
+                                            </button>
+                                            &nbsp;
+                                            <button type='button' id='' onclick='' class='btn btn-sm'>
+                                                <i class="fa fa-undo" aria-hidden="true"></i>
+                                            </button>
+                                            &nbsp;
+                                            <button type='button' id='' onclick='' class='btn btn-primary btn-sm'>
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr class="row reencravacaoL3">
+                                        <td class="td-erp"><label>Expressão final</label></td>
                                     </tr>
                                 </table>
+
 
                                 <table id="tableLevel3Value" class="table table-condensed table-responsive no-margin margin-top" nameModal="@Resources.Resource.edit_input_data_type">
                                     <thead>
@@ -115,7 +153,7 @@
                 @*<div id="reincidencia">
                         @Html.Partial("_ReincidenciaXLevel", Model)
                     </div>*@
-                @Html.HiddenFor(r=>r.paramsDto.parLevel3Dto.hasVinculo)
+                @Html.HiddenFor(r => r.paramsDto.parLevel3Dto.hasVinculo)
                 @if (Model.paramsDto.parLevel3Dto.hasVinculo)
                 {
                     @Html.Partial("_Peso", Model)
@@ -183,6 +221,24 @@
 <script>
 
     var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
+
+    function getLevel3ReencravacaoInputCalcOutro(id) {
+        console.log(id)
+        //$.post('' + '/' + id,{}, function (myOptions) {
+        //    $('#parlevel3Recravacao').val(-1).change()
+
+        //    $.each(myOptions, function(val, text) {
+        //        let defaultSelected = false;
+        //        let nowSelected     = false;
+        //        $('#parlevel3Recravacao').append( new Option('teste3',4, defaultSelected , nowSelected))
+        //    })
+
+        //})
+    }
+
+    function getLevel3ValueReencravacaoInputCalcOutro(id) {
+        console.log(id)
+    }
 
     function UpdateUnidadeMedidas() {
         var valor = $("#modalInputMeasurementUnit").val();
@@ -639,6 +695,7 @@
 
             $('.ParIntervalos').hide();
             $('.ParBinarios').hide();
+            $('.reencravacaoL3').hide();
 
             $('#companyValueL3').hide();
         }
@@ -651,6 +708,7 @@
             $('.ParIntervalos').hide();
             $('.ParBinarios').fadeIn();
             $('#companyValueL3').fadeIn();
+            $('.reencravacaoL3').hide();
         }
 
         //Numero de defeitos
@@ -675,7 +733,7 @@
             //Colocar 0 no Limite Inferior
             $('#level3_data_type_collapse > div > table.table-erp > tbody > tr.row.ParIntervalos > td:nth-child(2)').hide()
             $('#parLevel3Value_IntervalMin').val(0);
-
+            $('.reencravacaoL3').hide();
             $('.ParIntervalos').fadeIn();
         }
 
@@ -703,6 +761,7 @@
                 allowMinus: true
             });
             $('.ParBinarios').hide();
+            $('.reencravacaoL3').hide();
             $('.ParIntervalos').fadeIn();
         }
 
@@ -713,6 +772,7 @@
             GuardJs.mascaraCampoCalculado('#parLevel3Value_IntervalMin');
             GuardJs.mascaraCampoCalculado('#parLevel3Value_IntervalMax');
             $('.ParBinarios').hide();
+            $('.reencravacaoL3').hide();
             $('.ParIntervalos').fadeIn();
         }
 
@@ -724,9 +784,40 @@
             GuardJs.mascaraCampoCalculado('#parLevel3Value_IntervalMax');
             $('.ParBinarios').hide();
             $('.ParIntervalos').hide();
+            $('.reencravacaoL3').hide();
             $('#companyValueL3').show();
         }
 
+        if ($("#selectTipoInput option:selected").val() == "99") {
+            resetaParIntervalos();
+            resetaParBinarios();
+            resetaParDefeitos();
+            $('.ParBinarios').hide();
+            $('.ParIntervalos').hide();
+            $('#companyValueL3').hide();
+            $('.reencravacaoL3').fadeIn();
+
+            let vinculados = $('#parLevel3Select2 option:selected').closest('optgroup')[0].children
+            let companyesVinculadas = $('#tablePeso > tbody > tr > td:nth-child(1)')
+
+            $('#parlevel3Recravacao option').hide()
+            $(vinculados).each(function (c, o) {
+                let value = $(o).val()
+                $('#parlevel3Recravacao option[value="'+value+'"]').show()
+            })
+            $('#parlevel3Recravacao option[value="-1"]').show()
+
+            $('#empresaRecravacao option').hide()
+            companyesVinculadas.each(function(c,o){
+                if($(o).text() == 'Todas'){
+                }
+                else{
+                    $('#empresaRecravacao option').filter(function () { return $(this).html() == $(o).text() }).show()
+                }
+            })
+            $('#empresaRecravacao option[value="-1"]').show()
+
+        }
     });
 
     function resetaParCalculado(){

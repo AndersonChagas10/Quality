@@ -509,7 +509,7 @@ namespace Dominio.Services
             var group = db.ParLevel3Group.Where(r => r.ParLevel2_Id == idParLevel2 && r.IsActive == true).ToList();
             var level3Level2 = parlevel3.ParLevel3Level2.Where(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == idParLevel3 && r.IsActive == true).OrderByDescending(r => r.IsActive);
             var level3Value = parlevel3.ParLevel3Value.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
-
+            
             #endregion
 
             #region Mapper
