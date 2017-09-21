@@ -87,7 +87,7 @@
                                     </tr>
                                     <tr class="row reencravacaoL3">
                                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlparLevel3, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3Recravacao", @onchange = "getLevel3ValueReencravacaoInputCalcOutro($('#parlevel3Recravacao option:selected').val())" }), @Html.Label("Selecione Par Level 3"), Table.PosicaoLabel.top)
-                                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlparLevel3, htmlAttributes: new { @class = "form-control input-sm", @id = "", @onchange = "function(){ }" }), @Html.Label("Selecione Valor do Tipo de Dado de Entrada"), Table.PosicaoLabel.top)
+                                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3RecravacaoValue", @onchange = "function(){ }" }), @Html.Label("Selecione Valor do Tipo de Dado de Entrada"), Table.PosicaoLabel.top)
                                     </tr>
                                     <tr class="row reencravacaoL3">
                                         <td class="td-erp">
@@ -237,7 +237,16 @@
     }
 
     function getLevel3ValueReencravacaoInputCalcOutro(id) {
-        console.log(id)
+        $.post('@Url.Action("GetLevel3PorUnidadeRecravacaoDdl", "Params")' + "/" + id , {level3Id: id}, function (r){
+            
+            let text = "teste"
+            let val = 1
+            let defaultSelected = false;
+            let nowSelected     = false;
+            $('#parlevel3RecravacaoValue').empty()
+            $('#parlevel3RecravacaoValue').append( new Option(text,val,defaultSelected,nowSelected) );
+
+        })
     }
 
     function UpdateUnidadeMedidas() {

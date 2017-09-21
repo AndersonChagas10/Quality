@@ -448,12 +448,12 @@ namespace SgqSystem.Controllers.Api.Params
         }
 
         [HttpPost]
-        [Route("GetLevel3PorUnidadeRecravacaoDdl")]
-        public void GetLevel3PorUnidadeRecravacaoDdl(int company, int level2Id, int level1Id)
+        [Route("GetLevel3PorUnidadeRecravacaoDdl/{level3Id}")]
+        public void GetLevel3PorUnidadeRecravacaoDdl([FromBody] int level3Id)
         {
             using (var db = new SgqDbDevEntities())
             {
-                var level3 = db.ParLevel3.Where(r => r.ParLevel3Level2.Any(c => c.ParCompany_Id == company && c.ParLevel2_Id == level2Id && c.IsActive && c.ParLevel3Level2Level1.Any(z=>z.ParLevel3Level2_Id == c.Id && z.ParCompany_Id == company && z.Active))).ToList();
+                var level3 = db.ParLevel3Value.Where(r => r.ParLevel3_Id == level3Id).ToList();
             }
             //return resourceManager.GetResourceSet(Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
         }
