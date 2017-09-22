@@ -900,7 +900,7 @@
             }
 
             /*Ajax*/
-            $.get(urlSalvarNovoItem + "/" + param1 + "/" + param2 + "/" + param3, {}, function (r) {
+            $.post(urlSalvarNovoItem, {val: param1, param: param2, predecessor: param3}, function (r) {
                 $(tempInput).append('<option value=' + r + '> ' + $('#newItem').val() + '</option>');
                 $(tempInput).val(r).change();
                 $('#modalNovo').modal('hide');
