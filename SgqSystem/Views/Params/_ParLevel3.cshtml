@@ -87,10 +87,10 @@
                                     </tr>
                                     <tr class="row reencravacaoL3">
                                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlparLevel3, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3Recravacao", @onchange = "getLevel3ValueReencravacaoInputCalcOutro($('#parlevel3Recravacao option:selected').val())" }), @Html.Label("Selecione Par Level 3"), Table.PosicaoLabel.top)
-                                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3RecravacaoValue", @onchange = "function(){ }" }), @Html.Label("Selecione Valor do Tipo de Dado de Entrada"), Table.PosicaoLabel.top)
                                     </tr>
                                     <tr class="row reencravacaoL3">
-                                        <td class="td-erp">
+                                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3RecravacaoValue", @onchange = "insertExpression($('#parlevel3RecravacaoValue option:selected').val())" }), @Html.Label("Selecione Valor do Tipo de Dado de Entrada"), Table.PosicaoLabel.top)
+                                        <td class="td-erp" style="width:50%">
                                             <button type='button' id='' onclick='' class='btn btn-sm'>
                                                 <i class="fa fa-plus" aria-hidden="true"></i>
                                             </button>
@@ -236,15 +236,42 @@
         //})
     }
 
+    expression = ["("]
+    function updateLogicExpression(){
+        
+    }
+    function insertLogic(btn) {
+        expression.push("+")
+    }
+    function insertExpression(option) {
+        expression.push($('#parlevel3Recravacao option:selected').text() + " " + $('#parlevel3RecravacaoValue option:selected').text())
+
+    }
+
     function getLevel3ValueReencravacaoInputCalcOutro(id) {
-        $.post('@Url.Action("GetLevel3PorUnidadeRecravacaoDdl", "Params")' + "/" + id , {level3Id: id}, function (r){
+        $.post('@Url.Action("GetLevel3PorUnidadeRecravacaoDdl", "api/ParamsApi")', {'': id}, function (r){
             
-            let text = "teste"
+            let text = ''
             let val = 1
             let defaultSelected = false;
             let nowSelected     = false;
             $('#parlevel3RecravacaoValue').empty()
-            $('#parlevel3RecravacaoValue').append( new Option(text,val,defaultSelected,nowSelected) );
+            $('#parlevel3RecravacaoValue').append( new Option('Selecione...',-1,defaultSelected,nowSelected) );
+
+            r.forEach(function(o, c){
+
+                if(o.ParLevel3InputType_Id == 3){
+                    if (o.AcceptableValueBetween) {
+                        val = o.Id
+                        text = 'Valor não está contido: Min. '+ o.IntervalMin + ' - Máx. '+ o.IntervalMax + o.ParMeasurementUnit.Name
+                        $('#parlevel3RecravacaoValue').append( new Option(text,val,defaultSelected,nowSelected))
+                    } else {
+                        val = o.Id
+                        text = 'Valor está contido: Min. '+ o.IntervalMin + ' - Máx. '+ o.IntervalMax + o.ParMeasurementUnit.Name
+                        $('#parlevel3RecravacaoValue').append( new Option(text,val,defaultSelected,nowSelected))
+                    }
+                }
+            })
 
         })
     }

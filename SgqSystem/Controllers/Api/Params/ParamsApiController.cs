@@ -5,11 +5,13 @@ using DTO;
 using DTO.DTO;
 using DTO.DTO.Params;
 using DTO.Helpers;
+using Newtonsoft.Json;
 using SgqSystem.Handlres;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Dynamic;
 using System.Globalization;
 using System.Linq;
@@ -448,14 +450,16 @@ namespace SgqSystem.Controllers.Api.Params
         }
 
         [HttpPost]
-        [Route("GetLevel3PorUnidadeRecravacaoDdl/{level3Id}")]
-        public void GetLevel3PorUnidadeRecravacaoDdl([FromBody] int level3Id)
+        [Route("GetLevel3PorUnidadeRecravacaoDdl")]
+        public List<ParLevel3Value> GetLevel3PorUnidadeRecravacaoDdl([FromBody] int level3Id)
         {
+            GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.Re‌​ferenceLoopHandling = ReferenceLoopHandling.Ignore;
             using (var db = new SgqDbDevEntities())
             {
-                var level3 = db.ParLevel3Value.Where(r => r.ParLevel3_Id == level3Id).ToList();
+                db.Configuration.LazyLoadingEnabled = false;
+                var level3 = db.ParLevel3Value.Include("ParMeasurementUnit").Where(r => r.ParLevel3_Id == level3Id).ToList();
+                return level3;
             }
-            //return resourceManager.GetResourceSet(Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
         }
     }
 
