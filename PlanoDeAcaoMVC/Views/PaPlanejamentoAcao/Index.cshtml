@@ -526,14 +526,16 @@
             /*Fim Botões*/
         }
 
-        function DdlChangeEstrategico(v1, v2, v3) {
+        function DdlChangeEstrategico(v1, v2, v3, edit ) {
 
             var change1 = v1 != undefined ? v1 : "";
             var change2 = v2 != undefined ? v2 : "";
 
+            let Dimensao_Id = $('#Dimensao_Id')
+            let Objetivo_Id = $('#Objetivo_Id')
 
             var rdy = true;
-            $('#Dimensao_Id').off('change').on('change', function () {
+            Dimensao_Id.off('change').on('change', function () {
                 var valor = $(this).val();
                 var form = $(this).parents('form');
                 rdy = false;
@@ -549,7 +551,7 @@
                 }
             });
 
-            $('#Objetivo_Id').off('change').on('change', function () {
+            Objetivo_Id.off('change').on('change', function () {
                 var valor = $(this).val();
                 var form = $(this).parents('form');
 
@@ -563,20 +565,20 @@
                 }
             });
 
+            //if(edit == undefined){
+                $('#Dimensao_Id').val(change1).change();
 
+                if (v2 != undefined) {
+                    setTimeout(function () { $('#Objetivo_Id').val(v2).change(); }, 3000)
+                } else {
+                    //$('#Objetivo_Id').val(change2).change();
+                    setTimeout(function () { $('#Objetivo_Id').val(change2).change(); }, 3000)
+                }
 
-
-            $('#Dimensao_Id').val(change1).change();
-
-            if (v2 != undefined) {
-                setTimeout(function () { $('#Objetivo_Id').val(change2).change(); }, 1000)
-            } else {
-                $('#Objetivo_Id').val(change2).change();
-            }
-
-            if (v3 != undefined) {
-                setTimeout(function () { $('#IndicadoresDiretriz_Id').val(v3).change(); }, 1500)
-            }
+                if (v3 != undefined) {
+                    setTimeout(function () { $('#IndicadoresDiretriz_Id').val(v3).change(); },5000)
+                }
+            //}
         }
 
         function DdlChangeTatico() {
@@ -786,6 +788,7 @@
         }
 
         function SalvarAcaoEditada() {
+            console.log("SalvarAcaoEditada")
             var listaAcoes = [];
             $('.Acao').each(function (c, o) {
 
@@ -869,11 +872,15 @@
 
         /*Novo item*/
         function Novo(btn, encadeado) {
-
+            console.log("Novo")
+            $('#encadeado').show()
             /*Limpa caso haja DDL denrto do modal.*/
             if ($('#encadeado').find('select').length) {
                 $('#encadeado').find('select').remove();
+                $('#encadeado').hide()
             }
+            if(encadeado == undefined)
+                $('#encadeado').hide()
 
             tempInput = $(btn).parents('tr').find('input , select');
             tempName = $(btn).parents('tr').find('input , select').attr('name');
@@ -885,6 +892,7 @@
             if (encadeado != undefined) {
                 $('#encadeado').show();
                 $('#labelPredecessora').append($('#' + encadeado).clone());
+                $('#labelPredecessora').find('select').val($('#' + encadeado + ' option:selected').val()).change()
             }
         }
 
@@ -944,8 +952,8 @@
                     /*9*/{ title: "Projeto/Iniciativa", mData: "Iniciativa" },//Iniciativa
                     /*10*/{ title: "Indicadores do Projeto/Iniciativa", mData: "IndicadoresDeProjeto" },
                     /*11*/{ title: "Objetivo Gerencial", mData: "ObjetivoGerencial" },
-                    /*12*/{ title: "Valor de", mData: "ValorDe" },
-                    /*13*/{ title: "Valor para", mData: "ValorPara" },
+                    /*12*/{ title: "Valor de", mData: "_ValorDe" },
+                    /*13*/{ title: "Valor para", mData: "_ValorPara" },
                     /*14*/{ title: "Data (Início)", mData: "_DataInicio" },
                     /*15*/{ title: "Data (Fim)", mData: "_DataFim" },
                     /*16*/{ title: "Responsavel pelo Projeto/Iniciativa", mData: "Responsavel_Projeto_Quem.Name" },
@@ -975,7 +983,7 @@
                     /*35*/{ title: "Status", mData: "Acao._StatusName" },
                     /*36*/{ title: "Prazo", mData: "Acao._Prazo" },//29 + 2
                     /*Fim Operacional*/
-
+                    
                     //{ title: "Data (Início)", mData: "_DataInicio" },
                     //{ title: "Indicadores do Projeto/Iniciativa", mData: "IndicadoresDeProjeto" },
 
@@ -1282,7 +1290,7 @@
             var show = {
                 PlanejamentoEstrategicos: {
                     extend: 'colvisGroup',
-                    text: 'Planejamento Estratégicos',
+                    text: 'Planejamento Estratégico',
                     show: arrEstragy,
                     hide: arrEstragyH
                 },
@@ -1431,6 +1439,7 @@
         }
 
         function TesteRenan(r, tipo, model) {
+            console.log("TesteRenan")
             //console.log(TesteRenan);
             //$('#modalLindo').find('.modal-body').empty().append(r);
 
@@ -1450,6 +1459,15 @@
                 //form.find('#Tatico_Id').val(model.Id);
                 form.attr('id', 'formEditTatico');
 
+                form.find('button').each(function (o,c){
+                    if($(c).attr('onclick').split(',')[1]){
+                        let before = $(c).attr('onclick').split(',')[1]
+                        before = before.slice(2,before.length)
+                        console.log(before)
+                        let after = `Novo(this, 'formEditTatico #${before}`
+                        $(c).attr('onclick', after)
+                    }
+                })
 
                 $('#modalLindo').find('.modal-body .content2').append(form);
                 $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditTatico'))\" >Salvar Tático</button><hr>");
@@ -1460,7 +1478,6 @@
                 //$('#Id').val(model.Id);
                 form.find('#Estrategico_Id').remove();
                 form.find('#IsTatico').val(false).change();
-
 
                 form.find('table > tbody > tr:nth-child(2)').hide();
                 form.find('table > tbody > tr:nth-child(3)').hide();
@@ -1474,9 +1491,20 @@
                 form.find('table > tbody > tr:nth-child(17)').hide();
                 form.find('table > tbody > tr:nth-child(18)').hide();
                 form.attr('id', 'formEditEstrategy');
+
+                form.find('button').each(function (o,c){
+                    if($(c).attr('onclick').split(',')[1]){
+                        let before = $(c).attr('onclick').split(',')[1]
+                        before = before.slice(2,before.length)
+                        console.log(before)
+                        let after = `Novo(this, 'formEditTatico #${before}`
+                        $(c).attr('onclick', after)
+                    }
+                })
+
                 $('#modalLindo').find('.modal-body .content1').append(form);
                 $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditEstrategy'))\">Salvar Estratégico</button><hr>");
-                DdlChangeEstrategico(model.Dimensao_Id, model.Objetivo_Id, model.IndicadoresDiretriz_Id);
+                DdlChangeEstrategico(model.Dimensao_Id, model.Objetivo_Id, model.IndicadoresDiretriz_Id, true);
                 //}
 
                 //else {
@@ -1522,10 +1550,10 @@
         }
 
         function getAcompanhamento(acaoCorrentId) {
+            console.log("getAcompanhamento");
 
             $('#modalLindo').modal('hide');
 
-            //console.log(getAcompanhamento);
             $.get(urlAcompanhamentoDetalhes, { id: acaoCorrentId }, function (r) {
                 $('#modalLindo').find('.modal-body').empty().append(r);
                 HideForOperacional();
@@ -1551,6 +1579,8 @@
                         $.get(urlEditPlanOp, { id: data.Id },
                              function (r) {
                                  TesteRenan(r, 'Estrategico', data);
+                                 $('#modalNovo > div > div > div.modal-footer > button').show()
+                                 
                                  //HideForOperacional();
                              }
                         );
@@ -1560,6 +1590,7 @@
                         $.get(urlEditPlanEstrat, { id: data.Id },
                              function (r) {
                                  TesteRenan(r, 'Tatico', data);
+                                 $('#modalNovo > div > div > div.modal-footer > button').show()
                                  //HideForOperacional();
                              }
                         );
@@ -1594,10 +1625,13 @@
                                   $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"SalvarAcaoEditada();\" >Salvar Operacional</button><hr>");
                                   $('#obj').show(); //Apagar depois
                                   InitDatePiker();
+                                  $('#modalNovo > div > div > div.modal-footer > button').show()
                               }
                         );
 
                     }
+
+
                     $('#modalLindo').find('.modal-footer button').hide();
                     $('#Header').html("Editar");
                     $('#modalLindo').modal();
@@ -1634,7 +1668,7 @@
             console.log(x);
             $.LoadingOverlay("hide");
             //alert('Não foi possível salvar o registro: ' + e.responseJSON.ExceptionMessage);
-            counter--;           
+            counter--;
         });
 
         /*Table*/

@@ -27,7 +27,8 @@ namespace PlanoAcaoCore
         public int Dimensao_Id { get; set; }
         public string Dimensao { get; set; }
 
-        [Display(Name = "Diretrizes / Objetivos")]
+        //[Display(Name = "Diretrizes / Objetivos")]
+        [Display(Name = "Diretriz")]
         public int Objetivo_Id { get; set; }
         public string Objetivo { get; set; }
 
@@ -337,12 +338,37 @@ namespace PlanoAcaoCore
             
             foreach (var i in planejamentos)
             {
+                //$
+                if (i.UnidadeDeMedida_Id == 1)
+                {
+                    if (i.ValorDe > 0)
+                        i._ValorDe = "R$ " + i.ValorDe.ToString("0.##");
+                    if (i.ValorPara > 0)
+                        i._ValorPara = "R$ " + i.ValorPara.ToString("0.##");
+                }
+                //Percentual
+                if (i.UnidadeDeMedida_Id == 2)
+                {
+                    if(i.ValorDe > 0)
+                        i._ValorDe = i.ValorDe.ToString("0.##") + " %";
+                    if (i.ValorPara > 0)
+                        i._ValorPara = i.ValorPara.ToString("0.##") + " %";
+                }
                 //if(i.Estrategico_Id.GetValueOrDefault() >0)
                 //{
                 //    remover.Add(i.Estrategico_Id.GetValueOrDefault());
                 //}
+                if (i.DataInicio.GetValueOrDefault() != DateTime.MinValue)
+                    i._DataInicio = i.DataInicio.GetValueOrDefault().ToString("dd/MM/yyyy");
+                else
+                    i._DataInicio = string.Empty;
 
-                var acoesTmp = acoes.Where(r => r.Panejamento_Id == i.Tatico_Id);
+                if (i.DataFim.GetValueOrDefault() != DateTime.MinValue)
+                    i._DataFim = i.DataFim.GetValueOrDefault().ToString("dd/MM/yyyy");
+                else
+                    i._DataFim = string.Empty;
+
+               var acoesTmp = acoes.Where(r => r.Panejamento_Id == i.Tatico_Id);
                 if (acoesTmp.Count() > 0)
                 {
                     foreach (var k in acoesTmp)
