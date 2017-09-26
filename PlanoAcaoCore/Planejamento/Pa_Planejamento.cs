@@ -32,7 +32,7 @@ namespace PlanoAcaoCore
         public int Objetivo_Id { get; set; }
         public string Objetivo { get; set; }
 
-        [Display(Name = "Indicadores da Diretrizes / Objetivos")]
+        [Display(Name = "Indicadores da Diretrizes")]
         public int IndicadoresDiretriz_Id { get; set; }
         public string IndicadoresDiretriz { get; set; }
 
@@ -384,6 +384,15 @@ namespace PlanoAcaoCore
                                 //throw;
                             }
 
+                        if (k.QuandoInicio != DateTime.MinValue)
+                            k._QuandoInicio = k.QuandoInicio.ToString("dd/MM/yyyy");
+                        else
+                            k._QuandoFim = string.Empty;
+
+                        if (k.QuandoFim != DateTime.MinValue)
+                            k._QuandoFim = k.QuandoFim.ToString("dd/MM/yyyy");
+                        else
+                            k._QuandoFim = string.Empty;
                         planTemp.Acao = k;
                         retorno.Add(planTemp);
                     }

@@ -26,6 +26,9 @@
         public static string user2 { get { return "sa"; } }
         public static string pass2 { get { return "1qazmko0"; } }
 
+        public static string selfRoot { get { return "http://192.168.25.200/PlanoAcao/"; } }
+        public static string SgqHost { get { return "http://192.168.25.200/sgqbr/api/User/AuthenticationLogin"; } }
+
         //Config para localhost
         //Local Db
         //public static string catalog { get { return "PlanoDeAcao"; } }
@@ -39,8 +42,8 @@
         //public static string user2 { get { return "sa"; } }
         //public static string pass2 { get { return "betsy1"; } }
 
-        public static string selfRoot { get { return "http://localhost:8091/PlanoAcao/"; } }
-        public static string SgqHost { get { return "http://localhost:8091/SgqSystem/api/User/AuthenticationLogin"; } }
+        //public static string selfRoot { get { return "http://localhost:8091/PlanoAcao/"; } }
+        //public static string SgqHost { get { return "http://localhost:8091/SgqSystem/api/User/AuthenticationLogin"; } }
 
         public static string emailFrom = "celsogea@hotmail.com";
         public static string emailPass = "tR48MJsfaz1Rf+dT+Ag8dQ==";
