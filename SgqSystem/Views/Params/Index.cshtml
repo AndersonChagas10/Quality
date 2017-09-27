@@ -829,11 +829,12 @@
                 if(dados['paramsDto.parLevel3Value.IntervalMin'] != undefined && dados['paramsDto.parLevel3Value.IntervalMin'] != null)
                     dados['paramsDto.parLevel3Value.IntervalMin'] = dados['paramsDto.parLevel3Value.IntervalMin'].replace(',', '.');
                 
-                dados["ParLevel3Value_OuterList"] = []
+                dados["paramsDto.parLevel3Dto.ParLevel3Value_OuterList"] = []
+                let counterParLevel3Value_OuterList = 0;
                 $('#tableLevel3Value tbody tr').each(function (c,o) {
-                    if($(o).data('ParLevel3Value_OuterList') != undefind)
+                    if($(o).data('ParLevel3Value_OuterList') != undefined)
                         $('#tableLevel3Value tbody tr').each(function (cc,oo) {
-                            dados["ParLevel3Value_OuterList"].push($(oo).data('ParLevel3Value_OuterList'))
+                            dados["paramsDto.parLevel3Dto.ParLevel3Value_OuterList["+counterParLevel3Value_OuterList+"]"].push($(oo).data('ParLevel3Value_OuterList'))
                         })
                 })
 
