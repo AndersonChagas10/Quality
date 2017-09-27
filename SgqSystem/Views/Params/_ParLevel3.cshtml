@@ -89,35 +89,59 @@
                                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlparLevel3, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3Recravacao", @onchange = "getLevel3ValueReencravacaoInputCalcOutro($('#parlevel3Recravacao option:selected').val())" }), @Html.Label("Selecione Par Level 3"), Table.PosicaoLabel.top)
                                     </tr>
                                     <tr class="row reencravacaoL3">
-                                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3RecravacaoValue", @onchange = "insertExpression($('#parlevel3RecravacaoValue option:selected').val())" }), @Html.Label("Selecione Valor do Tipo de Dado de Entrada"), Table.PosicaoLabel.top)
-                                        <td class="td-erp" style="width:50%">
-                                            <button type='button' id='' onclick='' class='btn btn-sm'>
+                                        @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3RecravacaoValue", @onchange = "" }), @Html.Label("Selecione Valor do Tipo de Dado de Entrada"), Table.PosicaoLabel.top)
+                                    </tr>
+                                    <tr class="row reencravacaoL3">
+                                        <td class="td-erp" id="sinais">
+                                            <button type='button' id='' onclick='clickSinal("+")' class='btn btn-sm'>
                                                 <i class="fa fa-plus" aria-hidden="true"></i>
                                             </button>
                                             &nbsp;
-                                            <button type='button' id='' onclick='' class='btn btn-sm'>
+                                            <button type='button' id='' onclick='clickSinal("-")' class='btn btn-sm'>
                                                 <i class="fa fa-minus" aria-hidden="true"></i>
                                             </button>
                                             &nbsp;
-                                            <button type='button' id='' onclick='' class='btn btn-sm'>
+                                            <button type='button' id='' onclick='clickSinal("*")' class='btn btn-sm'>
                                                 <i class="fa fa-asterisk" aria-hidden="true"></i>
                                             </button>
                                             &nbsp;
-                                            <button type='button' id='' onclick='' class='btn btn-sm'>
-                                                <i class="fa fa-code" aria-hidden="true"></i>
+                                            <button type='button' id='' onclick='clickSinal("/")' class='btn btn-sm'>
+                                                <i class="fa">/</i>
                                             </button>
                                             &nbsp;
-                                            <button type='button' id='' onclick='' class='btn btn-sm'>
+                                            <button type='button' id='' onclick='clickSinal("(")' class='btn btn-sm'>
+                                                <i class="fa">(</i>
+                                            </button>
+                                            &nbsp;
+                                            <button type='button' id='' onclick='clickSinal(")")' class='btn btn-sm'>
+                                                <i class="fa">)</i>
+                                            </button>
+                                            &nbsp;
+                                            <button type='button' id='' onclick='clickSinal("=")' class='btn btn-sm'>
+                                                <i class="fa">=</i>
+                                            </button>
+                                            &nbsp;
+                                            <button type='button' id='' onclick='clickSinal("dados")' class='btn btn-sm'>
+                                                <i class="fa">Dados Selecionados</i>
+                                            </button>
+                                            &nbsp;
+                                            <button type='button' id='' onclick='clickSinal("undo")' class='btn btn-sm'>
                                                 <i class="fa fa-undo" aria-hidden="true"></i>
                                             </button>
                                             &nbsp;
-                                            <button type='button' id='' onclick='' class='btn btn-primary btn-sm'>
-                                                <i class="fa fa-plus" aria-hidden="true"></i>
-                                            </button>
+
                                         </td>
+                                    </tr>
+                                    <tr class="row reencravacaoL3" id="">
+                                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "empresaRecravacaoSave" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top
+                                            , button: "<button type='button' id='btnSaveCounter' onclick='saveLogExpression(); ' class='btn btn-primary btn-sm'><i class='fa fa-plus' aria-hidden='true'></i></button>")
                                     </tr>
                                     <tr class="row reencravacaoL3">
                                         <td class="td-erp"><label>Expressão final</label></td>
+                                    </tr>
+
+                                    <tr class="row reencravacaoL3">
+                                        <td class="td-erp"><label id="expFinal"></label></td>
                                     </tr>
                                 </table>
 
@@ -222,53 +246,145 @@
 
     var config = @Html.Raw(Json.Encode(GlobalConfig.Eua));
 
+    function newExpressaObj(){
+        return {
+            OuterEmpresa_Id: null,
+            OuterEmpresa_Text: '',
+            OuterLevel3_Id: null,
+            OuterLevel3_Text: '',
+            OuterLevel3Value_Id: null,
+            OuterLevel3Value_Text: '',
+            OuterLevel3ValueIntervalMinValue: 0,
+            OuterLevel3ValueIntervalMaxValue: 0,
+        }
+    }
+
+    var expressaoObj = newExpressaObj()
+    var expressaoArr = []
+    
     function getLevel3ReencravacaoInputCalcOutro(id) {
         console.log(id)
         //$.post('' + '/' + id,{}, function (myOptions) {
         //    $('#parlevel3Recravacao').val(-1).change()
-
         //    $.each(myOptions, function(val, text) {
         //        let defaultSelected = false;
         //        let nowSelected     = false;
         //        $('#parlevel3Recravacao').append( new Option('teste3',4, defaultSelected , nowSelected))
         //    })
-
         //})
     }
 
-    expression = ["("]
-    function updateLogicExpression(){
+    function clickSinal(sinal){
         
-    }
-    function insertLogic(btn) {
-        expression.push("+")
-    }
-    function insertExpression(option) {
-        expression.push($('#parlevel3Recravacao option:selected').text() + " " + $('#parlevel3RecravacaoValue option:selected').text())
+        expressaoObj = {
+            OuterEmpresa_Id: $('#empresaRecravacao option:selected').val(),
+            OuterEmpresa_Text: $('#empresaRecravacao option:selected').text(),
+            OuterLevel3_Id: $('#parlevel3Recravacao option:selected').val(),
+            OuterLevel3_Text: $('#parlevel3Recravacao option:selected').text(),
+            OuterLevel3Value_Id: $('#parlevel3RecravacaoValue option:selected').val(),
+            OuterLevel3Value_Text: $('#parlevel3RecravacaoValue option:selected').text(),
+            OuterLevel3ValueIntervalMinValue: $('#parlevel3RecravacaoValue option:selected').attr('minvalue'),
+            OuterLevel3ValueIntervalMaxValue: $('#parlevel3RecravacaoValue option:selected').attr('maxvalue'),
+        }
 
+        if(sinal == "undo"){
+            expressaoArr.pop()
+            updateLogicExpression()
+        }else{
+            expressaoObj["Operator"] = sinal
+            expressaoObj["Order"] = expressaoArr.length + 1
+            expressaoArr.push(JSON.parse(JSON.stringify(expressaoObj)))
+            expressaoObj = newExpressaObj()
+            //$('#empresaRecravacao').val(-1).change()
+            //$('#parlevel3Recravacao').val(-1).change()
+            //$('#parlevel3RecravacaoValue').val(-1).change()
+            console.log(expressaoArr)
+            updateLogicExpression()
+        }
+    }
+
+    function updateLogicExpression(retorno){
+        let expressaoFinal = ''
+        expressaoArr.forEach(function(o, c){
+            if(o.Operator == "dados"){
+                console.log(o)
+                expressaoFinal += `(${o.OuterEmpresa_Text}, ${o.OuterLevel3_Text}: ${o.OuterLevel3Value_Text}) `
+            }else {
+                expressaoFinal += `${o.Operator} `
+            }
+        })
+
+        if(retorno)
+            return expressaoFinal
+        else
+            $('#expFinal').text(expressaoFinal)
+    }
+
+    function saveLogExpression(){
+
+        let tipo = $('#selectTipoInput option:selected').text()
+        let unidade = $('#empresaRecravacaoSave option:selected').text()
+        let expressao = updateLogicExpression(true)
+
+
+        let tr = `<tr pos="undefined">` +
+                    `<td>${tipo}</td>` +
+                    `<td>${unidade}</td>` +
+                    `<td></td>` +
+                    `<td></td>` +
+                    `<td></td>` +
+                    `<td>${expressao}</td>` +
+                    `<td></td>` +
+                    `<td></td>` +
+                    `<td>` +
+                        `<button type="button" class="btn btn-danger btn-xs popovers" data-content="Inativar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcInactive($(this));" data-toggle="popover" data-original-title="" title="">` +
+                            `<i class="fa fa-times" aria-hidden="true"></i>` +
+                        `</button>` +
+                        `<button type="button" class="btn btn-danger btn-xs popovers" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));" data-toggle="popover" data-original-title="" title="">` +
+                            `<i class="fa fa-pencil-square-o" aria-hidden="true"></i>` +
+                        `</button>` +
+                    `</td>` +
+                `</tr>`;
+
+        $('#tableLevel3Value tbody').append(tr)
+        $('#tableLevel3Value tbody tr:last').data('ParLevel3Value_OuterList', expressaoArr)
+
+        if($('#tableLevel3Value tbody tr').length)
+            $('#tableLevel3Value').show()
+        if(!$('#tableLevel3Value tbody tr').length)
+            $('#tableLevel3Value').hide()
+
+        expressaoObj = newExpressaObj()
+        expressaoArr = []
+        updateLogicExpression()
     }
 
     function getLevel3ValueReencravacaoInputCalcOutro(id) {
         $.post('@Url.Action("GetLevel3PorUnidadeRecravacaoDdl", "api/ParamsApi")', {'': id}, function (r){
-            
+
             let text = ''
             let val = 1
             let defaultSelected = false;
             let nowSelected     = false;
+
             $('#parlevel3RecravacaoValue').empty()
             $('#parlevel3RecravacaoValue').append( new Option('Selecione...',-1,defaultSelected,nowSelected) );
-
             r.forEach(function(o, c){
-
                 if(o.ParLevel3InputType_Id == 3){
                     if (o.AcceptableValueBetween) {
                         val = o.Id
-                        text = 'Valor não está contido: Min. '+ o.IntervalMin + ' - Máx. '+ o.IntervalMax + o.ParMeasurementUnit.Name
-                        $('#parlevel3RecravacaoValue').append( new Option(text,val,defaultSelected,nowSelected))
+                        text = 'Valor não está entre: Min. '+ o.IntervalMin + ' - Máx. '+ o.IntervalMax + o.ParMeasurementUnit.Name
+                        let option = new Option(text,val,defaultSelected,nowSelected)
+                        option.setAttribute("minValue", o.IntervalMin)
+                        option.setAttribute("maxValue", o.IntervalMax)
+                        $('#parlevel3RecravacaoValue').append(option)
                     } else {
                         val = o.Id
-                        text = 'Valor está contido: Min. '+ o.IntervalMin + ' - Máx. '+ o.IntervalMax + o.ParMeasurementUnit.Name
-                        $('#parlevel3RecravacaoValue').append( new Option(text,val,defaultSelected,nowSelected))
+                        text = 'Valor está entre: Min. '+ o.IntervalMin + ' - Máx. '+ o.IntervalMax + o.ParMeasurementUnit.Name
+                        let option = new Option(text,val,defaultSelected,nowSelected)
+                        option.setAttribute("minValue", o.IntervalMin)
+                        option.setAttribute("maxValue", o.IntervalMax)
+                        $('#parlevel3RecravacaoValue').append(option)
                     }
                 }
             })

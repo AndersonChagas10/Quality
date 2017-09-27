@@ -823,12 +823,19 @@
                 dados["paramsDto.level1Selected"] = $('#parLevel1Select2').val();
                 dados["paramsDto.level2Selected"] = $('#parLevel2Select2').val();
                 dados["paramsDto.level3Selected"] = $('#parLevel3Select2').val();
-
                 if(dados['paramsDto.parLevel3Value.IntervalMax'] != undefined && dados['paramsDto.parLevel3Value.IntervalMax'] != null)
                     dados['paramsDto.parLevel3Value.IntervalMax'] = dados['paramsDto.parLevel3Value.IntervalMax'].replace(',', '.');
 
                 if(dados['paramsDto.parLevel3Value.IntervalMin'] != undefined && dados['paramsDto.parLevel3Value.IntervalMin'] != null)
                     dados['paramsDto.parLevel3Value.IntervalMin'] = dados['paramsDto.parLevel3Value.IntervalMin'].replace(',', '.');
+                
+                dados["ParLevel3Value_OuterList"] = []
+                $('#tableLevel3Value tbody tr').each(function (c,o) {
+                    if($(o).data('ParLevel3Value_OuterList') != undefind)
+                        $('#tableLevel3Value tbody tr').each(function (cc,oo) {
+                            dados["ParLevel3Value_OuterList"].push($(oo).data('ParLevel3Value_OuterList'))
+                        })
+                })
 
                 try {
                     PesoL3.incluiNoObjetoParaSubmit(dados);
