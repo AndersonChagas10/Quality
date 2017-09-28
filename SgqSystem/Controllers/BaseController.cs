@@ -90,6 +90,7 @@ namespace SgqSystem.Controllers
             {
                 cookie.Expires = DateTime.Now.AddMinutes(60);
                 HttpContext.Response.Cookies.Set(cookie);
+                Response.Cookies.Add(cookie);
             }
             else
             {

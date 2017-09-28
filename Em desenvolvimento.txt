@@ -1,4 +1,15 @@
-05 09 2017 - CG EUA 
+05 09 2017 - CG EUA (nao inclusa no EF, não derruba build mais impacta em funcionalidade)
 
 ALTER TABLE UserSgq ADD IsActive BIT DEFAULT (0)
 UPDATE UserSgq SET IsActive = 1 
+
+
+
+11 09 2017 - CG JBS BRASIL (nao inclusa no EF, não derruba build mais impacta em funcionalidade)
+
+alter table parlevel1 add AllowAddLevel3 bit default 0
+alter table parlevel1 add AllowEditPatternLevel3Task bit default 0
+alter table parlevel1 add AllowEditWeightOnLevel3 bit default 0
+UPDATE PARLEVEL1 SET AllowAddLevel3 = 0
+UPDATE PARLEVEL1 SET AllowEditPatternLevel3Task = 0
+UPDATE PARLEVEL1 SET AllowEditWeightOnLevel3 = 0

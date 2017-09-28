@@ -6,16 +6,16 @@ namespace PlanoDeAcaoMVC.Controllers.Api
     [RoutePrefix("api/Generics")]
     public class GenericsController : ApiController
     {
-        [HttpGet]
-        [Route("Save/{val}/{param}/{predecessor}")]
-        public int Save(string val, string param, int? predecessor = 0)
+        [HttpPost]
+        [Route("Save")]
+        public int Save(GenericInsertPa valores)
         {
 
             var retorno = 0;
             var table = string.Empty;
             string fk = string.Empty;
 
-            switch (param)
+            switch (valores.param)
             {
                 case "TemaAssunto":
                     table = "Pa_TemaAssunto";
@@ -46,13 +46,20 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                     break;
             }
 
-            if(predecessor > 0)
-                retorno = Pa_BaseObject.GenericInsert(val, table, predecessor.GetValueOrDefault(), fk);
+            if(valores.predecessor > 0)
+                retorno = Pa_BaseObject.GenericInsert(valores.val, table, valores.predecessor.GetValueOrDefault(), fk);
             else
-                retorno = Pa_BaseObject.GenericInsert(val, table);
+                retorno = Pa_BaseObject.GenericInsert(valores.val, table);
 
             return retorno;
 
+        }
+
+        public class GenericInsertPa
+        {
+            public string val { get; set; }
+            public string param { get; set; }
+            public int? predecessor { get; set; } = 0;
         }
     }
 

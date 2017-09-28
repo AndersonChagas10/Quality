@@ -46,6 +46,38 @@ namespace SgqSystem.Mail
         #region SGQ USA Email
 
         /// <summary>
+        /// Realiza Chamada para API de outro SERVIDOR
+        /// </summary>
+        public static void Mail()
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var url = string.Empty;
+                    if (GlobalConfig.Brasil)
+                    {
+                        url = "http://mtzsvmqsc/SGQ/api/hf/SendMail";
+                    }
+                    else if (GlobalConfig.Eua)
+                    {
+                        //url = "http://sgqtest.jbssa.com/hmlusa/api/hf/SendMail";
+                        url = "http://sgq.jbssa.com/sgq/api/hf/SendMail";
+                    }
+                    //var url = "http://localhost:57506/" + "api/hf/SendMail";
+                    //var url = "http://localhost:8091/SgqSystem/" + "api/hf/SendMail";
+                    client.Timeout = TimeSpan.FromMinutes(2);
+                    client.GetAsync(url).Result.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+
+        /// <summary>
         /// 1 - CRIA LISTA DE EMAIL NA EMAIL CONTENT COM TODOS OS CAMPOS, INCLUSIVE DESTINATÁRIOS, DEVIATION e CORRECTIVE ACTION
         /// 2 - ENVIA EMAILS NA EMAILCONTENT
         /// 3 - CALLBACK PREENCHE EMAIL CONTENT COM RESULTADO DO ENVIO

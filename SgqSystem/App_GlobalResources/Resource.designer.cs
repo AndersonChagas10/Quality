@@ -232,6 +232,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allows less privileged users to edit the Tasks / Samples Related to Monitoring Linked to this Audit.
+        /// </summary>
+        internal static string allows_less_privileged_users_to_edit_the_tasks_samples {
+            get {
+                return ResourceManager.GetString("allows_less_privileged_users_to_edit_the_tasks_samples", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Allow create and/or edit of tasks.
         /// </summary>
         internal static string allow_create_and_or_edit_of_tasks {
@@ -246,6 +255,15 @@ namespace Resources {
         internal static string allow_field_edition_of_the_header {
             get {
                 return ResourceManager.GetString("allow_field_edition_of_the_header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allow less privileged users to edit the Monitoring Related Task Goal Linked to this Audit.
+        /// </summary>
+        internal static string allow_less_privileged_users_to_edit_the_monitoring {
+            get {
+                return ResourceManager.GetString("allow_less_privileged_users_to_edit_the_monitoring", resourceCulture);
             }
         }
         
@@ -5556,6 +5574,15 @@ namespace Resources {
         internal static string unit_changed_login_again {
             get {
                 return ResourceManager.GetString("unit_changed_login_again", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unreached Goals.
+        /// </summary>
+        internal static string unreached_goals {
+            get {
+                return ResourceManager.GetString("unreached_goals", resourceCulture);
             }
         }
         

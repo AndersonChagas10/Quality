@@ -2073,4 +2073,13 @@
   <data name="valueText" xml:space="preserve">
     <value>Valor do Texto</value>
   </data>
+  <data name="allows_less_privileged_users_to_edit_the_tasks_samples" xml:space="preserve">
+    <value>Permite que usuários menos privilegiados editem as Tarefas / Amostras vinculadas ao Monitoramento Ligado a este Indicador</value>
+  </data>
+  <data name="allow_less_privileged_users_to_edit_the_monitoring" xml:space="preserve">
+    <value>Permitir que usuários menos privilegiados editem o Objetivo da Tarefa vinculadas ao Monitoramento Ligado a este Indicador</value>
+  </data>
+  <data name="unreached_goals" xml:space="preserve">
+    <value>Metas Não Alcançadas</value>
+  </data>
 </root>

@@ -11,6 +11,11 @@ namespace DTO.DTO.Params
 {
     public class ParLevel1DTO : EntityBase
     {
+
+        public bool AllowAddLevel3 { get; set; }
+        public bool AllowEditWeightOnLevel3 { get; set; }
+        public bool AllowEditPatternLevel3Task { get; set; }
+
         public List<ParLevel2DTO> listParLevel2Colleta;
 
         //[Display(Name = "select_the_consolidation_type", ResourceType = typeof(Resource))]

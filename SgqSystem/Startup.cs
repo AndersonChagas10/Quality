@@ -29,8 +29,8 @@ namespace SgqSystem
             {
                 RecurringJob.RemoveIfExists("MailServer");
                 RecurringJob.AddOrUpdate("MailServer",
-                    () => SimpleAsynchronousUSA.SendMailUSA(),
-                    "*/2 * * * *");
+                    () => SimpleAsynchronousUSA.Mail(),
+                    "*/10 * * * *");
             }
             else if (GlobalConfig.Brasil)
             {
@@ -42,7 +42,7 @@ namespace SgqSystem
                 RecurringJob.RemoveIfExists("MailServer");
                 RecurringJob.AddOrUpdate("MailServer",
                     () => SimpleAsynchronous.Mail(),
-                    "*/2 * * * *");
+                    "*/10 * * * *");
             }
 
             //BackgroundJob.Enqueue(

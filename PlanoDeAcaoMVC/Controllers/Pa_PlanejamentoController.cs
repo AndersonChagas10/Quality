@@ -119,6 +119,7 @@ namespace PlanoDeAcaoMVC.Controllers
                 model._ValorDe = model.ValorDe.ToString("G29");
             if (model.ValorPara > 0)
                 model._ValorPara = model.ValorPara.ToString("G29");
+
             return PartialView("Index", model);
         }
 

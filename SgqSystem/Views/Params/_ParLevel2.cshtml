@@ -12,12 +12,12 @@
 <div id="newLevel2Modal">
     @using (Html.BeginForm())
     {
+        @Html.HiddenFor(r=>r.paramsDto.parLevel2Dto.isVinculado)
         <div class="row">
             <div class="col-lg-12">
 
                 <table class="table-erp">
                     <tbody>
-
                         <tr class="row hide">
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parLevel2Dto.Id, new { @class = "form-control input-sm" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)
                             @Table.GerarColuna(@Html.TextBoxFor(m => m.paramsDto.parEvaluationDto.ParCompany_Id, htmlAttributes: new { @Value = "1", @class = "" }), @Html.Label(Resources.Resource.level2), Table.PosicaoLabel.top, null, null)

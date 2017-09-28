@@ -29,6 +29,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + "'                                                                                                                                                                                                                    " +
                 "\n DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + "'                                                                                                                                                                                                                    " +
 
+                 "\n DECLARE @VOLUMEPCC int                                                  " +
+                
                 "\n CREATE TABLE #AMOSTRATIPO4 ( " +
 
                 "\n UNIDADE INT NULL, " +
@@ -209,6 +211,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + "'                                                                                                                                                                                                                    " +
                 "\n DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + "'                                                                                                                                                                                                                    " +
 
+                "\n DECLARE @VOLUMEPCC int                                                  " +
+                "\n DECLARE @ParCompany_id INT                                              " +
+
+                "\n SELECT @ParCompany_id = ID FROM PARCOMPANY WHERE NAME = '" + form.unitName + "'" +
+
                 "\n CREATE TABLE #AMOSTRATIPO4 ( " +
 
                 "\n UNIDADE INT NULL, " +
@@ -246,6 +253,35 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n ) TAB " +
                 "\n GROUP BY UNIDADE, INDICADOR " +
 
+                "\n --------------------------------                                                                                                                     " +
+                "\n                                                                                                                                                      " +
+                "\n  SELECT TOP 1 @VOLUMEPCC = SUM(Quartos) FROM VolumePcc1b  (nolock) WHERE ParCompany_id = @ParCompany_id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL " +
+                "\n                                                                                                                                                      " +
+                "\n                                                                                                                                                      " +
+                "\n  DECLARE @NAPCC INT                                                                                                                                  " +
+                "\n                                                                                                                                                      " +
+                "\n                                                                                                                                                      " +
+                "\n  SELECT                                                                                                                                              " +
+                "\n         @NAPCC =                                                                                                                                     " +
+                "\n           COUNT(1)                                                                                                                                   " +
+                "\n           FROM                                                                                                                                       " +
+                "\n      (                                                                                                                                               " +
+                "\n               SELECT                                                                                                                                 " +
+                "\n               COUNT(1) AS NA                                                                                                                         " +
+                "\n               FROM CollectionLevel2 C2(nolock)                                                                                                       " +
+                "\n               LEFT JOIN Result_Level3 C3(nolock)                                                                                                     " +
+                "\n               ON C3.CollectionLevel2_Id = C2.Id                                                                                                      " +
+                "\n               WHERE convert(date, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL                                                             " +
+                "\n               AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 where Hashkey = 1)                                                               " +
+                "\n               AND C2.UnitId = @ParCompany_Id                                                                                                         " +
+                "\n               AND IsNotEvaluate = 1                                                                                                                  " +
+                "\n               GROUP BY C2.ID                                                                                                                         " +
+                "\n           ) NA                                                                                                                                       " +
+                "\n           WHERE NA = 2                                                                                                                               " +
+                "\n  --------------------------------                                                                                                                    " +
+
+
+
                 "\n SELECT " +
 
                 "\n  CONVERT(varchar(153), Unidade) as UnidadeName" +
@@ -282,7 +318,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         , UNI.Id         AS Unidade_Id " +
                 "\n         , UNI.Name       AS Unidade " +
                 "\n         , CASE " +
-                "\n         WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
+                "\n         WHEN IND.HashKey = 1 THEN @VOLUMEPCC - @NAPCC " +
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
@@ -295,7 +331,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n        END AS Av " +
 
                 "\n       , CASE " +
-                "\n         WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
+                "\n         WHEN IND.HashKey = 1 THEN @VOLUMEPCC - @NAPCC " +
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN EvaluateTotal " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN EvaluatedResult " +
@@ -382,6 +418,38 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + "'                                                                                                                                                                                                                    " +
                 "\n DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + "'       " +
 
+                "\n DECLARE @VOLUMEPCC int                                                  " +
+                "\n DECLARE @ParCompany_id INT                                              " +
+
+                "\n SELECT @ParCompany_id = ID FROM PARCOMPANY WHERE NAME = '" + form.unitName + "'" +
+
+                "\n --------------------------------                                                                                                                     " +
+                "\n                                                                                                                                                      " +
+                "\n  SELECT TOP 1 @VOLUMEPCC = SUM(Quartos) FROM VolumePcc1b  (nolock) WHERE ParCompany_id = @ParCompany_id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL " +
+                "\n                                                                                                                                                      " +
+                "\n                                                                                                                                                      " +
+                "\n  DECLARE @NAPCC INT                                                                                                                                  " +
+                "\n                                                                                                                                                      " +
+                "\n                                                                                                                                                      " +
+                "\n  SELECT                                                                                                                                              " +
+                "\n         @NAPCC =                                                                                                                                     " +
+                "\n           COUNT(1)                                                                                                                                   " +
+                "\n           FROM                                                                                                                                       " +
+                "\n      (                                                                                                                                               " +
+                "\n               SELECT                                                                                                                                 " +
+                "\n               COUNT(1) AS NA                                                                                                                         " +
+                "\n               FROM CollectionLevel2 C2(nolock)                                                                                                       " +
+                "\n               LEFT JOIN Result_Level3 C3(nolock)                                                                                                     " +
+                "\n               ON C3.CollectionLevel2_Id = C2.Id                                                                                                      " +
+                "\n               WHERE convert(date, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL                                                             " +
+                "\n               AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 where Hashkey = 1)                                                               " +
+                "\n               AND C2.UnitId = @ParCompany_Id                                                                                                         " +
+                "\n               AND IsNotEvaluate = 1                                                                                                                  " +
+                "\n               GROUP BY C2.ID                                                                                                                         " +
+                "\n           ) NA                                                                                                                                       " +
+                "\n           WHERE NA = 2                                                                                                                               " +
+                "\n  --------------------------------                                                                                                                    " +
+
                "\n SELECT " +
                "\n  " +
                "\n  --level1_Id " +
@@ -407,7 +475,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
 
                                "\n         , CASE " +
-                "\n         WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos)/2 FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
+                "\n         WHEN IND.HashKey = 1 THEN @VOLUMEPCC/2 - @NAPCC " +
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL2.WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id in (3,4) THEN CL2.EvaluatedResult " +
@@ -417,7 +485,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n        END AS Av " +
 
                 "\n       , CASE " +
-                "\n         WHEN IND.HashKey = 1 THEN (SELECT TOP 1 SUM(Quartos) FROM VolumePcc1b WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
+                "\n         WHEN IND.HashKey = 1 THEN @VOLUMEPCC/2 - @NAPCC " +
                 "\n         WHEN IND.ParConsolidationType_Id = 1 THEN CL2.EvaluateTotal " +
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiEvaluation " +
                 "\n         WHEN IND.ParConsolidationType_Id in (3,4) THEN CL2.EvaluatedResult " +
@@ -495,6 +563,38 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + "'                                                                                                                                                                                                                    " +
                 "\n DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + "'       " +
 
+                 "\n DECLARE @VOLUMEPCC int                                                  " +
+                "\n DECLARE @ParCompany_id INT                                              " +
+
+                "\n SELECT @ParCompany_id = ID FROM PARCOMPANY WHERE NAME = '" + form.unitName + "'" +
+
+                "\n --------------------------------                                                                                                                     " +
+                "\n                                                                                                                                                      " +
+                "\n  SELECT TOP 1 @VOLUMEPCC = SUM(Quartos) FROM VolumePcc1b  (nolock) WHERE ParCompany_id = @ParCompany_id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL " +
+                "\n                                                                                                                                                      " +
+                "\n                                                                                                                                                      " +
+                "\n  DECLARE @NAPCC INT                                                                                                                                  " +
+                "\n                                                                                                                                                      " +
+                "\n                                                                                                                                                      " +
+                "\n  SELECT                                                                                                                                              " +
+                "\n         @NAPCC =                                                                                                                                     " +
+                "\n           COUNT(1)                                                                                                                                   " +
+                "\n           FROM                                                                                                                                       " +
+                "\n      (                                                                                                                                               " +
+                "\n               SELECT                                                                                                                                 " +
+                "\n               COUNT(1) AS NA                                                                                                                         " +
+                "\n               FROM CollectionLevel2 C2(nolock)                                                                                                       " +
+                "\n               LEFT JOIN Result_Level3 C3(nolock)                                                                                                     " +
+                "\n               ON C3.CollectionLevel2_Id = C2.Id                                                                                                      " +
+                "\n               WHERE convert(date, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL                                                             " +
+                "\n               AND C2.ParLevel1_Id = (SELECT top 1 id FROM Parlevel1 where Hashkey = 1)                                                               " +
+                "\n               AND C2.UnitId = @ParCompany_Id                                                                                                         " +
+                "\n               AND IsNotEvaluate = 1                                                                                                                  " +
+                "\n               GROUP BY C2.ID                                                                                                                         " +
+                "\n           ) NA                                                                                                                                       " +
+                "\n           WHERE NA = 2                                                                                                                               " +
+                "\n  --------------------------------                                                                                                                    " +
+
                 "\n SELECT " +
                 "\n TarefaName, NcSemPeso as Nc, AvSemPeso as Av, [Proc] FROM (" +
                 "\n SELECT " +
@@ -510,10 +610,10 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                          "\n ,SUM(R3.WeiDefects) AS Nc " +
                          "\n ,CASE WHEN IND.ParConsolidationType_Id = 2 THEN SUM(r3.WeiDefects) ELSE SUM(R3.Defects) END AS NcSemPeso  " +
                          "\n ,CASE " +
-                         "\n WHEN IND.HashKey = 1 THEN(SELECT TOP 1 SUM(Quartos) / 2 FROM VolumePcc1b (nolock) WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
+                         "\n WHEN IND.HashKey = 1 THEN @VOLUMEPCC/2 - @NAPCC " +
                          "\n ELSE SUM(R3.WeiEvaluation) END AS Av " +
                          "\n ,CASE " +
-                         "\n WHEN IND.HashKey = 1 THEN(SELECT TOP 1 SUM(Quartos) / 2 FROM VolumePcc1b (nolock) WHERE ParCompany_id = UNI.Id AND Data BETWEEN @DATAINICIAL AND @DATAFINAL) " +
+                         "\n WHEN IND.HashKey = 1 THEN @VOLUMEPCC/2 - @NAPCC " +
                          "\n WHEN IND.ParConsolidationType_Id = 2 THEN SUM(r3.WeiEvaluation) " +
                          "\n ELSE SUM(R3.Evaluation) END AS AvSemPeso " + 
                          "\n ,SUM(R3.WeiDefects) / " +
