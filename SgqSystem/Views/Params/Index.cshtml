@@ -834,7 +834,7 @@
                 $('#tableLevel3Value tbody tr').each(function (c,o) {
                     if($(o).data('ParLevel3Value_OuterList') != undefined)
                         $('#tableLevel3Value tbody tr').each(function (cc,oo) {
-                            dados["paramsDto.parLevel3Dto.ParLevel3Value_OuterList["+counterParLevel3Value_OuterList+"]"].push($(oo).data('ParLevel3Value_OuterList'))
+                            dados["paramsDto.parLevel3Dto.ParLevel3Value_OuterList"] = $(oo).data('ParLevel3Value_OuterList')
                         })
                 })
 

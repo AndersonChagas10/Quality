@@ -468,6 +468,100 @@ namespace Dominio.Services
             {
 
                 _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, listParRelapse, parLevel3Level2peso?.ToList(), paramsDto.level1Selected);
+
+                if (paramsDto.parLevel3Dto.ParLevel3Value_OuterList != null)
+                    foreach (var i in paramsDto.parLevel3Dto.ParLevel3Value_OuterList)
+                    {
+                        if (i.Id <= 0)
+                        {
+                            i.ParLevel3_Id = saveParamLevel3.Id;
+                            i.ParLevel3_Name = saveParamLevel3.Name;
+
+                            var queryInsertParLevel3Value_OuterList = string.Format(@"
+                            INSERT INTO [dbo].[ParLevel3Value_Outer]
+                                (
+                                    AddDate
+                                    ,AlterDate
+                                    ,IsActive
+                                    ,OuterEmpresa_Id
+                                    ,OuterEmpresa_Text
+                                    ,OuterLevel3_Id
+                                    ,OuterLevel3_Text
+                                    ,OuterLevel3Value_Id
+                                    ,OuterLevel3Value_Text
+                                    ,OuterLevel3ValueIntervalMaxValue
+                                   ,OuterLevel3ValueIntervalMinValue
+                                   ,Operator
+                                   ,[Order]
+                                   ,ParLevel3_Id
+                                   ,ParLevel3_Name
+                                   ,ParLevel3InputType_Id
+                                   ,ParLevel3InputType_Name
+                                   ,ParCompany_Id
+                                   ,ParCompany_Name
+                                   ,ParMeasurementUnit_Id
+                                   ,ParMeasurementUnit_Name
+                               )
+                           VALUES
+                               (
+                                   GETDATE()
+                                   ,null
+                                   ,1
+                                   ,{0}
+                                   ,N'{1}'
+                                   ,{2}
+                                   ,N'{3}'
+                                   ,{4}
+                                   ,N'{5}'
+                                   ,{6}
+                                   ,{7}
+                                   ,N'{8}'
+                                   ,{9}
+                                   ,{10}
+                                   ,N'{11}'        
+                                   ,{12}
+                                   ,N'{13}'
+                                   ,{14}
+                                   ,N'{15}'
+                                   ,{16}
+                                   ,N'{17}'
+                               );
+                           SELECT SCOPE_IDENTITY()"
+                            , i.OuterEmpresa_Id
+                            , i.OuterEmpresa_Text
+                            , i.OuterLevel3_Id
+                            , i.OuterLevel3_Text
+                            , i.OuterLevel3Value_Id
+                            , i.OuterLevel3Value_Text
+                            , i.OuterLevel3ValueIntervalMaxValue
+                            , i.OuterLevel3ValueIntervalMinValue
+                            , i.Operator
+                            , i.Order
+                            , i.ParLevel3_Id
+                            , i.ParLevel3_Name
+                            , i.ParLevel3InputType_Id
+                            , i.ParLevel3InputType_Name
+                            , i.ParCompany_Id
+                            , i.ParCompany_Name
+                            , i.ParMeasurementUnit_Id
+                            , i.ParMeasurementUnit_Name
+                            );
+
+                            var idSaved = db.Database.SqlQuery<decimal>(queryInsertParLevel3Value_OuterList).FirstOrDefault();
+                            i.Id = int.Parse(idSaved.ToString());
+                        }
+                        else
+                        {
+                            var queryUpdateParLevel3Value_OuterList = string.Format(@"
+                                UPDATE ParLevel3Value_Outer 
+                                SET AlterDate = {0}, IsActive = {1}
+                                WHERE Id = {2}", "GETDATE()", i.IsActive ? "1" : "0", i.Id);
+
+                            db.Database.ExecuteSqlCommand(queryUpdateParLevel3Value_OuterList);
+                        }
+
+                    }
+
                 if (parLevel3Level2peso != null)
                     foreach (var i in parLevel3Level2peso?.Where(r => r.IsActive))
                         AddVinculoL1L2(paramsDto.level1Selected, paramsDto.level2Selected, saveParamLevel3.Id, 0, i.ParCompany_Id);
@@ -509,7 +603,7 @@ namespace Dominio.Services
             var group = db.ParLevel3Group.Where(r => r.ParLevel2_Id == idParLevel2 && r.IsActive == true).ToList();
             var level3Level2 = parlevel3.ParLevel3Level2.Where(r => r.ParLevel2_Id == idParLevel2 && r.ParLevel3_Id == idParLevel3 && r.IsActive == true).OrderByDescending(r => r.IsActive);
             var level3Value = parlevel3.ParLevel3Value.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive);
-            
+            var parlevel3Reencravacao = db.Database.SqlQuery<ParLevel3Value_OuterListDTO>(string.Format(@"SELECT * FROM ParLevel3Value_Outer WHERE Parlevel3_Id = {0} AND IsActive = 1", parlevel3.Id)).ToList();
             #endregion
 
             #region Mapper
@@ -519,7 +613,8 @@ namespace Dominio.Services
             level3.listLevel3Level2 = Mapper.Map<List<ParLevel3Level2DTO>>(level3Level2);
             level3.listLevel3Value = Mapper.Map<List<ParLevel3ValueDTO>>(level3Value);
             retorno.parLevel3Value = new ParLevel3ValueDTO(); // Mini Gambi....
-
+            level3.ParLevel3Value_OuterList = parlevel3Reencravacao;
+            level3.ParLevel3Value_OuterListGrouped = parlevel3Reencravacao.GroupBy(r=>r.ParCompany_Id);
             #endregion
 
             #region Rn's

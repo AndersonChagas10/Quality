@@ -81,56 +81,58 @@
 
             <table style="width: 100%">
                 <tbody>
-                    
+
                     <tr>
                         <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold;">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
                         <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{$index + 1}}</td>
                     </tr>
-                    
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
+
+                   <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
                         <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
                         <td style="border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                            @*{{ParLevel3.ResultValue[$index]}}*@
                             {{ParLevel3.ResultValue['Ponto' + ($index +1)]}}
-                            @*<i ng-show="!(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue[$index] &&  ParLevel3.ResultValue[$index] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-times" aria-hidden="true"></i>
-                            <i ng-show="(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue[$index] &&  ParLevel3.ResultValue[$index] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-check" aria-hidden="true"></i>*@
                         </td>
                     </tr>
 
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
+                     <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
                         <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
                         <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                            BINARIO
+                            <span ng-show="ParLevel3.ResultValue[('Ponto' + ($index +1))] == '0'">
+                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
+                            </span>
+                            <span ng-show="ParLevel3.ResultValue[('Ponto' + ($index +1))] == '1'">
+                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
+                            </span>
                         </td>
                     </tr>
 
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '4')">
+                    @*<tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '4')">
                         <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
                         <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                            CALCULADO
+                            {{ParLevel3.ResultValue['Ponto' + ($index +1)]}}
                         </td>
-                    </tr>
+                    </tr>*@
 
                     <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
                         <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
                         <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                            Nº  de DEFEITOS
+                            {{ParLevel3.ResultValue[('Ponto' + ($index +1))] || "0"}}
                         </td>
                     </tr>
 
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
+                    @*<tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
                         <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
                         <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                            TEXTO
+                            {{ParLevel3.ResultValue['Ponto' + ($index +1)]}}
                         </td>
                     </tr>
 
                     <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '99')">
                         <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
                         <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                            NOVO CALCULADO POR OUTRO
+                            {{ParLevel3.ResultValue['Ponto' + ($index +1)]}}
                         </td>
-                    </tr>
+                    </tr>*@
 
                 </tbody>
             </table>
@@ -144,6 +146,7 @@
                 </div>
             </div>
 
+            @*{{item.ListParlevel3}}*@
             <!-- Modal Edit-->
             <div class="modal fade bd-example-modal-lg" id="editModal{{$index}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -160,71 +163,75 @@
 
                             <table style="width: 100%">
                                 <tbody>
-                    
+
                                     <tr>
                                         <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold;">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
                                         <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{$index + 1}}</td>
                                     </tr>
-                                    
-                                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
-                                      
+
+                                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index">
+
                                         <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                                            <input title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].IntervalMax}}"
-                                                   ng-model="ParLevel3.ResultValue['Ponto' + ($index +1)]"
-                                                   style="width:60%"
-                                                   type="number" />
-                                            <i ng-show="!(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-times" aria-hidden="true"></i>
-                                            <i ng-show="(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-check" aria-hidden="true"></i>
+                                        <td style="max-width: 150px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index" >
+                                            
+                                            @*1	Binário ok
+                                            2	Número de defeitos ok 
+                                            3	Intervalos ok
+                                            4	Calculado
+                                            5	Texto
+                                            99	NOVO CALCULADO POR OUTRO*@
+
+                                            @*3	Intervalos*@
+                                            <span ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
+                                                <input title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].IntervalMax}}"
+                                                       ng-model="ParLevel3.ResultValue['Ponto' + ($index +1)]"
+                                                       style="width:60%"
+                                                       type="number" />
+                                                <i ng-show="!(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-times" aria-hidden="true"></i>
+                                                <i ng-show="(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-check" aria-hidden="true"></i>
+                                            </span>
+
+                                            @*1	Binário*@
+                                            <span ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
+                                                <input type="radio" ng-model="etc" ng-value="true" ng-change="ParLevel3.ResultValue['Ponto' + ($index +1)] = 0" /> {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
+                                                <br />
+                                                <input type="radio" ng-model="etc" ng-value="false" ng-change="ParLevel3.ResultValue['Ponto' + ($index +1)] = 1" /> {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
+                                            </span>
+
+                                            @*4	Calculado*@
+                                            @*<span ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '4')">
+                                                CALCULADO
+                                            </span>*@
+
+                                            @*2	Número de defeitos*@
+                                            <span ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
+                                                <input title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].IntervalMax}}"
+                                                       ng-model="ParLevel3.ResultValue[('Ponto' + ($index +1))]"
+                                                       style="width:60%"
+                                                       type="number" />
+                                                <i ng-show="!(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-times" aria-hidden="true"></i>
+                                                <i ng-show="(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-check" aria-hidden="true"></i>
+                                            </span>
+
+                                            @*5	Texto*@
+                                            @*<span ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
+                                                Outro: <input type="text" />
+                                            </span>*@    
+
+                                            @*99 NOVO CALCULADO POR OUTRO*@
+                                            @*<span ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '99')">
+                                                NOVO CALCULADO POR OUTRO
+                                            </span>*@
                                         </td>
-                                        @*<td>{{ParLevel3}}</td>*@
+
+                                        <td>@*{{ParLevel3}}*@</td>
                                     </tr>
 
-                                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
-                                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                                           BINARIO
-                                        </td>
-                                        @*<td>{{ParLevel3}}</td>*@
-                                    </tr>
-
-                                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '4')">
-                                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                                            CALCULADO
-                                        </td>
-                                        @*<td>{{ParLevel3}}</td>*@
-                                    </tr>
-
-                                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
-                                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                                            Nº  de DEFEITOS
-                                        </td>
-                                         @*<td>{{ParLevel3}}</td>*@
-                                    </tr>
-
-                                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
-                                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                                            TEXTO
-                                        </td>
-                                        @*<td>{{ParLevel3}}</td>*@
-                                    </tr>
-
-                                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '99')">
-                                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                                            NOVO CALCULADO POR OUTRO
-                                        </td>
-                                        @*<td>{{ParLevel3}}</td>*@
-                                    </tr>
-                                  
                                 </tbody>
                             </table>
 
                         </div>
-                        @*{{item}}*@
+                        @*{{item}}*@    
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-primary">Save changes</button>
@@ -257,7 +264,7 @@
     </button>
 
 
-   
+
 
     <hr />
 
@@ -267,16 +274,16 @@
     @*{{linhas}}*@
     <hr />
     @*seletedLinha<br />
-    {{seletedLinha}}
-    <hr />
-    seletedLinha.TipoDeLata<br />
-    {{seletedLinha.TipoDeLata}}
-    {{range(seletedLinha.TipoDeLata.NumberOfPoints)}}
-    <hr />
-    seletedLinha.ListParlevel3<br />
-    {{seletedLinha.ListParlevel3}}
-    <hr />
-    {{activeInLine}}*@
+        {{seletedLinha}}
+        <hr />
+        seletedLinha.TipoDeLata<br />
+        {{seletedLinha.TipoDeLata}}
+        {{range(seletedLinha.TipoDeLata.NumberOfPoints)}}
+        <hr />
+        seletedLinha.ListParlevel3<br />
+        {{seletedLinha.ListParlevel3}}
+        <hr />
+        {{activeInLine}}*@
 </div>
 
 

@@ -129,23 +129,27 @@
                                                 <i class="fa fa-undo" aria-hidden="true"></i>
                                             </button>
                                             &nbsp;
-
+                                            <button type="button" id="btnSaveCounter" onclick="saveLogExpression(); " class="btn btn-primary btn-sm">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
                                         </td>
                                     </tr>
-                                    <tr class="row reencravacaoL3" id="">
-                                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "empresaRecravacaoSave" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top
-                                            , button: "<button type='button' id='btnSaveCounter' onclick='saveLogExpression(); ' class='btn btn-primary btn-sm'><i class='fa fa-plus' aria-hidden='true'></i></button>")
-                                    </tr>
+                                    @*<tr class="row reencravacaoL3" id="">
+                                            @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "empresaRecravacaoSave" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top
+                                                , button: "<button type='button' id='btnSaveCounter' onclick='saveLogExpression(); ' class='btn btn-primary btn-sm'><i class='fa fa-plus' aria-hidden='true'></i></button>")
+                                        </tr>*@
                                     <tr class="row reencravacaoL3">
                                         <td class="td-erp"><label>Expressão final</label></td>
                                     </tr>
-
+                                    <tr class="row reencravacaoL3">
+                                        <td class="td-erp"></td>
+                                    </tr>
                                     <tr class="row reencravacaoL3">
                                         <td class="td-erp"><label id="expFinal"></label></td>
                                     </tr>
                                 </table>
 
-
+                                <hr />
                                 <table id="tableLevel3Value" class="table table-condensed table-responsive no-margin margin-top" nameModal="@Resources.Resource.edit_input_data_type">
                                     <thead>
                                         <tr>
@@ -256,27 +260,38 @@
             OuterLevel3Value_Text: '',
             OuterLevel3ValueIntervalMinValue: 0,
             OuterLevel3ValueIntervalMaxValue: 0,
+            ParLevel3_Id: 0,
+            ParLevel3_Name: null,
+            ParLevel3InputType_Id: 0,
+            ParCompany_Id: 0,
+            ParCompany_Name: null,
+            ParMeasurementUnit_Id: 0,
+            ParMeasurementUnit_Name: null,
+            IsActive:  true
         }
     }
 
     var expressaoObj = newExpressaObj()
     var expressaoArr = []
-    
+
     function getLevel3ReencravacaoInputCalcOutro(id) {
         console.log(id)
-        //$.post('' + '/' + id,{}, function (myOptions) {
-        //    $('#parlevel3Recravacao').val(-1).change()
-        //    $.each(myOptions, function(val, text) {
-        //        let defaultSelected = false;
-        //        let nowSelected     = false;
-        //        $('#parlevel3Recravacao').append( new Option('teste3',4, defaultSelected , nowSelected))
-        //    })
-        //})
     }
 
+    @*var pl3Id = @Html.Raw(Json.Encode(Model.paramsDto.parLevel3Dto.Id))
+    var pl3Name =  @Html.Raw(Json.Encode(Model.paramsDto.parLevel3Dto.Name))*@
+
     function clickSinal(sinal){
-        
+
         expressaoObj = {
+            //ParLevel3_Id: pl3Id, //Resolved in BE
+            //ParLevel3_Name: pl3Name, //Resolved in BE
+            ParLevel3InputType_Id: $('#selectTipoInput option:selected').val(),
+            ParLevel3InputType_Name: $('#selectTipoInput option:selected').text(),
+            ParCompany_Id: $('#empresaRecravacao option:selected').val(),
+            ParCompany_Name: $('#empresaRecravacao option:selected').text(),
+            ParMeasurementUnit_Id: 0,
+            ParMeasurementUnit_Name: null,
             OuterEmpresa_Id: $('#empresaRecravacao option:selected').val(),
             OuterEmpresa_Text: $('#empresaRecravacao option:selected').text(),
             OuterLevel3_Id: $('#parlevel3Recravacao option:selected').val(),
@@ -323,7 +338,7 @@
     function saveLogExpression(){
 
         let tipo = $('#selectTipoInput option:selected').text()
-        let unidade = $('#empresaRecravacaoSave option:selected').text()
+        let unidade = $('#empresaRecravacao option:selected').text()
         let expressao = updateLogicExpression(true)
 
 
@@ -337,7 +352,7 @@
                     `<td></td>` +
                     `<td></td>` +
                     `<td>` +
-                        `<button type="button" class="btn btn-danger btn-xs popovers" data-content="Inativar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcInactive($(this));" data-toggle="popover" data-original-title="" title="">` +
+                        `<button type="button" class="btn btn-danger btn-xs popovers" data-content="Remover Item Inserido" data-trigger="hover" data-placement="right" name="" onclick="removeExpression($(this));" data-toggle="popover" data-original-title="" title="">` +
                             `<i class="fa fa-times" aria-hidden="true"></i>` +
                         `</button>` +
                         `<button type="button" class="btn btn-danger btn-xs popovers" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));" data-toggle="popover" data-original-title="" title="">` +
@@ -402,6 +417,85 @@
             $('#modalUnidadeMedida').hide();
         });
     }
+
+    var reencravacoes = @Html.Raw(Json.Encode(Model.paramsDto.parLevel3Dto.ParLevel3Value_OuterList))
+    var reencravacoes2 = @Html.Raw(Json.Encode(Model.paramsDto.parLevel3Dto.ParLevel3Value_OuterListGrouped))
+    function loadRecravacoes (){
+        console.log(reencravacoes)
+
+        if(reencravacoes2 != null && reencravacoes2!= undefined && reencravacoes2.length){
+            reencravacoes2.forEach(function(o,c){
+                expressaoArr = o
+                updateLogicExpression(true)
+
+                let tipo = reencravacoes[0].ParLevel3InputType_Name
+                let unidade = reencravacoes[0].ParCompany_Name
+                let expressao = updateLogicExpression(true)
+
+                let tr = `<tr pos="undefined">` +
+                            `<td>${tipo}</td>` +
+                            `<td>${unidade}</td>` +
+                            `<td></td>` +
+                            `<td></td>` +
+                            `<td></td>` +
+                            `<td>${expressao}</td>` +
+                            `<td></td>` +
+                            `<td></td>` +
+                            `<td>` +
+                                `<button style="display:none" type="button" class="btn btn-danger btn-xs popovers" data-content="Ativar Item" data-trigger="hover" data-placement="right" name="" onclick="inactivateExpression($(this), true);" data-toggle="popover" data-original-title="" title="">` +
+                                    `<i class="fa fa-undo" aria-hidden="true"></i>` +
+                                `</button>`+
+                                `<button type="button" class="btn btn-danger btn-xs popovers" data-content="Inativar Item" data-trigger="hover" data-placement="right" name="" onclick="inactivateExpression($(this), false);" data-toggle="popover" data-original-title="" title="">` +
+                                    `<i class="fa fa-times" aria-hidden="true"></i>` +
+                                `</button>` +
+                                `<button type="button" class="btn btn-danger btn-xs popovers" data-content="Alterar" data-trigger="hover" data-placement="right" name="" onclick="crudNxN.funcEdit($(this));" data-toggle="popover" data-original-title="" title="">` +
+                                    `<i class="fa fa-pencil-square-o" aria-hidden="true"></i>` +
+                                `</button>` +
+                            `</td>` +
+                        `</tr>`;
+
+                $('#tableLevel3Value tbody').append(tr)
+                $('#tableLevel3Value tbody tr:last').data('ParLevel3Value_OuterList', expressaoArr)
+
+                if($('#tableLevel3Value tbody tr').length)
+                    $('#tableLevel3Value').show()
+                if(!$('#tableLevel3Value tbody tr').length)
+                    $('#tableLevel3Value').hide()
+
+                expressaoObj = newExpressaObj()
+                expressaoArr = []
+                updateLogicExpression()
+            })
+        }
+    }
+
+    function removeExpression(row){
+        console.log(row)
+        row.parents('tr').remove()
+        if($('#tableLevel3Value tbody tr').length)
+            $('#tableLevel3Value').show()
+        if(!$('#tableLevel3Value tbody tr').length)
+            $('#tableLevel3Value').hide()
+    }
+
+    function inactivateExpression(row, conditional){
+        console.log(row)
+        if(conditional){
+            $(row.parents('tr').find('button')[0]).hide()
+            $(row.parents('tr').find('button')[1]).show()
+        }
+        else {
+            $(row.parents('tr').find('button')[0]).show()
+            $(row.parents('tr').find('button')[1]).hide()
+        }
+        row.parents('tr').each(function (cc,oo) {
+            $(oo).data('ParLevel3Value_OuterList').forEach(function (o,c) {
+                o['IsActive'] =  conditional
+            })
+        })
+    }
+
+    loadRecravacoes()
 
     /*Vinculo Level3Level2*/
     function saveLevel3Level2() {
