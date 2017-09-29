@@ -12,8 +12,13 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class DelDados
+    public partial class Result_Level3_Photos
     {
-        public int TESTE { get; set; }
+        public int ID { get; set; }
+        public Nullable<int> Result_Level3_Id { get; set; }
+        public byte[] Photo_Thumbnaills { get; set; }
+        public byte[] Photo { get; set; }
+        public Nullable<double> Latidute { get; set; }
+        public Nullable<double> Longitude { get; set; }
     }
 }
