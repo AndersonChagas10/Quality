@@ -2082,4 +2082,10 @@
   <data name="unreached_goals" xml:space="preserve">
     <value>Metas Não Alcançadas</value>
   </data>
+  <data name="pa_causa_especifica" xml:space="preserve">
+    <value>Causa Específica</value>
+  </data>
+  <data name="pa_ok" xml:space="preserve">
+    <value>ok</value>
+  </data>
 </root>
