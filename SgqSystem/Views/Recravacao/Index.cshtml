@@ -19,50 +19,67 @@
         </ul>
 
         <hr />
+
         <div ng-show="seletedLinha.Id > 0" class="col-lg-12 col-md-12 col-sm-12">
             <form role="form" class="ng-pristine ng-valid">
                 <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
                     <label for="">Produto</label>
-                    <select ng-options="item as item.Name for item in produtos track by item.Id" ng-model="seletedLinha.form.Produto" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true"></select>
+                    <select ng-disabled="seletedLinha.finalizado" ng-options="item as item.Name for item in produtos track by item.Id" ng-model="seletedLinha.form.Produto" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true"></select>
                 </div>
                 <div class="form-group float-label-control col-lg-3 col-md-3 col-sm-3">
                     <label for="">Hora do início da Produção</label>
-                    <input type="time" class="form-control" placeholder="Hora do início da Produção" ng-model="seletedLinha.form.HoraInicioProducao">
+                    <input ng-disabled="seletedLinha.finalizado" type="time" class="form-control" placeholder="Hora do início da Produção" ng-model="seletedLinha.form.HoraInicioProducao">
                 </div>
                 <div class="form-group float-label-control col-lg-3 col-md-3 col-sm-3">
                     <label for="">Hora do final da Produção</label>
-                    <input type="time" class="form-control" placeholder="Hora do final da Produção" ng-model="seletedLinha.form.HoraFimProducao">
+                    <input ng-disabled="seletedLinha.finalizado" type="time" class="form-control" placeholder="Hora do final da Produção" ng-model="seletedLinha.form.HoraFimProducao">
                 </div>
                 <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
                     <label for="">Fornecedor da Lata</label>
-                    <select ng-options="item as item.Name for item in fornecedorLata track by item.Id" ng-model="seletedLinha.form.FornecedorLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true"></select>
+                    <select ng-disabled="seletedLinha.finalizado" ng-options="item as item.Name for item in fornecedorLata track by item.Id" ng-model="seletedLinha.form.FornecedorLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true"></select>
                 </div>
                 <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
                     <label for="">Data do recebimento das latas</label>
-                    <input type="date" class="form-control" placeholder="Data do recebimento das latas" ng-model="seletedLinha.form.DataRecebimentoLatas">
+                    <input ng-disabled="seletedLinha.finalizado" type="date" class="form-control" placeholder="Data do recebimento das latas" ng-model="seletedLinha.form.DataRecebimentoLatas">
                 </div>
                 <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
                     <label for="">Fornecedor das tampas e funtos das latas</label>
-                    <select ng-options="item as item.Name for item in fornecedorTampaLata track by item.Id" ng-model="seletedLinha.form.FornecedorTampaFundoLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true"></select>
+                    <select ng-disabled="seletedLinha.finalizado" ng-options="item as item.Name for item in fornecedorTampaLata track by item.Id" ng-model="seletedLinha.form.FornecedorTampaFundoLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true"></select>
                 </div>
                 <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
                     <label for="">Data do recebimento das tampas e fundos das latas</label>
-                    <input type="date" class="form-control" placeholder="Data do recebimento das tampas e fundos das latas" ng-model="seletedLinha.form.DataRecebimentoTampasFundosLatas">
+                    <input ng-disabled="seletedLinha.finalizado" type="date" class="form-control" placeholder="Data do recebimento das tampas e fundos das latas" ng-model="seletedLinha.form.DataRecebimentoTampasFundosLatas">
                 </div>
                 <hr />
                 @*{{seletedLinha.form}}*@
                 <hr />
             </form>
 
-            <div style="text-align:right;">
-                <button ng-disabled="linha.FinalizarForm" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModalLogin">
-                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Finalizar Linha
-                </button>
+            <div class="row col-md-12">
+
+                <div style="" class="col-md-6">
+                    <span ng-show="seletedLinha.finalizado" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{seletedLinha.userFinish.Name}}
+                    &nbsp;
+                    <span ng-show="seletedLinha.finalizado" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{seletedLinha.dataUserFinish}}
+                    <button ng-disabled="seletedLinha.finalizado" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinatura">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Finalizar Linha
+                    </button>
+                </div>
+
+                <div style="" class="col-md-6" ng-show="seletedLinha.finalizado">
+                    <span ng-show="seletedLinha.isValidated" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{seletedLinha.userValidacao.Name}}
+                    &nbsp;
+                    <span ng-show="seletedLinha.isValidated" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{seletedLinha.dataUserValidacao}}
+                    <button  ng-disabled="seletedLinha.isValidated" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinaturaValidarLinha">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Validar Linha
+                    </button>
+                </div>
+
             </div>
 
         </div>
 
-        <div ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" class="col-lg-3 col-md-6 col-sm-6  col-xs-12" ng-repeat="item in seletedLinha.latas track by $index">
+        <div ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" class="col-lg-12 col-md-12 col-sm-12  col-xs-12" ng-repeat="item in seletedLinha.latas track by $index">
             <div style="text-align: right; padding-bottom: 5px; padding-top: 5px; float: left; vertical-align: middle; font-size: 18px;">{{item.Name}}</div>
             <div style="text-align: right; padding-bottom: 5px; padding-top: 5px; float: right; ">
                 <button ng-show="item.finalizado" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
@@ -74,7 +91,7 @@
                 <button ng-show="!item.finalizado" type="button" class="btn btn-danger btn-sm" ng-click="deleteLata(seletedLinha, $index)">
                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                 </button>
-                <button ng-show="item.prontoParaFinalizar" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModalLogin">
+                <button type="button" ng-show="item.liberaAssinaturaLata && !item.finalizado" ng-click="selectLata($index)" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinaturaFinalizaLata">
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                 </button>
             </div>
@@ -83,18 +100,18 @@
                 <tbody>
 
                     <tr>
-                        <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold;">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
-                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{$index + 1}}</td>
+                        <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold; width:15%">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
+                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd; width: 80px !important" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{$index + 1}}</td>
                     </tr>
 
-                   <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
+                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
                         <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
                         <td style="border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
                             {{ParLevel3.ResultValue['Ponto' + ($index +1)]}}
                         </td>
                     </tr>
 
-                     <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
+                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
                         <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
                         <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
                             <span ng-show="ParLevel3.ResultValue[('Ponto' + ($index +1))] == '0'">
@@ -110,7 +127,7 @@
                         <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
                         <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
                             {{ParLevel3.ResultValue['PontoCalc1' + ($index +1)]}}
-                            <span ng-show="ParLevel3.ResultValue[('Ponto' + ($index +1))] > 0" >
+                            <span ng-show="ParLevel3.ResultValue[('Ponto' + ($index +1))] > 0">
                                 x10^
                             </span>
                             {{ParLevel3.ResultValue['PontoCalc2' + ($index +1)]}}
@@ -126,15 +143,15 @@
 
                     <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
                         <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px; word-wrap:break-word;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
                             {{ParLevel3.ResultValue['PontoText' + ($index +1)]}}
                         </td>
                     </tr>
 
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '99')">
+                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
                         <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
                         <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                            {{ParLevel3.ResultValue['Ponto' + ($index +1)]}}
+                            {{geraIdCalc(ParLevel3.ParLevel3Value_OuterList, $index, seletedLinha.latas.indexOf(item)) }}
                         </td>
                     </tr>
 
@@ -143,21 +160,21 @@
 
             <div style="text-align: left; padding-top: 5px; height:40px;">
                 <div style="float:left;">
-                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Mônica (monica-lin)
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{item.userValidacao.Name}}
                 </div>
                 <div style="float:right;">
-                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> 05/09/2017 08:54
+                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{item.dataUserValidacao}}
                 </div>
             </div>
 
             @*{{item.ListParlevel3}}*@
             <!-- Modal Edit-->
             <div class="modal fade bd-example-modal-lg" id="editModal{{$index}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content modal-lg">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
 
                         <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel">Modal title</h5>
+                            <h5 class="modal-title" id="editModalLabel">Editar Lata</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -170,24 +187,24 @@
                                 <tbody>
 
                                     <tr>
-                                        <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold;">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
+                                        <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold; width:15%">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
                                         <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{$index + 1}}</td>
                                     </tr>
 
                                     <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index">
 
-                                        <td style="min-width: 150px; border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                                        <td style="min-width: 200px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index" >
-                                            
+                                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                                        <td style="border:1px solid #cccccc; padding: 2px; min-width:150px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+
                                             @*1	Binário ok
-                                            2	Número de defeitos ok 
-                                            3	Intervalos ok
-                                            4	Calculado
-                                            5	Texto
-                                            99	NOVO CALCULADO POR OUTRO*@
+                                                2	Número de defeitos ok
+                                                3	Intervalos ok
+                                                4	Calculado
+                                                5	Texto
+                                                99	NOVO CALCULADO POR OUTRO*@
 
                                             @*3	Intervalos*@
-                                                       @*ng-change="SetResult(ParLevel3.ResultValue['Ponto' + ($index +1)], ParLevel3.ParLevel3Value[0], $index)"*@
+                                            @*ng-change="SetResult(ParLevel3.ResultValue['Ponto' + ($index +1)], ParLevel3.ParLevel3Value[0], $index)"*@
                                             <span ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
                                                 <input title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].IntervalMax}}"
                                                        ng-model="ParLevel3.ResultValue['Ponto' + ($index +1)]"
@@ -200,9 +217,9 @@
 
                                             @*1	Binário*@
                                             <span ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
-                                                <input type="radio" ng-model="etc" ng-value="true" ng-change="ParLevel3.ResultValue['Ponto' + ($index +1)] = 0" /> {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
+                                                <input type="radio" ng-model="ParLevel3.Binario['Ponto' + ($index +1)]" ng-value="true" ng-change="ParLevel3.ResultValue['Ponto' + ($index +1)] = 0" /> {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
                                                 <br />
-                                                <input type="radio" ng-model="etc" ng-value="false" ng-change="ParLevel3.ResultValue['Ponto' + ($index +1)] = 1" /> {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
+                                                <input type="radio" ng-model="ParLevel3.Binario['Ponto' + ($index +1)]" ng-value="false" ng-change="ParLevel3.ResultValue['Ponto' + ($index +1)] = 1" /> {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
                                             </span>
 
                                             @*4	Calculado*@
@@ -210,17 +227,17 @@
                                                 <span>
                                                     <input title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].IntervalMax}}"
                                                            ng-model="ParLevel3.ResultValue[('PontoCalc1' + ($index +1))]"
-                                                           style="width:60%"
+                                                           style="width:30%"
                                                            type="number"
                                                            ng-change="ParLevel3.ResultValue[('Ponto' + ($index +1))] = (ParLevel3.ResultValue[('PontoCalc1' + ($index +1))] * (number|mathPow:ParLevel3.ResultValue[('PontoCalc2' + ($index +1))]))" />
-                                                    <span>x10^</span>
+                                                    <span style="font-size:10px;">x10^</span>
                                                     <input title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].IntervalMax}}"
                                                            ng-model="ParLevel3.ResultValue[('PontoCalc2' + ($index +1))]"
-                                                           style="width:60%"
+                                                           style="width:30%"
                                                            type="number"
                                                            ng-change="ParLevel3.ResultValue[('Ponto' + ($index +1))] = (ParLevel3.ResultValue[('PontoCalc1' + ($index +1))] * (number|mathPow:ParLevel3.ResultValue[('PontoCalc2' + ($index +1))]))" />
                                                 </span>
-                                                {{ParLevel3.ResultValue[('Ponto' + ($index +1))]}}
+                                                @*{{ParLevel3.ResultValue[('Ponto' + ($index +1))]}}*@
                                                 <i ng-show="!(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-times" aria-hidden="true"></i>
                                                 <i ng-show="(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-check" aria-hidden="true"></i>
                                             </span>
@@ -237,8 +254,8 @@
 
                                             @*5	Texto*@
                                             <span ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
-                                                <textarea class="form-control input-sm" cols="15" id="Observacao"  rows="5" ng-model="ParLevel3.ResultValue[('PontoText' + ($index +1))]" ></textarea>
-                                            </span>    
+                                                <textarea class="form-control input-sm" cols="15" id="Observacao" rows="5" ng-model="ParLevel3.ResultValue[('PontoText' + ($index +1))]"></textarea>
+                                            </span>
 
                                             @*99 NOVO CALCULADO POR OUTRO*@
                                             <span ng-show="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
@@ -253,10 +270,10 @@
                             @*{{resultObj}}*@
 
                         </div>
-                        @*{{item}}*@    
+                        @*{{item}}*@
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>*@
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="saveAndClose(item)">Fechar</button>
                         </div>
                     </div>
                 </div>
@@ -264,13 +281,11 @@
 
         </div>
 
-        <button ng-show="seletedLinha.Id > 0" type="button" ng-click="newLata(seletedLinha)" class="btn btn-sucsdfcess btn-lg">
+        <button ng-show="seletedLinha.Id > 0 && !seletedLinha.finalizado" type="button" ng-click="newLata(seletedLinha)" class="btn btn-sucsdfcess btn-lg">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Adicionar Lata
         </button>
 
     </div>
-
-
 
     <button type="button" ng-click="saveState()" class="btn btn-sucsdfcess btn-lg">
         <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>POST LINHA
@@ -279,30 +294,108 @@
         <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>GET TODAS AS LINHAS
     </button>
     <button type="button" ng-click="getLinhas()" class="btn btn-sucsdfcess btn-lg">
-        <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>GET LINHAS DB
+        <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>Atualizar Parametrização
     </button>
-    <button type="button" ng-click="mockLinhas()" class="btn btn-sucsdfcess btn-lg">
-        <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>MOCK
-    </button>
-
     <hr />
 
-    <div>
-        @*{{linhas[0].ListParlevel3}}*@
-        <hr />
-        @*{{linhas}}*@
-        <hr />
-        @*seletedLinha<br />
-            {{seletedLinha}}
-            <hr />
-            seletedLinha.TipoDeLata<br />
-            {{seletedLinha.TipoDeLata}}
-            {{range(seletedLinha.TipoDeLata.NumberOfPoints)}}
-            <hr />
-            seletedLinha.ListParlevel3<br />
-            {{seletedLinha.ListParlevel3}}
-            <hr />
-            {{activeInLine}}*@
+    <!-- Modal Finalizar Lata-->
+    <div class="modal fade" id="modalAssinaturaFinalizaLata" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Assinatura</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body" style="overflow-x:auto">
+
+                    <form role="form" class="ng-pristine ng-valid">
+                        <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                            <input type="text" class="form-control" ng-model="user.Name" placeholder="Nome de Usuário" />
+                        </div>
+                        <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                            <input type="password" class="form-control" ng-model="user.Password" placeholder="Senha" />
+                        </div>
+                    </form>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" ng-click="validateUserLata(user)">Valiadar Assinatura</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Finalizar Linha-->
+    <div class="modal fade" id="modalAssinatura" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Assinatura</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body" style="overflow-x:auto">
+
+                    <form role="form" class="ng-pristine ng-valid">
+                        <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                            <input type="text" class="form-control" ng-model="user.Name" placeholder="Nome de Usuário" />
+                        </div>
+                        <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                            <input type="password" class="form-control" ng-model="user.Password" placeholder="Senha" />
+                        </div>
+                    </form>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" ng-click="finsihLine(user)">Valiadar Assinatura</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal ValidarLinha-->
+    <div class="modal fade" id="modalAssinaturaValidarLinha" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Assinatura</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body" style="overflow-x:auto">
+                    <form role="form" class="ng-pristine ng-valid">
+                        <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                            <input class="form-control input-sm" type="text" ng-model="user.Name" placeholder="Nome de Usuário" />
+                        </div>
+                        <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                            <input class="form-control input-sm" type="password" ng-model="user.Password" placeholder="Senha" />
+                        </div>
+                        <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                            <textarea class="form-control input-sm" cols="30" id="" rows="5" ng-model="user.Obs" placeholder="Observações e Ações preventivas"></textarea>  
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" ng-click="validateLine(user)">Valiadar Assinatura</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>
@@ -325,6 +418,7 @@
                 vm.fornecedorLata = [{}]
                 vm.fornecedorTampaLata = [{}]
                 vm.seletedLinha = { Id: 0 }
+                vm.selectedLata = {}
                 vm.activeInLine = 0
                 //MOCK
                 vm.company = 14
@@ -334,6 +428,9 @@
                     vm.activeInLine = vm.seletedLinha.Id
                     setTimeout(function () { $('select').select2() }, 200)
                     //vm.$apply()
+                }
+                vm.selectLata = function (index) {
+                    vm.selectedLata = vm.seletedLinha.latas[index]
                 }
 
                 vm.range = function (n) {
@@ -479,16 +576,19 @@
                 //vm.getState()
 
                 setTimeout(function () { $('select').select2() }, 200)
-                
+
                 vm.getFormula = function (expressaoArr) {
                     let expressaoFinal = ''
-                    expressaoArr.forEach(function(o, c){
-                        if(o.Operator == "dados"){
+                    //expressaoArr.forEach(function(o, c){
+                    for (var i = 0; i < expressaoArr.length; i++) {
+                        let o = expressaoArr[i]
+                        if (o.Operator == "dados") {
                             expressaoFinal += `(${o.OuterLevel3_Text}) `
-                        }else {
+                        } else {
                             expressaoFinal += `${o.Operator} `
                         }
-                    })
+                    }
+                    //})
                     return expressaoFinal
                 }
 
@@ -496,7 +596,9 @@
                     let expressaoFinal = ''
                     var teste = []
                     let indexMaisUm = index + 1
-                    expressaoArr.forEach(function (o, c) {
+                    //expressaoArr.forEach(function (o, c) {
+                    for (var i = 0; i < expressaoArr.length; i++) {
+                        let o = expressaoArr[i]
                         if (o.Operator == "dados") {
                             let id = `#ParLevel3_Id${o.OuterLevel3_Id}ParLevel3Value_Id${o.OuterLevel3Value_Id}PontoIndex${indexMaisUm}LataIndex${lataIndex}`
                             let valor = parseInt($(id).val())
@@ -504,18 +606,18 @@
                         } else {
                             expressaoFinal += `${o.Operator}`
                         }
-                    })
+                    }
+                    //})
                     return vm.addbits(expressaoFinal.replace(/\s/g, ''))
                 }
-               
-                vm.addbits = function (s){
-                    var total= 0, s= s.match(/[+\-]*(\.\d+|\d+(\.\d+)?)/g) || [];
-                    while(s.length){
-                        total+= parseFloat(s.shift());
+
+                vm.addbits = function (s) {
+                    var total = 0, s = s.match(/[+\-]*(\.\d+|\d+(\.\d+)?)/g) || [];
+                    while (s.length) {
+                        total += parseFloat(s.shift());
                     }
                     return total;
                 }
-
 
                 vm.resultObj = {}
                 vm.SetResult = function (result, data, index) {
@@ -523,57 +625,124 @@
                     vm.resultObj[key] = { valor: result, ParLEvel3_Id: data.ParLevel3_Id, ParLevel3Value_Id: data.Id }
                 }
 
-                ////MOCK
-                vm.mockLinhas = function () {
-                    vm.linhas = []
-                    //MOCK
-                    let dif = 1 + Math.floor(Math.random() * 600)
-                    vm.linhas.push({
-                        Id: dif,
-                        Name: 'Linha teste ' + dif,
-                        ParCompany_Id: 14,
-                        ParRecravacao_TypeLata_Id: 1,
-                        NumberOfHeads: 1,
-                        Description: '',
-                        latas: []
-                    })
-                    dif = 1 + Math.floor(Math.random() * 600)
-                    vm.linhas.push({
-                        Id: dif,
-                        Name: 'Linha teste ' + dif,
-                        ParCompany_Id: 14,
-                        ParRecravacao_TypeLata_Id: 1,
-                        NumberOfHeads: 1,
-                        Description: '',
-                        latas: []
-                    })
-                    dif = 1 + Math.floor(Math.random() * 600)
-                    vm.linhas.push({
-                        Id: dif,
-                        Name: 'Linha teste ' + dif,
-                        ParCompany_Id: 14,
-                        ParRecravacao_TypeLata_Id: 1,
-                        NumberOfHeads: 1,
-                        Description: '',
-                        latas: []
-                    })
-                    dif = 1 + Math.floor(Math.random() * 600)
-                    vm.linhas.push({
-                        Id: dif,
-                        Name: 'Linha teste ' + dif,
-                        ParCompany_Id: 14,
-                        ParRecravacao_TypeLata_Id: 1,
-                        NumberOfHeads: 1,
-                        Description: '',
-                        latas: []
-                    })
+                vm.saveAndClose = function (item) {
+                    console.log(item)
+                    item["liberaAssinaturaLata"] = false
+                    let vmItem = item
+                    let numeroDePontos = vm.seletedLinha.TipoDeLata.NumberOfPoints
+                    for (var i = 0; i < vmItem.ListParlevel3.length; i++) {
+                        if (vmItem.ListParlevel3[i].ResultValue) {
+                            //existe
+                            let pontosPreenchidos = $.map(vmItem.ListParlevel3[i].ResultValue, function (obj) { return obj })
+                            for (var j = 0; j < pontosPreenchidos.length; j++) {
+                                if (typeof (pontosPreenchidos[j]) === "string") {
+
+                                } else if (isNaN(pontosPreenchidos[j])) {
+                                    vmItem["liberaAssinaturaLata"] = false
+                                    return false;
+                                }
+                            }
+                            if ((numeroDePontos <= pontosPreenchidos.length)) {
+                                vmItem["liberaAssinaturaLata"] = true
+                            } else {
+                                vmItem["liberaAssinaturaLata"] = false
+                                return false;
+                            }
+                        }
+                    }
+
+                    if (vmItem["liberaAssinaturaLata"])
+                        console.log("Parabens!! Voce Preencheu todos os pontos minino! Voce ja pode medir a proxima de 2000 latas !")
+
+                    item = vmItem
                 }
+
+                vm.validateUserUrl = "http://localhost:57506/api/User/AuthenticationLogin"
+                vm.user = { Name: "camilaprata-mtz", Password: "sgq345", Obs: "" }
+                //vm.user = { Name: "", Password: "" }
+                vm.validateUserLata = function () {
+                    $http({ method: 'POST', url: vm.validateUserUrl, data: vm.user })
+                        .then(function (r) {
+                            if (r.data.Retorno) {
+                                vm.user = { Name: "", Password: "" }
+                                toastr.success("Usuário validado com sucesso!")
+                                r.data.Retorno.ParCompanyXUserSgq = []
+                                vm.selectedLata.userValidacao = r.data.Retorno
+                                vm.selectedLata.dataUserValidacao = moment().format("DD/MM/YYYY HH:mm")
+                                vm.selectedLata.finalizado = !vm.selectedLata.finalizado
+                                $('.modal').modal('hide')
+                            }
+                            else {
+                                toastr.error("Usuário ou Senha Inválidos")
+                                console.log(r.Mensagem)
+                                console.log(r.MensagemExcecao)
+                            }
+                            //if (r.data.errors) {
+                            //    r.data.errors.forEach(function (o) {
+                            //        toastr.error(o)
+                            //    })
+                            //} else {
+                            //    toastr.success(r.data.resposta)
+                            //    //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
+                            //    vm.linhas = r.data.model
+                            //    vm.linhas.forEach(function (o, c) {
+                            //        o["latas"] = []
+                            //    })
+                            //    setTimeout(function () { $('select').select2() }, 200)
+                            //}
+                        });
+                }
+
+                vm.validateLine = function () {
+                    $http({ method: 'POST', url: vm.validateUserUrl, data: vm.user })
+                        .then(function (r) {
+                            if (r.data.Retorno) {
+                                vm.user = { Name: "", Password: "" }
+                                toastr.success("Usuário validado com sucesso!")
+                                r.data.Retorno.ParCompanyXUserSgq = []
+                                vm.seletedLinha.userValidacao = r.data.Retorno
+                                vm.seletedLinha.dataUserValidacao = moment().format("DD/MM/YYYY HH:mm")
+                                vm.seletedLinha.isValidated = true
+                                vm.seletedLinha.obs = vm.user.Obs
+                                $('.modal').modal('hide')
+                            }
+                            else {
+                                toastr.error("Usuário ou Senha Inválidos")
+                                console.log(r.Mensagem)
+                                console.log(r.MensagemExcecao)
+                            }
+                        });
+                }
+
+                vm.finsihLine = function () {
+                    $http({ method: 'POST', url: vm.validateUserUrl, data: vm.user })
+                        .then(function (r) {
+                            if (r.data.Retorno) {
+                                vm.user = { Name: "", Password: "" }
+                                toastr.success("Usuário validado com sucesso!")
+                                r.data.Retorno.ParCompanyXUserSgq = []
+                                vm.seletedLinha.userFinish = r.data.Retorno
+                                vm.seletedLinha.dataUserFinish = moment().format("DD/MM/YYYY HH:mm")
+                                vm.seletedLinha.finalizado = true
+                                vm.seletedLinha.obs = vm.user.Obs
+                                $('.modal').modal('hide')
+                            }
+                            else {
+                                toastr.error("Usuário ou Senha Inválidos")
+                                console.log(r.Mensagem)
+                                console.log(r.MensagemExcecao)
+                            }
+
+                        });
+                }
+
+                vm.getLinhas()
 
             }]).filter('mathPow', function () {
                 return function (base, exponent) {
                     return Math.pow(10, exponent);
                 }
-            }).filter('mathPowRev', function () {
+            }).filter('mathPowRev', function () { // Implementar!!!
                 return function (base, exponent) {
                     return Math.pow(10, exponent);
                 }
