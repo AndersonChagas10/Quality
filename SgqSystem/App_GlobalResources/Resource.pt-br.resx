@@ -2082,4 +2082,7 @@
   <data name="unreached_goals" xml:space="preserve">
     <value>Metas Não Alcançadas</value>
   </data>
+  <data name="take_photo" xml:space="preserve">
+    <value>Tirar foto</value>
+  </data>
 </root>

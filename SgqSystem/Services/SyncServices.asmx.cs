@@ -4205,7 +4205,8 @@ namespace SgqSystem.Services
                                             IsEmptyLevel3: parlevel2.IsEmptyLevel3,
                                             RuleId: parlevel2.ParNotConformityRule_id,
                                             RuleValue: ruleValue.ToString(),
-                                            reaudit: parlevel2.IsReaudit);
+                                            reaudit: parlevel2.IsReaudit,
+                                            HasTakePhoto: parlevel2.HasTakePhoto);
 
                 var listLineCounter = ParCounterDB.GetParLevelXParCounterList(0, parlevel2.Id, 2);
 

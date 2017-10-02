@@ -5308,6 +5308,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Take photo.
+        /// </summary>
+        internal static string take_photo {
+            get {
+                return ResourceManager.GetString("take_photo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The target was exceed.
         /// </summary>
         internal static string target_exceed {

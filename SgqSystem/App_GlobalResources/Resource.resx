@@ -2097,4 +2097,7 @@
   <data name="unreached_goals" xml:space="preserve">
     <value>Unreached Goals</value>
   </data>
+  <data name="take_photo" xml:space="preserve">
+    <value>Take photo</value>
+  </data>
 </root>

@@ -420,7 +420,8 @@ namespace SgqSystem.Services
                              string classe = null, decimal defects = 0, int evaluate = 1, int sample = 1,
                              bool reaudit = false, bool correctiveaction = false, bool phase = false,
                              bool HasSampleTotal = false, bool IsEmptyLevel3 = false, int level1Group_Id = 0,
-                             int RuleId = 0, string RuleValue = null, decimal AlertValue = 0, int ParFrequency_Id = 0)
+                             int RuleId = 0, string RuleValue = null, decimal AlertValue = 0, int ParFrequency_Id = 0,
+                             bool HasTakePhoto = false)
         {
 
             string tagLevel1Group = null;
@@ -447,6 +448,7 @@ namespace SgqSystem.Services
                            + "\" ParNotConformityRule_value=\"" + RuleValue
                            + "\" AlertValue=\"" + AlertValue.ToString()
                            + "\" reaudit=\"" + reaudit.ToString().ToLower()
+                           + "\" hastakephoto=\"" + HasTakePhoto.ToString().ToLower()
                            + "\"" + tagLevel1Group,
                            outerhtml: span(outerhtml: label, classe: "levelName")
                        );
@@ -464,7 +466,7 @@ namespace SgqSystem.Services
                                    );
 
 
-            string tags = " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin.ToString().Replace(",", ".") + "\" intervalmax=\"" + parLevel3.IntervalMax.ToString().Replace(",", ".") + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id + "\"";
+            string tags = " weight=\"" + parLevel3.Weight + "\" intervalmin=\"" + parLevel3.IntervalMin.ToString().Replace(",", ".") + "\" intervalmax=\"" + parLevel3.IntervalMax.ToString().Replace(",", ".") + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id + "\" hastakephoto=\""+parLevel3.HasTakePhoto.ToString().ToLower() + "\"";
 
 
             //Gera o level3
@@ -558,7 +560,7 @@ namespace SgqSystem.Services
                              bool IsLimitedEvaluetionNumber, IEnumerable<ParRelapse> listParRelapse)
         {
 
-            string tags = "parconsolidationtype_id=\"" + ParLevel1.ParConsolidationType_Id + "\" parfrequency_id=\"" + ParLevel1.ParFrequency_Id + "\" hasalert=\"" + ParLevel1.HasAlert.ToString().ToLower() + "\" isspecific=\"" + ParLevel1.IsSpecific.ToString().ToLower() + "\" totalavaliado=\"" + totalAvaliado + "\" totaldefeitos=\"" + totalDefeitos + "\" volumeAlertaIndicador=\"" + volumeAlertaIndicador + "\" metaIndicador=\"" + metaIndicador + "\" numeroAvaliacoes=\"" + numeroAvaliacoes + "\" metaDia=\"" + metaDia + "\" metaTolerancia=\"" + metaTolerancia + "\" metaAvaliacao=\"" + metaAvaliacao + "\" alertanivel1=\"" + alertNivel1 + "\" alertanivel2=\"" + alertNivel2 + "\" alertanivel3=\"" + alertaNivel3 + "\" alertaatual=\"" + alertaAtual + "\" avaliacaoultimoalerta=\"" + avaliacaoultimoalerta + "\" monitoramentoultimoalerta=\"" + monitoramentoultimoalerta + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\" haverealtimeconsolidation=\"" + ParLevel1.haveRealTimeConsolidation.ToString().ToLower() + "\" realtimeconsolitationupdate=\"" + ParLevel1.RealTimeConsolitationUpdate + "\" islimitedevaluetionnumber=\"" + ParLevel1.IsLimitedEvaluetionNumber.ToString().ToLower() + "\" hashkey=\"" + ParLevel1.hashKey + "\" ispartialsave=\"" + ParLevel1.IsPartialSave.ToString().ToLower() + "\" hascompleteevaluation=\"" + ParLevel1.HasCompleteEvaluation.ToString().ToLower() + "\" hasgrouplevel2=\"" + ParLevel1.HasGroupLevel2.ToString().ToLower() + "\" reaudit=\"" + ParLevel1.IsReaudit.ToString().ToLower() + "\" editlevel2=\""+ParLevel1.EditLevel2.ToString().ToLower() + "\"";
+            string tags = "parconsolidationtype_id=\"" + ParLevel1.ParConsolidationType_Id + "\" parfrequency_id=\"" + ParLevel1.ParFrequency_Id + "\" hasalert=\"" + ParLevel1.HasAlert.ToString().ToLower() + "\" isspecific=\"" + ParLevel1.IsSpecific.ToString().ToLower() + "\" totalavaliado=\"" + totalAvaliado + "\" totaldefeitos=\"" + totalDefeitos + "\" volumeAlertaIndicador=\"" + volumeAlertaIndicador + "\" metaIndicador=\"" + metaIndicador + "\" numeroAvaliacoes=\"" + numeroAvaliacoes + "\" metaDia=\"" + metaDia + "\" metaTolerancia=\"" + metaTolerancia + "\" metaAvaliacao=\"" + metaAvaliacao + "\" alertanivel1=\"" + alertNivel1 + "\" alertanivel2=\"" + alertNivel2 + "\" alertanivel3=\"" + alertaNivel3 + "\" alertaatual=\"" + alertaAtual + "\" avaliacaoultimoalerta=\"" + avaliacaoultimoalerta + "\" monitoramentoultimoalerta=\"" + monitoramentoultimoalerta + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\" haverealtimeconsolidation=\"" + ParLevel1.haveRealTimeConsolidation.ToString().ToLower() + "\" realtimeconsolitationupdate=\"" + ParLevel1.RealTimeConsolitationUpdate + "\" islimitedevaluetionnumber=\"" + ParLevel1.IsLimitedEvaluetionNumber.ToString().ToLower() + "\" hashkey=\"" + ParLevel1.hashKey + "\" ispartialsave=\"" + ParLevel1.IsPartialSave.ToString().ToLower() + "\" hascompleteevaluation=\"" + ParLevel1.HasCompleteEvaluation.ToString().ToLower() + "\" hasgrouplevel2=\"" + ParLevel1.HasGroupLevel2.ToString().ToLower() + "\" reaudit=\"" + ParLevel1.IsReaudit.ToString().ToLower() + "\" editlevel2=\""+ParLevel1.EditLevel2.ToString().ToLower() + "\" hastakephoto=\"" + ParLevel1.HasTakePhoto.ToString().ToLower()+"\"";
 
             string btnReaudit = button(Resources.Resource.reaudit, type.submit, "", classe: "btn-primary pull-right btnReaudit btn-sm hide", style: "margin-left: 4px;");
             string btnCA = button(Resources.Resource.corrective_action, type.submit, "", classe: "btn-danger pull-right btnCALevel1 btn-sm hide");

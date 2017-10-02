@@ -138,6 +138,10 @@
                         </tr>
 
                         <tr class="row">
+                            @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.HasTakePhoto, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.take_photo), Table.PosicaoLabel.left, null, null)
+                        </tr>
+
+                        <tr class="row">
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
                         </tr>
 
