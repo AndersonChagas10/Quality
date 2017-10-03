@@ -1052,6 +1052,7 @@
     <None Include="Properties\PublishProfiles\ParamsDevInterno.pubxml" />
     <None Include="Properties\PublishProfiles\ParamsInterno.pubxml" />
     <None Include="Properties\PublishProfiles\PublishEUA.pubxml" />
+    <None Include="Properties\PublishProfiles\Recravacao.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ BR.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ DEV.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ GRT.pubxml" />

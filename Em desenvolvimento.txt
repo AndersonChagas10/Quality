@@ -20,7 +20,6 @@ UPDATE PARLEVEL1 SET AllowEditWeightOnLevel3 = 0
 alter table parlevel1 add ShowInTablet bit default 1
 UPDATE PARLEVEL1 SET ShowInTablet = 1
 
-
 CREATE TABLE [dbo].[ParRecravacao_TipoLata](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 
@@ -28,7 +27,6 @@ CREATE TABLE [dbo].[ParRecravacao_TipoLata](
 	[Description] [nvarchar](500) NULL default(''),
 	[NumberOfPoints] [int] NOT NULL,
 
-	
 	[AddDate] [datetime2](7) NOT NULL default(GETDATE()),
 	[AlterDate] [datetime2](7) NULL,
 	[IsActive] [bit] NULL default(1)
@@ -58,22 +56,58 @@ CREATE TABLE [dbo].[ParRecravacao_Linhas](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 )
 
-
-CREATE TABLE [dbo].[RecravacaoJson] (
+CREATE TABLE [dbo].[RecravacaoJson](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-
-	UserSgqId int NOT NULL,
-	ParCompany_Id [int] NOT NULL,
-	ObjectRecravacaoJson [nvarchar](MAX) NOT NULL,
-	
-	[AddDate] [datetime2](7) NOT NULL default(GETDATE()),
+	[UserSgqId] [int] NOT NULL,
+	[ParCompany_Id] [int] NOT NULL,
+	[Linha_Id] [int] NOT NULL,
+	[ObjectRecravacaoJson] [nvarchar](max) NOT NULL,
+	[AddDate] [datetime2](7) NOT NULL DEFAULT (getdate()),
 	[AlterDate] [datetime2](7) NULL,
-	[IsActive] [bit] NULL default(1)
-	
+	[IsActive] [bit] NULL DEFAULT ((1)),
  CONSTRAINT [Pk_RecravacaoJson] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-)
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
+GO
+
+/****** Object:  Table [dbo].[ParLevel3Value_Outer]    Script Date: 02/10/2017 11:08:50 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[ParLevel3Value_Outer](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[AddDate] [datetime2](7) NOT NULL,
+	[AlterDate] [datetime2](7) NULL,
+	[IsActive] [bit] NOT NULL,
+	[ParLevel3_Id] [int] NOT NULL,
+	[ParLevel3_Name] [nvarchar](200) NOT NULL,
+	[ParLevel3InputType_Id] [int] NOT NULL,
+	[ParLevel3InputType_Name] [nvarchar](200) NOT NULL,
+	[ParCompany_Id] [int] NULL,
+	[ParCompany_Name] [nvarchar](200) NULL,
+	[ParMeasurementUnit_Id] [int] NULL,
+	[ParMeasurementUnit_Name] [nvarchar](200) NULL,
+	[OuterEmpresa_Id] [int] NULL,
+	[OuterEmpresa_Text] [nvarchar](200) NULL,
+	[OuterLevel3_Id] [int] NULL,
+	[OuterLevel3_Text] [nvarchar](200) NULL,
+	[OuterLevel3Value_Id] [int] NULL,
+	[OuterLevel3Value_Text] [nvarchar](200) NULL,
+	[OuterLevel3ValueIntervalMaxValue] [int] NULL,
+	[OuterLevel3ValueIntervalMinValue] [int] NULL,
+	[Operator] [nvarchar](200) NULL,
+	[Order] [int] NULL,
+ CONSTRAINT [PK_ParLevel3Value_Outer] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
 

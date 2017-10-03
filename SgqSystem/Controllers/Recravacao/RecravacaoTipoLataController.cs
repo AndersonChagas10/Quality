@@ -1,9 +1,11 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using Dominio;
+using Helper;
 
 namespace SgqSystem.Controllers.Recravacao
 {
+    [CustomAuthorize]
     public class RecravacaoTipoLataController : Controller
     {
         private SgqDbDevEntities db;
