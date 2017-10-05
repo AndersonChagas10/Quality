@@ -374,6 +374,32 @@
         updateLogicExpression()
     }
 
+    function myfunction() {
+        $('#parlevel3RecravacaoValue').empty()
+        let arr = [{text: 'Viado',
+            val: 10,
+            defaultSelected: false,
+            nowSelected: false,
+        },
+        {text: 'Jelsafa',
+            val: 11,
+            defaultSelected: false,
+            nowSelected: false
+        },{text: 'Jelsafa Viado',
+            val: 12,
+            defaultSelected: false,
+            nowSelected: false
+        }]
+        
+        arr.forEach(atribuiOptionsADdl);
+    }
+
+    function atribuiOptionsADdl(o, c){
+        let option = new Option(o.text,o.val,o.defaultSelected,o.nowSelected)
+        $('#parlevel3RecravacaoValue').append(option)
+    }
+
+
     function getLevel3ValueReencravacaoInputCalcOutro(id) {
         $.post('@Url.Action("GetLevel3PorUnidadeRecravacaoDdl", "api/ParamsApi")', {'': id}, function (r){
 
@@ -383,7 +409,7 @@
             let nowSelected     = false;
 
             $('#parlevel3RecravacaoValue').empty()
-            $('#parlevel3RecravacaoValue').append( new Option('Selecione...',-1,defaultSelected,nowSelected) );
+            $('#parlevel3RecravacaoValue').append( new Option('Selecione...', -1, defaultSelected, nowSelected) );
             r.forEach(function(o, c){
                 if(o.ParLevel3InputType_Id == 3){
                     if (o.AcceptableValueBetween) {
