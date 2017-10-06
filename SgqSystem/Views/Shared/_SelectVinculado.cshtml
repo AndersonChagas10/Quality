@@ -32,8 +32,7 @@
 
     @*var UrlListaInicial = @Html.Raw(Json.Encode(Url.Action("GetListLevel1", "api/ParamsApi")));*@
     var viewbag = true;
-    @*var ListaInicial = @ViewBag.UnidadeUsuario; //Fazendo*@
-    var ListaInicial = null; //Em Dev
+    var ListaInicial = @ViewBag.UnidadeUsuario;
     var GetListLevel1 = @Html.Raw(Json.Encode(Url.Action("GetListLevel1", "api/ParamsApi")));
     var GetListLevel2 = @Html.Raw(Json.Encode(Url.Action("GetListLevel2", "api/ParamsApi")));
     var GetListLevel3 = @Html.Raw(Json.Encode(Url.Action("GetListLevel3", "api/ParamsApi")));
