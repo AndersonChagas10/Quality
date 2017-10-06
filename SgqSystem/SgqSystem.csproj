@@ -1407,7 +1407,7 @@
     <Content Include="Views\RelatoriosSgq\NaoConformidadePorCabecalho.cshtml" />
     <Content Include="Views\EmailConfigEUA\Index.cshtml" />
     <Content Include="Views\RelatoriosSgq\RelatorioDeResultados.cshtml" />
-    <Content Include="Views\Shared\_RegUniChain.cshtml" />
+    <Content Include="Views\Shared\_SelectVinculado.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
