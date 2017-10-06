@@ -2,6 +2,7 @@
 /// <reference path="../admin-lte/js/app.min.js" />
 /// <reference path="../angular/app.js" />
 /// <reference path="../angular/level321chain.js" />
+/// <reference path="../angular/selectvinculado.js" />
 /// <reference path="../content/bootstrap-switch/js/bootstrap-switch.js" />
 /// <reference path="aes.js" />
 /// <reference path="ai.0.15.0-build58334.js" />

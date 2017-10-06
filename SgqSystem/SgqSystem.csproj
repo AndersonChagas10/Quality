@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -308,7 +308,6 @@
     <Compile Include="Controllers\Api\CorrectActApiController.cs" />
     <Compile Include="Controllers\Api\DefectApiController.cs" />
     <Compile Include="Controllers\Api\HangFireServicesController.cs" />
-    <Compile Include="Controllers\Api\ResultLevel3PhotosApiController.cs" />
     <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\FtaApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\VerificacaoTipificacaoApiController.cs" />
@@ -342,7 +341,6 @@
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\Familia\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Params\ParBinaryDataTypeController.cs" />
-    <Compile Include="Controllers\Photo\PhotoController.cs" />
     <Compile Include="Controllers\Relatorios\ParGoalScorecardController.cs" />
     <Compile Include="Controllers\Relatorios\RelatoriosSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleController.cs" />
@@ -523,6 +521,7 @@
     <Content Include="admin-lte\js\app.min.js" />
     <Content Include="Angular\app.js" />
     <Content Include="Angular\Level321Chain.js" />
+    <Content Include="Angular\SelectVinculado.js" />
     <Content Include="App_GlobalResources\Resource.pt-br.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <SubType>Designer</SubType>
@@ -1408,7 +1407,8 @@
     <Content Include="Views\RelatoriosSgq\_VerificacaoTipificacaoEdit.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoConformidadePorCabecalho.cshtml" />
     <Content Include="Views\EmailConfigEUA\Index.cshtml" />
-    <Content Include="Views\Photo\Index.cshtml" />
+    <Content Include="Views\RelatoriosSgq\RelatorioDeResultados.cshtml" />
+    <Content Include="Views\Shared\_SelectVinculado.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
