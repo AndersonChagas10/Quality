@@ -12,7 +12,7 @@ namespace Dominio
     using System;
     using System.Collections.Generic;
     
-    public partial class Result_Level3_Photos
+    public partial class Result_Level3_Photos1
     {
         public int ID { get; set; }
         public Nullable<int> Result_Level3_Id { get; set; }

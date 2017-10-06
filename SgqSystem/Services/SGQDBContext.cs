@@ -146,6 +146,17 @@ namespace SGQDBContext
             return parLevel1List;
         }
     }
+
+    public partial class Result_Level3_Photo
+    {
+        public int ID { get; set; }
+        public Nullable<int> Result_Level3_Id { get; set; }
+        public String Photo_Thumbnaills { get; set; }
+        public String Photo { get; set; }
+        public Nullable<double> Latitude { get; set; }
+        public Nullable<double> Longitude { get; set; }
+    }
+
     public partial class ParLevel1Alertas
     {
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;

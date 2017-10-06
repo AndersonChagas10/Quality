@@ -19,12 +19,17 @@ UPDATE PARLEVEL1 SET AllowEditWeightOnLevel3 = 0
 ALTER TABLE ParLevel1 ADD HasTakePhoto BIT NOT NULL DEFAULT 0;
 ALTER TABLE ParLevel2 ADD HasTakePhoto BIT NOT NULL DEFAULT 0;
 ALTER TABLE ParLevel3 ADD HasTakePhoto BIT NOT NULL DEFAULT 0;
+	
+ALTER TABLE Result_Level3 ADD HasPhoto BIT NOT NULL DEFAULT 0;
 
 CREATE TABLE Result_Level3_Photos (
 	ID INT NOT NULL PRIMARY KEY IDENTITY(1,1),
 	Result_Level3_Id int,
-	Photo_Thumbnaills image,
-	Photo image,
-	Latidute float,
+	Photo_Thumbnaills text,
+	Photo text,
+	Latitude float,
 	Longitude float
 )
+
+CREATE NONCLUSTERED INDEX [CollectionLevel2Photos]
+ON [dbo].[CollectionLevel2] ([ParLevel1_Id],[ParLevel2_Id],[EvaluationNumber],[Sample],[CollectionDate])

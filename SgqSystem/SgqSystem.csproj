@@ -308,6 +308,7 @@
     <Compile Include="Controllers\Api\CorrectActApiController.cs" />
     <Compile Include="Controllers\Api\DefectApiController.cs" />
     <Compile Include="Controllers\Api\HangFireServicesController.cs" />
+    <Compile Include="Controllers\Api\ResultLevel3PhotosApiController.cs" />
     <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\FtaApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\VerificacaoTipificacaoApiController.cs" />
@@ -341,6 +342,7 @@
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\Familia\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Params\ParBinaryDataTypeController.cs" />
+    <Compile Include="Controllers\Photo\PhotoController.cs" />
     <Compile Include="Controllers\Relatorios\ParGoalScorecardController.cs" />
     <Compile Include="Controllers\Relatorios\RelatoriosSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleController.cs" />
@@ -1406,6 +1408,7 @@
     <Content Include="Views\RelatoriosSgq\_VerificacaoTipificacaoEdit.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoConformidadePorCabecalho.cshtml" />
     <Content Include="Views\EmailConfigEUA\Index.cshtml" />
+    <Content Include="Views\Photo\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

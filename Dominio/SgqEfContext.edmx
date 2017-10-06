@@ -1105,9 +1105,9 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel2XHeaderField' does not h
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Result_Level3_Id" Type="int" />
-          <Property Name="Photo_Thumbnaills" Type="image" />
-          <Property Name="Photo" Type="image" />
-          <Property Name="Latidute" Type="float" />
+          <Property Name="Photo_Thumbnaills" Type="text" />
+          <Property Name="Photo" Type="text" />
+          <Property Name="Latitude" Type="float" />
           <Property Name="Longitude" Type="float" />
         </EntityType>
         <!--Errors Found During Generation:
@@ -3631,129 +3631,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="ParLevel2XHeaderField" EntityType="SgqDbModel.ParLevel2XHeaderField" />
           <EntitySet Name="Result_Level3_Photos" EntityType="SgqDbModel.Result_Level3_Photos" />
           </EntityContainer>
-        <EntityType Name="DelDados">
-          <Key>
-            <PropertyRef Name="TESTE" />
-          </Key>
-          <Property Name="TESTE" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Reports_CCA_Audit">
-          <Key>
-            <PropertyRef Name="Audit_Period" />
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Audit_Reaudit" />
-            <PropertyRef Name="No_of_Def" />
-            <PropertyRef Name="Cattle_Type" />
-            <PropertyRef Name="Chain_Speed" />
-            <PropertyRef Name="Lot__" />
-            <PropertyRef Name="Mud_Score" />
-          </Key>
-          <Property Name="Plant_Number" Type="Int32" />
-          <Property Name="Audit_Area" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Set_Start_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_Start_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Audit_Period" Type="Int32" Nullable="false" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Audit_Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Specks" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Dressing" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Single_Hairs" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Clusters" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Hide" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Defects" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="No_of_Def" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="Cattle_Type" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Chain_Speed" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
-          <Property Name="Lot__" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
-          <Property Name="Mud_Score" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
-          <Property Name="Auditor_Name_Global" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Set_End_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_End_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="Reports_CFF_Audit">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Side" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="Defect_Counter" />
-          </Key>
-          <Property Name="Plant_Number" Type="Int32" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Period" Type="Int32" Nullable="false" />
-          <Property Name="Set" Type="Int32" />
-          <Property Name="Start_Date" Type="DateTime" Precision="7" />
-          <Property Name="Side" Type="Int32" Nullable="false" />
-          <Property Name="Audit_Area" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Set_Start_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_Start_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Set_End_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_End_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Auditor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Defects" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Cut" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Fold_Flap" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Puncture" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Defect_Counter" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Reports_HTP_Audit">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Audit_ReAudit" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Baised_Unbiased" />
-            <PropertyRef Name="Starting_Phase" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="Plant_Number" Type="Int32" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Start_Date" Type="DateTime" Precision="7" />
-          <Property Name="Start_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Job_Id" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Auditor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Audit_ReAudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Period" Type="Int32" Nullable="false" />
-          <Property Name="Baised_Unbiased" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Job_Date" Type="DateTime" Precision="0" />
-          <Property Name="Job_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Starting_Phase" Type="Int32" Nullable="false" />
-          <Property Name="Core_Practice_HTP_Deviation" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="Other_Deviaton" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="Ending_Phase" Type="Int32" />
-          <Property Name="Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="End_Date" Type="DateTime" Precision="0" />
-          <Property Name="End_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="ID" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="VWCFFResults">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Side" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="Defect_Counter" />
-          </Key>
-          <Property Name="Plant_Number" Type="Int32" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Period" Type="Int32" Nullable="false" />
-          <Property Name="Set" Type="Int32" />
-          <Property Name="Start_Date" Type="DateTime" Precision="7" />
-          <Property Name="Side" Type="Int32" Nullable="false" />
-          <Property Name="Audit_Area" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Set_Start_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_Start_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Set_End_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_End_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Auditor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Defects" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Cut" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Fold_Flap" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Puncture" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Defect_Counter" Type="Int32" Nullable="false" />
-        </EntityType>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -6563,9 +6440,9 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Result_Level3_Id" Type="Int32" />
-          <Property Name="Photo_Thumbnaills" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="Latidute" Type="Double" />
+          <Property Name="Photo_Thumbnaills" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Latitude" Type="Double" />
           <Property Name="Longitude" Type="Double" />
         </EntityType>
         </Schema>
@@ -7955,7 +7832,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             <EntityTypeMapping TypeName="SgqDbModel.Result_Level3_Photos">
               <MappingFragment StoreEntitySet="Result_Level3_Photos">
                 <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="Latidute" ColumnName="Latidute" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="Photo" ColumnName="Photo" />
                 <ScalarProperty Name="Photo_Thumbnaills" ColumnName="Photo_Thumbnaills" />
                 <ScalarProperty Name="Result_Level3_Id" ColumnName="Result_Level3_Id" />
