@@ -198,7 +198,7 @@
                     <option value="0">Selecione</option>
                     <option class="showAsEstrategy" value="Diretoria">Diretoria</option>
                     <option class="showAsEstrategy" value="Dimensão">Dimensão</option>
-                    <option class="showAsEstrategy" value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                    <option class="showAsEstrategy" value="Diretriz">Diretriz</option>
                     <option class="showAsEstrategy" value="Indicadores Diretriz">Indicadores / Diretriz</option>
                     <option class="showAsEstrategy" value="Gerência">Gerência</option>
                     <option class="showAsEstrategy" value="Coordenação">Coordenação</option>
@@ -222,7 +222,7 @@
                     <option value="0">Selecione</option>
                     <option class="showAsEstrategy" value="Diretoria">Diretoria</option>
                     <option class="showAsEstrategy" value="Dimensão">Dimensão</option>
-                    <option class="showAsEstrategy" value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                    <option class="showAsEstrategy" value="Diretriz">Diretriz</option>
                     <option class="showAsEstrategy" value="Indicadores Diretriz">Indicadores / Diretriz</option>
                     <option class="showAsEstrategy" value="Gerência">Gerência</option>
                     <option class="showAsEstrategy" value="Coordenação">Coordenação</option>
@@ -249,7 +249,7 @@
                     <option value="0">Selecione</option>
                     <option class="showAsEstrategy" value="Diretoria">Diretoria</option>
                     <option class="showAsEstrategy" value="Dimensão">Dimensão</option>
-                    <option class="showAsEstrategy" value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                    <option class="showAsEstrategy" value="Diretriz">Diretriz</option>
                     <option class="showAsEstrategy" value="Indicadores Diretriz">Indicadores / Diretriz</option>
                     <option class="showAsEstrategy" value="Gerência">Gerência</option>
                     <option class="showAsEstrategy" value="Coordenação">Coordenação</option>
@@ -275,7 +275,7 @@
                     <option value="0">Selecione</option>
                     <option class="showAsEstrategy" value="Diretoria">Diretoria</option>
                     <option class="showAsEstrategy" value="Dimensão">Dimensão</option>
-                    <option class="showAsEstrategy" value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                    <option class="showAsEstrategy" value="Diretriz">Diretriz</option>
                     <option class="showAsEstrategy" value="Indicadores Diretriz">Indicadores / Diretriz</option>
                     <option class="showAsEstrategy" value="Gerência">Gerência</option>
                     <option class="showAsEstrategy" value="Coordenação">Coordenação</option>
@@ -316,7 +316,7 @@
                             <option value="0">Selecione</option>
                             <option value="Diretoria">Diretoria</option>
                             <option value="Dimensão">Dimensão</option>
-                            <option value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                            <option value="Diretriz">Diretriz</option>
                             <option value="Indicadores Diretriz">Indicadores / Diretriz</option>
                             <option value="Gerência">Gerência</option>
                             <option value="Coordenação">Coordenação</option>
@@ -340,7 +340,7 @@
                             <option value="0">Selecione</option>
                             <option value="Diretoria">Diretoria</option>
                             <option value="Dimensão">Dimensão</option>
-                            <option value="Diretriz / Objetivo">Diretriz / Objetivo</option>
+                            <option value="Diretriz">Diretriz</option>
                             <option value="Indicadores Diretriz">Indicadores / Diretriz</option>
                             <option value="Gerência">Gerência</option>
                             <option value="Coordenação">Coordenação</option>
@@ -1286,8 +1286,8 @@
             //});
 
             $.post(UrlSgq + 'api/Scorecard/GetScorecard', { //Url está na linha 16
-                endDate: moment().add(-i, 'month').format('DD/MM/YYYY'),
-                startDate: moment().add(-i - 1, 'month').format('DD/MM/YYYY'),
+                endDate: moment().subtract(i,'months').endOf('month').format('DD/MM/YYYY'),//moment().add(-i, 'month').format('DD/MM/YYYY'),
+                startDate: moment().subtract((i +1) ,'months').endOf('month').add(1, 'days').format('DD/MM/YYYY'),//moment().add(-i - 1, 'month').format('DD/MM/YYYY'),
                 unitId: unidade,
                 auditorId: auditor
             }, function (r) {
@@ -1357,6 +1357,7 @@
                 return oo.Level1Name == indicador
             })[0])
         })
+
         eixoY = MapeiaValorParaHC(eixoY, privotY);
         eixoX = MapeiaValorParaHC(eixoX, privotX);
 
@@ -1785,6 +1786,8 @@
 
         }).change();
 
+        $('select').css({ 'min-width': '150px;' })
+        $('select').select2()
     })
 
 

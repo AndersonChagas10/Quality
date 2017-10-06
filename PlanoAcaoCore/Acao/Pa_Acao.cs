@@ -118,7 +118,10 @@ namespace PlanoAcaoCore
         {
             get
             {
-                return QuandoFim.ToString("dd/MM/yyyy");
+                if (QuandoFim != DateTime.MinValue)
+                    return QuandoFim.ToString("dd/MM/yyyy");
+                else
+                    return string.Empty;
             }
         }
 
@@ -126,7 +129,11 @@ namespace PlanoAcaoCore
         {
             get
             {
-                return QuandoInicio.ToString("dd/MM/yyyy");
+                if (QuandoInicio != DateTime.MinValue)
+                    return QuandoInicio.ToString("dd/MM/yyyy");
+                else
+                    return string.Empty;
+                //return QuandoInicio.ToString("dd/MM/yyyy");
             }
         }
 
@@ -184,7 +191,7 @@ namespace PlanoAcaoCore
 
                 var agora = DateTime.Now;
                 if (QuandoFim > agora)
-                    return string.Format("Faltam {0} dias.", Math.Round((QuandoFim - agora).TotalDays));
+                    return string.Format("{0} Dias", Math.Round((QuandoFim - agora).TotalDays));
                 else if (QuandoFim < agora)
                     return string.Format("{0} Dias", Math.Round((QuandoFim - agora).TotalDays));
 
