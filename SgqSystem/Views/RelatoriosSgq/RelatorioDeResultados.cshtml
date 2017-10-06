@@ -1,0 +1,31 @@
+﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@{ 
+    ViewBag.Title = "Relatório de Resultados";
+}
+<div class="page-content" style="min-height: 600px;">
+
+    @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+    <div id="formBodyContent" style="width:1000px; margin-left:auto; margin-right:auto; border">
+
+        @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+
+        @*@Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")*@
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#btnSend").click(function (e) {
+            Send(true);
+        });
+
+        formControl.showFullCallendar();
+        formControl.showUnit();
+        formControl.showLevel1();
+
+    });
+
+</script>
