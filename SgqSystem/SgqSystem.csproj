@@ -1409,6 +1409,7 @@
     <Content Include="Views\EmailConfigEUA\Index.cshtml" />
     <Content Include="Views\RelatoriosSgq\RelatorioDeResultados.cshtml" />
     <Content Include="Views\Shared\_SelectVinculado.cshtml" />
+    <Content Include="Views\RelatoriosSgq\NaoCumprimentoMeta.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
