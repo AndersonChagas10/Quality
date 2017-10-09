@@ -1,4 +1,6 @@
-﻿using SgqSystem.ViewModels;
+﻿using Dominio;
+using Newtonsoft.Json.Linq;
+using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +11,15 @@ using System.Web.Http;
 namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 {
     [RoutePrefix("api/RelatorioDeResultados")]
-    public class RelatorioDeResultadosApiController : ApiController
+    public class RelatorioDeResultadosApiController : BaseApiController
     {
         List<RelatorioResultadosPeriodo> retorno;
         List<RetornoGenerico> retorno2;
         List<RelatorioResultados> retorno3;
         List<RelatorioResultadosPeriodo> retorno4;
+
+        private UserSgq usuario;
+        private SgqDbDevEntities conexao;
 
         public RelatorioDeResultadosApiController()
         {
@@ -84,6 +89,21 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             retorno4.Add(new RelatorioResultadosPeriodo { Av = 4, Data = DateTime.Now, Indicador = 4, IndicadorName = "Nome Indicador", Nc = 10, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 10 });
             retorno4.Add(new RelatorioResultadosPeriodo { Av = 5, Data = DateTime.Now, Indicador = 5, IndicadorName = "Nome Indicador", Nc = 10, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 10 });
             return retorno4;
+        }
+
+
+        [HttpPost]
+        [Route("listaAcoesIndicador")]
+        public List<JObject> listaAcoesIndicador([FromBody] FormularioParaRelatorioViewModel form)
+        {
+            //string sql = "select sei la o que";
+
+            //var result = QueryNinja(conexao, sql);
+
+            var result5 = new List<JObject>();
+            result5.Add(new JObject { });
+
+            return result5;
         }
 
         #region Mocks
