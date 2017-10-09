@@ -31,6 +31,7 @@
         <h3 id="TituloTabela"></h3>
         <br />
         <table id="DataTable"></table>
+
     </div>
 </div>
 
@@ -122,6 +123,7 @@
     </div>
 </div>
 
+
 <script>
     var UrlListaResultados = '@Html.Raw(Url.Action("listaResultados", "api/RelatorioDeResultados"))';
     var UrlListaResultadosPeriodo = '@Html.Raw(Url.Action("listaResultadosPeriodoTabela", "api/RelatorioDeResultados"))';
@@ -147,8 +149,8 @@
 
         //    $('#GraficoPeriodo').empty();
 
-            EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);
-            EasyAjax(UrlListaResultadosPeriodo, enviar, GerarTabela, "DataTable", undefined);
+        EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);
+        EasyAjax(UrlListaResultadosPeriodo, enviar, GerarTabela, "DataTable", undefined);
 
         //}
     }
@@ -197,7 +199,7 @@
                         else {
                             $('#GraficoHistoricoModal').empty();
                             $('#modalHistorico').modal()
-                           
+
                             EasyAjax(UrlGraficoHistorico, enviar2, function (r) {
                                 console.log(r)
                                 $('#GraficoHistoricoModal').empty()
@@ -369,7 +371,7 @@
                                 $('#mensagem').hide();
                                 $('#graficoAcoesXIndicadores').empty();
                                 $('#IndicadorXAcaoModal').modal();
-                                
+
                                 EasyAjax(UrlIndicadorXAcaoModal, enviar3, function (r) {
                                     if (r.length > 0) {
                                         //console.log(r);
@@ -1007,7 +1009,7 @@
             $('#' + selector).parents('.modal-body').find('#mensagem').show();
         }
     }
-    
+
     function SetTitulo() {
 
         let unidade = enviar.unitId;

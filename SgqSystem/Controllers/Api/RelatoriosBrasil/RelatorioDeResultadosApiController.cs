@@ -32,7 +32,18 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         [HttpPost]
         [Route("listaResultadosPeriodoTabela")]
         public List<RelatorioResultadosPeriodo> listaResultadosPeriodoTabela([FromBody] FormularioParaRelatorioViewModel form)
-        {            
+        {
+
+            //var IndicadorName = "";
+
+            //if (form.unitId != 0)
+            //{
+            //    IndicadorName = ",Concat(CONVERT(VARCHAR(153), Level1Name), ' - ',CONVERT(VARCHAR(153), Unidade)) AS IndicadorName";
+            //}
+            //else
+            //{
+            //    IndicadorName = ",Concat(CONVERT(VARCHAR(153), Level1Name)";
+            //}
 
             //Nenhum Indicador Sem Unidade
             //Nenhum Indicador Com Unidade
@@ -50,13 +61,13 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             {
                 GetMockResultadosPeriodo2();
             }
-            else if (form.level3Id == 0 && form.unitId == 0) //Nenhuma Tarefa Com Unidade
+            else if (form.level3Id == 0 && form.unitId == 0) //Nenhuma Tarefa Sem Unidade
             {
                 GetMockResultadosPeriodo3();
             }
-            else if (form.unitId != 0) //Indicador Monitoramento tarefa Sem Unidade
+            else if (form.unitId == 0) //Indicador Monitoramento tarefa Sem Unidade
             {
-                GetMockResultadosPeriodo4(); 
+                GetMockResultadosPeriodo4();
             }
 
             return retorno;
@@ -82,12 +93,12 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         [Route("listaResultadosAcoesConcluidas")]
         public List<RelatorioResultadosPeriodo> listaResultadosAcoesConcluidas([FromBody] FormularioParaRelatorioViewModel form)
         {
-            
-            retorno4.Add(new RelatorioResultadosPeriodo { Av = 1, Data = DateTime.Now, Indicador = 1, IndicadorName = "Nome Indicador", Nc = 10, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 10 });
-            retorno4.Add(new RelatorioResultadosPeriodo { Av = 2, Data = DateTime.Now, Indicador = 2, IndicadorName = "Nome Indicador", Nc = 10, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 10 });
-            retorno4.Add(new RelatorioResultadosPeriodo { Av = 3, Data = DateTime.Now, Indicador = 3, IndicadorName = "Nome Indicador", Nc = 10, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 10 });
-            retorno4.Add(new RelatorioResultadosPeriodo { Av = 4, Data = DateTime.Now, Indicador = 4, IndicadorName = "Nome Indicador", Nc = 10, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 10 });
-            retorno4.Add(new RelatorioResultadosPeriodo { Av = 5, Data = DateTime.Now, Indicador = 5, IndicadorName = "Nome Indicador", Nc = 10, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 10 });
+
+            retorno4.Add(new RelatorioResultadosPeriodo { Av = 1, Data = DateTime.Now, Indicador = 1, IndicadorName = "Nome Indicador", Nc = 10, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 40, UnidadeName = "Lins" });
+            retorno4.Add(new RelatorioResultadosPeriodo { Av = 2, Data = DateTime.Now, Indicador = 2, IndicadorName = "Nome Indicador", Nc = 30, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 10, UnidadeName = "Lins" });
+            retorno4.Add(new RelatorioResultadosPeriodo { Av = 3, Data = DateTime.Now, Indicador = 3, IndicadorName = "Nome Indicador", Nc = 40, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 20, UnidadeName = "Lins" });
+            retorno4.Add(new RelatorioResultadosPeriodo { Av = 4, Data = DateTime.Now, Indicador = 4, IndicadorName = "Nome Indicador", Nc = 20, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 30, UnidadeName = "Lins" });
+            retorno4.Add(new RelatorioResultadosPeriodo { Av = 5, Data = DateTime.Now, Indicador = 5, IndicadorName = "Nome Indicador", Nc = 50, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 50, UnidadeName = "Lins" });
             return retorno4;
         }
 
@@ -111,67 +122,67 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         private void GetMockResultadosPeriodo()
         {
 
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC nas Operações de Esfola", Indicador = 1, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "(%) NC nas Operações de Esfola - LIN" });
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC nas Operações de Esfola", Indicador = 2, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "(%) NC nas Operações de Esfola - CGR" });
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC nas Operações de Esfola", Indicador = 3, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "(%) NC nas Operações de Esfola - MTZ" });
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC CEP Desossa", Indicador = 1, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "(%) NC CEP Desossa - LIN" });
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC CEP Desossa", Indicador = 2, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "(%) NC CEP Desossa - CGR" });
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC CEP Desossa", Indicador = 3, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "(%) NC CEP Desossa - MTZ" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC nas Operações de Esfola", Indicador = 1, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "(%) NC nas Operações de Esfola - LIN", UnidadeName = "Lins" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC nas Operações de Esfola", Indicador = 2, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "(%) NC nas Operações de Esfola - CGR", UnidadeName = "Campo Grande II" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC nas Operações de Esfola", Indicador = 3, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "(%) NC nas Operações de Esfola - MTZ", UnidadeName = "Matriz" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC CEP Desossa", Indicador = 1, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "(%) NC CEP Desossa - LIN", UnidadeName = "Lins" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC CEP Desossa", Indicador = 2, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "(%) NC CEP Desossa - CGR", UnidadeName = "Campo Grande II" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC CEP Desossa", Indicador = 3, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "(%) NC CEP Desossa - MTZ", UnidadeName = "Matriz" });
 
         }
 
         private void GetMockResultadosPeriodo2()
         {
 
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Sangria", Indicador = 1, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "Sangria - LIN" });
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Sangria", Indicador = 2, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "Sangria - CGR" });
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Sangria", Indicador = 3, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "Sangria - MTZ" });
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Esfola da Pata TRS Esquerda", Indicador = 1, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "Esfola da Pata TRS Esquerda - LIN" });
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Esfola da Pata TRS Esquerda", Indicador = 2, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "Esfola da Pata TRS Esquerda - CGR" });
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Esfola da Pata TRS Esquerda", Indicador = 3, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "Esfola da Pata TRS Esquerda - MTZ" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Sangria", Indicador = 1, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "Sangria - LIN", UnidadeName = "Lins" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Sangria", Indicador = 2, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "Sangria - CGR", UnidadeName = "Campo Grande II" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Sangria", Indicador = 3, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "Sangria - MTZ", UnidadeName = "Matriz" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Esfola da Pata TRS Esquerda", Indicador = 1, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "Esfola da Pata TRS Esquerda - LIN", UnidadeName = "Lins" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Esfola da Pata TRS Esquerda", Indicador = 2, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "Esfola da Pata TRS Esquerda - CGR", UnidadeName = "Campo Grande II" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Esfola da Pata TRS Esquerda", Indicador = 3, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "Esfola da Pata TRS Esquerda - MTZ", UnidadeName = "Matriz" });
 
         }
 
         private void GetMockResultadosPeriodo3()
         {
 
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Ausência de contato - quarto esfolado / não esfolado", Indicador = 1, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "Ausência de contato - quarto esfolado / não esfolado - LIN" });
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Ausência de contato - quarto esfolado / não esfolado", Indicador = 2, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "Ausência de contato - quarto esfolado / não esfolado - CGR" });
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Ausência de contato - quarto esfolado / não esfolado", Indicador = 3, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "Ausência de contato - quarto esfolado / não esfolado - MTZ" });
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Ausência de perfurações / contaminação", Indicador = 1, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "Ausência de perfurações / contaminação - LIN" });
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Ausência de perfurações / contaminação", Indicador = 2, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "Ausência de perfurações / contaminação - CGR" });
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Ausência de perfurações / contaminação", Indicador = 3, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "Ausência de perfurações / contaminação - MTZ" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Ausência de contato - quarto esfolado / não esfolado", Indicador = 1, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "Ausência de contato - quarto esfolado / não esfolado - LIN", UnidadeName = "Lins" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Ausência de contato - quarto esfolado / não esfolado", Indicador = 2, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "Ausência de contato - quarto esfolado / não esfolado - CGR", UnidadeName = "Campo Grande II" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Ausência de contato - quarto esfolado / não esfolado", Indicador = 3, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "Ausência de contato - quarto esfolado / não esfolado - MTZ", UnidadeName = "Matriz" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Ausência de perfurações / contaminação", Indicador = 1, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "Ausência de perfurações / contaminação - LIN", UnidadeName = "Lins" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Ausência de perfurações / contaminação", Indicador = 2, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "Ausência de perfurações / contaminação - CGR", UnidadeName = "Campo Grande II" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "Ausência de perfurações / contaminação", Indicador = 3, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "Ausência de perfurações / contaminação - MTZ", UnidadeName = "Matriz" });
 
         }
 
         private void GetMockResultadosPeriodo4()
         {
 
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC nas Operações de Esfola", Indicador = 1, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "(%) NC nas Operações de Esfola" });
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC nas Operações de Esfola", Indicador = 2, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "(%) NC nas Operações de Esfola" });
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC nas Operações de Esfola", Indicador = 3, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "(%) NC nas Operações de Esfola" });
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC CEP Desossa", Indicador = 1, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "(%) NC CEP Desossa" });
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC CEP Desossa", Indicador = 2, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "(%) NC CEP Desossa" });
-            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC CEP Desossa", Indicador = 3, Av = 30, Meta = 80, Nc = 10, Pc = 90, Name = "(%) NC CEP Desossa" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC nas Operações de Esfola", Indicador = 1, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "(%) NC nas Operações de Esfola", UnidadeName = "Lins" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC nas Operações de Esfola", Indicador = 2, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "(%) NC nas Operações de Esfola", UnidadeName = "Campo Grande II" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC nas Operações de Esfola", Indicador = 3, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "(%) NC nas Operações de Esfola", UnidadeName = "Matriz" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC CEP Desossa", Indicador = 1, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "(%) NC CEP Desossa", UnidadeName = "Lins" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC CEP Desossa", Indicador = 2, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "(%) NC CEP Desossa", UnidadeName = "Campo Grande II" });
+            retorno.Add(new RelatorioResultadosPeriodo { IndicadorName = "(%) NC CEP Desossa", Indicador = 3, Av = 30, Meta = 80, Nc = 10, Pc = 90, IndicadorUnidade = "(%) NC CEP Desossa", UnidadeName = "Matriz" });
 
         }
 
         private void GetMockHistoricoModal()
         {
-            retorno2.Add(new RetornoGenerico { ChartTitle = "Histórico: Mock de Grafico Historico", HISTORICO_ID = "1", UnidadeName = "Unidade Mock", levelName = "Level Name Mock", av = 1, limiteSuperior = 200, nc = 250, date = DateTime.Now });
-            retorno2.Add(new RetornoGenerico { ChartTitle = "Histórico: Mock de Grafico Historico", HISTORICO_ID = "1", UnidadeName = "Unidade Mock", levelName = "Level Name Mock", av = 2, limiteSuperior = 200, nc = 200, date = DateTime.Now });
-            retorno2.Add(new RetornoGenerico { ChartTitle = "Histórico: Mock de Grafico Historico", HISTORICO_ID = "1", UnidadeName = "Unidade Mock", levelName = "Level Name Mock", av = 3, limiteSuperior = 200, nc = 150, date = DateTime.Now });
-            retorno2.Add(new RetornoGenerico { ChartTitle = "Histórico: Mock de Grafico Historico", HISTORICO_ID = "1", UnidadeName = "Unidade Mock", levelName = "Level Name Mock", av = 4, limiteSuperior = 200, nc = 50, date = DateTime.Now });
-            retorno2.Add(new RetornoGenerico { ChartTitle = "Histórico: Mock de Grafico Historico", HISTORICO_ID = "1", UnidadeName = "Unidade Mock", levelName = "Level Name Mock", av = 5, limiteSuperior = 200, nc = 350, date = DateTime.Now });
+            retorno2.Add(new RetornoGenerico { ChartTitle = "Histórico: Mock de Grafico Historico", HISTORICO_ID = "1", UnidadeName = "Unidade Mock", levelName = "Level Name Mock", av = 100, limiteSuperior = 200, nc = 250, date = DateTime.Now });
+            retorno2.Add(new RetornoGenerico { ChartTitle = "Histórico: Mock de Grafico Historico", HISTORICO_ID = "1", UnidadeName = "Unidade Mock", levelName = "Level Name Mock", av = 100, limiteSuperior = 200, nc = 200, date = DateTime.Now });
+            retorno2.Add(new RetornoGenerico { ChartTitle = "Histórico: Mock de Grafico Historico", HISTORICO_ID = "1", UnidadeName = "Unidade Mock", levelName = "Level Name Mock", av = 100, limiteSuperior = 200, nc = 150, date = DateTime.Now });
+            retorno2.Add(new RetornoGenerico { ChartTitle = "Histórico: Mock de Grafico Historico", HISTORICO_ID = "1", UnidadeName = "Unidade Mock", levelName = "Level Name Mock", av = 100, limiteSuperior = 200, nc = 50, date = DateTime.Now });
+            retorno2.Add(new RetornoGenerico { ChartTitle = "Histórico: Mock de Grafico Historico", HISTORICO_ID = "1", UnidadeName = "Unidade Mock", levelName = "Level Name Mock", av = 100, limiteSuperior = 200, nc = 350, date = DateTime.Now });
         }
 
         private void GetMockListaResultados()
         {
-            retorno3.Add(new RelatorioResultados { Data = DateTime.Now, Unidade = "Unidade Mock", Indicador = "Mock Indicador", LimiteSuperior = 100, LimiteInferior = 0, Sentido = "Maior", Nc = 100, Real = 10 });
-            retorno3.Add(new RelatorioResultados { Data = DateTime.Now, Unidade = "Unidade Mock", Indicador = "Mock Indicador", LimiteSuperior = 100, LimiteInferior = 0, Sentido = "Maior", Nc = 100, Real = 10 });
-            retorno3.Add(new RelatorioResultados { Data = DateTime.Now, Unidade = "Unidade Mock", Indicador = "Mock Indicador", LimiteSuperior = 100, LimiteInferior = 0, Sentido = "Maior", Nc = 100, Real = 10 });
-            retorno3.Add(new RelatorioResultados { Data = DateTime.Now, Unidade = "Unidade Mock", Indicador = "Mock Indicador", LimiteSuperior = 100, LimiteInferior = 0, Sentido = "Maior", Nc = 100, Real = 10 });
-            retorno3.Add(new RelatorioResultados { Data = DateTime.Now, Unidade = "Unidade Mock", Indicador = "Mock Indicador", LimiteSuperior = 100, LimiteInferior = 0, Sentido = "Maior", Nc = 100, Real = 10 });
+            retorno3.Add(new RelatorioResultados { Data = DateTime.Now, Unidade = "Unidade Mock", Indicador = "Mock Indicador", LimiteSuperior = 100, LimiteInferior = 0, Sentido = "Maior", Nc = 120, Real = 10 });
+            retorno3.Add(new RelatorioResultados { Data = DateTime.Now, Unidade = "Unidade Mock", Indicador = "Mock Indicador", LimiteSuperior = 100, LimiteInferior = 0, Sentido = "Maior", Nc = 150, Real = 10 });
+            retorno3.Add(new RelatorioResultados { Data = DateTime.Now, Unidade = "Unidade Mock", Indicador = "Mock Indicador", LimiteSuperior = 100, LimiteInferior = 0, Sentido = "Maior", Nc = 200, Real = 10 });
+            retorno3.Add(new RelatorioResultados { Data = DateTime.Now, Unidade = "Unidade Mock", Indicador = "Mock Indicador", LimiteSuperior = 100, LimiteInferior = 0, Sentido = "Maior", Nc = 300, Real = 10 });
+            retorno3.Add(new RelatorioResultados { Data = DateTime.Now, Unidade = "Unidade Mock", Indicador = "Mock Indicador", LimiteSuperior = 100, LimiteInferior = 0, Sentido = "Maior", Nc = 400, Real = 10 });
         }
 
         #endregion
@@ -225,7 +236,13 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         public decimal scorecard { get; set; }
         public decimal scorecardJbs { get; set; }
         public decimal scorecardJbsReg { get; set; }
-        public string _date { get; }
+        public string _date
+        {
+            get
+            {
+                return date.ToString("dd/MM/yyyy");
+            }
+        }
         public bool haveHistorico { get; set; }
         public decimal? limiteInferior { get; set; }
         public decimal? limiteSuperior { get; set; }
