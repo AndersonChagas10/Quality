@@ -1,5 +1,5 @@
 ﻿<li>
-    <div data-ng-controller="MainCtrl" id="showRegUnidadeVinculados" style="display:none; margin-left:0px!important">
+    <div data-ng-controller="MeuControle" id="showRegUnidadeVinculados" style="display:none; margin-left:0px!important">
         <div>
             <span class="redLabel">@Resources.Resource.structure_group</span>
             <select id="level1Id"
@@ -30,8 +30,12 @@
 
 
     @*var UrlListaInicial = @Html.Raw(Json.Encode(Url.Action("GetListLevel1", "api/ParamsApi")));*@
-    var viewbag = true;
-    var ListaInicial = @ViewBag.UnidadeUsuario;
+    //var viewbag = true;
+
+    var UrlListaInicial = @Html.Raw(Json.Encode(Url.Action("GetRegionaisUsuario", "api/CompanyForm")));
+
+    @*var ListaInicial = @ViewBag.UnidadeUsuario;*@
+
     var GetListLevel1 = @Html.Raw(Json.Encode(Url.Action("GetListLevel1", "api/ParamsApi")));
     var GetListLevel2 = @Html.Raw(Json.Encode(Url.Action("GetListLevel2", "api/ParamsApi")));
     var GetListLevel3 = @Html.Raw(Json.Encode(Url.Action("GetListLevel3", "api/ParamsApi")));

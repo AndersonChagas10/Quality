@@ -5,21 +5,21 @@
     START ANGULAR MODULE
     */
 
-    app.controller('MainCtrl', ['$scope', '$http',
+    app.controller('MeuControle', ['$scope', '$http',
         function ($scope, $http) {
 
-            if (viewBag) {
-                $scope.ListaInicial = ListaInicial;
-            } else {
+            //if (viewBag) {
+            //$scope.ListaInicial = ListaInicial;
+            //} else {
 
-                $http({
-                    method: 'POST',
-                    url: UrlListaInicial
-                }).
-                then(function (r) {
-                    $scope.ListaInicial = r.data;
-                });
-            }
+            $http({
+                method: 'POST',
+                url: UrlListaInicial
+            }).
+            then(function (r) {
+                $scope.ListaInicial = r.data;
+            });
+            //}
 
             $scope.GetNextDDL = function (elementValue, url, elementChainedName, urlParaOptionSelecione) {
                 if (elementValue) {

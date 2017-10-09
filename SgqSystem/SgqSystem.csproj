@@ -305,11 +305,13 @@
     <Compile Include="Controllers\Api\App\AppApiControlle.cs" />
     <Compile Include="Controllers\Api\App\ContadoresXX.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
+    <Compile Include="Controllers\Api\CompanyFormApiController.cs" />
     <Compile Include="Controllers\Api\CorrectActApiController.cs" />
     <Compile Include="Controllers\Api\DefectApiController.cs" />
     <Compile Include="Controllers\Api\HangFireServicesController.cs" />
     <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\FtaApiController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\RelatorioDeResultadosApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\VerificacaoTipificacaoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\NaoConformidadePorCabecalhoApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\ApontamentosDiariosApiController.cs" />
