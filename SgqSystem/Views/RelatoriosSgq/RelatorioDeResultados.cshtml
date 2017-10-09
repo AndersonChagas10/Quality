@@ -1,5 +1,5 @@
 ﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
-@{ 
+@{
     ViewBag.Title = "Relatório de Resultados";
 }
 <div class="page-content" style="min-height: 600px;">
@@ -11,10 +11,851 @@
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
         @*@Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")*@
+
+
+
+        <div class="alert alert-warning" id="SemDados" hidden>
+            Sem dados na busca.
+        </div>
+
+        <div class="alert alert-info" id="divMensagemAlerta" hidden>
+            Por favor selecione uma unidade.
+        </div>
+
+        <h2 id="Titulo"></h2>
+        <h3 id="TituloGrafico"></h3>
+        <br />
+        <div id="GraficoPeriodoLoader"></div>
+        <div id="GraficoPeriodo"></div>
+        <br />
+        <h3 id="TituloTabela"></h3>
+        <br />
+        <table id="DataTable"></table>
+    </div>
+</div>
+
+<!-- Modal Historico do Indicador-->
+<div class="modal fade bs-example-modal-lg" id="modalHistorico" role="dialog">
+    <div class="modal-dialog modal-lg ">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Histórico do Indicador</h4>
+            </div>
+            <div class="modal-body">
+                <div class="" id="GraficoHistoricoModal"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="modalResultados" role="dialog">
+    <div class="modal-dialog modal-lg ">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Resultados do Indicador</h4>
+            </div>
+            <div class="modal-body">
+                <table id="DataTableResultados"></table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal FTA -->
+<div class="modal fade bs-example-modal-lg" id="ftaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Deseja Criar um Formulario de Tratamento de anomalia?</h4>
+            </div>
+            @*<div class="modal-body">
+
+                </div>*@
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+                <a id="ftaModalSim" href="#" target="_blank">
+                    <button type="button" class="btn btn-primary">Sim</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal ACOES X INDICADORES -->
+<div class="modal fade bs-example-modal-lg" id="IndicadorXAcaoModal" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                @*<h4 class="modal-title" id="myModalLabel"></h4>*@
+            </div>
+            <div class="modal-body">
+
+                <div id="graficoAcoesXIndicadores"></div>
+                <div>
+                    <table class="table" id="tabelaAcoesXIndicaor"></table>
+                </div>
+                <label id="mensagem" style="display:none">Não existem dados de Ações para este Indicador / Unidade</label>
+            </div>
+            @*<div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+                    <a id="ftaModalSim" href="#" target="_blank">
+                        <button type="button" class="btn btn-primary">Sim</button>
+                    </a>
+                </div>*@
+        </div>
     </div>
 </div>
 
 <script>
+
+    function Send(toggle) {
+
+        //if (ValidaFormulario()) {
+
+        //    $('#menu-toggle').click();
+
+        //    LimparTitulos();
+
+        //    $('#GraficoPeriodo').empty();
+
+        //    EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);
+        //    EasyAjax(UrlListaResultadosPeriodo, enviar, GerarTabela, "DataTable", undefined);
+
+        //}
+        GerarGrafico([{ "Data": "0001-01-01T00:00:00", "Unidade": 4, "Indicador": 181, "UnidadeName": "ANDRADE", "IndicadorName": "INDISPONIBILIDADE LOGÍSTICA CAVALOS %", "Av": 41.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-69-122-181", "Meta": 80.0, "Status": 0, "IndicadorUnidade": "INDISPONIBILIDADE LOGÍSTICA CAVALOS % - ANDRADE", "NumeroAcoesConcluidas": 0, "_Data": "01/01/0001" }, { "Data": "0001-01-01T00:00:00", "Unidade": 4, "Indicador": 169, "UnidadeName": "ANDRADE", "IndicadorName": "INDISPONIBILIDADE  LOGÍSTICA %", "Av": 41.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-169", "Meta": 80.0, "Status": 0, "IndicadorUnidade": "INDISPONIBILIDADE  LOGÍSTICA % - ANDRADE", "NumeroAcoesConcluidas": 0, "_Data": "01/01/0001" }, { "Data": "0001-01-01T00:00:00", "Unidade": 4, "Indicador": 168, "UnidadeName": "ANDRADE", "IndicadorName": "INDISPONIBILIDADE MECÂNICA COLHEDORA %", "Av": 41.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-168", "Meta": 80.0, "Status": 0, "IndicadorUnidade": "INDISPONIBILIDADE MECÂNICA COLHEDORA % - ANDRADE", "NumeroAcoesConcluidas": 0, "_Data": "01/01/0001" }, { "Data": "0001-01-01T00:00:00", "Unidade": 4, "Indicador": 180, "UnidadeName": "ANDRADE", "IndicadorName": "INDISPONIBILIDADE MECÂNICA CAVALOS %", "Av": 41.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-69-122-180", "Meta": 80.0, "Status": 0, "IndicadorUnidade": "INDISPONIBILIDADE MECÂNICA CAVALOS % - ANDRADE", "NumeroAcoesConcluidas": 0, "_Data": "01/01/0001" }, { "Data": "0001-01-01T00:00:00", "Unidade": 4, "Indicador": 49, "UnidadeName": "ANDRADE", "IndicadorName": "IMPUREZA VEGETAL NA CANA ENTREGUE", "Av": 7.0, "Nc": 1.0, "Pc": 14.29, "Historico_Id": "1-7-3-9-22-49", "Meta": 80.0, "Status": 0, "IndicadorUnidade": "IMPUREZA VEGETAL NA CANA ENTREGUE - ANDRADE", "NumeroAcoesConcluidas": 0, "_Data": "01/01/0001" }, { "Data": "0001-01-01T00:00:00", "Unidade": 4, "Indicador": 170, "UnidadeName": "ANDRADE", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 41.0, "Nc": 7.0, "Pc": 17.07, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": "INDISPONIBILIDADE ADMINISTRATIVA % - ANDRADE", "NumeroAcoesConcluidas": 0, "_Data": "01/01/0001" }, { "Data": "0001-01-01T00:00:00", "Unidade": 4, "Indicador": 182, "UnidadeName": "ANDRADE", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA CAVALOS %", "Av": 41.0, "Nc": 8.0, "Pc": 19.51, "Historico_Id": "1-7-5-13-29-69-122-182", "Meta": 80.0, "Status": 0, "IndicadorUnidade": "INDISPONIBILIDADE ADMINISTRATIVA CAVALOS % - ANDRADE", "NumeroAcoesConcluidas": 0, "_Data": "01/01/0001" }, { "Data": "0001-01-01T00:00:00", "Unidade": 4, "Indicador": 120, "UnidadeName": "ANDRADE", "IndicadorName": "TEMPO DE CICLO (min)", "Av": 41.0, "Nc": 36.0, "Pc": 87.80, "Historico_Id": "1-7-5-13-29-69-120", "Meta": 80.0, "Status": 1, "IndicadorUnidade": "TEMPO DE CICLO (min) - ANDRADE", "NumeroAcoesConcluidas": 0, "_Data": "01/01/0001" }, { "Data": "0001-01-01T00:00:00", "Unidade": 4, "Indicador": 183, "UnidadeName": "ANDRADE", "IndicadorName": "INDISPONIBILIDADE MECÂNICA REBOQUES %", "Av": 41.0, "Nc": 41.0, "Pc": 100.0, "Historico_Id": "1-7-5-13-29-69-123-183", "Meta": 80.0, "Status": 1, "IndicadorUnidade": "INDISPONIBILIDADE MECÂNICA REBOQUES % - ANDRADE", "NumeroAcoesConcluidas": 0, "_Data": "01/01/0001" }]);
+        GerarTabela([{ "Data": "0001-01-01T00:00:00", "Unidade": 4, "Indicador": 182, "UnidadeName": "ANDRADE", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA CAVALOS %", "Av": 41.0, "Nc": 8.0, "Pc": 19.51, "Historico_Id": "1-7-5-13-29-69-122-182", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "01/01/0001" }, { "Data": "0001-01-01T00:00:00", "Unidade": 4, "Indicador": 169, "UnidadeName": "ANDRADE", "IndicadorName": "INDISPONIBILIDADE  LOGÍSTICA %", "Av": 41.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-169", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "01/01/0001" }, { "Data": "0001-01-01T00:00:00", "Unidade": 4, "Indicador": 168, "UnidadeName": "ANDRADE", "IndicadorName": "INDISPONIBILIDADE MECÂNICA COLHEDORA %", "Av": 41.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-168", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "01/01/0001" }, { "Data": "0001-01-01T00:00:00", "Unidade": 4, "Indicador": 183, "UnidadeName": "ANDRADE", "IndicadorName": "INDISPONIBILIDADE MECÂNICA REBOQUES %", "Av": 41.0, "Nc": 41.0, "Pc": 100.0, "Historico_Id": "1-7-5-13-29-69-123-183", "Meta": 80.0, "Status": 1, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "01/01/0001" }, { "Data": "0001-01-01T00:00:00", "Unidade": 4, "Indicador": 170, "UnidadeName": "ANDRADE", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 41.0, "Nc": 7.0, "Pc": 17.07, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "01/01/0001" }, { "Data": "0001-01-01T00:00:00", "Unidade": 4, "Indicador": 120, "UnidadeName": "ANDRADE", "IndicadorName": "TEMPO DE CICLO (min)", "Av": 41.0, "Nc": 36.0, "Pc": 87.80, "Historico_Id": "1-7-5-13-29-69-120", "Meta": 80.0, "Status": 1, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "01/01/0001" }, { "Data": "0001-01-01T00:00:00", "Unidade": 4, "Indicador": 49, "UnidadeName": "ANDRADE", "IndicadorName": "IMPUREZA VEGETAL NA CANA ENTREGUE", "Av": 7.0, "Nc": 1.0, "Pc": 14.29, "Historico_Id": "1-7-3-9-22-49", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "01/01/0001" }, { "Data": "0001-01-01T00:00:00", "Unidade": 4, "Indicador": 181, "UnidadeName": "ANDRADE", "IndicadorName": "INDISPONIBILIDADE LOGÍSTICA CAVALOS %", "Av": 41.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-69-122-181", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "01/01/0001" }, { "Data": "0001-01-01T00:00:00", "Unidade": 4, "Indicador": 180, "UnidadeName": "ANDRADE", "IndicadorName": "INDISPONIBILIDADE MECÂNICA CAVALOS %", "Av": 41.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-69-122-180", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "01/01/0001" }]);
+    }
+
+    function GerarTabela(retornoArray) {
+
+        if (retornoArray.length > 0) {
+            var counter = 0;
+            while (counter < retornoArray.length) {
+                if (retornoArray[counter]["Status"] == 1)
+                    retornoArray[counter]["Status"] = '<p style="color:green; font-size:15px;"><i class="fa fa-fw fa-arrow-up"></i></p>'
+                else
+                    retornoArray[counter]["Status"] = '<p style="color:red; font-size:15px;"><i class="fa fa-fw fa-arrow-down"></i></p>';
+                counter++;
+            }
+            var table = $('#DataTable').empty().DataTable({
+                data: retornoArray,
+                columns: [
+                    { title: "Unidade", mData: "UnidadeName" },
+                    { title: "Indicador", mData: "IndicadorName" },
+                    { title: "Av", mData: "Av" },
+                    { title: "Conformidades", mData: "Nc" },
+                    { title: "% Conformidades", mData: "Pc" },
+                    { title: "Meta", mData: "Meta" },
+                    { title: "Status", mData: "Status" },
+                    { title: "", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-target="#modalHistorico" >' + "Historico" + '</button>', "visible": true },
+                    { title: "", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalResultados">' + "Listar Resultados" + '</button>', "visible": true },
+                ],//onclick="loadHistorico()"
+                responsive: true,
+                loadingRecords: true,
+                destroy: true,
+                initComplete: function () {
+                    $('#DataTable tbody').on('click', 'button', function (data, a, b) {
+                        var data = table.row($(this).parents('tr')).data();
+                        enviar2 = {};
+                        enviar2["startDate"] = enviar["startDate"];
+                        enviar2["endDate"] = enviar["endDate"];
+                        enviar2["level1Id"] = data["Indicador"];
+                        enviar2["parlevelIdHistoricoModal"] = data["Indicador"];
+                        enviar2["UnitId"] = data["Unidade"];
+                        enviar2["historico_id"] = data["Historico_Id"];
+                        enviar2["ReincidenciaDesvioFTA"] = data["Av"] - data["Conformidades"];
+                        enviar2["PercentualNCFTA"] = data["Pc"];
+                        if ($(this).attr('data-target') == "#modalResultados")
+                            GerarTabelaResultados([{ "Data": "2017-10-09T00:00:00", "Unidade": "CRUZ ALTA", "Indicador": "BRIX DO CALDO PRÉ EVAPORADO CX 8", "LimiteInferior": 39.0, "LimiteSuperior": 45.0, "Sentido": "ENTRE", "Nc": 1.0, "Real": 42.50, "Historico_Id": null, "NumeroAcoesConcluidas": 0, "_Data": "2017-10-09" }, { "Data": "2017-10-09T00:00:00", "Unidade": "CRUZ ALTA", "Indicador": "BRIX DO CALDO PRÉ EVAPORADO CX 8", "LimiteInferior": 39.0, "LimiteSuperior": 45.0, "Sentido": "ENTRE", "Nc": 1.0, "Real": 42.50, "Historico_Id": null, "NumeroAcoesConcluidas": 0, "_Data": "2017-10-09" }, { "Data": "2017-10-09T00:00:00", "Unidade": "CRUZ ALTA", "Indicador": "BRIX DO CALDO PRÉ EVAPORADO CX 8", "LimiteInferior": 39.0, "LimiteSuperior": 45.0, "Sentido": "ENTRE", "Nc": 1.0, "Real": 42.50, "Historico_Id": null, "NumeroAcoesConcluidas": 0, "_Data": "2017-10-09" }]);
+                            //EasyAjax(UrlListaResultados, enviar2, GerarTabelaResultados, "DataTableResultados", null);
+                        else {
+                            $('#GraficoHistoricoModal').empty();
+                            $('#modalHistorico').modal()
+                            CallbackGraficoHistoricoModal([{ "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-01T00:00:00", "_date": "01/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 13.62, "av": 1.0, "ChartTitle": "Histórico: % de Não Conformidades no período 01/07/2017 a 30/11/2017 no indicador BRIX DO CALDO CLARIFICADO <br> <p style=\"font-size:10px;\">Macroprocesso: INDUSTRIAL -> Unidade: CRUZ ALTA -> Classificação do Negocio: QUALIDADE -> Processo: TRATAMENTO DE CALDO -> Indicador:  INDICE DA QUALIDADE DO PRODUTO ACABADO -> Indicador:  ÍNDICE DE QUALIDADE FÍSICO-QUÍMICA AÇÚCAR CRISTAL -> Indicador:  FILTRABILIDADE DO AÇUCAR</p>" }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-02T00:00:00", "_date": "02/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 15.20, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-03T00:00:00", "_date": "03/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 14.20, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-04T00:00:00", "_date": "04/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 14.22, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-05T00:00:00", "_date": "05/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 15.18, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-06T00:00:00", "_date": "06/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 14.10, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-07T00:00:00", "_date": "07/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 13.90, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-08T00:00:00", "_date": "08/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 14.47, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-09T00:00:00", "_date": "09/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 14.71, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-10T00:00:00", "_date": "10/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 11.78, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-11T00:00:00", "_date": "11/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 12.30, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-12T00:00:00", "_date": "12/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 14.53, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-13T00:00:00", "_date": "13/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 15.10, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-14T00:00:00", "_date": "14/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 14.50, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-15T00:00:00", "_date": "15/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 15.03, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-16T00:00:00", "_date": "16/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 11.52, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-17T00:00:00", "_date": "17/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 14.50, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-18T00:00:00", "_date": "18/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 11.01, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-19T00:00:00", "_date": "19/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 14.47, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-20T00:00:00", "_date": "20/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 14.56, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-21T00:00:00", "_date": "21/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 14.68, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-22T00:00:00", "_date": "22/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 14.43, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-23T00:00:00", "_date": "23/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 14.42, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-24T00:00:00", "_date": "24/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 15.33, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-25T00:00:00", "_date": "25/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 14.80, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-26T00:00:00", "_date": "26/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 14.40, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-27T00:00:00", "_date": "27/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 15.08, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-28T00:00:00", "_date": "28/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 12.56, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-29T00:00:00", "_date": "29/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 12.30, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-30T00:00:00", "_date": "30/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 14.63, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-07-31T00:00:00", "_date": "31/07/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 14.58, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-08-01T00:00:00", "_date": "01/08/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 14.58, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-08-02T00:00:00", "_date": "02/08/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 14.07, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-08-03T00:00:00", "_date": "03/08/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 14.28, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-08-04T00:00:00", "_date": "04/08/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 13.75, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-08-05T00:00:00", "_date": "05/08/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 13.37, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-08-06T00:00:00", "_date": "06/08/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 13.37, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-08-07T00:00:00", "_date": "07/08/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 17.59, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-08-08T00:00:00", "_date": "08/08/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 15.15, "av": 1.0, "ChartTitle": null }, { "haveHistorico": false, "limiteInferior": 10.0, "limiteSuperior": 23.0, "levelName": "BRIX DO CALDO CLARIFICADO", "UnidadeName": "CRUZ ALTA", "HISTORICO_ID": "2-8-3-10-23-54-113", "IsPaAcao": null, "date": "2017-08-09T00:00:00", "_date": "09/08/2017", "scorecard": 0.0, "regId": 0, "regName": null, "level1Name": null, "level2Name": null, "level3Name": null, "level1Id": 0, "level2Id": 0, "level3Id": 0, "scorecardJbs": 0.0, "scorecardJbsReg": 0.0, "companySigla": null, "companyScorecard": 0.0, "procentagemNc": 100.0, "nc": 15.30, "av": 1.0, "ChartTitle": null }]);
+                            //EasyAjax(UrlGraficoHistorico, enviar2, function (r) {
+                            //    console.log(r)
+                            //    $('#GraficoHistoricoModal').empty()
+                            //    CallbackGraficoHistoricoModal(r)
+                            //}, "GraficoHistoricoModal")
+                        }
+                    });
+                },
+                "language": {
+                    "sProcessing": "A processar...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "Não foram encontrados resultados",
+                    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
+                    "sInfoFiltered": "(filtrado de _MAX_ registros no total)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Procurar:",
+                    "sUrl": "",
+                    "oPaginate": {
+                        "sFirst": "Primeiro",
+                        "sPrevious": "Anterior",
+                        "sNext": "Seguinte",
+                        "sLast": "Último"
+                    }
+                }
+            });
+        }
+    }
+
+    function GerarGrafico(data) {
+
+        if (data.length > 0) {
+
+            SetTitulo();
+
+            //Colocar o grafico Aqui
+            var IndicadorUnidade = MapeiaValorParaHC(data, "IndicadorUnidade");
+            var Indicador = MapeiaValorParaHC(data, "Indicador");
+            var Unidade = MapeiaValorParaHC(data, "Unidade");
+            var porc = MapeiaValorParaHC(data, "Pc");
+            fazGambipraMenosCem(porc);
+
+            //$('#GraficoPeriodoLoader').removeClass('loader');
+            $('#GraficoPeriodo').empty().highcharts({
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    type: 'column',
+                    zoomType: 'x,y'
+                },
+                title: {
+                    text: "% de Não Conformidades nos Indicadores"
+                },
+                xAxis: {
+                    categories: IndicadorUnidade,
+                    //title: {
+                    //    text: 'Monitoramentos',
+                    //},
+                },
+                yAxis: [{
+                    min: 0,
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: '% NC',
+                    }
+                },
+                {
+                    min: 0,
+                    title: {
+                        text: 'Pareto'
+                    },
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    opposite: true
+                },
+                ],
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        grouping: false,
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                {
+                    name: '% NC',
+                    color: 'rgba(240,124,0,1)',
+                    data: porc,
+                    yAxis: 0,
+                    point: {
+                        events: {
+                            click: function () {
+
+                                enviar3 = {};
+                                enviar3["startDate"] = enviar["startDate"];
+                                enviar3["endDate"] = enviar["endDate"];
+                                enviar3['unitId'] = Unidade[this.x];
+                                enviar3['level1Id'] = Indicador[this.x];
+
+
+                                let selector = 'tabelaAcoesXIndicaor'
+                                if ($.fn.DataTable.isDataTable('#' + selector)) {
+                                    $('#' + selector).DataTable().destroy();
+                                    $('#' + selector).empty();
+                                }
+                                $('#mensagem').hide();
+                                $('#graficoAcoesXIndicadores').empty();
+                                $('#IndicadorXAcaoModal').modal();
+                                CBGAcoesXIndicador([{ "Data": "2017-07-01T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "01/07/2017" }, { "Data": "2017-07-02T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "02/07/2017" }, { "Data": "2017-07-03T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "03/07/2017" }, { "Data": "2017-07-04T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "04/07/2017" }, { "Data": "2017-07-05T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "05/07/2017" }, { "Data": "2017-07-06T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "06/07/2017" }, { "Data": "2017-07-07T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "07/07/2017" }, { "Data": "2017-07-08T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "08/07/2017" }, { "Data": "2017-07-09T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "09/07/2017" }, { "Data": "2017-07-10T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "10/07/2017" }, { "Data": "2017-07-11T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "11/07/2017" }, { "Data": "2017-07-12T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "12/07/2017" }, { "Data": "2017-07-13T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "13/07/2017" }, { "Data": "2017-07-14T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "14/07/2017" }, { "Data": "2017-07-15T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "15/07/2017" }, { "Data": "2017-07-16T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "16/07/2017" }, { "Data": "2017-07-17T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "17/07/2017" }, { "Data": "2017-07-18T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "18/07/2017" }, { "Data": "2017-07-19T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "19/07/2017" }, { "Data": "2017-07-20T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "20/07/2017" }, { "Data": "2017-07-21T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "21/07/2017" }, { "Data": "2017-07-22T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "22/07/2017" }, { "Data": "2017-07-23T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "23/07/2017" }, { "Data": "2017-07-24T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "24/07/2017" }, { "Data": "2017-07-25T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "25/07/2017" }, { "Data": "2017-07-26T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "26/07/2017" }, { "Data": "2017-07-27T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "27/07/2017" }, { "Data": "2017-07-28T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "28/07/2017" }, { "Data": "2017-07-29T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "29/07/2017" }, { "Data": "2017-07-30T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "30/07/2017" }, { "Data": "2017-07-31T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "31/07/2017" }, { "Data": "2017-08-01T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "01/08/2017" }, { "Data": "2017-08-02T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "02/08/2017" }, { "Data": "2017-08-03T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "03/08/2017" }, { "Data": "2017-08-04T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "04/08/2017" }, { "Data": "2017-08-05T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "05/08/2017" }, { "Data": "2017-08-06T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "06/08/2017" }, { "Data": "2017-08-07T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "07/08/2017" }, { "Data": "2017-08-08T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "08/08/2017" }, { "Data": "2017-08-09T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "09/08/2017" }, { "Data": "2017-08-14T00:00:00", "Unidade": 1, "Indicador": 170, "UnidadeName": "CRUZ ALTA", "IndicadorName": "INDISPONIBILIDADE ADMINISTRATIVA %", "Av": 1.0, "Nc": 0.0, "Pc": 0.0, "Historico_Id": "1-7-5-13-29-68-118-170", "Meta": 80.0, "Status": 0, "IndicadorUnidade": null, "NumeroAcoesConcluidas": 0, "_Data": "14/08/2017" }]);
+                                //EasyAjax(UrlIndicadorXAcaoModal, enviar3, function (r) {
+                                //    if (r.length > 0) {
+                                //        //console.log(r);
+                                //        $('#graficoAcoesXIndicadores').empty();
+                                //        CBGAcoesXIndicador(r);
+                                //    } else {
+                                //        $('#graficoAcoesXIndicadores').modal('hide');
+                                //    }
+                                //}, "graficoAcoesXIndicadores")
+                            }
+                        }
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        color: 'black',
+                        align: 'center',
+                        style: {
+                            fontSize: '10px',
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: ' %'
+                    }
+                },
+                 CurvaPareto(calculaPareto(porc))
+                ]
+            });
+            //Fim HC
+        } else {
+            $('#SemDados').show();
+        }
+    }
+
+    function CallbackGraficoHistoricoModal(data) {
+
+        var dia = MapeiaValorParaHC(data, "_date");
+        var nc = MapeiaValorParaHC(data, "nc");
+        var porc = MapeiaValorParaHC(data, "procentagemNc");
+        fazGambipraMenosCem(porc)
+        var qtdAv = MapeiaValorParaHC(data, "av");
+        var limInferior = MapeiaValorParaHC(data, "limiteInferior");
+        var limSup = MapeiaValorParaHC(data, "limiteSuperior");
+        var numeroAcoesConcluidas = MapeiaValorParaHC(data, "NumeroAcoesConcluidas");
+
+        /*Nao exibe no HC atribuindo nulo aonde for ZERO*/
+        limInferior.forEach(function (o, c) {
+            if (o == 0)
+                limInferior[c] = null
+        })
+        limSup.forEach(function (o, c) {
+            if (o == 0)
+                limSup[c] = null
+        })
+        //var NomesDeVerdade = []
+        //pegaNomeDoIndicadorGrafico(nome, NomesDeVerdade)
+        $('#GraficoHistoricoModal').removeClass('loader');
+
+        $('#GraficoHistoricoModal').empty();
+
+        chartHistorico = Highcharts.chart('GraficoHistoricoModal', {
+            //$('#GraficoHistoricoModal').empty().highcharts({
+            credits: {
+                enabled: false
+            },
+            chart: {
+                type: 'column',
+                zoomType: 'x,y'
+            },
+            title: {
+                //text: getNomeDoIndicadorTitulo(data[0].ChartTitle)
+                text: data[0].ChartTitle
+            },
+            xAxis: {
+                categories: dia,
+                title: {
+                    text: 'Data',
+                },
+            },
+            yAxis: [
+                {
+                    //min: 0,
+                    title: {
+                        text: 'Quantidade'
+                    },
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                }, {
+                    //min: 0,
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: '% NC',
+                    },
+                    opposite: true
+                }],
+            legend: {
+                shadow: false
+            },
+            tooltip: {
+                shared: true
+            },
+            plotOptions: {
+                column: {
+                    grouping: false,
+                    shadow: false,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'VALOR',
+                color: 'rgba(77,143,189,1)',
+                data: nc,
+                yAxis: 0,
+                type: 'line',
+                marker: {
+                    enabled: false
+                },
+                pointPadding: 0.2,
+                //pointPlacement: -0.2,
+                point: {
+                    events: {
+                        click: function () {
+
+                            FTA2(enviar, this)
+                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                        }
+                    }
+                },
+                dataLabels: {
+                    //enabled: true,
+                    enabled: false,
+                    color: 'black',
+                    align: 'center',
+                    style: {
+                        fontSize: '10px',
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ''
+                }
+            }, {
+                visible: false,
+                name: '% NC',
+                color: 'rgba(240,124,0,1)',
+                data: porc,
+                yAxis: 1,
+                type: 'line',
+                marker: {
+                    enabled: false
+                },
+                //pointPadding: 0.4,
+                //pointPlacement: -0.2,
+                point: {
+                    events: {
+                        click: function () {
+                            FTA2(enviar, this)
+                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                        }
+                    }
+                },
+                dataLabels: {
+                    //enabled: true,
+                    enabled: false,
+                    color: 'black',
+                    align: 'center',
+                    style: {
+                        fontSize: '10px',
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ' %'
+                }
+            }, {
+                visible: false,
+                name: 'Avaliações',
+                data: qtdAv,
+                type: 'line',
+                marker: {
+                    enabled: false
+                },
+                color: 'rgba(81,207,64,1)',
+                pointPadding: 0.3,
+                pointPlacement: 0.2,
+                yAxis: 0,
+                point: {
+                    events: {
+                        click: function () {
+                            FTA2(enviar, this)
+                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                        }
+                    }
+                },
+                dataLabels: {
+                    //enabled: true,
+                    enabled: false,
+                    color: 'black',
+                    align: 'center',
+                    style: {
+                        fontSize: '10px',
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ''
+                }
+            }, {
+                name: 'Limite Inferior',
+                color: 'red',
+                data: limInferior,
+                yAxis: 0,
+                type: 'line',
+                marker: {
+                    enabled: false
+                },
+                pointPadding: 0.2,
+                //pointPlacement: -0.2,
+                point: {
+                    events: {
+                        click: function () {
+                            FTA2(enviar, this)
+                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                        }
+                    }
+                },
+                dataLabels: {
+                    //enabled: true,
+                    enabled: false,
+                    color: 'black',
+                    align: 'center',
+                    style: {
+                        fontSize: '10px',
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ''
+                }
+            }, {
+                name: 'Limite Superior',
+                color: 'brown',
+                data: limSup,
+                yAxis: 0,
+                type: 'line',
+                marker: {
+                    enabled: false
+                },
+                pointPadding: 0.2,
+                //pointPlacement: -0.2,
+                point: {
+                    events: {
+                        click: function () {
+                            FTA2(enviar2, this)
+                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                        }
+                    }
+                },
+                dataLabels: {
+                    //enabled: true,
+                    enabled: false,
+                    color: 'black',
+                    align: 'center',
+                    style: {
+                        fontSize: '10px',
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ''
+                }
+            }]
+        });
+
+    }
+
+    function GerarTabelaResultados(retornoArray) {
+        var counter = 0;
+        while (counter < retornoArray.length) {
+            if (retornoArray[counter]["Nc"] == 1)
+                retornoArray[counter]["Nc"] = '<p style="color:green; font-size:15px;"><i class="fa fa-fw fa-check"></i></p>'
+            else
+                retornoArray[counter]["Nc"] = '<p style="color:red; font-size:15px;"><i class="fa fa-fw fa-close"></i></p>';
+            counter++;
+        }
+        console.log(retornoArray);
+        var tableResultados = $('#DataTableResultados').empty().DataTable({
+            data: retornoArray,
+            columns: [
+                { title: "Data", mData: "_Data" },
+                { title: "Unidade", mData: "Unidade" },
+                { title: "Indicador", mData: "Indicador" },
+                { title: "Limite Inferior", mData: "LimiteInferior" },
+                { title: "Limite Superior", mData: "LimiteSuperior" },
+                { title: "Sentido", mData: "Sentido" },
+                { title: "Conforme", mData: "Nc" },
+                { title: "Real", mData: "Real" },
+            ],
+            responsive: true,
+            loadingRecords: true,
+            destroy: true,
+            "language": {
+                "sProcessing": "A processar...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "Não foram encontrados resultados",
+                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros no total)",
+                "sInfoPostFix": "",
+                "sSearch": "Procurar:",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Primeiro",
+                    "sPrevious": "Anterior",
+                    "sNext": "Seguinte",
+                    "sLast": "Último"
+                }
+            }
+        });
+    }
+    
+    function CBGAcoesXIndicador(data) {
+
+        var dia = MapeiaValorParaHC(data, "_Data");
+        var porc = MapeiaValorParaHC(data, "Pc");
+        fazGambipraMenosCem(porc)
+        var numeroAcoesConcluidas = MapeiaValorParaHC(data, "NumeroAcoesConcluidas");
+
+        var ChartTitle = "Evolutivo de % de Não Conformidades no Indicador " + data[0].IndicadorName + " na unidade de " + data[0].UnidadeName;
+
+        chart = Highcharts.chart('graficoAcoesXIndicadores', {
+            credits: {
+                enabled: false
+            },
+            chart: {
+                type: 'column',
+                zoomType: 'x,y'
+            },
+            title: {
+                //text: getNomeDoIndicadorTitulo(data[0].ChartTitle)
+                text: ChartTitle//data[0].ChartTitle
+            },
+            xAxis: {
+                categories: dia,
+                title: {
+                    text: 'Data',
+                },
+            },
+            yAxis: [{
+                //min: 0,
+                title: {
+                    text: 'Quantidade de Ações'
+                },
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                },
+                opposite: true
+            },
+            {
+                //min: 0,
+                labels: {
+                    format: '{value} %',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                },
+                title: {
+                    text: '% NC',
+                },
+            }],
+            legend: {
+                shadow: false
+            },
+            tooltip: {
+                shared: true
+            },
+            plotOptions: {
+                column: {
+                    grouping: false,
+                    shadow: false,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                //visible: false,
+                name: '% NC',
+                color: 'rgba(240,124,0,1)',
+                data: porc,
+                yAxis: 1,
+                type: 'line',
+                //marker: {
+                //    enabled: false
+                //},
+                //pointPadding: 0.4,
+                //pointPlacement: -0.2,
+                point: {
+                    events: {
+                        click: function () {
+
+                            EasyAjax(UrlListaAcoesIndicador, enviar3, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
+                            //FTA2(enviar, this)
+                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                        }
+                    }
+                },
+                dataLabels: {
+                    //enabled: true,
+                    enabled: false,
+                    color: 'black',
+                    align: 'center',
+                    style: {
+                        fontSize: '10px',
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ' %'
+                }
+            }, {
+                //visible: false,
+                name: 'Ações Concluídas',
+                data: numeroAcoesConcluidas,
+                type: 'line',
+                //marker: {
+                //    enabled: false
+                //},
+                color: 'rgba(81,207,64,1)',
+                //pointPadding: 0.3,
+                //pointPlacement: 0.2,
+                yAxis: 0,
+                point: {
+                    events: {
+                        click: function () {
+
+                            EasyAjax(UrlListaAcoesIndicador, enviar3, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
+                            //FTA2(enviar, this)
+                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                        }
+                    }
+                },
+                dataLabels: {
+                    //enabled: true,
+                    enabled: false,
+                    color: 'black',
+                    align: 'center',
+                    style: {
+                        fontSize: '10px',
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ''
+                }
+            }]
+        });
+    }
+    
+    function SetTitulo() {
+
+        let unidade = enviar.unitId;
+        let status = enviar.status;
+        let TituloGrafico = "";
+        let TextoStatus = "";
+        let UnidadeNome = $('#unitId :selected').text();
+
+        if (status != undefined) {
+            if (status == "1") {
+                TextoStatus = "Somente indicadores dentro da meta";
+                TituloGrafico = TextoStatus;
+            } else if (status == "2") {
+                TextoStatus = "Somente indicadores fora da meta";
+                TituloGrafico = TextoStatus;
+            }
+        }
+
+        if (unidade != undefined && status != undefined && status != "0" && unidade != "") {
+            TituloGrafico = "Unidade " + UnidadeNome + " | " + TextoStatus;
+        } else if (unidade != undefined && unidade != "") {
+            TituloGrafico = "Unidade " + UnidadeNome;
+        }
+
+        $('#Titulo').html('Resultados das Avaliações dos Indicadores');
+        $('#TituloGrafico').html(TituloGrafico);
+        $('#TituloTabela').html('Lista de Resultados das Avaliações dos Indicadores');
+    }
+
+    function fazGambipraMenosCem(arr) {
+        arr.forEach(function (o, c) {
+            arr[c] = parseInt((100 - o).toFixed(2))
+        })
+    }
+
+    function CurvaPareto(dados) {
+        return {
+            type: 'spline',
+            yAxis: 1,
+            name: 'Gráfico de Pareto',
+            color: "Red",
+            data: dados,
+            yAxis: 1,
+            tooltip: {
+                valueDecimals: 2,
+                valueSuffix: ' %'
+            },
+            zones: [{
+                value: 80,
+                color: 'Red'
+            }, {
+                color: 'Black'
+            }],
+        }
+    }
+
+    function calculaPareto(data) {
+        var retorno = [];
+        var total = data.reduce(function (a, b) { return a + b; }, 0);
+        var totalAcc = 0;
+        data.forEach(function (a) {
+            totalAcc += a / total * 100;
+            retorno.push((Math.round(totalAcc, 0)));
+        });
+        return retorno;
+    }
+
+    function FTA2(dataCarrierForm, highChartInstance) {
+        enviar2['auditorId'] = parseInt(auditorId);
+        let params = enviar2
+        let str = jQuery.param(params);
+        console.log(highChartInstance);
+        console.log(str);
+        @*let preServer = @Html.Raw(Json.Encode(ConfigUrls.preServer))*@
+        $('#ftaModal').modal();
+        //$('#ftaModalSim').attr('href', preServer + str);
+        //$('#ftaModalSim').attr('href', preLocal + str);
+        //$('#ftaModalSim').attr('href', preServer + str);
+        //console.log(dataCarrierForm)
+
+        //console.log(highChartInstance)
+    }
 
     $(document).ready(function () {
 
@@ -28,5 +869,4 @@
         formControl.showLevel1();
         $('select').select2()
     });
-
 </script>
