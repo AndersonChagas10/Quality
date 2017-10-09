@@ -322,7 +322,7 @@
             </li>
         }
 
-        
+
 
         <li>
             <div id="showUnit" style="display:none">
@@ -348,7 +348,7 @@
             </div>
         </li>
 
-        
+        @*@Html.Partial("~/Views/Shared/_SelectVinculado.cshtml")*@
 
         @*<li>
                 <div id="showOnlyUnit" style="display:none">
@@ -395,6 +395,17 @@
             </div>
 
 
+        </li>
+
+        <li>
+            <div id="showStatusIndicador" style="display:none">
+                <span class="redLabel">Status Indicador</span>
+                <select id="statusIndicador" class="form-control" style="width: 210px;">
+                    <option>Todos</option>
+                    <option value="1">Fora da Meta</option>
+                    <option value="2">Dentro da Meta</option>
+                </select>
+            </div>
         </li>
 
         <li>
@@ -800,6 +811,10 @@
             enviar['clusterSelected_Id'] = $('#clusterId option:selected').val();
         });
 
+        $('#statusIndicador').on('change', function (e) {
+            enviar['statusIndicador'] = $('#statusIndicador option:selected').val();
+        });
+
         //enviar['level01Id'] = null;
         //enviar['level02Id'] = null;
         //enviar['level03Id'] = null;
@@ -833,7 +848,7 @@
             enviar['endDate'] = "";
         });
 
-       
+
         //Start config datepickerrange simple
 
         //Start config datepickerrange full
@@ -1061,6 +1076,14 @@
 
         showUnidadesManutencao: function () {
             $("#showUnidadesManutencao").show();
+        },
+
+        showRegUnidadeVinculados: function (){
+            $('#showRegUnidadeVinculados').show();
+        },
+
+        showStatusIndicador: function() {
+            $('#showStatusIndicador').show();
         }
 
     }

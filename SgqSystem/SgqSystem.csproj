@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -305,11 +305,13 @@
     <Compile Include="Controllers\Api\App\AppApiControlle.cs" />
     <Compile Include="Controllers\Api\App\ContadoresXX.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
+    <Compile Include="Controllers\Api\CompanyFormApiController.cs" />
     <Compile Include="Controllers\Api\CorrectActApiController.cs" />
     <Compile Include="Controllers\Api\DefectApiController.cs" />
     <Compile Include="Controllers\Api\HangFireServicesController.cs" />
     <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\FtaApiController.cs" />
+    <Compile Include="Controllers\Api\RelatoriosBrasil\RelatorioDeResultadosApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\VerificacaoTipificacaoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\NaoConformidadePorCabecalhoApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\ApontamentosDiariosApiController.cs" />
@@ -521,6 +523,7 @@
     <Content Include="admin-lte\js\app.min.js" />
     <Content Include="Angular\app.js" />
     <Content Include="Angular\Level321Chain.js" />
+    <Content Include="Angular\SelectVinculado.js" />
     <Content Include="App_GlobalResources\Resource.pt-br.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <SubType>Designer</SubType>
@@ -1047,6 +1050,7 @@
     <None Include="Properties\PublishProfiles\SGQ BR.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ DEV.pubxml" />
     <None Include="Properties\PublishProfiles\SGQ GRT.pubxml" />
+    <None Include="Properties\PublishProfiles\SGQ USA.pubxml" />
     <None Include="Properties\PublishProfiles\SgqBr.pubxml" />
     <None Include="Properties\PublishProfiles\SgqBrasilGlobal.pubxml" />
     <None Include="Properties\PublishProfiles\SgqGlobal.pubxml" />
@@ -1405,6 +1409,9 @@
     <Content Include="Views\RelatoriosSgq\_VerificacaoTipificacaoEdit.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoConformidadePorCabecalho.cshtml" />
     <Content Include="Views\EmailConfigEUA\Index.cshtml" />
+    <Content Include="Views\RelatoriosSgq\RelatorioDeResultados.cshtml" />
+    <Content Include="Views\Shared\_SelectVinculado.cshtml" />
+    <Content Include="Views\RelatoriosSgq\NaoCumprimentoMeta.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1476,6 +1483,10 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
@@ -1490,7 +1501,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8091/SgqSystem</IISUrl>
+          <IISUrl>http://localhost:8080/SgqSystem</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
