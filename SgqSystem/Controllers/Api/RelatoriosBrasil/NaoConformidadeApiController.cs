@@ -636,6 +636,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                          "\n WHERE IND.Name = '" + form.level1Name + "' " +
                          "\n    and MON.Name = '" + form.level2Name + "' " +
                          "\n 	AND (UNI.Name = '" + form.unitName + "' OR UNI.Initials = '" + form.unitName + "')" +
+                         "\n    AND R3.IsNotEvaluate = 0 " +
                          "\n 	AND CL2.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
                          "\n GROUP BY " +
                          "\n  IND.Id " +
