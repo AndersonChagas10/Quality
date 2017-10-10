@@ -199,6 +199,7 @@ namespace Dominio.Services
                                             , ListaParCounterLocal, listNonCoformitRule, listaReincidencia, listParGoal);
 
                 if (DTO.GlobalConfig.Brasil)
+                {
                     if (paramsDto.parLevel1Dto.IsSpecific)
                     {
                         var query = "UPDATE PARLEVEL1 SET {0} = {1} WHERE id = {2} SELECT 1";
@@ -210,6 +211,14 @@ namespace Dominio.Services
                         queryExcute = string.Format(query, "AllowEditWeightOnLevel3", paramsDto.parLevel1Dto.AllowEditWeightOnLevel3 ? 1 : 0, paramsDto.parLevel1Dto.Id);
                         db.Database.ExecuteSqlCommand(queryExcute);
                     }
+                    if (paramsDto.parLevel1Dto.IsRecravacao)
+                    {
+                        var query = "UPDATE PARLEVEL1 SET {0} = {1} WHERE id = {2} SELECT 1";
+                        var queryExcute = string.Empty;
+                        queryExcute = string.Format(query, "IsRecravacao", paramsDto.parLevel1Dto.IsRecravacao ? 1 : 0, paramsDto.parLevel1Dto.Id);
+                        db.Database.ExecuteSqlCommand(queryExcute);
+                    }
+                }
             }
             catch (DbUpdateException e)
             {
@@ -270,6 +279,10 @@ namespace Dominio.Services
                 parlevel1Dto.AllowEditPatternLevel3Task = db.Database.SqlQuery<bool>(queryExcute).FirstOrDefault();
                 queryExcute = string.Format(query, "AllowEditWeightOnLevel3", parlevel1Dto.Id);
                 parlevel1Dto.AllowEditWeightOnLevel3 = db.Database.SqlQuery<bool>(queryExcute).FirstOrDefault();
+
+                //Recravação
+                queryExcute = string.Format(query, "IsRecravacao", parlevel1Dto.Id);
+                parlevel1Dto.IsRecravacao = db.Database.SqlQuery<bool>(queryExcute).FirstOrDefault();
             }
 
             #endregion

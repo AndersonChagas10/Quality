@@ -2473,6 +2473,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Is Recravacao.
+        /// </summary>
+        internal static string IsRecravacao {
+            get {
+                return ResourceManager.GetString("IsRecravacao", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Is active.
         /// </summary>
         internal static string is_active {

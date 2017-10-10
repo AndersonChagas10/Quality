@@ -2082,4 +2082,7 @@
   <data name="Pl1ShowInTablet" xml:space="preserve">
     <value>Mostrar Indicador no Tablet</value>
   </data>
+  <data name="IsRecravacao" xml:space="preserve">
+    <value>É Recravação</value>
+  </data>
 </root>

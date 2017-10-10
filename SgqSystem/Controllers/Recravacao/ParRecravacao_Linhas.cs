@@ -20,6 +20,10 @@ namespace SgqSystem.Controllers.Recravacao
         [Required(ErrorMessage = "É necessário selecionar um tipo de lata.")]
         public int ParRecravacao_TypeLata_Id { get; set; }
 
+        [Display(Name = "Monitoramento")]
+        [Required(ErrorMessage = "É necessário selecionar um Monitoramento.")]
+        public int? ParLevel2_Id { get; set; }
+
         [Display(Name = "Quantidade de Cabeças")]
         [Range(1, 9999999999, ErrorMessage = "Ao menos uma cabeça é necessária.")]
         public int NumberOfHeads { get; set; }
@@ -36,5 +40,8 @@ namespace SgqSystem.Controllers.Recravacao
 
         [ForeignKey("ParRecravacao_TypeLata_Id")]
         public virtual ParRecravacao_TipoLata TipoLata { get; set; }
+
+        [ForeignKey("ParLevel2_Id")]
+        public virtual ParLevel2 ParLevel2 { get; set; }
     }
 }

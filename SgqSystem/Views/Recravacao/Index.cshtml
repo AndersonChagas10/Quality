@@ -19,286 +19,284 @@
         </ul>
     </div>
 
-        <br />
-        <div ng-show="seletedLinha.Id > 0" class="col-lg-12 col-md-12 col-sm-12">
-            <form role="form" class="ng-pristine ng-valid">
-                <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
-                    <label for="" class="">Produto</label>
-                    <br />
-                    <select ng-change="saveState(true)" ng-disabled="seletedLinha.finalizado" ng-options="item as item.Name for item in produtos track by item.Id" ng-model="seletedLinha.form.Produto" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true"></select>
-                </div>
-                <div class="form-group float-label-control col-lg-3 col-md-3 col-sm-3">
-                    <label for="">Hora do início da Produção</label>
-                    <br />
-                    <input ng-change="saveState(true)" ng-disabled="seletedLinha.finalizado" type="time" class="form-control" placeholder="Hora do início da Produção" ng-model="seletedLinha.form.HoraInicioProducao">
-                </div>
-                <div class="form-group float-label-control col-lg-3 col-md-3 col-sm-3">
-                    <label for="">Hora do final da Produção</label>
-                    <br />
-                    <input ng-change="saveState(true)" ng-disabled="seletedLinha.finalizado" type="time" class="form-control" placeholder="Hora do final da Produção" ng-model="seletedLinha.form.HoraFimProducao">
-                </div>
-                <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
-                    <label for="">Fornecedor da Lata</label>
-                    <br />
-                    <select ng-change="saveState(true)" ng-disabled="seletedLinha.finalizado" ng-options="item as item.Name for item in fornecedorLata track by item.Id" ng-model="seletedLinha.form.FornecedorLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true"></select>
-                </div>
-                <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
-                    <label for="">Data do recebimento das latas</label>
-                    <br />
-                    <input ng-change="saveState(true)" ng-disabled="seletedLinha.finalizado" type="date" class="form-control" placeholder="Data do recebimento das latas" ng-model="seletedLinha.form.DataRecebimentoLatas">
-                </div>
-                <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
-                    <label for="">Fornecedor das tampas e funtos das latas</label>
-                    <br />
-                    <select ng-change="saveState(true)" ng-disabled="seletedLinha.finalizado" ng-options="item as item.Name for item in fornecedorTampaLata track by item.Id" ng-model="seletedLinha.form.FornecedorTampaFundoLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true"></select>
-                </div>
-                <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
-                    <label for="">Data do recebimento das tampas e fundos das latas</label>
-                    <br />
-                    <input ng-change="saveState(true)" ng-disabled="seletedLinha.finalizado" type="date" class="form-control" placeholder="Data do recebimento das tampas e fundos das latas" ng-model="seletedLinha.form.DataRecebimentoTampasFundosLatas">
-                </div>
-                <hr />
-                @*{{seletedLinha.form}}*@
-                <hr />
-                <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
-                    <button ng-disabled="seletedLinha.finalizado" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinatura">
-                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Finalizar Linha
-                    </button>
-                    <span ng-show="seletedLinha.finalizado" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{seletedLinha.userFinish.Name}}
-                    &nbsp;
-                    <span ng-show="seletedLinha.finalizado" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{seletedLinha.dataUserFinish}}
-                </div>
+    <br />
+    <div ng-show="seletedLinha.Id > 0" class="col-lg-12 col-md-12 col-sm-12">
+        <form role="form" class="ng-pristine ng-valid">
+            <div class="form-group float-label-control col-lg-6 col-md-12 col-sm-12">
+                <label for="" class="">Produto</label>
+                <br />
+                <select ng-change="saveState(true, true)" ng-disabled="seletedLinha.finalizado" ng-options="item as item.Name for item in produtos track by item.Id" ng-model="seletedLinha.form.Produto" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+            </div>
+            <div class="form-group float-label-control col-lg-3 col-md-12 col-sm-12">
+                <label for="">Hora do início da Produção</label>
+                <br />
+                <input ng-change="saveState(true, true)" ng-disabled="seletedLinha.finalizado" type="time" class="form-control" placeholder="Hora do início da Produção" ng-model="seletedLinha.form.HoraInicioProducao">
+            </div>
+            <div class="form-group float-label-control col-lg-3 col-md-12 col-sm-12">
+                <label for="">Hora do final da Produção</label>
+                <br />
+                <input ng-change="saveState(true, true)" ng-disabled="seletedLinha.finalizado" type="time" class="form-control" placeholder="Hora do final da Produção" ng-model="seletedLinha.form.HoraFimProducao">
+            </div>
+            <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                <label for="">Fornecedor da Lata</label>
+                <br />
+                <select ng-change="saveState(true, true)" ng-disabled="seletedLinha.finalizado" ng-options="item as item.Name for item in fornecedorLata track by item.Id" ng-model="seletedLinha.form.FornecedorLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+            </div>
+            <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                <label for="">Data do recebimento das latas</label>
+                <br />
+                <input ng-change="saveState(true, true)" ng-disabled="seletedLinha.finalizado" type="date" class="form-control" placeholder="Data do recebimento das latas" ng-model="seletedLinha.form.DataRecebimentoLatas">
+            </div>
+            <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                <label for="">Fornecedor das tampas e funtos das latas</label>
+                <br />
+                <select ng-change="saveState(true, true)" ng-disabled="seletedLinha.finalizado" ng-options="item as item.Name for item in fornecedorTampaLata track by item.Id" ng-model="seletedLinha.form.FornecedorTampaFundoLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+            </div>
+            <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                <label for="">Data do recebimento das tampas e fundos das latas</label>
+                <br />
+                <input ng-change="saveState(true, true)" ng-disabled="seletedLinha.finalizado" type="date" class="form-control" placeholder="Data do recebimento das tampas e fundos das latas" ng-model="seletedLinha.form.DataRecebimentoTampasFundosLatas">
+            </div>
+            @*{{seletedLinha.form}}*@
+            <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                <button ng-disabled="seletedLinha.finalizado" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinatura">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Finalizar Linha
+                </button>
+                <span ng-show="seletedLinha.finalizado" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{seletedLinha.userFinish.Name}}
+                &nbsp;
+                <span ng-show="seletedLinha.finalizado" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{seletedLinha.dataUserFinish}}
+            </div>
 
-                <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6" ng-show="seletedLinha.finalizado">
-                    <button ng-disabled="seletedLinha.isValidated" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinaturaValidarLinha">
-                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Validar Linha
-                    </button>
-                    <span ng-show="seletedLinha.isValidated" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{seletedLinha.userValidacao.Name}}
-                    &nbsp;
-                    <span ng-show="seletedLinha.isValidated" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{seletedLinha.dataUserValidacao}}
-                </div>
-            </form>
+            <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6" ng-show="seletedLinha.finalizado">
+                <button ng-disabled="seletedLinha.isValidated" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinaturaValidarLinha">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Validar Linha
+                </button>
+                <span ng-show="seletedLinha.isValidated" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{seletedLinha.userValidacao.Name}}
+                &nbsp;
+                <span ng-show="seletedLinha.isValidated" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{seletedLinha.dataUserValidacao}}
+            </div>
+        </form>
 
+    </div>
+
+    <div ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" style="margin-left: 10px;" class="col-lg-12 col-md-12 col-sm-12" ng-repeat="item in seletedLinha.latas track by $index">
+        <div style="text-align: right; padding-bottom: 5px; padding-top: 5px; float: left; vertical-align: middle; font-size: 18px;">{{item.Name}}</div>
+        <div style="text-align: right; padding-bottom: 5px; padding-top: 5px; float: right; ">
+            <button ng-show="item.finalizado" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
+                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+            </button>
+            <button ng-show="!item.finalizado" type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal{{$index}}">
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+            </button>
+            <button ng-show="!item.finalizado" type="button" class="btn btn-danger btn-sm" ng-click="deleteLata(seletedLinha, $index)">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </button>
+            <button type="button" ng-show="item.liberaAssinaturaLata && !item.finalizado" ng-click="selectLata($index)" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinaturaFinalizaLata">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+            </button>
         </div>
-        
-        <div ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" style="margin-left: 10px;" class="col-lg-12 col-md-12 col-sm-12" ng-repeat="item in seletedLinha.latas track by $index">
-            <div style="text-align: right; padding-bottom: 5px; padding-top: 5px; float: left; vertical-align: middle; font-size: 18px;">{{item.Name}}</div>
-            <div style="text-align: right; padding-bottom: 5px; padding-top: 5px; float: right; ">
-                <button ng-show="item.finalizado" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
-                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                </button>
-                <button ng-show="!item.finalizado" type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal{{$index}}">
-                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                </button>
-                <button ng-show="!item.finalizado" type="button" class="btn btn-danger btn-sm" ng-click="deleteLata(seletedLinha, $index)">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </button>
-                <button type="button" ng-show="item.liberaAssinaturaLata && !item.finalizado" ng-click="selectLata($index)" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinaturaFinalizaLata">
-                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                </button>
+
+        <table style="width: 100%">
+            <tbody>
+
+                <tr>
+                    <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold; width:15%">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
+                    <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd; width: 80px !important" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{$index + 1}}</td>
+                </tr>
+
+                <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
+                    <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                    <td style="border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                        {{ParLevel3.ResultValue['Ponto' + ($index +1)]}}
+                    </td>
+                </tr>
+
+                <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
+                    <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                    <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                        <span ng-show="ParLevel3.ResultValue[('Ponto' + ($index +1))] == '0'">
+                            {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
+                        </span>
+                        <span ng-show="ParLevel3.ResultValue[('Ponto' + ($index +1))] == '1'">
+                            {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
+                        </span>
+                    </td>
+                </tr>
+
+                <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '4')">
+                    <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                    <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                        {{ParLevel3.ResultValue['PontoCalc1' + ($index +1)]}}
+                        <span ng-show="ParLevel3.ResultValue[('Ponto' + ($index +1))] > 0">
+                            x10^
+                        </span>
+                        {{ParLevel3.ResultValue['PontoCalc2' + ($index +1)]}}
+                    </td>
+                </tr>
+
+                <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
+                    <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                    <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                        {{ParLevel3.ResultValue[('Ponto' + ($index +1))] || "0"}}
+                    </td>
+                </tr>
+
+                <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
+                    <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                    <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px; word-wrap:break-word;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                        {{ParLevel3.ResultValue['PontoText' + ($index +1)]}}
+                    </td>
+                </tr>
+
+                <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
+                    <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                    <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                        {{geraIdCalc(ParLevel3.ParLevel3Value_OuterList, $index, seletedLinha.latas.indexOf(item)) }}
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <div style="text-align: left; padding-top: 5px; height:40px;">
+            <div style="float:left;">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{item.userValidacao.Name}}
             </div>
-
-            <table style="width: 100%">
-                <tbody>
-
-                    <tr>
-                        <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold; width:15%">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
-                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd; width: 80px !important" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{$index + 1}}</td>
-                    </tr>
-
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                        <td style="border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                            {{ParLevel3.ResultValue['Ponto' + ($index +1)]}}
-                        </td>
-                    </tr>
-
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                            <span ng-show="ParLevel3.ResultValue[('Ponto' + ($index +1))] == '0'">
-                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
-                            </span>
-                            <span ng-show="ParLevel3.ResultValue[('Ponto' + ($index +1))] == '1'">
-                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
-                            </span>
-                        </td>
-                    </tr>
-
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '4')">
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                            {{ParLevel3.ResultValue['PontoCalc1' + ($index +1)]}}
-                            <span ng-show="ParLevel3.ResultValue[('Ponto' + ($index +1))] > 0">
-                                x10^
-                            </span>
-                            {{ParLevel3.ResultValue['PontoCalc2' + ($index +1)]}}
-                        </td>
-                    </tr>
-
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                            {{ParLevel3.ResultValue[('Ponto' + ($index +1))] || "0"}}
-                        </td>
-                    </tr>
-
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px; word-wrap:break-word;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                            {{ParLevel3.ResultValue['PontoText' + ($index +1)]}}
-                        </td>
-                    </tr>
-
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-show="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                            {{geraIdCalc(ParLevel3.ParLevel3Value_OuterList, $index, seletedLinha.latas.indexOf(item)) }}
-                        </td>
-                    </tr>
-
-                </tbody>
-            </table>
-
-            <div style="text-align: left; padding-top: 5px; height:40px;">
-                <div style="float:left;">
-                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{item.userValidacao.Name}}
-                </div>
-                <div style="float:right;">
-                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{item.dataUserValidacao}}
-                </div>
+            <div style="float:right;">
+                <span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{item.dataUserValidacao}}
             </div>
+        </div>
 
-            @*{{item.ListParlevel3}}*@
-            <!-- Modal Edit-->
-            <div class="modal fade bd-example-modal-lg" id="editModal{{$index}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
+        @*{{item.ListParlevel3}}*@
+        <!-- Modal Edit-->
+        <div class="modal fade bd-example-modal-lg" id="editModal{{$index}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
 
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel">Editar Lata</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            item
-                        </div>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Editar Lata</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        item
+                    </div>
 
-                        <div class="modal-body" style="overflow-x:auto">
+                    <div class="modal-body" style="overflow-x:auto">
 
-                            <table style="width: 100%">
-                                <tbody>
+                        <table style="width: 100%">
+                            <tbody>
 
-                                    <tr>
-                                        <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold; width:15%">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
-                                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{$index + 1}}</td>
-                                    </tr>
+                                <tr>
+                                    <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold; width:15%">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
+                                    <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{$index + 1}}</td>
+                                </tr>
 
-                                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index">
+                                <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index">
 
-                                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                                        <td style="border:1px solid #cccccc; padding: 2px; min-width:150px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                                    <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                                    <td style="border:1px solid #cccccc; padding: 2px; min-width:150px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
 
-                                            @*1	Binário ok
-                                                2	Número de defeitos ok
-                                                3	Intervalos ok
-                                                4	Calculado
-                                                5	Texto
-                                                99	NOVO CALCULADO POR OUTRO*@
+                                        @*1	Binário ok
+                                            2	Número de defeitos ok
+                                            3	Intervalos ok
+                                            4	Calculado
+                                            5	Texto
+                                            99	NOVO CALCULADO POR OUTRO*@
 
-                                            @*3	Intervalos*@
-                                            @*ng-change="SetResult(ParLevel3.ResultValue['Ponto' + ($index +1)], ParLevel3.ParLevel3Value[0], $index)"*@
-                                            <span ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
+                                        @*3	Intervalos*@
+                                        @*ng-change="SetResult(ParLevel3.ResultValue['Ponto' + ($index +1)], ParLevel3.ParLevel3Value[0], $index)"*@
+                                        <span ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
+                                            <input title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].IntervalMax}}"
+                                                   ng-model="ParLevel3.ResultValue['Ponto' + ($index +1)]"
+                                                   style="width:60%"
+                                                   id='{{"ParLevel3_Id" +  ParLevel3.ParLevel3Value[0].ParLevel3_Id.toString() + "ParLevel3Value_Id" +  ParLevel3.ParLevel3Value[0].Id.toString() + "PontoIndex" + ($index + 1) + "LataIndex" + seletedLinha.latas.indexOf(item) }}'
+                                                   type="number" />
+                                            <i ng-show="!(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-times" aria-hidden="true"></i>
+                                            <i ng-show="(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-check" aria-hidden="true"></i>
+                                        </span>
+
+                                        @*1	Binário*@
+                                        <span ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
+                                            <input type="radio" ng-model="ParLevel3.Binario['Ponto' + ($index +1)]" ng-value="true" ng-change="ParLevel3.ResultValue['Ponto' + ($index +1)] = 0" /> {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
+                                            <br />
+                                            <input type="radio" ng-model="ParLevel3.Binario['Ponto' + ($index +1)]" ng-value="false" ng-change="ParLevel3.ResultValue['Ponto' + ($index +1)] = 1" /> {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
+                                        </span>
+
+                                        @*4	Calculado*@
+                                        <span ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '4')">
+                                            <span>
                                                 <input title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].IntervalMax}}"
-                                                       ng-model="ParLevel3.ResultValue['Ponto' + ($index +1)]"
-                                                       style="width:60%"
-                                                       id='{{"ParLevel3_Id" +  ParLevel3.ParLevel3Value[0].ParLevel3_Id.toString() + "ParLevel3Value_Id" +  ParLevel3.ParLevel3Value[0].Id.toString() + "PontoIndex" + ($index + 1) + "LataIndex" + seletedLinha.latas.indexOf(item) }}'
-                                                       type="number" />
-                                                <i ng-show="!(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-times" aria-hidden="true"></i>
-                                                <i ng-show="(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-check" aria-hidden="true"></i>
-                                            </span>
-
-                                            @*1	Binário*@
-                                            <span ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
-                                                <input type="radio" ng-model="ParLevel3.Binario['Ponto' + ($index +1)]" ng-value="true" ng-change="ParLevel3.ResultValue['Ponto' + ($index +1)] = 0" /> {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
-                                                <br />
-                                                <input type="radio" ng-model="ParLevel3.Binario['Ponto' + ($index +1)]" ng-value="false" ng-change="ParLevel3.ResultValue['Ponto' + ($index +1)] = 1" /> {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
-                                            </span>
-
-                                            @*4	Calculado*@
-                                            <span ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '4')">
-                                                <span>
-                                                    <input title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].IntervalMax}}"
-                                                           ng-model="ParLevel3.ResultValue[('PontoCalc1' + ($index +1))]"
-                                                           style="width:30%"
-                                                           type="number"
-                                                           ng-change="ParLevel3.ResultValue[('Ponto' + ($index +1))] = (ParLevel3.ResultValue[('PontoCalc1' + ($index +1))] * (number|mathPow:ParLevel3.ResultValue[('PontoCalc2' + ($index +1))]))" />
-                                                    <span style="font-size:10px;">x10^</span>
-                                                    <input title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].IntervalMax}}"
-                                                           ng-model="ParLevel3.ResultValue[('PontoCalc2' + ($index +1))]"
-                                                           style="width:30%"
-                                                           type="number"
-                                                           ng-change="ParLevel3.ResultValue[('Ponto' + ($index +1))] = (ParLevel3.ResultValue[('PontoCalc1' + ($index +1))] * (number|mathPow:ParLevel3.ResultValue[('PontoCalc2' + ($index +1))]))" />
-                                                </span>
-                                                @*{{ParLevel3.ResultValue[('Ponto' + ($index +1))]}}*@
-                                                <i ng-show="!(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-times" aria-hidden="true"></i>
-                                                <i ng-show="(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-check" aria-hidden="true"></i>
-                                            </span>
-
-                                            @*2	Número de defeitos*@
-                                            <span ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
+                                                       ng-model="ParLevel3.ResultValue[('PontoCalc1' + ($index +1))]"
+                                                       style="width:30%"
+                                                       type="number"
+                                                       ng-change="ParLevel3.ResultValue[('Ponto' + ($index +1))] = (ParLevel3.ResultValue[('PontoCalc1' + ($index +1))] * (number|mathPow:ParLevel3.ResultValue[('PontoCalc2' + ($index +1))]))" />
+                                                <span style="font-size:10px;">x10^</span>
                                                 <input title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].IntervalMax}}"
-                                                       ng-model="ParLevel3.ResultValue[('Ponto' + ($index +1))]"
-                                                       style="width:60%"
-                                                       type="number" />
-                                                <i ng-show="!(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-times" aria-hidden="true"></i>
-                                                <i ng-show="(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-check" aria-hidden="true"></i>
+                                                       ng-model="ParLevel3.ResultValue[('PontoCalc2' + ($index +1))]"
+                                                       style="width:30%"
+                                                       type="number"
+                                                       ng-change="ParLevel3.ResultValue[('Ponto' + ($index +1))] = (ParLevel3.ResultValue[('PontoCalc1' + ($index +1))] * (number|mathPow:ParLevel3.ResultValue[('PontoCalc2' + ($index +1))]))" />
                                             </span>
+                                            @*{{ParLevel3.ResultValue[('Ponto' + ($index +1))]}}*@
+                                            <i ng-show="!(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-times" aria-hidden="true"></i>
+                                            <i ng-show="(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-check" aria-hidden="true"></i>
+                                        </span>
 
-                                            @*5	Texto*@
-                                            <span ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
-                                                <textarea class="form-control input-sm" cols="15" id="Observacao" rows="5" ng-model="ParLevel3.ResultValue[('PontoText' + ($index +1))]"></textarea>
-                                            </span>
+                                        @*2	Número de defeitos*@
+                                        <span ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
+                                            <input title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].IntervalMax}}"
+                                                   ng-model="ParLevel3.ResultValue[('Ponto' + ($index +1))]"
+                                                   style="width:60%"
+                                                   type="number" />
+                                            <i ng-show="!(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-times" aria-hidden="true"></i>
+                                            <i ng-show="(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)" class="fa fa-check" aria-hidden="true"></i>
+                                        </span>
 
-                                            @*99 NOVO CALCULADO POR OUTRO*@
-                                            <span ng-show="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
-                                                {{geraIdCalc(ParLevel3.ParLevel3Value_OuterList, $index, seletedLinha.latas.indexOf(item)) }}
-                                            </span>
-                                        </td>
+                                        @*5	Texto*@
+                                        <span ng-show="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
+                                            <textarea class="form-control input-sm" cols="15" id="Observacao" rows="5" ng-model="ParLevel3.ResultValue[('PontoText' + ($index +1))]"></textarea>
+                                        </span>
 
-                                    </tr>
+                                        @*99 NOVO CALCULADO POR OUTRO*@
+                                        <span ng-show="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
+                                            {{geraIdCalc(ParLevel3.ParLevel3Value_OuterList, $index, seletedLinha.latas.indexOf(item)) }}
+                                        </span>
+                                    </td>
 
-                                </tbody>
-                            </table>
-                            @*{{resultObj}}*@
+                                </tr>
 
-                        </div>
-                        @*{{item}}*@
-                        <div class="modal-footer">
-                            @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>*@
-                            <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="saveAndClose(item)">Fechar</button>
-                        </div>
+                            </tbody>
+                        </table>
+                        @*{{resultObj}}*@
+
+                    </div>
+                    @*{{item}}*@
+                    <div class="modal-footer">
+                        @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>*@
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="saveAndClose(item)">Fechar</button>
                     </div>
                 </div>
             </div>
-
         </div>
-        <br />
-        <button ng-show="seletedLinha.Id > 0 && !seletedLinha.finalizado" type="button" ng-click="newLata(seletedLinha)" style="margin: 35px;" class="btn btn-primary btn-sm">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Adicionar Lata
-        </button>
+
+    </div>
+    <br />
+    <button ng-show="seletedLinha.Id > 0 && !seletedLinha.finalizado" type="button" ng-click="newLata(seletedLinha)" style="margin: 35px;" class="btn btn-primary btn-sm">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Adicionar Lata
+    </button>
 
     @*<button type="button" ng-click="saveState()" class="btn btn-sucsdfcess btn-lg">
             <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>POST LINHA
-        </button>
-        <button type="button" ng-click="getState()" class="btn btn-sucsdfcess btn-lg">
+        </button> *@
+    @*<button type="button" ng-click="getState()" class="btn btn-sucsdfcess btn-lg">
             <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>GET TODAS AS LINHAS
-        </button>
-    *@
-    <button type="button" ng-click="getParametrizacaoZeraColeta()" class="btn btn-info" style="margin-left: 30px;">Atualizar Parametrização</button>
+        </button>*@
+
+    <button type="button" ng-click="getLinha(activeInLine, true, true)" class="btn btn-info" style="margin-left: 30px;">Atualizar Parametrização</button>
 
     @*<button type="button" ng-click="getParametrizacaoZeraColeta()" class="btn btn-sucsdfcess btn-lg">
-        <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>Atualizar Parametrização
-    </button>*@
+            <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>Atualizar Parametrização
+        </button>*@
     <hr />
 
     <!-- Modal Finalizar Lata-->
@@ -409,6 +407,45 @@
     (function () {
         //'use strict';
 
+        app.factory('timestampMarker', [function () {
+            var timestampMarker = {
+                request: function (config) {
+                    config.requestTimestamp = new Date().getTime();
+                    return config;
+                },
+                response: function (response) {
+                    response.config.responseTimestamp = new Date().getTime();
+                    console.log('The request took ' + ((response.config.responseTimestamp - response.config.requestTimestamp) / 1000) + ' seconds.');
+                    return response;
+                }
+            };
+
+            return timestampMarker;
+        }]);
+
+        app.factory('loadingOverlay', [function () {
+            var loadingOverlay = {
+                request: function (config) {
+                    //console.log(config)
+                    if (config.showLoader)
+                        $.LoadingOverlay("show");
+                    return config;
+                },
+                response: function (response) {
+                    $.LoadingOverlay("hide", true);
+                    return response;
+                }
+            }
+
+            return loadingOverlay;
+        }]);
+
+
+        app.config(['$httpProvider', function ($httpProvider) {
+            $httpProvider.interceptors.push('timestampMarker');
+            $httpProvider.interceptors.push('loadingOverlay');
+        }]);
+
         /*
         START ANGULAR MODULE
         */
@@ -425,13 +462,62 @@
                 vm.activeInLine = 0
                 //MOCK
                 vm.company = 14
+
+                vm.findWithAttr = function (array, attr, value) {
+                    for (var i = 0; i < array.length; i += 1) {
+                        if (array[i][attr] === value) {
+                            return i
+                        }
+                    }
+                    return -1
+                }
+
                 //vm.company = GetUnidadeUsuario()
-                vm.getLinha = function (index) {
-                    vm.seletedLinha = vm.linhas[index]
-                    vm.activeInLine = vm.seletedLinha.Id
+                vm.getAllLinha = function (index, needFindIndex, showMensagem) {
+                    //vm.seletedLinha = vm.linhas[index]
+                    //vm.activeInLine = vm.seletedLinha.Id
+                    //if (needFindIndex)
+                    //    index = vm.findWithAttr(vm.linhas, 'Id', vm.activeInLine);
+                    vm.linhas.forEach(function (o, c) {
+                        $http({ method: 'POST', url: vm.getParametrizacaoUrl, data: o })
+                           .then(function (r) {
+                               if (r.data.errors) {
+                                   r.data.errors.forEach(function (o) {
+                                       toastr.error(o)
+                                   })
+                               } else {
+                                   //toastr.success(r.data.resposta)
+                                   //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
+                                   if (showMensagem)
+                                       toastr.success('Recuperadas linhas parametrizadas \n da base de dados')
+                                   vm.linhas[c] = r.data.model[0]
+                                   vm.linhas[c]["latas"] = []
+                                   vm.activeInLine = vm.linhas[c].Id
+                                   setTimeout(function () { $('select').select2() }, 200)
+                                   //vm.seletedLinha = { Id: 0 }
+                                   //vm.getState()
+                               }
+                           });
+                    })
+
                     setTimeout(function () { $('select').select2() }, 200)
                     //vm.$apply()
                 }
+
+                vm.getLinha = function (index, needFindIndex, showMensagem) {
+                    $.LoadingOverlay("show");
+                    if (needFindIndex)
+                        index = vm.findWithAttr(vm.linhas, 'Id', vm.activeInLine);
+
+                    vm.seletedLinha = vm.linhas[index]
+                    vm.activeInLine = vm.seletedLinha.Id
+
+                    setTimeout(function () { $('select').select2() }, 200)
+                    vm.getState()
+
+                    //vm.$apply()
+                }
+
                 vm.selectLata = function (index) {
                     vm.selectedLata = vm.seletedLinha.latas[index]
                 }
@@ -460,11 +546,12 @@
                 }
 
                 vm.saveStateUrl = '@Url.Action("RecravacaoApi", "api")'//'http://localhost:57506/api/RecravacaoApi'
-                vm.saveState = function (notShowLabel) {
+                vm.saveState = function (notShowLabel, notShowLoader) {
                     let model = vm.linhas.filter(function (s) {
                         return s.Id == vm.activeInLine
                     })[0]
-                    $http({ method: 'POST', url: vm.saveStateUrl, data: model })
+
+                    $http({ method: 'POST', url: vm.saveStateUrl, data: model, showLoader: notShowLoader ? false : true })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {
@@ -527,7 +614,7 @@
 
                 /*GET Todas as linhas cadastradas*/
                 vm.getParametrizacaoUrl = '@Url.Action("RecravacaoLinhaApi", "api")'//'http://localhost:57506/api/RecravacaoLinhaApi'
-                vm.getParametrizacao = function () {
+                vm.getParametrizacaoLinhas = function () {
                     $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?Company=" + vm.company })
                         .then(function (r) {
                             if (r.data.errors) {
@@ -543,7 +630,8 @@
                                     o["latas"] = []
                                 })
                                 setTimeout(function () { $('select').select2() }, 200)
-                                vm.getState()
+                                vm.getAllLinha()
+                                //vm.getState()
                             }
                         });
                 }
@@ -583,23 +671,51 @@
                                 //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
                                 let linhasSalvas = r.data.model//jQuery.parseJSON(r.data.model.ObjectRecravacaoJson)
                                 let novaLinha = []
-                                vm.linhas.forEach(function (o, c) {
-                                    var objetoSalvo = linhasSalvas.filter(function (objArr) {
-                                        let s = jQuery.parseJSON(objArr.ObjectRecravacaoJson)
-                                        if (s.Id == o.Id && (o.IsActive == "True" || o.IsActive == true) && (s.IsActive == "False" || s.IsActive == false))
-                                            s.IsActive = "True"
-                                        else if (s.Id == o.Id && (o.IsActive == "False" || o.IsActive == false) && (s.IsActive == "True" || s.IsActive == true))
-                                            s.IsActive = "False"
+                                //vm.linhas.forEach(function (o, c) {
+                                let o = vm.seletedLinha
 
-                                        return s.Id == o.Id
-                                    });
-                                    if (objetoSalvo.length)
-                                        novaLinha.push(JSON.parse(JSON.stringify(jQuery.parseJSON(objetoSalvo[0].ObjectRecravacaoJson))))
-                                    else
-                                        novaLinha.push(JSON.parse(JSON.stringify(o)))
-                                })
-                                vm.linhas = JSON.parse(JSON.stringify(novaLinha))
+                                /*Recebe objeto salvo no banco de dados compara se é ativo na parametrização e subistiu caso seja ativo.*/
+                                var objetoSalvo = linhasSalvas.filter(function (objArr) {
+                                    let s = jQuery.parseJSON(objArr.ObjectRecravacaoJson)
+                                    if (s.Id == o.Id && (o.IsActive == "True" || o.IsActive == true) && (s.IsActive == "False" || s.IsActive == false))
+                                        s.IsActive = "True"
+                                    else if (s.Id == o.Id && (o.IsActive == "False" || o.IsActive == false) && (s.IsActive == "True" || s.IsActive == true))
+                                        s.IsActive = "False"
+
+                                    return s.Id == o.Id
+                                });
+                                if (objetoSalvo.length)
+                                    novaLinha.push(JSON.parse(JSON.stringify(jQuery.parseJSON(objetoSalvo[0].ObjectRecravacaoJson))))
+                                else
+                                    novaLinha.push(JSON.parse(JSON.stringify(o)))
+                                //})
+
+                                /**/
+
+                                vm.seletedLinha = JSON.parse(JSON.stringify(novaLinha))[0]
+
+                                if (vm.seletedLinha.form) {
+                                    if (vm.seletedLinha.form.HoraInicioProducao)
+                                        vm.seletedLinha.form.HoraInicioProducao = new Date(vm.seletedLinha.form.HoraInicioProducao)
+
+                                    if (vm.seletedLinha.form.HoraFimProducao)
+                                        vm.seletedLinha.form.HoraFimProducao = new Date(vm.seletedLinha.form.HoraFimProducao)
+
+                                    if (vm.seletedLinha.form.DataRecebimentoLatas)
+                                        vm.seletedLinha.form.DataRecebimentoLatas = new Date(vm.seletedLinha.form.DataRecebimentoLatas)
+
+                                    if (vm.seletedLinha.form.DataRecebimentoTampasFundosLatas)
+                                        vm.seletedLinha.form.DataRecebimentoTampasFundosLatas = new Date(vm.seletedLinha.form.DataRecebimentoTampasFundosLatas)
+                                }
+
+                                index = vm.findWithAttr(vm.linhas, 'Id', vm.seletedLinha.Id);
+                                vm.linhas[index] = vm.seletedLinha
+
+                                vm.seletedLinha = vm.linhas[index]
+                                vm.activeInLine = vm.seletedLinha.Id
+
                                 setTimeout(function () { $('select').select2() }, 200)
+                                $.LoadingOverlay("hide", true);
                             }
                         });
                 }
@@ -775,7 +891,8 @@
                         });
                 }
 
-                vm.getParametrizacao()
+                vm.getParametrizacaoLinhas()
+
 
             }]).filter('mathPow', function () {
                 return function (base, exponent) {
@@ -786,6 +903,8 @@
                     return Math.pow(10, exponent);
                 }
             })
+
+
 
     })();
 </script>

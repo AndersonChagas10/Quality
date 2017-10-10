@@ -15,6 +15,8 @@ namespace SgqSystem.Controllers.Recravacao
             db = new SgqDbDevEntities();
             ViewBag.ParCompany = db.ParCompany.Where(r => r.IsActive == true).ToList();
             ViewBag.TipoLata = db.Database.SqlQuery<ParRecravacao_TipoLata>("SELECT Id, Name FROM ParRecravacao_TipoLata where IsActive = 1");
+            ViewBag.ParLevel2 = db.Database.SqlQuery<DTO.DTO.Params.ParLevel2DTO>(@"select id, name from parlevel2 where id in (select DISTINCT(Parlevel2_Id) from parlevel3level2 where id in ( select parlevel3level2_id from parlevel3level2level1 where parlevel1_id in ( select id from parlevel1 where isrecravacao = 1)))");
+
             //repo = new Repo<UserSgq>();
         }
 
@@ -84,6 +86,7 @@ namespace SgqSystem.Controllers.Recravacao
                     "\n       ,[NumberOfHeads] = {3}" +
                     "\n       ,[Description] = '{4}'" +
                     "\n       ,[AlterDate] = {5}" +
+                    "\n       ,[ParLevel2_Id] = {8}" +
                     "\n       ,[IsActive] = {6}" +
                     "\n  WHERE Id = {7}"
                     , model.Name
@@ -93,7 +96,8 @@ namespace SgqSystem.Controllers.Recravacao
                     , model.Description
                     , "GETDATE()"
                     , model.IsActive ? "1" : "0"
-                    , model.Id.ToString());
+                    , model.Id.ToString()
+                    , model.ParLevel2_Id);
 
                 db.Database.ExecuteSqlCommand(update);
 
@@ -107,6 +111,7 @@ namespace SgqSystem.Controllers.Recravacao
                           "\n       ,[NumberOfHeads] " +
                           "\n       ,[Description] " +
                           "\n       ,[AddDate] " +
+                          "\n       ,[ParLevel2_Id] " +
                           "\n       ,[IsActive]) " +
                           "\n   VALUES " +
                           "\n       (N'{0}' " +
@@ -115,6 +120,7 @@ namespace SgqSystem.Controllers.Recravacao
                           "\n       ,{3} " +
                           "\n       ,'{4}' " +
                           "\n       ,{5} " +
+                          "\n       ,{7} " +
                           "\n       ,{6}) SELECT SCOPE_IDENTITY()"
                           , model.Name
                           , model.ParCompany_Id.ToString()
@@ -122,7 +128,9 @@ namespace SgqSystem.Controllers.Recravacao
                           , model.NumberOfHeads.ToString()
                           , model.Description
                           , "GETDATE()" 
-                          , model.IsActive ? "1" : "0"); 
+                          , model.IsActive ? "1" : "0"
+                          , model.ParLevel2_Id
+                          ); 
 
                 model.Id = int.Parse(db.Database.SqlQuery<decimal>(insert).FirstOrDefault().ToString());
             }

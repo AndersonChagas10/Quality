@@ -2097,4 +2097,7 @@
   <data name="Pl1ShowInTablet" xml:space="preserve">
     <value>Show in Tablet</value>
   </data>
+  <data name="IsRecravacao" xml:space="preserve">
+    <value>Is Recravacao</value>
+  </data>
 </root>
