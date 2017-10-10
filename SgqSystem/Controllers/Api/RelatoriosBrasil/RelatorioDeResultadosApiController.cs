@@ -344,9 +344,9 @@ WHERE NA = 2
 --------------------------------                                                                                                                    
 SELECT
 
-	--level1_Id 
-	--,Level1Name 
-	level2_Id as Monitoramento
+	level1_Id as Indicador
+	,Level1Name as IndicadorName
+	,level2_Id as Monitoramento
 	,Level2Name AS MonitoramentoName
 	,concat(S1.Level2Name, ' - ', S1.Unidade) as MonitoramentoUnidade
 	,Unidade_Id as Unidade
@@ -412,9 +412,9 @@ FROM (SELECT
 	WHERE CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 	" + where2 + @"
 	AND IND.Id = " + form.level1Id + @" )S1
-GROUP BY Level2Name, Unidade_Id, Unidade, level2_Id
+GROUP BY Level2Name, Unidade_Id, Unidade, level2_Id, level1_Id, S1.Level1Name
 HAVING SUM(NC) > 0
-ORDER BY 8 DESC ";
+ORDER BY 9 DESC ";
 
             using (var db = new SgqDbDevEntities())
             {
@@ -481,11 +481,15 @@ FROM (SELECT
 WHERE NA = 2
 --------------------------------                                                                                                                    
 SELECT
-	TarefaName AS TarefaName
-   ,NcSemPeso AS Nc
-   ,AvSemPeso AS Av
+	TAB.Indicador
+   ,TAB.IndicadorName
+   ,TAB.Monitoramento
+   ,TAB.MonitoramentoName
+   ,TAB.TarefaName AS TarefaName
+   ,TAB.NcSemPeso AS Nc
+   ,TAB.AvSemPeso AS Av
    ,[Proc] AS PC
-   ,TarefaId AS Tarefa
+   ,TAB.TarefaId AS Tarefa
    ,CONCAT(TarefaName, ' - ', UnidadeName) AS TarefaUnidade
    ,Unidade AS Unidade
    ,UnidadeName AS UnidadeName
@@ -494,6 +498,10 @@ SELECT
 FROM (SELECT
 		UNI.Id AS Unidade
 	   ,UNI.Name AS UnidadeName
+	   ,IND.Name AS IndicadorName
+	   ,Ind.Id AS Indicador
+	   ,MON.Name AS MonitoramentoName
+	   ,Mon.Id AS Monitoramento
 	   ,R3.ParLevel3_Id AS TarefaId
 	   ,R3.ParLevel3_Name AS TarefaName
 	   ,SUM(R3.WeiDefects) AS Nc
@@ -540,6 +548,8 @@ FROM (SELECT
 	AND CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 	GROUP BY IND.Id
 			,IND.Name
+			,Mon.Name
+			,MON.Id
 			,R3.ParLevel3_Id
 			,R3.ParLevel3_Name
 			,UNI.Name
@@ -547,7 +557,7 @@ FROM (SELECT
 			,ind.hashKey
 			,ind.ParConsolidationType_Id
 	HAVING SUM(R3.WeiDefects) > 0) TAB
-ORDER BY 4 DESC ";
+ORDER BY 8 DESC ";
 
             using (var db = new SgqDbDevEntities())
             {
