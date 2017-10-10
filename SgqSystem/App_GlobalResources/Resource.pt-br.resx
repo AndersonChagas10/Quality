@@ -2082,4 +2082,7 @@
   <data name="unreached_goals" xml:space="preserve">
     <value>Metas Não Alcançadas</value>
   </data>
+  <data name="results_reports" xml:space="preserve">
+    <value>Relatório de Resultados</value>
+  </data>
 </root>

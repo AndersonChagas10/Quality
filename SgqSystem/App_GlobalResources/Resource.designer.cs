@@ -4300,6 +4300,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Results of Reports.
+        /// </summary>
+        internal static string results_reports {
+            get {
+                return ResourceManager.GetString("results_reports", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Result evaluation and deviation communication.
         /// </summary>
         internal static string result_evaluation_and_deviation_communication {
