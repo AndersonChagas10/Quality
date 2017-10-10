@@ -85,6 +85,7 @@ namespace DTO
         public int shift { get; set; }
         public int period { get; set; }
 
+        public int statusIndicador { get; set; }
 
         public int MetaFTA { get; set; }
         public int PercentualNCFTA { get; set; }
