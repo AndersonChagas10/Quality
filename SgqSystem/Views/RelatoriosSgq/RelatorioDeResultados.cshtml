@@ -148,15 +148,16 @@
         //    LimparTitulos();
 
         //    $('#GraficoPeriodo').empty();
+        $('#SemDados').hide();
+        $('#divMensagemAlerta').hide();
 
-        EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);
+        EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", true);
         EasyAjax(UrlListaResultadosPeriodo, enviar, GerarTabela, "DataTable", undefined);
 
         //}
     }
 
     function GerarTabela(retornoArray) {
-
         if (retornoArray.length > 0) {
             var counter = 0;
             while (counter < retornoArray.length) {
@@ -171,6 +172,8 @@
                 columns: [
                     { title: "Unidade", mData: "UnidadeName" },
                     { title: "Indicador", mData: "IndicadorName" },
+                    { title: "Monitoramento", mData: "MonitoramentoName" },
+                    { title: "Tarefa", mData: "TarefaName" },
                     { title: "Av", mData: "Av" },
                     { title: "Não Conformidades", mData: "Nc" },
                     { title: "% Não Conformidades", mData: "Pc" },
@@ -182,6 +185,7 @@
                 responsive: true,
                 loadingRecords: true,
                 destroy: true,
+                "scrollX": true,
                 initComplete: function () {
                     $('#DataTable tbody').on('click', 'button', function (data, a, b) {
                         var data = table.row($(this).parents('tr')).data();
@@ -273,17 +277,47 @@
             table.buttons(0, null).container().prependTo(
                 table.table().container()
             );
+
+            if (retornoArray[0].IsIndicador) {
+                table.column(2).visible(false);
+                table.column(3).visible(false);
+            }
+
+            if (retornoArray[0].IsMonitoramento) {
+                table.column(3).visible(false);
+                table.column(7).visible(false);
+                table.column(8).visible(false);
+            }
+
+            if (retornoArray[0].IsTarefa) {
+                table.column(7).visible(false);
+                table.column(8).visible(false);
+            }
         }
     }
 
     function GerarGrafico(data) {
 
+        var NomeExibir = "";
+        var Level = 0;
+
         if (data.length > 0) {
 
-            SetTitulo();
-
             //Colocar o grafico Aqui
-            var IndicadorUnidade = MapeiaValorParaHC(data, "IndicadorUnidade");
+            if (data[0].IsIndicador) {
+                NomeExibir = "IndicadorUnidade";
+                Level = 1;
+            } else if (data[0].IsMonitoramento) {
+                Level = 2;
+                NomeExibir = "MonitoramentoUnidade";
+            } else {
+                Level = 3;
+                NomeExibir = "TarefaUnidade"
+            }
+
+            SetTitulo(Level);
+
+            var IndicadorUnidade = MapeiaValorParaHC(data, NomeExibir);
             var Indicador = MapeiaValorParaHC(data, "Indicador");
             var Unidade = MapeiaValorParaHC(data, "Unidade");
             var porc = MapeiaValorParaHC(data, "Pc");
@@ -299,7 +333,7 @@
                     zoomType: 'x,y'
                 },
                 title: {
-                    text: "% de Não Conformidades nos Indicadores"
+                    text: "% de Não Conformidades",
                 },
                 xAxis: {
                     categories: IndicadorUnidade,
@@ -1010,13 +1044,14 @@
         }
     }
 
-    function SetTitulo() {
+    function SetTitulo(Level) {
 
         let unidade = enviar.unitId;
         let status = enviar.status;
         let TituloGrafico = "";
         let TextoStatus = "";
         let UnidadeNome = $('#unitId :selected').text();
+        let Titulo = "";
 
         if (status != undefined) {
             if (status == "1") {
@@ -1033,10 +1068,16 @@
         } else if (unidade != undefined && unidade != "") {
             TituloGrafico = "Unidade " + UnidadeNome;
         }
-
-        $('#Titulo').html('Resultados das Avaliações dos Indicadores');
+        if (Level == 1) {
+            Titulo = "Indicadores";
+        } else if (Level == 2) {
+            Titulo = "Monitoramentos";
+        } else {
+            Titulo = "Tarefas";
+        }
+        $('#Titulo').html('Resultados das Avaliações dos ' + Titulo);
         $('#TituloGrafico').html(TituloGrafico);
-        $('#TituloTabela').html('Lista de Resultados das Avaliações dos Indicadores');
+        $('#TituloTabela').html('Lista de Resultados das Avaliações dos ' + Titulo);
     }
 
     function fazGambipraMenosCem(arr) {

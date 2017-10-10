@@ -63,6 +63,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         {
             var where = "";
             var where2 = "";
+            var whereStatus = "";
 
             if (form.unitId != 0)
             {
@@ -70,6 +71,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 where2 = "AND UNI.Id =" + form.unitId + "";
             }
 
+            if (form.statusIndicador == 1)
+            {
+                whereStatus = "AND case when ProcentagemNc > S2.Meta then 0 else 1 end = 0";
+            }
+            else if (form.statusIndicador == 2)
+            {
+                whereStatus = "AND case when ProcentagemNc > S2.Meta then 0 else 1 end = 1";
+            }
 
             var query = @"
  DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + @"'
@@ -164,6 +173,7 @@ SELECT
    ,NC
    ,Av
    ,case when ProcentagemNc > S2.Meta then 0 else 1 end as Status
+   ,CAST(1 as bit) as IsIndicador
 FROM (SELECT
 		Unidade
 	   ,IsRuleConformity
@@ -267,6 +277,7 @@ FROM (SELECT
 			,level1_Id
 			,IsRuleConformity) S2
 WHERE nc > 0
+" + whereStatus + @"
 ORDER BY 6 DESC
 DROP TABLE #AMOSTRATIPO4 ";
 
@@ -335,9 +346,9 @@ SELECT
 
 	--level1_Id 
 	--,Level1Name 
-	level2_Id as Indicador
-	,Level2Name AS IndicadorName
-	,concat(S1.Level2Name, ' - ', S1.Unidade) as IndicadorUnidade
+	level2_Id as Monitoramento
+	,Level2Name AS MonitoramentoName
+	,concat(S1.Level2Name, ' - ', S1.Unidade) as MonitoramentoUnidade
 	,Unidade_Id as Unidade
 	,Unidade as UnidadeName
    ,SUM(avSemPeso) AS Av
@@ -347,6 +358,7 @@ SELECT
 			SUM(AV) = 0 THEN 0
 		ELSE SUM(NC) / SUM(AV) * 100
 	END AS Pc
+   ,CAST(1 as bit) as IsMonitoramento
 FROM (SELECT
 		MON.Id AS level2_Id
 	   ,MON.Name AS Level2Name
@@ -425,7 +437,7 @@ ORDER BY 8 DESC ";
 
             if (form.level3Id != 0)
             {
-                where3 = "AND R3.Id = " + form.level3Id + "";
+                where3 = "AND R3.ParLevel3_Id = " + form.level3Id + "";
             }
 
             var query = @"
@@ -469,19 +481,20 @@ FROM (SELECT
 WHERE NA = 2
 --------------------------------                                                                                                                    
 SELECT
-	TarefaName AS IndicadorName
+	TarefaName AS TarefaName
    ,NcSemPeso AS Nc
    ,AvSemPeso AS Av
    ,[Proc] AS PC
-   ,TaredaId AS Indicador
-   ,CONCAT(TarefaName, ' - ', UnidadeName) AS IndicadorUnidade
+   ,TarefaId AS Tarefa
+   ,CONCAT(TarefaName, ' - ', UnidadeName) AS TarefaUnidade
    ,Unidade AS Unidade
    ,UnidadeName AS UnidadeName
    ,0 AS Sentido
+   ,CAST(1 as bit) as IsTarefa
 FROM (SELECT
 		UNI.Id AS Unidade
 	   ,UNI.Name AS UnidadeName
-	   ,R3.ParLevel3_Id AS TaredaId
+	   ,R3.ParLevel3_Id AS TarefaId
 	   ,R3.ParLevel3_Name AS TarefaName
 	   ,SUM(R3.WeiDefects) AS Nc
 	   ,CASE
@@ -522,6 +535,7 @@ FROM (SELECT
 	WHERE IND.Id = " + form.level1Id + @"
 	AND MON.Id = " + form.level2Id + @"
 	" + where2 + @"
+    " + where3 + @"
 	AND R3.IsNotEvaluate = 0
 	AND CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 	GROUP BY IND.Id
@@ -664,6 +678,10 @@ ORDER BY 4 DESC ";
         public DateTime Data { get; set; }
         public int Unidade { get; set; }
         public int Indicador { get; set; }
+        public int Monitoramento { get; set; }
+        public string MonitoramentoName { get; set; }
+        public int Tarefa { get; set; }
+        public string TarefaName { get; set; }
         public string UnidadeName { get; set; }
         public string IndicadorName { get; set; }
         public decimal Av { get; set; }
@@ -673,6 +691,8 @@ ORDER BY 4 DESC ";
         public decimal Meta { get; set; }
         public int Status { get; set; }
         public string IndicadorUnidade { get; set; }
+        public string MonitoramentoUnidade { get; set; }
+        public string TarefaUnidade { get; set; }
         public int NumeroAcoesConcluidas { get; set; }
         public string Name { get; set; }
         public string _Data
@@ -682,6 +702,9 @@ ORDER BY 4 DESC ";
                 return Data.ToString("dd/MM/yyyy");
             }
         }
+        public bool IsIndicador { get; set; }
+        public bool IsMonitoramento { get; set; }
+        public bool IsTarefa { get; set; }
     }
 
     public class RetornoGenerico
