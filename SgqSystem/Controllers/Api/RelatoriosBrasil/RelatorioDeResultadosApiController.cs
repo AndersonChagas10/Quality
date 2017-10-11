@@ -16,7 +16,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         List<RelatorioResultadosPeriodo> retorno;
         List<RetornoGenerico> retorno2;
         List<RetornoGenerico> retorno3;
-        List<RelatorioResultadosPeriodo> retorno4;
+        List<RetornoGenerico> retorno4;
 
         private UserSgq usuario;
         private SgqDbDevEntities conexao;
@@ -26,7 +26,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             retorno = new List<RelatorioResultadosPeriodo>();
             retorno2 = new List<RetornoGenerico>();
             retorno3 = new List<RetornoGenerico>();
-            retorno4 = new List<RelatorioResultadosPeriodo>();
+            retorno4 = new List<RetornoGenerico>();
         }
 
         [HttpPost]
@@ -1166,14 +1166,35 @@ DROP TABLE #AMOSTRATIPO4a  ";
 
         [HttpPost]
         [Route("listaResultadosAcoesConcluidas")]
-        public List<RelatorioResultadosPeriodo> listaResultadosAcoesConcluidas([FromBody] FormularioParaRelatorioViewModel form)
+        public List<RetornoGenerico> listaResultadosAcoesConcluidas([FromBody] FormularioParaRelatorioViewModel form)
         {
 
-            retorno4.Add(new RelatorioResultadosPeriodo { Av = 1, Data = DateTime.Now, Indicador = 1, IndicadorName = "Nome Indicador", Nc = 10, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 40, UnidadeName = "Lins" });
-            retorno4.Add(new RelatorioResultadosPeriodo { Av = 2, Data = DateTime.Now, Indicador = 2, IndicadorName = "Nome Indicador", Nc = 30, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 10, UnidadeName = "Lins" });
-            retorno4.Add(new RelatorioResultadosPeriodo { Av = 3, Data = DateTime.Now, Indicador = 3, IndicadorName = "Nome Indicador", Nc = 40, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 20, UnidadeName = "Lins" });
-            retorno4.Add(new RelatorioResultadosPeriodo { Av = 4, Data = DateTime.Now, Indicador = 4, IndicadorName = "Nome Indicador", Nc = 20, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 30, UnidadeName = "Lins" });
-            retorno4.Add(new RelatorioResultadosPeriodo { Av = 5, Data = DateTime.Now, Indicador = 5, IndicadorName = "Nome Indicador", Nc = 50, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 50, UnidadeName = "Lins" });
+            string query = "";
+
+            if (form.level3Id != 0)
+            {
+
+            }
+            else if (form.level2Id != 0)
+            {
+                query = getQueryHistoricoMonitoramento(form);
+            }
+            else
+            {
+                query = getQueryHistorioIndicador(form);
+            }
+
+
+            using (var db = new SgqDbDevEntities())
+            {
+                retorno4 = db.Database.SqlQuery<RetornoGenerico>(query).ToList();
+            }
+
+            //retorno4.Add(new RelatorioResultadosPeriodo { Av = 1, Data = DateTime.Now, Indicador = 1, IndicadorName = "Nome Indicador", Nc = 10, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 40, UnidadeName = "Lins" });
+            //retorno4.Add(new RelatorioResultadosPeriodo { Av = 2, Data = DateTime.Now, Indicador = 2, IndicadorName = "Nome Indicador", Nc = 30, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 10, UnidadeName = "Lins" });
+            //retorno4.Add(new RelatorioResultadosPeriodo { Av = 3, Data = DateTime.Now, Indicador = 3, IndicadorName = "Nome Indicador", Nc = 40, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 20, UnidadeName = "Lins" });
+            //retorno4.Add(new RelatorioResultadosPeriodo { Av = 4, Data = DateTime.Now, Indicador = 4, IndicadorName = "Nome Indicador", Nc = 20, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 30, UnidadeName = "Lins" });
+            //retorno4.Add(new RelatorioResultadosPeriodo { Av = 5, Data = DateTime.Now, Indicador = 5, IndicadorName = "Nome Indicador", Nc = 50, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 50, UnidadeName = "Lins" });
             return retorno4;
         }
 
@@ -1338,24 +1359,4 @@ DROP TABLE #AMOSTRATIPO4a  ";
 
     }
 
-    public class RelatorioResultados
-    {
-        public DateTime Data { get; set; }
-        public string Unidade { get; set; }
-        public string Indicador { get; set; }
-        public decimal? LimiteInferior { get; set; }
-        public decimal? LimiteSuperior { get; set; }
-        public string Sentido { get; set; }
-        public decimal? Nc { get; set; }
-        public decimal? Real { get; set; }
-        public string Historico_Id { get; set; }
-        public int NumeroAcoesConcluidas { get; set; }
-        public string _Data
-        {
-            get
-            {
-                return Data.ToString("yyyy-MM-dd");
-            }
-        }
-    }
 }
