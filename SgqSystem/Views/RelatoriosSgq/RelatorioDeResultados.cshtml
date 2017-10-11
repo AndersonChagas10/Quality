@@ -137,6 +137,7 @@
     var enviar2 = {};
     var enviar3 = {};
     var $btn = $('#btnSend');
+    exibeTodosLevels = false;
     @*var auditorId = @Html.Raw(Json.Encode(Session["LoginUserId"]));*@
 
     function Send(toggle) {
@@ -1144,7 +1145,7 @@
         formControl.showUnit();
         formControl.showLevel1();
         formControl.showStatusIndicador();
-        //formControl.showRegUnidadeVinculados();
+        //formControl.showLevel123();
         $('select').select2()
     });
 
