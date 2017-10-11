@@ -85,6 +85,12 @@
             <button ng-show="item.finalizado" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
                 <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
             </button>
+            <button ng-show="!item.finalizado" type="button" class="btn btn-warning btn-sm"  ng-click="cloneLata(seletedLinha, $index)">
+                <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
+            </button>
+            <button ng-show="!item.finalizado" type="button" class="btn btn-warning btn-sm" ng-click="cloneLata(seletedLinha, $index, 50)">
+                <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
+            </button>
             <button ng-show="!item.finalizado" type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal{{$index}}">
                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
             </button>
@@ -292,7 +298,7 @@
             <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>GET TODAS AS LINHAS
         </button>*@
 
-    <button type="button" ng-click="getLinha(activeInLine, true, true)" class="btn btn-info" style="margin-left: 30px;">Atualizar Parametrização</button>
+    <button type="button" ng-show="seletedLinha.Id > 0" ng-click="getParansLinha(activeInLine, true, true)" class="btn btn-info" style="margin-left: 30px;">Atualizar Parametrização / Nova Coleta</button>
 
     @*<button type="button" ng-click="getParametrizacaoZeraColeta()" class="btn btn-sucsdfcess btn-lg">
             <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>Atualizar Parametrização
@@ -419,7 +425,6 @@
                     return response;
                 }
             };
-
             return timestampMarker;
         }]);
 
@@ -429,6 +434,8 @@
                     //console.log(config)
                     if (config.showLoader)
                         $.LoadingOverlay("show");
+                    if (config.showLoader == undefined)
+                        $.LoadingOverlay("show");
                     return config;
                 },
                 response: function (response) {
@@ -436,10 +443,8 @@
                     return response;
                 }
             }
-
             return loadingOverlay;
         }]);
-
 
         app.config(['$httpProvider', function ($httpProvider) {
             $httpProvider.interceptors.push('timestampMarker');
@@ -460,9 +465,10 @@
                 vm.seletedLinha = { Id: 0 }
                 vm.selectedLata = {}
                 vm.activeInLine = 0
-                //MOCK
-                vm.company = 14
 
+                //MOCK                  Sem Mock
+                vm.company = 14 // GetUnidadeUsuario()
+                
                 vm.findWithAttr = function (array, attr, value) {
                     for (var i = 0; i < array.length; i += 1) {
                         if (array[i][attr] === value) {
@@ -504,8 +510,38 @@
                     //vm.$apply()
                 }
 
+                vm.getParansLinha = function (index, needFindIndex, showMensagem) {
+                    //vm.seletedLinha = vm.linhas[index]
+                    //vm.activeInLine = vm.seletedLinha.Id
+                    //if (needFindIndex)
+                    index = vm.findWithAttr(vm.linhas, 'Id', vm.seletedLinha.Id);
+                    $http({ method: 'POST', url: vm.getParametrizacaoUrl, data: vm.seletedLinha })
+                        .then(function (r) {
+                            if (r.data.errors) {
+                                r.data.errors.forEach(function (o) {
+                                    toastr.error(o)
+                                })
+                            } else {
+                                //toastr.success(r.data.resposta)
+                                //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
+                                if (showMensagem)
+                                    toastr.success('Recuperada linha parametrizada \n da base de dados')
+                                vm.linhas[index] = r.data.model[0]
+                                vm.linhas[index]["latas"] = []
+                                vm.seletedLinha = vm.linhas[index]
+                                vm.activeInLine = vm.seletedLinha.Id
+                                vm.saveState()
+                                setTimeout(function () { $('select').select2() }, 200)
+                                //vm.seletedLinha = { Id: 0 }
+                                //vm.getState()
+                            }
+                        });
+
+                    //vm.$apply()
+                }
+
                 vm.getLinha = function (index, needFindIndex, showMensagem) {
-                    $.LoadingOverlay("show");
+                    //$.LoadingOverlay("show");
                     if (needFindIndex)
                         index = vm.findWithAttr(vm.linhas, 'Id', vm.activeInLine);
 
@@ -537,6 +573,21 @@
                         finalizado: false,
                         ListParlevel3: JSON.parse(JSON.stringify(linha.ListParlevel3))
                     })
+                    linha.counterDeLatas++
+                }
+                vm.cloneLataALot = function (linha, index, repeat) {
+
+                    $.LoadingOverlay("show");
+                    for (let i = 0; i < repeat; i++) {
+                        vm.cloneLata(linha, index)
+                    }
+                    $.LoadingOverlay("hide", true);
+
+                }
+                vm.cloneLata = function (linha, index) {
+                    let cloned = JSON.parse(JSON.stringify(linha.latas[index]))
+                    cloned.Name = 'Lata - ' + (linha["counterDeLatas"])
+                    linha.latas.push(cloned)
                     linha.counterDeLatas++
                 }
                 vm.deleteLata = function (linha, index, trashBin) {
@@ -615,7 +666,7 @@
                 /*GET Todas as linhas cadastradas*/
                 vm.getParametrizacaoUrl = '@Url.Action("RecravacaoLinhaApi", "api")'//'http://localhost:57506/api/RecravacaoLinhaApi'
                 vm.getParametrizacaoLinhas = function () {
-                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?Company=" + vm.company })
+                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?Company=" + vm.company, showLoader: true })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {
@@ -636,27 +687,27 @@
                         });
                 }
 
-                vm.getParametrizacaoZeraColeta = function () {
-                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?Company=" + vm.company })
-                        .then(function (r) {
-                            if (r.data.errors) {
-                                r.data.errors.forEach(function (o) {
-                                    toastr.error(o)
-                                })
-                            } else {
-                                //toastr.success(r.data.resposta)
-                                //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
-                                toastr.success('Recuperadas linhas parametrizadas \n da base de dados')
-                                vm.linhas = r.data.model
-                                vm.linhas.forEach(function (o, c) {
-                                    o["latas"] = []
-                                })
-                                setTimeout(function () { $('select').select2() }, 200)
-                                vm.seletedLinha = { Id: 0 }
-                                //vm.getState()
-                            }
-                        });
-                }
+                //vm.getParametrizacaoZeraColeta = function () {
+                //    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?Company=" + vm.company })
+                //        .then(function (r) {
+                //            if (r.data.errors) {
+                //                r.data.errors.forEach(function (o) {
+                //                    toastr.error(o)
+                //                })
+                //            } else {
+                //                //toastr.success(r.data.resposta)
+                //                //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
+                //                toastr.success('Recuperadas linhas parametrizadas \n da base de dados')
+                //                vm.linhas = r.data.model
+                //                vm.linhas.forEach(function (o, c) {
+                //                    o["latas"] = []
+                //                })
+                //                setTimeout(function () { $('select').select2() }, 200)
+                //                vm.seletedLinha = { Id: 0 }
+                //                //vm.getState()
+                //            }
+                //        });
+                //}
 
                 /*GET os Dados das linhas cadastradas*/
                 vm.getState = function () {
@@ -719,9 +770,6 @@
                             }
                         });
                 }
-                //vm.getState()
-
-                setTimeout(function () { $('select').select2() }, 200)
 
                 vm.getFormula = function (expressaoArr) {
                     let expressaoFinal = ''
@@ -822,6 +870,7 @@
                                 vm.selectedLata.dataUserValidacao = moment().format("DD/MM/YYYY HH:mm")
                                 vm.selectedLata.finalizado = !vm.selectedLata.finalizado
                                 $('.modal').modal('hide')
+                                vm.saveState()
                             }
                             else {
                                 toastr.error("Usuário ou Senha Inválidos")
@@ -860,6 +909,7 @@
                                 naoFinalizados.forEach(function (o, c) {
                                     vm.deleteLata(vm.seletedLinha, vm.seletedLinha.latas.indexOf(o))
                                 })
+                                vm.saveState()
                             }
                             else {
                                 toastr.error("Usuário ou Senha Inválidos")
@@ -881,6 +931,7 @@
                                 vm.seletedLinha.finalizado = true
                                 vm.seletedLinha.obs = vm.user.Obs
                                 $('.modal').modal('hide')
+                                vm.saveState()
                             }
                             else {
                                 toastr.error("Usuário ou Senha Inválidos")
@@ -893,6 +944,7 @@
 
                 vm.getParametrizacaoLinhas()
 
+                setTimeout(function () { $('select').select2() }, 200)
 
             }]).filter('mathPow', function () {
                 return function (base, exponent) {
@@ -903,8 +955,6 @@
                     return Math.pow(10, exponent);
                 }
             })
-
-
 
     })();
 </script>

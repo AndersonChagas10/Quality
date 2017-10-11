@@ -42,8 +42,19 @@ namespace SgqSystem.Controllers.Api
                 var linhaStringFormatada = ToJson(linha);
                 int IdLinha = int.Parse(dados["Id"]);
                 int IdCompany = int.Parse(dados["ParCompany_Id"]);
+                bool isValidated = false;
+
+                try //Não encontrei outra forma de evitar o estouro caso a chave não exista. CG.
+                {
+                    isValidated = dados["isValidated"];
+                    //dados.TryGetValue<bool>("isValidated", out isValidated);
+                }
+                catch (Exception)
+                {
+                }
+
                 //var IdLinha = int.Parse(((JValue)(((JContainer)linha).First.FirstOrDefault())).Value.ToString());
-                var existente = db.Database.SqlQuery<int>(string.Format("SELECT Id from RecravacaoJson WHERE Linha_Id = {0} AND ParCompany_Id = {1}", IdLinha, IdCompany)).FirstOrDefault();
+                var existente = db.Database.SqlQuery<int>(string.Format("SELECT Id from RecravacaoJson WHERE Linha_Id = {0} AND ParCompany_Id = {1} AND IsValidated = 0", IdLinha, IdCompany)).FirstOrDefault();
 
                 if (existente > 0)
                 {
@@ -59,6 +70,13 @@ namespace SgqSystem.Controllers.Api
                     var Id = int.Parse(db.Database.SqlQuery<decimal>(queryInsert + " SELECT SCOPE_IDENTITY()").FirstOrDefault().ToString());
                 }
 
+                if (isValidated)
+                {
+                    var queryUpdate = string.Format("UPDATE RecravacaoJson SET IsValidated = N'{0}' WHERE Id = {1}", 1, existente);
+                    var queryUpdateAlterDate = string.Format("UPDATE RecravacaoJson SET ValidateLockDate = {0} WHERE Id = {1}", "GETDATE()", existente);
+                    db.Database.ExecuteSqlCommand(queryUpdate);
+                    db.Database.ExecuteSqlCommand(queryUpdateAlterDate);
+                }
                 //Post Save
                 mensagemSucesso = "Registro atualizado";
 

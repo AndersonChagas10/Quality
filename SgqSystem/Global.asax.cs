@@ -20,7 +20,7 @@ namespace SgqSystem
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
-
+        private string ScriptFull;
         private BackgroundJobServer _backgroundJobServer;
 
         protected void Application_Start()
@@ -55,12 +55,16 @@ namespace SgqSystem
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("");
             }
 
+            ScriptFull = string.Empty;
             VerifyColumnExistsNotExistisThenCreate("ParLevel1", "IsRecravacao", "bit", "default (0)", "IsRecravacao = 0");
             VerifyColumnExistsNotExistisThenCreate("ParLevel1", "AllowAddLevel3", "bit", "default (0)", "AllowAddLevel3 = 0");
             VerifyColumnExistsNotExistisThenCreate("ParLevel1", "AllowEditPatternLevel3Task", "bit", "default (0)", "AllowEditPatternLevel3Task = 0");
             VerifyColumnExistsNotExistisThenCreate("ParLevel1", "AllowEditWeightOnLevel3", "bit", "default (0)", "AllowEditWeightOnLevel3 = 0");
 
+            //09/09/2017 CG
             VerifyColumnExistsNotExistisThenCreate("ParRecravacao_Linhas", "ParLevel2_Id", "int", "default null", "ParLevel2_Id = null");
+            VerifyColumnExistsNotExistisThenCreate("RecravacaoJson", "isValidated", "bit", "default (0)", "IsValidated = 0");
+            VerifyColumnExistsNotExistisThenCreate("RecravacaoJson", "ValidateLockDate", "datetime2(7)", "default null", "ValidateLockDate = null");
         }
 
         /// <summary>
@@ -78,12 +82,15 @@ namespace SgqSystem
                 var sql = string.Empty;
                 try
                 {
+
                     sql = string.Format(@"IF COL_LENGTH('{0}','{1}') IS NULL
                         BEGIN
                         /*Column does not exist or caller does not have permission to view the object*/
                         Alter table {0} add {1} {2} {3}
                         EXEC ('update {0} set {4}')
                         END", table, colmun, type, defaultValue, setValue);
+
+                    ScriptFull += sql + "\n\n";
                     db.Database.ExecuteSqlCommand(sql);
                 }
                 catch (Exception e)
