@@ -194,10 +194,12 @@
                         enviar2["startDate"] = enviar["startDate"];
                         enviar2["endDate"] = enviar["endDate"];
                         enviar2["level1Id"] = data["Indicador"];
-                        enviar2["parlevelIdHistoricoModal"] = data["Indicador"];
+                        //enviar2["parlevelIdHistoricoModal"] = data["Indicador"];
+                        enviar2["level2Id"] = data["Monitoramento"];
+                        enviar2["level3Id"] = data["Tarefa"];
                         enviar2["UnitId"] = data["Unidade"];
-                        enviar2["historico_id"] = data["Historico_Id"];
-                        enviar2["ReincidenciaDesvioFTA"] = data["Av"] - data["Conformidades"];
+                        //enviar2["historico_id"] = data["Historico_Id"];
+                        enviar2["ReincidenciaDesvioFTA"] = data["Av"] - data["Nc"];
                         enviar2["PercentualNCFTA"] = data["Pc"];
                         if ($(this).attr('data-target') == "#modalResultados")
                             EasyAjax(UrlListaResultados, enviar2, GerarTabelaResultados, "DataTableResultados", null);
@@ -445,7 +447,7 @@
         var dia = MapeiaValorParaHC(data, "_date");
         var nc = MapeiaValorParaHC(data, "nc");
         var porc = MapeiaValorParaHC(data, "procentagemNc");
-        fazGambipraMenosCem(porc)
+        //fazGambipraMenosCem(porc)
         var qtdAv = MapeiaValorParaHC(data, "av");
         var limInferior = MapeiaValorParaHC(data, "limiteInferior");
         var limSup = MapeiaValorParaHC(data, "limiteSuperior");
@@ -689,28 +691,31 @@
     function GerarTabelaResultados(retornoArray) {
         var counter = 0;
         while (counter < retornoArray.length) {
-            if (retornoArray[counter]["Nc"] == 1)
-                retornoArray[counter]["Nc"] = '<p style="color:green; font-size:15px;"><i class="fa fa-fw fa-check"></i></p>'
+            if (retornoArray[counter]["nc"] <= 0)
+                retornoArray[counter]["status"] = '<p style="color:green; font-size:15px;"><i class="fa fa-fw fa-check"></i></p>'
             else
-                retornoArray[counter]["Nc"] = '<p style="color:red; font-size:15px;"><i class="fa fa-fw fa-close"></i></p>';
+                retornoArray[counter]["status"] = '<p style="color:red; font-size:15px;"><i class="fa fa-fw fa-close"></i></p>';
             counter++;
         }
         console.log(retornoArray);
         var tableResultados = $('#DataTableResultados').empty().DataTable({
             data: retornoArray,
             columns: [
-                { title: "Data", mData: "_Data" },
-                { title: "Unidade", mData: "Unidade" },
-                { title: "Indicador", mData: "Indicador" },
-                { title: "Limite Inferior", mData: "LimiteInferior" },
-                { title: "Limite Superior", mData: "LimiteSuperior" },
-                { title: "Sentido", mData: "Sentido" },
-                { title: "Conforme", mData: "Nc" },
-                { title: "Real", mData: "Real" },
+                { title: "Data", mData: "_date" },
+                { title: "Unidade", mData: "UnidadeName" },
+                { title: "Indicador", mData: "level1Name" },
+                { title: "Monitoramento", mData: "level2Name" },
+                { title: "Tarefa", mData: "level3Name" },
+                { title: "Av", mData: "av" },
+                { title: "NC", mData: "nc" },
+                { title: "% NC", mData: "procentagemNc" },
+                { title: "Meta", mData: "Meta" },
+                { title: "Status", mData: "status" },
             ],
             responsive: true,
             loadingRecords: true,
             destroy: true,
+            "scrollX": true,
             "language": {
                 "sProcessing": "A processar...",
                 "sLengthMenu": "Mostrar _MENU_ registros",
