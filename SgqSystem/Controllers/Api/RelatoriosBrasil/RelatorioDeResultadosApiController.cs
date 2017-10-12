@@ -414,7 +414,7 @@ FROM (SELECT
 	AND IND.Id = " + form.level1Id + @" )S1
 GROUP BY Level2Name, Unidade_Id, Unidade, level2_Id, level1_Id, S1.Level1Name
 HAVING SUM(NC) > 0
-ORDER BY 9 DESC ";
+ORDER BY 10 DESC ";
 
             using (var db = new SgqDbDevEntities())
             {
@@ -575,6 +575,7 @@ ORDER BY 8 DESC ";
 
             if (form.level3Id != 0)
             {
+                query = getQueryHistoricoTarefa(form);
 
             }
             else if (form.level2Id != 0)
@@ -588,11 +589,154 @@ ORDER BY 8 DESC ";
 
             using (var db = new SgqDbDevEntities())
             {
+
                 retorno2 = db.Database.SqlQuery<RetornoGenerico>(query).ToList();
             }
 
             //GetMockHistoricoModal();
             return retorno2;
+        }
+
+        private static string getQueryHistoricoTarefa(FormularioParaRelatorioViewModel form)
+        {
+            return @"
+
+
+DECLARE @dataFim_ date = '" + form._dataFimSQL + @"'
+  
+ DECLARE @dataInicio_ date = DATEADD(MONTH, -1, @dataFim_)
+SET @dataInicio_ = DATEFROMPARTS(YEAR(@dataInicio_), MONTH(@dataInicio_), 01)
+  
+ declare @ListaDatas_ table(data_ date)
+  
+ WHILE @dataInicio_ <= @dataFim_  
+ BEGIN
+INSERT INTO @ListaDatas_
+	SELECT
+		@dataInicio_
+SET @dataInicio_ = DATEADD(DAY, 1, @dataInicio_)
+  
+ END
+ DECLARE @DATAFINAL DATE = @dataFim_
+ DECLARE @DATAINICIAL DATE = DateAdd(mm, DateDiff(mm, 0, @DATAFINAL) - 1, 0)
+
+       
+ DECLARE @VOLUMEPCC int
+                                                  
+ DECLARE @ParCompany_id INT
+SELECT
+	@ParCompany_id = ID
+FROM PARCOMPANY
+WHERE ID = " + form.unitId + @"
+
+SELECT TOP 1
+	@VOLUMEPCC = SUM(Quartos)
+FROM VolumePcc1b(nolock)
+WHERE ParCompany_id = @ParCompany_id
+AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
+                                                                                                                                                    
+  DECLARE @NAPCC INT
+
+SELECT
+	@NAPCC =
+	COUNT(1)
+FROM (SELECT
+		COUNT(1) AS NA
+	FROM CollectionLevel2 C2 (NOLOCK)
+	LEFT JOIN Result_Level3 C3 (NOLOCK)
+		ON C3.CollectionLevel2_Id = C2.Id
+	WHERE CONVERT(DATE, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL
+	AND C2.ParLevel1_Id = (SELECT TOP 1
+			id
+		FROM Parlevel1
+		WHERE Hashkey = 1)
+	AND C2.UnitId = @ParCompany_Id
+	AND IsNotEvaluate = 1
+	GROUP BY C2.ID) NA
+WHERE NA = 2
+--------------------------------                                                                                                                    
+SELECT
+	TAB.Indicador AS level1_id
+   ,TAB.IndicadorName AS Level1Name
+   ,TAB.Monitoramento AS level2_Id
+   ,TAB.MonitoramentoName AS Level2Name
+   ,TAB.TarefaName AS level3Name
+   ,TAB.NcSemPeso AS nc
+   ,TAB.AvSemPeso AS av
+   ,[Proc] AS procentagemNC
+   ,TAB.TarefaId AS level3_Id
+   ,CONCAT(TarefaName, ' - ', UnidadeName) AS TarefaUnidade
+   ,Unidade AS UnidadeId
+   ,UnidadeName AS UnidadeName
+   ,0 AS Sentido
+   ,CAST(1 AS BIT) AS IsTarefa
+   ,date
+   ,'Histórico da Tarefa: ' + TAB.TarefaName as ChartTitle
+FROM (SELECT
+		UNI.Id AS Unidade
+	   ,UNI.Name AS UnidadeName
+	   ,IND.Name AS IndicadorName
+	   ,Ind.Id AS Indicador
+	   ,MON.Name AS MonitoramentoName
+	   ,Mon.Id AS Monitoramento
+	   ,R3.ParLevel3_Id AS TarefaId
+	   ,R3.ParLevel3_Name AS TarefaName
+	   ,SUM(R3.WeiDefects) AS Nc
+	   ,CASE
+			WHEN IND.ParConsolidationType_Id = 2 THEN SUM(r3.WeiDefects)
+			ELSE SUM(R3.Defects)
+		END AS NcSemPeso
+	   ,CASE
+			WHEN IND.HashKey = 1 THEN @VOLUMEPCC / 2 - @NAPCC
+			ELSE SUM(R3.WeiEvaluation)
+		END AS Av
+	   ,CASE
+			WHEN IND.HashKey = 1 THEN @VOLUMEPCC / 2 - @NAPCC
+			WHEN IND.ParConsolidationType_Id = 2 THEN SUM(r3.WeiEvaluation)
+			ELSE SUM(R3.Evaluation)
+		END AS AvSemPeso
+	   ,SUM(R3.WeiDefects) /
+		CASE
+			WHEN IND.HashKey = 1 THEN (SELECT TOP 1
+						SUM(Quartos) / 2
+					FROM VolumePcc1b(nolock)
+					WHERE ParCompany_id = UNI.Id
+					AND Data BETWEEN @DATAINICIAL AND @DATAFINAL)
+			ELSE SUM(R3.WeiEvaluation)
+		END * 100 AS [Proc]
+	   ,CAST(c2.CollectionDate AS DATE) AS date
+	FROM Result_Level3 R3 (NOLOCK)
+	INNER JOIN CollectionLevel2 C2 (NOLOCK)
+		ON C2.Id = R3.CollectionLevel2_Id
+	INNER JOIN ConsolidationLevel2 CL2 (NOLOCK)
+		ON CL2.Id = C2.ConsolidationLevel2_Id
+	INNER JOIN ConsolidationLevel1 CL1 (NOLOCK)
+		ON CL1.Id = CL2.ConsolidationLevel1_Id
+	INNER JOIN ParCompany UNI (NOLOCK)
+		ON UNI.Id = C2.UnitId
+	INNER JOIN ParLevel1 IND (NOLOCK)
+		ON IND.Id = C2.ParLevel1_Id
+	INNER JOIN ParLevel2 MON (NOLOCK)
+		ON MON.Id = C2.ParLevel2_Id
+	WHERE IND.Id = " + form.level1Id + @"
+	AND MON.Id = " + form.level2Id + @"
+	AND UNI.Id = " + form.unitId + @"
+	AND r3.ParLevel3_Id = " + form.level3Id + @"
+	AND R3.IsNotEvaluate = 0
+	AND CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
+	GROUP BY IND.Id
+			,IND.Name
+			,Mon.Name
+			,MON.Id
+			,R3.ParLevel3_Id
+			,R3.ParLevel3_Name
+			,UNI.Name
+			,UNI.Id
+			,ind.hashKey
+			,ind.ParConsolidationType_Id
+			,CAST(c2.CollectionDate AS date)
+	HAVING SUM(R3.WeiDefects) > 0) TAB
+ORDER BY 8 DESC ";
         }
 
         private static string getQueryHistoricoMonitoramento(FormularioParaRelatorioViewModel form)
@@ -857,10 +1001,9 @@ FROM (SELECT
 				ON 1 = 1
 				AND (NOMES.A1 = CL1.ParLevel1_Id
 				AND NOMES.A4 = UNI.ID)
-				OR (IND.ID IS NULL)) S1) S2
-	WHERE (RELATORIO_DIARIO = 1
-	OR (RELATORIO_DIARIO = 0
-	AND AV = 0))
+				OR (IND.ID IS NULL)
+            where CL2.ParLevel2_Id = " + form.level2Id + @") S1) S2
+	WHERE 1 = 1
 	AND level1_Id = " + form.level1Id + @"
     AND S2.level2_Id = " + form.level2Id + @"
 	AND Unidade_Id = @UNIDADE) ff
@@ -1120,9 +1263,7 @@ FROM (SELECT
 				AND (NOMES.A1 = CL1.ParLevel1_Id
 				AND NOMES.A4 = UNI.ID)
 				OR (IND.ID IS NULL)) S1) S2
-	WHERE (RELATORIO_DIARIO = 1
-	OR (RELATORIO_DIARIO = 0
-	AND AV = 0))
+	WHERE 1 = 1
 	AND level1_Id  = " + form.level1Id + @"
 	AND Unidade_Id = @UNIDADE) ff
 GROUP BY level1_id
@@ -1356,7 +1497,7 @@ DROP TABLE #AMOSTRATIPO4a  ";
         public string HISTORICO_ID { get; set; }
         public int? IsPaAcao { get; set; }
         public decimal Meta { get; set; }
-
+        public string _dateEUA { get { return date.ToString("yyyy-MM-dd"); } }
     }
 
 }
