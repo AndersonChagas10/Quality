@@ -116,6 +116,7 @@ namespace SgqSystem.Controllers
         [ValidateAntiForgeryToken]
         public bool Save(UserDTO userSgqDto)
         {
+            var IsActive = userSgqDto.IsActive;
 
             ValidaUserSgqDto(userSgqDto);
 
@@ -186,7 +187,7 @@ namespace SgqSystem.Controllers
             if (userSgqDto != null)
                 if (GlobalConfig.Eua)
                 {
-                    var ativo = userSgqDto.IsActive ? "1" : "0";
+                    var ativo = IsActive ? "1" : "0";
                     var ativoQuery = "UPDATE UserSgq SET IsActive = " + ativo + " WHERE Id = " + userSgqDto.Id + " SELECT IsActive FROM usersgq WHERE Id = " + userSgqDto.Id;
                     var estadoAtual = db.Database.SqlQuery<bool>(ativoQuery).FirstOrDefault();
                 }
