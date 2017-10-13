@@ -225,7 +225,7 @@ FROM (SELECT
 			END AS NC
 		   ,CASE
 				WHEN IND.ParConsolidationType_Id = 1 THEN DefectsTotal
-				WHEN IND.ParConsolidationType_Id = 2 THEN DefectsTotal
+				WHEN IND.ParConsolidationType_Id = 2 THEN WeiDefects
 				WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult
 				WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
 				WHEN IND.ParConsolidationType_Id = 5 THEN DefectsTotal
@@ -394,7 +394,7 @@ FROM (SELECT
 		END AS NC
 	   ,CASE
 			WHEN IND.ParConsolidationType_Id = 1 THEN CL2.DefectsTotal
-			WHEN IND.ParConsolidationType_Id = 2 THEN CL2.DefectsTotal
+			WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiDefects
 			WHEN IND.ParConsolidationType_Id IN (3, 4) THEN CL2.DefectsResult
 			WHEN IND.ParConsolidationType_Id = 5 THEN CL2.DefectsTotal
 			WHEN IND.ParConsolidationType_Id = 6 THEN CL2.TotalLevel3WithDefects
@@ -913,7 +913,7 @@ FROM (SELECT
 				END AS NC
 			   ,CASE
 					WHEN IND.ParConsolidationType_Id = 1 THEN CL2.DefectsTotal
-					WHEN IND.ParConsolidationType_Id = 2 THEN CL2.DefectsTotal
+					WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiDefects
 					WHEN IND.ParConsolidationType_Id = 3 THEN CL2.DefectsResult
 					WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
 					ELSE 0
@@ -1188,7 +1188,7 @@ FROM (SELECT
 				END AS NC
 			   ,CASE
 					WHEN IND.ParConsolidationType_Id = 1 THEN DefectsTotal
-					WHEN IND.ParConsolidationType_Id = 2 THEN DefectsTotal
+					WHEN IND.ParConsolidationType_Id = 2 THEN WeiDefects
 					WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult
 					WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
 					ELSE 0
