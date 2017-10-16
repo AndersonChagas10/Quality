@@ -736,7 +736,7 @@ FROM (SELECT
 			,ind.ParConsolidationType_Id
 			,CAST(c2.CollectionDate AS date)
 	HAVING SUM(R3.WeiDefects) > 0) TAB
-ORDER BY 8 DESC ";
+ORDER BY 15";
         }
 
         private static string getQueryHistoricoMonitoramento(FormularioParaRelatorioViewModel form)
@@ -1016,7 +1016,7 @@ GROUP BY level1_id
 		,level2_Id
 		,level2Name
 having sum(av) is not null or sum(nc) is not null
-ORDER BY 10
+ORDER BY 12
 DROP TABLE #AMOSTRATIPO4a  ";
         }
 

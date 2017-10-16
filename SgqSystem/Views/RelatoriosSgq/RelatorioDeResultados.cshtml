@@ -303,6 +303,7 @@
 
         var NomeExibir = "";
         var Level = 0;
+        var Titulo = "% de Não Conformidades";
 
         if (data.length > 0) {
 
@@ -310,12 +311,15 @@
             if (data[0].IsIndicador) {
                 NomeExibir = "IndicadorUnidade";
                 Level = 1;
+                Titulo += "nos Indicadores ";
             } else if (data[0].IsMonitoramento) {
                 Level = 2;
                 NomeExibir = "MonitoramentoUnidade";
+                Titulo += "nos Monitoramentos do Indicador " + data[0].IndicadorName;
             } else {
                 Level = 3;
                 NomeExibir = "TarefaUnidade"
+                Titulo += "nas Tarefas do Monitoramento " + data[0].MonitoramentoName + " do Indicador " + data[0].IndicadorName;
             }
 
             SetTitulo(Level);
@@ -338,7 +342,7 @@
                     zoomType: 'x,y'
                 },
                 title: {
-                    text: "% de Não Conformidades",
+                    text: Titulo,
                 },
                 xAxis: {
                     categories: IndicadorUnidade,
