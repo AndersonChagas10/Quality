@@ -795,21 +795,17 @@
         //fazGambipraMenosCem(porc)
         var numeroAcoesConcluidas = MapeiaValorParaHC(data, "NumeroAcoesConcluidas");
 
-        var tipo = "";
+        var aux = "";
 
-        if (retornoArray[0].IsIndicador) {
-            tipo = "Indicador";
+        if (data[0].level3Id > 0) {
+            aux = "Tarefa:" + " " + data[0].level3Name;
+        }else if (data[0].level2Id) {
+            aux = "Monitoramento:" + " " + data[0].level2Name;
+        }else if (data[0].level1Id > 0) {
+            aux = "Indicador:" + " " + data[0].level1Name;
         }
 
-        if (retornoArray[0].IsMonitoramento) {
-            tipo = "Monitoramento";
-        }
-
-        if (retornoArray[0].IsTarefa) {
-            tipo = "Tarefa";
-        }
-
-        var ChartTitle = "Evolutivo de % de Não Conformidades no "+ tipo + " " + data[0].IndicadorName + " na unidade de " + data[0].UnidadeName;
+        var ChartTitle = "Evolutivo de % de Não Conformidades no " + aux + " na unidade de " + data[0].UnidadeName;
 
         chart = Highcharts.chart('graficoAcoesXIndicadores', {
             credits: {

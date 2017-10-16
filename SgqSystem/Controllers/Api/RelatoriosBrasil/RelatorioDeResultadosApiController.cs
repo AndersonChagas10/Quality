@@ -656,15 +656,15 @@ FROM (SELECT
 WHERE NA = 2
 --------------------------------                                                                                                                    
 SELECT
-	TAB.Indicador AS level1_id
+	TAB.Indicador AS level1id
    ,TAB.IndicadorName AS Level1Name
-   ,TAB.Monitoramento AS level2_Id
+   ,TAB.Monitoramento AS level2Id
    ,TAB.MonitoramentoName AS Level2Name
    ,TAB.TarefaName AS level3Name
    ,TAB.NcSemPeso AS nc
    ,TAB.AvSemPeso AS av
    ,[Proc] AS procentagemNC
-   ,TAB.TarefaId AS level3_Id
+   ,TAB.TarefaId AS level3Id
    ,CONCAT(TarefaName, ' - ', UnidadeName) AS TarefaUnidade
    ,Unidade AS UnidadeId
    ,UnidadeName AS UnidadeName
@@ -820,10 +820,10 @@ FROM (SELECT
 WHERE NA = 2
 
 SELECT
-	level1_id
+	level1_id as level1Id
    ,Level1Name AS Level1Name
-   ,ff.level2_Id
-   ,ff.level2Name
+   ,ff.level2_Id as level2Id
+   ,ff.level2Name as Level2Name
    ,ChartTitle
    ,Unidade_Id AS UnidadeId
    ,Unidade AS UnidadeName
@@ -1101,7 +1101,7 @@ FROM (SELECT
 WHERE NA = 2
 
 SELECT
-	level1_id
+	level1_id as level1Id
    ,Level1Name as Level1Name
    ,ChartTitle
    ,Unidade_Id as UnidadeId
