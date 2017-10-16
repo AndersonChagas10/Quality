@@ -8,6 +8,8 @@
     var urlVerificacaoTipificacao = Url.Action("VerificacaoTipificacao", "RelatoriosSgq");
     var urlVisaoGeralDaArea = Url.Action("VisaoGeralDaArea", "RelatoriosSgq");
     var urlAcaoCorretiva = Url.Action("CorrectiveActionreport", "Reports");
+    var urlEvolutivo = Url.Action("RelatorioDeResultados", "RelatoriosSgq");
+    var urlCEP = Url.Action("CartasCep", "RelatoriosSgq");
     var urlPlanoDeAcao = "http://mtzsvmqsc/PlanoDeAcao";
 }
 
@@ -321,10 +323,10 @@
                         <ul id="nav">
                             <li><a href="@urlRelatorioDiario">@Resources.Resource.daily_meeting</a></li>
                             <li><a href="@urlNaoConformidade">@Resources.Resource.not_conformities</a></li>
-                            <li><a href="#">@Resources.Resource.letters_cep</a></li>
+                            <li><a href="@urlCEP">@Resources.Resource.letters_cep (@Resources.Resource.desenvolvimento) </a></li>
                             <li><a href="@urlScorecard">@Resources.Resource.scorecard</a></li>
-                            <li><a href="@urlAcaoCorretiva">@Resources.Resource.corrective_action</a></li>
-                            <li><a href="#">@Resources.Resource.indicators_evolution </a></li>
+                            <li><a href="@urlAcaoCorretiva">@Resources.Resource.corrective_action (Beta)</a></li>
+                            <li><a href="@urlEvolutivo">@Resources.Resource.indicators_evolution (Beta) </a></li>
                         </ul>
                     </div>
 
@@ -337,7 +339,7 @@
                         <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
 
                         <ul id="nav">
-                            <li><a href="#">@Resources.Resource.recidivism</a></li>
+                            <li><a href="#">@Resources.Resource.recidivism (@Resources.Resource.desenvolvimento) </a></li>
                         </ul>
                     </div>
 

@@ -2091,4 +2091,7 @@
   <data name="pa_ok" xml:space="preserve">
     <value>ok</value>
   </data>
+  <data name="desenvolvimento" xml:space="preserve">
+    <value>Em desenvolvimento</value>
+  </data>
 </root>
