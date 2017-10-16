@@ -482,7 +482,7 @@
             },
             title: {
                 //text: getNomeDoIndicadorTitulo(data[0].ChartTitle)
-                text: data[0].ChartTitle
+                text: data[0].ChartTitle + " em " + data[0].UnidadeName
             },
             xAxis: {
                 categories: dia,
@@ -795,7 +795,21 @@
         //fazGambipraMenosCem(porc)
         var numeroAcoesConcluidas = MapeiaValorParaHC(data, "NumeroAcoesConcluidas");
 
-        var ChartTitle = "Evolutivo de % de Não Conformidades no Indicador " + data[0].IndicadorName + " na unidade de " + data[0].UnidadeName;
+        var tipo = "";
+
+        if (retornoArray[0].IsIndicador) {
+            tipo = "Indicador";
+        }
+
+        if (retornoArray[0].IsMonitoramento) {
+            tipo = "Monitoramento";
+        }
+
+        if (retornoArray[0].IsTarefa) {
+            tipo = "Tarefa";
+        }
+
+        var ChartTitle = "Evolutivo de % de Não Conformidades no "+ tipo + " " + data[0].IndicadorName + " na unidade de " + data[0].UnidadeName;
 
         chart = Highcharts.chart('graficoAcoesXIndicadores', {
             credits: {
