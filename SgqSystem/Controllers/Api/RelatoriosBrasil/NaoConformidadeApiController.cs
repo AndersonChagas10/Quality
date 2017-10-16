@@ -346,7 +346,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiDefects " +
                 "\n         WHEN IND.ParConsolidationType_Id = 3 THEN CL2.DefectsResult " +
                 "\n         WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM" +
-                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN CL2.WeiDefects "+
+                "\n         WHEN IND.ParConsolidationType_Id = 5 THEN CL2.WeiDefects " +
                 "\n         WHEN IND.ParConsolidationType_Id = 6 THEN CL2.TotalLevel3WithDefects " +
                 "\n         ELSE 0 " +
 
@@ -373,13 +373,17 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                "\n  END                                                                                                                                                                                                                                                                " +
                "\n  AS Meta                                                                                                                                                                                                                                                            " +
                 "\n         FROM ConsolidationLevel1 CL1  (nolock)" +
-                "\n         INNER JOIN ConsolidationLevel2 CL2 (nolock) " +
-                "\n         ON CL2.ConsolidationLevel1_ID = CL1.ID " +
-                "\n         INNER JOIN PARLEVEL2 P2 " + 
-                "\n         ON P2.ID = CL2.PARLEVEL2_ID " +
-                "\n         AND P2.PARDEPARTMENT_ID = 2 " +
                 "\n         INNER JOIN ParLevel1 IND  (nolock)" +
                 "\n         ON IND.Id = CL1.ParLevel1_Id " +
+                
+                "\n         INNER JOIN ConsolidationLevel2 CL2 with (nolock) " +
+                "\n         ON CL2.ConsolidationLevel1_id = CL1.Id " +
+                "\n         INNER JOIN ParLevel2 L2 with (nolock) " +
+                "\n         ON CL2.ParLevel2_id = L2.Id " +
+                "\n         INNER JOIN ParDepartment D with (nolock) " +
+                "\n         ON L2.ParDepartment_Id = D.Id " +
+
+
                 "\n         INNER JOIN ParCompany UNI  (nolock)" +
                 "\n         ON UNI.Id = CL1.UnitId " +
                 "\n         LEFT JOIN #AMOSTRATIPO4 A4  (nolock)" +
@@ -388,6 +392,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL " +
                 "\n         AND UNI.Name = '" + form.unitName + "'" +
                 "\n         -- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) " +
+
+                "\n         AND D.Id = 2 " +
 
                 "\n     ) S1 " +
 
