@@ -225,7 +225,7 @@ FROM (SELECT
 			END AS NC
 		   ,CASE
 				WHEN IND.ParConsolidationType_Id = 1 THEN DefectsTotal
-				WHEN IND.ParConsolidationType_Id = 2 THEN DefectsTotal
+				WHEN IND.ParConsolidationType_Id = 2 THEN WeiDefects
 				WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult
 				WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
 				WHEN IND.ParConsolidationType_Id = 5 THEN DefectsTotal
@@ -394,7 +394,7 @@ FROM (SELECT
 		END AS NC
 	   ,CASE
 			WHEN IND.ParConsolidationType_Id = 1 THEN CL2.DefectsTotal
-			WHEN IND.ParConsolidationType_Id = 2 THEN CL2.DefectsTotal
+			WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiDefects
 			WHEN IND.ParConsolidationType_Id IN (3, 4) THEN CL2.DefectsResult
 			WHEN IND.ParConsolidationType_Id = 5 THEN CL2.DefectsTotal
 			WHEN IND.ParConsolidationType_Id = 6 THEN CL2.TotalLevel3WithDefects
@@ -913,7 +913,7 @@ FROM (SELECT
 				END AS NC
 			   ,CASE
 					WHEN IND.ParConsolidationType_Id = 1 THEN CL2.DefectsTotal
-					WHEN IND.ParConsolidationType_Id = 2 THEN CL2.DefectsTotal
+					WHEN IND.ParConsolidationType_Id = 2 THEN CL2.WeiDefects
 					WHEN IND.ParConsolidationType_Id = 3 THEN CL2.DefectsResult
 					WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
 					ELSE 0
@@ -1015,6 +1015,7 @@ GROUP BY level1_id
 		,[date]
 		,level2_Id
 		,level2Name
+having sum(av) is not null or sum(nc) is not null
 ORDER BY 10
 DROP TABLE #AMOSTRATIPO4a  ";
         }
@@ -1187,7 +1188,7 @@ FROM (SELECT
 				END AS NC
 			   ,CASE
 					WHEN IND.ParConsolidationType_Id = 1 THEN DefectsTotal
-					WHEN IND.ParConsolidationType_Id = 2 THEN DefectsTotal
+					WHEN IND.ParConsolidationType_Id = 2 THEN WeiDefects
 					WHEN IND.ParConsolidationType_Id = 3 THEN DefectsResult
 					WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
 					ELSE 0
@@ -1272,6 +1273,7 @@ GROUP BY level1_id
 		,Unidade_Id
 		,Unidade
 		,[date]
+having sum(av) is not null or sum(nc) is not null
 ORDER BY 10
 DROP TABLE #AMOSTRATIPO4a  ";
         }
@@ -1284,7 +1286,7 @@ DROP TABLE #AMOSTRATIPO4a  ";
 
             if (form.level3Id != 0)
             {
-
+                query = getQueryHistoricoTarefa(form);
             }
             else if (form.level2Id != 0)
             {
@@ -1314,7 +1316,7 @@ DROP TABLE #AMOSTRATIPO4a  ";
 
             if (form.level3Id != 0)
             {
-
+                query = getQueryHistoricoTarefa(form);
             }
             else if (form.level2Id != 0)
             {
