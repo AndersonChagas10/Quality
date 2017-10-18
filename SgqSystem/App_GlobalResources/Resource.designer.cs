@@ -1096,6 +1096,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Critical Level.
+        /// </summary>
+        internal static string criticalLevel {
+            get {
+                return ResourceManager.GetString("criticalLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current Evaluation.
         /// </summary>
         internal static string current_evaluation {

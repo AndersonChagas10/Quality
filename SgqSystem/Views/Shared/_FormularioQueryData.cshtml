@@ -358,6 +358,8 @@
                 </div>
             </li>*@
 
+        @Html.Partial("~/Views/Shared/_ClusterRegionalUnidadeCriticalLevel123.cshtml")
+
         @Html.Partial("~/Views/Shared/_Level321Chain.cshtml")
 
         @*<li>
@@ -818,6 +820,32 @@
             enviar['statusIndicador'] = $('#statusIndicador option:selected').val();
         });
 
+        $('#structureId').on('change',function(e){
+            enviar['structureId'] = $('#structureId option:selected').val();
+        });
+
+        $('#unitIdV').on('change',function(e){
+            enviar['unitId'] = $('#unitIdV option:selected').val();
+        });
+
+        $('#criticalLevelId').on('change',function(e){
+            enviar['criticalLevelId'] = $('#criticalLevelId option:selected').val();
+        });
+
+        $('#level1Idv').on('change', function (e) {
+            enviar['level1Id'] = parseInt( $('#level1Idv').val().replace(/\D/g, ''), 10);
+            $('#level2Idv').change();
+        });
+
+        $('#level2Idv').on('change', function (e) {
+            enviar['level2Id'] = parseInt( $('#level2Idv').val().replace(/\D/g, ''), 10);
+            $('#level3Idv').change();
+        });
+
+        $('#level3Idv').on('change', function (e) {
+            enviar['level3Id'] = parseInt( $('#level3Idv').val().replace(/\D/g, ''), 10);
+        });
+
         //enviar['level01Id'] = null;
         //enviar['level02Id'] = null;
         //enviar['level03Id'] = null;
@@ -1087,8 +1115,11 @@
 
         showStatusIndicador: function() {
             $('#showStatusIndicador').show();
-        }
+        },
 
+        showClustRegUnitCriticalLevel123: function(){
+            $('#showClustRegUnitCriticalLevel123').show();
+        }
     }
 
     //Esconde o header e o footer quando tecla f11

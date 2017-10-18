@@ -2091,4 +2091,7 @@
   <data name="pa_ok" xml:space="preserve">
     <value>ok</value>
   </data>
+  <data name="criticalLevel" xml:space="preserve">
+    <value>Nível de Criticidade</value>
+  </data>
 </root>
