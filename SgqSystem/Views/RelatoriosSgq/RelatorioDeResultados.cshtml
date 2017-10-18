@@ -1,18 +1,24 @@
 ﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
+@using DTO
 @{
     ViewBag.Title = "Relatório de Resultados";
 }
+
+<style>
+    .totalNC {
+        text-align: center;
+    }
+</style>
+
 <div class="page-content" style="min-height: 600px;">
 
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
 
-    <div id="formBodyContent" style="width:1000px; margin-left:auto; margin-right:auto; border">
+    <div id="formBodyContent" style="width:1000px; margin-left:auto; margin-right:auto;">
 
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
         @*@Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")*@
-
-
 
         <div class="alert alert-warning" id="SemDados" hidden>
             Sem dados na busca.
@@ -25,8 +31,24 @@
         <h2 id="Titulo"></h2>
         <h3 id="TituloGrafico"></h3>
         <br />
+        <div id="showNCIndicador" class="totalNC alert alert-info col-lg-2" role="alert" hidden>
+            <h1>0 %</h1>
+            <br />
+            <span>De Não Conformidade no Periodo</span>
+        </div>
+        <div class="col-lg-10" id="GraficoHistoricoIndicador"></div>
+        <div id="showNCMonitoramento" class="totalNC alert alert-info col-lg-2" role="alert" hidden>
+            <h1>0 %</h1>
+            <br />
+            <span>De Não Conformidade no Periodo</span>
+        </div>
+        <div class="col-lg-10" id="GraficoHistoricoMonitoramento"></div>
+        <br />
         <div id="GraficoPeriodoLoader"></div>
         <div id="GraficoPeriodo"></div>
+        <br />
+        <div id="GraficoPeriodoSemUnidadeLoader"></div>
+        <div id="GraficoPeriodoSemUnidade"></div>
         <br />
         <h3 id="TituloTabela"></h3>
         <br />
@@ -43,7 +65,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Histórico do Indicador</h4>
+                <h4 class="modal-title">Histórico</h4>
             </div>
             <div class="modal-body">
                 <div class="" id="GraficoHistoricoModal"></div>
@@ -129,6 +151,7 @@
     var UrlListaResultadosPeriodo = '@Html.Raw(Url.Action("listaResultadosPeriodoTabela", "api/RelatorioDeResultados"))';
     var UrlGraficoHistorico = '@Html.Raw(Url.Action("GetGraficoHistoricoModal", "api/RelatorioDeResultados"))';
     var UrlListaResultadosPeriodoGrafico = '@Html.Raw(Url.Action("listaResultadosPeriodoTabela", "api/RelatorioDeResultados"))';
+    var UrlListaResultadosPeriodoSemUnidadeGrafico = '@Html.Raw(Url.Action("listaResultadosPeriodoSemUnidadeTabela", "api/RelatorioDeResultados"))';
     var UrlIndicadorXAcaoModal = '@Html.Raw(Url.Action("listaResultadosAcoesConcluidas", "api/RelatorioDeResultados"))';
     var UrlListaAcoesIndicador = '@Html.Raw(Url.Action("listaAcoesIndicador", "api/VisaoGeralDaArea"))';
 
@@ -136,8 +159,9 @@
     var chartHistorico;
     var enviar2 = {};
     var enviar3 = {};
+    var enviarHistorico = {};
     var $btn = $('#btnSend');
-    @*var auditorId = @Html.Raw(Json.Encode(Session["LoginUserId"]));*@
+    exibeTodosLevels = false;
 
     function Send(toggle) {
 
@@ -148,15 +172,32 @@
         //    LimparTitulos();
 
         //    $('#GraficoPeriodo').empty();
+        $('#SemDados').hide();
+        $('#divMensagemAlerta').hide();
+        $('#GraficoHistoricoIndicador').empty();
+        $('#GraficoHistoricoMonitoramento').empty();
+        $('.totalNC').hide();
 
-        EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);
+        EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", true);
+        EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", undefined);
         EasyAjax(UrlListaResultadosPeriodo, enviar, GerarTabela, "DataTable", undefined);
+
+        if (enviar['unitId'] > 0) {
+            if (enviar['level2Id'] > 0) {
+                var enviar4 = Object.create(enviar);
+                enviar4['level2Id'] = 0;
+
+                EasyAjax(UrlGraficoHistorico, enviar4, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
+                EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", undefined);
+            }else if (enviar['level1Id'] > 0) {
+                EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
+            }
+        }
 
         //}
     }
 
     function GerarTabela(retornoArray) {
-
         if (retornoArray.length > 0) {
             var counter = 0;
             while (counter < retornoArray.length) {
@@ -171,6 +212,8 @@
                 columns: [
                     { title: "Unidade", mData: "UnidadeName" },
                     { title: "Indicador", mData: "IndicadorName" },
+                    { title: "Monitoramento", mData: "MonitoramentoName" },
+                    { title: "Tarefa", mData: "TarefaName" },
                     { title: "Av", mData: "Av" },
                     { title: "Não Conformidades", mData: "Nc" },
                     { title: "% Não Conformidades", mData: "Pc" },
@@ -182,6 +225,7 @@
                 responsive: true,
                 loadingRecords: true,
                 destroy: true,
+                "scrollX": true,
                 initComplete: function () {
                     $('#DataTable tbody').on('click', 'button', function (data, a, b) {
                         var data = table.row($(this).parents('tr')).data();
@@ -189,10 +233,12 @@
                         enviar2["startDate"] = enviar["startDate"];
                         enviar2["endDate"] = enviar["endDate"];
                         enviar2["level1Id"] = data["Indicador"];
-                        enviar2["parlevelIdHistoricoModal"] = data["Indicador"];
+                        //enviar2["parlevelIdHistoricoModal"] = data["Indicador"];
+                        enviar2["level2Id"] = data["Monitoramento"];
+                        enviar2["level3Id"] = data["Tarefa"];
                         enviar2["UnitId"] = data["Unidade"];
-                        enviar2["historico_id"] = data["Historico_Id"];
-                        enviar2["ReincidenciaDesvioFTA"] = data["Av"] - data["Conformidades"];
+                        //enviar2["historico_id"] = data["Historico_Id"];
+                        enviar2["ReincidenciaDesvioFTA"] = data["Av"] - data["Nc"];
                         enviar2["PercentualNCFTA"] = data["Pc"];
                         if ($(this).attr('data-target') == "#modalResultados")
                             EasyAjax(UrlListaResultados, enviar2, GerarTabelaResultados, "DataTableResultados", null);
@@ -273,20 +319,56 @@
             table.buttons(0, null).container().prependTo(
                 table.table().container()
             );
+
+            if (retornoArray[0].IsIndicador) {
+                table.column(2).visible(false);
+                table.column(3).visible(false);
+            }
+
+            if (retornoArray[0].IsMonitoramento) {
+                table.column(3).visible(false);
+                table.column(7).visible(false);
+                table.column(8).visible(false);
+            }
+
+            if (retornoArray[0].IsTarefa) {
+                table.column(7).visible(false);
+                table.column(8).visible(false);
+            }
         }
     }
 
     function GerarGrafico(data) {
 
+        var NomeExibir = "";
+        var Level = 0;
+        var Titulo = "% de Não Conformidades";
+
         if (data.length > 0) {
 
-            SetTitulo();
-
             //Colocar o grafico Aqui
-            var IndicadorUnidade = MapeiaValorParaHC(data, "IndicadorUnidade");
+            if (data[0].IsIndicador) {
+                NomeExibir = "IndicadorUnidade";
+                Level = 1;
+                Titulo += "nos Indicadores ";
+            } else if (data[0].IsMonitoramento) {
+                Level = 2;
+                NomeExibir = "MonitoramentoUnidade";
+                Titulo += "nos Monitoramentos do Indicador " + data[0].IndicadorName;
+            } else {
+                Level = 3;
+                NomeExibir = "TarefaUnidade"
+                Titulo += "nas Tarefas do Monitoramento " + data[0].MonitoramentoName + " do Indicador " + data[0].IndicadorName;
+            }
+
+            SetTitulo(Level);
+
+            var IndicadorUnidade = MapeiaValorParaHC(data, NomeExibir);
             var Indicador = MapeiaValorParaHC(data, "Indicador");
             var Unidade = MapeiaValorParaHC(data, "Unidade");
             var porc = MapeiaValorParaHC(data, "Pc");
+            var Monitoramento = MapeiaValorParaHC(data, "Monitoramento");
+            var Tarefa = MapeiaValorParaHC(data, "Tarefa");
             //fazGambipraMenosCem(porc);
 
             //$('#GraficoPeriodoLoader').removeClass('loader');
@@ -296,10 +378,11 @@
                 },
                 chart: {
                     type: 'column',
-                    zoomType: 'x,y'
+                    zoomType: 'x,y',
+                    height: 400
                 },
                 title: {
-                    text: "% de Não Conformidades nos Indicadores"
+                    text: Titulo,
                 },
                 xAxis: {
                     categories: IndicadorUnidade,
@@ -361,7 +444,8 @@
                                 enviar3["endDate"] = enviar["endDate"];
                                 enviar3['unitId'] = Unidade[this.x];
                                 enviar3['level1Id'] = Indicador[this.x];
-
+                                enviar3['level2Id'] = Monitoramento[this.x];
+                                enviar3['level3Id'] = Tarefa[this.x];
 
                                 let selector = 'tabelaAcoesXIndicaor'
                                 if ($.fn.DataTable.isDataTable('#' + selector)) {
@@ -405,26 +489,176 @@
         }
     }
 
-    function CallbackGraficoHistoricoModal(data) {
+    function GerarGraficoSemUnidade(data){
+        var NomeExibir = "";
+        var Level = 0;
+        var Titulo = "% de Não Conformidades";
+
+        if (data.length > 0) {
+
+            //Colocar o grafico Aqui
+            if (data[0].IsIndicador) {
+                NomeExibir = "IndicadorName";
+                Level = 1;
+                Titulo += "nos Indicadores ";
+            } else if (data[0].IsMonitoramento) {
+                Level = 2;
+                NomeExibir = "MonitoramentoName";
+                Titulo += "nos Monitoramentos do Indicador " + data[0].IndicadorName;
+            } else {
+                Level = 3;
+                NomeExibir = "TarefaName"
+                Titulo += "nas Tarefas do Monitoramento " + data[0].MonitoramentoName + " do Indicador " + data[0].IndicadorName;
+            }
+
+            //SetTitulo(Level);
+
+            var IndicadorName = MapeiaValorParaHC(data, NomeExibir);
+            var Indicador = MapeiaValorParaHC(data, "Indicador");
+            var Unidade = MapeiaValorParaHC(data, "Unidade");
+            var porc = MapeiaValorParaHC(data, "Pc");
+            var Monitoramento = MapeiaValorParaHC(data, "Monitoramento");
+            var Tarefa = MapeiaValorParaHC(data, "Tarefa");
+            //fazGambipraMenosCem(porc);
+
+            //$('#GraficoPeriodoLoader').removeClass('loader');
+            $('#GraficoPeriodoSemUnidade').empty().highcharts({
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    type: 'column',
+                    zoomType: 'x,y',
+                    height: 400
+                },
+                title: {
+                    text: Titulo,
+                },
+                xAxis: {
+                    categories: IndicadorName,
+                    //title: {
+                    //    text: 'Monitoramentos',
+                    //},
+                },
+                yAxis: [{
+                    min: 0,
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: '% NC',
+                    }
+                },
+                {
+                    min: 0,
+                    title: {
+                        text: 'Pareto'
+                    },
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    opposite: true
+                },
+                ],
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        grouping: false,
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                {
+                    name: '% NC',
+                    color: 'rgba(240,124,0,1)',
+                    data: porc,
+                    yAxis: 0,
+                    point: {
+                        events: {
+                            //click: function () {
+
+                            //    enviar3 = {};
+                            //    enviar3["startDate"] = enviar["startDate"];
+                            //    enviar3["endDate"] = enviar["endDate"];
+                            //    enviar3['unitId'] = Unidade[this.x];
+                            //    enviar3['level1Id'] = Indicador[this.x];
+                            //    enviar3['level2Id'] = Monitoramento[this.x];
+                            //    enviar3['level3Id'] = Tarefa[this.x];
+
+                            //    let selector = 'tabelaAcoesXIndicaor'
+                            //    if ($.fn.DataTable.isDataTable('#' + selector)) {
+                            //        $('#' + selector).DataTable().destroy();
+                            //        $('#' + selector).empty();
+                            //    }
+                            //    $('#mensagem').hide();
+                            //    $('#graficoAcoesXIndicadores').empty();
+                            //    $('#IndicadorXAcaoModal').modal();
+
+                            //    EasyAjax(UrlIndicadorXAcaoModal, enviar3, function (r) {
+                            //        if (r.length > 0) {
+                            //            //console.log(r);
+                            //            $('#graficoAcoesXIndicadores').empty();
+                            //            CBGAcoesXIndicador(r);
+                            //        } else {
+                            //            $('#graficoAcoesXIndicadores').modal('hide');
+                            //        }
+                            //    }, "graficoAcoesXIndicadores")
+                            //}
+                        }
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        color: 'black',
+                        align: 'center',
+                        style: {
+                            fontSize: '10px',
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: ' %'
+                    }
+                },
+                 CurvaPareto(calculaPareto(porc))
+                ]
+            });
+            //Fim HC
+        } else {
+            $('#SemDados').show();
+        }
+    }
+
+    function GerarGraficoHistoricoModal(data){
 
         var dia = MapeiaValorParaHC(data, "_date");
         var nc = MapeiaValorParaHC(data, "nc");
         var porc = MapeiaValorParaHC(data, "procentagemNc");
-        fazGambipraMenosCem(porc)
+        //fazGambipraMenosCem(porc)
         var qtdAv = MapeiaValorParaHC(data, "av");
         var limInferior = MapeiaValorParaHC(data, "limiteInferior");
-        var limSup = MapeiaValorParaHC(data, "limiteSuperior");
-        var numeroAcoesConcluidas = MapeiaValorParaHC(data, "NumeroAcoesConcluidas");
+        //var limSup = MapeiaValorParaHC(data, "limiteSuperior");
+        //var numeroAcoesConcluidas = MapeiaValorParaHC(data, "NumeroAcoesConcluidas");
 
         /*Nao exibe no HC atribuindo nulo aonde for ZERO*/
-        limInferior.forEach(function (o, c) {
-            if (o == 0)
-                limInferior[c] = null
-        })
-        limSup.forEach(function (o, c) {
-            if (o == 0)
-                limSup[c] = null
-        })
+        //limInferior.forEach(function (o, c) {
+        //    if (o == 0)
+        //        limInferior[c] = null
+        //})
+        //limSup.forEach(function (o, c) {
+        //    if (o == 0)
+        //        limSup[c] = null
+        //})
         //var NomesDeVerdade = []
         //pegaNomeDoIndicadorGrafico(nome, NomesDeVerdade)
         $('#GraficoHistoricoModal').removeClass('loader');
@@ -442,7 +676,7 @@
             },
             title: {
                 //text: getNomeDoIndicadorTitulo(data[0].ChartTitle)
-                text: data[0].ChartTitle
+                text: data[0].ChartTitle + " em " + data[0].UnidadeName
             },
             xAxis: {
                 categories: dia,
@@ -489,7 +723,7 @@
                 }
             },
             series: [{
-                name: 'VALOR',
+                name: 'NC',
                 color: 'rgba(77,143,189,1)',
                 data: nc,
                 yAxis: 0,
@@ -584,10 +818,161 @@
                 tooltip: {
                     valueSuffix: ''
                 }
-            }, {
-                name: 'Limite Inferior',
-                color: 'red',
-                data: limInferior,
+            }
+            //, {
+            //    name: 'Limite Inferior',
+            //    color: 'red',
+            //    data: limInferior,
+            //    yAxis: 0,
+            //    type: 'line',
+            //    marker: {
+            //        enabled: false
+            //    },
+            //    pointPadding: 0.2,
+            //    //pointPlacement: -0.2,
+            //    point: {
+            //        events: {
+            //            click: function () {
+            //                FTA2(enviar, this)
+            //                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+            //            }
+            //        }
+            //    },
+            //    dataLabels: {
+            //        //enabled: true,
+            //        enabled: false,
+            //        color: 'black',
+            //        align: 'center',
+            //        style: {
+            //            fontSize: '10px',
+            //        }
+            //    },
+            //    tooltip: {
+            //        valueSuffix: ''
+            //    }
+            //}, {
+            //    name: 'Limite Superior',
+            //    color: 'brown',
+            //    data: limSup,
+            //    yAxis: 0,
+            //    type: 'line',
+            //    marker: {
+            //        enabled: false
+            //    },
+            //    pointPadding: 0.2,
+            //    //pointPlacement: -0.2,
+            //    point: {
+            //        events: {
+            //            click: function () {
+            //                FTA2(enviar2, this)
+            //                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+            //            }
+            //        }
+            //    },
+            //    dataLabels: {
+            //        //enabled: true,
+            //        enabled: false,
+            //        color: 'black',
+            //        align: 'center',
+            //        style: {
+            //            fontSize: '10px',
+            //        }
+            //    },
+            //    tooltip: {
+            //        valueSuffix: ''
+            //    }
+            //}
+            ]
+        });
+    }
+
+    function CallbackGraficoHistoricoModal(data) {
+
+        var dia = MapeiaValorParaHC(data, "_date");
+        var nc = MapeiaValorParaHC(data, "nc");
+        var porc = MapeiaValorParaHC(data, "procentagemNc");
+        //fazGambipraMenosCem(porc)
+        var qtdAv = MapeiaValorParaHC(data, "av");
+        var limInferior = MapeiaValorParaHC(data, "limiteInferior");
+        //var limSup = MapeiaValorParaHC(data, "limiteSuperior");
+        //var numeroAcoesConcluidas = MapeiaValorParaHC(data, "NumeroAcoesConcluidas");
+
+        /*Nao exibe no HC atribuindo nulo aonde for ZERO*/
+        //limInferior.forEach(function (o, c) {
+        //    if (o == 0)
+        //        limInferior[c] = null
+        //})
+        //limSup.forEach(function (o, c) {
+        //    if (o == 0)
+        //        limSup[c] = null
+        //})
+        //var NomesDeVerdade = []
+        //pegaNomeDoIndicadorGrafico(nome, NomesDeVerdade)
+        $('#GraficoHistoricoModal').removeClass('loader');
+
+        $('#GraficoHistoricoModal').empty();
+
+        chartHistorico = Highcharts.chart('GraficoHistoricoModal', {
+            //$('#GraficoHistoricoModal').empty().highcharts({
+            credits: {
+                enabled: false
+            },
+            chart: {
+                type: 'column',
+                zoomType: 'x,y'
+            },
+            title: {
+                //text: getNomeDoIndicadorTitulo(data[0].ChartTitle)
+                text: data[0].ChartTitle + " em " + data[0].UnidadeName
+            },
+            xAxis: {
+                categories: dia,
+                title: {
+                    text: 'Data',
+                },
+            },
+            yAxis: [
+                {
+                    //min: 0,
+                    title: {
+                        text: 'Quantidade'
+                    },
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                }, {
+                    //min: 0,
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: '% NC',
+                    },
+                    opposite: true
+                }],
+            legend: {
+                shadow: false
+            },
+            tooltip: {
+                shared: true
+            },
+            plotOptions: {
+                column: {
+                    grouping: false,
+                    shadow: false,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'NC',
+                color: 'rgba(77,143,189,1)',
+                data: nc,
                 yAxis: 0,
                 type: 'line',
                 marker: {
@@ -595,6 +980,71 @@
                 },
                 pointPadding: 0.2,
                 //pointPlacement: -0.2,
+                point: {
+                    events: {
+                        click: function () {
+
+                            FTA2(enviar, this)
+                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                        }
+                    }
+                },
+                dataLabels: {
+                    //enabled: true,
+                    enabled: false,
+                    color: 'black',
+                    align: 'center',
+                    style: {
+                        fontSize: '10px',
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ''
+                }
+            }, {
+                visible: false,
+                name: '% NC',
+                color: 'rgba(240,124,0,1)',
+                data: porc,
+                yAxis: 1,
+                type: 'line',
+                marker: {
+                    enabled: false
+                },
+                //pointPadding: 0.4,
+                //pointPlacement: -0.2,
+                point: {
+                    events: {
+                        click: function () {
+                            FTA2(enviar, this)
+                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                        }
+                    }
+                },
+                dataLabels: {
+                    //enabled: true,
+                    enabled: false,
+                    color: 'black',
+                    align: 'center',
+                    style: {
+                        fontSize: '10px',
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ' %'
+                }
+            }, {
+                visible: false,
+                name: 'Avaliações',
+                data: qtdAv,
+                type: 'line',
+                marker: {
+                    enabled: false
+                },
+                color: 'rgba(81,207,64,1)',
+                pointPadding: 0.3,
+                pointPlacement: 0.2,
+                yAxis: 0,
                 point: {
                     events: {
                         click: function () {
@@ -615,67 +1065,452 @@
                 tooltip: {
                     valueSuffix: ''
                 }
-            }, {
-                name: 'Limite Superior',
-                color: 'brown',
-                data: limSup,
-                yAxis: 0,
-                type: 'line',
-                marker: {
-                    enabled: false
-                },
-                pointPadding: 0.2,
-                //pointPlacement: -0.2,
-                point: {
-                    events: {
-                        click: function () {
-                            FTA2(enviar2, this)
-                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
-                        }
-                    }
-                },
-                dataLabels: {
-                    //enabled: true,
-                    enabled: false,
-                    color: 'black',
-                    align: 'center',
-                    style: {
-                        fontSize: '10px',
-                    }
-                },
-                tooltip: {
-                    valueSuffix: ''
-                }
-            }]
+            }
+            //, {
+            //    name: 'Limite Inferior',
+            //    color: 'red',
+            //    data: limInferior,
+            //    yAxis: 0,
+            //    type: 'line',
+            //    marker: {
+            //        enabled: false
+            //    },
+            //    pointPadding: 0.2,
+            //    //pointPlacement: -0.2,
+            //    point: {
+            //        events: {
+            //            click: function () {
+            //                FTA2(enviar, this)
+            //                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+            //            }
+            //        }
+            //    },
+            //    dataLabels: {
+            //        //enabled: true,
+            //        enabled: false,
+            //        color: 'black',
+            //        align: 'center',
+            //        style: {
+            //            fontSize: '10px',
+            //        }
+            //    },
+            //    tooltip: {
+            //        valueSuffix: ''
+            //    }
+            //}, {
+            //    name: 'Limite Superior',
+            //    color: 'brown',
+            //    data: limSup,
+            //    yAxis: 0,
+            //    type: 'line',
+            //    marker: {
+            //        enabled: false
+            //    },
+            //    pointPadding: 0.2,
+            //    //pointPlacement: -0.2,
+            //    point: {
+            //        events: {
+            //            click: function () {
+            //                FTA2(enviar2, this)
+            //                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+            //            }
+            //        }
+            //    },
+            //    dataLabels: {
+            //        //enabled: true,
+            //        enabled: false,
+            //        color: 'black',
+            //        align: 'center',
+            //        style: {
+            //            fontSize: '10px',
+            //        }
+            //    },
+            //    tooltip: {
+            //        valueSuffix: ''
+            //    }
+            //}
+            ]
         });
 
+    }
+
+    function GerarGraficoHistoricoIndicador(data){
+
+        if (data.length > 0) {
+
+            var dia = MapeiaValorParaHC(data, "_date");
+            var nc = MapeiaValorParaHC(data, "nc");
+            var porc = MapeiaValorParaHC(data, "procentagemNc");
+            var qtdAv = MapeiaValorParaHC(data, "av");
+            var limInferior = MapeiaValorParaHC(data, "limiteInferior");
+
+            var sumav = qtdAv.reduce(function(a, b){return a+b;});
+            var sumnc = nc.reduce(function(a, b){return a+b;});
+            var porcPeriodo = sumnc/sumav * 100;
+
+            $('#GraficoHistoricoIndicador').removeClass('loader');
+
+            $('#GraficoHistoricoIndicador').empty();
+
+            chartHistorico = Highcharts.chart('GraficoHistoricoIndicador', {
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    type: 'column',
+                    zoomType: 'x,y',
+                    height: 300
+                },
+                title: {
+                    //text: getNomeDoIndicadorTitulo(data[0].ChartTitle)
+                    text: data[0].ChartTitle + " em " + data[0].UnidadeName
+                },
+                xAxis: {
+                    categories: dia,
+                    title: {
+                        text: 'Data',
+                    },
+                },
+                yAxis: [
+                    {
+                        //min: 0,
+                        title: {
+                            text: 'Quantidade'
+                        },
+                        labels: {
+                            format: '{value}',
+                            style: {
+                                color: Highcharts.getOptions().colors[1]
+                            }
+                        },
+                    }, {
+                        //min: 0,
+                        labels: {
+                            format: '{value} %',
+                            style: {
+                                color: Highcharts.getOptions().colors[1]
+                            }
+                        },
+                        title: {
+                            text: '% NC',
+                        },
+                        opposite: true
+                    }],
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        grouping: false,
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    name: 'NC',
+                    color: 'rgba(77,143,189,1)',
+                    data: nc,
+                    yAxis: 0,
+                    type: 'line',
+                    marker: {
+                        enabled: false
+                    },
+                    pointPadding: 0.2,
+                    //pointPlacement: -0.2,
+                    point: {
+                        events: {
+                            click: function () {
+
+                                FTA2(enviar, this)
+                                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                            }
+                        }
+                    },
+                    dataLabels: {
+                        //enabled: true,
+                        enabled: false,
+                        color: 'black',
+                        align: 'center',
+                        style: {
+                            fontSize: '10px',
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: ''
+                    }
+                }, {
+                    visible: false,
+                    name: '% NC',
+                    color: 'rgba(240,124,0,1)',
+                    data: porc,
+                    yAxis: 1,
+                    type: 'line',
+                    marker: {
+                        enabled: false
+                    },
+                    point: {
+                        events: {
+                            click: function () {
+                                FTA2(enviar, this)
+                                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                            }
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false,
+                        color: 'black',
+                        align: 'center',
+                        style: {
+                            fontSize: '10px',
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: ' %'
+                    }
+                }, {
+                    visible: false,
+                    name: 'Avaliações',
+                    data: qtdAv,
+                    type: 'line',
+                    marker: {
+                        enabled: false
+                    },
+                    color: 'rgba(81,207,64,1)',
+                    pointPadding: 0.3,
+                    pointPlacement: 0.2,
+                    yAxis: 0,
+                    point: {
+                        events: {
+                            click: function () {
+                                FTA2(enviar, this)
+                                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                            }
+                        }
+                    },
+                    dataLabels: {
+                        //enabled: true,
+                        enabled: false,
+                        color: 'black',
+                        align: 'center',
+                        style: {
+                            fontSize: '10px',
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: ''
+                    }
+                }]
+            }, function(){
+                $('#showNCIndicador > h1').text(parseFloat(porcPeriodo.toFixed(2)) + " %");
+                $('#showNCIndicador').show();
+            });
+
+        }
+    }
+
+    function GerarGraficoHistoricoMonitoramento(data){
+
+        if (data.length > 0) {
+
+            var dia = MapeiaValorParaHC(data, "_date");
+            var nc = MapeiaValorParaHC(data, "nc");
+            var porc = MapeiaValorParaHC(data, "procentagemNc");
+            var qtdAv = MapeiaValorParaHC(data, "av");
+            var limInferior = MapeiaValorParaHC(data, "limiteInferior");
+
+            var sumav = qtdAv.reduce(function(a, b){return a+b;});
+            var sumnc = nc.reduce(function(a, b){return a+b;});
+            var porcPeriodo = sumnc/sumav * 100;
+
+            $('#GraficoHistoricoMonitoramento').removeClass('loader');
+
+            $('#GraficoHistoricoMonitoramento').empty();
+
+            chartHistorico = Highcharts.chart('GraficoHistoricoMonitoramento', {
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    type: 'column',
+                    zoomType: 'x,y',
+                    height: 300
+                },
+                title: {
+                    //text: getNomeDoIndicadorTitulo(data[0].ChartTitle)
+                    text: data[0].ChartTitle + " em " + data[0].UnidadeName
+                },
+                xAxis: {
+                    categories: dia,
+                    title: {
+                        text: 'Data',
+                    },
+                },
+                yAxis: [
+                    {
+                        //min: 0,
+                        title: {
+                            text: 'Quantidade'
+                        },
+                        labels: {
+                            format: '{value}',
+                            style: {
+                                color: Highcharts.getOptions().colors[1]
+                            }
+                        },
+                    }, {
+                        //min: 0,
+                        labels: {
+                            format: '{value} %',
+                            style: {
+                                color: Highcharts.getOptions().colors[1]
+                            }
+                        },
+                        title: {
+                            text: '% NC',
+                        },
+                        opposite: true
+                    }],
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        grouping: false,
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    name: 'NC',
+                    color: 'rgba(77,143,189,1)',
+                    data: nc,
+                    yAxis: 0,
+                    type: 'line',
+                    marker: {
+                        enabled: false
+                    },
+                    pointPadding: 0.2,
+                    //pointPlacement: -0.2,
+                    point: {
+                        events: {
+                            click: function () {
+
+                                //FTA2(enviar, this)
+                            }
+                        }
+                    },
+                    dataLabels: {
+                        //enabled: true,
+                        enabled: false,
+                        color: 'black',
+                        align: 'center',
+                        style: {
+                            fontSize: '10px',
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: ''
+                    }
+                }, {
+                    visible: false,
+                    name: '% NC',
+                    color: 'rgba(240,124,0,1)',
+                    data: porc,
+                    yAxis: 1,
+                    type: 'line',
+                    marker: {
+                        enabled: false
+                    },
+                    point: {
+                        events: {
+                            click: function () {
+                                //FTA2(enviar, this)
+                            }
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false,
+                        color: 'black',
+                        align: 'center',
+                        style: {
+                            fontSize: '10px',
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: ' %'
+                    }
+                }, {
+                    visible: false,
+                    name: 'Avaliações',
+                    data: qtdAv,
+                    type: 'line',
+                    marker: {
+                        enabled: false
+                    },
+                    color: 'rgba(81,207,64,1)',
+                    pointPadding: 0.3,
+                    pointPlacement: 0.2,
+                    yAxis: 0,
+                    point: {
+                        events: {
+                            click: function () {
+                                //FTA2(enviar, this)
+                            }
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false,
+                        color: 'black',
+                        align: 'center',
+                        style: {
+                            fontSize: '10px',
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: ''
+                    }
+                }]
+            }, function(){
+                $('#showNCMonitoramento > h1').text(parseFloat(porcPeriodo.toFixed(2)) + " %");
+                $('#showNCMonitoramento').show();
+            });
+        }
     }
 
     function GerarTabelaResultados(retornoArray) {
         var counter = 0;
         while (counter < retornoArray.length) {
-            if (retornoArray[counter]["Nc"] == 1)
-                retornoArray[counter]["Nc"] = '<p style="color:green; font-size:15px;"><i class="fa fa-fw fa-check"></i></p>'
+            if (retornoArray[counter]["nc"] <= 0)
+                retornoArray[counter]["status"] = '<p style="color:green; font-size:15px;"><i class="fa fa-fw fa-check"></i></p>'
             else
-                retornoArray[counter]["Nc"] = '<p style="color:red; font-size:15px;"><i class="fa fa-fw fa-close"></i></p>';
+                retornoArray[counter]["status"] = '<p style="color:red; font-size:15px;"><i class="fa fa-fw fa-close"></i></p>';
             counter++;
         }
         console.log(retornoArray);
         var tableResultados = $('#DataTableResultados').empty().DataTable({
             data: retornoArray,
             columns: [
-                { title: "Data", mData: "_Data" },
-                { title: "Unidade", mData: "Unidade" },
-                { title: "Indicador", mData: "Indicador" },
-                { title: "Limite Inferior", mData: "LimiteInferior" },
-                { title: "Limite Superior", mData: "LimiteSuperior" },
-                { title: "Sentido", mData: "Sentido" },
-                { title: "Conforme", mData: "Nc" },
-                { title: "Real", mData: "Real" },
+                { title: "Data", mData: "_dateEUA" },
+                { title: "Unidade", mData: "UnidadeName" },
+                { title: "Indicador", mData: "level1Name" },
+                { title: "Monitoramento", mData: "level2Name" },
+                { title: "Tarefa", mData: "level3Name" },
+                { title: "Av", mData: "av" },
+                { title: "NC", mData: "nc" },
+                { title: "% NC", mData: "procentagemNc" },
+                { title: "Meta", mData: "Meta" },
+                { title: "Status", mData: "status" },
             ],
             responsive: true,
             loadingRecords: true,
             destroy: true,
+            "scrollX": true,
             "language": {
                 "sProcessing": "A processar...",
                 "sLengthMenu": "Mostrar _MENU_ registros",
@@ -745,12 +1580,22 @@
 
     function CBGAcoesXIndicador(data) {
 
-        var dia = MapeiaValorParaHC(data, "_Data");
-        var porc = MapeiaValorParaHC(data, "Pc");
-        fazGambipraMenosCem(porc)
+        var dia = MapeiaValorParaHC(data, "_date");
+        var porc = MapeiaValorParaHC(data, "procentagemNc");
+        //fazGambipraMenosCem(porc)
         var numeroAcoesConcluidas = MapeiaValorParaHC(data, "NumeroAcoesConcluidas");
 
-        var ChartTitle = "Evolutivo de % de Não Conformidades no Indicador " + data[0].IndicadorName + " na unidade de " + data[0].UnidadeName;
+        var aux = "";
+
+        if (data[0].level3Id > 0) {
+            aux = "Tarefa:" + " " + data[0].level3Name;
+        }else if (data[0].level2Id) {
+            aux = "Monitoramento:" + " " + data[0].level2Name;
+        }else if (data[0].level1Id > 0) {
+            aux = "Indicador:" + " " + data[0].level1Name;
+        }
+
+        var ChartTitle = "Evolutivo de % de Não Conformidades no " + aux + " na unidade de " + data[0].UnidadeName;
 
         chart = Highcharts.chart('graficoAcoesXIndicadores', {
             credits: {
@@ -1010,13 +1855,14 @@
         }
     }
 
-    function SetTitulo() {
+    function SetTitulo(Level) {
 
         let unidade = enviar.unitId;
         let status = enviar.status;
         let TituloGrafico = "";
         let TextoStatus = "";
         let UnidadeNome = $('#unitId :selected').text();
+        let Titulo = "";
 
         if (status != undefined) {
             if (status == "1") {
@@ -1033,10 +1879,16 @@
         } else if (unidade != undefined && unidade != "") {
             TituloGrafico = "Unidade " + UnidadeNome;
         }
-
-        $('#Titulo').html('Resultados das Avaliações dos Indicadores');
+        if (Level == 1) {
+            Titulo = "Indicadores";
+        } else if (Level == 2) {
+            Titulo = "Monitoramentos";
+        } else {
+            Titulo = "Tarefas";
+        }
+        $('#Titulo').html('Resultados das Avaliações dos ' + Titulo);
         $('#TituloGrafico').html(TituloGrafico);
-        $('#TituloTabela').html('Lista de Resultados das Avaliações dos Indicadores');
+        $('#TituloTabela').html('Lista de Resultados das Avaliações dos ' + Titulo);
     }
 
     function fazGambipraMenosCem(arr) {
@@ -1078,19 +1930,14 @@
     }
 
     function FTA2(dataCarrierForm, highChartInstance) {
-        enviar2['auditorId'] = parseInt(auditorId);
+        enviar2['auditorId'] = GetUsuarioId();;
         let params = enviar2
         let str = jQuery.param(params);
         console.log(highChartInstance);
         console.log(str);
-        @*let preServer = @Html.Raw(Json.Encode(ConfigUrls.preServer))*@
+        let preServer = @Html.Raw(Json.Encode(GlobalConfig.pathFTA));
         $('#ftaModal').modal();
-        //$('#ftaModalSim').attr('href', preServer + str);
-        //$('#ftaModalSim').attr('href', preLocal + str);
-        //$('#ftaModalSim').attr('href', preServer + str);
-        //console.log(dataCarrierForm)
-
-        //console.log(highChartInstance)
+        $('#ftaModalSim').attr('href', preServer + str);
     }
 
     $(document).ready(function () {
@@ -1103,7 +1950,7 @@
         formControl.showUnit();
         formControl.showLevel1();
         formControl.showStatusIndicador();
-        //formControl.showRegUnidadeVinculados();
+        //formControl.showLevel123();
         $('select').select2()
     });
 

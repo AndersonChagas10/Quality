@@ -24,7 +24,7 @@ namespace DTO.DTO.Params
 
         public bool IsActive { get; set; } = true;
         public bool hasVinculo { get; set; }
-        
+        public bool HasTakePhoto { get; set; } = false;
         public decimal pesoDoVinculo { get; set; }
         public virtual List<ParLevel3ValueDTO> ParLevel3Value { get; set; }
         public List<ParLevel3GroupDTO> listGroupsLevel2 { get; set; }

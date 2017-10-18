@@ -250,8 +250,8 @@
             //var id = MapeiaValorParaHC(data, "UnidadeName")
    enviar["level1names"] = nome
               enviar.isLevel = 1
-            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
-                 insereLabelFtaPelaColunName(nome, r)
+            //$.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
+            //     insereLabelFtaPelaColunName(nome, r)
             $('#' + selector).empty().highcharts({
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
@@ -278,8 +278,8 @@
                      Chart.Meta(meta, GetMonitoramento),
                     //Chart.curvaPareto(data, nc, 1, inverse),
                 ]
-            });
-daUmaPintadaNaLabel(selector)
+//            });
+//daUmaPintadaNaLabel(selector)
             })
         }
 
@@ -302,8 +302,8 @@ daUmaPintadaNaLabel(selector)
             var inverse = sentido == 'desc' ? undefined : 1;
    enviar["level2names"] = nome
               enviar.isLevel = 2
-            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
-                 insereLabelFtaPelaColunName(nome, r)
+            //$.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
+            //     insereLabelFtaPelaColunName(nome, r)
             $('#' + selector).empty().highcharts({
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
@@ -329,8 +329,8 @@ daUmaPintadaNaLabel(selector)
                     Chart.Av(qtdAv, GetTarefa),
                     Chart.curvaPareto(data, nc, 1, inverse)
                 ]
-            });
-     daUmaPintadaNaLabel(selector)
+     //       });
+     //daUmaPintadaNaLabel(selector)
             })
 
 
@@ -347,17 +347,17 @@ daUmaPintadaNaLabel(selector)
             var selector = "RGMonitoramentosGrafico";
             enviar["level3names"] = nome
               enviar.isLevel = 3
-            $.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
+            //$.post(preffixFta + 'api/sgq/getacoes', enviar , function (r) {
 
-                //Preenche label x Axys com FTA
-                /*$.each(r, function(i, n){
-                    if(nome.indexOf(i)  != -1 && n > 0){
-                        nome[nome.indexOf(i)] = nome[nome.indexOf(i)] + ftaPreffixLabel + n + ")"
-                    }
-                    //console.log("Tratamentos de Anomalia: " + n)
-                });*/
+            //    //Preenche label x Axys com FTA
+            //    /*$.each(r, function(i, n){
+            //        if(nome.indexOf(i)  != -1 && n > 0){
+            //            nome[nome.indexOf(i)] = nome[nome.indexOf(i)] + ftaPreffixLabel + n + ")"
+            //        }
+            //        //console.log("Tratamentos de Anomalia: " + n)
+            //    });*/
 
-                insereLabelFtaPelaColunName(nome, r)
+            //    insereLabelFtaPelaColunName(nome, r)
 
             /*?*/
             var sentido = 'desc';
@@ -453,8 +453,8 @@ daUmaPintadaNaLabel(selector)
                     Chart.Av(qtdAv, function() {}),
                     Chart.curvaPareto(data, nc, 1, inverse)
                 ]
-            });
-                daUmaPintadaNaLabel(selector)
+            //});
+            //    daUmaPintadaNaLabel(selector)
             })
 
         }
