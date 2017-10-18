@@ -278,7 +278,7 @@
 
                 <div id="menu1Plan" class="menuCampos">
 
-                    <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
+                    <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">@Resources.Resource.back</div>
 
                     <ul id="nav">
 
@@ -300,11 +300,13 @@
 
                             <li>
                                 <a href="#">@Resources.Resource.collection_reports</a>
+                                <a href="@urlPlanoDeAcao">@Resources.Resource.action_plan</a>
+
                                 <ul>
-                                    <li><a href="#">@Resources.Resource.customization</a></li>
-                                    <li><a href="#">@Resources.Resource.sgq_using</a></li>
+                                    @*<li><a href="#">@Resources.Resource.customization</a></li>*@
+                                    @*<li><a href="#">@Resources.Resource.sgq_using</a></li>*@
                                     <li><a href="@urlApontamentosDiarios">@Resources.Resource.daily_apointments</a></li>
-                                    <li><a href="@urlVerificacaoTipificacao">@Resources.Resource.tipification_verification</a></li>
+                                    @*<li><a href="@urlVerificacaoTipificacao">@Resources.Resource.tipification_verification</a></li>*@
                                 </ul>
                             </li>
                         </ul>
@@ -316,15 +318,15 @@
 
                     <div class="interno">
 
-                        <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
+                        <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">@Resources.Resource.back</div>
 
                         <ul id="nav">
-                            <li><a href="@urlRelatorioDiario">@Resources.Resource.daily_meeting</a></li>
-                            <li><a href="@urlNaoConformidade">@Resources.Resource.not_conformities</a></li>
-                            <li><a href="#">@Resources.Resource.letters_cep</a></li>
+                            <li><a href="@urlRelatorioDiario">@Resources.Resource.daily_report</a></li>
+                            <li><a href="@urlNaoConformidade">@Resources.Resource.defects_reports</a></li>
+                            <li><a href="#">@Resources.Resource.spc_charts</a></li>
                             <li><a href="@urlScorecard">@Resources.Resource.scorecard</a></li>
-                            <li><a href="@urlAcaoCorretiva">@Resources.Resource.corrective_action</a></li>
-                            <li><a href="#">@Resources.Resource.indicators_evolution </a></li>
+                            <li><a href="@urlAcaoCorretiva">@Resources.Resource.corrective_action_reports</a></li>
+                            <li><a href="#">@Resources.Resource.evolutional </a></li>
                         </ul>
                     </div>
 
@@ -334,7 +336,7 @@
 
                     <div class="interno">
 
-                        <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
+                        <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">@Resources.Resource.back</div>
 
                         <ul id="nav">
                             <li><a href="#">@Resources.Resource.recidivism</a></li>
