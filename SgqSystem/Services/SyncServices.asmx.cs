@@ -16,6 +16,7 @@ using DTO;
 using SgqSystem.Helpers;
 using SGQDBContextYTOARA;
 using SgqSystem.Controllers.Api.App;
+using System.Data;
 
 namespace SgqSystem.Services
 {
@@ -2042,8 +2043,10 @@ namespace SgqSystem.Services
                 if (result.Count() > 16)
                     WeiDefects = result[16].Replace(",", ".");
 
+                string hasPhoto = BoolConverter(result.Count() > 17 ? result[17] : "false");
+
                 if (filho)
-                    WeiDefects = (tarefaFilha.Weight * Decimal.Parse(defects)).ToString().Replace(",", ".");
+                WeiDefects = (tarefaFilha.Weight * Decimal.Parse(defects)).ToString().Replace(",", ".");
 
                 //decimal defeitos = Convert.ToDecimal(defects.ToString().Replace(".", ","));
                 //decimal punicao = Convert.ToDecimal(punishimentValue.ToString().Replace(".", ","));
@@ -2072,7 +2075,7 @@ namespace SgqSystem.Services
                     sql += "INSERT INTO Result_Level3 ([CollectionLevel2_Id],[ParLevel3_Id],[ParLevel3_Name],[Weight],[IntervalMin],[IntervalMax],[Value],[ValueText],[IsConform],[IsNotEvaluate],[PunishmentValue],[Defects],[Evaluation],[WeiEvaluation],[WeiDefects]) " +
                            "VALUES " +
                            "('" + CollectionLevel02Id + "','" + Level03Id + "', '" + parLevel3List.FirstOrDefault(p => p.Id == Convert.ToInt32(Level03Id)).Name.Replace("'", "''") + "'," + weight + "," + intervalMin + "," + intervalMax + ", " + value + ",'" + valueText + "','" + conform + "','" + isnotEvaluate + "', " + punishimentValue + ", " + defects + ", " + evaluation + ", " + _WeiEvaluation + ", " + WeiDefects + ") ";
-
+                    
                     sql += " SELECT @@IDENTITY AS 'Identity'";
 
                 }
@@ -2111,10 +2114,7 @@ namespace SgqSystem.Services
                         //Se o script foi executado, retorna o Id
                         if (i > 0)
                         {
-
-                            //ReconsolidationToLevel3(CollectionLevel02Id.ToString());
                             return i;
-
                         }
                         else
                         {
@@ -2137,8 +2137,9 @@ namespace SgqSystem.Services
                 int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "InsertCollectionLevel03");
                 return 0;
             }
+            
         }
-
+        
         #endregion
 
         #region WeiEvaluation
@@ -4205,7 +4206,8 @@ namespace SgqSystem.Services
                                             IsEmptyLevel3: parlevel2.IsEmptyLevel3,
                                             RuleId: parlevel2.ParNotConformityRule_id,
                                             RuleValue: ruleValue.ToString(),
-                                            reaudit: parlevel2.IsReaudit);
+                                            reaudit: parlevel2.IsReaudit,
+                                            HasTakePhoto: parlevel2.HasTakePhoto);
 
                 var listLineCounter = ParCounterDB.GetParLevelXParCounterList(0, parlevel2.Id, 2);
 
@@ -4443,7 +4445,7 @@ namespace SgqSystem.Services
             return ParLevel2List;
         }
 
-        public string GetHeaderHtml(IEnumerable<ParLevelHeader> list, ParFieldType ParFieldTypeDB, Html html, int ParLevel1_Id = 0, int ParLevel2_Id = 0, ParLevelHeader ParLevelHeaderDB = null, int ParCompany_id = 0)
+        public string GetHeaderHtml(IEnumerable<ParLevelHeader> list, SGQDBContext.ParFieldType ParFieldTypeDB, Html html, int ParLevel1_Id = 0, int ParLevel2_Id = 0, ParLevelHeader ParLevelHeaderDB = null, int ParCompany_id = 0)
         {
             string retorno = "";
 

@@ -2094,4 +2094,7 @@
   <data name="desenvolvimento" xml:space="preserve">
     <value>Em desenvolvimento</value>
   </data>
+  <data name="take_photo" xml:space="preserve">
+    <value>Tirar foto</value>
+  </data>
 </root>

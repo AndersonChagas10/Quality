@@ -39,6 +39,7 @@ namespace SGQDBContext
         public bool IsFixedEvaluetionNumber { get; set; }
 
         public bool HasGroupLevel2 { get; set; }
+        public bool HasTakePhoto { get; set; }
 
         public ParLevel1()
         {
@@ -107,7 +108,7 @@ namespace SGQDBContext
             string whereIsChildren = " AND IsChildren = 0 ";
 
             //SqlConnection db = new SqlConnection(conexao);
-            string sql = "\n SELECT P1.Id, P1.Name, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
+            string sql = "\n SELECT P1.Id, P1.Name, P1.HasTakePhoto, CL.Id AS ParCriticalLevel_Id, CL.Name AS ParCriticalLevel_Name, P1.HasSaveLevel2 AS HasSaveLevel2, P1.ParConsolidationType_Id AS ParConsolidationType_Id, P1.ParFrequency_Id AS ParFrequency_Id,     " +
                          "\n P1.HasNoApplicableLevel2 AS HasNoApplicableLevel2, P1.HasAlert, P1.IsSpecific, P1.hashKey, P1.haveRealTimeConsolidation, P1.RealTimeConsolitationUpdate, P1.IsLimitedEvaluetionNumber, P1.IsPartialSave" +
                          "\n ,AL.ParNotConformityRule_Id AS tipoAlerta, AL.Value AS valorAlerta, AL.IsReaudit AS IsReaudit, P1.HasCompleteEvaluation AS HasCompleteEvaluation, P1.HasGroupLevel2 AS HasGroupLevel2, P1.EditLevel2 AS EditLevel2, P1.IsFixedEvaluetionNumber AS IsFixedEvaluetionNumber " +
                          "\n FROM ParLevel1 P1  (nolock)                                                                                                         " +
@@ -145,6 +146,17 @@ namespace SGQDBContext
             return parLevel1List;
         }
     }
+
+    public partial class Result_Level3_Photo
+    {
+        public int ID { get; set; }
+        public Nullable<int> Result_Level3_Id { get; set; }
+        public String Photo_Thumbnaills { get; set; }
+        public String Photo { get; set; }
+        public Nullable<double> Latitude { get; set; }
+        public Nullable<double> Longitude { get; set; }
+    }
+
     public partial class ParLevel1Alertas
     {
         //string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DbContextSgqEUA"].ConnectionString;
@@ -337,7 +349,7 @@ namespace SGQDBContext
         public DateTime AlterDate { get; set; }
 
         public bool IsActive { get; set; }
-
+        public bool HasTakePhoto { get; set; }
 
         public int ParNotConformityRule_id { get; set; }
 
@@ -433,7 +445,7 @@ namespace SGQDBContext
 
             if (parLevel1.IsFixedEvaluetionNumber == true)
             {
-                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit, PL2.ParFrequency_id " +
+                string sql = "SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.HasTakePhoto, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit, PL2.ParFrequency_id " +
                              "\n FROM ParLevel3Level2 P32   (nolock)                                                                                                                             " +
                              "\n INNER JOIN ParLevel3Level2Level1 P321  (nolock)                                                                                                                 " +
                              "\n ON P321.ParLevel3Level2_Id = P32.Id                                                                                                                   " +
@@ -449,9 +461,9 @@ namespace SGQDBContext
                              "\n or F1.UNIDADE is null))  Familia                                                                                                                      " +
                              "\n ON Familia.ParLevel2_Id = PL2.Id                                                                                                                      " +
                              "\n WHERE P321.ParLevel1_Id = " + parLevel1.Id + "                                                                                                      " +
-                             "\n AND PL2.IsActive = 1                                                                                                                                  " +
+                             "\n AND PL2.IsActive = 1     " +
                              "\n AND (Familia.ParCompany_Id = " + ParCompany_Id + "  or Familia.ParCompany_Id IS NULL)                                                               " +
-                             "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id             ";
+                             "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id, PL2.HasTakePhoto             ";
 
                 var parLevel2List = db.Query<ParLevel2>(sql);
 
@@ -465,7 +477,7 @@ namespace SGQDBContext
 
 
 
-                string sql = "\n SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit,PL2.ParFrequency_id  " +
+                string sql = "\n SELECT PL2.Id AS Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.HasTakePhoto, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit,PL2.ParFrequency_id  " +
                          "\n FROM ParLevel3Level2 P32                                      " +
                          "\n INNER JOIN ParLevel3Level2Level1 P321                         " +
                          "\n ON P321.ParLevel3Level2_Id = P32.Id                           " +
@@ -492,7 +504,7 @@ namespace SGQDBContext
                          "\n select number as a  from ParSample  (nolock) where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null " +
                          "\n ) temAm) > 0 " +
 
-                         "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id                 " +
+                         "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id, PL2.HasTakePhoto                 " +
                          "\n ";
 
                 var parLevel2List = db.Query<ParLevel2>(sql);
@@ -824,6 +836,7 @@ namespace SGQDBContext
         public decimal PunishmentValue { get; set; }
         public decimal WeiEvaluation { get; set; }
         public int ParCompany_Id { get; set; }
+        public bool HasTakePhoto { get; set; }
 
         private SqlConnection db { get; set; }
         public ParLevel3() { }

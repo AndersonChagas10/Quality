@@ -85,9 +85,6 @@
     <Compile Include="Defect.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DelDados.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="DepartamentoOperacoes.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
@@ -334,15 +331,6 @@
     <Compile Include="Regionais.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Reports_CCA_Audit.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Reports_CFF_Audit.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Reports_HTP_Audit.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="Resultados.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
@@ -350,6 +338,9 @@
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Result_Level3.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Result_Level3_Photos.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="RoleJBS.cs">
@@ -490,9 +481,6 @@
     </Compile>
     <Compile Include="VTVerificacaoTipificacaoValidacao.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="VWCFFResults.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
