@@ -40,9 +40,9 @@ namespace SgqSystem.Mail
             {
                 using (var client = new HttpClient())
                 {
-                    var url = "http://mtzsvmqsc/SGQ/api/hf/SendMail";
+                    //var url = "http://mtzsvmqsc/SGQ/api/hf/SendMail";
                     //var url = "http://localhost:57506/" + "api/hf/SendMail";
-                    //var url = "http://localhost:8091/SgqSystem/" + "api/hf/SendMail";
+                    var url = "http://localhost:8091/SgqSystem/" + "api/hf/SendMail";
                     client.Timeout = TimeSpan.FromMinutes(2);
                     client.GetAsync(url).Result.Content.ReadAsStringAsync();
                 }
@@ -83,7 +83,7 @@ namespace SgqSystem.Mail
             try
             {
                 CreateMailSgqAppDeviation();
-                CreateMailSgqAppCorrectiveAction();
+                //CreateMailSgqAppCorrectiveAction();
                 using (var db = new SgqDbDevEntities())
                     ListaDeMail = db.EmailContent.Where(r => r.SendStatus == null && r.Project == "SGQApp").ToList();
 

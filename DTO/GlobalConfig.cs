@@ -41,6 +41,8 @@ namespace DTO
         public static bool Canada { get; set; }
         public static bool Ytoara { get; set; }
         public static bool Guarani { get; set; }
+        public static bool Santander { get; set; }
+        
 
         /*Resources manager*/
         public static bool LanguageBrasil { get; set; }
@@ -172,6 +174,13 @@ namespace DTO
                     Guarani = true;
                     LanguageBrasil = true;
                     Verifica += "Ambiente:  Guarani\n";
+                    break;
+                case 6:
+                    Santander = true;
+                    //Brasil = true;
+                    LanguageBrasil = true;
+                    //Brasil = true;
+                    Verifica += "Ambiente:  Santander\n";
                     break;
                 default:
                     break;

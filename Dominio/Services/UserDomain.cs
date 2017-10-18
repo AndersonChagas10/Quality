@@ -111,9 +111,11 @@ namespace Dominio.Services
                 if (GlobalConfig.Eua)
                     isUser = LoginEUA(userDto, userByName);
 
-                /*Login Ytoara*/
-                if (GlobalConfig.Ytoara)
+                /*Login SGQ Puro*/
+                if (GlobalConfig.Ytoara || GlobalConfig.Santander)
                     isUser = LoginSgq(userDto, userByName);
+
+            
 
                 if (isUser.IsNull())
                     throw new ExceptionHelper(mensagens.naoEncontrado);
