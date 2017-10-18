@@ -1606,6 +1606,7 @@
                 $(".select2Init").select2();
                 $('.modal .modal-footer button').hide();
                 $('#showAcompnhamentoForm').show();
+                $('select').select2();
                 $("#SaveAcompanhamento").on("click", function (event) {
                     //event.preventDefault();
                     var obj = $("#acompanhamento").serializeObject();
@@ -1718,6 +1719,7 @@
         /*Table*/
         $(document).ready(function () {
             GetDataTable();
+            $('select').select2();
         });
 
     </script>

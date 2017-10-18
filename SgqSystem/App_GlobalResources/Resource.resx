@@ -2100,4 +2100,10 @@
   <data name="take_photo" xml:space="preserve">
     <value>Take photo</value>
   </data>
+  <data name="results_reports" xml:space="preserve">
+    <value>Results of Reports</value>
+  </data>
+  <data name="desenvolvimento" xml:space="preserve">
+    <value>Under Development</value>
+  </data>
 </root>

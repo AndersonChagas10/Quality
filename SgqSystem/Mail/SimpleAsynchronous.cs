@@ -289,10 +289,35 @@ namespace SgqSystem.Mail
                 if (nivel > 3)
                     nivel = 2;
 
-                var query = "\n SELECT Email FROM UserSgq" +
-                            "\n WHERE Id in (SELECT UserSgq_Id FROM ParCompanyXUserSgq WHERE ParCompany_Id = " + companyId + " AND [Role] IN (SELECT Nivel FROM desvioNiveis WHERE Desvio = " + nivel + "))" +
-                            "\n  AND Email IS NOT NULL" +
-                            "\n  AND Email <> ''";
+                //var query = "\n SELECT Email FROM UserSgq" +
+                //            "\n WHERE Id in (SELECT UserSgq_Id FROM ParCompanyXUserSgq WHERE ParCompany_Id = " + companyId + " AND [Role] IN (SELECT Nivel FROM desvioNiveis WHERE Desvio = " + nivel + "))" +
+                //            "\n  AND Email IS NOT NULL" +
+                //            "\n  AND Email <> ''";
+
+                var query = @"SELECT U.Email FROM UserSgq U
+                            INNER JOIN ParCompanyXUserSgq UU
+                            ON UU.UserSgq_Id = U.id
+                            INNER JOIN ParCompanyXStructure UniReg
+                            ON UU.ParCompany_Id = UniReg.ParCompany_Id
+                            INNER JOIN ParStructure Reg
+                            ON UniReg.ParStructure_Id = Reg.Id
+                            WHERE
+                            (UU.ParCompany_Id = " + companyId + @" AND UU.Role in (SELECT Nivel FROM desvioNiveis WHERE Desvio = " + nivel + @"))
+                            AND U.Email IS NOT NULL
+                            AND U.Email <> ''
+                            AND Reg.Id =
+                            CASE
+
+                                WHEN U.ID = 1002 THEN 5
+
+                                WHEN U.ID = 1003 THEN 3
+
+                                WHEN U.ID = 1004 THEN 4
+
+                                WHEN U.ID = 1872 THEN 2
+
+                            ELSE(SELECT ParStructure_Id FROM ParCompanyXStructure where ParCompany_Id = " + companyId + @") END";
+
                 var listaEmails = dbLegado.Database.SqlQuery<string>(query);
                 if (listaEmails != null && listaEmails.Count() > 0)
                 {
