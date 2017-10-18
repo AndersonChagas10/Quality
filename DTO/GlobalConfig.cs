@@ -41,6 +41,8 @@ namespace DTO
         public static bool Canada { get; set; }
         public static bool Ytoara { get; set; }
         public static bool Guarani { get; set; }
+        public static bool Santander { get; set; }
+        
 
         /*Resources manager*/
         public static bool LanguageBrasil { get; set; }
@@ -173,6 +175,13 @@ namespace DTO
                     LanguageBrasil = true;
                     Verifica += "Ambiente:  Guarani\n";
                     break;
+                case 6:
+                    Santander = true;
+                    //Brasil = true;
+                    LanguageBrasil = true;
+                    //Brasil = true;
+                    Verifica += "Ambiente:  Santander\n";
+                    break;
                 default:
                     break;
             }
@@ -191,9 +200,9 @@ namespace DTO
             emailSmtp = dto.MailSmtp;
             emailPort = dto.MailPort;
             mockEmail = dto.MockEmail;
-            //pathFTA = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao/NewFTA?";
+            pathFTA = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao/NewFTA?";
             //pathFTA = "http://localhost:57506/Pa_Acao/NewFTA?";
-            pathFTA = "http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?";
+            //pathFTA = "http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?";
 
             Verifica += "recoveryPassAvaliable:  " + recoveryPassAvaliable.ToString() + "\n";
             Verifica += "urlPreffixAppColleta:  " + urlPreffixAppColleta + "\n";

@@ -2091,6 +2091,12 @@
   <data name="pa_ok" xml:space="preserve">
     <value>ok</value>
   </data>
+  <data name="desenvolvimento" xml:space="preserve">
+    <value>Em desenvolvimento</value>
+  </data>
+  <data name="take_photo" xml:space="preserve">
+    <value>Tirar foto</value>
+  </data>
   <data name="criticalLevel" xml:space="preserve">
     <value>Nível de Criticidade</value>
   </data>
