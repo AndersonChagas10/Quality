@@ -398,7 +398,7 @@
                             events: {
                                 click: function () {
                                     enviar['level3Name'] = removeFtaDaLabel(this.category);
-                                    enviar['PercentualNCFTA'] = this.y;
+                                    enviar['PercentualNCFTA'] = porc[this.x];
                                     enviar['ReincidenciaDesvioFTA'] = nc[this.x];
                                     enviar['Evaluated'] = qtdAv[this.x];
                                     enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
@@ -430,7 +430,7 @@
                             events: {
                                 click: function () {
                                     enviar['level3Name'] = removeFtaDaLabel(this.category);
-                                    enviar['PercentualNCFTA'] = this.y;
+                                    enviar['PercentualNCFTA'] = porc[this.x];
                                     enviar['ReincidenciaDesvioFTA'] = nc[this.x];
                                     enviar['Evaluated'] = qtdAv[this.x];
                                     enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
