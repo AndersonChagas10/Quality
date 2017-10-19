@@ -1930,12 +1930,29 @@
     }
 
     function FTA2(dataCarrierForm, highChartInstance) {
-        enviar2['auditorId'] = GetUsuarioId();;
-        let params = enviar2
+
+        var enviarFTA = {};
+        enviarFTA['_DataInicioFTA'] = enviar2.startDate;
+        enviarFTA['_DataFimFTA'] = enviar2.endDate;
+        enviarFTA['Supervisor_Id'] = GetUsuarioId();
+        enviarFTA['Unidade_Id'] = enviar2.UnitId;
+        enviarFTA['PercentualNCFTA'] = enviar2.PercentualNCFTA;
+        enviarFTA['ReincidenciaDesvioFTA'] = enviar2.ReincidenciaDesvioFTA;
+        enviarFTA['level1Id'] = enviar2.level1Id == 0 ? null : enviar2.level1Id;
+        enviarFTA['level2Id'] = enviar2.level2Id == 0 ? null : enviar2.level2Id;;
+        enviarFTA['level3Id'] = enviar2.level3Id == 0 ? null : enviar2.level3Id;;
+
+        //enviar2['auditorId'] = GetUsuarioId();
+        //let params = enviar2
+        let params = enviarFTA;
         let str = jQuery.param(params);
         console.log(highChartInstance);
         console.log(str);
         let preServer = @Html.Raw(Json.Encode(GlobalConfig.pathFTA));
+
+        preServer = preServer.substr(0,(preServer.length - 1));
+        preServer += "2?"
+
         $('#ftaModal').modal();
         $('#ftaModalSim').attr('href', preServer + str);
     }
