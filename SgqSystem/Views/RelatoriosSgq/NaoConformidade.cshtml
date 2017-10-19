@@ -400,6 +400,7 @@
                                     enviar['level3Name'] = removeFtaDaLabel(this.category);
                                     enviar['PercentualNCFTA'] = this.y;
                                     enviar['ReincidenciaDesvioFTA'] = nc[this.x];
+                                    enviar['Evaluated'] = qtdAv[this.x];
                                     enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
                                     enviar['byName'] = true;
                                     $.post('@Url.Action("GetUnitId","api/Fta")', enviar, function(c){
@@ -431,6 +432,7 @@
                                     enviar['level3Name'] = removeFtaDaLabel(this.category);
                                     enviar['PercentualNCFTA'] = this.y;
                                     enviar['ReincidenciaDesvioFTA'] = nc[this.x];
+                                    enviar['Evaluated'] = qtdAv[this.x];
                                     enviar['auditorId'] = getCookie("webControlCookie")[0].split('=')[1];
                                     enviar['byName'] = true;
                                     $.post('@Url.Action("GetUnitId", "api/Fta")', enviar, function(c){
