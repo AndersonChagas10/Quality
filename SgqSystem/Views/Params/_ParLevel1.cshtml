@@ -99,6 +99,12 @@
                                 @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel1Dto.AllowEditPatternLevel3Task, new { @class = "form-control checkbox-erp" }), @Html.Label("Permite Editar Padrão das Tarefas", new { @class = "padding-left" }), Table.PosicaoLabel.left, null, "Permite que usuários com menos privilégios possam editar os Padrões dos Tipo de Dados de Entrada em Tarefas Vinculadas a Monitoramentos Vinculados a este Indicador")
                             </tr>
                         }
+                        else
+                        {
+                            @Html.HiddenFor(model => model.paramsDto.parLevel1Dto.AllowAddLevel3)
+                            @Html.HiddenFor(model => model.paramsDto.parLevel1Dto.AllowEditWeightOnLevel3)
+                            @Html.HiddenFor(model => model.paramsDto.parLevel1Dto.AllowEditPatternLevel3Task)
+                        }
 
                         <tr class="row">
                             <!-- Table.GerarColunaRadioButton(Html.Label(Resources.Resource.standard), Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "true", new { class = "icheck" }), Html.RadioButtonFor(model => model.paramsDto.parLevel1Dto.IsRuleConformity, "false", new { class = "icheck" }), Resources.Resource.conform, Resources.Resource.not_conform, Table.PosicaoLabel.top, null, null)-->

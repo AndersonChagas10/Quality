@@ -1,5 +1,17 @@
 ﻿@using DTO
+@{
+    //EUA HML
+    //ViewBag.urlRootPa = "http://sgqtest.jbssa.com/actionPlan";
+    //ViewBag.urlRootPaFTA = "http://sgqtest.jbssa.com/actionPlan/Pa_Acao/NewFTA?";
 
+    //EUA GRT
+    ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcaoUSA";
+    ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcaoUSA/Pa_Acao/NewFTA?";
+
+    //JBS HML / PROD
+    //ViewBag.urlRootPa = "http://mtzsvmqsc/PlanoDeAcao";
+    //ViewBag.urlRootPaFTA = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao/NewFTA?";
+ }
 <!-- Modal -->
 <div class="modal fade" id="ftaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -24,7 +36,7 @@
 
 <script>
 
-    var preffix = @Html.Raw(Json.Encode(GlobalConfig.pathFTA));
+    var preffix = @Html.Raw(Json.Encode(@ViewBag.urlRootPaFTA));   //Html.Raw(Json.Encode(GlobalConfig.pathFTA));
     var preffixFta = preffix.slice(0, preffix.indexOf("Pa_Acao/NewFTA?"))
         /*
         unitName:"Pimenta Bueno"
@@ -40,7 +52,6 @@
     function RedirecionaParaFTA(r) {
         var url = "";
         url += preffix;
-        //url += "http://192.168.25.200/PlanoAcao/Pa_Acao//NewFTA?";
         url += "MetaFTA=" + r.MetaFTA;
         url += "&PercentualNCFTA=" + r.PercentualNCFTA;
         url += "&ReincidenciaDesvioFTA=" + r.ReincidenciaDesvioFTA;
