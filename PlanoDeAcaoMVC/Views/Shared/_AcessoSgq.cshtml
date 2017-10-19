@@ -92,23 +92,76 @@
         $.LoadingOverlay('show');
         user['IsWeb'] = true;
         if (isSgqIntegrado) {
+            //$.ajax({
+            //    url: urlMaster,
+            //    type: 'POST',
+            //    data: user,
+            //    success: function (r) {
+            //        $.LoadingOverlay('hide')
+            //        if (r.length == 0) {
+            //            //console.log(r);
+            //            removeBlur();
+            //            clearInterval(checkSessionControl);//DESLIGA VERIFICAÇÃO ATÉ QUE RECEBA O COOKIE DEVOLTA
+            //            modalLogin.modal("hide");
+            //            createUpdateCookie(r.Retorno);
+            //            identy = user;
+            //        }
+            //        else {
+            //            $('#formLogin #resultado').text('Usuário ou Senha inválidos.').fadeIn().fadeOut(intervalLabels, "swing");
+            //            console.log(r);
+            //        }
+            //        removeBlur();
+            //        clearInterval(checkSessionControl);//DESLIGA VERIFICAÇÃO ATÉ QUE RECEBA O COOKIE DEVOLTA
+            //        modalLogin.modal("hide");
+            //        createUpdateCookie(r.Retorno);
+            //        identy = user;
+            //    },
+            //    error: function (jqXHR, exception) {
+            //        var msg = '';
+            //        if (jqXHR.status === 0) {
+            //            msg = 'Not connect.\n Verify Network.';
+            //        } else if (jqXHR.status == 404) {
+            //            msg = 'Requested page not found. [404]';
+            //        } else if (jqXHR.status == 500) {
+            //            msg = 'Internal Server Error [500].';
+            //        } else if (exception === 'parsererror') {
+            //            msg = 'Requested JSON parse failed.';
+            //        } else if (exception === 'timeout') {
+            //            msg = 'Time out error.';
+            //        } else if (exception === 'abort') {
+            //            msg = 'Ajax request aborted.';
+            //        } else {
+            //            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+            //        }
+            //        toastr.info(msg)
+            //    },
+            //});
+
             $.post(urlMaster, user, function (r) {
                 $.LoadingOverlay('hide')
-                if (r.Mensagem == null && r.MensagemExcecao == null && r.Retorno != null) {
+                if (r.MensagemExcecao) {
+                    $('#formLogin #resultado').text('Usuário ou Senha inválidos.').fadeIn().fadeOut(intervalLabels, "swing");
+                }
+                else if (r.errors) {
                     //console.log(r);
+                    $('#formLogin #resultado').text('Usuário ou Senha inválidos.').fadeIn().fadeOut(intervalLabels, "swing");
+                    console.log(r);
+                } else {
                     removeBlur();
                     clearInterval(checkSessionControl);//DESLIGA VERIFICAÇÃO ATÉ QUE RECEBA O COOKIE DEVOLTA
                     modalLogin.modal("hide");
                     createUpdateCookie(r.Retorno);
-                    identy = user;
-                }
-                else {
-                    $('#formLogin #resultado').text('Usuário ou Senha inválidos.').fadeIn().fadeOut(intervalLabels, "swing");
-                    console.log(r);
+                    //window.location.href = '/';
+                    identy = r.user;
+                    if ($('#sasenhora:visible').length > 0)
+                        setTimeout(function () {
+                            GetDataTable();
+                            console.log('geraTable');
+                        }, 500)
                 }
             });
             //} else {
-                //LOGIN PA PURO
+            //    //LOGIN PA PURO
             //}
         }
     }
@@ -117,6 +170,9 @@
         $.post(urlCookie, dto, function (r, a, xhr) {
             xhr.getResponseHeader('Set-Cookie');
             atribuiInterval();
+		if(!(window.location.href.indexOf('FTA') > 0))
+	            window.location = '@Url.Action("","")'
+            //GetDataTable(); //Gambiarra do renan
         });
     }
 
@@ -140,7 +196,6 @@
                 loginPaSgq(user);
             }
             return false;
-
         });
     }
 
