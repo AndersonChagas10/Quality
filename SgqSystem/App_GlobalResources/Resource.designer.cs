@@ -1591,6 +1591,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want to create an anomaly treatment form?.
+        /// </summary>
+        internal static string do_you_want_to_create_an_anomaly_treatment_form {
+            get {
+                return ResourceManager.GetString("do_you_want_to_create_an_anomaly_treatment_form", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duplicated collection.
         /// </summary>
         internal static string duplicated_collection {
