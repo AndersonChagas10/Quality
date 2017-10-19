@@ -2097,4 +2097,10 @@
   <data name="take_photo" xml:space="preserve">
     <value>Tirar foto</value>
   </data>
+  <data name="criticalLevel" xml:space="preserve">
+    <value>Nível de Criticidade</value>
+  </data>
+  <data name="do_you_want_to_create_an_anomaly_treatment_form" xml:space="preserve">
+    <value>Deseja Criar um Formulario de Tratamento de anomalia?</value>
+  </data>
 </root>

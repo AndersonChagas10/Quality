@@ -319,6 +319,7 @@
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
     <Compile Include="Controllers\Api\LanguageController.cs" />
+    <Compile Include="Controllers\Api\SelectVinculado\SelectVinculadoApiController.cs" />
     <Compile Include="Controllers\Api\UserAndRoles\LoginController.cs" />
     <Compile Include="Controllers\Api\NQAController.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
@@ -523,6 +524,7 @@
     <Content Include="admin-lte\js\app.js" />
     <Content Include="admin-lte\js\app.min.js" />
     <Content Include="Angular\app.js" />
+    <Content Include="Angular\ClusterRegionalUnidadeCriticalLevel123.js" />
     <Content Include="Angular\Level321Chain.js" />
     <Content Include="Angular\SelectVinculado.js" />
     <Content Include="App_GlobalResources\Resource.pt-br.resx">
@@ -1415,6 +1417,7 @@
     <Content Include="Views\RelatoriosSgq\RelatorioDeResultados.cshtml" />
     <Content Include="Views\Shared\_SelectVinculado.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoCumprimentoMeta.cshtml" />
+    <Content Include="Views\Shared\_ClusterRegionalUnidadeCriticalLevel123.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1480,6 +1483,7 @@
     <Content Include="App_GlobalResources\Resource.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Resource.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <PropertyGroup>

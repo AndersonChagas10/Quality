@@ -64,6 +64,9 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         {
             var where = "";
             var where2 = "";
+            var where3 = "";
+            var where4 = "";
+
             var whereStatus = "";
 
             if (form.unitId != 0)
@@ -79,6 +82,16 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             else if (form.statusIndicador == 2)
             {
                 whereStatus = "AND case when ProcentagemNc > S2.Meta then 0 else 1 end = 1";
+            }
+
+            if (form.clusterSelected_Id != 0)
+            {
+                where3 = "and PCC.ParCluster_Id =  " + form.clusterSelected_Id;
+            }
+
+            if (form.structureId != 0)
+            {
+                where4 = "AND CXS.ParStructure_Id = " + form.structureId;
             }
 
             var query = @"
@@ -268,8 +281,18 @@ FROM (SELECT
 		LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
 			ON A4.UNIDADE = UNI.Id
 			AND A4.INDICADOR = IND.ID
-		WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
+		INNER JOIN ParLevel1XCluster L1XC (NOLOCK)
+			ON CL1.ParLevel1_Id = L1XC.ParLevel1_Id
+            and L1XC.IsActive = 1
+		INNER JOIN ParCompanyXStructure CXS (NOLOCK)
+			ON CL1.UnitId = CXS.ParCompany_Id
+		INNER JOIN ParCompanyCluster PCC
+			ON PCC.ParCompany_Id = UNI.Id
+		WHERE 1 = 1
+        AND CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 		" + where2 + @"
+        " + where3 + @"
+        " + where4 + @"
 	-- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) 
 	) S1
 	GROUP BY Unidade

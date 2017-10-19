@@ -1,0 +1,89 @@
+﻿<li>
+    <div data-ng-controller="CtrlClstRegUnitCriticalLevel123" id="showClustRegUnitCriticalLevel123" style="display:none; margin-left:0px!important">
+        <div>
+            <span class="redLabel">@Resources.Resource.cluster</span>
+            <select id="clusterId" data-ng-model="clusterValue"
+                    data-ng-options="c.Id as c.Name for c in cluster |orderBy:'Name' track by c.Id"
+                    data-ng-change="GetListStructureVinculadoCluster()" class="form-control" style="width:210px">
+                <option value="">@Resources.Resource.select</option>
+            </select>
+        </div>
+        <div>
+            <span class="redLabel">@Resources.Resource.structure_group</span>
+            <select id="structureId" data-ng-model="structureValue"
+                    data-ng-options="s.Id as s.Name for s in structure |orderBy:'Name' track by s.Id"
+                    data-ng-change="GetListUnitVinculadoStructure()" class="form-control" style="width:210px">
+                <option value="">@Resources.Resource.select</option>
+            </select>
+        </div>
+        <div>
+            <span class="redLabel">@Resources.Resource.unit</span>
+            <select id="unitIdV" data-ng-model="unitValue"
+                    data-ng-options="u.Id as u.Name for u in unit |orderBy:'Name' track by u.Id"
+                    data-ng-change="AtribuiObject()" class="form-control" style="width:210px">
+                <option value="">@Resources.Resource.select</option>
+            </select>
+        </div>
+        <div>
+            <span class="redLabel">@Resources.Resource.criticalLevel</span>
+            <select id="criticalLevelId" data-ng-model="criticalLevelValue"
+                    data-ng-options="cl.Id as cl.Name for cl in criticalLevel | orderBy:'Name' track by cl.Id"
+                    data-ng-change="GetLevel1ByCriticalLevel()" class="form-control" style="width:210px">
+                <option value="">@Resources.Resource.select</option>
+            </select>
+        </div>
+        <div>
+            <span class="redLabel">@Resources.Resource.level1</span>
+            <select id="level1Idv" data-ng-model="level1Value"
+                    data-ng-options="s.Id as s.Name for s in level1 | orderBy:'Name'"
+                    data-ng-change="GetListLevel2VinculadoLevel1()" class="form-control" style="width:210px">
+                <option value="">@Resources.Resource.select</option>
+            </select>
+        </div>
+
+        <div>
+            <span class="redLabel">@Resources.Resource.level2</span>
+            <select id="level2Idv" data-ng-model="level2Value"
+                    data-ng-options="s.Id as s.Name for s in level2 | orderBy:'Name'"
+                    data-ng-change="GetListLevel3VinculadoLevel2()" class="form-control" style="width:210px">
+                <option value="">@Resources.Resource.select</option>
+            </select>
+        </div>
+
+        <div>
+            <span class="redLabel">@Resources.Resource.level3</span>
+            <select id="level3Idv" data-ng-model="level3Value"
+                    data-ng-options="s.Id as s.Name for s in level3 | orderBy:'Name'"
+                    data-ng-change="" class="form-control" style="width:210px">
+                <option value="">@Resources.Resource.select</option>
+            </select>
+        </div>
+    </div>
+</li>
+
+<script>
+
+    var UnitList = @Html.Raw(Json.Encode(ViewBag.UnidadeUsuario));
+    var GetListCluster = @Html.Raw(Json.Encode(Url.Action("GetParCluster", "api/SelectVinculadoApi")));
+    var GetListStructure = @Html.Raw(Json.Encode(Url.Action("GetParStructure", "api/SelectVinculadoApi")));
+    var GetListUnitVinculado = @Html.Raw(Json.Encode(Url.Action("GetParCompany", "api/SelectVinculadoApi")));
+    var GetListCriticalLevelVinculadoCluster = @Html.Raw(Json.Encode(Url.Action("GetParCriticalLevel", "api/SelectVinculadoApi")));
+    var GetListLevel1 = @Html.Raw(Json.Encode(Url.Action("GetListLevel1", "api/ParamsApi")));
+    var GetListLevel2 = @Html.Raw(Json.Encode(Url.Action("GetListLevel2", "api/ParamsApi")));
+    var GetListLevel3 = @Html.Raw(Json.Encode(Url.Action("GetListLevel3", "api/ParamsApi")));
+    var GetListLevel1VinculadoCriticalLevel = @Html.Raw(Json.Encode(Url.Action("GetLevel1ParCriticalLevel", "api/SelectVinculadoApi")));
+    var GetListLevel2VinculadoLevel1 = @Html.Raw(Json.Encode(Url.Action("GetListLevel2VinculadoLevel1", "api/ParamsApi")));
+    var GetListLevel3VinculadoLevel2 = @Html.Raw(Json.Encode(Url.Action("GetListLevel3VinculadoLevel2", "api/ParamsApi")));
+    var GetListLevel3VinculadoLevel2Level1 = @Html.Raw(Json.Encode(Url.Action("GetListLevel3VinculadoLevel2Level1", "api/ParamsApi")));
+
+
+    $(document).ready(function () {
+        //$('#').select2();
+        //$('#').select2();
+        //$('#').select2();
+    });
+
+</script>
+
+@*Referencing the Angular library to the page*@
+<script src="~/Angular/ClusterRegionalUnidadeCriticalLevel123.js"></script>

@@ -2109,4 +2109,13 @@
   <data name="spc_charts" xml:space="preserve">
     <value>SPC Charts</value>
   </data>
+  <data name="criticalLevel" xml:space="preserve">
+    <value>Critical Level</value>
+  </data>
+  <data name="desenvolvimento" xml:space="preserve">
+    <value>Under Development</value>
+  </data>
+  <data name="do_you_want_to_create_an_anomaly_treatment_form" xml:space="preserve">
+    <value>Do you want to create an anomaly treatment form?</value>
+  </data>
 </root>
