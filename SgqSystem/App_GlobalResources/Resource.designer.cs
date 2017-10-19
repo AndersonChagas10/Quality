@@ -1807,7 +1807,16 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Failure Description.
+        ///   Looks up a localized string similar to Evolutional.
+        /// </summary>
+        internal static string evolutional {
+            get {
+                return ResourceManager.GetString("evolutional", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failure Description.
         /// </summary>
         internal static string failure_description {
             get {
@@ -2041,7 +2050,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Pesquisa uma cadeia de caracteres localizada semelhante a General view of the area.
+        ///   Looks up a localized string similar to Area Overview.
         /// </summary>
         internal static string general_view_of_the_area {
             get {
@@ -4075,7 +4084,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Recidivism.
+        ///   Looks up a localized string similar to Recurrence.
         /// </summary>
         internal static string recidivism {
             get {
@@ -5146,7 +5155,16 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Audit counts.
+        ///   Looks up a localized string similar to SPC Charts.
+        /// </summary>
+        internal static string spc_charts {
+            get {
+                return ResourceManager.GetString("spc_charts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Audit counts.
         /// </summary>
         internal static string standard {
             get {
@@ -5164,7 +5182,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Pesquisa uma cadeia de caracteres localizada semelhante a Statistical Report.
+        ///   Looks up a localized string similar to Statistical Reports.
         /// </summary>
         internal static string statistical_report {
             get {

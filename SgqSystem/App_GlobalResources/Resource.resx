@@ -373,7 +373,7 @@
     <value>Range</value>
   </data>
   <data name="recidivism" xml:space="preserve">
-    <value>Recidivism</value>
+    <value>Recurrence</value>
   </data>
   <data name="rule_for_recidivism" xml:space="preserve">
     <value>Rule for recidivism</value>
@@ -1327,7 +1327,7 @@
     <value>Data collection execution and action plan</value>
   </data>
   <data name="general_view_of_the_area" xml:space="preserve">
-    <value>General view of the area</value>
+    <value>Area Overview</value>
   </data>
   <data name="indicators_evolution" xml:space="preserve">
     <value>Indicators evolution</value>
@@ -1639,7 +1639,7 @@
     <value>Control Charts (SPC)</value>
   </data>
   <data name="statistical_report" xml:space="preserve">
-    <value>Statistical Report</value>
+    <value>Statistical Reports</value>
   </data>
   <data name="impossible_refresh_result" xml:space="preserve">
     <value>It is not possible refresh the result</value>
@@ -2103,7 +2103,10 @@
   <data name="results_reports" xml:space="preserve">
     <value>Results of Reports</value>
   </data>
-  <data name="desenvolvimento" xml:space="preserve">
-    <value>Under Development</value>
+  <data name="evolutional" xml:space="preserve">
+    <value>Evolutional</value>
+  </data>
+  <data name="spc_charts" xml:space="preserve">
+    <value>SPC Charts</value>
   </data>
 </root>
