@@ -322,7 +322,7 @@
             </li>
         }
 
-        
+
 
         <li>
             <div id="showUnit" style="display:none">
@@ -395,6 +395,17 @@
             </div>
 
 
+        </li>
+
+        <li>
+            <div id="showStatusIndicador" style="display:none">
+                <span class="redLabel">Status Indicador</span>
+                <select id="statusIndicador" class="form-control" style="width: 210px;">
+                    <option>Todos</option>
+                    <option value="1">Fora da Meta</option>
+                    <option value="2">Dentro da Meta</option>
+                </select>
+            </div>
         </li>
 
         <li>
@@ -747,6 +758,7 @@
     var enviar = {};
     var start = moment();
     var end = moment();
+    var exibeTodosLevels = true;
 
     var monthNames = [
         '@Resources.Resource.january',
@@ -766,10 +778,12 @@
 
         $('#level1Id').on('change', function (e) {
             enviar['level1Id'] = parseInt( $('#level1Id').val().replace(/\D/g, ''), 10);
+            $('#level2Id').change();
         });
 
         $('#level2Id').on('change', function (e) {
             enviar['level2Id'] = parseInt( $('#level2Id').val().replace(/\D/g, ''), 10);
+            $('#level3Id').change();
         });
 
         $('#level3Id').on('change', function (e) {
@@ -798,6 +812,10 @@
 
         $('#clusterId').on('change', function (e) {
             enviar['clusterSelected_Id'] = $('#clusterId option:selected').val();
+        });
+
+        $('#statusIndicador').on('change', function (e) {
+            enviar['statusIndicador'] = $('#statusIndicador option:selected').val();
         });
 
         //enviar['level01Id'] = null;
@@ -833,7 +851,7 @@
             enviar['endDate'] = "";
         });
 
-       
+
         //Start config datepickerrange simple
 
         //Start config datepickerrange full
@@ -1063,8 +1081,12 @@
             $("#showUnidadesManutencao").show();
         },
 
-        showRegUnidadeVinculados: function (){
-            $('#showRegUnidadeVinculados').show();
+        showLevel123: function (){
+            $('#showLevel123').show();
+        },
+
+        showStatusIndicador: function() {
+            $('#showStatusIndicador').show();
         }
 
     }
