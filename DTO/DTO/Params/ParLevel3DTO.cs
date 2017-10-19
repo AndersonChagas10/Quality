@@ -24,6 +24,7 @@ namespace DTO.DTO.Params
         public string Description { get; set; }
 
         public bool IsActive { get; set; } = true;
+        public bool IsPointLess { get; set; } = true;
         public bool hasVinculo { get; set; }
         
         public decimal pesoDoVinculo { get; set; }
@@ -37,5 +38,6 @@ namespace DTO.DTO.Params
         public List<ParLevel3Level2DTO> listLevel3Level2 { get; set; }
         public List<ParLevel3Value_OuterListDTO> ParLevel3Value_OuterList { get; set; }
         public IEnumerable<IGrouping<int, ParLevel3Value_OuterListDTO>> ParLevel3Value_OuterListGrouped { get; set; }
+        public bool AllowNA { get; set; }
     }
 }

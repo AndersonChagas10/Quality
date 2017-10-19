@@ -34,6 +34,12 @@
                     <tr class="row">
                         @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
                     </tr>
+                    <tr class="row">
+                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.IsPointLess, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.IsPointLess), Table.PosicaoLabel.left, null, null)
+                    </tr>
+                    <tr class="row">
+                        @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.AllowNA, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.AllowNA), Table.PosicaoLabel.left, null, null)
+                    </tr>
                 </table>
 
                 <div class="panel-group accordion" id="level3_data_type_accordion">
@@ -93,36 +99,46 @@
                                     </tr>
                                     <tr class="row reencravacaoL3">
                                         <td class="td-erp" id="sinais">
+                                            @for (var i = 0; i < 10; i++)
+                                            {
+                                                <button type='button' id='' onclick='clickSinal(@i)' class='btn btn-sm'>
+                                                    @i
+                                                </button>
+                                            }
+                                            <button type='button' id='' onclick='clickSinal(".")' class='btn btn-sm'>
+                                                .
+                                            </button>
+                                            &nbsp;
                                             <button type='button' id='' onclick='clickSinal("+")' class='btn btn-sm'>
-                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                               +
                                             </button>
                                             &nbsp;
                                             <button type='button' id='' onclick='clickSinal("-")' class='btn btn-sm'>
-                                                <i class="fa fa-minus" aria-hidden="true"></i>
+                                                -
                                             </button>
                                             &nbsp;
                                             <button type='button' id='' onclick='clickSinal("*")' class='btn btn-sm'>
-                                                <i class="fa fa-asterisk" aria-hidden="true"></i>
+                                                *
                                             </button>
                                             &nbsp;
                                             <button type='button' id='' onclick='clickSinal("/")' class='btn btn-sm'>
-                                                <i class="fa">/</i>
+                                                /
                                             </button>
                                             &nbsp;
                                             <button type='button' id='' onclick='clickSinal("(")' class='btn btn-sm'>
-                                                <i class="fa">(</i>
+                                                (
                                             </button>
                                             &nbsp;
                                             <button type='button' id='' onclick='clickSinal(")")' class='btn btn-sm'>
-                                                <i class="fa">)</i>
+                                                )
                                             </button>
                                             &nbsp;
                                             <button type='button' id='' onclick='clickSinal("=")' class='btn btn-sm'>
-                                                <i class="fa">=</i>
+                                                =
                                             </button>
                                             &nbsp;
                                             <button type='button' id='' onclick='clickSinal("dados")' class='btn btn-sm'>
-                                                <i class="fa">Dados Selecionados</i>
+                                                Dados Selecionados
                                             </button>
                                             &nbsp;
                                             <button type='button' id='' onclick='clickSinal("undo")' class='btn btn-sm'>
@@ -318,21 +334,69 @@
         }
     }
 
+    function rainbow(value, s, l, max, min, start, end) {
+        value = ((value - min) * (start - end) / max)+end;
+        return 'hsl(' + value + ','+s+'%,'+l+'%)';
+    }
+    
+    function createRainbowDiv(start,end){
+        var gradient = [];
+        for (var i = start; ((i <= end) && (i >= start)) || ((i >= end) && (i <= start)); 
+            i += (end-start) / Math.abs(end-start)){
+            gradient.push(rainbow(i, 100,50, Math.max(start,end), Math.min(start,end), start,end));
+        }
+        
+        return gradient;
+    }
+    
+    function returnUpperCase (stringExp){
+        var positions = [];
+        for(var i=0; i<stringExp.length; i++){
+            if(stringExp[i].match(/[A-Z]/) != null){
+                positions.push(i);
+            }
+        }
+        let retorno = ''
+        if(positions.length > 1)
+            positions.forEach(function (o,c) {retorno += stringExp[o]})
+        else 
+            retorno = stringExp.slice(0,3).toUpperCase()
+
+        return retorno
+    }
+
     function updateLogicExpression(retorno){
         let expressaoFinal = ''
+        arrGradientCounter = 0;
         expressaoArr.forEach(function(o, c){
             if(o.Operator == "dados"){
                 console.log(o)
-                expressaoFinal += `(${o.OuterEmpresa_Text}, ${o.OuterLevel3_Text}: ${o.OuterLevel3Value_Text}) `
+                //expressaoFinal += `(${o.OuterEmpresa_Text}, ${o.OuterLevel3_Text}: ${o.OuterLevel3Value_Text}) `
+                let name = o.OuterLevel3_Text.split(' - ')[1]
+                name = returnUpperCase(name)
+                expressaoFinal += `<span style="background-color:#0600ff40">${name}</span> `
             }else {
-                expressaoFinal += `${o.Operator} `
+                if(o.Operator == '('){
+                    let color = percentToRGB(arrGradientCounter, 1)
+                    arrGradientCounter = arrGradientCounter + 25;
+                    expressaoFinal += `<span style="background-color:${color}">${o.Operator} </span>`
+                }
+                else if (o.Operator == ')'){
+                    if(arrGradientCounter > 0)
+                        arrGradientCounter = arrGradientCounter - 25;
+                    let color = percentToRGB(arrGradientCounter, 1)
+                    expressaoFinal += `<span style="background-color:${color}">${o.Operator} </span>`
+                }
+                else {
+                    expressaoFinal += `<span>${o.Operator}</span> `
+                }
             }
         })
 
         if(retorno)
             return expressaoFinal
         else
-            $('#expFinal').text(expressaoFinal)
+            $('#expFinal').empty().append($('<span style="background-color:#ff380063">' + expressaoFinal + '</span>')) //$('#expFinal').text($(expressaoFinal))
     }
 
     function saveLogExpression(){
@@ -429,7 +493,8 @@
                     }
                 }
             })
-
+            if($('#parlevel3RecravacaoValue option:first').length < 3)
+                $('#parlevel3RecravacaoValue').val($('#parlevel3RecravacaoValue option:first').next().val()).change()
         })
     }
 

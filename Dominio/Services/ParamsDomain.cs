@@ -482,6 +482,9 @@ namespace Dominio.Services
 
                 _paramsRepo.SaveParLevel3(saveParamLevel3, listSaveParamLevel3Value, listParRelapse, parLevel3Level2peso?.ToList(), paramsDto.level1Selected);
 
+                db.Database.ExecuteSqlCommand(string.Format("Update ParLevel3 SET IsPointLess = {0} WHERE Id = {1}", paramsDto.parLevel3Dto.IsPointLess ? "1" : "0", saveParamLevel3.Id));
+                db.Database.ExecuteSqlCommand(string.Format("Update ParLevel3 SET AllowNA = {0} WHERE Id = {1}", paramsDto.parLevel3Dto.AllowNA ? "1" : "0", saveParamLevel3.Id));
+
                 if (paramsDto.parLevel3Dto.ParLevel3Value_OuterList != null)
                     foreach (var i in paramsDto.parLevel3Dto.ParLevel3Value_OuterList)
                     {
@@ -638,6 +641,11 @@ namespace Dominio.Services
             foreach (var Level3Value in level3.listLevel3Value)/*ParLevel 3 Value*/
                 Level3Value.PreparaGet();
 
+            var pointLess = db.Database.SqlQuery<bool>(string.Format("SELECT IsPointLess FROM ParLevel3 WHERE Id = {0}", level3.Id)).FirstOrDefault();
+            level3.IsPointLess = pointLess;
+
+            var AllowNA = db.Database.SqlQuery<bool>(string.Format("SELECT AllowNA FROM ParLevel3 WHERE Id = {0}", level3.Id)).FirstOrDefault();
+            level3.AllowNA = AllowNA;
             #endregion
 
             retorno.parLevel3Dto = level3;

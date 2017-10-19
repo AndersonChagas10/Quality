@@ -80,8 +80,8 @@ namespace SgqSystem.Controllers.Api
 	                SELECT * FROM ParLevel3Level2 WHERE ParLevel2_Id = {0} AND (ParCompany_Id IS NULL) AND IsActive = 1
                     AND ParLevel3_Id NOT IN  (
                         SELECT DISTINCT(ParLevel3_Id) FROM ParLevel3Level2 WHERE ParLevel2_Id = {0} AND (ParCompany_Id = {1}) AND IsActive = 1)
-                    AND ParLevel3_Id IN  (
-                        SELECT DISTINCT(ParLevel3_Id) FROM ParLevel3Value WHERE (ParCompany_Id IN ({1}) OR ParCompany_Id IS NULL)  AND IsActive = 1)
+                    --AND ParLevel3_Id IN  (
+                    --    SELECT DISTINCT(ParLevel3_Id) FROM ParLevel3Value WHERE (ParCompany_Id IN ({1}) OR ParCompany_Id IS NULL)  AND IsActive = 1)
                     ", parlevel2_Id, parcompany);
                 queryVinculoLevel321 = string.Format(@"
                     SELECT * FROM parlevel3level2Level1 
@@ -111,8 +111,18 @@ namespace SgqSystem.Controllers.Api
         {
             var idLevel3 = int.Parse(vinculoLevel32["ParLevel3_Id"].ToString());
             var level3 = db.ParLevel3.Include("ParLevel3Value").Include("ParLevel3Value.ParLevel3BoolFalse").Include("ParLevel3Value.ParLevel3BoolTrue").FirstOrDefault(r => r.Id == idLevel3);
+
+            while (level3.ParLevel3Value.Any(r => !r.IsActive))
+                level3.ParLevel3Value.Remove(level3.ParLevel3Value.FirstOrDefault(r => !r.IsActive));
+
             var level3Dto = Mapper.Map<ParLevel3DTO>(level3);
-            var valueCampoCalcOutro = db.Database.SqlQuery<ParLevel3Value_OuterListDTO>(string.Format(@"SELECT * FROM ParLevel3Value_Outer WHERE Parlevel3_Id = {0} AND IsActive = 1 AND OuterEmpresa_Id = {1}", level3.Id, parcompany)).ToList();
+            var pointLess = db.Database.SqlQuery<bool>(string.Format("SELECT IsPointLess FROM ParLevel3 WHERE Id = {0}", level3Dto.Id)).FirstOrDefault();
+
+            var AllowNA = db.Database.SqlQuery<bool>(string.Format("SELECT AllowNA FROM ParLevel3 WHERE Id = {0}", level3.Id)).FirstOrDefault();
+            level3Dto.AllowNA = AllowNA;
+
+            level3Dto.IsPointLess = pointLess;
+            var valueCampoCalcOutro = db.Database.SqlQuery<ParLevel3Value_OuterListDTO>(string.Format(@"SELECT * FROM ParLevel3Value_Outer WHERE Parlevel3_Id = {0} AND IsActive = 1 AND (OuterEmpresa_Id = {1} OR OuterEmpresa_Id = -1)", level3.Id, parcompany)).ToList();
 
             level3Dto.ParLevel3Value_OuterList = valueCampoCalcOutro;
             level3Dto.ParLevel3Value_OuterListGrouped = valueCampoCalcOutro.GroupBy(r => r.ParCompany_Id);

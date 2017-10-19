@@ -2100,4 +2100,10 @@
   <data name="IsRecravacao" xml:space="preserve">
     <value>Is Recravacao</value>
   </data>
+  <data name="IsPointLess" xml:space="preserve">
+    <value>A tarefa se repete a cada numero de pontos  da lata na Recravação</value>
+  </data>
+  <data name="AllowNA" xml:space="preserve">
+    <value>Allow not avaliable</value>
+  </data>
 </root>

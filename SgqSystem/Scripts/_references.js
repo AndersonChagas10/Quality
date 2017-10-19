@@ -204,6 +204,7 @@
 /// <reference path="locales/bootstrap-datepicker.vi.min.js" />
 /// <reference path="locales/bootstrap-datepicker.zh-CN.min.js" />
 /// <reference path="locales/bootstrap-datepicker.zh-TW.min.js" />
+/// <reference path="math/math.js" />
 /// <reference path="md5.js" />
 /// <reference path="modernizr-2.6.2.js" />
 /// <reference path="moment.js" />

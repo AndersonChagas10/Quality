@@ -232,6 +232,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allow not avaliable.
+        /// </summary>
+        internal static string AllowNA {
+            get {
+                return ResourceManager.GetString("AllowNA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Allows less privileged users to edit the Tasks / Samples Related to Monitoring Linked to this Audit.
         /// </summary>
         internal static string allows_less_privileged_users_to_edit_the_tasks_samples {
@@ -2469,6 +2478,15 @@ namespace Resources {
         internal static string isPartialSave {
             get {
                 return ResourceManager.GetString("isPartialSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A tarefa se repete a cada numero de pontos  da lata na Recravação.
+        /// </summary>
+        internal static string IsPointLess {
+            get {
+                return ResourceManager.GetString("IsPointLess", resourceCulture);
             }
         }
         
