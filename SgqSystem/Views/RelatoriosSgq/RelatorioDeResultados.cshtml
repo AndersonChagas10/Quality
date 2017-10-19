@@ -350,15 +350,15 @@
             if (data[0].IsIndicador) {
                 NomeExibir = "IndicadorUnidade";
                 Level = 1;
-                Titulo += "nos Indicadores ";
+                Titulo += " nos Indicadores ";
             } else if (data[0].IsMonitoramento) {
                 Level = 2;
                 NomeExibir = "MonitoramentoUnidade";
-                Titulo += "nos Monitoramentos do Indicador " + data[0].IndicadorName;
+                Titulo += " nos Monitoramentos do Indicador " + data[0].IndicadorName;
             } else {
                 Level = 3;
                 NomeExibir = "TarefaUnidade"
-                Titulo += "nas Tarefas do Monitoramento " + data[0].MonitoramentoName + " do Indicador " + data[0].IndicadorName;
+                Titulo += " nas Tarefas do Monitoramento " + data[0].MonitoramentoName + " do Indicador " + data[0].IndicadorName;
             }
 
             SetTitulo(Level);
@@ -500,15 +500,15 @@
             if (data[0].IsIndicador) {
                 NomeExibir = "IndicadorName";
                 Level = 1;
-                Titulo += "nos Indicadores ";
+                Titulo += " nos Indicadores ";
             } else if (data[0].IsMonitoramento) {
                 Level = 2;
                 NomeExibir = "MonitoramentoName";
-                Titulo += "nos Monitoramentos do Indicador " + data[0].IndicadorName;
+                Titulo += " nos Monitoramentos do Indicador " + data[0].IndicadorName;
             } else {
                 Level = 3;
                 NomeExibir = "TarefaName"
-                Titulo += "nas Tarefas do Monitoramento " + data[0].MonitoramentoName + " do Indicador " + data[0].IndicadorName;
+                Titulo += " nas Tarefas do Monitoramento " + data[0].MonitoramentoName + " do Indicador " + data[0].IndicadorName;
             }
 
             //SetTitulo(Level);
