@@ -1418,6 +1418,7 @@
     <Content Include="Views\Shared\_SelectVinculado.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoCumprimentoMeta.cshtml" />
     <Content Include="Views\Shared\_ClusterRegionalUnidadeCriticalLevel123.cshtml" />
+    <Content Include="Views\RelatoriosSgq\_Image.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
