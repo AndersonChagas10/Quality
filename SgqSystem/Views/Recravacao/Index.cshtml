@@ -56,10 +56,10 @@
                 <br />
                 <input ng-change="saveState(true, true)" ng-disabled="seletedLinha.finalizado" type="time" class="form-control" placeholder="Hora do final da Produção" ng-model="seletedLinha.form.HoraFimProducao">
             </div>
-            <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
-                <label for="">Fornecedor da Lata</label>
+            <div class="form-group float-label-control col-lg-6 col-md-12 col-sm-12">
+                <label for="" class="">Código do produto</label>
                 <br />
-                <select ng-change="saveState(true, true)" ng-disabled="seletedLinha.finalizado" ng-options="item as item.Name for item in fornecedorLata track by item.Id" ng-model="seletedLinha.form.FornecedorLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+                <input type="text" ng-change="saveState(true, true)" ng-disabled="seletedLinha.finalizado" ng-model="seletedLinha.form.CodProduto" class="form-control" style="width:100%!important" />
             </div>
             <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
                 <label for="">Data do recebimento das latas</label>
@@ -67,16 +67,22 @@
                 <input ng-change="saveState(true, true)" ng-disabled="seletedLinha.finalizado" type="date" class="form-control" placeholder="Data do recebimento das latas" ng-model="seletedLinha.form.DataRecebimentoLatas">
             </div>
             <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
-                <label for="">Fornecedor das tampas/fundos das latas</label>
+                <label for="">Fornecedor da Lata</label>
                 <br />
-                <select ng-change="saveState(true, true)" ng-disabled="seletedLinha.finalizado" ng-options="item as item.Name for item in fornecedorTampaLata track by item.Id" ng-model="seletedLinha.form.FornecedorTampaFundoLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+                <select ng-change="saveState(true, true)" ng-disabled="seletedLinha.finalizado" ng-options="item as item.Name for item in fornecedorLata track by item.Id" ng-model="seletedLinha.form.FornecedorLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
             </div>
             <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
                 <label for="">Data do recebimento das tampas/fundos das latas</label>
                 <br />
                 <input ng-change="saveState(true, true)" ng-disabled="seletedLinha.finalizado" type="date" class="form-control" placeholder="Data do recebimento das tampas e fundos das latas" ng-model="seletedLinha.form.DataRecebimentoTampasFundosLatas">
             </div>
-            @*{{seletedLinha.form}}*@
+            <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                <label for="">Fornecedor das tampas/fundos das latas</label>
+                <br />
+                <select ng-change="saveState(true, true)" ng-disabled="seletedLinha.finalizado" ng-options="item as item.Name for item in fornecedorTampaLata track by item.Id" ng-model="seletedLinha.form.FornecedorTampaFundoLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+            </div>
+            <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
+
             <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
                 <button ng-disabled="seletedLinha.finalizado" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinatura">
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Finalizar Linha
@@ -94,22 +100,39 @@
                 &nbsp;
                 <span ng-show="seletedLinha.isValidated" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{seletedLinha.dataUserValidacao}}
             </div>
+            </div>
         </form>
 
     </div>
 
     <div class="col-lg-12 col-md-12 col-sm-12">
         <div ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" style="" class="col-lg-6 col-md-6 col-sm-12" ng-repeat="item in seletedLinha.latas track by $index">
-            @*<div ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" style="" class="col-lg-12 col-md-12 col-sm-12" ng-repeat="item in seletedLinha.latas track by $index">*@
-
             <div style="text-align: right; float:left; padding-bottom: 5px; padding-top: 5px; vertical-align: middle; font-size: 18px;">{{item.Name}}</div>
 
             <div style="text-align: right; padding-bottom: 5px; padding-top: 5px; float: right; ">
-                @*{{item.haveError}}*@
-                <button id="acaoPrev" title="Gerar Ação Preventiva para {{item.Name}}" type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modalPreventiveAction" ng-click="selectLata($index, selectedLata.haveErrors)">
+                <button type="button"
+                        class="btn btn-warning btn-sm"
+                        data-toggle="modal"
+                        data-target="#modalPreventiveAction"
+                        id="acaoPrev" title="Gerar Ação Preventiva para {{item.Name}}"
+                        ng-if="(seletedLinha.latas[$index].correctiveAction && seletedLinha.latas[$index].correctiveAction.IsAssinada)"
+                        ng-click="selectLata($index, selectedLata.haveErrors)">
                     <span class="glyphicon glyphicon-alert" aria-hidden="true"></span>
                 </button>
-                <button title="Modo Somente Visualização" ng-show="item.finalizado" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
+                <button id="correctiveActionBtn"
+                        type="button" class="btn btn-danger btn-sm"
+                        data-toggle="modal"
+                        data-target="#modalCorrectiveAction"
+                        title="Gerar Ação Corretiva para {{item.Name}}"
+                        ng-click="selectLata($index, selectedLata.haveErrors);  newCorrectiveAction()">
+                    <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                </button>
+                <button title="Modo Somente Visualização"
+                        type="button"
+                        class="btn btn-info btn-sm"
+                        data-toggle="modal"
+                        data-target="#myModal"
+                        ng-show="item.finalizado">
                     <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                 </button>
                 @*<button type="button" class="btn btn-warning btn-sm" ng-click="cloneLata(seletedLinha, $index)">
@@ -118,13 +141,25 @@
                     <button type="button" class="btn btn-warning btn-sm" ng-click="cloneLataALot(seletedLinha, $index, 50)">
                         <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
                     </button>*@
-                <button title="Editar {{item.Name}}" ng-show="!item.finalizado" ng-click="executeDocReady()" type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal{{$index}}">
+                <button type="button"
+                        class="btn btn-warning btn-sm"
+                        data-toggle="modal"
+                        title="Editar {{item.Name}}"
+                        ng-show="!item.finalizado"
+                        ng-click="executeDocReady()"
+                        data-target="#editModal{{$index}}">
                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                 </button>
-                <button title="Remover {{item.Name}}" ng-show="!item.finalizado" type="button" class="btn btn-danger btn-sm" ng-click="deleteLata(seletedLinha, $index)">
+                <button type="button" class="btn btn-danger btn-sm" title="Remover {{item.Name}}" ng-show="!item.finalizado" ng-click="deleteLata(seletedLinha, $index)">
                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                 </button>
-                <button title="Assinar {{item.Name}}" type="button" ng-show="item.liberaAssinaturaLata && !item.finalizado" ng-click="selectLata($index)" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinaturaFinalizaLata">
+                <button class="btn btn-success btn-sm"
+                        data-toggle="modal"
+                        data-target="#modalAssinaturaFinalizaLata"
+                        title="Assinar {{item.Name}}"
+                        type="button"
+                        ng-show="item.liberaAssinaturaLata && !item.finalizado"
+                        ng-click="selectLata($index)">
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                 </button>
             </div>
@@ -142,7 +177,7 @@
                         <td style="border:1px solid #cccccc; padding: 2px; text-align: center;"
                             ng-class="{bgWhite:  (ParLevel3.ResultValue['Ponto' + ($index +1)].length == 0), bgGreen: (ParLevel3.ResultValue['Ponto' + ($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (ParLevel3.ResultValue['Ponto' + ($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) }"
                             ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                                {{ParLevel3.ResultValue['Ponto' + ($index +1)]}}
+                            {{ParLevel3.ResultValue['Ponto' + ($index +1)]}}
                         </td>
                     </tr>
 
@@ -255,16 +290,17 @@
                                                            ng-class="{bgWhite:  (ParLevel3.ResultValue['Ponto' + ($index +1)].length == 0), bgGreen: (ParLevel3.ResultValue['Ponto' + ($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (ParLevel3.ResultValue['Ponto' + ($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= ParLevel3.ResultValue['Ponto' + ($index +1)] && ParLevel3.ResultValue['Ponto' + ($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax)}"
                                                            ng-disabled="ParLevel3.ResultValue[('Na' + ($index +1))]"
                                                            id='{{"ParLevel3_Id" +  ParLevel3.ParLevel3Value[0].ParLevel3_Id.toString() + "ParLevel3Value_Id" +  ParLevel3.ParLevel3Value[0].Id.toString() + "PontoIndex" + ($index + 1) + "LataIndex" + seletedLinha.latas.indexOf(item) }}' />
-                                                    {{ParLevel3.ResultValue[('Ponto' + ($index +1))]}}
+
+                                                    @*{{ParLevel3.ResultValue[('Ponto' + ($index +1))]}}*@
 
                                                     <span ng-if="ParLevel3.AllowNA"><input type="checkbox" ng-model="ParLevel3.ResultValue[('Na' + ($index +1))]" /> NA </span>
                                                 </span>
 
-                                                <input type="text" 
+                                                <input type="text"
                                                        style="width:100%; max-width: 65px; display:none"
                                                        ng-if="(ParLevel3.IsPointLess == false && $index > 0)"
                                                        id='{{"ParLevel3_Id" +  ParLevel3.ParLevel3Value[0].ParLevel3_Id.toString() + "ParLevel3Value_Id" +  ParLevel3.ParLevel3Value[0].Id.toString() + "PontoIndex" + ($index + 1) + "LataIndex" + seletedLinha.latas.indexOf(item) }}'
-                                                       ng-model="ParLevel3.ResultValue['Ponto' + (1)]"/>
+                                                       ng-model="ParLevel3.ResultValue['Ponto' + (1)]" />
                                             </span>
 
                                             @*1	Binário*@
@@ -516,6 +552,81 @@
         </div>
     </div>
 
+    @*modalCorrectiveAction*@
+    <div class="modal fade" id="modalCorrectiveAction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="preventiveAction">Ação Preventiva</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body" style="overflow-x:auto">
+                    <form role="form" class="ng-pristine ng-valid">
+                        <div class="row">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="row" style="padding:8px;">
+                                        <div class="col-xs-6" id="CorrectiveActionTaken">
+                                            <b class="font16">Ação Corretiva Tomada:<br></b>
+                                            <b>Data/Hora:</b>
+                                            <span id="datetime">{{ selectedLata.correctiveAction.AddDate }}</span>
+                                            <br><b>Monitor: </b>
+                                            <span id="auditor">{{selectedLata.correctiveAction.userAuditor.Name}}</span>
+                                            @*<br><b>Turno: </b>
+                                                <span id="shift">Turno 1</span><br>*@
+                                        </div>
+                                        <div class="col-xs-6" id="AuditInformation">
+                                            <b class="font16">Informação da Auditoria:<br></b>
+                                            <b>Indicadores: </b>
+                                            <span id="auditText">Indicador NAME MOCK</span><br>
+                                            <b>Data Inicial:</b>
+                                            <span id="starttime">{{selectedLata.StartAuditTime}}</span><br>
+                                            @*<b>Período:</b>
+                                                <span id="correctivePeriod">Período 1</span>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
+                                <label>Descrição da Falha:</label>
+                                <textarea ng-model="selectedLata.correctiveAction.DescriptionFailure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                            </div>
+                            <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
+                                <label>Ação Corretiva Imediata:</label>
+                                <textarea ng-model="selectedLata.correctiveAction.ImmediateCorrectiveAction" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                            </div>
+                            <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
+                                <label>Disposição do produto:</label>
+                                <textarea ng-model="selectedLata.correctiveAction.ProductDisposition" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                            </div>
+                            <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
+                                <label>Acão Preventiva:</label>
+                                <textarea ng-model="selectedLata.correctiveAction.PreventativeMeasure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                            </div>
+                            <br />
+                            <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                <input type="text" class="form-control" ng-model="selectedLata.correctiveAction.Assinatura1.Name" placeholder="Nome de Usuário" />
+                            </div>
+                            <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                                <input type="password" class="form-control" ng-model="selectedLata.correctiveAction.Assinatura1.Password" placeholder="Senha" />
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" ng-click="AssinaCorrectiveAction1()">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script src="~/Scripts/toastr.min.js"></script>
@@ -523,7 +634,7 @@
 
 <script>
     (function () {
-        //'use strict';
+        'use strict';
 
         app.factory('timestampMarker', [function () {
             var timestampMarker = {
@@ -577,6 +688,17 @@
                 vm.seletedLinha = { Id: 0 }
                 vm.selectedLata = {}
                 vm.activeInLine = 0
+                vm.getUser = function () {
+                    return {
+                        Id: GetUsuarioId(),
+                        Name: $.grep(getCookie('webControlCookie'), function (a, b) {
+                            return a.indexOf('userName') != -1;
+                        })[0].split('=')[1],
+                        LoadPageTime: moment().format("DD/MM/YYYY HH:mm")
+
+                    }
+                }
+                vm.userAuditor = vm.getUser()
 
                 //MOCK                  Sem Mock
                 vm.company = GetUnidadeUsuario()
@@ -671,7 +793,7 @@
                         index = vm.findWithAttr(vm.linhas, 'Id', vm.activeInLine);
 
                     vm.seletedLinha = vm.linhas[index]
-
+                    vm.seletedLinha['StartAuditTime'] = moment().format("DD/MM/YYYY HH:mm")
                     vm.activeInLine = vm.seletedLinha.Id
 
                     vm.executeDocReady(true)
@@ -690,7 +812,7 @@
 
                 vm.range = function (n) {
                     if (n)
-                        return new Array(parseInt(n))
+                        return new Array(parseInt(n) + 1)
                     else
                         return new Array()
                 }
@@ -703,7 +825,8 @@
                             Name: 'Lata - ' + (linha["counterDeLatas"]),
                             finalizado: false,
                             haveErrors: false,
-                            ListParlevel3: JSON.parse(JSON.stringify(linha.ListParlevel3))
+                            ListParlevel3: JSON.parse(JSON.stringify(linha.ListParlevel3)),
+                            StartAuditTime: moment().format("DD/MM/YYYY HH:mm"),
                         })
                         linha.counterDeLatas++
                     }
@@ -794,7 +917,6 @@
                 vm.getFornecedorLata()
                 vm.getFornecedorTampaLata()
                 vm.getProdutos()
-                //vm.mockLinhas()
 
                 /*GET Todas as linhas cadastradas*/
                 vm.getParametrizacaoUrl = '@Url.Action("RecravacaoLinhaApi", "api")'//'http://localhost:57506/api/RecravacaoLinhaApi'
@@ -904,6 +1026,7 @@
                         });
                 }
 
+                //Não utilizado ainda
                 vm.getFormula = function (expressaoArr) {
                     let expressaoFinal = ''
                     //expressaoArr.forEach(function(o, c){
@@ -919,6 +1042,9 @@
                     return expressaoFinal
                 }
 
+                //REAL TIME NA INSERÇÃO DE DADOS
+
+                //OTIMIZAR
                 vm.geraIdCalc = function (expressaoArr, index, lataIndex) {
                     let expressaoFinal = ''
                     var teste = []
@@ -929,6 +1055,9 @@
                         if (o.Operator == "dados") {
                             let id = `#ParLevel3_Id${o.OuterLevel3_Id}ParLevel3Value_Id${o.OuterLevel3Value_Id}PontoIndex${indexMaisUm}LataIndex${lataIndex}`
                             let valor = parseFloat($(id).val())
+                            if (isNaN(parseFloat(valor))) {
+                                return ""
+                            }
                             expressaoFinal += valor
                         } else {
                             expressaoFinal += `${o.Operator}`
@@ -941,13 +1070,7 @@
                     //return vm.addbits(expressaoFinal.replace(/\s/g, ''))
                 }
 
-                vm.addbits = function (s) {
-                    var total = 0, s = s.match(/[+\-]*(\.\d+|\d+(\.\d+)?)/g) || [];
-                    while (s.length) {
-                        total += parseFloat(s.shift());
-                    }
-                    return total;
-                }
+                //FIM REAL TIME NA INSERÇÃO DE DADOS
 
                 vm.resultObj = {}
                 vm.SetResult = function (result, data, index) {
@@ -955,6 +1078,7 @@
                     vm.resultObj[key] = { valor: result, ParLEvel3_Id: data.ParLevel3_Id, ParLevel3Value_Id: data.Id }
                 }
 
+                //OTIMIZAR
                 vm.checkTableBgRed = function ($event) {
                     //console.log($event)
                     vm.selectedLata.haveErrors = $($event.currentTarget).parents('.modal').find('table').find('.bgRed').length ? true : false
@@ -968,6 +1092,12 @@
                     let vmItem = item
                     let index = vm.seletedLinha.latas.indexOf(item)
                     let numeroDePontos = vm.seletedLinha.TipoDeLata.NumberOfPoints
+
+                    //MOCK
+                    vmItem["liberaAssinaturaLata"] = true
+                    vm.saveState()
+                    return true
+
                     for (var i = 0; i < vmItem.ListParlevel3.length; i++) {
                         if (vmItem.ListParlevel3[i].ResultValue) {
                             //existe
@@ -998,7 +1128,7 @@
                                         return false
                                     }
                                 }
-                                if ((numeroDePontos <= pontosPreenchidos.length)) {
+                                if (((numeroDePontos + 1) <= pontosPreenchidos.length)) {
                                     vmItem["liberaAssinaturaLata"] = true
                                 } else {
                                     vmItem["liberaAssinaturaLata"] = false
@@ -1008,8 +1138,8 @@
                             }
                         }
                     }
-                    if (vmItem["liberaAssinaturaLata"])
-                        console.log("Parabens!! Voce Preencheu todos os pontos minino! Voce ja pode medir a proxima de 2000 latas !")
+                    //if (vmItem["liberaAssinaturaLata"])
+                    //    console.log("Parabens!! Voce Preencheu todos os pontos minino! Voce ja pode medir a proxima de 2000 latas !")
 
                     item = vmItem
                     vm.saveState()
@@ -1037,19 +1167,6 @@
                                 console.log(r.Mensagem)
                                 console.log(r.MensagemExcecao)
                             }
-                            //if (r.data.errors) {
-                            //    r.data.errors.forEach(function (o) {
-                            //        toastr.error(o)
-                            //    })
-                            //} else {
-                            //    toastr.success(r.data.resposta)
-                            //    //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
-                            //    vm.linhas = r.data.model
-                            //    vm.linhas.forEach(function (o, c) {
-                            //        o["latas"] = []
-                            //    })
-                            //    setTimeout(function () { $('select').select2() }, 200)
-                            //}
                         });
                 }
 
@@ -1115,13 +1232,43 @@
                             /*PELO AMOR DE TUDO QUE É MAIS SAGRADO!!!! REMOVER ESTA FUNCIONALIDADE DAQUI E FAZER DE FORMA DESCENTE! CELSO GEA, OBS FUI EU QUE FIZ ISTO.....*/
                             $('[name=visualizacao]').each(function (o, c) {
                                 if ($(c).find('.bgRed').length)
-                                    $(c).parent().find('#acaoPrev').removeClass('ng-hide')
+                                    $(c).parent().find('#correctiveActionBtn').removeClass('ng-hide')
                                 else
-                                    $(c).parent().find('#acaoPrev').addClass('ng-hide')
+                                    $(c).parent().find('#correctiveActionBtn').addClass('ng-hide')
                             })
                         }
                     }, 125)
 
+                }
+
+                vm.newCorrectiveAction = function () {
+                    if (vm.selectedLata.correctiveAction == undefined)
+                        vm.selectedLata.correctiveAction = {
+                            AddDate: moment().format("DD/MM/YYYY HH:mm"),
+                            userAuditor: vm.getUser()
+                        }
+                }
+
+                vm.AssinaCorrectiveAction1 = function (item) {
+                    vm.selectedLata.correctiveAction.Assinatura1.IsAssinada
+                    $http({ method: 'POST', url: vm.validateUserUrl, data: vm.selectedLata.correctiveAction.Assinatura1 })
+                       .then(function (r) {
+                           if (r.data.Retorno) {
+                               vm.user = { Name: "", Password: "" }
+                               toastr.success("Usuário validado com sucesso!")
+                               r.data.Retorno.ParCompanyXUserSgq = []
+                               vm.selectedLata.correctiveAction.IsAssinada = true
+                               vm.saveState()
+                               $('.modal').modal('hide')
+                           }
+                           else {
+                               vm.selectedLata.correctiveAction.IsAssinada = false
+                               toastr.error("Usuário ou Senha Inválidos")
+                               console.log(r.Mensagem)
+                               console.log(r.MensagemExcecao)
+                               vm.saveState()
+                           }
+                       });
                 }
 
             }]).filter('mathPow', function () {
