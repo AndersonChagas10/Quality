@@ -135,7 +135,7 @@
         public static string dataSource { get { return @"10.255.0.41"; } }
         public static string user { get { return "UserGQualidade"; } }
         public static string pass { get { return "grJsoluco3s"; } }
-        //Remoto SGQ
+        ////Remoto SGQ
         public static string catalog2 { get { return "dbGQualidade"; } }
         public static string dataSource2 { get { return @"10.255.5.93"; } }
         public static string user2 { get { return "UserGQualidade"; } }
