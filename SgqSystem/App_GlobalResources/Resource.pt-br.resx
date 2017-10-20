@@ -2109,4 +2109,13 @@
   <data name="spc_charts" xml:space="preserve">
     <value>Cartas CEP</value>
   </data>
+  <data name="photo" xml:space="preserve">
+    <value>Foto</value>
+  </data>
+  <data name="latitude" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="longitude" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
 </root>

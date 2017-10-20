@@ -2118,4 +2118,13 @@
   <data name="do_you_want_to_create_an_anomaly_treatment_form" xml:space="preserve">
     <value>Do you want to create an anomaly treatment form?</value>
   </data>
+  <data name="photo" xml:space="preserve">
+    <value>Photo</value>
+  </data>
+  <data name="latitude" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="longitude" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
 </root>

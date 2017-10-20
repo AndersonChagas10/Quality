@@ -56,6 +56,23 @@ namespace SgqSystem.Controllers.Api
             return _list;
         }
 
+        [HttpGet]
+        [Route("PhotoPreview/{ResultLevel3Id}")]
+        public String GetPhotoPreview(int ResultLevel3Id)
+        {
+            var result = db.Result_Level3_Photos.FirstOrDefault(r => r.Result_Level3_Id == ResultLevel3Id);
+            if(result != null)
+                return result.Photo_Thumbnaills;
+            return null;
+        }
+
+        [HttpGet]
+        [Route("Photo/{ResultLevel3Id}")]
+        public Result_Level3_Photos GetPhoto(int ResultLevel3Id)
+        {
+            return db.Result_Level3_Photos.FirstOrDefault(r => r.Result_Level3_Id == ResultLevel3Id);
+        }
+
         [HttpPost]
         [Route("Edit/{id}")]
         public Result_Level3DTO EditResultLevel3(int id)
