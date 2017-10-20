@@ -767,6 +767,7 @@
     <Content Include="Imagens\tablet.png" />
     <Content Include="Imagens\timeout-icon.png" />
     <Content Include="Imagens\under_construction.png" />
+    <Content Include="Imagens\under_construction_red.png" />
     <Content Include="Imagens\United-States.png" />
     <Content Include="Scripts\aes.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />

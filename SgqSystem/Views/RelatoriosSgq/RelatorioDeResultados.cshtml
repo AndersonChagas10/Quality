@@ -8,6 +8,10 @@
     .totalNC {
         text-align: center;
     }
+
+    .position-modal {
+        margin-top: 80px;
+    }
 </style>
 
 <div class="page-content" style="min-height: 600px;">
@@ -29,7 +33,7 @@
         </div>
 
         <h2 id="Titulo"></h2>
-        <h3 id="TituloGrafico"></h3>
+        <h3 id="TituloGrafico" style="display:none;"></h3>
         <br />
         <div id="showNCIndicador" class="totalNC alert alert-info col-lg-2" role="alert" hidden>
             <h1>0 %</h1>
@@ -44,11 +48,11 @@
         </div>
         <div class="col-lg-10" id="GraficoHistoricoMonitoramento"></div>
         <br />
+        <div id="GraficoPeriodoSemUnidadeLoader"></div>
+        <div id="GraficoPeriodoSemUnidade"></div>        
+        <br />
         <div id="GraficoPeriodoLoader"></div>
         <div id="GraficoPeriodo"></div>
-        <br />
-        <div id="GraficoPeriodoSemUnidadeLoader"></div>
-        <div id="GraficoPeriodoSemUnidade"></div>
         <br />
         <h3 id="TituloTabela"></h3>
         <br />
@@ -58,11 +62,11 @@
 </div>
 
 <!-- Modal Historico do Indicador-->
-<div class="modal fade bs-example-modal-lg" id="modalHistorico" role="dialog">
+<div class="modal fade bs-example-modal-lg position-modal" id="modalHistorico" role="dialog">
     <div class="modal-dialog modal-lg ">
 
         <!-- Modal content-->
-        <div class="modal-content">
+        <div class="modal-content position-modal">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Histórico</h4>
@@ -82,7 +86,7 @@
     <div class="modal-dialog modal-lg ">
 
         <!-- Modal content-->
-        <div class="modal-content">
+        <div class="modal-content position-modal">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Resultados do Indicador</h4>
@@ -100,7 +104,7 @@
 
 <!-- Modal FTA -->
 <div class="modal fade bs-example-modal-lg" id="ftaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg position-modal" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -121,7 +125,7 @@
 
 <!-- Modal ACOES X INDICADORES -->
 <div class="modal fade bs-example-modal-lg" id="IndicadorXAcaoModal" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg position-modal" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -216,7 +220,11 @@
                     { title: "Tarefa", mData: "TarefaName" },
                     { title: "Av", mData: "Av" },
                     { title: "Não Conformidades", mData: "Nc" },
-                    { title: "% Não Conformidades", mData: "Pc" },
+                    { title: "% Não Conformidades", mData: "Pc", "orderable": true, 
+                        
+                    render: $.fn.dataTable.render.number(',', '.', 2, '')
+
+                    },
                     { title: "% Meta", mData: "Meta" },
                     { title: "Status", mData: "Status" },
                     { title: "", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-target="#modalHistorico" >' + "Historico" + '</button>', "visible": true },
@@ -350,16 +358,26 @@
             if (data[0].IsIndicador) {
                 NomeExibir = "IndicadorUnidade";
                 Level = 1;
-                Titulo += "nos Indicadores ";
+                Titulo += " nos Indicadores ";
             } else if (data[0].IsMonitoramento) {
                 Level = 2;
                 NomeExibir = "MonitoramentoUnidade";
-                Titulo += "nos Monitoramentos do Indicador " + data[0].IndicadorName;
+                Titulo += " nos Monitoramentos do Indicador " + data[0].IndicadorName;
             } else {
                 Level = 3;
                 NomeExibir = "TarefaUnidade"
-                Titulo += "nas Tarefas do Monitoramento " + data[0].MonitoramentoName + " do Indicador " + data[0].IndicadorName;
+                Titulo += " nas Tarefas do Monitoramento " + data[0].MonitoramentoName + " do Indicador " + data[0].IndicadorName;
             }
+
+            Titulo += " por Unidade";
+
+            if((enviar.unitId != '' && enviar.unitId != undefined))
+            {
+                Titulo += " da Unidade " + $('#unitIdV :selected').text();
+            }
+            
+
+            
 
             SetTitulo(Level);
 
@@ -420,7 +438,10 @@
                     shadow: false
                 },
                 tooltip: {
-                    shared: true
+                    valueDecimals: 2,
+                    shared: true,
+                    format: '{point.y:.2f}',
+                    format: '{point:.2f}',
                 },
                 plotOptions: {
                     column: {
@@ -472,12 +493,16 @@
                         enabled: true,
                         color: 'black',
                         align: 'center',
+                        format: '{point.y:.2f}',
                         style: {
                             fontSize: '10px',
                         }
                     },
                     tooltip: {
-                        valueSuffix: ' %'
+                        valueDecimals: 2,
+                        valueSuffix: ' %',
+                        format: '{point.y:.2f}',
+                        format: '{point:.2f}',
                     }
                 },
                  CurvaPareto(calculaPareto(porc))
@@ -500,15 +525,20 @@
             if (data[0].IsIndicador) {
                 NomeExibir = "IndicadorName";
                 Level = 1;
-                Titulo += "nos Indicadores ";
+                Titulo += " nos Indicadores ";
             } else if (data[0].IsMonitoramento) {
                 Level = 2;
                 NomeExibir = "MonitoramentoName";
-                Titulo += "nos Monitoramentos do Indicador " + data[0].IndicadorName;
+                Titulo += " nos Monitoramentos do Indicador " + data[0].IndicadorName;
             } else {
                 Level = 3;
                 NomeExibir = "TarefaName"
-                Titulo += "nas Tarefas do Monitoramento " + data[0].MonitoramentoName + " do Indicador " + data[0].IndicadorName;
+                Titulo += " nas Tarefas do Monitoramento " + data[0].MonitoramentoName + " do Indicador " + data[0].IndicadorName;
+            }
+
+            if((enviar.unitId != '' && enviar.unitId != undefined))
+            {
+                Titulo += " da Unidade " + $('#unitIdV :selected').text();
             }
 
             //SetTitulo(Level);
@@ -570,7 +600,10 @@
                     shadow: false
                 },
                 tooltip: {
-                    shared: true
+                    valueDecimals: 2,
+                    shared: true,
+                    format: '{point.y:.2f}',
+                    format: '{point:.2f}',
                 },
                 plotOptions: {
                     column: {
@@ -622,12 +655,16 @@
                         enabled: true,
                         color: 'black',
                         align: 'center',
+                        format: '{point.y:.2f}',
                         style: {
                             fontSize: '10px',
                         }
                     },
                     tooltip: {
-                        valueSuffix: ' %'
+                        valueDecimals: 2,
+                        valueSuffix: ' %',
+                        format: '{point.y:.2f}',
+                        format: '{point:.2f}',
                     }
                 },
                  CurvaPareto(calculaPareto(porc))
@@ -713,7 +750,10 @@
                 shadow: false
             },
             tooltip: {
-                shared: true
+                valueDecimals: 2,
+                shared: true,
+                format: '{point.y:.2f}',
+                format: '{point:.2f}',
             },
             plotOptions: {
                 column: {
@@ -747,12 +787,16 @@
                     enabled: false,
                     color: 'black',
                     align: 'center',
+                    format: '{point.y:.2f}',
                     style: {
                         fontSize: '10px',
                     }
                 },
                 tooltip: {
-                    valueSuffix: ''
+                    valueDecimals: 2,
+                    valueSuffix: '',
+                    format: '{point.y:.2f}',
+                    format: '{point:.2f}',
                 }
             }, {
                 visible: false,
@@ -779,12 +823,16 @@
                     enabled: false,
                     color: 'black',
                     align: 'center',
+                    format: '{point.y:.2f}',
                     style: {
                         fontSize: '10px',
                     }
                 },
                 tooltip: {
-                    valueSuffix: ' %'
+                    valueDecimals: 2,
+                    valueSuffix: ' %',
+                    format: '{point.y:.2f}',
+                    format: '{point:.2f}',
                 }
             }, {
                 visible: false,
@@ -811,12 +859,16 @@
                     enabled: false,
                     color: 'black',
                     align: 'center',
+                    format: '{point.y:.2f}',
                     style: {
                         fontSize: '10px',
                     }
                 },
                 tooltip: {
-                    valueSuffix: ''
+                    valueDecimals: 2,
+                    valueSuffix: '',
+                    format: '{point.y:.2f}',
+                    format: '{point:.2f}',
                 }
             }
             //, {
@@ -960,7 +1012,10 @@
                 shadow: false
             },
             tooltip: {
-                shared: true
+                valueDecimals: 2,
+                shared: true,
+                format: '{point.y:.2f}',
+                format: '{point:.2f}',
             },
             plotOptions: {
                 column: {
@@ -994,12 +1049,16 @@
                     enabled: false,
                     color: 'black',
                     align: 'center',
+                    format: '{point.y:.2f}',
                     style: {
                         fontSize: '10px',
                     }
                 },
                 tooltip: {
-                    valueSuffix: ''
+                    valueDecimals: 2,
+                    valueSuffix: '',
+                    format: '{point.y:.2f}',
+                    format: '{point:.2f}',
                 }
             }, {
                 visible: false,
@@ -1026,12 +1085,16 @@
                     enabled: false,
                     color: 'black',
                     align: 'center',
+                    format: '{point.y:.2f}',
                     style: {
                         fontSize: '10px',
                     }
                 },
                 tooltip: {
-                    valueSuffix: ' %'
+                    valueDecimals: 2,
+                    valueSuffix: ' %',
+                    format: '{point.y:.2f}',
+                    format: '{point:.2f}',
                 }
             }, {
                 visible: false,
@@ -1058,12 +1121,16 @@
                     enabled: false,
                     color: 'black',
                     align: 'center',
+                    format: '{point.y:.2f}',
                     style: {
                         fontSize: '10px',
                     }
                 },
                 tooltip: {
-                    valueSuffix: ''
+                    valueDecimals: 2,
+                    valueSuffix: '',
+                    format: '{point.y:.2f}',
+                    format: '{point:.2f}',
                 }
             }
             //, {
@@ -1200,7 +1267,10 @@
                     shadow: false
                 },
                 tooltip: {
-                    shared: true
+                    valueDecimals: 2,
+                    shared: true,
+                    format: '{point.y:.2f}',
+                    format: '{point:.2f}',
                 },
                 plotOptions: {
                     column: {
@@ -1234,12 +1304,16 @@
                         enabled: false,
                         color: 'black',
                         align: 'center',
+                        format: '{point.y:.2f}',
                         style: {
                             fontSize: '10px',
                         }
                     },
                     tooltip: {
-                        valueSuffix: ''
+                        valueDecimals: 2,
+                        valueSuffix: '',
+                        format: '{point.y:.2f}',
+                        format: '{point:.2f}',
                     }
                 }, {
                     visible: false,
@@ -1263,12 +1337,16 @@
                         enabled: false,
                         color: 'black',
                         align: 'center',
+                        format: '{point.y:.2f}',
                         style: {
                             fontSize: '10px',
                         }
                     },
                     tooltip: {
-                        valueSuffix: ' %'
+                        valueDecimals: 2,
+                        valueSuffix: ' %',
+                        format: '{point.y:.2f}',
+                        format: '{point:.2f}',
                     }
                 }, {
                     visible: false,
@@ -1295,12 +1373,16 @@
                         enabled: false,
                         color: 'black',
                         align: 'center',
+                        format: '{point.y:.2f}',
                         style: {
                             fontSize: '10px',
                         }
                     },
                     tooltip: {
-                        valueSuffix: ''
+                        valueDecimals: 2,
+                        valueSuffix: '',
+                        format: '{point.y:.2f}',
+                        format: '{point:.2f}',
                     }
                 }]
             }, function(){
@@ -1377,7 +1459,10 @@
                     shadow: false
                 },
                 tooltip: {
-                    shared: true
+                    valueDecimals: 2,
+                    shared: true,
+                    format: '{point.y:.2f}',
+                    format: '{point:.2f}',
                 },
                 plotOptions: {
                     column: {
@@ -1410,12 +1495,16 @@
                         enabled: false,
                         color: 'black',
                         align: 'center',
+                        format: '{point.y:.2f}',
                         style: {
                             fontSize: '10px',
                         }
                     },
                     tooltip: {
-                        valueSuffix: ''
+                        valueDecimals: 2,
+                        valueSuffix: '',
+                        format: '{point.y:.2f}',
+                        format: '{point:.2f}',
                     }
                 }, {
                     visible: false,
@@ -1438,12 +1527,16 @@
                         enabled: false,
                         color: 'black',
                         align: 'center',
+                        format: '{point.y:.2f}',
                         style: {
                             fontSize: '10px',
                         }
                     },
                     tooltip: {
-                        valueSuffix: ' %'
+                        valueDecimals: 2,
+                        valueSuffix: ' %',
+                        format: '{point.y:.2f}',
+                        format: '{point:.2f}',
                     }
                 }, {
                     visible: false,
@@ -1468,12 +1561,16 @@
                         enabled: false,
                         color: 'black',
                         align: 'center',
+                        format: '{point.y:.2f}',
                         style: {
                             fontSize: '10px',
                         }
                     },
                     tooltip: {
-                        valueSuffix: ''
+                        valueDecimals: 2,
+                        valueSuffix: '',
+                        format: '{point.y:.2f}',
+                        format: '{point:.2f}',
                     }
                 }]
             }, function(){
@@ -1644,7 +1741,10 @@
                 shadow: false
             },
             tooltip: {
-                shared: true
+                valueDecimals: 2,
+                shared: true,
+                format: '{point.y:.2f}',
+                format: '{point:.2f}',
             },
             plotOptions: {
                 column: {
@@ -1680,12 +1780,16 @@
                     enabled: false,
                     color: 'black',
                     align: 'center',
+                    format: '{point.y:.2f}',
                     style: {
                         fontSize: '10px',
                     }
                 },
                 tooltip: {
-                    valueSuffix: ' %'
+                    valueDecimals: 2,
+                    valueSuffix: ' %',
+                    format: '{point.y:.2f}',
+                    format: '{point:.2f}',
                 }
             }, {
                 //visible: false,
@@ -1714,12 +1818,16 @@
                     enabled: false,
                     color: 'black',
                     align: 'center',
+                    format: '{point.y:.2f}',
                     style: {
                         fontSize: '10px',
                     }
                 },
                 tooltip: {
-                    valueSuffix: ''
+                    valueDecimals: 2,
+                    valueSuffix: '',
+                    format: '{point.y:.2f}',
+                    format: '{point:.2f}',
                 }
             }]
         });
@@ -1887,7 +1995,7 @@
             Titulo = "Tarefas";
         }
         $('#Titulo').html('Resultados das Avaliações dos ' + Titulo);
-        $('#TituloGrafico').html(TituloGrafico);
+        //$('#TituloGrafico').html(TituloGrafico);
         $('#TituloTabela').html('Lista de Resultados das Avaliações dos ' + Titulo);
     }
 
@@ -1907,7 +2015,9 @@
             yAxis: 1,
             tooltip: {
                 valueDecimals: 2,
-                valueSuffix: ' %'
+                valueSuffix: ' %',
+                format: '{point.y:.2f}',
+                format: '{point:.2f}',
             },
             zones: [{
                 value: 80,
@@ -1930,12 +2040,29 @@
     }
 
     function FTA2(dataCarrierForm, highChartInstance) {
-        enviar2['auditorId'] = GetUsuarioId();;
-        let params = enviar2
+
+        var enviarFTA = {};
+        enviarFTA['_DataInicioFTA'] = enviar2.startDate;
+        enviarFTA['_DataFimFTA'] = enviar2.endDate;
+        enviarFTA['Supervisor_Id'] = GetUsuarioId();
+        enviarFTA['Unidade_Id'] = enviar2.UnitId;
+        enviarFTA['PercentualNCFTA'] = enviar2.PercentualNCFTA;
+        enviarFTA['ReincidenciaDesvioFTA'] = enviar2.ReincidenciaDesvioFTA;
+        enviarFTA['level1Id'] = enviar2.level1Id == 0 ? null : enviar2.level1Id;
+        enviarFTA['level2Id'] = enviar2.level2Id == 0 ? null : enviar2.level2Id;;
+        enviarFTA['level3Id'] = enviar2.level3Id == 0 ? null : enviar2.level3Id;;
+
+        //enviar2['auditorId'] = GetUsuarioId();
+        //let params = enviar2
+        let params = enviarFTA;
         let str = jQuery.param(params);
         console.log(highChartInstance);
         console.log(str);
         let preServer = @Html.Raw(Json.Encode(GlobalConfig.pathFTA));
+
+        preServer = preServer.substr(0,(preServer.length - 1));
+        preServer += "2?"
+
         $('#ftaModal').modal();
         $('#ftaModalSim').attr('href', preServer + str);
     }

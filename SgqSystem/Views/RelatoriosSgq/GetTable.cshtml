@@ -257,6 +257,12 @@
 
     }
 
+    if ($('.colHead1:last > table:first').width() < $('.colHead1:last').parent().width()) {
+        $('.colHead1:last').parent().width($('.colHead1:last > table:first').width() + 6);
+        //$('.colUieFim1:last').parent().css( { marginLeft : "-5px" } );
+        $('.colUieFim1:last').parent().css({ float: "left" });
+    }
+
     var _dados1;
     var _dados2;
     var _dados3;
