@@ -132,6 +132,7 @@ INSERT INTO #AMOSTRATIPO4
 		FROM CollectionLevel2 C2 (NOLOCK)
 		INNER JOIN ParLevel1 L1 (NOLOCK)
 			ON L1.Id = C2.ParLevel1_Id
+            AND L1.Id <> 43
 		INNER JOIN ParCompany C (NOLOCK)
 			ON C.Id = C2.UnitId
 		WHERE CAST(C2.CollectionDate AS DATE) BETWEEN @DATAINICIAL AND @DATAFINAL
@@ -276,6 +277,7 @@ FROM (SELECT
 		FROM ConsolidationLevel1 CL1 (NOLOCK)
 		INNER JOIN ParLevel1 IND (NOLOCK)
 			ON IND.Id = CL1.ParLevel1_Id
+            AND IND.Id <> 43
 		INNER JOIN ParCompany UNI (NOLOCK)
 			ON UNI.Id = CL1.UnitId
 		LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
@@ -429,6 +431,7 @@ FROM (SELECT
 		ON CL1.Id = CL2.ConsolidationLevel1_Id
 	INNER JOIN ParLevel1 IND (NOLOCK)
 		ON IND.Id = CL1.ParLevel1_Id
+        AND IND.Id <> 43
 	INNER JOIN ParLevel2 MON (NOLOCK)
 		ON MON.Id = CL2.ParLevel2_Id
 	INNER JOIN ParCompany UNI (NOLOCK)
@@ -562,6 +565,7 @@ FROM (SELECT
 		ON UNI.Id = C2.UnitId
 	INNER JOIN ParLevel1 IND (NOLOCK)
 		ON IND.Id = C2.ParLevel1_Id
+        AND IND.Id <> 43
 	INNER JOIN ParLevel2 MON (NOLOCK)
 		ON MON.Id = C2.ParLevel2_Id
 	WHERE IND.Id = " + form.level1Id + @"
@@ -670,6 +674,7 @@ INSERT INTO #AMOSTRATIPO4
 		FROM CollectionLevel2 C2 (NOLOCK)
 		INNER JOIN ParLevel1 L1 (NOLOCK)
 			ON L1.Id = C2.ParLevel1_Id
+            AND L1.Id <> 43
 		INNER JOIN ParCompany C (NOLOCK)
 			ON C.Id = C2.UnitId
 		WHERE CAST(C2.CollectionDate AS DATE) BETWEEN @DATAINICIAL AND @DATAFINAL
@@ -809,6 +814,7 @@ FROM (SELECT
 		FROM ConsolidationLevel1 CL1 (NOLOCK)
 		INNER JOIN ParLevel1 IND (NOLOCK)
 			ON IND.Id = CL1.ParLevel1_Id
+            AND IND.Id <> 43
 		INNER JOIN ParCompany UNI (NOLOCK)
 			ON UNI.Id = CL1.UnitId
 		LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
@@ -947,6 +953,7 @@ FROM (SELECT
 		ON CL1.Id = CL2.ConsolidationLevel1_Id
 	INNER JOIN ParLevel1 IND (NOLOCK)
 		ON IND.Id = CL1.ParLevel1_Id
+        AND IND.Id <> 43
 	INNER JOIN ParLevel2 MON (NOLOCK)
 		ON MON.Id = CL2.ParLevel2_Id
 	INNER JOIN ParCompany UNI (NOLOCK)
@@ -1082,6 +1089,7 @@ FROM (SELECT
 		ON UNI.Id = C2.UnitId
 	INNER JOIN ParLevel1 IND (NOLOCK)
 		ON IND.Id = C2.ParLevel1_Id
+        AND IND.Id <> 43
 	INNER JOIN ParLevel2 MON (NOLOCK)
 		ON MON.Id = C2.ParLevel2_Id
 	WHERE IND.Id = " + form.level1Id + @"
@@ -1146,8 +1154,8 @@ ORDER BY 8 DESC ";
 
 DECLARE @dataFim_ date = '" + form._dataFimSQL + @"'
   
- DECLARE @dataInicio_ date = DATEADD(MONTH, -1, @dataFim_)
-SET @dataInicio_ = DATEFROMPARTS(YEAR(@dataInicio_), MONTH(@dataInicio_), 01)
+ DECLARE @dataInicio_ date = '" + form._dataInicioSQL + @"'
+SET @dataInicio_ = '" + form._dataInicioSQL + @"'
   
  declare @ListaDatas_ table(data_ date)
   
@@ -1161,6 +1169,9 @@ SET @dataInicio_ = DATEADD(DAY, 1, @dataInicio_)
  END
  DECLARE @DATAFINAL DATE = @dataFim_
  DECLARE @DATAINICIAL DATE = DateAdd(mm, DateDiff(mm, 0, @DATAFINAL) - 1, 0)
+
+
+ SET @DATAINICIAL = '" + form._dataInicioSQL + @"'
 
        
  DECLARE @VOLUMEPCC int
@@ -1258,6 +1269,7 @@ FROM (SELECT
 		ON UNI.Id = C2.UnitId
 	INNER JOIN ParLevel1 IND (NOLOCK)
 		ON IND.Id = C2.ParLevel1_Id
+        AND IND.Id <> 43
 	INNER JOIN ParLevel2 MON (NOLOCK)
 		ON MON.Id = C2.ParLevel2_Id
 	WHERE IND.Id = " + form.level1Id + @"
@@ -1286,8 +1298,8 @@ ORDER BY 15";
             return @" 
  DECLARE @dataFim_ date = '" + form._dataFimSQL + @"'
   
- DECLARE @dataInicio_ date = DATEADD(MONTH, -1, @dataFim_)
-SET @dataInicio_ = DATEFROMPARTS(YEAR(@dataInicio_), MONTH(@dataInicio_), 01)
+ DECLARE @dataInicio_ date = '" + form._dataInicioSQL + @"'
+SET @dataInicio_ = '" + form._dataInicioSQL + @"'
   
  declare @ListaDatas_ table(data_ date)
   
@@ -1301,6 +1313,7 @@ SET @dataInicio_ = DATEADD(DAY, 1, @dataInicio_)
  END
  DECLARE @DATAFINAL DATE = @dataFim_
  DECLARE @DATAINICIAL DATE = DateAdd(mm, DateDiff(mm, 0, @DATAFINAL) - 1, 0)
+ SET @DATAINICIAL = '" + form._dataInicioSQL + @"'
  DECLARE @UNIDADE INT = " + form.unitId + @"
 
  CREATE TABLE #AMOSTRATIPO4a (   
@@ -1328,6 +1341,7 @@ INSERT INTO #AMOSTRATIPO4a
 		FROM CollectionLevel2 C2 (NOLOCK)
 		INNER JOIN ParLevel1 L1 (NOLOCK)
 			ON L1.Id = C2.ParLevel1_Id
+            AND L1.Id <> 43
 		INNER JOIN ParCompany C (NOLOCK)
 			ON C.Id = C2.UnitId
 		WHERE CAST(C2.CollectionDate AS DATE) BETWEEN @DATAINICIAL AND @DATAFINAL
@@ -1499,6 +1513,7 @@ FROM (SELECT
 			LEFT JOIN ParLevel1 IND (NOLOCK)
 				ON IND.Id = CL1.ParLevel1_Id
 				AND IND.Id = " + form.level1Id + @"
+                -- AND IND.Id <> 43
             LEFT JOIN ParLevel2 MON (NOLOCK)
 				ON MON.Id = CL2.ParLevel2_Id
 				AND MON.Id = " + form.level2Id + @"
@@ -1526,6 +1541,7 @@ FROM (SELECT
 					ON CL2.ConsolidationLevel1_Id = CL1.Id
 				LEFT JOIN ParLevel1 IND (NOLOCK)
 					ON IND.Id = CL1.ParLevel1_Id
+                    AND IND.Id <> 43
 				LEFT JOIN ParLevel2 MON (NOLOCK)
 					ON MON.Id = CL2.ParLevel2_Id
 				--AND IND.ID = 1  
@@ -1567,8 +1583,8 @@ DROP TABLE #AMOSTRATIPO4a  ";
             return @" 
  DECLARE @dataFim_ date = '" + form._dataFimSQL + @"'
   
- DECLARE @dataInicio_ date = DATEADD(MONTH, -1, @dataFim_)
-SET @dataInicio_ = DATEFROMPARTS(YEAR(@dataInicio_), MONTH(@dataInicio_), 01)
+ DECLARE @dataInicio_ date = '" + form._dataInicioSQL + @"'
+SET @dataInicio_ = '" + form._dataInicioSQL + @"'
   
  declare @ListaDatas_ table(data_ date)
   
@@ -1582,6 +1598,7 @@ SET @dataInicio_ = DATEADD(DAY, 1, @dataInicio_)
  END
  DECLARE @DATAFINAL DATE = @dataFim_
  DECLARE @DATAINICIAL DATE = DateAdd(mm, DateDiff(mm, 0, @DATAFINAL) - 1, 0)
+ SET @DATAINICIAL = '" + form._dataInicioSQL + @"'
  DECLARE @UNIDADE INT = " + form.unitId + @"
 
  CREATE TABLE #AMOSTRATIPO4a (   
@@ -1609,6 +1626,7 @@ INSERT INTO #AMOSTRATIPO4a
 		FROM CollectionLevel2 C2 (NOLOCK)
 		INNER JOIN ParLevel1 L1 (NOLOCK)
 			ON L1.Id = C2.ParLevel1_Id
+            AND L1.Id <> 43
 		INNER JOIN ParCompany C (NOLOCK)
 			ON C.Id = C2.UnitId
 		WHERE CAST(C2.CollectionDate AS DATE) BETWEEN @DATAINICIAL AND @DATAFINAL
@@ -1772,6 +1790,7 @@ FROM (SELECT
 			LEFT JOIN ParLevel1 IND (NOLOCK)
 				ON IND.Id = CL1.ParLevel1_Id
 				AND IND.Id = " + form.level1Id + @"
+                --AND IND.Id <> 43
 			LEFT JOIN ParCompany UNI (NOLOCK)
 				ON UNI.Id = CL1.UnitId
 				AND UNI.Id = @UNIDADE
@@ -1792,7 +1811,7 @@ FROM (SELECT
 					AND UnitId <> 11514) CL1
 				LEFT JOIN ParLevel1 IND (NOLOCK)
 					ON IND.Id = CL1.ParLevel1_Id
-					--AND IND.ID = 1  
+					AND IND.Id <> 43 
 				LEFT JOIN ParCompany UNI (NOLOCK)
 					ON UNI.Id = CL1.UnitId
 				LEFT JOIN #AMOSTRATIPO4a A4 (NOLOCK)

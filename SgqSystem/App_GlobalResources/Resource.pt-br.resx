@@ -649,7 +649,7 @@
     <value>Salvando</value>
   </data>
   <data name="structure_group" xml:space="preserve">
-    <value>Estrutura do Grupo</value>
+    <value>Regional</value>
   </data>
   <data name="company" xml:space="preserve">
     <value>Empresa</value>
@@ -2102,5 +2102,11 @@
   </data>
   <data name="do_you_want_to_create_an_anomaly_treatment_form" xml:space="preserve">
     <value>Deseja Criar um Formulario de Tratamento de anomalia?</value>
+  </data>
+  <data name="evolutional" xml:space="preserve">
+    <value>Evolutivo</value>
+  </data>
+  <data name="spc_charts" xml:space="preserve">
+    <value>Cartas CEP</value>
   </data>
 </root>
