@@ -31,18 +31,22 @@
         <h2 id="Titulo"></h2>
         <h3 id="TituloGrafico" style="display:none;"></h3>
         <br />
-        <div id="showNCIndicador" class="totalNC alert alert-info col-lg-2" role="alert" hidden>
-            <h1>0 %</h1>
-            <br />
-            <span>De Não Conformidade no Periodo</span>
+        <div class="totalNC" id="NCIndicador" hidden>
+            <div id="showNCIndicador" class="alert alert-info col-lg-2" role="alert">
+                <h1>0 %</h1>
+                <br />
+                <span>De Não Conformidade no Periodo</span>
+            </div>
+            <div class="col-lg-10" id="GraficoHistoricoIndicador"></div>
         </div>
-        <div class="col-lg-10" id="GraficoHistoricoIndicador"></div>
-        <div id="showNCMonitoramento" class="totalNC alert alert-info col-lg-2" role="alert" hidden>
-            <h1>0 %</h1>
-            <br />
-            <span>De Não Conformidade no Periodo</span>
+        <div class="totalNC" id="NCMonitoramento" hidden>
+            <div id="showNCMonitoramento" class="alert alert-info col-lg-2" role="alert">
+                <h1>0 %</h1>
+                <br />
+                <span>De Não Conformidade no Periodo</span>
+            </div>
+            <div class="col-lg-10" id="GraficoHistoricoMonitoramento"></div>
         </div>
-        <div class="col-lg-10" id="GraficoHistoricoMonitoramento"></div>
         <br />
         <div id="GraficoPeriodoSemUnidadeLoader"></div>
         <div id="GraficoPeriodoSemUnidade"></div>        
@@ -176,10 +180,12 @@
         $('#divMensagemAlerta').hide();
         $('#GraficoHistoricoIndicador').empty();
         $('#GraficoHistoricoMonitoramento').empty();
+        $('#GraficoPeriodoSemUnidade').empty();
         $('.totalNC').hide();
 
-        EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", true);
-        EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", undefined);
+        enviar['auditorId'] = GetUsuarioId();
+
+        EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", true);        
         EasyAjax(UrlListaResultadosPeriodo, enviar, GerarTabela, "DataTable", undefined);
 
         if (enviar['unitId'] > 0) {
@@ -192,6 +198,8 @@
             }else if (enviar['level1Id'] > 0) {
                 EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
             }
+        }else{
+            EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", undefined);
         }
 
         //}
@@ -1383,7 +1391,7 @@
                 }]
             }, function(){
                 $('#showNCIndicador > h1').text(parseFloat(porcPeriodo.toFixed(2)) + " %");
-                $('#showNCIndicador').show();
+                $('#NCIndicador').show();
             });
 
         }
@@ -1571,7 +1579,7 @@
                 }]
             }, function(){
                 $('#showNCMonitoramento > h1').text(parseFloat(porcPeriodo.toFixed(2)) + " %");
-                $('#showNCMonitoramento').show();
+                $('#NCMonitoramento').show();
             });
         }
     }
