@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -319,6 +319,7 @@
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
     <Compile Include="Controllers\Api\LanguageController.cs" />
+    <Compile Include="Controllers\Api\ResultLevel3PhotosApiController.cs" />
     <Compile Include="Controllers\Api\UserAndRoles\LoginController.cs" />
     <Compile Include="Controllers\Api\NQAController.cs" />
     <Compile Include="Controllers\Api\Params\ParamsApiController.cs" />
@@ -344,6 +345,7 @@
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\Familia\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Params\ParBinaryDataTypeController.cs" />
+    <Compile Include="Controllers\Photo\PhotoController.cs" />
     <Compile Include="Controllers\Relatorios\ParGoalScorecardController.cs" />
     <Compile Include="Controllers\Relatorios\RelatoriosSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleController.cs" />
@@ -1414,6 +1416,7 @@
     <Content Include="Views\RelatoriosSgq\RelatorioDeResultados.cshtml" />
     <Content Include="Views\Shared\_SelectVinculado.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoCumprimentoMeta.cshtml" />
+    <Content Include="Views\Photo\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
