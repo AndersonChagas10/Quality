@@ -23,8 +23,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             retorno = new List<RelatorioResultadosPeriodo>();
             retorno2 = new List<RetornoGenerico>();
             retorno3 = new List<RetornoGenerico>();
-            retorno4 = new List<RetornoGenerico>();
-            
+            retorno4 = new List<RetornoGenerico>();           
         }
 
         [HttpPost]
@@ -2085,7 +2084,6 @@ DROP TABLE #AMOSTRATIPO4a  ";
             //retorno4.Add(new RelatorioResultadosPeriodo { Av = 5, Data = DateTime.Now, Indicador = 5, IndicadorName = "Nome Indicador", Nc = 50, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 50, UnidadeName = "Lins" });
             return retorno4;
         }
-
 
         [HttpPost]
         [Route("listaAcoesIndicador")]

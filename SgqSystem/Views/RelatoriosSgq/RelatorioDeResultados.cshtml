@@ -10,7 +10,8 @@
     }
 
     .position-modal {
-        margin-top: 80px;
+        top:5%;
+        outline: none;
     }
 </style>
 
@@ -86,7 +87,7 @@
     </div>
 </div>
 
-<div class="modal fade bs-example-modal-lg" id="modalResultados" role="dialog">
+<div class="modal fade bs-example-modal-lg position-modal" id="modalResultados" role="dialog">
     <div class="modal-dialog modal-lg ">
 
         <!-- Modal content-->
@@ -107,7 +108,7 @@
 </div>
 
 <!-- Modal FTA -->
-<div class="modal fade bs-example-modal-lg" id="ftaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade bs-example-modal-lg position-modal" id="ftaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg position-modal" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -128,7 +129,7 @@
 </div>
 
 <!-- Modal ACOES X INDICADORES -->
-<div class="modal fade bs-example-modal-lg" id="IndicadorXAcaoModal" role="dialog">
+<div class="modal fade bs-example-modal-lg position-modal" id="IndicadorXAcaoModal" role="dialog">
     <div class="modal-dialog modal-lg position-modal" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -263,7 +264,7 @@
                             $('#modalHistorico').modal()
 
                             EasyAjax(UrlGraficoHistorico, enviar2, function (r) {
-                                console.log(r)
+                                //console.log(r)
                                 $('#GraficoHistoricoModal').empty()
                                 CallbackGraficoHistoricoModal(r)
                             }, "GraficoHistoricoModal")
@@ -682,268 +683,6 @@
         } else {
             $('#SemDados').show();
         }
-    }
-
-    function GerarGraficoHistoricoModal(data){
-
-        var dia = MapeiaValorParaHC(data, "_date");
-        var nc = MapeiaValorParaHC(data, "nc");
-        var porc = MapeiaValorParaHC(data, "procentagemNc");
-        //fazGambipraMenosCem(porc)
-        var qtdAv = MapeiaValorParaHC(data, "av");
-        var limInferior = MapeiaValorParaHC(data, "limiteInferior");
-        //var limSup = MapeiaValorParaHC(data, "limiteSuperior");
-        //var numeroAcoesConcluidas = MapeiaValorParaHC(data, "NumeroAcoesConcluidas");
-
-        /*Nao exibe no HC atribuindo nulo aonde for ZERO*/
-        //limInferior.forEach(function (o, c) {
-        //    if (o == 0)
-        //        limInferior[c] = null
-        //})
-        //limSup.forEach(function (o, c) {
-        //    if (o == 0)
-        //        limSup[c] = null
-        //})
-        //var NomesDeVerdade = []
-        //pegaNomeDoIndicadorGrafico(nome, NomesDeVerdade)
-        $('#GraficoHistoricoModal').removeClass('loader');
-
-        $('#GraficoHistoricoModal').empty();
-
-        chartHistorico = Highcharts.chart('GraficoHistoricoModal', {
-            //$('#GraficoHistoricoModal').empty().highcharts({
-            credits: {
-                enabled: false
-            },
-            chart: {
-                type: 'column',
-                zoomType: 'x,y'
-            },
-            title: {
-                //text: getNomeDoIndicadorTitulo(data[0].ChartTitle)
-                text: data[0].ChartTitle + " em " + data[0].UnidadeName
-            },
-            xAxis: {
-                categories: dia,
-                title: {
-                    text: 'Data',
-                },
-            },
-            yAxis: [
-                {
-                    //min: 0,
-                    title: {
-                        text: 'Quantidade'
-                    },
-                    labels: {
-                        format: '{value}',
-                        style: {
-                            color: Highcharts.getOptions().colors[1]
-                        }
-                    },
-                }, {
-                    //min: 0,
-                    labels: {
-                        format: '{value} %',
-                        style: {
-                            color: Highcharts.getOptions().colors[1]
-                        }
-                    },
-                    title: {
-                        text: '% NC',
-                    },
-                    opposite: true
-                }],
-            legend: {
-                shadow: false
-            },
-            tooltip: {
-                valueDecimals: 2,
-                shared: true,
-                format: '{point.y:.2f}',
-                format: '{point:.2f}',
-            },
-            plotOptions: {
-                column: {
-                    grouping: false,
-                    shadow: false,
-                    borderWidth: 0
-                }
-            },
-            series: [{
-                name: 'NC',
-                color: 'rgba(77,143,189,1)',
-                data: nc,
-                yAxis: 0,
-                type: 'line',
-                marker: {
-                    enabled: false
-                },
-                pointPadding: 0.2,
-                //pointPlacement: -0.2,
-                point: {
-                    events: {
-                        click: function () {
-
-                            FTA2(enviar, this)
-                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
-                        }
-                    }
-                },
-                dataLabels: {
-                    //enabled: true,
-                    enabled: false,
-                    color: 'black',
-                    align: 'center',
-                    format: '{point.y:.2f}',
-                    style: {
-                        fontSize: '10px',
-                    }
-                },
-                tooltip: {
-                    valueDecimals: 2,
-                    valueSuffix: '',
-                    format: '{point.y:.2f}',
-                    format: '{point:.2f}',
-                }
-            }, {
-                visible: false,
-                name: '% NC',
-                color: 'rgba(240,124,0,1)',
-                data: porc,
-                yAxis: 1,
-                type: 'line',
-                marker: {
-                    enabled: false
-                },
-                //pointPadding: 0.4,
-                //pointPlacement: -0.2,
-                point: {
-                    events: {
-                        click: function () {
-                            FTA2(enviar, this)
-                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
-                        }
-                    }
-                },
-                dataLabels: {
-                    //enabled: true,
-                    enabled: false,
-                    color: 'black',
-                    align: 'center',
-                    format: '{point.y:.2f}',
-                    style: {
-                        fontSize: '10px',
-                    }
-                },
-                tooltip: {
-                    valueDecimals: 2,
-                    valueSuffix: ' %',
-                    format: '{point.y:.2f}',
-                    format: '{point:.2f}',
-                }
-            }, {
-                visible: false,
-                name: 'Avaliações',
-                data: qtdAv,
-                type: 'line',
-                marker: {
-                    enabled: false
-                },
-                color: 'rgba(81,207,64,1)',
-                pointPadding: 0.3,
-                pointPlacement: 0.2,
-                yAxis: 0,
-                point: {
-                    events: {
-                        click: function () {
-                            FTA2(enviar, this)
-                            //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
-                        }
-                    }
-                },
-                dataLabels: {
-                    //enabled: true,
-                    enabled: false,
-                    color: 'black',
-                    align: 'center',
-                    format: '{point.y:.2f}',
-                    style: {
-                        fontSize: '10px',
-                    }
-                },
-                tooltip: {
-                    valueDecimals: 2,
-                    valueSuffix: '',
-                    format: '{point.y:.2f}',
-                    format: '{point:.2f}',
-                }
-            }
-            //, {
-            //    name: 'Limite Inferior',
-            //    color: 'red',
-            //    data: limInferior,
-            //    yAxis: 0,
-            //    type: 'line',
-            //    marker: {
-            //        enabled: false
-            //    },
-            //    pointPadding: 0.2,
-            //    //pointPlacement: -0.2,
-            //    point: {
-            //        events: {
-            //            click: function () {
-            //                FTA2(enviar, this)
-            //                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
-            //            }
-            //        }
-            //    },
-            //    dataLabels: {
-            //        //enabled: true,
-            //        enabled: false,
-            //        color: 'black',
-            //        align: 'center',
-            //        style: {
-            //            fontSize: '10px',
-            //        }
-            //    },
-            //    tooltip: {
-            //        valueSuffix: ''
-            //    }
-            //}, {
-            //    name: 'Limite Superior',
-            //    color: 'brown',
-            //    data: limSup,
-            //    yAxis: 0,
-            //    type: 'line',
-            //    marker: {
-            //        enabled: false
-            //    },
-            //    pointPadding: 0.2,
-            //    //pointPlacement: -0.2,
-            //    point: {
-            //        events: {
-            //            click: function () {
-            //                FTA2(enviar2, this)
-            //                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
-            //            }
-            //        }
-            //    },
-            //    dataLabels: {
-            //        //enabled: true,
-            //        enabled: false,
-            //        color: 'black',
-            //        align: 'center',
-            //        style: {
-            //            fontSize: '10px',
-            //        }
-            //    },
-            //    tooltip: {
-            //        valueSuffix: ''
-            //    }
-            //}
-            ]
-        });
     }
 
     function CallbackGraficoHistoricoModal(data) {
@@ -1597,7 +1336,7 @@
                 retornoArray[counter]["status"] = '<p style="color:red; font-size:15px;"><i class="fa fa-fw fa-close"></i></p>';
             counter++;
         }
-        console.log(retornoArray);
+        //console.log(retornoArray);
         var tableResultados = $('#DataTableResultados').empty().DataTable({
             data: retornoArray,
             columns: [
@@ -2064,8 +1803,8 @@
         //let params = enviar2
         let params = enviarFTA;
         let str = jQuery.param(params);
-        console.log(highChartInstance);
-        console.log(str);
+        //console.log(highChartInstance);
+        //console.log(str);
         let preServer = @Html.Raw(Json.Encode(GlobalConfig.pathFTA));
 
         preServer = preServer.substr(0,(preServer.length - 1));

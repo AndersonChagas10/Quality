@@ -23,6 +23,8 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
         [Route("GetParCluster")]
         public List<ParClusterDTO> GetParCluster(List<UnitDTO> teste)
         {
+            var retorno = new List<ParClusterDTO>();
+
             var lista = "";
 
             foreach (var item in teste)
@@ -45,15 +47,17 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
 
             using (var db = new SgqDbDevEntities())
             {
-                var retorno = db.Database.SqlQuery<ParClusterDTO>(query).ToList();
-                return retorno;
+                retorno = db.Database.SqlQuery<ParClusterDTO>(query).ToList();
             }
+
+            return retorno;
         }
 
         [HttpPost]
         [Route("GetParStructure")]
         public List<ParStructureDTO> GetParStructure(JObject JForm)
         {
+            var retorno = new List<ParStructureDTO>();
 
             dynamic Form = JForm;
 
@@ -94,15 +98,18 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
 
             using (var db = new SgqDbDevEntities())
             {
-                var retorno = db.Database.SqlQuery<ParStructureDTO>(query).ToList();
-                return retorno;
+                retorno = db.Database.SqlQuery<ParStructureDTO>(query).ToList();
             }
+
+            return retorno;
         }
 
         [HttpPost]
         [Route("GetParCompany")]
         public List<ParCompanyDTO> GetParCompany(JObject JForm)
         {
+            var retorno = new List<ParCompanyDTO>();
+
             dynamic Form = JForm;
 
             var lista = "";
@@ -148,15 +155,18 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
 
             using (var db = new SgqDbDevEntities())
             {
-                var retorno = db.Database.SqlQuery<ParCompanyDTO>(query).ToList();
-                return retorno;
+                retorno = db.Database.SqlQuery<ParCompanyDTO>(query).ToList();
             }
+
+            return retorno;
         }
 
         [HttpPost]
         [Route("GetParCriticalLevel")]
         public List<ParCriticalLevelDTO> GetParCriticalLevel(JObject JForm)
         {
+            var retorno = new List<ParCriticalLevelDTO>();
+
             dynamic Form = JForm;
 
             var whereCluster = "";
@@ -177,15 +187,19 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
 
             using (var db = new SgqDbDevEntities())
             {
-                var retorno = db.Database.SqlQuery<ParCriticalLevelDTO>(query).ToList();
-                return retorno;
+                retorno = db.Database.SqlQuery<ParCriticalLevelDTO>(query).ToList();
             }
+
+            return retorno;
         }
 
         [HttpPost]
         [Route("GetLevel1ParCriticalLevel")]
-        public List<ParCriticalLevelDTO> GetLevel1ParCriticalLevel(JObject JForm)
+        public List<ParLevel1DTO> GetLevel1ParCriticalLevel(JObject JForm)
         {
+            var retorno = new List<ParLevel1DTO>();
+
+
             dynamic Form = JForm;
 
             var whereCriticalLevel = "";
@@ -234,9 +248,10 @@ namespace SgqSystem.Controllers.Api.SelectVinculado
 
             using (var db = new SgqDbDevEntities())
             {
-                var retorno = db.Database.SqlQuery<ParCriticalLevelDTO>(query).ToList();
-                return retorno;
+                retorno = db.Database.SqlQuery<ParLevel1DTO>(query).ToList();
             }
+
+            return retorno;
         }
     }
 }
