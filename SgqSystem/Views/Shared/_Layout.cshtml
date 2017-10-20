@@ -6,6 +6,20 @@
     //var urlChangeLevel2UserCompany = Url.Action("ChangeLevel2UserCompany", "ParLevel2ControlCompany"); //URL relativa
     //var userRolesCompany =
     var urlLogOutCookie = @Url.Action("LogOutCookie", "UserAuthentication");
+
+    //EUA HML
+    //ViewBag.urlRootPa = "http://sgqtest.jbssa.com/actionPlan";
+    //ViewBag.urlRootPaFTA = "http://sgqtest.jbssa.com/actionPlan/Pa_Acao/NewFTA?";
+
+    //EUA GRT
+    ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcaoUSA";
+    ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcaoUSA/Pa_Acao/NewFTA?";
+
+    //JBS HML / PROD
+    //ViewBag.urlRootPa = "http://mtzsvmqsc/PlanoDeAcao";
+    //ViewBag.urlRootPaFTA = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao/NewFTA?";
+
+
 }
 <!DOCTYPE html>
 <html ng-app="sgqSystem">
@@ -200,10 +214,6 @@
     </div>
 
     <footer class="wrapper">
-
-        @*<div>
-                <a href="#" id="timeout-example">Click Here to See Demo</a>
-            </div>*@
 
         <p class="page-content-wrapper" style="padding-left: 16px; padding-right: 16px;">
             <label class="pull-right">Version: @Html.AssemblyVersion()</label>

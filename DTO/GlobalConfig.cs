@@ -203,6 +203,8 @@ namespace DTO
             pathFTA = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao/NewFTA?";
             //pathFTA = "http://localhost:57506/Pa_Acao/NewFTA?";
             //pathFTA = "http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?";
+            //pathFTA = "http://192.168.25.200/PlanoAcaoUSA/Pa_Acao/NewFTA?";
+            //pathFTA = "http://10.190.2.34/ActionPlanHML/Pa_Acao/NewFTA?";
 
             Verifica += "recoveryPassAvaliable:  " + recoveryPassAvaliable.ToString() + "\n";
             Verifica += "urlPreffixAppColleta:  " + urlPreffixAppColleta + "\n";

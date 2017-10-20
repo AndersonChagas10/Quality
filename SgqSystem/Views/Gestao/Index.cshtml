@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = Resources.Resource.management;
     var urlScorecard = Url.Action("Scorecard", "RelatoriosSgq");
     var urlRelatorioDiario = Url.Action("RelatorioDiario", "RelatoriosSgq");
@@ -10,7 +9,18 @@
     var urlAcaoCorretiva = Url.Action("CorrectiveActionreport", "Reports");
     var urlEvolutivo = Url.Action("RelatorioDeResultados", "RelatoriosSgq");
     var urlCEP = Url.Action("CartasCep", "RelatoriosSgq");
-    var urlPlanoDeAcao = "http://mtzsvmqsc/PlanoDeAcao";
+
+    //EUA HML
+    //ViewBag.urlRootPa = "http://sgqtest.jbssa.com/actionPlan";
+    //ViewBag.urlRootPaFTA = "http://sgqtest.jbssa.com/actionPlan/Pa_Acao/NewFTA?";
+
+    //EUA GRT
+    ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcaoUSA";
+    ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcaoUSA/Pa_Acao/NewFTA?";
+
+    //JBS HML / PROD
+    //ViewBag.urlRootPa = "http://mtzsvmqsc/PlanoDeAcao";
+    //ViewBag.urlRootPaFTA = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao/NewFTA?";
 }
 
 <style>
@@ -224,6 +234,13 @@
         font-weight: bold;
         background: #ccc;
     }
+
+    .under_construction {
+        height: 20px;
+        width: 20px;
+        float: right;
+
+    }
 </style>
 
 <div class="page-content" style="min-height: 525px; padding: 32px;">
@@ -280,14 +297,14 @@
 
                 <div id="menu1Plan" class="menuCampos">
 
-                    <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
+                    <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">@Resources.Resource.back</div>
 
                     <ul id="nav">
 
                         @*<li><a href="#">@Resources.Resource.general_view_of_the_area (Em Desenvolvimento)</a>*@
                         <li><a href="@urlVisaoGeralDaArea">@Resources.Resource.general_view_of_the_area</a>
 
-                        <li><a href="@urlPlanoDeAcao">@Resources.Resource.action_plan</a></li>
+                        <li><a href="@ViewBag.urlRootPa">@Resources.Resource.action_plan</a></li>
                     </ul>
 
                 </div>
@@ -302,11 +319,13 @@
 
                             <li>
                                 <a href="#">@Resources.Resource.collection_reports</a>
+                                <a href="@ViewBag.urlRootPa">@Resources.Resource.action_plan</a>
+
                                 <ul>
-                                    <li><a href="#">@Resources.Resource.customization</a></li>
-                                    <li><a href="#">@Resources.Resource.sgq_using</a></li>
+                                    @*<li><a href="#">@Resources.Resource.customization</a></li>*@
+                                    @*<li><a href="#">@Resources.Resource.sgq_using</a></li>*@
                                     <li><a href="@urlApontamentosDiarios">@Resources.Resource.daily_apointments</a></li>
-                                    <li><a href="@urlVerificacaoTipificacao">@Resources.Resource.tipification_verification</a></li>
+                                    @*<li><a href="@urlVerificacaoTipificacao">@Resources.Resource.tipification_verification</a></li>*@
                                 </ul>
                             </li>
                         </ul>
@@ -318,15 +337,15 @@
 
                     <div class="interno">
 
-                        <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
+                        <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">@Resources.Resource.back</div>
 
                         <ul id="nav">
-                            <li><a href="@urlRelatorioDiario">@Resources.Resource.daily_meeting</a></li>
-                            <li><a href="@urlNaoConformidade">@Resources.Resource.not_conformities</a></li>
-                            <li><a href="@urlCEP">@Resources.Resource.letters_cep (@Resources.Resource.desenvolvimento) </a></li>
+                            <li><a href="@urlRelatorioDiario">@Resources.Resource.daily_report</a></li>
+                            <li><a href="@urlNaoConformidade">@Resources.Resource.defects_reports</a></li>
+                            <li><a href="@urlCEP">@Resources.Resource.spc_charts <img class="under_construction" src="~/Imagens/under_construction.png" alt="Under_construction"/></a></li>
                             <li><a href="@urlScorecard">@Resources.Resource.scorecard</a></li>
-                            <li><a href="@urlAcaoCorretiva">@Resources.Resource.corrective_action (Beta)</a></li>
-                            <li><a href="@urlEvolutivo">@Resources.Resource.indicators_evolution (Beta) </a></li>
+                            <li><a href="@urlAcaoCorretiva">@Resources.Resource.corrective_action_reports</a></li>
+                            <li><a href="@urlEvolutivo">@Resources.Resource.evolutional <img class="under_construction" src="~/Imagens/under_construction.png" alt="Under_construction" /></a></li>
                         </ul>
                     </div>
 
@@ -336,10 +355,10 @@
 
                     <div class="interno">
 
-                        <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">Voltar</div>
+                        <div class="botaoFecharMenu" onclick="showHide('fundoMenuSuperior', 'fundoMenuSuperior')">@Resources.Resource.back</div>
 
                         <ul id="nav">
-                            <li><a href="#">@Resources.Resource.recidivism (@Resources.Resource.desenvolvimento) </a></li>
+                            <li><a href="#">@Resources.Resource.recidivism <img class="under_construction" src="~/Imagens/under_construction.png" alt="Under_construction" /></a></li>
                         </ul>
                     </div>
 
