@@ -83,7 +83,7 @@ namespace PlanoAcaoCore
         public int CausaGenerica_Id { get; set; }
         public string _CausaGenerica { get; set; }
 
-        [Display(Name = "Contramedida Genérica")]
+        [Display(Name = "Ação Genérica")]
         public int ContramedidaGenerica_Id { get; set; }
         public string _ContramedidaGenerica { get; set; }
 
@@ -94,7 +94,7 @@ namespace PlanoAcaoCore
         [Display(Name = "Causa Especifica")]
         public string CausaEspecifica { get; set; }
 
-        [Display(Name = "Contramedida Especifica")]
+        [Display(Name = "Ação Especifica")]
         public string ContramedidaEspecifica { get; set; }
 
         [Display(Name = "Indicador")]
