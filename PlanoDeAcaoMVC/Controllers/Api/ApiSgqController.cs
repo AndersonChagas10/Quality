@@ -80,11 +80,11 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         }
 
 
-//1	2017-03-08 20:12:27.8500000	NULL Atrasado
-//2	2017-03-08 20:12:27.8500000	NULL Cancelado
-//3	2017-03-08 20:12:27.8500000	NULL Concluído
-//4	2017-03-08 20:12:27.8500000	NULL Concluído com atraso
-//5	2017-03-08 20:12:27.8500000	NULL Em Andamento
+        //1	2017-03-08 20:12:27.8500000	NULL Atrasado
+        //2	2017-03-08 20:12:27.8500000	NULL Cancelado
+        //3	2017-03-08 20:12:27.8500000	NULL Concluído
+        //4	2017-03-08 20:12:27.8500000	NULL Concluído com atraso
+        //5	2017-03-08 20:12:27.8500000	NULL Em Andamento
 
         private Dictionary<string, int> FiltraPorLevel2(DateTime dataInicio, DateTime dataFim, Factory dbSgq, string level1, string unidadeNameSGQ, List<string> level2Name)
         {
@@ -93,7 +93,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             foreach (var l2Name in level2Name)
             {
                 //registros = db.Pa_Acao.Count(r => r.UnidadeName == unidadeNameSGQ && r.Level1Name == level1 && r.Level2Name == l2Name && r.AddDate<= dataFim && r.AddDate >= dataInicio && (r.Status == 5 || r.Status == 1));7
-                registros = db.Pa_Acao.Count(r => r.UnidadeName == unidadeNameSGQ && r.Level1Name == level1 && r.Level2Name == l2Name &&  (r.Status == 5 || r.Status == 1));
+                registros = db.Pa_Acao.Count(r => r.UnidadeName == unidadeNameSGQ && r.Level1Name == level1 && r.Level2Name == l2Name && (r.Status == 5 || r.Status == 1));
                 retorno.Add(l2Name, registros);
             }
             return retorno;
@@ -119,12 +119,109 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             foreach (var l3Name in level3Name)
             {
                 //registros = db.Pa_Acao.Count(r => r.UnidadeName == unidadeNameSGQ && r.Level1Name == level1 && r.Level2Name == level2 && r.Level3Name == l3Name && r.AddDate <= dataFim && r.AddDate >= dataInicio && (r.Status == 5 || r.Status == 1));
-                registros = db.Pa_Acao.Count(r => r.UnidadeName == unidadeNameSGQ && r.Level1Name == level1 && r.Level2Name == level2 && r.Level3Name == l3Name &&  (r.Status == 5 || r.Status == 1));
+                registros = db.Pa_Acao.Count(r => r.UnidadeName == unidadeNameSGQ && r.Level1Name == level1 && r.Level2Name == level2 && r.Level3Name == l3Name && (r.Status == 5 || r.Status == 1));
                 retorno.Add(l3Name, registros);
             }
             return retorno;
         }
 
+
+        [HttpPost]
+        [Route("GetAcoesByDate")]
+        public List<AcoesConcluidas> GetAcoesByDate(JObject filtro)
+        {
+            try
+            {
+                dynamic filtroDyn = filtro;
+                var retorno = new List<AcoesConcluidas>();
+                string inicio = filtroDyn.startDate;
+                string fim = filtroDyn.endDate;
+                int level = filtroDyn.isLevel;
+                var dataInicio = Guard.ParseDateToSqlV2(inicio, Guard.CultureCurrent.BR).ToString("yyyyMMdd");
+                var dataFim = Guard.ParseDateToSqlV2(fim, Guard.CultureCurrent.BR).ToString("yyyyMMdd");
+
+                string unidade = filtroDyn.unitId;
+                string level1Id = filtroDyn.level1Id;
+                string level2Id = filtroDyn.level2Id;
+                string level3Id = filtroDyn.level3Id;
+
+                var whereLevel = "";
+
+                if (level == 3)
+                {
+                    whereLevel = "AND pa.Level1Id = " + level1Id;
+                    whereLevel += ",AND pa.Level2Id = " + level2Id;
+                    whereLevel += ",AND pa.Level3Id = " + level3Id;
+                }
+                else if (level == 2)
+                {
+                    whereLevel = "AND pa.Level1Id = " + level1Id;
+                    whereLevel += ",AND pa.Level2Id = " + level2Id;
+                }
+                else if (level == 1)
+                {
+                    whereLevel = "AND pa.Level1Id = " + level1Id;
+                }
+
+                var query = @" DECLARE @dataFim_ date = '" + dataFim + @"'
+  
+                 DECLARE @dataInicio_ date = '" + dataInicio + @"'
+                SET @dataInicio_ = '" + dataInicio + @"'
+                  
+                 CREATE TABLE #ListaDatas_ (data_ date)
+                  
+                 WHILE @dataInicio_ <= @dataFim_  
+                 BEGIN
+                INSERT INTO #ListaDatas_
+                
+                	SELECT
+                		@dataInicio_
+                SET @dataInicio_ = DATEADD(DAY, 1, @dataInicio_)
+                  
+                 END
+                
+                SELECT
+                	LD.data_ as Data
+                   ,COUNT(DISTINCT PA.Id) QteConcluidas
+                FROM #ListaDatas_ LD
+                
+                LEFT JOIN (SELECT
+                		Acao_id
+                	   ,MAX(AddDate) Max_Date
+                	   ,COUNT(DISTINCT Acao_id) QteAcao
+                	FROM Pa_Acompanhamento
+                	WHERE Status_Id IN (3, 4)
+                	GROUP BY Acao_id) PC
+                	ON LD.data_ = CAST(PC.Max_Date AS DATE)
+                LEFT JOIN (SELECT
+                		*
+                	FROM Pa_Acao PA
+                	WHERE PA.Status IN (3, 4)
+                	" + whereLevel + @"
+                	AND PA.Unidade_Id = " + unidade + @") PA
+                	ON PC.Acao_Id = PA.Id
+                GROUP BY LD.data_
+                order by ld.data_
+
+                DROP TABLE #ListaDatas_";
+
+                retorno = db.Database.SqlQuery<AcoesConcluidas>(query).ToList();
+
+                return retorno;
+            }
+            catch (Exception e)
+            {
+                return new List<AcoesConcluidas>();
+            }
+
+        }
+
+        public class AcoesConcluidas
+        {
+            public DateTime Data { get; set; }
+            public int QteConcluidas { get; set; }
+            public string _data { get { return Data.ToString("dd/MM/yyyy"); } }
+        }
 
     }
 }
