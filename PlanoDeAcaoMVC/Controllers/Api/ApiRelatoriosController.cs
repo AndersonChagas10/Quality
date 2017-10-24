@@ -41,7 +41,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             if (!Conn.visaoOperacional)
             {
-                query += "\n,  ISNULL(ContraMedGen.ContramedidaGenerica, 'Não possui Contramedida Genérica') AS 'Contramedida Genérica'," +
+                query += "\n,  ISNULL(ContraMedGen.ContramedidaGenerica, 'Não possui Ação Genérica') AS 'Ação Genérica'," +
                 "\n  ISNULL(CausaGen.CausaGenerica, 'Não possui Causa Genérica') AS 'Causa Genérica'," +
                 "\n  ISNULL(GrpCausa.GrupoCausa, 'Não possui Grupo Causa') AS 'Grupo Causa'," +
                 "\n  ISNULL(Un.Description, 'Corporativo') AS 'Unidade'," +
@@ -186,7 +186,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             if (!Conn.visaoOperacional)
             {
-                query += "\n,  ISNULL(ContraMedGen.ContramedidaGenerica, 'Não possui Contramedida Genérica') AS 'Contramedida Genérica'," +
+                query += "\n,  ISNULL(ContraMedGen.ContramedidaGenerica, 'Não possui Ação Genérica') AS 'Ação Genérica'," +
                 "\n  ISNULL(CausaGen.CausaGenerica, 'Não possui Causa Genérica') AS 'Causa Genérica'," +
                 "\n  ISNULL(GrpCausa.GrupoCausa, 'Não possui Grupo Causa') AS 'Grupo Causa'," +
                 "\n  ISNULL(Un.Description, 'Corporativo') AS 'Unidade'," +

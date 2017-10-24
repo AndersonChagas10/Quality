@@ -18,15 +18,12 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         List<RetornoGenerico> retorno3;
         List<RetornoGenerico> retorno4;
 
-        private UserSgq usuario;
-        private SgqDbDevEntities conexao;
-
         public RelatorioDeResultadosApiController()
         {
             retorno = new List<RelatorioResultadosPeriodo>();
             retorno2 = new List<RetornoGenerico>();
             retorno3 = new List<RetornoGenerico>();
-            retorno4 = new List<RetornoGenerico>();
+            retorno4 = new List<RetornoGenerico>();           
         }
 
         [HttpPost]
@@ -59,20 +56,26 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             return retorno;
         }
 
-
         private void GetResultadosIndicador(FormularioParaRelatorioViewModel form)
         {
-            var where = "";
-            var where2 = "";
-            var where3 = "";
-            var where4 = "";
-
+            var whereUnidade = "";
+            var whereUnidade2 = "";
+            var whereCluster = "";
+            var whereStructure = "";
+            var whereCriticalLevel = "";
+            var userUnits = "";
             var whereStatus = "";
 
             if (form.unitId != 0)
             {
-                where = "WHERE ID = " + form.unitId + "";
-                where2 = "AND UNI.Id =" + form.unitId + "";
+                whereUnidade = "WHERE ID = " + form.unitId + "";
+                whereUnidade2 = "AND UNI.Id =" + form.unitId + "";
+            }
+            else
+            {
+                userUnits = GetUserUnits(form.auditorId);
+                whereUnidade = "WHERE ID IN (" + userUnits + ")";
+                whereUnidade2 = "AND UNI.Id IN (" + userUnits + ")";
             }
 
             if (form.statusIndicador == 1)
@@ -86,12 +89,17 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.clusterSelected_Id != 0)
             {
-                where3 = "and PCC.ParCluster_Id =  " + form.clusterSelected_Id;
+                whereCluster = "and PCC.ParCluster_Id =  " + form.clusterSelected_Id;
             }
 
             if (form.structureId != 0)
             {
-                where4 = "AND CXS.ParStructure_Id = " + form.structureId;
+                whereStructure = "AND CXS.ParStructure_Id = " + form.structureId;
+            }
+
+            if (form.criticalLevelId != 0)
+            {
+                whereCriticalLevel = "and L1XC.ParCriticalLevel_Id = " + form.criticalLevelId;
             }
 
             var query = @"
@@ -106,7 +114,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 SELECT
 	@ParCompany_id = ID
 FROM PARCOMPANY
-" + where + @"
+" + whereUnidade + @"
  CREATE TABLE #AMOSTRATIPO4 ( 
  UNIDADE INT NULL, 
  INDICADOR INT NULL, 
@@ -292,10 +300,11 @@ FROM (SELECT
 			ON PCC.ParCompany_Id = UNI.Id
 		WHERE 1 = 1
         AND CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
-		" + where2 + @"
-        " + where3 + @"
-        " + where4 + @"
-	-- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) 
+		" + whereUnidade2 + @"
+        " + whereCluster + @"
+        " + whereStructure + @"
+        " + whereCriticalLevel + @"
+    -- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) 
 	) S1
 	GROUP BY Unidade
 			,Unidade_Id
@@ -311,19 +320,43 @@ DROP TABLE #AMOSTRATIPO4 ";
             {
                 retorno = db.Database.SqlQuery<RelatorioResultadosPeriodo>(query).ToList();
             }
-        }
+        }      
 
         private void GetResultadosMonitoramento(FormularioParaRelatorioViewModel form)
         {
-            var where = "";
-            var where2 = "";
+            var whereUnidade = "";
+            var whereUnidade2 = "";
+            var whereCluster = "";
+            var whereStructure = "";
+            var whereCriticalLevel = "";
+            var userUnits = "";
 
             if (form.unitId != 0)
             {
-                where = "WHERE ID = " + form.unitId + "";
-                where2 = "AND UNI.Id =" + form.unitId + "";
+                whereUnidade = "WHERE ID = " + form.unitId + "";
+                whereUnidade2 = "AND UNI.Id =" + form.unitId + "";
+            }
+            else
+            {
+                userUnits = GetUserUnits(form.auditorId);
+                whereUnidade = "WHERE ID IN (" + userUnits + ")";
+                whereUnidade2 = "AND UNI.Id IN (" + userUnits + ")";
             }
 
+            if (form.clusterSelected_Id != 0)
+            {
+                whereCluster = "and PCC.ParCluster_Id =  " + form.clusterSelected_Id;
+            }
+
+            if (form.structureId != 0)
+            {
+                whereStructure = "AND CXS.ParStructure_Id = " + form.structureId;
+            }
+
+            if (form.criticalLevelId != 0)
+            {
+                whereCriticalLevel = "and L1XC.ParCriticalLevel_Id = " + form.criticalLevelId;
+            }
 
             var query = @"
  DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + @"'
@@ -336,7 +369,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 SELECT
 	@ParCompany_id = ID
 FROM PARCOMPANY
-" + where + @"
+" + whereUnidade + @"
 --------------------------------                                                                                                                     
 
 SELECT TOP 1
@@ -436,8 +469,19 @@ FROM (SELECT
 		ON MON.Id = CL2.ParLevel2_Id
 	INNER JOIN ParCompany UNI (NOLOCK)
 		ON UNI.Id = CL1.UnitId
-	WHERE CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
-	" + where2 + @"
+	INNER JOIN ParLevel1XCluster L1XC (NOLOCK)
+		ON CL1.ParLevel1_Id = L1XC.ParLevel1_Id
+           and L1XC.IsActive = 1
+	INNER JOIN ParCompanyXStructure CXS (NOLOCK)
+		ON CL1.UnitId = CXS.ParCompany_Id
+	INNER JOIN ParCompanyCluster PCC (NOLOCK)
+		ON PCC.ParCompany_Id = UNI.Id
+	WHERE 1 = 1
+    AND CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
+	" + whereUnidade2 + @"
+    " + whereCluster + @"
+    " + whereStructure + @"
+    " + whereCriticalLevel + @"
 	AND IND.Id = " + form.level1Id + @" )S1
 GROUP BY Level2Name, Unidade_Id, Unidade, level2_Id, level1_Id, S1.Level1Name
 HAVING SUM(NC) > 0
@@ -452,19 +496,44 @@ ORDER BY 10 DESC ";
 
         private void GetResultadosTarefa(FormularioParaRelatorioViewModel form)
         {
-            var where = "";
-            var where2 = "";
-            var where3 = "";
+            var whereUnidade = "";
+            var whereUnidade2 = "";
+            var whereLevel3 = "";
+            var whereCluster = "";
+            var whereStructure = "";
+            var whereCriticalLevel = "";
+            var userUnits = "";
 
             if (form.unitId != 0)
             {
-                where = "WHERE ID = " + form.unitId + "";
-                where2 = "AND UNI.Id = " + form.unitId + "";
+                whereUnidade = "WHERE ID = " + form.unitId + "";
+                whereUnidade2 = "AND UNI.Id = " + form.unitId + "";
+            }
+            else
+            {
+                userUnits = GetUserUnits(form.auditorId);
+                whereUnidade = "WHERE ID IN (" + userUnits + ")";
+                whereUnidade2 = "AND UNI.Id IN (" + userUnits + ")";
             }
 
             if (form.level3Id != 0)
             {
-                where3 = "AND R3.ParLevel3_Id = " + form.level3Id + "";
+                whereLevel3 = "AND R3.ParLevel3_Id = " + form.level3Id + "";
+            }
+
+            if (form.clusterSelected_Id != 0)
+            {
+                whereCluster = "and PCC.ParCluster_Id =  " + form.clusterSelected_Id;
+            }
+
+            if (form.structureId != 0)
+            {
+                whereStructure = "AND CXS.ParStructure_Id = " + form.structureId;
+            }
+
+            if (form.criticalLevelId != 0)
+            {
+                whereCriticalLevel = "and L1XC.ParCriticalLevel_Id = " + form.criticalLevelId;
             }
 
             var query = @"
@@ -478,7 +547,7 @@ ORDER BY 10 DESC ";
 SELECT
 	@ParCompany_id = ID
 FROM PARCOMPANY
-" + where + @"
+" + whereUnidade + @"
 --------------------------------                                                                                                                     
 
 SELECT TOP 1
@@ -568,10 +637,20 @@ FROM (SELECT
         AND IND.Id <> 43
 	INNER JOIN ParLevel2 MON (NOLOCK)
 		ON MON.Id = C2.ParLevel2_Id
+	INNER JOIN ParLevel1XCluster L1XC (NOLOCK)
+		ON CL1.ParLevel1_Id = L1XC.ParLevel1_Id
+           and L1XC.IsActive = 1
+	INNER JOIN ParCompanyXStructure CXS (NOLOCK)
+		ON CL1.UnitId = CXS.ParCompany_Id
+	INNER JOIN ParCompanyCluster PCC (NOLOCK)
+		ON PCC.ParCompany_Id = UNI.Id
 	WHERE IND.Id = " + form.level1Id + @"
 	AND MON.Id = " + form.level2Id + @"
-	" + where2 + @"
-    " + where3 + @"
+	" + whereUnidade2 + @"
+    " + whereLevel3 + @"
+    " + whereCluster + @"
+    " + whereStructure + @"
+    " + whereCriticalLevel + @"
 	AND R3.IsNotEvaluate = 0
 	AND CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 	GROUP BY IND.Id
@@ -617,14 +696,24 @@ ORDER BY 8 DESC ";
 
         private void GetResultadosIndicadorSemUnidade(FormularioParaRelatorioViewModel form)
         {
-            var where = "";
-            var where2 = "";
+            var whereUnidade = "";
+            var whereUnidade2 = "";
             var whereStatus = "";
+            var whereCluster = "";
+            var whereStructure = "";
+            var whereCriticalLevel = "";
+            var userUnits = "";
 
             if (form.unitId != 0)
             {
-                where = "WHERE ID = " + form.unitId + "";
-                where2 = "AND UNI.Id =" + form.unitId + "";
+                whereUnidade = "WHERE ID = " + form.unitId + "";
+                whereUnidade2 = "AND UNI.Id =" + form.unitId + "";
+            }
+            else
+            {
+                userUnits = GetUserUnits(form.auditorId);
+                whereUnidade = "WHERE ID IN (" + userUnits + ")";
+                whereUnidade2 = "AND UNI.Id IN (" + userUnits + ")";
             }
 
             if (form.statusIndicador == 1)
@@ -634,6 +723,21 @@ ORDER BY 8 DESC ";
             else if (form.statusIndicador == 2)
             {
                 whereStatus = "AND case when ProcentagemNc > S2.Meta then 0 else 1 end = 1";
+            }
+
+            if (form.clusterSelected_Id != 0)
+            {
+                whereCluster = "and PCC.ParCluster_Id =  " + form.clusterSelected_Id;
+            }
+
+            if (form.structureId != 0)
+            {
+                whereStructure = "AND CXS.ParStructure_Id = " + form.structureId;
+            }
+
+            if (form.criticalLevelId != 0)
+            {
+                whereCriticalLevel = "and L1XC.ParCriticalLevel_Id = " + form.criticalLevelId;
             }
 
             var query = @"
@@ -648,7 +752,7 @@ ORDER BY 8 DESC ";
 SELECT
 	@ParCompany_id = ID
 FROM PARCOMPANY
-" + where + @"
+" + whereUnidade + @"
  CREATE TABLE #AMOSTRATIPO4 ( 
  UNIDADE INT NULL, 
  INDICADOR INT NULL, 
@@ -820,8 +924,18 @@ FROM (SELECT
 		LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
 			ON A4.UNIDADE = UNI.Id
 			AND A4.INDICADOR = IND.ID
+		INNER JOIN ParLevel1XCluster L1XC (NOLOCK)
+			ON CL1.ParLevel1_Id = L1XC.ParLevel1_Id
+            and L1XC.IsActive = 1
+		INNER JOIN ParCompanyXStructure CXS (NOLOCK)
+			ON CL1.UnitId = CXS.ParCompany_Id
+		INNER JOIN ParCompanyCluster PCC
+			ON PCC.ParCompany_Id = UNI.Id
 		WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
-		" + where2 + @"
+		" + whereUnidade2 + @"
+        " + whereCluster + @"
+        " + whereStructure + @"
+        " + whereCriticalLevel + @"
 	) S1
 	GROUP BY 
 			Level1Name
@@ -840,15 +954,39 @@ DROP TABLE #AMOSTRATIPO4 ";
 
         private void GetResultadosMonitoramentoSemUnidade(FormularioParaRelatorioViewModel form)
         {
-            var where = "";
-            var where2 = "";
+            var whereUnidade = "";
+            var whereUnidade2 = "";
+            var whereCluster = "";
+            var whereStructure = "";
+            var whereCriticalLevel = "";
+            var userUnits = "";
 
             if (form.unitId != 0)
             {
-                where = "WHERE ID = " + form.unitId + "";
-                where2 = "AND UNI.Id =" + form.unitId + "";
+                whereUnidade = "WHERE ID = " + form.unitId + "";
+                whereUnidade2 = "AND UNI.Id =" + form.unitId + "";
+            }
+            else
+            {
+                userUnits = GetUserUnits(form.auditorId);
+                whereUnidade = "WHERE ID IN (" + userUnits + ")";
+                whereUnidade2 = "AND UNI.Id IN (" + userUnits + ")";
             }
 
+            if (form.clusterSelected_Id != 0)
+            {
+                whereCluster = "and PCC.ParCluster_Id =  " + form.clusterSelected_Id;
+            }
+
+            if (form.structureId != 0)
+            {
+                whereStructure = "AND CXS.ParStructure_Id = " + form.structureId;
+            }
+
+            if (form.criticalLevelId != 0)
+            {
+                whereCriticalLevel = "and L1XC.ParCriticalLevel_Id = " + form.criticalLevelId;
+            }
 
             var query = @"
  DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + @"'
@@ -861,7 +999,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 SELECT
 	@ParCompany_id = ID
 FROM PARCOMPANY
-" + where + @"
+" + whereUnidade + @"
 --------------------------------                                                                                                                     
 
 SELECT TOP 1
@@ -958,8 +1096,18 @@ FROM (SELECT
 		ON MON.Id = CL2.ParLevel2_Id
 	INNER JOIN ParCompany UNI (NOLOCK)
 		ON UNI.Id = CL1.UnitId
+	INNER JOIN ParLevel1XCluster L1XC (NOLOCK)
+		ON CL1.ParLevel1_Id = L1XC.ParLevel1_Id
+           and L1XC.IsActive = 1
+    INNER JOIN ParCompanyXStructure CXS (NOLOCK)
+    	ON CL1.UnitId = CXS.ParCompany_Id
+    INNER JOIN ParCompanyCluster PCC
+    	ON PCC.ParCompany_Id = UNI.Id
 	WHERE CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
-	" + where2 + @"
+	" + whereUnidade2 + @"
+    " + whereCluster + @"
+    " + whereStructure + @"
+    " + whereCriticalLevel + @"
 	AND IND.Id = " + form.level1Id + @" )S1
 GROUP BY Level2Name, level2_Id, level1_Id, S1.Level1Name
 HAVING SUM(NC) > 0
@@ -974,19 +1122,45 @@ ORDER BY 7 DESC ";
 
         private void GetResultadosTarefaSemUnidade(FormularioParaRelatorioViewModel form)
         {
-            var where = "";
-            var where2 = "";
-            var where3 = "";
+            var whereUnidade = "";
+            var whereUnidade2 = "";
+            var whereLevel3 = "";
+            var whereCluster = "";
+            var whereStructure = "";
+            var whereCriticalLevel = "";
+            var userUnits = "";
 
             if (form.unitId != 0)
             {
-                where = "WHERE ID = " + form.unitId + "";
-                where2 = "AND UNI.Id = " + form.unitId + "";
+                whereUnidade = "WHERE ID = " + form.unitId + "";
+                whereUnidade2 = "AND UNI.Id = " + form.unitId + "";
             }
+            else
+            {
+                userUnits = GetUserUnits(form.auditorId);
+                whereUnidade = "WHERE ID IN (" + userUnits + ")";
+                whereUnidade2 = "AND UNI.Id IN (" + userUnits + ")";
+            }
+
 
             if (form.level3Id != 0)
             {
-                where3 = "AND R3.ParLevel3_Id = " + form.level3Id + "";
+                whereLevel3 = "AND R3.ParLevel3_Id = " + form.level3Id + "";
+            }
+
+            if (form.clusterSelected_Id != 0)
+            {
+                whereCluster = "and PCC.ParCluster_Id =  " + form.clusterSelected_Id;
+            }
+
+            if (form.structureId != 0)
+            {
+                whereStructure = "AND CXS.ParStructure_Id = " + form.structureId;
+            }
+
+            if (form.criticalLevelId != 0)
+            {
+                whereCriticalLevel = "and L1XC.ParCriticalLevel_Id = " + form.criticalLevelId;
             }
 
             var query = @"
@@ -1000,7 +1174,7 @@ ORDER BY 7 DESC ";
 SELECT
 	@ParCompany_id = ID
 FROM PARCOMPANY
-" + where + @"
+" + whereUnidade + @"
 --------------------------------                                                                                                                     
 
 SELECT TOP 1
@@ -1092,10 +1266,20 @@ FROM (SELECT
         AND IND.Id <> 43
 	INNER JOIN ParLevel2 MON (NOLOCK)
 		ON MON.Id = C2.ParLevel2_Id
+	INNER JOIN ParLevel1XCluster L1XC (NOLOCK)
+		ON CL1.ParLevel1_Id = L1XC.ParLevel1_Id
+           and L1XC.IsActive = 1
+	INNER JOIN ParCompanyXStructure CXS (NOLOCK)
+		ON CL1.UnitId = CXS.ParCompany_Id
+	INNER JOIN ParCompanyCluster PCC
+		ON PCC.ParCompany_Id = UNI.Id
 	WHERE IND.Id = " + form.level1Id + @"
 	AND MON.Id = " + form.level2Id + @"
-	" + where2 + @"
-    " + where3 + @"
+	" + whereUnidade2 + @"
+    " + whereLevel3 + @"
+    " + whereCluster + @"
+    " + whereStructure + @"
+    " + whereCriticalLevel + @"
 	AND R3.IsNotEvaluate = 0
 	AND CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
 	GROUP BY IND.Id
@@ -1858,7 +2042,6 @@ DROP TABLE #AMOSTRATIPO4a  ";
                 query = getQueryHistorioIndicador(form);
             }
 
-
             using (var db = new SgqDbDevEntities())
             {
                 retorno3 = db.Database.SqlQuery<RetornoGenerico>(query).ToList();
@@ -1901,7 +2084,6 @@ DROP TABLE #AMOSTRATIPO4a  ";
             //retorno4.Add(new RelatorioResultadosPeriodo { Av = 5, Data = DateTime.Now, Indicador = 5, IndicadorName = "Nome Indicador", Nc = 50, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 50, UnidadeName = "Lins" });
             return retorno4;
         }
-
 
         [HttpPost]
         [Route("listaAcoesIndicador")]
@@ -1986,6 +2168,14 @@ DROP TABLE #AMOSTRATIPO4a  ";
         }
 
         #endregion
+
+        private string GetUserUnits(int User)
+        {
+            using (var db = new SgqDbDevEntities())
+            {
+                return string.Join(",", db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == User).Select(r => r.ParCompany_Id).ToList());
+            }
+        }
 
     }
 
