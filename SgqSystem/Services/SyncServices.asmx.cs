@@ -5674,6 +5674,10 @@ namespace SgqSystem.Services
             {
                 empresa = "ytoara";
             }
+            if (GlobalConfig.Santander)
+            {
+                empresa = "santander";
+            }
 
             string footOuterHtml = html.br() +
                                    html.br() +
