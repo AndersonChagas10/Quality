@@ -61,8 +61,9 @@ namespace SgqSystem.Controllers.Api
             foreach (var i in results)
             {
                 int idLata = int.Parse(i["Id"].ToString());
-                var tipoDeLAta = QueryNinja(db, string.Format(queryTipoLata, 1)).FirstOrDefault();
-                i["TipoDeLata"] = QueryNinja(db, string.Format(queryTipoLata, 1)).FirstOrDefault();
+                int parRecravacao_TypeLata_Id = int.Parse(i["ParRecravacao_TypeLata_Id"].ToString());
+                var tipoDeLAta = QueryNinja(db, string.Format(queryTipoLata, parRecravacao_TypeLata_Id)).FirstOrDefault();
+                i["TipoDeLata"] = tipoDeLAta;//QueryNinja(db, string.Format(queryTipoLata, parRecravacao_TypeLata_Id)).FirstOrDefault();
                 var queryVinculoLevel21 = string.Format("SELECT * FROM ParLevel2Level1 WHERE ParLevel1_Id in ({0}) AND ParLevel2_Id = {1} AND ParCompany_Id = {2} AND IsActive = 1", level1Ids, parlevel2_Id, parcompany);
                 var queryVinculoLevel32 = string.Format("SELECT * FROM ParLevel3Level2 WHERE ParLevel2_Id = {0} AND ParCompany_Id = {1} AND IsActive = 1", parlevel2_Id, parcompany);
                 var queryVinculoLevel321 = string.Format("SELECT * FROM parlevel3level2Level1 WHERE ParLevel1_Id in ({0}) AND ParLevel3Level2_Id IN (select Id from ParLevel3Level2 WHERE ParLevel2_Id = {1} AND ParCompany_Id = {2} AND IsActive = 1)", level1Ids, parlevel2_Id, parcompany);

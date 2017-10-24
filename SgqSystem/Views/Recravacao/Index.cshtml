@@ -558,7 +558,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="preventiveAction">Ação Preventiva</h5>
+                    <h5 class="modal-title" id="preventiveAction">Ação Corretiva</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -812,7 +812,7 @@
 
                 vm.range = function (n) {
                     if (n)
-                        return new Array(parseInt(n) + 1)
+                        return new Array(parseInt(n)) //return new Array(parseInt(n) + 1)
                     else
                         return new Array()
                 }
@@ -1014,7 +1014,7 @@
                                         vm.seletedLinha.form.DataRecebimentoTampasFundosLatas = new Date(vm.seletedLinha.form.DataRecebimentoTampasFundosLatas)
                                 }
 
-                                index = vm.findWithAttr(vm.linhas, 'Id', vm.seletedLinha.Id);
+                                let index = vm.findWithAttr(vm.linhas, 'Id', vm.seletedLinha.Id);
                                 vm.linhas[index] = vm.seletedLinha
 
                                 vm.seletedLinha = vm.linhas[index]
@@ -1128,7 +1128,7 @@
                                         return false
                                     }
                                 }
-                                if (((numeroDePontos + 1) <= pontosPreenchidos.length)) {
+                                if ((/*(numeroDePontos + 1)*/ (numeroDePontos) <= pontosPreenchidos.length)) {
                                     vmItem["liberaAssinaturaLata"] = true
                                 } else {
                                     vmItem["liberaAssinaturaLata"] = false
@@ -1237,7 +1237,26 @@
                                     $(c).parent().find('#correctiveActionBtn').addClass('ng-hide')
                             })
                         }
-                    }, 125)
+
+                        //if (executeArrowMoviment) {
+                            var keyCodes = {
+                                'up': 38,
+                                'down': 40,
+                                'left': 37,
+                                'right': 39
+                            };
+                            var notReadonly = ":input:not([readonly])"
+                            $(document).ready(function () {
+                                $('input').keyup(function (e) {
+                                    if (e.which == keyCodes.right) $(this).closest('td').nextAll().find(notReadonly).first().focus();
+                                    else if (e.which == keyCodes.left) $(this).closest('td').prevAll().find(notReadonly).first().focus();
+                                    else if (e.which == keyCodes.down) $(this).closest('tr').next().find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus();
+                                    else if (e.which == keyCodes.up) $(this).closest('tr').prev().find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus();
+                                });
+                            });
+                        //}
+
+                    }, 325)
 
                 }
 
