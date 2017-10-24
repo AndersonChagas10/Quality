@@ -1421,8 +1421,8 @@
 
     function CBGAcoesXIndicador(data) {
 
-        var dia = MapeiaValorParaHC(data, "_date");
-        var porc = MapeiaValorParaHC(data, "procentagemNc");
+        //var dia = MapeiaValorParaHC(data, "_date");
+        //var porc = MapeiaValorParaHC(data, "procentagemNc");
         //fazGambipraMenosCem(porc)
         //var numeroAcoesConcluidas = MapeiaValorParaHC(data, "NumeroAcoesConcluidas");
         let preServer = @Html.Raw(Json.Encode(GlobalConfig.pathFTA));
@@ -1435,7 +1435,7 @@
         if (data[0].level3Id > 0) {
             aux = "Tarefa:" + " " + data[0].level3Name;
             enviarAxI.isLevel = 3;            
-        }else if (data[0].level2Id) {
+        }else if (data[0].level2Id > 0) {
             aux = "Monitoramento:" + " " + data[0].level2Name;
             enviarAxI.isLevel = 2;
         }else if (data[0].level1Id > 0) {
@@ -1452,7 +1452,23 @@
 
         $.post(preffixFta + 'api/sgq/getacoesByDate', enviarAxI , function (r) {
 
-            let numeroAcoesConcluidas = MapeiaValorParaHC(r, "QteConcluidas")
+            r.map(function(a, b){
+
+                var array = $.grep(data, function(o){ return o.date == a.Data})
+
+                if (array.length > 0) {
+                    a['procentagemNc'] = array[0].procentagemNc;
+                }else{
+                    a['procentagemNc'] = 0;
+                }
+                
+            });
+
+            let numeroAcoesConcluidas = MapeiaValorParaHC(r, "QteConcluidas");
+
+            let dia = MapeiaValorParaHC(r, "_data");
+
+            let porc = MapeiaValorParaHC(r, "procentagemNc");
 
             chart = Highcharts.chart('graficoAcoesXIndicadores', {
                 credits: {

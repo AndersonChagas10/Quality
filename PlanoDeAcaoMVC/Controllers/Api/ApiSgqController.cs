@@ -150,13 +150,13 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 if (level == 3)
                 {
                     whereLevel = "AND pa.Level1Id = " + level1Id;
-                    whereLevel += ",AND pa.Level2Id = " + level2Id;
-                    whereLevel += ",AND pa.Level3Id = " + level3Id;
+                    whereLevel += "AND pa.Level2Id = " + level2Id;
+                    whereLevel += "AND pa.Level3Id = " + level3Id;
                 }
                 else if (level == 2)
                 {
                     whereLevel = "AND pa.Level1Id = " + level1Id;
-                    whereLevel += ",AND pa.Level2Id = " + level2Id;
+                    whereLevel += "AND pa.Level2Id = " + level2Id;
                 }
                 else if (level == 1)
                 {
