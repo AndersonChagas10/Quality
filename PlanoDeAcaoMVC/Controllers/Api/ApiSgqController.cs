@@ -1,6 +1,7 @@
 ﻿using ADOFactory;
 using DTO.Helpers;
 using Newtonsoft.Json.Linq;
+using PlanoAcaoCore;
 using PlanoDeAcaoMVC.SgqIntegracao;
 using System;
 using System.Collections.Generic;
@@ -212,6 +213,97 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             catch (Exception e)
             {
                 return new List<AcoesConcluidas>();
+            }
+
+        }
+
+        [HttpPost]
+        [Route("GetAcoesIndicador")]
+        public List<Pa_Acao> GetAcoesIndicador(JObject filtro)
+        {
+            try
+            {
+                dynamic filtroDyn = filtro;
+                var retorno = new List<Pa_Acao>();
+                DateTime dataConclusao = filtroDyn.Data;
+                int level = filtroDyn.isLevel;
+                //var dataConclusao = Guard.ParseDateToSqlV2(data, Guard.CultureCurrent.EUA).ToString("yyyyMMdd");
+
+
+                string unidade = filtroDyn.unitId;
+                string level1Id = filtroDyn.level1Id;
+                string level2Id = filtroDyn.level2Id;
+                string level3Id = filtroDyn.level3Id;
+
+                var whereLevel = "";
+
+                if (level == 3)
+                {
+                    whereLevel = "AND pa.Level1Id = " + level1Id;
+                    whereLevel += "AND pa.Level2Id = " + level2Id;
+                    whereLevel += "AND pa.Level3Id = " + level3Id;
+                }
+                else if (level == 2)
+                {
+                    whereLevel = "AND pa.Level1Id = " + level1Id;
+                    whereLevel += "AND pa.Level2Id = " + level2Id;
+                }
+                else if (level == 1)
+                {
+                    whereLevel = "AND pa.Level1Id = " + level1Id;
+                }
+
+                var query = @"SELECT
+                                	ISNULL(PA.UnidadeName,'') as 'UnidadeName'
+                               ,ISNULL(PA.Level1Name,'') as 'Level1Name'
+                               ,ISNULL(PA.Level2Name,'') as 'Level2Name'
+                               ,ISNULL(PA.Level3Name,'') as 'Level3Name'
+                               ,ISNULL(PC.Max_Date, '') as 'Max_Date'
+                               ,ISNULL(PA.QuandoInicio,'') as 'QuandoInicio'
+                               ,ISNULL(PA.QuandoFim,'') as 'QuandoFim'
+                            	--,'Como' as 'Como'
+                               ,PA.QuantoCusta
+                               ,ISNULL(S.Name,'') AS '_StatusName'
+                               ,ISNULL(U.Name,'') AS '_Quem'
+                               ,ISNULL(CG.CausaGenerica,'') AS '_CausaGenerica'
+                               ,ISNULL(GC.GrupoCausa,'') AS '_GrupoCausa'
+                               ,ISNULL(CMG.ContramedidaGenerica,'') AS '_ContramedidaGenerica'
+                            --,'Assunto' as 'Assunto' 
+                            --,'O que' as 'O que'
+                            --,'Observacao' as 'Observacao'
+                            FROM (SELECT
+                            		*
+                            	FROM Pa_Acao PA
+                            	WHERE PA.Status IN (3, 4)
+                            	" + whereLevel + @"
+                            	AND PA.Unidade_Id = " + unidade + @") PA
+                            INNER JOIN (SELECT
+                            		Acao_id
+                            	   ,MAX(AddDate) Max_Date
+                            	   ,COUNT(DISTINCT Acao_id) QteAcao
+                            	FROM Pa_Acompanhamento
+                            	WHERE Status_Id IN (3, 4)
+                            	AND CAST(AddDate AS DATE) = '" + dataConclusao.ToString("yyyyMMdd") + @"'
+                            	GROUP BY Acao_id) PC
+                            	ON PC.Acao_Id = PA.Id
+                            LEFT JOIN Pa_Quem U
+                            	ON PA.Quem_Id = U.Id
+                            LEFT JOIN Pa_CausaGenerica CG
+                            	ON PA.CausaGenerica_Id = CG.id
+                            LEFT JOIN Pa_GrupoCausa GC
+                            	ON GC.Id = PA.GrupoCausa_Id
+                            LEFT JOIN Pa_ContramedidaGenerica CMG
+                            	ON CMG.Id = PA.ContramedidaGenerica_Id
+                            LEFT JOIN Pa_Status S
+                            	ON S.Id = PA.Status";
+
+                retorno = db.Database.SqlQuery<Pa_Acao>(query).ToList();
+
+                return retorno;
+            }
+            catch (Exception e)
+            {
+                return new List<Pa_Acao>();
             }
 
         }

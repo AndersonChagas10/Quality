@@ -2077,11 +2077,6 @@ DROP TABLE #AMOSTRATIPO4a  ";
                 retorno4 = db.Database.SqlQuery<RetornoGenerico>(query).ToList();
             }
 
-            //retorno4.Add(new RelatorioResultadosPeriodo { Av = 1, Data = DateTime.Now, Indicador = 1, IndicadorName = "Nome Indicador", Nc = 10, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 40, UnidadeName = "Lins" });
-            //retorno4.Add(new RelatorioResultadosPeriodo { Av = 2, Data = DateTime.Now, Indicador = 2, IndicadorName = "Nome Indicador", Nc = 30, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 10, UnidadeName = "Lins" });
-            //retorno4.Add(new RelatorioResultadosPeriodo { Av = 3, Data = DateTime.Now, Indicador = 3, IndicadorName = "Nome Indicador", Nc = 40, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 20, UnidadeName = "Lins" });
-            //retorno4.Add(new RelatorioResultadosPeriodo { Av = 4, Data = DateTime.Now, Indicador = 4, IndicadorName = "Nome Indicador", Nc = 20, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 30, UnidadeName = "Lins" });
-            //retorno4.Add(new RelatorioResultadosPeriodo { Av = 5, Data = DateTime.Now, Indicador = 5, IndicadorName = "Nome Indicador", Nc = 50, Pc = 10, Meta = 80, Status = 1, NumeroAcoesConcluidas = 50, UnidadeName = "Lins" });
             return retorno4;
         }
 

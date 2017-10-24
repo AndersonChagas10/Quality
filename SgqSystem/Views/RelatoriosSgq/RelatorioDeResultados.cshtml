@@ -1434,7 +1434,7 @@
 
         if (data[0].level3Id > 0) {
             aux = "Tarefa:" + " " + data[0].level3Name;
-            enviarAxI.isLevel = 3;            
+            enviarAxI.isLevel = 3;
         }else if (data[0].level2Id > 0) {
             aux = "Monitoramento:" + " " + data[0].level2Name;
             enviarAxI.isLevel = 2;
@@ -1461,13 +1461,13 @@
                 }else{
                     a['procentagemNc'] = 0;
                 }
-                
+
             });
 
             let numeroAcoesConcluidas = MapeiaValorParaHC(r, "QteConcluidas");
 
             let dia = MapeiaValorParaHC(r, "_data");
-
+            let date = MapeiaValorParaHC(r, "Data");
             let porc = MapeiaValorParaHC(r, "procentagemNc");
 
             chart = Highcharts.chart('graficoAcoesXIndicadores', {
@@ -1544,7 +1544,27 @@
                     point: {
                         events: {
                             click: function () {
-                                tabelaAcoesXIndicaor([{ "UNIDADE": "ANDRADE", "INDICADOR": "INDISPONIBILIDADE  LOGÍSTICA %", "DATA DE CRIAÇÃO": "26/09/2017 ", "QUANDO INÍCIO": "26/09/2017 ", "QUANDO FIM": "26/09/2017 ", "COMO": "", "VALOR": "0", "STATUS": "Em Andamento", "QUEM": "lcaiano", "CAUSA GENÉRICA": "1.2. O procedimento não está numa forma utilizável", "GRUPO CAUSA": "Procedimento", "CONTRAMEDIDA GENÉRICA": "Preparar um Procedimento Operacional Padrão e garanta que todos os operadores sejam treinados", "ASSUNTO": "teste", "O QUE": "", "OBSERVAÇÃO": "" }]);
+
+                                enviarAI = {};
+
+                                enviarAI['Data'] = date[this.x];
+                                enviarAI['level1Id'] = data[0].level1Id;
+                                enviarAI['level2Id'] = data[0].level2Id;
+                                enviarAI['level3Id'] = data[0].level3Id;
+                                enviarAI['unitId'] = enviar3.unitId;
+                                enviarAI['isLevel'] = enviarAxI.isLevel;
+                                console.log(preffixFta + 'api/sgq/getAcoesIndicador');
+
+                                $.post(preffixFta + 'api/sgq/getAcoesIndicador', enviarAI , function (r) {
+
+
+                                    tabelaAcoesXIndicaor(r);
+
+
+                                });
+
+
+                                //tabelaAcoesXIndicaor([{ "UNIDADE": "ANDRADE", "INDICADOR": "INDISPONIBILIDADE  LOGÍSTICA %", "DATA DE CRIAÇÃO": "26/09/2017 ", "QUANDO INÍCIO": "26/09/2017 ", "QUANDO FIM": "26/09/2017 ", "COMO": "", "VALOR": "0", "STATUS": "Em Andamento", "QUEM": "lcaiano", "CAUSA GENÉRICA": "1.2. O procedimento não está numa forma utilizável", "GRUPO CAUSA": "Procedimento", "CONTRAMEDIDA GENÉRICA": "Preparar um Procedimento Operacional Padrão e garanta que todos os operadores sejam treinados", "ASSUNTO": "teste", "O QUE": "", "OBSERVAÇÃO": "" }]);
                                 //EasyAjax(UrlListaAcoesIndicador, enviar3, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
                                 //FTA2(enviar, this)
                                 //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
@@ -1583,7 +1603,26 @@
                         events: {
                             click: function () {
 
-                                EasyAjax(UrlListaAcoesIndicador, enviar3, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
+                                enviarAI = {};
+
+                                enviarAI['Data'] = date[this.x];
+                                enviarAI['level1Id'] = data[0].level1Id;
+                                enviarAI['level2Id'] = data[0].level2Id;
+                                enviarAI['level3Id'] = data[0].level3Id;
+                                enviarAI['unitId'] = enviar3.unitId;
+                                enviarAI['isLevel'] = enviarAxI.isLevel;
+
+                                console.log(preffixFta + 'api/sgq/getAcoesIndicador');
+
+                                $.post(preffixFta + 'api/sgq/GetAcoesIndicador', enviarAI , function (r) {
+
+
+                                    tabelaAcoesXIndicaor(r);
+
+
+                                });
+
+                                //EasyAjax(UrlListaAcoesIndicador, enviar3, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
                                 //FTA2(enviar, this)
                                 //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                             }
@@ -1610,46 +1649,41 @@
 
         });
 
-        
+
     }
 
     function tabelaAcoesXIndicaor(data) {
-        geraTabela(data, 'tabelaAcoesXIndicaor')
-    }
 
-    function geraTabela(arrData, selector) {
-        $('#' + selector).parents('.modal-body').find('#mensagem').hide();
-        var arrColumns = [];
-        var concluidas = arrData;
-        //if (isPessoas) {
-        //    concluidas = resultPessoasEnvolvidas;
-        //}
-        //else if (isDate) {
-        //    concluidas = $.grep(resultGetGrafico, function (a, b) {
-        //        return (a.Status != "Concluído" && a.Status != "Concluído com atraso");
-        //    });
-        //} else {
-        //    concluidas = $.grep(resultGetGrafico, function (a, b) {
-        //        return a.Status == query
-        //    });
-        //}
+        var selector = 'tabelaAcoesXIndicaor';
 
         if ($.fn.DataTable.isDataTable('#' + selector)) {
-            $('#' + selector).DataTable().destroy();
+            $('#tabelaAcoesXIndicaor' + selector).DataTable().destroy();
             $('#' + selector).empty();
         }
 
-        if (arrData.length) {
-            var o = arrData[0]
-            var row = {};
-            for (var key in o) {
-                if (key != 'Id')
-                    arrColumns.push({ 'title': key, 'mData': key })
-            }
+        if (data.length) {
 
             var table = $('#' + selector).empty().DataTable({
-                data: arrData,
-                columns: arrColumns,
+                data: data,
+                columns: [
+                { title: '@Resources.Resource.unit', mData: 'UnidadeName' },
+                { title: '@Resources.Resource.level1', mData: 'Level1Name' },
+                { title: '@Resources.Resource.level2', mData: 'Level2Name' },
+                { title: '@Resources.Resource.level3', mData: 'Level3Name' },
+                @*{ title: '@Resources.Resource.date', mData: 'Max_Date' },*@
+                { title: 'Quando Inicio', mData: '_QuandoInicioData' },
+                { title: 'Quando Fim', mData: '_QuandoFimData' },
+                //{ title: 'Como', mData: '' },
+                { title: 'Valor', mData: 'QuantoCusta' },
+                { title: 'Status', mData: '_StatusName' },
+                { title: 'Quem', mData: '_Quem' },
+                { title: 'Causa Generica', mData: '_CausaGenerica' },
+                { title: 'Grupo Causa', mData: '_GrupoCausa' },
+                { title: 'Contramedida Generica', mData: '_ContramedidaGenerica' },
+                //{ title: 'Assunto', mData: '' },
+                //{ title: 'O que', mData: '' },
+                //{ title: 'Observacao', mData: '' },
+                ],
                 "sScrollX": "100%",
                 "scrollX": true,
                 "scrollY": '550px',
@@ -1741,6 +1775,7 @@
         } else {
             $('#' + selector).parents('.modal-body').find('#mensagem').show();
         }
+
     }
 
     function SetTitulo(Level) {
