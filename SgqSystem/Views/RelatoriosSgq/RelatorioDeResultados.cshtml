@@ -174,13 +174,6 @@
 
     function Send(toggle) {
 
-        //if (ValidaFormulario()) {
-
-        //    $('#menu-toggle').click();
-
-        //    LimparTitulos();
-
-        //    $('#GraficoPeriodo').empty();
         $('#SemDados').hide();
         $('#divMensagemAlerta').hide();
         $('#GraficoHistoricoIndicador').empty();
@@ -207,7 +200,6 @@
             EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", undefined);
         }
 
-        //}
     }
 
     function GerarTabela(retornoArray) {
@@ -626,35 +618,6 @@
                     yAxis: 0,
                     point: {
                         events: {
-                            //click: function () {
-
-                            //    enviar3 = {};
-                            //    enviar3["startDate"] = enviar["startDate"];
-                            //    enviar3["endDate"] = enviar["endDate"];
-                            //    enviar3['unitId'] = Unidade[this.x];
-                            //    enviar3['level1Id'] = Indicador[this.x];
-                            //    enviar3['level2Id'] = Monitoramento[this.x];
-                            //    enviar3['level3Id'] = Tarefa[this.x];
-
-                            //    let selector = 'tabelaAcoesXIndicaor'
-                            //    if ($.fn.DataTable.isDataTable('#' + selector)) {
-                            //        $('#' + selector).DataTable().destroy();
-                            //        $('#' + selector).empty();
-                            //    }
-                            //    $('#mensagem').hide();
-                            //    $('#graficoAcoesXIndicadores').empty();
-                            //    $('#IndicadorXAcaoModal').modal();
-
-                            //    EasyAjax(UrlIndicadorXAcaoModal, enviar3, function (r) {
-                            //        if (r.length > 0) {
-                            //            //console.log(r);
-                            //            $('#graficoAcoesXIndicadores').empty();
-                            //            CBGAcoesXIndicador(r);
-                            //        } else {
-                            //            $('#graficoAcoesXIndicadores').modal('hide');
-                            //        }
-                            //    }, "graficoAcoesXIndicadores")
-                            //}
                         }
                     },
                     dataLabels: {
@@ -1555,19 +1518,7 @@
                                 enviarAI['isLevel'] = enviarAxI.isLevel;
                                 console.log(preffixFta + 'api/sgq/getAcoesIndicador');
 
-                                $.post(preffixFta + 'api/sgq/getAcoesIndicador', enviarAI , function (r) {
-
-
-                                    tabelaAcoesXIndicaor(r);
-
-
-                                });
-
-
-                                //tabelaAcoesXIndicaor([{ "UNIDADE": "ANDRADE", "INDICADOR": "INDISPONIBILIDADE  LOGÍSTICA %", "DATA DE CRIAÇÃO": "26/09/2017 ", "QUANDO INÍCIO": "26/09/2017 ", "QUANDO FIM": "26/09/2017 ", "COMO": "", "VALOR": "0", "STATUS": "Em Andamento", "QUEM": "lcaiano", "CAUSA GENÉRICA": "1.2. O procedimento não está numa forma utilizável", "GRUPO CAUSA": "Procedimento", "CONTRAMEDIDA GENÉRICA": "Preparar um Procedimento Operacional Padrão e garanta que todos os operadores sejam treinados", "ASSUNTO": "teste", "O QUE": "", "OBSERVAÇÃO": "" }]);
-                                //EasyAjax(UrlListaAcoesIndicador, enviar3, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
-                                //FTA2(enviar, this)
-                                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                                EasyAjax(preffixFta + 'api/sgq/getAcoesIndicador', enviarAI, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
                             }
                         }
                     },
@@ -1612,19 +1563,8 @@
                                 enviarAI['unitId'] = enviar3.unitId;
                                 enviarAI['isLevel'] = enviarAxI.isLevel;
 
-                                console.log(preffixFta + 'api/sgq/getAcoesIndicador');
+                                EasyAjax(preffixFta + 'api/sgq/getAcoesIndicador', enviarAI, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
 
-                                $.post(preffixFta + 'api/sgq/GetAcoesIndicador', enviarAI , function (r) {
-
-
-                                    tabelaAcoesXIndicaor(r);
-
-
-                                });
-
-                                //EasyAjax(UrlListaAcoesIndicador, enviar3, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
-                                //FTA2(enviar, this)
-                                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                             }
                         }
                     },
@@ -1648,8 +1588,6 @@
             });
 
         });
-
-
     }
 
     function tabelaAcoesXIndicaor(data) {
@@ -1864,15 +1802,11 @@
         enviarFTA['PercentualNCFTA'] = enviar2.PercentualNCFTA;
         enviarFTA['ReincidenciaDesvioFTA'] = enviar2.ReincidenciaDesvioFTA;
         enviarFTA['level1Id'] = enviar2.level1Id == 0 ? null : enviar2.level1Id;
-        enviarFTA['level2Id'] = enviar2.level2Id == 0 ? null : enviar2.level2Id;;
-        enviarFTA['level3Id'] = enviar2.level3Id == 0 ? null : enviar2.level3Id;;
+        enviarFTA['level2Id'] = enviar2.level2Id == 0 ? null : enviar2.level2Id;
+        enviarFTA['level3Id'] = enviar2.level3Id == 0 ? null : enviar2.level3Id;
 
-        //enviar2['auditorId'] = GetUsuarioId();
-        //let params = enviar2
         let params = enviarFTA;
         let str = jQuery.param(params);
-        //console.log(highChartInstance);
-        //console.log(str);
         let preServer = @Html.Raw(Json.Encode(GlobalConfig.pathFTA));
 
         preServer = preServer.substr(0,(preServer.length - 1));
@@ -1889,13 +1823,10 @@
         });
 
         formControl.showFullCallendar();
-        //formControl.showUnit();
-        //formControl.showLevel1();
         formControl.showStatusIndicador();
         formControl.showClustRegUnitCriticalLevel123();
 
-        //formControl.showLevel123();
-        $('select').select2()
+        $('select').select2();
     });
 
     $('#IndicadorXAcaoModal').on('shown.bs.modal', function (e) {
