@@ -1105,6 +1105,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Department.
+        /// </summary>
+        internal static string criticalLevelDepartment {
+            get {
+                return ResourceManager.GetString("criticalLevelDepartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current Evaluation.
         /// </summary>
         internal static string current_evaluation {
@@ -2050,6 +2059,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to from Level 1.
+        /// </summary>
+        internal static string fromLevel1 {
+            get {
+                return ResourceManager.GetString("fromLevel1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to from Level 2.
+        /// </summary>
+        internal static string fromLevel2 {
+            get {
+                return ResourceManager.GetString("fromLevel2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to from.
+        /// </summary>
+        internal static string fromUnit {
+            get {
+                return ResourceManager.GetString("fromUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fullname.
         /// </summary>
         internal static string fullname {
@@ -2626,6 +2662,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level 1 % Non-conformities.
+        /// </summary>
+        internal static string Level1Non_Conformities {
+            get {
+                return ResourceManager.GetString("Level1Non_Conformities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 1 Results.
+        /// </summary>
+        internal static string level1Results {
+            get {
+                return ResourceManager.GetString("level1Results", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 1 Status.
+        /// </summary>
+        internal static string level1Status {
+            get {
+                return ResourceManager.GetString("level1Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level1 Children.
         /// </summary>
         internal static string level1_children {
@@ -2707,6 +2770,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level 2 % Non-conformities.
+        /// </summary>
+        internal static string Level2Non_Conformities {
+            get {
+                return ResourceManager.GetString("Level2Non_Conformities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 2 Results.
+        /// </summary>
+        internal static string level2Results {
+            get {
+                return ResourceManager.GetString("level2Results", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level 2 Defects.
         /// </summary>
         internal static string level2_defects {
@@ -2784,6 +2865,24 @@ namespace Resources {
         internal static string level3 {
             get {
                 return ResourceManager.GetString("level3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 3 % Non-conformities.
+        /// </summary>
+        internal static string Level3Non_Conformities {
+            get {
+                return ResourceManager.GetString("Level3Non_Conformities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 2 Results.
+        /// </summary>
+        internal static string level3Results {
+            get {
+                return ResourceManager.GetString("level3Results", resourceCulture);
             }
         }
         
@@ -3751,6 +3850,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to % Non-conformities.
+        /// </summary>
+        internal static string percentNon_conformities {
+            get {
+                return ResourceManager.GetString("percentNon_conformities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Profile.
         /// </summary>
         internal static string perfil_user {
@@ -3783,6 +3891,15 @@ namespace Resources {
         internal static string permanent {
             get {
                 return ResourceManager.GetString("permanent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to per Plant.
+        /// </summary>
+        internal static string perUnit {
+            get {
+                return ResourceManager.GetString("perUnit", resourceCulture);
             }
         }
         
@@ -5218,6 +5335,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Regional.
+        /// </summary>
+        internal static string structure {
+            get {
+                return ResourceManager.GetString("structure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Group Structure.
         /// </summary>
         internal static string structure_group {
@@ -5614,7 +5740,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unit.
+        ///   Looks up a localized string similar to Plant.
         /// </summary>
         internal static string unit {
             get {

@@ -1,7 +1,7 @@
 ﻿@model SgqSystem.ViewModels.FormularioParaRelatorioViewModel
 @using DTO
 @{
-    ViewBag.Title = "Relatório de Resultados";
+    ViewBag.Title = Resources.Resource.evolutional;
 }
 
 <style>
@@ -351,7 +351,7 @@
 
         var NomeExibir = "";
         var Level = 0;
-        var Titulo = "% de Não Conformidades";
+        var Titulo = "";
 
         if (data.length > 0) {
 
@@ -359,22 +359,22 @@
             if (data[0].IsIndicador) {
                 NomeExibir = "IndicadorUnidade";
                 Level = 1;
-                Titulo += " nos Indicadores ";
+                Titulo += @Html.Raw(Json.Encode(@Resources.Resource.Level1Non_Conformities));
             } else if (data[0].IsMonitoramento) {
                 Level = 2;
                 NomeExibir = "MonitoramentoUnidade";
-                Titulo += " nos Monitoramentos do Indicador " + data[0].IndicadorName;
+                Titulo += @Html.Raw(Json.Encode(@Resources.Resource.Level2Non_Conformities)) + " @Resources.Resource.fromLevel1 " + data[0].IndicadorName;
             } else {
                 Level = 3;
                 NomeExibir = "TarefaUnidade"
-                Titulo += " nas Tarefas do Monitoramento " + data[0].MonitoramentoName + " do Indicador " + data[0].IndicadorName;
+                Titulo += @Html.Raw(Json.Encode(@Resources.Resource.Level3Non_Conformities)) + " @Resources.Resource.fromLevel2 " + data[0].MonitoramentoName + ", @Resources.Resource.fromLevel1 " + data[0].IndicadorName;
             }
 
-            Titulo += " por Unidade";
+            Titulo += " @Resources.Resource.perUnit";
 
             if((enviar.unitId != '' && enviar.unitId != undefined))
             {
-                Titulo += " da Unidade " + $('#unitIdV :selected').text();
+                Titulo += " @Resources.Resource.fromUnit " + $('#unitIdV :selected').text();
             }
 
             SetTitulo(Level);
@@ -515,7 +515,7 @@
     function GerarGraficoSemUnidade(data){
         var NomeExibir = "";
         var Level = 0;
-        var Titulo = "% de Não Conformidades";
+        var Titulo = "";
 
         if (data.length > 0) {
 
@@ -523,20 +523,20 @@
             if (data[0].IsIndicador) {
                 NomeExibir = "IndicadorName";
                 Level = 1;
-                Titulo += " nos Indicadores ";
+                Titulo += @Html.Raw(Json.Encode(@Resources.Resource.Level1Non_Conformities));
             } else if (data[0].IsMonitoramento) {
                 Level = 2;
                 NomeExibir = "MonitoramentoName";
-                Titulo += " nos Monitoramentos do Indicador " + data[0].IndicadorName;
+                Titulo += @Html.Raw(Json.Encode(@Resources.Resource.Level2Non_Conformities)) + " @Resources.Resource.fromLevel1 " + data[0].IndicadorName;
             } else {
                 Level = 3;
                 NomeExibir = "TarefaName"
-                Titulo += " nas Tarefas do Monitoramento " + data[0].MonitoramentoName + " do Indicador " + data[0].IndicadorName;
+                Titulo += @Html.Raw(Json.Encode(@Resources.Resource.Level3Non_Conformities)) + " @Resources.Resource.fromLevel2 " + data[0].MonitoramentoName + ", @Resources.Resource.fromLevel1 " + data[0].IndicadorName;
             }
 
             if((enviar.unitId != '' && enviar.unitId != undefined))
             {
-                Titulo += " da Unidade " + $('#unitIdV :selected').text();
+                Titulo += " @Resources.Resource.fromUnit " + $('#unitIdV :selected').text();
             }
 
             //SetTitulo(Level);
@@ -1396,13 +1396,13 @@
         var aux = "";
 
         if (data[0].level3Id > 0) {
-            aux = "Tarefa:" + " " + data[0].level3Name;
+            aux = "@Resources.Resource.level1:" + " " + data[0].level3Name;
             enviarAxI.isLevel = 3;
         }else if (data[0].level2Id > 0) {
-            aux = "Monitoramento:" + " " + data[0].level2Name;
+            aux = "@Resources.Resource.level2:" + " " + data[0].level2Name;
             enviarAxI.isLevel = 2;
         }else if (data[0].level1Id > 0) {
-            aux = "Indicador:" + " " + data[0].level1Name;
+            aux = "@Resources.Resource.level3:" + " " + data[0].level1Name;
             enviarAxI.isLevel = 1;
         }
 
@@ -1411,7 +1411,7 @@
         enviarAxI['level3Id'] = data[0].level3Id;
         enviarAxI['unitId'] = enviar3.unitId;
 
-        var ChartTitle = "Evolutivo de % de Não Conformidades no " + aux + " na unidade de " + data[0].UnidadeName;
+        var ChartTitle = "Evolutivo de % de Não Conformidades no " + aux + " @Resources.Resource.fromUnit " + data[0].UnidadeName;
 
         $.post(preffixFta + 'api/sgq/getacoesByDate', enviarAxI , function (r) {
 
@@ -1741,13 +1741,13 @@
             TituloGrafico = "Unidade " + UnidadeNome;
         }
         if (Level == 1) {
-            Titulo = "Indicadores";
+            Titulo = "@Resources.Resource.level1Results";
         } else if (Level == 2) {
-            Titulo = "Monitoramentos";
+            Titulo = "@Resources.Resource.level2Results";
         } else {
-            Titulo = "Tarefas";
+            Titulo = "@Resources.Resource.level3Results";
         }
-        $('#Titulo').html('Resultados das Avaliações dos ' + Titulo);
+        $('#Titulo').html(Titulo);
         //$('#TituloGrafico').html(TituloGrafico);
         $('#TituloTabela').html('Lista de Resultados das Avaliações dos ' + Titulo);
     }
@@ -1762,7 +1762,7 @@
         return {
             type: 'spline',
             yAxis: 1,
-            name: 'Gráfico de Pareto',
+            name: '@Resources.Resource.pareto_chart',
             color: "Red",
             data: dados,
             yAxis: 1,

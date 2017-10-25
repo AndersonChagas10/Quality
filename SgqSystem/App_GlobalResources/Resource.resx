@@ -181,7 +181,7 @@
     <value>Shift</value>
   </data>
   <data name="unit" xml:space="preserve">
-    <value>Unit</value>
+    <value>Plant</value>
   </data>
   <data name="april" xml:space="preserve">
     <value>April</value>
@@ -2117,5 +2117,47 @@
   </data>
   <data name="do_you_want_to_create_an_anomaly_treatment_form" xml:space="preserve">
     <value>Do you want to create an anomaly treatment form?</value>
+  </data>
+  <data name="criticalLevelDepartment" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="fromLevel1" xml:space="preserve">
+    <value>from Level 1</value>
+  </data>
+  <data name="fromLevel2" xml:space="preserve">
+    <value>from Level 2</value>
+  </data>
+  <data name="fromUnit" xml:space="preserve">
+    <value>from</value>
+  </data>
+  <data name="Level1Non_Conformities" xml:space="preserve">
+    <value>Level 1 % Non-conformities</value>
+  </data>
+  <data name="level1Results" xml:space="preserve">
+    <value>Level 1 Results</value>
+  </data>
+  <data name="level1Status" xml:space="preserve">
+    <value>Level 1 Status</value>
+  </data>
+  <data name="Level2Non_Conformities" xml:space="preserve">
+    <value>Level 2 % Non-conformities</value>
+  </data>
+  <data name="level2Results" xml:space="preserve">
+    <value>Level 2 Results</value>
+  </data>
+  <data name="Level3Non_Conformities" xml:space="preserve">
+    <value>Level 3 % Non-conformities</value>
+  </data>
+  <data name="level3Results" xml:space="preserve">
+    <value>Level 2 Results</value>
+  </data>
+  <data name="percentNon_conformities" xml:space="preserve">
+    <value>% Non-conformities</value>
+  </data>
+  <data name="perUnit" xml:space="preserve">
+    <value>per Plant</value>
+  </data>
+  <data name="structure" xml:space="preserve">
+    <value>Regional</value>
   </data>
 </root>

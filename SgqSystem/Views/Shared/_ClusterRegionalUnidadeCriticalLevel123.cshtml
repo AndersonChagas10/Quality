@@ -1,4 +1,5 @@
-﻿<li>
+﻿@using DTO
+<li>
     <div data-ng-controller="CtrlClstRegUnitCriticalLevel123" id="showClustRegUnitCriticalLevel123" style="display:none; margin-left:0px!important">
         <div>
             <span class="redLabel">@Resources.Resource.cluster</span>
@@ -8,14 +9,17 @@
                 <option value="">@Resources.Resource.select</option>
             </select>
         </div>
-        <div>
-            <span class="redLabel">@Resources.Resource.structure_group</span>
-            <select id="structureId" data-ng-model="structureValue"
-                    data-ng-options="s.Id as s.Name for s in structure |orderBy:'Name' track by s.Id"
-                    data-ng-change="GetListUnitVinculadoStructure()" class="form-control" style="width:210px">
-                <option value="">@Resources.Resource.select</option>
-            </select>
-        </div>
+        @if (GlobalConfig.Brasil)
+        {
+            <div>
+                <span class="redLabel">@Resources.Resource.structure</span>
+                <select id="structureId" data-ng-model="structureValue"
+                        data-ng-options="s.Id as s.Name for s in structure |orderBy:'Name' track by s.Id"
+                        data-ng-change="GetListUnitVinculadoStructure()" class="form-control" style="width:210px">
+                    <option value="">@Resources.Resource.select</option>
+                </select>
+            </div>
+        }
         <div>
             <span class="redLabel">@Resources.Resource.unit</span>
             <select id="unitIdV" data-ng-model="unitValue"
@@ -24,6 +28,7 @@
                 <option value="">@Resources.Resource.select</option>
             </select>
         </div>
+        @*Este campo está sendo utilizado como departamento para a JBS EUA na seguinte data 25/10/2017*@
         <div>
             <span class="redLabel">@Resources.Resource.criticalLevel</span>
             <select id="criticalLevelId" data-ng-model="criticalLevelValue"

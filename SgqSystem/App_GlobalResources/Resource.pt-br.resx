@@ -2109,4 +2109,46 @@
   <data name="spc_charts" xml:space="preserve">
     <value>Cartas CEP</value>
   </data>
+  <data name="criticalLevelDepartment" xml:space="preserve">
+    <value>Nível de Criticidade</value>
+  </data>
+  <data name="fromLevel1" xml:space="preserve">
+    <value>do Indicador</value>
+  </data>
+  <data name="fromLevel2" xml:space="preserve">
+    <value>do Monitoramento</value>
+  </data>
+  <data name="fromPlant" xml:space="preserve">
+    <value>da Unidade</value>
+  </data>
+  <data name="Level1Non_Conformities" xml:space="preserve">
+    <value>% de Não Conformidades nos Indicadores</value>
+  </data>
+  <data name="level1Results" xml:space="preserve">
+    <value>Resultados das Avaliações dos Indicadores</value>
+  </data>
+  <data name="level1Status" xml:space="preserve">
+    <value>Status do Indicador</value>
+  </data>
+  <data name="Level2Non_Conformities" xml:space="preserve">
+    <value>% de Não Conformidades nos Monitoramentos</value>
+  </data>
+  <data name="level2Results" xml:space="preserve">
+    <value>Resultados das Avaliações dos Monitoramentos</value>
+  </data>
+  <data name="Level3Non_Conformities" xml:space="preserve">
+    <value>% de Não Conformidades nas Tarefas do Monitoramento</value>
+  </data>
+  <data name="level3Results" xml:space="preserve">
+    <value>Resultados das Avaliações das Tarefas</value>
+  </data>
+  <data name="percentNon_conformities" xml:space="preserve">
+    <value>% de Não Conformidades</value>
+  </data>
+  <data name="perUnit" xml:space="preserve">
+    <value>por Unidade</value>
+  </data>
+  <data name="structure" xml:space="preserve">
+    <value>Regional</value>
+  </data>
 </root>
