@@ -15,5 +15,11 @@ namespace SgqSystem.Controllers.Recravacao
         {
             return View();
         }
+
+        // GET: Recravacao
+        public ActionResult Print()
+        {
+            return View();
+        }
     }
 }
