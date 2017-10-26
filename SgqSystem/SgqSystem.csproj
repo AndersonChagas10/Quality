@@ -319,6 +319,7 @@
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
     <Compile Include="Controllers\Api\LanguageController.cs" />
+    <Compile Include="Controllers\Api\ResultLevel3PhotosApiController.cs" />
     <Compile Include="Controllers\Api\SelectVinculado\SelectVinculadoApiController.cs" />
     <Compile Include="Controllers\Api\UserAndRoles\LoginController.cs" />
     <Compile Include="Controllers\Api\NQAController.cs" />
@@ -345,6 +346,7 @@
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\Familia\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Params\ParBinaryDataTypeController.cs" />
+    <Compile Include="Controllers\Photo\PhotoController.cs" />
     <Compile Include="Controllers\Relatorios\ParGoalScorecardController.cs" />
     <Compile Include="Controllers\Relatorios\RelatoriosSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleController.cs" />
@@ -706,12 +708,40 @@
     <Content Include="Content\erp.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\gallery\.eslintrc.js" />
+    <Content Include="Content\gallery\css\blueimp-gallery-indicator.css" />
+    <Content Include="Content\gallery\css\blueimp-gallery-video.css" />
+    <Content Include="Content\gallery\css\blueimp-gallery.css" />
+    <Content Include="Content\gallery\css\blueimp-gallery.min.css" />
+    <Content Include="Content\gallery\css\demo\demo.css" />
+    <Content Include="Content\gallery\img\error.png" />
+    <Content Include="Content\gallery\img\error.svg" />
+    <Content Include="Content\gallery\img\loading.gif" />
+    <Content Include="Content\gallery\img\play-pause.png" />
+    <Content Include="Content\gallery\img\play-pause.svg" />
+    <Content Include="Content\gallery\img\video-play.png" />
+    <Content Include="Content\gallery\img\video-play.svg" />
+    <Content Include="Content\gallery\index.html" />
+    <Content Include="Content\gallery\js\blueimp-gallery-fullscreen.js" />
+    <Content Include="Content\gallery\js\blueimp-gallery-indicator.js" />
+    <Content Include="Content\gallery\js\blueimp-gallery-video.js" />
+    <Content Include="Content\gallery\js\blueimp-gallery-vimeo.js" />
+    <Content Include="Content\gallery\js\blueimp-gallery-youtube.js" />
+    <Content Include="Content\gallery\js\blueimp-gallery.js" />
+    <Content Include="Content\gallery\js\blueimp-gallery.min.js" />
+    <Content Include="Content\gallery\js\blueimp-helper.js" />
+    <Content Include="Content\gallery\js\demo\demo.js" />
+    <Content Include="Content\gallery\js\jquery.blueimp-gallery.js" />
+    <Content Include="Content\gallery\js\jquery.blueimp-gallery.min.js" />
+    <Content Include="Content\gallery\js\vendor\jquery.js" />
+    <Content Include="Content\gallery\LICENSE.txt" />
     <Content Include="Content\Gridmvc.css" />
     <Content Include="Content\gridmvc.datepicker.css" />
     <Content Include="Content\gridmvc.datepicker.min.css" />
     <Content Include="Content\Imagens\GRTJBSLogo.png" />
     <Content Include="Content\Imagens\GRTYtoaraLogo.png" />
     <Content Include="Content\Imagens\SGQLogo01.png" />
+    <Content Include="Scripts\noframework.waypoints.min.js" />
     <Content Include="Content\select2.min.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
@@ -904,6 +934,14 @@
     <Content Include="Content\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\fonts\fontawesome-webfont.ttf" />
     <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\gallery\.eslintignore" />
+    <Content Include="Content\gallery\.gitignore" />
+    <Content Include="Content\gallery\.npmignore" />
+    <Content Include="Content\gallery\css\blueimp-gallery.min.css.map" />
+    <Content Include="Content\gallery\js\blueimp-gallery.min.js.map" />
+    <Content Include="Content\gallery\js\jquery.blueimp-gallery.min.js.map" />
+    <Content Include="Content\gallery\package.json" />
+    <Content Include="Content\gallery\README.md" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1419,6 +1457,8 @@
     <Content Include="Views\RelatoriosSgq\NaoCumprimentoMeta.cshtml" />
     <Content Include="Views\Shared\_ClusterRegionalUnidadeCriticalLevel123.cshtml" />
     <Content Include="Views\RelatoriosSgq\_Image.cshtml" />
+    <Content Include="Views\Photo\Index.cshtml" />
+    <Content Include="Views\Shared\_Carousel.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

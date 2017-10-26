@@ -178,6 +178,11 @@ namespace SgqSystem.Controllers
             return View(form);
         }
 
+        public ActionResult GetCarousel()
+        {
+            return PartialView("_Carousel");
+        }
+
         #region Visao Geral da Area
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]

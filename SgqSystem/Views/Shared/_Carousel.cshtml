@@ -1,0 +1,70 @@
+﻿<div id="imageCarousel" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators"></ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner"></div>
+
+    <!-- Left and right controls -->
+    <a class="left carousel-control" onclick="carouselMain.left()">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" onclick="carouselMain.right()">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+<script>
+    var carouselMain = {
+        setPicturesBase64: function (pictures) {
+            //console.log(pictures)
+            if (pictures.length > 0) {
+                console.log('Images: ' + pictures.length)
+                $('.carousel-indicators').empty();
+                $('.carousel-inner').empty()
+                for (var i = 0; i < pictures.length; i++) {
+                    var item = $('<div class="item"><img height="490"/></div>');
+                    var indicator = $('<li data-target="#imageCarousel" data-slide-to="' + i + '"></li>');
+                    if (i == 0) {
+                        item.addClass('active');
+                        $('.carousel-indicators').addClass('active');
+                    }
+                    item.children('img').attr('src', pictures[i]);
+                    $('.carousel-inner').append(item);
+                    $('.carousel-indicators').append(indicator);
+                }
+            }
+        },
+        right: function () {
+            console.log('right')
+            var active = $('#imageCarousel > .carousel-inner .item.active');
+            var activeInd = $('#imageCarousel > .carousel-indicators li.active');
+            if (active.next().length == 0) {
+                $('#imageCarousel > .carousel-inner .item').first().addClass('active');
+                $('#imageCarousel > .carousel-indicators li').first().addClass('active');
+            } else {
+                active.next().first().addClass('active');
+                activeInd.next().first().addClass('active');
+            }
+            active.removeClass('active');
+            activeInd.removeClass('active');
+        },
+        left: function () {
+            console.log('left');
+            var active = $('#imageCarousel > .carousel-inner .item.active');
+            var activeInd = $('#imageCarousel > .carousel-indicators li.active');
+            if (active.prev().length == 0) {
+                $('#imageCarousel > .carousel-inner .item').last().addClass('active');
+                $('#imageCarousel > .carousel-indicators li').last().addClass('active');
+            } else {
+                active.prev().first().addClass('active');
+                activeInd.prev().first().addClass('active');
+            }
+            active.removeClass('active');
+            activeInd.removeClass('active');
+        }
+    }
+</script>
+

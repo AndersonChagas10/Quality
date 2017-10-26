@@ -67,10 +67,10 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpGet]
-        [Route("Photo/{ResultLevel3Id}")]
-        public Result_Level3_Photos GetPhoto(int ResultLevel3Id)
+        [Route("Photos/{ResultLevel3Id}")]
+        public List<Result_Level3_Photos> GetPhotos(int ResultLevel3Id)
         {
-            return db.Result_Level3_Photos.FirstOrDefault(r => r.Result_Level3_Id == ResultLevel3Id);
+            return db.Result_Level3_Photos.Where(r => r.Result_Level3_Id == ResultLevel3Id).ToList();
         }
 
         [HttpPost]

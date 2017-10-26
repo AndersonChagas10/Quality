@@ -5,8 +5,9 @@
     var urlGet = Url.Action("Get", "api/ApontamentosDiarios");
     var urlEdit = Url.Action("Edit", "api/ApontamentosDiarios");
     var urlSave = Url.Action("Save", "api/ApontamentosDiarios");
-    var urlPhoto = Url.Action("Photo", "api/ApontamentosDiarios");
+    var urlPhotos = Url.Action("Photos", "api/ApontamentosDiarios");
     var urlPhotoPreview = Url.Action("PhotoPreview", "api/ApontamentosDiarios");
+    var urlGetCarousel = Url.Action("GetCarousel", "RelatoriosSgq");
 }
 
 <style>
@@ -57,8 +58,9 @@
         var urlGet = '@Html.Raw(@urlGet)';
         var urlEdit = '@Html.Raw(@urlEdit)';
         var urlSave = '@Html.Raw(@urlSave)';
-        var urlPhoto = '@Html.Raw(urlPhoto)';
+        var urlPhotos = '@Html.Raw(urlPhotos)';
         var urlPhotoPreview = '@Html.Raw(urlPhotoPreview)';
+        var urlGetCarousel = '@Html.Raw(urlGetCarousel)';
         var $btn = $('#btnSend');
         var RoleUser = @Html.Raw(Json.Encode(ViewBag.Roles));
 
@@ -210,12 +212,23 @@
                     },
                     createdRow: function (row, data, index) {
 
-                        GetImagePreview($(row).find('#imgResult' + data.ResultLevel3Id), data.ResultLevel3Id);
+                        $(window).scroll(function () {
+                            if ($(row).is(':visible')
+                                && !$(row).find('#imgResult' + data.ResultLevel3Id).attr('checked')
+                                && !$(row).find('#imgResult' + data.ResultLevel3Id).attr('isChecking')
+                            )
+                                GetImagePreview($(row).find('#imgResult' + data.ResultLevel3Id), data.ResultLevel3Id);
+                        });
 
+                        //var waypoint = new Waypoint({
+                        //    element: row,
+                        //    handler: function (direction) {
+                        //    }
+                        //})
+                                                
                     },
                     fnDrawCallback: function (data, d, o) {
-
-
+                        //console.log(data);
                     }
                 });
 
@@ -268,31 +281,37 @@
         function GetImagePreview(Img, ResultLevel3Id) {
             Img.addClass('hide');
             Img.after('<i class="fa fa-spinner fa-pulse"></i>');
+            Img.attr('isChecking', true);
             $.get(urlPhotoPreview + "/" + ResultLevel3Id, function (result1) {
                 Img.siblings('i').remove();
                 Img.removeClass('hide');
+                Img.attr('checked', true);
+                Img.removeAttr('isChecking');
                 if (result1) {
                     Img.attr('src', result1);
                     Img.click(function (o) {
                         console.log(o);
 
-                        $('.modal-loading').removeClass('hide');
-                        $('.modal-body').addClass('hide');
+                        $('#imageModal .modal-loading, #imageModal .modal-title-loading').removeClass('hide');
+                        $('#imageModal .modal-body, #imageModal .modal-title').addClass('hide');
 
-                        $('.modal-title-loading').removeClass('hide');
-                        $('.modal-title').addClass('hide');
+                        $.get(urlPhotos + "/" + ResultLevel3Id, function (photos) {
+                            if (photos.length > 0) {
+                                var _photos = [];
+                                $.grep(photos, function (o) {
+                                    if (o) _photos.push(o.Photo);
+                                });
+                                $.get(urlGetCarousel, function (carousel) {
+                                    $('#imageModal .modal-body').html(carousel);
+                                    carouselMain.setPicturesBase64(_photos);
 
-                        $.get(urlPhoto + "/" + ResultLevel3Id, function (result2) {
-                            console.log(result2);
-                            $('#imageBodyModal').attr('src', result2.Photo);
-                            $('#latitudeModal').text(result2.Latitude);
-                            $('#longitudeModal').text(result2.Longitude);
+                                    $('#imageModal .modal-loading, #imageModal .modal-title-loading').addClass('hide');
+                                    $('#imageModal .modal-body, #imageModal .modal-title').removeClass('hide');
+                                });
 
-                            $('.modal-loading').addClass('hide');
-                            $('.modal-body').removeClass('hide');
-
-                            $('.modal-title-loading').addClass('hide');
-                            $('.modal-title').removeClass('hide');
+                                $('#latitudeModal').text(photos[0].Latitude);
+                                $('#longitudeModal').text(photos[0].Longitude);
+                            }
                         });
                     });
                 }
