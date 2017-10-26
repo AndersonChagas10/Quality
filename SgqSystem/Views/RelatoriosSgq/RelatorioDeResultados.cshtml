@@ -37,6 +37,15 @@
         <h2 id="Titulo"></h2>
         <h3 id="TituloGrafico" style="display:none;"></h3>
         <br />
+        <div class="totalNC" id="NCGeral" hidden>
+            <div id="showNCGeral" class="alert alert-info col-lg-2" role="alert">
+                <h1>0 %</h1>
+                <br />
+                <span>De Não Conformidade no Periodo</span>
+            </div>
+            <div class="col-lg-10" id="GraficoHistoricoGeral"></div>
+        </div>
+
         <div class="totalNC" id="NCIndicador" hidden>
             <div id="showNCIndicador" class="alert alert-info col-lg-2" role="alert">
                 <h1>0 %</h1>
@@ -45,6 +54,7 @@
             </div>
             <div class="col-lg-10" id="GraficoHistoricoIndicador"></div>
         </div>
+
         <div class="totalNC" id="NCMonitoramento" hidden>
             <div id="showNCMonitoramento" class="alert alert-info col-lg-2" role="alert">
                 <h1>0 %</h1>
@@ -160,6 +170,7 @@
     var UrlListaResultados = '@Html.Raw(Url.Action("listaResultados", "api/RelatorioDeResultados"))';
     var UrlListaResultadosPeriodo = '@Html.Raw(Url.Action("listaResultadosPeriodoTabela", "api/RelatorioDeResultados"))';
     var UrlGraficoHistorico = '@Html.Raw(Url.Action("GetGraficoHistoricoModal", "api/RelatorioDeResultados"))';
+    var UrlGraficoHistoricoGeral = '@Html.Raw(Url.Action("GetGraficoHistoricoModalGeral", "api/RelatorioDeResultados"))';
     var UrlListaResultadosPeriodoGrafico = '@Html.Raw(Url.Action("listaResultadosPeriodoTabela", "api/RelatorioDeResultados"))';
     var UrlListaResultadosPeriodoSemUnidadeGrafico = '@Html.Raw(Url.Action("listaResultadosPeriodoSemUnidadeTabela", "api/RelatorioDeResultados"))';
     var UrlIndicadorXAcaoModal = '@Html.Raw(Url.Action("listaResultadosAcoesConcluidas", "api/RelatorioDeResultados"))';
@@ -182,6 +193,9 @@
 
         EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);
         EasyAjax(UrlListaResultadosPeriodo, enviar, GerarTabela, "DataTable", undefined);
+
+        /*Colocando o grafico de histórico geral*/
+        EasyAjax(UrlGraficoHistoricoGeral, enviar, GerarGraficoHistoricoGeral, "GraficoHistoricoGeral", undefined);
 
         if (enviar['unitId'] > 0) {
             if (enviar['level2Id'] > 0) {
@@ -901,6 +915,198 @@
             ]
         });
 
+    }
+
+    function GerarGraficoHistoricoGeral(data){
+
+        if (data.length > 0) {
+
+            var dia = MapeiaValorParaHC(data, "_date");
+            var nc = MapeiaValorParaHC(data, "nc");
+            var porc = MapeiaValorParaHC(data, "procentagemNc");
+            var qtdAv = MapeiaValorParaHC(data, "av");
+            var limInferior = MapeiaValorParaHC(data, "limiteInferior");
+
+            var sumav = qtdAv.reduce(function(a, b){return a+b;});
+            var sumnc = nc.reduce(function(a, b){return a+b;});
+            var porcPeriodo = sumnc/sumav * 100;
+
+            $('#GraficoHistoricoGeral').removeClass('loader');
+
+            $('#GraficoHistoricoGeral').empty();
+
+            chartHistorico = Highcharts.chart('GraficoHistoricoGeral', {
+                credits: {
+                    enabled: false
+                },
+                chart: {
+                    type: 'column',
+                    zoomType: 'x,y',
+                    height: 300
+                },
+                title: {
+                    //text: getNomeDoIndicadorTitulo(data[0].ChartTitle)
+                    text: data[0].ChartTitle + " em " + data[0].UnidadeName
+                },
+                xAxis: {
+                    categories: dia,
+                    title: {
+                        text: 'Data',
+                    },
+                },
+                yAxis: [
+                    {
+                        //min: 0,
+                        title: {
+                            text: 'Quantidade'
+                        },
+                        labels: {
+                            format: '{value}',
+                            style: {
+                                color: Highcharts.getOptions().colors[1]
+                            }
+                        },
+                    }, {
+                        //min: 0,
+                        labels: {
+                            format: '{value} %',
+                            style: {
+                                color: Highcharts.getOptions().colors[1]
+                            }
+                        },
+                        title: {
+                            text: '% NC',
+                        },
+                        opposite: true
+                    }],
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    valueDecimals: 2,
+                    shared: true,
+                    format: '{point.y:.2f}',
+                    format: '{point:.2f}',
+                },
+                plotOptions: {
+                    column: {
+                        grouping: false,
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    name: 'NC',
+                    color: 'rgba(77,143,189,1)',
+                    data: nc,
+                    yAxis: 0,
+                    type: 'line',
+                    marker: {
+                        enabled: false
+                    },
+                    pointPadding: 0.2,
+                    //pointPlacement: -0.2,
+                    point: {
+                        events: {
+                            click: function () {
+
+                                FTA2(enviar, this)
+                                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                            }
+                        }
+                    },
+                    dataLabels: {
+                        //enabled: true,
+                        enabled: false,
+                        color: 'black',
+                        align: 'center',
+                        format: '{point.y:.2f}',
+                        style: {
+                            fontSize: '10px',
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: '',
+                        format: '{point.y:.2f}',
+                        format: '{point:.2f}',
+                    }
+                }, {
+                    visible: false,
+                    name: '% NC',
+                    color: 'rgba(240,124,0,1)',
+                    data: porc,
+                    yAxis: 1,
+                    type: 'line',
+                    marker: {
+                        enabled: false
+                    },
+                    point: {
+                        events: {
+                            click: function () {
+                                FTA2(enviar, this)
+                                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                            }
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false,
+                        color: 'black',
+                        align: 'center',
+                        format: '{point.y:.2f}',
+                        style: {
+                            fontSize: '10px',
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' %',
+                        format: '{point.y:.2f}',
+                        format: '{point:.2f}',
+                    }
+                }, {
+                    visible: false,
+                    name: 'Avaliações',
+                    data: qtdAv,
+                    type: 'line',
+                    marker: {
+                        enabled: false
+                    },
+                    color: 'rgba(81,207,64,1)',
+                    pointPadding: 0.3,
+                    pointPlacement: 0.2,
+                    yAxis: 0,
+                    point: {
+                        events: {
+                            click: function () {
+                                FTA2(enviar, this)
+                                //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
+                            }
+                        }
+                    },
+                    dataLabels: {
+                        //enabled: true,
+                        enabled: false,
+                        color: 'black',
+                        align: 'center',
+                        format: '{point.y:.2f}',
+                        style: {
+                            fontSize: '10px',
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: '',
+                        format: '{point.y:.2f}',
+                        format: '{point:.2f}',
+                    }
+                }]
+            }, function(){
+                $('#showNCGeral > h1').text(parseFloat(porcPeriodo.toFixed(2)) + " %");
+                $('#NCGeral').show();
+            });
+
+        }
     }
 
     function GerarGraficoHistoricoIndicador(data){
