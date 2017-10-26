@@ -2664,9 +2664,9 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Level 1 % Non-conformities.
         /// </summary>
-        internal static string Level1Non_Conformities {
+        internal static string level1Non_Conformities {
             get {
-                return ResourceManager.GetString("Level1Non_Conformities", resourceCulture);
+                return ResourceManager.GetString("level1Non_Conformities", resourceCulture);
             }
         }
         
@@ -2772,9 +2772,9 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Level 2 % Non-conformities.
         /// </summary>
-        internal static string Level2Non_Conformities {
+        internal static string level2Non_Conformities {
             get {
-                return ResourceManager.GetString("Level2Non_Conformities", resourceCulture);
+                return ResourceManager.GetString("level2Non_Conformities", resourceCulture);
             }
         }
         
@@ -2871,9 +2871,9 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Level 3 % Non-conformities.
         /// </summary>
-        internal static string Level3Non_Conformities {
+        internal static string level3Non_Conformities {
             get {
-                return ResourceManager.GetString("Level3Non_Conformities", resourceCulture);
+                return ResourceManager.GetString("level3Non_Conformities", resourceCulture);
             }
         }
         
@@ -2955,6 +2955,15 @@ namespace Resources {
         internal static string link_number_evaluation {
             get {
                 return ResourceManager.GetString("link_number_evaluation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List of.
+        /// </summary>
+        internal static string listOf {
+            get {
+                return ResourceManager.GetString("listOf", resourceCulture);
             }
         }
         

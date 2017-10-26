@@ -13,6 +13,7 @@
         top: 5%;
         outline: none;
     }
+
 </style>
 
 <div class="page-content" style="min-height: 600px;">
@@ -171,19 +172,15 @@
     var enviarHistorico = {};
     var $btn = $('#btnSend');
     exibeTodosLevels = false;
+    var chartHistoricoIndicador;
 
     function Send(toggle) {
 
-        $('#SemDados').hide();
-        $('#divMensagemAlerta').hide();
-        $('#GraficoHistoricoIndicador').empty();
-        $('#GraficoHistoricoMonitoramento').empty();
-        $('#GraficoPeriodoSemUnidade').empty();
-        $('.totalNC').hide();
+        limpaDadosTela();
 
         enviar['auditorId'] = GetUsuarioId();
 
-        EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", true);
+        EasyAjax(UrlListaResultadosPeriodoGrafico, enviar, GerarGrafico, "GraficoPeriodoLoader", undefined);
         EasyAjax(UrlListaResultadosPeriodo, enviar, GerarTabela, "DataTable", undefined);
 
         if (enviar['unitId'] > 0) {
@@ -192,12 +189,12 @@
                 enviar4['level2Id'] = 0;
 
                 EasyAjax(UrlGraficoHistorico, enviar4, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
-                EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", undefined);
+                EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoMonitoramento, "GraficoHistoricoMonitoramento", true);
             }else if (enviar['level1Id'] > 0) {
-                EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", undefined);
+                EasyAjax(UrlGraficoHistorico, enviar, GerarGraficoHistoricoIndicador, "GraficoHistoricoIndicador", true);
             }
         }else{
-            EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", undefined);
+            EasyAjax(UrlListaResultadosPeriodoSemUnidadeGrafico, enviar, GerarGraficoSemUnidade, "GraficoPeriodoSemUnidadeLoader", true);
         }
 
     }
@@ -207,9 +204,9 @@
             var counter = 0;
             while (counter < retornoArray.length) {
                 if (retornoArray[counter]["Status"] == 1)
-                    retornoArray[counter]["Status"] = '<p style="color:green; font-size:15px;"><i class="fa fa-fw fa-arrow-up"></i></p>'
+                    retornoArray[counter]["Status"] = '<p style="color:green; font-size:15px;"><i class="fa fa-fw fa-arrow-down"></i></p>'
                 else
-                    retornoArray[counter]["Status"] = '<p style="color:red; font-size:15px;"><i class="fa fa-fw fa-arrow-down"></i></p>';
+                    retornoArray[counter]["Status"] = '<p style="color:red; font-size:15px;"><i class="fa fa-fw fa-arrow-up"></i></p>';
                 counter++;
             }
             var table = $('#DataTable').empty().DataTable({
@@ -228,8 +225,8 @@
                     },
                     { title: "% Meta", mData: "Meta" },
                     { title: "Status", mData: "Status" },
-                    { title: "", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-target="#modalHistorico" >' + "Historico" + '</button>', "visible": true },
-                    { title: "", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalResultados">' + "Listar Resultados" + '</button>', "visible": true },
+                    { title: "Historico", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-target="#modalHistorico" >' + "Historico" + '</button>', "visible": true },
+                    { title: "Resultados", mData: null, defaultContent: '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalResultados">' + "Listar Resultados" + '</button>', "visible": true },
                 ],//onclick="loadHistorico()"
                 responsive: true,
                 loadingRecords: true,
@@ -284,11 +281,11 @@
 
             new $.fn.dataTable.Buttons(table, {
                 buttons: [
-                      {
-                          extend: 'colvisGroup',
-                          text: 'Mostrar Todos',
-                          show: ':hidden'
-                      },
+                      //{
+                      //    extend: 'colvisGroup',
+                      //    text: 'Mostrar Todos',
+                      //    show: ':hidden'
+                      //},
                     {
                         extend: 'print',
                         text: 'Imprimir',
@@ -315,14 +312,14 @@
                      //        columns: ':visible'
                      //    }
                      //},
-                      {
-                          extend: 'colvis',
-                          text: 'Colunas Visíveis',
-                          collectionLayout: 'fixed two-column',
-                          exportOptions: {
-                              columns: ':visible',
-                          }
-                      },
+                      //{
+                      //    extend: 'colvis',
+                      //    text: 'Colunas Visíveis',
+                      //    collectionLayout: 'fixed two-column',
+                      //    exportOptions: {
+                      //        columns: ':visible',
+                      //    }
+                      //},
                 ]
             });
             table.buttons(0, null).container().prependTo(
@@ -359,22 +356,22 @@
             if (data[0].IsIndicador) {
                 NomeExibir = "IndicadorUnidade";
                 Level = 1;
-                Titulo += @Html.Raw(Json.Encode(@Resources.Resource.Level1Non_Conformities));
+                Titulo += Resources("level1Non_Conformities");
             } else if (data[0].IsMonitoramento) {
                 Level = 2;
                 NomeExibir = "MonitoramentoUnidade";
-                Titulo += @Html.Raw(Json.Encode(@Resources.Resource.Level2Non_Conformities)) + " @Resources.Resource.fromLevel1 " + data[0].IndicadorName;
+                Titulo += Resources("level2Non_Conformities") + " " + Resources("fromLevel1") + ": " + data[0].IndicadorName;
             } else {
                 Level = 3;
                 NomeExibir = "TarefaUnidade"
-                Titulo += @Html.Raw(Json.Encode(@Resources.Resource.Level3Non_Conformities)) + " @Resources.Resource.fromLevel2 " + data[0].MonitoramentoName + ", @Resources.Resource.fromLevel1 " + data[0].IndicadorName;
+                Titulo += Resources("level3Non_Conformities") + " " + Resources("fromLevel2") + ": " + data[0].MonitoramentoName + ", " + Resources("fromLevel1") +": "+ data[0].IndicadorName;
             }
-
-            Titulo += " @Resources.Resource.perUnit";
 
             if((enviar.unitId != '' && enviar.unitId != undefined))
             {
-                Titulo += " @Resources.Resource.fromUnit " + $('#unitIdV :selected').text();
+                Titulo += " " + Resources("fromUnit") + ": " + $('#unitIdV :selected').text();
+            }else{
+                Titulo += " " + Resources("perUnit");
             }
 
             SetTitulo(Level);
@@ -523,23 +520,21 @@
             if (data[0].IsIndicador) {
                 NomeExibir = "IndicadorName";
                 Level = 1;
-                Titulo += @Html.Raw(Json.Encode(@Resources.Resource.Level1Non_Conformities));
+                Titulo += Resources("level1Non_Conformities");
             } else if (data[0].IsMonitoramento) {
                 Level = 2;
                 NomeExibir = "MonitoramentoName";
-                Titulo += @Html.Raw(Json.Encode(@Resources.Resource.Level2Non_Conformities)) + " @Resources.Resource.fromLevel1 " + data[0].IndicadorName;
+                Titulo += Resources("level2Non_Conformities") + " " + Resources("fromLevel1") + ": " + data[0].IndicadorName;
             } else {
                 Level = 3;
                 NomeExibir = "TarefaName"
-                Titulo += @Html.Raw(Json.Encode(@Resources.Resource.Level3Non_Conformities)) + " @Resources.Resource.fromLevel2 " + data[0].MonitoramentoName + ", @Resources.Resource.fromLevel1 " + data[0].IndicadorName;
+                Titulo += Resources("level3Non_Conformities") + " " + Resources("fromLevel2") + ": " + data[0].MonitoramentoName + ", " + Resources("fromLevel1") + ": " + data[0].IndicadorName;
             }
 
             if((enviar.unitId != '' && enviar.unitId != undefined))
             {
-                Titulo += " @Resources.Resource.fromUnit " + $('#unitIdV :selected').text();
+                Titulo += Resources("fromUnit") + ": " + $('#unitIdV :selected').text();
             }
-
-            //SetTitulo(Level);
 
             var IndicadorName = MapeiaValorParaHC(data, NomeExibir);
             var Indicador = MapeiaValorParaHC(data, "Indicador");
@@ -1001,7 +996,7 @@
                         events: {
                             click: function () {
 
-                                FTA2(enviar, this)
+                                //FTA2(enviar, this)
                                 //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                             }
                         }
@@ -1035,7 +1030,7 @@
                     point: {
                         events: {
                             click: function () {
-                                FTA2(enviar, this)
+                                //FTA2(enviar, this)
                                 //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                             }
                         }
@@ -1070,7 +1065,7 @@
                     point: {
                         events: {
                             click: function () {
-                                FTA2(enviar, this)
+                                //FTA2(enviar, this)
                                 //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                             }
                         }
@@ -1336,11 +1331,11 @@
 
         new $.fn.dataTable.Buttons(tableResultados, {
             buttons: [
-                  {
-                      extend: 'colvisGroup',
-                      text: 'Mostrar Todos',
-                      show: ':hidden'
-                  },
+                  //{
+                  //    extend: 'colvisGroup',
+                  //    text: 'Mostrar Todos',
+                  //    show: ':hidden'
+                  //},
                 {
                     extend: 'print',
                     text: 'Imprimir',
@@ -1367,14 +1362,14 @@
                  //        columns: ':visible'
                  //    }
                  //},
-                  {
-                      extend: 'colvis',
-                      text: 'Colunas Visíveis',
-                      collectionLayout: 'fixed two-column',
-                      exportOptions: {
-                          columns: ':visible',
-                      }
-                  },
+                  //{
+                  //    extend: 'colvis',
+                  //    text: 'Colunas Visíveis',
+                  //    collectionLayout: 'fixed two-column',
+                  //    exportOptions: {
+                  //        columns: ':visible',
+                  //    }
+                  //},
             ]
         });
         tableResultados.buttons(0, null).container().prependTo(
@@ -1396,13 +1391,13 @@
         var aux = "";
 
         if (data[0].level3Id > 0) {
-            aux = "@Resources.Resource.level1:" + " " + data[0].level3Name;
+            aux = Resources("level1") + ": " + data[0].level3Name;
             enviarAxI.isLevel = 3;
         }else if (data[0].level2Id > 0) {
-            aux = "@Resources.Resource.level2:" + " " + data[0].level2Name;
+            aux = Resources("level2") + ": " + data[0].level2Name;
             enviarAxI.isLevel = 2;
         }else if (data[0].level1Id > 0) {
-            aux = "@Resources.Resource.level3:" + " " + data[0].level1Name;
+            aux = Resources("level3") + ": " + data[0].level1Name;
             enviarAxI.isLevel = 1;
         }
 
@@ -1411,7 +1406,7 @@
         enviarAxI['level3Id'] = data[0].level3Id;
         enviarAxI['unitId'] = enviar3.unitId;
 
-        var ChartTitle = "Evolutivo de % de Não Conformidades no " + aux + " @Resources.Resource.fromUnit " + data[0].UnidadeName;
+        var ChartTitle = "Evolutivo de % de Não Conformidades no " + aux + " " + Resources("fromUnit") + " " + data[0].UnidadeName;
 
         $.post(preffixFta + 'api/sgq/getacoesByDate', enviarAxI , function (r) {
 
@@ -1604,11 +1599,11 @@
             var table = $('#' + selector).empty().DataTable({
                 data: data,
                 columns: [
-                { title: '@Resources.Resource.unit', mData: 'UnidadeName' },
-                { title: '@Resources.Resource.level1', mData: 'Level1Name' },
-                { title: '@Resources.Resource.level2', mData: 'Level2Name' },
-                { title: '@Resources.Resource.level3', mData: 'Level3Name' },
-                @*{ title: '@Resources.Resource.date', mData: 'Max_Date' },*@
+                { title: Resources("unit"), mData: 'UnidadeName' },
+                { title: Resources("level1"), mData: 'Level1Name' },
+                { title: Resources("level2"), mData: 'Level2Name' },
+                { title: Resources("level3"), mData: 'Level3Name' },
+                //{ title: Resources("date"), mData: 'Max_Date' },
                 { title: 'Quando Inicio', mData: '_QuandoInicioData' },
                 { title: 'Quando Fim', mData: '_QuandoFimData' },
                 //{ title: 'Como', mData: '' },
@@ -1741,15 +1736,15 @@
             TituloGrafico = "Unidade " + UnidadeNome;
         }
         if (Level == 1) {
-            Titulo = "@Resources.Resource.level1Results";
+            Titulo = Resources("level1Results");
         } else if (Level == 2) {
-            Titulo = "@Resources.Resource.level2Results";
+            Titulo = Resources("level2Results");
         } else {
-            Titulo = "@Resources.Resource.level3Results";
+            Titulo = Resources("level3Results");
         }
         $('#Titulo').html(Titulo);
         //$('#TituloGrafico').html(TituloGrafico);
-        $('#TituloTabela').html('Lista de Resultados das Avaliações dos ' + Titulo);
+        $('#TituloTabela').html(Resources("listOf") + " " + Titulo);
     }
 
     function fazGambipraMenosCem(arr) {
@@ -1762,7 +1757,7 @@
         return {
             type: 'spline',
             yAxis: 1,
-            name: '@Resources.Resource.pareto_chart',
+            name: Resources("pareto_chart"),
             color: "Red",
             data: dados,
             yAxis: 1,
@@ -1816,6 +1811,20 @@
         $('#ftaModalSim').attr('href', preServer + str);
     }
 
+    function limpaDadosTela(){
+        $('#SemDados').hide();
+        $('#divMensagemAlerta').hide();
+        $('#GraficoPeriodo').empty();
+        $('#GraficoPeriodoSemUnidade').empty();
+        $('#GraficoHistoricoIndicador').empty();
+        $('#GraficoHistoricoMonitoramento').empty();
+        $('#GraficoPeriodoSemUnidade').empty();
+        $('.totalNC').hide();
+        $('#Titulo').html("");
+        $('#TituloTabela').html("");
+        $('#DataTable_wrapper').hide();
+    }
+
     $(document).ready(function () {
 
         $("#btnSend").click(function (e) {
@@ -1848,4 +1857,5 @@
             $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
         }, 0);
     });
+
 </script>

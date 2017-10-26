@@ -2186,11 +2186,11 @@ DROP TABLE #AMOSTRATIPO4a  ";
         public string TarefaName { get; set; }
         public string UnidadeName { get; set; }
         public string IndicadorName { get; set; }
-        public decimal Av { get; set; }
-        public decimal Nc { get; set; }
-        public decimal Pc { get; set; }
+        public decimal? Av { get; set; }
+        public decimal? Nc { get; set; }
+        public decimal? Pc { get; set; }
         public string Historico_Id { get; set; }
-        public decimal Meta { get; set; }
+        public decimal? Meta { get; set; }
         public int Status { get; set; }
         public string IndicadorUnidade { get; set; }
         public string MonitoramentoUnidade { get; set; }
