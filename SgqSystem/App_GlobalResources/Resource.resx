@@ -2130,7 +2130,7 @@
   <data name="fromUnit" xml:space="preserve">
     <value>from</value>
   </data>
-  <data name="Level1Non_Conformities" xml:space="preserve">
+  <data name="level1Non_Conformities" xml:space="preserve">
     <value>Level 1 % Non-conformities</value>
   </data>
   <data name="level1Results" xml:space="preserve">
@@ -2139,13 +2139,13 @@
   <data name="level1Status" xml:space="preserve">
     <value>Level 1 Status</value>
   </data>
-  <data name="Level2Non_Conformities" xml:space="preserve">
+  <data name="level2Non_Conformities" xml:space="preserve">
     <value>Level 2 % Non-conformities</value>
   </data>
   <data name="level2Results" xml:space="preserve">
     <value>Level 2 Results</value>
   </data>
-  <data name="Level3Non_Conformities" xml:space="preserve">
+  <data name="level3Non_Conformities" xml:space="preserve">
     <value>Level 3 % Non-conformities</value>
   </data>
   <data name="level3Results" xml:space="preserve">
@@ -2159,5 +2159,8 @@
   </data>
   <data name="structure" xml:space="preserve">
     <value>Regional</value>
+  </data>
+  <data name="listOf" xml:space="preserve">
+    <value>List of</value>
   </data>
 </root>
