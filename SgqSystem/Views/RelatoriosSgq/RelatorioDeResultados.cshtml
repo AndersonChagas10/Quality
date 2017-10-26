@@ -422,6 +422,20 @@
                     },
                     opposite: true
                 },
+                ,
+                {
+                    min: 0,
+                    title: {
+                        text: 'Ponderado'
+                    },
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[3]
+                        }
+                    },
+                    
+                },
                 ],
                 legend: {
                     shadow: false
@@ -494,7 +508,8 @@
                         format: '{point:.2f}',
                     }
                 },
-                 CurvaPareto(calculaPareto(porc))
+                 CurvaPareto(calculaPareto(porc)),
+                 LinhaPonderada(calculaPonderado(data))
                 ]
             });
             //Fim HC
@@ -582,6 +597,19 @@
                     },
                     opposite: true
                 },
+                {
+                    min: 0,
+                    title: {
+                        text: 'Ponderado'
+                    },
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    
+                },
                 ],
                 legend: {
                     shadow: false
@@ -625,7 +653,8 @@
                         format: '{point:.2f}',
                     }
                 },
-                 CurvaPareto(calculaPareto(porc))
+                 CurvaPareto(calculaPareto(porc)),
+                 LinhaPonderada(calculaPonderado(data))
                 ]
             });
             //Fim HC
@@ -1945,6 +1974,24 @@
         }
     }
 
+    function LinhaPonderada(dados) {
+        return {
+            type: 'spline',
+            yAxis: 0,
+            name: '@Resources.Resource.average',
+            color: "green",
+            data: dados,
+            yAxis: 0,
+            tooltip: {
+                valueDecimals: 2,
+                valueSuffix: ' %',
+                format: '{point.y:.2f}',
+                format: '{point:.2f}',
+            },
+            
+        }
+    }
+
     function calculaPareto(data) {
         var retorno = [];
         var total = data.reduce(function (a, b) { return a + b; }, 0);
@@ -1953,6 +2000,29 @@
             totalAcc += a / total * 100;
             retorno.push((Math.round(totalAcc, 0)));
         });
+        return retorno;
+    }
+
+    function calculaPonderado(data) {
+        var retorno = [];
+        var totalPerc = 0;
+        var Number = 0;
+        data.forEach(function (a) {
+            totalPerc += a.Pc;
+            Number++;
+        });
+
+        var total = 0;
+        
+        if(Number > 0)
+        {
+            total = totalPerc / Number;
+        }
+
+        data.forEach(function (a) {
+            retorno.push((Math.round(total, 0)));
+        });
+
         return retorno;
     }
 
