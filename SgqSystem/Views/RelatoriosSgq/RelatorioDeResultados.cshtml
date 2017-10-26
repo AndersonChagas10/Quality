@@ -127,7 +127,7 @@
             </div>
             @*<div class="modal-body">
 
-                </div>*@
+            </div>*@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
                 <a id="ftaModalSim" href="#" target="_blank">
@@ -155,11 +155,11 @@
                 <label id="mensagem" style="display:none">Não existem dados de Ações para este Indicador / Unidade</label>
             </div>
             @*<div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
-                    <a id="ftaModalSim" href="#" target="_blank">
-                        <button type="button" class="btn btn-primary">Sim</button>
-                    </a>
-                </div>*@
+                <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+                <a id="ftaModalSim" href="#" target="_blank">
+                    <button type="button" class="btn btn-primary">Sim</button>
+                </a>
+            </div>*@
         </div>
     </div>
 </div>
@@ -1978,7 +1978,7 @@
         return {
             type: 'spline',
             yAxis: 0,
-            name: '@Resources.Resource.average',
+            name: Resources("average"),
             color: "green",
             data: dados,
             yAxis: 0,
