@@ -111,7 +111,7 @@ namespace SgqSystem.Controllers.Api
         private void AdicionaParLevel3ALata(string parcompany, List<ParLevel3DTO> listaLevel3, Newtonsoft.Json.Linq.JObject vinculoLevel32)
         {
             var idLevel3 = int.Parse(vinculoLevel32["ParLevel3_Id"].ToString());
-            var level3 = db.ParLevel3.Include("ParLevel3Value").Include("ParLevel3Value.ParLevel3BoolFalse").Include("ParLevel3Value.ParLevel3BoolTrue").FirstOrDefault(r => r.Id == idLevel3);
+            var level3 = db.ParLevel3.Include("ParLevel3Value").Include("ParLevel3Value.ParMeasurementUnit").Include("ParLevel3Value.ParLevel3BoolFalse").Include("ParLevel3Value.ParLevel3BoolTrue").FirstOrDefault(r => r.Id == idLevel3);
 
             while (level3.ParLevel3Value.Any(r => !r.IsActive))
                 level3.ParLevel3Value.Remove(level3.ParLevel3Value.FirstOrDefault(r => !r.IsActive));
