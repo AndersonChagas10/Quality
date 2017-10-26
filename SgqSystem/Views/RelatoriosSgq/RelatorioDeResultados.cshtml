@@ -255,7 +255,8 @@
                         enviar2["level3Id"] = data["Tarefa"];
                         enviar2["UnitId"] = data["Unidade"];
                         //enviar2["historico_id"] = data["Historico_Id"];
-                        enviar2["ReincidenciaDesvioFTA"] = data["Av"] - data["Nc"];
+                        enviar2['QtdeAvaliado'] = data["Av"];
+                        enviar2["ReincidenciaDesvioFTA"] = data["Nc"];
                         enviar2["PercentualNCFTA"] = data["Pc"];
                         if ($(this).attr('data-target') == "#modalResultados")
                             EasyAjax(UrlListaResultados, enviar2, GerarTabelaResultados, "DataTableResultados", null);
@@ -762,7 +763,7 @@
                 point: {
                     events: {
                         click: function () {
-                            FTA2(qtdAv[this.x], nc[this.x], porc[this.x]); 
+                            FTA2(); 
                             //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                         }
                     }
@@ -798,7 +799,7 @@
                 point: {
                     events: {
                         click: function () {
-                            FTA2(qtdAv[this.x], nc[this.x], porc[this.x]);                    
+                            FTA2();                    
                             //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                         }
                     }
@@ -834,7 +835,7 @@
                 point: {
                     events: {
                         click: function () {
-                            FTA2(qtdAv[this.x], nc[this.x], porc[this.x]);
+                            FTA2();
                             //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                         }
                     }
@@ -1960,21 +1961,19 @@
         return retorno;
     }
 
-    function FTA2(QtdeAvaliado, ReincidenciaDesvioFTA, PercentualNCFTA) {
+    function FTA2() {
 
         var enviarFTA = {};
         enviarFTA['_DataInicioFTA'] = enviar2.startDate;
         enviarFTA['_DataFimFTA'] = enviar2.endDate;
         enviarFTA['Supervisor_Id'] = GetUsuarioId();
         enviarFTA['Unidade_Id'] = enviar2.UnitId;
-        enviarFTA['PercentualNCFTA'] = PercentualNCFTA;
-        enviarFTA['ReincidenciaDesvioFTA'] = ReincidenciaDesvioFTA;
-        //enviarFTA['PercentualNCFTA'] = enviar2.PercentualNCFTA;
-        //enviarFTA['ReincidenciaDesvioFTA'] = enviar2.ReincidenciaDesvioFTA;
+        enviarFTA['PercentualNCFTA'] = enviar2.PercentualNCFTA;
+        enviarFTA['ReincidenciaDesvioFTA'] = enviar2.ReincidenciaDesvioFTA;
         enviarFTA['level1Id'] = enviar2.level1Id == 0 ? null : enviar2.level1Id;
         enviarFTA['level2Id'] = enviar2.level2Id == 0 ? null : enviar2.level2Id;
         enviarFTA['level3Id'] = enviar2.level3Id == 0 ? null : enviar2.level3Id;
-        enviarFTA['Evaluated'] = QtdeAvaliado;
+        enviarFTA['Evaluated'] = enviar2.QtdeAvaliado;
 
         let params = enviarFTA;
         let str = jQuery.param(params);
