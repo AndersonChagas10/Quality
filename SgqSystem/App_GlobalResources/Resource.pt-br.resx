@@ -2157,4 +2157,10 @@
   <data name="listOf" xml:space="preserve">
     <value>Lista de</value>
   </data>
+  <data name="history" xml:space="preserve">
+    <value>Histórico</value>
+  </data>
+  <data name="list_results" xml:space="preserve">
+    <value>Listar Resultados</value>
+  </data>
 </root>

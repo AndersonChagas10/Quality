@@ -2302,6 +2302,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to History.
+        /// </summary>
+        internal static string history {
+            get {
+                return ResourceManager.GetString("history", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
         internal static string home {
@@ -2964,6 +2973,15 @@ namespace Resources {
         internal static string listOf {
             get {
                 return ResourceManager.GetString("listOf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List Results.
+        /// </summary>
+        internal static string list_results {
+            get {
+                return ResourceManager.GetString("list_results", resourceCulture);
             }
         }
         

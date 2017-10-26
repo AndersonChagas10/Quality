@@ -2163,4 +2163,10 @@
   <data name="listOf" xml:space="preserve">
     <value>List of</value>
   </data>
+  <data name="history" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="list_results" xml:space="preserve">
+    <value>List Results</value>
+  </data>
 </root>

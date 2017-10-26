@@ -66,12 +66,12 @@
 
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-  
+
     <script src="~/Scripts/Timeout/timeout-dialog.js"></script>
     <script src="~/Scripts/angular.js"></script>
     <script src="~/Angular/app.js"></script>
     <script src="~/Scripts/smart-table.min.js"></script>
- 
+
     <div class="modal fade modalLoader" id="modalLoader" role="dialog" style="display: none; background-color: rgba(173, 173, 173, 0.35);">
         <div class="modal-dialog">
 
@@ -202,12 +202,12 @@
     <div class="page-wrapper">
 
         @Html.Partial("~/Views/Shared/_Navbar.cshtml")
-        <div class="page-container" >
+        <div class="page-container">
             @*@Html.Partial("~/Views/Shared/_RightLayout.cshtml")*@
             @Html.Partial("~/Views/Shared/_LeftLayout.cshtml")
 
             @*<div class="page-content-wrapper">*@
-                @RenderBody()
+            @RenderBody()
             @*</div>*@
 
         </div>
@@ -243,7 +243,7 @@
                "columnDefs": [
                    { "className": "dt-center", "targets": "_all" }
                ],
-               "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+               "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "@Resources.Resource.all"]],
                "oLanguage": {
 
                    "sProcessing": "Aguarde enquanto os dados são carregados ...",
@@ -566,7 +566,7 @@
             else
                 return _event_;
         }
-        
+
         function GetUsuarioId() {
             return $.grep(getCookie('webControlCookie'), function (a, b) {
                 return a.indexOf('userId') != -1;
