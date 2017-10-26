@@ -29,7 +29,7 @@
                     var indicator = $('<li data-target="#imageCarousel" data-slide-to="' + i + '"></li>');
                     if (i == 0) {
                         item.addClass('active');
-                        $('.carousel-indicators').addClass('active');
+                        indicator.addClass('active');
                     }
                     item.children('img').attr('src', pictures[i]);
                     $('.carousel-inner').append(item);
@@ -41,7 +41,10 @@
             console.log('right')
             var active = $('#imageCarousel > .carousel-inner .item.active');
             var activeInd = $('#imageCarousel > .carousel-indicators li.active');
-            if (active.next().length == 0) {
+            if (active.next().length == 0 && active.prev().length == 0){
+                return;
+            }
+            else if (active.next().length == 0) {
                 $('#imageCarousel > .carousel-inner .item').first().addClass('active');
                 $('#imageCarousel > .carousel-indicators li').first().addClass('active');
             } else {
@@ -55,7 +58,10 @@
             console.log('left');
             var active = $('#imageCarousel > .carousel-inner .item.active');
             var activeInd = $('#imageCarousel > .carousel-indicators li.active');
-            if (active.prev().length == 0) {
+            if (active.next().length == 0 && active.prev().length == 0) {
+                return;
+            }
+            else if (active.prev().length == 0) {
                 $('#imageCarousel > .carousel-inner .item').last().addClass('active');
                 $('#imageCarousel > .carousel-indicators li').last().addClass('active');
             } else {
