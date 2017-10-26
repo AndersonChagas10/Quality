@@ -2101,7 +2101,7 @@
     <value>Nível de Criticidade</value>
   </data>
   <data name="do_you_want_to_create_an_anomaly_treatment_form" xml:space="preserve">
-    <value>Deseja Criar um Formulario de Tratamento de anomalia?</value>
+    <value>Deseja Criar um Formulário de Tratamento de anomalia?</value>
   </data>
   <data name="evolutional" xml:space="preserve">
     <value>Evolutivo</value>
@@ -2157,10 +2157,16 @@
   <data name="listOf" xml:space="preserve">
     <value>Lista de</value>
   </data>
+  <data name="could_not_fetch_data" xml:space="preserve">
+    <value>Não foi possivel buscar os dados</value>
+  </data>
   <data name="history" xml:space="preserve">
     <value>Histórico</value>
   </data>
   <data name="list_results" xml:space="preserve">
     <value>Listar Resultados</value>
+  </data>
+  <data name="non_conformities_in_period" xml:space="preserve">
+    <value>de Não Conformidades no Período</value>
   </data>
 </root>

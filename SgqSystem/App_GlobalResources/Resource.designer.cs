@@ -1069,6 +1069,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not fetch data.
+        /// </summary>
+        internal static string could_not_fetch_data {
+            get {
+                return ResourceManager.GetString("could_not_fetch_data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Counter.
         /// </summary>
         internal static string counter {
@@ -3522,6 +3531,15 @@ namespace Resources {
         internal static string nonconformity {
             get {
                 return ResourceManager.GetString("nonconformity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Non-Conformities in Period.
+        /// </summary>
+        internal static string non_conformities_in_period {
+            get {
+                return ResourceManager.GetString("non_conformities_in_period", resourceCulture);
             }
         }
         

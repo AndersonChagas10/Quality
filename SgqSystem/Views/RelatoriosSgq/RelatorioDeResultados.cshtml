@@ -26,11 +26,11 @@
         @*@Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")*@
 
         <div class="alert alert-warning" id="SemDados" hidden>
-            Sem dados na busca.
+            @Resources.Resource.could_not_fetch_data
         </div>
 
         <div class="alert alert-info" id="divMensagemAlerta" hidden>
-            Por favor selecione uma unidade.
+            @Resources.Resource.select_the_unit_first
         </div>
 
         <h2 id="Titulo"></h2>
@@ -40,7 +40,7 @@
             <div id="showNCGeral" class="alert alert-info col-lg-2" role="alert">
                 <h1>0 %</h1>
                 <br />
-                <span>De Não Conformidade no Periodo</span>
+                <span>@Resources.Resource.non_conformities_in_period</span>
             </div>
             <div class="col-lg-10" id="GraficoHistoricoGeral"></div>
         </div>
@@ -49,7 +49,7 @@
             <div id="showNCIndicador" class="alert alert-info col-lg-2" role="alert">
                 <h1>0 %</h1>
                 <br />
-                <span>De Não Conformidade no Periodo</span>
+                <span>@Resources.Resource.non_conformities_in_period</span>
             </div>
             <div class="col-lg-10" id="GraficoHistoricoIndicador"></div>
         </div>
@@ -58,7 +58,7 @@
             <div id="showNCMonitoramento" class="alert alert-info col-lg-2" role="alert">
                 <h1>0 %</h1>
                 <br />
-                <span>De Não Conformidade no Periodo</span>
+                <span>@Resources.Resource.non_conformities_in_period</span>
             </div>
             <div class="col-lg-10" id="GraficoHistoricoMonitoramento"></div>
         </div>
@@ -123,7 +123,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Deseja Criar um Formulario de Tratamento de anomalia?</h4>
+                <h4 class="modal-title" id="myModalLabel">@Resources.Resource.do_you_want_to_create_an_anomaly_treatment_form</h4>
             </div>
             @*<div class="modal-body">
 
@@ -434,7 +434,7 @@
                             color: Highcharts.getOptions().colors[3]
                         }
                     },
-                    
+
                 },
                 ],
                 legend: {
@@ -608,7 +608,7 @@
                             color: Highcharts.getOptions().colors[1]
                         }
                     },
-                    
+
                 },
                 ],
                 legend: {
@@ -712,7 +712,7 @@
                 {
                     //min: 0,
                     title: {
-                        text: 'Quantidade'
+                        text: Resources("quantity")
                     },
                     labels: {
                         format: '{value}',
@@ -954,8 +954,7 @@
                     height: 300
                 },
                 title: {
-                    //text: getNomeDoIndicadorTitulo(data[0].ChartTitle)
-                    text: data[0].ChartTitle + " em " + data[0].UnidadeName
+                    text: data[0].ChartTitle + " " + Resources("from") + " " + data[0].UnidadeName
                 },
                 xAxis: {
                     categories: dia,
@@ -967,7 +966,8 @@
                     {
                         //min: 0,
                         title: {
-                            text: 'Quantidade'
+                            text: Resources("quantity")
+
                         },
                         labels: {
                             format: '{value}',
@@ -1075,7 +1075,7 @@
                     }
                 }, {
                     visible: false,
-                    name: 'Avaliações',
+                    name: Resources("samples"),
                     data: qtdAv,
                     type: 'line',
                     marker: {
@@ -1159,7 +1159,7 @@
                     {
                         //min: 0,
                         title: {
-                            text: 'Quantidade'
+                            text: Resources("quantity")
                         },
                         labels: {
                             format: '{value}',
@@ -1267,7 +1267,7 @@
                     }
                 }, {
                     visible: false,
-                    name: 'Avaliações',
+                    name: Resources("samples"),
                     data: qtdAv,
                     type: 'line',
                     marker: {
@@ -1351,7 +1351,7 @@
                     {
                         //min: 0,
                         title: {
-                            text: 'Quantidade'
+                            text: Resources("quantity")
                         },
                         labels: {
                             format: '{value}',
@@ -1457,7 +1457,7 @@
                     }
                 }, {
                     visible: false,
-                    name: 'Avaliações',
+                    name: Resources("samples"),
                     data: qtdAv,
                     type: 'line',
                     marker: {
@@ -1988,7 +1988,7 @@
                 format: '{point.y:.2f}',
                 format: '{point:.2f}',
             },
-            
+
         }
     }
 
@@ -2013,7 +2013,7 @@
         });
 
         var total = 0;
-        
+
         if(Number > 0)
         {
             total = totalPerc / Number;
