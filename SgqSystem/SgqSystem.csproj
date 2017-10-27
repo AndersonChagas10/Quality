@@ -1084,6 +1084,7 @@
     <None Include="Properties\PublishProfiles\Ytoara.pubxml" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
     <Content Include="Scripts\GuardJs.js" />
+    <Content Include="Scripts\humanizeduration\humanize-duration.js" />
     <Content Include="Scripts\inputmask\inputmask\inputmask.date.extensions.js" />
     <Content Include="Scripts\inputmask\inputmask\inputmask.dependencyLib.js" />
     <Content Include="Scripts\inputmask\inputmask\inputmask.extensions.js" />

@@ -41,8 +41,6 @@
 </style>
 <link href="~/Content/toastr.min.css" rel="stylesheet" />
 
-<script src="~/Scripts/Timer/angular-timer.min.js"></script>
-
 <div ng-controller="reencravationCtrl as r" class="container page-content " style="min-height: 600px;width:100%;">
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
@@ -58,13 +56,27 @@
     </div>
 
     <br />
+    
+    <button ng-show="(seletedLinha.Id > 0 && seletedLinha.IsStoped)" id="btnStartStop"
+            type="button"
+            class="floatinBottonButton btn btn-success btn-sm"
+            data-toggle="modal"
+            data-target="#modalParadaDeLinha"
+            ng-init="seletedLinha.ExcedidoTempoLimite = false"
+            ng-class="{'btn-success': (seletedLinha.ExcedidoTempoLimite == false), 'btn-danger': (seletedLinha.ExcedidoTempoLimite == true)}"
+            title="Para / Reinicia a Linha">
+        <span class="glyphicon glyphicon-time" aria-hidden="true">
+            <span style="font-family:'Open Sans',sans-serif">&nbsp; Parar / Reiniciar a Linha. Linha parada a {{seletedLinha.LinhaParadaTimer}}</span>
+        </span>
+    </button>
 
-    <timer countdown="30" interval="1000">
-        <div class="progress progress-striped active {{displayProgressActive}}" style="height: 30px;"> 
-        Remaining time : {{countdown}} second{{secondsS}} ({{progressBar}}%). Activity? {{displayProgressActive}} 
-            <div class="bar" style="min-width: 2em;width: {{progressBar}}%;"></div> 
-        </div>
-    </timer>
+    @*{{seletedLinha.LinhaParadaTimer}}
+    <button ng-click="testTimerOn()">Start Timers</button>
+    <button ng-click="testTimerOff()">Stop Timers</button>*@
+    @*{{timerRunning}}
+    <timer interval="1000">{{hours}} hour{{hoursS}}, {{minutes}} minute{{minutesS}}, {{seconds}} second{{secondsS}}.</timer>
+    <button ng-click="startTimer()" ng-disabled="timerRunning">Start Timers</button>
+    <button ng-click="stopTimer()" ng-disabled="!timerRunning">Stop Timers</button>*@
 
     <div ng-show="seletedLinha.Id > 0" class="col-lg-12 col-md-12 col-sm-12">
         <form role="form" class="ng-pristine ng-valid">
@@ -132,14 +144,6 @@
 
     </div>
 
-    <button ng-show="(seletedLinha.Id > 0 && seletedLinha.IsStoped)" id="btnStartStop"
-            type="button"
-            class="floatinBottonButton btn btn-danger btn-sm"
-            data-toggle="modal"
-            data-target="#modalParadaDeLinha"
-            title="Para / Reinicia a Linha">
-        <span class="glyphicon glyphicon-time" aria-hidden="true"><span style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">&nbsp; Parar / Reiniciar a Linha {{ seletedLinha.IsStopedTimer | date:'HH:mm:ss'}}</span></span>
-    </button>
 
     <button class="floatinBottonButton btn btn-danger btn-sm"
             ng-show="(saving)">
@@ -147,11 +151,8 @@
     </button>
 
     <div class="col-lg-12 col-md-12 col-sm-12"
-         ng-init="seletedLinha.IsStoped = false"
-         ng-class="{'alert alert-danger' : (seletedLinha.IsStoped)}">
-        @*<div class="alert alert-danger">
-                <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-            </div>*@
+         @*ng-class="{'alert alert-danger' : (seletedLinha.IsStoped)}"*@
+         ng-init="seletedLinha.IsStoped = false">
         <div ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" style="" class="col-lg-6 col-md-6 col-sm-12" ng-repeat="item in seletedLinha.latas track by $index" ng-init="lataIndex = $index" tables>
             <div style="text-align: right; float:left; padding-bottom: 5px; padding-top: 5px; vertical-align: middle; font-size: 18px;">{{item.Name}} <span ng-show="item.HoraDaRetiradaDaLata"> retirada as: {{item.HoraDaRetiradaDaLata}}</span></div>
 
@@ -186,9 +187,9 @@
                 @*<button type="button" class="btn btn-warning btn-sm" ng-click="cloneLata(seletedLinha, $index)">
                         <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
                     </button>*@
-                <button type="button" class="btn btn-warning btn-sm" ng-click="cloneLataALot(seletedLinha, $index, 30)">
+                @*<button type="button" class="btn btn-warning btn-sm" ng-click="cloneLataALot(seletedLinha, $index, 30)">
                     <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
-                </button>
+                </button>*@
                 <button type="button"
                         class="btn btn-warning btn-sm"
                         data-toggle="modal"
@@ -848,6 +849,22 @@
             function ($scope, $http, $timeout) {
                 let vm = $scope
 
+                //$scope.timerRunning = true;
+
+                //$scope.startTimer = function () {
+                //    $scope.$broadcast('timer-start');
+                //    $scope.timerRunning = true;
+                //};
+
+                //$scope.stopTimer = function () {
+                //    $scope.$broadcast('timer-stop');
+                //    $scope.timerRunning = false;
+                //};
+
+                //$scope.$on('timer-stopped', function (event, data) {
+                //    console.log('Timer Stopped - data = ', data);
+                //});
+
                 vm.linhas = [{}]
                 vm.produtos = [{}]
                 vm.fornecedorLata = [{}]
@@ -1464,8 +1481,7 @@
                                vm.saveState()
                                $('.modal').modal('hide')
                                vm.seletedLinha.IsStoped = true;
-                               vm.seletedLinha.StartParadaDeLinha = moment();
-                               vm.seletedLinha.TimeoutParadaLinha = $timeout($scope.onTimeout, 1000);
+                               vm.TimerOn()
                            }
                            else {
                                vm.selectedLata.correctiveAction.IsAssinada = false
@@ -1477,6 +1493,24 @@
                        });
                 }
 
+                vm.TimerOn = function () {
+                    vm.seletedLinha.ExcedidoTempoLimite = false
+                    vm.seletedLinha.StartParadaDeLinha = moment();
+                    vm.seletedLinha.TimeoutParadaLinha = $timeout($scope.onTimeout, 1000);
+                }
+
+                vm.TimerOff = function () {
+                    let diffTime = moment().diff(vm.seletedLinha.StartParadaDeLinha)
+                    let duration = moment.duration(diffTime);
+                    let //years = duration.years(),
+                        days = duration.days(),
+                        hrs = duration.hours(),
+                      mins = duration.minutes(),
+                      secs = duration.seconds();
+                    vm.seletedLinha.TempoDeLinhaParada = (/*years + ' years ' + */days + ' days ' + hrs + ' hrs ' + mins + ' mins ' + secs + ' sec');
+                    $timeout.cancel(vm.seletedLinha.mytimeout);
+                }
+
                 $scope.onTimeout = function () {
                     let diffTime = moment().diff(vm.seletedLinha.StartParadaDeLinha)
                     let duration = moment.duration(diffTime);
@@ -1485,21 +1519,19 @@
                         hrs = duration.hours(),
                       mins = duration.minutes(),
                       secs = duration.seconds();
-                    vm.seletedLinha.LinhaParadaTimer = (/*years + ' years ' + */days + ' days ' + hrs + ' hrs ' + mins + ' mins ' + secs + ' sec');
+
+                    //if (hrs > 1)
+                    //    vm.seletedLinha.ExcedidoTempoLimite = true
+
+                    //Testes
+                    if (mins > 2)
+                        vm.seletedLinha.ExcedidoTempoLimite = true
+                    else
+                        vm.seletedLinha.ExcedidoTempoLimite = false
+
+                    vm.seletedLinha.LinhaParadaTimer = (/*years + ' years ' + */days + ' Dias ' + hrs + ' Horas ' + mins + ' Minutos ' + secs + ' Segundos');
                     vm.seletedLinha.mytimeout = $timeout($scope.onTimeout, 1000);
                 }
-                //var mytimeout = $timeout($scope.onTimeout, 1000);
-
-                $scope.stopTimeout = function () {
-                    $timeout.cancel(vm.seletedLinha.TimeoutParadaLinha);
-                }
-
-                vm.setTimer = function () {
-                    vm.seletedLinha.StartCorrectiveActionTimer = 
-                    vm.seletedLinha.IsStopedTimer = moment().format('HH:mm:ss');
-                }
-
-                vm.stopTimer
 
                 vm.generateIdParaOutroCalculado = function (ParLevel3, index) {
                     return ((ParLevel3.Id + " - " + ParLevel3.Name + (index + 1)).replace(/ /g, '').replace('.', ''))
@@ -1511,6 +1543,7 @@
 
                     vm.seletedLinha.logParada.push(vm.copyObj(vm.seletedLinha.RegistroParada))
                     vm.seletedLinha.RegistroParada = {}
+                    vm.TimerOff()
                     vm.saveState()
                 }
 

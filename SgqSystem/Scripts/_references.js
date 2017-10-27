@@ -112,6 +112,7 @@
 /// <reference path="highcharts/4.2.0/themes/grid-light.js" />
 /// <reference path="highcharts/4.2.0/themes/sand-signika.js" />
 /// <reference path="highcharts/4.2.0/themes/skies.js" />
+/// <reference path="humanizeduration/humanize-duration.js" />
 /// <reference path="inputmask/inputmask/inputmask.date.extensions.js" />
 /// <reference path="inputmask/inputmask/inputmask.dependencyLib.js" />
 /// <reference path="inputmask/inputmask/inputmask.extensions.js" />
