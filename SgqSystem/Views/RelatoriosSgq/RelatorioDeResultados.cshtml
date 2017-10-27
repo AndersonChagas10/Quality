@@ -128,7 +128,7 @@
             </div>
             @*<div class="modal-body">
 
-            </div>*@
+                </div>*@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
                 <a id="ftaModalSim" href="#" target="_blank">
@@ -156,11 +156,11 @@
                 <label id="mensagem" style="display:none">Não existem dados de Ações para este Indicador / Unidade</label>
             </div>
             @*<div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
-                <a id="ftaModalSim" href="#" target="_blank">
-                    <button type="button" class="btn btn-primary">Sim</button>
-                </a>
-            </div>*@
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+                    <a id="ftaModalSim" href="#" target="_blank">
+                        <button type="button" class="btn btn-primary">Sim</button>
+                    </a>
+                </div>*@
         </div>
     </div>
 </div>
@@ -174,7 +174,9 @@
     var UrlListaResultadosPeriodoGrafico = '@Html.Raw(Url.Action("listaResultadosPeriodoTabela", "api/RelatorioDeResultados"))';
     var UrlListaResultadosPeriodoSemUnidadeGrafico = '@Html.Raw(Url.Action("listaResultadosPeriodoSemUnidadeTabela", "api/RelatorioDeResultados"))';
     var UrlIndicadorXAcaoModal = '@Html.Raw(Url.Action("listaResultadosAcoesConcluidas", "api/RelatorioDeResultados"))';
-    var UrlListaAcoesIndicador = '@Html.Raw(Url.Action("listaAcoesIndicador", "api/VisaoGeralDaArea"))';
+    var UrlIndicadorXAcaoModalPA = '@Html.Raw(Url.Action("GetAcoesByDate", "api/RelatorioDeResultados"))';
+    var UrlListaAcoesIndicador = '@Html.Raw(Url.Action("GetAcoesIndicador", "api/RelatorioDeResultados"))';
+
 
     var chart;
     var chartHistorico;
@@ -764,7 +766,7 @@
                 point: {
                     events: {
                         click: function () {
-                            FTA2(); 
+                            FTA2();
                             //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                         }
                     }
@@ -800,7 +802,7 @@
                 point: {
                     events: {
                         click: function () {
-                            FTA2();                    
+                            FTA2();
                             //Index.montarGraficoOperacaoPorUnidadeClicked(Unidade, UnidadeId, Operacao, OperacaoId, DataInicio, DataFim, diaNumeral[this.x], dia[this.x]);
                         }
                     }
@@ -1542,7 +1544,8 @@
 
         var ChartTitle = "Evolutivo de % de Não Conformidades no " + aux + " " + Resources("fromUnit") + " " + data[0].UnidadeName;
 
-        $.post(preffixFta + 'api/sgq/getacoesByDate', enviarAxI , function (r) {
+        //$.post(preffixFta + 'api/sgq/getacoesByDate', enviarAxI , function (r) {
+        $.post(UrlIndicadorXAcaoModalPA, enviarAxI , function (r) {
 
             r.map(function(a, b){
 
@@ -1647,7 +1650,8 @@
                                 enviarAI['isLevel'] = enviarAxI.isLevel;
                                 console.log(preffixFta + 'api/sgq/getAcoesIndicador');
 
-                                EasyAjax(preffixFta + 'api/sgq/getAcoesIndicador', enviarAI, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
+                                //EasyAjax(preffixFta + 'api/sgq/getAcoesIndicador', enviarAI, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
+                                EasyAjax(UrlListaAcoesIndicador, enviarAI, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
                             }
                         }
                     },
@@ -1692,8 +1696,8 @@
                                 enviarAI['unitId'] = enviar3.unitId;
                                 enviarAI['isLevel'] = enviarAxI.isLevel;
 
-                                EasyAjax(preffixFta + 'api/sgq/getAcoesIndicador', enviarAI, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
-
+                                //EasyAjax(preffixFta + 'api/sgq/getAcoesIndicador', enviarAI, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
+                                EasyAjax(UrlListaAcoesIndicador, enviarAI, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
                             }
                         }
                     },

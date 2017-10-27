@@ -1,5 +1,7 @@
 ﻿using Dominio;
+using DTO.Helpers;
 using Newtonsoft.Json.Linq;
+using PlanoAcaoCore;
 using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -17,13 +19,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         List<RetornoGenerico> retorno2;
         List<RetornoGenerico> retorno3;
         List<RetornoGenerico> retorno4;
+        
 
         public RelatorioDeResultadosApiController()
         {
             retorno = new List<RelatorioResultadosPeriodo>();
             retorno2 = new List<RetornoGenerico>();
             retorno3 = new List<RetornoGenerico>();
-            retorno4 = new List<RetornoGenerico>();           
+            retorno4 = new List<RetornoGenerico>();          
         }
 
         [HttpPost]
@@ -320,7 +323,7 @@ DROP TABLE #AMOSTRATIPO4 ";
             {
                 retorno = db.Database.SqlQuery<RelatorioResultadosPeriodo>(query).ToList();
             }
-        }      
+        }
 
         private void GetResultadosMonitoramento(FormularioParaRelatorioViewModel form)
         {
@@ -1302,7 +1305,7 @@ ORDER BY 8 DESC ";
 
         [HttpPost]
         [Route("GetGraficoHistoricoModal")]
-        public List<RetornoGenerico> GetGraficoHistoricoModal([FromBody] FormularioParaRelatorioViewModel form) 
+        public List<RetornoGenerico> GetGraficoHistoricoModal([FromBody] FormularioParaRelatorioViewModel form)
         {
 
             string query = "";
@@ -1349,9 +1352,6 @@ ORDER BY 8 DESC ";
             //GetMockHistoricoModal();
             return retorno2;
         }
-
-
-
 
         private static string getQueryHistoricoTarefa(FormularioParaRelatorioViewModel form)
         {
@@ -2059,7 +2059,7 @@ DROP TABLE #AMOSTRATIPO4a  ";
                 where1 += " AND C2.UnitId IN (SELECT DISTINCT ParCompany_Id FROM ParCompanyXStructure where ParStructure_Id = " + form.structureId + ") ";
             }
 
-            
+
 
             var where2 = "";
 
@@ -2077,7 +2077,7 @@ DROP TABLE #AMOSTRATIPO4a  ";
 
             if (form.level1Id > 0 && form.unitId == 0)
             {
-                where3 = " AND level1_Id = " + form.level1Id ;
+                where3 = " AND level1_Id = " + form.level1Id;
             }
 
             var where4 = "";
@@ -2096,7 +2096,7 @@ DROP TABLE #AMOSTRATIPO4a  ";
 
             if (form.level1Id > 0 && form.unitId == 0)
             {
-                where5 = " AND IND.Id = " + form.level1Id ;
+                where5 = " AND IND.Id = " + form.level1Id;
             }
 
             return @"
@@ -2504,8 +2504,214 @@ DROP TABLE #AMOSTRATIPO4a  ";
             }
         }
 
-    }
+        [HttpPost]
+        [Route("GetAcoesByDate")]
+        public List<AcoesConcluidas> GetAcoesByDate(JObject filtro)
+        {
+            try
+            {
+                var BancoPA = "PlanoDeAcao";
+                //const BancoPA = "PlanoDeAcaoUSA2";  
 
+                dynamic filtroDyn = filtro;
+                var retorno = new List<AcoesConcluidas>();
+                string inicio = filtroDyn.startDate;
+                string fim = filtroDyn.endDate;
+                int level = filtroDyn.isLevel;
+                var dataInicio = Guard.ParseDateToSqlV2(inicio, Guard.CultureCurrent.BR).ToString("yyyyMMdd");
+                var dataFim = Guard.ParseDateToSqlV2(fim, Guard.CultureCurrent.BR).ToString("yyyyMMdd");
+                //var dataInicio = Guard.ParseDateToSqlV2(inicio, Guard.CultureCurrent.EUA).ToString("yyyyMMdd");
+                //var dataFim = Guard.ParseDateToSqlV2(fim, Guard.CultureCurrent.EUA).ToString("yyyyMMdd");
+
+                string unidade = filtroDyn.unitId;
+                string level1Id = filtroDyn.level1Id;
+                string level2Id = filtroDyn.level2Id;
+                string level3Id = filtroDyn.level3Id;
+
+                var whereLevel = "";
+
+                if (level == 3)
+                {
+                    whereLevel = "AND pa.Level1Id = " + level1Id;
+                    whereLevel += "AND pa.Level2Id = " + level2Id;
+                    whereLevel += "AND pa.Level3Id = " + level3Id;
+                }
+                else if (level == 2)
+                {
+                    whereLevel = "AND pa.Level1Id = " + level1Id;
+                    whereLevel += "AND pa.Level2Id = " + level2Id;
+                }
+                else if (level == 1)
+                {
+                    whereLevel = "AND pa.Level1Id = " + level1Id;
+                }
+
+                var query = @" 
+                Use " + BancoPA + @"
+                DECLARE @dataFim_ date = '" + dataFim + @"'
+  
+                 DECLARE @dataInicio_ date = '" + dataInicio + @"'
+                SET @dataInicio_ = '" + dataInicio + @"'
+                  
+                 CREATE TABLE #ListaDatas_ (data_ date)
+                  
+                 WHILE @dataInicio_ <= @dataFim_  
+                 BEGIN
+                INSERT INTO #ListaDatas_
+                
+                	SELECT
+                		@dataInicio_
+                SET @dataInicio_ = DATEADD(DAY, 1, @dataInicio_)
+                  
+                 END
+                
+                SELECT
+                	LD.data_ as Data
+                   ,COUNT(DISTINCT PA.Id) QteConcluidas
+                FROM #ListaDatas_ LD
+                
+                LEFT JOIN (SELECT
+                		Acao_id
+                	   ,MAX(AddDate) Max_Date
+                	   ,COUNT(DISTINCT Acao_id) QteAcao
+                	FROM Pa_Acompanhamento
+                	WHERE Status_Id IN (3, 4)
+                	GROUP BY Acao_id) PC
+                	ON LD.data_ = CAST(PC.Max_Date AS DATE)
+                LEFT JOIN (SELECT
+                		*
+                	FROM Pa_Acao PA
+                	WHERE PA.Status IN (3, 4)
+                	" + whereLevel + @"
+                	AND PA.Unidade_Id = " + unidade + @") PA
+                	ON PC.Acao_Id = PA.Id
+                GROUP BY LD.data_
+                order by ld.data_
+
+                DROP TABLE #ListaDatas_";
+
+
+                using (var db = new SgqDbDevEntities())
+                {
+                    retorno = db.Database.SqlQuery<AcoesConcluidas>(query).ToList();
+                }
+
+                return retorno;
+            }
+            catch (Exception e)
+            {
+                return new List<AcoesConcluidas>();
+            }
+
+        }
+
+        [HttpPost]
+        [Route("GetAcoesIndicador")]
+        public List<Pa_Acao> GetAcoesIndicador(JObject filtro)
+        {
+            try
+            {
+
+                var BancoPA = "PlanoDeAcao";
+                //const BancoPA = "PlanoDeAcaoUSA2"; 
+
+                dynamic filtroDyn = filtro;
+                var retorno = new List<Pa_Acao>();
+                DateTime dataConclusao = filtroDyn.Data;
+                int level = filtroDyn.isLevel;
+                //var dataConclusao = Guard.ParseDateToSqlV2(data, Guard.CultureCurrent.EUA).ToString("yyyyMMdd");
+
+                string unidade = filtroDyn.unitId;
+                string level1Id = filtroDyn.level1Id;
+                string level2Id = filtroDyn.level2Id;
+                string level3Id = filtroDyn.level3Id;
+
+                var whereLevel = "";
+
+                if (level == 3)
+                {
+                    whereLevel = "AND pa.Level1Id = " + level1Id;
+                    whereLevel += "AND pa.Level2Id = " + level2Id;
+                    whereLevel += "AND pa.Level3Id = " + level3Id;
+                }
+                else if (level == 2)
+                {
+                    whereLevel = "AND pa.Level1Id = " + level1Id;
+                    whereLevel += "AND pa.Level2Id = " + level2Id;
+                }
+                else if (level == 1)
+                {
+                    whereLevel = "AND pa.Level1Id = " + level1Id;
+                }
+
+                var query = @"
+                                Use " + BancoPA + @"
+                                SELECT
+                                	ISNULL(PA.UnidadeName,'') as 'UnidadeName'
+                               ,ISNULL(PA.Level1Name,'') as 'Level1Name'
+                               ,ISNULL(PA.Level2Name,'') as 'Level2Name'
+                               ,ISNULL(PA.Level3Name,'') as 'Level3Name'
+                               ,ISNULL(PC.Max_Date, '') as 'Max_Date'
+                               ,ISNULL(PA.QuandoInicio,'') as 'QuandoInicio'
+                               ,ISNULL(PA.QuandoFim,'') as 'QuandoFim'
+                            	--,'Como' as 'Como'
+                               ,PA.QuantoCusta
+                               ,ISNULL(S.Name,'') AS '_StatusName'
+                               ,ISNULL(U.Name,'') AS '_Quem'
+                               ,ISNULL(CG.CausaGenerica,'') AS '_CausaGenerica'
+                               ,ISNULL(GC.GrupoCausa,'') AS '_GrupoCausa'
+                               ,ISNULL(CMG.ContramedidaGenerica,'') AS '_ContramedidaGenerica'
+                            --,'Assunto' as 'Assunto' 
+                            --,'O que' as 'O que'
+                            --,'Observacao' as 'Observacao'
+                            FROM (SELECT
+                            		*
+                            	FROM Pa_Acao PA
+                            	WHERE PA.Status IN (3, 4)
+                            	" + whereLevel + @"
+                            	AND PA.Unidade_Id = " + unidade + @") PA
+                            INNER JOIN (SELECT
+                            		Acao_id
+                            	   ,MAX(AddDate) Max_Date
+                            	   ,COUNT(DISTINCT Acao_id) QteAcao
+                            	FROM Pa_Acompanhamento
+                            	WHERE Status_Id IN (3, 4)
+                            	AND CAST(AddDate AS DATE) = '" + dataConclusao.ToString("yyyyMMdd") + @"'
+                            	GROUP BY Acao_id) PC
+                            	ON PC.Acao_Id = PA.Id
+                            LEFT JOIN Pa_Quem U
+                            	ON PA.Quem_Id = U.Id
+                            LEFT JOIN Pa_CausaGenerica CG
+                            	ON PA.CausaGenerica_Id = CG.id
+                            LEFT JOIN Pa_GrupoCausa GC
+                            	ON GC.Id = PA.GrupoCausa_Id
+                            LEFT JOIN Pa_ContramedidaGenerica CMG
+                            	ON CMG.Id = PA.ContramedidaGenerica_Id
+                            LEFT JOIN Pa_Status S
+                            	ON S.Id = PA.Status";
+
+                using (var db = new SgqDbDevEntities())
+                {
+                    retorno = db.Database.SqlQuery<Pa_Acao>(query).ToList();
+                }
+
+                return retorno;
+            }
+            catch (Exception e)
+            {
+                return new List<Pa_Acao>();
+            }
+
+        }
+
+        public class AcoesConcluidas
+        {
+            public DateTime Data { get; set; }
+            public int QteConcluidas { get; set; }
+            public string _data { get { return Data.ToString("dd/MM/yyyy"); } }
+        }
+
+    }
 
     public class RelatorioResultadosPeriodo
     {

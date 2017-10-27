@@ -345,6 +345,17 @@
                 @*@Html.DropDownList("clusterId", new SelectList(ViewBag.Clusters, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })*@
             </div>
         </li>
+        @if (ViewBag.Department != null)
+        {
+            <li>
+                <div id="showDepartment" style="display:none">
+                    <span class="redLabel">@Resources.Resource.department</span>
+
+                    @Html.DropDownList("departmentId", new SelectList(ViewBag.Department, "Id", "Name"), @Resources.Resource.all, htmlAttributes: new { @class = "form-control ", @style = "width:210px" })
+                </div>
+            </li>
+        }
+
 
         @*@Html.Partial("~/Views/Shared/_SelectVinculado.cshtml")*@
 
@@ -844,6 +855,10 @@
             enviar['level3Id'] = parseInt( $('#level3Idv').val().replace(/\D/g, ''), 10);
         });
 
+        $('#departmentId').on('change', function(e){
+            enviar['departmentId'] = $('#departmentId option:selected').val();
+        });
+
         //enviar['level01Id'] = null;
         //enviar['level02Id'] = null;
         //enviar['level03Id'] = null;
@@ -1117,6 +1132,10 @@
 
         showClustRegUnitCriticalLevel123: function(){
             $('#showClustRegUnitCriticalLevel123').show();
+        },
+
+        showDepartment: function(){
+            $('#showDepartment').show();
         }
     }
 

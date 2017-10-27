@@ -186,7 +186,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             return _list;
         }
 
-
         [HttpPost]
         [Route("GraficoIndicadorDepartamento")]
         public List<NaoConformidadeResultsSet> GraficoIndicadorDepartamento([FromBody] FormularioParaRelatorioViewModel form)
@@ -637,8 +636,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             //_list = CriaMockGraficoMonitoramento();
 
             //var query = new NaoConformidadeResultsSet().Select(form._dataInicio, form._dataFim, form.unitId);
-
-
 
             var query = "" +
 
