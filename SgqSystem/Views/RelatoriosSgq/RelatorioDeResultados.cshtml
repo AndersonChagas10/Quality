@@ -174,8 +174,8 @@
     var UrlListaResultadosPeriodoGrafico = '@Html.Raw(Url.Action("listaResultadosPeriodoTabela", "api/RelatorioDeResultados"))';
     var UrlListaResultadosPeriodoSemUnidadeGrafico = '@Html.Raw(Url.Action("listaResultadosPeriodoSemUnidadeTabela", "api/RelatorioDeResultados"))';
     var UrlIndicadorXAcaoModal = '@Html.Raw(Url.Action("listaResultadosAcoesConcluidas", "api/RelatorioDeResultados"))';
-    var UrlIndicadorXAcaoModalPA = '@Html.Raw(Url.Action("GetAcoesByDate", "api/RelatorioDeResultados"))';
-    var UrlListaAcoesIndicador = '@Html.Raw(Url.Action("GetAcoesIndicador", "api/RelatorioDeResultados"))';
+    @*var UrlIndicadorXAcaoModalPA = '@Html.Raw(Url.Action("GetAcoesByDate", "api/RelatorioDeResultados"))';
+    var UrlListaAcoesIndicador = '@Html.Raw(Url.Action("GetAcoesIndicador", "api/RelatorioDeResultados"))';*@
 
 
     var chart;
@@ -1544,8 +1544,8 @@
 
         var ChartTitle = "Evolutivo de % de Não Conformidades no " + aux + " " + Resources("fromUnit") + " " + data[0].UnidadeName;
 
-        //$.post(preffixFta + 'api/sgq/getacoesByDate', enviarAxI , function (r) {
-        $.post(UrlIndicadorXAcaoModalPA, enviarAxI , function (r) {
+        $.post(preffixFta + 'api/sgq/getacoesByDate', enviarAxI , function (r) {
+            //$.post(UrlIndicadorXAcaoModalPA, enviarAxI , function (r) {
 
             r.map(function(a, b){
 
@@ -1650,8 +1650,8 @@
                                 enviarAI['isLevel'] = enviarAxI.isLevel;
                                 console.log(preffixFta + 'api/sgq/getAcoesIndicador');
 
-                                //EasyAjax(preffixFta + 'api/sgq/getAcoesIndicador', enviarAI, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
-                                EasyAjax(UrlListaAcoesIndicador, enviarAI, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
+                                EasyAjax(preffixFta + 'api/sgq/getAcoesIndicador', enviarAI, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
+                                //EasyAjax(UrlListaAcoesIndicador, enviarAI, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
                             }
                         }
                     },
@@ -1696,8 +1696,8 @@
                                 enviarAI['unitId'] = enviar3.unitId;
                                 enviarAI['isLevel'] = enviarAxI.isLevel;
 
-                                //EasyAjax(preffixFta + 'api/sgq/getAcoesIndicador', enviarAI, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
-                                EasyAjax(UrlListaAcoesIndicador, enviarAI, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
+                                EasyAjax(preffixFta + 'api/sgq/getAcoesIndicador', enviarAI, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
+                                //EasyAjax(UrlListaAcoesIndicador, enviarAI, tabelaAcoesXIndicaor, "tabelaAcoesXIndicaor");
                             }
                         }
                     },
