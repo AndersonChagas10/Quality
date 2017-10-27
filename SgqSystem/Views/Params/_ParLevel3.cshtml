@@ -7,6 +7,12 @@
     //  var url = Url.Action("AddUpdateLevel3", "api/ParamsApi"); //URL relativa
     //  var urlGetLevel1 = Url.Action("GetParLevel3ById", "api/ParamsApi"); //URL relativa
 }
+<style>
+    .btnCalc {
+        min-width:32.3px;
+        min-height:32.3px;
+    }
+</style>
 <div id="newLevel3Modal">
     @using (Html.BeginForm())
     {
@@ -61,23 +67,6 @@
 
                                     </tr>
 
-
-                                    <tr class="row ParIntervalos" style="display: none;">
-                                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
-                                        @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, new { @Id = "parLevel3Value_IntervalMin", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
-                                        @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, new { @Id = "parLevel3Value_IntervalMax", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
-                                        <td style="display: none;">
-                                            <label>@Resources.Resource.values_between</label>
-                                            <select class="form-control input-sm" id="parIntervalosType" name="paramsDto.parLevel3Value.AcceptableValueBetween"></select>
-                                        </td>
-                                    </tr>
-                                    <tr class="row" style="display:none;padding:10px;">
-                                        <td colspan="3">
-                                            *
-                                            <span id="ParIntervalosLabel"></span>
-                                        </td>
-                                    </tr>
-
                                     <tr class="row ParBinarios" style="display: none;">
                                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolTrue_Id", Model.paramsDdl.DdlParLevel3BoolTrue, htmlAttributes: new { @class = "form-control input-sm", @id = "selectConforme" }), @Html.Label(Resources.Resource.positive_value), Table.PosicaoLabel.top)
                                         @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParLevel3BoolFalse_Id", Model.paramsDdl.DdlParLevel3BoolFalse, htmlAttributes: new { @class = "form-control input-sm", @id = "selectNaoConforme" }), @Html.Label(Resources.Resource.negative_value), Table.PosicaoLabel.top, button: "<button type='button' id='btnPositiveNegative' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
@@ -97,63 +86,90 @@
                                     <tr class="row reencravacaoL3">
                                         @Table.GerarColuna(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "parlevel3RecravacaoValue", @onchange = "" }), @Html.Label("Selecione Valor do Tipo de Dado de Entrada"), Table.PosicaoLabel.top)
                                     </tr>
+
+                                    <tr class="row reencravacaoL3">
+                                            <td class="td-erp" id="sinais">
+                                                <button type='button' id='' onclick='clickSinal(1)' class='btnCalc btn btn-sm'>
+                                                    1
+                                                </button>
+                                                <button type='button' id='' onclick='clickSinal(2)' class='btnCalc btn btn-sm'>
+                                                    2
+                                                </button>
+                                                <button type='button' id='' onclick='clickSinal(3)' class='btnCalc btn btn-sm'>
+                                                    3
+                                                </button>
+                                                <button type='button' id='' onclick='clickSinal("+")' class='btnCalc btn btn-sm'>
+                                                    +
+                                                </button>
+                                                <button type='button' id='' onclick='clickSinal("/")' class='btnCalc btn btn-sm'>
+                                                    /
+                                                </button>
+                                                <button type='button' id='' onclick='clickSinal("undo")' class='btnCalc btn btn-sm'>
+                                                    <i class="fa fa-undo" aria-hidden="true"></i>
+                                                </button>
+                                            </td>
+                                    </tr>
                                     <tr class="row reencravacaoL3">
                                         <td class="td-erp" id="sinais">
-                                            @for (var i = 0; i < 10; i++)
-                                            {
-                                                <button type='button' id='' onclick='clickSinal(@i)' class='btn btn-sm'>
-                                                    @i
-                                                </button>
-                                            }
-                                            <button type='button' id='' onclick='clickSinal(".")' class='btn btn-sm'>
-                                                .
+                                            <button type='button' id='' onclick='clickSinal(4)' class='btnCalc btn btn-sm'>
+                                                4
                                             </button>
-                                            &nbsp;
-                                            <button type='button' id='' onclick='clickSinal("+")' class='btn btn-sm'>
-                                               +
+                                            <button type='button' id='' onclick='clickSinal(5)' class='btnCalc btn btn-sm'>
+                                                5
                                             </button>
-                                            &nbsp;
-                                            <button type='button' id='' onclick='clickSinal("-")' class='btn btn-sm'>
+                                            <button type='button' id='' onclick='clickSinal(6)' class='btnCalc btn btn-sm'>
+                                                6
+                                            </button>
+                                            <button type='button' id='' onclick='clickSinal("-")' class='btnCalc btn btn-sm'>
                                                 -
                                             </button>
-                                            &nbsp;
-                                            <button type='button' id='' onclick='clickSinal("*")' class='btn btn-sm'>
-                                                *
-                                            </button>
-                                            &nbsp;
-                                            <button type='button' id='' onclick='clickSinal("/")' class='btn btn-sm'>
-                                                /
-                                            </button>
-                                            &nbsp;
-                                            <button type='button' id='' onclick='clickSinal("(")' class='btn btn-sm'>
+                                            <button type='button' id='' onclick='clickSinal("(")' class='btnCalc btn btn-sm'>
                                                 (
                                             </button>
-                                            &nbsp;
-                                            <button type='button' id='' onclick='clickSinal(")")' class='btn btn-sm'>
+                                           
+                                            
+                                        </td>
+                                    </tr>
+                                    <tr class="row reencravacaoL3">
+                                        <td class="td-erp" id="sinais">
+                                            <button type='button' id='' onclick='clickSinal(7)' class='btnCalc btn btn-sm'>
+                                                7
+                                            </button>
+                                            <button type='button' id='' onclick='clickSinal(8)' class='btnCalc btn btn-sm'>
+                                                8
+                                            </button>
+                                            <button type='button' id='' onclick='clickSinal(9)' class='btnCalc btn btn-sm'>
+                                                9
+                                            </button>
+                                            <button type='button' id='' onclick='clickSinal("*")' class='btnCalc btn btn-sm'>
+                                                *
+                                            </button>
+                                            <button type='button' id='' onclick='clickSinal(")")' class='btnCalc btn btn-sm'>
                                                 )
-                                            </button>
-                                            &nbsp;
-                                            <button type='button' id='' onclick='clickSinal("=")' class='btn btn-sm'>
-                                                =
-                                            </button>
-                                            &nbsp;
-                                            <button type='button' id='' onclick='clickSinal("dados")' class='btn btn-sm'>
-                                                Dados Selecionados
-                                            </button>
-                                            &nbsp;
-                                            <button type='button' id='' onclick='clickSinal("undo")' class='btn btn-sm'>
-                                                <i class="fa fa-undo" aria-hidden="true"></i>
-                                            </button>
-                                            &nbsp;
-                                            <button type="button" id="btnSaveCounter" onclick="saveLogExpression(); " class="btn btn-primary btn-sm">
-                                                <i class="fa fa-plus" aria-hidden="true"></i>
                                             </button>
                                         </td>
                                     </tr>
-                                    @*<tr class="row reencravacaoL3" id="">
-                                            @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParCompany_Id", Model.paramsDdl.DdlParCompany, htmlAttributes: new { @class = "form-control input-sm", @id = "empresaRecravacaoSave" }), @Html.Label(Resources.Resource.company), Table.PosicaoLabel.top
-                                                , button: "<button type='button' id='btnSaveCounter' onclick='saveLogExpression(); ' class='btn btn-primary btn-sm'><i class='fa fa-plus' aria-hidden='true'></i></button>")
-                                        </tr>*@
+
+                                    <tr class="row reencravacaoL3">
+                                        <td class="td-erp" id="sinais">
+                                            <button type='button' id='' onclick='clickSinal(".")' class='btnCalc btn btn-sm'>
+                                                .
+                                            </button>
+                                            <button type='button' id='' onclick='clickSinal(0)' class='btnCalc btn btn-sm'>
+                                                0
+                                            </button>
+                                            <button type='button' id='' onclick='clickSinal("=")' class='btnCalc btn btn-sm'>
+                                                =
+                                            </button>
+                                            <button type='button' id='' onclick='clickSinal("dados")' class='btn btn-sm'>
+                                                Dados Selecionados
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                  
+                                   
+
                                     <tr class="row reencravacaoL3">
                                         <td class="td-erp"><label>Expressão final</label></td>
                                     </tr>
@@ -163,6 +179,31 @@
                                     <tr class="row reencravacaoL3">
                                         <td class="td-erp"><label id="expFinal"></label></td>
                                     </tr>
+
+                                    <tr class="row ParIntervalos" style="display: none;">
+                                        @Table.GerarColunaButton(@Html.DropDownList("paramsDto.parLevel3Value.ParMeasurementUnit_Id", Model.paramsDdl.DdlParMeasurementUnit, htmlAttributes: new { @class = "form-control input-sm", @id = "selectUnidadeDeMedidas" }), @Html.Label(Resources.Resource.measurement_unit), Table.PosicaoLabel.top, button: "<button type='button' id='btnUnidadeMedida' class='btn btn-primary btn-sm'><i class='fa fa-external-link' aria-hidden='true'></i></button>")
+                                        @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMin", Model.paramsDto.parLevel3Value.IntervalMin.Value, new { @Id = "parLevel3Value_IntervalMin", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.minimum_range), Table.PosicaoLabel.top)
+                                        @Table.GerarColuna(@Html.TextBox("paramsDto.parLevel3Value.IntervalMax", Model.paramsDto.parLevel3Value.IntervalMax.Value, new { @Id = "parLevel3Value_IntervalMax", @class = "form-control input-sm maskDecimal" }), @Html.Label(Resources.Resource.maximum_range), Table.PosicaoLabel.top)
+                                        <td style="display: none;">
+                                            <label>@Resources.Resource.values_between</label>
+                                            <select class="form-control input-sm" id="parIntervalosType" name="paramsDto.parLevel3Value.AcceptableValueBetween"></select>
+                                        </td>
+                                    </tr>
+                                    <tr class="row" style="display:none;padding:10px;">
+                                        <td colspan="3">
+                                            *
+                                            <span id="ParIntervalosLabel"></span>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="row reencravacaoL3">
+                                        <td class="td-erp" id="sinais">
+                                            <button type="button" id="btnSaveCounter" onclick="saveLogExpression(); " class="btn btn-primary btn-sm">
+                                                <i class="fa fa-plus" aria-hidden="true">Incluir</i>
+                                            </button>
+                                        </td>
+                                    </tr>
+
                                 </table>
 
                                 <hr />
@@ -338,17 +379,17 @@
         value = ((value - min) * (start - end) / max)+end;
         return 'hsl(' + value + ','+s+'%,'+l+'%)';
     }
-    
+
     function createRainbowDiv(start,end){
         var gradient = [];
-        for (var i = start; ((i <= end) && (i >= start)) || ((i >= end) && (i <= start)); 
+        for (var i = start; ((i <= end) && (i >= start)) || ((i >= end) && (i <= start));
             i += (end-start) / Math.abs(end-start)){
             gradient.push(rainbow(i, 100,50, Math.max(start,end), Math.min(start,end), start,end));
         }
-        
+
         return gradient;
     }
-    
+
     function returnUpperCase (stringExp){
         var positions = [];
         for(var i=0; i<stringExp.length; i++){
@@ -359,7 +400,7 @@
         let retorno = ''
         if(positions.length > 1)
             positions.forEach(function (o,c) {retorno += stringExp[o]})
-        else 
+        else
             retorno = stringExp.slice(0,3).toUpperCase()
 
         return retorno
@@ -404,14 +445,25 @@
         let tipo = $('#selectTipoInput option:selected').text()
         let unidade = $('#empresaRecravacao option:selected').text()
         let expressao = updateLogicExpression(true)
+        let limites
 
+        if($('#selectUnidadeDeMedidas option:selected').val() && $('#parLevel3Value_IntervalMin').val().length > 0 && $('#parLevel3Value_IntervalMin').val().length > 0 && $('#parIntervalosType option:selected').val() > 0){
+            let limites = {
+                UnidadeMedidaId: $('#selectUnidadeDeMedidas option:selected').val(),
+                UnidadeMedidaText:$('#selectUnidadeDeMedidas option:selected').text(),
+                LimInferior: $('#parLevel3Value_IntervalMin').val(),
+                LimSuperior: $('#parLevel3Value_IntervalMax').val(),
+                AceitavelEntreVal: $('#parIntervalosType option:selected').val(),
+                AceitavelEntreText: $('#parIntervalosType option:selected').text(),
+            }
+        }
 
         let tr = `<tr pos="undefined">` +
                     `<td>${tipo}</td>` +
                     `<td>${unidade}</td>` +
                     `<td></td>` +
-                    `<td></td>` +
-                    `<td></td>` +
+                    `<td>${$('#parLevel3Value_IntervalMin').val()}</td>` +
+                    `<td>${$('#parLevel3Value_IntervalMax').val()}</td>` +
                     `<td>${expressao}</td>` +
                     `<td></td>` +
                     `<td></td>` +
@@ -454,7 +506,7 @@
             defaultSelected: false,
             nowSelected: false
         }]
-        
+
         arr.forEach(atribuiOptionsADdl);
     }
 
@@ -1126,6 +1178,7 @@
         }
 
         if ($("#selectTipoInput option:selected").val() == "99") {
+
             resetaParIntervalos();
             resetaParBinarios();
             resetaParDefeitos();
@@ -1153,7 +1206,33 @@
                 }
             })
             $('#empresaRecravacao option[value="-1"]').show()
+            $('#empresaRecravacao').parents('td').hide()
 
+            resetaParIntervalos();
+            resetaParBinarios();
+            resetaParDefeitos();
+            $('#parLevel3Value_IntervalMin').inputmask("numeric",  {
+                //radixPoint: ".",
+                //groupSeparator: ",",
+                //groupSize: 3,
+                //digits: 2,
+                //autoGroup: true,
+                //allowPlus: true,
+                allowMinus: true
+            });
+            $('#parLevel3Value_IntervalMax').inputmask("numeric",  {
+                //radixPoint: ".",
+                //groupSeparator: ",",
+                //groupSize: 3,
+                //digits: 2,
+                //autoGroup: true,
+                //allowPlus: true,
+                allowMinus: true
+            });
+            $('.ParBinarios').hide();
+            //$('.reencravacaoL3').hide();
+            $('.ParIntervalos').fadeIn();
+            $('#companyValueL3 > td').hide()
         }
     });
 

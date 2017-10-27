@@ -216,6 +216,7 @@
 /// <reference path="theme/js/app.min.js" />
 /// <reference path="theme/js/jquery.slimscroll.min.js" />
 /// <reference path="Timeout/timeout-dialog.js" />
+/// <reference path="timer/angular-timer.min.js" />
 /// <reference path="toastr.min.js" />
 /// <reference path="tripledes.js" />
 /// <reference path="x64-core.js" />

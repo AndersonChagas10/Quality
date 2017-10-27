@@ -1209,6 +1209,7 @@
     <Content Include="Scripts\theme\js\app.min.js" />
     <Content Include="Scripts\theme\js\jquery.slimscroll.min.js" />
     <Content Include="Scripts\Timeout\timeout-dialog.js" />
+    <Content Include="Scripts\Timer\angular-timer.min.js" />
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\tripledes.js" />
     <Content Include="Scripts\x64-core.js" />
