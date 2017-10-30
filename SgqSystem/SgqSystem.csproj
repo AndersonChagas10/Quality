@@ -1085,6 +1085,7 @@
     <None Include="Properties\PublishProfiles\Ytoara.pubxml" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
     <Content Include="Scripts\GuardJs.js" />
+    <Content Include="Scripts\humanizeduration\humanize-duration.js" />
     <Content Include="Scripts\inputmask\inputmask\inputmask.date.extensions.js" />
     <Content Include="Scripts\inputmask\inputmask\inputmask.dependencyLib.js" />
     <Content Include="Scripts\inputmask\inputmask\inputmask.extensions.js" />
@@ -1210,6 +1211,7 @@
     <Content Include="Scripts\theme\js\app.min.js" />
     <Content Include="Scripts\theme\js\jquery.slimscroll.min.js" />
     <Content Include="Scripts\Timeout\timeout-dialog.js" />
+    <Content Include="Scripts\Timer\angular-timer.min.js" />
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\tripledes.js" />
     <Content Include="Scripts\x64-core.js" />

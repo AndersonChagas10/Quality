@@ -56,6 +56,27 @@
     </div>
 
     <br />
+    
+    <button ng-show="(seletedLinha.Id > 0 && seletedLinha.IsStoped)" id="btnStartStop"
+            type="button"
+            class="floatinBottonButton btn btn-success btn-sm"
+            data-toggle="modal"
+            data-target="#modalParadaDeLinha"
+            ng-init="seletedLinha.ExcedidoTempoLimite = false"
+            ng-class="{'btn-success': (seletedLinha.ExcedidoTempoLimite == false), 'btn-danger': (seletedLinha.ExcedidoTempoLimite == true)}"
+            title="Para / Reinicia a Linha">
+        <span class="glyphicon glyphicon-time" aria-hidden="true">
+            <span style="font-family:'Open Sans',sans-serif">&nbsp; Parar / Reiniciar a Linha. Linha parada a {{seletedLinha.LinhaParadaTimer}}</span>
+        </span>
+    </button>
+
+    @*{{seletedLinha.LinhaParadaTimer}}
+    <button ng-click="testTimerOn()">Start Timers</button>
+    <button ng-click="testTimerOff()">Stop Timers</button>*@
+    @*{{timerRunning}}
+    <timer interval="1000">{{hours}} hour{{hoursS}}, {{minutes}} minute{{minutesS}}, {{seconds}} second{{secondsS}}.</timer>
+    <button ng-click="startTimer()" ng-disabled="timerRunning">Start Timers</button>
+    <button ng-click="stopTimer()" ng-disabled="!timerRunning">Stop Timers</button>*@
 
     <div ng-show="seletedLinha.Id > 0" class="col-lg-12 col-md-12 col-sm-12">
         <form role="form" class="ng-pristine ng-valid">
@@ -122,29 +143,18 @@
         </form>
 
     </div>
-   
-    <button ng-show="(seletedLinha.Id > 0 && seletedLinha.HaveCorrectiveAction)" id="btnStartStop"
-            type="button"
-            class="floatinBottonButton btn btn-danger btn-sm"
-            data-toggle="modal"
-            data-target="#modalParadaDeLinha"
-            title="Para / Reinicia a Linha">
-        <span class="glyphicon glyphicon-time" aria-hidden="true"><span style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">&nbsp; Parar / Reiniciar a Linha</span></span>
-    </button>
+
 
     <button class="floatinBottonButton btn btn-danger btn-sm"
-            ng-show="(saving)" >
+            ng-show="(saving)">
         <span class="glyphicon glyphicon-time" aria-hidden="true"><span style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">&nbsp; Salvando dados...</span></span>
     </button>
 
     <div class="col-lg-12 col-md-12 col-sm-12"
-         ng-init="seletedLinha.IsStoped = false"
-         ng-class="{'alert alert-danger' : (seletedLinha.IsStoped)}">
-        @*<div class="alert alert-danger">
-                <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-            </div>*@
+         @*ng-class="{'alert alert-danger' : (seletedLinha.IsStoped)}"*@
+         ng-init="seletedLinha.IsStoped = false">
         <div ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" style="" class="col-lg-6 col-md-6 col-sm-12" ng-repeat="item in seletedLinha.latas track by $index" ng-init="lataIndex = $index" tables>
-            <div style="text-align: right; float:left; padding-bottom: 5px; padding-top: 5px; vertical-align: middle; font-size: 18px;">{{item.Name}}</div>
+            <div style="text-align: right; float:left; padding-bottom: 5px; padding-top: 5px; vertical-align: middle; font-size: 18px;">{{item.Name}} <span ng-show="item.HoraDaRetiradaDaLata"> retirada as: {{item.HoraDaRetiradaDaLata}}</span></div>
 
             <div style="text-align: right; padding-bottom: 5px; padding-top: 5px; float: right; ">
 
@@ -177,9 +187,9 @@
                 @*<button type="button" class="btn btn-warning btn-sm" ng-click="cloneLata(seletedLinha, $index)">
                         <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
                     </button>*@
-                <button type="button" class="btn btn-warning btn-sm" ng-click="cloneLataALot(seletedLinha, $index, 30)">
+                @*<button type="button" class="btn btn-warning btn-sm" ng-click="cloneLataALot(seletedLinha, $index, 30)">
                     <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
-                </button>
+                </button>*@
                 <button type="button"
                         class="btn btn-warning btn-sm"
                         data-toggle="modal"
@@ -335,10 +345,10 @@
                 </div>
 
                 <div class="modal-body" style="overflow-x:auto">
-                    <span>Horário de Retirada da lata da linha</span>
+                    <span>Horário em que a lata foi retirada da linha</span>
                     <input type="text"
                            class="time form-control"
-                           placeholder="Horário de Retirada da lata da linha"
+                           placeholder=""
                            ng-change="saveState(true, true)"
                            ng-model="selectedLata.HoraDaRetiradaDaLata">
                     <br />
@@ -385,7 +395,7 @@
                                     </span>
 
                                     @*1	Binário*@
-                                    <span ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
+                                    <span ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')" ng-class="{bgWhite: (!(selectedLata.ResultValue[ParLevel3.Name][($index +1)] === true) && !(selectedLata.ResultValue[ParLevel3.Name][($index +1)] === false)), bgGreen: (selectedLata.ResultValue[ParLevel3.Name][($index +1)] === true), bgRed: (selectedLata.ResultValue[ParLevel3.Name][($index +1)] === false)}">
                                         <span ng-if="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))">
                                             <input type="radio"
                                                    style="width:100%; max-width: 65px;"
@@ -394,7 +404,6 @@
                                                    ng-model="selectedLata.ResultValue[ParLevel3.Name][($index +1)]"
                                                    @*ng-change="selectedLata.ResultValue[ParLevel3.Name][($index +1)] = 0"*@ />
                                             {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
-                                            <br />
                                             <input type="radio"
                                                    style="width:100%; max-width: 65px;"
                                                    ng-value="false"
@@ -402,7 +411,6 @@
                                                    ng-model="selectedLata.ResultValue[ParLevel3.Name][($index +1)]"
                                                    @*ng-change="selectedLata.ResultValue[ParLevel3.Name][($index +1)] = 1"*@ />
                                             {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
-
                                             <span ng-if="ParLevel3.AllowNA"><input type="checkbox" ng-model="selectedLata.ResultValue[ParLevel3.Name][('Na' + ($index +1))]" /> NA </span>
                                         </span>
                                     </span>
@@ -627,43 +635,40 @@
                         <div class="row">
                             <div class="panel panel-default">
                                 <div class="panel-body">
-                                    <div class="row" style="padding:8px;">
-                                        <div class="col-xs-6" id="CorrectiveActionTaken">
-                                            <b class="font16">Ação Corretiva Tomada:<br></b>
-                                            <b>Data/Hora:</b>
-                                            <span id="datetime">{{ selectedLata.correctiveAction.AddDate }}</span>
-                                            <br><b>Monitor: </b>
-                                            <span id="auditor">{{selectedLata.correctiveAction.userAuditor.Name}}</span>
-                                            @*<br><b>Turno: </b>
-                                                <span id="shift">Turno 1</span><br>*@
-                                        </div>
-                                        <div class="col-xs-6" id="AuditInformation">
-                                            <b class="font16">Informação da Auditoria:<br></b>
-                                            <b>Indicadores: </b>
-                                            <span id="auditText">Indicador NAME MOCK</span><br>
-                                            <b>Data Inicial:</b>
-                                            <span id="starttime">{{selectedLata.StartAuditTime}}</span><br>
-                                            @*<b>Período:</b>
-                                                <span id="correctivePeriod">Período 1</span>*@
-                                        </div>
+                                    <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
+                                        <label>Horário de parada da linha</label>
+                                        <br />
+                                        <input type="text"
+                                               class="time form-control"
+                                               title="Horário de parada da linha"
+                                               @*ng-init="seletedLinha.correctiveAction.HorarioDeParada = parseDate(seletedLinha.RegistroParada.HorarioDeParada)"*@
+                                               ng-model="seletedLinha.correctiveAction.HorarioDeParada" />
+                                    </div>
+                                    <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
+                                        <label>Descrição da Falha:</label>
+                                        <textarea ng-model="selectedLata.correctiveAction.DescriptionFailure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                                    </div>
+                                    <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
+                                        <label>Ação Corretiva Imediata:</label><label ng-show="seletedLinha.correctiveAction.HorarioDeParada"> Ás {{seletedLinha.correctiveAction.HorarioDeParada}} a linha {{seletedLinha.Name}} foi paralizada:</label>
+                                        <textarea ng-model="selectedLata.correctiveAction.ImmediateCorrectiveAction" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                                    </div>
+                                    @*<div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
+                                            <label>Disposição do produto:</label>
+                                            <textarea ng-model="selectedLata.correctiveAction.ProductDisposition" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                                        </div>*@
+                                    <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
+                                        <label>Acão Preventiva:</label>
+                                        <textarea ng-model="selectedLata.correctiveAction.PreventativeMeasure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
+                                    </div>
+                                    <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
+                                        <label>Horário de liberação da linha</label>
+                                        <input type="text"
+                                               class="time form-control"
+                                               title="Horário de liberação da linha"
+                                               @*ng-init="seletedLinha.correctiveAction.HorarioDeParada = parseDate(seletedLinha.RegistroParada.HorarioDeParada)"*@
+                                               ng-model="seletedLinha.correctiveAction.HorarioDeLiberacao" />
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
-                                <label>Descrição da Falha:</label>
-                                <textarea ng-model="selectedLata.correctiveAction.DescriptionFailure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
-                            </div>
-                            <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
-                                <label>Ação Corretiva Imediata:</label>
-                                <textarea ng-model="selectedLata.correctiveAction.ImmediateCorrectiveAction" class="form-control custom-control" rows="3" style="resize:none"></textarea>
-                            </div>
-                            <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
-                                <label>Disposição do produto:</label>
-                                <textarea ng-model="selectedLata.correctiveAction.ProductDisposition" class="form-control custom-control" rows="3" style="resize:none"></textarea>
-                            </div>
-                            <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
-                                <label>Acão Preventiva:</label>
-                                <textarea ng-model="selectedLata.correctiveAction.PreventativeMeasure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
                             </div>
                             <br />
                             <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
@@ -702,7 +707,7 @@
 
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="col-lg-6 col-md-6 col-sm-12">
-                                <div class="form-group float-label-control">
+                                @*<div class="form-group float-label-control">
                                     <label>Horário de parada</label>
                                     <br />
                                     <input type="datetime-local"
@@ -720,7 +725,7 @@
                                            ng-init="seletedLinha.RegistroParada.HorarioDeRetomada = parseDate(seletedLinha.RegistroParada.HorarioDeRetomada)"
                                            ng-disabled="!seletedLinha.IsStoped"
                                            ng-model="seletedLinha.RegistroParada.HorarioDeRetomada" />
-                                </div>
+                                </div>*@
                                 <div class="form-group float-label-control">
                                     <label>Observações</label>
                                     <br />
@@ -748,7 +753,7 @@
 
                         <br />
 
-                        <button type="button" class="btn btn-secondary" ng-click="seletedLinha.exebirAcoesAnteriores = !seletedLinha.exebirAcoesAnteriores">
+                        @*<button type="button" class="btn btn-secondary" ng-click="seletedLinha.exebirAcoesAnteriores = !seletedLinha.exebirAcoesAnteriores">
                             <span ng-show="!seletedLinha.exebirAcoesAnteriores">Exibir ações anteriores para esta Linha</span>
                             <span ng-show="seletedLinha.exebirAcoesAnteriores">Ocultar ações anteriores para esta Linha</span>
                         </button>
@@ -776,15 +781,15 @@
                                     <textarea ng-model="logParada.MotivoParada3" ng-disabled="true" placeholder="Observação 3" type="text" class="form-control custom-control" rows="3" style="resize:none"></textarea>
                                 </div>
                             </div>
-                        </div>
+                        </div>*@
 
                     </form>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" ng-hide="seletedLinha.IsStoped" ng-click="seletedLinha.IsStoped =  !seletedLinha.IsStoped; saveState();" data-dismiss="modal">Parar Linha</button>
-                    <button type="button" class="btn btn-primary" ng-show="(seletedLinha.IsStoped && seletedLinha.RegistroParada.HorarioDeParada && seletedLinha.RegistroParada.HorarioDeRetomada)" ng-click="seletedLinha.IsStoped =  !seletedLinha.IsStoped; saveLogParada();" data-dismiss="modal">Retomar ativide da Linha</button>
+                    @*<button type="button" class="btn btn-primary" ng-hide="seletedLinha.IsStoped" ng-click="seletedLinha.IsStoped =  !seletedLinha.IsStoped; saveState();" data-dismiss="modal">Parar Linha</button>*@
+                    <button type="button" class="btn btn-primary" ng-show="(seletedLinha.IsStoped)" ng-click="seletedLinha.IsStoped =  false" data-dismiss="modal">Retomar ativide da Linha</button>
                 </div>
             </div>
         </div>
@@ -840,9 +845,25 @@
         /*
         START ANGULAR MODULE
         */
-        app.controller('reencravationCtrl', ['$scope', '$http',
-            function ($scope, $http) {
+        app.controller('reencravationCtrl', ['$scope', '$http', '$timeout',
+            function ($scope, $http, $timeout) {
                 let vm = $scope
+
+                //$scope.timerRunning = true;
+
+                //$scope.startTimer = function () {
+                //    $scope.$broadcast('timer-start');
+                //    $scope.timerRunning = true;
+                //};
+
+                //$scope.stopTimer = function () {
+                //    $scope.$broadcast('timer-stop');
+                //    $scope.timerRunning = false;
+                //};
+
+                //$scope.$on('timer-stopped', function (event, data) {
+                //    console.log('Timer Stopped - data = ', data);
+                //});
 
                 vm.linhas = [{}]
                 vm.produtos = [{}]
@@ -1104,28 +1125,6 @@
                         });
                 }
 
-                //vm.getParametrizacaoZeraColeta = function () {
-                //    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?Company=" + vm.company })
-                //        .then(function (r) {
-                //            if (r.data.errors) {
-                //                r.data.errors.forEach(function (o) {
-                //                    toastr.error(o)
-                //                })
-                //            } else {
-                //                //toastr.success(r.data.resposta)
-                //                //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
-                //                toastr.success('Recuperadas linhas parametrizadas \n da base de dados')
-                //                vm.linhas = r.data.model
-                //                vm.linhas.forEach(function (o, c) {
-                //                    o["latas"] = []
-                //                })
-                //                setTimeout(function () { $('select').select2() }, 200)
-                //                vm.seletedLinha = { Id: 0 }
-                //                //vm.getState()
-                //            }
-                //        });
-                //}
-
                 /*GET os Dados das linhas cadastradas*/
                 vm.getState = function () {
                     $http({ method: 'GET', url: vm.saveStateUrl + "?Company=" + vm.company })
@@ -1161,7 +1160,7 @@
                                 /**/
 
                                 vm.seletedLinha = JSON.parse(JSON.stringify(novaLinha))[0]
-                                
+
                                 if (vm.seletedLinha.form) {
                                     if (vm.seletedLinha.form.HoraInicioProducao)
                                         vm.seletedLinha.form.HoraInicioProducao = new Date(vm.seletedLinha.form.HoraInicioProducao)
@@ -1183,7 +1182,7 @@
                                 vm.activeInLine = vm.seletedLinha.Id
 
                                 $.LoadingOverlay("hide", true);
-                                //vm.executeDocReady(true)
+                                vm.executeDocReady()
                             }
                         });
                 }
@@ -1260,7 +1259,7 @@
                     console.log(vm.selectedLata)
                     console.log(vm.selectedLata.haveErrors)
                 }
-                
+
                 //DEPRECIADO
                 vm.saveAndClose = function (item, remove) {
                     //console.log(item)
@@ -1458,7 +1457,7 @@
                         });
                     });
 
-                    if(save)
+                    if (save)
                         vm.saveState(notShowLabel, notShowLoader)
                 }
 
@@ -1481,6 +1480,8 @@
                                vm.selectedLata.correctiveAction.IsAssinada = true
                                vm.saveState()
                                $('.modal').modal('hide')
+                               vm.seletedLinha.IsStoped = true;
+                               vm.TimerOn()
                            }
                            else {
                                vm.selectedLata.correctiveAction.IsAssinada = false
@@ -1490,6 +1491,46 @@
                                vm.saveState(true, true)
                            }
                        });
+                }
+
+                vm.TimerOn = function () {
+                    vm.seletedLinha.ExcedidoTempoLimite = false
+                    vm.seletedLinha.StartParadaDeLinha = moment();
+                    vm.seletedLinha.TimeoutParadaLinha = $timeout($scope.onTimeout, 1000);
+                }
+
+                vm.TimerOff = function () {
+                    let diffTime = moment().diff(vm.seletedLinha.StartParadaDeLinha)
+                    let duration = moment.duration(diffTime);
+                    let //years = duration.years(),
+                        days = duration.days(),
+                        hrs = duration.hours(),
+                      mins = duration.minutes(),
+                      secs = duration.seconds();
+                    vm.seletedLinha.TempoDeLinhaParada = (/*years + ' years ' + */days + ' days ' + hrs + ' hrs ' + mins + ' mins ' + secs + ' sec');
+                    $timeout.cancel(vm.seletedLinha.mytimeout);
+                }
+
+                $scope.onTimeout = function () {
+                    let diffTime = moment().diff(vm.seletedLinha.StartParadaDeLinha)
+                    let duration = moment.duration(diffTime);
+                    let //years = duration.years(),
+                        days = duration.days(),
+                        hrs = duration.hours(),
+                      mins = duration.minutes(),
+                      secs = duration.seconds();
+
+                    //if (hrs > 1)
+                    //    vm.seletedLinha.ExcedidoTempoLimite = true
+
+                    //Testes
+                    if (mins > 2)
+                        vm.seletedLinha.ExcedidoTempoLimite = true
+                    else
+                        vm.seletedLinha.ExcedidoTempoLimite = false
+
+                    vm.seletedLinha.LinhaParadaTimer = (/*years + ' years ' + */days + ' Dias ' + hrs + ' Horas ' + mins + ' Minutos ' + secs + ' Segundos');
+                    vm.seletedLinha.mytimeout = $timeout($scope.onTimeout, 1000);
                 }
 
                 vm.generateIdParaOutroCalculado = function (ParLevel3, index) {
@@ -1502,6 +1543,7 @@
 
                     vm.seletedLinha.logParada.push(vm.copyObj(vm.seletedLinha.RegistroParada))
                     vm.seletedLinha.RegistroParada = {}
+                    vm.TimerOff()
                     vm.saveState()
                 }
 
@@ -1517,6 +1559,7 @@
                     date = new Date(date);
                 }
 
+                /*Não utilizado*/
                 vm.$on('$viewContentLoaded', function () {
                     //Here your view content is fully loaded !!
                     //vm.executeDocReady()
@@ -1529,6 +1572,30 @@
                             //vm.executeDocReady()
                         }, 0);
                     });
+
+                //vm.getParametrizacaoZeraColeta = function () {
+                //    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?Company=" + vm.company })
+                //        .then(function (r) {
+                //            if (r.data.errors) {
+                //                r.data.errors.forEach(function (o) {
+                //                    toastr.error(o)
+                //                })
+                //            } else {
+                //                //toastr.success(r.data.resposta)
+                //                //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
+                //                toastr.success('Recuperadas linhas parametrizadas \n da base de dados')
+                //                vm.linhas = r.data.model
+                //                vm.linhas.forEach(function (o, c) {
+                //                    o["latas"] = []
+                //                })
+                //                setTimeout(function () { $('select').select2() }, 200)
+                //                vm.seletedLinha = { Id: 0 }
+                //                //vm.getState()
+                //            }
+                //        });
+                //}
+
+                /*Não utilizado FIM*/
 
             }])
             .filter('mathPow', function () {
@@ -1575,35 +1642,14 @@
                       (items + '').split('').reverse().join(''); // else make it a string (if it isn't already), and reverse it
                 };
             })
-
-        //app.directive('tables', ['$timeout', function ($timeout) {
-        //    return {
-        //        //terminal: true,
-        //        //transclude: false,
-        //        compile: function (scope, elem, attrs) {
-        //            console.log("Compiling tables-directive");
-        //            return {
-        //                pre: function (scope) {
-        //                    console.log("Prelink - tables-directive");
-        //                },
-        //                post: function (scope) {
-        //                    //scope.executeDocReady(true)
-        //                    $timeout(scope.executeDocReady(true), 0);
-        //                    console.log("Postlink - tables-directive");
-        //                }
-        //            };
-        //        }
-        //    };
-        //}])
-
-        app.directive('tables', ['$timeout', function ($timeout) {
-            return function (scope, element, attrs) {
-                if (scope.$last) {
-                    //window.alert("im the last!");
-                    //$timeout(scope.$emit(scope.executeDocReady(true)), 200);
-                }
-            };
-        }])
+            .directive('tables', ['$timeout', function ($timeout) {
+                return function (scope, element, attrs) {
+                    if (scope.$last) {
+                        //window.alert("im the last!");
+                        //$timeout(scope.$emit(scope.executeDocReady(true)), 200);
+                    }
+                };
+            }])
 
     })();
 </script>
