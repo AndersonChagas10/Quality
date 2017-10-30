@@ -2750,9 +2750,9 @@ DROP TABLE #AMOSTRATIPO4a  ";
     public class RetornoGenerico
     {
 
-        public decimal av { get; set; }
+        public decimal? av { get; set; }
         public string ChartTitle { get; set; }
-        public decimal companyScorecard { get; set; }
+        public decimal? companyScorecard { get; set; }
         public string companySigla { get; set; }
         public DateTime date { get; set; }
         public int level1Id { get; set; }
@@ -2761,13 +2761,13 @@ DROP TABLE #AMOSTRATIPO4a  ";
         public string level2Name { get; set; }
         public int level3Id { get; set; }
         public string level3Name { get; set; }
-        public decimal nc { get; set; }
-        public decimal procentagemNc { get; set; }
+        public decimal? nc { get; set; }
+        public decimal? procentagemNc { get; set; }
         public int regId { get; set; }
         public string regName { get; set; }
-        public decimal scorecard { get; set; }
-        public decimal scorecardJbs { get; set; }
-        public decimal scorecardJbsReg { get; set; }
+        public decimal? scorecard { get; set; }
+        public decimal? scorecardJbs { get; set; }
+        public decimal? scorecardJbsReg { get; set; }
         public string _date
         {
             get
@@ -2782,7 +2782,7 @@ DROP TABLE #AMOSTRATIPO4a  ";
         public string UnidadeName { get; set; }
         public string HISTORICO_ID { get; set; }
         public int? IsPaAcao { get; set; }
-        public decimal Meta { get; set; }
+        public decimal? Meta { get; set; }
         public string _dateEUA { get { return date.ToString("yyyy-MM-dd"); } }
     }
 

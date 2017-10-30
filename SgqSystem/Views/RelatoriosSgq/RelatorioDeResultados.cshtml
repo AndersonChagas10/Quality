@@ -180,12 +180,15 @@
 
     var chart;
     var chartHistorico;
+    var chartHistoricoGeral;
+    var chartHistoricoIndicador;
+    var chartHistoricoMonitoramento;
     var enviar2 = {};
     var enviar3 = {};
     var enviarHistorico = {};
     var $btn = $('#btnSend');
     exibeTodosLevels = false;
-    var chartHistoricoIndicador;
+    
 
     function Send(toggle) {
 
@@ -882,7 +885,7 @@
 
             $('#GraficoHistoricoGeral').empty();
 
-            chartHistorico = Highcharts.chart('GraficoHistoricoGeral', {
+            chartHistoricoGeral = Highcharts.chart('GraficoHistoricoGeral', {
                 credits: {
                     enabled: false
                 },
@@ -1050,9 +1053,10 @@
                 }]
             }, function(){
                 $('#showNCGeral > h1').text(parseFloat(porcPeriodo.toFixed(2)) + " %");
-                $('#NCGeral').show();
+                $('#NCGeral').show();                
             });
 
+            chartHistoricoGeral.reflow();
         }
     }
 
@@ -1074,7 +1078,7 @@
 
             $('#GraficoHistoricoIndicador').empty();
 
-            chartHistorico = Highcharts.chart('GraficoHistoricoIndicador', {
+            chartHistoricoIndicador = Highcharts.chart('GraficoHistoricoIndicador', {
                 credits: {
                     enabled: false
                 },
@@ -1245,6 +1249,7 @@
                 $('#NCIndicador').show();
             });
 
+            chartHistoricoIndicador.reflow();
         }
     }
 
@@ -1266,7 +1271,7 @@
 
             $('#GraficoHistoricoMonitoramento').empty();
 
-            chartHistorico = Highcharts.chart('GraficoHistoricoMonitoramento', {
+            chartHistoricoMonitoramento = Highcharts.chart('GraficoHistoricoMonitoramento', {
                 credits: {
                     enabled: false
                 },
@@ -1432,6 +1437,8 @@
                 $('#showNCMonitoramento > h1').text(parseFloat(porcPeriodo.toFixed(2)) + " %");
                 $('#NCMonitoramento').show();
             });
+
+            chartHistoricoMonitoramento.reflow();
         }
     }
 
