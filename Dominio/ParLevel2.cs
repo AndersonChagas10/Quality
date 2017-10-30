@@ -42,6 +42,7 @@ namespace Dominio
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool IsActive { get; set; }
         public Nullable<bool> HasSampleTotal { get; set; }
+        public bool HasTakePhoto { get; set; }
     
         public virtual ParDepartment ParDepartment { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

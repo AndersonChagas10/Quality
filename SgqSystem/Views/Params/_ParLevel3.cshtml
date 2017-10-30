@@ -447,15 +447,24 @@
         let expressao = updateLogicExpression(true)
         let limites
 
-        if($('#selectUnidadeDeMedidas option:selected').val() && $('#parLevel3Value_IntervalMin').val().length > 0 && $('#parLevel3Value_IntervalMin').val().length > 0 && $('#parIntervalosType option:selected').val() > 0){
+        if($('#selectUnidadeDeMedidas option:selected').val() && $('#parLevel3Value_IntervalMin').val().length > 0 && $('#parLevel3Value_IntervalMin').val().length > 0 && $('#parIntervalosType option:selected').val() >= 0){
             let limites = {
-                UnidadeMedidaId: $('#selectUnidadeDeMedidas option:selected').val(),
+                UnidadeMedida_Id: $('#selectUnidadeDeMedidas option:selected').val(),
                 UnidadeMedidaText:$('#selectUnidadeDeMedidas option:selected').text(),
                 LimInferior: $('#parLevel3Value_IntervalMin').val(),
                 LimSuperior: $('#parLevel3Value_IntervalMax').val(),
-                AceitavelEntreVal: $('#parIntervalosType option:selected').val(),
+                AceitavelEntre_Id: $('#parIntervalosType option:selected').val(),
                 AceitavelEntreText: $('#parIntervalosType option:selected').text(),
             }
+
+            expressaoArr.forEach(function(o, c){ 
+                o['UnidadeMedida_Id'] = limites.UnidadeMedida_Id
+                o['UnidadeMedidaText'] = limites.UnidadeMedidaText
+                o['LimInferior'] = limites.LimInferior
+                o['LimSuperior'] = limites.LimSuperior
+                o['AceitavelEntre_Id'] = limites.AceitavelEntre_Id
+                o['AceitavelEntreText'] = limites.AceitavelEntreText
+            })
         }
 
         let tr = `<tr pos="undefined">` +
@@ -574,14 +583,18 @@
                 let tipo = reencravacoes[0].ParLevel3InputType_Name
                 let unidade = reencravacoes[0].ParCompany_Name
                 let expressao = updateLogicExpression(true)
+                let UnidadeMedidaText = reencravacoes[0].UnidadeMedidaText
+                let AceitavelEntreText = reencravacoes[0].AceitavelEntreText
+                let LimInferior = reencravacoes[0].LimInferior
+                let LimSuperior = reencravacoes[0].LimSuperior
 
                 let tr = `<tr pos="undefined">` +
                             `<td>${tipo}</td>` +
                             `<td>${unidade}</td>` +
-                            `<td></td>` +
-                            `<td></td>` +
-                            `<td></td>` +
-                            `<td>${expressao}</td>` +
+                            `<td>${UnidadeMedidaText}</td>` +
+                            `<td>${LimInferior}</td>` +
+                            `<td>${LimSuperior}</td>` +
+                            `<td>${expressao}${AceitavelEntreText}</td>` +
                             `<td></td>` +
                             `<td></td>` +
                             `<td>` +

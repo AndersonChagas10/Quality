@@ -43,6 +43,17 @@
 
 <div ng-controller="reencravationCtrl as r" class="container page-content " style="min-height: 600px;width:100%;">
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        
+        <ul class="nav navbar-nav">
+            <li class="active" style="margin-left:18px;" ng-repeat="indicador in indicadores track by $index" ng-click="selectIndicador(indicador)">
+                <a href="#" ng-class="{active: indicadorSelecionado.Name == indicador.Name}">
+                    <span class="" aria-hidden="true"></span> {{indicador.Name}}
+                    @*<span class="glyphicon glyphicon-sound-stereo" aria-hidden="true"></span>
+                    <span class="sr-only">(current)</span>*@
+                </a>
+            </li>
+        </ul>
+
         <ul class="nav navbar-nav">
             <li class="active" style="margin-left:18px;" ng-repeat="item in linhas track by $index" ng-click="getLinha($index)" ng-show="item.IsActive == 'True'">
                 <a href="#" ng-class="{active: seletedLinha.Name == item.Name}">
@@ -69,14 +80,6 @@
             <span style="font-family:'Open Sans',sans-serif">&nbsp; Parar / Reiniciar a Linha. Linha parada a {{seletedLinha.LinhaParadaTimer}}</span>
         </span>
     </button>
-
-    @*{{seletedLinha.LinhaParadaTimer}}
-    <button ng-click="testTimerOn()">Start Timers</button>
-    <button ng-click="testTimerOff()">Stop Timers</button>*@
-    @*{{timerRunning}}
-    <timer interval="1000">{{hours}} hour{{hoursS}}, {{minutes}} minute{{minutesS}}, {{seconds}} second{{secondsS}}.</timer>
-    <button ng-click="startTimer()" ng-disabled="timerRunning">Start Timers</button>
-    <button ng-click="stopTimer()" ng-disabled="!timerRunning">Stop Timers</button>*@
 
     <div ng-show="seletedLinha.Id > 0" class="col-lg-12 col-md-12 col-sm-12">
         <form role="form" class="ng-pristine ng-valid">
@@ -143,7 +146,6 @@
         </form>
 
     </div>
-
 
     <button class="floatinBottonButton btn btn-danger btn-sm"
             ng-show="(saving)">
@@ -293,6 +295,7 @@
                         <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px; text-align: center;"
                             colspan="{{((ParLevel3.IsPointLess == false) ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}"
                             ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
+                            ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Name][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Name][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}"
                             ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
                             <span class="validate">{{item.ResultValue[ParLevel3.Name][($index + 1)]}}</span>
                         </td>
@@ -395,7 +398,9 @@
                                     </span>
 
                                     @*1	Binário*@
-                                    <span ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')" ng-class="{bgWhite: (!(selectedLata.ResultValue[ParLevel3.Name][($index +1)] === true) && !(selectedLata.ResultValue[ParLevel3.Name][($index +1)] === false)), bgGreen: (selectedLata.ResultValue[ParLevel3.Name][($index +1)] === true), bgRed: (selectedLata.ResultValue[ParLevel3.Name][($index +1)] === false)}">
+                                    <span ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')" 
+                                          ng-class="{bgWhite: (!(selectedLata.ResultValue[ParLevel3.Name][($index +1)] === true) && !(selectedLata.ResultValue[ParLevel3.Name][($index +1)] === false)), bgGreen: (selectedLata.ResultValue[ParLevel3.Name][($index +1)] === true), bgRed: (selectedLata.ResultValue[ParLevel3.Name][($index +1)] === false)}"
+                                          style="display: block; text-align: center;">
                                         <span ng-if="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))">
                                             <input type="radio"
                                                    style="width:100%; max-width: 65px;"
@@ -463,7 +468,9 @@
                                     </span>
 
                                     @*99 NOVO CALCULADO POR OUTRO*@
-                                    <span style="width:100%; max-width: 65px;" ng-show="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
+                                    <span style="width:100%; display: block; text-align: right;" ng-show="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')"
+                                          ng-class="{bgWhite:  (selectedLata.ResultValue[ParLevel3.Name][($index +1)].length == 0), bgYellow: (selectedLata.ResultValue[ParLevel3.Name][($index +1)] == 'NA'), bgGreen: (selectedLata.ResultValue[ParLevel3.Name][($index +1)] != null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= selectedLata.ResultValue[ParLevel3.Name][($index +1)] && selectedLata.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed: (selectedLata.ResultValue[ParLevel3.Name][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= selectedLata.ResultValue[ParLevel3.Name][($index +1)] && selectedLata.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}"
+                                          >
                                         {{geraIdCalc($index, ParLevel3.ParLevel3Value_OuterList, seletedLinha.latas.indexOf(selectedLata), ParLevel3.Name)}}
                                     </span>
                                 </td>
@@ -830,7 +837,7 @@
                     return config;
                 },
                 response: function (response) {
-                    $.LoadingOverlay("hide", true);
+                    $.LoadingOverlay("hide");
                     return response;
                 }
             }
@@ -883,6 +890,7 @@
                     }
                 }
                 vm.userAuditor = vm.getUser()
+                vm.getParametrizacaoUrl = '@Url.Action("RecravacaoLinhaApi", "api")'//'http://localhost:57506/api/RecravacaoLinhaApi'
 
                 vm.company = GetUnidadeUsuario()
 
@@ -893,6 +901,28 @@
                         }
                     }
                     return -1
+                }
+
+                vm.carregaIndicadores = function (showMensagem) {
+                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?Company=" + vm.company + "&level1Id=0" })
+                          .then(function (r) {
+                              if (r.data.errors) {
+                                  r.data.errors.forEach(function (o) {
+                                      toastr.error(o)
+                                  })
+                              } else {
+                                  if (showMensagem)
+                                      toastr.success('Indicadores carregados')
+                                  vm.indicadores = r.data.model
+                              }
+                          });
+                }
+
+                
+                vm.selectIndicador = function (item) {
+                    vm.indicadorSelecionado = item
+                    vm.seletedLinha = {}
+                    vm.getParametrizacaoLinhas(item.Id)
                 }
 
                 //vm.company = GetUnidadeUsuario()
@@ -1102,9 +1132,9 @@
                 vm.getProdutos()
 
                 /*GET Todas as linhas cadastradas*/
-                vm.getParametrizacaoUrl = '@Url.Action("RecravacaoLinhaApi", "api")'//'http://localhost:57506/api/RecravacaoLinhaApi'
-                vm.getParametrizacaoLinhas = function () {
-                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?Company=" + vm.company, showLoader: true })
+
+                vm.getParametrizacaoLinhas = function (idLevel1) {
+                    $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?Company=" + vm.company + "&level1Id=" + idLevel1, showLoader: true })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {
@@ -1387,7 +1417,8 @@
                         });
                 }
 
-                vm.getParametrizacaoLinhas()
+                //vm.getParametrizacaoLinhas()
+                vm.carregaIndicadores(true)
 
                 vm.executeDocReady = function (executaVerificacaoParaAcao, save, notShowLabel, notShowLoader) {
                     setTimeout(function () { vm.docReady(executaVerificacaoParaAcao, save, notShowLabel, notShowLoader) }, 325)
@@ -1445,15 +1476,54 @@
                     };
 
                     $(document).ready(function () {
-                        $('input').keyup(function (e) {
+                        $('input').off('keyup').on('keyup', function (e) {
                             if (e.which == keyCodes.rigth)
                                 $(this).closest('td').next().find('input').focus().select();
                             else if (e.which == keyCodes.left)
                                 $(this).closest('td').prev().find('input').focus().select();
-                            else if (e.which == keyCodes.down)
-                                $(this).closest('tr').next().find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus().select();
-                            else if (e.which == keyCodes.up)
-                                $(this).closest('tr').prev().find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus().select();
+                            else if (e.which == keyCodes.down){
+                                var nextTr = $(this).closest('tr').next()
+                                if (nextTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').length == 0) {
+                                    while (nextTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').length == 0 && nextTr.length != 0) {
+                                        nextTr = nextTr.closest('tr').next()
+                                        if (nextTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').length == 1) {
+                                            if (nextTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input:visible').length) {
+                                                nextTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus().select();
+                                                return
+                                            }
+                                            else {
+                                                nextTr.find('input').focus().select();
+                                                return
+                                            }
+                                        }
+                                    }
+                                }
+                                else {
+                                    nextTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus().select();
+                                }
+                            }
+                            else if (e.which == keyCodes.up) {
+                                var prevTr = $(this).closest('tr').prev()
+                                if (prevTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').length == 0) {
+                                    while (prevTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').length == 0 && prevTr.length != 0) {
+                                        prevTr = prevTr.closest('tr').prev()
+                                        if (prevTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').length == 1) {
+                                            if (prevTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input:visible').length) {
+                                                prevTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus().select();
+                                                return
+                                            }
+                                            else {
+                                                prevTr.find('input').focus().select();
+                                                return
+                                            }
+                                        }
+                                    }
+                                }
+                                else {
+                                    prevTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus().select();
+                                }
+                            }
+                                //$(this).closest('tr').prev().find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus().select();
                         });
                     });
 

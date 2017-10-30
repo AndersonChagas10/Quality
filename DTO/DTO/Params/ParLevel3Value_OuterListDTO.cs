@@ -29,6 +29,13 @@ namespace DTO.DTO.Params
         public int ParMeasurementUnit_Id { get; set; }
         public string ParMeasurementUnit_Name { get; set; }
 
+        public int UnidadeMedida_Id { get; set; }
+        public string UnidadeMedidaText { get; set; }
+        public string AceitavelEntreText { get; set; }
+        public int AceitavelEntre_Id { get; set; }
+        public decimal  LimInferior { get; set; }
+        public decimal LimSuperior { get; set; }
+
         public bool IsActive { get; set; }
 
     }

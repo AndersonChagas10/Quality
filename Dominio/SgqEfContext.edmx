@@ -147,7 +147,7 @@
           <Property Name="Sequential" Type="int" />
           <Property Name="Side" Type="int" />
           <Property Name="WeiEvaluation" Type="decimal" Precision="38" Scale="10" />
-          <Property Name="Defects" Type="decimal" Precision="38" Scale="10" />
+          <Property Name="Defects" Type="decimal" Precision="30" Scale="8" />
           <Property Name="WeiDefects" Type="decimal" Precision="15" Scale="5" />
           <Property Name="TotalLevel3WithDefects" Type="int" />
           <Property Name="TotalLevel3Evaluation" Type="int" />
@@ -208,22 +208,23 @@
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="ConsolidationDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="Evaluation" Type="decimal" Precision="32" Scale="8" />
+          <Property Name="Evaluation" Type="decimal" Precision="38" Scale="10" />
           <Property Name="AtualAlert" Type="int" />
-          <Property Name="WeiEvaluation" Type="decimal" Precision="32" Scale="8" />
-          <Property Name="EvaluateTotal" Type="decimal" Precision="32" Scale="8" />
-          <Property Name="DefectsTotal" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="WeiDefects" Type="decimal" Precision="30" Scale="8" />
+          <Property Name="WeiEvaluation" Type="decimal" Precision="38" Scale="10" />
+          <Property Name="EvaluateTotal" Type="decimal" Precision="38" Scale="10" />
+          <Property Name="DefectsTotal" Type="decimal" Precision="38" Scale="10" />
+          <Property Name="WeiDefects" Type="decimal" Precision="38" Scale="10" />
           <Property Name="TotalLevel3Evaluation" Type="int" />
           <Property Name="TotalLevel3WithDefects" Type="int" />
           <Property Name="LastEvaluationAlert" Type="int" />
           <Property Name="EvaluatedResult" Type="int" />
           <Property Name="DefectsResult" Type="int" />
           <Property Name="LastLevel2Alert" Type="int" />
-          <Property Name="ReauditIs" Type="int" />
-          <Property Name="ReauditNumber" Type="int" />
           <Property Name="Shift" Type="int" />
           <Property Name="Period" Type="int" />
+          <Property Name="ReauditIs" Type="int" />
+          <Property Name="ReauditNumber" Type="int" />
+          <Property Name="ReauditLevel" Type="int" />
         </EntityType>
         <EntityType Name="ConsolidationLevel2">
           <Key>
@@ -237,18 +238,18 @@
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="AlertLevel" Type="int" />
           <Property Name="ConsolidationDate" Type="datetime2" Precision="7" />
-          <Property Name="WeiEvaluation" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="EvaluateTotal" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="DefectsTotal" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="WeiDefects" Type="decimal" Precision="30" Scale="8" />
+          <Property Name="WeiEvaluation" Type="decimal" Precision="38" Scale="10" />
+          <Property Name="EvaluateTotal" Type="decimal" Precision="38" Scale="10" />
+          <Property Name="DefectsTotal" Type="decimal" Precision="38" Scale="10" />
+          <Property Name="WeiDefects" Type="decimal" Precision="38" Scale="10" />
           <Property Name="TotalLevel3Evaluation" Type="int" />
           <Property Name="TotalLevel3WithDefects" Type="int" />
           <Property Name="LastEvaluationAlert" Type="int" />
           <Property Name="EvaluatedResult" Type="int" />
           <Property Name="DefectsResult" Type="int" />
           <Property Name="LastLevel2Alert" Type="int" />
-          <Property Name="ReauditIs" Type="int" />
-          <Property Name="ReauditNumber" Type="int" />
+          <Property Name="ReauditIs" Type="int" Nullable="false" />
+          <Property Name="ReauditNumber" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CorrectiveAction">
           <Key>
@@ -322,14 +323,14 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
-          <Property Name="To" Type="nvarchar" MaxLength="900" Nullable="false" />
+          <Property Name="To" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Body" Type="nvarchar(max)" />
-          <Property Name="SendStatus" Type="nvarchar" MaxLength="900" />
+          <Property Name="SendStatus" Type="nvarchar(max)" />
           <Property Name="SendDate" Type="datetime2" Precision="7" />
-          <Property Name="Project" Type="nvarchar" MaxLength="15" />
+          <Property Name="Project" Type="nvarchar(max)" />
           <Property Name="IsBodyHtml" Type="bit" />
-          <Property Name="From" Type="nvarchar" MaxLength="350" />
-          <Property Name="Subject" Type="nvarchar" MaxLength="2900" />
+          <Property Name="From" Type="nvarchar(max)" />
+          <Property Name="Subject" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Example">
           <Key>
@@ -493,7 +494,7 @@
           <Property Name="CompanyNumber" Type="int" />
           <Property Name="IPServer" Type="nvarchar" MaxLength="155" />
           <Property Name="DBServer" Type="nvarchar" MaxLength="155" />
-          <Property Name="IntegrationId" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="IntegrationId" Type="decimal" Precision="38" Scale="10" />
           <Property Name="ParCompany_Id" Type="int" />
         </EntityType>
         <EntityType Name="ParCompanyCluster">
@@ -698,14 +699,21 @@
           <Property Name="IsPartialSave" Type="bit" />
           <Property Name="HasCompleteEvaluation" Type="bit" />
           <Property Name="ParScoreType_Id" Type="int" />
+          <Property Name="ParGroupLevel1_Id" Type="int" />
           <Property Name="IsChildren" Type="bit" />
           <Property Name="ParLevel1Origin_Id" Type="int" />
           <Property Name="PointsDestiny" Type="bit" />
           <Property Name="ParLevel1Destiny_Id" Type="int" />
           <Property Name="EditLevel2" Type="bit" Nullable="false" />
+          <Property Name="AllowAddLevel3" Type="bit" />
+          <Property Name="AllowEditPatternLevel3Task" Type="bit" />
+          <Property Name="AllowEditWeightOnLevel3" Type="bit" />
+          <Property Name="ShowInTablet" Type="bit" />
+          <Property Name="HasTakePhoto" Type="bit" Nullable="false" />
+          <Property Name="IsRecravacao" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade_JBS.dbo.ParLevel1VariableProduction' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProduction' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ParLevel1VariableProduction">
           <Key>
             <PropertyRef Name="Id" />
@@ -719,7 +727,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.ParLevel1VariableProduction' 
           <Property Name="AlterDate" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade_JBS.dbo.ParLevel1VariableProductionXLevel1' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProductionXLevel1' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ParLevel1VariableProductionXLevel1">
           <Key>
             <PropertyRef Name="Id" />
@@ -775,6 +783,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.ParLevel1VariableProductionXL
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="HasSampleTotal" Type="bit" />
+          <Property Name="HasTakePhoto" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ParLevel2ControlCompany">
           <Key>
@@ -801,9 +810,16 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.ParLevel1VariableProductionXL
           <Property Name="AlterDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'dbGQualidade.dbo.ParLevel2XHeaderField' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ParLevel2XHeaderField">
           <Key>
             <PropertyRef Name="Id" />
+            
+            
+            
+            
+            
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParLevel2_Id" Type="int" Nullable="false" />
@@ -823,6 +839,9 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.ParLevel1VariableProductionXL
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="HasTakePhoto" Type="bit" Nullable="false" />
+          <Property Name="IsPointLess" Type="bit" />
+          <Property Name="AllowNA" Type="bit" />
         </EntityType>
         <EntityType Name="ParLevel3BoolFalse">
           <Key>
@@ -912,6 +931,39 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.ParLevel1VariableProductionXL
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="ParLevel3Value_Outer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="ParLevel3_Id" Type="int" Nullable="false" />
+          <Property Name="ParLevel3_Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="ParLevel3InputType_Id" Type="int" Nullable="false" />
+          <Property Name="ParLevel3InputType_Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="ParCompany_Id" Type="int" />
+          <Property Name="ParCompany_Name" Type="nvarchar" MaxLength="200" />
+          <Property Name="ParMeasurementUnit_Id" Type="int" />
+          <Property Name="ParMeasurementUnit_Name" Type="nvarchar" MaxLength="200" />
+          <Property Name="OuterEmpresa_Id" Type="int" />
+          <Property Name="OuterEmpresa_Text" Type="nvarchar" MaxLength="200" />
+          <Property Name="OuterLevel3_Id" Type="int" />
+          <Property Name="OuterLevel3_Text" Type="nvarchar" MaxLength="200" />
+          <Property Name="OuterLevel3Value_Id" Type="int" />
+          <Property Name="OuterLevel3Value_Text" Type="nvarchar" MaxLength="200" />
+          <Property Name="OuterLevel3ValueIntervalMaxValue" Type="int" />
+          <Property Name="OuterLevel3ValueIntervalMinValue" Type="int" />
+          <Property Name="Operator" Type="nvarchar" MaxLength="200" />
+          <Property Name="Order" Type="int" />
+          <Property Name="UnidadeMedida_Id" Type="int" />
+          <Property Name="UnidadeMedidaText" Type="nvarchar" MaxLength="200" />
+          <Property Name="AceitavelEntreText" Type="nvarchar" MaxLength="200" />
+          <Property Name="AceitavelEntre_Id" Type="int" />
+          <Property Name="LimInferior" Type="decimal" Precision="18" Scale="5" />
+          <Property Name="LimSuperior" Type="decimal" Precision="18" Scale="5" />
+        </EntityType>
         <EntityType Name="ParLevelDefiniton">
           <Key>
             <PropertyRef Name="Id" />
@@ -953,7 +1005,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.ParLevel1VariableProductionXL
           <Property Name="ParHeaderField_Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="155" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="PunishmentValue" Type="decimal" Precision="38" Scale="10" Nullable="false" />
+          <Property Name="PunishmentValue" Type="decimal" Precision="10" Scale="4" Nullable="false" />
           <Property Name="Conformity" Type="bit" Nullable="false" />
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
@@ -978,7 +1030,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.ParLevel1VariableProductionXL
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ParNotConformityRule_Id" Type="int" Nullable="false" />
           <Property Name="ParCompany_Id" Type="int" />
-          <Property Name="Value" Type="decimal" Precision="38" Scale="10" />
+          <Property Name="Value" Type="decimal" Precision="10" Scale="5" />
           <Property Name="Level" Type="int" Nullable="false" />
           <Property Name="ParLevel1_Id" Type="int" />
           <Property Name="ParLevel2_Id" Type="int" />
@@ -1084,7 +1136,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.ParLevel1VariableProductionXL
           <Property Name="Sampling" Type="decimal" Precision="10" Scale="5" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade_JBS.dbo.ResultLevel2HeaderField' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'dbGQualidade.dbo.ResultLevel2HeaderField' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ResultLevel2HeaderField">
           <Key>
             <PropertyRef Name="Id" />
@@ -1104,15 +1156,15 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.ResultLevel2HeaderField' does
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade_JBS.dbo.RoleJBS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'dbGQualidade.dbo.RoleJBS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="RoleJBS">
           <Key>
-            
             <PropertyRef Name="Id" />
+            
           </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ScreenComponent_Id" Type="int" Nullable="false" />
           <Property Name="Role" Type="nchar" MaxLength="10" />
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="RoleSGQ">
           <Key>
@@ -1123,7 +1175,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.RoleJBS' does not have a prim
           <Property Name="Role" Type="nchar" MaxLength="10" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade_JBS.dbo.RoleType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'dbGQualidade.dbo.RoleType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="RoleType">
           <Key>
             <PropertyRef Name="Id" />
@@ -1133,7 +1185,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.RoleType' does not have a pri
           <Property Name="Type" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade_JBS.dbo.RoleUserSgq' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'dbGQualidade.dbo.RoleUserSgq' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="RoleUserSgq">
           <Key>
             <PropertyRef Name="Id" />
@@ -1149,14 +1201,14 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.RoleUserSgq' does not have a 
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade_JBS.dbo.ScreenComponent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ScreenComponent">
           <Key>
             <PropertyRef Name="Id" />
             
             
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="HashKey" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Component" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Type" Type="int" />
@@ -1314,140 +1366,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.ScreenComponent' does not hav
           <Property Name="ParCompany_id" Type="int" />
           <Property Name="ParLevel1_id" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade_JBS.dbo.DelDados' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="DelDados">
-          <Key>
-            <PropertyRef Name="TESTE" />
-          </Key>
-          <Property Name="TESTE" Type="int" Nullable="false" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade_JBS.dbo.Reports_CCA_Audit' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="Reports_CCA_Audit">
-          <Key>
-            <PropertyRef Name="Audit Period" />
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Audit/Reaudit" />
-            <PropertyRef Name="No of Def" />
-            <PropertyRef Name="Cattle Type" />
-            <PropertyRef Name="Chain Speed" />
-            <PropertyRef Name="Lot #" />
-            <PropertyRef Name="Mud Score" />
-          </Key>
-          <Property Name="Plant Number" Type="int" />
-          <Property Name="Audit Area" Type="varchar(max)" />
-          <Property Name="Set Start Date" Type="date" />
-          <Property Name="Set Start Time" Type="varchar" MaxLength="5" />
-          <Property Name="Audit Period" Type="int" Nullable="false" />
-          <Property Name="Shift" Type="int" Nullable="false" />
-          <Property Name="Audit/Reaudit" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="Specks" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="Dressing" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="Single Hairs" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="Clusters" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="Hide" Type="decimal" Precision="10" Scale="5" />
-          <Property Name="Defects" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="No of Def" Type="varchar" MaxLength="3" Nullable="false" />
-          <Property Name="Cattle Type" Type="varchar" MaxLength="5" Nullable="false" />
-          <Property Name="Chain Speed" Type="decimal" Precision="20" Scale="5" Nullable="false" />
-          <Property Name="Lot #" Type="decimal" Precision="20" Scale="5" Nullable="false" />
-          <Property Name="Mud Score" Type="decimal" Precision="20" Scale="5" Nullable="false" />
-          <Property Name="Auditor Name Global" Type="nvarchar(max)" />
-          <Property Name="Set End Date" Type="date" />
-          <Property Name="Set End Time" Type="varchar" MaxLength="5" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade_JBS.dbo.Reports_CFF_Audit' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="Reports_CFF_Audit">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Side" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="Defect Counter" />
-          </Key>
-          <Property Name="Plant Number" Type="int" />
-          <Property Name="Shift" Type="int" Nullable="false" />
-          <Property Name="Period" Type="int" Nullable="false" />
-          <Property Name="Set" Type="int" />
-          <Property Name="Start Date" Type="datetime2" Precision="7" />
-          <Property Name="Side" Type="int" Nullable="false" />
-          <Property Name="Audit Area" Type="varchar(max)" />
-          <Property Name="Set Start Date" Type="date" />
-          <Property Name="Set Start Time" Type="varchar" MaxLength="5" />
-          <Property Name="Set End Date" Type="date" />
-          <Property Name="Set End Time" Type="varchar" MaxLength="5" />
-          <Property Name="Auditor" Type="nvarchar(max)" />
-          <Property Name="Reaudit" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="Defects" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Cut" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Fold/Flap" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Puncture" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Defect Counter" Type="int" Nullable="false" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade_JBS.dbo.Reports_HTP_Audit' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="Reports_HTP_Audit">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Audit/ReAudit" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Baised/Unbiased" />
-            <PropertyRef Name="Starting Phase" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="Plant Number" Type="int" />
-          <Property Name="Shift" Type="int" Nullable="false" />
-          <Property Name="Start Date" Type="datetime2" Precision="7" />
-          <Property Name="Start Time" Type="varchar" MaxLength="10" />
-          <Property Name="Job Id" Type="varchar(max)" />
-          <Property Name="Auditor" Type="nvarchar(max)" />
-          <Property Name="Audit/ReAudit" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="Period" Type="int" Nullable="false" />
-          <Property Name="Baised/Unbiased" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="Job Date" Type="date" />
-          <Property Name="Job Time" Type="varchar" MaxLength="10" />
-          <Property Name="Starting Phase" Type="int" Nullable="false" />
-          <Property Name="Core Practice HTP Deviation" Type="varchar" MaxLength="3" />
-          <Property Name="Other Deviaton" Type="varchar" MaxLength="3" />
-          <Property Name="Ending Phase" Type="int" />
-          <Property Name="Reaudit" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="End Date" Type="date" />
-          <Property Name="End Time" Type="varchar" MaxLength="10" />
-          <Property Name="ID" Type="int" Nullable="false" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="VWCFFResults">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Side" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="Defect Counter" />
-          </Key>
-          <Property Name="Plant Number" Type="int" />
-          <Property Name="Shift" Type="int" Nullable="false" />
-          <Property Name="Period" Type="int" Nullable="false" />
-          <Property Name="Set" Type="int" />
-          <Property Name="Start Date" Type="datetime2" Precision="7" />
-          <Property Name="Side" Type="int" Nullable="false" />
-          <Property Name="Audit Area" Type="varchar(max)" />
-          <Property Name="Set Start Date" Type="date" />
-          <Property Name="Set Start Time" Type="varchar" MaxLength="5" />
-          <Property Name="Set End Date" Type="date" />
-          <Property Name="Set End Time" Type="varchar" MaxLength="5" />
-          <Property Name="Auditor" Type="nvarchar(max)" />
-          <Property Name="Reaudit" Type="varchar" MaxLength="8" Nullable="false" />
-          <Property Name="Defects" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Cut" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Fold/Flap" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Puncture" Type="decimal" Precision="38" Scale="5" />
-          <Property Name="Defect Counter" Type="int" Nullable="false" />
-        </EntityType>
-        <Association Name="FK__VolumeCep__ParCo__4D4A6ED8">
+        <Association Name="FK__VolumeCep__ParCo__665613C4">
           <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="0..1" />
           <End Role="VolumeCepDesossa" Type="Self.VolumeCepDesossa" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1459,7 +1378,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__VolumeCep__ParCo__4F32B74A">
+        <Association Name="FK__VolumeCep__ParCo__683E5C36">
           <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="0..1" />
           <End Role="VolumeCepRecortes" Type="Self.VolumeCepRecortes" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1471,7 +1390,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__VolumeCep__ParLe__4E3E9311">
+        <Association Name="FK__VolumeCep__ParLe__674A37FD">
           <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="0..1" />
           <End Role="VolumeCepDesossa" Type="Self.VolumeCepDesossa" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1483,7 +1402,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__VolumeCep__ParLe__5026DB83">
+        <Association Name="FK__VolumeCep__ParLe__6932806F">
           <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="0..1" />
           <End Role="VolumeCepRecortes" Type="Self.VolumeCepRecortes" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1495,7 +1414,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__VolumePcc__ParCo__511AFFBC">
+        <Association Name="FK__VolumePcc__ParCo__6A26A4A8">
           <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="0..1" />
           <End Role="VolumePcc1b" Type="Self.VolumePcc1b" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1507,7 +1426,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__VolumePcc__ParLe__520F23F5">
+        <Association Name="FK__VolumePcc__ParLe__6B1AC8E1">
           <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="0..1" />
           <End Role="VolumePcc1b" Type="Self.VolumePcc1b" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1519,7 +1438,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__VolumeVac__ParCo__55DFB4D9">
+        <Association Name="FK__VolumeVac__ParCo__6C0EED1A">
           <End Role="ParCompany" Type="Self.ParCompany" Multiplicity="0..1" />
           <End Role="VolumeVacuoGRD" Type="Self.VolumeVacuoGRD" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1531,7 +1450,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__VolumeVac__ParLe__56D3D912">
+        <Association Name="FK__VolumeVac__ParLe__6D031153">
           <End Role="ParLevel1" Type="Self.ParLevel1" Multiplicity="0..1" />
           <End Role="VolumeVacuoGRD" Type="Self.VolumeVacuoGRD" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1852,30 +1771,6 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
             </Principal>
             <Dependent Role="CorrectiveAction">
               <PropertyRef Name="AuditorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CorrectiveAction_UserSgq1">
-          <End Role="UserSgq" Type="Self.UserSgq" Multiplicity="0..1" />
-          <End Role="CorrectiveAction" Type="Self.CorrectiveAction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserSgq">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CorrectiveAction">
-              <PropertyRef Name="TechinicalId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CorrectiveAction_UserSgq2">
-          <End Role="UserSgq" Type="Self.UserSgq" Multiplicity="0..1" />
-          <End Role="CorrectiveAction" Type="Self.CorrectiveAction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserSgq">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CorrectiveAction">
-              <PropertyRef Name="SlaughterId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2710,7 +2605,6 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <EntitySet Name="ParLevel2" EntityType="Self.ParLevel2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel2ControlCompany" EntityType="Self.ParLevel2ControlCompany" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel2Level1" EntityType="Self.ParLevel2Level1" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ParLevel2XHeaderField" EntityType="Self.ParLevel2XHeaderField" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3" EntityType="Self.ParLevel3" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3BoolFalse" EntityType="Self.ParLevel3BoolFalse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3BoolTrue" EntityType="Self.ParLevel3BoolTrue" Schema="dbo" store:Type="Tables" />
@@ -2719,6 +2613,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <EntitySet Name="ParLevel3Level2" EntityType="Self.ParLevel3Level2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3Level2Level1" EntityType="Self.ParLevel3Level2Level1" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel3Value" EntityType="Self.ParLevel3Value" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParLevel3Value_Outer" EntityType="Self.ParLevel3Value_Outer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevelDefiniton" EntityType="Self.ParLevelDefiniton" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLocal" EntityType="Self.ParLocal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParMeasurementUnit" EntityType="Self.ParMeasurementUnit" Schema="dbo" store:Type="Tables" />
@@ -2760,6 +2655,17 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
     [ParLevel1VariableProductionXLevel1].[AlterDate] AS [AlterDate]
     FROM [dbo].[ParLevel1VariableProductionXLevel1] AS [ParLevel1VariableProductionXLevel1]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="ParLevel2XHeaderField" EntityType="Self.ParLevel2XHeaderField" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ParLevel2XHeaderField].[Id] AS [Id], 
+    [ParLevel2XHeaderField].[ParLevel2_Id] AS [ParLevel2_Id], 
+    [ParLevel2XHeaderField].[ParLevel1_Id] AS [ParLevel1_Id], 
+    [ParLevel2XHeaderField].[ParHeaderField_Id] AS [ParHeaderField_Id], 
+    [ParLevel2XHeaderField].[AddDate] AS [AddDate], 
+    [ParLevel2XHeaderField].[AlterDate] AS [AlterDate], 
+    [ParLevel2XHeaderField].[IsActive] AS [IsActive]
+    FROM [dbo].[ParLevel2XHeaderField] AS [ParLevel2XHeaderField]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="ResultLevel2HeaderField" EntityType="Self.ResultLevel2HeaderField" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [ResultLevel2HeaderField].[Id] AS [Id], 
@@ -2775,9 +2681,9 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           </EntitySet>
           <EntitySet Name="RoleJBS" EntityType="Self.RoleJBS" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
+    [RoleJBS].[Id] AS [Id], 
     [RoleJBS].[ScreenComponent_Id] AS [ScreenComponent_Id], 
-    [RoleJBS].[Role] AS [Role], 
-    [RoleJBS].[Id] AS [Id]
+    [RoleJBS].[Role] AS [Role]
     FROM [dbo].[RoleJBS] AS [RoleJBS]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="RoleType" EntityType="Self.RoleType" store:Type="Tables" store:Schema="dbo">
@@ -2804,132 +2710,35 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
     [ScreenComponent].[Type] AS [Type]
     FROM [dbo].[ScreenComponent] AS [ScreenComponent]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="DelDados" EntityType="Self.DelDados" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [DelDados].[TESTE] AS [TESTE]
-    FROM [dbo].[DelDados] AS [DelDados]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Reports_CCA_Audit" EntityType="Self.Reports_CCA_Audit" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Reports_CCA_Audit].[Plant Number] AS [Plant Number], 
-    [Reports_CCA_Audit].[Audit Area] AS [Audit Area], 
-    [Reports_CCA_Audit].[Set Start Date] AS [Set Start Date], 
-    [Reports_CCA_Audit].[Set Start Time] AS [Set Start Time], 
-    [Reports_CCA_Audit].[Audit Period] AS [Audit Period], 
-    [Reports_CCA_Audit].[Shift] AS [Shift], 
-    [Reports_CCA_Audit].[Audit/Reaudit] AS [Audit/Reaudit], 
-    [Reports_CCA_Audit].[Specks] AS [Specks], 
-    [Reports_CCA_Audit].[Dressing] AS [Dressing], 
-    [Reports_CCA_Audit].[Single Hairs] AS [Single Hairs], 
-    [Reports_CCA_Audit].[Clusters] AS [Clusters], 
-    [Reports_CCA_Audit].[Hide] AS [Hide], 
-    [Reports_CCA_Audit].[Defects] AS [Defects], 
-    [Reports_CCA_Audit].[No of Def] AS [No of Def], 
-    [Reports_CCA_Audit].[Cattle Type] AS [Cattle Type], 
-    [Reports_CCA_Audit].[Chain Speed] AS [Chain Speed], 
-    [Reports_CCA_Audit].[Lot #] AS [Lot #], 
-    [Reports_CCA_Audit].[Mud Score] AS [Mud Score], 
-    [Reports_CCA_Audit].[Auditor Name Global] AS [Auditor Name Global], 
-    [Reports_CCA_Audit].[Set End Date] AS [Set End Date], 
-    [Reports_CCA_Audit].[Set End Time] AS [Set End Time]
-    FROM [dbo].[Reports_CCA_Audit] AS [Reports_CCA_Audit]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Reports_CFF_Audit" EntityType="Self.Reports_CFF_Audit" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Reports_CFF_Audit].[Plant Number] AS [Plant Number], 
-    [Reports_CFF_Audit].[Shift] AS [Shift], 
-    [Reports_CFF_Audit].[Period] AS [Period], 
-    [Reports_CFF_Audit].[Set] AS [Set], 
-    [Reports_CFF_Audit].[Start Date] AS [Start Date], 
-    [Reports_CFF_Audit].[Side] AS [Side], 
-    [Reports_CFF_Audit].[Audit Area] AS [Audit Area], 
-    [Reports_CFF_Audit].[Set Start Date] AS [Set Start Date], 
-    [Reports_CFF_Audit].[Set Start Time] AS [Set Start Time], 
-    [Reports_CFF_Audit].[Set End Date] AS [Set End Date], 
-    [Reports_CFF_Audit].[Set End Time] AS [Set End Time], 
-    [Reports_CFF_Audit].[Auditor] AS [Auditor], 
-    [Reports_CFF_Audit].[Reaudit] AS [Reaudit], 
-    [Reports_CFF_Audit].[Defects] AS [Defects], 
-    [Reports_CFF_Audit].[Cut] AS [Cut], 
-    [Reports_CFF_Audit].[Fold/Flap] AS [Fold/Flap], 
-    [Reports_CFF_Audit].[Puncture] AS [Puncture], 
-    [Reports_CFF_Audit].[Defect Counter] AS [Defect Counter]
-    FROM [dbo].[Reports_CFF_Audit] AS [Reports_CFF_Audit]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Reports_HTP_Audit" EntityType="Self.Reports_HTP_Audit" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Reports_HTP_Audit].[Plant Number] AS [Plant Number], 
-    [Reports_HTP_Audit].[Shift] AS [Shift], 
-    [Reports_HTP_Audit].[Start Date] AS [Start Date], 
-    [Reports_HTP_Audit].[Start Time] AS [Start Time], 
-    [Reports_HTP_Audit].[Job Id] AS [Job Id], 
-    [Reports_HTP_Audit].[Auditor] AS [Auditor], 
-    [Reports_HTP_Audit].[Audit/ReAudit] AS [Audit/ReAudit], 
-    [Reports_HTP_Audit].[Period] AS [Period], 
-    [Reports_HTP_Audit].[Baised/Unbiased] AS [Baised/Unbiased], 
-    [Reports_HTP_Audit].[Job Date] AS [Job Date], 
-    [Reports_HTP_Audit].[Job Time] AS [Job Time], 
-    [Reports_HTP_Audit].[Starting Phase] AS [Starting Phase], 
-    [Reports_HTP_Audit].[Core Practice HTP Deviation] AS [Core Practice HTP Deviation], 
-    [Reports_HTP_Audit].[Other Deviaton] AS [Other Deviaton], 
-    [Reports_HTP_Audit].[Ending Phase] AS [Ending Phase], 
-    [Reports_HTP_Audit].[Reaudit] AS [Reaudit], 
-    [Reports_HTP_Audit].[End Date] AS [End Date], 
-    [Reports_HTP_Audit].[End Time] AS [End Time], 
-    [Reports_HTP_Audit].[ID] AS [ID]
-    FROM [dbo].[Reports_HTP_Audit] AS [Reports_HTP_Audit]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="VWCFFResults" EntityType="Self.VWCFFResults" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [VWCFFResults].[Plant Number] AS [Plant Number], 
-    [VWCFFResults].[Shift] AS [Shift], 
-    [VWCFFResults].[Period] AS [Period], 
-    [VWCFFResults].[Set] AS [Set], 
-    [VWCFFResults].[Start Date] AS [Start Date], 
-    [VWCFFResults].[Side] AS [Side], 
-    [VWCFFResults].[Audit Area] AS [Audit Area], 
-    [VWCFFResults].[Set Start Date] AS [Set Start Date], 
-    [VWCFFResults].[Set Start Time] AS [Set Start Time], 
-    [VWCFFResults].[Set End Date] AS [Set End Date], 
-    [VWCFFResults].[Set End Time] AS [Set End Time], 
-    [VWCFFResults].[Auditor] AS [Auditor], 
-    [VWCFFResults].[Reaudit] AS [Reaudit], 
-    [VWCFFResults].[Defects] AS [Defects], 
-    [VWCFFResults].[Cut] AS [Cut], 
-    [VWCFFResults].[Fold/Flap] AS [Fold/Flap], 
-    [VWCFFResults].[Puncture] AS [Puncture], 
-    [VWCFFResults].[Defect Counter] AS [Defect Counter]
-    FROM [dbo].[VWCFFResults] AS [VWCFFResults]</DefiningQuery>
-          </EntitySet>
-          <AssociationSet Name="FK__VolumeCep__ParCo__4D4A6ED8" Association="Self.FK__VolumeCep__ParCo__4D4A6ED8">
+          <AssociationSet Name="FK__VolumeCep__ParCo__665613C4" Association="Self.FK__VolumeCep__ParCo__665613C4">
             <End Role="ParCompany" EntitySet="ParCompany" />
             <End Role="VolumeCepDesossa" EntitySet="VolumeCepDesossa" />
           </AssociationSet>
-          <AssociationSet Name="FK__VolumeCep__ParCo__4F32B74A" Association="Self.FK__VolumeCep__ParCo__4F32B74A">
+          <AssociationSet Name="FK__VolumeCep__ParCo__683E5C36" Association="Self.FK__VolumeCep__ParCo__683E5C36">
             <End Role="ParCompany" EntitySet="ParCompany" />
             <End Role="VolumeCepRecortes" EntitySet="VolumeCepRecortes" />
           </AssociationSet>
-          <AssociationSet Name="FK__VolumeCep__ParLe__4E3E9311" Association="Self.FK__VolumeCep__ParLe__4E3E9311">
+          <AssociationSet Name="FK__VolumeCep__ParLe__674A37FD" Association="Self.FK__VolumeCep__ParLe__674A37FD">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="VolumeCepDesossa" EntitySet="VolumeCepDesossa" />
           </AssociationSet>
-          <AssociationSet Name="FK__VolumeCep__ParLe__5026DB83" Association="Self.FK__VolumeCep__ParLe__5026DB83">
+          <AssociationSet Name="FK__VolumeCep__ParLe__6932806F" Association="Self.FK__VolumeCep__ParLe__6932806F">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="VolumeCepRecortes" EntitySet="VolumeCepRecortes" />
           </AssociationSet>
-          <AssociationSet Name="FK__VolumePcc__ParCo__511AFFBC" Association="Self.FK__VolumePcc__ParCo__511AFFBC">
+          <AssociationSet Name="FK__VolumePcc__ParCo__6A26A4A8" Association="Self.FK__VolumePcc__ParCo__6A26A4A8">
             <End Role="ParCompany" EntitySet="ParCompany" />
             <End Role="VolumePcc1b" EntitySet="VolumePcc1b" />
           </AssociationSet>
-          <AssociationSet Name="FK__VolumePcc__ParLe__520F23F5" Association="Self.FK__VolumePcc__ParLe__520F23F5">
+          <AssociationSet Name="FK__VolumePcc__ParLe__6B1AC8E1" Association="Self.FK__VolumePcc__ParLe__6B1AC8E1">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="VolumePcc1b" EntitySet="VolumePcc1b" />
           </AssociationSet>
-          <AssociationSet Name="FK__VolumeVac__ParCo__55DFB4D9" Association="Self.FK__VolumeVac__ParCo__55DFB4D9">
+          <AssociationSet Name="FK__VolumeVac__ParCo__6C0EED1A" Association="Self.FK__VolumeVac__ParCo__6C0EED1A">
             <End Role="ParCompany" EntitySet="ParCompany" />
             <End Role="VolumeVacuoGRD" EntitySet="VolumeVacuoGRD" />
           </AssociationSet>
-          <AssociationSet Name="FK__VolumeVac__ParLe__56D3D912" Association="Self.FK__VolumeVac__ParLe__56D3D912">
+          <AssociationSet Name="FK__VolumeVac__ParLe__6D031153" Association="Self.FK__VolumeVac__ParLe__6D031153">
             <End Role="ParLevel1" EntitySet="ParLevel1" />
             <End Role="VolumeVacuoGRD" EntitySet="VolumeVacuoGRD" />
           </AssociationSet>
@@ -3034,14 +2843,6 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
             <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
           </AssociationSet>
           <AssociationSet Name="FK_CorrectiveAction_UserSgq" Association="Self.FK_CorrectiveAction_UserSgq">
-            <End Role="UserSgq" EntitySet="UserSgq" />
-            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CorrectiveAction_UserSgq1" Association="Self.FK_CorrectiveAction_UserSgq1">
-            <End Role="UserSgq" EntitySet="UserSgq" />
-            <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CorrectiveAction_UserSgq2" Association="Self.FK_CorrectiveAction_UserSgq2">
             <End Role="UserSgq" EntitySet="UserSgq" />
             <End Role="CorrectiveAction" EntitySet="CorrectiveAction" />
           </AssociationSet>
@@ -3311,11 +3112,6 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
     <edmx:ConceptualModels>
       <Schema Namespace="SgqDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="SgqDbDevEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="DelDados" EntityType="SgqDbModel.DelDados" />
-          <EntitySet Name="Reports_CCA_Audit" EntityType="SgqDbModel.Reports_CCA_Audit" />
-          <EntitySet Name="Reports_CFF_Audit" EntityType="SgqDbModel.Reports_CFF_Audit" />
-          <EntitySet Name="Reports_HTP_Audit" EntityType="SgqDbModel.Reports_HTP_Audit" />
-          <EntitySet Name="VWCFFResults" EntityType="SgqDbModel.VWCFFResults" />
           <FunctionImport Name="sp_alterdiagram">
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
@@ -3858,130 +3654,8 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <EntitySet Name="VerificacaoTipificacaoV2" EntityType="SgqDbModel.VerificacaoTipificacaoV2" />
           <EntitySet Name="Deviation" EntityType="SgqDbModel.Deviation" />
           <EntitySet Name="ParLevel2XHeaderField" EntityType="SgqDbModel.ParLevel2XHeaderField" />
+          <EntitySet Name="ParLevel3Value_Outer" EntityType="SgqDbModel.ParLevel3Value_Outer" />
           </EntityContainer>
-        <EntityType Name="DelDados">
-          <Key>
-            <PropertyRef Name="TESTE" />
-          </Key>
-          <Property Name="TESTE" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Reports_CCA_Audit">
-          <Key>
-            <PropertyRef Name="Audit_Period" />
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Audit_Reaudit" />
-            <PropertyRef Name="No_of_Def" />
-            <PropertyRef Name="Cattle_Type" />
-            <PropertyRef Name="Chain_Speed" />
-            <PropertyRef Name="Lot__" />
-            <PropertyRef Name="Mud_Score" />
-          </Key>
-          <Property Name="Plant_Number" Type="Int32" />
-          <Property Name="Audit_Area" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Set_Start_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_Start_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Audit_Period" Type="Int32" Nullable="false" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Audit_Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Specks" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Dressing" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Single_Hairs" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Clusters" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Hide" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="Defects" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="No_of_Def" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="Cattle_Type" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Chain_Speed" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
-          <Property Name="Lot__" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
-          <Property Name="Mud_Score" Type="Decimal" Nullable="false" Precision="20" Scale="5" />
-          <Property Name="Auditor_Name_Global" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Set_End_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_End_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="Reports_CFF_Audit">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Side" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="Defect_Counter" />
-          </Key>
-          <Property Name="Plant_Number" Type="Int32" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Period" Type="Int32" Nullable="false" />
-          <Property Name="Set" Type="Int32" />
-          <Property Name="Start_Date" Type="DateTime" Precision="7" />
-          <Property Name="Side" Type="Int32" Nullable="false" />
-          <Property Name="Audit_Area" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Set_Start_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_Start_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Set_End_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_End_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Auditor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Defects" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Cut" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Fold_Flap" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Puncture" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Defect_Counter" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Reports_HTP_Audit">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Audit_ReAudit" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Baised_Unbiased" />
-            <PropertyRef Name="Starting_Phase" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="Plant_Number" Type="Int32" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Start_Date" Type="DateTime" Precision="7" />
-          <Property Name="Start_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Job_Id" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Auditor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Audit_ReAudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Period" Type="Int32" Nullable="false" />
-          <Property Name="Baised_Unbiased" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Job_Date" Type="DateTime" Precision="0" />
-          <Property Name="Job_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Starting_Phase" Type="Int32" Nullable="false" />
-          <Property Name="Core_Practice_HTP_Deviation" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="Other_Deviaton" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="Ending_Phase" Type="Int32" />
-          <Property Name="Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="End_Date" Type="DateTime" Precision="0" />
-          <Property Name="End_Time" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="ID" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="VWCFFResults">
-          <Key>
-            <PropertyRef Name="Shift" />
-            <PropertyRef Name="Period" />
-            <PropertyRef Name="Side" />
-            <PropertyRef Name="Reaudit" />
-            <PropertyRef Name="Defect_Counter" />
-          </Key>
-          <Property Name="Plant_Number" Type="Int32" />
-          <Property Name="Shift" Type="Int32" Nullable="false" />
-          <Property Name="Period" Type="Int32" Nullable="false" />
-          <Property Name="Set" Type="Int32" />
-          <Property Name="Start_Date" Type="DateTime" Precision="7" />
-          <Property Name="Side" Type="Int32" Nullable="false" />
-          <Property Name="Audit_Area" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Set_Start_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_Start_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Set_End_Date" Type="DateTime" Precision="0" />
-          <Property Name="Set_End_Time" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="Auditor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Reaudit" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Defects" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Cut" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Fold_Flap" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Puncture" Type="Decimal" Precision="38" Scale="5" />
-          <Property Name="Defect_Counter" Type="Int32" Nullable="false" />
-        </EntityType>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -4520,6 +4194,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <NavigationProperty Name="ParCounterXLocal" Relationship="SgqDbModel.FK_ParCounterLocal_ParLevel2" FromRole="ParLevel2" ToRole="ParCounterXLocal" />
           <NavigationProperty Name="ConsolidationLevel2" Relationship="SgqDbModel.FK_ConsolidationLevel2_ParLevel2" FromRole="ParLevel2" ToRole="ConsolidationLevel2" />
           <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ParLevel2" FromRole="ParLevel2" ToRole="CollectionLevel2" />
+          <Property Name="HasTakePhoto" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="ParLevel2ControlCompany">
           <Key>
@@ -4567,6 +4242,9 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel3" FromRole="ParLevel3" ToRole="ParRelapse" />
           <NavigationProperty Name="ParCounterXLocal" Relationship="SgqDbModel.FK_ParCounterLocal_ParLevel3" FromRole="ParLevel3" ToRole="ParCounterXLocal" />
           <NavigationProperty Name="Result_Level3" Relationship="SgqDbModel.FK_Result_Level3_ParLevel3" FromRole="ParLevel3" ToRole="Result_Level3" />
+          <Property Name="HasTakePhoto" Type="Boolean" Nullable="false" />
+          <Property Name="IsPointLess" Type="Boolean" />
+          <Property Name="AllowNA" Type="Boolean" />
         </EntityType>
         <EntityType Name="ParLevel3BoolFalse">
           <Key>
@@ -4706,7 +4384,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <Property Name="ParHeaderField_Id" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="155" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PunishmentValue" Type="Decimal" Nullable="false" Precision="38" Scale="10" />
+          <Property Name="PunishmentValue" Type="Decimal" Nullable="false" Precision="10" Scale="4" />
           <Property Name="Conformity" Type="Boolean" Nullable="false" />
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
@@ -4733,7 +4411,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ParNotConformityRule_Id" Type="Int32" Nullable="false" />
           <Property Name="ParCompany_Id" Type="Int32" />
-          <Property Name="Value" Type="Decimal" Precision="38" Scale="10" />
+          <Property Name="Value" Type="Decimal" Precision="10" Scale="5" />
           <Property Name="Level" Type="Int32" Nullable="false" />
           <Property Name="ParLevel1_Id" Type="Int32" />
           <Property Name="ParLevel2_Id" Type="Int32" />
@@ -5528,7 +5206,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <Property Name="CompanyNumber" Type="Int32" />
           <Property Name="IPServer" Type="String" MaxLength="155" FixedLength="false" Unicode="true" />
           <Property Name="DBServer" Type="String" MaxLength="155" FixedLength="false" Unicode="true" />
-          <Property Name="IntegrationId" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="IntegrationId" Type="Decimal" Precision="38" Scale="10" />
           <Property Name="ParCompany_Id" Type="Int32" />
           <NavigationProperty Name="Defect" Relationship="SgqDbModel.FK_Defect_ParCompany" FromRole="ParCompany" ToRole="Defect" />
           <NavigationProperty Name="VolumeCepDesossa" Relationship="SgqDbModel.FK__CepDesoss__ParCo__17D860BF" FromRole="ParCompany" ToRole="VolumeCepDesossa" />
@@ -6037,18 +5715,18 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="AlertLevel" Type="Int32" />
           <Property Name="ConsolidationDate" Type="DateTime" Precision="7" />
-          <Property Name="WeiEvaluation" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="EvaluateTotal" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="DefectsTotal" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="WeiDefects" Type="Decimal" Precision="30" Scale="8" />
+          <Property Name="WeiEvaluation" Type="Decimal" Precision="38" Scale="10" />
+          <Property Name="EvaluateTotal" Type="Decimal" Precision="38" Scale="10" />
+          <Property Name="DefectsTotal" Type="Decimal" Precision="38" Scale="10" />
+          <Property Name="WeiDefects" Type="Decimal" Precision="38" Scale="10" />
           <Property Name="TotalLevel3Evaluation" Type="Int32" />
           <Property Name="TotalLevel3WithDefects" Type="Int32" />
           <Property Name="LastEvaluationAlert" Type="Int32" />
           <Property Name="EvaluatedResult" Type="Int32" />
           <Property Name="DefectsResult" Type="Int32" />
           <Property Name="LastLevel2Alert" Type="Int32" />
-          <Property Name="ReauditIs" Type="Int32" />
-          <Property Name="ReauditNumber" Type="Int32" />
+          <Property Name="ReauditIs" Type="Int32" Nullable="false" />
+          <Property Name="ReauditNumber" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ConsolidationLevel2_ParLevel2" FromRole="ConsolidationLevel2" ToRole="ParLevel2" />
           <NavigationProperty Name="CollectionLevel2" Relationship="SgqDbModel.FK_CollectionLevel2_ConsolidationLevel2" FromRole="ConsolidationLevel2" ToRole="CollectionLevel2" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel11" FromRole="ConsolidationLevel2" ToRole="ParCompany" />
@@ -6101,7 +5779,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <Property Name="Sequential" Type="Int32" />
           <Property Name="Side" Type="Int32" />
           <Property Name="WeiEvaluation" Type="Decimal" Precision="38" Scale="10" />
-          <Property Name="Defects" Type="Decimal" Precision="38" Scale="10" />
+          <Property Name="Defects" Type="Decimal" Precision="30" Scale="8" />
           <Property Name="WeiDefects" Type="Decimal" Precision="15" Scale="5" />
           <Property Name="TotalLevel3WithDefects" Type="Int32" />
           <Property Name="TotalLevel3Evaluation" Type="Int32" />
@@ -6240,14 +5918,14 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AddDate" Type="DateTime" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="To" Type="String" Nullable="false" MaxLength="900" FixedLength="false" Unicode="true" />
+          <Property Name="To" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SendStatus" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
+          <Property Name="SendStatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="SendDate" Type="DateTime" Precision="7" />
-          <Property Name="Project" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Project" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsBodyHtml" Type="Boolean" />
-          <Property Name="From" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
-          <Property Name="Subject" Type="String" MaxLength="2900" FixedLength="false" Unicode="true" />
+          <Property Name="From" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ParLevel1">
           <Key>
@@ -6305,6 +5983,13 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel1" FromRole="ParLevel1" ToRole="ParNotConformityRuleXLevel" />
           <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel1" FromRole="ParLevel1" ToRole="ParRelapse" />
           <NavigationProperty Name="ConsolidationLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_Level1" FromRole="ParLevel1" ToRole="ConsolidationLevel1" />
+          <Property Name="ParGroupLevel1_Id" Type="Int32" />
+          <Property Name="AllowAddLevel3" Type="Boolean" />
+          <Property Name="AllowEditPatternLevel3Task" Type="Boolean" />
+          <Property Name="AllowEditWeightOnLevel3" Type="Boolean" />
+          <Property Name="ShowInTablet" Type="Boolean" />
+          <Property Name="HasTakePhoto" Type="Boolean" Nullable="false" />
+          <Property Name="IsRecravacao" Type="Boolean" />
         </EntityType>
         <Association Name="FK_CollectionLevel2_CollectionLevel2">
           <End Type="SgqDbModel.CollectionLevel2" Role="CollectionLevel2" Multiplicity="1" />
@@ -6557,12 +6242,12 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="ConsolidationDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="Evaluation" Type="Decimal" Precision="32" Scale="8" />
+          <Property Name="Evaluation" Type="Decimal" Precision="38" Scale="10" />
           <Property Name="AtualAlert" Type="Int32" />
-          <Property Name="WeiEvaluation" Type="Decimal" Precision="32" Scale="8" />
-          <Property Name="EvaluateTotal" Type="Decimal" Precision="32" Scale="8" />
-          <Property Name="DefectsTotal" Type="Decimal" Precision="10" Scale="5" />
-          <Property Name="WeiDefects" Type="Decimal" Precision="30" Scale="8" />
+          <Property Name="WeiEvaluation" Type="Decimal" Precision="38" Scale="10" />
+          <Property Name="EvaluateTotal" Type="Decimal" Precision="38" Scale="10" />
+          <Property Name="DefectsTotal" Type="Decimal" Precision="38" Scale="10" />
+          <Property Name="WeiDefects" Type="Decimal" Precision="38" Scale="10" />
           <Property Name="TotalLevel3Evaluation" Type="Int32" />
           <Property Name="TotalLevel3WithDefects" Type="Int32" />
           <Property Name="LastEvaluationAlert" Type="Int32" />
@@ -6577,6 +6262,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ConsolidationLevel1_Level1" FromRole="ConsolidationLevel1" ToRole="ParLevel1" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ConsolidationLevel1_ParCompany" FromRole="ConsolidationLevel1" ToRole="ParCompany" />
           <NavigationProperty Name="ConsolidationLevel2" Relationship="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel1" FromRole="ConsolidationLevel1" ToRole="ConsolidationLevel2" />
+          <Property Name="ReauditLevel" Type="Int32" />
         </EntityType>
         <Association Name="FK_ConsolidationLevel1_Department">
           <End Type="SgqDbModel.Department" Role="Department" Multiplicity="1" />
@@ -6776,119 +6462,45 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <Property Name="AlterDate" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="ParLevel3Value_Outer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="ParLevel3_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParLevel3_Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ParLevel3InputType_Id" Type="Int32" Nullable="false" />
+          <Property Name="ParLevel3InputType_Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ParCompany_Id" Type="Int32" />
+          <Property Name="ParCompany_Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ParMeasurementUnit_Id" Type="Int32" />
+          <Property Name="ParMeasurementUnit_Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="OuterEmpresa_Id" Type="Int32" />
+          <Property Name="OuterEmpresa_Text" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="OuterLevel3_Id" Type="Int32" />
+          <Property Name="OuterLevel3_Text" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="OuterLevel3Value_Id" Type="Int32" />
+          <Property Name="OuterLevel3Value_Text" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="OuterLevel3ValueIntervalMaxValue" Type="Int32" />
+          <Property Name="OuterLevel3ValueIntervalMinValue" Type="Int32" />
+          <Property Name="Operator" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Order" Type="Int32" />
+          <Property Name="UnidadeMedida_Id" Type="Int32" />
+          <Property Name="UnidadeMedidaText" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="AceitavelEntreText" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="AceitavelEntre_Id" Type="Int32" />
+          <Property Name="LimInferior" Type="Decimal" Precision="18" Scale="5" />
+          <Property Name="LimSuperior" Type="Decimal" Precision="18" Scale="5" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="SgqDbModelStoreContainer" CdmEntityContainer="SgqDbDevEntities">
-          <EntitySetMapping Name="DelDados">
-            <EntityTypeMapping TypeName="SgqDbModel.DelDados">
-              <MappingFragment StoreEntitySet="DelDados">
-                <ScalarProperty Name="TESTE" ColumnName="TESTE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Reports_CCA_Audit">
-            <EntityTypeMapping TypeName="SgqDbModel.Reports_CCA_Audit">
-              <MappingFragment StoreEntitySet="Reports_CCA_Audit">
-                <ScalarProperty Name="Set_End_Time" ColumnName="Set End Time" />
-                <ScalarProperty Name="Set_End_Date" ColumnName="Set End Date" />
-                <ScalarProperty Name="Auditor_Name_Global" ColumnName="Auditor Name Global" />
-                <ScalarProperty Name="Mud_Score" ColumnName="Mud Score" />
-                <ScalarProperty Name="Lot__" ColumnName="Lot #" />
-                <ScalarProperty Name="Chain_Speed" ColumnName="Chain Speed" />
-                <ScalarProperty Name="Cattle_Type" ColumnName="Cattle Type" />
-                <ScalarProperty Name="No_of_Def" ColumnName="No of Def" />
-                <ScalarProperty Name="Defects" ColumnName="Defects" />
-                <ScalarProperty Name="Hide" ColumnName="Hide" />
-                <ScalarProperty Name="Clusters" ColumnName="Clusters" />
-                <ScalarProperty Name="Single_Hairs" ColumnName="Single Hairs" />
-                <ScalarProperty Name="Dressing" ColumnName="Dressing" />
-                <ScalarProperty Name="Specks" ColumnName="Specks" />
-                <ScalarProperty Name="Audit_Reaudit" ColumnName="Audit/Reaudit" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="Audit_Period" ColumnName="Audit Period" />
-                <ScalarProperty Name="Set_Start_Time" ColumnName="Set Start Time" />
-                <ScalarProperty Name="Set_Start_Date" ColumnName="Set Start Date" />
-                <ScalarProperty Name="Audit_Area" ColumnName="Audit Area" />
-                <ScalarProperty Name="Plant_Number" ColumnName="Plant Number" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Reports_CFF_Audit">
-            <EntityTypeMapping TypeName="SgqDbModel.Reports_CFF_Audit">
-              <MappingFragment StoreEntitySet="Reports_CFF_Audit">
-                <ScalarProperty Name="Defect_Counter" ColumnName="Defect Counter" />
-                <ScalarProperty Name="Puncture" ColumnName="Puncture" />
-                <ScalarProperty Name="Fold_Flap" ColumnName="Fold/Flap" />
-                <ScalarProperty Name="Cut" ColumnName="Cut" />
-                <ScalarProperty Name="Defects" ColumnName="Defects" />
-                <ScalarProperty Name="Reaudit" ColumnName="Reaudit" />
-                <ScalarProperty Name="Auditor" ColumnName="Auditor" />
-                <ScalarProperty Name="Set_End_Time" ColumnName="Set End Time" />
-                <ScalarProperty Name="Set_End_Date" ColumnName="Set End Date" />
-                <ScalarProperty Name="Set_Start_Time" ColumnName="Set Start Time" />
-                <ScalarProperty Name="Set_Start_Date" ColumnName="Set Start Date" />
-                <ScalarProperty Name="Audit_Area" ColumnName="Audit Area" />
-                <ScalarProperty Name="Side" ColumnName="Side" />
-                <ScalarProperty Name="Start_Date" ColumnName="Start Date" />
-                <ScalarProperty Name="Set" ColumnName="Set" />
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="Plant_Number" ColumnName="Plant Number" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Reports_HTP_Audit">
-            <EntityTypeMapping TypeName="SgqDbModel.Reports_HTP_Audit">
-              <MappingFragment StoreEntitySet="Reports_HTP_Audit">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="End_Time" ColumnName="End Time" />
-                <ScalarProperty Name="End_Date" ColumnName="End Date" />
-                <ScalarProperty Name="Reaudit" ColumnName="Reaudit" />
-                <ScalarProperty Name="Ending_Phase" ColumnName="Ending Phase" />
-                <ScalarProperty Name="Other_Deviaton" ColumnName="Other Deviaton" />
-                <ScalarProperty Name="Core_Practice_HTP_Deviation" ColumnName="Core Practice HTP Deviation" />
-                <ScalarProperty Name="Starting_Phase" ColumnName="Starting Phase" />
-                <ScalarProperty Name="Job_Time" ColumnName="Job Time" />
-                <ScalarProperty Name="Job_Date" ColumnName="Job Date" />
-                <ScalarProperty Name="Baised_Unbiased" ColumnName="Baised/Unbiased" />
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="Audit_ReAudit" ColumnName="Audit/ReAudit" />
-                <ScalarProperty Name="Auditor" ColumnName="Auditor" />
-                <ScalarProperty Name="Job_Id" ColumnName="Job Id" />
-                <ScalarProperty Name="Start_Time" ColumnName="Start Time" />
-                <ScalarProperty Name="Start_Date" ColumnName="Start Date" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="Plant_Number" ColumnName="Plant Number" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="VWCFFResults">
-            <EntityTypeMapping TypeName="SgqDbModel.VWCFFResults">
-              <MappingFragment StoreEntitySet="VWCFFResults">
-                <ScalarProperty Name="Defect_Counter" ColumnName="Defect Counter" />
-                <ScalarProperty Name="Puncture" ColumnName="Puncture" />
-                <ScalarProperty Name="Fold_Flap" ColumnName="Fold/Flap" />
-                <ScalarProperty Name="Cut" ColumnName="Cut" />
-                <ScalarProperty Name="Defects" ColumnName="Defects" />
-                <ScalarProperty Name="Reaudit" ColumnName="Reaudit" />
-                <ScalarProperty Name="Auditor" ColumnName="Auditor" />
-                <ScalarProperty Name="Set_End_Time" ColumnName="Set End Time" />
-                <ScalarProperty Name="Set_End_Date" ColumnName="Set End Date" />
-                <ScalarProperty Name="Set_Start_Time" ColumnName="Set Start Time" />
-                <ScalarProperty Name="Set_Start_Date" ColumnName="Set Start Date" />
-                <ScalarProperty Name="Audit_Area" ColumnName="Audit Area" />
-                <ScalarProperty Name="Side" ColumnName="Side" />
-                <ScalarProperty Name="Start_Date" ColumnName="Start Date" />
-                <ScalarProperty Name="Set" ColumnName="Set" />
-                <ScalarProperty Name="Period" ColumnName="Period" />
-                <ScalarProperty Name="Shift" ColumnName="Shift" />
-                <ScalarProperty Name="Plant_Number" ColumnName="Plant Number" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="BkpCollection">
             <EntityTypeMapping TypeName="SgqDbModel.BkpCollection">
               <MappingFragment StoreEntitySet="BkpCollection">
@@ -7349,6 +6961,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <EntitySetMapping Name="ParLevel2">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel2">
               <MappingFragment StoreEntitySet="ParLevel2">
+                <ScalarProperty Name="HasTakePhoto" ColumnName="HasTakePhoto" />
                 <ScalarProperty Name="HasSampleTotal" ColumnName="HasSampleTotal" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
@@ -7394,6 +7007,9 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <EntitySetMapping Name="ParLevel3">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel3">
               <MappingFragment StoreEntitySet="ParLevel3">
+                <ScalarProperty Name="AllowNA" ColumnName="AllowNA" />
+                <ScalarProperty Name="IsPointLess" ColumnName="IsPointLess" />
+                <ScalarProperty Name="HasTakePhoto" ColumnName="HasTakePhoto" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
@@ -8103,6 +7719,13 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <EntitySetMapping Name="ParLevel1">
             <EntityTypeMapping TypeName="SgqDbModel.ParLevel1">
               <MappingFragment StoreEntitySet="ParLevel1">
+                <ScalarProperty Name="IsRecravacao" ColumnName="IsRecravacao" />
+                <ScalarProperty Name="HasTakePhoto" ColumnName="HasTakePhoto" />
+                <ScalarProperty Name="ShowInTablet" ColumnName="ShowInTablet" />
+                <ScalarProperty Name="AllowEditWeightOnLevel3" ColumnName="AllowEditWeightOnLevel3" />
+                <ScalarProperty Name="AllowEditPatternLevel3Task" ColumnName="AllowEditPatternLevel3Task" />
+                <ScalarProperty Name="AllowAddLevel3" ColumnName="AllowAddLevel3" />
+                <ScalarProperty Name="ParGroupLevel1_Id" ColumnName="ParGroupLevel1_Id" />
                 <ScalarProperty Name="EditLevel2" ColumnName="EditLevel2" />
                 <ScalarProperty Name="ParLevel1Destiny_Id" ColumnName="ParLevel1Destiny_Id" />
                 <ScalarProperty Name="PointsDestiny" ColumnName="PointsDestiny" />
@@ -8142,6 +7765,7 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
           <EntitySetMapping Name="ConsolidationLevel1">
             <EntityTypeMapping TypeName="SgqDbModel.ConsolidationLevel1">
               <MappingFragment StoreEntitySet="ConsolidationLevel1">
+                <ScalarProperty Name="ReauditLevel" ColumnName="ReauditLevel" />
                 <ScalarProperty Name="Period" ColumnName="Period" />
                 <ScalarProperty Name="Shift" ColumnName="Shift" />
                 <ScalarProperty Name="ReauditNumber" ColumnName="ReauditNumber" />
@@ -8253,6 +7877,40 @@ warning 6002: The table/view 'dbGQualidade_JBS.dbo.VWCFFResults' does not have a
                 <ScalarProperty Name="ParHeaderField_Id" ColumnName="ParHeaderField_Id" />
                 <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
                 <ScalarProperty Name="ParLevel2_Id" ColumnName="ParLevel2_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParLevel3Value_Outer">
+            <EntityTypeMapping TypeName="SgqDbModel.ParLevel3Value_Outer">
+              <MappingFragment StoreEntitySet="ParLevel3Value_Outer">
+                <ScalarProperty Name="LimSuperior" ColumnName="LimSuperior" />
+                <ScalarProperty Name="LimInferior" ColumnName="LimInferior" />
+                <ScalarProperty Name="AceitavelEntre_Id" ColumnName="AceitavelEntre_Id" />
+                <ScalarProperty Name="AceitavelEntreText" ColumnName="AceitavelEntreText" />
+                <ScalarProperty Name="UnidadeMedidaText" ColumnName="UnidadeMedidaText" />
+                <ScalarProperty Name="UnidadeMedida_Id" ColumnName="UnidadeMedida_Id" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="Operator" ColumnName="Operator" />
+                <ScalarProperty Name="OuterLevel3ValueIntervalMinValue" ColumnName="OuterLevel3ValueIntervalMinValue" />
+                <ScalarProperty Name="OuterLevel3ValueIntervalMaxValue" ColumnName="OuterLevel3ValueIntervalMaxValue" />
+                <ScalarProperty Name="OuterLevel3Value_Text" ColumnName="OuterLevel3Value_Text" />
+                <ScalarProperty Name="OuterLevel3Value_Id" ColumnName="OuterLevel3Value_Id" />
+                <ScalarProperty Name="OuterLevel3_Text" ColumnName="OuterLevel3_Text" />
+                <ScalarProperty Name="OuterLevel3_Id" ColumnName="OuterLevel3_Id" />
+                <ScalarProperty Name="OuterEmpresa_Text" ColumnName="OuterEmpresa_Text" />
+                <ScalarProperty Name="OuterEmpresa_Id" ColumnName="OuterEmpresa_Id" />
+                <ScalarProperty Name="ParMeasurementUnit_Name" ColumnName="ParMeasurementUnit_Name" />
+                <ScalarProperty Name="ParMeasurementUnit_Id" ColumnName="ParMeasurementUnit_Id" />
+                <ScalarProperty Name="ParCompany_Name" ColumnName="ParCompany_Name" />
+                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
+                <ScalarProperty Name="ParLevel3InputType_Name" ColumnName="ParLevel3InputType_Name" />
+                <ScalarProperty Name="ParLevel3InputType_Id" ColumnName="ParLevel3InputType_Id" />
+                <ScalarProperty Name="ParLevel3_Name" ColumnName="ParLevel3_Name" />
+                <ScalarProperty Name="ParLevel3_Id" ColumnName="ParLevel3_Id" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

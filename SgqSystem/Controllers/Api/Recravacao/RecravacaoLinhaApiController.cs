@@ -26,20 +26,32 @@ namespace SgqSystem.Controllers.Api
         }
 
         // GET: api/RecravacaoLinhaApi
-        public HttpResponseMessage Get(int Company)
+        public HttpResponseMessage Get(int Company, int level1Id)
         {
             db.Configuration.LazyLoadingEnabled = false;
             db.Configuration.ValidateOnSaveEnabled = false;
             db.Configuration.ProxyCreationEnabled = false;
             db.Configuration.AutoDetectChangesEnabled = false;
 
-            var parlevel1_ids = db.Database.SqlQuery<ParLevel1DTO>("SELECT Id, Name From Parlevel1 where IsRecravacao = 1").ToList();
-            var parlevel2 = db.Database.SqlQuery<ParLevel2DTO>(@"select id, name from parlevel2 where id in (select DISTINCT(Parlevel2_Id) from parlevel3level2 where id in ( select parlevel3level2_id from parlevel3level2level1 where parlevel1_id in ( select id from parlevel1 where isrecravacao = 1)))").ToList();
             var parcompany = Company;
             var paramsFromRequest = ToDynamic(Request.Content.ReadAsStringAsync().Result);
-            var query = string.Format(" SELECT * FROM ParRecravacao_Linhas WHERE ParCompany_Id = {0} and ParLevel2_Id is not null", Company);
-            var results = QueryNinja(db, query).ToList();
-            return Request.CreateResponse(HttpStatusCode.OK, new { resposta = "Busca de linhas concluída", model = results });
+
+            if (level1Id <= 0)
+            {
+                var level1List = db.ParLevel1.Where(r => r.IsActive && r.IsRecravacao == true).ToList();
+                return Request.CreateResponse(HttpStatusCode.OK, new { resposta = "Busca de Indicadores Concluída", model = level1List });
+            }
+            else
+            {
+                var query = string.Format(@"SELECT * FROM ParRecravacao_Linhas WHERE 
+                        ParCompany_Id = {0} 
+                        and ParLevel2_Id in (SELECT DISTINCT(parlevel2_Id) FROM PARLEVEL2Level1 where parlevel1_Id = {1} and isactive = 1)", Company, level1Id);
+                var listLinhasDoLevel1 = QueryNinja(db, query).ToList();
+                return Request.CreateResponse(HttpStatusCode.OK, new { resposta = "Busca de Linhas Concluída", model = listLinhasDoLevel1 });
+            }
+
+            //var parlevel2 = db.Database.SqlQuery<ParLevel2DTO>(@"select id, name from parlevel2 where id in (select DISTINCT(Parlevel2_Id) from parlevel3level2 where id in ( select parlevel3level2_id from parlevel3level2level1 where parlevel1_id in ( select id from parlevel1 where isrecravacao = 1)))").ToList();
+            //var query = string.Format(" SELECT * FROM ParRecravacao_Linhas WHERE ParCompany_Id = {0} and ParLevel2_Id is not null", Company);
         }
 
         // GET: api/RecravacaoLinhaApi

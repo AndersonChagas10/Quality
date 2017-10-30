@@ -85,9 +85,6 @@
     <Compile Include="Defect.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DelDados.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="DepartamentoOperacoes.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
@@ -285,6 +282,9 @@
     <Compile Include="ParLevel3Value.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ParLevel3Value_Outer.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ParLevelDefiniton.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
@@ -324,24 +324,12 @@
     <Compile Include="Perfil.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Period.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="Produtos.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Regionais.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Reports_CCA_Audit.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Reports_CFF_Audit.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Reports_HTP_Audit.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Resultados.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
@@ -399,10 +387,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="SgqEfContext.Designer.cs">
+    <Compile Include="Period.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Period.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SgqEfContext.Designer.cs">
       <DependentUpon>SgqEfContext.edmx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Shift.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
@@ -491,9 +484,6 @@
     <Compile Include="VTVerificacaoTipificacaoValidacao.cs">
       <DependentUpon>SgqBrasilEfContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="VWCFFResults.cs">
-      <DependentUpon>SgqEfContext.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="AutoMapper, Version=5.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
@@ -521,7 +511,10 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DTO\DTO.csproj">
@@ -540,15 +533,19 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SgqBrasilEfContext.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Compile Include="Period.cs">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Period.Designer.cs</LastGenOutput>
+    </Compile>
+    <None Include="SgqBrasilEfContext.edmx.diagram">
+      <DependentUpon>SgqBrasilEfContext.edmx</DependentUpon>
+    </None>
     <EntityDeploy Include="SgqEfContext.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SgqEfContext.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="SgqBrasilEfContext.edmx.diagram">
-      <DependentUpon>SgqBrasilEfContext.edmx</DependentUpon>
-    </None>
     <None Include="SgqEfContext.edmx.diagram">
-      <DependentUpon>SgqEfContext.edmx</DependentUpon>
+      <DependentUpon>Period.cs</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -567,12 +564,12 @@
     </Content>
     <Content Include="SgqEfContext.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SgqEfContext.edmx</DependentUpon>
+      <DependentUpon>Period.cs</DependentUpon>
       <LastGenOutput>SgqEfContext.Context.cs</LastGenOutput>
     </Content>
     <Content Include="SgqEfContext.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SgqEfContext.edmx</DependentUpon>
+      <DependentUpon>Period.cs</DependentUpon>
       <LastGenOutput>SgqEfContext.cs</LastGenOutput>
     </Content>
   </ItemGroup>
