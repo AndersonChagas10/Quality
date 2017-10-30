@@ -8,7 +8,7 @@
         public static bool visaoOperacional = false;
         public static string nameCausaEspecifica { get { return !visaoOperacional ? "Causa Especifica" : "Assunto"; } }
         public static string nameComoPontosImportantes { get { return !visaoOperacional ? "Como Pontos Importantes" : "Como"; } }
-        public static string nameContramedidaEspecifica { get { return !visaoOperacional ? "Contramedida Específica" : "O que"; } }
+        public static string nameContramedidaEspecifica { get { return !visaoOperacional ? "Ação Específica" : "O que"; } }
         public static string TitileMailAcompanhamento = "Plano de Ação - Atualização de Acompanhamento.";
         public static string TitileMailNovaAcao = "Plano de Ação - Nova Ação.";
         public static string TitileMailNovoFTA = "Plano de Ação - Novo Relatório de Análise de Desvio criado.";
