@@ -764,6 +764,7 @@
     <Content Include="Global.asax" />
     <Content Include="Imagens\Brazil.png" />
     <Content Include="Imagens\chart.png" />
+    <Content Include="Imagens\JBS_logo.jpg" />
     <Content Include="Imagens\Logo.png" />
     <Content Include="Imagens\setas.png" />
     <Content Include="Imagens\Spain.png" />
