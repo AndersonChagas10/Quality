@@ -148,9 +148,9 @@ function EasyAjax(url, dados, callback, loader, toggle) {
     }).fail(function (e, h, x) {
         $btn.button('reset');
         if (e.status == 0) {
-            GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.statusText);
+            GuardJs.exibirMensagemAlerta(Resources("could_not_fetch_data") + ": " + e.statusText);
         } else {
-            GuardJs.exibirMensagemAlerta("Não foi possivel buscar os dados: " + e.responseJSON.Message);
+            GuardJs.exibirMensagemAlerta(Resources("could_not_fetch_data") + ": " + e.responseJSON.Message);
         }
     }).always(function () {
         if (!!loader)
