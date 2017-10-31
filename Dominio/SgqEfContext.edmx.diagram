@@ -41,7 +41,6 @@
         <EntityTypeShape EntityType="SgqDbModel.ParLevel2" Width="1.5" PointX="6" PointY="47" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel2ControlCompany" Width="1.5" PointX="14.25" PointY="41.25" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel2Level1" Width="1.5" PointX="11.25" PointY="53.375" />
-        <EntityTypeShape EntityType="SgqDbModel.ParLevel3" Width="1.5" PointX="14.25" PointY="61.75" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel3BoolFalse" Width="1.5" PointX="20.25" PointY="39.75" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel3BoolTrue" Width="1.5" PointX="20.25" PointY="36.75" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel3Group" Width="1.5" PointX="8.25" PointY="61" />
@@ -95,10 +94,6 @@
         <AssociationConnector Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel2" />
         <AssociationConnector Association="SgqDbModel.FK_ParRelapse_ParLevel2" />
         <AssociationConnector Association="SgqDbModel.FK_ParSample_ParLevel2" />
-        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Level2_ParLevel3" />
-        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParLevel3" />
-        <AssociationConnector Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel3" />
-        <AssociationConnector Association="SgqDbModel.FK_ParRelapse_ParLevel3" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParLevel3BoolFalse" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParLevel3BoolTrue" />
         <AssociationConnector Association="SgqDbModel.FK_ParLevel3Level2_ParLevel3Group" />
@@ -150,7 +145,6 @@
         <EntityTypeShape EntityType="SgqDbModel.ParLocal" Width="1.5" PointX="14.25" PointY="66.75" />
         <AssociationConnector Association="SgqDbModel.FK_ParCounterLocal_ParCounter" />
         <AssociationConnector Association="SgqDbModel.FK_ParCounterLocal_ParLevel2" />
-        <AssociationConnector Association="SgqDbModel.FK_ParCounterLocal_ParLevel3" />
         <AssociationConnector Association="SgqDbModel.FK_ParCounterLocal_ParLocal" />
         <EntityTypeShape EntityType="SgqDbModel.ConsolidationLevel2" Width="2" PointX="22.5" PointY="51.875" />
         <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel2_ParLevel2" />
@@ -162,7 +156,6 @@
         <AssociationConnector Association="SgqDbModel.FK_ConsolidationLevel2_ConsolidationLevel11" />
         <EntityTypeShape EntityType="SgqDbModel.Result_Level3" Width="2.125" PointX="27.875" PointY="50.25" />
         <AssociationConnector Association="SgqDbModel.FK_Result_Level3_CollectionLevel2" />
-        <AssociationConnector Association="SgqDbModel.FK_Result_Level3_ParLevel3" />
         <EntityTypeShape EntityType="SgqDbModel.EmailContent" Width="1.5" PointX="15.375" PointY="0.75" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel1" Width="1.5" PointX="25.625" PointY="27.5" />
         <AssociationConnector Association="SgqDbModel.FK_CollectionLevel2_CollectionLevel2" />
@@ -200,6 +193,13 @@
         <EntityTypeShape EntityType="SgqDbModel.Deviation" Width="1.5" PointX="7.375" PointY="15.75" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel2XHeaderField" Width="1.5" PointX="9.375" PointY="11.75" />
         <EntityTypeShape EntityType="SgqDbModel.ParLevel3Value_Outer" Width="1.5" PointX="0.75" PointY="16.75" />
+        <EntityTypeShape EntityType="SgqDbModel.ParLevel3" Width="1.5" PointX="3" PointY="50.375" />
+        <AssociationConnector Association="SgqDbModel.FK_ParCounterLocal_ParLevel3" />
+        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Level2_ParLevel3" />
+        <AssociationConnector Association="SgqDbModel.FK_ParLevel3Value_ParLevel3" />
+        <AssociationConnector Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel3" />
+        <AssociationConnector Association="SgqDbModel.FK_ParRelapse_ParLevel3" />
+        <AssociationConnector Association="SgqDbModel.FK_Result_Level3_ParLevel3" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

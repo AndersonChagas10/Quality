@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Resources;
 using System.Linq;
+using System;
 
 namespace DTO.DTO.Params
 {
@@ -31,6 +32,7 @@ namespace DTO.DTO.Params
         public virtual List<ParLevel3ValueDTO> ParLevel3Value { get; set; }
         public List<ParLevel3GroupDTO> listGroupsLevel2 { get; set; }
         public int? groupLevel2Selected;
+        public Nullable<int> OrderColumn { get; set; }
 
         public List<ParRelapseDTO> listParRelapseDto { get; set; }
         public List<int> removeReincidencia { get; set; }

@@ -27,7 +27,7 @@ namespace Dominio
     
         public virtual ParFrequency ParFrequency { get; set; }
         public virtual ParLevel2 ParLevel2 { get; set; }
-        public virtual ParLevel3 ParLevel3 { get; set; }
         public virtual ParLevel1 ParLevel1 { get; set; }
+        public virtual ParLevel3 ParLevel3 { get; set; }
     }
 }

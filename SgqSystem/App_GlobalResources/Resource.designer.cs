@@ -3643,6 +3643,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Order in data aquisition list.
+        /// </summary>
+        internal static string OrderColumn {
+            get {
+                return ResourceManager.GetString("OrderColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Origionation Date.
         /// </summary>
         internal static string origionation_date {

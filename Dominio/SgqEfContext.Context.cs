@@ -69,7 +69,6 @@ namespace Dominio
         public virtual DbSet<ParLevel2> ParLevel2 { get; set; }
         public virtual DbSet<ParLevel2ControlCompany> ParLevel2ControlCompany { get; set; }
         public virtual DbSet<ParLevel2Level1> ParLevel2Level1 { get; set; }
-        public virtual DbSet<ParLevel3> ParLevel3 { get; set; }
         public virtual DbSet<ParLevel3BoolFalse> ParLevel3BoolFalse { get; set; }
         public virtual DbSet<ParLevel3BoolTrue> ParLevel3BoolTrue { get; set; }
         public virtual DbSet<ParLevel3Group> ParLevel3Group { get; set; }
@@ -123,6 +122,7 @@ namespace Dominio
         public virtual DbSet<Deviation> Deviation { get; set; }
         public virtual DbSet<ParLevel2XHeaderField> ParLevel2XHeaderField { get; set; }
         public virtual DbSet<ParLevel3Value_Outer> ParLevel3Value_Outer { get; set; }
+        public virtual DbSet<ParLevel3> ParLevel3 { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

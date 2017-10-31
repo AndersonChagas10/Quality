@@ -37,6 +37,9 @@
 
 
                     </tr>
+                    <tr class="row showAsReencravation">
+                        @Table.GerarColuna(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.OrderColumn, new { @class = "form-control"}), @Html.Label(Resources.Resource.OrderColumn), Table.PosicaoLabel.left, null, null)
+                    </tr>
                     <tr class="row">
                         @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Dto.IsActive, new { @class = "form-control checkbox-erp", @checked = "" }), @Html.Label(Resources.Resource.is_active), Table.PosicaoLabel.left, null, null)
                     </tr>

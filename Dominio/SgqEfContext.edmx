@@ -842,6 +842,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel2XHeaderField' does not h
           <Property Name="HasTakePhoto" Type="bit" Nullable="false" />
           <Property Name="IsPointLess" Type="bit" />
           <Property Name="AllowNA" Type="bit" />
+          <Property Name="OrderColumn" Type="int" />
         </EntityType>
         <EntityType Name="ParLevel3BoolFalse">
           <Key>
@@ -3181,7 +3182,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="ParLevel2" EntityType="SgqDbModel.ParLevel2" />
           <EntitySet Name="ParLevel2ControlCompany" EntityType="SgqDbModel.ParLevel2ControlCompany" />
           <EntitySet Name="ParLevel2Level1" EntityType="SgqDbModel.ParLevel2Level1" />
-          <EntitySet Name="ParLevel3" EntityType="SgqDbModel.ParLevel3" />
           <EntitySet Name="ParLevel3BoolFalse" EntityType="SgqDbModel.ParLevel3BoolFalse" />
           <EntitySet Name="ParLevel3BoolTrue" EntityType="SgqDbModel.ParLevel3BoolTrue" />
           <EntitySet Name="ParLevel3Group" EntityType="SgqDbModel.ParLevel3Group" />
@@ -3312,22 +3312,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <AssociationSet Name="FK_ParSample_ParLevel2" Association="SgqDbModel.FK_ParSample_ParLevel2">
             <End Role="ParLevel2" EntitySet="ParLevel2" />
             <End Role="ParSample" EntitySet="ParSample" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParLevel3Level2_ParLevel3" Association="SgqDbModel.FK_ParLevel3Level2_ParLevel3">
-            <End Role="ParLevel3" EntitySet="ParLevel3" />
-            <End Role="ParLevel3Level2" EntitySet="ParLevel3Level2" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParLevel3Value_ParLevel3" Association="SgqDbModel.FK_ParLevel3Value_ParLevel3">
-            <End Role="ParLevel3" EntitySet="ParLevel3" />
-            <End Role="ParLevel3Value" EntitySet="ParLevel3Value" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParNotConformityRuleXLevel_ParLevel3" Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel3">
-            <End Role="ParLevel3" EntitySet="ParLevel3" />
-            <End Role="ParNotConformityRuleXLevel" EntitySet="ParNotConformityRuleXLevel" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ParRelapse_ParLevel3" Association="SgqDbModel.FK_ParRelapse_ParLevel3">
-            <End Role="ParLevel3" EntitySet="ParLevel3" />
-            <End Role="ParRelapse" EntitySet="ParRelapse" />
           </AssociationSet>
           <AssociationSet Name="FK_ParLevel3Value_ParLevel3BoolFalse" Association="SgqDbModel.FK_ParLevel3Value_ParLevel3BoolFalse">
             <End Role="ParLevel3BoolFalse" EntitySet="ParLevel3BoolFalse" />
@@ -3488,10 +3472,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             <End Role="ParLevel2" EntitySet="ParLevel2" />
             <End Role="ParCounterXLocal" EntitySet="ParCounterXLocal" />
           </AssociationSet>
-          <AssociationSet Name="FK_ParCounterLocal_ParLevel3" Association="SgqDbModel.FK_ParCounterLocal_ParLevel3">
-            <End Role="ParLevel3" EntitySet="ParLevel3" />
-            <End Role="ParCounterXLocal" EntitySet="ParCounterXLocal" />
-          </AssociationSet>
           <AssociationSet Name="FK_ParCounterLocal_ParLocal" Association="SgqDbModel.FK_ParCounterLocal_ParLocal">
             <End Role="ParLocal" EntitySet="ParLocal" />
             <End Role="ParCounterXLocal" EntitySet="ParCounterXLocal" />
@@ -3525,10 +3505,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="Result_Level3" EntityType="SgqDbModel.Result_Level3" />
           <AssociationSet Name="FK_Result_Level3_CollectionLevel2" Association="SgqDbModel.FK_Result_Level3_CollectionLevel2">
             <End Role="CollectionLevel2" EntitySet="CollectionLevel2" />
-            <End Role="Result_Level3" EntitySet="Result_Level3" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Result_Level3_ParLevel3" Association="SgqDbModel.FK_Result_Level3_ParLevel3">
-            <End Role="ParLevel3" EntitySet="ParLevel3" />
             <End Role="Result_Level3" EntitySet="Result_Level3" />
           </AssociationSet>
           <EntitySet Name="EmailContent" EntityType="SgqDbModel.EmailContent" />
@@ -3655,6 +3631,31 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="Deviation" EntityType="SgqDbModel.Deviation" />
           <EntitySet Name="ParLevel2XHeaderField" EntityType="SgqDbModel.ParLevel2XHeaderField" />
           <EntitySet Name="ParLevel3Value_Outer" EntityType="SgqDbModel.ParLevel3Value_Outer" />
+          <EntitySet Name="ParLevel3" EntityType="SgqDbModel.ParLevel3" />
+          <AssociationSet Name="FK_ParCounterLocal_ParLevel3" Association="SgqDbModel.FK_ParCounterLocal_ParLevel3">
+            <End Role="ParLevel3" EntitySet="ParLevel3" />
+            <End Role="ParCounterXLocal" EntitySet="ParCounterXLocal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel3Level2_ParLevel3" Association="SgqDbModel.FK_ParLevel3Level2_ParLevel3">
+            <End Role="ParLevel3" EntitySet="ParLevel3" />
+            <End Role="ParLevel3Level2" EntitySet="ParLevel3Level2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParLevel3Value_ParLevel3" Association="SgqDbModel.FK_ParLevel3Value_ParLevel3">
+            <End Role="ParLevel3" EntitySet="ParLevel3" />
+            <End Role="ParLevel3Value" EntitySet="ParLevel3Value" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParNotConformityRuleXLevel_ParLevel3" Association="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel3">
+            <End Role="ParLevel3" EntitySet="ParLevel3" />
+            <End Role="ParNotConformityRuleXLevel" EntitySet="ParNotConformityRuleXLevel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParRelapse_ParLevel3" Association="SgqDbModel.FK_ParRelapse_ParLevel3">
+            <End Role="ParLevel3" EntitySet="ParLevel3" />
+            <End Role="ParRelapse" EntitySet="ParRelapse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Result_Level3_ParLevel3" Association="SgqDbModel.FK_Result_Level3_ParLevel3">
+            <End Role="ParLevel3" EntitySet="ParLevel3" />
+            <End Role="Result_Level3" EntitySet="Result_Level3" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -4226,26 +4227,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_Level2Level1_ParLevel2" FromRole="ParLevel2Level1" ToRole="ParLevel2" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_Level2Level1_ParLevel1" FromRole="ParLevel2Level1" ToRole="ParLevel1" />
         </EntityType>
-        <EntityType Name="ParLevel3">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="AlterDate" Type="DateTime" Precision="7" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ParLevel3Level2" Relationship="SgqDbModel.FK_ParLevel3Level2_ParLevel3" FromRole="ParLevel3" ToRole="ParLevel3Level2" />
-          <NavigationProperty Name="ParLevel3Value" Relationship="SgqDbModel.FK_ParLevel3Value_ParLevel3" FromRole="ParLevel3" ToRole="ParLevel3Value" />
-          <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel3" FromRole="ParLevel3" ToRole="ParNotConformityRuleXLevel" />
-          <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel3" FromRole="ParLevel3" ToRole="ParRelapse" />
-          <NavigationProperty Name="ParCounterXLocal" Relationship="SgqDbModel.FK_ParCounterLocal_ParLevel3" FromRole="ParLevel3" ToRole="ParCounterXLocal" />
-          <NavigationProperty Name="Result_Level3" Relationship="SgqDbModel.FK_Result_Level3_ParLevel3" FromRole="ParLevel3" ToRole="Result_Level3" />
-          <Property Name="HasTakePhoto" Type="Boolean" Nullable="false" />
-          <Property Name="IsPointLess" Type="Boolean" />
-          <Property Name="AllowNA" Type="Boolean" />
-        </EntityType>
         <EntityType Name="ParLevel3BoolFalse">
           <Key>
             <PropertyRef Name="Id" />
@@ -4309,10 +4290,10 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="ParCompany_Id" Type="Int32" />
           <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParLevel3Level2_ParLevel2" FromRole="ParLevel3Level2" ToRole="ParLevel2" />
-          <NavigationProperty Name="ParLevel3" Relationship="SgqDbModel.FK_ParLevel3Level2_ParLevel3" FromRole="ParLevel3Level2" ToRole="ParLevel3" />
           <NavigationProperty Name="ParLevel3Group" Relationship="SgqDbModel.FK_ParLevel3Level2_ParLevel3Group" FromRole="ParLevel3Level2" ToRole="ParLevel3Group" />
           <NavigationProperty Name="ParLevel3Level2Level1" Relationship="SgqDbModel.FK_ParLevel3Level2Level1_ParLevel3Level2" FromRole="ParLevel3Level2" ToRole="ParLevel3Level2Level1" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParLevel3Level2_ParCompany" FromRole="ParLevel3Level2" ToRole="ParCompany" />
+          <NavigationProperty Name="ParLevel3" Relationship="SgqDbModel.FK_ParLevel3Level2_ParLevel3" FromRole="ParLevel3Level2" ToRole="ParLevel3" />
         </EntityType>
         <EntityType Name="ParLevel3Level2Level1">
           <Key>
@@ -4345,12 +4326,12 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ParLevel3" Relationship="SgqDbModel.FK_ParLevel3Value_ParLevel3" FromRole="ParLevel3Value" ToRole="ParLevel3" />
           <NavigationProperty Name="ParLevel3BoolFalse" Relationship="SgqDbModel.FK_ParLevel3Value_ParLevel3BoolFalse" FromRole="ParLevel3Value" ToRole="ParLevel3BoolFalse" />
           <NavigationProperty Name="ParLevel3BoolTrue" Relationship="SgqDbModel.FK_ParLevel3Value_ParLevel3BoolTrue" FromRole="ParLevel3Value" ToRole="ParLevel3BoolTrue" />
           <NavigationProperty Name="ParLevel3InputType" Relationship="SgqDbModel.FK_ParLevel3Value_ParLevel3InputType" FromRole="ParLevel3Value" ToRole="ParLevel3InputType" />
           <NavigationProperty Name="ParMeasurementUnit" Relationship="SgqDbModel.FK_ParLevel3Value_ParMeasurementUnit" FromRole="ParLevel3Value" ToRole="ParMeasurementUnit" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParLevel3Value_ParCompany" FromRole="ParLevel3Value" ToRole="ParCompany" />
+          <NavigationProperty Name="ParLevel3" Relationship="SgqDbModel.FK_ParLevel3Value_ParLevel3" FromRole="ParLevel3Value" ToRole="ParLevel3" />
         </EntityType>
         <EntityType Name="ParLevelDefiniton">
           <Key>
@@ -4421,10 +4402,10 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="AlterDate" Type="DateTime" Precision="7" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel2" FromRole="ParNotConformityRuleXLevel" ToRole="ParLevel2" />
-          <NavigationProperty Name="ParLevel3" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel3" FromRole="ParNotConformityRuleXLevel" ToRole="ParLevel3" />
           <NavigationProperty Name="ParNotConformityRule" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParNotConformityRule" FromRole="ParNotConformityRuleXLevel" ToRole="ParNotConformityRule" />
           <NavigationProperty Name="ParCompany" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParCompany" FromRole="ParNotConformityRuleXLevel" ToRole="ParCompany" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel1" FromRole="ParNotConformityRuleXLevel" ToRole="ParLevel1" />
+          <NavigationProperty Name="ParLevel3" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel3" FromRole="ParNotConformityRuleXLevel" ToRole="ParLevel3" />
         </EntityType>
         <EntityType Name="ParRelapse">
           <Key>
@@ -4442,8 +4423,8 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParFrequency" Relationship="SgqDbModel.FK_ParRelapse_ParFrequency" FromRole="ParRelapse" ToRole="ParFrequency" />
           <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParRelapse_ParLevel2" FromRole="ParRelapse" ToRole="ParLevel2" />
-          <NavigationProperty Name="ParLevel3" Relationship="SgqDbModel.FK_ParRelapse_ParLevel3" FromRole="ParRelapse" ToRole="ParLevel3" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParRelapse_ParLevel1" FromRole="ParRelapse" ToRole="ParLevel1" />
+          <NavigationProperty Name="ParLevel3" Relationship="SgqDbModel.FK_ParRelapse_ParLevel3" FromRole="ParRelapse" ToRole="ParLevel3" />
         </EntityType>
         <EntityType Name="ParSample">
           <Key>
@@ -4976,54 +4957,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Principal>
             <Dependent Role="ParSample">
               <PropertyRef Name="ParLevel2_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParLevel3Level2_ParLevel3">
-          <End Type="SgqDbModel.ParLevel3" Role="ParLevel3" Multiplicity="1" />
-          <End Type="SgqDbModel.ParLevel3Level2" Role="ParLevel3Level2" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel3">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3Level2">
-              <PropertyRef Name="ParLevel3_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParLevel3Value_ParLevel3">
-          <End Type="SgqDbModel.ParLevel3" Role="ParLevel3" Multiplicity="1" />
-          <End Type="SgqDbModel.ParLevel3Value" Role="ParLevel3Value" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel3">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParLevel3Value">
-              <PropertyRef Name="ParLevel3_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParNotConformityRuleXLevel_ParLevel3">
-          <End Type="SgqDbModel.ParLevel3" Role="ParLevel3" Multiplicity="0..1" />
-          <End Type="SgqDbModel.ParNotConformityRuleXLevel" Role="ParNotConformityRuleXLevel" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel3">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParNotConformityRuleXLevel">
-              <PropertyRef Name="ParLevel3_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParRelapse_ParLevel3">
-          <End Type="SgqDbModel.ParLevel3" Role="ParLevel3" Multiplicity="0..1" />
-          <End Type="SgqDbModel.ParRelapse" Role="ParRelapse" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel3">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParRelapse">
-              <PropertyRef Name="ParLevel3_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5639,9 +5572,9 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ParCounter" Relationship="SgqDbModel.FK_ParCounterLocal_ParCounter" FromRole="ParCounterXLocal" ToRole="ParCounter" />
           <NavigationProperty Name="ParLevel2" Relationship="SgqDbModel.FK_ParCounterLocal_ParLevel2" FromRole="ParCounterXLocal" ToRole="ParLevel2" />
-          <NavigationProperty Name="ParLevel3" Relationship="SgqDbModel.FK_ParCounterLocal_ParLevel3" FromRole="ParCounterXLocal" ToRole="ParLevel3" />
           <NavigationProperty Name="ParLocal" Relationship="SgqDbModel.FK_ParCounterLocal_ParLocal" FromRole="ParCounterXLocal" ToRole="ParLocal" />
           <NavigationProperty Name="ParLevel1" Relationship="SgqDbModel.FK_ParCounterLocal_ParLevel1" FromRole="ParCounterXLocal" ToRole="ParLevel1" />
+          <NavigationProperty Name="ParLevel3" Relationship="SgqDbModel.FK_ParCounterLocal_ParLevel3" FromRole="ParCounterXLocal" ToRole="ParLevel3" />
         </EntityType>
         <EntityType Name="ParLocal">
           <Key>
@@ -5676,18 +5609,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Principal>
             <Dependent Role="ParCounterXLocal">
               <PropertyRef Name="ParLevel2_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ParCounterLocal_ParLevel3">
-          <End Type="SgqDbModel.ParLevel3" Role="ParLevel3" Multiplicity="0..1" />
-          <End Type="SgqDbModel.ParCounterXLocal" Role="ParCounterXLocal" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel3">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParCounterXLocal">
-              <PropertyRef Name="ParLevel3_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5896,18 +5817,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Principal>
             <Dependent Role="Result_Level3">
               <PropertyRef Name="CollectionLevel2_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Result_Level3_ParLevel3">
-          <End Type="SgqDbModel.ParLevel3" Role="ParLevel3" Multiplicity="1" />
-          <End Type="SgqDbModel.Result_Level3" Role="Result_Level3" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ParLevel3">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Result_Level3">
-              <PropertyRef Name="ParLevel3_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6495,6 +6404,99 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="LimInferior" Type="Decimal" Precision="18" Scale="5" />
           <Property Name="LimSuperior" Type="Decimal" Precision="18" Scale="5" />
         </EntityType>
+        <EntityType Name="ParLevel3">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="HasTakePhoto" Type="Boolean" Nullable="false" />
+          <Property Name="IsPointLess" Type="Boolean" />
+          <Property Name="AllowNA" Type="Boolean" />
+          <Property Name="OrderColumn" Type="Int32" />
+          <NavigationProperty Name="ParCounterXLocal" Relationship="SgqDbModel.FK_ParCounterLocal_ParLevel3" FromRole="ParLevel3" ToRole="ParCounterXLocal" />
+          <NavigationProperty Name="ParLevel3Level2" Relationship="SgqDbModel.FK_ParLevel3Level2_ParLevel3" FromRole="ParLevel3" ToRole="ParLevel3Level2" />
+          <NavigationProperty Name="ParLevel3Value" Relationship="SgqDbModel.FK_ParLevel3Value_ParLevel3" FromRole="ParLevel3" ToRole="ParLevel3Value" />
+          <NavigationProperty Name="ParNotConformityRuleXLevel" Relationship="SgqDbModel.FK_ParNotConformityRuleXLevel_ParLevel3" FromRole="ParLevel3" ToRole="ParNotConformityRuleXLevel" />
+          <NavigationProperty Name="ParRelapse" Relationship="SgqDbModel.FK_ParRelapse_ParLevel3" FromRole="ParLevel3" ToRole="ParRelapse" />
+          <NavigationProperty Name="Result_Level3" Relationship="SgqDbModel.FK_Result_Level3_ParLevel3" FromRole="ParLevel3" ToRole="Result_Level3" />
+        </EntityType>
+        <Association Name="FK_ParCounterLocal_ParLevel3">
+          <End Type="SgqDbModel.ParLevel3" Role="ParLevel3" Multiplicity="0..1" />
+          <End Type="SgqDbModel.ParCounterXLocal" Role="ParCounterXLocal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel3">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParCounterXLocal">
+              <PropertyRef Name="ParLevel3_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel3Level2_ParLevel3">
+          <End Type="SgqDbModel.ParLevel3" Role="ParLevel3" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel3Level2" Role="ParLevel3Level2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel3">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel3Level2">
+              <PropertyRef Name="ParLevel3_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParLevel3Value_ParLevel3">
+          <End Type="SgqDbModel.ParLevel3" Role="ParLevel3" Multiplicity="1" />
+          <End Type="SgqDbModel.ParLevel3Value" Role="ParLevel3Value" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel3">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParLevel3Value">
+              <PropertyRef Name="ParLevel3_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParNotConformityRuleXLevel_ParLevel3">
+          <End Type="SgqDbModel.ParLevel3" Role="ParLevel3" Multiplicity="0..1" />
+          <End Type="SgqDbModel.ParNotConformityRuleXLevel" Role="ParNotConformityRuleXLevel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel3">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParNotConformityRuleXLevel">
+              <PropertyRef Name="ParLevel3_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParRelapse_ParLevel3">
+          <End Type="SgqDbModel.ParLevel3" Role="ParLevel3" Multiplicity="0..1" />
+          <End Type="SgqDbModel.ParRelapse" Role="ParRelapse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel3">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParRelapse">
+              <PropertyRef Name="ParLevel3_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Result_Level3_ParLevel3">
+          <End Type="SgqDbModel.ParLevel3" Role="ParLevel3" Multiplicity="1" />
+          <End Type="SgqDbModel.Result_Level3" Role="Result_Level3" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParLevel3">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Result_Level3">
+              <PropertyRef Name="ParLevel3_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7000,21 +7002,6 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
                 <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
                 <ScalarProperty Name="ParLevel2_Id" ColumnName="ParLevel2_Id" />
                 <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ParLevel3">
-            <EntityTypeMapping TypeName="SgqDbModel.ParLevel3">
-              <MappingFragment StoreEntitySet="ParLevel3">
-                <ScalarProperty Name="AllowNA" ColumnName="AllowNA" />
-                <ScalarProperty Name="IsPointLess" ColumnName="IsPointLess" />
-                <ScalarProperty Name="HasTakePhoto" ColumnName="HasTakePhoto" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
-                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -7911,6 +7898,22 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParLevel3">
+            <EntityTypeMapping TypeName="SgqDbModel.ParLevel3">
+              <MappingFragment StoreEntitySet="ParLevel3">
+                <ScalarProperty Name="OrderColumn" ColumnName="OrderColumn" />
+                <ScalarProperty Name="AllowNA" ColumnName="AllowNA" />
+                <ScalarProperty Name="IsPointLess" ColumnName="IsPointLess" />
+                <ScalarProperty Name="HasTakePhoto" ColumnName="HasTakePhoto" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

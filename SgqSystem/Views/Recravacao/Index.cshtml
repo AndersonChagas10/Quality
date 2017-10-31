@@ -225,30 +225,24 @@
                         <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd; width: 80px !important" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{($index+1)}}</td>
                     </tr>
 
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center;"
-                            colspan="{{((ParLevel3.IsPointLess == false) ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}"
-                            ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
-                            ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Name][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Name][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) }"
-                            ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                            <span class="validate">{{item.ResultValue[ParLevel3.Name][($index +1)]}}</span>
-                        </td>
-                    </tr>
-
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
+                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
                         <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
                         <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px; text-align: center;"
                             colspan="{{((ParLevel3.IsPointLess == false) ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}"
                             ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
-                            ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index"
-                            ng-class="{bgWhite: (!(item.ResultValue[ParLevel3.Name][($index +1)] === true) && !(item.ResultValue[ParLevel3.Name][($index +1)] === false)), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] === true), bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] === false)}">
-                            <span class="validate" ng-if="item.ResultValue[ParLevel3.Name][($index +1)] === true">
-                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
-                            </span>
-                            <span class="validate" ng-if="item.ResultValue[ParLevel3.Name][($index +1)] === false">
-                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
-                            </span>
+                            ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Name][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Name][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}"
+                            ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                            <span class="validate">{{item.ResultValue[ParLevel3.Name][($index + 1)]}}</span>
+                        </td>
+                    </tr>
+
+                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px; text-align: center; word-wrap:break-word;"
+                            colspan="{{((ParLevel3.IsPointLess == false) ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}"
+                            ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
+                            ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                            {{ParLevel3.ResultValue['PontoText' + ($index +1)]}}
                         </td>
                     </tr>
 
@@ -270,6 +264,18 @@
                         </td>
                     </tr>
 
+                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
+                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center;"
+                            colspan="{{((ParLevel3.IsPointLess == false) ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}"
+                            ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
+                            ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Name][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Name][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) }"
+                            ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
+                            <span class="validate">{{item.ResultValue[ParLevel3.Name][($index +1)]}}</span>
+                        </td>
+                    </tr>
+
+
                     <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
                         <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
                         <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px; text-align: center;"
@@ -280,26 +286,24 @@
                         </td>
                     </tr>
 
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px; text-align: center; word-wrap:break-word;"
-                            colspan="{{((ParLevel3.IsPointLess == false) ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}"
-                            ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
-                            ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                            {{ParLevel3.ResultValue['PontoText' + ($index +1)]}}
-                        </td>
-                    </tr>
-
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
+                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
                         <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
                         <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px; text-align: center;"
                             colspan="{{((ParLevel3.IsPointLess == false) ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}"
                             ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
-                            ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Name][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Name][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}"
-                            ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                            <span class="validate">{{item.ResultValue[ParLevel3.Name][($index + 1)]}}</span>
+                            ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index"
+                            ng-class="{bgWhite: (!(item.ResultValue[ParLevel3.Name][($index +1)] === true) && !(item.ResultValue[ParLevel3.Name][($index +1)] === false)), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] === true), bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] === false)}">
+                            <span class="validate" ng-if="item.ResultValue[ParLevel3.Name][($index +1)] === true">
+                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
+                            </span>
+                            <span class="validate" ng-if="item.ResultValue[ParLevel3.Name][($index +1)] === false">
+                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
+                            </span>
                         </td>
                     </tr>
+
+
+                  
 
                 </tbody>
             </table>
@@ -363,7 +367,7 @@
                                 <td style="border:1px solid #cccccc; padding: 2px; max-width:65px; text-align: center; font-weight: bold; background-color:#dddddd;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{$index + 1}}</td>
                             </tr>
 
-                            <tr ng-repeat="ParLevel3 in seletedLinha.ListParlevel3 track by $index" ng-init="parLevel3IndexME = $index">
+                            <tr ng-repeat="ParLevel3 in seletedLinha.ListParlevel3 | orderBy : sorterFunc track by $index" ng-init="parLevel3IndexME = $index">
 
                                 <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
                                 <td style="border:1px solid #cccccc; padding: 2px; max-width:65px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index" ng-init="pontoIndexME = $index" ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))" colspan="{{((ParLevel3.IsPointLess == false) ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}">
@@ -469,8 +473,7 @@
 
                                     @*99 NOVO CALCULADO POR OUTRO*@
                                     <span style="width:100%; display: block; text-align: right;" ng-show="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')"
-                                          ng-class="{bgWhite:  (selectedLata.ResultValue[ParLevel3.Name][($index +1)].length == 0), bgYellow: (selectedLata.ResultValue[ParLevel3.Name][($index +1)] == 'NA'), bgGreen: (selectedLata.ResultValue[ParLevel3.Name][($index +1)] != null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= selectedLata.ResultValue[ParLevel3.Name][($index +1)] && selectedLata.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed: (selectedLata.ResultValue[ParLevel3.Name][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= selectedLata.ResultValue[ParLevel3.Name][($index +1)] && selectedLata.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}"
-                                          >
+                                          ng-class="{bgWhite:  (selectedLata.ResultValue[ParLevel3.Name][($index +1)].length == 0), bgYellow: (selectedLata.ResultValue[ParLevel3.Name][($index +1)] == 'NA'), bgGreen: (selectedLata.ResultValue[ParLevel3.Name][($index +1)] != null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= selectedLata.ResultValue[ParLevel3.Name][($index +1)] && selectedLata.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed: (selectedLata.ResultValue[ParLevel3.Name][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= selectedLata.ResultValue[ParLevel3.Name][($index +1)] && selectedLata.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}">
                                         {{geraIdCalc($index, ParLevel3.ParLevel3Value_OuterList, seletedLinha.latas.indexOf(selectedLata), ParLevel3.Name)}}
                                     </span>
                                 </td>
@@ -891,6 +894,11 @@
                 }
                 vm.userAuditor = vm.getUser()
                 vm.getParametrizacaoUrl = '@Url.Action("RecravacaoLinhaApi", "api")'//'http://localhost:57506/api/RecravacaoLinhaApi'
+
+                $scope.sorterFunc = function (item) {
+                    //return parseInt(item['Description']);
+                    return item['OrderColumn']
+                };
 
                 vm.company = GetUnidadeUsuario()
 

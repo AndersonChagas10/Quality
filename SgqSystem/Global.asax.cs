@@ -69,6 +69,24 @@ namespace SgqSystem
             //18 10 2017 CG 
             VerifyColumnExistsNotExistisThenCreate("ParLevel3", "IsPointLess", "bit", "default (1)", "IsPointLess = 1");
             VerifyColumnExistsNotExistisThenCreate("ParLevel3", "AllowNA", "bit", "default (0)", "AllowNA = 0");
+            VerifyColumnExistsNotExistisThenCreate("ParLevel3", "OrderColumn", "int", "null", "OrderColumn = 0");
+            ExecuteSql();
+
+        }
+
+        private void ExecuteSql()
+        {
+            using (var db = new Dominio.SgqDbDevEntities())
+            {
+                try
+                {
+                    db.Database.ExecuteSqlCommand(ScriptFull);
+                }
+                catch (Exception e)
+                {
+                    new CreateLog(new Exception("Erro ao criar ao tentar atualizar o DB: " + ScriptFull, e), ControllerAction: "Application_Start");
+                }
+            }
         }
 
         /// <summary>
@@ -81,27 +99,18 @@ namespace SgqSystem
         /// <param name="setValue">Ex: "IsRecravacao = 0"</param>
         private void VerifyColumnExistsNotExistisThenCreate(string table, string colmun, string type, string defaultValue, string setValue)
         {
-            using (var db = new Dominio.SgqDbDevEntities())
-            {
-                var sql = string.Empty;
-                try
-                {
 
-                    sql = string.Format(@"IF COL_LENGTH('{0}','{1}') IS NULL
-                        BEGIN
-                        /*Column does not exist or caller does not have permission to view the object*/
-                        Alter table {0} add {1} {2} {3}
-                        EXEC ('update {0} set {4}')
-                        END", table, colmun, type, defaultValue, setValue);
+            ScriptFull += string.Format(@"
 
-                    ScriptFull += sql + "\n\n";
-                    db.Database.ExecuteSqlCommand(sql);
-                }
-                catch (Exception e)
-                {
-                    new CreateLog(new Exception("Erro ao criar a coluna " + colmun + " para tabela " + table + " em global.asax", e), ControllerAction: sql);
-                }
-            }
+IF COL_LENGTH('{0}','{1}') IS NULL
+BEGIN
+/*Column does not exist or caller does not have permission to view the object*/
+Alter table {0} add {1} {2} {3}
+EXEC ('update {0} set {4}')
+END
+
+", table, colmun, type, defaultValue, setValue);
+
         }
 
         protected void Application_End(object sender, EventArgs e)

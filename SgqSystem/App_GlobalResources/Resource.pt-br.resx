@@ -2091,4 +2091,7 @@
   <data name="AllowNA" xml:space="preserve">
     <value>Exibe opção não avaliado (NA)</value>
   </data>
+  <data name="OrderColumn" xml:space="preserve">
+    <value>Ordem na lista de coleta</value>
+  </data>
 </root>

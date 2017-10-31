@@ -114,3 +114,19 @@ GO
 --------------------------------------------------------------------------------------27 10 2017 - CG RECRAVACAO
 
 
+	alter table [ParLevel3Value_Outer] add [UnidadeMedida_Id] [int] NULL;
+	alter table [ParLevel3Value_Outer] add [UnidadeMedidaText] [nvarchar](200) NULL;
+	alter table [ParLevel3Value_Outer] add [AceitavelEntreText] [nvarchar](200) NULL;
+	alter table [ParLevel3Value_Outer] add [AceitavelEntre_Id] [int] NULL;
+	alter table [ParLevel3Value_Outer] add [LimInferior] [decimal](18, 5) NULL;
+	alter table [ParLevel3Value_Outer] add [LimSuperior] [decimal](18, 5) NULL;
+
+
+	
+IF COL_LENGTH('ParLevel3','OrderColumn') IS NULL
+BEGIN
+/*Column does not exist or caller does not have permission to view the object*/
+Alter table ParLevel3 add OrderColumn int null
+EXEC ('update ParLevel3 set OrderColumn = 0')
+END
+

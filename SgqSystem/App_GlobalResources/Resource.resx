@@ -2106,4 +2106,7 @@
   <data name="AllowNA" xml:space="preserve">
     <value>Allow not avaliable</value>
   </data>
+  <data name="OrderColumn" xml:space="preserve">
+    <value>Order in data aquisition list</value>
+  </data>
 </root>
