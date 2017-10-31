@@ -486,7 +486,7 @@
 <script src="~/Views/Home/AuxiliarIndexHome.js"></script>*@
 
 <script>
-
+    var listaStatus = ["Atrasado", "Cancelado","Concluído", "Concluído com atraso", "Em Andamento","Finalizado","Finalizado com sucesso", "Retorno"];
     Highcharts.setOptions({
         lang: {
             months: moment.monthsShort(),
@@ -503,9 +503,25 @@
     var urlGraficoNumeroDeAcoes = '@Url.Action("NumeroDeAcoes", "api/Relatorios")';
     var urlGraficoEvolucaoDoResultado = '@Url.Action("EvolucaoDoResultado", "api/Relatorios")';
 
+    function orderArray(array) {
+        
+        array.sort(function (a, b) {
+            if (a.name > b.name) {
+                return 1;
+            }
+            if (a.name < b.name) {
+                return -1;
+            }
+            
+            return 0;
+        });
 
+        return array;
+    }
     /*Container 1*/
     function GraficoBar(privotY, privotX) {
+
+
         var r = resultGetGrafico
         var title = privotY + " x " + privotX
         var result = r;
@@ -513,17 +529,46 @@
         var serie = [];
         var eixoY = MapeiaValorParaHC(result, privotY).filter(onlyUnique);
         var eixoX = MapeiaValorParaHC(result, privotX).filter(onlyUnique);
-
+        //var eixoX = listaStatus;
+        
         eixoX.forEach(function (o, c) {
             var serieData = {};
             serieData["name"] = o;
             serieData["data"] = [];
+
+            
             eixoY.forEach(function (oo, cc) {
+                console.log(oo);
                 serieData["data"].push($.grep(result, function (e) { return e[privotX] == o && e[privotY] == eixoY[cc]; }).length)
             })
             serie.push(serieData);
         });
+        if (privotX == 'Status' && serie != '') {
 
+            Highcharts.setOptions({
+                colors: ['red', 'pink', 'blue', 'orange', 'green', 'black', "yellow", "gray"]
+            });
+
+            var serieAux;
+            var listaVazia;            
+            var aux = 0;
+            serieAux = orderArray(serie);
+            serie = [];
+
+            for (var i = 0; i < listaStatus.length; i++) {
+                if (serieAux[aux].name == listaStatus[i]) {
+                    serie.push(serieAux[aux]);
+                    if (serieAux.length > aux + 1) {
+                        aux++;
+                    }
+                } else {
+                    listaVazia = { name: listaStatus[i], data: null, visible: false };
+                    serie.push(listaVazia);
+                }
+            }
+        }
+        
+        
         Highcharts.chart('divGrafico1', {
             credits: {
                 enabled: false
@@ -580,6 +625,7 @@
                 series: {
                     stacking: 'normal'
                 }
+                
             },
             series: serie
         });
@@ -603,6 +649,31 @@
             })
             serie.push(serieData);
         });
+
+        if (privotX == 'Status' && serie != '') {
+
+            Highcharts.setOptions({
+                colors: ['red', 'pink', 'blue', 'orange', 'green', 'black', "yellow", "gray"]
+            });
+
+            var serieAux;
+            var listaVazia;
+            var aux = 0;
+            serieAux = orderArray(serie);
+            serie = [];
+
+            for (var i = 0; i < listaStatus.length; i++) {
+                if (serieAux[aux].name == listaStatus[i]) {
+                    serie.push(serieAux[aux]);
+                    if (serieAux.length > aux + 1) {
+                        aux++;
+                    }
+                } else {
+                    listaVazia = { name: listaStatus[i], data: null, visible: false };
+                    serie.push(listaVazia);
+                }
+            }
+        }
 
         Highcharts.chart('divCol', {
             credits: {
@@ -672,15 +743,46 @@
             series: serie
         });
     }
+    function populaListaStatus(r)
+    {
+        var aux = 0;
+        var re = [];
+        for (var i = 0; i < listaStatus.length; i++) {
+            if (r[aux].name == listaStatus[i]) {
+                re.push(r[aux]);
+                if (r.length > aux+1)
+                {
+                    aux++;
+                }
+                
+            } else {
+                var a = { y: null, name: listaStatus[i] };
+                re.push(a);
+            }
+        }
 
+        return re;
+    }
     function GraficoPizza(r) {
+       
+        r = populaListaStatus(r);
+
         dadosPie = r;
         var serie = [];
         r.forEach(function (o, c) {
-            serie.push({
-                name: o.name,
-                y: parseInt(o.y)
-            })
+            
+            if (o.y == null) {
+                serie.push({
+                    name: o.name,
+                    y: null,
+                    visible: false
+                })
+            } else {
+                serie.push({
+                    name: o.name,
+                    y: parseInt(o.y)
+                })
+            }
         });
 
         Highcharts.chart('divPie', {
@@ -726,7 +828,9 @@
                             fontWeight: 'normal',
                         },
                         connectorColor: 'silver'
-                    }
+                    },
+                    colors: ['red', 'pink', 'blue', 'orange', 'green', 'black', "yellow", "gray"]
+                     
                 }
             },
             series: [{

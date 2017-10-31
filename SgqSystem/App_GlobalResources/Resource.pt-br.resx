@@ -1732,7 +1732,7 @@
     <value>Pontos Disputados</value>
   </data>
   <data name="registers" xml:space="preserve">
-    <value>Registers</value>
+    <value>Registros</value>
   </data>
   <data name="resgisters_page" xml:space="preserve">
     <value>Registros por Pagina</value>
@@ -2168,5 +2168,56 @@
   </data>
   <data name="non_conformities_in_period" xml:space="preserve">
     <value>de Não Conformidades no Período</value>
+  </data>
+  <data name="concluded_actions" xml:space="preserve">
+    <value>Ações Concluídas</value>
+  </data>
+  <data name="consolidated_history" xml:space="preserve">
+    <value>Histórico Consolidado</value>
+  </data>
+  <data name="final_date" xml:space="preserve">
+    <value>Data final</value>
+  </data>
+  <data name="general_cause" xml:space="preserve">
+    <value>Causa Genérica</value>
+  </data>
+  <data name="generic_countermeasure" xml:space="preserve">
+    <value>Contramedida Genérica</value>
+  </data>
+  <data name="group_cause" xml:space="preserve">
+    <value>Grupo Causa</value>
+  </data>
+  <data name="level1_history" xml:space="preserve">
+    <value>Histórico do Indicador</value>
+  </data>
+  <data name="level1_porc_non_conform_evo" xml:space="preserve">
+    <value>Evolutivo de % de não conformidades no Indicador</value>
+  </data>
+  <data name="level2_history" xml:space="preserve">
+    <value>Histórico do Monitoramento</value>
+  </data>
+  <data name="level2_porc_non_conform_evo" xml:space="preserve">
+    <value>Evolutivo de % de não conformidades no Monitoramento</value>
+  </data>
+  <data name="level3_history" xml:space="preserve">
+    <value>Histórico da Tarefa</value>
+  </data>
+  <data name="level3_porc_non_conform_evo" xml:space="preserve">
+    <value>Evolutivo de % de não conformidades na Tarefa</value>
+  </data>
+  <data name="number_of_shares" xml:space="preserve">
+    <value>Número de Ações</value>
+  </data>
+  <data name="off_goal" xml:space="preserve">
+    <value>Fora da Meta</value>
+  </data>
+  <data name="there_are_no_data_for_this_indicador_unit" xml:space="preserve">
+    <value>Não existem dados de ações para este Indicador / Unidade</value>
+  </data>
+  <data name="who" xml:space="preserve">
+    <value>Quem</value>
+  </data>
+  <data name="within_goal" xml:space="preserve">
+    <value>Dentro da Meta</value>
   </data>
 </root>

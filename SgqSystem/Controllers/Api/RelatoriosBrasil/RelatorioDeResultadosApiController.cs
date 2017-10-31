@@ -1430,7 +1430,8 @@ SELECT
    ,0 AS Sentido
    ,CAST(1 AS BIT) AS IsTarefa
    ,date
-   ,'Histórico da Tarefa: ' + TAB.TarefaName as ChartTitle
+   --,'Histórico da Tarefa: ' + TAB.TarefaName as ChartTitle
+   ,'Histórico da Tarefa' as ChartTitle
 FROM (SELECT
 		UNI.Id AS Unidade
 	   ,UNI.Name AS UnidadeName
@@ -1634,7 +1635,8 @@ FROM (SELECT
 				--IND.Id AS level1_Id  
 			   ,NOMES.A2 AS Level1Name
 				--IND.Name     AS Level1Name  
-			   ,'Histórico do Monitoramento ' + NOMES.A8 AS ChartTitle
+			   --,'Histórico do Monitoramento ' + NOMES.A8 AS ChartTitle
+               ,'Histórico do Monitoramento' AS ChartTitle
 			   ,IND.IsRuleConformity
 			   ,NOMES.A4 AS Unidade_Id
 				--UNI.Id  AS Unidade_Id  
@@ -1915,7 +1917,8 @@ FROM (SELECT
 				--IND.Id AS level1_Id  
 			   ,NOMES.A2 AS Level1Name
 			   --IND.Name     AS Level1Name  
-			   ,'Histórico do Indicador ' + NOMES.A2 AS ChartTitle
+			   --,'Histórico do Indicador ' + NOMES.A2 AS ChartTitle
+               ,'Histórico do Indicador' AS ChartTitle
 			   ,IND.IsRuleConformity
 			   ,NOMES.A4 AS Unidade_Id
 			   --UNI.Id  AS Unidade_Id  

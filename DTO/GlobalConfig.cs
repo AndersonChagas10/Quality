@@ -202,9 +202,10 @@ namespace DTO
             mockEmail = dto.MockEmail;
             //pathFTA = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao/NewFTA?";
             //pathFTA = "http://localhost:59907/Pa_Acao/NewFTA?";
-            pathFTA = "http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?";
+            //pathFTA = "http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?";
             //pathFTA = "http://192.168.25.200/PlanoAcaoUSA/Pa_Acao/NewFTA?";
             //pathFTA = "http://10.190.2.34/ActionPlanHML/Pa_Acao/NewFTA?";
+            pathFTA = "http://sgqtest.jbssa.com/actionPlan/Pa_Acao/NewFTA?";
 
             Verifica += "recoveryPassAvaliable:  " + recoveryPassAvaliable.ToString() + "\n";
             Verifica += "urlPreffixAppColleta:  " + urlPreffixAppColleta + "\n";
@@ -247,7 +248,6 @@ namespace DTO
             //JBS = false;
 
         }
-
 
     }
 

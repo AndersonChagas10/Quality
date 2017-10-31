@@ -925,6 +925,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Concluded Actions.
+        /// </summary>
+        internal static string concluded_actions {
+            get {
+                return ResourceManager.GetString("concluded_actions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirmation password required.
         /// </summary>
         internal static string confirmation_password_required {
@@ -966,6 +975,15 @@ namespace Resources {
         internal static string conform {
             get {
                 return ResourceManager.GetString("conform", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Consolidated History.
+        /// </summary>
+        internal static string consolidated_history {
+            get {
+                return ResourceManager.GetString("consolidated_history", resourceCulture);
             }
         }
         
@@ -1996,6 +2014,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Final date.
+        /// </summary>
+        internal static string final_date {
+            get {
+                return ResourceManager.GetString("final_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alert Triggered.
         /// </summary>
         internal static string fired {
@@ -2113,11 +2140,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to General Cause.
+        /// </summary>
+        internal static string general_cause {
+            get {
+                return ResourceManager.GetString("general_cause", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Area Overview.
         /// </summary>
         internal static string general_view_of_the_area {
             get {
                 return ResourceManager.GetString("general_view_of_the_area", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generic Countermeasure.
+        /// </summary>
+        internal static string generic_countermeasure {
+            get {
+                return ResourceManager.GetString("generic_countermeasure", resourceCulture);
             }
         }
         
@@ -2172,6 +2217,15 @@ namespace Resources {
         internal static string groups {
             get {
                 return ResourceManager.GetString("groups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group Cause.
+        /// </summary>
+        internal static string group_cause {
+            get {
+                return ResourceManager.GetString("group_cause", resourceCulture);
             }
         }
         
@@ -2752,6 +2806,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level 1 History.
+        /// </summary>
+        internal static string level1_history {
+            get {
+                return ResourceManager.GetString("level1_history", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level 1 Row.
         /// </summary>
         internal static string level1_line {
@@ -2775,6 +2838,15 @@ namespace Resources {
         internal static string level1_origin {
             get {
                 return ResourceManager.GetString("level1_origin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 1 % non-conformities evolutional.
+        /// </summary>
+        internal static string level1_porc_non_conform_evo {
+            get {
+                return ResourceManager.GetString("level1_porc_non_conform_evo", resourceCulture);
             }
         }
         
@@ -2851,6 +2923,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level 2 History.
+        /// </summary>
+        internal static string level2_history {
+            get {
+                return ResourceManager.GetString("level2_history", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level 2 Row.
         /// </summary>
         internal static string level2_line {
@@ -2874,6 +2955,15 @@ namespace Resources {
         internal static string level2_name {
             get {
                 return ResourceManager.GetString("level2_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 2 % non-conformities evolutional.
+        /// </summary>
+        internal static string level2_porc_non_conform_evo {
+            get {
+                return ResourceManager.GetString("level2_porc_non_conform_evo", resourceCulture);
             }
         }
         
@@ -2932,11 +3022,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Level 3 History.
+        /// </summary>
+        internal static string level3_history {
+            get {
+                return ResourceManager.GetString("level3_history", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level 3 name.
         /// </summary>
         internal static string level3_name {
             get {
                 return ResourceManager.GetString("level3_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 3 % non-conformities evolutional.
+        /// </summary>
+        internal static string level3_porc_non_conform_evo {
+            get {
+                return ResourceManager.GetString("level3_porc_non_conform_evo", resourceCulture);
             }
         }
         
@@ -3706,6 +3814,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Number of Shares.
+        /// </summary>
+        internal static string number_of_shares {
+            get {
+                return ResourceManager.GetString("number_of_shares", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Samplers.
         /// </summary>
         internal static string number_samplers {
@@ -3729,6 +3846,15 @@ namespace Resources {
         internal static string of {
             get {
                 return ResourceManager.GetString("of", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Off Goal.
+        /// </summary>
+        internal static string off_goal {
+            get {
+                return ResourceManager.GetString("off_goal", resourceCulture);
             }
         }
         
@@ -5578,6 +5704,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are no data for this Level / Unit.
+        /// </summary>
+        internal static string there_are_no_data_for_this_indicador_unit {
+            get {
+                return ResourceManager.GetString("there_are_no_data_for_this_indicador_unit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is not a pattern value..
         /// </summary>
         internal static string there_id_not_a_pattern_value {
@@ -6186,6 +6321,24 @@ namespace Resources {
         internal static string weighted_ev {
             get {
                 return ResourceManager.GetString("weighted_ev", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Who.
+        /// </summary>
+        internal static string who {
+            get {
+                return ResourceManager.GetString("who", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Within Goal.
+        /// </summary>
+        internal static string within_goal {
+            get {
+                return ResourceManager.GetString("within_goal", resourceCulture);
             }
         }
         

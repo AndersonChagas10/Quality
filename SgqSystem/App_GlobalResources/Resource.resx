@@ -2175,4 +2175,55 @@
   <data name="non_conformities_in_period" xml:space="preserve">
     <value>Non-Conformities in Period</value>
   </data>
+  <data name="concluded_actions" xml:space="preserve">
+    <value>Concluded Actions</value>
+  </data>
+  <data name="consolidated_history" xml:space="preserve">
+    <value>Consolidated History</value>
+  </data>
+  <data name="final_date" xml:space="preserve">
+    <value>Final date</value>
+  </data>
+  <data name="general_cause" xml:space="preserve">
+    <value>General Cause</value>
+  </data>
+  <data name="generic_countermeasure" xml:space="preserve">
+    <value>Generic Countermeasure</value>
+  </data>
+  <data name="group_cause" xml:space="preserve">
+    <value>Group Cause</value>
+  </data>
+  <data name="level1_history" xml:space="preserve">
+    <value>Level 1 History</value>
+  </data>
+  <data name="level1_porc_non_conform_evo" xml:space="preserve">
+    <value>Level 1 % non-conformities evolutional</value>
+  </data>
+  <data name="level2_history" xml:space="preserve">
+    <value>Level 2 History</value>
+  </data>
+  <data name="level2_porc_non_conform_evo" xml:space="preserve">
+    <value>Level 2 % non-conformities evolutional</value>
+  </data>
+  <data name="level3_history" xml:space="preserve">
+    <value>Level 3 History</value>
+  </data>
+  <data name="level3_porc_non_conform_evo" xml:space="preserve">
+    <value>Level 3 % non-conformities evolutional</value>
+  </data>
+  <data name="number_of_shares" xml:space="preserve">
+    <value>Number of Shares</value>
+  </data>
+  <data name="off_goal" xml:space="preserve">
+    <value>Off Goal</value>
+  </data>
+  <data name="there_are_no_data_for_this_indicador_unit" xml:space="preserve">
+    <value>There are no data for this Level / Unit</value>
+  </data>
+  <data name="who" xml:space="preserve">
+    <value>Who</value>
+  </data>
+  <data name="within_goal" xml:space="preserve">
+    <value>Within Goal</value>
+  </data>
 </root>
