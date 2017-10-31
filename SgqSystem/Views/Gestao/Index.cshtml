@@ -1,4 +1,5 @@
-﻿@{
+﻿@using DTO
+@{
     ViewBag.Title = Resources.Resource.management;
     var urlScorecard = Url.Action("Scorecard", "RelatoriosSgq");
     var urlRelatorioDiario = Url.Action("RelatorioDiario", "RelatoriosSgq");
@@ -15,12 +16,12 @@
     //ViewBag.urlRootPaFTA = "http://sgqtest.jbssa.com/actionPlan/Pa_Acao/NewFTA?";
 
     //EUA GRT
-    //ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcaoUSA";
-    //ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcaoUSA/Pa_Acao/NewFTA?";
+    ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcaoUSA";
+    ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcaoUSA/Pa_Acao/NewFTA?";
 
     //BR GRT
-    ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcao";
-    ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?";
+    //ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcao";
+    //ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?";
 
     //JBS HML / PROD
     //ViewBag.urlRootPa = "http://mtzsvmqsc/PlanoDeAcao";
@@ -243,7 +244,6 @@
         height: 20px;
         width: 20px;
         float: right;
-
     }
 </style>
 
@@ -306,8 +306,15 @@
                     <ul id="nav">
 
                         @*<li><a href="#">@Resources.Resource.general_view_of_the_area (Em Desenvolvimento)</a>*@
-                        <li><a href="@urlVisaoGeralDaArea">@Resources.Resource.general_view_of_the_area</a>
 
+                        @if (GlobalConfig.Eua)
+                        {
+                            <li><a href="#">@Resources.Resource.general_view_of_the_area <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></li>
+                        }
+                        else
+                        {
+                            <li><a href="@urlVisaoGeralDaArea">@Resources.Resource.general_view_of_the_area</a></li>
+                        }
                         <li><a href="@ViewBag.urlRootPa">@Resources.Resource.action_plan</a></li>
                     </ul>
 
@@ -346,10 +353,17 @@
                         <ul id="nav">
                             <li><a href="@urlRelatorioDiario">@Resources.Resource.daily_report</a></li>
                             <li><a href="@urlNaoConformidade">@Resources.Resource.defects_reports</a></li>
-                            <li><a href="#">@Resources.Resource.spc_charts <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction"/></a></li>
-                            <li><a href="@urlScorecard">@Resources.Resource.scorecard</a></li>
+                            <li><a href="#">@Resources.Resource.spc_charts <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></li>
+                            @if (GlobalConfig.Eua)
+                            {
+                                <li><a href="#">@Resources.Resource.scorecard <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></li>
+                            }
+                            else
+                            {
+                                <li><a href="@urlScorecard">@Resources.Resource.scorecard</a></li>
+                            }
                             <li><a href="@urlAcaoCorretiva">@Resources.Resource.corrective_action_reports</a></li>
-                            <li><a href="@urlEvolutivo">@Resources.Resource.evolutional <img class="under_construction" src="~/Imagens/under_construction_red.png" alt="Under_construction" /></a></li>
+                            <li><a href="@urlEvolutivo">@Resources.Resource.evolutional <img class="under_construction" src="~/Imagens/under_construction.png" alt="Under_construction" /></a></li>
                         </ul>
                     </div>
 
