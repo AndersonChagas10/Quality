@@ -35,6 +35,10 @@
             filter: alpha(opacity=10);
             z-index: 9998;
         }
+
+        .error {
+            border-color: red
+        }
     </style>
 
     @Scripts.Render("~/bundles/jquery")
@@ -121,7 +125,7 @@
             <!--/.nav-collapse -->
         </div>
     </nav>
-    <div class="container" id="RederBodyContainer" style="margin-top:20px;" >
+    <div class="container" id="RederBodyContainer" style="margin-top:20px;">
         <hr />
 
         @Html.Partial("~/Views/Shared/_AcessoSgq.cshtml")
@@ -246,6 +250,34 @@
         });
 
         $.fn.serializeObject = function () {
+            $('.error').removeClass('error')
+            var isValid = true
+            $(this).find('select.required').each(function (c, o) {
+                console.log($(o).find('option:selected').val())
+                console.log($(o).find('option:selected').text())
+
+                if ($(o).find('option:selected').val().length == 0) {
+                    $(o).addClass('error')
+                    isValid = false
+                }
+            })
+
+            $(this).find('input.required').each(function (c, o) {
+                console.log($(o).find('option:selected').val())
+                console.log($(o).find('option:selected').text())
+
+                if ($(o).val().length == 0) {
+                    $(o).addClass('error')
+                    isValid = false
+                }
+
+            });
+
+            if (!isValid) {
+                alert("Campos obrigatórios");
+                return
+            } 
+
             var o = {};
             var a = this.serializeArray();
             $.each(a, function () {
@@ -260,7 +292,6 @@
             });
             return o;
         };
-
     </script>
 
 </body>
