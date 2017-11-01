@@ -2220,4 +2220,10 @@
   <data name="within_goal" xml:space="preserve">
     <value>Dentro da Meta</value>
   </data>
+  <data name="defects_per_deparment" xml:space="preserve">
+    <value>Defeitos por Departamento</value>
+  </data>
+  <data name="next_unfolding" xml:space="preserve">
+    <value>Próximo Desdobramento</value>
+  </data>
 </root>

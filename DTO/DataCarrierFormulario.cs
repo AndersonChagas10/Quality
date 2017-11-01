@@ -105,5 +105,6 @@ namespace DTO
         public int structureId { get; set; }
 
         public int departmentId { get; set; }
+        public string departmentName { get; set; }
     }
 }
