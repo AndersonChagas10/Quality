@@ -3,6 +3,7 @@
     ViewBag.Title = Resources.Resource.defects_reports; //"Não Conformidades";
     var url = Url.Action("Index", "Home");
     var urlGraficoUnidades = Url.Action("GraficoUnidades", "api/NaoConformidade");
+    var urlGraficoDepartamentos = Url.Action("GraficoDepartamentos", "api/NaoConformidade");
     var urlGetPanelResultSet = Url.Action("GetPanelResultSet", "api/NaoConformidade");
     var urlGraficoNcPorUnidadeIndicador = Url.Action("GraficoIndicador", "api/NaoConformidade");
     var urlGraficoMonitoramento = Url.Action("GraficoMonitoramento", "api/NaoConformidade");
@@ -28,10 +29,37 @@
         width: 100%;
         height: 100%;
     }
+
+    #CustomPopover {
+        z-index: 1040;
+        border-width: 2px;
+        padding: 8px;
+        /*width: 250px;*/
+        border-radius: 2px !important;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        position: absolute;
+        background: white;
+        /*top: 35%;
+        left: 70%;*/
+    }
+
+        #CustomPopover .btn {
+            margin-left: 1px;
+            margin-right: 1px;
+        }
 </style>
 
 <div class="page-content" style="min-height: 600px;">
     @Html.Partial("~/Views/Shared/_FormToQueryFullScreen.cshtml")
+
+
+    <div id="CustomPopover" class="hide">
+        <h5>@Resources.Resource.next_unfolding</h5>
+        <div>
+            <button class="btn btn-sm btn-default" id="btnIndicador">@Resources.Resource.level1</button>
+            <button class="btn btn-sm btn-default" id="btnDepartamento">@Resources.Resource.department</button>
+        </div>
+    </div>
 
     <div id="formBodyContent">
         @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
@@ -70,9 +98,7 @@
             </div>
             @**O Peso atribuído as Tarefas influenciam no resultado gráfico.*@
         </div>
-
     </div>
-
 </div>
 
 @Html.Partial("~/Views/RelatoriosSgq/_Fta.cshtml")
@@ -102,6 +128,9 @@
         var urlGraficoTarefasAcumuladas = @Html.Raw(Json.Encode(urlGraficoTarefasAcumuladas));
         var UnidadeUsuario = (@Html.Raw(Json.Encode(ViewBag.UnidadeUsuario)));
         var urlGetFta = @Html.Raw(Json.Encode(urlFtaGet));
+        var urlGraficoDepartamentos = @Html.Raw(Json.Encode(urlGraficoDepartamentos));
+        var popoverMain;
+        var UnidadeAux;
 
         $('#simpleCallendar').hide().attr('disabled', true);
 
@@ -122,6 +151,8 @@
                 //_RGUnidade = UnidadeUsuario[0].Text;
                 //UsarGraficoUnidades = false;
             }
+
+            popoverMain = $('#CustomPopover').addClass('hide');
         });
 
         function Send(toggle) {
@@ -129,6 +160,7 @@
             $btn.button('loading');
             $('#results').empty();
             $("#RGOperacoesGrafico").empty();
+            $('#RGDepartamentosGrafico').empty();
             $("#PanelFull0").hide();
 
             if (!ValidaDadosParaEnvio()) {
@@ -159,11 +191,34 @@
 
         /*GET*/
 
-        function GetGraficoIndicadorUnidade (unidade) {
+        function GetGraficoDepartamento(unidade){
+            $("#PanelFull0").hide();
+            enviar["unitName"] = unidade;
+            EasyAjax(urlGraficoDepartamentos, enviar, GraficoDepartamento, "RGDepartamentosGrafico");
+        }
+
+        function GetGraficoIndicadorDepartamento(departamento){
+            enviar["departmentName"] = departamento;
+            EasyAjax(urlGraficoIndicador, enviar, GraficoIndicadorUnidade, "RGOperacoesGrafico");
+        }
+
+        function GetGraficoIndicadorUnidade(unidade) {
             $("#PanelFull0").hide();
             enviar["unitName"] = unidade;
             EasyAjax(urlGraficoIndicador, enviar, GraficoIndicadorUnidade, "RGOperacoesGrafico");
         };
+
+        function GetPopover(unidade){
+
+            UnidadeAux = null;
+
+            UnidadeAux = unidade;
+
+            popoverMain.css("top", y);
+            popoverMain.css("left", x);
+
+            popoverMain.removeClass('hide');
+        }
 
         function GetMonitoramento(indicador){
             $("#PanelFull0").hide();
@@ -224,9 +279,12 @@
                 },
                 series: [
                     //Chart.serie('column', 'Meta', Chart.CorMeta(), )
-                    Chart.ProcNc(Proc, GetGraficoIndicadorUnidade),
-                    Chart.NC(Nc, GetGraficoIndicadorUnidade),
-                    Chart.Av(Av, GetGraficoIndicadorUnidade)
+                    //Chart.ProcNc(Proc, GetGraficoIndicadorUnidade),
+                    //Chart.NC(Nc, GetGraficoIndicadorUnidade),
+                    //Chart.Av(Av, GetGraficoIndicadorUnidade)
+                    Chart.ProcNc(Proc, GetPopover),
+                    Chart.NC(Nc, GetPopover),
+                    Chart.Av(Av, GetPopover)
                     //Chart.curvaPareto(data, nc, 1, inverse),
                 ]
             });
@@ -240,6 +298,42 @@
 
             $('.body-content').css('height', '3350px');
 
+        }
+
+        function GraficoDepartamento(data){
+
+            var dataX = MapeiaValorParaHC(data, "DepartamentoName");
+            var Nc = MapeiaValorParaHC(data, "Nc");
+            var Av = MapeiaValorParaHC(data, "Av");
+            var Proc = MapeiaValorParaHC(data, "Proc");
+            var selector = "RGDepartamentosGrafico";
+
+            $('#' + selector).empty().highcharts({
+                credits: Chart.Credits(),
+                chart: Chart.Chart('column', 'xy'),
+                title: Chart.Titulo(Resources("defects_per_deparment"), enviar["unitName"]),
+                xAxis: Chart.Xaxis(dataX),
+                yAxis: Chart.yAxisPadraoRelNc(),
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                    Chart.ProcNc(Proc, GetGraficoIndicadorDepartamento),
+                    Chart.NC(Nc, GetGraficoIndicadorDepartamento),
+                    Chart.Av(Av, GetGraficoIndicadorDepartamento),
+                    //Chart.Meta(meta, GetGraficoIndicadorUnidade),
+                ]
+
+            })
         }
 
         function GraficoIndicadorUnidade(data) {
@@ -284,10 +378,6 @@
                 //            });
                 //daUmaPintadaNaLabel(selector)
             })
-        }
-
-        function GraficoDepartamento() {
-
         }
 
         function GraficoMonitoramento(data, tarefa) {
@@ -512,6 +602,8 @@
 
             if (parseInt(enviar.departmentId) > 0) {
                 return NomeGrafico + " | " + Department + ": " + $('#departmentId option:selected').text();
+            }else if (enviar['departmentName'] != "" && enviar['departmentName'] != undefined && enviar['departmentName'] != null) {
+                return NomeGrafico + " | " + Department + ": " + enviar['departmentName'];
             }else{
                 return NomeGrafico
             }
@@ -741,6 +833,7 @@
                     point: {
                         events: {
                             click: function () {
+
                                 if(!!func)
                                     func(this.category);
                             }
@@ -827,6 +920,25 @@
         }
         /*END Charts*/
 
+
+        $(document).mousemove(function(e) {
+            window.x = e.pageX;
+            window.y = e.pageY;
+        });
+
+
+        $('#btnIndicador').on('click', function(){
+            popoverMain.addClass('hide');
+            $('#RGDepartamentosGrafico').empty();
+            enviar['departmentName'] = "";
+            GetGraficoIndicadorUnidade(UnidadeAux);
+        });
+
+        $('#btnDepartamento').on('click', function(){
+            popoverMain.addClass('hide');
+            $('#RGOperacoesGrafico').empty();
+            GetGraficoDepartamento(UnidadeAux);
+        });
 
     </script>
 
