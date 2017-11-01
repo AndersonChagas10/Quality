@@ -192,6 +192,8 @@ function InitiMasksDefaults() {
         $(this).select2();
     });
 
+    
+
     /*FIM Select 2*/
 
     $('.DataPiker').daterangepicker({
@@ -206,7 +208,7 @@ function InitiMasksDefaults() {
 
 /*Mascaras e instancias de Select 2 por classe*/
 $(document).ready(function () {
-
+    
     InitiMasksDefaults();
 
 })
