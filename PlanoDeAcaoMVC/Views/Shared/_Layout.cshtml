@@ -37,7 +37,7 @@
         }
 
         .error {
-            border-color: red
+            border-color: red;
         }
     </style>
 
@@ -253,30 +253,34 @@
             $('.error').removeClass('error')
             var isValid = true
             $(this).find('select.required').each(function (c, o) {
-                console.log($(o).find('option:selected').val())
-                console.log($(o).find('option:selected').text())
+                $(o).addClass('error')
+                $('.required').off('input').on('input', function () {
+                    if (($(this).val().length > 0)) {
+                        $(this).removeClass('error')
+                    } else {
+                        $(this).addClass('error')
+                    }
+                })
+                isValid = false
 
-                if ($(o).find('option:selected').val().length == 0) {
-                    $(o).addClass('error')
-                    isValid = false
-                }
             })
 
             $(this).find('input.required').each(function (c, o) {
-                console.log($(o).find('option:selected').val())
-                console.log($(o).find('option:selected').text())
-
-                if ($(o).val().length == 0) {
-                    $(o).addClass('error')
-                    isValid = false
-                }
-
+                $(o).addClass('error')
+                $('.required').off('input').on('input', function () {
+                    if (($(this).val().length > 0)) {
+                        $(this).removeClass('error')
+                    } else {
+                        $(this).addClass('error')
+                    }
+                })
+                isValid = false
             });
 
             if (!isValid) {
                 alert("Campos obrigatórios");
                 return
-            } 
+            }
 
             var o = {};
             var a = this.serializeArray();
