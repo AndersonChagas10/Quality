@@ -2,6 +2,14 @@
 using System.Web.Mvc;
 using Dominio;
 using Helper;
+using System.Web;
+using System.Collections.Generic;
+using System.IO;
+using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace SgqSystem.Controllers.Recravacao
 {
@@ -18,14 +26,15 @@ namespace SgqSystem.Controllers.Recravacao
         // GET: RecravacaoTipoLata
         public ActionResult Index()
         {
-            var model = db.Database.SqlQuery<ParRecravacao_TipoLata>("SELECT * FROM ParRecravacao_TipoLata").OrderByDescending(r=>r.IsActive).ToList();
+            var model = db.Database.SqlQuery<ParRecravacao_TipoLata>("SELECT * FROM ParRecravacao_TipoLata").OrderByDescending(r => r.IsActive).ToList();
             return View(model);
         }
 
         // GET: RecravacaoTipoLata/Create
         public ActionResult Create()
         {
-            var model = new ParRecravacao_TipoLata();
+            var model = new ParRecravacao_TipoLataDTO();
+            model.ParLataImagensList = new List<ParLataImagens>();
             model.IsActive = true;
             return View(model);
         }
@@ -33,14 +42,15 @@ namespace SgqSystem.Controllers.Recravacao
         // GET: RecravacaoTipoLata/Edit/5
         public ActionResult Edit(int id)
         {
-            ParRecravacao_TipoLata model = GetTipoLata(id);
+            ParRecravacao_TipoLataDTO model = GetTipoLata(id);
+
             return View("Create", model);
         }
 
         [HttpPost]
-        public ActionResult Edit(ParRecravacao_TipoLata collection)
+        public ActionResult Edit(ParRecravacao_TipoLataDTO parRecravacao_TipoLata, IEnumerable<HttpPostedFileBase> files)
         {
-            return Create(collection);
+            return Create(parRecravacao_TipoLata, files);
         }
 
         // GET: RecravacaoTipoLata/Details/5
@@ -52,21 +62,51 @@ namespace SgqSystem.Controllers.Recravacao
 
         // POST: RecravacaoTipoLata/Create
         [HttpPost]
-        public ActionResult Create(ParRecravacao_TipoLata collection)
+        public ActionResult Create(ParRecravacao_TipoLataDTO parRecravacao_TipoLata, IEnumerable<HttpPostedFileBase> files)
         {
             try
             {
                 // TODO: Add insert logic here
                 if (ModelState.IsValid)
-                    Save(collection);
+                {
+
+                    Save(parRecravacao_TipoLata);
+                    var counter = 0;
+                    foreach (var file in files)
+                    {
+                        if (file != null)
+                            if (file.ContentLength > 0)
+                            {
+                                var fileName = Path.GetFileName(file.FileName);
+                                var path = Path.Combine(Server.MapPath("~/Imagens"), fileName);
+                                file.SaveAs(path);
+                                var imagem = Image.FromStream(file.InputStream, true, true);
+
+                                var parLataImagens = new ParLataImagens() { AddDate = DateTime.Now };
+                                parLataImagens.Imagem = ImageToByteArray(imagem);
+                                parLataImagens.ParRecravacao_TipoLata_Id = parRecravacao_TipoLata.Id;
+                                parLataImagens.PathFile = path;
+                                parLataImagens.FileName = fileName;
+                                parLataImagens.PontoIndex = (counter + 1);
+
+                                parRecravacao_TipoLata.ParLataImagensList = new List<ParLataImagens>();
+                                parRecravacao_TipoLata.ParLataImagensList.Add(parLataImagens);
+
+                                db.ParLataImagens.Add(parLataImagens);
+                                db.SaveChanges();
+                            }
+
+                        counter++;
+                    }
+                }
                 else
-                    return View();
+                    return View(parRecravacao_TipoLata);
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception e)
             {
-                return View();
+                return View(parRecravacao_TipoLata);
             }
         }
 
@@ -116,13 +156,37 @@ namespace SgqSystem.Controllers.Recravacao
             }
         }
 
-        private ParRecravacao_TipoLata GetTipoLata(int id)
+        private ParRecravacao_TipoLataDTO GetTipoLata(int id)
         {
-            var model = new ParRecravacao_TipoLata();
+            var model = new ParRecravacao_TipoLataDTO();
             if (id > 0)
-                model = db.Database.SqlQuery<ParRecravacao_TipoLata>("SELECT * FROM ParRecravacao_TipoLata WHERE Id = " + id).FirstOrDefault();
+                model = db.Database.SqlQuery<ParRecravacao_TipoLataDTO>("SELECT * FROM ParRecravacao_TipoLata WHERE Id = " + id).FirstOrDefault();
+
+            model.ParLataImagensList = new List<ParLataImagens>();
+            model.ParLataImagensList = db.ParLataImagens.Where(r => r.ParRecravacao_TipoLata_Id == model.Id).OrderBy(r => r.PontoIndex).ToList();
             return model;
         }
 
+        private byte[] ImageToByteArray(System.Drawing.Image imageIn)
+        {
+            MemoryStream ms = new MemoryStream();
+            imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
+            return ms.ToArray();
+        }
+
+        private Image ByteArrayToImage(byte[] byteArrayIn)
+        {
+            MemoryStream ms = new MemoryStream(byteArrayIn);
+            Image returnImage = Image.FromStream(ms);
+            return returnImage;
+        }
+
     }
+
+    public class ParRecravacao_TipoLataDTO : ParRecravacao_TipoLata
+    {
+        public List<ParLataImagens> ParLataImagensList { get; set; }
+        public List<Image> ImageList { get; set; }
+    }
+
 }

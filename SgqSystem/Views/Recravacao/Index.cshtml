@@ -38,18 +38,44 @@
         visibility: visible;
         margin-top: 70px;
     }
+
+    td {
+        position: relative;
+        text-align: center;
+    }
+
+        td > span.label {
+            position: absolute;
+            top: 1px;
+            bottom: 1px;
+            left: 1px;
+            right: 1px;
+            color: black;
+        }
+
+            td > span.label:after {
+                content: '';
+                height: 100%;
+                display: inline-block;
+                vertical-align: middle;
+                color: black;
+            }
+
+    .redDot {
+        color: red;
+    }
 </style>
 <link href="~/Content/toastr.min.css" rel="stylesheet" />
 
 <div ng-controller="reencravationCtrl as r" class="container page-content " style="min-height: 600px;width:100%;">
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        
+
         <ul class="nav navbar-nav">
             <li class="active" style="margin-left:18px;" ng-repeat="indicador in indicadores track by $index" ng-click="selectIndicador(indicador)">
                 <a href="#" ng-class="{active: indicadorSelecionado.Name == indicador.Name}">
                     <span class="" aria-hidden="true"></span> {{indicador.Name}}
                     @*<span class="glyphicon glyphicon-sound-stereo" aria-hidden="true"></span>
-                    <span class="sr-only">(current)</span>*@
+                        <span class="sr-only">(current)</span>*@
                 </a>
             </li>
         </ul>
@@ -64,16 +90,17 @@
                 </a>
             </li>
         </ul>
+
     </div>
 
     <br />
-    
-    <button ng-show="(seletedLinha.Id > 0 && seletedLinha.IsStoped)" id="btnStartStop"
+
+    <button ng-if="(seletedLinha.Id > 0 && seletedLinha.IsStoped)" id="btnStartStop"
             type="button"
             class="floatinBottonButton btn btn-success btn-sm"
             data-toggle="modal"
             data-target="#modalParadaDeLinha"
-            ng-init="seletedLinha.ExcedidoTempoLimite = false"
+            ng-init="seletedLinha.ExcedidoTempoLimite = false; TimerOn(true)"
             ng-class="{'btn-success': (seletedLinha.ExcedidoTempoLimite == false), 'btn-danger': (seletedLinha.ExcedidoTempoLimite == true)}"
             title="Para / Reinicia a Linha">
         <span class="glyphicon glyphicon-time" aria-hidden="true">
@@ -123,6 +150,12 @@
                 <br />
                 <select ng-change="saveState(true, true)" ng-disabled="seletedLinha.finalizado" ng-options="item as item.Name for item in fornecedorTampaLata track by item.Id" ng-model="seletedLinha.form.FornecedorTampaFundoLata" class="form-control select2" data-placeholder="Selecone..." multiple tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
             </div>
+            <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                <label for="">Tipo da Lata</label>
+                <br />
+                <select ng-change="saveState(true, true)" ng-disabled="seletedLinha.finalizado" ng-options="item as item.Name for item in tipoLataLista track by item.Id" ng-model="seletedLinha.form.TipoDeLata" class="form-control select2" data-placeholder="Selecone..." tabindex="-1" aria-hidden="true" style="width:100%!important"></select>
+            </div>
+
             <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
 
                 <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
@@ -144,7 +177,6 @@
                 </div>
             </div>
         </form>
-
     </div>
 
     <button class="floatinBottonButton btn btn-danger btn-sm"
@@ -190,8 +222,8 @@
                         <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
                     </button>*@
                 @*<button type="button" class="btn btn-warning btn-sm" ng-click="cloneLataALot(seletedLinha, $index, 30)">
-                    <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
-                </button>*@
+                        <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+                    </button>*@
                 <button type="button"
                         class="btn btn-warning btn-sm"
                         data-toggle="modal"
@@ -225,85 +257,69 @@
                         <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd; width: 80px !important" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{($index+1)}}</td>
                     </tr>
 
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
+                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 | orderBy : sorterFunc track by $index">
                         <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px; text-align: center;"
-                            colspan="{{((ParLevel3.IsPointLess == false) ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}"
-                            ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
-                            ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Name][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Name][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}"
-                            ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                            <span class="validate">{{item.ResultValue[ParLevel3.Name][($index + 1)]}}</span>
-                        </td>
-                    </tr>
-
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px; text-align: center; word-wrap:break-word;"
-                            colspan="{{((ParLevel3.IsPointLess == false) ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}"
-                            ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
-                            ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                            {{ParLevel3.ResultValue['PontoText' + ($index +1)]}}
-                        </td>
-                    </tr>
-
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '4')">
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px; text-align: center;"
-                            colspan="{{((ParLevel3.IsPointLess == false) ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}"
-                            ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
-                            ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                            <span class="validate">
-                                {{ParLevel3.ResultValue['PontoCalc1' + ($index +1)]}}
-                            </span>
-                            <span ng-if="ParLevel3.ResultValue[('Ponto' + ($index +1))] > 0">
-                                x10^
-                            </span>
-                            <span class="validate">
-                                {{ParLevel3.ResultValue['PontoCalc2' + ($index +1)]}}
-                            </span>
-                        </td>
-                    </tr>
-
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                        <td style="border:1px solid #cccccc; padding: 2px; text-align: center;"
-                            colspan="{{((ParLevel3.IsPointLess == false) ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}"
-                            ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
-                            ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Name][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Name][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) }"
-                            ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                            <span class="validate">{{item.ResultValue[ParLevel3.Name][($index +1)]}}</span>
-                        </td>
-                    </tr>
-
-
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px; text-align: center;"
-                            colspan="{{((ParLevel3.IsPointLess == false) ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}"
-                            ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
-                            ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">
-                            <span class="validate"> {{item.ResultValue[ParLevel3.Name][($index +1))] || "0"}}</span>
-                        </td>
-                    </tr>
-
-                    <tr ng-repeat="ParLevel3 in item.ListParlevel3 track by $index" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
-                        <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
-                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 2px; text-align: center;"
-                            colspan="{{((ParLevel3.IsPointLess == false) ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}"
-                            ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
+                        <td style="max-width: 80px; border:1px solid #cccccc; padding: 1px; text-align: center;"
                             ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index"
-                            ng-class="{bgWhite: (!(item.ResultValue[ParLevel3.Name][($index +1)] === true) && !(item.ResultValue[ParLevel3.Name][($index +1)] === false)), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] === true), bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] === false)}">
-                            <span class="validate" ng-if="item.ResultValue[ParLevel3.Name][($index +1)] === true">
-                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
+                            ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
+                            colspan="{{((ParLevel3.IsPointLess == false) ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}">
+
+                            @*1 Binário ok
+                                2   Número de defeitos ok
+                                3   Intervalos ok
+                                4   Calculado
+                                5   Texto
+                                99  NOVO CALCULADO POR OUTRO*@
+
+                            @*1 Binário*@
+                            <span class="label " ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')"
+                                  ng-class="{bgWhite: (!(item.ResultValue[ParLevel3.Name][($index +1)] === true) && !(item.ResultValue[ParLevel3.Name][($index +1)] === false)), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] === true), bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] === false)}">
+                                <span>
+                                    <span class="validate" ng-if="item.ResultValue[ParLevel3.Name][($index +1)] === true">
+                                        {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
+                                    </span>
+                                    <span class="validate" ng-if="item.ResultValue[ParLevel3.Name][($index +1)] === false">
+                                        {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
+                                    </span>
+                                </span>
                             </span>
-                            <span class="validate" ng-if="item.ResultValue[ParLevel3.Name][($index +1)] === false">
-                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
+                            @*2 Número de defeitos*@
+                            <span class="label validate" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
+                                <span>{{item.ResultValue[ParLevel3.Name][($index +1))] || "0"}}</span>
+                            </span>
+                            @*3 Intervalos*@
+                            <span class="label validate"
+                                  ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')"
+                                  ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Name][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Name][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) }">
+                                <span>{{item.ResultValue[ParLevel3.Name][($index +1)]}}</span>
+                            </span>
+                            @*4 Calculado*@
+                            <span class="label " ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '4')">
+                                <span>
+                                    <span class="validate">
+                                        {{ParLevel3.ResultValue['PontoCalc1' + ($index +1)]}}
+                                    </span>
+                                    <span ng-if="ParLevel3.ResultValue[('Ponto' + ($index +1))] > 0">
+                                        x10^
+                                    </span>
+                                    <span class="validate">
+                                        {{ParLevel3.ResultValue['PontoCalc2' + ($index +1)]}}
+                                    </span>
+                                </span>
+                            </span>
+                            @*5 Texto*@
+                            <label style="word-wrap: break-word;" class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
+                                @*<span>{{item.ResultValue[ParLevel3.Name][($index +1)]}}</span>*@
+                                {{item.ResultValue[ParLevel3.Name][($index +1)]}}
+                            </label>
+                            @*99 NOVO CALCULADO POR OUTRO*@
+                            <span class="label validate"
+                                  ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Name][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Name][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}"
+                                  ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
+                                <span>{{item.ResultValue[ParLevel3.Name][($index + 1)]}}</span>
                             </span>
                         </td>
                     </tr>
-
-
-                  
 
                 </tbody>
             </table>
@@ -372,14 +388,14 @@
                                 <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
                                 <td style="border:1px solid #cccccc; padding: 2px; max-width:65px;" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index" ng-init="pontoIndexME = $index" ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))" colspan="{{((ParLevel3.IsPointLess == false) ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}">
 
-                                    @*1	Binário ok
-                                        2	Número de defeitos ok
-                                        3	Intervalos ok
-                                        4	Calculado
-                                        5	Texto
-                                        99	NOVO CALCULADO POR OUTRO*@
+                                    @*1 Binário ok
+                                        2   Número de defeitos ok
+                                        3   Intervalos ok
+                                        4   Calculado
+                                        5   Texto
+                                        99  NOVO CALCULADO POR OUTRO*@
 
-                                    @*3	Intervalos*@
+                                    @*3 Intervalos*@
                                     <span ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
                                         @*{{ParLevel3}}*@
                                         <span ng-if="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))">
@@ -401,8 +417,8 @@
                                                ng-model="selectedLata.ResultValue[ParLevel3.Name][1]" />
                                     </span>
 
-                                    @*1	Binário*@
-                                    <span ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')" 
+                                    @*1 Binário*@
+                                    <span ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')"
                                           ng-class="{bgWhite: (!(selectedLata.ResultValue[ParLevel3.Name][($index +1)] === true) && !(selectedLata.ResultValue[ParLevel3.Name][($index +1)] === false)), bgGreen: (selectedLata.ResultValue[ParLevel3.Name][($index +1)] === true), bgRed: (selectedLata.ResultValue[ParLevel3.Name][($index +1)] === false)}"
                                           style="display: block; text-align: center;">
                                         <span ng-if="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))">
@@ -424,7 +440,7 @@
                                         </span>
                                     </span>
 
-                                    @*4	Calculado*@
+                                    @*4 Calculado*@
                                     <span ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '4')">
                                         <span ng-if="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))">
                                             <input title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].IntervalMax}}"
@@ -449,7 +465,7 @@
                                         </span>
                                     </span>
 
-                                    @*2	Número de defeitos*@
+                                    @*2 Número de defeitos*@
                                     <span ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
                                         <input title="Valores aceitáveis entre {{ParLevel3.ParLevel3Value[0].IntervalMin}} e {{ParLevel3.ParLevel3Value[0].IntervalMax}}"
                                                style="width:100%; max-width: 65px;"
@@ -461,14 +477,14 @@
                                         <span ng-if="ParLevel3.AllowNA"><input type="checkbox" ng-model="selectedLata.ResultValue[ParLevel3.Name][('Na' + ($index +1))]" /> NA </span>
                                     </span>
 
-                                    @*5	Texto*@
+                                    @*5 Texto*@
                                     <span ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
                                         <textarea class="form-control input-sm"
                                                   style="width:100%; max-width: 65px;"
                                                   cols="15"
                                                   id="Observacao"
                                                   rows="5"
-                                                  ng-model="selectedLata.ResultValue[ParLevel3.Name][($index +1))]"></textarea>
+                                                  ng-model="selectedLata.ResultValue[ParLevel3.Name][($index +1)]"></textarea>
                                     </span>
 
                                     @*99 NOVO CALCULADO POR OUTRO*@
@@ -655,17 +671,13 @@
                                                ng-model="seletedLinha.correctiveAction.HorarioDeParada" />
                                     </div>
                                     <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
-                                        <label>Descrição da Falha:</label>
+                                        <span class="redDot">*</span><label>Descrição da Falha:</label>
                                         <textarea ng-model="selectedLata.correctiveAction.DescriptionFailure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
                                     </div>
                                     <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
-                                        <label>Ação Corretiva Imediata:</label><label ng-show="seletedLinha.correctiveAction.HorarioDeParada"> Ás {{seletedLinha.correctiveAction.HorarioDeParada}} a linha {{seletedLinha.Name}} foi paralizada:</label>
+                                        <span class="redDot">*</span><label>Ação Corretiva Imediata:</label><label ng-show="seletedLinha.correctiveAction.HorarioDeParada"> Ás {{seletedLinha.correctiveAction.HorarioDeParada}} a linha {{seletedLinha.Name}} foi paralizada:</label>
                                         <textarea ng-model="selectedLata.correctiveAction.ImmediateCorrectiveAction" class="form-control custom-control" rows="3" style="resize:none"></textarea>
                                     </div>
-                                    @*<div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
-                                            <label>Disposição do produto:</label>
-                                            <textarea ng-model="selectedLata.correctiveAction.ProductDisposition" class="form-control custom-control" rows="3" style="resize:none"></textarea>
-                                        </div>*@
                                     <div class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
                                         <label>Acão Preventiva:</label>
                                         <textarea ng-model="selectedLata.correctiveAction.PreventativeMeasure" class="form-control custom-control" rows="3" style="resize:none"></textarea>
@@ -694,7 +706,12 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" ng-click="AssinaCorrectiveAction1()">Salvar</button>
+                    <button type="button"
+                            class="btn btn-primary"
+                            ng-disabled="(seletedLinha.IsStoped || !(selectedLata.correctiveAction.DescriptionFailure) || !(selectedLata.correctiveAction.ImmediateCorrectiveAction))"
+                            ng-click="AssinaCorrectiveAction1()">
+                        Salvar
+                    </button>
                 </div>
             </div>
         </div>
@@ -717,25 +734,7 @@
 
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="col-lg-6 col-md-6 col-sm-12">
-                                @*<div class="form-group float-label-control">
-                                    <label>Horário de parada</label>
-                                    <br />
-                                    <input type="datetime-local"
-                                           class="form-control"
-                                           title="Horário de parada"
-                                           ng-init="seletedLinha.RegistroParada.HorarioDeParada = parseDate(seletedLinha.RegistroParada.HorarioDeParada)"
-                                           ng-model="seletedLinha.RegistroParada.HorarioDeParada" />
-                                </div>
-                                <div class="form-group float-label-control">
-                                    <label>Horário de retomada</label>
-                                    <br />
-                                    <input type="datetime-local"
-                                           class="form-control"
-                                           title="Horário de retomada das operações na linha"
-                                           ng-init="seletedLinha.RegistroParada.HorarioDeRetomada = parseDate(seletedLinha.RegistroParada.HorarioDeRetomada)"
-                                           ng-disabled="!seletedLinha.IsStoped"
-                                           ng-model="seletedLinha.RegistroParada.HorarioDeRetomada" />
-                                </div>*@
+
                                 <div class="form-group float-label-control">
                                     <label>Observações</label>
                                     <br />
@@ -763,43 +762,13 @@
 
                         <br />
 
-                        @*<button type="button" class="btn btn-secondary" ng-click="seletedLinha.exebirAcoesAnteriores = !seletedLinha.exebirAcoesAnteriores">
-                            <span ng-show="!seletedLinha.exebirAcoesAnteriores">Exibir ações anteriores para esta Linha</span>
-                            <span ng-show="seletedLinha.exebirAcoesAnteriores">Ocultar ações anteriores para esta Linha</span>
-                        </button>
-
-                        <br />
-
-                        <div ng-repeat="logParada in seletedLinha.logParada.slice().reverse() track by $index" ng-show="(seletedLinha.exebirAcoesAnteriores && $index < (seletedLinha.logParada.length - 1))">
-                            <div class="col-lg-6 col-md-6 col-sm-12">
-                                <h5>Parada {{($index +1)}}</h5>
-                                <div class="form-group float-label-control">
-                                    <label>Horário de parada</label>
-                                    <br />
-                                    <input ng-init="logParada.HorarioDeParada = parseDate(logParada.HorarioDeParada)" ng-model="logParada.HorarioDeParada" type="datetime-local" class="form-control" title="Horário de parada" />
-                                </div>
-                                <div class="form-group float-label-control">
-                                    <label>Horário de retomada</label>
-                                    <br />
-                                    <input ng-init="logParada.HorarioDeRetomada = parseDate(logParada.HorarioDeRetomada)" ng-disabled="true" ng-model="logParada.HorarioDeRetomada" type="datetime-local" class="form-control" title="Horário de retomada das operações na linha" />
-                                </div>
-                                <div class="form-group float-label-control">
-                                    <label>Observações</label>
-                                    <br />
-                                    <textarea ng-model="logParada.MotivoParada1" ng-disabled="true" placeholder="Observação 1" type="text" class="form-control custom-control" rows="3" style="resize:none"></textarea>
-                                    <textarea ng-model="logParada.MotivoParada2" ng-disabled="true" placeholder="Observação 2" type="text" class="form-control custom-control" rows="3" style="resize:none"></textarea>
-                                    <textarea ng-model="logParada.MotivoParada3" ng-disabled="true" placeholder="Observação 3" type="text" class="form-control custom-control" rows="3" style="resize:none"></textarea>
-                                </div>
-                            </div>
-                        </div>*@
-
                     </form>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                     @*<button type="button" class="btn btn-primary" ng-hide="seletedLinha.IsStoped" ng-click="seletedLinha.IsStoped =  !seletedLinha.IsStoped; saveState();" data-dismiss="modal">Parar Linha</button>*@
-                    <button type="button" class="btn btn-primary" ng-show="(seletedLinha.IsStoped)" ng-click="seletedLinha.IsStoped =  false" data-dismiss="modal">Retomar ativide da Linha</button>
+                    <button type="button" class="btn btn-primary" ng-show="(seletedLinha.IsStoped)" ng-click="seletedLinha.IsStoped =  false; saveState();" data-dismiss="modal">Retomar ativide da Linha</button>
                 </div>
             </div>
         </div>
@@ -926,7 +895,7 @@
                           });
                 }
 
-                
+
                 vm.selectIndicador = function (item) {
                     vm.indicadorSelecionado = item
                     vm.seletedLinha = {}
@@ -1122,6 +1091,18 @@
                         Id: 2
                     })
                 }
+                vm.tipoLata = function () {
+                    //MOCK
+                    vm.tipoLataLista = []
+                    vm.tipoLataLista.push({
+                        Name: 'Litografada',
+                        Id: 1
+                    })
+                    vm.tipoLataLista.push({
+                        Name: 'Lata Branca',
+                        Id: 2
+                    })
+                }
                 vm.getFornecedorTampaLata = function () {
                     //MOCK
                     vm.fornecedorTampaLata = []
@@ -1134,10 +1115,24 @@
                         Id: 2
                     })
                 }
+                //vm.padroesAcaoCorretiva = function () {
+                //    //MOCK
+                //    vm.padroesAcaoCorretivaList = []
+                //    vm.padroesAcaoCorretivaList.push({
+                //        Name: 'JBS Lins',
+                //        Id: 1
+                //    })
+                //    vm.padroesAcaoCorretivaList.push({
+                //        Name: 'Outros',
+                //        Id: 2
+                //    })
+                //}
 
                 vm.getFornecedorLata()
                 vm.getFornecedorTampaLata()
                 vm.getProdutos()
+                vm.tipoLata()
+                //vm.padroesAcaoCorretiva()
 
                 /*GET Todas as linhas cadastradas*/
 
@@ -1435,19 +1430,31 @@
                 vm.docReady = function (executaVerificacaoParaAcao, save, notShowLabel, notShowLoader) {
                     $('select').select2({ allowClear: true })
                     $('.decimal').each(function (index) {
-                        //$(this).val($(this).val().replace(',', '.'));
-                        $(this).inputmask("decimal", { rightAlign: true, radixPoint: ',', greedy: false, mask: "9[.99]", digits: 2, allowMinus: false, digitsOptional: false });
-                        $(this).keyup(function () {
-                            if (this.value.length == 4) {
-                                //$(this).next('.inputs').focus().select();
-                                $(this).closest('td').next().find('input').focus().select();
+                        $(this).inputmask("decimal", {
+                            rightAlign: true, radixPoint: ',', greedy: false, mask: "9[.99]", digits: 2, allowMinus: false, digitsOptional: false,
+                            oncomplete: function (e) {
+                                var currVal = $(e.currentTarget).inputmask('unmaskedvalue');
+                                if (currVal.length == 4) {
+                                    //$(this).next('.inputs').focus().select();
+                                    $(this).closest('td').next().find('input').focus().select();
+                                }
                             }
                         });
                     })
 
                     $('.percentage').each(function (index) {
                         $(this).val($(this).val().replace(',', '.'));
-                        $(this).inputmask('Regex', { regex: "^[1-9][0-9]?$|^100$", rightAlign: true });
+                        $(this).inputmask('Regex', {
+                            regex: "^[1-9][0-9]?$|^100$", rightAlign: true,
+                            oncomplete: function (e) {
+                                //var currVal = $(e.currentTarget).inputmask('unmaskedvalue');
+                                //if (currVal <= 100currVal.length == 2) {
+                                //    //$(this).next('.inputs').focus().select();
+                                //    $(this).closest('td').next().find('input').focus().select();
+                                //}else if (currVal.length == 3)
+                                //    $(this).closest('td').next().find('input').focus().select();
+                            }
+                        });
                     })
 
                     $(".time").inputmask({
@@ -1489,7 +1496,7 @@
                                 $(this).closest('td').next().find('input').focus().select();
                             else if (e.which == keyCodes.left)
                                 $(this).closest('td').prev().find('input').focus().select();
-                            else if (e.which == keyCodes.down){
+                            else if (e.which == keyCodes.down) {
                                 var nextTr = $(this).closest('tr').next()
                                 if (nextTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').length == 0) {
                                     while (nextTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').length == 0 && nextTr.length != 0) {
@@ -1531,7 +1538,7 @@
                                     prevTr.find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus().select();
                                 }
                             }
-                                //$(this).closest('tr').prev().find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus().select();
+                            //$(this).closest('tr').prev().find('td:eq(' + $(this).closest('td').index() + ')').find('input').focus().select();
                         });
                     });
 
@@ -1559,7 +1566,8 @@
                                vm.saveState()
                                $('.modal').modal('hide')
                                vm.seletedLinha.IsStoped = true;
-                               vm.TimerOn()
+                               vm.TimerOn(false, vm.saveState(true, true))
+
                            }
                            else {
                                vm.selectedLata.correctiveAction.IsAssinada = false
@@ -1571,10 +1579,16 @@
                        });
                 }
 
-                vm.TimerOn = function () {
-                    vm.seletedLinha.ExcedidoTempoLimite = false
-                    vm.seletedLinha.StartParadaDeLinha = moment();
-                    vm.seletedLinha.TimeoutParadaLinha = $timeout($scope.onTimeout, 1000);
+                vm.TimerOn = function (isLoadData, cb) {
+                    if (isLoadData) {
+                        vm.seletedLinha.TimeoutParadaLinha = $timeout($scope.onTimeout, 1000);
+                    } else if (vm.seletedLinha.IsStoped) {
+                        vm.seletedLinha.ExcedidoTempoLimite = false
+                        vm.seletedLinha.StartParadaDeLinha = moment();
+                        vm.seletedLinha.TimeoutParadaLinha = $timeout($scope.onTimeout, 1000);
+                    }
+                    if (cb)
+                        cb()
                 }
 
                 vm.TimerOff = function () {
@@ -1601,8 +1615,14 @@
                     //if (hrs > 1)
                     //    vm.seletedLinha.ExcedidoTempoLimite = true
 
-                    //Testes
-                    if (mins > 2)
+                    //SEM MOCK
+                    if (hrs > 1 || days > 0)
+                        vm.seletedLinha.ExcedidoTempoLimite = true
+                    else
+                        vm.seletedLinha.ExcedidoTempoLimite = false
+
+                    //MOCK PARA Testes
+                    if (secs > 10)
                         vm.seletedLinha.ExcedidoTempoLimite = true
                     else
                         vm.seletedLinha.ExcedidoTempoLimite = false

@@ -231,6 +231,9 @@
     <Compile Include="ParHeaderField.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ParLataImagens.cs">
+      <DependentUpon>SgqEfContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="ParLevel1.cs">
       <DependentUpon>SgqEfContext.tt</DependentUpon>
     </Compile>

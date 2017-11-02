@@ -667,6 +667,19 @@
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsRequired" Type="bit" />
         </EntityType>
+        <EntityType Name="ParLataImagens">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="Imagem" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ParRecravacao_TipoLata_Id" Type="int" Nullable="false" />
+          <Property Name="PathFile" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="FileName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="PontoIndex" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="ParLevel1">
           <Key>
             <PropertyRef Name="Id" />
@@ -2600,6 +2613,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="ParGoal" EntityType="Self.ParGoal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParGoalScorecard" EntityType="Self.ParGoalScorecard" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParHeaderField" EntityType="Self.ParHeaderField" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParLataImagens" EntityType="Self.ParLataImagens" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel1" EntityType="Self.ParLevel1" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel1XCluster" EntityType="Self.ParLevel1XCluster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParLevel1XHeaderField" EntityType="Self.ParLevel1XHeaderField" Schema="dbo" store:Type="Tables" />
@@ -3656,6 +3670,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             <End Role="ParLevel3" EntitySet="ParLevel3" />
             <End Role="Result_Level3" EntitySet="Result_Level3" />
           </AssociationSet>
+          <EntitySet Name="ParLataImagens" EntityType="SgqDbModel.ParLataImagens" />
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -6497,6 +6512,19 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ParLataImagens">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddDate" Type="DateTime" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="Imagem" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="ParRecravacao_TipoLata_Id" Type="Int32" Nullable="false" />
+          <Property Name="PathFile" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="FileName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PontoIndex" Type="Int32" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7914,6 +7942,20 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParLataImagens">
+            <EntityTypeMapping TypeName="SgqDbModel.ParLataImagens">
+              <MappingFragment StoreEntitySet="ParLataImagens">
+                <ScalarProperty Name="PontoIndex" ColumnName="PontoIndex" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="PathFile" ColumnName="PathFile" />
+                <ScalarProperty Name="ParRecravacao_TipoLata_Id" ColumnName="ParRecravacao_TipoLata_Id" />
+                <ScalarProperty Name="Imagem" ColumnName="Imagem" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
