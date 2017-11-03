@@ -142,6 +142,7 @@
                 Send(true);
             });
             formControl.showFullCallendar();
+            formControl.showShift();
             formControl.showDepartment();
             //formControl.showUnit();
 
@@ -162,6 +163,7 @@
             $("#RGOperacoesGrafico").empty();
             $('#RGDepartamentosGrafico').empty();
             $("#PanelFull0").hide();
+            popoverMain.addClass('hide');
 
             if (!ValidaDadosParaEnvio()) {
                 $btn.button('reset');

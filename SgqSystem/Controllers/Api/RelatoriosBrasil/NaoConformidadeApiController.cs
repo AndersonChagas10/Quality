@@ -25,10 +25,16 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             CommonLog.SaveReport(form, "Relatorio_Nao_Conformidade");
 
             var whereDepartment = "";
+            var whereShift = "";
 
             if (form.departmentId != 0)
             {
                 whereDepartment = "\n AND L2.ParDepartment_Id = " + form.departmentId + " ";
+            }
+
+            if (form.shift != 0)
+            {
+                whereShift = "\n AND CL1.Shift = " + form.shift + " ";
             }
 
             var query = "" +
@@ -167,8 +173,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         ON IND.Id = CL1.ParLevel1_Id " +
                 "\n         INNER JOIN ParCompany UNI  (nolock)" +
                 "\n         ON UNI.Id = CL1.UnitId " +
-                "\n         INNER JOIN ParCompanyXUserSgq CU(nolock) " +
-                "\n         ON CU.UserSgq_Id = " + form.auditorId + " and CU.ParCompany_Id = UNI.Id " +
+                "\n         --INNER JOIN ParCompanyXUserSgq CU(nolock) " +
+                "\n         --ON CU.UserSgq_Id = " + form.auditorId + " and CU.ParCompany_Id = UNI.Id " +
                 "\n         LEFT JOIN #AMOSTRATIPO4 A4 (nolock) " +
                 "\n         ON A4.UNIDADE = UNI.Id " +
                 "\n         AND A4.INDICADOR = IND.ID " +
@@ -182,8 +188,12 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                 "\n         WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL " +
                             whereDepartment +
+                            whereShift +
                 "\n         -- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) " +
-
+                "\n             AND UNI.Id IN (SELECT       " +
+                "\n           ParCompany_Id                 " +
+                "\n        FROM ParCompanyXUserSgq          " +
+                "\n        WHERE UserSgq_Id = " + form.auditorId + ")           " +
                 "\n     ) S1 " +
 
                 "\n     GROUP BY Unidade, Unidade_Id " +
@@ -205,6 +215,24 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
         [Route("GraficoDepartamentos")]
         public List<NaoConformidadeResultsSet> GraficoDepartamentos([FromBody] FormularioParaRelatorioViewModel form)
         {
+
+            var whereDepartment = "";
+            var whereShift = "";
+
+            if (form.departmentId != 0)
+            {
+                whereDepartment = "\n AND L2.ParDepartment_Id = " + form.departmentId + " ";
+            }
+
+            if (form.departmentName != "" && form.departmentName != null)
+            {
+                whereDepartment = "\n AND D.Name = '" + form.departmentName + "'";
+            }
+
+            if (form.shift != 0)
+            {
+                whereShift = "\n AND CL1.Shift = " + form.shift + " ";
+            }
 
             var query = @"
              
@@ -414,6 +442,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             				AND A4.INDICADOR = IND.ID
             			WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
             			AND UNI.Name = '" + form.unitName + @"'
+                        " + whereDepartment + @"
+                        " + whereShift + @"
             		--AND D.Id = 2
             		) S1
             		GROUP BY Unidade
@@ -688,6 +718,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             //public decimal Proc { get; internal set; }
 
             var whereDepartment = "";
+            var whereShift = "";
+
 
             if (form.departmentId != 0)
             {
@@ -697,6 +729,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             if (form.departmentName != "" && form.departmentName != null)
             {
                 whereDepartment = "\n AND D.Name = '" + form.departmentName + "'";
+            }
+
+            if (form.shift != 0)
+            {
+                whereShift = "\n AND CL1.Shift = " + form.shift + " ";
             }
 
             var query = "" +
@@ -884,6 +921,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL " +
                 "\n         AND UNI.Name = '" + form.unitName + "'" +
                 whereDepartment +
+                whereShift +
                 "\n         -- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) " +
 
                 "\n     ) S1 " +
@@ -914,6 +952,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             //var query = new NaoConformidadeResultsSet().Select(form._dataInicio, form._dataFim, form.unitId);
 
             var whereDepartment = "";
+            var whereShift = "";
 
             if (form.departmentId != 0)
             {
@@ -923,6 +962,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             if (form.departmentName != "" && form.departmentName != null)
             {
                 whereDepartment = "\n AND D.Name = '" + form.departmentName + "'";
+            }
+
+            if (form.shift != 0)
+            {
+                whereShift = "\n AND CL1.Shift = " + form.shift + " ";
             }
 
             var query = "" +
@@ -1042,6 +1086,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                "\n  ON MON.ParDepartment_Id = D.Id " +
                "\n 	WHERE CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL" +
                whereDepartment +
+               whereShift +
                "\n 	AND (UNI.Name = '" + form.unitName + "' OR UNI.Initials = '" + form.unitName + "')" +
                "\n 	AND IND.Name = '" + form.level1Name + "' " + //
 
@@ -1072,6 +1117,13 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             //Nc = nc + i,
             //Proc = proc + i,
             //TarefaName = tarefaName + i.ToString()
+
+            var whereShift = "";
+
+            if (form.shift != 0)
+            {
+                whereShift = "\n AND CL1.Shift = " + form.shift + " ";
+            }
 
             var query = "" +
 
@@ -1153,6 +1205,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                          "\n 	AND (UNI.Name = '" + form.unitName + "' OR UNI.Initials = '" + form.unitName + "')" +
                          "\n    AND R3.IsNotEvaluate = 0 " +
                          "\n 	AND CL2.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
+                         whereShift +
                          "\n GROUP BY " +
                          "\n  IND.Id " +
                          "\n ,IND.Name " +
