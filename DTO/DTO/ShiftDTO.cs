@@ -8,7 +8,7 @@ namespace DTO.DTO
     {
         [DataMember]
         public string Description { get; set; }
-        public string Name { get { return "Turno" + Description; } }
+        public string Name { get { return /*"Turno" +*/ Description; } }
         public void ValidaShiftDTO()
         {
             ValidaBaseEntity();
