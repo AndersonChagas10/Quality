@@ -10,7 +10,7 @@
                     @Html.LabelFor(model => model.Diretoria_Id, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td style="min-width: 43%;">
-                    @Html.DropDownList("Diretoria_Id", new SelectList(ViewBag.Diretoria, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    @Html.DropDownList("Diretoria_Id", new SelectList(ViewBag.Diretoria, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
                     @Html.ValidationMessageFor(model => model.Diretoria_Id, "", new { @class = "text-danger" })
                 </td>
                 <td style="width: 16%;"></td>
@@ -22,7 +22,7 @@
                     @Html.LabelFor(model => model.Missao_Id, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
-                    @Html.DropDownList("Missao_Id", new SelectList(ViewBag.Missao, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    @Html.DropDownList("Missao_Id", new SelectList(ViewBag.Missao, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
                     @Html.ValidationMessageFor(model => model.Missao_Id, "", new { @class = "text-danger" })
                 </td>
                 <td></td>
@@ -32,7 +32,7 @@
                     @Html.LabelFor(model => model.Visao_Id, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
-                    @Html.DropDownList("Visao_Id", new SelectList(ViewBag.Visao, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    @Html.DropDownList("Visao_Id", new SelectList(ViewBag.Visao, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
                     @Html.ValidationMessageFor(model => model.Visao_Id, "", new { @class = "text-danger" })
                 </td>
                 <td></td>
@@ -43,7 +43,7 @@
                     @Html.LabelFor(model => model.Dimensao_Id, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
-                    @Html.DropDownList("Dimensao_Id", new SelectList(ViewBag.Dimensao, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    @Html.DropDownList("Dimensao_Id", new SelectList(ViewBag.Dimensao, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
                     @Html.ValidationMessageFor(model => model.Dimensao_Id, "", new { @class = "text-danger" })
                 </td>
                 <td></td>
@@ -53,7 +53,7 @@
                     @Html.LabelFor(model => model.Objetivo_Id, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
-                    @Html.DropDownList("Objetivo_Id", new SelectList(ViewBag.Objetivo, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    @Html.DropDownList("Objetivo_Id", new SelectList(ViewBag.Objetivo, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
                     @Html.ValidationMessageFor(model => model.Objetivo_Id, "", new { @class = "text-danger" })
                 </td>
                 <td>
@@ -64,7 +64,7 @@
                     @Html.LabelFor(model => model.IndicadoresDiretriz_Id, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
-                    @Html.DropDownList("IndicadoresDiretriz_Id", new SelectList(ViewBag.IndicadoresDiretriz, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    @Html.DropDownList("IndicadoresDiretriz_Id", new SelectList(ViewBag.IndicadoresDiretriz, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
                 </td>
                 <td>
                 </td>
@@ -75,7 +75,7 @@
                     @Html.LabelFor(model => model.Responsavel_Diretriz, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
-                    @Html.DropDownList("Responsavel_Diretriz", new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                    @Html.DropDownList("Responsavel_Diretriz", new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
                 </td>
                 <td></td>
             </tr>
@@ -98,7 +98,7 @@
         <select data-ng-model="plan"
                 data-ng-options="s.Id as s.Name for s in plans"
                 data-ng-change="" class="form-control" style="width:210px">
-            <option value="">Selecione</option>
+            <option value="">Selecione...</option>
         </select>
     </div>
 
