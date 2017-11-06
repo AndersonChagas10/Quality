@@ -16,13 +16,15 @@ namespace SgqSystem.Controllers
         private IBaseDomain<ParStructureGroup, ParStructureGroupDTO> _baseDomainParStructureGroup;
         private IBaseDomain<ParCluster, ParClusterDTO> _baseDomainParCluster;
         private IBaseDomain<ParCompanyCluster, ParCompanyClusterDTO> _baseDomainParCompanyCluster;
+        private IBaseDomain<ParClusterGroup, ParClusterGroupDTO> _baseDomainParClusterGroup;
 
         public ParCompanyController(IBaseDomain<ParCompany, ParCompanyDTO> baseDomainParCompany,
                     IBaseDomain<ParCompanyXStructure, ParCompanyXStructureDTO> baseDomainParCompanyXStructure,
                     IBaseDomain<ParStructure, ParStructureDTO> baseDomainParStructure,
                     IBaseDomain<ParStructureGroup, ParStructureGroupDTO> baseDomainParStructureGroup,
                     IBaseDomain<ParCluster, ParClusterDTO> baseDomainParCluster,
-                    IBaseDomain<ParCompanyCluster, ParCompanyClusterDTO> baseDomainParCompanyCluster
+                    IBaseDomain<ParCompanyCluster, ParCompanyClusterDTO> baseDomainParCompanyCluster,
+                    IBaseDomain<ParClusterGroup, ParClusterGroupDTO> baseDomainParClusterGroup
                     )
         {
             _baseDomainParCompany = baseDomainParCompany;
@@ -31,12 +33,14 @@ namespace SgqSystem.Controllers
             _baseDomainParStructureGroup = baseDomainParStructureGroup;
             _baseDomainParCluster = baseDomainParCluster;
             _baseDomainParCompanyCluster = baseDomainParCompanyCluster;
+            _baseDomainParClusterGroup = baseDomainParClusterGroup;
 
             ViewBag.listaParCompany = _baseDomainParCompany.GetAll().Where(r => r.IsActive == true).ToList();
             ViewBag.listaParCompanyStructure = _baseDomainParCompanyXStructure.GetAllNoLazyLoad().Where(r => r.Active == true).ToList();
             ViewBag.listaParStructure = _baseDomainParStructure.GetAll().Where(r => r.IsActive == true).ToList();
             ViewBag.listaParStructureGroup = _baseDomainParStructureGroup.GetAll().Where(r => r.IsActive == true).ToList();
             ViewBag.listaParCluster = _baseDomainParCluster.GetAll().Where(r=>r.IsActive == true).ToList();
+            ViewBag.listaParClusterGroup = _baseDomainParClusterGroup.GetAll().ToList();
             ViewBag.listaParStructureXCompany = _baseDomainParStructure.GetAll().Where(
                 r=>r.ParStructureGroup_Id == _baseDomainParStructure.GetAllNoLazyLoad().Where(y => y.IsActive == true).Max(x => x.ParStructureGroup_Id) && r.IsActive == true);
 
@@ -77,9 +81,6 @@ namespace SgqSystem.Controllers
         {
             return PartialView("ParStructureGroup");//retorna partial ParStructureGroup
         }
-
-        
-
 
     }
 }
