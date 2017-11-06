@@ -28,8 +28,8 @@
                             @Html.LabelFor(model => model.Unidade_Id, htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td style="width: 43%;">
-                            @Html.DropDownList("Unidade_Id", new SelectList(ViewBag.Unidade, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
-                            @Html.ValidationMessageFor(model => model.Unidade_Id, "", new { @class = "text-danger" })
+                            @Html.DropDownList("Unidade_Id", new SelectList(ViewBag.Unidade, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm required" })
+                            @Html.ValidationMessageFor(model => model.Unidade_Id, "", new { @class = "text-danger " })
                         </td>
                         <td style="width: 16%;"></td>
                     </tr>
@@ -38,18 +38,18 @@
                                 @Html.LabelFor(model => model.Departamento_Id, htmlAttributes: new { @class = "control-label " })
                             </td>
                             <td>
-                                @Html.DropDownList("Departamento_Id", new SelectList(ViewBag.Departamento, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                                @Html.DropDownList("Departamento_Id", new SelectList(ViewBag.Departamento, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
                                 @Html.ValidationMessageFor(model => model.Departamento_Id, "", new { @class = "text-danger" })
                             </td>
                             <td></td>
                         </tr>*@
                     <tr class="showAsEstrategy">
                         <td style="width: 43%;">
-                            @Html.Label("Tipo de Indicador:", htmlAttributes: new { @class = "control-label " })
+                            @Html.Label("Tipo de Indicador", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td style="width: 43%;">
                             <select name="TipoIndicador" class="form-control input-sm" id="tipoIndicador">
-                                <option value="0">Selecione</option>
+                                <option value="0">Selecione...</option>
                                 <option value="1">Indicadores Diretrizes</option>
                                 <option value="2">Indicador Scorecard</option>
                             </select>
@@ -62,7 +62,7 @@
                             @Html.LabelFor(r => r.Level1Id, htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @Html.DropDownListFor(r => r.Level1Id, new SelectList(ViewBag.Level1, "Id", "name"), "Selecione", new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.Level1Id, new SelectList(ViewBag.Level1, "Id", "name"), "Selecione...", new { @class = "form-control input-sm" })
                         </td>
                         <td></td>
                     </tr>
@@ -71,7 +71,7 @@
                             @Html.LabelFor(r => r.Level2Id, htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @Html.DropDownListFor(r => r.Level2Id, new SelectList(ViewBag.Level2, "Id", "name"), "Selecione", new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.Level2Id, new SelectList(ViewBag.Level2, "Id", "name"), "Selecione...", new { @class = "form-control input-sm" })
                         </td>
                         <td></td>
                     </tr>
@@ -80,7 +80,7 @@
                             @Html.LabelFor(r => r.Level3Id, htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @Html.DropDownListFor(r => r.Level3Id, new SelectList(ViewBag.Level3, "Id", "name"), "Selecione", new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.Level3Id, new SelectList(ViewBag.Level3, "Id", "name"), "Selecione...", new { @class = "form-control input-sm" })
                         </td>
                         <td></td>
                     </tr>
@@ -91,8 +91,8 @@
                             @Html.LabelFor(r => r.Pa_IndicadorSgqAcao_Id, htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @*@Html.DropDownListFor(r => r.Pa_IndicadorSgqAcao_Id, new SelectList(ViewBag.Pa_IndicadorSgqAcao, "Id", "name"), "Selecione", new { @class = "form-control input-sm" })*@
-                            @Html.DropDownList("Pa_IndicadorSgqAcao_Id", new SelectList(ViewBag.Pa_IndicadorSgqAcao, "Id", "name"), "Selecione", new { @class = "form-control input-sm" })
+                            @*@Html.DropDownListFor(r => r.Pa_IndicadorSgqAcao_Id, new SelectList(ViewBag.Pa_IndicadorSgqAcao, "Id", "name"), "Selecione...", new { @class = "form-control input-sm" })*@
+                            @Html.DropDownList("Pa_IndicadorSgqAcao_Id", new SelectList(ViewBag.Pa_IndicadorSgqAcao, "Id", "name"), "Selecione...", new { @class = "form-control input-sm" })
                         </td>
                         <td></td>
                     </tr>
@@ -101,8 +101,8 @@
                             @Html.LabelFor(r => r.Pa_Problema_Desvio_Id, htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @*@Html.DropDownListFor(r => r.Pa_Problema_Desvio_Id, new SelectList(ViewBag.Pa_Problema_Desvio, "Id", "name"), "Selecione", new { @class = "form-control input-sm" })*@
-                            @Html.DropDownList("Pa_Problema_Desvio_Id", new SelectList(ViewBag.Pa_Problema_Desvio, "Id", "name"), "Selecione", new { @class = "form-control input-sm" })
+                            @*@Html.DropDownListFor(r => r.Pa_Problema_Desvio_Id, new SelectList(ViewBag.Pa_Problema_Desvio, "Id", "name"), "Selecione...", new { @class = "form-control input-sm" })*@
+                            @Html.DropDownList("Pa_Problema_Desvio_Id", new SelectList(ViewBag.Pa_Problema_Desvio, "Id", "name"), "Selecione...", new { @class = "form-control input-sm" })
                         </td>
                         <td></td>
                     </tr>
@@ -111,7 +111,7 @@
                             @Html.Label("Causa generica", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @Html.DropDownListFor(r => r.CausaGenerica_Id, new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione", new { @class = "form-control input-sm required" })
+                            @Html.DropDownListFor(r => r.CausaGenerica_Id, new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione...", new { @class = "form-control input-sm required" })
                         </td>
                         <td></td>
                     </tr>
@@ -120,7 +120,7 @@
                             @Html.Label("Grupo causa", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td id="GrupoCausa">
-                            @Html.DropDownListFor(r => r.GrupoCausa_Id, new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
+                            @Html.DropDownListFor(r => r.GrupoCausa_Id, new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), "Selecione...", new { @class = "form-control input-sm", @disabled = true })
                         </td>
                         <td></td>
                     </tr>
@@ -129,7 +129,7 @@
                             @Html.Label("Ação genérica", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td id="ContramedidaGenerica">
-                            @Html.DropDownListFor(r => r.ContramedidaGenerica_Id, new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), "Selecione", new { @class = "form-control input-sm", @disabled = true })
+                            @Html.DropDownListFor(r => r.ContramedidaGenerica_Id, new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), "Selecione...", new { @class = "form-control input-sm", @disabled = true })
                         </td>
                         <td></td>
                     </tr>
@@ -158,7 +158,7 @@
                             @Html.Label("Quem", htmlAttributes: new { @class = "control-label " })
                         </td>
                         <td>
-                            @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione", new { @class = "form-control input-sm required" })
+                            @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm required" })
                         </td>
                         <td style="text-align: center; display:none; vertical-align: bottom;" id="CausaMedidasXAcaoAdd">
 
@@ -217,7 +217,7 @@
                                 @Html.LabelFor(model => model.Predecessora_Id, htmlAttributes: new { @class = "control-label " })
                             </td>
                             <td>
-                                @Html.DropDownList("Predecessora_Id", new SelectList(ViewBag.Predecessora, "Id", "Id"), "Selecione", new { @class = "form-control input-sm" })
+                                @Html.DropDownList("Predecessora_Id", new SelectList(ViewBag.Predecessora, "Id", "Id"), "Selecione...", new { @class = "form-control input-sm" })
                                 @Html.ValidationMessageFor(model => model.Predecessora_Id, "", new { @class = "text-danger" })
                             </td>
                             <td></td>
@@ -253,7 +253,7 @@
                                     @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label " })
                                 </td>
                                 <td>
-                                    @Html.DropDownList("Status", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione", new { @class = "form-control input-sm" })
+                                    @Html.DropDownList("Status", new SelectList(ViewBag.Status, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
                                     @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                                 </td>
                                 <td></td>
@@ -268,7 +268,7 @@
                                 @Html.LabelFor(model => model.Panejamento_Id, htmlAttributes: new { @class = "control-label " })
                             </td>
                             <td>
-                                @Html.DropDownList("Panejamento_Id", new SelectList(ViewBag.Panejamento, "Id", "Id"), "Selecione", new { @class = "form-control input-sm" })
+                                @Html.DropDownList("Panejamento_Id", new SelectList(ViewBag.Panejamento, "Id", "Id"), "Selecione...", new { @class = "form-control input-sm" })
                                 @Html.ValidationMessageFor(model => model.Panejamento_Id, "", new { @class = "text-danger" })
                             </td>
                             <td></td>

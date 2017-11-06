@@ -25,10 +25,16 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             CommonLog.SaveReport(form, "Relatorio_Nao_Conformidade");
 
             var whereDepartment = "";
+            var whereShift = "";
 
             if (form.departmentId != 0)
             {
                 whereDepartment = "\n AND L2.ParDepartment_Id = " + form.departmentId + " ";
+            }
+
+            if (form.shift != 0)
+            {
+                whereShift = "\n AND CL1.Shift = " + form.shift + " ";
             }
 
             var query = "" +
@@ -167,8 +173,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         ON IND.Id = CL1.ParLevel1_Id " +
                 "\n         INNER JOIN ParCompany UNI  (nolock)" +
                 "\n         ON UNI.Id = CL1.UnitId " +
-                "\n         INNER JOIN ParCompanyXUserSgq CU(nolock) " +
-                "\n         ON CU.UserSgq_Id = " + form.auditorId + " and CU.ParCompany_Id = UNI.Id " +
+                "\n         --INNER JOIN ParCompanyXUserSgq CU(nolock) " +
+                "\n         --ON CU.UserSgq_Id = " + form.auditorId + " and CU.ParCompany_Id = UNI.Id " +
                 "\n         LEFT JOIN #AMOSTRATIPO4 A4 (nolock) " +
                 "\n         ON A4.UNIDADE = UNI.Id " +
                 "\n         AND A4.INDICADOR = IND.ID " +
@@ -182,8 +188,12 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                 "\n         WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL " +
                             whereDepartment +
+                            whereShift +
                 "\n         -- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) " +
-
+                "\n             AND UNI.Id IN (SELECT       " +
+                "\n           ParCompany_Id                 " +
+                "\n        FROM ParCompanyXUserSgq          " +
+                "\n        WHERE UserSgq_Id = " + form.auditorId + ")           " +
                 "\n     ) S1 " +
 
                 "\n     GROUP BY Unidade, Unidade_Id " +
@@ -199,6 +209,265 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             }
 
             return _list;
+        }
+
+        [HttpPost]
+        [Route("GraficoDepartamentos")]
+        public List<NaoConformidadeResultsSet> GraficoDepartamentos([FromBody] FormularioParaRelatorioViewModel form)
+        {
+
+            var whereDepartment = "";
+            var whereShift = "";
+
+            if (form.departmentId != 0)
+            {
+                whereDepartment = "\n AND L2.ParDepartment_Id = " + form.departmentId + " ";
+            }
+
+            if (form.departmentName != "" && form.departmentName != null)
+            {
+                whereDepartment = "\n AND D.Name = '" + form.departmentName + "'";
+            }
+
+            if (form.shift != 0)
+            {
+                whereShift = "\n AND CL1.Shift = " + form.shift + " ";
+            }
+
+            var query = @"
+             
+                         DECLARE @DATAINICIAL DATETIME = '" + form._dataInicioSQL + @"'
+                                                                                                                                                                                                                                            
+                         DECLARE @DATAFINAL   DATETIME = '" + form._dataFimSQL + @"'
+                                                                                                                                                                                                                                            
+                         DECLARE @VOLUMEPCC int
+                                                                          
+                         DECLARE @ParCompany_id INT
+            SELECT
+            	@ParCompany_id = ID
+            FROM PARCOMPANY
+            WHERE NAME = '" + form.unitName + @"'
+                         CREATE TABLE #AMOSTRATIPO4 ( 
+                         UNIDADE INT NULL, 
+                         INDICADOR INT NULL, 
+                         AM INT NULL, 
+                         DEF_AM INT NULL 
+                         )
+            INSERT INTO #AMOSTRATIPO4
+            	SELECT
+            		UNIDADE
+            	   ,INDICADOR
+            	   ,COUNT(1) AM
+            	   ,SUM(DEF_AM) DEF_AM
+            	FROM (SELECT
+            			CAST(C2.CollectionDate AS DATE) AS DATA
+            		   ,C.Id AS UNIDADE
+            		   ,C2.ParLevel1_Id AS INDICADOR
+            		   ,C2.EvaluationNumber AS AV
+            		   ,C2.Sample AS AM
+            		   ,CASE
+            				WHEN SUM(C2.WeiDefects) = 0 THEN 0
+            				ELSE 1
+            			END DEF_AM
+            		FROM CollectionLevel2 C2 (NOLOCK)
+            		INNER JOIN ParLevel1 L1 (NOLOCK)
+            			ON L1.Id = C2.ParLevel1_Id
+            		INNER JOIN ParCompany C (NOLOCK)
+            			ON C.Id = C2.UnitId
+            		WHERE CAST(C2.CollectionDate AS DATE) BETWEEN @DATAINICIAL AND @DATAFINAL
+            		AND C2.NotEvaluatedIs = 0
+            		AND C2.Duplicated = 0
+            		AND L1.ParConsolidationType_Id = 4
+            		GROUP BY C.Id
+            				,ParLevel1_Id
+            				,EvaluationNumber
+            				,Sample
+            				,CAST(CollectionDate AS DATE)) TAB
+            	GROUP BY UNIDADE
+            			,INDICADOR
+            --------------------------------                                                                                                                     
+            
+            SELECT TOP 1
+            	@VOLUMEPCC = SUM(Quartos)
+            FROM VolumePcc1b(nolock)
+            WHERE ParCompany_id = @ParCompany_id
+            AND Data BETWEEN @DATAINICIAL AND @DATAFINAL
+                                                                                                                                                                          
+                          DECLARE @NAPCC INT
+            
+            SELECT
+            	@NAPCC =
+            	COUNT(1)
+            FROM (SELECT
+            		COUNT(1) AS NA
+            	FROM CollectionLevel2 C2 (NOLOCK)
+            	LEFT JOIN Result_Level3 C3 (NOLOCK)
+            		ON C3.CollectionLevel2_Id = C2.Id
+            	WHERE CONVERT(DATE, C2.CollectionDate) BETWEEN @DATAINICIAL AND @DATAFINAL
+            	AND C2.ParLevel1_Id = (SELECT TOP 1
+            			id
+            		FROM Parlevel1
+            		WHERE Hashkey = 1)
+            	AND C2.UnitId = @ParCompany_Id
+            	AND IsNotEvaluate = 1
+            	GROUP BY C2.ID) NA
+            WHERE NA = 2
+            --------------------------------  
+            SELECT
+            	UnidadeName
+               ,Unidade_Id
+               ,SUM([proc]) AS 'proc'
+                  ,SUM(Meta) as Meta
+               ,SUM(NC) AS NC
+               ,SUM(Av) AS Av
+               ,DepartamentoName
+               ,Departamento_Id
+            FROM (SELECT
+            		CONVERT(VARCHAR(153), Unidade) AS UnidadeName
+            	   ,CONVERT(VARCHAR(153), Unidade_Id) AS Unidade_Id
+            		--,CONVERT(VARCHAR(153), level1_Id) AS Indicador_Id
+            		--,CONVERT(VARCHAR(153), Level1Name) AS IndicadorName
+            	   ,ProcentagemNc AS [proc]
+            	   ,(CASE
+            			WHEN IsRuleConformity = 1 THEN (100 - META)
+            			ELSE Meta
+            		END) AS Meta
+            	   ,NC
+            	   ,Av
+            	   ,DepartamentoName
+            	   ,CONVERT(VARCHAR(153), Departamento_Id) AS Departamento_Id
+            	--,IsRuleConformity
+            	FROM (SELECT
+            			Unidade
+            		   ,IsRuleConformity
+            		   ,Unidade_Id
+            			--,Level1Name
+            			--,level1_Id
+            		   ,SUM(avSemPeso) AS av
+            		   ,SUM(ncSemPeso) AS nc
+            		   ,CASE
+            				WHEN SUM(AV) IS NULL OR
+            					SUM(AV) = 0 THEN 0
+            				ELSE SUM(NC) / SUM(AV) * 100
+            			END AS ProcentagemNc
+            		   ,MAX(Meta) AS Meta
+            		   ,DepartamentoName
+            		   ,Departamento_Id
+            		FROM (SELECT
+            				IND.Id AS level1_Id
+            			   ,IND.IsRuleConformity
+            			   ,IND.Name AS Level1Name
+            			   ,UNI.Id AS Unidade_Id
+            			   ,UNI.Name AS Unidade
+            			   ,CASE
+            					WHEN IND.HashKey = 1 THEN @VOLUMEPCC - @NAPCC
+            					WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiEvaluation
+            					WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation
+            					WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult
+            					WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM
+            					WHEN IND.ParConsolidationType_Id = 5 THEN CL1.WeiEvaluation
+            					WHEN IND.ParConsolidationType_Id = 6 THEN CL1.WeiEvaluation
+            					ELSE 0
+            				END AS Av
+            			   ,CASE
+            					WHEN IND.HashKey = 1 THEN @VOLUMEPCC - @NAPCC
+            					WHEN IND.ParConsolidationType_Id = 1 THEN CL1.EvaluateTotal
+            					WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiEvaluation
+            					WHEN IND.ParConsolidationType_Id = 3 THEN CL1.EvaluatedResult
+            					WHEN IND.ParConsolidationType_Id = 4 THEN A4.AM
+            					WHEN IND.ParConsolidationType_Id = 5 THEN CL1.EvaluateTotal
+            					WHEN IND.ParConsolidationType_Id = 6 THEN CL1.EvaluateTotal
+            					ELSE 0
+            				END AS AvSemPeso
+            			   ,CASE
+            					WHEN IND.ParConsolidationType_Id = 1 THEN CL1.WeiDefects
+            					WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiDefects
+            					WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult
+            					WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
+            					WHEN IND.ParConsolidationType_Id = 5 THEN CL1.WeiDefects
+            					WHEN IND.ParConsolidationType_Id = 6 THEN CL1.TotalLevel3WithDefects
+            					ELSE 0
+            				END AS NC
+            			   ,CASE
+            					WHEN IND.ParConsolidationType_Id = 1 THEN CL1.DefectsTotal
+            					WHEN IND.ParConsolidationType_Id = 2 THEN CL1.WeiDefects
+            					WHEN IND.ParConsolidationType_Id = 3 THEN CL1.DefectsResult
+            					WHEN IND.ParConsolidationType_Id = 4 THEN A4.DEF_AM
+            					WHEN IND.ParConsolidationType_Id = 5 THEN CL1.DefectsTotal
+            					WHEN IND.ParConsolidationType_Id = 6 THEN CL1.TotalLevel3WithDefects
+            					ELSE 0
+            				END AS NCSemPeso
+            			   ,CASE
+            
+            					WHEN (SELECT
+            								COUNT(1)
+            							FROM ParGoal G
+            							WHERE G.ParLevel1_id = CL1.ParLevel1_Id
+            							AND (G.ParCompany_id = CL1.UnitId
+            							OR G.ParCompany_id IS NULL)
+            							AND G.AddDate <= @DATAFINAL)
+            						> 0 THEN (SELECT TOP 1
+            								ISNULL(G.PercentValue, 0)
+            							FROM ParGoal G
+            							WHERE G.ParLevel1_id = CL1.ParLevel1_Id
+            							AND (G.ParCompany_id = CL1.UnitId
+            							OR G.ParCompany_id IS NULL)
+            							AND G.AddDate <= @DATAFINAL
+            							ORDER BY G.ParCompany_Id DESC, AddDate DESC)
+            
+            					ELSE (SELECT TOP 1
+            								ISNULL(G.PercentValue, 0)
+            							FROM ParGoal G
+            							WHERE G.ParLevel1_id = CL1.ParLevel1_Id
+            							AND (G.ParCompany_id = CL1.UnitId
+            							OR G.ParCompany_id IS NULL)
+            							ORDER BY G.ParCompany_Id DESC, AddDate ASC)
+            				END
+            				AS Meta
+            			   ,D.Name AS DepartamentoName
+            			   ,D.Id AS Departamento_Id
+            			FROM ConsolidationLevel1 CL1 (NOLOCK)
+            			INNER JOIN ParLevel1 IND (NOLOCK)
+            				ON IND.Id = CL1.ParLevel1_Id
+            			INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK)
+            				ON CL2.ConsolidationLevel1_id = CL1.Id
+            			INNER JOIN ParLevel2 L2 WITH (NOLOCK)
+            				ON CL2.ParLevel2_id = L2.Id
+            			INNER JOIN ParDepartment D WITH (NOLOCK)
+            				ON L2.ParDepartment_Id = D.Id
+            			INNER JOIN ParCompany UNI (NOLOCK)
+            				ON UNI.Id = CL1.UnitId
+            			LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
+            				ON A4.UNIDADE = UNI.Id
+            				AND A4.INDICADOR = IND.ID
+            			WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
+            			AND UNI.Name = '" + form.unitName + @"'
+                        " + whereDepartment + @"
+                        " + whereShift + @"
+            		--AND D.Id = 2
+            		) S1
+            		GROUP BY Unidade
+            				,Unidade_Id
+            				 --,Level1Name
+            				 --,level1_Id
+            				,IsRuleConformity
+            				,DepartamentoName
+            				,Departamento_Id) S2
+            	WHERE nc > 0) A
+            GROUP BY UnidadeName
+            		,Unidade_Id
+            		,DepartamentoName
+            		,Departamento_Id
+            ORDER BY 5 DESC
+            DROP TABLE #AMOSTRATIPO4 ";
+
+            using (var db = new SgqDbDevEntities())
+            {
+                _list = db.Database.SqlQuery<NaoConformidadeResultsSet>(query).ToList();
+            }
+
+            return _list;
+
         }
 
         [HttpPost]
@@ -449,10 +718,22 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             //public decimal Proc { get; internal set; }
 
             var whereDepartment = "";
+            var whereShift = "";
+
 
             if (form.departmentId != 0)
             {
                 whereDepartment = "\n AND L2.ParDepartment_Id = " + form.departmentId + " ";
+            }
+
+            if (form.departmentName != "" && form.departmentName != null)
+            {
+                whereDepartment = "\n AND D.Name = '" + form.departmentName + "'";
+            }
+
+            if (form.shift != 0)
+            {
+                whereShift = "\n AND CL1.Shift = " + form.shift + " ";
             }
 
             var query = "" +
@@ -640,6 +921,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 "\n         WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL " +
                 "\n         AND UNI.Name = '" + form.unitName + "'" +
                 whereDepartment +
+                whereShift +
                 "\n         -- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) " +
 
                 "\n     ) S1 " +
@@ -670,10 +952,21 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             //var query = new NaoConformidadeResultsSet().Select(form._dataInicio, form._dataFim, form.unitId);
 
             var whereDepartment = "";
+            var whereShift = "";
 
             if (form.departmentId != 0)
             {
                 whereDepartment = "\n AND MON.ParDepartment_Id = " + form.departmentId + " ";
+            }
+
+            if (form.departmentName != "" && form.departmentName != null)
+            {
+                whereDepartment = "\n AND D.Name = '" + form.departmentName + "'";
+            }
+
+            if (form.shift != 0)
+            {
+                whereShift = "\n AND CL1.Shift = " + form.shift + " ";
             }
 
             var query = "" +
@@ -789,8 +1082,11 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                "\n 	ON MON.Id = CL2.ParLevel2_Id " +
                "\n 	INNER JOIN ParCompany UNI (nolock) " +
                "\n 	ON UNI.Id = CL1.UnitId " +
+               "\n  INNER JOIN ParDepartment D WITH (NOLOCK) " +
+               "\n  ON MON.ParDepartment_Id = D.Id " +
                "\n 	WHERE CL2.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL" +
                whereDepartment +
+               whereShift +
                "\n 	AND (UNI.Name = '" + form.unitName + "' OR UNI.Initials = '" + form.unitName + "')" +
                "\n 	AND IND.Name = '" + form.level1Name + "' " + //
 
@@ -821,6 +1117,13 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             //Nc = nc + i,
             //Proc = proc + i,
             //TarefaName = tarefaName + i.ToString()
+
+            var whereShift = "";
+
+            if (form.shift != 0)
+            {
+                whereShift = "\n AND CL1.Shift = " + form.shift + " ";
+            }
 
             var query = "" +
 
@@ -902,6 +1205,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                          "\n 	AND (UNI.Name = '" + form.unitName + "' OR UNI.Initials = '" + form.unitName + "')" +
                          "\n    AND R3.IsNotEvaluate = 0 " +
                          "\n 	AND CL2.ConsolidationDate BETWEEN '" + form._dataInicioSQL + "' AND '" + form._dataFimSQL + "'" +
+                         whereShift +
                          "\n GROUP BY " +
                          "\n  IND.Id " +
                          "\n ,IND.Name " +
@@ -1118,6 +1422,8 @@ public class NaoConformidadeResultsSet
 
     public string Indicador_Id { get; set; }
     public string IndicadorName { get; set; }
+    public string DepartamentoName { get; set; }
+    public string Departamento_Id { get; set; }
     public string Unidade_Id { get; set; }
     public string UnidadeName { get; set; }
     public string Monitoramento_Id { get; set; }

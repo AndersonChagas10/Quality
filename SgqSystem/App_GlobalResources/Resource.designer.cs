@@ -1393,6 +1393,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Defects per Departments.
+        /// </summary>
+        internal static string defects_per_deparment {
+            get {
+                return ResourceManager.GetString("defects_per_deparment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Defects Per Monitoring.
         /// </summary>
         internal static string defects_per_monitoring {
@@ -3621,6 +3630,15 @@ namespace Resources {
         internal static string next {
             get {
                 return ResourceManager.GetString("next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next Unfolding.
+        /// </summary>
+        internal static string next_unfolding {
+            get {
+                return ResourceManager.GetString("next_unfolding", resourceCulture);
             }
         }
         
