@@ -37,7 +37,8 @@
         }
 
         .error {
-            border-color: red
+            /*border-color: red;*/
+            background: pink;
         }
     </style>
 
@@ -252,12 +253,28 @@
         $.fn.serializeObject = function () {
             $('.error').removeClass('error')
             var isValid = true
-            $(this).find('select.required').each(function (c, o) {
+
+            var tipo = "";
+
+            if (typeof isClickedTaticoVinculado != 'undefined'){
+
+                if (isClickedTaticoVinculado) {
+                    tipo = '.tatico';
+                } else if (isClickedEstrategico) {
+                    tipo = ".estrategico";
+                }
+            }
+            //var tipo = "estrategico";
+
+            $(this).find('select.required' + tipo).each(function (c, o) {
                 console.log($(o).find('option:selected').val())
                 console.log($(o).find('option:selected').text())
 
                 if ($(o).find('option:selected').val().length == 0) {
                     $(o).addClass('error')
+
+                    $('#' + $(o).attr('id') + ' + .select2').find('.select2-selection__rendered').addClass('error');
+
                     isValid = false
                 }
             })
@@ -276,7 +293,7 @@
             if (!isValid) {
                 alert("Campos obrigatórios");
                 return
-            } 
+            }
 
             var o = {};
             var a = this.serializeArray();
@@ -290,6 +307,8 @@
                     o[this.name] = this.value || '';
                 }
             });
+
+
             return o;
         };
     </script>

@@ -36,7 +36,7 @@ namespace PlanoAcaoCore
         public int IndicadoresDiretriz_Id { get; set; }
         public string IndicadoresDiretriz { get; set; }
 
-        [Display(Name = "Responsavel pela Diretriz")]
+        [Display(Name = "Responsável pela Diretriz")]
         public int Responsavel_Diretriz { get; set; }
         public Pa_Quem Responsavel_Diretriz_Quem
         {
@@ -116,7 +116,7 @@ namespace PlanoAcaoCore
         [Display(Name = "_DataFim")]
         public string _DataFim { get; set; }
 
-        [Display(Name = "Responsavel pelo Projeto / Iniciativa")]
+        [Display(Name = "Responsável pelo Projeto / Iniciativa")]
         public int Responsavel_Projeto { get; set; }
         public Pa_Quem Responsavel_Projeto_Quem
         {
@@ -195,7 +195,7 @@ namespace PlanoAcaoCore
                         " Dimensão" + Dimensao +
                         " \n Diretrizes / Objetivos" + Objetivo;
                     //" \n Indicadores da Diretrizes / Objetivos" + IndicadoresDiretriz +
-                    //" \n Responsavel pela Diretriz" + Responsavel_Diretriz_Quem.Name;
+                    //" \n Responsável pela Diretriz" + Responsavel_Diretriz_Quem.Name;
 
                 }
                 return retorno;
@@ -250,7 +250,7 @@ namespace PlanoAcaoCore
                 //if (IndicadoresDiretriz_Id <= 0)
                 //    message += "\n Indicadores da Diretrizes / Objetivos,";
                 //if (Responsavel_Diretriz <= 0)
-                //    message += "\n Responsavel pela Diretriz,";
+                //    message += "\n Responsável pela Diretriz,";
 
             //}
 

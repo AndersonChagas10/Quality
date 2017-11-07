@@ -166,7 +166,7 @@
 </div>
 
 <div class="container">
-    <div class="modal fade" id="modalLindo"  role="dialog" aria-labelledby="" data-backdrop="static">
+    <div class="modal fade" id="modalLindo" role="dialog" aria-labelledby="" data-backdrop="static">
         <div class="modal-dialog" style="max-width:90%;  min-width:70%" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -209,10 +209,10 @@
                 <form>
                     <div class="form-group">
                         <div style="display:none" id="encadeado">
-                            <label id="labelPredecessora">Predecessor: </label>
+                            <label style="min-width: 450px;" id="labelPredecessora">Predecessor: </label>
                         </div>
                         <div>
-                            <label>Novo item:</label><input type="text" class="form-control" id="newItem">
+                            <label>Novo item:</label><input style="min-width: 371px;" type="text" class="form-control" id="newItem">
                         </div>
                     </div>
                 </form>
@@ -236,6 +236,9 @@
 @section Scripts {
 
     <script>
+        $(document).ready(function () {
+            var zero =0;
+        });
 
         var visaoOperacional = @Html.Raw(Json.Encode(Conn.visaoOperacional));
         var nameCausaEspecifica = @Html.Raw(Json.Encode(Conn.nameCausaEspecifica));
@@ -247,6 +250,7 @@
         var isTaticoClicked = false;
         var isNovaAcao = false;
         var isClickedTaticoVinculado = false;
+        var isClickedEstrategico = false;
         var NovaAcaoBuscaFeita = false;
         var tempInput;
         var tempName;
@@ -325,6 +329,7 @@
                 $('#NovoPlanejamento').show();
 
             }
+
             $('#Fechar').show();
             $('#Salvar').show();
             /*Fim Botões*/
@@ -395,27 +400,34 @@
         //Verificando
         function SalvarPlanejamento(form) {
             console.log(SalvarPlanejamento);
+            
+            if (!isClickedTaticoVinculado){
+                isClickedEstrategico = true;
+            }
+
             var sendObj = $('#Planejamento').serializeObject();
 
             if (isClickedTaticoVinculado)
                 sendObj['IsTAtico'] = true;
 
-            $.post(urlSalvarPlanejamento, sendObj, function (r) {
-                //ModalOpcoesEstrategico('');
-                planejamentoCorrentId = parseInt(r.Id);
-                openMessageModal('Registro salvo com sucesso!', '');
-                $('#modalLindo').modal('hide');
+            if(sendObj != undefined){
+                $.post(urlSalvarPlanejamento, sendObj, function (r) {
+                    //ModalOpcoesEstrategico('');
+                    planejamentoCorrentId = parseInt(r.Id);
+                    openMessageModal('Registro salvo com sucesso!', '');
+                    $('#modalLindo').modal('hide');
 
-                $.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
+                    $.post(urlGetPlanejamentoAcao, {}, function (r) { GerarTabela(r) })
 
-            }).fail(function (e, h, x) {
+                }).fail(function (e, h, x) {
 
-                //console.log(e);
-                //console.log(h);
-                //console.log(x);
+                    //console.log(e);
+                    //console.log(h);
+                    //console.log(x);
 
-                openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
-            });
+                    openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
+                });
+            }
 
         }/*planejamentoCorrentId*/
 
@@ -458,11 +470,14 @@
             } else {
                 $('#Header').html(title + title2);
             }
+
             $.get(urlNovoPlanejamento, function (r) {
                 $('#modalLindo').find('.modal-body').empty().append(r);
                 if (isTaticoClicked) {
                     $('.novoItem ').hide();
-                    if (isClickedTaticoVinculado) {//Novo tatico
+                    if (isClickedTaticoVinculado) {
+
+                        //Novo tatico
                         $('#Planejamento > #IsTatico').val(true);
                         $('#Planejamento > table > tbody > tr:nth-child(1)').find('input, select').attr('disabled', true);
                         $('#Planejamento > table > tbody > tr:nth-child(4)').find('input, select').attr('disabled', true);
@@ -472,6 +487,7 @@
                         $('#Planejamento > table > tbody > tr:nth-child(8)').find('input, select').attr('disabled', true);
                         $('#Planejamento > table > tbody > tr:nth-child(9)').find('input, select').attr('disabled', true);
                         if (model != undefined) {
+
                             //$('#Id').val(model.Id);
                             $('#Estrategico_Id').val(model.Id);
                             if (model.Diretoria_Id > 0)
@@ -489,9 +505,11 @@
                             if (model.Responsavel_Diretriz > 0)
                                 $('#Planejamento > table > tbody > tr:nth-child(9)').find('input, select').val(model.Responsavel_Diretriz);
                         }
+
                         $('.novoTatico').show();
                         DdlChangeTatico();
                     } else {
+
                         $('#Planejamento > table > tbody > tr:nth-child(1)').hide();
                         $('#Planejamento > table > tbody > tr:nth-child(4)').hide();
                         $('#Planejamento > table > tbody > tr:nth-child(5)').hide();
@@ -514,10 +532,13 @@
                     $('#Planejamento > table > tbody > tr:nth-child(17)').hide();
                     $('#Planejamento > table > tbody > tr:nth-child(18)').hide();
                 }
+
                 InitDatePiker();
                 MoneyMask();
+
             });
             /*Botões*/
+
             $('#modalLindo').find('.modal-footer button').hide()
             $('#Fechar').show();
             $('#Salvar').show();
@@ -574,7 +595,7 @@
                     //$('#Objetivo_Id').val(change2).change();
                     setTimeout(function () { $('#Objetivo_Id').val(change2).change(); }, 2000)
                 }
-                
+
                 if (v3 != undefined) {
                     setTimeout(function () { $('#IndicadoresDiretriz_Id').val(v3).change(); },4000)
                 }
@@ -583,19 +604,31 @@
 
         function DdlChangeTatico() {
 
+
             $('#Iniciativa_Id').off('change').on('change', function () {
                 var Iniciativa_Id = $('#Iniciativa_Id').val() > 0 ? $('#Iniciativa_Id').val() : 0;
                 $.get(GETIndicadoresProjetoIniciativa, { id: Iniciativa_Id }, function (r) {
-                    $('#IndicadoresDeProjeto_Id').parent().append(r);
-                    $('#IndicadoresDeProjeto_Id').remove();
+                    $('#IndicadoresDeProjeto_Id').parent().html('').append(r);
+                    //$('#IndicadoresDeProjeto_Id').remove();
                     $('#IndicadoresDeProjeto_Id').off('change').on('change', function () {
                         var Objetivo_Id = $('#IndicadoresDeProjeto_Id').val() > 0 ? $('#IndicadoresDeProjeto_Id').val() : 0;
                         $.get(GETObjetivosGerenciais, { id: Objetivo_Id }, function (r) {
-                            $('#ObjetivoGerencial_Id').parent().append(r);
-                            $('#ObjetivoGerencial_Id').remove();
+
+                            $('#ObjetivoGerencial_Id').parent().html('').append(r);
+                            //$('#ObjetivoGerencial_Id').remove();
+
+                            try {
+                                $('#modalLindo span.select2').prev('select').select2('destroy');
+                            } catch(e){
+                            }
+                            finally {
+                                $('#modalLindo select').select2();
+                            }
+
                         });
                     });
                     $('#IndicadoresDeProjeto_Id').change();
+
                 });
             });
             $('#Iniciativa_Id').change();
@@ -624,6 +657,11 @@
                 myfunction();
                 MoneyMask('R$ ');
                 InitDatePiker();
+
+                $('div[id = ' + collapseId + '] select').select2({
+
+                    width: "280px"
+                });
             };
 
         })();
@@ -727,8 +765,11 @@
 
                 if (valor == 1) {
                     form.find('.IndicadorOutros').show();
+                    form.find('.ProbDesv').hide();
+                    form.find('.ProbDesv').val("");
                 } else if (valor == 2) {
                     form.find('.IndicadorSgq').show();
+                    form.find('.ProbDesv').show();
                 }
 
             });
@@ -761,29 +802,32 @@
 
             });
 
-            $.post(urlSalvarAcao, { "": listaAcoes }, function (r) {
-                $.post(urlGetPlanejamentoAcao, {}, function (r) {
+            if(listaAcoes[0] != undefined){
 
-                    //if (counter == 1 && !jaLiberouCallback) {
-                    jaLiberouCallback = true;
-                    $('#modalLindo').modal('hide');
-                    openMessageModal('Registro salvo com sucesso!', '');
-                    //}
-                    GerarTabela(r);
+                $.post(urlSalvarAcao, { "": listaAcoes }, function (r) {
+                    $.post(urlGetPlanejamentoAcao, {}, function (r) {
 
-                }).fail(function (e, h, x) {
+                        //if (counter == 1 && !jaLiberouCallback) {
+                        jaLiberouCallback = true;
+                        $('#modalLindo').modal('hide');
+                        openMessageModal('Registro salvo com sucesso!', '');
+                        //}
+                        GerarTabela(r);
+
+                    }).fail(function (e, h, x) {
+
+                        openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
+
+                    }).always(function () {
+
+                    });
+                })
+                .fail(function (e, h, x) {
 
                     openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
 
-                }).always(function () {
-
                 });
-            })
-            .fail(function (e, h, x) {
-
-                openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
-
-            });
+            }
 
         }
 
@@ -826,7 +870,8 @@
         function SalvarAcaoAvulsa(o, isEdit) {
             console.log(SalvarAcaoAvulsa);
             var sendObj = $(o).serializeObject();
-            if (isEdit == undefined) {
+
+            if (isEdit == undefined && sendObj != undefined) {
                 sendObj['Panejamento_Id'] = planejamentoCorrentId;
             }
             //sendObj['AcaoXQuem'] = [];
@@ -873,6 +918,10 @@
         /*Novo item*/
         function Novo(btn, encadeado) {
             console.log("Novo")
+
+            $('#body').find('select').select2()
+            $('#body').find('select').select2('destroy')
+
             $('#encadeado').show()
             /*Limpa caso haja DDL denrto do modal.*/
             if ($('#encadeado').find('select').length) {
@@ -891,9 +940,16 @@
 
             if (encadeado != undefined) {
                 $('#encadeado').show();
-                $('#labelPredecessora').append($('#' + encadeado).clone());
+                $('#labelPredecessora').children().remove()
+                $('#labelPredecessora').append($('#' + encadeado).clone().removeClass('select2-hidden-accessible'));
+
+                $('#modalNovo select').select2();
+                $('#modalNovo select').select2('destroy');
+                $('#modalNovo select').select2();
+
                 $('#labelPredecessora').find('select').val($('#' + encadeado + ' option:selected').val()).change()
             }
+            $('#body').find('select').select2()
         }
 
         function SalvarNovo() {
@@ -935,7 +991,7 @@
 
             var btnDetalhes = '<button type="button" class="details btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Detalhes" style="cursor:pointer" class="glyphicon glyphicon-list-alt"></span>&nbsp Detalhes</button>';
             var btnNovoTatico = '<button type="button" class="btnNovoTatico showAsEstrategy btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Novo Planejamento Tático para este Planejamento Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tag"></span>&nbsp Novo Tático</button>';
-            var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp Nova Acao</button>';
+            var btnNovoOperacional = '<button type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Novo Planejamento Operacional Vinculado ao Planejamento Tático e Estratégico" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>&nbsp Nova Ação</button>';
             var btnAcompanhamento = '<button type="button" class="btnAcompanhamento btn btn-default btn-sm" style="text-align: left; width:100%"><span title="Acompanhamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp Acompanhamento</button>';
             var arrEstragy = [0, 1, 2, 3, 4, 5, 6];
             var arrEstragyH = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35];
@@ -946,10 +1002,10 @@
                     /*0*/{ title: "Diretoria", mData: "Diretoria" },
                     /*1*/{ title: "Missão", mData: "Missao" },
                     /*2*/{ title: "Visão", mData: "Visao" },
-                    /*3*/{ title: "Dimenção", mData: "Dimensao" },
+                    /*3*/{ title: "Dimensão", mData: "Dimensao" },
                     /*4*/{ title: "Diretrizes", mData: "Objetivo" },//Objetivo
                     /*5*/{ title: "Indicadores Diretriz", mData: "IndicadoresDiretriz" },
-                    /*6*/{ title: "Responsavel pela Diretriz", mData: "Responsavel_Diretriz_Quem.Name" },
+                    /*6*/{ title: "Responsável pela Diretriz", mData: "Responsavel_Diretriz_Quem.Name" },
                     /*Fim Planejamento Estratégico*/
 
                     /*7*/{ title: "Gerência", mData: "Gerencia" },
@@ -961,7 +1017,7 @@
                     /*13*/{ title: "Valor para", mData: "_ValorPara" },
                     /*14*/{ title: "Data (Início)", mData: "_DataInicio" },
                     /*15*/{ title: "Data (Fim)", mData: "_DataFim" },
-                    /*16*/{ title: "Responsavel pelo Projeto/Iniciativa", mData: "Responsavel_Projeto_Quem.Name" },
+                    /*16*/{ title: "Responsável pelo Projeto/Iniciativa", mData: "Responsavel_Projeto_Quem.Name" },
                     /*Fim Tático*/
 
                     /*17*/{ title: "Regional", mData: "Acao.Regional"}, //Novo
@@ -988,7 +1044,7 @@
                     /*35*/{ title: "Status", mData: "Acao._StatusName" },
                     /*36*/{ title: "Prazo", mData: "Acao._Prazo" },//29 + 2
                     /*Fim Operacional*/
-                    
+
                     //{ title: "Data (Início)", mData: "_DataInicio" },
                     //{ title: "Indicadores do Projeto/Iniciativa", mData: "IndicadoresDeProjeto" },
 
@@ -1133,6 +1189,8 @@
                             //EditarPlanejamento(r)
                             ModalOpcoesEstrategico("Novo Planejamento Tático Vinculado", 0, function () { EditarPlanejamento(r) });
                         });
+
+
 
                     });
 
@@ -1603,10 +1661,10 @@
                 HideForOperacional();
                 $('#modalLindo').modal();
                 $('#Header').html('Acompanhamento do Planejamento Operacional');
-                $(".select2Init").select2();
+                //$(".select2Init").select2();
                 $('.modal .modal-footer button').hide();
                 $('#showAcompnhamentoForm').show();
-                $('select').select2();
+                //$('select').select2();
                 $("#SaveAcompanhamento").on("click", function (event) {
                     //event.preventDefault();
                     var obj = $("#acompanhamento").serializeObject();
@@ -1625,7 +1683,7 @@
                              function (r) {
                                  TesteRenan(r, 'Estrategico', data);
                                  $('#modalNovo > div > div > div.modal-footer > button').show()
-                                 
+
                                  //HideForOperacional();
                              }
                         );
@@ -1716,8 +1774,12 @@
             counter--;
         });
 
+        $(function() {
+            console.log( "ready!" );
+            GetDataTable()
+        });
         /*Table*/
-        
+
 
     </script>
 
