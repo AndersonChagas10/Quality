@@ -5,6 +5,8 @@ using DTO.DTO.Params;
 using SgqSystem.Handlres;
 using SgqSystem.ViewModels;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api.Company
@@ -32,15 +34,29 @@ namespace SgqSystem.Controllers.Api.Company
         [HttpPost]
         [HandleApi()]
         [Route("AddUpdateParCompany")]
-        public void AddUpdateParCompany([FromBody] CompanyViewModel companyViewModel)
+        public HttpResponseMessage AddUpdateParCompany([FromBody] CompanyViewModel companyViewModel)
         {
             ParCompany parCompanySalvar = Mapper.Map<ParCompany>(companyViewModel.parCompanyDTO);
             List<ParCompanyCluster> parCompanyClusterSalvar = Mapper.Map<List<ParCompanyCluster>>(companyViewModel.parCompanyDTO.ListParCompanyCluster);
             List<ParCompanyXStructure> parCompanyXStructureSalvar = Mapper.Map<List<ParCompanyXStructure>>(companyViewModel.parCompanyDTO.ListParCompanyXStructure);
 
-            _companyDomain.SaveParCompany(parCompanySalvar);
-            _companyDomain.SaveParCompanyCluster(parCompanyClusterSalvar, parCompanySalvar);
-            _companyDomain.SaveParCompanyXStructure(parCompanyXStructureSalvar, parCompanySalvar);
+            var errors = new List<string>();
+
+            try
+            {
+                _companyDomain.SaveParCompany(parCompanySalvar);
+                _companyDomain.SaveParCompanyCluster(parCompanyClusterSalvar, parCompanySalvar);
+                _companyDomain.SaveParCompanyXStructure(parCompanyXStructureSalvar, parCompanySalvar);
+            }
+            catch (System.Exception e)
+            {
+                errors.Add("Error: " + e.Message);
+            }
+
+            if (errors.Count > 0)
+                return Request.CreateResponse(HttpStatusCode.OK, new { errors });
+
+            return Request.CreateResponse(HttpStatusCode.OK, new { resposta = "", user = "" }); ;
         }
 
         [HttpPost]
