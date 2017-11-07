@@ -374,8 +374,9 @@
                                                     <th style="width:10%">@Resources.Resource.preview</th>
                                                     
                                                     <th style="width:15%">@Resources.Resource.required</th>
-                                                    <th style="width:5%"></th>
+                                                    
                                                     <th style="width:15%">@Resources.Resource.pattern</th>
+                                                    <th style="width:5%"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -510,9 +511,7 @@
                                                                     }
                                                                 </select>
                                                             </td>
-                                                            <td>
-                                                                <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
-                                                            </td>
+                                                            
                                                             <td>
                                                                 @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 1)
                                                                 {
@@ -537,6 +536,9 @@
                                                                     </div>
                                                                 }
 
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
                                                             </td>
 
                                                         </tr>
@@ -936,6 +938,7 @@
            
             example += '</td>'
             example += '<td> <label>' + statusText + '</label></td>'; // obrigatoriedade;
+            example += '<td> <label> &nbsp; </label></td>'; //padrão em branco quando insere;
             example += '<td>' + Cabecalhos.BtnExcluir() + '</td></tr>';//Btn excluir
 
 
@@ -1120,7 +1123,8 @@
                 }
             });
             example += '</td>';
-
+            example += '<td> <label> &nbsp; </label></td>';
+            example += '<td> <label> &nbsp; </label></td>';
             example += '<td>' + Cabecalhos.BtnExcluir2() + '</td></tr>';//Btn excluir
 
             $('#tableCabecalhosPreview').append(example);
@@ -1207,7 +1211,8 @@
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + o.Link + '"/>';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
             example += '</td>';
-
+            example += '<td> <label> &nbsp; </label></td>';
+            example += '<td> <label> &nbsp; </label></td>';
             example += '<td>';
             example += '' +  Cabecalhos.BtnExcluir();
             //example += '</div>';
@@ -1288,6 +1293,8 @@
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + o.Link + '"/>';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
             example += '</td>';
+            example += '<td> <label> &nbsp; </label></td>';
+            example += '<td> <label> &nbsp; </label></td>';
             example += '<td>';
             example += '' + Cabecalhos.BtnExcluir();
             //example += '</div>';
@@ -1365,6 +1372,8 @@
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + o.Link + '"/>';
             example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
             example += '</td>';
+            example += '<td> <label> &nbsp; </label></td>';
+            example += '<td> <label> &nbsp; </label></td>';
             example += '<td>';
             example += '' + Cabecalhos.BtnExcluir();
             //example += '</div>';
