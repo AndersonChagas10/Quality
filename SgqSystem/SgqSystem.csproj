@@ -525,6 +525,7 @@
     <Content Include="admin-lte\js\app.js" />
     <Content Include="admin-lte\js\app.min.js" />
     <Content Include="Angular\app.js" />
+    <Content Include="Angular\ClusterGroupCluster.js" />
     <Content Include="Angular\ClusterRegionalUnidadeCriticalLevel123.js" />
     <Content Include="Angular\Level321Chain.js" />
     <Content Include="Angular\SelectVinculado.js" />
@@ -1515,7 +1516,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8090/SgqSystem</IISUrl>
+          <IISUrl>http://localhost/SgqSystem</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
