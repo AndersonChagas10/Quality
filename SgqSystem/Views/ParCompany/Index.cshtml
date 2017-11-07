@@ -8,6 +8,7 @@
     var urlStructure = Url.Action("AddUpdateParStructure", "api/Company"); //URL relativa
     var urlStructureGroup = Url.Action("AddUpdateParStructureGroup", "api/Company"); //URL relativa
     var urlHome = Url.Action("Index", "Home");
+    var urlGetListClusterVinculadoClusterGroup = Url.Action("GetListClusterVinculadoClusterGroup", "api/CompanyForm");
 
 }
 
@@ -34,9 +35,9 @@
             <div class="page-toolbar">
                 <!--<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green" data-placement="top" data-original-title="Change dashboard date range">-->
                 @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
-                    <i class="fa fa-calendar"></i>&nbsp;
-                    <span class="thin uppercase" id="currentDate"></span>&nbsp;
-                </div>*@
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                    </div>*@
             </div>
         </div>
 
@@ -52,7 +53,7 @@
                     <div class="portlet-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="setup_tab">
-                                
+
                                 @Html.Partial("~/Views/ParCompany/ParCompany.cshtml")
 
                             </div>
@@ -114,14 +115,53 @@
 
                             </div>
                             <div class="col-xs-6">
-                                <table class="table-erp">
+                                @*<table class="table-erp">
+                                        <tbody>
+                                            <tr class="row">
+                                                @Table.GerarColuna(@Html.DropDownList("clusterGroupListId", new SelectList(ViewBag.listaParClusterGroup, "Id", "Name"), Resources.Resource.select + "...", new { @id = "clusterGroupListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.cluster_group), Table.PosicaoLabel.top)
+                                            </tr>
+
+                                            <tr class="row">
+                                                @Table.GerarColunaButton(@Html.DropDownList("clusterListId", new SelectList(ViewBag.listaParCluster, "Id", "Name"), Resources.Resource.select + "...", new { @id = "clusterListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.cluster), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='" + Resources.Resource.saving + "' id='' onclick='modalClusterListAdd()' class='btn btn-primary btn-sm margin'><i class='fa fa-plus'></i></button>")
+                                            </tr>
+                                        </tbody>
+                                    </table>*@
+
+
+                                <table class="table-erp" ng-controller="Renan">
                                     <tbody>
                                         <tr class="row">
-                                            @Table.GerarColuna(@Html.DropDownList("clusterGroupListId", new SelectList(ViewBag.listaParClusterGroup, "Id", "Name"), Resources.Resource.select + "...", new { @id = "clusterGroupListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.cluster_group), Table.PosicaoLabel.top)
+                                            <td class="td-erp" colspan="0">
+                                                <label>@Resources.Resource.cluster_group</label>
+                                                <div>
+                                                    <select id="clusterGroupListId" class="form-control input-sm"
+                                                            ng-model="clusterGroupValue" ng-options="c.Id as c.Name for c in clusterGroup | orderBy:'Name' track by c.Id"
+                                                            ng-change="GetListClusterVinculadoClusterGroup()">
+                                                        <option value="">@Resources.Resource.select</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            @*@Table.GerarColuna( , @Html.Label(Resources.Resource.cluster_group), Table.PosicaoLabel.top)*@
                                         </tr>
 
                                         <tr class="row">
-                                            @Table.GerarColunaButton(@Html.DropDownList("clusterListId", new SelectList(ViewBag.listaParCluster, "Id", "Name"), Resources.Resource.select + "...", new { @id = "clusterListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.cluster), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='" + Resources.Resource.saving + "' id='' onclick='modalClusterListAdd()' class='btn btn-primary btn-sm margin'><i class='fa fa-plus'></i></button>")
+                                            @*@Table.GerarColunaButton(@Html.DropDownList("clusterListId", new SelectList(ViewBag.listaParCluster, "Id", "Name"), Resources.Resource.select + "...", new { @id = "clusterListId", @class = "form-control input-sm" }), @Html.Label(Resources.Resource.cluster), Table.PosicaoLabel.top, button: "<button type='button' data-loading-text='" + Resources.Resource.saving + "' id='' onclick='modalClusterListAdd()' class='btn btn-primary btn-sm margin'><i class='fa fa-plus'></i></button>")*@
+
+                                            <td class="td-erp">
+                                                <label>@Resources.Resource.cluster</label>
+                                                <div class="input-group">
+                                                    <select id="clusterListId" name="clusterListId" class="form-control input-sm"
+                                                            ng-model="clusterValue"
+                                                            ng-options="cl.Id as cl.Name for cl in cluster | orderBy:'Name' track by cl.Id">
+                                                        <option value="">@Resources.Resource.select</option>
+                                                    </select>
+                                                    <span class="input-group-btn">
+                                                        <button type="button" data-loading-text="Salvando" id="" onclick="modalClusterListAdd()" class="btn btn-primary btn-sm margin">
+                                                            <i class="fa fa-plus"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -159,12 +199,17 @@
     </div>
 </div>
 
+<script src="~/Angular/ClusterGroupCluster.js"></script>
 
 <script>
 
     var urlCompany = '@Html.Raw(@urlCompany)';
     var urlStructure = '@Html.Raw(@urlStructure)';
     var urlStructureGroup = '@Html.Raw(@urlStructureGroup)';
+
+    var listaClusterGroup = @Html.Raw(Json.Encode(ViewBag.listaParClusterGroup));
+    var listaCluster = @Html.Raw(Json.Encode(ViewBag.listaParCluster));
+    var urlGetListClusterVinculadoClusterGroup = '@Html.Raw(@urlGetListClusterVinculadoClusterGroup)';
 
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
@@ -227,22 +272,31 @@
                 var ParCompanyXStructureDTO = { 'ParStructure_Id': $(structureGroupList[i]).attr('value'), 'ParCompany_Id': $('#parCompanyDTO_Id').val() };
                 dados['parCompanyDTO.ListParCompanyXStructure'].push(ParCompanyXStructureDTO);
             }
-            
+
             var companyClusterList = $('#clusterList').children('tbody').children('tr');
 
             for (var i = 0; i < companyClusterList.length; i++) {
                 var ParCompanyClusterDTO = { 'ParCompany_Id': $('#parCompanyDTO_Id').val(), 'ParCluster_Id': $(companyClusterList[i]).attr('value') };
                 dados['parCompanyDTO.ListParCompanyCluster'].push(ParCompanyClusterDTO);
-            }       
+            }
 
             $.post(urlCompany, dados, function (objetoReturn, statusmessage, respostaCompleta) {
                 console.log(objetoReturn);
                 console.log(statusmessage);
                 console.log(respostaCompleta);
 
+                if (objetoReturn["errors"] == undefined) {
+                    openMessageModal("@Resources.Resource.saved_successfully","");
+                    location.reload();
+                }else{
+                    openMessageModal("@Resources.Resource.error", objetoReturn.errors);
+                    location.reload();
+                }
+
                 $.get("GetParCompany", function (data) {
-                    $('#formParCompany').replaceWith(data);
+                    $('#formParCompany').replaceWith(data);                    
                 });
+
             }).fail(function (e, h, x) {
                 console.log(e);
             });
@@ -251,6 +305,8 @@
             $('#modalCompany .modal-dialog').addClass('modal-xl');
             $('#modalCompany').modal();
             $('#modalCompanyObj').removeClass('hide');
+            $('#clusterGroupListId option[value=""]').attr("selected",true);
+            $('#clusterListId option[value=""]').attr("selected",true);
 
             $('#modalCompany .modal-header').text('@Resources.Resource.company');
 
@@ -289,7 +345,7 @@
         enviarDadosParaApi: function (result) {
 
             var dados = $('#formParStructure').serializeObject();
-            if(result)
+            if (result)
                 dados = result;
 
             $.post(urlStructure, dados, function (objetoReturn, statusmessage, respostaCompleta) {
@@ -316,7 +372,7 @@
                 $('#modalStructureObj #parStructureDTO_' + key).val(obj);
             }
 
-            
+
         }
     }
 
@@ -366,6 +422,7 @@
         }
 
         closeCompanyModal();
+        //location.reload();
     });
 
     //Controles dentro do modal
