@@ -2232,4 +2232,7 @@
   <data name="next_unfolding" xml:space="preserve">
     <value>Next Unfolding</value>
   </data>
+  <data name="new_cluster_group" xml:space="preserve">
+    <value>New Cluster Group</value>
+  </data>
 </root>
