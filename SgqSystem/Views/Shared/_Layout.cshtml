@@ -16,12 +16,12 @@
     //ViewBag.urlRootPaFTA = "http://sgqtest.jbssa.com/actionPlanHML/Pa_Acao/NewFTA?";
 
     //EUA GRT
-    ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcaoUSA";
-    ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcaoUSA/Pa_Acao/NewFTA?";
+    //ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcaoUSA";
+    //ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcaoUSA/Pa_Acao/NewFTA?";
 
     //BR GRT
-    //ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcao";
-    //ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?";
+    ViewBag.urlRootPa = "http://192.168.25.200/PlanoAcao";
+    ViewBag.urlRootPaFTA = "http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?";
 
     //JBS HML / PROD
     //ViewBag.urlRootPa = "http://mtzsvmqsc/PlanoDeAcao";
@@ -579,6 +579,10 @@
             return $.grep(getCookie('webControlCookie'), function (a, b) {
                 return a.indexOf('userId') != -1;
             })[0].split('=')[1];
+        }
+
+        function GetUrlFTA(){
+            return @Html.Raw(Json.Encode(@ViewBag.urlRootPaFTA))
         }
 
     </script>

@@ -256,7 +256,7 @@
 
             var tipo = "";
 
-            if (typeof isClickedTaticoVinculado != 'undefined'){
+            if (typeof isClickedTaticoVinculado != 'undefined') {
 
                 if (isClickedTaticoVinculado) {
                     tipo = '.tatico';
@@ -279,20 +279,23 @@
                 }
             })
 
-            $(this).find('input.required').each(function (c, o) {
-                console.log($(o).find('option:selected').val())
-                console.log($(o).find('option:selected').text())
 
-                if ($(o).val().length == 0) {
+            if (isValid) {
+                $(this).find('input.required').each(function (c, o) {
                     $(o).addClass('error')
-                    isValid = false
-                }
-
-            });
+                    if (($(this).val().length > 0)) {
+                        $(this).removeClass('error')
+                        isValid = true
+                    } else {
+                        $(this).addClass('error')
+                        isValid = false
+                    }
+                });
+            }
 
             if (!isValid) {
                 alert("Campos obrigatórios");
-                return
+                return {isValid: '0'}
             }
 
             var o = {};

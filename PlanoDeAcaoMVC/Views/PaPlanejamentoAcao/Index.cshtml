@@ -841,6 +841,7 @@
             });
 
             $.post(urlSalvarAcao, { "": listaAcoes }, function (r) {
+                if(listaAcoes[0].isValid == '0') { return }
                 $.post(urlGetPlanejamentoAcao, {}, function (r) {
                     //if (counter == 1 && !jaLiberouCallback) {
                     jaLiberouCallback = true;
