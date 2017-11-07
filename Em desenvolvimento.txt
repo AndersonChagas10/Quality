@@ -31,3 +31,8 @@ CREATE TABLE Result_Level3_Photos (
 
 CREATE NONCLUSTERED INDEX [CollectionLevel2Photos]
 ON [dbo].[CollectionLevel2] ([ParLevel1_Id],[ParLevel2_Id],[EvaluationNumber],[Sample],[CollectionDate])
+
+07 11 2017 
+
+ALTER TABLE CollectionLevel2XParHeaderField ADD Evaluation int;
+ALTER TABLE CollectionLevel2XParHeaderField ADD Sample int;
