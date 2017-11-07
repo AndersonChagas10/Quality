@@ -4,6 +4,11 @@
     })[0].split('=')[1];
 }
 
+function openInNewTab(url) {
+    var win = window.open(url, '_blank');
+    win.focus();
+}
+
 var ftaPreffixLabel = ' (FTA:';
 
 function tootipFTA(arr, closureThisInTooltip) {
@@ -17,6 +22,12 @@ function tootipFTA(arr, closureThisInTooltip) {
         return '<br/><span style="color:blue">Ações Corretivas no período: ' + pegaNumeroDoFtaEmLabelQueContemFta(result) + '</span>'
     else
         return ''
+}
+
+function GetUsuarioId() {
+    return $.grep(getCookie('webControlCookie'), function (a, b) {
+        return a.indexOf('userId') != -1;
+    })[0].split('=')[1];
 }
 
 function labelFTA(arr, closureThisInTooltip) {

@@ -17,7 +17,15 @@ namespace SgqSystem.Controllers.Recravacao
         }
 
         // GET: Recravacao
-        public ActionResult Print()
+        public ActionResult Print(int? indicadorId = 0, int? linhaId = 0)
+        {
+            ViewBag.IndicadorId = indicadorId;
+            ViewBag.LinhaId = linhaId;
+            return View();
+        }
+
+        // GET: Recravacao
+        public ActionResult Print2()
         {
             return View();
         }

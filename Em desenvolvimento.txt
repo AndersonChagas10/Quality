@@ -111,7 +111,7 @@ CREATE TABLE [dbo].[ParLevel3Value_Outer](
 
 GO
 
---------------------------------------------------------------------------------------27 10 2017 - CG RECRAVACAO
+--------------------------------------------------------------------------------------27 10 2017 - CG RECRAVACAO ------------------------------------- UP
 
 
 	alter table [ParLevel3Value_Outer] add [UnidadeMedida_Id] [int] NULL;
@@ -130,3 +130,70 @@ Alter table ParLevel3 add OrderColumn int null
 EXEC ('update ParLevel3 set OrderColumn = 0')
 END
 
+
+/****** Object:  Table [dbo].[RecravacaoJson]    Script Date: 06/11/2017 15:57:28 ******/
+DROP TABLE [dbo].[RecravacaoJson]
+GO
+
+/****** Object:  Table [dbo].[RecravacaoJson]    Script Date: 06/11/2017 15:57:28 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[RecravacaoJson](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[UserSgqId] [int] NOT NULL,
+	[ParCompany_Id] [int] NOT NULL,
+	[Linha_Id] [int] NOT NULL,
+	[ObjectRecravacaoJson] [nvarchar](max) NOT NULL,
+	[AddDate] [datetime2](7) NOT NULL DEFAULT (getdate()),
+	[AlterDate] [datetime2](7) NULL,
+	[IsActive] [bit] NULL DEFAULT ((1)),
+	[isValidated] [bit] NULL DEFAULT ((0)),
+	[ValidateLockDate] [datetime2](7) NULL DEFAULT (NULL),
+	--[SalvoParaInserirColeta] [int] NULL,
+	--[ParLevel1Id] [int] NULL,
+	[ParLevel1_Id] [int] NULL,
+	[SalvoParaInserirNovaColeta] [int] NULL,
+ CONSTRAINT [Pk_RecravacaoJson] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+
+/****** Object:  Table [dbo].[ParLataImagens]    Script Date: 06/11/2017 16:42:15 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[ParLataImagens](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[AddDate] [datetime2](7) NULL,
+	[AlterDate] [datetime2](7) NULL,
+	[Imagem] [varbinary](max) NOT NULL,
+	[ParRecravacao_TipoLata_Id] [int] NOT NULL,
+	[PathFile] [varchar](500) NOT NULL,
+	[FileName] [varchar](100) NOT NULL,
+	[PontoIndex] [int] NOT NULL,
+ CONSTRAINT [PK_ParLataImagens] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+--------------------------------------------------------------------------------------DD MM YYYY - RESPONSÁVEL  ------------------------------------- Down

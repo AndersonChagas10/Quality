@@ -310,6 +310,7 @@
     <Compile Include="Controllers\Api\HangFireServicesController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoLinhaApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoApiController.cs" />
+    <Compile Include="Controllers\Api\Recravacao\RepoRecravacao.cs" />
     <Compile Include="Controllers\Api\RelatorioGenericoApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\FtaApiController.cs" />
     <Compile Include="Controllers\Api\RelatoriosBrasil\VerificacaoTipificacaoApiController.cs" />
@@ -1432,6 +1433,7 @@
     <Content Include="Views\RecravacaoLinhas\Create.cshtml" />
     <Content Include="Views\RecravacaoLinhas\Details.cshtml" />
     <Content Include="Views\Recravacao\Print.cshtml" />
+    <Content Include="Views\Recravacao\Print2.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

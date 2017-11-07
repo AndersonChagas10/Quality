@@ -1126,6 +1126,23 @@ warning 6002: The table/view 'dbGQualidade.dbo.ParLevel2XHeaderField' does not h
           <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="AlterDate" Type="datetime2" Precision="7" />
         </EntityType>
+        <EntityType Name="RecravacaoJson">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserSgqId" Type="int" Nullable="false" />
+          <Property Name="ParCompany_Id" Type="int" Nullable="false" />
+          <Property Name="Linha_Id" Type="int" Nullable="false" />
+          <Property Name="ObjectRecravacaoJson" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="AddDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AlterDate" Type="datetime2" Precision="7" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="isValidated" Type="bit" />
+          <Property Name="ValidateLockDate" Type="datetime2" Precision="7" />
+          <Property Name="ParLevel1_Id" Type="int" />
+          <Property Name="SalvoParaInserirNovaColeta" Type="int" />
+        </EntityType>
         <EntityType Name="Result_Level3">
           <Key>
             <PropertyRef Name="Id" />
@@ -2641,6 +2658,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <EntitySet Name="ParStructure" EntityType="Self.ParStructure" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParStructureGroup" EntityType="Self.ParStructureGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Period" EntityType="Self.Period" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RecravacaoJson" EntityType="Self.RecravacaoJson" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Result_Level3" EntityType="Self.Result_Level3" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoleSGQ" EntityType="Self.RoleSGQ" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Shift" EntityType="Self.Shift" Schema="dbo" store:Type="Tables" />
@@ -3671,6 +3689,7 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
             <End Role="Result_Level3" EntitySet="Result_Level3" />
           </AssociationSet>
           <EntitySet Name="ParLataImagens" EntityType="SgqDbModel.ParLataImagens" />
+          <EntitySet Name="RecravacaoJson" EntityType="SgqDbModel.RecravacaoJson" />
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -6525,6 +6544,23 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
           <Property Name="FileName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="PontoIndex" Type="Int32" Nullable="false" />
         </EntityType>
+        <EntityType Name="RecravacaoJson">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserSgqId" Type="Int32" Nullable="false" />
+          <Property Name="ParCompany_Id" Type="Int32" Nullable="false" />
+          <Property Name="Linha_Id" Type="Int32" Nullable="false" />
+          <Property Name="ObjectRecravacaoJson" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AlterDate" Type="DateTime" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="isValidated" Type="Boolean" />
+          <Property Name="ValidateLockDate" Type="DateTime" Precision="7" />
+          <Property Name="ParLevel1_Id" Type="Int32" />
+          <Property Name="SalvoParaInserirNovaColeta" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7956,6 +7992,24 @@ warning 6002: The table/view 'dbGQualidade.dbo.ScreenComponent' does not have a 
                 <ScalarProperty Name="Imagem" ColumnName="Imagem" />
                 <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
                 <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RecravacaoJson">
+            <EntityTypeMapping TypeName="SgqDbModel.RecravacaoJson">
+              <MappingFragment StoreEntitySet="RecravacaoJson">
+                <ScalarProperty Name="SalvoParaInserirNovaColeta" ColumnName="SalvoParaInserirNovaColeta" />
+                <ScalarProperty Name="ParLevel1_Id" ColumnName="ParLevel1_Id" />
+                <ScalarProperty Name="ValidateLockDate" ColumnName="ValidateLockDate" />
+                <ScalarProperty Name="isValidated" ColumnName="isValidated" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AlterDate" ColumnName="AlterDate" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="ObjectRecravacaoJson" ColumnName="ObjectRecravacaoJson" />
+                <ScalarProperty Name="Linha_Id" ColumnName="Linha_Id" />
+                <ScalarProperty Name="ParCompany_Id" ColumnName="ParCompany_Id" />
+                <ScalarProperty Name="UserSgqId" ColumnName="UserSgqId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

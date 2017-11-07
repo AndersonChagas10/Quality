@@ -2,43 +2,73 @@
     Layout = null;
 }
 
+
 <style type="text/css">
     a.active {
         background-color: rgba(128, 128, 128, 0.17);
     }
 
-
-
-    td {
-        /*position: relative;*/
-        text-align: center;
-        font-size: 8px;
+    .bgRed {
+        background-color: rgba(248, 2, 2, 0.29);
+        ;
     }
 
-    /*td > span.label {
+    .bgGreen {
+        background-color: rgba(0, 128, 0, 0.23);
+        ;
+    }
+
+    .bgYellow {
+        background-color: rgba(233, 248, 2, 0.29);
+        ;
+    }
+
+    .bgWhite {
+        background-color: white;
+        ;
+    }
+
+    .floatinBottonButton {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        z-index: 9996;
+        display: block;
+        visibility: visible;
+        margin-top: 70px;
+    }
+
+    td {
+        position: relative;
+        text-align: center;
+        font-size: 7px;
+    }
+
+        td > span.label {
             position: absolute;
             top: 1px;
             bottom: 1px;
             left: 1px;
             right: 1px;
             color: black;
-        }*/
+        }
 
-    /*td > span.label:after {
+            td > span.label:after {
                 content: '';
                 height: 100%;
                 display: inline-block;
                 vertical-align: middle;
                 color: black;
-            }*/
+            }
 
     .redDot {
         color: red;
     }
 
     img {
-        width: 50px;
-        height: 50px;
+        width: 100px;
+        height: 100px;
         text-align: center;
     }
 
@@ -50,7 +80,7 @@
         .tg td {
             font-family: Arial, sans-serif;
             font-size: 7px;
-            /*padding: 10px 5px;*/
+            padding: 10px 5px;
             border-style: solid;
             border-width: 1px;
             overflow: hidden;
@@ -61,7 +91,7 @@
             font-family: Arial, sans-serif;
             font-size: 7px;
             font-weight: normal;
-            padding: 2px 1px;
+            padding: 10px 5px;
             border-style: solid;
             border-width: 1px;
             overflow: hidden;
@@ -90,7 +120,7 @@
         border: 2px solid #000000;
         padding: 10px;
         width: 100%;
-        height: 50px;
+        height: 190px;
         display: inline-block;
     }
 
@@ -100,11 +130,8 @@
         margin: 0;
         padding: 0;
         background-color: #FAFAFA;
-        /*font: 6pt Georgia, "Times New Roman", Times, serif !important;*/
-        font-family: Georgia, ‘Times New Roman’, serif;
-        font-size: 8pt; 
-        line-height: 1.0;
-        background: rgb(204,204,204);
+        font: 6pt Georgia, "Times New Roman", Times, serif !important;
+        line-height: 1.3;
     }
 
     * {
@@ -136,6 +163,11 @@
 
     li {
         content: "» ";
+    }
+
+
+    body {
+        background: rgb(204,204,204);
     }
 
     page {
@@ -206,20 +238,13 @@
         background: white;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     }
-
-    div.divided { width: 50%; float: left; }
-/*#div1 { background: #DDD; }
-#div2 { background: #AAA; }
-#div3 { background: #777; }
-#div4 { background: #444; }*/
-
 </style>
 
-<html xmlns="">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Print Recravação</title>
     @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">*@
-    @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/toastr.min.css" rel="stylesheet" />
     <link href="~/Content/select2.min.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-select.min.css" rel="stylesheet" />
@@ -231,11 +256,7 @@
     <script src="~/Scripts/select2.min.js"></script>
     <script src="~/Scripts/moment-with-locales.min.js"></script>
     <script src="~/Scripts/toastr.min.js"></script>
-    <script src="~/Scripts/loadingoverlay.min.js"></script>*@
-
-    @Styles.Render("~/bundles/RecravacaoPrintCss")
-    @Scripts.Render("~/bundles/RecravacaoPrintJs")
-
+    <script src="~/Scripts/loadingoverlay.min.js"></script>
 </head>
 <body ng-app="sgqSystem">
     <div ng-controller="reencravationCtrl as r">
@@ -246,6 +267,8 @@
                 <li class="active" style="margin-left:18px;" ng-repeat="indicador in indicadores track by $index" ng-click="selectIndicador(indicador)">
                     <a href="#" ng-class="{active: indicadorSelecionado.Name == indicador.Name}">
                         <span class="" aria-hidden="true"></span> {{indicador.Name}}
+                        @*<span class="glyphicon glyphicon-sound-stereo" aria-hidden="true"></span>
+                            <span class="sr-only">(current)</span>*@
                     </a>
                 </li>
             </ul>
@@ -263,8 +286,10 @@
 
         </div>
 
-        <section size="A4" >
-            <table class="tg" style="table-layout: fixed; width: 100%">
+        <section size="A4">
+
+
+            <table class="tg" style="undefined;table-layout: fixed; width: 100%">
                 <colgroup>
                     <col style="width: 41px">
                     <col style="width: 41px">
@@ -273,8 +298,8 @@
                 </colgroup>
                 <tr>
                     <th class="tg-031e" colspan="2" rowspan="4"><img src="~/Imagens/JBS_logo.jpg" /></th>
-                    <th class="tg-s6z2" rowspan="1"><strong>{{indicadorSelecionado.Name}} - {{seletedLinha.Name}}</strong></th>
-                    <th class="tg-baqh" colspan="2" rowspan="4">GARANTIA E QUALIDADE LOGO</th>
+                    <th class="tg-s6z2" rowspan="2"><strong>PCC <p class="recravacao">3B Recravação</p></strong></th>
+                    <th class="tg-baqh" rowspan="4">GARANTIA E QUALIDADE LOGO</th>
                 </tr>
                 <tr></tr>
                 <tr>
@@ -284,90 +309,267 @@
                     <td class="tg-yw4l"><strong>Aprovador:</strong> Melina Villa Dantas - GQU/BTS</td>
                 </tr>
             </table>
-            <br />
-            <table class="tg" style="width: 100%">
+
+            <table>
                 <tbody>
                     <tr>
                         <td>Produto</td>
-                        <td>{{seletedLinha.form.Produto.Name}}</td>
+                        <td>{{seletedLinha.form.Produto}}</td>
                         <td>Hora do início da Produção</td>
-                        <td>{{seletedLinha.form.HoraInicioProducao | date:'HH:mm'}}</td>
+                        <td>{{seletedLinha.form.HoraInicioProducao}}</td>
                         <td>Hora do final da Produção</td>
-                        <td>{{seletedLinha.form.HoraFimProducao  | date:'HH:mm'}}</td>
+                        <td>{{seletedLinha.form.HoraFimProducao}}</td>
                     </tr>
                     <tr>
                         <td>Código do produto</td>
                         <td>{{seletedLinha.form.CodProduto}}</td>
                         <td>Data do recebimento das latas</td>
-                        <td>{{seletedLinha.form.DataRecebimentoLatas | date:'dd/MM/yyyy'}}</td>
+                        <td>{{seletedLinha.form.DataRecebimentoLatas}}</td>
                         <td>Fornecedor da Lata</td>
-                        <td><span ng-repeat="item in seletedLinha.form.FornecedorLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
+                        <td>@*<span for="" class="" ng-repeat="item as item.Name for item in seletedLinha.form.FornecedorLata track by item.Id">{{item.Name}}</span>*@</td>
                     </tr>
                     <tr>
                         <td>Data do recebimento das tampas/fundos das latas</td>
-                        <td>{{seletedLinha.form.DataRecebimentoTampasFundosLatas  | date:'dd/MM/yyyy'}}</td>
+                        <td>{{seletedLinha.form.DataRecebimentoTampasFundosLatas}}</td>
                         <td>Fornecedor das tampas/fundos das latas</td>
-                        <td><span ng-repeat="item in seletedLinha.form.FornecedorTampaFundoLata">{{item.Name}}{{$last ? '' : ', '}}</span></td>
+                        <td>@*<span for="" class="" ng-repeat="item as item.Name for item in seletedLinha.form.FornecedorTampaFundoLata track by item.Id">{{item.Name}}</span>*@</td>
                         <td>Tipo da Lata</td>
-                        <td>{{seletedLinha.form.TipoDeLata.Name}}</td>
+                        <td></td>
                     </tr>
 
                 </tbody>
             </table>
-            <br />
-            <div id="div{{($index +1)}}" class="divided"  ng-repeat="item in seletedLinha.latas track by $index" ng-init="lataIndex = $index; seletedLinha.IsStoped = false">
-                <table style="width:100%;" ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0">
-                    <tbody>
-                        <tr>
-                            <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold; width:15%">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
-                            <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd; width: 80px !important" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{($index+1)}}</td>
-                        </tr>
-                        <tr ng-repeat="ParLevel3 in item.ListParlevel3 | orderBy : sorterFunc track by $index">
-                            <td style="border:1px solid #cccccc; padding: 2px;">{{ParLevel3.Name}}</td>
-                            <td style="max-width: 80px; border:1px solid #cccccc; padding: 1px; text-align: center;"
-                                ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index"
-                                ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
-                                colspan="{{((ParLevel3.IsPointLess == false) ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}">
+            <div ng-show="false" class="col-lg-3 col-md-3 col-sm-3">
+                <form role="form" class="ng-pristine ng-valid">
+                    <div class="form-group float-label-control col-lg-6 col-md-12 col-sm-12">
+                        <label for="" class="">Produto: {{seletedLinha.form.Produto}}</label>
+                        <br />
+                        <span for="" class="">{{seletedLinha.form.Produto}}</span>
+                    </div>
+                    <div class="form-group float-label-control col-lg-3 col-md-12 col-sm-12">
+                        <label for="">Hora do início da Produção: {{seletedLinha.form.HoraInicioProducao}}</label>
+                        <br />
+                        <span for="" class=""></span>
+                    </div>
+                    <div class="form-group float-label-control col-lg-3 col-md-12 col-sm-12">
+                        <label for="">Hora do final da Produção: @*{{seletedLinha.form.HoraFimProducao | date: "DD/MM/YYYY"}}*@</label>
+                        <br />
+                        <span for="" class=""></span>
+                    </div>
+                    <div class="form-group float-label-control col-lg-6 col-md-12 col-sm-12">
+                        <label for="" class="">Código do produto</label>
+                        <br />
+                        <span for="" class="">{{seletedLinha.form.CodProduto}}</span>
+                    </div>
+                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                        <label for="">Data do recebimento das latas</label>
+                        <br />
+                        <span for="" class="">{{seletedLinha.form.DataRecebimentoLatas}}</span>
+                    </div>
+                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                        <label for="">Fornecedor da Lata</label>
+                        <br />
+                        @*<span for="" class="" ng-repeat="item as item.Name for item in seletedLinha.form.FornecedorLata track by item.Id">{{item.Name}}</span>*@
+                    </div>
+                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                        <label for="">Data do recebimento das tampas/fundos das latas</label>
+                        <br />
+                        <span for="" class="">{{seletedLinha.form.DataRecebimentoTampasFundosLatas}}</span>
+                    </div>
+                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                        <label for="">Fornecedor das tampas/fundos das latas</label>
+                        <br />
+                        @*<span for="" class="" ng-repeat="item as item.Name for item in seletedLinha.form.FornecedorTampaFundoLata track by item.Id">{{item.Name}}</span>*@
+                    </div>
+                    <div class="form-group float-label-control col-lg-6 col-md-6 col-sm-12">
+                        <label for="">Tipo da Lata</label>
+                        <br />
+                        @*<span for="" class="" ng-repeat="item as item.Name for item in seletedLinha.form.TipoDeLata track by item.Id">{{item.Name}}</span>*@
+                    </div>
 
-                                <span class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')">
-                                    <span>
-                                        <span class="validate" ng-if="item.ResultValue[ParLevel3.Id][($index +1)] === true" >
-                                            {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
-                                        </span>
-                                        <span class="validate" ng-if="item.ResultValue[ParLevel3.Id][($index +1)] === false"  >
-                                            {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
+                    <div ng-show="false" class="form-group float-label-control col-lg-12 col-md-12 col-sm-12">
+
+                        <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6">
+                            <button ng-disabled="seletedLinha.finalizado" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinatura">
+                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Finalizar Linha
+                            </button>
+                            <span ng-show="seletedLinha.finalizado" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{seletedLinha.userFinish.Name}}
+                            &nbsp;
+                            <span ng-show="seletedLinha.finalizado" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{seletedLinha.dataUserFinish}}
+                        </div>
+
+                        <div style="" class="form-group float-label-control col-lg-6 col-md-6 col-sm-6" ng-show="seletedLinha.finalizado">
+                            <button ng-disabled="seletedLinha.isValidated" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAssinaturaValidarLinha">
+                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Validar Linha
+                            </button>
+                            <span ng-show="seletedLinha.isValidated" class="glyphicon glyphicon-user" aria-hidden="true"></span> {{seletedLinha.userValidacao.Name}}
+                            &nbsp;
+                            <span ng-show="seletedLinha.isValidated" class="glyphicon glyphicon-time" aria-hidden="true"></span> {{seletedLinha.dataUserValidacao}}
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12"
+                 @*ng-class="{'alert alert-danger' : (seletedLinha.IsStoped)}"*@
+                 ng-init="seletedLinha.IsStoped = false">
+                <div ng-show="seletedLinha.Id > 0 && seletedLinha.latas.length > 0" style="" class="col-lg-6 col-md-6 col-sm-12" ng-repeat="item in seletedLinha.latas track by $index" ng-init="lataIndex = $index" tables>
+                    <div style="text-align: right; float:left; padding-bottom: 5px; padding-top: 5px; vertical-align: middle; font-size: 18px;">{{item.Name}} <span ng-show="item.HoraDaRetiradaDaLata"> retirada as: {{item.HoraDaRetiradaDaLata}}</span></div>
+
+                    <div ng-show="false" style="text-align: right; padding-bottom: 5px; padding-top: 5px; float: right; ">
+
+                        <button id="correctiveActionBtn"
+                                type="button" class="btn btn-danger btn-sm"
+                                data-toggle="modal"
+                                data-target="#modalCorrectiveAction"
+                                title="Gerar Ação Corretiva para {{item.Name}}"
+                                ng-show="item.showCorrectiveAction"
+                                ng-click="selectLata($index, selectedLata.haveErrors);  newCorrectiveAction()">
+                            <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                        </button>
+                        <button title="Modo Somente Visualização"
+                                type="button"
+                                class="btn btn-info btn-sm"
+                                data-toggle="modal"
+                                data-target="#myModal"
+                                ng-show="item.finalizado">
+                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                        </button>
+
+                        <button type="button"
+                                class="btn btn-warning btn-sm"
+                                data-toggle="modal"
+                                title="Editar {{item.Name}}"
+                                ng-show="!item.finalizado"
+                                ng-click="executeDocReady(); selectLata($index)"
+                                data-target="#editModal">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm" title="Remover {{item.Name}}"
+                                ng-show="!item.finalizado"
+                                ng-click="deleteLata(seletedLinha, $index)">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </button>
+                        <button class="btn btn-success btn-sm"
+                                data-toggle="modal"
+                                data-target="#modalAssinaturaFinalizaLata"
+                                title="Assinar {{item.Name}}"
+                                type="button"
+                                ng-show="item.liberaAssinaturaLata && !item.finalizado"
+                                ng-click="selectLata($index)">
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                        </button>
+                    </div>
+
+                    <table name="visualizacao" style="width: 100%">
+                        <tbody>
+
+                            <tr>
+                                <td style="border:0px solid #cccccc; padding: 2px; text-align: right; font-weight: bold; width:15%">Ponto <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></td>
+                                <td style="border:1px solid #cccccc; padding: 2px; text-align: center; font-weight: bold; background-color:#dddddd; width: 80px !important" ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index">{{($index+1)}}</td>
+                            </tr>
+
+                            <tr ng-repeat="ParLevel3 in item.ListParlevel3 | orderBy : sorterFunc track by $index">
+                                <td style="border:1px solid #cccccc; padding: 2px; font-weight: bold;">{{ParLevel3.Name}}</td>
+                                <td style="max-width: 80px; border:1px solid #cccccc; padding: 1px; text-align: center;"
+                                    ng-repeat="NumberOfPoints in range(seletedLinha.TipoDeLata.NumberOfPoints) track by $index"
+                                    ng-show="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))"
+                                    colspan="{{((ParLevel3.IsPointLess == false) ? seletedLinha.TipoDeLata.NumberOfPoints : 1)}}">
+
+                                    @*1 Binário ok
+                                        2   Número de defeitos ok
+                                        3   Intervalos ok
+                                        4   Calculado
+                                        5   Texto
+                                        99  NOVO CALCULADO POR OUTRO*@
+
+                                    @*1 Binário*@
+                                    <span class="label " ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '1')"
+                                          ng-class="{bgWhite: (!(item.ResultValue[ParLevel3.Name][($index +1)] === true) && !(item.ResultValue[ParLevel3.Name][($index +1)] === false)), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] === true), bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] === false)}">
+                                        <span>
+                                            <span class="validate" ng-if="item.ResultValue[ParLevel3.Name][($index +1)] === true">
+                                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolTrue.Name}}
+                                            </span>
+                                            <span class="validate" ng-if="item.ResultValue[ParLevel3.Name][($index +1)] === false">
+                                                {{ParLevel3.ParLevel3Value[0].ParLevel3BoolFalse.Name}}
+                                            </span>
                                         </span>
                                     </span>
-                                </span>
-                                <span class="validate" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
-                                    <span  >{{item.ResultValue[ParLevel3.Id][($index +1)] || "0"}}</span>
-                                </span>
-                                <span class="validate"
-                                      ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')">
-                                    <span  >{{item.ResultValue[ParLevel3.Id][($index +1)]}}</span>
-                                </span>
-                                <label style="word-wrap: break-word;" class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
-                                    {{item.ResultValue[ParLevel3.Id][($index +1)]}}
-                                </label>
-                                <span class="validate"
-                                      ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
-                                    <span  >{{item.ResultValue[ParLevel3.Id][($index + 1)]}}</span>
-                                </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-         
+                                    @*2 Número de defeitos*@
+                                    <span class="label validate" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '2')">
+                                        <span>{{item.ResultValue[ParLevel3.Name][($index +1)] || "0"}}</span>
+                                    </span>
+                                    @*3 Intervalos*@
+                                    <span class="label validate"
+                                          ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3')"
+                                          ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Name][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Name][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) }">
+                                        <span>{{item.ResultValue[ParLevel3.Name][($index +1)]}}</span>
+                                    </span>
+                                    @*4 Calculado*@
+                                    @*<span class="label " ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '4')">
+                                            <span>
+                                                <span class="validate">
+                                                    {{ParLevel3.ResultValue['PontoCalc1' + ($index +1)]}}
+                                                </span>
+                                                <span ng-if="ParLevel3.ResultValue[('Ponto' + ($index +1)] > 0">
+                                                    x10^
+                                                </span>
+                                                <span class="validate">
+                                                    {{ParLevel3.ResultValue['PontoCalc2' + ($index +1)]}}
+                                                </span>
+                                            </span>
+                                        </span>*@
+                                    @*5 Texto*@
+                                    <label style="word-wrap: break-word;" class="" ng-if="(ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '5')">
+                                        @*<span>{{item.ResultValue[ParLevel3.Name][($index +1)]}}</span>*@
+                                        {{item.ResultValue[ParLevel3.Name][($index +1)]}}
+                                    </label>
+                                    @*99 NOVO CALCULADO POR OUTRO*@
+                                    <span class="label validate"
+                                          ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Name][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Name][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && (ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior) , bgRed: (item.ResultValue[ParLevel3.Name][($index +1)] != null) && !(ParLevel3.ParLevel3Value_OuterList[0].LimInferior <= item.ResultValue[ParLevel3.Name][($index +1)] && item.ResultValue[ParLevel3.Name][($index +1)] <= ParLevel3.ParLevel3Value_OuterList[0].LimSuperior)}"
+                                          ng-if="(ParLevel3.ParLevel3Value_OuterList[0] && ParLevel3.ParLevel3Value_OuterList[0].ParLevel3InputType_Id == '99')">
+                                        <span>{{item.ResultValue[ParLevel3.Name][($index + 1)]}}</span>
+                                    </span>
+                                </td>
+                            </tr>
 
+                        </tbody>
+                    </table>
+
+                    <div style="text-align: left; padding-top: 5px; height:40px;">
+                        <div style="float:left;">
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{item.userValidacao.Name}}
+                        </div>
+                        <div style="float:right;">
+                            <span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{item.dataUserValidacao}}
+                        </div>
+                    </div>
+
+                </div>
+
+                <br />
+                <div ng-show="false">
+                    <button ng-show="seletedLinha.Id > 0 && !seletedLinha.finalizado" type="button" ng-click="newLata(seletedLinha); executeDocReady(true)" style="margin: 35px;" class="btn btn-primary btn-sm">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Adicionar Lata
+                    </button>
+                    <button type="button" ng-show="seletedLinha.Id > 0" ng-click="getParansLinha(activeInLine, true, true, true)" class="btn btn-info" style="margin-left: 30px;">
+                        Atualizar Parametrização / Nova Coleta
+                    </button>
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <br />
+            <br />
             <div id="rcorners2">
-                @*<p><label>Espaço Livre</label></p><br />
-                    <p><label>Escareação</label></p><br />
-                    <p><label>Altura</label></p><br />
-                    <p><label>Gancho Corpo</label></p><br />
-                    <p><label>Gancho Tampa</label></p><br />
-                    <p><label>Junção</label></p><br />
-                    <p><label>Teste de ar</label></p>*@
+                <p><label>Espaço Livre</label></p><br />
+                <p><label>Escareação</label></p><br />
+                <p><label>Altura</label></p><br />
+                <p><label>Gancho Corpo</label></p><br />
+                <p><label>Gancho Tampa</label></p><br />
+                <p><label>Junção</label></p><br />
+                <p><label>Teste de ar</label></p>
             </div>
         </section>
     </div>
@@ -379,12 +581,6 @@
 <script src="~/Scripts/Math/math.js"></script>
 
 <script>
-
-    var indicadorId = @Html.Raw(Json.Encode(ViewBag.IndicadorId));
-    var linhaId = @Html.Raw(Json.Encode(ViewBag.linhaId));
-
-    //var indicadorId = '48'
-    //var linhaId  = '8'
 
     var app = angular.module('sgqSystem', []);
     function GetUsuarioId() {
@@ -497,7 +693,7 @@
 
                 vm.findWithAttr = function (array, attr, value) {
                     for (var i = 0; i < array.length; i += 1) {
-                        if (array[i][attr] == value) {
+                        if (array[i][attr] === value) {
                             return i
                         }
                     }
@@ -513,29 +709,21 @@
                                   })
                               } else {
                                   if (showMensagem)
-                                      //toastr.success('Indicadores carregados')
-                                      vm.indicadores = r.data.model
-
-                                  vm.init()
+                                      toastr.success('Indicadores carregados')
+                                  vm.indicadores = r.data.model
                               }
                           });
                 }
 
 
-                vm.selectIndicador = function (item, id) {
-                    if (id && indicadorId > 0){
-                        vm.indicadorSelecionado = vm.findWithAttr(vm.indicadores, 'Id', indicadorId)
-                        vm.indicadorSelecionado = vm.indicadores[vm.indicadorSelecionado]
-                    }
-                    else
-                        vm.indicadorSelecionado = item
-
+                vm.selectIndicador = function (item) {
+                    vm.indicadorSelecionado = item
                     vm.seletedLinha = {}
-                    vm.getParametrizacaoLinhas(vm.indicadorSelecionado.Id, true)
+                    vm.getParametrizacaoLinhas(item.Id)
                 }
 
                 //vm.company = GetUnidadeUsuario()
-                vm.getAllLinha = function (index, needFindIndex, showMensagem, loadLinha) {
+                vm.getAllLinha = function (index, needFindIndex, showMensagem) {
                     //vm.seletedLinha = vm.linhas[index]
                     //vm.activeInLine = vm.seletedLinha.Id
                     //if (needFindIndex)
@@ -558,13 +746,7 @@
                                    //vm.executeDocReady(true)
                                    //vm.seletedLinha = { Id: 0 }
                                    //vm.getState()
-
-                                   if (c == (vm.linhas.length -1))
-                                       if (loadLinha) {
-                                           vm.activeInLine = linhaId
-                                           vm.getLinha(null, linhaId, false)
-                                       }
-                                }
+                               }
                            });
                     })
 
@@ -619,9 +801,9 @@
                     //$.LoadingOverlay("show");
                     if (needFindIndex)
                         index = vm.findWithAttr(vm.linhas, 'Id', vm.activeInLine);
+
                     vm.seletedLinha = vm.linhas[index]
-                    if (vm.seletedLinha['StartAuditTime'])
-                        vm.seletedLinha['StartAuditTime'] = moment().format("DD/MM/YYYY HH:mm")
+                    vm.seletedLinha['StartAuditTime'] = moment().format("DD/MM/YYYY HH:mm")
                     vm.activeInLine = vm.seletedLinha.Id
 
                     //vm.executeDocReady(true)
@@ -778,7 +960,7 @@
 
                 /*GET Todas as linhas cadastradas*/
 
-                vm.getParametrizacaoLinhas = function (idLevel1, loadLinha) {
+                vm.getParametrizacaoLinhas = function (idLevel1) {
                     $http({ method: 'GET', url: vm.getParametrizacaoUrl + "?Company=" + vm.company + "&level1Id=" + idLevel1, showLoader: true })
                         .then(function (r) {
                             if (r.data.errors) {
@@ -786,7 +968,7 @@
                                     toastr.error(o)
                                 })
                             } else {
-                                //toastr.success(r.data.resposta)
+                                toastr.success(r.data.resposta)
                                 //toastr.success('Recuperada coleta persistida \n na Base de Dados')
                                 //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
                                 vm.linhas = r.data.model
@@ -794,7 +976,7 @@
                                     o["latas"] = []
                                 })
                                 //vm.executeDocReady(true)
-                                vm.getAllLinha(null,null, false, loadLinha)
+                                vm.getAllLinha()
                                 //vm.getState()
                             }
                         });
@@ -802,14 +984,14 @@
 
                 /*GET os Dados das linhas cadastradas*/
                 vm.getState = function () {
-                    $http({ method: 'GET', url: `${vm.saveStateUrl}?Company=${vm.company}&level1Id=${vm.indicadorSelecionado.Id}` })
+                    $http({ method: 'GET', url: vm.saveStateUrl + "?Company=" + vm.company })
                         .then(function (r) {
                             if (r.data.errors) {
                                 r.data.errors.forEach(function (o) {
                                     toastr.error(o)
                                 })
                             } else {
-                                //toastr.success(r.data.resposta)
+                                toastr.success(r.data.resposta)
                                 //console.log(jQuery.parseJSON(r.data.model.ObjectRecravacaoJson))
                                 let linhasSalvas = r.data.model//jQuery.parseJSON(r.data.model.ObjectRecravacaoJson)
                                 let novaLinha = []
@@ -858,7 +1040,6 @@
 
                                 $.LoadingOverlay("hide", true);
                                 vm.executeDocReady()
-                                setTimeout(function () { window.print()}, 1000)
                             }
                         });
                 }
@@ -1301,12 +1482,11 @@
                 }
 
                 /*Não utilizado*/
-                vm.init = function () {
-                    // check if there is query in url
-                    // and fire search in case its value is not empty
-                    vm.selectIndicador(null, true)
-                };
-               
+                vm.$on('$viewContentLoaded', function () {
+                    //Here your view content is fully loaded !!
+                    //vm.executeDocReady()
+                });
+
                 vm.$watch('$viewContentLoaded',
                     function () {
                         setTimeout(function () {
@@ -1395,3 +1575,4 @@
 
     })();
 </script>
+

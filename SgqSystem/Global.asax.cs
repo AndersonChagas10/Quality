@@ -29,8 +29,10 @@ namespace SgqSystem
             ModelBinders.Binders.Add(typeof(decimal), new DecimalModelBinder());
             System.Web.Http.GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            BundleTable.EnableOptimizations = true;
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
             AutoMapperConfig.RegisterMappings();
             DisableApplicationInsightsOnDebug();
             GlobalConfig.VerifyConfig("DbContextSgqEUA");

@@ -1,7 +1,9 @@
 ﻿using Dominio;
 using Newtonsoft.Json.Linq;
+using SgqSystem.Controllers.Api.Recravacao;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -11,6 +13,7 @@ namespace SgqSystem.Controllers.Api
     public class RecravacaoApiController : BaseApiController
     {
         private SgqDbDevEntities db;
+        private RepoRecravacao<RecravacaoJson> repo;
         private List<string> errors;
         private string mensagemSucesso;
 
@@ -18,7 +21,18 @@ namespace SgqSystem.Controllers.Api
         {
             db = new SgqDbDevEntities();
             errors = new List<string>();
+            repo = new RepoRecravacao<RecravacaoJson>();
             mensagemSucesso = string.Empty;
+        }
+
+        // GET: api/RecravacaoApi
+        public HttpResponseMessage Get(int Company, int level1Id)
+        {
+            var requestResults = Request.Content.ReadAsStringAsync().Result;
+            var paramsFromRequest = ToDynamic(Request.Content.ReadAsStringAsync().Result);
+            var query = string.Format("SELECT TOP 1* FROM RecravacaoJson WHERE ParCompany_Id = {0} AND ParLevel1_Id = {1} AND SalvoParaInserirNovaColeta IS NULL AND ISACTIVE = 1 ORDER BY Id DESC", Company, level1Id);
+            var results = QueryNinja(db, query);
+            return Request.CreateResponse(HttpStatusCode.OK, new { resposta = "Dados Recuperados", model = results });
         }
 
         // POST: api/RecravacaoApi
@@ -26,64 +40,49 @@ namespace SgqSystem.Controllers.Api
         {
             ////Teste de erros não controlados
             //throw new Exception("teste", new Exception("INNER", new Exception("Inner 2")));
-
             var model = string.Empty;
 
             try
             {
-
                 ////Teste de erros controlados
                 //throw new Exception("teste", new Exception("INNER", new Exception("Inner 2")));
-
                 model = Request.Content.ReadAsStringAsync().Result;
                 System.Web.Script.Serialization.JavaScriptSerializer json_serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
                 dynamic dados = json_serializer.DeserializeObject(model);
                 var linha = ToDynamic(model);
                 var linhaStringFormatada = ToJson(linha);
-                int IdLinha = int.Parse(dados["Id"]);
-                int IdCompany = int.Parse(dados["ParCompany_Id"]);
+                int idLinha = int.Parse(dados["Id"]);
+                int idCompany = int.Parse(dados["ParCompany_Id"]);
+                int parLevel1_Id = int.Parse(dados["ParLevel1_Id"]);
+                bool salvoParaInserirNovaColeta = false;
                 bool isValidated = false;
-
-                try //Não encontrei outra forma de evitar o estouro caso a chave não exista. CG.
-                {
+                var existente = db.RecravacaoJson.FirstOrDefault(r => r.ParCompany_Id == idCompany && r.Linha_Id == idLinha && !isValidated && r.SalvoParaInserirNovaColeta == null)?.Id;
+                
+                if(IsPropertyExist(dados, "isValidated"))
                     isValidated = dados["isValidated"];
-                    //dados.TryGetValue<bool>("isValidated", out isValidated);
-                }
-                catch (Exception)
-                {
-                }
 
-                //var IdLinha = int.Parse(((JValue)(((JContainer)linha).First.FirstOrDefault())).Value.ToString());
-                var existente = db.Database.SqlQuery<int>(string.Format("SELECT Id from RecravacaoJson WHERE Linha_Id = {0} AND ParCompany_Id = {1} AND IsValidated = 0", IdLinha, IdCompany)).FirstOrDefault();
+                if (IsPropertyExist(dados, "SalvoParaInserirColeta"))
+                    salvoParaInserirNovaColeta = dados["SalvoParaInserirColeta"];
 
-                if (existente > 0)
-                {
-                    var queryUpdate = string.Format("UPDATE RecravacaoJson SET ObjectRecravacaoJson = N'{0}' WHERE Id = {1}", linhaStringFormatada, existente);
-                    var queryUpdateAlterDate = string.Format("UPDATE RecravacaoJson SET AlterDate = {0} WHERE Id = {1}", "GETDATE()", existente);
-                    db.Database.ExecuteSqlCommand(queryUpdate);
-                    db.Database.ExecuteSqlCommand(queryUpdateAlterDate);
-                }
+                if (existente.GetValueOrDefault() > 0 && salvoParaInserirNovaColeta == false)
+                    Update(linhaStringFormatada, existente);
                 else
                 {
-                    var queryInsert = string.Format("INSERT INTO RecravacaoJson (UserSgqId, ParCompany_Id, Linha_Id, ObjectRecravacaoJson) \n \t VALUES \n \t" +
-                        "\n ({0}, \n {1}, \n {2}, \n N'{3} \n ')", "1", IdCompany, IdLinha, linhaStringFormatada);
-                    var Id = int.Parse(db.Database.SqlQuery<decimal>(queryInsert + " SELECT SCOPE_IDENTITY()").FirstOrDefault().ToString());
+                    if (existente.GetValueOrDefault() > 0  && salvoParaInserirNovaColeta == true)
+                        UpdateRecravacaoJsonParaNovaColeta(linhaStringFormatada, existente.GetValueOrDefault());
+                    else
+                        Save(linhaStringFormatada, idLinha, idCompany, parLevel1_Id);
                 }
 
                 if (isValidated)
-                {
-                    var queryUpdate = string.Format("UPDATE RecravacaoJson SET IsValidated = N'{0}' WHERE Id = {1}", 1, existente);
-                    var queryUpdateAlterDate = string.Format("UPDATE RecravacaoJson SET ValidateLockDate = {0} WHERE Id = {1}", "GETDATE()", existente);
-                    db.Database.ExecuteSqlCommand(queryUpdate);
-                    db.Database.ExecuteSqlCommand(queryUpdateAlterDate);
-                }
+                    UpdateRecravacaoJsonFinalizaColetaValidada(linhaStringFormatada, existente.GetValueOrDefault());
                 //Post Save
                 mensagemSucesso = "Registro atualizado";
 
             }
             catch (Exception e)
             {
-                errors.Add("Não foi possível inserir o Usuário, favor entrar em contato com o Suporte do Sistema, descrição do problema: " + e.Message);
+                errors.Add("Não foi possível Salvas os Dados: " + e.Message);
             }
 
             if (errors.Count() > 0)
@@ -93,16 +92,62 @@ namespace SgqSystem.Controllers.Api
 
         }
 
-        // GET: api/RecravacaoApi
-        public HttpResponseMessage Get(int Company)
+        private void UpdateRecravacaoJsonFinalizaColetaValidada(string linhaStringFormatada, int? existente)
         {
-            var requestResults = Request.Content.ReadAsStringAsync().Result;
-            var paramsFromRequest = ToDynamic(Request.Content.ReadAsStringAsync().Result);
-            var query = string.Format("SELECT * FROM RecravacaoJson WHERE ParCompany_Id = {0} ORDER BY Id DESC", Company);
-            var results = QueryNinja(db, query);
-            return Request.CreateResponse(HttpStatusCode.OK, new { resposta = "Dados Recuperados", model = results });
+            var updateRecravacaoJsonFinalizaColetaValidada = db.RecravacaoJson.FirstOrDefault(r => r.Id == existente);
+            updateRecravacaoJsonFinalizaColetaValidada.ObjectRecravacaoJson = linhaStringFormatada;
+            updateRecravacaoJsonFinalizaColetaValidada.AlterDate = DateTime.Now;
+            updateRecravacaoJsonFinalizaColetaValidada.isValidated = true;
+            repo.Save(updateRecravacaoJsonFinalizaColetaValidada);
         }
 
+        private void UpdateRecravacaoJsonParaNovaColeta(string linhaStringFormatada, int? existente)
+        {
+            var updateRecravacaoJsonNovaColeta = db.RecravacaoJson.FirstOrDefault(r => r.Id == existente);
+            updateRecravacaoJsonNovaColeta.ObjectRecravacaoJson = linhaStringFormatada;
+            updateRecravacaoJsonNovaColeta.AlterDate = DateTime.Now;
+            updateRecravacaoJsonNovaColeta.SalvoParaInserirNovaColeta = existente;
+            repo.Save(updateRecravacaoJsonNovaColeta);
+        }
+
+        private void Save(string linhaStringFormatada, int idLinha, int idCompany, int parLevel1_Id)
+        {
+            var newRecravacaoColeta = new RecravacaoJson()
+            {
+                AddDate = DateTime.Now,
+                IsActive = true,
+                UserSgqId = 1,
+                ParCompany_Id = idCompany,
+                Linha_Id = idLinha,
+                ParLevel1_Id = parLevel1_Id,
+                ObjectRecravacaoJson = linhaStringFormatada
+            };
+            repo.Save(newRecravacaoColeta);
+        }
+
+        private void Update(string linhaStringFormatada, int? existente)
+        {
+            var updateRecravacaoJson = db.RecravacaoJson.FirstOrDefault(r => r.Id == existente);
+            updateRecravacaoJson.ObjectRecravacaoJson = linhaStringFormatada;
+            updateRecravacaoJson.AlterDate = DateTime.Now;
+            repo.Save(updateRecravacaoJson);
+        }
+
+        private bool IsPropertyExist(dynamic obj, string name)
+        {
+            try
+            {
+                return ((IDictionary<string, object>)obj).ContainsKey(name);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            //if (obj is ExpandoObject)
+            //    return ((IDictionary<string, object>)obj).ContainsKey(name);
+
+            //return obj.GetType().GetProperty(name) != null;
+        }
 
     }
 }

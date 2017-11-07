@@ -22,7 +22,10 @@ namespace SgqSystem
             bundles.Add(new ScriptBundle("~/bundles/Guard")
              .Include("~/Scripts/GuardJs.js",
                 "~/Scripts/loadingoverlay.min.js",
-                "~/Scripts/loadingoverlay_progress.min.js")
+                "~/Scripts/loadingoverlay_progress.min.js",
+                "~/Scripts/toastr.min.js",
+                "~/Scripts/Math/math.js"
+                )
             );
 
             bundles.Add(new ScriptBundle("~/bundles/mask")
@@ -79,6 +82,7 @@ namespace SgqSystem
             bundles.Add(new StyleBundle("~/Content/General").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-theme.min.css.map",
+                      "~/Content/toastr.min.css",
                       "~/Content/jquery-ui.min.css"
                       ));
 
@@ -110,6 +114,29 @@ namespace SgqSystem
 
             //bundles.Add(new StyleBundle("~/Content/Hc").Include(
             //      "~/Content/daterangepicker.css"));
+            #endregion
+
+
+            #region Privates
+            bundles.Add(new StyleBundle("~/bundles/RecravacaoPrintCss").Include(
+                "~/Content/bootstrap.min.css"
+                , "~/Content/toastr.min.css"
+                , "~/Content/select2.min.css"
+                , "~/Content/bootstrap-select.min.css"
+                ));
+
+           bundles.Add(new ScriptBundle("~/bundles/RecravacaoPrintJs").Include(
+                "~/Scripts/jquery-3.1.0.min.js"
+                , "~/Scripts/inputmask/jquery.inputmask.bundle.js"
+                , "~/Scripts/angular.min.js"
+                , "~/Scripts/bootstrap.min.js"
+                , "~/Scripts/select2.min.js"
+                , "~/Scripts/moment-with-locales.min.js"
+                , "~/Scripts/toastr.min.js"
+                , "~/Scripts/loadingoverlay.min.js"
+                ));
+
+
             #endregion
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
