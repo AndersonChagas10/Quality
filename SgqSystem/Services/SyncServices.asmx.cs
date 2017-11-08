@@ -1816,22 +1816,22 @@ namespace SgqSystem.Services
                 if (ParHeaderField_Id != "undefined" && ParFieldType_Id != "undefined")
                 {
 
-                    sql += "INSERT INTO[dbo].[CollectionLevel2XParHeaderField]               " +
-                         "      ([CollectionLevel2_Id]                                     " +
-                         "      ,[ParHeaderField_Id]                                       " +
-                         "      ,[ParHeaderField_Name]                                     " +
-                         "      ,[ParFieldType_Id]                                         " +
-                         "      ,[Evaluation]                                         " +
-                         "      ,[Sample]                                         " +
-                         "      ,[Value])                                                  " +
-                         "VALUES                                                           " +
-                         "      ('" + CollectionLevel2Id + "'                              " +
-                         "      ," + ParHeaderField_Id + "                                     " +
+                    sql += "INSERT INTO[dbo].[CollectionLevel2XParHeaderField]                                      " +
+                         "      ([CollectionLevel2_Id]                                                              " +
+                         "      ,[ParHeaderField_Id]                                                                " +
+                         "      ,[ParHeaderField_Name]                                                              " +
+                         "      ,[ParFieldType_Id]                                                                  " +
+                         "      ,[Evaluation]                                                                       " +
+                         "      ,[Sample]                                                                           " +
+                         "      ,[Value])                                                                           " +
+                         "VALUES                                                                                    " +
+                         "      ('" + CollectionLevel2Id + "'                                                       " +
+                         "      ," + ParHeaderField_Id + "                                                          " +
                          "      ,(SELECT Name FROM ParHeaderField (nolock)  WHERE Id='" + ParHeaderField_Id + "')   " +
-                         "      ,'" + ParFieldType_Id + "'                                  " +
-                         "      ,'" + Evaluation + "'                                  " +
-                         "      ,'" + Sample + "'                                  " +
-                         "      ,'" + Value + "')                                           ";
+                         "      ,'" + ParFieldType_Id + "'                                                          " +
+                         "      ,'" + Evaluation + "'                                                               " +
+                         "      ,'" + Sample + "'                                                                   " +
+                         "      ,'" + Value + "')                                                                   ";
 
                 }
 
