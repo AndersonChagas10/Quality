@@ -343,12 +343,16 @@
                             </span>
                             @*3 Intervalos*@
                             <span class="label validate"
-                                  ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id != idEC && ParLevel3.Id != idET)"
+                                  ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id != idEC && ParLevel3.Id != idET && ParLevel3.Id != idEspessura)"
                                   ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: (item.ResultValue[ParLevel3.Id][($index +1)] != null) && (ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) , bgRed: (item.ResultValue[ParLevel3.Id][($index +1)] != null) && !(ParLevel3.ParLevel3Value[0].IntervalMin <= item.ResultValue[ParLevel3.Id][($index +1)] && item.ResultValue[ParLevel3.Id][($index +1)] <= ParLevel3.ParLevel3Value[0].IntervalMax) }">
                                 <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}</span>
                             </span>
                             <span class="label validate"
                                   ng-if="(ParLevel3.ParLevel3Value[0]  && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && (ParLevel3.Id == idEC || ParLevel3.Id == idET)"
+                                  ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Id][($index +1)] == 'NA') }">
+                                <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}</span>
+                            </span>
+                            <span ng-if="((ParLevel3.ParLevel3Value[0] && ParLevel3.ParLevel3Value[0].ParLevel3InputType_Id == '3') && ParLevel3.Id == idEspessura)"  
                                   ng-class="{bgWhite:  (item.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (item.ResultValue[ParLevel3.Id][($index +1)] == 'NA') }">
                                 <span>{{item.ResultValue[ParLevel3.Id][($index +1)]}}</span>
                             </span>
@@ -520,8 +524,9 @@
                                         <span ng-if="((ParLevel3.IsPointLess == true) || (ParLevel3.IsPointLess == false && $index == 0))">
                                             <input style="width:100%;"
                                                    type="text"
+                                                   @*title="{{selectedLlata.espessuraTT}}"*@
                                                    ng-model="selectedLata.ResultValue[ParLevel3.Id][($index +1)]"
-                                                   ng-class="{decimal: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10), percentage: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:  (selectedLata.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (selectedLata.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: bgGreenEspessura() , bgRed: bgRedEspessura()}"
+                                                   ng-class="{decimal: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id != 10), percentage: (ParLevel3.ParLevel3Value[0].ParMeasurementUnit.Id == 10), bgWhite:  (selectedLata.ResultValue[ParLevel3.Id][($index +1)].length == 0), bgYellow: (selectedLata.ResultValue[ParLevel3.Id][($index +1)] == 'NA'), bgGreen: bgGreenEspessura(selectedLata.ResultValue[ParLevel3.Id][($index +1)]) , bgRed: bgRedEspessura(selectedLata.ResultValue[ParLevel3.Id][($index +1)])}"
                                                    ng-disabled="selectedLata.ResultValue[ParLevel3.Id][($index +1)] == 'NA'"
                                                    id='{{generateIdParaOutroCalculado(ParLevel3, $index)}}'
                                                    ng-change="calcularEspessura(selectedLata)"
@@ -846,8 +851,7 @@
                                           ng-model="selectedLata.PreventiveAction.PreventativeMeasure"
                                           class="form-control custom-control"
                                           rows="3"
-                                          style="resize:none">
-                                </textarea>
+                                          style="resize:none"></textarea>
                             </div>
                             <div class="{{formDefault12}}">
                                 <div ng-show="selectedLata.PreventiveAction.IsAssinada">
@@ -999,12 +1003,7 @@
 
 
                 //TUDO MOCK MOCK
-                //vm.idEC = 1263
-                //vm.idET =
-                //vm.idEC = 1263
-                //vm.idET = 1264
-                //vm.idOVERLAP = 1262
-                //vm.mercado = 1
+               
 
                 vm.idEC = 1263
                 vm.idET = 1264
@@ -1015,27 +1014,61 @@
                 vm.limSuperiorEspessura
                 vm.valorEt
                 vm.valorEc
+                //vm.idEC = 3320
+                //vm.idET = 3319
+                //vm.idEspessura = 3314
+                //vm.idOVERLAP = 3327
+                vm.espessuraTT = function () {
+                    let lata = vm.selectedLata
+                    if (lata.ResultValue)
+                        if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()]) 
+                            lata.espessuraTT = `Lim. Inferior ((2*EC)+(3*ET))+0.05=${lata["limInferiorEspessura"]}, lim. superior ((2*EC)+(3*ET))+0.23=${lata["limSuperiorEspessura"]}`
+                        else
+                            lata.espessuraTT =`Lim. Inferior ((2*EC)+(3*ET))+0.05, lim. superior ((2*EC)+(3*ET))+0.23`
+                }
                 vm.calcularEspessura = function (lata) {
-                    if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()]) {
-                        let valorEc = lata.ResultValue[vm.idEC.toString()]
-                        let valorEt = lata.ResultValue[vm.idET.toString()]
-                        lata["limInferiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.05`)
-                        lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.23`)
-                    }
+                    //if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()]) {
+                    //    let valorEc = lata.ResultValue[vm.idEC.toString()]
+                    //    let valorEt = lata.ResultValue[vm.idET.toString()]
+                    //    lata["limInferiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.05`)
+                    //    lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.23`)
+                    //}
                     //console.log(vm.limInferiorEspessura)
                     //console.log(vm.limSuperiorEspessura)
                 }
-                vm.bgGreenEspessura = function () {
-                    return false
+                vm.bgGreenEspessura = function (value) {
+                    let lata = vm.selectedLata
+                    if (lata.ResultValue)
+                        if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()]) {
+                            let valorEc = lata.ResultValue[vm.idEC.toString()]
+                            let valorEt = lata.ResultValue[vm.idET.toString()]
+                            lata["limInferiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.05`)
+                            lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.23`)
+                            vm.espessuraTT()
+                            if ((value != null) && (lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
+                                return true
+                        } else
+                            return false
                 }
-                vm.bgRedEspessura = function () {
-                    return false
+                vm.bgRedEspessura = function (value) {
+                    let lata = vm.selectedLata
+                    if (lata.ResultValue)
+                        if (lata.ResultValue[vm.idEC.toString()] && lata.ResultValue[vm.idET.toString()]) {
+                            let valorEc = lata.ResultValue[vm.idEC.toString()]
+                            let valorEt = lata.ResultValue[vm.idET.toString()]
+                            lata["limInferiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.05`)
+                            lata["limSuperiorEspessura"] = math.eval(`((2*${valorEt["1"]})+(3*${valorEc["1"]}))+0.23`)
+                            vm.espessuraTT()
+                            if ((value != null) && !(lata["limInferiorEspessura"] <= value && value <= lata["limSuperiorEspessura"]))
+                                return true
+                        } else
+                            return false
                 }
                 //FIM TUDO MOCK MOCK
 
                 vm.formDefault = 'form-group float-label-control col-lg-6 col-md-12 col-sm-12'
                 vm.formDefault12 = 'form-group float-label-control col-lg-12 col-md-12 col-sm-12'
-           
+
                 vm.linhas = [{}]
                 vm.produtos = [{}]
                 vm.fornecedorLata = [{}]
