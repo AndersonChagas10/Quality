@@ -43,9 +43,9 @@ namespace SgqSystem.Controllers.Api
                 "CP.Value AS Value,                                                            " +
                 "C.EvaluationNumber AS Evaluation,                                             " +
                 "C.Sample AS Sample                                                            " +
-                "FROM CollectionLevel2XParHeaderField CP                                       " +
-                "LEFT JOIN CollectionLevel2 C ON C.Id = CP.CollectionLevel2_Id                 " +
-                "LEFT JOIN ParHeaderField PH ON CP.ParHeaderField_Id = PH.Id                   " +
+                "FROM CollectionLevel2XParHeaderField CP (NOLOCK)                              " +
+                "LEFT JOIN CollectionLevel2 C (NOLOCK) ON C.Id = CP.CollectionLevel2_Id        " +
+                "LEFT JOIN ParHeaderField PH (NOLOCK) ON CP.ParHeaderField_Id = PH.Id          " +
                 "AND PH.LinkNumberEvaluetion = 1                                               " +
                 "WHERE C.UnitId = " + UnitId + " AND                                           " +
                 "C.CollectionDate BETWEEN '" + TransformedDate + " 00:00' AND                  " +
