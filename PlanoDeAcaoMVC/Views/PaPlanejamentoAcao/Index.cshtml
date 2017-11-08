@@ -4,6 +4,15 @@
 }
 
 <style>
+
+    .select2-container {
+      width: 278px;
+    }
+
+    select {
+        min-width:278px
+    }
+
     .hideEmail {
         display: block !important;
     }
@@ -407,6 +416,12 @@
 
             var sendObj = $('#Planejamento').serializeObject();
 
+            let isValid = $('#Planejamento').find('.error').length == 0
+            if(!isValid)  {
+                alert("Campos obrigatórios")
+                return 
+            }
+
             if (isClickedTaticoVinculado)
                 sendObj['IsTAtico'] = true;
 
@@ -440,6 +455,12 @@
                 sendObj['IsTAtico'] = true;
 
             sendObj = $(form).serializeObject();
+
+            let isValid = !($(form).find('.error:visible') == 0)
+            if(!isValid)  {
+                alert("Campos obrigatórios")
+                return 
+            }
 
             $.post(urlSalvarPlanejamento, sendObj, function (r) {
                 //ModalOpcoesEstrategico('');
@@ -797,13 +818,12 @@
             console.log(SalvarAcao);
             var listaAcoes = [];
             $('.Acao').not(':first').each(function (c, o) {
-
                 listaAcoes.push(SalvarAcaoAvulsa(o));
-
             });
 
-            if(listaAcoes[0] != undefined){
-
+            let isValid = $('.Acao').not(':first').find('.error').length == 0
+            if(listaAcoes[0] != undefined && isValid ){
+                //if(listaAcoes[0].isValid == '0') { return }
                 $.post(urlSalvarAcao, { "": listaAcoes }, function (r) {
                     if(listaAcoes[0].isValid == '0') { return }
                     $.post(urlGetPlanejamentoAcao, {}, function (r) {
@@ -828,7 +848,8 @@
                     openMessageModal("Não foi possível salvar o registro:", e.responseJSON.Message);
 
                 });
-            }
+            }else
+                alert("Campos obrigatórios");
 
         }
 
@@ -841,8 +862,13 @@
 
             });
 
+            let isValid = $('.Acao').find('.error').length == 0
+            if(!isValid)  {
+                alert("Campos obrigatórios")
+                return 
+            }
+
             $.post(urlSalvarAcao, { "": listaAcoes }, function (r) {
-                if(listaAcoes[0].isValid == '0') { return }
                 $.post(urlGetPlanejamentoAcao, {}, function (r) {
                     //if (counter == 1 && !jaLiberouCallback) {
                     jaLiberouCallback = true;
@@ -1761,9 +1787,16 @@
         //    HideForOperacional();
         //});
 
-        $(document).ajaxComplete(function () {
+        $(document).ajaxStop(function () {
             $.LoadingOverlay("hide", true);
             counter--;
+
+            setTimeout(function () {
+                $('select:visible').select2()
+                $('select:visible').select2('destroy')
+                $('select:visible').select2()
+            }, 500)
+
             HideForOperacional();
         });
 
