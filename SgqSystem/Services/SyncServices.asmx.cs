@@ -4561,12 +4561,11 @@ namespace SgqSystem.Services
                         form_control = "<input class=\"form-control input-sm\" type=\"time\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
                         break;
                     //Infomações
-                    case 8:
-                       
-                        form_control = "<div id=\"info" + header.ParHeaderField_Id + "\" style=\"display: none;background: RGBA(0,0,0,0.35);position: fixed;z-index: 999999;width: 100%;height: 100%;top: 0;left: 0;\"><div style=\"background: white;position: fixed; width: 100% ;height: 200px ; margin: 80px 0 0 0;\">" + header.ParHeaderField_Description + "<div onclick='document.getElementById(\"info" + header.ParHeaderField_Id + "\").style.display = \"none\"'>X</div></div></div><button onclick='document.getElementById(\"info" + header.ParHeaderField_Id + "\").style.display = \"block\"' class='btn btn-default btn-lg headerInformacao' ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\"><i class=\"fa fa-info-circle \" aria-hidden=\"true\" style=\"float:right; color:#17175c;\" title=\"" + header.ParHeaderField_Description + "\" ></i></button>";
+                    case 8:                     
+                        form_control = "<br><div id=\"info" + header.ParHeaderField_Id + "\" style=\"display: none;background: RGBA(0,0,0,0.35);position: fixed;z-index: 999999;width: 100%;height: 100%;top: 0;left: 0;\"><div style=\"background: white;position: fixed; width: 100% ;height: 200px ; margin: 80px 0 0 0; padding: 10px 20px 20px 20px;\"><div style=\"float:right; cursor: pointer;\" class=\"btn btn-primary\" onclick='document.getElementById(\"info" + header.ParHeaderField_Id + "\").style.display = \"none\";'>X</div><br><br>" + header.ParHeaderField_Description + "</div></div><button onclick='document.getElementById(\"info" + header.ParHeaderField_Id + "\").style.display = \"block\"' class='btn btn-default btn-lg headerInformacao' ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\"><i class=\"fa fa-info-circle \" aria-hidden=\"true\" style=\"float:right; color:#17175c;\" title=\"" + header.ParHeaderField_Description + "\" ></i></button>";
                         break;
                 }
-
+                
                 //Incrementar valor para o pai do elemento para Ytoara.
                 id = id + 1;
 
