@@ -310,6 +310,15 @@
                                         <input class="btn btn-primary btn-sm margin-button" type="button" value="Incluir Campo Integrações" id="btn ntegracoes" onclick="Cabecalhos.IncluirSalvarIntegracoes(true);" />
                                     </div>
 
+                                    @*Informações*@
+                                    <div id="objInformacoes" style="display:none;">
+                                        
+                                        @Html.Label(Resources.Resource.valueText): <input type="text" id="objInformacoesTextValue" />
+
+                                        <input class="btn btn-primary btn-sm margin-button" type="button" value="@Resources.Resource.include_information" id="btnIncluirInformacao" onclick="Cabecalhos.IncluirInformacoes();" />
+           
+                                    </div>
+
                                     @*tabela cabecalho itens inputados*@
                                     <div id="divCamposCabecalhoIncluidos" style="display:none;">
                                         <table id="camposCabecalhoIncluidos" class="">
@@ -480,6 +489,20 @@
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
                                                                     <input type="time" class="active form-control input-sm">
+                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
+                                                                    <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
+                                                                        <span class="glyphicon glyphicon-pencil"></span>
+                                                                    </button>
+                                                                </td>
+                                                            }
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 8)
+                                                            {
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+                                                                <td>
+                                                                    <input type="number" class="fixed-width form-control input-sm" />
+
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
                                                                     <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
                                                                         <span class="glyphicon glyphicon-pencil"></span>
@@ -768,6 +791,9 @@
                     break;
                 case 7:
                     Cabecalhos.ShowHora();
+                    break;
+                case 8: //Informacoes
+                    Cabecalhos.ShowInformacoes();
                     break;
                 default:
                     Cabecalhos.hideAllObj();
@@ -1059,6 +1085,90 @@
                 binary =true;
             }else
                 openMessageModal("Máximo de dois binários permitidos.");
+        },
+        ShowInformacoes: function () {
+            $('#objInformacoes').show();
+            $('#btnIncluirCabecalho input').hide();
+            $('#salvarCabecalho2').val('Salvar ' + $('#parFieldType option:selected').text()).show();
+
+            if($(camposCabecalhoIncluidos).find('tbody > tr:first > td').attr('colspan') == 7)
+                $('#salvarCabecalho2').fadeOut();
+            else
+                $('#salvarCabecalho2').fadeIn();
+        },
+        IncluirInformacoes: function (isData) {
+
+            if($('#headerLevel option:selected').val() == -1){
+                openMessageModal("@Resources.Resource.warning", "@Resources.Resource.select_the_header_level");
+                //alert('Selecione o Nivel do Cabecalho')
+                return;
+            }
+
+
+            if($('#paramsDto_parHeaderFieldDto_Name').val().length == 0){
+                openMessageModal("@Resources.Resource.alert", "Digite o nome para o Campo Texto");
+                //alert('Digite o nome para o Campo Texto');
+                return;
+            }
+
+            var nome = $('#paramsDto_parHeaderFieldDto_Name').val();
+            var nivelCabecalho = $('#headerLevel option:selected').val();
+            var tipo = $('#parFieldType option:selected').val();
+            var linkedNumberEvaluation = $('#paramsDto_parLevel1Dto_IsLimitedEvaluetionNumber').is(':checked');
+
+            Cabecalhos.AtualizaPreviewCampoInformacoes({
+                Name: nome,
+                Nivel: nivelCabecalho,
+                Type: tipo,
+                IsRemoved: false,
+                Description: "",
+                Link: linkedNumberEvaluation,
+                isDataDefined: isData
+            });
+
+            updateAllTables();
+
+        },AtualizaPreviewCampoInformacoes: function (o) {
+            var tipo = $('#parFieldType option:selected').val();
+            var example = '<tr><td>' + $('#headerLevel :selected').text() + '</td>' // Nivel
+            example += '<td id=""><label class=""> ' + $('#paramsDto_parHeaderFieldDto_Name').val() + '</label></td>' + // nome
+                       '<td id=""><label class=""> ' + $('#parFieldType :selected').text() + '</label></td>' ; // Tipo
+            //var example = '<div>';
+            //example += '<label> ' + o.Name + ' </label>&nbsp;';//Label
+            example += '<td>';
+            if(tipo == 6){
+                example += '<input type="text" class="dataInput form-control input-sm "/>';//Input Date
+            }else if(tipo == 7){
+                example += '<input type="time" class="form-control input-sm "/>'
+            }else if(tipo == 8){
+                example += $('#objInformacoesTextValue').val();
+            }else{
+                example += '<input type="text" class="form-control input-sm " />';//Input
+            }
+
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParFieldType_Id"        value="' + o.Type + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Name"                   value="' + o.Name + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].Description"            value="' + $('#objInformacoesTextValue').val() + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].ParLevelDefinition_Id"  value="' + o.Nivel + '" />';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].LinkNumberEvaluetion"   value="' + o.Link + '"/>';
+            example += '<input type="hidden"  name="paramsDto.listParHeaderFieldDto[~].IsActive"               value="true" />';
+            example += '</td>';
+
+            example += '<td>';
+            example += '' +  Cabecalhos.BtnExcluir();
+            //example += '</div>';
+            example += '</td>';
+
+            $('#tableCabecalhosPreview').append(example);
+
+            if (o.isDataDefined) {
+                SingleCallendar.IntiFullCallendarByClass('dataInput');
+            }
+
+        },
+        ExcluirCampoInformacoes: function (e) {
+            e.parent().remove();
+            updateAllTables();
         },
         ShowBinario: function () {
             $('#objBinario').show();

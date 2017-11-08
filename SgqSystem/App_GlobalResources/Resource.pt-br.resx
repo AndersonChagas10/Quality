@@ -2229,6 +2229,9 @@
   <data name="new_cluster_group" xml:space="preserve">
     <value>Novo Módulo</value>
   </data>
+  <data name="include_information" xml:space="preserve">
+    <value>Incluir campo Informação</value>
+  </data>
   <data name="fill_the_name" xml:space="preserve">
     <value>Preencha o Nome</value>
   </data>

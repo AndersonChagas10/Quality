@@ -42,8 +42,9 @@ namespace SgqSystem.Mail
                 {
                     //var url = "http://mtzsvmqsc/SGQ/api/hf/SendMail";
                     //var url = "http://localhost:57506/" + "api/hf/SendMail";
-                    var url = "http://localhost:8091/SgqSystem/" + "api/hf/SendMail";
-                    client.Timeout = TimeSpan.FromMinutes(2);
+                    //var url = "http://localhost:8090/SgqSystem/" + "api/hf/SendMail";
+                    var url = "http://mtzsvmqsc/Robo/api/hf/SendMail";
+                    client.Timeout = TimeSpan.FromMinutes(10);
                     client.GetAsync(url).Result.Content.ReadAsStringAsync();
                 }
             }
@@ -87,8 +88,8 @@ namespace SgqSystem.Mail
                 using (var db = new SgqDbDevEntities())
                     ListaDeMail = db.EmailContent.Where(r => r.SendStatus == null && r.Project == "SGQApp").ToList();
 
-                if (ListaDeMail != null && ListaDeMail.Count() > 0)
-                    foreach (var i in ListaDeMail.ToList())
+                if (ListaDeMail != null && ListaDeMail.Count() > 0)                   
+                    foreach (var i in ListaDeMail.Distinct().ToList())
                         Task.Run(() => MailSender.SendMail(Mapper.Map<EmailContentDTO>(i), GlobalConfig.emailFrom, GlobalConfig.emailPass, GlobalConfig.emailSmtp, GlobalConfig.emailPort, GlobalConfig.emailSSL, SendCompletedCallbackSgq, true));
             }
             catch (Exception ex)
