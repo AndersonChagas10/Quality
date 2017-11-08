@@ -316,41 +316,7 @@
                                         @Html.Label(Resources.Resource.valueText): <input type="text" id="objInformacoesTextValue" />
 
                                         <input class="btn btn-primary btn-sm margin-button" type="button" value="@Resources.Resource.include_information" id="btnIncluirInformacao" onclick="Cabecalhos.IncluirInformacoes();" />
-
-                                        @*<table id="tblBinario">
-                                            <tbody>
-                                                <tr class="row">
-                                                    <td class="td-erp"></td>
-                                                    @Table.GerarColunaLabel(@Html.Label(Resources.Resource.value))
-                                                    @Table.GerarColunaLabel(@Html.Label(Resources.Resource.punishment_value), Resources.Resource.punishment_value_popover)
-                                                </tr>
-                                                <tr class="row" id="positivo">
-                                                    @Table.GerarColunaLabel(@Html.Label(Resources.Resource.positive))
-                                                    <td>
-                                                        <input type="text" id="objBinarioPunishmentName1" class="form-control input-sm">
-                                                        @Html.ErrorManual("punishmentNameCabecalho1", "O campo Nome deve ser preechido para o Cabecalho.")
-                                                    </td>
-                                                    <td>
-                                                        <input type="number" id="objBinarioPunishmentValue1" class="form-control input-sm" value="0">
-                                                        @Html.ErrorManual("punishmentValueCabecalho1", "O campo Punição/Premiação deve ser selecionado para o Cabecalho.")
-                                                    </td>
-                                                </tr>
-                                                <tr class="row" id="negativo">
-                                                    @Table.GerarColunaLabel(@Html.Label(Resources.Resource.negative))
-                                                    <td>
-                                                        <input type="text" id="objBinarioPunishmentName2" class="form-control input-sm">
-                                                        @Html.ErrorManual("punishmentNameCabecalho2", "O campo Nome deve ser preechido para o Cabecalho.")
-                                                    </td>
-                                                    <td>
-                                                        <input type="number" id="objBinarioPunishmentValue2" class="form-control input-sm" value="0">
-                                                        @Html.ErrorManual("punishmentValueCabecalho2", "O campo Punição/Premiação deve ser selecionado para o Cabecalho.")
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn btn-primary btn-sm margin-button" type="button" id="btnIncluirCluster" onclick="Cabecalhos.IncluirBinario();"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>*@
+           
                                     </div>
 
                                     @*tabela cabecalho itens inputados*@
@@ -523,6 +489,20 @@
                                                                 <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
                                                                 <td>
                                                                     <input type="time" class="active form-control input-sm">
+                                                                    @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
+                                                                    <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
+                                                                        <span class="glyphicon glyphicon-pencil"></span>
+                                                                    </button>
+                                                                </td>
+                                                            }
+                                                            @if (parLevel1XHeaderField.ParHeaderField.ParFieldType_Id == 8)
+                                                            {
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParLevelDefiniton.Name</td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.Name </td>
+                                                                <td>@parLevel1XHeaderField.ParHeaderField.ParFieldType.Name</td>
+                                                                <td>
+                                                                    <input type="number" class="fixed-width form-control input-sm" />
+
                                                                     @Html.Hidden("paramsDto.parLevel1Dto.removerParHeaderField", parLevel1XHeaderField.Id, htmlAttributes: new { @class = "", @disabled = "disabled" })
                                                                     <button type="button" class="btn btn-success" id="EditarCabecalho" onclick="ModalEdicaoCabecalho('Editar Cabeçalho', @parLevel1XHeaderField.ParHeaderField.Id,@parLevel1XHeaderField.ParLevel1_Id,@parLevel1XHeaderField.ParHeaderField.ParFieldType_Id);" data-toggle="modal">
                                                                         <span class="glyphicon glyphicon-pencil"></span>
