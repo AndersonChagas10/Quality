@@ -280,7 +280,7 @@
             })
 
 
-            if (isValid) {
+            if (isValid || !isValid) {
                 $(this).find('input.required').each(function (c, o) {
                     $(o).addClass('error')
                     if (($(this).val().length > 0)) {
