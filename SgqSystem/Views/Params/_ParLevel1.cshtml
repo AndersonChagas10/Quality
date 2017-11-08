@@ -511,9 +511,7 @@
                                                                     </button>
                                                                 </td>
                                                             }
-                                                            <td>
-                                                                <button type="button" class="btn btn-danger btn-xs" onclick="Cabecalhos.RemoveCabecalhoEDICAO($(this));"><i class="fa fa-times"></i></button>
-                                                            </td>
+                                                            
                                                             <td>
                                                                 <select id="parLevel1XHeaderField_ParHeaderField_IsRequired" class="form-control input-sm" onchange="Cabecalhos.SetRequired($(this), @parLevel1XHeaderField.ParHeaderField.Id);">
                                                                     @if (parLevel1XHeaderField.ParHeaderField.IsRequired != null)
@@ -1178,8 +1176,9 @@
             example += '</td>';
 
             example += '<td>';
+            example += '<td></td>' //obrigatoriedade ""
+            example += '<td></td>' //padrão
             example += '' +  Cabecalhos.BtnExcluir();
-            //example += '</div>';
             example += '</td>';
 
             $('#tableCabecalhosPreview').append(example);
