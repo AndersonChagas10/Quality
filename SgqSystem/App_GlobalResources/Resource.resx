@@ -2232,4 +2232,7 @@
   <data name="next_unfolding" xml:space="preserve">
     <value>Next Unfolding</value>
   </data>
+  <data name="include_information" xml:space="preserve">
+    <value>Include Information Text</value>
+  </data>
 </root>

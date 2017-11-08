@@ -4560,6 +4560,11 @@ namespace SgqSystem.Services
                     case 7:
                         form_control = "<input class=\"form-control input-sm\" type=\"time\" Id=\"cb" + header.ParHeaderField_Id + "\" ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\" ParFieldType_Id=\"" + header.ParFieldType_Id + "\">";
                         break;
+                    //Infomações
+                    case 8:
+                       
+                        form_control = "<div id=\"gabriel\" style=\"display: none;background: red;position: absolute;z-index: 999999;width: 500px;height: 500px;\"></div><button onclick='document.getElementById(\"gabriel\").style.display = \"block\"' class='btn btn-default btn-lg headerInformacao' ParHeaderField_Id=\"" + header.ParHeaderField_Id + "\"><i class=\"fa fa-info-circle \" aria-hidden=\"true\" style=\"float:right; color:#17175c;\" title=\"" + header.ParHeaderField_Description + "\" ></i></button>";
+                        break;
                 }
 
                 //Incrementar valor para o pai do elemento para Ytoara.

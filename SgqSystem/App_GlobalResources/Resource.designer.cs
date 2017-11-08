@@ -2455,6 +2455,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Include Information Text.
+        /// </summary>
+        internal static string include_information {
+            get {
+                return ResourceManager.GetString("include_information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Include options.
         /// </summary>
         internal static string include_options {

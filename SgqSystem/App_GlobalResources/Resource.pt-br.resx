@@ -2226,4 +2226,7 @@
   <data name="next_unfolding" xml:space="preserve">
     <value>Próximo Desdobramento</value>
   </data>
+  <data name="include_information" xml:space="preserve">
+    <value>Incluir campo Informação</value>
+  </data>
 </root>
