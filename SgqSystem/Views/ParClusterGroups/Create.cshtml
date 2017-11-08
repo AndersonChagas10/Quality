@@ -1,9 +1,8 @@
-﻿@model Dominio.ParCluster
+﻿@model Dominio.ParClusterGroup
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = Resources.Resource.create;
 }
-
 
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
@@ -15,11 +14,11 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ParClusters")">@Resources.Resource.clusters</a>
+                    <a href="@Url.Action("Index", "ParClusterGroup")">@Resources.Resource.cluster_group</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <span>@Resources.Resource.new_cluster</span>
+                    <span>@Resources.Resource.new_cluster_group</span>
                 </li>
             </ul>
             <div class="page-toolbar">
@@ -38,7 +37,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.new_cluster</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.new_cluster_group</span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -51,14 +50,6 @@
 
                                     <div class="form-horizontal">
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.ParClusterGroup_Id, Resources.Resource.cluster_group, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
-                                                @Html.DropDownList("ParClusterGroup_Id", null, htmlAttributes: new { @class = "form-control" })
-                                                @Html.ValidationMessageFor(model => model.ParClusterGroup_Id, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Name, Resources.Resource.name, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
@@ -75,13 +66,39 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.ParClusterParent_Id, Resources.Resource.cluster_group, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        @*<div class="form-group">
+                                                @Html.LabelFor(model => model.ParClusterGroupParent_Id, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-10">
+                                                    @Html.DropDownListFor(model => model.ParClusterGroupParent_Id, null , new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.ParClusterGroupParent_Id, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>*@
+
+                                        @*<div class="form-group">
+                                            @Html.LabelFor(model => model.AddDate, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.ParClusterParent_Id, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.ParClusterParent_Id, "", new { @class = "text-danger" })
+                                                @Html.EditorFor(model => model.AddDate, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.AddDate, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.AlterDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.EditorFor(model => model.AlterDate, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.AlterDate, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.IsActive)
+                                                    @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>*@
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">

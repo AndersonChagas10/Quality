@@ -2226,4 +2226,7 @@
   <data name="next_unfolding" xml:space="preserve">
     <value>Próximo Desdobramento</value>
   </data>
+  <data name="new_cluster_group" xml:space="preserve">
+    <value>Novo Módulo</value>
+  </data>
 </root>

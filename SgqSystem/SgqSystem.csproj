@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -345,6 +345,7 @@
     <Compile Include="Controllers\Params\Level1ControlController.cs" />
     <Compile Include="Controllers\Familia\ParLevel2ControlCompanyController.cs" />
     <Compile Include="Controllers\Params\ParBinaryDataTypeController.cs" />
+    <Compile Include="Controllers\Params\ParClusterGroupsController.cs" />
     <Compile Include="Controllers\Relatorios\ParGoalScorecardController.cs" />
     <Compile Include="Controllers\Relatorios\RelatoriosSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleController.cs" />
@@ -1420,6 +1421,11 @@
     <Content Include="Views\Shared\_SelectVinculado.cshtml" />
     <Content Include="Views\RelatoriosSgq\NaoCumprimentoMeta.cshtml" />
     <Content Include="Views\Shared\_ClusterRegionalUnidadeCriticalLevel123.cshtml" />
+    <Content Include="Views\ParClusterGroups\Create.cshtml" />
+    <Content Include="Views\ParClusterGroups\Delete.cshtml" />
+    <Content Include="Views\ParClusterGroups\Details.cshtml" />
+    <Content Include="Views\ParClusterGroups\Edit.cshtml" />
+    <Content Include="Views\ParClusterGroups\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1506,11 +1512,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:57506/</IISUrl>
+          <IISUrl>http://localhost/SgqSystem</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

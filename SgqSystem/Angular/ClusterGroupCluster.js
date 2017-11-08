@@ -3,7 +3,7 @@
     START ANGULAR MODULE
     */
 
-    app.controller('Renan', ['$scope', '$http',
+    app.controller('ClusterGroupCluster', ['$scope', '$http',
         function ($scope, $http) {
 
             $scope.clusterGroup = listaClusterGroup;
