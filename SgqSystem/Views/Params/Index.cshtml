@@ -1153,7 +1153,8 @@
 
     $(document).ajaxError(function myErrorHandler(event, xhr, ajaxOptions, thrownError) {
         closeLoader();
-        openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.unable_to_complete_data_request)), '');
+        @*openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.unable_to_complete_data_request)), '');*@
+        openMessageModal(@Html.Raw(Json.Encode(Resources.Resource.unable_to_complete_data_request)), e.responseJSON.Message);
     });
 
     $( document ).ajaxStop(function() {
