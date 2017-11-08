@@ -26,10 +26,12 @@
             <tr>
                 <td style="width: 43%;">
                     @Html.LabelFor(model => model.Unidade_Id, htmlAttributes: new { @class = "control-label " })
+                    <i style="color:red">*</i>
                 </td>
                 <td style="width: 43%;">
                     @Html.DropDownList("Unidade_Id", new SelectList(ViewBag.Unidade, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm required" })
                     @Html.ValidationMessageFor(model => model.Unidade_Id, "", new { @class = "text-danger" })
+                    
                 </td>
                 <td style="width: 16%;"></td>
             </tr>
@@ -97,7 +99,7 @@
                 <td></td>
             </tr>
 
-            <tr class="showAsEstrategy">
+            <tr class="showAsEstrategy" style="display:none;">
                 <td>
                     @Html.LabelFor(r => r.Pa_Problema_Desvio_Id, htmlAttributes: new { @class = "control-label " })
                 </td>
@@ -110,6 +112,7 @@
             <tr class="showAsEstrategy">
                 <td>
                     @Html.Label("Causa generica", htmlAttributes: new { @class = "control-label " })
+                    <i style="color:red">*</i>
                 </td>
                 <td>
                     @Html.DropDownListFor(r => r.CausaGenerica_Id, new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), "Selecione...", new { @class = "form-control input-sm required" })
@@ -137,6 +140,7 @@
             <tr>
                 <td>
                     @Html.Label(Conn.nameCausaEspecifica, htmlAttributes: new { @class = "control-label " })
+                    <i style="color:red">*</i>
                 </td>
                 <td>
                     @Html.EditorFor(r => r.CausaEspecifica, new { htmlAttributes = new { @class = "form-control required" } })
@@ -147,6 +151,7 @@
             <tr>
                 <td>
                     @Html.Label(Conn.nameContramedidaEspecifica, htmlAttributes: new { @class = "control-label " })
+                    <i style="color:red">*</i>
                 </td>
                 <td>
                     @Html.EditorFor(r => r.ContramedidaEspecifica, new { htmlAttributes = new { @class = "form-control required" } })
@@ -157,6 +162,7 @@
             <tr rowspan="2" class="tr_clone quemClone" id="quem">
                 <td>
                     @Html.Label("Quem", htmlAttributes: new { @class = "control-label" })
+                    <i style="color:red">*</i>
                 </td>
                 <td>
                     @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm required" })
@@ -176,6 +182,7 @@
             <tr>
                 <td>
                     @Html.LabelFor(model => model.QuandoInicio, htmlAttributes: new { @class = "control-label " })
+                    <i style="color:red">*</i>
                 </td>
                 <td>
                     @Html.Editor("_QuandoInicio", new { htmlAttributes = new { @class = "form-control datepicker required" } })
@@ -196,6 +203,7 @@
             <tr>
                 <td>
                     @Html.LabelFor(model => model.QuandoFim, htmlAttributes: new { @class = "control-label " })
+                    <i style="color:red">*</i>
                 </td>
                 <td>
                     @Html.Editor("_QuandoFim", new { htmlAttributes = new { @class = "form-control datepicker required" } })

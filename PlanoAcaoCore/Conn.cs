@@ -14,7 +14,7 @@
         public static string TitileMailNovoFTA = "Plano de Ação - Novo Relatório de Análise de Desvio criado.";
 
         //////Config para dev GRT
-        //////Local Db
+        ////Local Db
         public static string catalog { get { return "PlanoDeAcao"; } }
         public static string dataSource { get { return @"SERVERGRT\MSSQLSERVER2014"; } }
         public static string user { get { return "sa"; } }
@@ -129,8 +129,8 @@
         //public static string user2 { get { return "grjqualidadedev"; } }
         //public static string pass2 { get { return "Mi3UpU0J35<_"; } }
 
-        //Utilizar para JBS
-        //DB Local
+        //////Utilizar para JBS
+        //////DB Local
         //public static string catalog { get { return "dbGQualidadeTeste"; } }
         //public static string dataSource { get { return @"10.255.0.41"; } }
         //public static string user { get { return "UserGQualidade"; } }

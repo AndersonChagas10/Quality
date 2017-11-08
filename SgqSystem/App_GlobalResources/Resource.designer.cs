@@ -2455,6 +2455,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Include Information Text.
+        /// </summary>
+        internal static string include_information {
+            get {
+                return ResourceManager.GetString("include_information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Include options.
         /// </summary>
         internal static string include_options {
@@ -3522,6 +3531,15 @@ namespace Resources {
         internal static string new_cluster {
             get {
                 return ResourceManager.GetString("new_cluster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Cluster Group.
+        /// </summary>
+        internal static string new_cluster_group {
+            get {
+                return ResourceManager.GetString("new_cluster_group", resourceCulture);
             }
         }
         

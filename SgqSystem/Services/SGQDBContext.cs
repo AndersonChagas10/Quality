@@ -1478,7 +1478,7 @@ namespace SGQDBContext
                 }
 
                 sql = "\n SELECT Id, Nome as Name, 0 as PunishmentValue, 0 as IsDefaultOption " +
-                             "\n FROM Equipamentos  (nolock) " +
+                             "\n FROM Equipamentos  With (nolock) " +
                              "\n WHERE (Tipo = '" + valores[0] + "' AND " + subtipo + ") " +
                              "\n AND ParCompany_id = " + ParCompany_Id;
 
@@ -1486,7 +1486,12 @@ namespace SGQDBContext
             else if (valores[0] == "Produto")
             {
                 sql = "\n SELECT nCdProduto Id, cast(nCdProduto as varchar) + ' | ' + cNmProduto as Name, 0 as PunishmentValue, 0 as IsDefaultOption  " +
-                      "\n FROM Produto  (nolock) ";
+                      "\n FROM Produto  With (nolock) ";
+            }
+            else if (valores[0] == "Novo")
+            {
+                sql = "\n SELECT Id as Id, Name as Name, 0 as PunishmentValue, 0 as IsDefaultOption  " +
+                      "\n FROM UserSgq With (nolock) ";
             }
 
             var multipleValues = db.Query<ParFieldType>(sql);
