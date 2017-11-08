@@ -456,7 +456,7 @@
 
             sendObj = $(form).serializeObject();
 
-            let isValid = !($(form).find('.error:visible') == 0)
+            let isValid = ($(form).find('.error:visible').length == 0)
             if(!isValid)  {
                 alert("Campos obrigatórios")
                 return 
@@ -1054,7 +1054,8 @@
                     /*19*/{ title: "Indicador", mData: "Acao.Level1Name" }, //Novo
                     /*20*/{ title: "Monitoramento", mData: "Acao.Level2Name" }, //Novo
                     /*21*/{ title: "Tarefa", mData: "Acao.Level3Name" }, //Novo
-                    /*22*/{ title: "Problema ou Desvio", mData: "Acao._Pa_Problema_Desvio_Id.Name" },
+                    ///*22*/{ title: "Problema ou Desvio", mData: "Acao._Pa_Problema_Desvio_Id.Name" },
+                     /*22*/{ title: " ", mData: "Acao._Pa_Problema_Desvio_Id.Name" },
                     /*23*/{ title: "Indicador Operacional", mData: "Acao._Pa_IndicadorSgqAcao.Name" },
                     /*24*/{ title: "Causa Genérica", mData: "Acao._CausaGenerica" },
                     /*25*/{ title: "Grupo Causa", mData: "Acao._GrupoCausa" },
