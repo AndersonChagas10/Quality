@@ -251,7 +251,6 @@
         });
 
         $.fn.serializeObject = function () {
-            $('.error').removeClass('error')
             var isValid = true
 
             var tipo = "";
@@ -266,37 +265,28 @@
             }
             //var tipo = "estrategico";
 
+            $(this).find('.error').removeClass('error')
             $(this).find('select.required' + tipo).each(function (c, o) {
-                console.log($(o).find('option:selected').val())
-                console.log($(o).find('option:selected').text())
-
                 if ($(o).find('option:selected').val().length == 0) {
                     $(o).addClass('error')
-
-                    $('#' + $(o).attr('id') + ' + .select2').find('.select2-selection__rendered').addClass('error');
-
-                    isValid = false
+                    $(o).parents('form').find('#' + $(o).attr('id') + ' + .select2').find('.select2-selection__rendered').addClass('error');
                 }
             })
 
+            $(this).find('input.required').each(function (c, o) {
+                $(o).addClass('error')
+                if (($(this).val().length > 0)) {
+                    $(this).removeClass('error')
+                } else {
+                    $(this).addClass('error')
+                }
+            });
 
-            if (isValid) {
-                $(this).find('input.required').each(function (c, o) {
-                    $(o).addClass('error')
-                    if (($(this).val().length > 0)) {
-                        $(this).removeClass('error')
-                        isValid = true
-                    } else {
-                        $(this).addClass('error')
-                        isValid = false
-                    }
-                });
-            }
-
-            if (!isValid) {
-                alert("Campos obrigatórios");
-                return {isValid: '0'}
-            }
+            //if ($(this).find('.error').length) {
+            //    alert("Campos obrigatórios");
+            //    return { isValid: '0' }
+            //    throw "Campos obrigatórios";
+            //}
 
             var o = {};
             var a = this.serializeArray();

@@ -3535,6 +3535,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Cluster Group.
+        /// </summary>
+        internal static string new_cluster_group {
+            get {
+                return ResourceManager.GetString("new_cluster_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New company.
         /// </summary>
         internal static string new_company {
