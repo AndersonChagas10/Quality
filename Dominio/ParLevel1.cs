@@ -74,6 +74,7 @@ namespace Dominio
         public Nullable<bool> AllowEditWeightOnLevel3 { get; set; }
         public Nullable<bool> ShowInTablet { get; set; }
         public bool HasTakePhoto { get; set; }
+        public Nullable<bool> ShowScorecard { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }

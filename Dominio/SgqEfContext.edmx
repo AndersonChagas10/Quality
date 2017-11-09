@@ -710,6 +710,7 @@
           <Property Name="AllowEditWeightOnLevel3" Type="bit" />
           <Property Name="ShowInTablet" Type="bit" />
           <Property Name="HasTakePhoto" Type="bit" Nullable="false" />
+          <Property Name="ShowScorecard" Type="bit" Nullable="true"/>
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'dbGQualidade.dbo.ParLevel1VariableProduction' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
