@@ -78,6 +78,16 @@ namespace SgqSystem
             VerifyColumnExistsNotExistisThenCreate("ParLevel1", "HasTakePhoto", "bit", "default (0)", "HasTakePhoto = 0");
             VerifyColumnExistsNotExistisThenCreate("ParLevel2", "HasTakePhoto", "bit", "default (0)", "HasTakePhoto = 0");
             VerifyColumnExistsNotExistisThenCreate("ParLevel3", "HasTakePhoto", "bit", "default (0)", "HasTakePhoto = 0");
+
+            //09 11 2017 BJ Br
+            VerifyColumnExistsNotExistisThenCreate("ParLevel1", "IsRecravacao", "bit", "default (0)", "IsRecravacao = 0");
+            VerifyColumnExistsNotExistisThenCreate("ParLevel1", "ShowScorecard", "bit", "default (0)", "ShowScorecard = 0");
+            VerifyColumnExistsNotExistisThenCreate("ParLevel3", "IsPointLess", "bit", "default (0)", "IsPointLess = 0");
+            VerifyColumnExistsNotExistisThenCreate("ParLevel3", "OrderColumn", "bit", "default (0)", "OrderColumn = 0");
+            VerifyColumnExistsNotExistisThenCreate("ParLevel3", "AllowNA", "bit", "default (0)", "AllowNA = 0");
+            VerifyColumnExistsNotExistisThenCreate("CollectionLevel2XParHeaderField", "Evaluation", "int", "default (null)", "Evaluation = null");
+            VerifyColumnExistsNotExistisThenCreate("CollectionLevel2XParHeaderField", "Sample", "int", "default (null)", "Sample = null");
+
         }
 
         /// <summary>
