@@ -32,6 +32,9 @@ namespace Dominio
         public Nullable<System.DateTime> AlterDate { get; set; }
         public bool IsActive { get; set; }
         public bool HasTakePhoto { get; set; }
+        public Nullable<bool> IsPointLess { get; set; }
+        public Nullable<bool> AllowNA { get; set; }
+        public Nullable<int> OrderColumn { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel3Level2> ParLevel3Level2 { get; set; }
