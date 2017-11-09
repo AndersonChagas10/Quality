@@ -4464,7 +4464,14 @@ namespace SgqSystem.Services
                     }
                 }
 
-                var label = "<label class=\"font-small\">" + header.ParHeaderField_Name + "</label>";
+                var duplicar = header.duplicate;
+
+                var duplicaHeader = duplicar ? "  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <div style='display: inline-table' onclick='$(this).parent().clone(true,true).insertAfter($(this).parent());'><i class='fa fa-plus' aria-hidden='true'></i></div>     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     <div style='display: inline-table' onclick='$(this).parent().remove();'><i class='fa fa-minus' aria-hidden='true'></i></div>" : "";
+
+
+
+                var label = "<label class=\"font-small\">" + header.ParHeaderField_Name + "</label>"
+                    + duplicaHeader;
 
                 var form_control = "";
 
@@ -4571,7 +4578,7 @@ namespace SgqSystem.Services
                 id = id + 1;
 
                 var form_group = html.div(
-                                            outerhtml: label + form_control,
+                                            outerhtml: label + form_control ,
                                             classe: "form-group header",
                                             tags: header.IsRequired == 1 ? "required" : "",
                                             style: "margin-bottom: 4px;"
